@@ -1,5 +1,4 @@
 <?php
-
 //---------------------------------------------------------------------------------------------------------------
 // Microservice getCourseGroupsAndMembers, returns a list of group member related to the provided 
 // course id and course version
@@ -25,8 +24,14 @@ if(isset($_SESSION['uid'])){
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
+$log_uuid=getOP('log_uuid');
+/* Specified group to retrieve members from*/
+$showgrp=getOP('showgrp'); 
 
 $grplst=array();
+$grpmembershp = null;
+$debug = "NONE!";
+$uid = "guest";
 
 if(checklogin()){
 	if(isset($_SESSION['uid'])){
@@ -44,11 +49,19 @@ if(checklogin()){
 		$query->bindParam(':vers', $coursevers);
 		if($query->execute()) {
 			foreach($query->fetchAll() as $row) {
-				$email=$row['email'];
-				if(is_null($email)){
-					$email=$row['username']."@student.his.se";
+		        $grpmembershp=$row['groups'];
+				if (!empty($grpmembershp)){
+					// just need two first letters for comparison
+					$grpletters = $grpmembershp[0] . $grpmembershp[1];
+					// Collect members part of the group specified in $showgrp
+					if (strpos($showgrp, $grpletters)!==false){
+						$email=$row['email'];
+						if(is_null($email)){
+							$email=$row['username']."@student.his.se";
+						}
+						array_push($grplst, array($row['groups'],$row['firstname'],$row['lastname'],$email));
+					}
 				}
-				array_push($grplst, array($row['groups'],$row['firstname'],$row['lastname'],$email));
 			}
 			sort($grplst);
 		}else{
@@ -56,6 +69,11 @@ if(checklogin()){
 		}
 	} 	
 }
-echo json_encode(array('debug'=> "NONE!",'grplst' => $grplst));
+
+
+include_once "./retrieveSectionedService_ms.php";
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data['grplst'] = $grplst;
+$data['grpmembershp'] = $grpmembershp;
+echo json_encode($data);
 return;
-?>

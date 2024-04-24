@@ -60,6 +60,7 @@ This document primaraly focuses on the services provided by the service-files, t
 - createDugga
 - UpdateDugga
 - deleteDugga
+- saveDugga
 - createDuggaVariant
 - updateDuggaVariant
 - deleteDuggaVariant
@@ -660,6 +661,20 @@ Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
 <br>
 
 ---
+
+<br>
+
+### saveDugga (SAVDU)
+Will use service __Logging__ if it's going to be created
+Not to be confused with SAVDUGGA that is used by teachers to update quiz-answers. 
+This microservice is used to handle user answers for dugga quizzes and assignments. This microservice can retrieve data from user answers (submissions),
+update user answers and insert new user answers.
+
+
+
+<br>
+
+--
 
 <br>
 
