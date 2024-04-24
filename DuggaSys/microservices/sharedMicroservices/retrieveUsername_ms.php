@@ -14,7 +14,7 @@ pdoConnect();
 session_start();
 
 
-function retrieveUsername($pdo)
+function readUsername($pdo)
 {
 	$userid = getUid();
 	// Gets username based on uid
