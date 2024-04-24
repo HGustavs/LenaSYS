@@ -8835,8 +8835,21 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLFinalState:
             let finalVec = `
                 <g> 
-                    <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                    <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/> 
+                    <path 
+                        d="M 12,-0
+                            C 18.623,-0 24,5.377 24,12
+                            C 24,18.623 18.623,24 12,24
+                            C 5.377,24 -0,18.623 -0,12
+                            C -0,5.377 5.377,-0 12,-0 Z
+                            M 12,2C17.519,2 22,6.481 22,12
+                            C 22,17.519 17.519,22 12,22
+                            C 6.481,22 2,17.519 2,12
+                            C 2,6.481 6.481,2 12,2 Z"
+                    />
+                    <circle 
+                        transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" 
+                        cx="14.5" cy="14.5" r="5.5"
+                    /> 
                 </g>`
             str += drawElementState(element, ghosted, finalVec);
             break;
@@ -8845,6 +8858,12 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.IEEntity:
             str += drawElementIEEntity(element, ghosted);
+            break;
+        case elementTypesNames.sequenceActor:
+            str += drawElementSequenceActor(element, ghosted, textWidth);
+            break;
+        case elementTypesNames.sequenceObject:
+            str += drawElementSequenceObject(element, ghosted);
             break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
@@ -8921,117 +8940,8 @@ function drawElement(element, ghosted = false) {
         //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == elementTypesNames.sequenceActor) {
-        //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`
-        str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text"
-                d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-                    v${boxw / 6}
-                    m-${(boxw / 4)},0
-                    h${boxw / 2}
-                    m-${(boxw / 4)},0
-                    v${boxw / 3}
-                    l${boxw / 4},${boxw / 4}
-                    m${(boxw / 4) * -1},${(boxw / 4) * -1}
-                    l${(boxw / 4) * -1},${boxw / 4}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='transparent'
-            />`;
-        //svg for the actor name text, it has a background rect for ease of readability.
-        //make the rect fit the text if the text isn't too big
-        if (!tooBig) {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${xAnchor - (textWidth / 2)}'
-                    y='${boxw + (linew * 2)}'
-                    width='${textWidth}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        }
-        //else just make a boxw width rect and adjust the text to fit this new rect better
-        else {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${linew}'
-                    y='${boxw + (linew * 2)}'
-                    width='${boxw - linew}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-        }
-        str += `</g>`;
-        str += `</svg>`;
-    }
-    //actor or object is determined via the buttons in the context menu. the default is actor.
-    else if (element.kind == "sequenceObject") {
-        //svg for object.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`;
-        str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
-                height='${(boxw / 2) - linew}'
-                rx='${sequenceCornerRadius}'
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}' 
-            />`;
-        str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</g>`;
-        str += `</svg>`;
-    }
-
-    // Sequence activation 
-    else if (element.kind == 'sequenceActivation') {
+    } else if (element.kind == "sequenceObject") {
+    } else if (element.kind == 'sequenceActivation') {
         //div to encapsulate sequence lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;z-index:1;`;
@@ -9629,6 +9539,129 @@ function drawElementSuperState(element, ghosted, textWidth) {
                 </svg>
             </div>`;
 }
+
+function drawElementSequenceActor(element, ghosted, textWidth) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<path 
+                    class="text" 
+                    d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                />
+                <g>
+                    <circle 
+                        cx="${(boxw / 2) + linew}" 
+                        cy="${(boxw / 8) + linew}" 
+                        r="${boxw / 8}px" 
+                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
+                    />
+                    <path 
+                        class="text"
+                        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                            v${boxw / 6}
+                            m-${(boxw / 4)},0
+                            h${boxw / 2}
+                            m-${(boxw / 4)},0
+                            v${boxw / 3}
+                            l${boxw / 4},${boxw / 4}
+                            m${(boxw / 4) * -1},${(boxw / 4) * -1}
+                            l${(boxw / 4) * -1},${boxw / 4} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='transparent'
+                    />
+                    <rect 
+                        class='text'
+                        x='${(boxw - textWidth) / 2}'
+                        y='${boxw + (linew * 2)}'
+                        width='${textWidth}'
+                        height='${texth - linew}'
+                        stroke='none'
+                        fill='${element.fill}'
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${boxw + texth / 2 + linew * 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceObject(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<path 
+                    class="text" 
+                    d="M ${(boxw / 2) + linew},${(boxw / 4) + linew}
+                        V ${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                /> 
+                <g>
+                    <rect 
+                        class='text'
+                        x='${linew}'
+                        y='${linew}'
+                        width='${boxw - (linew * 2)}'
+                        height='${(boxw / 2) - linew}'
+                        rx='${sequenceCornerRadius}'
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}' 
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${(boxw / 2 - linew) / 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+
 
 /**
  * @description Updates the elements translations and redraw lines.
