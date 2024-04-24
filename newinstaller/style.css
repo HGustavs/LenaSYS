@@ -7,8 +7,8 @@
     --primary-color: #8F58A3;
     --primary-color-hover: #773090;
     --primary-color-active: #692582;
-    --secondary-color: rgba(143, 88, 163, 0.4);
-    --third-color: #D9D9D9;
+    --secondary-color: #8f58a366;
+    --accent-color: #D9D9D9;
     --page-background: #FCFCFC;
     --warning-text: #F05555;
     --success-text: #5FCE71;
@@ -22,7 +22,7 @@
     --h2-fontsize-small: 26px;
     --text-large: 16px;
     --text-medium: 14px;
-    --text-xs: 12px;
+    --text-small: 12px;
 }
 
 html body {
@@ -104,8 +104,7 @@ html body {
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */
 @media (max-width: 768px) {
-
-    .input-grid{
+    .input-grid {
         font-family: var(--body-font);
         display: flex;
         flex-direction: column;
@@ -155,7 +154,7 @@ input[type=text]:focus {
 }
 
 .tip {
-    font-size: var(--text-xs);
+    font-size: var(--text-small);
     font-style: italic;
     color: var(--text-dark);
     margin-top: .25rem;
@@ -176,7 +175,7 @@ input[type=checkbox] {
 }
 
 .warning {
-    font-size: var(--text-xs);
+    font-size: var(--text-small);
     color: var(--warning-text);
     font-style: italic;
     padding-left: 0.25rem;
@@ -184,7 +183,7 @@ input[type=checkbox] {
 }
 
 .backButton {
-    background-color: rgba(0, 0, 0, 0); /* To get none color*/
+    background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
     width: 100px;
@@ -204,21 +203,21 @@ input[type=checkbox] {
 }
 
 .progressButton:hover {
-    cursor:pointer;
+    cursor: pointer;
     background-color: var(--primary-color-hover);
-    box-shadow:1px 1px 1px var(--text-dark);
+    box-shadow: 1px 1px 1px var(--text-dark);
 }
 
 .progressButton:active {
     background-color: var(--primary-color-active);
-    box-shadow:2px 2px 2px var(--text-dark);
+    box-shadow: 2px 2px 2px var(--text-dark);
 }
 
 .backButton:hover {
-    cursor:pointer;
-    box-shadow:-1px 1px 1px var(--text-dark);
+    cursor: pointer;
+    box-shadow: -1px 1px 1px var(--text-dark);
 }
 
 .backButton:active {
-    box-shadow:-2px 2px 2px var(--text-dark);
+    box-shadow: -2px 2px 2px var(--text-dark);
 }
