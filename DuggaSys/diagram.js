@@ -7921,28 +7921,18 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 var dy = Math.abs(y2 - y1);
                 // Check if the elements are more horizontally, vertically, or diagonally aligned
                 if (dx > dy && (Math.abs(dx-dy) > 150)) {
-                    console.log("Horizontally aligned");
-                    console.log("dx: " + dx + " dy: " + dy);
-                    console.log("lines between: " +linesBetween.length);
                     // Horizontally aligned, adjust offsetX
                     newLine.offsetY = (x2 > x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
                     newLine.offsetX = 0; // No vertical offset
                 } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
-                    console.log("Vertically aligned");
-                    console.log("dx: " + dx + " dy: " + dy);
-                    console.log("lines between: " +linesBetween.length);
                     // Vertically aligned, adjust offsetY
                     newLine.offsetY = 0; // No horizontal offset
                     newLine.offsetX = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
                 } else {
-                    console.log("Diagonally aligned");
-                    console.log("dx: " + dx + " dy: " + dy);
-                    console.log("lines between: " +linesBetween.length);
                     // Diagonally aligned, adjust both offsetX and offsetY
                     newLine.offsetX = (x2 < x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
                     newLine.offsetY = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
                 }
-                console.log("offsetX: " + newLine.offsetX + " offsetY: " + newLine.offsetY);
             }
         
 
@@ -7994,23 +7984,14 @@ function calculateLineOffset(line) {
         var dy = Math.abs(y2 - y1);
         // Check if the elements are more horizontally, vertically, or diagonally aligned
         if (dx > dy && (Math.abs(dx-dy) > 150)) {
-            console.log("Horizontally aligned");
-            console.log("dx: " + dx + " dy: " + dy);
-            console.log("lines between: " +linesBetween.length);
             // Horizontally aligned, adjust offsetX
             line.offsetY = (x2 > x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
             line.offsetX = 0; // No vertical offset
         } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
-            console.log("Vertically aligned");
-            console.log("dx: " + dx + " dy: " + dy);
-            console.log("lines between: " +linesBetween.length);
             // Vertically aligned, adjust offsetY
             line.offsetY = 0; // No horizontal offset
             line.offsetX = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
         } else {
-            console.log("Diagonally aligned");
-            console.log("dx: " + dx + " dy: " + dy);
-            console.log("lines between: " +linesBetween.length);
             // Diagonally aligned, adjust both offsetX and offsetY
             line.offsetX = (x2 < x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
             line.offsetY = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
@@ -8643,7 +8624,6 @@ function redrawArrows(str) {
 
         // Recalculate the offset for the line
         if (lines[i].specialCase) {
-            console.log("found one!")
             calculateLineOffset(lines[i]);
         }
     }
