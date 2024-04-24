@@ -2,7 +2,7 @@
 /* Import fonts Noto Sans and Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Variable Declaration*/
+/* Variable Declaration */
 :root {
     --primary-color: #8F58A3;
     --primary-color-hover: #773090;
@@ -35,11 +35,14 @@ html body {
     background-color: var(--page-background);
 }
 
+/*  Create a padding for all content
+    inside the installer window */
 .wrapper {
     padding: 3rem;
     padding-top: 2.5rem;
 }
 
+/*  Creates the purple background behind .header-1  */
 .banner {
     background-color: var(--primary-color);
 }
@@ -76,8 +79,8 @@ html body {
     margin-bottom: 1.5rem;
 }
 
-/*  Container for the main content of the installer
-    window, including the .body-text and .input-grid    */
+/*  Container that sets padding for the main content of the
+    installer window, including the .body-text and .input-grid  */
 .inner-wrapper {
     padding: 2rem;
     padding-top: 0;
@@ -109,7 +112,7 @@ html body {
         gap: 1.5rem;
     }
 
-    .header h1 {
+    .header-1 {
         font-family: var(--header-font);
         color: var(--text-light);
         font-size: var(--h1-fontsize-small);
@@ -117,7 +120,7 @@ html body {
         padding: 1rem;
     }
 
-    h2 {
+    .header-2 {
         font-family: var(--header-font);
         color: var(--primary-color);
         font-size: var(--h2-fontsize-small);
