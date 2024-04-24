@@ -90,7 +90,7 @@ Codeviewer Service:
 
 - settingCodeexampleTemplate_ms.php
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
-- editContentOfCodeExample_ms.php
+- editContentOfCodeExample_ms.php __==finished==__ New filename: "updateContentOfCodeExample_ms.php" according to new nameconvention based on CRUD and the main function of the ms.
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
 - deleteCodeExample_ms.php __==finished==__ New filename: "deleteCodeExample_ms.php" according to new nameconvention based on CRUD.
 
@@ -712,15 +712,40 @@ DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
 
 <br>
 
-### editContentOfCodeExample
-Uses the services __updateTableBox__ to change the content of these columns:
+### updateContentOfCodeExample_ms.php
+_UPDATE_ operation on the table __'box'__ to update the values of the columns:
 - boxtitle
 - boxcontent
 - filename
 - fontsize
 - wordlistid
 
-Aswell as __insertIntoTableImprow__ or __deleteFromTableImpwordlist__ to add or remove a row in table __improw__.
+```sql
+UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;
+```
+
+
+_INSERT_ operation into the table __'improw'__ to add a new row with values for the following columns:
+- boxid
+- exampleid
+- istart
+- iend
+- uid
+
+```sql
+INSERT INTO improw (boxid, exampleid, istart, iend, uid) VALUES (:boxid, :exampleid, :istart, :iend, :uid);
+```
+
+
+_DELETE_ operation on the table __'improw'__ to remove rows where the following conditions are met:
+- boxid
+- istart
+- iend
+- exampleid
+
+```sql
+DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;
+```
 
 <br>
 
