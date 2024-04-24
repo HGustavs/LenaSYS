@@ -1385,7 +1385,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         //actorOrObject: "actor",
         canChangeTo: null
@@ -1396,7 +1396,7 @@ var defaults = {
         fill: "#FFFFFF",
         stroke: "#000000",
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         //actorOrObject: "object",
         canChangeTo: null
@@ -1407,7 +1407,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 30,
-        height: 300,
+        height: 100,
         type: "SE",
         canChangeTo: null
     }, // Sequence Activation.
@@ -2345,6 +2345,50 @@ function mouseEnter() {
     }
 }
 
+var mouseSeq = false;
+//const target = null;
+function mouseEnterSeq(event){
+    if(elementTypeSelected === elementTypes.sequenceActivation){
+        //mouseSeq = true;
+        const target = event.target;
+        const targetId = target.id;
+        
+        const targetClass = target.className;
+        const targetTagName = target.tagName;
+        const divElement = document.getElementById(targetId);
+        const width = divElement.clientWidth;
+        console.log(targetId, width, divElement.clientX);
+        snapSAToLifeline(targetId);
+    }
+}
+
+
+function snapSAToLifeline(targetId) {
+    
+    const lifeline = document.getElementById(targetId);
+    if (lifeline) {
+        
+        const lifelineRect = lifeline.getBoundingClientRect();
+        var lifelineCenterX = lifelineRect.left + (lifelineRect.width / 2);
+        console.log(lifelineRect);
+        for (let i = 0; i < data.length; i++ ){
+               console.log(data[0].kind);
+            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequence" && data[i].id === targetId) {
+                var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
+                const element = data[i];
+                
+                    const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
+                    ghostElement.x = newXGhost;
+                
+               
+                updatepos(0, 0);
+                
+            }
+        }
+    }
+}
+
+
 /**
  * @description change cursor style when mouse is hovering over the container.
  */
@@ -2576,6 +2620,9 @@ function mouseMode_onMouseMove(event) {
         case mouseModes.EDGE_CREATION:
             mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
+            /*if (target != null){
+                snapSAToLifeline();
+            }*/
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
@@ -3862,6 +3909,10 @@ function setMouseMode(mode) {
     } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
+    }
+
+    if(mouseMode == mouseModes.POINTER){
+        elementTypeSelected = null;
     }
 }
 
@@ -8854,7 +8905,7 @@ function drawElement(element, ghosted = false) {
     } else if (element.kind == elementTypesNames.SDEntity) {
     } else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter(), mouseEnterSeq(event);' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
 
         if (context.includes(element)) {
@@ -8922,7 +8973,7 @@ function drawElement(element, ghosted = false) {
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter(), mouseEnterSeq(event);' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
@@ -8993,7 +9044,7 @@ function drawElement(element, ghosted = false) {
     //actor or object is determined via the buttons in the context menu. the default is actor.
     else if (element.kind == "sequenceObject") {
         //svg for object.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter(),  mouseEnterSeq(event);' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
