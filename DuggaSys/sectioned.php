@@ -463,15 +463,33 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">Only numbers(between 3-8 numbers)</span></div>
+				<div class='inputwrapper'>
+					<span>Version ID:</span>
+					<div class="formDialog" style="display: block; left:-122px;">
+						<span id="dialog2" style="display: none; left:0px;" class="formDialogText formDialog">Only numbers(between 3-8 numbers)</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
+				</div>
 				<!--<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>-->
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
+				<div class='inputwrapper'>
+					<span>Version Name:</span>
+					<div class="formDialog" style="display: block; left:-135px; top:-5px;">
+						<span id="dialog" style="display: none; left:0px;" class="formDialogText formDialog">Must be in of the form HTNN, VTNN or STNN</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
+				</div>
 				<!--<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9.</p>-->
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-25px;"><span id="dialog3" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
+				<div class='inputwrapper'>
+					<span>Start Date:</span>
+					<div class="formDialog" style="display: block; left:-120px; top:-5px;">
+						<span id="dialog3" style="display: none; left:0px;" class="formDialogText formDialog">Start date has to be before end date</span>
+					</div>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>End Date:</span>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' />
+				</div>
 				<!--<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>-->
 				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
 				<div class="formDialog" style="display: block; left:50px; top:-12px;"><span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span></div>
