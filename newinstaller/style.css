@@ -144,11 +144,21 @@ html body {
     flex-direction: column;
 }
 
+/*  Declaration of Font-family this way is
+    not optimal, but increase readability   */
 .input-field label{
     font-family: "Noto Sans", sans-serif;
 }
 
 .input-field input{
+    font-family: "Noto Sans", sans-serif;
+}
+
+.checkbox label{
+    font-family: "Noto Sans", sans-serif;
+}
+
+.tip{
     font-family: "Noto Sans", sans-serif;
 }
 
