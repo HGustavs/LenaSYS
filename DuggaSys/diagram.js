@@ -1967,9 +1967,15 @@ function mdown(event) {
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
                 if (determinedLines.specialCase == true) {
-                    targetElement = data[findIndex(data, determinedLines.id)];
-                    startX = event.clientX;
-                    startY = event.clientY;
+                    targetLine = data[findIndex(data, determinedLines.id)];
+                    // get the elements the targetLine is connected to
+                    var fromElement = data[findIndex(data, targetLine.fromID)];
+                    var toElement = data[findIndex(data, targetLine.toID)];
+                    // recalculate the lines offset
+                    var lineOffset = calculateLineOffset(fromElement, toElement, targetLine);
+
+
+
                 }
 
                 pointerState = pointerStates.CLICKED_LINE;
@@ -7849,14 +7855,14 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Defina a boolean for special case for sequence diagrams where multiple lines are allowed
     var specialCaseSequence = (
-        fromElement.kind === elementTypesNames.sequenceActorAndObject &&
-        toElement.kind === elementTypesNames.sequenceActorAndObject ||
+        fromElement.kind === elementTypesNames.sequenceActor &&
+        toElement.kind === elementTypesNames.sequenceActor ||
+        fromElement.kind === elementTypesNames.sequenceObject &&
+        toElement.kind === elementTypesNames.sequenceObject ||
         fromElement.kind === elementTypesNames.sequenceActivation &&
         toElement.kind === elementTypesNames.sequenceActivation ||
         fromElement.kind === elementTypesNames.sequenceLoopOrAlt &&
-        toElement.kind === elementTypesNames.sequenceLoopOrAlt ||
-        fromElement.kind === elementTypesNames.sequenceMessage &&
-        toElement.kind === elementTypesNames.sequenceMessage
+        toElement.kind === elementTypesNames.sequenceLoopOrAlt
     );
 
     // Check rules for Recursive relations
@@ -7965,7 +7971,60 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
         return newLine;
     } else {
+        console.log(numOfExistingLines, specialCase, specialCaseSequence);
+        console.log(fromElement, toElement);
+
         displayMessage(messageTypes.ERROR, `Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
+    }
+}
+
+/**
+ * @description Calculates the correct offset for x and y coordinates for the line to be drawn between two elements.
+ * @param {Object} fromElement Element that the line is from.
+ * @param {Object} toElement Element that the line is to.
+ * @param {Line} line The line that should be corrected.
+ */
+function calculateLineOffset(fromElement, toElement, line) {
+    var linesBetween = lines.filter(function (line) {
+        return (fromElement.id === line.fromID &&
+            toElement.id === line.toID ||
+            fromElement.id === line.toID &&
+            toElement.id === line.fromID)
+    });
+
+    if (linesBetween.length > 0) {
+        x1 = fromElement.x1;
+        y1 = fromElement.y1;
+        x2 = toElement.x1;
+        y2 = toElement.y1;
+
+        // Calculate differences in x and y coordinates
+        var dx = Math.abs(x2 - x1);
+        var dy = Math.abs(y2 - y1);
+        // Check if the elements are more horizontally, vertically, or diagonally aligned
+        if (dx > dy && (Math.abs(dx-dy) > 150)) {
+            console.log("Horizontally aligned");
+            console.log("dx: " + dx + " dy: " + dy);
+            console.log("lines between: " +linesBetween.length);
+            // Horizontally aligned, adjust offsetX
+            line.offsetY = (x2 > x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
+            line.offsetX = 0; // No vertical offset
+        } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
+            console.log("Vertically aligned");
+            console.log("dx: " + dx + " dy: " + dy);
+            console.log("lines between: " +linesBetween.length);
+            // Vertically aligned, adjust offsetY
+            line.offsetY = 0; // No horizontal offset
+            line.offsetX = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
+        } else {
+            console.log("Diagonally aligned");
+            console.log("dx: " + dx + " dy: " + dy);
+            console.log("lines between: " +linesBetween.length);
+            // Diagonally aligned, adjust both offsetX and offsetY
+            line.offsetX = (x2 < x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
+            line.offsetY = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
+        }
+        console.log("offsetX: " + line.offsetX + " offsetY: " + line.offsetY);
     }
 }
 
@@ -8382,12 +8441,22 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
-    if (line.specialCase){
-        return `<polyline
-                id='${line.id}'
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}'
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' style="transform: translate(${line.offsetX * zoomfact}, ${line.offsetY * zoomfact}px);"
-            />`;
+    if (line.specialCase) {
+        // Calculate the midpoint offsets based on line.offsetX and line.offsetY if line.specialCase is true
+        let offsetX = line.specialCase ? line.offsetX / 2 : 0;
+        let offsetY = line.specialCase ? line.offsetY / 2 : 0;
+        
+        // Calculate the points with offsets
+        let points = `  ${fx + offset.x1 + (offsetX * zoomfact)},
+                        ${fy + offset.y1 + (offsetY * zoomfact)} ${fx + offset.x1 - dx},
+                        ${fy + offset.y1 - dy + (offsetY * zoomfact)} ${tx + offset.x2 + dx + (offsetX * zoomfact)},
+                        ${ty + offset.y2 + dy + (offsetY * zoomfact)} ${tx + offset.x2 + (offsetX * zoomfact)},
+                        ${ty + offset.y2 + (offsetY * zoomfact)}`;
+
+        // Construct the polyline SVG element
+        let polylineSVG = `<polyline id='${line.id}' points='${points}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
+
+        return polylineSVG;
     }
 
     return `<polyline 
