@@ -7727,8 +7727,7 @@ textarea#mrkdwntxt {
 }
 
 #saveCourse{
-  margin-left: 347px;
-  margin-top: 20px;
+  margin: 0px;
 }
 
 #submitEditCourse{
@@ -7743,6 +7742,82 @@ textarea#mrkdwntxt {
   margin-bottom: 20px;
   margin-right: 2px;
 }
+
+
+.form-popup {
+  text-align: center;
+  display: none;
+  padding: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  background-color: #fff; /* white background */
+  height:16.25rem;
+  width:28.75rem;
+  background-color:#775886;
+}
+
+/* styles to the form container */
+.form-container {
+  height:211px;
+  padding: 30px;
+  background-color: white;
+}
+
+#deleteCourseButton{
+  background-color:#d42c35;
+  height:30px;
+  padding-left:35px;
+  padding-right:35px;
+  border: none;
+  border-radius: 5px;
+  font-size:14px;
+  margin:0px;
+  margin-right:238px;
+  color:#fff;
+}
+
+#deleteCourseButton:hover {
+  background-color:#c9555b;
+  cursor: pointer;
+}
+
+#deleteCourseButtonYes{
+  background-color:#ccc;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border: solid 1px #775886;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  margin-right:75px;
+}
+
+#deleteCourseButtonYes:hover {
+  background-color:#6e6e6e;
+  cursor: pointer;
+}
+
+#deleteCourseButtonNo{
+  background-color:#e35057;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  border: solid 1px #775886;
+}
+
+#deleteCourseButtonNo:hover {
+  background-color:#810f15;
+  cursor: pointer;
+}
+
 
 
 @media only screen and (max-width: 1350px) {

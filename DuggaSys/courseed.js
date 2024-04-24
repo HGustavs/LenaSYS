@@ -29,6 +29,14 @@ AJAXService("GET", {}, "COURSE");
 // Commands:
 //----------------------------------------
 
+function openDeleteForm() {
+	document.getElementById("myForm").style.display = "block";
+}
+
+function closeDeleteForm() {
+	document.getElementById("myForm").style.display = "none";
+}
+
 function updateCourse()
 {
 	var coursename = $("#coursename").val();
