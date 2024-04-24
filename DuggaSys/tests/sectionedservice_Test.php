@@ -581,7 +581,7 @@ $testsData = array(
         'query-before-test-2' => "INSERT INTO listentries (cid,vers, entryname, visible,creator) VALUES(9999,888,'PUBLICTEST123',0,101);",
         'query-before-test-3' => "SELECT lid FROM listentries WHERE entryname = 'PUBLICTEST123';",
         'query-after-test-1' => "DELETE FROM listentries WHERE entryname = 'PUBLICTEST123';",
-        'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
+        'query-after-test-2' => "DELETE FROM course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(array( 
             // Data that service needs to execute function
