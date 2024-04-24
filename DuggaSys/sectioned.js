@@ -13,6 +13,16 @@ var momentexists = 0;
 var resave = false;
 var versnme = "UNK";
 var versnr;
+var retData; //Data returned from AJAXService
+var exampleid; 
+var courseid;
+var cvers;
+var sectionData; 
+var codeExamples = [];
+var allBlocks = [];
+var tokens = [];
+var currentPos;
+var selectionRange;
 var motd = "UNK";
 var hideItemList = [];
 var hasDuggs = false;
@@ -4220,14 +4230,45 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(data => {
         //For testing/finding bugs/errors
         //console.log(data);
-
-        confirmBox('closeConfirmBox');
+        updateTemplate();
+        //confirmBox('closeConfirmBox');
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
       });
 }
-  
+function updateTemplate(){
+  templateno = $("#templateno").val();
+	$("#chooseTemplateContainer").css("display", "none");
+  var selectBoxes = [...document.querySelectorAll('#templateOptions select')];
+	var examples = selectBoxes.length / 3;
+	//var examples = localStorage.getItem("boxAmount");
+  var courseid = querystring['courseid'];
+	var exampleid = 9010;
+	var cvers = 45656;
+	var templateno = $("#templateno").val();
+	var content = [];
+
+  var values = ["Code", "JavaScript_Ex1.js", "3"]
+  content.push(values);
+  console.log(examples);
+  console.log(courseid);
+  console.log(exampleid);
+  console.log(cvers);
+  console.log(templateno);
+  try {
+		
+		AJAXService("SETTEMPL", {
+			courseid: courseid,
+			exampleid: exampleid,
+			cvers: cvers,
+			templateno: templateno,
+			content: content
+		}, "CODEVIEW");
+	} catch (e) {
+		alert("Error when updating template: " + e.message)
+	}
+}  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");
@@ -4270,8 +4311,206 @@ function changetemplate(templateno) {
       boxes = 1;
       break;
   }
+  localStorage.setItem("boxAmount", boxes);
+}
+function returned(data) 
+{
+	allBlocks = [];
+	retData = data;
+	sectionData = JSON.parse(localStorage.getItem("ls-section-data"));
+	// User can choose template if no template has been chosen and the user has write access.
+	if ((retData['templateid'] == 0)) {
+		if (retData['writeaccess'] == "w") {
+			alert("A template has not been chosen for this example. Please choose one.");
+			$("#chooseTemplateContainer").css("display", "flex");
+			return;
+		} else {
+			alert("The administrator of this code example has not yet chosen a template.");
+			return;
+		}
+	}
+	changeCSS("../Shared/css/" + retData['stylesheet']);
+
+	//Checks current example name with all the examples in codeExamples[] to find a match
+	//and determine current position.
+	for(i = 0; i < sectionData['entries'].length; i++){
+		if(retData['examplename'] == sectionData['entries'][i]['examplename'] && retData['sectionname'] == sectionData['entries'][i]['entryname']){
+			currentPos = i;
+		}
+		else if(sectionData['entries'][i]['link'] == exampleid){
+			currentPos = i;
+		}
+	}
+
+	//Fixes the five next code examples in retData to match the order that was assigned in Section.
+	var j = 0;
+	var posAfter = currentPos+1;
+
+	// Holds all items shown on forward button press
+	retData['after'] = [];
+	for(i = currentPos; i <= sectionData['entries'].length-1; i++){
+		if(j < 5){
+			if(currentPos == sectionData['entries'].length-1 && posAfter + j == sectionData['entries'].length){
+				retData['after'] = [];
+				break;
+			}
+			if(posAfter + j == sectionData['entries'].length){
+				//Not ideal to have this here but this is needed to not get an arrayOutOfBounds Error.
+				break;
+			}
+
+			retData['after'].push(sectionData['entries'][posAfter + j]);
+			if(sectionData['entries'][posAfter + j]['kind'] == 1){
+				/* Text added after in all titles. 
+				If not set text "undefined" will be displayed. */
+				retData['after'][j][2] = " ";
+			}
+			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
+			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
+
+			for(k = 0; k < retData['beforeafter'].length; k++){
+				if(retData['beforeafter'][k][0] == retData['after'][j][0]){			
+					retData['after'][j][2] = retData['beforeafter'][k][2]
+					break;
+				}
+			}
+			retData['exampleno'] = posAfter;
+			j++;
+		}else{
+			break
+		}
+	}
+
+	//Fixes the five code examples before the current one in retData to match the order that was assigned in Section.
+	j = 0;
+	var posBefore = currentPos-1;
+
+	// Holds all items shown on backward button press
+	retData['before'] = [];
+	for(i = currentPos; i > 0; i--){
+		if(j < 5){
+			if(currentPos==1 && posBefore - j == 0){
+				retData['before'] = [];
+				break;
+			}
+			retData['before'].push(sectionData['entries'][posBefore - j]);
+			retData['before'][j][1] = sectionData['entries'][posBefore - j]['entryname'];
+			retData['before'][j][0] = (String)(sectionData['entries'][posBefore - j]['link']);
+
+			for(k = 0; k < retData['beforeafter'].length; k++){
+				if(retData['beforeafter'][k][0] == retData['before'][j][0] ){					
+					retData['before'][j][2] = retData['beforeafter'][k][2]
+					break;
+				}
+			}
+			if(sectionData['entries'][posBefore - j]['kind']== 1){
+				/* Text added after in all titles. 
+				If not set text "undefined" will be displayed. */
+				retData['before'][j][2] = " ";
+			}			
+			retData['exampleno'] = posBefore;
+			j++;
+		}else{
+			break
+		}
+	}
+	if (retData['deleted']) {
+		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
+	}
+
+	if ($('#fileedButton').length) {
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
+		document.getElementById('fileedButton').style = "display:table-cell;";
+	}
+
+	if (retData['debug'] != "NONE!") alert(retData['debug']);
+
+	// Disables before and after button if there are no available example before or after.
+	// Works by checking if the current example is last or first in the order of examples.
+	//If there are no examples this disables being able to jump through (the non-existsing) examples
+
+	if (retData['before'].length != 0 && retData['after'].length != 0 || retData['before'].length == 0 || retData['after'].length == 0) {
+    if (retData['exampleno'] == 0 || retData['before'].length == 0) {
+        var beforeButton = document.querySelector("#beforebutton");
+        if (beforeButton) {
+            beforeButton.style.opacity = "0.4";
+            beforeButton.style.pointerEvents = "none";
+        }
+    }
+    if (retData['exampleno'] == sectionData['entries'].length || retData['after'].length == 0) {
+        var afterButton = document.querySelector("#afterbutton");
+        if (afterButton) {
+            afterButton.style.opacity = "0.4";
+            afterButton.style.pointerEvents = "none";
+        }
+    }
+} else if (retData['before'].length == 0 && retData['after'].length == 0) {
+    var beforeButton = document.querySelector("#beforebutton");
+    var afterButton = document.querySelector("#afterbutton");
+    if (beforeButton) {
+        beforeButton.style.opacity = "0.4";
+        beforeButton.style.pointerEvents = "none";
+    }
+    if (afterButton) {
+        afterButton.style.opacity = "0.4";
+        afterButton.style.pointerEvents = "none";
+    }
 }
 
+	// Disables the play button if there is no playlink
+	if (typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
+		document.querySelector("#playbutton").style.opacity = "0.4";
+		document.querySelector("#playbutton").style.pointerEvents = "none";
+	} else {
+		retData['playlink'] = retData['playlink'].replace(/\&\#47\;/g, "/");
+	}
+
+	// Clear div2
+	$("#div2").html("");
+
+	// Possible crash warning if returned number of boxes is wrong
+	if (retData['numbox'] == 0 || retData['numbox'] == null) {
+		var debug = "Debug: Nr boxes ret: " + retData['numbox'] + ", may cause page crash"
+		console.log(debug);
+	}
+
+	// Create boxes
+	if (retData['numbox'] > retData['box'].length) {
+		alert("Number of boxes is inconsistent\n" + retData['numbox'] + "\n" + retData['box'].length);
+	}
+
+	for (var i = 0; i < retData['numbox']; i++) {
+		var contentid = "box" + retData['box'][i][0];
+		var boxid = retData['box'][i][0];
+		var boxtype = retData['box'][i][1].toUpperCase();
+		var boxcontent = retData['box'][i][2];
+		var boxwordlist = retData['box'][i][3];
+		var boxfilename = retData['box'][i][5];
+		var boxfilepath = retData['box'][i][7];
+		var boxfilekind = retData['box'][i][8];
+		var boxmenuheight = 0;
+
+		
+	}
+}
+function returnedTitle(data) {
+	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
+	console.log("enter returnedTitle: ", data);
+	retData['box'][data.id - 1][4] = data.title;
+	console.log("retdata, data.id, data.title: ", retData, data.id, data.title);
+	var boxWrapper = document.querySelector('#box' + data.id + 'wrapper');
+	console.log("Boxwrapper: ", boxWrapper);
+	var titleSpan = boxWrapper.querySelector('#boxtitle2');
+	console.log("titleSpan: ", titleSpan);
+	titleSpan.innerHTML = data.title;
+	console.log("innerHTML: ", titleSpan.innerHTML);
+	fillBurger();
+}
+function returnedError(error) {
+	if (error.responseText) {
+		console.log(error.responseText);
+	}
+}
 // In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 function getLidFromButton(lid) {
   document.getElementById('lidInput').value = lid;
