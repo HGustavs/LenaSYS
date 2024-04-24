@@ -2566,6 +2566,7 @@ $(window).keyup(function (event) {
     document.activeElement.blur(); // To lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     // Remember that keycode 13 = enter button
+    console.log("This is from sectioned.js");
     document.activeElement.blur();
     var saveButtonDisplay = ($('#saveBtn').css('display'));
     var editSectionDisplay = ($('#editSection').css('display'));

@@ -2708,6 +2708,7 @@ function editDuggaInstruction(){
 //Code that makes it possible to navigate using tab and enter to click elements
 $(document).on('keydown', function(e) {
 	if(e.key === 'Enter'){
+		console.log("This is from dugga.js");
 		var box = $(e.target);
 		var allSort = document.getElementById("all-files-sort");
 		var globalSort = document.getElementById("global-files-sort");
