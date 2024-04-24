@@ -829,11 +829,11 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
+    PRIMARY: "primary",
     WEAK: "weakKey",
+    COMPUTED: "computed",
     MULTIPLE: "multiple",
     CANDIDATE: "candidate",
-    PRIMARY: "primary",
-    COMPUTED: "computed",
 };
 
 /**
