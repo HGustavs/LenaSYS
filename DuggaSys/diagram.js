@@ -3572,35 +3572,6 @@ function enumContainsPropertyValue(value, enumObject) {
 }
 
 /**
- * @description Creates an object with the selected x and y values.
- * @param {*} x
- * @param {*} y
- * @returns {Object} Returns object with x and y properties set.
- * @depricated Use new Point object instead!
- */
-function getPoint(x, y) {
-    return {
-        x: x,
-        y: y
-    };
-}
-
-/**
- * @description Creates a new rectangle from upper left point and lower right point.
- * @param {Point} topLeft
- * @param {Point} bottomRight
- * @returns {Object} Returns an object representing a rectangle with position and size.
- */
-function getRectFromPoints(topLeft, bottomRight) {
-    return {
-        x: topLeft.x,
-        y: topLeft.y,
-        width: bottomRight.x - topLeft.x,
-        height: bottomRight.y - topLeft.y,
-    };
-}
-
-/**
  * @description Creates a new rectangle from an element.
  * @param {Object} element Element with a x,y,width and height propery.
  * @returns
@@ -3640,20 +3611,6 @@ function getRectFromElement(element) {
         width: element.width,
         height: element.height,
     };
-}
-
-/**
- * @description Checks if the second rectangle is within the first rectangle.
- * @param {*} left First rectangle
- * @param {*} right Second rectangle
- * @returns {Boolean} true if the right rectangle is within the left rectangle.
- */
-function rectsIntersect(left, right) {
-    return (
-        ((left.x + left.width) >= ((right.x) + (right.width * 0.75))) &&
-        ((left.y + left.height) > (right.y + right.height * 0.75)) &&
-        (left.x < right.x + 0.25 * right.width) && (left.y < right.y + 0.25 * right.height)
-    );
 }
 
 /**
@@ -3731,10 +3688,6 @@ function setPos(objects, x, y) {
 
     // Update positions
     updatepos(0, 0);
-}
-
-function isKeybindValid(e, keybind) {
-    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findUMLEntityFromLine(lineObj) {
