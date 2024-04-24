@@ -2,6 +2,7 @@
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
+include "../Shared/toast.php";
 pdoConnect();
 
 if (file_exists("../.git/refs/heads/master")) {
