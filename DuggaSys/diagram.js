@@ -8871,6 +8871,7 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.SDEntity:
             str += drawElementSDEntity(element, ghosted);
+            break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
                 <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
