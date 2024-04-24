@@ -7981,11 +7981,6 @@ function calculateLineOffset(line) {
                 fromElement.id === line.toID &&
                 toElement.id === line.fromID)
     });
-
-    // Remove self from linesBetween
-    linesBetween = linesBetween.filter(function (line) {
-        return line.id !== line.id;
-    });
     
 
     if (linesBetween.length > 0) {
@@ -8443,15 +8438,17 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
         let offsetY = line.specialCase ? line.offsetY / 2 : 0;
         
         // Calculate the points with offsets
-        let points = `${fx + offset.x1 + offsetX * zoomfact},
-        ${fy + offset.y1 + offsetY * zoomfact} ${fx + offset.x1 - dx},
-        ${fy + offset.y1 - dy + offsetY * zoomfact} ${tx + offset.x2 + dx + offsetX * zoomfact},
-        ${ty + offset.y2 + dy + offsetY * zoomfact} ${tx + offset.x2 + offsetX * zoomfact},
-        ${ty + offset.y2 + offsetY * zoomfact}`;
+        let points = `  
+                    ${fx + offset.x1 + (offsetX * zoomfact)},
+                    ${fy + offset.y1 + (offsetY * zoomfact)} ${fx + offset.x1 - dx + (offsetX * zoomfact)},
+                    ${fy + offset.y1 - dy + (offsetY * zoomfact)} ${tx + offset.x2 + dx + (offsetX * zoomfact)},
+                    ${ty + offset.y2 + dy + (offsetY * zoomfact)} ${tx + offset.x2 + (offsetX * zoomfact)},
+                    ${ty + offset.y2 + (offsetY * zoomfact)}
+                    `;
 
 
         // Construct the polyline SVG element
-        let polylineSVG = `<polyline id='${line.id}' points='${points}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
+        let polylineSVG = `<polyline id='${line.id}' points='${points}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' marker-end="url(#arrow)"/>`;
 
         return polylineSVG;
     }
@@ -8638,9 +8635,18 @@ function redrawArrows(str) {
 
     // Recalculate the offsets for all the specialCase lines
     for (var i = 0; i < lines.length; i++) {
-        if (lines[i].specialCase) {
+        var linesCompleted = []; // Array to keep track of which lines have been recalculated
+
+        // Skip if line doesnt have any offsets
+        if (!lines[i].offsetX && !lines[i].offsetY) {
+            continue;
+        }
+
+        // Recalculate the offset for the line
+        if (lines[i].specialCase && !linesCompleted.includes(lines[i].id)) {
             console.log("found one!")
             calculateLineOffset(lines[i]);
+            linesCompleted.push(lines[i].id);
         }
     }
 

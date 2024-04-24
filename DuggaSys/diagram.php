@@ -1045,6 +1045,9 @@
                 <pattern id="grid" patternUnits="userSpaceOnUse">
                     <path d="M 100 0 L 0 0 0 100"/>
                 </pattern>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+                </marker>
             </defs>
             <rect id="grid_rect"/>
             <line id="origoX" x1="0%" y1="100" x2="100%" y2="100" />
