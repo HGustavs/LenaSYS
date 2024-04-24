@@ -67,9 +67,6 @@ if($opt=="REFRESH"){
 			logUserEvent($userid, $username, EventTypes::LoginSuccess,"");
 
 		  }else{
-			addlogintry(); // If to many attempts has been commited, it will jump to this
-			// As login has failed we log the attempt
-
 			// Logging for failed login, include guest id if guest cookie is set.
 			if(isset($_COOKIE["cookie_guest"])){
 				logUserEvent($username, $username, EventTypes::LoginFail, $_COOKIE["cookie_guest"]);

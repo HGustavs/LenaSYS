@@ -516,7 +516,9 @@ if(!$error){
 //echo "{$hash}|";
 //echo "{$hashpwd}|";
 //echo "{$variant}|<br>";
-header("Location: /sh/?s=$hash");
+
+//redirects back to the dugga
+header("Location: showDugga.php?did=$duggaid&courseid=$cid&coursevers=$vers&moment=$moment&cid=$cid");
 exit();	
 
 

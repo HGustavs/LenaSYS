@@ -1,8 +1,8 @@
 <?php
 $loggingDataJSON = file_get_contents("php://input"); // JSON string from dugga.js
 
-$latestLogFile = "logs/latestlog.json";
-$logFile = "logs/log.json";
+$latestLogFile = "../log/latestlog.json";
+$logFile = "../log/log.json";
 
 // Append log to log file
 file_put_contents($logFile, $loggingDataJSON, FILE_APPEND);
