@@ -1,19 +1,12 @@
 <?php
 // This microservice is used to retrieve a username from a specific userid (uid) 
 
-include_once "../../../Shared/basic.php";
-include_once "../../../Shared/sessions.php";
 include_once "getUid_ms.php";
 
-function retrieveUsername()
+function retrieveUsername($pdo)
 {
 	date_default_timezone_set("Europe/Stockholm");
 
-	// Connect to database and start session
-	pdoConnect();
-	session_start();
-
-	global $pdo;
 	$userid = getUid();
 
 	$query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
