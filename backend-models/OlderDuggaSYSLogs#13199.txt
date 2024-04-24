@@ -2,7 +2,6 @@ DuggaSys folder commits thats been checked:
 
 ace.js -No Testing, one commit? The rest of commits must be else where (21972 rows code)
 backToTop.js -No Testing
-clickcounter.js -No Testing
 
 codeviewer.js -No testing
 codeviewer.php -No testing
