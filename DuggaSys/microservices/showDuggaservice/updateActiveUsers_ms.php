@@ -1,5 +1,4 @@
 <?php
-
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
@@ -14,6 +13,7 @@ $query->bindParam(':hash', $hash);
 $query->execute();
 $result = $query->fetch();
 $active = $result['active_users'];
+
 if($active == null){
     $query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
     $query->bindParam(':hash', $hash);
@@ -28,4 +28,3 @@ if($active == null){
 }
 
 echo json_encode($active);
-?>

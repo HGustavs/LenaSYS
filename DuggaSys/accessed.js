@@ -393,8 +393,8 @@ function hideSSN(ssn) {
 function renderCell(col, celldata, cellid) {
 	var str = "UNK";
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname" || col == "class" || col == "examiner" || col == "groups" || col == "vers" || col == "access" || col == "requestedpasswordchange") {
-		obj = JSON.parse(celldata);
-	}
+        obj = JSON.parse(celldata);
+    }
 
 	if (col == "username" || col == "ssn" || col == "firstname" || col == "lastname") {
 		if (col == "ssn") {
