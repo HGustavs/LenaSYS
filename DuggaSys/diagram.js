@@ -3280,18 +3280,6 @@ function changeLineProperties() {
             line.innerType = lineType.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {innerType: lineType.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-        // Start label, near side
-        if (line.startLabel != startLabel.value) {
-            startLabel.value = startLabel.value.trim();
-            line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // End label, opposite side
-        if (line.endLabel != endLabel.value) {
-            endLabel.value = endLabel.value.trim();
-            line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -6934,7 +6922,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == entityType.SD || contextLine[0].type == 'NOTE')) {
+            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == 'NOTE')) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
                 str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                 str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6957,6 +6945,12 @@ function generateContextProperties() {
                 str += `/>`;
                 str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+                str += `/>`;
+            } else if (contextLine[0].type == entityType.SD) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+                str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
+                str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
                 str += `/>`;
             }
             if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
