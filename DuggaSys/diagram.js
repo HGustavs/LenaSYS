@@ -771,10 +771,11 @@ const elementTypes = {
     UMLInitialState: 9,
     UMLFinalState: 10,
     UMLSuperState: 11,
-    sequenceActorAndObject: 12,
+    sequenceActor: 12,
     sequenceActivation: 13,
     sequenceLoopOrAlt: 14,
     note: 15,
+    sequenceObject: 16,
 };
 
 /**
@@ -793,7 +794,8 @@ const elementTypesNames = {
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
     UMLSuperState: "UMLSuperState",
-    sequenceActorAndObject: "sequenceActorAndObject",
+    sequenceActor: "sequenceActor",
+    sequenceObject: "sequenceObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
@@ -1062,6 +1064,13 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variables for resizing
+var originalWidth = 0;
+var originalHeight = 0;
+var originalX = 0;
+var originalY = 0;
+var resizeOverlapping = false;
+
 // Zoom variables
 var desiredZoomfact = 1.0;
 var zoomfact = 1.0;
@@ -1175,7 +1184,8 @@ const subMenuUMLstate = [
     elementTypes.UMLSuperState,
 ]
 const subMenuSequence = [
-    elementTypes.sequenceActorAndObject,
+    elementTypes.sequenceActor,
+    elementTypes.sequenceObject,
     elementTypes.sequenceActivation,
     elementTypes.sequenceLoopOrAlt,
 ]
@@ -1188,7 +1198,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER: false, UML: false, IE: false, SD: false, NOTE: false};
+var diagramType = {ER: false, UML: false, IE: false, SD: false, SE: false, NOTE: false};
 
 //Grid Settings
 var settings = {
@@ -1310,7 +1320,7 @@ var defaults = {
         stroke: color.BLACK,
         fill: color.WHITE,
         width: 200,
-        height: 50,
+        height: 0,
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
@@ -1369,18 +1379,28 @@ var defaults = {
         type: "SD",
         canChangeTo: null
     },  // UML Super State.
-
-    sequenceActorAndObject: {
+    sequenceActor: {
         name: "name",
-        kind: "sequenceActorAndObject",
+        kind: "sequenceActor",
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 100,
         height: 150,
         type: "SE",
-        actorOrObject: "actor",
+        //actorOrObject: "actor",
         canChangeTo: null
-    }, // sequence actor and object
+    }, // sequence actor
+    sequenceObject: {
+        name: "name",
+        kind: "sequenceObject",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 100,
+        height: 150,
+        type: "SE",
+        //actorOrObject: "object",
+        canChangeTo: null
+    }, // sequence object
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
@@ -1565,7 +1585,7 @@ function showDiagramTypes() {
     }
 
     // SE buttons
-    if (diagramType.UML) {
+    if (diagramType.SE) {
         document.getElementById("elementPlacement12").onmousedown = function () {
             holdPlacementButtonDown(0);
         };
@@ -1577,6 +1597,7 @@ function showDiagramTypes() {
     } else {
         Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
+
         });
     }
     // NOTE button
@@ -1737,6 +1758,7 @@ document.addEventListener('keydown', function (e) {
 document.addEventListener('keyup', function (e) {
     var pressedKey = e.key.toLowerCase();
 
+    hidePlacementType();
     // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
@@ -1801,7 +1823,7 @@ document.addEventListener('keyup', function (e) {
     // Sequence
     if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
         if (subMenuCycling(subMenuSequence)) return;
-        setElementPlacementType(elementTypes.sequenceActorAndObject);
+        setElementPlacementType(elementTypes.sequenceActor);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
@@ -1853,7 +1875,6 @@ document.addEventListener('keyup', function (e) {
 })
 
 window.addEventListener("resize", handleResize);
-var testCount = 0;
 function handleResize() {
     updateRulers();
 }
@@ -2022,6 +2043,14 @@ function mdown(event) {
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
+            var element = data[findIndex(data, context[0].id)];
+
+            // Save the original properties
+            originalWidth = element.width;
+            originalHeight = element.height;
+            originalX = element.x;
+            originalY = element.y;
+            
             startWidth = data[findIndex(data, context[0].id)].width;
             startHeight = data[findIndex(data, context[0].id)].height;
 
@@ -2269,6 +2298,24 @@ function mup(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
+            if (resizeOverlapping) {
+                // Reset to original state if overlapping is detected
+                var element = data[findIndex(data, context[0].id)];
+                element.width = originalWidth;
+                element.height = originalHeight;
+                element.x = originalX;
+                element.y = originalY;
+        
+                // Update DOM with the original properties
+                const elementDOM = document.getElementById(element.id);
+                elementDOM.style.width = originalWidth + 'px';
+                elementDOM.style.height = originalHeight + 'px';
+                elementDOM.style.left = originalX + 'px';
+                elementDOM.style.top = originalY + 'px';
+                showdata()
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+                resizeOverlapping = false;
+            }
             break;
         default:
             console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
@@ -2625,12 +2672,21 @@ function mmoving(event) {
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
-            const minWidth = 20; // Declare the minimal with of an object
+            var minWidth = 20; // Declare the minimal with of an object
+            var minHeight = 50; // Declare the minimal height of an object
+
+            // Sets different min-values for ERRelation
+            if (elementData.kind === "ERRelation") {
+                minHeight = 60;
+                minWidth = 60; 
+            }
+
             deltaX = startX - event.clientX;
 
-            const minHeight = (elementData.kind == "UMLEntity") ? 0 : 50; // Declare the minimal height of an object
-        
-            if (elementData.kind === "IEEntity" || elementData.kind === "SDEntity") {
+            if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
+                minHeight = 0;
+            }
+            if (elementData.kind === "SDEntity") {
                 deltaY = (startY - event.clientY) / 2;
             } else {
                 deltaY = startY - event.clientY;
@@ -2723,6 +2779,17 @@ function mmoving(event) {
             }
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
+
+            // Check if entity is overlapping
+            resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
+
+            // Update element in DOM
+            const elementDOM = document.getElementById(context[0].id);
+            elementDOM.style.width = elementData.width + 'px';
+            elementDOM.style.height = elementData.height + 'px';
+            elementDOM.style.left = elementData.x + 'px';
+            elementDOM.style.top = elementData.y + 'px';
+            showdata()
             updatepos(null, null);
             break;
 
@@ -3793,7 +3860,7 @@ function entityIsOverlapping(id, x, y) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if (data[i].kind == elementTypesNames.sequenceActorAndObject || element.kind == elementTypesNames.sequenceActorAndObject) {
+                if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject)) {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
@@ -6177,7 +6244,7 @@ function togglePlacementType(num, type) {
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
     } else if (type == 12) {
-        // Sequence lifetime
+        // Sequence lifeline (actor)
         document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
@@ -6195,6 +6262,13 @@ function togglePlacementType(num, type) {
         document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
+        // Sequence lifeline (object)
+        document.getElementById("elementPlacement16").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement16").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement16").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton16").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox16").classList.remove("activeTogglePlacementTypeBox");
+
     }
     // Unhide the currently selected placement type
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
@@ -6783,7 +6857,11 @@ function generateContextProperties() {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                str += `<input id='elementProperty_${property}' 
+                                            type='text' 
+                                            value='${element[property]}' 
+                                            maxlength='${20 * zoomfact}'
+                                            onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
                             default:
                                 break;
@@ -6791,20 +6869,25 @@ function generateContextProperties() {
                     }
                 }
             } else if (element.type == 'SE') {//Selected sequence type
-                //if sequenceActorAndObject kind
-                if (element.kind == elementTypesNames.sequenceActorAndObject) {
+                //if sequenceActor or Object kind
+                if (element.kind == elementTypesNames.sequenceActor) {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
-                            case 'actororobject':
-                                //buttons for choosing object or actor via toggleActorOrbject
-                                str += `<div>`
-                                str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
-                                str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
-                                str += `</div>`
+                            default:
+                                break;
+                        }
+                    }
+                }
+                if (element.kind == 'sequenceObject') {
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='color:white'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
                             default:
                                 break;
@@ -6858,10 +6941,10 @@ function generateContextProperties() {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
-                            str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
                         } else {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
-                            str += `<label for='${value[i]}'>${value[i]}</label><br>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
                         }
                     }
                 }
@@ -7705,14 +7788,25 @@ function sortElementAssociations(element) {
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
-
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == elementTypesNames.EREntity) {
+    if (toElement.kind == "EREntity"){
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
     }
-
+    //If line is comming to ERRelation from weak entity it adds double line, else it will be single
+    if (toElement.kind == "ERRelation") {
+        if (fromElement.state == "weak") {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+            kind = "Double";
+        } else {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+        }
+    }
     if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
@@ -8466,6 +8560,26 @@ function addNodes(element) {
 
     elementDiv.innerHTML += nodes;
     const defaultNodeSize = 8;
+
+    var nodeSize = defaultNodeSize * zoomfact;
+    if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
+        var mdNode = document.getElementById("md");
+        mdNode.style.width = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
+        mdNode.style.bottom = "0%";
+    }
+
+    if (element.kind == "UMLSuperState") {
+        var mdNode = document.getElementById("md");
+        var muNode = document.getElementById("mu");
+        mdNode.style.width = nodeSize + "px";
+        muNode.style.width = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        muNode.style.height = nodeSize + "px";
+        mdNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
+        muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
+    }
   
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
@@ -8710,76 +8824,34 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.SDEntity:
             str += drawElementSDEntity(element, ghosted);
+        case elementTypesNames.UMLInitialState:
+            let initVec = `
+                <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+                    <circle cx="16.5" cy="12.5" r="10.5" />
+                </g>`
+            str += drawElementState(element, ghosted, initVec);
+            break;
+        case elementTypesNames.UMLFinalState:
+            let finalVec = `
+                <g> 
+                    <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
+                    <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/> 
+                </g>`
+            str += drawElementState(element, ghosted, finalVec);
+            break;
+        case elementTypesNames.UMLSuperState:
+            str += drawElementSuperState(element, ghosted, textWidth);
+            break;
+        case elementTypesNames.IEEntity:
+            str += drawElementIEEntity(element, ghosted);
             break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%" 
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg" 
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
-                            <circle cx="16.5" cy="12.5" r="10.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
-            element.fill = color.WHITE;
-        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
-            element.fill = color.BLACK;
-        }
     } else if (element.kind == elementTypesNames.UMLFinalState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g>
-                            <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                            <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
-            element.fill = color.WHITE;
-        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
-            element.fill = color.BLACK;
-        }
     } else if (element.kind == elementTypesNames.UMLSuperState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        str += `<div id="${element.id}" 
-                    class="element uml-Super"
-                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
-                     onmousedown='ddown(event);' 
-                     onmouseenter='mouseEnter();' 
-                     onmouseleave='mouseLeave();'>
-                    <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${actorFontColor}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${boxw / 2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
-                    </svg>
-                </div>`;
-    }
-    else if (element.kind == elementTypesNames.SDEntity){}
-    //Check if element is UMLRelation
-    else if (element.kind == 'UMLRelation') {
+    } else if (element.kind == elementTypesNames.SDEntity) {
+    } else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
         str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
@@ -8808,90 +8880,10 @@ function drawElement(element, ghosted = false) {
         //end of svg
         str += `</svg>`;
     }
-    //=============================================== <-- IE functionality
+        //=============================================== <-- IE functionality
     //Check if the element is a IE entity
     else if (element.kind == elementTypesNames.IEEntity) {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in IEHeight for the element
-        for (var i = 0; i < IEHeight.length; i++) {
-            if (element.id == IEHeight[i].id) {
-                IEHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the IEEntity's real height
-        var IEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-        }
-        IEHeight.push(IEEntityHeight);
-
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate IE header
-        str += `<div class='uml-header' style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for IE header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-        stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-        <text class='text' x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for IE header
-        str += `</svg>`;
-        //end of div for IE header
-        str += `</div>`;
-
-        //div to encapuslate IE content
-        str += `<div class='uml-content' style='height: ${boxh / 2 + (boxh * elemAttri / 2)}px;'>`;
-        //Draw IE-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='5' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw IE-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<rect class='text' x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh / 2 + (boxh / 2) - (linew * 2)}'
-            stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />`;
-            str += `<text class='text' x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'> </text>`;
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for IE content
-        str += `</div>`;
-    }
-    //IE inheritance
-    else if (element.kind == elementTypesNames.IERelation) {
+    } else if (element.kind == elementTypesNames.IERelation) {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
@@ -8924,10 +8916,10 @@ function drawElement(element, ghosted = false) {
         //end of svg
         str += `</svg>`;
     }
-    //=============================================== <-- End of IE functionality
-    //=============================================== <-- Start Sequnece functionality
+        //=============================================== <-- End of IE functionality
+        //=============================================== <-- Start Sequnece functionality
     //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == elementTypesNames.sequenceActorAndObject) {
+    else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
@@ -8950,12 +8942,9 @@ function drawElement(element, ghosted = false) {
         stroke-dasharray='${linew * 3},${linew * 3}'
         fill='transparent'
         />`;
-        //actor or object is determined via the buttons in the context menu. the default is actor.
-        if (element.actorOrObject == "actor") {
-            //svg for actor.
-            str += `<g>`
-            str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-            str += `<path class="text"
+        str += `<g>`
+        str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+        str += `<path class="text"
                 d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
                     v${boxw / 6}
                     m-${(boxw / 4)},0
@@ -8970,11 +8959,11 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='transparent'
             />`;
-            //svg for the actor name text, it has a background rect for ease of readability.
-            //make the rect fit the text if the text isn't too big
-            if (!tooBig) {
-                //rect for sitting behind the actor text
-                str += `<rect class='text'
+        //svg for the actor name text, it has a background rect for ease of readability.
+        //make the rect fit the text if the text isn't too big
+        if (!tooBig) {
+            //rect for sitting behind the actor text
+            str += `<rect class='text'
                     x='${xAnchor - (textWidth / 2)}'
                     y='${boxw + (linew * 2)}'
                     width='${textWidth}'
@@ -8982,12 +8971,12 @@ function drawElement(element, ghosted = false) {
                     stroke='none'
                     fill='${element.fill}'
                 />`;
-                str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            }
-            //else just make a boxw width rect and adjust the text to fit this new rect better
-            else {
-                //rect for sitting behind the actor text
-                str += `<rect class='text'
+            str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        }
+        //else just make a boxw width rect and adjust the text to fit this new rect better
+        else {
+            //rect for sitting behind the actor text
+            str += `<rect class='text'
                     x='${linew}'
                     y='${boxw + (linew * 2)}'
                     width='${boxw - linew}'
@@ -8995,14 +8984,37 @@ function drawElement(element, ghosted = false) {
                     stroke='none'
                     fill='${element.fill}'
                 />`;
-                str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-            }
-            str += `</g>`;
+            str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
         }
-        else if (element.actorOrObject == "object") {
-            //svg for object.
-            str += `<g>`;
-            str += `<rect class='text'
+        str += `</g>`;
+        str += `</svg>`;
+    }
+    //actor or object is determined via the buttons in the context menu. the default is actor.
+    else if (element.kind == "sequenceObject") {
+        //svg for object.
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
+
+        if (context.includes(element)) {
+            str += `z-index: 1;`;
+        }
+        if (ghosted) {
+            str += `pointer-events: none; opacity: ${ghostPreview};`;
+        }
+        str += `'>`;
+        str += `<svg width='${boxw}' height='${boxh}'>`;
+        //svg for the life line
+        str += `<path class="text" 
+        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+        V${boxh}
+        "
+        stroke-width='${linew}'
+        stroke='${element.stroke}'
+        stroke-dasharray='${linew * 3},${linew * 3}'
+        fill='transparent'
+        />`;
+        str += `<g>`;
+        str += `<rect class='text'
                 x='${linew}'
                 y='${linew}'
                 width='${boxw - (linew * 2)}'
@@ -9012,11 +9024,11 @@ function drawElement(element, ghosted = false) {
                 stroke='${element.stroke}'
                 fill='${element.fill}' 
             />`;
-            str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            str += `</g>`;
-        }
+        str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+        str += `</g>`;
         str += `</svg>`;
     }
+
     // Sequence activation 
     else if (element.kind == 'sequenceActivation') {
         //div to encapsulate sequence lifeline.
@@ -9249,20 +9261,12 @@ function drawElement(element, ghosted = false) {
                             height:${boxh}px;
                             font-size:${texth}px;`;
         }
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `
-                pointer-events: none;
-                opacity: ${ghostPreview};
-            `;
-        }
+        if (context.includes(element)) str += `z-index: 1;`;
+        if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview}; `;
         str += `'>`;
         str += `<svg width='${boxw}' height='${boxh}' >`;
         // Create svg 
         if (element.kind == elementTypesNames.EREntity) {
-
             var weak = "";
 
             if (element.state == "weak") {
@@ -9338,11 +9342,16 @@ function drawElement(element, ghosted = false) {
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     `;
                 xAnchor += linew * multioffs;
-            }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     ${weak}`;
-            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+                str += `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            } else {
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
+                    ${weak}`;
+                str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            }
         }
         str += "</svg>";
     }
@@ -9352,6 +9361,27 @@ function drawElement(element, ghosted = false) {
     }
     str += "</div>";
     return str;
+}
+
+const splitLengthyLine = (s, max) => {
+    if (s.length <= max) return s;
+    return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
+}
+
+function splitFull(e, max) {
+    return e.map(line => splitLengthyLine(line, max)).flat()
+}
+
+function updateElementHeight(arr, element, height) {
+    // Removes the previouse value in IEHeight for the element
+    for (let i = 0; i < arr.length; i++) {
+        if (element.id == arr[i].id) arr.splice(i, 1);
+    }
+    // Calculate and store the IEEntity's real height
+    arr.push( {
+        id: element.id,
+        height: height
+    });
 }
 
 function drawElementUMLEntity(element, ghosted) {
@@ -9364,34 +9394,14 @@ function drawElementUMLEntity(element, ghosted) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
-    const splitLengthyLine = (s, max) => {
-        if (s.length <= max) return s;
-        return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
-    }
-
-    const aText = element.attributes.map(
-        line => splitLengthyLine(line, maxCharactersPerLine)
-    ).flat();
-
-    const fText = element.functions.map(
-        line => splitLengthyLine(line, maxCharactersPerLine)
-    ).flat();
-
-    // Removes the previouse value in UMLHeight for the element
-    for (let i = 0; i < UMLHeight.length; i++) {
-        if (element.id == UMLHeight[i].id) UMLHeight.splice(i, 1);
-    }
+    const aText = splitFull(element.attributes, maxCharactersPerLine);
+    const fText = splitFull(element.functions, maxCharactersPerLine);
 
     let aHeight = texth * (aText.length + 1) * lineHeight;
     let fHeight = texth * (fText.length + 1) * lineHeight;
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
-    // Calculate and store the UMLEntity's real height, used for overlapping check
-    UMLHeight.push({
-        id: element.id,
-        height: totalHeight + boxh
-    });
+    updateElementHeight(UMLHeight, element, totalHeight + boxh)
 
-    //div to encapuslate UML element
     str += `<div 
             id='${element.id}' 
             class='element uml-element' 
@@ -9579,11 +9589,110 @@ const drawRect = (w, h, l, e) => {
                 stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
             />`;
 }
-const drawText = (x, y, a, t) => {
+const drawText = (x, y, a, t, extra='') => {
     return `<text
                 class='text' x='${x}' y='${y}' 
-                dominant-baseline='auto' text-anchor='${a}'
+                dominant-baseline='auto' text-anchor='${a}' ${extra}
             > ${t} </text>`;
+}
+
+function drawElementIEEntity(element, ghosted) {
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let texth = Math.round(zoomfact * textheight);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(IEHeight, element, totalHeight + boxh)
+
+    str += `<div 
+            id='${element.id}' 
+            class='element uml-element' 
+            onmousedown='ddown(event);' 
+            onmouseenter='mouseEnter();' 
+            onmouseleave='mouseLeave()';' 
+            style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
+
+    if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview};`;
+    str += `'>`;
+
+    let height = texth * 2;
+    let headRect = drawRect(boxw, height, linew, element);
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headRect + headText);
+    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
+
+    // Content, Attributes
+    const textBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let rect = drawRect(boxw, height, linew, element);
+        let contentSvg = drawSvg(boxw, height, rect + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += textBox(text, 'uml-content');
+    return str;
+}
+
+function drawElementState(element, ghosted, vectorGraphic) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
+    const theme = document.getElementById("themeBlack");
+    if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
+        element.fill = color.WHITE;
+    } else if (element.fill == color.WHITE && theme.href.includes('style')) {
+        element.fill = color.BLACK;
+    }
+    return `<div id="${element.id}" 
+                class="element uml-state"
+                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width="100%" height="100%" 
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" 
+                    xml:space="preserve"
+                    style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                    ${vectorGraphic}
+                </svg>
+            </div>`;
+}
+
+function drawElementSuperState(element, ghosted, textWidth) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let linew = Math.round(strokewidth * zoomfact);
+    element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`)
+    return `<div id="${element.id}" 
+                class="element uml-Super"
+                style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width='${boxw}' height='${boxh}'>
+                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width='${linew}' rx="20"/>
+                    <rect x='${linew}' y='${linew}' width="${textWidth + 40 * zoomfact}px" height="${50 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
+                    ${text}
+                </svg>
+            </div>`;
 }
 
 /**
@@ -9608,7 +9717,7 @@ function updatepos(deltaX, deltaY) {
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
 }
 
 /**
