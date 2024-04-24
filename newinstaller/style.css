@@ -80,7 +80,7 @@ html body {
     font-family: var(--header-font);
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
-    margin-top: 0rem;
+    margin-top: 0;
     margin-bottom: 1.5rem;
 }
 
@@ -128,7 +128,7 @@ html body {
         font-family: var(--header-font);
         color: var(--primary-color);
         font-size: var(--h2-fontsize-small);
-        margin-top: 0rem;
+        margin-top: 0;
         margin-bottom: 1.5rem;
     }
 }
