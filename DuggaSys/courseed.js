@@ -690,7 +690,7 @@ function returnedCourse(data)
 	slist.innerHTML = str;
 
 	if (data['debug'] != "NONE!") {
-		toast("error",data['debug'],10);
+		alert(data['debug']);
 	}
 
 	motd = data["motd"];
