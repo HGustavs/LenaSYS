@@ -3023,7 +3023,7 @@ function changeState() {
         // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation) {
         return;
-    } else if (element.type == 'ER') {
+    } else if (element.type == entityType.ER) {
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != elementTypesNames.ERAttr) {
             if (oldType != newType) {
@@ -3040,7 +3040,7 @@ function changeState() {
         var property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type == 'UML') {
+    } else if (element.type == entityType.UML) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.UMLEntity) {
             var property = document.getElementById("propertySelect").value;
@@ -3058,7 +3058,7 @@ function changeState() {
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-    } else if (element.type == 'IE') {
+    } else if (element.type == entityType.IE) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.IEEntity) {
             var property = document.getElementById("propertySelect").value;
@@ -3075,7 +3075,7 @@ function changeState() {
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if (element.type == 'SD') {
+    } else if (element.type == entityType.SD) {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
@@ -3086,7 +3086,7 @@ function changeState() {
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if (element.type == 'SE') {
+    } else if (element.type == entityType.SE) {
         if (oldType != newType) {
             var newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
@@ -3228,7 +3228,7 @@ function changeLineProperties() {
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML or IE line
-    if ((line.type == 'UML') || (line.type == 'IE')) {
+    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
         // Start label, near side
         if (line.startLabel != startLabel.value) {
             startLabel.value = startLabel.value.trim();
@@ -3274,7 +3274,7 @@ function changeLineProperties() {
         }
     }
     // SD line
-    if (line.type == 'SD') {
+    if (line.type == entityType.SD) {
         if (line.innerType != lineType.value) {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
@@ -3616,7 +3616,7 @@ function getRectFromElement(element) {
             // Corrects returned y position due to problems with SE types
             
             let elementY = resizedY;
-            if (element.type == "SE") {
+            if (element.type == entityType.SE) {
                 elementY += preResizeHeight[i].height / 3;
             }
 
@@ -3631,7 +3631,7 @@ function getRectFromElement(element) {
 
     // Corrects returned y position due to problems with resizing vertically
     let elementY = element.y;
-    if (element.type == "SE") {
+    if (element.type == entityType.SE) {
         elementY += element.height / 3;
     }
     return {
@@ -6676,7 +6676,7 @@ function generateContextProperties() {
                 }
             }
             //Selected ER type
-            if (element.type == 'ER') {
+            if (element.type == entityType.ER) {
                 //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6722,7 +6722,7 @@ function generateContextProperties() {
                             break;
                     }
                 }
-            } else if (element.type == 'UML') { //Selected UML type
+            } else if (element.type == entityType.UML) { //Selected UML type
                 //If UML entity
                 if (element.kind == elementTypesNames.UMLEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
@@ -6778,7 +6778,7 @@ function generateContextProperties() {
                     }
                     str += '</select>';
                 }
-            } else if (element.type == 'IE') {//Selected IE type
+            } else if (element.type == entityType.IE) {//Selected IE type
                 //If IE entity
                 if (element.kind == elementTypesNames.IEEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
@@ -6829,7 +6829,7 @@ function generateContextProperties() {
                     }
                     str += '</select>';
                 }
-            } else if (element.type == 'SD') {//Selected SD type
+            } else if (element.type == entityType.SD) {//Selected SD type
                 //if SDEntity kind
                 if (element.kind == elementTypesNames.SDEntity) {
                     for (const property in element) {
@@ -6868,8 +6868,7 @@ function generateContextProperties() {
                         }
                     }
                 }
-            } else if (element.type == 'SE') {//Selected sequence type
-                //if sequenceActor or Object kind
+            } else if (element.type == entityType.SE) {//Selected sequence type
                 if (element.kind == elementTypesNames.sequenceActor) {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6935,7 +6934,7 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
-            if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER' || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == entityType.ER || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (var i = 0; i < value.length; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
@@ -6949,7 +6948,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if (contextLine[0].type == 'ER') {
+            if (contextLine[0].type == entityType.ER) {
                 if (findAttributeFromLine(contextLine[0]) == null) {
                     if (findEntityFromLine(contextLine[0]) != null) {
                         str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
@@ -6969,7 +6968,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD' || contextLine[0].type == 'NOTE')) {
+            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == entityType.IE) || (contextLine[0].type == entityType.SD || contextLine[0].type == 'NOTE')) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
                 str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                 str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6983,7 +6982,7 @@ function generateContextProperties() {
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
                 str += `/>`;
             }
-            if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
@@ -7114,7 +7113,7 @@ function generateContextProperties() {
                 str += `</select>`;
             }
             //generate the dropdown for SD line icons.
-            if (contextLine[0].type == 'SD') {
+            if (contextLine[0].type == entityType.SD) {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with SD, and add them to the drop down as options
@@ -7962,7 +7961,7 @@ function preProcessLine(line) {
     telem = data[findIndex(data, line.toID)];
 
     //Sets the endIcon of the to-be-created line, if it an State entity
-    if ((felem.type === 'SD') && (telem.type === 'SD')) {
+    if ((felem.type === entityType.SD) && (telem.type === entityType.SD)) {
         if (line.kind === 'Recursive') {
             line.endIcon = '';
         } else {
