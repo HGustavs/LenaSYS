@@ -8850,6 +8850,9 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLRelation:
             str += drawElementUMLRelation(element, ghosted);
             break;
+        case elementTypesNames.IERelation:
+            str += drawElementIERelation(element, ghosted);
+            break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
@@ -8859,42 +8862,7 @@ function drawElement(element, ghosted = false) {
     } else if (element.kind == elementTypesNames.UMLRelation) {
     } else if (element.kind == elementTypesNames.IEEntity) {
     } else if (element.kind == elementTypesNames.IERelation) {
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh / 2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
-
-        // Overlapping IE-inheritance
-
-        if (element.state == 'overlapping') {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />`
-        }
-        // Disjoint IE-inheritance
-        else {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/>
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />
-                <line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke="black" />
-                <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke="black" />`
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-        //=============================================== <-- End of IE functionality
-        //=============================================== <-- Start Sequnece functionality
-    //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == elementTypesNames.sequenceActor) {
+    } else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
@@ -9360,7 +9328,7 @@ function updateElementHeight(arr, element, height) {
 }
 
 const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
-const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
+const drawSvg = (w, h, s, extra='') =>`<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
 const drawRect = (w, h, l, e) => {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
@@ -9400,9 +9368,8 @@ function drawElementUMLEntity(element, ghosted) {
                 onmousedown='ddown(event);' 
                 onmouseenter='mouseEnter();' 
                 onmouseleave='mouseLeave();' 
-                style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
             >`;
-
 
     // Header
     let height = texth * 2;
@@ -9627,6 +9594,36 @@ function drawElementUMLRelation(element, ghosted) {
             style='fill:${fill}; stroke:black; stroke-width:${linew};'
         />`;
     str += drawSvg(boxw, boxh, poly);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementIERelation(element, ghosted) {
+    let str = "";
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+
+    str += `<div 
+                id='${element.id}' 
+                class='element ie-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh / 2}px; z-index:1;${ghostStr}'
+            >`;
+
+    let content = "";
+    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`
+
+    if (element.state != inheritanceStateIE.OVERLAPPING) {
+        content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
+                    <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
+    }
+    str += drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
     str += `</div>`;
     return str;
 }
