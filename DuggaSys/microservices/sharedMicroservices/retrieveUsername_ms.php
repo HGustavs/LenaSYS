@@ -12,14 +12,16 @@ include_once "getUid_ms.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
-$userid = getUid();
 
-function retrieveUsername($userid, $pdo){
-// Gets username based on uid
+
+function retrieveUsername($pdo)
+{
+	$userid = getUid();
+	// Gets username based on uid
 	$query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
 	$query->bindParam(':uid', $userid);
 	$query->execute();
-	
+
 	if(checklogin() == true){
 		while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 			$username = $row['username'];
