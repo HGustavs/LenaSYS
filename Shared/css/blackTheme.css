@@ -488,6 +488,10 @@ body {
     color: var(--color-text-list) !important;
 }
 
+.formDialog .formDialogText::after {
+    border-color: transparent transparent transparent var(--color-text-header);
+}
+
 #announcementBoxOverlay{
     display: none;
     background-color: var(--color-background);
