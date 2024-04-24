@@ -7977,10 +7977,16 @@ function calculateLineOffset(line) {
     
     var linesBetween = lines.filter(function (line) {
         return (fromElement.id === line.fromID &&
-            toElement.id === line.toID ||
-            fromElement.id === line.toID &&
-            toElement.id === line.fromID)
+                toElement.id === line.toID ||
+                fromElement.id === line.toID &&
+                toElement.id === line.fromID)
     });
+
+    // Remove self from linesBetween
+    linesBetween = linesBetween.filter(function (line) {
+        return line.id !== line.id;
+    });
+    
 
     if (linesBetween.length > 0) {
         x1 = fromElement.x1;
