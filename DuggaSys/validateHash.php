@@ -58,8 +58,6 @@
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/markdown.js"></script>
-	<script src="timer.js"></script>
-	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
 </head>
 <body>	

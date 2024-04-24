@@ -26,8 +26,6 @@
 	<script src="../Shared/dugga.js"></script>
 	<script src="../DuggaSys/templates/svg-dugga.js"></script>
 	<script src="../Shared/markdown.js"></script>
-	<script src="timer.js"></script>
-	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
 
 <?php

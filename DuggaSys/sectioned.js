@@ -491,20 +491,20 @@ function refreshGithubRepo(courseid, user) {
       dataCheck = false;
     }
   });
-  console.log("ajax done" + courseid);
   return dataCheck;
 }
 
 //Send new Github URL and course id to PHP-script which gets and saves the latest commit in the sqllite db
-function updateGithubRepo(githubURL, cid) {
+function updateGithubRepo(githubURL, cid, githubKey) {
   //Used to return success(true) or error(false) to the calling function
   regexURL = githubURL.replace(/.git$/, "");
   var dataCheck;
+  console.log("updateGithubRepo");
   $.ajax({
     async: false,
     url: "../DuggaSys/gitcommitService.php",
     type: "POST",
-    data: { 'githubURL': regexURL, 'cid': cid, 'action': 'directInsert' },
+    data: { 'githubURL': regexURL, 'cid': cid,'token': githubKey , 'action': 'directInsert'},
     success: function () {
       //Returns true if the data and JSON is correct
       dataCheck = true;
@@ -723,6 +723,7 @@ function confirmBox(operation, item = null) {
   else if (operation == "openGitHubTemplate") {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
+    gitTemplatePopupOutsideClickHandler();
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -732,6 +733,7 @@ function confirmBox(operation, item = null) {
     $("#noMaterialConfirmBox").css("display", "none");
     $("#sectionShowConfirmBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none");
+    purgeInputFieldsGitTemplate();
   }
   else if (operation == "showItems" && !hideItemList.length == 0) {
     showMarkedItems(hideItemList);
@@ -751,7 +753,17 @@ function confirmBox(operation, item = null) {
     }
   });
 }
+//OnClick handler for clicking outside the template popup
+function gitTemplatePopupOutsideClickHandler(){
+  const templateContainer = document.getElementById('chooseTemplate');
+  document.addEventListener('click', function(event){
+    const target = event.target;
 
+    if(!templateContainer.contains(target)){
+      purgeInputFieldsGitTemplate();
+    }
+  });
+}
 // Creates an array over all checked items
 function markedItems(item = null) {
   var removed = false;
@@ -1241,6 +1253,11 @@ function createVersion() {
   param.startdate = getDateFormat(new Date($("#startdate").val()));
   param.enddate = getDateFormat(new Date($("#enddate").val()));
 
+  //If no previous versions exist. "None" can't be selected which makes it empty. Set to "None" for if-statement a few lines down.
+  if (param.copycourse == "") {
+    param.copycourse = "None";
+  }
+
   newversid = param.versid;
 
   if (param.versid == "" || param.versname == "") {
@@ -1478,9 +1495,13 @@ function returnedSection(data) {
 
       for (i = 0; i < data['entries'].length; i++) {
         var item = data['entries'][i];
-        var deadline = item['deadline'];
+        var deadline = item['handindeadline'];
         var rDeadline = item['relativedeadline'];
         var released = item['release'];
+
+        if(deadline==null) {
+          deadline = item['deadline'];
+        }
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
@@ -1915,10 +1936,19 @@ function returnedSection(data) {
 
 
           str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(" + makeparams([item['lid'], item['entryname'],
-          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+          str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(";
+          if(item['handindeadline']!=null) {
+            str +=makeparams([item['lid'], item['entryname'],
+            item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+            item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
+            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+          }
+          else {
+            str +=makeparams([item['lid'], item['entryname'],
+            item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+            item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
+            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+          }
 
 
           str += "</td>";
@@ -3908,14 +3938,14 @@ function validateForm(formid) {
 
   if (formid === 'githubPopupWindow') {
     var repoLink = $("#gitRepoURL").val();
+    var repoKey = $("#gitAPIKey").val();
     var cid = $("#cidTrue").val();
-
     if (repoLink) {
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
         $("#githubPopupWindow").css("display", "none");
-        updateGithubRepo(repoLink, cid);
+        updateGithubRepo(repoLink, cid, repoKey);
         // Refresh page after github link
         location.reload();
       }
@@ -4060,9 +4090,9 @@ function fetchGitCodeExamples(courseid){
         filteredFiles.push(fileNamesArray[i]);
       }
     }
-  
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test here to view content in console. codeExamplesContent array elements contains alot of info, including sha key. sha key is needed to store in gitFiles db. 
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
+      storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4079,7 +4109,7 @@ function fetchGitCodeExamples(courseid){
     // Extract the owner and repo into individual variables
     var parts = githubURL.split("/");
     var owner = parts[3];
-    var repo = parts[4]
+    var repo = parts[4];
     //Foreach loop to fetch each file in the filteredFiles array
     filteredFiles.forEach(function(filename){
       var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;
@@ -4115,9 +4145,16 @@ function fetchGitCodeExamples(courseid){
   }
   // Remove the filename from the filepath and construct a path to its folder
   function getParentFolderOfFile(filePath){
-       var lastIndex = filePath.lastIndexOf("/");
-       var folderPath = filePath.substring(0, lastIndex);
-       return folderPath;
+    var lastIndex = filePath.lastIndexOf("/");
+    var folderPath = filePath.substring(0, lastIndex);
+    return folderPath;
+  }
+  //Clear inputfields in githubtemplate popup box
+  function purgeInputFieldsGitTemplate(){
+    var inputFields =  document.querySelectorAll('.inputwrapper input');
+    inputFields.forEach(input => {
+        input.value = '';
+    });
   }
   //Fetch all filenames from the parent folder of original input file
   async function fetchFileNames(githubURL, folderPath){
@@ -4135,6 +4172,7 @@ function fetchGitCodeExamples(courseid){
         success: function(response) {
           // Check if response is an array or single object, then parse the response to extract file names.
           // resolve() returns all filenames.
+          var response = response.filter(item => item.type === 'file');
           var files = Array.isArray(response) ? response : [response];
           var fileNames = files.map(function(file) {
             return file.name;
@@ -4147,7 +4185,49 @@ function fetchGitCodeExamples(courseid){
       });
     });
   }
+//Function to store Code Examples in directory and in database (metadata2.db)
+function storeCodeExamples(cid, codeExamplesContent, githubURL){
+    var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
+    //Push all file data into separate arrays and add them into one single array.
+    codeExamplesContent.map(function(item) {
+       decodedContent.push(atob(item.content.content));
+       shaKeys.push(item.content.sha);
+       fileNames.push(item.filename);
+       fileURL.push(item.content.url);
+       downloadURL.push(item.content.download_url);
+       filePath.push(item.content.path);
+       fileType.push(item.content.type);
+    });
 
+    var AllJsonData = {
+      codeExamplesContent: decodedContent,
+      SHA: shaKeys,
+      fileNames: fileNames,
+      filePaths: filePath,
+      fileURLS: fileURL,
+      downloadURLS: downloadURL,
+      fileTypes: fileType
+    }
+    //Send data to sectioned.php as JSON through POST and GET
+    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
+       method: 'POST',
+       body: JSON.stringify(AllJsonData),
+       headers: {
+        'Content-Type': 'application/json'
+       }
+      }) 
+      .then(response => response.text())
+      .then(data => {
+        //For testing/finding bugs/errors
+        //console.log(data);
+
+        confirmBox('closeConfirmBox');
+      })
+      .catch(error => {
+          console.error('Error calling PHP function:', error);
+      });
+}
+  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");
