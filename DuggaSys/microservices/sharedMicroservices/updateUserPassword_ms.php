@@ -75,20 +75,7 @@ if(checklogin()) {
 						$status = "teacher";
 					} else {
 						//Action determines which form is being used
-						if($action == "challenge"){
-								//Update challenge question
-								$querystringz = "UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid";
-								$stmt = $pdo->prepare($querystringz);
-								$stmt->bindParam(':userid', $userid);
-								$stmt->bindParam(':SQ', $question);
-								$stmt->bindParam(':answer', $hashedAnswer);
-
-								if(!$stmt->execute()) {
-									$error=$stmt->errorInfo(); 
-								} else {
-									$success = true;
-								}
-						} else if($action == "password"){
+						if($action == "password"){
 							//Update password
 							$passwordquery = "UPDATE user SET password=:PW WHERE uid=:userid";
 							$stmt = $pdo->prepare($passwordquery);
