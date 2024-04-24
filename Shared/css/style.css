@@ -7726,6 +7726,10 @@ textarea#mrkdwntxt {
   border-radius: 0px;
 }
 
+/* --------------===============################================-------------- *
+ *                                    courseed                                 *
+ * --------------================################================-------------- */
+
 #saveCourse{
   margin: 0px;
 }
@@ -7743,7 +7747,6 @@ textarea#mrkdwntxt {
   margin-right: 2px;
 }
 
-
 .form-popup {
   text-align: center;
   display: none;
@@ -7754,7 +7757,7 @@ textarea#mrkdwntxt {
   transform: translate(-50%, -50%);
   border: 3px solid #f1f1f1;
   z-index: 9;
-  background-color: #fff; /* white background */
+  background-color: #fff; 
   height:16.25rem;
   width:28.75rem;
   background-color:#775886;
