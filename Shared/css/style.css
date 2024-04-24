@@ -7821,8 +7821,6 @@ textarea#mrkdwntxt {
   cursor: pointer;
 }
 
-
-
 @media only screen and (max-width: 1350px) {
   .previewWindow {
     height: 89%;
