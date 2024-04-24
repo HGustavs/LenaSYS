@@ -2,15 +2,6 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../../../Shared/sessions.php";
-include_once "../../../Shared/basic.php";
-include "../shared_microservices/getUid_ms.php";
-getUid();
-
-// Connect to database and start session
-pdoConnect();
-session_start();
-
 function getUid(){
   // Checks user id, if user has none a guest id is set
   if(isset($_SESSION['uid'])){
@@ -35,6 +26,9 @@ $disabled = getOP('disabled');
 $param = getOP('param');
 $variantanswer = getOP('variantanswer');
 
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
+  // MS KOD
+}
 // Prepare the SQL statement
 $query = $pdo->prepare("INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)");
 
