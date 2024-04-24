@@ -7764,7 +7764,7 @@ textarea#mrkdwntxt {
 }
 
 /* styles to the form container */
-.form-container {
+.form-popup_container {
   height:211px;
   padding: 30px;
   background-color: white;

@@ -144,7 +144,7 @@ if(isset($_SESSION['uid'])){
 				<button id="deleteCourseButton" onclick='openDeleteForm()'>Delete</button>
     			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
 				<div class="form-popup" id="myForm">
-					<form action="" class="form-container DarkModeBackgrounds">
+					<form action="" class="form-popup_container DarkModeBackgrounds">
 						<h1 Class="DarkModeText" style="font-size:24px; padding-bottom:50px; padding-top:60px; border-bottom: 2px solid #ccc;">Are you sure? </h1>
 						<button id="deleteCourseButtonYes" type="button" onclick="closeDeleteForm()">Yes</button>
 						<button id="deleteCourseButtonNo" type="button" onclick="closeDeleteForm()">No</button>
