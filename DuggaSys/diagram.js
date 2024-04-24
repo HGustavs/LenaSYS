@@ -1320,7 +1320,7 @@ var defaults = {
         stroke: color.BLACK,
         fill: color.WHITE,
         width: 200,
-        height: 0,
+        height: 0, // Extra height when resizing larger than text.
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
@@ -1342,7 +1342,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 200,
-        height: 50,
+        height: 0, // Extra height when resizing larger than text.
         type: "SD",
         attributes: ['do: func'],
         functions: ['+function'],
@@ -2683,14 +2683,14 @@ function mmoving(event) {
 
             deltaX = startX - event.clientX;
 
-            if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
+            if (elementData.kind == elementTypesNames.UMLEntity ||
+                elementData.kind == elementTypesNames.IEEntity ||
+                elementData.kind == elementTypesNames.SDEntity) { // Declare the minimal height of an object
                 minHeight = 0;
             }
-            if (elementData.kind === "SDEntity") {
-                deltaY = (startY - event.clientY) / 2;
-            } else {
-                deltaY = startY - event.clientY;
-            }
+
+            deltaY = startY - event.clientY;
+
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -9385,6 +9385,22 @@ function updateElementHeight(arr, element, height) {
     });
 }
 
+const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
+const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
+const drawRect = (w, h, l, e) => {
+    return `<rect 
+                class='text' x='${l}' y='${l}' 
+                width='${w - l * 2}' height='${h - l * 2}' 
+                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
+            />`;
+}
+const drawText = (x, y, a, t, extra='') => {
+    return `<text
+                class='text' x='${x}' y='${y}' 
+                dominant-baseline='auto' text-anchor='${a}' ${extra}
+            > ${t} </text>`;
+}
+
 function drawElementUMLEntity(element, ghosted) {
     let str = "";
     let ghostPreview = ghostLine ? 0 : 0.4;
@@ -9403,16 +9419,16 @@ function drawElementUMLEntity(element, ghosted) {
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
     updateElementHeight(UMLHeight, element, totalHeight + boxh)
 
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
     str += `<div 
-            id='${element.id}' 
-            class='element uml-element' 
-            onmousedown='ddown(event);' 
-            onmouseenter='mouseEnter();' 
-            onmouseleave='mouseLeave()';' 
-            style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;`;
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+            >`;
 
-    if (ghosted) str += `pointer-events:none; opacity:${ghostPreview};`;
-    str += `'>`;
 
     // Header
     let height = texth * 2;
@@ -9436,165 +9452,83 @@ function drawElementUMLEntity(element, ghosted) {
 
     str += textBox(aText, 'uml-content');
     str += textBox(fText, 'uml-footer');
+    str += `</div>`;
     return str;
 }
 
 function drawElementSDEntity(element, ghosted){
-    let ghostPreview = ghostLine ? 0 : 0.4;
     let str = "";
-    // Compute size variables
+    let ghostPreview = ghostLine ? 0 : 0.4;
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact);
     let texth = Math.round(zoomfact * textheight);
-    let hboxw = Math.round(element.width * zoomfact * 0.5);
-    let hboxh = Math.round(element.height * zoomfact * 0.5);
     let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
+    const maxCharactersPerLine = Math.floor(boxw / texth * 1.75);
+    const lineHeight = 1.5;
 
-    const maxCharactersPerLine = Math.floor(boxw / texth);
+    const text = splitFull(element.attributes, maxCharactersPerLine);
 
-    let textWidth = canvasContext.measureText(element.name).width;
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(SDHeight, element, totalHeight + boxh)
 
-    // If calculated size is larger than element width
-    const margin = 10 * zoomfact;
-    let tooBig = (textWidth >= (boxw - (margin * 2)));
-    let xAnchor = tooBig ? margin : hboxw;
-    let vAlignment = tooBig ? "left" : "middle";
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1};${ghostStr}'
+            >`
 
-    const splitLengthyLine = (str, max) => {
-        if (str.length <= max) return str;
-        else {
-            return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-        }
-    }
-
-    const text = element.attributes.map(line => {
-        return splitLengthyLine(line, maxCharactersPerLine);
-    }).flat();
-
-    elemAttri = text.length;
-
-    // Removes the previouse value in SDHeight for the element
-    for (let i = 0; i < SDHeight.length; i++) {
-        if (element.id == SDHeight[i].id) {
-            SDHeight.splice(i, 1);
-        }
-    }
-
-    // Calculate and store the SDEntity's real height
-    let SDEntityHeight = {
-        id: element.id,
-        height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-    }
-    SDHeight.push(SDEntityHeight);
-
-    //div to encapuslate SD element
-    /*str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px; z-index:1;'`;
-
-    if (context.includes(element)) {
-        str += `z-index: 1;`;
-    }
-    if (ghosted) {
-        str += `pointer-events: none; opacity: ${ghostPreview};`;
-    }
-    str += `'>`;*/
-    str += `<div id='${element.id}' class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();' 
-        style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index: ${context.includes(element) ? 1 : 0}; ${ghosted ? 'pointer-events: none; opacity: ' + ghostPreview + ';' : ''}'>`;
-
-    //div to encapuslate SD header
-    str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-    //svg for SD header, background and text
-    str += `<svg width='${boxw}' height='${boxh}'>`;
-    str += `<path class="text" 
-            d="M${linew + cornerRadius},${(linew)}
-                h${(boxw - (linew * 2)) - (cornerRadius * 2)}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius)}
-                h${(boxw - (linew * 2)) * -1}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - (cornerRadius)) * -1}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius) * -1}
-                z
-            "
+    let height = texth * 2;
+    let headPath = `
+        <path 
+            d="M ${linew + cornerRadius},${linew}
+                h ${boxw - linew * 2 - cornerRadius * 2}
+                a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
+                v ${height - linew * 2 - cornerRadius}
+                h ${(boxw - linew * 2) * -1}
+                v ${(height - linew * 2 - cornerRadius) * -1}
+                a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius * -1}
+                z"
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='${element.fill}'
-        />
-        
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-    //end of svg for SD header
-    str += `</svg>`;
-    //end of div for SD header
-    str += `</div>`;
+        />`
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headPath + headText);
+    str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px;`, headSvg);
 
-    //div to encapuslate SD content
-
-    //Draw SD-content if there exist at least one attribute
-    if (elemAttri != 0) {
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-        str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2 ))}
-                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-        for (let i = 0; i < elemAttri; i++) {
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
+    const drawBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
         }
-        //end of svg for background
-        str += `</svg>`;
-        // Draw SD-content if there are no attributes.
-    }
-    else {
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-        str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
+        let path = `<path class="text"
+                d="M ${linew},${(linew)}
+                    h ${boxw - linew * 2}
+                    v ${height - linew * 2 - cornerRadius }
+                    a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius * -1},${cornerRadius}
+                    h ${(boxw - linew * 2 - cornerRadius * 2) * -1}
+                    a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius * -1},${cornerRadius * -1}
+                    v ${(height - linew * 2 - cornerRadius) * -1}
+                    z"
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
-        //end of svg for background
-        str += `</svg>`;
+        let contentSvg = drawSvg(boxw, height, path + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
     }
-    //end of div for SD content
-    str += `</div>`;
+
+    str += drawBox(text, 'uml-content');
     str += `</div>`;
     return str;
-}
-const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
-const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
-const drawRect = (w, h, l, e) => {
-    return `<rect 
-                class='text' x='${l}' y='${l}' 
-                width='${w - l * 2}' height='${h - l * 2}' 
-                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
-            />`;
-}
-const drawText = (x, y, a, t, extra='') => {
-    return `<text
-                class='text' x='${x}' y='${y}' 
-                dominant-baseline='auto' text-anchor='${a}' ${extra}
-            > ${t} </text>`;
 }
 
 function drawElementIEEntity(element, ghosted) {
@@ -9613,16 +9547,15 @@ function drawElementIEEntity(element, ghosted) {
     let totalHeight =  tHeight - linew * 2 + texth * 2;
     updateElementHeight(IEHeight, element, totalHeight + boxh)
 
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
     str += `<div 
-            id='${element.id}' 
-            class='element uml-element' 
-            onmousedown='ddown(event);' 
-            onmouseenter='mouseEnter();' 
-            onmouseleave='mouseLeave()';' 
-            style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-    if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview};`;
-    str += `'>`;
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+            >`;
 
     let height = texth * 2;
     let headRect = drawRect(boxw, height, linew, element);
@@ -9644,6 +9577,7 @@ function drawElementIEEntity(element, ghosted) {
     }
 
     str += textBox(text, 'uml-content');
+    str += `</div>`;
     return str;
 }
 
