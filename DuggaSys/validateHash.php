@@ -37,7 +37,6 @@
             header("Location: $link");
             exit();	
         }else{
-            echo "{$_SESSION['checkhash']} / $hashpwd is not valid!";
             header("Location: ../errorpages/404.php");
 		    exit();	
         }

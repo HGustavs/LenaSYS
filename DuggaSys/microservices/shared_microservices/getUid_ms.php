@@ -25,9 +25,7 @@
         $log_timestamp = getOP('log_timestamp');
 
         $info="opt: ".$opt." courseId: ".$courseId." courseVersion: ".$courseVersion." exampleName: ".$exampleName." sectionName: ".$sectionName." exampleId: ".$exampleId;
-        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php",$userid,$info, $log_timestamp); //logging information into serviceLogEntries-table through logServiceEvent-function);
-
-        $appuser=(array_key_exists('uid', $_SESSION) ? $_SESSION['uid'] : 0);
+        logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php", $userid, $info, $log_timestamp); //logging information into serviceLogEntries-table through logServiceEvent-function);
 
         return $userid;
     }
