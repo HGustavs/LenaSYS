@@ -2566,27 +2566,28 @@ $(window).keyup(function (event) {
     document.activeElement.blur(); // To lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     // Remember that keycode 13 = enter button
-    console.log("This is from sectioned.js");
     document.activeElement.blur();
     var saveButtonDisplay = ($('#saveBtn').css('display'));
     var editSectionDisplay = ($('#editSection').css('display'));
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
-      //I don't know who did this but this call is not necessory
-      updateItem();
-      //Add class to element so it will be highlighted.
-      setTimeout(function () {
-        var element = document.getElementById('I' + updatedLidsection).firstChild;
-        if (element.tagName == 'DIV') {
-          element = element.firstChild;
-          element.classList.add("highlightChange");
-        } else if (element.tagName == 'A') {
-          document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
-        } else if (element.tagName == 'SPAN') {
-          document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
-        }
-      }, 200);
+      //If all information is correct -> item can be updated
+      if (window.bool10 == true && window.bool11 == true) {
+        updateItem();
+        //Add class to element so it will be highlighted.
+        setTimeout(function () {
+          var element = document.getElementById('I' + updatedLidsection).firstChild;
+          if (element.tagName == 'DIV') {
+            element = element.firstChild;
+            element.classList.add("highlightChange");
+          } else if (element.tagName == 'A') {
+            document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
+          } else if (element.tagName == 'SPAN') {
+            document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
+          }
+        }, 200);
+      }
 
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
