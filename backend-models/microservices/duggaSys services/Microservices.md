@@ -1,4 +1,4 @@
-# POTENTIAL MICROSERVICES
+# MICROSERVICES
 This document primarily focuses on the services provided by the monolithc service files and which microservies can obtained thorugh these files. However, a complementary document may be required for functions that gather information.
 
 # BACKGROUND
@@ -43,8 +43,8 @@ CRUD stands for the four basic operations for managing data in applications and 
 
 - accessedservice.php __==finished==__
 - codeviewerService.php __==finished==__
-- contributedservice.php : _there is no documentation for this file_ __dont know is needed__
-- contribution_loginbox_service.php : __dont know if needed__
+- contributedservice.php : _there is no documentation for this file_ __unclear if needed__
+- contribution_loginbox_service.php : __unclear if needed__
 - courseedservice.php  __==finished==__
 - diagramservice.php  __WORK PAUSED in this service will continue when the service is fixed__
 - duggaedservice.php __==finished==__
@@ -56,22 +56,28 @@ CRUD stands for the four basic operations for managing data in applications and 
 - showDuggaservice.php __==finished==__ 
 
 ---
-# LIST OF POTENTIAL MICROSERVICES
+# LIST OF MICROSERVICES
 ---
+
+Please note that the microservices marked "UNFINISHED" in this documentation have remained unchanged since the group in 2023. These microservices still rely on the services described in the Database_related_micro_services.md. Once all the microservices are implemented, the Database_related_micro_services.md will become obsolete and therefore will be deleted. The microservices marked "finished" include complete documentation about the queries in this document.
+
+Also note that __no renaming of microservices__ will take place until all microservices are implemented.
+
+<br>
 
 Shared microservices:
 
-- logging_ms.php
+- logging_ms.php __==UNFINISHED==__
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
-- isSuperUser_ms.php
-- hasAccess_ms.php
-- setUserID_ms.php
-- setActiveCourseversion_ms.php
-- updateUserPassword_ms.php
+- isSuperUser_ms.php __==UNFINISHED==__
+- hasAccess_ms.php __==UNFINISHED==__
+- setUserID_ms.php __==UNFINISHED==__
+- setActiveCourseversion_ms.php __==UNFINISHED==__
+- updateUserPassword_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
-- createNewVersionOfCourse_ms.php
+- createNewVersionOfCourse_ms.php __==UNFINISHED==__
 - setAsActiveCourse_ms.php __==finished==__ New filename: "updateActiveCourse_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
@@ -81,14 +87,14 @@ Accessed Service:
 - updateUser_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
-- changeUserPassword_accessed_ms.php
+- changeUserPassword_accessed_ms.php __==UNFINISHED==__ 
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
 
 Codeviewer Service:
 
-- settingCodeexampleTemplate_ms.php
+- settingCodeexampleTemplate_ms.php __==UNFINISHED==__
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfCodeExample_ms.php __==finished==__ New filename: "updateContentOfCodeExample_ms.php" according to new nameconvention based on CRUD and the main function of the ms.
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
@@ -102,7 +108,7 @@ Courseed Service:
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_courseed_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
-- copyCourseVersion_ms.php
+- copyCourseVersion_ms.php __==UNFINISHED==__
 - updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -114,7 +120,7 @@ Duggaed Service:
 
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- deleteDugga_ms.php
+- deleteDugga_ms.php __==UNFINISHED==__
 - createDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -124,13 +130,13 @@ Duggaed Service:
 Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updataFileLink_ms.php
+- updataFileLink_ms.php __==UNFINISHED==__
 
 <br>
 
 Highscore Service:
 
-- highscoreservice_ms.php
+- highscoreservice_ms.php __==UNFINISHED==__
 
 <br>
 
@@ -144,15 +150,15 @@ Sectioned Service:
 - reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updateListentriesGradesystem_ms.php
+- updateListentriesGradesystem_ms.php __==UNFINISHED==__
 - setVisibleListentrie_ms.php __==finished==__ New filename: "updateVisibleListentrie_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateCourseVersion_sectioned_ms.php
+- updateCourseVersion_sectioned_ms.php __==UNFINISHED==__
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
-- getCourseVersions_ms.php
-- getGitReference_ms.php
-- createGithubCodeexample_ms.php
+- getCourseVersions_ms.php __==UNFINISHED==__
+- getGitReference_ms.php __==UNFINISHED==__
+- createGithubCodeexample_ms.php __==UNFINISHED==__
 - getUserDuggaFeedback_ms.php __==finished==__ New filename: "readUserDuggaFeedback_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
 
@@ -160,9 +166,9 @@ Sectioned Service:
 
 Profile Service:
 
-- changeProfileValues_ms.php
-- updateSecurityQuestion_ms.php
-- updatePassword_ms.php
+- changeProfileValues_ms.php __==UNFINISHED==__
+- updateSecurityQuestion_ms.php __==UNFINISHED==__
+- updatePassword_ms.php __==UNFINISHED==__ 
 
 <br>
 
