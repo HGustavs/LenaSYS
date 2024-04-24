@@ -3091,20 +3091,20 @@ div.submit-button:disabled {
   border-color: transparent transparent transparent var(--color-border-6);
 }
 
-.versionDialog{
+/* Tooltip */
+
+.versionDialog {
   display: block;
   top:-5px;
 }
 
-#dialogContainer{
+#dialogContainer {
   left:-135px; 
 }
 
-#dialogContainer2, #dialogContainer3{
+#dialogContainer2, #dialogContainer3 {
   left:-120px; 
 }
-
-/* Tooltip */
 
 .tooltipDugga {
   position: relative;
@@ -5717,11 +5717,11 @@ only screen and (max-device-width: 568px) {
     left: 10%;*/
   }
 
-  #dialogContainer2, #dialogContainer3{
+  #dialogContainer2, #dialogContainer3 {
     left: -150px;
   }
 
-  #dialogContainer{
+  #dialogContainer {
     left: -165px;
   }
   
