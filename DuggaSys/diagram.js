@@ -6887,9 +6887,22 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
-            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == entityType.ER || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (var i = 0; i < value.length; i++) {
+                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                        if (selected == value[i]) {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        } else {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        }
+                    }
+                }
+            }else if(contextLine[0].type == entityType.ER){
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+                for (var i = 0; i < value.length - 1; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
