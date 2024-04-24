@@ -29,11 +29,11 @@ AJAXService("GET", {}, "COURSE");
 // Commands:
 //----------------------------------------
 
-function openForm() {
+function openDeleteForm() {
 	document.getElementById("myForm").style.display = "block";
 }
 
-function closeForm() {
+function closeDeleteForm() {
 	document.getElementById("myForm").style.display = "none";
 }
 
