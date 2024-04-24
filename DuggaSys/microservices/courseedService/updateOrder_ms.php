@@ -5,7 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include necessary files
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../shared_microservices/getUid_ms.php";
+include_once "../../../../coursesyspw.php";
 
 // Connect to the database and start the session
 pdoConnect();
