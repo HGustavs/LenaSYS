@@ -8635,7 +8635,6 @@ function redrawArrows(str) {
 
     // Recalculate the offsets for all the specialCase lines
     for (var i = 0; i < lines.length; i++) {
-        var linesCompleted = []; // Array to keep track of which lines have been recalculated
 
         // Skip if line doesnt have any offsets
         if (!lines[i].offsetX && !lines[i].offsetY) {
@@ -8643,10 +8642,9 @@ function redrawArrows(str) {
         }
 
         // Recalculate the offset for the line
-        if (lines[i].specialCase && !linesCompleted.includes(lines[i].id)) {
+        if (lines[i].specialCase) {
             console.log("found one!")
             calculateLineOffset(lines[i]);
-            linesCompleted.push(lines[i].id);
         }
     }
 
