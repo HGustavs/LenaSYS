@@ -801,7 +801,6 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 	
 }
 function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
-	$debug="NONE!";
 	try {
 		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
 		if(!defined("MYSQL_VERSION")) {
@@ -822,7 +821,44 @@ function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadU
 		$error=$query->errorInfo();
 		echo "Error updating entries in codeexample" . $error[2];
 	} else{
-		echo "File stored successfully in codeexample";
+		echo "Row updated successfully in codeexample";
+	}
+}
+
+function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+	$count = count($fileNames);
+	$boxContent = "Code";
+	$wordlistID = "3";
+	$y = 1;
+	for($i = 0; $i < $count; $i++){
+		//TODO: Change boxcontent to be named dynamicly.
+		//Maybe change filenameNoExt to somehting better named. Also what is wordlistid?
+		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), 
+		wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
+	    $query->bindParam(':boxid', $y);
+		$query->bindParam(':exampleid', $CeHiddenParam[0]);
+		$filenameNoExt = preg_replace('/\.[^.]*$/', "", $fileNames[$i]);
+		$query->bindParam(':boxtitle', $filenameNoExt);
+		$query->bindParam(':boxcontent', $boxContent);
+		$query->bindParam(':filename', $fileNames[$i]);
+		$query->bindParam(':wordlistid', $wordlistID);
+	    
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating entries" . $error[2];
+		} else {
+			echo "File stored successfully in box";
+		}
+		$y++;
 	}
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -848,7 +884,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     insertIntoSqLiteGitRepo($cid, $githubURL);
     insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
 	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
-	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);  
+	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
+	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 }
 ?>
 </body>
