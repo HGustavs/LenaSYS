@@ -681,6 +681,10 @@
 				
 		</div>
 <?php
+include_once "../Shared/database.php";
+include_once(__DIR__ . "/../../coursesyspw.php");
+pdoConnect();
+
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
     //First query: Check if a row with same cid already exists. If not, insert into db.
@@ -761,6 +765,42 @@ function writeFilesInDir($path, $fileNames, $content){
     }
 }
 
+function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam){
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+	$count = count($fileNames);
+	for($i = 0; $i < $count; $i ++){
+		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
+	    $query->bindParam(':filename', $fileNames[$i]);
+	    $query->bindParam(':cid', $cid);
+	    $query->execute();
+	    $norows = $query->fetchColumn();
+	    echo $norows;
+		if($norows == 0){
+			//TODO: Kind value should be fixed to dynamic
+			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
+			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'1',:cid);");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':fileName', $fileNames[$i]);
+			$query->execute();
+			if (!$query->execute()) {
+                $error = $query->errorInfo();
+                echo "Error updating entries" . $error[2];
+            } else {
+                echo "File stored successfully in fileLink";
+            }
+		}
+	}
+	
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Retrieval of JSON data sent through POST and GET
     $cid = $_GET['cid'];
@@ -774,14 +814,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
     $downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
     $fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-    
+    $CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
     $path = '../../LenaSYS/courses/' . $cid;
     $pathCoursesRoot = '../../LenaSYS/courses';
-
+    
     writeCoursesDir($path, $pathCoursesRoot);
     writeFilesInDir($path, $fileNames, $codeExamplesContent);
     insertIntoSqLiteGitRepo($cid, $githubURL);
-    insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA);   
+    insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
+	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);  
 }
 ?>
 </body>

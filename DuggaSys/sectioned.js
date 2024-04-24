@@ -4232,7 +4232,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(response => response.text())
       .then(data => {
         //For testing/finding bugs/errors
-        //console.log(data);
+        console.log(data);
         //updateTemplate();
         //confirmBox('closeConfirmBox');
       })
