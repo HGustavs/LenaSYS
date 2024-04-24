@@ -488,8 +488,13 @@
 					<span>End Date:</span>
 					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' />
 				</div>
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-12px;"><span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span></div>
+				<div class='inputwrapper'>
+					<span>MOTD:</span>
+					<div class="formDialog versionDialog" id='dialogContainer4'>
+						<span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
+				</div>
 				<div class="formDialog" style="display: block; left:50px; top:4px;"><span id="dialog42" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols.</span></div>
 				<!--<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
 				<!--<p id="dialog42" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->

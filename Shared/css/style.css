@@ -3095,15 +3095,20 @@ div.submit-button:disabled {
 
 .versionDialog {
   display: block;
-  top:-5px;
+  top: -5px;
 }
 
 #dialogContainer {
-  left:-135px; 
+  left: -135px; 
 }
 
 #dialogContainer2, #dialogContainer3 {
-  left:-120px; 
+  left: -120px; 
+}
+
+#dialogContainer4 {
+  left: -110px; 
+  top: 5px;
 }
 
 .tooltipDugga {
@@ -5717,13 +5722,18 @@ only screen and (max-device-width: 568px) {
     left: 10%;*/
   }
 
+  #dialogContainer {
+    left: -165px;
+  }
+
   #dialogContainer2, #dialogContainer3 {
     left: -150px;
   }
 
-  #dialogContainer {
-    left: -165px;
+  #dialogContainer4{
+    left: -139px;
   }
+
   
   #searchNavButt{
     display: none;
