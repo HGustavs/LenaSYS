@@ -576,8 +576,8 @@ $testsData = array(
     // This tests the microservice setVisibleListentrie and the part of the monolith called "PUBLIC" 
     //------------------------------------------------------------------------------------------
     'setVisibleListentriePUBLIC' => array(
-        'expected-output'   => '{"entries":[{"entryname":"JavaScript-Code:","visible":"1"},{"entryname":"JS-TEST template 1","visible":"1"},{"entryname":"JS-TEST template 2","visible":"1"},{"entryname":"JS-TEST template 3","visible":"1"},{"entryname":"JS-TEST template 4","visible":"1"},{"entryname":"JS-TEST template 5","visible":"1"},{"entryname":"JS-TEST template 6","visible":"1"},{"entryname":"JS-TEST template 7","visible":"1"},{"entryname":"JS-TEST template 8","visible":"1"},{"entryname":"JS-TEST template 9","visible":"1"},{"entryname":"JS-TEST template 10","visible":"1"},{"entryname":"HTML-Code:","visible":"1"},{"entryname":"Html-test template 1","visible":"1"},{"entryname":"Html-test template 2","visible":"1"},{"entryname":"Html-test template 3","visible":"1"},{"entryname":"Html-test template 4","visible":"1"},{"entryname":"Html-test template 5","visible":"1"},{"entryname":"Html-test template 6","visible":"1"},{"entryname":"Html-test template 7","visible":"1"},{"entryname":"Html-test template 8","visible":"1"},{"entryname":"Html-test template 9","visible":"1"},{"entryname":"Html-test template 10","visible":"1"},{"entryname":"SQL-CODE:","visible":"1"},{"entryname":"SQL-TEST template 1","visible":"1"},{"entryname":"SQL-TEST template 2","visible":"1"},{"entryname":"SQL-TEST template 3","visible":"1"},{"entryname":"SQL-TEST template 4","visible":"1"},{"entryname":"SQL-TEST template 5","visible":"1"},{"entryname":"SQL-TEST template 6","visible":"1"},{"entryname":"SQL-TEST template 7","visible":"1"},{"entryname":"SQL-TEST template 8","visible":"1"},{"entryname":"SQL-TEST template 9","visible":"1"},{"entryname":"SQL-TEST template 10","visible":"1"},{"entryname":"PHP-CODE:","visible":"1"},{"entryname":"PHP-TEST template 1","visible":"1"},{"entryname":"PHP-TEST template 2","visible":"1"},{"entryname":"PHP-TEST template 3","visible":"1"},{"entryname":"PHP-TEST template 4","visible":"1"},{"entryname":"PHP-TEST template 5","visible":"1"},{"entryname":"PHP-TEST template 6","visible":"1"},{"entryname":"PHP-TEST template 7","visible":"1"},{"entryname":"PHP-TEST template 8","visible":"1"},{"entryname":"PHP-TEST template 9","visible":"1"},{"entryname":"PHP-TEST template 10","visible":"1"},{"entryname":"Other:","visible":"1"},{"entryname":"PUBLICTEST123","visible":"1"}],"debug":"NONE!","writeaccess":true,"readaccess":true,"coursevers":"1337","courseid":"1885"}',
-        'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator) VALUES(1885,1337,'PUBLICTEST123',9099,6,5,0,101);",
+        'expected-output'   => '{"entries":[{"entryname":"PUBLICTEST123","visible":"1"},{"entryname":"Bit count test 1HP","visible":"1"},{"entryname":"Bit count test 1","visible":"1"},{"entryname":"Bit count test 2","visible":"1"},{"entryname":"Color test 1HP","visible":"1"},{"entryname":"Hex color test 1","visible":"1"},{"entryname":"Hex color test 2","visible":"1"},{"entryname":"Geometry 2HP","visible":"1"},{"entryname":"Geometry test 1","visible":"1"},{"entryname":"Geometry test 2","visible":"1"},{"entryname":"Transforms 3,5HP","visible":"1"},{"entryname":"Transforms test 1","visible":"1"},{"entryname":"Transforms test 2","visible":"1"},{"entryname":"Quizzes 1HP","visible":"1"},{"entryname":"Quiz 1","visible":"1"},{"entryname":"Report 1HP","visible":"1"},{"entryname":"Report submission","visible":"1"}]}',
+        'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, visible,creator) VALUES(2,97731,'PUBLICTEST123',0,101);",
         'query-before-test-2' => "SELECT lid FROM listentries WHERE entryname = 'PUBLICTEST123';",
         'query-after-test-1' => "DELETE FROM listentries WHERE entryname = 'PUBLICTEST123';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
@@ -587,8 +587,8 @@ $testsData = array(
             'username' => 'brom',
             'password' => 'password',
             'lid' => '<!query-before-test-2!><*[0]["lid"]*>',
-            'courseid' => '1885',
-            'coursevers' => '1337',
+            'courseid' => '2',
+            'coursevers' => '97731',
         )),
         'filter-output' => serialize(array( 
             // Filter what output to use in assert test, use none to use all ouput from service
@@ -596,11 +596,6 @@ $testsData = array(
                 'entryname',
                 'visible',
             ),
-            'debug',
-            'writeaccess',
-            'readaccess',
-            'coursevers',
-            'courseid',
         )),
     ), 
 );
