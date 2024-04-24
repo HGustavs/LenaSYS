@@ -9669,7 +9669,7 @@ function drawElementState(element, ghosted, vectorGraphic) {
                     xmlns="http://www.w3.org/2000/svg"
                     xml:space="preserve"
                     style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                    <circle cx="50%" cy="50%" r="50%" />
+                  // <circle cx="50%" cy="50%" r="50%" />
                     ${vectorGraphic}
                 </svg>
             </div>`;
