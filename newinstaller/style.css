@@ -1,0 +1,221 @@
+
+/* Import fonts Noto Sans and Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Variable Declaration*/
+:root {
+    --primary-color: #8F58A3;
+    --primary-color-hover: #773090;
+    --primary-color-active: #692582;
+    --secondary-color: rgba(143, 88, 163, 0.4);
+    --third-color: #D9D9D9;
+    --page-background: #FCFCFC;
+    --warning-text: #F05555;
+    --success-text: #5FCE71;
+    --text-light: #FEFCFF;
+    --text-dark: #1E1E1E;
+    --header-font: "Montserrat", sans-serif;
+    --body-font: "Noto Sans", sans-serif;
+    --h1-fontsize: 54px;
+    --h1-fontsize-small: 38px;
+    --h2-fontsize: 36px;
+    --h2-fontsize-small: 26px;
+    --text-large: 16px;
+    --text-medium: 14px;
+    --text-xs: 12px;
+}
+
+html body {
+    margin: 0;
+}
+
+.page {
+    margin: 2rem;
+    border: 1px solid var(--primary-color);
+    background-color: var(--page-background);
+}
+
+.wrapper {
+    padding: 3rem;
+    padding-top: 2.5rem;
+}
+
+.banner {
+    background-color: var(--primary-color);
+}
+
+.header-1 {
+    font-family: var(--header-font);
+    color: var(--text-light);
+    font-size: var(--h1-fontsize);
+    margin: 0;
+    padding: 1rem;
+}
+
+.breadcrumbs {
+    font-family: var(--header-font);
+    font-size: var(--text-large);
+    display: flex;
+    align-items: baseline;
+    list-style: none;
+    padding-left: .15rem;
+    margin-bottom: .5rem;
+}
+
+.arrow_icon {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    font-size: var(--text-large);
+}
+
+.header-2 {
+    font-family: var(--header-font);
+    color: var(--primary-color);
+    font-size: var(--h2-fontsize);
+    margin-top: 0rem;
+    margin-bottom: 1.5rem;
+}
+
+/*  Container for the main content of the installer
+    window, including the .body-text and .input-grid    */
+.inner-wrapper {
+    padding: 2rem;
+    padding-top: 0;
+}
+
+.body-text {
+    font-family: var(--body-font);
+    margin-bottom: 2.5rem;
+}
+
+/* Group of all input fields + labels*/
+.input-grid {
+    font-family: var(--body-font);
+    display: grid;
+    grid-template-columns: 17rem 17rem;
+    grid-template-rows: repeat(auto, 1fr);
+    grid-column-gap: 2rem;
+    grid-row-gap: 1rem;
+}
+
+/*  Media query for changing element disposition to support
+    smaller screens like tablets and smaller browser windows */
+@media (max-width: 768px) {
+
+    .input-grid{
+        font-family: var(--body-font);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .header h1 {
+        font-family: var(--header-font);
+        color: var(--text-light);
+        font-size: var(--h1-fontsize-small);
+        margin: 0;
+        padding: 1rem;
+    }
+
+    h2 {
+        font-family: var(--header-font);
+        color: var(--primary-color);
+        font-size: var(--h2-fontsize-small);
+        margin-top: 0rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/*  Lets the last cell of the .input-grid span 2 columns */
+.grid-element-span {
+    grid-area: 4 / 1 / 5 / 3;
+}
+
+/*  Sets label above corresponding input field  */
+.input-field {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type=text] {
+    inset: none;
+    border-radius: 0;
+    border: 1px solid var(--text-dark);
+    padding: 0.25rem;
+    width: 12rem;
+    outline: none;
+    transition: .3s ease;
+}
+
+input[type=text]:focus {
+    border-color: var(--primary-color);
+}
+
+.tip {
+    font-size: var(--text-xs);
+    font-style: italic;
+    color: var(--text-dark);
+    margin-top: .25rem;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkbox {
+    display: flex;
+    font-size: var(--text-medium);
+}
+
+input[type=checkbox] {
+    accent-color: var(--primary-color);
+}
+
+.warning {
+    font-size: var(--text-xs);
+    color: var(--warning-text);
+    font-style: italic;
+    padding-left: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.backButton {
+    background-color: rgba(0, 0, 0, 0); /* To get none color*/
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    width: 100px;
+    height: 45px;
+    padding: .75rem;
+    font-size: var(--text-large);
+}
+
+.progressButton {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    width: 100px;
+    height: 45px;
+    padding: .75rem;
+    font-size: var(--text-large);
+}
+
+.progressButton:hover {
+    cursor:pointer;
+    background-color: var(--primary-color-hover);
+    box-shadow:1px 1px 1px var(--text-dark);
+}
+
+.progressButton:active {
+    background-color: var(--primary-color-active);
+    box-shadow:2px 2px 2px var(--text-dark);
+}
+
+.backButton:hover {
+    cursor:pointer;
+    box-shadow:-1px 1px 1px var(--text-dark);
+}
+
+.backButton:active {
+    box-shadow:-2px 2px 2px var(--text-dark);
+}
