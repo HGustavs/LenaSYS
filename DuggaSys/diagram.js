@@ -799,6 +799,7 @@ const elementTypesNames = {
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
+    UMLRelation: "UMLRelation",
 }
 
 /**
@@ -8846,44 +8847,17 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IEEntity:
             str += drawElementIEEntity(element, ghosted);
             break;
+        case elementTypesNames.UMLRelation:
+            str += drawElementUMLRelation(element, ghosted);
+            break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
     } else if (element.kind == elementTypesNames.UMLFinalState) {
     } else if (element.kind == elementTypesNames.UMLSuperState) {
     } else if (element.kind == elementTypesNames.SDEntity) {
-    } else if (element.kind == 'UMLRelation') {
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-
-        //Overlapping UML-inheritance
-        if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //Disjoint UML-inheritance
-        else {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-        //=============================================== <-- IE functionality
-    //Check if the element is a IE entity
-    else if (element.kind == elementTypesNames.IEEntity) {
+    } else if (element.kind == elementTypesNames.UMLRelation) {
+    } else if (element.kind == elementTypesNames.IEEntity) {
     } else if (element.kind == elementTypesNames.IERelation) {
         //div to encapuslate IE element
         str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
@@ -9628,6 +9602,33 @@ function drawElementSuperState(element, ghosted, textWidth) {
                     ${text}
                 </svg>
             </div>`;
+}
+
+function drawElementUMLRelation(element, ghosted) {
+    let str = "";
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;${ghostStr}'
+            >`;
+
+    let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let poly = `
+        <polygon 
+            points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+        />`;
+    str += drawSvg(boxw, boxh, poly);
+    str += `</div>`;
+    return str;
 }
 
 /**
