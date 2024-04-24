@@ -17,6 +17,7 @@ var retData; //Data returned from AJAXService
 var exampleid; 
 var courseid;
 var cvers;
+var CeHiddenParameters = [];
 var sectionData; 
 var codeExamples = [];
 var allBlocks = [];
@@ -734,6 +735,7 @@ function confirmBox(operation, item = null) {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
     gitTemplatePopupOutsideClickHandler();
+    fetchCodeExampleHiddenLinkParam(item);
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -4101,7 +4103,7 @@ function fetchGitCodeExamples(courseid){
       }
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info.
       storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
@@ -4216,7 +4218,8 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       filePaths: filePath,
       fileURLS: fileURL,
       downloadURLS: downloadURL,
-      fileTypes: fileType
+      fileTypes: fileType,
+      codeExamplesLinkParam: CeHiddenParameters
     }
     //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
@@ -4230,7 +4233,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(data => {
         //For testing/finding bugs/errors
         //console.log(data);
-        updateTemplate();
+        //updateTemplate();
         //confirmBox('closeConfirmBox');
       })
       .catch(error => {
@@ -4313,6 +4316,31 @@ function changetemplate(templateno) {
   }
   localStorage.setItem("boxAmount", boxes);
 }
+//TODO: add more error handling
+function fetchCodeExampleHiddenLinkParam(codeExampleItem){
+  var parentTr = codeExampleItem.closest('tr');
+    if(parentTr){
+      var childTd = parentTr.querySelector('td.example.item');
+      var childDiv = childTd.querySelector('div.ellipsis.nowrap');
+      var span = childDiv.querySelector('span');
+      if (span){
+        var hiddenLink = span.querySelector('a.example-link');
+        if (hiddenLink) {
+          var url = new URL(hiddenLink.href);
+          var exampleId = url.searchParams.get('exampleid');
+          var courseId = url.searchParams.get('courseid');
+          var courseName = url.searchParams.get('coursename');
+          var cvers = url.searchParams.get('cvers');
+          var lid = url.searchParams.get('lid');
+          CeHiddenParameters.length = 0;
+          CeHiddenParameters.push(exampleId, courseId, courseName, cvers, lid);
+        } else {
+          console.log('Hidden link not found');
+        }
+      }
+    }
+}
+/*
 function returned(data) 
 {
 	allBlocks = [];
@@ -4363,7 +4391,7 @@ function returned(data)
 			if(sectionData['entries'][posAfter + j]['kind'] == 1){
 				/* Text added after in all titles. 
 				If not set text "undefined" will be displayed. */
-				retData['after'][j][2] = " ";
+				/*retData['after'][j][2] = " ";
 			}
 			retData['after'][j][1] = sectionData['entries'][posAfter + j]['entryname'];
 			retData['after'][j][0] = (String)(sectionData['entries'][posAfter + j]['link']);
@@ -4406,7 +4434,7 @@ function returned(data)
 			if(sectionData['entries'][posBefore - j]['kind']== 1){
 				/* Text added after in all titles. 
 				If not set text "undefined" will be displayed. */
-				retData['before'][j][2] = " ";
+			/*	retData['before'][j][2] = " ";
 			}			
 			retData['exampleno'] = posBefore;
 			j++;
@@ -4510,7 +4538,7 @@ function returnedError(error) {
 	if (error.responseText) {
 		console.log(error.responseText);
 	}
-}
+}*/
 // In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 function getLidFromButton(lid) {
   document.getElementById('lidInput').value = lid;
@@ -4531,4 +4559,39 @@ function getLocalStorage() {
     var dropdown = document.querySelector('select[name="githubDir"]');
     dropdown.value = selectedValue;
   }
+}
+//var githubIcons = document.querySelectorAll("[id^='dorf']");
+function attachClickEventToGitHubIcons() {
+  // Add click event listener to each Github icon
+  console.log('function is called');
+  githubIcons.forEach(function(icon) {
+      icon.addEventListener('click', function() {
+        console.log('event listener works');
+          // Traverse the DOM to find the corresponding hidden link
+          var parentTr = icon.closest('tr'); 
+          var hiddenLink = parentTr.querySelector('.hidden.internal-link');
+
+          // Check if the hidden link exists
+          if (hiddenLink) {
+              // Create a URL object to parse the href
+              var url = new URL(hiddenLink.href);
+
+              // Extract the parameters from the URL
+              var exampleId = url.searchParams.get('exampleid');
+              var courseId = url.searchParams.get('courseid');
+              var courseName = url.searchParams.get('coursename');
+              var cvers = url.searchParams.get('cvers');
+              var lid = url.searchParams.get('lid');
+
+              // Now you can use these parameters as needed
+              console.log('Example ID:', exampleId);
+              console.log('Course ID:', courseId);
+              console.log('Course Name:', courseName);
+              console.log('Cvers:', cvers);
+              console.log('Lid:', lid);
+          } else {
+              console.log('Hidden link not found');
+          }
+      });
+  });
 }
