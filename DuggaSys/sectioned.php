@@ -786,7 +786,7 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 		if($norows == 0){
 			//TODO: Kind value should be fixed to dynamic
 			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
-			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'1',:cid);");
+			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'3',:cid);");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fileName', $fileNames[$i]);
 			$query->execute();
@@ -800,7 +800,31 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 	}
 	
 }
-
+function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
+	$debug="NONE!";
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+	//Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
+	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
+	$query->bindParam(':playlink', $fileNames[0]);
+	$query->bindParam(':templateno', $templateid);
+	$query->bindParam(':exampleid', $CeHiddenParam[0]);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':cvers', $CeHiddenParam[3]);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		echo "Error updating entries in codeexample" . $error[2];
+	} else{
+		echo "File stored successfully in codeexample";
+	}
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Retrieval of JSON data sent through POST and GET
     $cid = $_GET['cid'];
@@ -815,6 +839,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
     $fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
     $CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
+	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
     $path = '../../LenaSYS/courses/' . $cid;
     $pathCoursesRoot = '../../LenaSYS/courses';
     
@@ -822,7 +847,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     writeFilesInDir($path, $fileNames, $codeExamplesContent);
     insertIntoSqLiteGitRepo($cid, $githubURL);
     insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
-	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);  
+	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
+	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);  
 }
 ?>
 </body>
