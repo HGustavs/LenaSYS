@@ -9658,17 +9658,18 @@ function drawElementState(element, ghosted, vectorGraphic) {
     } else if (element.fill == color.WHITE && theme.href.includes('style')) {
         element.fill = color.BLACK;
     }
-    return `<div id="${element.id}" 
+    return `<div id="${element.id}"
                 class="element uml-state"
-                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
+                style="margin-top:${((boxh / 2))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
+                onmousedown='ddown(event);'
+                onmouseenter='mouseEnter();'
                 onmouseleave='mouseLeave();'>
-                <svg width="100%" height="100%" 
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg" 
+                <svg width="100%" height="100%"
+                    viewBox="0 0 ${boxw} ${boxh}" <!-- dynamically set viewBox -->
+                    xmlns="http://www.w3.org/2000/svg"
                     xml:space="preserve"
                     style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                    <circle cx="50%" cy="50%" r="50%" />
                     ${vectorGraphic}
                 </svg>
             </div>`;
