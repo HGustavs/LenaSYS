@@ -1966,17 +1966,6 @@ function mdown(event) {
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
-                if (determinedLines.specialCase == true) {
-                    targetLine = data[findIndex(data, determinedLines.id)];
-                    // get the elements the targetLine is connected to
-                    var fromElement = data[findIndex(data, targetLine.fromID)];
-                    var toElement = data[findIndex(data, targetLine.toID)];
-                    // recalculate the lines offset
-                    var lineOffset = calculateLineOffset(fromElement, toElement, targetLine);
-
-
-
-                }
 
                 pointerState = pointerStates.CLICKED_LINE;
 
@@ -7971,9 +7960,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
         return newLine;
     } else {
-        console.log(numOfExistingLines, specialCase, specialCaseSequence);
-        console.log(fromElement, toElement);
-
         displayMessage(messageTypes.ERROR, `Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
     }
 }
@@ -7984,7 +7970,11 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
  * @param {Object} toElement Element that the line is to.
  * @param {Line} line The line that should be corrected.
  */
-function calculateLineOffset(fromElement, toElement, line) {
+function calculateLineOffset(line) {
+    // Get the from and to elements
+    var fromElement = data[findIndex(data, line.fromID)];
+    var toElement = data[findIndex(data, line.toID)];
+    
     var linesBetween = lines.filter(function (line) {
         return (fromElement.id === line.fromID &&
             toElement.id === line.toID ||
@@ -8447,11 +8437,12 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
         let offsetY = line.specialCase ? line.offsetY / 2 : 0;
         
         // Calculate the points with offsets
-        let points = `  ${fx + offset.x1 + (offsetX * zoomfact)},
-                        ${fy + offset.y1 + (offsetY * zoomfact)} ${fx + offset.x1 - dx},
-                        ${fy + offset.y1 - dy + (offsetY * zoomfact)} ${tx + offset.x2 + dx + (offsetX * zoomfact)},
-                        ${ty + offset.y2 + dy + (offsetY * zoomfact)} ${tx + offset.x2 + (offsetX * zoomfact)},
-                        ${ty + offset.y2 + (offsetY * zoomfact)}`;
+        let points = `${fx + offset.x1 + offsetX * zoomfact},
+        ${fy + offset.y1 + offsetY * zoomfact} ${fx + offset.x1 - dx},
+        ${fy + offset.y1 - dy + offsetY * zoomfact} ${tx + offset.x2 + dx + offsetX * zoomfact},
+        ${ty + offset.y2 + dy + offsetY * zoomfact} ${tx + offset.x2 + offsetX * zoomfact},
+        ${ty + offset.y2 + offsetY * zoomfact}`;
+
 
         // Construct the polyline SVG element
         let polylineSVG = `<polyline id='${line.id}' points='${points}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' />`;
@@ -8637,6 +8628,14 @@ function redrawArrows(str) {
     // Sort all association ends that number above 0 according to direction of line
     for (var i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
+    }
+
+    // Recalculate the offsets for all the specialCase lines
+    for (var i = 0; i < lines.length; i++) {
+        if (lines[i].specialCase) {
+            console.log("found one!")
+            calculateLineOffset(lines[i]);
+        }
     }
 
     // Draw each line using sorted line ends when applicable
