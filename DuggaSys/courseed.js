@@ -357,7 +357,6 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 		str += "<option value='2'>Login</option>";
 	}
 
-
 	$("#visib").html(str);
 	var cstr = "";
 	var sstr = "";
