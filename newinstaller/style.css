@@ -154,14 +154,6 @@ html body {
     font-family: "Noto Sans", sans-serif;
 }
 
-.checkbox label{
-    font-family: "Noto Sans", sans-serif;
-}
-
-.tip{
-    font-family: "Noto Sans", sans-serif;
-}
-
 input[type=text] {
     inset: none;
     border-radius: 0;
@@ -177,6 +169,7 @@ input[type=text]:focus {
 }
 
 .tip {
+    font-family: "Noto Sans", sans-serif;
     font-size: var(--text-small);
     font-style: italic;
     color: var(--text-dark);
@@ -193,11 +186,16 @@ input[type=text]:focus {
     font-size: var(--text-medium);
 }
 
+.checkbox label{
+    font-family: "Noto Sans", sans-serif;
+}
+
 input[type=checkbox] {
     accent-color: var(--primary-color);
 }
 
 .warning {
+    font-family: "Noto Sans", sans-serif;
     font-size: var(--text-small);
     color: var(--warning-text);
     font-style: italic;
@@ -206,6 +204,7 @@ input[type=checkbox] {
 }
 
 .backButton {
+    font-family: "Noto Sans", sans-serif;
     background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
@@ -216,6 +215,7 @@ input[type=checkbox] {
 }
 
 .progressButton {
+    font-family: "Noto Sans", sans-serif;
     background-color: var(--primary-color);
     color: var(--text-light);
     border: 1px solid var(--primary-color);
