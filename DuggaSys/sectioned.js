@@ -3601,6 +3601,7 @@ function validateSectName(name) {
     window.bool10 = false;
     return false;
   }else{
+    $(errorMsg).fadeOut();
     element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
@@ -3666,7 +3667,6 @@ function quickValidateForm(formid, submitButton) {
   var valid = true;
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
-    var deadDate = document.getElementById("setDeadlineValue").value;
     var item = document.getElementById("editSectionDialogTitle").innerHTML;
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display;
