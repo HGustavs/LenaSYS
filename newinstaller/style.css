@@ -65,6 +65,11 @@ html body {
     margin-bottom: .5rem;
 }
 
+.breadcrumb-selected{
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
 .arrow_icon {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
@@ -93,7 +98,6 @@ html body {
 
 /* Group of all input fields + labels*/
 .input-grid {
-    font-family: var(--body-font);
     display: grid;
     grid-template-columns: 17rem 17rem;
     grid-template-rows: repeat(auto, 1fr);
@@ -104,6 +108,7 @@ html body {
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */
 @media (max-width: 768px) {
+
     .input-grid {
         font-family: var(--body-font);
         display: flex;
@@ -137,6 +142,14 @@ html body {
 .input-field {
     display: flex;
     flex-direction: column;
+}
+
+.input-field label{
+    font-family: "Noto Sans", sans-serif;
+}
+
+.input-field input{
+    font-family: "Noto Sans", sans-serif;
 }
 
 input[type=text] {
