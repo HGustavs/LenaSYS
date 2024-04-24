@@ -3093,18 +3093,15 @@ div.submit-button:disabled {
 
 .versionDialog{
   display: block;
+  top:-5px;
 }
 
 #dialogContainer{
-  left:-135px; top:-5px;
+  left:-135px; 
 }
 
-#dialogContainer2{
-  left:-120px; top:-5px;
-}
-
-#dialogContainer3{
-  left:-120px; top:-5px;
+#dialogContainer2, #dialogContainer3{
+  left:-120px; 
 }
 
 /* Tooltip */
@@ -5718,6 +5715,14 @@ only screen and (max-device-width: 568px) {
   .loginBox {
     /*top: 8%;
     left: 10%;*/
+  }
+
+  #dialogContainer2, #dialogContainer3{
+    left: -150px;
+  }
+
+  #dialogContainer{
+    left: -165px;
   }
   
   #searchNavButt{
