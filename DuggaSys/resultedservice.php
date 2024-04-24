@@ -33,7 +33,7 @@ if(checklogin())
 	} 
 }
 
-if(true || isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
+if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	// Get data to display in table rows
 	try{
 		$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers");
