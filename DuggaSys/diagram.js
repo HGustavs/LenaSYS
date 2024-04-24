@@ -1418,7 +1418,7 @@ var defaults = {
         width: 750,
         height: 300,
         type: "SE",
-        alternatives: ["alternative1", "alternative2", "alternative3"],
+        alternatives: ["alternative1"],
         altOrLoop: "Alt",
         canChangeTo: null
     }, // Sequence Loop or Alternative.
@@ -8865,6 +8865,12 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.sequenceObject:
             str += drawElementSequenceObject(element, ghosted);
             break;
+        case elementTypesNames.sequenceActivation:
+            str += drawElementSequenceActivation(element, ghosted);
+            break;
+        case elementTypesNames.sequenceLoopOrAlt:
+            str += drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor);
+            break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
@@ -8942,100 +8948,8 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == elementTypesNames.sequenceActor) {
     } else if (element.kind == "sequenceObject") {
     } else if (element.kind == 'sequenceActivation') {
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the activation rect
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' rx='${sequenceCornerRadius * 3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
-        str += `</svg>`;
-    }
-    // Sequence loop or alt
-    else if (element.kind == 'sequenceLoopOrAlt') {
-        //first, set a suggested height for the element based on the amount of alternatives
-        if (element.alternatives != null) {
-            //increase length of element to avoid squished alternatives
-            for (let i = 0; i < element.alternatives.length; i++) {
-                boxh += 125 * zoomfact;
-            }
-            //also set alt or loop to whatever is correct
-            //if it has more than one alternative its an alt, else its loop.
-            element.alternatives.length > 1 ? element.altOrLoop = "Alt" : element.altOrLoop = "Loop";
-        }
-
-        //div to encapsulate sequence loop 
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop/alt rectangle
-        str += `<rect class='text'
-            x='${linew}'
-            y='${linew}'
-            width='${boxw - (linew * 2)}'
-            height='${boxh - (linew * 2)}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='none'
-            rx='${7 * zoomfact}'
-            fill-opacity="0"
-        />`;
-        //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
-        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
-            for (let i = 1; i < element.alternatives.length; i++) {
-                str += `<path class="text"
-                d="M${boxw - linew},${(boxh / element.alternatives.length) * i}
-                    H${linew}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                stroke-dasharray='${linew * 3},${linew * 3}'
-                fill='transparent'
-                />`;
-                //text for each alternative
-                str += `<text x='${linew * 2}' y='${((boxh / element.alternatives.length) * i) + (texth / 1.5) + linew * 2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
-            }
-        }
-        //svg for the small label in top left corner
-        str += `<path 
-            d="M${(7 * zoomfact) + linew},${linew}
-                h${100 * zoomfact}
-                v${25 * zoomfact}
-                l${-12.5 * zoomfact},${12.5 * zoomfact}
-                H${linew}
-                V${linew + (7 * zoomfact)}
-                a${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />`;
-        //text in the label
-        str += `<text x='${50 * zoomfact + linew}' y='${18.75 * zoomfact + linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
-        //text below the label
-        //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${linew * 2}' y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
-        str += `</svg>`;
-    }
-    //=============================================== <-- End of Sequnece functionality
-    //=============================================== <-- Start Note functionality
-    else if (element.kind == "note") {
+    } else if (element.kind == 'sequenceLoopOrAlt') {
+    } else if (element.kind == "note") {
         const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
         const theme = document.getElementById("themeBlack");
         const splitLengthyLine = (str, max) => {
@@ -9661,7 +9575,117 @@ function drawElementSequenceObject(element, ghosted) {
     return str;
 }
 
+function drawElementSequenceActivation(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<rect 
+                    x='${linew}' y='${linew}' 
+                    width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
+                    rx='${sequenceCornerRadius * 3}' 
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
+                />`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
 
+function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    let altLen = element.alternatives.length;
+    if (element.alternatives) boxh += 125 * zoomfact * altLen;
+    element.altOrLoop = (altLen > 1) ? "Alt" : "Loop";
+
+    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+
+    content = `<rect 
+                    class='text'
+                    x='${linew}'
+                    y='${linew}'
+                    width='${boxw - linew * 2}'
+                    height='${boxh - linew * 2}'
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='none'
+                    rx='${7 * zoomfact}'
+                    fill-opacity="0"
+                />`;
+    //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+    if (element.alternatives.length > 0) {
+        for (let i = 1; i < element.alternatives.length; i++) {
+            content += `<path class="text"
+                            d="M ${boxw - linew},${(boxh / element.alternatives.length) * i}
+                                H ${linew} "
+                            stroke-width='${linew}'
+                            stroke='${element.stroke}'
+                            stroke-dasharray='${linew * 3},${linew * 3}'
+                            fill='transparent'
+                        />
+                        <text 
+                            x='${linew * 2}' 
+                            y='${(boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2}' 
+                            fill='${actorFontColor}'>${element.alternatives[i]}
+                        </text>`;
+        }
+    }
+    //svg for the small label in top left corner
+    content += `<path 
+                    d="M ${(7 * zoomfact) + linew},${linew}
+                        h ${100 * zoomfact}
+                        v ${25 * zoomfact}
+                        l ${-12.5 * zoomfact},${12.5 * zoomfact}
+                        H ${linew}
+                        V ${linew + (7 * zoomfact)}
+                        a ${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
+                        z" 
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='${element.fill}'
+                />
+                <text 
+                    x='${50 * zoomfact + linew}' 
+                    y='${18.75 * zoomfact + linew}' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle'
+                > ${element.altOrLoop} </text>
+                <text 
+                    x='${linew * 2}' 
+                    y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' 
+                    fill='${actorFontColor}'
+                > ${element.alternatives[0]} </text>`;
+    //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
 
 /**
  * @description Updates the elements translations and redraw lines.
