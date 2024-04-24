@@ -141,7 +141,7 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
     		<div style='float:right; padding-top:20px; width: 464px;' >
-    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
+				<div id="buttonContainerSaveCourse"></div>
     		</div>
       </div>
 	</div>

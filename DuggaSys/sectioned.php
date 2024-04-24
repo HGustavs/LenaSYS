@@ -638,7 +638,7 @@
 				</form>
 			</div>
 			<div style='padding-top:15px; width: 464px;'>
-				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick='validateForm("githubPopupWindow");' />
+				<div id="buttonContainerSaveRepo"></div>
 			</div>
 		</div>
 	</div>
