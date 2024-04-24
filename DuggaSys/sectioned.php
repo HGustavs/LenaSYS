@@ -461,7 +461,7 @@
 			</div>
 			<div style='padding:5px;'>
 				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-30px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">3-8 numbers required</span></div>
+				<div class="formDialog" style="display: block; left:54px; top:-30px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">3 to 8 numbers required</span></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<div class="formDialog" style="display: block; left:54px; top:-35px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>

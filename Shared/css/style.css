@@ -3118,7 +3118,7 @@ div.submit-button:disabled {
 .formDialogWide .formDialogText::after {
   content: "";
   position: relative;
-  top: -23px;
+  top: -22px;
   left: -38%;
   border-width: 5px;
   border-style: solid;
