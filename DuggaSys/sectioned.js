@@ -3946,6 +3946,8 @@ function validateForm(formid) {
         localStorage.setItem('courseGitHubRepo', repoLink);
         $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid, repoKey);
+        //resets and display the cooldown for the github url button
+        resetGitFetchTimer(isSuperUser);
         // Refresh page after github link
         location.reload();
       }

@@ -39,6 +39,11 @@
 	}
 ?>
 
+<!-- decoding and storing the php session uid as variable for js. Necessary for github url cooldown function call -->
+<script>
+	var isSuperUser = <?php echo json_encode(isSuperUser($_SESSION['uid'])); ?>;
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 

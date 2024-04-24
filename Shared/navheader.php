@@ -231,7 +231,7 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
-									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
+									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
 
 								//Check if user is super user
