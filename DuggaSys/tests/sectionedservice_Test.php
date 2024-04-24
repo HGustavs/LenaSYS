@@ -576,19 +576,21 @@ $testsData = array(
     // This tests the microservice setVisibleListentrie and the part of the monolith called "PUBLIC" 
     //------------------------------------------------------------------------------------------
     'setVisibleListentriePUBLIC' => array(
-        'expected-output'   => '{"entries":[{"entryname":"PUBLICTEST123","visible":"1"},{"entryname":"Bit count test 1HP","visible":"1"},{"entryname":"Bit count test 1","visible":"1"},{"entryname":"Bit count test 2","visible":"1"},{"entryname":"Color test 1HP","visible":"1"},{"entryname":"Hex color test 1","visible":"1"},{"entryname":"Hex color test 2","visible":"1"},{"entryname":"Geometry 2HP","visible":"1"},{"entryname":"Geometry test 1","visible":"1"},{"entryname":"Geometry test 2","visible":"1"},{"entryname":"Transforms 3,5HP","visible":"1"},{"entryname":"Transforms test 1","visible":"1"},{"entryname":"Transforms test 2","visible":"1"},{"entryname":"Quizzes 1HP","visible":"1"},{"entryname":"Quiz 1","visible":"1"},{"entryname":"Report 1HP","visible":"1"},{"entryname":"Report submission","visible":"1"}]}',
-        'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, visible,creator) VALUES(2,97731,'PUBLICTEST123',0,101);",
-        'query-before-test-2' => "SELECT lid FROM listentries WHERE entryname = 'PUBLICTEST123';",
+        'expected-output'   => '{"entries":[{"entryname":"PUBLICTEST123","visible":"1"}]}',
+        'query-before-test-1' => "INSERT INTO course(cid, creator) VALUES (9999, 1);",
+        'query-before-test-2' => "INSERT INTO listentries (cid,vers, entryname, visible,creator) VALUES(9999,888,'PUBLICTEST123',0,101);",
+        'query-before-test-3' => "SELECT lid FROM listentries WHERE entryname = 'PUBLICTEST123';",
         'query-after-test-1' => "DELETE FROM listentries WHERE entryname = 'PUBLICTEST123';",
+        'query-after-test-3' => "DELETE FROM course WHERE cid = 9999;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(array( 
             // Data that service needs to execute function
             'opt' => 'PUBLIC',
             'username' => 'brom',
             'password' => 'password',
-            'lid' => '<!query-before-test-2!><*[0]["lid"]*>',
-            'courseid' => '2',
-            'coursevers' => '97731',
+            'lid' => '<!query-before-test-3!><*[0]["lid"]*>',
+            'courseid' => '9999',
+            'coursevers' => '888',
         )),
         'filter-output' => serialize(array( 
             // Filter what output to use in assert test, use none to use all ouput from service
