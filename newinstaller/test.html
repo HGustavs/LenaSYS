@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Installer Test</title>
+</head>
+<body>
+    <div class="page">
+        <div class="banner">
+            <h1 class="header-1">Installer <b>LenaSYS</b> </h1>
+        </div>
+        <div class="wrapper">
+            <div>
+                <ul class="breadcrumbs">
+                    <li>Step 1</li><span class="arrow_icon">
+                        &gt;
+                        </span>
+                    <li>Step 2</li><span class="arrow_icon">
+                        &gt;
+                        </span>
+                    <li class="breadcrumb-selected">Step 3</li><span class="arrow_icon">
+                        &gt;
+                        </span>
+                    <li>Step 4</li><span class="arrow_icon">
+                        &gt;
+                        </span>
+                    <li>Step 5</li><span class="arrow_icon">
+                        &gt;
+                        </span>
+                    <li>Step 6</li>
+                </ul>
+            </div>
+            <div class="content">
+                <div>
+                    <h2 class="header-2">Create New Database & User</h2>
+                </div>
+                <div class="inner-wrapper">
+                    <div class="body-text">
+                        <p>Provide the following data for the data and user.</p>
+                    </div>
+                    <div class="input-grid">
+                        <div class="input-field">
+                            <label for="databaseName">Database Name</label>
+                            <input id="databaseName" type="text">
+                        </div>
+                        <div class="input-field">
+                            <label for="mySQLUser">MySQL user</label>
+                            <input id="mySQLUser" type="text">
+                        </div>
+                        <div class="input-field">
+                            <label for="hostname">Hostname</label>
+                            <input id="hostname" type="text">
+                            <p class="tip">Tip: Usually set to "localhost"</p>
+                        </div>
+                        <div class="input-field">
+                            <label for="mySQLUserPW">MySQL user Password</label>
+                            <input id="mySQLUserPW" type="text">
+                        </div>
+                        <div class="checkbox">
+                            <input id="distEnvironment" type="checkbox">
+                            <label for="distEnvironment">Use Distributed Environment</label>
+                        </div>
+                        <div class="checkbox">
+                            <input id="iniDatabaseTrans" type="checkbox">
+                            <label for="iniDatabaseTrans">Initialize database as transaction</label>
+                        </div>
+                        <div class="grid-element-span">
+                            <div class="checkbox">
+                                <input id="overwriteDatabase" type="checkbox">
+                                <label for="overwriteDatabase">Overwrite existing database and user names</label>
+                            </div>
+                            <p class="warning">WARNING! Overwriting databases and users cannot be undone!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttonContainer">
+                    <button class="backButton">Back</button>
+                    <button class="progressButton">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
