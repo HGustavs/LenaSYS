@@ -137,7 +137,7 @@ Fileed Service:
 gitcommit Service:
 
 - clearGitFiles_ms.php __==UNFINISHED==__
-- updateGithubRepo_ms.php __==UNFINISHED==__
+- updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
 - refreshGithubRepo_ms.php __==UNFINISHED==__
 - fetchOldToken_ms.php __==UNFINISHED==__
 - insertIntoSQLite_ms.php __==UNFINISHED==__
@@ -1470,6 +1470,75 @@ There exist tree different versions of this update, with different _WHERE_ cases
 __WHERE__ kind __AND__ filename;
 __WHERE__ cid __AND__ kind __AND__ filename;
 __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
+
+<br>
+<br>
+
+---
+## ----------------------------- _gitCommitService_ -----------------------------
+---
+
+<br>
+<br>
+
+### clearGitFiles_ms.php
+
+<br>
+
+---
+
+<br>
+
+### updateGithubRepo_ms.php
+Update github repo in course updates the repo url and commit in SQLlite DB.
+
+_UPDATE_ operation on the table __'gitRepos'__ to update the values of the columns:
+- repoURL
+- lastCommit
+
+```sql
+UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :cid;
+```
+
+<br>
+
+---
+
+<br>
+
+### refreshGithubRepo_ms.php
+
+<br>
+
+---
+
+<br>
+
+### fetchOldToken_ms.php
+
+<br>
+
+---
+
+<br>
+
+### insertIntoSQLite_ms.php
+
+<br>
+
+---
+
+<br>
+
+### newUpdateTime_ms.php
+
+<br>
+
+---
+
+<br>
+
+### refreshCheck_ms.php
 
 <br>
 <br>
