@@ -177,9 +177,8 @@ Sectioned Service:
 
 Profile Service:
 
-- changeProfileValues_ms.php __==UNFINISHED==__
 - updateSecurityQuestion_ms.php __==UNFINISHED==__
-- updatePassword_ms.php __==UNFINISHED==__ 
+- updateUserPassword_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 
 <br>
 
@@ -304,7 +303,7 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 ### updateUserPassword
 __USED BY__
 - changeUserPassword_accessed
-- changeProfileValues
+
 <br>
 
 Uses the services __updateTableUser__ to change the content of these columns:
@@ -2120,23 +2119,46 @@ SELECT * FROM listentries WHERE visible = '3'
 <br>
 <br>
 
-profileService - handles password changes and challenge question
-
-### changeProfileValues    
-(writter comment: i think this service is small enough as is )
-<br>
-
-Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
-Uses service __selectFromTableUser_course__ to _get_ information it requires from __user_course__.
-<br>
-
-Statements below are methods for _changeProfileValues_ and not services.
+ProfileService - handles password changes and challenge question
 
 #### updateSecurityQuestion
 Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
 
-#### updatePassword
-Uses service __updateUserPassword__ to _get_ information it requires from __user__.
+<br>
+
+---
+
+<br>
+
+#### updateUserPassword_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
+- password
+
+```sql
+SELECT password FROM user WHERE uid = :userid LIMIT 1;
+```
+
+_SELECT_ operation on the table __'user_course'__ to retrieve the value of the column:
+- access
+
+```sql
+SELECT access FROM user_course WHERE uid = :userid AND access = 'W' LIMIT 1;
+```
+
+_UPDATE_ operation on the table __'user'__ to update the values of the columns:
+- securityquestion
+- securityquestionanswer
+
+```sql
+UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid;
+```
+
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
+- password
+
+```sql
+UPDATE user SET password=:PW WHERE uid=:userid;
+```
 
 <br>
 <br>
