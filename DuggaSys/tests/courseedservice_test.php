@@ -17,6 +17,8 @@ $testsData = array(
         'expected-output' => '{"success":true,"message":"Course created successfully"}',
         'service' => 'http://localhost/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(array(
+            'username' => 'brom',
+            'password' => 'password',
             'opt' => 'NEWCOURSE',
             'coursecode' => '10',
             'coursename' => 'SoftwareEngineering',
@@ -30,6 +32,8 @@ $testsData = array(
         'expected-output' => '{"success":true, "message":"Course version updated"}',
         'service' => 'http://localhost/LenaSYS/DuggaSys/courseService.php',
         'service-data' => serialize(array(
+            'username' => 'brom',
+            'password' => 'password',
             'opt' => 'UPDATE',
             'cid' => '1001',
             'activevers' => '202402',
@@ -41,6 +45,8 @@ $testsData = array(
         'expected-output' => '{"success":true,"message":"Course deleted successfully"}',
         'service' => 'http://localhost/LenaSYS/DuggaSys/courseedservice.php',
         'service-data' => serialize(array(
+            'username' => 'brom',
+            'password' => 'password',
             'opt' => 'DELETE',
             'cid' => '1002'
         )),
@@ -48,7 +54,7 @@ $testsData = array(
     )
 );
 
-testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint (HTML), false = raw JSON
+testHandler($testsData, true); // (prettyPrint): true = prettyprint (HTML), false = raw JSON
 
 
 ?>
