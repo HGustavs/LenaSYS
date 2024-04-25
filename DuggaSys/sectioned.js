@@ -2575,6 +2575,11 @@ $(window).keyup(function (event) {
       //If all information is correct -> item can be updated
       if (window.bool10 == true && window.bool11 == true) {
         updateItem();
+        //Toggle for alert when update a item
+        var element = document.getElementById("updateAlert");
+        element.classList.toggle("createAlertToggle");
+        //Set text for the alert when update a item
+        document.getElementById("updateAlert").innerHTML = "The item is now updated!";
         //Add class to element so it will be highlighted.
         setTimeout(function () {
           var element = document.getElementById('I' + updatedLidsection).firstChild;
@@ -2587,6 +2592,11 @@ $(window).keyup(function (event) {
             document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
           }
         }, 200);
+        //Duration time for the alert before remove
+        setTimeout(function () {
+          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").innerHTML = "";
+        }, 3000);
       }
 
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
