@@ -51,7 +51,18 @@
                 <p>".$bodyText."</p>
                 </div>";
         }
-          
+
+        function testProgressBar{
+            echo "<div class='progressBar'>
+                    <div class='progressBarLabels'>
+                        <label></label>
+                        <label></label>
+                    </div>
+                    <div class='progressBarBorder'>
+                        <div class='progressBarIndicator'></div>
+                    </div>
+                </div>"
+        }
     ?>
 
     <div class="page">
@@ -82,11 +93,10 @@
 
         function breadCrumbActive() {
             var breadcrumbs = document.getElementsByClassName("breadcrumb");
-        for(breadcrumb of breadcrumbs)
-        {
-            breadcrumb.classList.remove("breadcrumb-selected");
-        }
-        document.getElementById('bcStep'+stepSelected).classList.add("breadcrumb-selected");
+            for(breadcrumb of breadcrumbs){
+                breadcrumb.classList.remove("breadcrumb-selected");
+            }
+            document.getElementById('bcStep'+stepSelected).classList.add("breadcrumb-selected");
         }
 
         function breadCrumbInc() {
