@@ -21,7 +21,6 @@ if(isset($_SESSION['uid'])){
 } 
 
 $password= getOP('password');
-$question = getOP('question');
 $action = getOP('action');
 $newPassword = getOP('newPassword');
 $hashedPassword = standardPasswordHash($newPassword);
