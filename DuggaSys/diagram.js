@@ -3134,6 +3134,22 @@ function saveProperties() {
                     propsChanged.name = value;
                 }
                 break;
+            case 'primaryKey':
+                //Get string from textarea
+                var elementPK = child.value;
+                //Create an array from string where newline seperates elements
+                var arrayElementPK = elementAttr.split('\n');
+                var formatPK = [];
+                for (var i = 0; i < arrayElementPK.length; i++) {
+                    if (!(arrayElementPK[i] == '\n' || arrayElementPK[i] == '' || arrayElementPK[i] == ' ')) {
+                        formatPK.push(arrayElementPK[i]);
+                    }
+                }
+                //Update the attribute array
+                arrayElementPK = formatPK;
+                element[propName] = arrayElementPK;
+                propsChanged.attributes = arrayElementPK;
+                break;
             case 'attributes':
                 //Get string from textarea
                 var elementAttr = child.value;
@@ -9661,6 +9677,12 @@ function drawElementIEEntity(element, ghosted) {
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
 
+    let primaryKeyText = "";
+    if(element.primaryKey && element.primaryKey.length > 0) {
+        primaryKeyText = `${element.primaryKey.join(", ")}`;
+        text.unshift(primaryKeyText); // adding primary key to the beginning of text
+    }
+
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight =  tHeight - linew * 2 + texth * 2;
     updateElementHeight(IEHeight, element, totalHeight + boxh)
@@ -9683,11 +9705,24 @@ function drawElementIEEntity(element, ghosted) {
     str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
     // Content, Attributes
-    const textBox = (s, css) => {
+    const textBox = (s, css) =>
+    {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
-        for (let i = 0; i < s.length; i++) {
-            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        for (let i = 0; i < s.length; i++)
+        {
+            //     text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+            // }
+
+            // Check if the current line is the primary key
+            if (s[i] === primaryKeyText)
+            {
+                text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i], true);  // Pass true for primary key
+            }
+            else
+            {
+                text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+            }
         }
         let rect = drawRect(boxw, height, linew, element);
         let contentSvg = drawSvg(boxw, height, rect + text);
