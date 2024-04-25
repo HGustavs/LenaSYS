@@ -7893,6 +7893,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         var newLine = {
             id: makeRandomID(),
             specialCase: false,
+            otherLinesCount: 0,
             offsetX: 0,
             offsetY: 0,
             fromID: fromElement.id,
@@ -7915,6 +7916,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
                 y1 = fromElement.y1;
                 x2 = toElement.x1;
                 y2 = toElement.y1;
+                newLine.otherLinesCount = linesBetween.length;
 
                 // Calculate differences in x and y coordinates
                 var dx = Math.abs(x2 - x1);
@@ -7964,16 +7966,8 @@ function calculateLineOffset(line) {
     // Get the from and to elements
     var fromElement = data[findIndex(data, line.fromID)];
     var toElement = data[findIndex(data, line.toID)];
-    
-    var linesBetween = lines.filter(function (line) {
-        return (fromElement.id === line.fromID &&
-                toElement.id === line.toID ||
-                fromElement.id === line.toID &&
-                toElement.id === line.fromID)
-    });
-    
 
-    if (linesBetween.length > 0) {
+    if (line.otherLinesCount > 0) {
         x1 = fromElement.x1;
         y1 = fromElement.y1;
         x2 = toElement.x1;
@@ -7985,16 +7979,16 @@ function calculateLineOffset(line) {
         // Check if the elements are more horizontally, vertically, or diagonally aligned
         if (dx > dy && (Math.abs(dx-dy) > 150)) {
             // Horizontally aligned, adjust offsetX
-            line.offsetY = (x2 > x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
+            line.offsetY = (x2 > x1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetX based on direction
             line.offsetX = 0; // No vertical offset
         } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
             // Vertically aligned, adjust offsetY
             line.offsetY = 0; // No horizontal offset
-            line.offsetX = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
+            line.offsetX = (y2 > y1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetY based on direction
         } else {
             // Diagonally aligned, adjust both offsetX and offsetY
-            line.offsetX = (x2 < x1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetX based on direction
-            line.offsetY = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10); // Adjust offsetY based on direction
+            line.offsetX = (x2 < x1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetX based on direction
+            line.offsetY = (y2 > y1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetY based on direction
         }
         console.log("offsetX: " + line.offsetX + " offsetY: " + line.offsetY);
     }
@@ -8618,7 +8612,7 @@ function redrawArrows(str) {
     for (var i = 0; i < lines.length; i++) {
 
         // Skip if line doesnt have any offsets
-        if (!lines[i].offsetX && !lines[i].offsetY) {
+        if (lines[i].otherLinesCount == 0) {
             continue;
         }
 
