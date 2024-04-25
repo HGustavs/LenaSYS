@@ -41,7 +41,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, __FILE__, $userid, $i
 if (checklogin()) {
 	if (isSuperUser($userid)) {
 		$status = "teacher";
-	} else if ($action === "challenge" || $action === "password") {
+	} else if ($action == "challenge") {
 		// and fetch the password from the db
 		$querystring = "SELECT password FROM user WHERE uid=:userid LIMIT 1";
 		$stmt = $pdo->prepare($querystring);
