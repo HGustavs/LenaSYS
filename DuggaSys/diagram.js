@@ -955,6 +955,22 @@ const SDLineType = {
 }
 
 /**
+ * @description Available options of icons to display at the end of lines connecting two SE elements.
+ */
+ const SELineIcons = {//TODO: Replace with actual icons for the dropdown
+    ARROW: "ARROW",
+    BLACK_TRIANGLE: "Black_Triangle"
+};
+
+/**
+ * @description Available options of Line types between two SE elements
+ */
+const SELineType = {
+    STRAIGHT: "Straight",
+    SEGMENT: "Segment"
+}
+
+/**
  * @description Polyline [x, y] coordinates of a line icon. For all element pair orientations
  * @type {{BT: number[][], LR: number[][], RL: number[][], TB: number[][]}}
  */
@@ -3190,7 +3206,7 @@ function changeLineProperties() {
     var endIcon = document.getElementById("lineEndIcon");
     var lineType = document.getElementById("lineType");
     var line = contextLine[0];
-
+    
     if (radio1 != null && radio1.checked && line.kind != radio1.value) {
         line.kind = radio1.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio1.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3208,11 +3224,12 @@ function changeLineProperties() {
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio4.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         displayMessage(messageTypes.SUCCESS, 'Successfully saved');
     }
+
     // Check if this element exists
     if (!!document.getElementById('propertyCardinality')) {
         // Change line - cardinality
         var cardinalityInputValue = document.getElementById('propertyCardinality').value;
-
+        
         if (line.cardinality != undefined && cardinalityInputValue == "") {
             delete line.cardinality;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3221,12 +3238,25 @@ function changeLineProperties() {
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: cardinalityInputValue}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
-
+    
     if (line.label != label.value) {
         label.value = label.value.trim();
         line.label = label.value
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
+
+    // SE (Sequence) line
+    if (line.type == entityType.SE) {
+        if (line.startIcon != startIcon.value) {
+            line.startIcon = startIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+        if (line.endIcon != endIcon.value) {
+            line.endIcon = endIcon.value
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        }
+    }
+
     // UML or IE line
     if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
         // Start label, near side
@@ -6935,6 +6965,14 @@ function generateContextProperties() {
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
                 str += `/>`;
             }
+
+            if (contextLine[0].type == entityType.SE) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px; text-align: center;">Label</h3>`;
+                str += `<input id="lineLabel" style="text-align: center; display: block; margin: auto;" maxlength="50" type="text" placeholder="Label..."`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+                str += `/>`;
+            }
+            
             if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
