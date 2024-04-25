@@ -2117,6 +2117,14 @@ function ddown(event) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
                     targetElementDiv = document.getElementById(targetElement.id);
+                    for (let j = 0; j < data.length; j++) {
+                        if (data[j].id === targetElement.id) {
+                            targetKind = data[j].kind;
+                            if(targetKind == "sequenceActivation"){
+                                targetElement.style.zIndex = '0';
+                            }
+                        }
+                    }
                 }
             case mouseModes.EDGE_CREATION:
                 if (event.button == 2) return;
@@ -2347,33 +2355,55 @@ function mouseEnter() {
 
 
 function mouseEnterSeq(event){
-    if(elementTypeSelected === elementTypes.sequenceActivation){
+    var elementTarget = ""; 
+    if(targetElement != null){
+        console.log(targetElement.id);
+        console.log(data);
+        for (let j = 0; j < data.length; j++){
+            if ( data[j].id === targetElement.id){
+                
+                elementTarget = data[j]; 
+                console.log(elementTarget);
+            }
+        }    
+    }
+    if(elementTypeSelected === elementTypes.sequenceActivation || elementTarget.kind === "sequenceActivation"){
         const target = event.target;
         const targetId = target.id;
-        snapSAToLifeline(targetId);
+        snapSAToLifeline(targetId, elementTarget);
     }
 }
 
 
-function snapSAToLifeline(targetId) {
+function snapSAToLifeline(targetId, elementTarget) {
     
-    const lifeline = document.getElementById(targetId);
+    const lifeline = document.getElementById(targetId, elementTarget.kind);
     if (lifeline) {
 
         const lifelineRect = lifeline.getBoundingClientRect();
-        console.log(lifelineRect);
+       // console.log(lifelineRect);
 
         for (let i = 0; i < data.length; i++ ){
                
             if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
-                
-                const element = data[i];
-                const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
-                ghostElement.x = newXGhost;
-               
+                if(ghostElement){
+                    const element = data[i];
+                    const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
+                    ghostElement.x = newXGhost;
+                }else {
+                    const element = data[i];
+                    const newXTarget = element.x + (element.width / 2) - (elementTarget.width / 2);
+                    
+                    // Om elementTarget är ett vanligt JavaScript-objekt
+                    elementTarget.x = newXTarget; // Uppdatera objektets egenskap direkt
+                    
+                    console.log(element.x + " + " + (element.width / 2) + " - " + (elementTarget.width / 2) + " = " + newXTarget) ;
+                    console.log(elementTarget.x);
+                }      
                 updatepos(0, 0);              
             }
         }
+        
     }
 }
 
@@ -2631,6 +2661,7 @@ function mouseMode_onMouseMove(event) {
             mouseOverSelection(event.clientX, event.clientY);
             break;
         case mouseModes.BOX_SELECTION:
+    
             boxSelect_Update(event.clientX, event.clientY);
             updatepos(0, 0);
             mouseOverSelection(event.clientX, event.clientY);
@@ -2697,7 +2728,7 @@ function mmoving(event) {
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
-
+                
                 // We update position of connected objects
                 updatepos(deltaX, deltaY);
 
