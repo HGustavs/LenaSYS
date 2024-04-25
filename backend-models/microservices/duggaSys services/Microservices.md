@@ -72,7 +72,6 @@ Shared microservices:
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - isSuperUser_ms.php __==UNFINISHED==__
 - hasAccess_ms.php __==UNFINISHED==__
-- setUserID_ms.php __==UNFINISHED==__
 - setActiveCourseversion_ms.php __==UNFINISHED==__
 - updateUserPassword_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -120,7 +119,7 @@ Duggaed Service:
 
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- deleteDugga_ms.php __==UNFINISHED==__
+- deleteDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -158,7 +157,6 @@ Sectioned Service:
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
 - getCourseVersions_ms.php __==UNFINISHED==__
 - getGitReference_ms.php __==UNFINISHED==__
-- createGithubCodeexample_ms.php __==UNFINISHED==__
 - getUserDuggaFeedback_ms.php __==finished==__ New filename: "readUserDuggaFeedback_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
 
@@ -266,18 +264,6 @@ Check if a specified user ID has the requested access on a specified course
 @param string $access_type A single letter denoting read or write access (r and w respectively)
 @return bool Returns true if the user has the requested access on the course and false if they don't.
 ```
-
-<br>
-
----
-
-<br>
-
-### setUserID
-
-Checks currents sessions user ID and sets it to a variable.  
-
-*writters personal comment, this might be to small to justify making a seperat service. 
 
 <br>
 
@@ -1339,8 +1325,23 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 
 <br>
 
-### deleteDugga
-Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
+### deleteDugga_ms.php
+_DELETE_ operation on the table __'useranswer'__ to remove rows where the column:
+- quiz
+matches a specific value (`:qid`).
+
+```sql
+DELETE FROM useranswer WHERE quiz=:qid;
+```
+
+
+_DELETE_ operation on the table __'quiz'__ to remove rows where the column:
+- id
+matches a specific value (`:qid`).
+
+```sql
+DELETE FROM quiz WHERE id=:qid;
+```
 
 <br>
 
@@ -1799,21 +1800,6 @@ This service creates an array containing values from the column downloadeURL in 
 Uses service __selectFromTableBox__ to _get_ information it requires from __box__.
 Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
 Uses service __selectFromTableGitFiles__ to _get_ information it requires from __gitFiles__.
-
-<br>
-
----
-
-<br>
-
-### createGithubCodeexample
-Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
-Uses service __selectFromTableCourse__ to _get_ information it requires from __course__.
-Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
-<br>
-
-Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
-Uses service __createNewListentrie__ to makes _inserts_ into the table __listentries__.
 
 <br>
 
@@ -2284,6 +2270,7 @@ _SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve 
 
 - The 'hash' value in the __'userAnswer'__ table matches the value bound to :hash.
 
+<br>
 
 If the hash didn't work then retrive all answers for that moment:
 
