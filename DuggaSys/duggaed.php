@@ -1,6 +1,7 @@
 <?php
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+include_once "../Shared/toast.php";
 pdoConnect();
 $cid=getOPG('courseid');
 $vers=getOPG('coursevers');
