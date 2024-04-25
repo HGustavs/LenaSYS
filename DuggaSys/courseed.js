@@ -29,6 +29,14 @@ AJAXService("GET", {}, "COURSE");
 // Commands:
 //----------------------------------------
 
+function openDeleteForm() {
+	document.getElementById("myForm").style.display = "block";
+}
+
+function closeDeleteForm() {
+	document.getElementById("myForm").style.display = "none";
+}
+
 function updateCourse()
 {
 	var coursename = $("#coursename").val();
@@ -347,12 +355,6 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 		str += "<option selected='selected' value='2'>Login</option>";
 	} else {
 		str += "<option value='2'>Login</option>";
-	}
-
-	if (visi == 3) {
-		str += "<option selected='selected' value='3'>Deleted</option>";
-	} else {
-		str += "<option value='3'>Deleted</option>";
 	}
 
 	$("#visib").html(str);
