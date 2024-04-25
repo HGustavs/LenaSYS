@@ -8816,7 +8816,6 @@ function drawElement(element, ghosted = false) {
         }
     }
 
-    //=============================================== <-- UML functionality
     // TODO: Refactor each if into own function, then use it in switch
     switch (element.kind) {
         case elementTypesNames.UMLEntity:
@@ -8870,6 +8869,9 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceLoopOrAlt:
             str += drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor);
+            break;
+        case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
+            str += drawElementNote(element, ghosted);
             break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
@@ -8950,119 +8952,7 @@ function drawElement(element, ghosted = false) {
     } else if (element.kind == 'sequenceActivation') {
     } else if (element.kind == 'sequenceLoopOrAlt') {
     } else if (element.kind == "note") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-        const theme = document.getElementById("themeBlack");
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in NOTEHeight for the element
-        for (var i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                NOTEHeight.splice(i, 1);
-            }
-        }
-        // Calculate and store the NOTEEntity's real height
-        var NOTEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
-        }
-        NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == color.BLACK) {
-            element.stroke = color.WHITE;
-        } else if (element.fill == color.WHITE) {
-            element.stroke = color.BLACK;
-        }
-        //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        //div to encapuslate note content
-        //Draw note-content if there exist at least one attribute
-        if (elemAttri <= 4) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
-            //path math to create the note entity
-            //the 4 sets the vertical size to be the same as having written 4 lines in the element
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
-            //path math to create the note entity and scale it with every line after the 4th line.
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        }
-        //end of div for UML content
-        str += `</div>`;
-    }
-    //=============================================== <-- End of Note functionality
-    //=============================================== <-- Start ER functionality
-    //ER element
-    else {
+    } else {
         // Create div & svg element
         if (element.kind == elementTypesNames.EREntity) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
@@ -9678,6 +9568,59 @@ function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
     let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
     let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0], `fill=${actorFontColor}` );
     str += drawSvg(boxw, boxh, content + textOne + textTwo);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementNote(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+    let length = (text.length > 4) ? text.length : 4;
+    let totalHeight = boxh * (1 + length) / 2;
+    updateElementHeight(NOTEHeight, element, totalHeight);
+    element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                    id='${element.id}' 
+                    class='element uml-element' 
+                    onmousedown='ddown(event);' 
+                    onmouseenter='mouseEnter();' 
+                    onmouseleave='mouseLeave();' 
+                    style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+                >`;
+
+    content += `<path class="text"
+                        d=" M ${linew},${linew}
+                            v ${boxh * (1 + length) / 2 - linew * 2}
+                            h ${boxw - linew * 2}
+                            v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                            h 1
+                            h -1
+                            v ${(boxh - linew * 2) * 0.5} 
+                            h ${(boxw - linew * 2) * 0.12}
+                            v 1
+                            v -1
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
+                            h -${(boxw - linew * 2) * 0.885} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}'
+                    />`;
+    for (let i = 0; i < text.length; i++) {
+        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+    }
+    str += drawSvg(boxw, boxh * (1 + length) / 2, content);
     str += `</div>`;
     return str;
 }
