@@ -315,21 +315,6 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 
 <br>
 
-### updateUserPassword
-__USED BY__
-- changeUserPassword_accessed
-
-<br>
-
-Uses the services __updateTableUser__ to change the content of these columns:
-- password
-
-<br>
-
----
-
-<br>
-
 ### createNewCodeExample_ms.php
 _SELECT_ operation on the table __'user'__ to retrieve the value from the column:
 - username
