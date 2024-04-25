@@ -33,6 +33,7 @@ if(isset($_SESSION['uid'])){
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 
 	<script src="darkmodeToggle.js"></script>
+	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -141,8 +142,8 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
 			<div style='float:right; padding-top:20px; width: 464px;' >
-				<button id="deleteCourseButton" onclick='openDeleteForm()'>Delete</button>
-				<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
+				<div id="buttonContainerDeleteCourse"></div>
+				<div id="buttonContainerSaveCourse"></div>
 				<div class="form-popup" id="myForm">
 					<form action="" class="form-popup_container DarkModeBackgrounds">
 						<h1 Class="DarkModeText" style="font-size:24px; padding-bottom:50px; padding-top:60px; border-bottom: 2px solid #ccc;">Are you sure? </h1>

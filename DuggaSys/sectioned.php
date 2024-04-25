@@ -57,6 +57,7 @@
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
 	<script src="darkmodeToggle.js"></script>
+	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -658,7 +659,7 @@
 				</form>
 			</div>
 			<div style='padding-top:15px; width: 464px;'>
-				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick='validateForm("githubPopupWindow");' />
+				<div id="buttonContainerSaveRepo"></div>
 			</div>
 		</div>
 	</div>
