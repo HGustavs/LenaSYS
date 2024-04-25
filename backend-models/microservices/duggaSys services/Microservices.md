@@ -89,7 +89,6 @@ Shared microservices:
 - isSuperUser_ms.php __==UNFINISHED==__
 - hasAccess_ms.php __==UNFINISHED==__
 - setActiveCourseversion_ms.php __==UNFINISHED==__
-- updateUserPassword_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
 - createNewVersionOfCourse_ms.php __==UNFINISHED==__
