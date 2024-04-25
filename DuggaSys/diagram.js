@@ -6789,6 +6789,10 @@ function generateContextProperties() {
                                 str += `<div style='color:white'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
+                            case 'primarykey':
+                                str += `<div style='color:white'>Primary Key</div>`;
+                                str += `<textarea id='elementProperty_${property}' rows='2' style='width:98%;resize:none;text-decoration:underline;'>${textboxFormatString(element[property])}</textarea>`;
+                                break;
                             case 'attributes':
                                 str += `<div style='color:white'>Attributes</div>`;
                                 str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
