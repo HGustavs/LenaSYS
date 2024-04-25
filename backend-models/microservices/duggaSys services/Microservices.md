@@ -60,7 +60,9 @@ CRUD stands for the four basic operations for managing data in applications and 
 # LIST OF MICROSERVICES
 ---
 
-Please note that the microservices marked "UNFINISHED" in this documentation have remained unchanged since the group in 2023. These microservices still rely on the services described in the Database_related_micro_services.md. Once all the microservices are implemented, the Database_related_micro_services.md will become obsolete and therefore will be deleted. The microservices marked "finished" include complete documentation about the queries in this document.
+# OBSERVE
+
+Please note that the microservices marked __"UNFINISHED"__ in this documentation have remained __unchanged since the group in 2023__. These microservices __still rely__ on the services described in the Database_related_micro_services.md. Once all the microservices are implemented, the Database_related_micro_services.md will become obsolete and therefore will be deleted. The microservices marked __"finished"__ include complete documentation about the queries in this document.
 
 Also note that __no renaming of microservices__ will take place until all microservices are implemented. 
 
@@ -130,7 +132,7 @@ Duggaed Service:
 Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updataFileLink_ms.php __==UNFINISHED==__
+- updateFileLink_ms.php __==UNFINISHED==__
 
 <br>
 
