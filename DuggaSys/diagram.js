@@ -2635,6 +2635,18 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
+            // Check if the line is a special case line
+            var targetLine = lines[findIndex(lines, determinedLines.id)];
+            if (targetLine.specialCase == true) {
+                // Moving the line
+                movingObject = true;
+                deltaX = startX - event.clientX;
+                deltaY = startY - event.clientY;
+
+                // We update the lines offset position
+                updatelineOffset(targetLine, deltaX, deltaY);
+            }
+
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
