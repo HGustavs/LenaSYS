@@ -55,8 +55,8 @@
         function testProgressBar{
             echo "<div class='progressBar'>
                     <div class='progressBarLabels'>
-                        <label></label>
-                        <label></label>
+                        <label>lenasys/dugga...</label>
+                        <label>15%</label>
                     </div>
                     <div class='progressBarBorder'>
                         <div class='progressBarIndicator'></div>
@@ -66,7 +66,7 @@
     ?>
 
     <div class="page">
-    <div class="banner">
+        <div class="banner">
             <h1 class="header-1">Installer <b>LenaSYS</b> </h1>
         </div>
         <div class="wrapper">
@@ -86,6 +86,7 @@
         </div>
         <?php
             testButton("Back","Continue");
+            testProgressBar();
         ?>
     </div>
     <script>
