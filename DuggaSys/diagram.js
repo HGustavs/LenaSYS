@@ -1322,6 +1322,7 @@ var defaults = {
         width: 200,
         height: 0,
         type: "IE",
+        primaryKey: ['*PrimaryKey'],
         attributes: ['-Attribute'],
         functions: ['+function'],
         canChangeTo: ["UML", "ER", "IE", "SD"]
