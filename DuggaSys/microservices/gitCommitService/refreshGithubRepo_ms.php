@@ -11,9 +11,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include basic application services!
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
-include_once "../DuggaSys/gitfetchService.php";
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include_once "../../gitfetchService.php";
 
 global $pdo;
 
