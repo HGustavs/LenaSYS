@@ -1,5 +1,7 @@
 <?php
-// This microservice is used when a variant is created for a dugga.
+//---------------------------------------------------------------------
+// createDuggaVariant_ms.php - Used for creating a variant for a dugga.
+//---------------------------------------------------------------------
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
