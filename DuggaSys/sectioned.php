@@ -466,21 +466,21 @@
 				<div class='inputwrapper'>
 					<span>Version ID:</span>
 					<div class="formDialog versionDialog" id='dialogContainer2'>
-						<span id="dialog2" style="display: none; left:0px;" class="formDialogText formDialog">Only numbers(between 3-8 numbers)</span>
+						<span id="dialog2" class="formDialogText formDialog">Only numbers(between 3-8 numbers)</span>
 					</div>
 					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
 				</div>
 				<div class='inputwrapper'>
 					<span>Version Name:</span>
 					<div class="formDialog versionDialog" id='dialogContainer'>
-						<span id="dialog" style="display: none; left:0px;" class="formDialogText formDialog">Must be in of the form HTNN, VTNN or STNN</span>
+						<span id="dialog" class="formDialogText formDialog">Must be in of the form HTNN, VTNN or STNN</span>
 					</div>
 					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
 				</div>
 				<div class='inputwrapper'>
 					<span>Start Date:</span>
 					<div class="formDialog versionDialog" id='dialogContainer3'>
-						<span id="dialog3" style="display: none; left:0px;" class="formDialogText formDialog">Start date has to be before end date</span>
+						<span id="dialog3" class="formDialogText formDialog">Start date has to be before end date</span>
 					</div>
 					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
 				</div>
@@ -491,7 +491,7 @@
 				<div class='inputwrapper'>
 					<span>MOTD:</span>
 					<div class="formDialog versionDialog" id='dialogContainer4'>
-						<span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span>
+						<span id="dialog4" class="formDialogText">Prohibited symbols.</span>
 					</div>
 					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
 				</div>
