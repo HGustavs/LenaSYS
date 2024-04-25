@@ -1419,7 +1419,7 @@ var defaults = {
         width: 750,
         height: 300,
         type: "SE",
-        alternatives: ["alternative1", "alternative2", "alternative3"],
+        alternatives: ["alternative1"],
         altOrLoop: "Alt",
         canChangeTo: null
     }, // Sequence Loop or Alternative.
@@ -8817,7 +8817,6 @@ function drawElement(element, ghosted = false) {
         }
     }
 
-    //=============================================== <-- UML functionality
     // TODO: Refactor each if into own function, then use it in switch
     switch (element.kind) {
         case elementTypesNames.UMLEntity:
@@ -8836,8 +8835,21 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLFinalState:
             let finalVec = `
                 <g> 
-                    <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                    <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/> 
+                    <path 
+                        d=" M 12,-0
+                            C 18.623,-0 24,5.377 24,12
+                            C 24,18.623 18.623,24 12,24
+                            C 5.377,24 -0,18.623 -0,12
+                            C -0,5.377 5.377,-0 12,-0 Z
+                            M 12,2C17.519,2 22,6.481 22,12
+                            C 22,17.519 17.519,22 12,22
+                            C 6.481,22 2,17.519 2,12
+                            C 2,6.481 6.481,2 12,2 Z"
+                    />
+                    <circle 
+                        transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" 
+                        cx="14.5" cy="14.5" r="5.5"
+                    /> 
                 </g>`
             str += drawElementState(element, ghosted, finalVec);
             break;
@@ -8852,6 +8864,20 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.IERelation:
             str += drawElementIERelation(element, ghosted);
+        case elementTypesNames.sequenceActor:
+            str += drawElementSequenceActor(element, ghosted, textWidth);
+            break;
+        case elementTypesNames.sequenceObject:
+            str += drawElementSequenceObject(element, ghosted);
+            break;
+        case elementTypesNames.sequenceActivation:
+            str += drawElementSequenceActivation(element, ghosted);
+            break;
+        case elementTypesNames.sequenceLoopOrAlt:
+            str += drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor);
+            break;
+        case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
+            str += drawElementNote(element, ghosted);
             break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
@@ -8863,324 +8889,11 @@ function drawElement(element, ghosted = false) {
     } else if (element.kind == elementTypesNames.IEEntity) {
     } else if (element.kind == elementTypesNames.IERelation) {
     } else if (element.kind == elementTypesNames.sequenceActor) {
-        //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`
-        str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text"
-                d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-                    v${boxw / 6}
-                    m-${(boxw / 4)},0
-                    h${boxw / 2}
-                    m-${(boxw / 4)},0
-                    v${boxw / 3}
-                    l${boxw / 4},${boxw / 4}
-                    m${(boxw / 4) * -1},${(boxw / 4) * -1}
-                    l${(boxw / 4) * -1},${boxw / 4}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='transparent'
-            />`;
-        //svg for the actor name text, it has a background rect for ease of readability.
-        //make the rect fit the text if the text isn't too big
-        if (!tooBig) {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${xAnchor - (textWidth / 2)}'
-                    y='${boxw + (linew * 2)}'
-                    width='${textWidth}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        }
-        //else just make a boxw width rect and adjust the text to fit this new rect better
-        else {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${linew}'
-                    y='${boxw + (linew * 2)}'
-                    width='${boxw - linew}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-        }
-        str += `</g>`;
-        str += `</svg>`;
-    }
-    //actor or object is determined via the buttons in the context menu. the default is actor.
-    else if (element.kind == "sequenceObject") {
-        //svg for object.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`;
-        str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
-                height='${(boxw / 2) - linew}'
-                rx='${sequenceCornerRadius}'
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}' 
-            />`;
-        str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</g>`;
-        str += `</svg>`;
-    }
-
-    // Sequence activation 
-    else if (element.kind == 'sequenceActivation') {
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the activation rect
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' rx='${sequenceCornerRadius * 3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
-        str += `</svg>`;
-    }
-    // Sequence loop or alt
-    else if (element.kind == 'sequenceLoopOrAlt') {
-        //first, set a suggested height for the element based on the amount of alternatives
-        if (element.alternatives != null) {
-            //increase length of element to avoid squished alternatives
-            for (let i = 0; i < element.alternatives.length; i++) {
-                boxh += 125 * zoomfact;
-            }
-            //also set alt or loop to whatever is correct
-            //if it has more than one alternative its an alt, else its loop.
-            element.alternatives.length > 1 ? element.altOrLoop = "Alt" : element.altOrLoop = "Loop";
-        }
-
-        //div to encapsulate sequence loop 
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop/alt rectangle
-        str += `<rect class='text'
-            x='${linew}'
-            y='${linew}'
-            width='${boxw - (linew * 2)}'
-            height='${boxh - (linew * 2)}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='none'
-            rx='${7 * zoomfact}'
-            fill-opacity="0"
-        />`;
-        //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
-        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
-            for (let i = 1; i < element.alternatives.length; i++) {
-                str += `<path class="text"
-                d="M${boxw - linew},${(boxh / element.alternatives.length) * i}
-                    H${linew}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                stroke-dasharray='${linew * 3},${linew * 3}'
-                fill='transparent'
-                />`;
-                //text for each alternative
-                str += `<text x='${linew * 2}' y='${((boxh / element.alternatives.length) * i) + (texth / 1.5) + linew * 2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
-            }
-        }
-        //svg for the small label in top left corner
-        str += `<path 
-            d="M${(7 * zoomfact) + linew},${linew}
-                h${100 * zoomfact}
-                v${25 * zoomfact}
-                l${-12.5 * zoomfact},${12.5 * zoomfact}
-                H${linew}
-                V${linew + (7 * zoomfact)}
-                a${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />`;
-        //text in the label
-        str += `<text x='${50 * zoomfact + linew}' y='${18.75 * zoomfact + linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
-        //text below the label
-        //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${linew * 2}' y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
-        str += `</svg>`;
-    }
-    //=============================================== <-- End of Sequnece functionality
-    //=============================================== <-- Start Note functionality
-    else if (element.kind == "note") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-        const theme = document.getElementById("themeBlack");
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in NOTEHeight for the element
-        for (var i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                NOTEHeight.splice(i, 1);
-            }
-        }
-        // Calculate and store the NOTEEntity's real height
-        var NOTEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
-        }
-        NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == color.BLACK) {
-            element.stroke = color.WHITE;
-        } else if (element.fill == color.WHITE) {
-            element.stroke = color.BLACK;
-        }
-        //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        //div to encapuslate note content
-        //Draw note-content if there exist at least one attribute
-        if (elemAttri <= 4) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
-            //path math to create the note entity
-            //the 4 sets the vertical size to be the same as having written 4 lines in the element
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
-            //path math to create the note entity and scale it with every line after the 4th line.
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        }
-        //end of div for UML content
-        str += `</div>`;
-    }
-    //=============================================== <-- End of Note functionality
-    //=============================================== <-- Start ER functionality
-    //ER element
-    else {
+    } else if (element.kind == "sequenceObject") {
+    } else if (element.kind == 'sequenceActivation') {
+    } else if (element.kind == 'sequenceLoopOrAlt') {
+    } else if (element.kind == "note") {
+    } else {
         // Create div & svg element
         if (element.kind == elementTypesNames.EREntity) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
@@ -9329,11 +9042,12 @@ function updateElementHeight(arr, element, height) {
 
 const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
 const drawSvg = (w, h, s, extra='') =>`<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
-const drawRect = (w, h, l, e) => {
+const drawRect = (w, h, l, e, extra=`fill='${e.fill}'`) => {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
                 width='${w - l * 2}' height='${h - l * 2}' 
-                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
+                stroke-width='${l}' stroke='${e.stroke}' 
+                ${extra} 
             />`;
 }
 const drawText = (x, y, a, t, extra='') => {
@@ -9449,7 +9163,9 @@ function drawElementSDEntity(element, ghosted){
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
         }
-        let path = `<path class="text"
+        let path = `
+            <path 
+                class="text"
                 d="M ${linew},${(linew)}
                     h ${boxw - linew * 2}
                     v ${height - linew * 2 - cornerRadius }
@@ -9550,25 +9266,303 @@ function drawElementState(element, ghosted, vectorGraphic) {
 }
 
 function drawElementSuperState(element, ghosted, textWidth) {
+    let str = "";
     let ghostPreview = ghostLine ? 0 : 0.4;
     const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact);
     let linew = Math.round(strokewidth * zoomfact);
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
-    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`)
-    return `<div id="${element.id}" 
+
+    str += `<div id="${element.id}" 
                 class="element uml-Super"
-                style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                style="margin-top:${boxh * 0.025}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                 onmousedown='ddown(event);' 
                 onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'>
-                <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${textWidth + 40 * zoomfact}px" height="${50 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                    ${text}
-                </svg>
-            </div>`;
+                onmouseleave='mouseLeave();'
+            >`;
+
+    let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='20'`);
+    let rectTwo = drawRect(textWidth + 40 * zoomfact, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`);
+    str += drawSvg(boxw, boxh, rectOne + rectTwo + text);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceActor(element, ghosted, textWidth) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<path 
+                    class="text" 
+                    d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                />
+                <g>
+                    <circle 
+                        cx="${(boxw / 2) + linew}" 
+                        cy="${(boxw / 8) + linew}" 
+                        r="${boxw / 8}px" 
+                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
+                    />
+                    <path 
+                        class="text"
+                        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                            v${boxw / 6}
+                            m-${(boxw / 4)},0
+                            h${boxw / 2}
+                            m-${(boxw / 4)},0
+                            v${boxw / 3}
+                            l${boxw / 4},${boxw / 4}
+                            m${(boxw / 4) * -1},${(boxw / 4) * -1}
+                            l${(boxw / 4) * -1},${boxw / 4} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='transparent'
+                    />
+                    <rect 
+                        class='text'
+                        x='${(boxw - textWidth) / 2}'
+                        y='${boxw + (linew * 2)}'
+                        width='${textWidth}'
+                        height='${texth - linew}'
+                        stroke='none'
+                        fill='${element.fill}'
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${boxw + texth / 2 + linew * 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceObject(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<path 
+                    class="text" 
+                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
+                        V ${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                /> 
+                <g>
+                    <rect 
+                        class='text'
+                        x='${linew}'
+                        y='${linew}'
+                        width='${boxw - linew * 2}'
+                        height='${(boxw / 2) - linew}'
+                        rx='${sequenceCornerRadius}'
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}' 
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${(boxw / 2 - linew) / 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceActivation(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<rect 
+                    x='${linew}' y='${linew}' 
+                    width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
+                    rx='${sequenceCornerRadius * 3}' 
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
+                />`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    let altLen = element.alternatives.length;
+    if (element.alternatives) boxh += 125 * zoomfact * altLen;
+    element.altOrLoop = (altLen > 1) ? "Alt" : "Loop";
+
+    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+
+    content = `<rect 
+                    class='text'
+                    x='${linew}'
+                    y='${linew}'
+                    width='${boxw - linew * 2}'
+                    height='${boxh - linew * 2}'
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='none'
+                    rx='${7 * zoomfact}'
+                    fill-opacity="0"
+                />`;
+    //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+    if (element.alternatives.length > 0) {
+        for (let i = 1; i < element.alternatives.length; i++) {
+            content += `<path class="text"
+                            d="M ${boxw - linew},${(boxh / element.alternatives.length) * i}
+                                H ${linew} "
+                            stroke-width='${linew}'
+                            stroke='${element.stroke}'
+                            stroke-dasharray='${linew * 3},${linew * 3}'
+                            fill='transparent'
+                        />`;
+            content += drawText(linew * 2,
+                (boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2,
+                'auto', element.alternatives[i], `fill='${actorFontColor}'`
+            );
+        }
+    }
+    //svg for the small label in top left corner
+    content += `<path 
+                    d="M ${(7 * zoomfact) + linew},${linew}
+                        h ${100 * zoomfact}
+                        v ${25 * zoomfact}
+                        l ${-12.5 * zoomfact},${12.5 * zoomfact}
+                        H ${linew}
+                        V ${linew + (7 * zoomfact)}
+                        a ${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
+                        z" 
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='${element.fill}'
+                />`;
+    let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
+    let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0], `fill=${actorFontColor}` );
+    str += drawSvg(boxw, boxh, content + textOne + textTwo);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementNote(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+    let length = (text.length > 4) ? text.length : 4;
+    let totalHeight = boxh * (1 + length) / 2;
+    updateElementHeight(NOTEHeight, element, totalHeight);
+    element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                    id='${element.id}' 
+                    class='element uml-element' 
+                    onmousedown='ddown(event);' 
+                    onmouseenter='mouseEnter();' 
+                    onmouseleave='mouseLeave();' 
+                    style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+                >`;
+
+    content += `<path class="text"
+                        d=" M ${linew},${linew}
+                            v ${boxh * (1 + length) / 2 - linew * 2}
+                            h ${boxw - linew * 2}
+                            v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                            h 1
+                            h -1
+                            v ${(boxh - linew * 2) * 0.5} 
+                            h ${(boxw - linew * 2) * 0.12}
+                            v 1
+                            v -1
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
+                            h -${(boxw - linew * 2) * 0.885} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}'
+                    />`;
+    for (let i = 0; i < text.length; i++) {
+        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+    }
+    str += drawSvg(boxw, boxh * (1 + length) / 2, content);
+    str += `</div>`;
+    return str;
 }
 
 function drawElementUMLRelation(element, ghosted) {
