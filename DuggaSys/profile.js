@@ -30,7 +30,7 @@ function processChallenge(password, question, answer){
     
     $.ajax({
 		type: "POST",
-		url: "microservices/sharedMicroservices/updateSecurityQuestion_ms.php",
+        url: "profileservice.php",
 		data: {
 			password: password,
 			question:question,
