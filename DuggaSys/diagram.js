@@ -2345,19 +2345,11 @@ function mouseEnter() {
     }
 }
 
-var mouseSeq = false;
-//const target = null;
+
 function mouseEnterSeq(event){
     if(elementTypeSelected === elementTypes.sequenceActivation){
-        //mouseSeq = true;
         const target = event.target;
         const targetId = target.id;
-        
-        const targetClass = target.className;
-        const targetTagName = target.tagName;
-        const divElement = document.getElementById(targetId);
-        const width = divElement.clientWidth;
-        console.log(targetId, width, divElement.clientX);
         snapSAToLifeline(targetId);
     }
 }
@@ -2367,22 +2359,19 @@ function snapSAToLifeline(targetId) {
     
     const lifeline = document.getElementById(targetId);
     if (lifeline) {
-        
+
         const lifelineRect = lifeline.getBoundingClientRect();
-        var lifelineCenterX = lifelineRect.left + (lifelineRect.width / 2);
         console.log(lifelineRect);
+
         for (let i = 0; i < data.length; i++ ){
-               console.log(data[0].kind);
-            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequence" && data[i].id === targetId) {
-                var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-                const element = data[i];
-                
-                    const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
-                    ghostElement.x = newXGhost;
-                
                
-                updatepos(0, 0);
+            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
                 
+                const element = data[i];
+                const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
+                ghostElement.x = newXGhost;
+               
+                updatepos(0, 0);              
             }
         }
     }
@@ -8905,7 +8894,7 @@ function drawElement(element, ghosted = false) {
     } else if (element.kind == elementTypesNames.SDEntity) {
     } else if (element.kind == 'UMLRelation') {
         //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter(), mouseEnterSeq(event);' onmouseleave='mouseLeave();'
+        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
         style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
 
         if (context.includes(element)) {
