@@ -3093,6 +3093,29 @@ div.submit-button:disabled {
 
 /* Tooltip */
 
+.versionDialog {
+  display: block;
+  top: -5px;
+}
+
+#dialog2, #dialog, #dialog3, #dialog4 {
+  display: none;
+  left:0px;
+}
+
+#dialogContainer {
+  left: -135px; 
+}
+
+#dialogContainer2, #dialogContainer3 {
+  left: -120px; 
+}
+
+#dialogContainer4 {
+  left: -110px; 
+  top: 5px;
+}
+
 .tooltipDugga {
   position: relative;
   display: inline-block;
@@ -5703,6 +5726,19 @@ only screen and (max-device-width: 568px) {
     /*top: 8%;
     left: 10%;*/
   }
+
+  #dialogContainer {
+    left: -165px;
+  }
+
+  #dialogContainer2, #dialogContainer3 {
+    left: -150px;
+  }
+
+  #dialogContainer4{
+    left: -139px;
+  }
+
   
   #searchNavButt{
     display: none;
