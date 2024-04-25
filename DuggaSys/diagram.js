@@ -1267,7 +1267,9 @@ var defaults = {
         state: 'normal',
         attributes: ['-attribute'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 50,
     },
     ERRelation: {
         name: "Relation",
@@ -1278,7 +1280,9 @@ var defaults = {
         height: 60,
         type: "ER",
         state: 'normal',
-        canChangeTo: Object.values(relationType)
+        canChangeTo: Object.values(relationType),
+        minWidth: 60,
+        minHeight: 60,
     },
     ERAttr: {
         name: "Attribute",
@@ -1288,7 +1292,9 @@ var defaults = {
         width: 90,
         height: 45,
         type: "ER",
-        state: 'normal'
+        state: 'normal',
+        minWidth: 90,
+        minHeight: 45,
     },
     Ghost: {name: "Ghost", kind: "ERAttr", fill: color.WHITE, stroke: color.BLACK, width: 5, height: 5, type: "ER"},
 
@@ -1302,7 +1308,9 @@ var defaults = {
         type: "UML",
         attributes: ['-Attribute'],
         functions: ['+Function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
     },     //<-- UML functionality
     UMLRelation: {
         name: "Inheritance",
@@ -1312,7 +1320,9 @@ var defaults = {
         width: 60,
         height: 60,
         type: "UML",
-        canChangeTo: Object.values(relationType)
+        canChangeTo: Object.values(relationType),
+        minWidth: 60,
+        minHeight: 60,
     }, //<-- UML functionality
     IEEntity: {
         name: "IEEntity",
@@ -1324,7 +1334,9 @@ var defaults = {
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
     },     //<-- IE functionality
     IERelation: {
         name: "Inheritance",
@@ -1334,7 +1346,9 @@ var defaults = {
         width: 50,
         height: 50,
         type: "IE",
-        canChangeTo: Object.values(relationType)
+        canChangeTo: Object.values(relationType),
+        minWidth: 50,
+        minHeight: 50,
     }, //<-- IE inheritence functionality
     SDEntity: {
         name: "State",
@@ -1346,7 +1360,9 @@ var defaults = {
         type: "SD",
         attributes: ['do: func'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
     }, //<-- SD functionality
 
     UMLInitialState: {
@@ -1357,7 +1373,9 @@ var defaults = {
         width: 60,
         height: 60,
         type: "SD",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 60,
+        minHeight: 60,
     }, // UML Initial state.
     UMLFinalState: {
         name: "UML Final State",
@@ -1367,7 +1385,9 @@ var defaults = {
         width: 60,
         height: 60,
         type: "SD",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 60,
+        minHeight: 60,
     }, // UML Final state.
     UMLSuperState: {
         name: "UML Super State",
@@ -1377,7 +1397,9 @@ var defaults = {
         width: 500,
         height: 500,
         type: "SD",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 200,
+        minHeight: 150,
     },  // UML Super State.
     sequenceActor: {
         name: "name",
@@ -1388,7 +1410,9 @@ var defaults = {
         height: 150,
         type: "SE",
         //actorOrObject: "actor",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 100,
+        minHeight: 100,
     }, // sequence actor
     sequenceObject: {
         name: "name",
@@ -1399,7 +1423,9 @@ var defaults = {
         height: 150,
         type: "SE",
         //actorOrObject: "object",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 100,
+        minHeight: 50,
     }, // sequence object
     sequenceActivation: {
         name: "Activation",
@@ -1409,7 +1435,9 @@ var defaults = {
         width: 30,
         height: 300,
         type: "SE",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 30,
+        minHeight: 50,
     }, // Sequence Activation.
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
@@ -1420,7 +1448,9 @@ var defaults = {
         type: "SE",
         alternatives: ["alternative1", "alternative2", "alternative3"],
         altOrLoop: "Alt",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 150,
+        minHeight: 50,
     }, // Sequence Loop or Alternative.
 
     note: {
@@ -1432,6 +1462,8 @@ var defaults = {
         height: 50,
         type: "NOTE",
         attributes: ['Note'],
+        minWidth: 150,
+        minHeight: 50,
     },  // Note.
 }
 
@@ -2672,8 +2704,8 @@ function mmoving(event) {
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
-            var minWidth = 20; // Declare the minimal with of an object
-            var minHeight = 50; // Declare the minimal height of an object
+            var minWidth = elementData.minWidth; // Declare the minimal with of an object
+            var minHeight = elementData.minHeight; // Declare the minimal height of an object
 
             // Sets different min-values for ERRelation
             if (elementData.kind === "ERRelation") {
