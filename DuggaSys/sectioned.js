@@ -4337,38 +4337,3 @@ function getLocalStorage() {
     dropdown.value = selectedValue;
   }
 }
-//var githubIcons = document.querySelectorAll("[id^='dorf']");
-function attachClickEventToGitHubIcons() {
-  // Add click event listener to each Github icon
-  console.log('function is called');
-  githubIcons.forEach(function(icon) {
-      icon.addEventListener('click', function() {
-        console.log('event listener works');
-          // Traverse the DOM to find the corresponding hidden link
-          var parentTr = icon.closest('tr'); 
-          var hiddenLink = parentTr.querySelector('.hidden.internal-link');
-
-          // Check if the hidden link exists
-          if (hiddenLink) {
-              // Create a URL object to parse the href
-              var url = new URL(hiddenLink.href);
-
-              // Extract the parameters from the URL
-              var exampleId = url.searchParams.get('exampleid');
-              var courseId = url.searchParams.get('courseid');
-              var courseName = url.searchParams.get('coursename');
-              var cvers = url.searchParams.get('cvers');
-              var lid = url.searchParams.get('lid');
-
-              // Now you can use these parameters as needed
-              console.log('Example ID:', exampleId);
-              console.log('Course ID:', courseId);
-              console.log('Course Name:', courseName);
-              console.log('Cvers:', cvers);
-              console.log('Lid:', lid);
-          } else {
-              console.log('Hidden link not found');
-          }
-      });
-  });
-}
