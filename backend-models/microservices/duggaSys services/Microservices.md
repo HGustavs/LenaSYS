@@ -120,7 +120,7 @@ Duggaed Service:
 
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- deleteDugga_ms.php __==UNFINISHED==__
+- deleteDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -1339,8 +1339,23 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 
 <br>
 
-### deleteDugga
-Uses service __deliteFromTableQuiz__ to delete a row from the table __quiz__.
+### deleteDugga_ms.php
+_DELETE_ operation on the table __'useranswer'__ to remove rows where the column:
+- quiz
+matches a specific value (`:qid`).
+
+```sql
+DELETE FROM useranswer WHERE quiz=:qid;
+```
+
+
+_DELETE_ operation on the table __'quiz'__ to remove rows where the column:
+- id
+matches a specific value (`:qid`).
+
+```sql
+DELETE FROM quiz WHERE id=:qid;
+```
 
 <br>
 
@@ -2284,6 +2299,7 @@ _SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve 
 
 - The 'hash' value in the __'userAnswer'__ table matches the value bound to :hash.
 
+<br>
 
 If the hash didn't work then retrive all answers for that moment:
 
