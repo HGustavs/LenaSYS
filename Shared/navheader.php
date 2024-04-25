@@ -40,6 +40,14 @@
 			global $pdo;
 			$query = $pdo->prepare('SELECT updated, courseGitURL FROM course WHERE cid = :cid;');
 			$query->bindParam(':cid', $_SESSION['courseid']);
+			try{
+				$query->execute();
+			}
+			catch(Exception $e){
+				$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+				$query->bindParam(':cid', $_SESSION['courseid']);
+				$query->execute();
+			}
 			
 			// Add error handling for the execute function
 			if (!$query->execute()) {
@@ -52,11 +60,11 @@
 			
 			if ($row !== false) {
 				// Now we know $row is an array and we can safely access its elements
-				$checkIfGithubURL = $row['courseGitURL'];
-				if ($checkIfGithubURL) {
-					$updateTime = $row['updated'];
+				//$checkIfGithubURL = $row['courseGitURL'];
+				if(isset($row['courseGitURL'])){
+					$checkIfGithubURL = $row['courseGitURL'];
 				} else {
-					$updateTime = "No Github URL set";
+					$checkIfGithubURL = null;
 				}
 			} else {
 				// $row is false, which means no data was fetched
