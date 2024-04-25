@@ -142,7 +142,7 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
 			<div style='float:right; padding-top:20px; width: 464px;' >
-				<button id="deleteCourseButton" onclick='openDeleteForm()'>Delete</button>
+				<div id="buttonContainerDeleteCourse"></div>
 				<div id="buttonContainerSaveCourse"></div>
 				<div class="form-popup" id="myForm">
 					<form action="" class="form-popup_container DarkModeBackgrounds">
