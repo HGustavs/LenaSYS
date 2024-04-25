@@ -3098,7 +3098,7 @@ div.submit-button:disabled {
   top: -5px;
 }
 
-#dialog2, #dialog, #dialog3, #dialog4{
+#dialog2, #dialog, #dialog3, #dialog4 {
   display: none;
   left:0px;
 }
