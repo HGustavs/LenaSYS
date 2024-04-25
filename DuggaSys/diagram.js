@@ -8864,6 +8864,7 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.IERelation:
             str += drawElementIERelation(element, ghosted);
+            break;
         case elementTypesNames.sequenceActor:
             str += drawElementSequenceActor(element, ghosted, textWidth);
             break;
