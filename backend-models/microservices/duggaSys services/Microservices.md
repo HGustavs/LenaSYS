@@ -157,7 +157,6 @@ Sectioned Service:
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
 - getCourseVersions_ms.php __==UNFINISHED==__
 - getGitReference_ms.php __==UNFINISHED==__
-- createGithubCodeexample_ms.php __==UNFINISHED==__
 - getUserDuggaFeedback_ms.php __==finished==__ New filename: "readUserDuggaFeedback_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
 
@@ -1801,21 +1800,6 @@ This service creates an array containing values from the column downloadeURL in 
 Uses service __selectFromTableBox__ to _get_ information it requires from __box__.
 Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
 Uses service __selectFromTableGitFiles__ to _get_ information it requires from __gitFiles__.
-
-<br>
-
----
-
-<br>
-
-### createGithubCodeexample
-Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
-Uses service __selectFromTableCourse__ to _get_ information it requires from __course__.
-Uses service __selectFromTableListentries__ to _get_ information it requires from __listentries__.
-<br>
-
-Uses service __createNewCodeexample__ to makes _inserts_ into the table __codeexample__.
-Uses service __createNewListentrie__ to makes _inserts_ into the table __listentries__.
 
 <br>
 
