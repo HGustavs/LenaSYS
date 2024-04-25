@@ -464,18 +464,38 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">Only numbers(between 3-8 numbers)</span></div>
-				<!--<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>-->
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<!--<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9.</p>-->
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-25px;"><span id="dialog3" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-				<!--<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>-->
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-12px;"><span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span></div>
+				<div class='inputwrapper'>
+					<span>Version ID:</span>
+					<div class="formDialog versionDialog" id='dialogContainer2'>
+						<span id="dialog2" class="formDialogText formDialog">Only numbers(between 3-8 numbers)</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
+				</div>
+				<div class='inputwrapper'>
+					<span>Version Name:</span>
+					<div class="formDialog versionDialog" id='dialogContainer'>
+						<span id="dialog" class="formDialogText formDialog">Must be in of the form HTNN, VTNN or STNN</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
+				</div>
+				<div class='inputwrapper'>
+					<span>Start Date:</span>
+					<div class="formDialog versionDialog" id='dialogContainer3'>
+						<span id="dialog3" class="formDialogText formDialog">Start date has to be before end date</span>
+					</div>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>End Date:</span>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>MOTD:</span>
+					<div class="formDialog versionDialog" id='dialogContainer4'>
+						<span id="dialog4" class="formDialogText">Prohibited symbols.</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
+				</div>
 				<div class="formDialog" style="display: block; left:50px; top:4px;"><span id="dialog42" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols.</span></div>
 				<!--<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
 				<!--<p id="dialog42" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
@@ -682,25 +702,29 @@
 				
 		</div>
 <?php
+include_once "../Shared/database.php";
+include_once(__DIR__ . "/../../coursesyspw.php");
+pdoConnect();
+
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
-    //First query: Check if a row with same cid already exists. If not, insert into db.
-    $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-    $query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
-    $query->execute([$cid]);
-    $count = $query->fetchColumn();
+	//First query: Check if a row with same cid already exists. If not, insert into db.
+	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	$query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
+	$query->execute([$cid]);
+	$count = $query->fetchColumn();
 
-    if($count > 0){
-        //A repo with the same cid primary key already exists. Do nothing.
-    } else {
-        $query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
-        $query->bindParam(':cid', $cid);
-        $query->bindParam(':repoURL', $githubURL);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            echo "Error updating entry in gitRepos" . $error[2];
-        }
-    }
+	if($count > 0){
+		//A repo with the same cid primary key already exists. Do nothing.
+	} else {
+		$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $githubURL);
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating entry in gitRepos" . $error[2];
+		}
+	}
 }
 
 //Insert files into gitFiles DB
@@ -762,27 +786,124 @@ function writeFilesInDir($path, $fileNames, $content){
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //Retrieval of JSON data sent through POST and GET
-    $cid = $_GET['cid'];
-    $githubURL = $_GET['githubURL'];
-    $postDataContent = file_get_contents('php://input');
-    $requestDataContent = json_decode($postDataContent, true);
-    $codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
-    $SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
-    $fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
-    $filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
-    $fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
-    $downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
-    $fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-    
-    $path = '../../LenaSYS/courses/' . $cid;
-    $pathCoursesRoot = '../../LenaSYS/courses';
+function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam) {
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+	$count = count($fileNames);
+	for($i = 0; $i < $count; $i ++) {
+		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
+		$query->bindParam(':filename', $fileNames[$i]);
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+		$norows = $query->fetchColumn();
+		echo $norows;
+		if($norows == 0) {
+			//TODO: Kind value should be fixed to dynamic
+			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
+			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'3',:cid);");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':fileName', $fileNames[$i]);
+			if (!$query->execute()) {
+				$error = $query->errorInfo();
+				echo "Error updating entries" . $error[2];
+			} else {
+				echo "File stored successfully in fileLink";
+			}
+		}
+	}
+}
+function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+	//Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
+	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
+	$query->bindParam(':playlink', $fileNames[0]);
+	$query->bindParam(':templateno', $templateid);
+	$query->bindParam(':exampleid', $CeHiddenParam[0]);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':cvers', $CeHiddenParam[3]);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		echo "Error updating entries in codeexample" . $error[2];
+	} else{
+		echo "Row updated successfully in codeexample";
+	}
+}
 
-    writeCoursesDir($path, $pathCoursesRoot);
-    writeFilesInDir($path, $fileNames, $codeExamplesContent);
-    insertIntoSqLiteGitRepo($cid, $githubURL);
-    insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA);   
+function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+	$count = count($fileNames);
+	$boxContent = "Code";
+	$wordlistID = "3";
+	$y = 1;
+	for($i = 0; $i < $count; $i++){
+		//TODO: Change boxcontent to be named dynamicly.
+		// Maybe change filenameNoExt to something better named. Also what is wordlistid?
+		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
+		$query->bindParam(':boxid', $y);
+		$query->bindParam(':exampleid', $CeHiddenParam[0]);
+		$filenameNoExt = preg_replace('/\.[^.]*$/', "", $fileNames[$i]);
+		$query->bindParam(':boxtitle', $filenameNoExt);
+		$query->bindParam(':boxcontent', $boxContent);
+		$query->bindParam(':filename', $fileNames[$i]);
+		$query->bindParam(':wordlistid', $wordlistID);
+	    
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating entries" . $error[2];
+		} else {
+			echo "File stored successfully in box";
+		}
+		$y++;
+	}
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	//Retrieval of JSON data sent through POST and GET
+	$cid = $_GET['cid'];
+	$githubURL = $_GET['githubURL'];
+	$postDataContent = file_get_contents('php://input');
+	$requestDataContent = json_decode($postDataContent, true);
+	$codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
+	$SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
+	$fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
+	$filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
+	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
+	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
+	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
+	$CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
+	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
+	$path = '../../LenaSYS/courses/' . $cid;
+	$pathCoursesRoot = '../../LenaSYS/courses';
+
+	writeCoursesDir($path, $pathCoursesRoot);
+	writeFilesInDir($path, $fileNames, $codeExamplesContent);
+	insertIntoSqLiteGitRepo($cid, $githubURL);
+	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
+	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
+	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
+	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 }
 ?>
 </body>

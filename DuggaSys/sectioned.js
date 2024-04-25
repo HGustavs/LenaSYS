@@ -13,6 +13,7 @@ var momentexists = 0;
 var resave = false;
 var versnme = "UNK";
 var versnr;
+var CeHiddenParameters = [];
 var motd = "UNK";
 var hideItemList = [];
 var hasDuggs = false;
@@ -724,6 +725,7 @@ function confirmBox(operation, item = null) {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
     gitTemplatePopupOutsideClickHandler();
+    fetchCodeExampleHiddenLinkParam(item);
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -4091,7 +4093,7 @@ function fetchGitCodeExamples(courseid){
       }
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info.
       storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
@@ -4187,6 +4189,7 @@ function fetchGitCodeExamples(courseid){
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
 function storeCodeExamples(cid, codeExamplesContent, githubURL){
+    var templateNo = updateTemplate();
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
     //Push all file data into separate arrays and add them into one single array.
     codeExamplesContent.map(function(item) {
@@ -4206,7 +4209,9 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       filePaths: filePath,
       fileURLS: fileURL,
       downloadURLS: downloadURL,
-      fileTypes: fileType
+      fileTypes: fileType,
+      codeExamplesLinkParam: CeHiddenParameters,
+      templateid: templateNo
     }
     //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
@@ -4219,15 +4224,19 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(response => response.text())
       .then(data => {
         //For testing/finding bugs/errors
-        //console.log(data);
-
+        console.log(data);
         confirmBox('closeConfirmBox');
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
       });
 }
-  
+function updateTemplate() {
+  templateNo = $("#templateno").val();
+  $("#chooseTemplateContainer").css("display", "none");
+  var templateNo = $("#templateno").val();
+  return templateNo;
+}  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");
@@ -4270,8 +4279,33 @@ function changetemplate(templateno) {
       boxes = 1;
       break;
   }
+  localStorage.setItem("boxAmount", boxes);
 }
-
+//TODO: add more error handling. Diffent query selector for test examples and new code examples >:(
+//td.example.item for parentTr. a.example-link for span
+function fetchCodeExampleHiddenLinkParam(codeExampleItem) {
+  var parentTr = codeExampleItem.closest('tr');
+  if (parentTr) {
+      var childTd = parentTr.querySelector('td.example.item.hidden');
+      var childDiv = childTd.querySelector('div.ellipsis.nowrap');
+      var span = childDiv.querySelector('span');
+      if (span) {
+          var hiddenLink = span.querySelector('a.hidden.internal-link');
+          if (hiddenLink) {
+              var url = new URL(hiddenLink.href);
+              var exampleId = url.searchParams.get('exampleid');
+              var courseId = url.searchParams.get('courseid');
+              var courseName = url.searchParams.get('coursename');
+              var cvers = url.searchParams.get('cvers');
+              var lid = url.searchParams.get('lid');
+              CeHiddenParameters.length = 0;
+              CeHiddenParameters.push(exampleId, courseId, courseName, cvers, lid);
+          } else {
+              console.log('Hidden link not found');
+          }
+      }
+  }
+}
 // In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 function getLidFromButton(lid) {
   document.getElementById('lidInput').value = lid;

@@ -172,7 +172,7 @@
 				$query->bindParam(':cvers', $courseVersion);
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
-					$debug.="Error updaring example: ".$error[2]." ".__LINE__;
+					$debug.="Error updating example: ".$error[2]." ".__LINE__;
 				}
 
 				// TODO: Check for better way to get and set before/afterId
