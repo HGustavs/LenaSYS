@@ -179,7 +179,7 @@ Resulted Service:
 Show Dugga Service:
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
-- processDuggaFile_ms.php __==finished==__ New filename: "readDuggaFile_ms.php" according to new nameconvention based on CRUD.
+- processDuggaFile_ms.php __==UNFINISHED==__ 
 - saveDugga_ms.php __==finished==__ Should keep existing name. This filename is not based on CRUD because, in this particular case, a more general name is preferable as it better describes the microservice's function and avoids confusion with other services that handle similar functions.
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
 
@@ -2146,7 +2146,7 @@ UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 
 <br>
 
-### readDuggaFile_ms.php
+### processDuggaFile_ms.php
 _SELECT_ operation on the table __'submission'__ to retrieve the following columns for records that match a specific condition:
 - subid
 - vers
