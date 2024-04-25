@@ -12,30 +12,30 @@
         $value2 = null;
         function testButton($value1,$value2) {
             echo "<div class='buttonContainer'>";
-            echo "<button class='backButton'>".$value1."</button>";
-            echo "<button class='progressButton' onclick='breadCrumbInc();'>".$value2."</button>";
+            echo "<button class='backButton' onclick='breadCrumbDecr(); breadCrumbActive();'>".$value1."</button>";
+            echo "<button class='progressButton' onclick='breadCrumbInc(); breadCrumbActive();'>".$value2."</button>";
             echo "</div>";
         }
 
         function testBreadcrumb() {
             echo "<div>
                     <ul class='breadcrumbs'>
-                        <li>Step 1</li><span class='arrow_icon'>
+                        <li id='bcStep1' class='breadcrumb breadcrumb-selected'>Step 1</li><span class='arrow_icon'>
                             &gt;
                             </span>
-                        <li>Step 2</li><span class='arrow_icon'>
+                        <li id='bcStep2' class='breadcrumb'>Step 2</li><span class='arrow_icon'>
                             &gt;
                             </span>
-                        <li class='breadcrumb-selected'>Step 3</li><span class='arrow_icon'>
+                        <li id='bcStep3' class='breadcrumb'>Step 3</li><span class='arrow_icon'>
                             &gt;
                             </span>
-                        <li>Step 4</li><span class='arrow_icon'>
+                        <li id='bcStep4' class='breadcrumb'>Step 4</li><span class='arrow_icon'>
                             &gt;
                             </span>
-                        <li>Step 5</li><span class='arrow_icon'>
+                        <li id='bcStep5' class='breadcrumb'>Step 5</li><span class='arrow_icon'>
                             &gt;
                             </span>
-                        <li>Step 6</li>
+                        <li id='bcStep6' class='breadcrumb'>Step 6</li>
                     </ul>
                 </div>";
         }
@@ -59,8 +59,28 @@
     </div>
     <script>
         var stepSelected = 1;
+
+        function breadCrumbActive() {
+            var breadcrumbs = document.getElementsByClassName("breadcrumb");
+        for(breadcrumb of breadcrumbs)
+        {
+            breadcrumb.classList.remove("breadcrumb-selected");
+        }
+        document.getElementById('bcStep'+stepSelected).classList.add("breadcrumb-selected");
+        }
+
         function breadCrumbInc() {
             stepSelected += 1;
+            if(stepSelected>=6){
+                stepSelected = 6;
+            }
+            console.log(stepSelected);
+        }
+        function breadCrumbDecr() {
+            stepSelected -= 1;
+            if(stepSelected<=1){
+                stepSelected = 1;
+            }
             console.log(stepSelected);
         }
     </script>
