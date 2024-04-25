@@ -93,7 +93,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 			$debug.="Error updating dugga ".$error[2];
 		}
 	}else if(strcmp($opt,"DELDU")===0){
-		$query = $pdo->prepare("DELETE FROM useranswer WHERE quiz=:qid;");
+		$query = $pdo->prepare("DELETE FROM userAnswer WHERE quiz=:qid;");
 		$query->bindParam(':qid', $qid);
 
 		if(!$query->execute()) {
