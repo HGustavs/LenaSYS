@@ -1011,7 +1011,7 @@ function deleteItem(item_lid = null) {
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60000);
+  }, 60);
 }
 
 // Permanently delete elements.
