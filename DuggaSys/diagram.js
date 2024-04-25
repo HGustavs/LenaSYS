@@ -3813,7 +3813,7 @@ function entityIsOverlapping(id, x, y) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject)) {
+                if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) || (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
