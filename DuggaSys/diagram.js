@@ -6888,7 +6888,7 @@ function generateContextProperties() {
                         }
                     }
                 }
-            }else if(contextLine[0].type == entityType.ER){
+            } else if (contextLine[0].type == entityType.ER) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (var i = 0; i < value.length - 1; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
