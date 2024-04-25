@@ -68,6 +68,19 @@ Also note that __no renaming of microservices__ will take place until all micros
 
 <br>
 
+Here is how you search in the document:
+
+Example: 
+
+"Shared microservices:
+
+-retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to the new naming convention based on CRUD."
+
+_retrieveUsername_ms.php_ is the old name. _readUsername_ms.php_ is the new filename that the file will be renamed to later. When searching for a file in the document, look for the new file name. The queries handled by _retrieveUsername_ms.php_ will be found in the section for _Shared microservices_, under _readUsername_ms.php_.
+The old name remains listed under "LIST OF MICROSERVICES" so that we can keep track of them until we switch to the new names.
+
+<br>
+
 Shared microservices:
 
 - logging_ms.php __==UNFINISHED==__
