@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById(containerId);
     if (container) {
       const button = new LoadingButton(buttonLabel, (stopLoadingCallback) => {
-        asyncActionRunner(action, argument, stopLoadingCallback);
+        asyncActionRunner(action(), argument, stopLoadingCallback);
       }, style, color);
       button.render(containerId);
     }
