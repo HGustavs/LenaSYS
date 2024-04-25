@@ -4,13 +4,11 @@
 // profileService - handles password changes and challenge question
 //---------------------------------------------------------------------------------------------------------------
 
-
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
-
 
 // Connect to database and start session
 pdoConnect();
@@ -21,7 +19,6 @@ if(isset($_SESSION['uid'])){
 }else{
 	$userid="1";		
 } 
-
 
 $password= getOP('password');
 $question = getOP('question');
@@ -62,7 +59,6 @@ if(checklogin()) {
 				$accessString = "SELECT access FROM user_course WHERE uid=:userid AND access='W' LIMIT 1";
 				$query = $pdo->prepare($accessString);
 				$query->bindParam('userid', $userid);
-				
 				
 				if(!$query->execute()) {
 					$error = $stmt->errorInfo();
