@@ -8836,7 +8836,7 @@ function drawElement(element, ghosted = false) {
             let finalVec = `
                 <g> 
                     <path 
-                        d="M 12,-0
+                        d=" M 12,-0
                             C 18.623,-0 24,5.377 24,12
                             C 24,18.623 18.623,24 12,24
                             C 5.377,24 -0,18.623 -0,12
@@ -9211,11 +9211,12 @@ function updateElementHeight(arr, element, height) {
 
 const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
 const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
-const drawRect = (w, h, l, e) => {
+const drawRect = (w, h, l, e, extra=`fill='${e.fill}'`) => {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
                 width='${w - l * 2}' height='${h - l * 2}' 
-                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
+                stroke-width='${l}' stroke='${e.stroke}' 
+                ${extra} 
             />`;
 }
 const drawText = (x, y, a, t, extra='') => {
@@ -9332,7 +9333,9 @@ function drawElementSDEntity(element, ghosted){
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
         }
-        let path = `<path class="text"
+        let path = `
+            <path 
+                class="text"
                 d="M ${linew},${(linew)}
                     h ${boxw - linew * 2}
                     v ${height - linew * 2 - cornerRadius }
@@ -9433,25 +9436,28 @@ function drawElementState(element, ghosted, vectorGraphic) {
 }
 
 function drawElementSuperState(element, ghosted, textWidth) {
+    let str = "";
     let ghostPreview = ghostLine ? 0 : 0.4;
     const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact);
     let linew = Math.round(strokewidth * zoomfact);
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
-    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`)
-    return `<div id="${element.id}" 
+
+    str += `<div id="${element.id}" 
                 class="element uml-Super"
-                style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                style="margin-top:${boxh * 0.025}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
                 onmousedown='ddown(event);' 
                 onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'>
-                <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${textWidth + 40 * zoomfact}px" height="${50 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                    ${text}
-                </svg>
-            </div>`;
+                onmouseleave='mouseLeave();'
+            >`;
+
+    let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='20'`);
+    let rectTwo = drawRect(textWidth + 40 * zoomfact, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`);
+    str += drawSvg(boxw, boxh, rectOne + rectTwo + text);
+    str += `</div>`;
+    return str;
 }
 
 function drawElementSequenceActor(element, ghosted, textWidth) {
@@ -9543,7 +9549,7 @@ function drawElementSequenceObject(element, ghosted) {
             >`;
     content = `<path 
                     class="text" 
-                    d="M ${(boxw / 2) + linew},${(boxw / 4) + linew}
+                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
                         V ${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
@@ -9555,7 +9561,7 @@ function drawElementSequenceObject(element, ghosted) {
                         class='text'
                         x='${linew}'
                         y='${linew}'
-                        width='${boxw - (linew * 2)}'
+                        width='${boxw - linew * 2}'
                         height='${(boxw / 2) - linew}'
                         rx='${sequenceCornerRadius}'
                         stroke-width='${linew}'
@@ -9594,7 +9600,7 @@ function drawElementSequenceActivation(element, ghosted) {
             >`;
     content = `<rect 
                     x='${linew}' y='${linew}' 
-                    width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' 
+                    width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
                     rx='${sequenceCornerRadius * 3}' 
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
                 />`;
@@ -9648,12 +9654,11 @@ function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
                             stroke='${element.stroke}'
                             stroke-dasharray='${linew * 3},${linew * 3}'
                             fill='transparent'
-                        />
-                        <text 
-                            x='${linew * 2}' 
-                            y='${(boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2}' 
-                            fill='${actorFontColor}'>${element.alternatives[i]}
-                        </text>`;
+                        />`;
+            content += drawText(linew * 2,
+                (boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2,
+                'auto', element.alternatives[i], `fill='${actorFontColor}'`
+            );
         }
     }
     //svg for the small label in top left corner
@@ -9669,20 +9674,10 @@ function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
                     fill='${element.fill}'
-                />
-                <text 
-                    x='${50 * zoomfact + linew}' 
-                    y='${18.75 * zoomfact + linew}' 
-                    dominant-baseline='middle' 
-                    text-anchor='middle'
-                > ${element.altOrLoop} </text>
-                <text 
-                    x='${linew * 2}' 
-                    y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' 
-                    fill='${actorFontColor}'
-                > ${element.alternatives[0]} </text>`;
-    //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-    str += drawSvg(boxw, boxh, content);
+                />`;
+    let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
+    let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0], `fill=${actorFontColor}` );
+    str += drawSvg(boxw, boxh, content + textOne + textTwo);
     str += `</div>`;
     return str;
 }
