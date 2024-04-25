@@ -162,7 +162,7 @@ Sectioned Service:
 - reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updateListentriesGradesystem_ms.php __==UNFINISHED==__
+- updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - setVisibleListentrie_ms.php __==finished==__ New filename: "updateVisibleListentrie_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -1781,6 +1781,12 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 <br>
 
 ### updateListentriesGradesystem_ms.php
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- gradesystem
+
+```sql
+UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
+```
 
 <br>
 
