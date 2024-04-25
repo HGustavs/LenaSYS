@@ -1968,6 +1968,7 @@ function mdown(event) {
             if (determinedLines.id.length == 6) { // LINE
 
                 pointerState = pointerStates.CLICKED_LINE;
+                targetElement = determinedLines.id;
 
                 // If double click, open option pane
                 if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
@@ -2630,18 +2631,6 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
-            // Check if the line is a special case line
-            var targetLine = lines[findIndex(lines, determinedLines.id)];
-            if (targetLine.specialCase == true) {
-                // Moving the line
-                movingObject = true;
-                deltaX = startX - event.clientX;
-                deltaY = startY - event.clientY;
-
-                // We update the lines offset position
-                updatelineOffset(targetLine, deltaX, deltaY);
-            }
-
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
@@ -11759,10 +11748,7 @@ function updateLabelPos(newPosX, newPosY) {
     displaceFromLine(newPosX, newPosY);
 }
 
-function updatelineOffset(line, x, y) {
-    line.offsetX = x;
-    line.offsetY = y;
-}
+
 
 function calculateProcentualDistance(objectLabel, x, y) {
     // Math to calculate procentuall distance from/to centerpoint
