@@ -100,5 +100,3 @@ echo json_encode(array(
 
 // Log the end event of this service query.
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, __FILE__, $userid, $info);
-
-?>
