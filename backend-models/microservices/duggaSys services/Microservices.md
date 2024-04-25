@@ -49,6 +49,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - diagramservice.php  __WORK PAUSED in this service will continue when the service is fixed__
 - duggaedservice.php __==finished==__
 - fileedservice.php __==finished==__
+- gitcommitService.php 
 - highscoreservice.php __==finished==__
 - sectionedservice.php __==finished==__
 - profileservice.php __==finished==__
@@ -61,7 +62,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 
 Please note that the microservices marked "UNFINISHED" in this documentation have remained unchanged since the group in 2023. These microservices still rely on the services described in the Database_related_micro_services.md. Once all the microservices are implemented, the Database_related_micro_services.md will become obsolete and therefore will be deleted. The microservices marked "finished" include complete documentation about the queries in this document.
 
-Also note that __no renaming of microservices__ will take place until all microservices are implemented.
+Also note that __no renaming of microservices__ will take place until all microservices are implemented. 
 
 <br>
 
@@ -130,6 +131,18 @@ Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updataFileLink_ms.php __==UNFINISHED==__
+
+<br>
+
+gitcommit Service:
+
+- clearGitFiles_ms.php __==UNFINISHED==__
+- updateGithubRepo_ms.php __==UNFINISHED==__
+- refreshGithubRepo_ms.php __==UNFINISHED==__
+- fetchOldToken_ms.php __==UNFINISHED==__
+- insertIntoSQLite_ms.php __==UNFINISHED==__
+- newUpdateTime_ms.php __==UNFINISHED==__
+- refreshCheck_ms.php __==UNFINISHED==__
 
 <br>
 
