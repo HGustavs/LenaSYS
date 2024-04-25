@@ -9650,30 +9650,44 @@ function drawElementIEEntity(element, ghosted) {
 function drawElementState(element, ghosted, vectorGraphic) {
     let ghostPreview = ghostLine ? 0 : 0.4;
     const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
+    const maxSize = Math.max(Math.round(element.width * zoomfact), Math.round(element.height * zoomfact));
+
     const theme = document.getElementById("themeBlack");
     if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
         element.fill = color.WHITE;
     } else if (element.fill == color.WHITE && theme.href.includes('style')) {
         element.fill = color.BLACK;
     }
+
+    const circleRadius = maxSize / 2;
+    const animationDuration = 1000;
+    const circleAnimation = `
+        <animate attributeName="r"
+                 attributeType="XML"
+                 from="0"
+                 to="${circleRadius}"
+                 dur="${animationDuration}ms"
+                 fill="freeze" />`;
+
     return `<div id="${element.id}"
                 class="element uml-state"
-                style="margin-top:${((boxh / 2))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
+                style="margin-top:${((maxSize / 2.5))}px;width:${maxSize}px;height:${maxSize}px;z-index:1;${ghostAttr}"
                 onmousedown='ddown(event);'
                 onmouseenter='mouseEnter();'
                 onmouseleave='mouseLeave();'>
                 <svg width="100%" height="100%"
-                    viewBox="0 0 ${boxw} ${boxh}" <!-- dynamically set viewBox -->
+                    viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                     xml:space="preserve"
                     style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                  // <circle cx="50%" cy="50%" r="50%" />
-                    ${vectorGraphic}
+                    <g>
+                        ${vectorGraphic}
+                        ${circleAnimation}
+                    </g>
                 </svg>
             </div>`;
 }
+
 
 function drawElementSuperState(element, ghosted, textWidth) {
     let ghostPreview = ghostLine ? 0 : 0.4;
