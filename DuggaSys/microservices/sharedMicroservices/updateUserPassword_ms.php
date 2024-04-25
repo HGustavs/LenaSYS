@@ -22,11 +22,9 @@ if(isset($_SESSION['uid'])){
 
 $password= getOP('password');
 $question = getOP('question');
-$answer = getOP('answer');
 $action = getOP('action');
 $newPassword = getOP('newPassword');
 $hashedPassword = standardPasswordHash($newPassword);
-$hashedAnswer = standardPasswordHash($answer);
 
 $success = false;
 $status = "";
@@ -43,7 +41,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, __FILE__, $userid, $i
 if(checklogin()) {
 	if (isSuperUser($userid)) {
 		$status = "teacher";
-	} else if ($action === "challenge" || $action === "password") {
+	} else if ($action === "password") {
 		// and fetch the password from the db
 		$querystring="SELECT password FROM user WHERE uid=:userid LIMIT 1";	
 		$stmt = $pdo->prepare($querystring);
@@ -62,7 +60,6 @@ if(checklogin()) {
 				$query = $pdo->prepare($accessString);
 				$query->bindParam('userid', $userid);
 				
-				
 				if(!$query->execute()) {
 					$error = $stmt->errorInfo();
 					$debug = "Error checking if user is teacher ".$error[2];
@@ -71,7 +68,6 @@ if(checklogin()) {
 						//If a row matches query, the user is a teacher/superuser and cannot change password/security questions
 						$status = "teacher";
 					} else {
-						//Action determines which form is being used
 						if($action == "password"){
 							//Update password
 							$passwordquery = "UPDATE user SET password=:PW WHERE uid=:userid";
