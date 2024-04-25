@@ -39,6 +39,18 @@
                     </ul>
                 </div>";
         }
+
+        function testHeader2($header2Text) {
+            echo "<div>
+                <h2 class='header-2'>".$header2Text."</h2>
+                </div>";
+        }
+
+        function testBodyText($bodyText) {
+            echo "<div class='body-text'>
+                <p>".$bodyText."</p>
+                </div>";
+        }
           
     ?>
 
@@ -50,8 +62,16 @@
             <?php
                 testBreadcrumb()
             ?>
-        <div>
-            Some random text...
+        <div class="content">
+        <?php
+                $testHeader2 = "Create New Database & User";
+                testHeader2($testHeader2);
+            ?>
+            <div class="inner-wrapper">
+                <?php
+                    testBodyText("Provide the following data for the data and user.");
+                ?>
+            </div>
         </div>
         <?php
             testButton("Back","Continue");
