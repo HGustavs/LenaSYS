@@ -460,16 +460,39 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-30px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">3 to 8 numbers required</span></div>
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<div class="formDialog" style="display: block; left:54px; top:-35px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' /></div>
-				<div class="formDialog" style="display: block; left:54px; top:-50px;"><span id="dialog3" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<div class="formDialog" style="display: block; left:54px; top:-38px;"><span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span></div>
-				<div class="formDialog" style="display: block; left:54px; top:-20px;"><span id="dialog42" style="display: none; left:0px;" class="formDialogText">Max 50 characters.</span></div>
+				<div class='inputwrapper'>
+					<span>Version ID:</span>
+					<div class="formDialog versionDialog" id='dialogContainer2'>
+						<span id="dialog2" class="formDialogText formDialog">3 to 8 numbers required</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
+				</div>
+				<div class='inputwrapper'>
+					<span>Version Name:</span>
+					<div class="formDialog versionDialog" id='dialogContainer'>
+						<span id="dialog" class="formDialogText formDialog">Must be in of the form HTNN, VTNN or STNN</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
+				</div>
+				<div class='inputwrapper'>
+					<span>Start Date:</span>
+					<div class="formDialog versionDialog" id='dialogContainer3'>
+						<span id="dialog3" class="formDialogText formDialog">Start date has to be before end date</span>
+					</div>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>End Date:</span>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>MOTD:</span>
+					<div class="formDialog versionDialog" id='dialogContainer4'>
+						<span id="dialog4" class="formDialogText">Prohibited symbols</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
+				</div>
+				<div class="formDialog" style="display: block; left:50px; top:4px;"><span id="dialog42" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
