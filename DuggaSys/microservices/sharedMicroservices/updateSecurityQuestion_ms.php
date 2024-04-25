@@ -82,19 +82,7 @@ if(checklogin()) {
 								} else {
 									$success = true;
 								}
-						} else if($action == "password"){
-							//Update password
-							$passwordquery = "UPDATE user SET password=:PW WHERE uid=:userid";
-							$stmt = $pdo->prepare($passwordquery);
-							$stmt->bindParam(':userid', $userid);
-							$stmt->bindParam(':PW', $hashedPassword);
-
-							if(!$stmt->execute()) {
-								$error=$stmt->errorInfo(); 
-							} else {
-								$success = true;
-							}
-						}
+						} 
 					}
 				}
 			} else {
