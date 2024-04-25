@@ -72,7 +72,6 @@ Shared microservices:
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - isSuperUser_ms.php __==UNFINISHED==__
 - hasAccess_ms.php __==UNFINISHED==__
-- setUserID_ms.php __==UNFINISHED==__
 - setActiveCourseversion_ms.php __==UNFINISHED==__
 - updateUserPassword_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -266,18 +265,6 @@ Check if a specified user ID has the requested access on a specified course
 @param string $access_type A single letter denoting read or write access (r and w respectively)
 @return bool Returns true if the user has the requested access on the course and false if they don't.
 ```
-
-<br>
-
----
-
-<br>
-
-### setUserID
-
-Checks currents sessions user ID and sets it to a variable.  
-
-*writters personal comment, this might be to small to justify making a seperat service. 
 
 <br>
 
