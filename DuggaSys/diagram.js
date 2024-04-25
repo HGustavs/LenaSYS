@@ -1966,9 +1966,13 @@ function mdown(event) {
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
+                if (determinedLines.specialCase == true) {
+                    targetElement = data[findIndex(data, determinedLines.id)];
+                    startX = event.clientX;
+                    startY = event.clientY;
+                }
 
                 pointerState = pointerStates.CLICKED_LINE;
-                targetElement = determinedLines.id;
 
                 // If double click, open option pane
                 if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
