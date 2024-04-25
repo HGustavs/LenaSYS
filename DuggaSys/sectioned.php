@@ -687,23 +687,23 @@ pdoConnect();
 
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
-    //First query: Check if a row with same cid already exists. If not, insert into db.
-    $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-    $query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
-    $query->execute([$cid]);
-    $count = $query->fetchColumn();
+	//First query: Check if a row with same cid already exists. If not, insert into db.
+	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	$query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
+	$query->execute([$cid]);
+	$count = $query->fetchColumn();
 
-    if($count > 0){
-        //A repo with the same cid primary key already exists. Do nothing.
-    } else {
-        $query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
-        $query->bindParam(':cid', $cid);
-        $query->bindParam(':repoURL', $githubURL);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            echo "Error updating entry in gitRepos" . $error[2];
-        }
-    }
+	if($count > 0){
+		//A repo with the same cid primary key already exists. Do nothing.
+	} else {
+		$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $githubURL);
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating entry in gitRepos" . $error[2];
+		}
+	}
 }
 
 //Insert files into gitFiles DB
@@ -765,7 +765,7 @@ function writeFilesInDir($path, $fileNames, $content){
     }
 }
 
-function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam){
+function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam) {
 	try {
 		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
 		if(!defined("MYSQL_VERSION")) {
@@ -776,29 +776,27 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 		exit;
 	}
 	$count = count($fileNames);
-	for($i = 0; $i < $count; $i ++){
+	for($i = 0; $i < $count; $i ++) {
 		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
-	    $query->bindParam(':filename', $fileNames[$i]);
-	    $query->bindParam(':cid', $cid);
-	    $query->execute();
-	    $norows = $query->fetchColumn();
-	    echo $norows;
-		if($norows == 0){
+		$query->bindParam(':filename', $fileNames[$i]);
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+		$norows = $query->fetchColumn();
+		echo $norows;
+		if($norows == 0) {
 			//TODO: Kind value should be fixed to dynamic
 			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
 			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'3',:cid);");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fileName', $fileNames[$i]);
-			$query->execute();
 			if (!$query->execute()) {
-                $error = $query->errorInfo();
-                echo "Error updating entries" . $error[2];
-            } else {
-                echo "File stored successfully in fileLink";
-            }
+				$error = $query->errorInfo();
+				echo "Error updating entries" . $error[2];
+			} else {
+				echo "File stored successfully in fileLink";
+			}
 		}
 	}
-	
 }
 function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
 	try {
@@ -841,10 +839,9 @@ function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS,
 	$y = 1;
 	for($i = 0; $i < $count; $i++){
 		//TODO: Change boxcontent to be named dynamicly.
-		//Maybe change filenameNoExt to somehting better named. Also what is wordlistid?
-		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), 
-		wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
-	    $query->bindParam(':boxid', $y);
+		// Maybe change filenameNoExt to something better named. Also what is wordlistid?
+		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
+		$query->bindParam(':boxid', $y);
 		$query->bindParam(':exampleid', $CeHiddenParam[0]);
 		$filenameNoExt = preg_replace('/\.[^.]*$/', "", $fileNames[$i]);
 		$query->bindParam(':boxtitle', $filenameNoExt);
@@ -862,27 +859,27 @@ function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS,
 	}
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //Retrieval of JSON data sent through POST and GET
-    $cid = $_GET['cid'];
-    $githubURL = $_GET['githubURL'];
-    $postDataContent = file_get_contents('php://input');
-    $requestDataContent = json_decode($postDataContent, true);
-    $codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
-    $SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
-    $fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
-    $filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
-    $fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
-    $downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
-    $fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-    $CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
+	//Retrieval of JSON data sent through POST and GET
+	$cid = $_GET['cid'];
+	$githubURL = $_GET['githubURL'];
+	$postDataContent = file_get_contents('php://input');
+	$requestDataContent = json_decode($postDataContent, true);
+	$codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
+	$SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
+	$fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
+	$filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
+	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
+	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
+	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
+	$CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
 	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
-    $path = '../../LenaSYS/courses/' . $cid;
-    $pathCoursesRoot = '../../LenaSYS/courses';
-    
-    writeCoursesDir($path, $pathCoursesRoot);
-    writeFilesInDir($path, $fileNames, $codeExamplesContent);
-    insertIntoSqLiteGitRepo($cid, $githubURL);
-    insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
+	$path = '../../LenaSYS/courses/' . $cid;
+	$pathCoursesRoot = '../../LenaSYS/courses';
+
+	writeCoursesDir($path, $pathCoursesRoot);
+	writeFilesInDir($path, $fileNames, $codeExamplesContent);
+	insertIntoSqLiteGitRepo($cid, $githubURL);
+	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
 	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
 	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);

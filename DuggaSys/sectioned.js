@@ -13,17 +13,7 @@ var momentexists = 0;
 var resave = false;
 var versnme = "UNK";
 var versnr;
-var retData; //Data returned from AJAXService
-var exampleid; 
-var courseid;
-var cvers;
 var CeHiddenParameters = [];
-var sectionData; 
-var codeExamples = [];
-var allBlocks = [];
-var tokens = [];
-var currentPos;
-var selectionRange;
 var motd = "UNK";
 var hideItemList = [];
 var hasDuggs = false;
@@ -4199,7 +4189,7 @@ function fetchGitCodeExamples(courseid){
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
 function storeCodeExamples(cid, codeExamplesContent, githubURL){
-    var templateno = updateTemplate();
+    var templateNo = updateTemplate();
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
     //Push all file data into separate arrays and add them into one single array.
     codeExamplesContent.map(function(item) {
@@ -4221,7 +4211,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       downloadURLS: downloadURL,
       fileTypes: fileType,
       codeExamplesLinkParam: CeHiddenParameters,
-      templateid: templateno
+      templateid: templateNo
     }
     //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
@@ -4241,11 +4231,11 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
           console.error('Error calling PHP function:', error);
       });
 }
-function updateTemplate(){
-  templateno = $("#templateno").val();
-	$("#chooseTemplateContainer").css("display", "none");
-	var templateno = $("#templateno").val();
-  return templateno;
+function updateTemplate() {
+  templateNo = $("#templateno").val();
+  $("#chooseTemplateContainer").css("display", "none");
+  var templateNo = $("#templateno").val();
+  return templateNo;
 }  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
@@ -4293,28 +4283,28 @@ function changetemplate(templateno) {
 }
 //TODO: add more error handling. Diffent query selector for test examples and new code examples >:(
 //td.example.item for parentTr. a.example-link for span
-function fetchCodeExampleHiddenLinkParam(codeExampleItem){
+function fetchCodeExampleHiddenLinkParam(codeExampleItem) {
   var parentTr = codeExampleItem.closest('tr');
-    if(parentTr){
+  if (parentTr) {
       var childTd = parentTr.querySelector('td.example.item.hidden');
       var childDiv = childTd.querySelector('div.ellipsis.nowrap');
       var span = childDiv.querySelector('span');
-      if (span){
-        var hiddenLink = span.querySelector('a.hidden.internal-link');
-        if (hiddenLink) {
-          var url = new URL(hiddenLink.href);
-          var exampleId = url.searchParams.get('exampleid');
-          var courseId = url.searchParams.get('courseid');
-          var courseName = url.searchParams.get('coursename');
-          var cvers = url.searchParams.get('cvers');
-          var lid = url.searchParams.get('lid');
-          CeHiddenParameters.length = 0;
-          CeHiddenParameters.push(exampleId, courseId, courseName, cvers, lid);
-        } else {
-          console.log('Hidden link not found');
-        }
+      if (span) {
+          var hiddenLink = span.querySelector('a.hidden.internal-link');
+          if (hiddenLink) {
+              var url = new URL(hiddenLink.href);
+              var exampleId = url.searchParams.get('exampleid');
+              var courseId = url.searchParams.get('courseid');
+              var courseName = url.searchParams.get('coursename');
+              var cvers = url.searchParams.get('cvers');
+              var lid = url.searchParams.get('lid');
+              CeHiddenParameters.length = 0;
+              CeHiddenParameters.push(exampleId, courseId, courseName, cvers, lid);
+          } else {
+              console.log('Hidden link not found');
+          }
       }
-    }
+  }
 }
 // In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 function getLidFromButton(lid) {
