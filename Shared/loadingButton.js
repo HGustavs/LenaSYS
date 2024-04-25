@@ -1,7 +1,9 @@
 class LoadingButton {
-  constructor(label, onClick) {
+  constructor(label, onClick, style = 'float:right; margin-right:5px;', color = '') {
     this.label = label;
     this.onClick = onClick;
+    this.style = style;
+    this.color = color;
     this.isLoading = false;
     this.buttonElement = null;
   }
@@ -11,7 +13,8 @@ class LoadingButton {
     const container = document.getElementById(containerId);
     this.buttonElement = document.createElement('button');
     this.buttonElement.classList.add('submit-button');
-    this.buttonElement.style = 'float:right; margin-right:5px;';
+    this.buttonElement.style = this.style;
+    this.buttonElement.style.backgroundColor = this.color;
     this.buttonElement.textContent = this.label;
     this.buttonElement.onclick = () => this.handleOnClick();
     container.appendChild(this.buttonElement);
@@ -52,28 +55,38 @@ function asyncActionRunner(action, actionArgument, stopLoadingCallback) {
 document.addEventListener('DOMContentLoaded', () => {
   const actions = {
     saveRepo: {
-      action: validateForm, // Function
+      action: () => validateForm, // Function, () => is used to reference the function without calling it
       argument: "githubPopupWindow", // Argument to pass to the function
       buttonLabel: "Save Repo", // Button label
-      containerId: "buttonContainerSaveRepo" // Container ID
+      containerId: "buttonContainerSaveRepo", // Container ID
+      // style: 'float:right; margin-right:5px;', // Optional: Custom styling
+      // color: 'Blue' // Optional: Custom color
     },
     saveCourse: {
-      action: validateForm,
+      action: () => validateForm,
       argument: "editCourse",
       buttonLabel: "Save",
       containerId: "buttonContainerSaveCourse"
+    },
+    deleteCourse: {
+      action: () => openDeleteForm,
+      argument: "",
+      buttonLabel: "Delete",
+      containerId: "buttonContainerDeleteCourse",
+      style: 'float:left; margin-right:5px;',
+      color: 'DarkRed'
     }
     // Add more actions here as needed
   };
 
   // Loop through the actions and create a button for each, if the container exists
   Object.keys(actions).forEach((key) => {
-    const { action, argument, buttonLabel, containerId } = actions[key];
+    const { action, argument, buttonLabel, containerId, style, color } = actions[key];
     const container = document.getElementById(containerId);
     if (container) {
       const button = new LoadingButton(buttonLabel, (stopLoadingCallback) => {
         asyncActionRunner(action, argument, stopLoadingCallback);
-      });
+      }, style, color);
       button.render(containerId);
     }
   });
