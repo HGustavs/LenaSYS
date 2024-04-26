@@ -67,7 +67,7 @@
 
 		// Check if not null, else add it to Sqlite db
 		if($cid != null) {
-			insertIntoSQLite($githubURL, $cid);
+			insertIntoSQLite($githubURL, $cid, "");
 		} else {
 			print_r("No matches in database!");
 		}
