@@ -18,31 +18,9 @@ include_once "../../gitfetchService.php";
 
 global $pdo;
 
-//Get data from AJAX call in courseed.js and then runs the function getCourseID, refreshGithubRepo or updateGithubRepo depending on the action
-if(isset($_POST['action'])) 
-{
-    if($_POST['action'] == 'getCourseID') 
-    {
-        getCourseID($_POST['githubURL']);
-    }
-    else if($_POST['action'] == 'refreshGithubRepo') 
-    {
-        refreshGithubRepo($_POST['cid']);
-    }
-    else if($_POST['action'] == 'updateGithubRepo') 
-    {
-        updateGithubRepo($_POST['githubURL'], $_POST['cid']);
-    }
-    else if($_POST['action'] == 'directInsert'){
-        
-        insertIntoSQLite($_POST['githubURL'], $_POST['cid'], $_POST['token'],);
-    }
-};
-
 //--------------------------------------------------------------------------------------------------
 // clearGitFiles: Clear the gitFiles table in SQLite db when a course has been updated with a new github repo
 //--------------------------------------------------------------------------------------------------
-
 
 function clearGitFiles($cid) {
     $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
@@ -56,5 +34,3 @@ function clearGitFiles($cid) {
         echo $errorvar;
     }
 }
-
-?>
