@@ -3,14 +3,10 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../../../Shared/basic.php";
-include_once "../../../Shared/sessions.php";
 include_once "getUid_ms.php";
 
-// Connect to database and start session
-pdoConnect();
-session_start();
+function setAsActiveCourse($pdo) {
 
-// Global variables
 $cid = getOP('cid');
 $versid = getOP('versid');
 $makeactive = getOP('makeactive');
@@ -25,4 +21,5 @@ if ($makeactive == 3) {
 		$error = $query->errorInfo();
 		$debug = "Error updating entries\n" . $error[2];
 	}
+}
 }
