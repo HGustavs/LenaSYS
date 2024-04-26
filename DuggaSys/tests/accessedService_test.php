@@ -330,7 +330,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'username' => 'brom',
                 'password' => 'password',
                 'opt' => 'ADDUSR',
-                'newuser' => '[["471212-1234","Fname","Lname","test1234@student.his.se","testClass","HT-14",0]]',
+                'newusers' => '[["471212-1234","Fname","Lname","test1234@student.his.se","testClass","HT-14",0]]',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
