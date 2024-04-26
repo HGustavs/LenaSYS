@@ -8270,12 +8270,12 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(line.cardinality).width / 4;
     if (offsetOnLine > distance * 0.5) {
-        posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
-        posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+        posX = tx + (offsetOnLine * (fx - tx) / distance) * tweakOffset;
+        posY = ty + (offsetOnLine * (fy - ty) / distance) * tweakOffset;
     } else {
         // Set position on line for the given offset
-        posX = fx + (offsetOnLine * (tx - fx) / distance);
-        posY = fy + (offsetOnLine * (ty - fy) / distance);
+        posX = tx + (offsetOnLine * (fx - tx) / distance);
+        posY = ty + (offsetOnLine * (fy - ty) / distance);
     }
 
     if (findEntityFromLine(line) == -1) {
