@@ -192,7 +192,7 @@ Sectioned Service:
 
 Profile Service:
 
-- updateSecurityQuestion_ms.php __==UNFINISHED==__
+- updateSecurityQuestion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserPassword_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 
 <br>
@@ -226,7 +226,7 @@ Show Dugga Service:
 <br>
 
 ### logUserEvent_ms.php
-Creates a new userbased event in the log.db database.
+Creates a new userbased event in the log.db database (not MYSQL).
 
 
 _INSERT_ operation on the table __'userLogEntries'__ to add a new row with values for the following columns:
@@ -248,7 +248,7 @@ INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, re
 <br>
 
 ### logServiceEvent_ms.php
-Creates a new service event in the log.db database. The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format).
+Creates a new service event in the log.db database (not MYSQL). The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format).
 
 _INSERT_ operation on the table __'serviceLogEntries'__ to add a new row with values for the following columns:
 - uuid
@@ -2210,10 +2210,36 @@ SELECT * FROM listentries WHERE visible = '3'
 <br>
 <br>
 
-ProfileService - handles password changes and challenge question
+ProfileService handles password changes and challenge questions. To access these functions, the user clicks on their profile when logged in.
 
-#### updateSecurityQuestion
-Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
+#### updateSecurityQuestion_ms.php
+__updateSecurityQuestion_ms.php__ handles the updating of security questions for users. Changes to security questions are permitted only for non-superuser/non-teacher users and only if the correct password is entered.
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
+- password
+
+```sql
+SELECT password FROM user WHERE uid = :userid LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'user_course'__ to retrieve the value of the column:
+- access
+
+```sql
+SELECT access FROM user_course WHERE uid = :userid AND access = 'W' LIMIT 1;
+```
+
+
+_UPDATE_ operation on the table __'user'__ to update the values of the columns:
+- securityquestion
+- securityquestionanswer
+
+```sql
+UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid;
+```
 
 <br>
 
@@ -2222,6 +2248,10 @@ Uses service __selectFromTableUser__ to _get_ information it requires from __use
 <br>
 
 #### updateUserPassword_ms.php
+__updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated.
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - password
 
