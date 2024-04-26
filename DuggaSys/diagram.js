@@ -3138,7 +3138,7 @@ function saveProperties() {
                 //Get string from textarea
                 var elementPK = child.value;
                 //Create an array from string where newline seperates elements
-                var arrayElementPK = elementAttr.split('\n');
+                var arrayElementPK = elementPK.split('\n');
                 var formatPK = [];
                 for (var i = 0; i < arrayElementPK.length; i++) {
                     if (!(arrayElementPK[i] == '\n' || arrayElementPK[i] == '' || arrayElementPK[i] == ' ')) {
@@ -3158,6 +3158,9 @@ function saveProperties() {
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        if (Array.from(arrElementAttr[i])[0] != '-') {
+                            arrElementAttr[i] = "-" + arrElementAttr[i];
+                        }
                         formatArr.push(arrElementAttr[i]);
                     }
                 }
