@@ -9717,11 +9717,7 @@ function drawElementIEEntity(element, ghosted) {
         let text = "";
         for (let i = 0; i < s.length; i++)
         {
-            //     text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
-            // }
-
-            // Check if the current line is the primary key
-            if (s[i] === primaryKeyText)
+            if (s[i] === primaryKeyText) // Checks if the current line is the primary key
             {
                 text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i], 'style="text-decoration-line:underline;"');
             }
