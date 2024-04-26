@@ -1045,6 +1045,10 @@ var startNodeLeft = false;
 var startNodeRight = false;
 var startNodeDown = false;
 var startNodeUp = false;
+var startNodeUpRight = false;
+var startNodeUpLeft = false;
+var startNodeDownRight = false;
+var startNodeDownLeft = false;
 var containerStyle;
 var lastMousePos = getPoint(0, 0);
 var dblPreviousTime = new Date().getTime(); // Used when determining if an element was doubleclicked.
@@ -2059,6 +2063,10 @@ function mdown(event) {
             startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
             startNodeDown = event.target.classList.contains("md");
             startNodeUp = event.target.classList.contains("mu");
+            startNodeUpRight = event.target.classList.contains("tr");
+            startNodeUpLeft = event.target.classList.contains("tl");
+            startNodeDownRight = event.target.classList.contains("br");
+            startNodeDownLeft = event.target.classList.contains("bl");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -2669,6 +2677,7 @@ function mmoving(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
+            let isX;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -2701,21 +2710,13 @@ function mmoving(event) {
                 const widthChange = -(tmp - elementData.width);
 
                 // Fetch original x-position
-                tmp = elementData.x;
-                elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
-
-                // Deduct the new position, giving us the total change
-                const xChange = -(tmp - elementData.x);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
 
-                // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-
+                let widthChange = movementXChange(elementData,startX,deltaX);
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
@@ -2751,13 +2752,8 @@ function mmoving(event) {
                 // Deduct the new height, giving us the total change
                 const heightChange = -(tmp - elementData.height);
 
-                // Fetch original y-position
-                // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
-                tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
-
-                // Deduct the new position, giving us the total change
-                const yChange = -(tmp - elementData.y);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
 
                 // Adds a deep clone of the element to preResizeHeight if it isn't in it
                 let foundID = false;
@@ -2800,7 +2796,32 @@ function mmoving(event) {
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
 }
+function movementPosChange(element,start,delta, isX){
+    let tmp = (isX) ? element.x : element.y;
+    let elem;
+    if (isX){
+        element.x = screenToDiagramCoordinates( (start - delta ),0).x;
+        elem = element.x;
+    }
+    else {
+        element.y = screenToDiagramCoordinates(0, (start - delta + 20)).y;
+        elem = element.y;
+    }
 
+    // Deduct the new position, giving us the total change
+    return -(tmp - elem);
+}
+function movementXChange(element,start,delta){
+
+    let tmp = element.width;
+    element.width = (start - (delta / zoomfact));
+
+    // Remove the new width, giving us the total change
+    return -(tmp - element.width);
+
+
+
+}
 //#endregion ===================================================================================
 //#region ================================ ELEMENT MANIPULATION ================================
 
