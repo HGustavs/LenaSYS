@@ -303,11 +303,13 @@
 .node.md {
     right: calc(50% - 4px);
     bottom: 0; 
+    margin-left: 2%;
     cursor: row-resize;
 }
 
 .node.mu {
     right: calc(50% - 4px);
+    margin-left: 2%;
     cursor: row-resize;
 }
 
