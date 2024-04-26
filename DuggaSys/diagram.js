@@ -3135,23 +3135,21 @@ function saveProperties() {
                 }
                 break;
             case 'primaryKey':
-                //Get string from textarea
-                var elementPK = child.value;
-                //Create an array from string where newline seperates elements
-                var arrayElementPK = elementPK.split('\n');
-                var formatPK = [];
-                for (var i = 0; i < arrayElementPK.length; i++) {
-                    if (!(arrayElementPK[i] == '\n' || arrayElementPK[i] == '' || arrayElementPK[i] == ' ')) {
-                        if (Array.from(arrayElementPK[i])[0] != '*') { // Checks if line starts with a star ('*')
-                            arrayElementPK[i] = "*" + arrayElementPK[i];
+                var textAreaPK = child.value;
+                var lines = textAreaPK.split('\n');
+                var cleanedLines = [];
+                for (var i = 0; i < lines.length; i++) {
+                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
+                        if (Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
+                            lines[i] = "*" + lines[i];
                         }
-                        formatPK.push(arrayElementPK[i]);
+                        cleanedLines.push(lines[i]);
                     }
                 }
-                //Update the attribute array
-                arrayElementPK = formatPK;
-                element[propName] = arrayElementPK;
-                propsChanged.attributes = arrayElementPK;
+                //Updates property
+                lines = cleanedLines;
+                element[propName] = lines;
+                propsChanged.propName = lines;
                 break;
             case 'attributes':
                 //Get string from textarea
