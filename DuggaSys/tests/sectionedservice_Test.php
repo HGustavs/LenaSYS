@@ -24,18 +24,21 @@ $testsData = array(
     // This test the microservice getCourseGroupsAndMembers and the part of the monalith called "GRP" 
     //------------------------------------------------------------------------------------------
     'getCourseGroupsAndMembers' => array(
-        'expected-output' => '{"debug": "NONE!", "coursename": "Webbutveckling - datorgrafik", "coursevers": "97732", "courseid": "2", "grpmembershp": "UNK", "grplst": [["No_2", "Anders", "Nilsson", "a99andni@student.his.se"], ["No_2", "Anna", "Andersson", "a99annan@student.his.se"], ["No_2", "Birgitta", "Olsson", "a99birol@student.his.se"], ["No_2", "Elisabet", "Nilsson", "a99elini@student.his.se"], ["No_2", "Erik", "Johansson", "a99erijo@student.his.se"], ["No_2", "Eva", "Eriksson", "a99evaer@student.his.se"], ["No_2", "Gunnar", "Bengtsson", "a99gunbe@student.his.se"], ["No_2", "Johan", "Eriksson", "a99joher@student.his.se"], ["No_2", "Karin", "Persson", "a99karpe@student.his.se"], ["No_2", "Karl", "Karlsson", "a99karka@student.his.se"], ["No_2", "Kerstin", "Bengtsson", "a99kerbe@student.his.se"], ["No_2", "Kristina", "Larsson", "a99krila@student.his.se"], ["No_2", "Lars", "Andersson", "a99laran@student.his.se"], ["No_2", "Linnéa", "Jansson", "a99linja@student.his.se"], ["No_2", "Margareta", "Karlsson", "a99marka@student.his.se"], ["No_2", "Maria", "Johansson", "a99marjo@student.his.se"], ["No_2", "Nils", "Olsson", "a99nilol@student.his.se"], ["No_2", "Olof", "Jansson", "a99oloja@student.his.se"], ["No_2", "Per", "Larsson", "a99perla@student.his.se"], ["No_2", "Peter", "Hansson", "a99petha@student.his.se"]]}',
-        'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(2,97732,'New Group',9021,6,5,0,22,'No', 0, 0, null)",
-        'query-after-test-1' => "DELETE FROM listentries WHERE lid > 5009;",
+        'expected-output' => '{"debug": "NONE!","coursevers": "1337","courseid": "1885","grpmembershp": "No_2","grplst": [["No_2",null,null,"Tester@student.his.se"],["No_2","Martin","Brobygge","martin.b@his.se"]]}',
+        'query-before-test-1' => "INSERT INTO user_course (cid, vers, uid,groups,access) VALUES (1885,1337,3, 'No_2','W'), (1885,1337,101, 'No_2','W');",
+        'query-before-test-2' => "INSERT INTO listentries (cid,vers, entryname, kind, visible,creator, groupKind)  VALUES(1885,1337,'test group',6,1,101, 'No');",
+        'query-after-test-1' => "DELETE FROM user_course WHERE uid=3;",
+        'query-after-test-2' => "DELETE FROM user_course WHERE uid=101;",
+        'query-after-test-3' => "DELETE FROM listentries WHERE cid=1885 AND vers=1337 AND entryname='test group';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
                 'opt' => 'GRP',
                 'username' => 'mestr',
                 'password' => 'password',
-                'showgrp' => 'No_UNK',
-                'courseid' => '2',
-                'coursevers' => '97732',
+                'showgrp' => 'No_2',
+                'courseid' => '1885',
+                'coursevers' => '1337',
             )
         ),
         'filter-output' => serialize(
@@ -69,8 +72,8 @@ $testsData = array(
                 'writeaccess',
                 'studentteacher',
                 'readaccess',
-                */
                 'coursename',
+                */
                 'coursevers',
                 'courseid',
                 /*
