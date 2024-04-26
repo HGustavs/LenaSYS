@@ -14,7 +14,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="UNK";
+	$userid="1";//workaround to make tests work, same is also done duggaedservice.php
 }
 
 $pw = getOP('pw');
@@ -196,8 +196,12 @@ if(checklogin() && $hasAccess) {
                   	$firstname = $user[1];
                   	$lastname = $user[2];
 	                $term = $user[5];
-					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
-    	            
+					if (isset($user[4])){
+						$className = $user[4];
+					}
+					else{
+						$className = "UNK"; // no class is not sent with newusers in the current implementation of lenasys
+					}
 
 					//If a className has been set. (this is not implemented in lenasys right now)
                   	if(strcmp($className,"UNK")!==0){
