@@ -9708,7 +9708,7 @@ function drawElementIEEntity(element, ghosted) {
     let headSvg = drawSvg(boxw, height, headRect + headText);
     str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
-    // Content, Attributes
+    // Content, Attributes box area
     const textBox = (s, css) =>
     {
         let height = texth * (s.length + 1) * lineHeight + boxh;
