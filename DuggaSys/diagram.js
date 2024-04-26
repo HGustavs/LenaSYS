@@ -4101,6 +4101,12 @@ function boxSelect_Start(mouseX, mouseY) {
     boxSelectionInUse = true;
 }
 
+document.addEventListener("mouseleave", (event) => {  
+    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
+      mouseMode_onMouseUp();
+    }  
+});
+
 function boxSelect_Update(mouseX, mouseY) {
     if (boxSelectionInUse) {
         // Update relative position form the starting position
