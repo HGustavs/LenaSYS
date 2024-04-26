@@ -11,7 +11,7 @@ function validateChallenge(){
        
     if(password != "" && question != "" && answer != ""){
         if(answer.match(chars)){
-            processChallenge(password, question, answer);
+            processChallenge(password, question, answer); 
         } else {
              message.html("Enter valid characters (a-ö, space, 0-9, -_')");
         }
@@ -30,12 +30,12 @@ function processChallenge(password, question, answer){
     
     $.ajax({
 		type: "POST",
-        url: "profileservice.php",
+		url: "profileservice.php",
 		data: {
 			password: password,
 			question:question,
 			answer: answer,
-			action: "challenge"
+			action: "challenge" 
 		},
 		dataType: "json",
 		success:function(data) {
@@ -163,7 +163,7 @@ function changePassword(){
     
     $.ajax({
         type: "POST",
-        url: "profileservice.php",
+        url: "microservices/sharedMicroservices/updateUserPassword.php",
         data: {
             password: password,
             newPassword: newPassword,
