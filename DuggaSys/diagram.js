@@ -958,7 +958,7 @@ const SDLineType = {
  * @description Available options of icons to display at the end of lines connecting two SE elements.
  */
  const SELineIcons = {//TODO: Replace with actual icons for the dropdown
-    ARROW: "ARROW",
+    ARROW: "Arrow", 
     BLACK_TRIANGLE: "Black_Triangle"
 };
 
@@ -7148,6 +7148,43 @@ function generateContextProperties() {
                     }
                 });
                 str += `</select>`;
+            }
+
+            if (contextLine[0].type == entityType.SE) {
+                str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`;
+                //iterate through all the icons assicoated with SD, and add them to the drop down as options
+                Object.keys(SELineIcons).forEach(icon => {
+                    if (contextLine[0].startIcon != undefined) {
+                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                        if (contextLine[0].startIcon == icon) {
+                            str += `<option value='${SELineIcons[icon]}' selected>${SELineIcons[icon]}</option>`;
+                        }
+                        //else, its not matching and the option is just added to the dropdown normally.
+                        else {
+                            str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
+                        }
+                    } else {
+                        str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
+                    }
+                });
+
+                str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`;
+                Object.keys(SELineIcons).forEach(icon => {
+                    if (contextLine[0].endIcon != undefined) {
+                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
+                        if (contextLine[0].endIcon == icon) {
+                            str += `<option value='${SELineIcons[icon]}' selected>${SELineIcons[icon]}</option>`;
+                        }
+                        //else, its not matching and the option is just added to the dropdown normally.
+                        else {
+                            str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
+                        }
+                    } else {
+                        str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
+                    }
+                });
             }
             str += `<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
         }
