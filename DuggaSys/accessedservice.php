@@ -304,7 +304,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W';");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -343,7 +343,7 @@ if(checklogin() && $hasAccess) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$teacher = array(
-			//'name' => $row['firstname']." ".$row['lastname'],
+			'name' => $row['firstname']." ".$row['lastname'],
 			'uid' => $row['uid']
 		);
 		array_push($teachers, $teacher);
