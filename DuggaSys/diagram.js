@@ -9671,6 +9671,7 @@ const drawText = (x, y, a, t, extra='') => {
 
 function drawElementIEEntity(element, ghosted) {
     let str = "";
+    let primaryKeyArray;
     let ghostPreview = ghostLine ? 0 : 0.4;
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
@@ -9681,10 +9682,9 @@ function drawElementIEEntity(element, ghosted) {
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
 
-    let primaryKeyText = "";
     if(element.primaryKey && element.primaryKey.length > 0) {
-        primaryKeyText = `${element.primaryKey.join(", ")}`; // makes so that value in primary key text area is one (1) line always.
-        text.unshift(primaryKeyText); // adding primary key to the beginning of text
+        primaryKeyArray = element.primaryKey;
+        text.unshift(...primaryKeyArray); // adding primary keys to the beginning of the array
     }
 
     let tHeight = texth * (text.length + 1) * lineHeight;
@@ -9715,7 +9715,7 @@ function drawElementIEEntity(element, ghosted) {
         let text = "";
         for (let i = 0; i < s.length; i++)
         {
-            if (s[i] === primaryKeyText) // Checks if the current line is the primary key
+            if (i < primaryKeyArray.length)
             {
                 text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i], 'style="text-decoration-line:underline;"');
             }
