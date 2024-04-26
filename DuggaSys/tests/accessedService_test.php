@@ -322,7 +322,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Add-user' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'test1234';",
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = '1885';",
+        'query-after-test-2' => "DELETE FROM user WHERE username = 'test1234';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -331,6 +332,8 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'password' => 'password',
                 'opt' => 'ADDUSR',
                 'newusers' => '[["471212-1234","Fname","Lname","test1234@student.his.se","testClass","HT-14",0]]',
+                'courseid' => '1885',
+                'coursevers'=> '1337'
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
