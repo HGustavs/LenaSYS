@@ -275,10 +275,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
             )),
     ),
     //TEST #11
-    //Add class
+    //Add class / Working test
     'Add-class' => array(  
-        'expected-output' => '{"output":"PLACEHOLDER"}',
-        'query-after-test-1' => "DELETE FROM class WHERE class = 'WEBUG18h';",
+        'expected-output' => '{"classes":[{"class":"DVSUG13h"},{"class":"Testclass1"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
+        'query-after-test-1' => "DELETE FROM class WHERE class = 'Testclass1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -286,11 +286,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'username' => 'brom',
                 'password' => 'password',
                 'opt' => 'ADDCLASS',
-                'newclass' => '[["WEBUG18h","101","testclass","199399","WEBUG",180,"100",null]]'
+                'newclass' => '[["Testclass1","101","testclass","199399","WEBUG",180,"100",null]]'
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'none'
+                'classes'
             )),
     ),
     //TEST #12
@@ -322,7 +322,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     'Add-user' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
-        //'query-after-test-1' => "DELETE FROM user WHERE username = 'test1234';",
+        'query-after-test-1' => "DELETE FROM user WHERE username = 'test1234';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
