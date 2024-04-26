@@ -200,7 +200,7 @@ if(checklogin() && $hasAccess) {
 						$className = $user[4];
 					}
 					else{
-						$className = "UNK"; // no class is not sent with newusers in the current implementation of lenasys
+						$className = "UNK"; // no class is sent with newusers in the current implementation of lenasys
 					}
 
 					//If a className has been set. (this is not implemented in lenasys right now)
