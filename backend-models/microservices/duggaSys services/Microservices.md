@@ -152,7 +152,7 @@ gitcommit Service:
 
 - clearGitFiles_ms.php __==UNFINISHED==__
 - updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
-- refreshGithubRepo_ms.php __==UNFINISHED==__
+- refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
 - fetchOldToken_ms.php __==UNFINISHED==__
 - insertIntoSQLite_ms.php __==UNFINISHED==__
 - newUpdateTime_ms.php __==UNFINISHED==__
@@ -1505,6 +1505,56 @@ UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :ci
 <br>
 
 ### refreshGithubRepo_ms.php
+Updates the metadata from the github repo if there's been a new commit.
+
+
+__- refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit:__
+
+_DELETE_ operation on the table __'gitFiles'__ to remove rows where the column:
+- cid
+
+matches a specific value (`:cid`).
+
+```sql
+DELETE FROM gitFiles WHERE cid = :cid;
+```
+
+
+_SELECT_ operation on the table __'gitRepos'__ to retrieve the values of the columns:
+- lastCommit
+- repoURL
+
+```sql
+SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid;
+```
+
+
+_UPDATE_ operation on the table __'gitRepos'__ to update the value of the column:
+- lastCommit
+
+```sql
+UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid;
+```
+
+
+__- refreshCheck: Decide how often the data can be updated, and if it can be updated again:__
+
+_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
+- updated
+
+```sql
+SELECT updated FROM course WHERE cid = :cid;
+```
+
+
+__- newUpdateTime: Updates the MySQL database to save the latest update time:__
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
+- updated
+
+```sql
+UPDATE course SET updated = :parsedTime WHERE cid = :cid;
+```
 
 <br>
 
