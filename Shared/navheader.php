@@ -8,9 +8,11 @@
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
+			
 
 			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
+			pdoConnect();
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
 			if (isset($_GET['courseid']))
@@ -193,8 +195,8 @@
 							//Need to check if the course has a version, if it does not the button should not be created
 							if(isset($result['versname'])) {
 								// Changes format from 'HT20' to numbers to create the URL
-								$array = explode("T", $result['versname']);
-								$array_1 = explode("-", $result['startdate']);
+								$array = explode('T', $result['versname'] ?? '');
+								$array_1 = explode('-', $result['startdate'] ?? '');
         						$year = $array_1[0];
 
 								if ($array[0] === "H") {

@@ -127,7 +127,7 @@ if($gradesys=="UNK") $gradesys=0;
 		    $isSuperUserVar=isSuperUser($userid);
 		    $ha = $haswrite || $isSuperUserVar;
 		    if(strcmp($opt,"GRP")===0) {
-		        $query = $pdo->prepare("SELECT user.uid,user.username,/*user.firstname,user.lastname,*/user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
+		        $query = $pdo->prepare("SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
 		        $query->bindParam(':cid', $courseid);
 		        $query->bindParam(':vers', $coursevers);
 		        /*
@@ -154,18 +154,18 @@ if($gradesys=="UNK") $gradesys=0;
 		                    if(is_null($email)){
 		                        $email=$row['username']."@student.his.se";
 		                    }
-		                //    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
+							array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
 		                    $idx=strpos($grpmembershp,$showgrp,$idx+1);
 		                }
 		            }
 		            sort($grplst);
-		            /*
+					/*
 		            foreach($query->fetchAll() as $row) {
 		                if(isset($row['groups'])){
 		                    $grpmembershp = explode(" ", $row['groups']);
 
 		                    foreach($grpmembershp as $member){
-		                        if($ha||in_array($member,$glst)){
+		                        if($ha||in_array($member,$grplst)){
 		                          foreach($groups as $groupKind=>$group){
 		                            if(in_array($member,$group)){
 		                                if(!isset($grplst[$groupKind])){
@@ -183,7 +183,7 @@ if($gradesys=="UNK") $gradesys=0;
 		                    }
 		                }
 		            }
-		            */
+					*/
 		        }else{
 		            $debug="Failed to get group members!";
 		        }
@@ -390,10 +390,9 @@ if($gradesys=="UNK") $gradesys=0;
 						}
 					}
 				}else if(strcmp($opt,"UPDATEDEADLINE")===0){
-					$deadlinequery = $pdo->prepare("UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link;");
+					$deadlinequery = $pdo->prepare("UPDATE listentries SET handindeadline=:deadline WHERE lid=:lid;");
 					$deadlinequery->bindParam(':deadline',$deadline);
-					$deadlinequery->bindParam(':relativedeadline',$relativedeadline);
-					$deadlinequery->bindParam(':link',$link);
+					$deadlinequery->bindParam(':lid',$sectid);
 					
 					if(!$deadlinequery->execute()){
 						$error=$deadlinequery->errorInfo();
@@ -1055,7 +1054,7 @@ if($gradesys=="UNK") $gradesys=0;
 		$entries=array();
 
 		if($cvisibility){
-			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
+			$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,handindeadline,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
 			 ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
 					WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 			$query->bindParam(':cid', $courseid);
@@ -1078,6 +1077,7 @@ if($gradesys=="UNK") $gradesys=0;
 								'kind' => $row['kind'],
 								'moment' => $row['moment'],
 								'link'=> $row['link'],
+								'handindeadline'=> $row['handindeadline'],
 								'visible'=> $row['visible'],
 								'highscoremode'=> $row['highscoremode'],
 								'gradesys' => $row['gradesystem'],

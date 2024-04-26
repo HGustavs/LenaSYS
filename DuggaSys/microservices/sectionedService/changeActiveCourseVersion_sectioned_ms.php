@@ -1,5 +1,4 @@
 <?php
-
 //---------------------------------------------------------------------------------------------------------------
 // changeActiveCourseVersion_sectioned_ms
 //---------------------------------------------------------------------------------------------------------------
@@ -8,8 +7,8 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 
 pdoConnect();
 session_start();
@@ -24,7 +23,7 @@ $courseid = getOP('cid');
 $versid = getOP('vers');
 
 // Authorization
-$isSuperUserVar = isSuperUser($userid)
+$isSuperUserVar = isSuperUser($userid);
 $ha = (checklogin() && ($haswrite || $isSuperUserVar));
 
 if($ha || $studentTeacher) {
@@ -37,5 +36,3 @@ if($ha || $studentTeacher) {
         $debug="Error updating entries".$error[2];
     }
 }
-
-?>

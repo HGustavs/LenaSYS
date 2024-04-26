@@ -771,10 +771,11 @@ const elementTypes = {
     UMLInitialState: 9,
     UMLFinalState: 10,
     UMLSuperState: 11,
-    sequenceActorAndObject: 12,
+    sequenceActor: 12,
     sequenceActivation: 13,
     sequenceLoopOrAlt: 14,
     note: 15,
+    sequenceObject: 16,
 };
 
 /**
@@ -793,10 +794,12 @@ const elementTypesNames = {
     UMLInitialState: "UMLInitialState",
     UMLFinalState: "UMLFinalState",
     UMLSuperState: "UMLSuperState",
-    sequenceActorAndObject: "sequenceActorAndObject",
+    sequenceActor: "sequenceActor",
+    sequenceObject: "sequenceObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
+    UMLRelation: "UMLRelation",
 }
 
 /**
@@ -827,11 +830,11 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
+    PRIMARY: "primary",
     WEAK: "weakKey",
+    COMPUTED: "computed",
     MULTIPLE: "multiple",
     CANDIDATE: "candidate",
-    PRIMARY: "primary",
-    COMPUTED: "computed",
 };
 
 /**
@@ -1161,7 +1164,8 @@ const subMenuUMLstate = [
     elementTypes.UMLSuperState,
 ]
 const subMenuSequence = [
-    elementTypes.sequenceActorAndObject,
+    elementTypes.sequenceActor,
+    elementTypes.sequenceObject,
     elementTypes.sequenceActivation,
     elementTypes.sequenceLoopOrAlt,
 ]
@@ -1174,7 +1178,7 @@ var movingObject = false;
 var movingContainer = false;
 
 //setting the base values for the allowed diagramtypes
-var diagramType = {ER: false, UML: false, IE: false, SD: false, NOTE: false};
+var diagramType = {ER: false, UML: false, IE: false, SD: false, SE: false, NOTE: false};
 
 //Grid Settings
 var settings = {
@@ -1239,7 +1243,9 @@ var defaults = {
         state: 'normal',
         attributes: ['-attribute'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 50,
     },
     ERRelation: {
         name: "Relation",
@@ -1250,7 +1256,9 @@ var defaults = {
         height: 60,
         type: "ER",
         state: 'normal',
-        canChangeTo: Object.values(relationType)
+        canChangeTo: Object.values(relationType),
+        minWidth: 60,
+        minHeight: 60,
     },
     ERAttr: {
         name: "Attribute",
@@ -1260,7 +1268,9 @@ var defaults = {
         width: 90,
         height: 45,
         type: "ER",
-        state: 'normal'
+        state: 'normal',
+        minWidth: 90,
+        minHeight: 45,
     },
     Ghost: {
         name: "Ghost",
@@ -1281,7 +1291,9 @@ var defaults = {
         type: "UML",
         attributes: ['-Attribute'],
         functions: ['+Function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
     },
     UMLRelation: {
         name: "Inheritance",
@@ -1291,7 +1303,9 @@ var defaults = {
         width: 60,
         height: 60,
         type: "UML",
-        canChangeTo: Object.values(relationType)
+        canChangeTo: Object.values(relationType),
+        minWidth: 60,
+        minHeight: 60,
     },
     IEEntity: {
         name: "IEEntity",
@@ -1299,11 +1313,13 @@ var defaults = {
         stroke: color.BLACK,
         fill: color.WHITE,
         width: 200,
-        height: 0,
+        height: 0, // Extra height when resizing larger than text.
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
     },
     IERelation: {
         name: "Inheritance",
@@ -1313,19 +1329,23 @@ var defaults = {
         width: 50,
         height: 50,
         type: "IE",
-        canChangeTo: Object.values(relationType)
-    },
+        canChangeTo: Object.values(relationType),
+        minWidth: 50,
+        minHeight: 50,
+    }, 
     SDEntity: {
         name: "State",
         kind: "SDEntity",
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 200,
-        height: 50,
+        height: 0, // Extra height when resizing larger than text.
         type: "SD",
         attributes: ['do: func'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
     },
     UMLInitialState: {
         name: "UML Initial State",
@@ -1335,7 +1355,9 @@ var defaults = {
         width: 60,
         height: 60,
         type: "SD",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 60,
+        minHeight: 60,
     },
     UMLFinalState: {
         name: "UML Final State",
@@ -1345,7 +1367,9 @@ var defaults = {
         width: 60,
         height: 60,
         type: "SD",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 60,
+        minHeight: 60,
     },
     UMLSuperState: {
         name: "UML Super State",
@@ -1355,18 +1379,33 @@ var defaults = {
         width: 500,
         height: 500,
         type: "SD",
-        canChangeTo: null
-    },
-    sequenceActorAndObject: {
+        canChangeTo: null,
+        minWidth: 200,
+        minHeight: 150,
+    }, 
+    sequenceActor: {
         name: "name",
-        kind: "sequenceActorAndObject",
+        kind: "sequenceActor",
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 100,
         height: 150,
         type: "SE",
-        actorOrObject: "actor",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 100,
+        minHeight: 100,
+    },
+    sequenceObject: {
+        name: "name",
+        kind: "sequenceObject",
+        fill: "#FFFFFF",
+        stroke: "#000000",
+        width: 100,
+        height: 150,
+        type: "SE",
+        canChangeTo: null,
+        minWidth: 100,
+        minHeight: 50,
     },
     sequenceActivation: {
         name: "Activation",
@@ -1376,7 +1415,9 @@ var defaults = {
         width: 30,
         height: 300,
         type: "SE",
-        canChangeTo: null
+        canChangeTo: null,
+        minWidth: 30,
+        minHeight: 50,
     },
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
@@ -1385,10 +1426,12 @@ var defaults = {
         width: 750,
         height: 300,
         type: "SE",
-        alternatives: ["alternative1", "alternative2", "alternative3"],
+        alternatives: ["alternative1"],
         altOrLoop: "Alt",
-        canChangeTo: null
-    },
+        canChangeTo: null,
+        minWidth: 150,
+        minHeight: 50,
+    }, 
     note: {
         name: "Note",
         kind: "note",
@@ -1398,6 +1441,8 @@ var defaults = {
         height: 50,
         type: "NOTE",
         attributes: ['Note'],
+        minWidth: 150,
+        minHeight: 50,
     },
 }
 
@@ -1548,7 +1593,7 @@ function showDiagramTypes() {
     }
 
     // SE buttons
-    if (diagramType.UML) {
+    if (diagramType.SE) {
         document.getElementById("elementPlacement12").onmousedown = function () {
             holdPlacementButtonDown(0);
         };
@@ -1560,6 +1605,7 @@ function showDiagramTypes() {
     } else {
         Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
             button.classList.add("hiddenPlacementType");
+
         });
     }
     // NOTE button
@@ -1785,7 +1831,7 @@ document.addEventListener('keyup', function (e) {
     // Sequence
     if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
         if (subMenuCycling(subMenuSequence)) return;
-        setElementPlacementType(elementTypes.sequenceActorAndObject);
+        setElementPlacementType(elementTypes.sequenceActor);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
@@ -1837,7 +1883,6 @@ document.addEventListener('keyup', function (e) {
 })
 
 window.addEventListener("resize", handleResize);
-var testCount = 0;
 function handleResize() {
     updateRulers();
 }
@@ -2636,18 +2681,25 @@ function mmoving(event) {
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
-            const minWidth = 20; // Declare the minimal with of an object
+            var minWidth = elementData.minWidth; // Declare the minimal with of an object
+            var minHeight = elementData.minHeight; // Declare the minimal height of an object
+
+            // Sets different min-values for ERRelation
+            if (elementData.kind === "ERRelation") {
+                minHeight = 60;
+                minWidth = 60; 
+            }
+
             deltaX = startX - event.clientX;
 
-            let minHeight = 50;
-            if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
+            if (elementData.kind == elementTypesNames.UMLEntity ||
+                elementData.kind == elementTypesNames.IEEntity ||
+                elementData.kind == elementTypesNames.SDEntity) { // Declare the minimal height of an object
                 minHeight = 0;
             }
-            if (elementData.kind === "SDEntity") {
-                deltaY = (startY - event.clientY) / 2;
-            } else {
-                deltaY = startY - event.clientY;
-            }
+
+            deltaY = startY - event.clientY;
+
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
@@ -2979,7 +3031,7 @@ function changeState() {
         // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation) {
         return;
-    } else if (element.type == 'ER') {
+    } else if (element.type == entityType.ER) {
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != elementTypesNames.ERAttr) {
             if (oldType != newType) {
@@ -2996,7 +3048,7 @@ function changeState() {
         let property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type == 'UML') {
+    } else if (element.type == entityType.UML) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.UMLEntity) {
             let property = document.getElementById("propertySelect").value;
@@ -3014,7 +3066,7 @@ function changeState() {
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
 
-    } else if (element.type == 'IE') {
+    } else if (element.type == entityType.IE) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.IEEntity) {
             let property = document.getElementById("propertySelect").value;
@@ -3031,7 +3083,7 @@ function changeState() {
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if (element.type == 'SD') {
+    } else if (element.type == entityType.SD) {
         if (oldType != newType) {
             let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
@@ -3042,7 +3094,7 @@ function changeState() {
             element.type = newType;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-    } else if (element.type == 'SE') {
+    } else if (element.type == entityType.SE) {
         if (oldType != newType) {
             let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
@@ -3184,7 +3236,7 @@ function changeLineProperties() {
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     // UML or IE line
-    if ((line.type == 'UML') || (line.type == 'IE')) {
+    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
         // Start label, near side
         if (line.startLabel != startLabel.value) {
             startLabel.value = startLabel.value.trim();
@@ -3230,23 +3282,11 @@ function changeLineProperties() {
         }
     }
     // SD line
-    if (line.type == 'SD') {
+    if (line.type == entityType.SD) {
         if (line.innerType != lineType.value) {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {innerType: lineType.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // Start label, near side
-        if (line.startLabel != startLabel.value) {
-            startLabel.value = startLabel.value.trim();
-            line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // End label, opposite side
-        if (line.endLabel != endLabel.value) {
-            endLabel.value = endLabel.value.trim();
-            line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
@@ -3526,35 +3566,6 @@ function enumContainsPropertyValue(value, enumObject) {
 }
 
 /**
- * @description Creates an object with the selected x and y values.
- * @param {*} x
- * @param {*} y
- * @returns {Object} Returns object with x and y properties set.
- * @depricated Use new Point object instead!
- */
-function getPoint(x, y) {
-    return {
-        x: x,
-        y: y
-    };
-}
-
-/**
- * @description Creates a new rectangle from upper left point and lower right point.
- * @param {Point} topLeft
- * @param {Point} bottomRight
- * @returns {Object} Returns an object representing a rectangle with position and size.
- */
-function getRectFromPoints(topLeft, bottomRight) {
-    return {
-        x: topLeft.x,
-        y: topLeft.y,
-        width: bottomRight.x - topLeft.x,
-        height: bottomRight.y - topLeft.y,
-    };
-}
-
-/**
  * @description Creates a new rectangle from an element.
  * @param {Object} element Element with a x,y,width and height propery.
  * @returns
@@ -3570,7 +3581,7 @@ function getRectFromElement(element) {
             // Corrects returned y position due to problems with SE types
             
             let elementY = resizedY;
-            if (element.type == "SE") {
+            if (element.type == entityType.SE) {
                 elementY += preResizeHeight[i].height / 3;
             }
 
@@ -3585,7 +3596,7 @@ function getRectFromElement(element) {
 
     // Corrects returned y position due to problems with resizing vertically
     let elementY = element.y;
-    if (element.type == "SE") {
+    if (element.type == entityType.SE) {
         elementY += element.height / 3;
     }
     return {
@@ -3594,20 +3605,6 @@ function getRectFromElement(element) {
         width: element.width,
         height: element.height,
     };
-}
-
-/**
- * @description Checks if the second rectangle is within the first rectangle.
- * @param {*} left First rectangle
- * @param {*} right Second rectangle
- * @returns {Boolean} true if the right rectangle is within the left rectangle.
- */
-function rectsIntersect(left, right) {
-    return (
-        ((left.x + left.width) >= ((right.x) + (right.width * 0.75))) &&
-        ((left.y + left.height) > (right.y + right.height * 0.75)) &&
-        (left.x < right.x + 0.25 * right.width) && (left.y < right.y + 0.25 * right.height)
-    );
 }
 
 /**
@@ -3685,10 +3682,6 @@ function setPos(objects, x, y) {
 
     // Update positions
     updatepos(0, 0);
-}
-
-function isKeybindValid(e, keybind) {
-    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 function findUMLEntityFromLine(lineObj) {
@@ -3814,7 +3807,10 @@ function entityIsOverlapping(id, x, y) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if (data[i].kind == elementTypesNames.sequenceActorAndObject || element.kind == elementTypesNames.sequenceActorAndObject) {
+                else if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || 
+                    (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) ||
+                    (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) 
+                {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
@@ -6198,7 +6194,7 @@ function togglePlacementType(num, type) {
         document.getElementById("togglePlacementTypeButton11").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox11").classList.remove("activeTogglePlacementTypeBox");
     } else if (type == 12) {
-        // Sequence lifetime
+        // Sequence lifeline (actor)
         document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
         document.getElementById("elementPlacement12").children.item(1).classList.add("toolTipText");
         document.getElementById("elementPlacement12").children.item(1).classList.remove("hiddenToolTiptext");
@@ -6216,6 +6212,13 @@ function togglePlacementType(num, type) {
         document.getElementById("elementPlacement14").children.item(1).classList.remove("hiddenToolTiptext");
         document.getElementById("togglePlacementTypeButton14").classList.remove("activeTogglePlacementTypeButton");
         document.getElementById("togglePlacementTypeBox14").classList.remove("activeTogglePlacementTypeBox");
+        // Sequence lifeline (object)
+        document.getElementById("elementPlacement16").classList.add("hiddenPlacementType");
+        document.getElementById("elementPlacement16").children.item(1).classList.add("toolTipText");
+        document.getElementById("elementPlacement16").children.item(1).classList.remove("hiddenToolTiptext");
+        document.getElementById("togglePlacementTypeButton16").classList.remove("activeTogglePlacementTypeButton");
+        document.getElementById("togglePlacementTypeBox16").classList.remove("activeTogglePlacementTypeBox");
+
     }
     // Unhide the currently selected placement type
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
@@ -6623,7 +6626,7 @@ function generateContextProperties() {
                 }
             }
             //Selected ER type
-            if (element.type == 'ER') {
+            if (element.type == entityType.ER) {
                 //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                 for (const property in element) {
                     switch (property.toLowerCase()) {
@@ -6669,7 +6672,7 @@ function generateContextProperties() {
                             break;
                     }
                 }
-            } else if (element.type == 'UML') { //Selected UML type
+            } else if (element.type == entityType.UML) { //Selected UML type
                 //If UML entity
                 if (element.kind == elementTypesNames.UMLEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
@@ -6725,7 +6728,7 @@ function generateContextProperties() {
                     }
                     str += '</select>';
                 }
-            } else if (element.type == 'IE') {//Selected IE type
+            } else if (element.type == entityType.IE) {//Selected IE type
                 //If IE entity
                 if (element.kind == elementTypesNames.IEEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
@@ -6776,7 +6779,7 @@ function generateContextProperties() {
                     }
                     str += '</select>';
                 }
-            } else if (element.type == 'SD') {//Selected SD type
+            } else if (element.type == entityType.SD) {//Selected SD type
                 //if SDEntity kind
                 if (element.kind == elementTypesNames.SDEntity) {
                     for (const property in element) {
@@ -6804,6 +6807,23 @@ function generateContextProperties() {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
+                                str += `<input id='elementProperty_${property}' 
+                                            type='text' 
+                                            value='${element[property]}' 
+                                            maxlength='${20 * zoomfact}'
+                                            onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            } else if (element.type == entityType.SE) {//Selected sequence type
+                if (element.kind == elementTypesNames.sequenceActor) {
+                    for (const property in element) {
+                        switch (property.toLowerCase()) {
+                            case 'name':
+                                str += `<div style='color:white'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
                                 break;
                             default:
@@ -6811,21 +6831,12 @@ function generateContextProperties() {
                         }
                     }
                 }
-            } else if (element.type == 'SE') {//Selected sequence type
-                //if sequenceActorAndObject kind
-                if (element.kind == elementTypesNames.sequenceActorAndObject) {
+                if (element.kind == 'sequenceObject') {
                     for (const property in element) {
                         switch (property.toLowerCase()) {
                             case 'name':
                                 str += `<div style='color:white'>Name</div>`;
                                 str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            case 'actororobject':
-                                //buttons for choosing object or actor via toggleActorOrbject
-                                str += `<div>`
-                                str += `<button onclick='toggleActorOrbject("actor");'>Actor</button>`
-                                str += `<button onclick='toggleActorOrbject("object");'>Object</button>`
-                                str += `</div>`
                                 break;
                             default:
                                 break;
@@ -6873,7 +6884,7 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
-            if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'ER' || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (let i = 0; i < value.length; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
@@ -6886,8 +6897,21 @@ function generateContextProperties() {
                         }
                     }
                 }
+            } else if (contextLine[0].type == entityType.ER) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+                for (var i = 0; i < value.length - 1; i++) {
+                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                        if (selected == value[i]) {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        } else {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        }
+                    }
+                }
             }
-            if (contextLine[0].type == 'ER') {
+            if (contextLine[0].type == entityType.ER) {
                 if (findAttributeFromLine(contextLine[0]) == null) {
                     if (findEntityFromLine(contextLine[0]) != null) {
                         str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
@@ -6907,7 +6931,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if ((contextLine[0].type == 'UML') || (contextLine[0].type == 'IE') || (contextLine[0].type == 'SD' || contextLine[0].type == 'NOTE')) {
+            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == 'NOTE')) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
                 str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                 str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6920,8 +6944,25 @@ function generateContextProperties() {
                 str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
                 str += `/>`;
+            } else if ((contextLine[0].type == entityType.IE)) {
+                str += `<span id="lineLabel"`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `${contextLine[0].label}`;
+                str += `/span>`;
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
+                str += `<input id="lineStartLabel" maxlength="50" type="text" placeholder="Start cardinality"`;
+                if (contextLine[0].startLabel && contextLine[0].startLabel != "") str += `value="${contextLine[0].startLabel}"`;
+                str += `/>`;
+                str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
+                if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+                str += `/>`;
+            } else if (contextLine[0].type == entityType.SD) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+                str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
+                str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
+                str += `/>`;
             }
-            if (contextLine[0].type == 'UML' || contextLine[0].type == 'IE' || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
@@ -7052,7 +7093,7 @@ function generateContextProperties() {
                 str += `</select>`;
             }
             //generate the dropdown for SD line icons.
-            if (contextLine[0].type == 'SD') {
+            if (contextLine[0].type == entityType.SD) {
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with SD, and add them to the drop down as options
@@ -7727,14 +7768,25 @@ function sortElementAssociations(element) {
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
 function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
-
     // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == elementTypesNames.EREntity) {
+    if (toElement.kind == "EREntity"){
         var tempElement = toElement;
         toElement = fromElement;
         fromElement = tempElement;
     }
-
+    //If line is comming to ERRelation from weak entity it adds double line, else it will be single
+    if (toElement.kind == "ERRelation") {
+        if (fromElement.state == "weak") {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+            kind = "Double";
+        } else {
+            var tempElement = toElement;
+            toElement = fromElement;
+            fromElement = tempElement;
+        }
+    }
     if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
@@ -7890,7 +7942,7 @@ function preProcessLine(line) {
     telem = data[findIndex(data, line.toID)];
 
     //Sets the endIcon of the to-be-created line, if it an State entity
-    if ((felem.type === 'SD') && (telem.type === 'SD')) {
+    if ((felem.type === entityType.SD) && (telem.type === entityType.SD)) {
         if (line.kind === 'Recursive') {
             line.endIcon = '';
         } else {
@@ -8485,7 +8537,27 @@ function addNodes(element) {
 
     elementDiv.innerHTML += nodes;
     const defaultNodeSize = 8;
-  
+
+    var nodeSize = defaultNodeSize * zoomfact;
+    if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
+        var mdNode = document.getElementById("md");
+        mdNode.style.width = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
+        mdNode.style.bottom = "0%";
+    }
+
+    if (element.kind == "UMLSuperState") {
+        var mdNode = document.getElementById("md");
+        var muNode = document.getElementById("mu");
+        mdNode.style.width = nodeSize + "px";
+        muNode.style.width = nodeSize + "px";
+        mdNode.style.height = nodeSize + "px";
+        muNode.style.height = nodeSize + "px";
+        mdNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
+        muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
+    }
+
     var nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
@@ -8553,31 +8625,53 @@ function drawRulerBars(X, Y) {
         var verticalText = " ";
     }
 
+    //Calculate the visible range based on viewports dimenstions, current position and zoomfactor
+    var viewportHeight = window.innerHeight;
+    var viewportWidth = window.innerWidth;
+
+    var visibleRangeY = [
+        (pannedY*-1),
+        (pannedY*-1 + viewportHeight)
+    ];
+    var visibleRangeX = [
+        (pannedX*-1) ,
+        (pannedX*-1 + viewportWidth)
+    ];
+
+
     //Draw the Y-axis ruler positive side.
     var lineNumber = (lineRatio3 - 1);
-    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {        
         lineNumber++;
-
-        //Check if a full line should be drawn
-        if (lineNumber === lineRatio3) {
-            lineNumber = 0;
-            barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
-            barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
-            cordY = cordY + 10;
-        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
-            //centi
-            if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "' style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
-                barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
-            } else {
-                barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+        //Check wether the line that will be drawn is within the visible range
+        if (i > visibleRangeY[0] && i < visibleRangeY[1]) {
+            //Check if a full line should be drawn
+            if (lineNumber === lineRatio3) {
+                lineNumber = 0;
+                barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+                barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "'style='font-size: 10px''>" + cordY + "</text>";
+                cordY = cordY + 10;
+            } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
+                //centi
+                if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
+                    barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "'style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
+                    barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+                } else {
+                    barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+                }
+            } else if (zoomfact > 0.75) {
+                //milli
+                if ((lineNumber) % 5 == 0) {
+                    barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+                } else {
+                    barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
+                }
             }
-        } else if (zoomfact > 0.75) {
-            //milli
-            if ((lineNumber) % 5 == 0) {
-                barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
-            } else {
-                barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
+        }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
+            if(lineNumber === lineRatio3){
+                lineNumber = 0;
+                cordY = cordY + 10
             }
         }
     }
@@ -8586,27 +8680,35 @@ function drawRulerBars(X, Y) {
     cordY = -10;
     for (let i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
-
-        //Check if a full line should be drawn
-        if (lineNumber === lineRatio3) {
-            lineNumber = 0;
-            barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
-            barY += "<text class='ruler-text' x='10' y='" + (pannedY - i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
-            cordY = cordY - 10;
-        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
-            //centi
-            if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordY + 10 - lineNumber / 10) != 0) {
-                barY += "<text class='ruler-text' x='20' y='" + (pannedY - i + 10) + "' style='font-size: 8px''>" + (cordY + 10 - lineNumber / 10) + "</text>";
-                barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
-            } else {
-                barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+        //Check wether the line that will be drawn is within the visible range
+        if (-i > visibleRangeY[0] && -i < visibleRangeY[1]) {
+            //Check if a full line should be drawn
+            if (lineNumber === lineRatio3) {
+                lineNumber = 0;
+                barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+                barY += "<text class='ruler-text' x='10' y='" + (pannedY - i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
+                cordY = cordY - 10;
+            } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
+                //centi
+                if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordY + 10 - lineNumber / 10) != 0) {
+                    barY += "<text class='ruler-text' x='20' y='" + (pannedY - i + 10) + "' style='font-size: 8px''>" + (cordY + 10 - lineNumber / 10) + "</text>";
+                    barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+                } else {
+                    barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+                }
+            } else if (zoomfact > 0.75) {
+                //milli
+                if ((lineNumber) % 5 == 0) {
+                    barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
+                } else {
+                    barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
+                }
             }
-        } else if (zoomfact > 0.75) {
-            //milli
-            if ((lineNumber) % 5 == 0) {
-                barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
-            } else {
-                barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
+        }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
+            if(lineNumber === lineRatio3) {
+                lineNumber = 0;
+                cordY = cordY - 10;
             }
         }
     }
@@ -8617,26 +8719,35 @@ function drawRulerBars(X, Y) {
     lineNumber = (lineRatio3 - 1);
     for (let i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
-        //Check if a full line should be drawn
-        if (lineNumber === lineRatio3) {
-            lineNumber = 0;
-            barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='0' x2='" + (i + pannedX) + "' y2='40px'/>";
-            barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='15' style='font-size: 10px'>" + cordX + "</text>";
-            cordX = cordX + 10;
-        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
-            //centi
-            if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='25' style='font-size: 8px'>" + (cordX - 10 + lineNumber / 10) + "</text>";
-                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='20' x2='" + (i + pannedX) + "' y2='40px'/>";
-            } else {
-                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='25' x2='" + (i + pannedX) + "' y2='40px'/>";
+        //Check wether the line that will be drawn is within the visible range
+        if (i > visibleRangeX[0] && i < visibleRangeX[1]) {
+            //Check if a full line should be drawn
+            if (lineNumber === lineRatio3) {
+                lineNumber = 0;
+                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='0' x2='" + (i + pannedX) + "' y2='40px'/>";
+                barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='15' style='font-size: 10px'>" + cordX + "</text>";
+                cordX = cordX + 10;
+            } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
+                //centi
+                if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
+                    barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='25' style='font-size: 8px'>" + (cordX - 10 + lineNumber / 10) + "</text>";
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='20' x2='" + (i + pannedX) + "' y2='40px'/>";
+                } else {
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='25' x2='" + (i + pannedX) + "' y2='40px'/>";
+                }
+            } else if (zoomfact > 0.75) {
+                //milli
+                if ((lineNumber) % 5 == 0) {
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='32' x2='" + (i + pannedX) + "' y2='40px'/>";
+                } else {
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
+                }
             }
-        } else if (zoomfact > 0.75) {
-            //milli
-            if ((lineNumber) % 5 == 0) {
-                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='32' x2='" + (i + pannedX) + "' y2='40px'/>";
-            } else {
-                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
+        }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
+            if(lineNumber === lineRatio3){
+                lineNumber = 0;
+                cordX = cordX+10
             }
         }
     }
@@ -8645,26 +8756,35 @@ function drawRulerBars(X, Y) {
     cordX = -10;
     for (let i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
-        //Check if a full line should be drawn
-        if (lineNumber === lineRatio3) {
-            lineNumber = 0;
-            barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='0' x2='" + (pannedX - i) + "' y2='40px'/>";
-            barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='15'style='font-size: 10px'>" + cordX + "</text>";
-            cordX = cordX - 10;
-        } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
-            //centi
-            if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordX + 10 - lineNumber / 10) != 0) {
-                barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='25'style='font-size: 8px'>" + (cordX + 10 - lineNumber / 10) + "</text>";
-                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='20' x2='" + (pannedX - i) + "' y2='40px'/>";
-            } else {
-                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='25' x2='" + (pannedX - i) + "' y2='40px'/>";
+        //Check wether the line that will be drawn is within the visible range
+        if (-i > visibleRangeX[0] && -i < visibleRangeX[1]) {
+            //Check if a full line should be drawn
+            if (lineNumber === lineRatio3) {
+                lineNumber = 0;
+                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='0' x2='" + (pannedX - i) + "' y2='40px'/>";
+                barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='15'style='font-size: 10px'>" + cordX + "</text>";
+                cordX = cordX - 10;
+            } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
+                //centi
+                if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordX + 10 - lineNumber / 10) != 0) {
+                    barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='25'style='font-size: 8px'>" + (cordX + 10 - lineNumber / 10) + "</text>";
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='20' x2='" + (pannedX - i) + "' y2='40px'/>";
+                } else {
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='25' x2='" + (pannedX - i) + "' y2='40px'/>";
+                }
+            } else if (zoomfact > 0.75) {
+                //milli
+                if ((lineNumber) % 5 == 0) {
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='32' x2='" + (pannedX - i) + "' y2='40px'/>";
+                } else {
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
+                }
             }
-        } else if (zoomfact > 0.75) {
-            //milli
-            if ((lineNumber) % 5 == 0) {
-                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='32' x2='" + (pannedX - i) + "' y2='40px'/>";
-            } else {
-                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
+        }else{
+            // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
+            if(lineNumber === lineRatio3) {
+                lineNumber = 0;
+                cordX = cordX - 10;
             }
         }
     }
@@ -8683,7 +8803,6 @@ function drawElement(element, ghosted = false) {
     let str = "";
     const multioffs = 3;
 
-    // Compute size variables
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact);
@@ -8692,7 +8811,7 @@ function drawElement(element, ghosted = false) {
     let hboxh = Math.round(element.height * zoomfact * 0.5);
     let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     let sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
-    let elemAttri;
+  
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8723,572 +8842,84 @@ function drawElement(element, ghosted = false) {
         }
     }
 
-    //=============================================== <-- UML functionality
     // TODO: Refactor each if into own function, then use it in switch
     switch (element.kind) {
         case elementTypesNames.UMLEntity:
             str += drawElementUMLEntity(element, ghosted);
             break;
+        case elementTypesNames.SDEntity:
+            str += drawElementSDEntity(element, ghosted);
+            break;
+        case elementTypesNames.UMLInitialState:
+            let initVec = `
+                <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+                    <circle cx="16.5" cy="12.5" r="10.5" />
+                </g>`
+            str += drawElementState(element, ghosted, initVec);
+            break;
+        case elementTypesNames.UMLFinalState:
+            let finalVec = `
+                <g> 
+                    <path 
+                        d=" M 12,-0
+                            C 18.623,-0 24,5.377 24,12
+                            C 24,18.623 18.623,24 12,24
+                            C 5.377,24 -0,18.623 -0,12
+                            C -0,5.377 5.377,-0 12,-0 Z
+                            M 12,2C17.519,2 22,6.481 22,12
+                            C 22,17.519 17.519,22 12,22
+                            C 6.481,22 2,17.519 2,12
+                            C 2,6.481 6.481,2 12,2 Z"
+                    />
+                    <circle 
+                        transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" 
+                        cx="14.5" cy="14.5" r="5.5"
+                    /> 
+                </g>`
+            str += drawElementState(element, ghosted, finalVec);
+            break;
+        case elementTypesNames.UMLSuperState:
+            str += drawElementSuperState(element, ghosted, textWidth);
+            break;
         case elementTypesNames.IEEntity:
             str += drawElementIEEntity(element, ghosted);
+            break;
+        case elementTypesNames.UMLRelation:
+            str += drawElementUMLRelation(element, ghosted);
+            break;
+        case elementTypesNames.IERelation:
+            str += drawElementIERelation(element, ghosted);
+            break;
+        case elementTypesNames.sequenceActor:
+            str += drawElementSequenceActor(element, ghosted, textWidth);
+            break;
+        case elementTypesNames.sequenceObject:
+            str += drawElementSequenceObject(element, ghosted);
+            break;
+        case elementTypesNames.sequenceActivation:
+            str += drawElementSequenceActivation(element, ghosted);
+            break;
+        case elementTypesNames.sequenceLoopOrAlt:
+            str += drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor);
+            break;
+        case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
+            str += drawElementNote(element, ghosted);
             break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%" 
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg" 
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)">
-                            <circle cx="16.5" cy="12.5" r="10.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
-            element.fill = color.WHITE;
-        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
-            element.fill = color.BLACK;
-        }
     } else if (element.kind == elementTypesNames.UMLFinalState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        const theme = document.getElementById("themeBlack");
-        str += `<div id="${element.id}" 
-                    class="element uml-state"
-                    style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}"
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();'>
-                    <svg width="100%" height="100%"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xml:space="preserve"
-                        style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                        <g>
-                            <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                            <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/>
-                        </g>
-                    </svg>
-                </div>`;
-        if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
-            element.fill = color.WHITE;
-        } else if (element.fill == color.WHITE && theme.href.includes('style')) {
-            element.fill = color.BLACK;
-        }
     } else if (element.kind == elementTypesNames.UMLSuperState) {
-        const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-        str += `<div id="${element.id}" 
-                    class="element uml-Super"
-                    style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
-                     onmousedown='ddown(event);' 
-                     onmouseenter='mouseEnter();' 
-                     onmouseleave='mouseLeave();'>
-                    <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${actorFontColor}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${boxw / 2}px" height="${80 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                        <text x='${80 * zoomfact}px' y='${40 * zoomfact}px' dominant-baseline='middle' text-anchor='${vAlignment}' font-size="${20 * zoomfact}px">${element.name}</text>
-                    </svg>
-                </div>`;
-    }
-    // Check if element is SDEntity
-    else if (element.kind == elementTypesNames.SDEntity) {
-        const maxCharactersPerLine = Math.floor(boxw / texth);
-
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in SDHeight for the element
-        for (let i = 0; i < SDHeight.length; i++) {
-            if (element.id == SDHeight[i].id) {
-                SDHeight.splice(i, 1);
-            }
-        }
-
-        // Calculate and store the SDEntity's real height
-        var SDEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-        }
-        SDHeight.push(SDEntityHeight);
-
-        //div to encapuslate SD element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //div to encapuslate SD header
-        str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-        //svg for SD header, background and text
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        str += `<path class="text" 
-            d="M${linew + cornerRadius},${(linew)}
-                h${(boxw - (linew * 2)) - (cornerRadius * 2)}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius)}
-                h${(boxw - (linew * 2)) * -1}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - (cornerRadius)) * -1}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />
-        
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        //end of svg for SD header
-        str += `</svg>`;
-        //end of div for SD header
-        str += `</div>`;
-
-        //div to encapuslate SD content
-
-        //Draw SD-content if there exist at least one attribute
-        if (elemAttri != 0) {
-            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-            /* find me let sdOption = document.getElementById("SDOption");
-             console.log(sdOption); */
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-            str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2 ))}
-                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (let i = 0; i < elemAttri; i++) {
-                str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
-            }
-            //end of svg for background
-            str += `</svg>`;
-            // Draw SD-content if there are no attributes.
-        }
-        else {
-            str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-            str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            /*str += `<text x='5' y='${hboxh + boxh / 2}' dominant-baseline='middle' text-anchor='right'></text>`; */
-            //end of svg for background
-            str += `</svg>`;
-        }
-        //end of div for SD content
-        str += `</div>`;
-    }
-    //Check if element is UMLRelation
-    else if (element.kind == 'UMLRelation') {
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-
-        //Overlapping UML-inheritance
-        if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //Disjoint UML-inheritance
-        else {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-    //=============================================== <-- IE functionality
-    //Check if the element is a IE entity
-    else if (element.kind == elementTypesNames.IEEntity) {
+    } else if (element.kind == elementTypesNames.SDEntity) {
+    } else if (element.kind == elementTypesNames.UMLRelation) {
+    } else if (element.kind == elementTypesNames.IEEntity) {
     } else if (element.kind == elementTypesNames.IERelation) {
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh / 2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
-
-        // Overlapping IE-inheritance
-
-        if (element.state == 'overlapping') {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white" stroke="black"'/> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black" />`
-        }
-        // Disjoint IE-inheritance
-        else {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white" stroke="black"/>
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black" />
-                <line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke="black" />
-                <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke="black" />`
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-    //=============================================== <-- End of IE functionality
-    //=============================================== <-- Start Sequnece functionality
-    //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == elementTypesNames.sequenceActorAndObject) {
-        //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        //actor or object is determined via the buttons in the context menu. the default is actor.
-        if (element.actorOrObject == "actor") {
-            //svg for actor.
-            str += `<g>`
-            str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-            str += `<path class="text"
-                d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-                    v${boxw / 6}
-                    m-${(boxw / 4)},0
-                    h${boxw / 2}
-                    m-${(boxw / 4)},0
-                    v${boxw / 3}
-                    l${boxw / 4},${boxw / 4}
-                    m${(boxw / 4) * -1},${(boxw / 4) * -1}
-                    l${(boxw / 4) * -1},${boxw / 4}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='transparent'
-            />`;
-            //svg for the actor name text, it has a background rect for ease of readability.
-            //make the rect fit the text if the text isn't too big
-            if (!tooBig) {
-                //rect for sitting behind the actor text
-                str += `<rect class='text'
-                    x='${xAnchor - (textWidth / 2)}'
-                    y='${boxw + (linew * 2)}'
-                    width='${textWidth}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-                str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            }
-            //else just make a boxw width rect and adjust the text to fit this new rect better
-            else {
-                //rect for sitting behind the actor text
-                str += `<rect class='text'
-                    x='${linew}'
-                    y='${boxw + (linew * 2)}'
-                    width='${boxw - linew}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-                str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-            }
-            str += `</g>`;
-        }
-        else if (element.actorOrObject == "object") {
-            //svg for object.
-            str += `<g>`;
-            str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
-                height='${(boxw / 2) - linew}'
-                rx='${sequenceCornerRadius}'
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}' 
-            />`;
-            str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-            str += `</g>`;
-        }
-        str += `</svg>`;
-    }
-    // Sequence activation 
-    else if (element.kind == 'sequenceActivation') {
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the activation rect
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' rx='${sequenceCornerRadius * 3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
-        str += `</svg>`;
-    }
-    // Sequence loop or alt
-    else if (element.kind == 'sequenceLoopOrAlt') {
-        //first, set a suggested height for the element based on the amount of alternatives
-        if (element.alternatives != null) {
-            //increase length of element to avoid squished alternatives
-            for (let i = 0; i < element.alternatives.length; i++) {
-                boxh += 125 * zoomfact;
-            }
-            //also set alt or loop to whatever is correct
-            //if it has more than one alternative its an alt, else its loop.
-            element.alternatives.length > 1 ? element.altOrLoop = "Alt" : element.altOrLoop = "Loop";
-        }
-
-        //div to encapsulate sequence loop 
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop/alt rectangle
-        str += `<rect class='text'
-            x='${linew}'
-            y='${linew}'
-            width='${boxw - (linew * 2)}'
-            height='${boxh - (linew * 2)}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='none'
-            rx='${7 * zoomfact}'
-            fill-opacity="0"
-        />`;
-        //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
-        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
-            for (let i = 1; i < element.alternatives.length; i++) {
-                str += `<path class="text"
-                d="M${boxw - linew},${(boxh / element.alternatives.length) * i}
-                    H${linew}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                stroke-dasharray='${linew * 3},${linew * 3}'
-                fill='transparent'
-                />`;
-                //text for each alternative
-                str += `<text x='${linew * 2}' y='${((boxh / element.alternatives.length) * i) + (texth / 1.5) + linew * 2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
-            }
-        }
-        //svg for the small label in top left corner
-        str += `<path 
-            d="M${(7 * zoomfact) + linew},${linew}
-                h${100 * zoomfact}
-                v${25 * zoomfact}
-                l${-12.5 * zoomfact},${12.5 * zoomfact}
-                H${linew}
-                V${linew + (7 * zoomfact)}
-                a${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />`;
-        //text in the label
-        str += `<text x='${50 * zoomfact + linew}' y='${18.75 * zoomfact + linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
-        //text below the label
-        //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${linew * 2}' y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
-        str += `</svg>`;
-    }
-    //=============================================== <-- End of Sequnece functionality
-    //=============================================== <-- Start Note functionality
-    else if (element.kind == "note") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-        const theme = document.getElementById("themeBlack");
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in NOTEHeight for the element
-        for (let i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                NOTEHeight.splice(i, 1);
-            }
-        }
-        // Calculate and store the NOTEEntity's real height
-        var NOTEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
-        }
-        NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == color.BLACK) {
-            element.stroke = color.WHITE;
-        } else if (element.fill == color.WHITE) {
-            element.stroke = color.BLACK;
-        }
-        //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        //div to encapuslate note content
-        //Draw note-content if there exist at least one attribute
-        if (elemAttri <= 4) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
-            //path math to create the note entity
-            //the 4 sets the vertical size to be the same as having written 4 lines in the element
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (let i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
-            //path math to create the note entity and scale it with every line after the 4th line.
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (let i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        }
-        //end of div for UML content
-        str += `</div>`;
-    }
-    //=============================================== <-- End of Note functionality
-    //=============================================== <-- Start ER functionality
-    //ER element
-    else {
+    } else if (element.kind == elementTypesNames.sequenceActor) {
+    } else if (element.kind == "sequenceObject") {
+    } else if (element.kind == 'sequenceActivation') {
+    } else if (element.kind == 'sequenceLoopOrAlt') {
+    } else if (element.kind == "note") {
+    } else {
         // Create div & svg element
         if (element.kind == elementTypesNames.EREntity) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
@@ -9393,11 +9024,16 @@ function drawElement(element, ghosted = false) {
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     `;
                 xAnchor += linew * multioffs;
-            }
-            str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
                     ${weak}`;
-            str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+                str += `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            } else {
+                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
+                    ${weak}`;
+                str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
+            }
         }
         str += "</svg>";
     }
@@ -9407,22 +9043,6 @@ function drawElement(element, ghosted = false) {
     }
     str += "</div>";
     return str;
-}
-
-const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
-const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
-const drawRect = (w, h, l, e) => {
-    return `<rect 
-                class='text' x='${l}' y='${l}' 
-                width='${w - l * 2}' height='${h - l * 2}' 
-                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
-            />`;
-}
-const drawText = (x, y, a, t) => {
-    return `<text
-                class='text' x='${x}' y='${y}' 
-                dominant-baseline='auto' text-anchor='${a}'
-            > ${t} </text>`;
 }
 
 const splitLengthyLine = (s, max) => {
@@ -9446,6 +9066,23 @@ function updateElementHeight(arr, element, height) {
     });
 }
 
+const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
+const drawSvg = (w, h, s, extra='') =>`<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
+const drawRect = (w, h, l, e, extra=`fill='${e.fill}'`) => {
+    return `<rect 
+                class='text' x='${l}' y='${l}' 
+                width='${w - l * 2}' height='${h - l * 2}' 
+                stroke-width='${l}' stroke='${e.stroke}' 
+                ${extra} 
+            />`;
+}
+const drawText = (x, y, a, t, extra='') => {
+    return `<text
+                class='text' x='${x}' y='${y}' 
+                dominant-baseline='auto' text-anchor='${a}' ${extra}
+            > ${t} </text>`;
+}
+
 function drawElementUMLEntity(element, ghosted) {
     let str = "";
     let ghostPreview = ghostLine ? 0 : 0.4;
@@ -9464,16 +9101,15 @@ function drawElementUMLEntity(element, ghosted) {
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
     updateElementHeight(UMLHeight, element, totalHeight + boxh)
 
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
     str += `<div 
-            id='${element.id}' 
-            class='element uml-element' 
-            onmousedown='ddown(event);' 
-            onmouseenter='mouseEnter();' 
-            onmouseleave='mouseLeave()';' 
-            style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;`;
-
-    if (ghosted) str += `pointer-events:none; opacity:${ghostPreview};`;
-    str += `'>`;
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+            >`;
 
     // Header
     let height = texth * 2;
@@ -9497,6 +9133,84 @@ function drawElementUMLEntity(element, ghosted) {
 
     str += textBox(aText, 'uml-content');
     str += textBox(fText, 'uml-footer');
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSDEntity(element, ghosted){
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
+    const maxCharactersPerLine = Math.floor(boxw / texth * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(SDHeight, element, totalHeight + boxh)
+
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1};${ghostStr}'
+            >`
+
+    let height = texth * 2;
+    let headPath = `
+        <path 
+            d="M ${linew + cornerRadius},${linew}
+                h ${boxw - linew * 2 - cornerRadius * 2}
+                a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
+                v ${height - linew * 2 - cornerRadius}
+                h ${(boxw - linew * 2) * -1}
+                v ${(height - linew * 2 - cornerRadius) * -1}
+                a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius * -1}
+                z"
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headPath + headText);
+    str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px;`, headSvg);
+
+    const drawBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let path = `
+            <path 
+                class="text"
+                d="M ${linew},${(linew)}
+                    h ${boxw - linew * 2}
+                    v ${height - linew * 2 - cornerRadius }
+                    a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius * -1},${cornerRadius}
+                    h ${(boxw - linew * 2 - cornerRadius * 2) * -1}
+                    a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius * -1},${cornerRadius * -1}
+                    v ${(height - linew * 2 - cornerRadius) * -1}
+                    z"
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+        let contentSvg = drawSvg(boxw, height, path + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += drawBox(text, 'uml-content');
+    str += `</div>`;
     return str;
 }
 
@@ -9516,16 +9230,15 @@ function drawElementIEEntity(element, ghosted) {
     let totalHeight =  tHeight - linew * 2 + texth * 2;
     updateElementHeight(IEHeight, element, totalHeight + boxh)
 
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
     str += `<div 
-            id='${element.id}' 
-            class='element uml-element' 
-            onmousedown='ddown(event);' 
-            onmouseenter='mouseEnter();' 
-            onmouseleave='mouseLeave()';' 
-            style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-    if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview};`;
-    str += `'>`;
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+            >`;
 
     let height = texth * 2;
     let headRect = drawRect(boxw, height, linew, element);
@@ -9547,6 +9260,391 @@ function drawElementIEEntity(element, ghosted) {
     }
 
     str += textBox(text, 'uml-content');
+    str += `</div>`;
+    return str;
+}
+
+function drawElementState(element, ghosted, vectorGraphic) {
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    var boxw = Math.round(element.width * zoomfact);
+    var boxh = Math.round(element.height * zoomfact);
+    const theme = document.getElementById("themeBlack");
+    if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
+        element.fill = color.WHITE;
+    } else if (element.fill == color.WHITE && theme.href.includes('style')) {
+        element.fill = color.BLACK;
+    }
+    return `<div id="${element.id}" 
+                class="element uml-state"
+                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'>
+                <svg width="100%" height="100%" 
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" 
+                    xml:space="preserve"
+                    style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                    ${vectorGraphic}
+                </svg>
+            </div>`;
+}
+
+function drawElementSuperState(element, ghosted, textWidth) {
+    let str = "";
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let linew = Math.round(strokewidth * zoomfact);
+    element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
+
+    str += `<div id="${element.id}" 
+                class="element uml-Super"
+                style="margin-top:${boxh * 0.025}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+            >`;
+
+    let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='20'`);
+    let rectTwo = drawRect(textWidth + 40 * zoomfact, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`);
+    str += drawSvg(boxw, boxh, rectOne + rectTwo + text);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceActor(element, ghosted, textWidth) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<path 
+                    class="text" 
+                    d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                />
+                <g>
+                    <circle 
+                        cx="${(boxw / 2) + linew}" 
+                        cy="${(boxw / 8) + linew}" 
+                        r="${boxw / 8}px" 
+                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
+                    />
+                    <path 
+                        class="text"
+                        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                            v${boxw / 6}
+                            m-${(boxw / 4)},0
+                            h${boxw / 2}
+                            m-${(boxw / 4)},0
+                            v${boxw / 3}
+                            l${boxw / 4},${boxw / 4}
+                            m${(boxw / 4) * -1},${(boxw / 4) * -1}
+                            l${(boxw / 4) * -1},${boxw / 4} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='transparent'
+                    />
+                    <rect 
+                        class='text'
+                        x='${(boxw - textWidth) / 2}'
+                        y='${boxw + (linew * 2)}'
+                        width='${textWidth}'
+                        height='${texth - linew}'
+                        stroke='none'
+                        fill='${element.fill}'
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${boxw + texth / 2 + linew * 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceObject(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<path 
+                    class="text" 
+                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
+                        V ${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                /> 
+                <g>
+                    <rect 
+                        class='text'
+                        x='${linew}'
+                        y='${linew}'
+                        width='${boxw - linew * 2}'
+                        height='${(boxw / 2) - linew}'
+                        rx='${sequenceCornerRadius}'
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}' 
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${(boxw / 2 - linew) / 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceActivation(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1; ${ghostStr}'
+            >`;
+    content = `<rect 
+                    x='${linew}' y='${linew}' 
+                    width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
+                    rx='${sequenceCornerRadius * 3}' 
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
+                />`;
+    str += drawSvg(boxw, boxh, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    let altLen = element.alternatives.length;
+    if (element.alternatives) boxh += 125 * zoomfact * altLen;
+    element.altOrLoop = (altLen > 1) ? "Alt" : "Loop";
+
+    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}'
+                class='element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
+            >`;
+
+    content = `<rect 
+                    class='text'
+                    x='${linew}'
+                    y='${linew}'
+                    width='${boxw - linew * 2}'
+                    height='${boxh - linew * 2}'
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='none'
+                    rx='${7 * zoomfact}'
+                    fill-opacity="0"
+                />`;
+    //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+    if (element.alternatives.length > 0) {
+        for (let i = 1; i < element.alternatives.length; i++) {
+            content += `<path class="text"
+                            d="M ${boxw - linew},${(boxh / element.alternatives.length) * i}
+                                H ${linew} "
+                            stroke-width='${linew}'
+                            stroke='${element.stroke}'
+                            stroke-dasharray='${linew * 3},${linew * 3}'
+                            fill='transparent'
+                        />`;
+            content += drawText(linew * 2,
+                (boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2,
+                'auto', element.alternatives[i], `fill='${actorFontColor}'`
+            );
+        }
+    }
+    //svg for the small label in top left corner
+    content += `<path 
+                    d="M ${(7 * zoomfact) + linew},${linew}
+                        h ${100 * zoomfact}
+                        v ${25 * zoomfact}
+                        l ${-12.5 * zoomfact},${12.5 * zoomfact}
+                        H ${linew}
+                        V ${linew + (7 * zoomfact)}
+                        a ${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
+                        z" 
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='${element.fill}'
+                />`;
+    let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
+    let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0], `fill=${actorFontColor}` );
+    str += drawSvg(boxw, boxh, content + textOne + textTwo);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementNote(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+    let length = (text.length > 4) ? text.length : 4;
+    let totalHeight = boxh * (1 + length) / 2;
+    updateElementHeight(NOTEHeight, element, totalHeight);
+    element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                    id='${element.id}' 
+                    class='element uml-element' 
+                    onmousedown='ddown(event);' 
+                    onmouseenter='mouseEnter();' 
+                    onmouseleave='mouseLeave();' 
+                    style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+                >`;
+
+    content += `<path class="text"
+                        d=" M ${linew},${linew}
+                            v ${boxh * (1 + length) / 2 - linew * 2}
+                            h ${boxw - linew * 2}
+                            v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                            h 1
+                            h -1
+                            v ${(boxh - linew * 2) * 0.5} 
+                            h ${(boxw - linew * 2) * 0.12}
+                            v 1
+                            v -1
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
+                            h -${(boxw - linew * 2) * 0.885} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}'
+                    />`;
+    for (let i = 0; i < text.length; i++) {
+        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+    }
+    str += drawSvg(boxw, boxh * (1 + length) / 2, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementUMLRelation(element, ghosted) {
+    let str = "";
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;${ghostStr}'
+            >`;
+
+    let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let poly = `
+        <polygon 
+            points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+        />`;
+    str += drawSvg(boxw, boxh, poly);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementIERelation(element, ghosted) {
+    let str = "";
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+
+    str += `<div 
+                id='${element.id}' 
+                class='element ie-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh / 2}px; z-index:1;${ghostStr}'
+            >`;
+
+    let content = "";
+    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`
+
+    if (element.state != inheritanceStateIE.OVERLAPPING) {
+        content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
+                    <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
+    }
+    str += drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    str += `</div>`;
     return str;
 }
 
@@ -9572,7 +9670,7 @@ function updatepos(deltaX, deltaY) {
 
     // Updates nodes for resizing
     removeNodes();
-    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != elementTypesNames.ERRelation && context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
+    if (context.length === 1 && mouseMode == mouseModes.POINTER && (context[0].kind != "UMLRelation" && context[0].kind != elementTypesNames.IERelation)) addNodes(context[0]);
 }
 
 /**
