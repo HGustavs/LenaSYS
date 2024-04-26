@@ -18,7 +18,7 @@ include_once "../Shared/sessions.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
-
+ 
 $opt = getOP('opt');
 $cid = getOP('cid');
 $coursename = getOP('coursename');
@@ -35,7 +35,7 @@ $enddate = getOP('enddate');
 $makeactive = getOP('makeactive');
 $motd = getOP('motd');
 $readonly = getOP('readonly');
-$courseGitURL = getOP('courseGitURL'); // for github url
+$courseGitURL = getOP('courseGitURL'); // for github url 
 $LastCourseCreated = array();
 
 if (isset($_SESSION['uid'])) {
@@ -46,10 +46,15 @@ if (isset($_SESSION['uid'])) {
 $ha = null;
 $debug = "NONE!";
 
+
+
 // Gets username based on uid, USED FOR LOGGING
 $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
 $query->bindParam(':uid', $userid);
 $query->execute();
+
+
+
 
 // This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -81,7 +86,7 @@ if (checklogin()) {
 		// The code for modification using sessions
 		if (strcmp($opt, "DEL") === 0) {
 		} else if (strcmp($opt, "NEW") === 0) {
-			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
+			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
 
 			$query->bindParam(':usrid', $userid);
 			$query->bindParam(':coursecode', $coursecode);
@@ -455,7 +460,7 @@ if (checklogin()) {
 				$debug = "Error duplicate course name\n" . $error[2];
 			}
 		} else if (strcmp($opt, "UPDATE") === 0) {
-			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
+			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursename', $coursename);
@@ -505,7 +510,7 @@ if (checklogin()) {
 			} else {
 				$momentlist = array();
 				foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-					$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
+					$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
 
 					print_r($row['coursename'] . $row['visibility'] . $row['coursecode']);
 					$query->bindParam(':cid', $cid);
@@ -523,6 +528,7 @@ if (checklogin()) {
 		}
 	}
 }
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
@@ -556,12 +562,15 @@ foreach ($queryz->fetchAll(PDO::FETCH_ASSOC) as $row) {
 }
 
 //Delete course matterial from courses that have been marked as deleted.
-$deleted = 3;
+/* $deleted = 3;
 $query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
+
 if (!$query->execute()) {
+
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
+
 }
 
 
@@ -571,7 +580,7 @@ $query->bindParam(':deleted', $deleted);
  if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading courses\n".$error[2];
-} 
+}
 
 //useranswer
 $query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
@@ -659,10 +668,17 @@ $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
+} */
+
+
+try{
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+	//$query->bindParam(':cid', $cid);
+	$query->execute();
 }
-
-
-$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
+catch(Exception $e){
+	$error = $query->errorInfo();
+}
 
 /*
 
@@ -673,11 +689,16 @@ $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversio
 
 */
 
+
 if (!$query->execute()) {
 	$error = $query->errorInfo();
+
 	$debug = "Error reading courses\n" . $error[2];
 } else {
 
+	$myfile = fopen("a22natth.txt", "w") or die("unable to open file");
+	fwrite($myfile, "hejg!!!j" );
+	fclose($myfile);
 
 	foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$writeAccess = false;
@@ -707,7 +728,7 @@ if (!$query->execute()) {
 					'activeversion' => $row['activeversion'],
 					'activeedversion' => $row['activeedversion'],
 					'registered' => $isRegisteredToCourse,
-					'courseGitURL' => $row['courseGitURL']
+					//'courseGitURL' => $row['courseGitURL']
 				)
 			);
 		}
