@@ -799,6 +799,7 @@ const elementTypesNames = {
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
+    UMLRelation: "UMLRelation",
 }
 
 /**
@@ -829,11 +830,11 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
+    PRIMARY: "primary",
     WEAK: "weakKey",
+    COMPUTED: "computed",
     MULTIPLE: "multiple",
     CANDIDATE: "candidate",
-    PRIMARY: "primary",
-    COMPUTED: "computed",
 };
 
 /**
@@ -3280,18 +3281,6 @@ function changeLineProperties() {
             line.innerType = lineType.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {innerType: lineType.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
-        // Start label, near side
-        if (line.startLabel != startLabel.value) {
-            startLabel.value = startLabel.value.trim();
-            line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // End label, opposite side
-        if (line.endLabel != endLabel.value) {
-            endLabel.value = endLabel.value.trim();
-            line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3813,7 +3802,10 @@ function entityIsOverlapping(id, x, y) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) || (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) {
+                else if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || 
+                    (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) ||
+                    (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) 
+                {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
@@ -6887,9 +6879,22 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
-            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == entityType.ER || contextLine[0].type == 'NOTE') {
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (var i = 0; i < value.length; i++) {
+                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                        if (selected == value[i]) {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        } else {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        }
+                    }
+                }
+            } else if (contextLine[0].type == entityType.ER) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+                for (var i = 0; i < value.length - 1; i++) {
                     if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
@@ -6921,7 +6926,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == entityType.IE) || (contextLine[0].type == entityType.SD || contextLine[0].type == 'NOTE')) {
+            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == 'NOTE')) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
                 str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                 str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6933,6 +6938,23 @@ function generateContextProperties() {
                 str += `/>`;
                 str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+                str += `/>`;
+            } else if ((contextLine[0].type == entityType.IE)) {
+                str += `<span id="lineLabel"`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `${contextLine[0].label}`;
+                str += `/span>`;
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
+                str += `<input id="lineStartLabel" maxlength="50" type="text" placeholder="Start cardinality"`;
+                if (contextLine[0].startLabel && contextLine[0].startLabel != "") str += `value="${contextLine[0].startLabel}"`;
+                str += `/>`;
+                str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
+                if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+                str += `/>`;
+            } else if (contextLine[0].type == entityType.SD) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+                str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
+                str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
                 str += `/>`;
             }
             if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
@@ -8816,7 +8838,6 @@ function drawElement(element, ghosted = false) {
         }
     }
 
-    //=============================================== <-- UML functionality
     // TODO: Refactor each if into own function, then use it in switch
     switch (element.kind) {
         case elementTypesNames.UMLEntity:
@@ -8859,6 +8880,12 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IEEntity:
             str += drawElementIEEntity(element, ghosted);
             break;
+        case elementTypesNames.UMLRelation:
+            str += drawElementUMLRelation(element, ghosted);
+            break;
+        case elementTypesNames.IERelation:
+            str += drawElementIERelation(element, ghosted);
+            break;
         case elementTypesNames.sequenceActor:
             str += drawElementSequenceActor(element, ghosted, textWidth);
             break;
@@ -8871,198 +8898,24 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.sequenceLoopOrAlt:
             str += drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor);
             break;
+        case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
+            str += drawElementNote(element, ghosted);
+            break;
     }
     if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
     } else if (element.kind == elementTypesNames.UMLInitialState) {
     } else if (element.kind == elementTypesNames.UMLFinalState) {
     } else if (element.kind == elementTypesNames.UMLSuperState) {
     } else if (element.kind == elementTypesNames.SDEntity) {
-    } else if (element.kind == 'UMLRelation') {
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-
-        //Overlapping UML-inheritance
-        if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //Disjoint UML-inheritance
-        else {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-        //=============================================== <-- IE functionality
-    //Check if the element is a IE entity
-    else if (element.kind == elementTypesNames.IEEntity) {
+    } else if (element.kind == elementTypesNames.UMLRelation) {
+    } else if (element.kind == elementTypesNames.IEEntity) {
     } else if (element.kind == elementTypesNames.IERelation) {
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh / 2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
-
-        // Overlapping IE-inheritance
-
-        if (element.state == 'overlapping') {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />`
-        }
-        // Disjoint IE-inheritance
-        else {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/>
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />
-                <line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke="black" />
-                <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke="black" />`
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-        //=============================================== <-- End of IE functionality
-        //=============================================== <-- Start Sequnece functionality
-    //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == elementTypesNames.sequenceActor) {
+    } else if (element.kind == elementTypesNames.sequenceActor) {
     } else if (element.kind == "sequenceObject") {
     } else if (element.kind == 'sequenceActivation') {
     } else if (element.kind == 'sequenceLoopOrAlt') {
     } else if (element.kind == "note") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-        const theme = document.getElementById("themeBlack");
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in NOTEHeight for the element
-        for (var i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                NOTEHeight.splice(i, 1);
-            }
-        }
-        // Calculate and store the NOTEEntity's real height
-        var NOTEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
-        }
-        NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == color.BLACK) {
-            element.stroke = color.WHITE;
-        } else if (element.fill == color.WHITE) {
-            element.stroke = color.BLACK;
-        }
-        //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        //div to encapuslate note content
-        //Draw note-content if there exist at least one attribute
-        if (elemAttri <= 4) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
-            //path math to create the note entity
-            //the 4 sets the vertical size to be the same as having written 4 lines in the element
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
-            //path math to create the note entity and scale it with every line after the 4th line.
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        }
-        //end of div for UML content
-        str += `</div>`;
-    }
-    //=============================================== <-- End of Note functionality
-    //=============================================== <-- Start ER functionality
-    //ER element
-    else {
+    } else {
         // Create div & svg element
         if (element.kind == elementTypesNames.EREntity) {
             str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
@@ -9210,7 +9063,7 @@ function updateElementHeight(arr, element, height) {
 }
 
 const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
-const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
+const drawSvg = (w, h, s, extra='') =>`<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
 const drawRect = (w, h, l, e, extra=`fill='${e.fill}'`) => {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
@@ -9251,9 +9104,8 @@ function drawElementUMLEntity(element, ghosted) {
                 onmousedown='ddown(event);' 
                 onmouseenter='mouseEnter();' 
                 onmouseleave='mouseLeave();' 
-                style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
             >`;
-
 
     // Header
     let height = texth * 2;
@@ -9678,6 +9530,116 @@ function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
     let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
     let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0], `fill=${actorFontColor}` );
     str += drawSvg(boxw, boxh, content + textOne + textTwo);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementNote(element, ghosted) {
+    let str = "";
+    let content;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let texth = Math.round(zoomfact * textheight);
+
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+    let length = (text.length > 4) ? text.length : 4;
+    let totalHeight = boxh * (1 + length) / 2;
+    updateElementHeight(NOTEHeight, element, totalHeight);
+    element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                    id='${element.id}' 
+                    class='element uml-element' 
+                    onmousedown='ddown(event);' 
+                    onmouseenter='mouseEnter();' 
+                    onmouseleave='mouseLeave();' 
+                    style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
+                >`;
+
+    content += `<path class="text"
+                        d=" M ${linew},${linew}
+                            v ${boxh * (1 + length) / 2 - linew * 2}
+                            h ${boxw - linew * 2}
+                            v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                            h 1
+                            h -1
+                            v ${(boxh - linew * 2) * 0.5} 
+                            h ${(boxw - linew * 2) * 0.12}
+                            v 1
+                            v -1
+                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
+                            h -${(boxw - linew * 2) * 0.885} "
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}'
+                    />`;
+    for (let i = 0; i < text.length; i++) {
+        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+    }
+    str += drawSvg(boxw, boxh * (1 + length) / 2, content);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementUMLRelation(element, ghosted) {
+    let str = "";
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    str += `<div 
+                id='${element.id}' 
+                class='element uml-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;${ghostStr}'
+            >`;
+
+    let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let poly = `
+        <polygon 
+            points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+        />`;
+    str += drawSvg(boxw, boxh, poly);
+    str += `</div>`;
+    return str;
+}
+
+function drawElementIERelation(element, ghosted) {
+    let str = "";
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact);
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+
+    str += `<div 
+                id='${element.id}' 
+                class='element ie-element' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();'
+                style='left:0; top:0; width:${boxw}px; height:${boxh / 2}px; z-index:1;${ghostStr}'
+            >`;
+
+    let content = "";
+    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`
+
+    if (element.state != inheritanceStateIE.OVERLAPPING) {
+        content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
+                    <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
+    }
+    str += drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
     str += `</div>`;
     return str;
 }
