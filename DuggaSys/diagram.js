@@ -9685,7 +9685,7 @@ function drawElementIEEntity(element, ghosted) {
 
     let primaryKeyText = "";
     if(element.primaryKey && element.primaryKey.length > 0) {
-        primaryKeyText = `${element.primaryKey.join(", ")}`;
+        primaryKeyText = `${element.primaryKey.join(", ")}`; // makes so that value in primary key text area is one (1) line always.
         text.unshift(primaryKeyText); // adding primary key to the beginning of text
     }
 
@@ -9723,7 +9723,7 @@ function drawElementIEEntity(element, ghosted) {
             // Check if the current line is the primary key
             if (s[i] === primaryKeyText)
             {
-                text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i], true);  // Pass true for primary key
+                text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i], 'style="text-decoration-line:underline;"');
             }
             else
             {
