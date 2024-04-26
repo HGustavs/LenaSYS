@@ -206,8 +206,8 @@ Resulted Service:
 Show Dugga Service:
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
-- processDuggaFile_ms.php __==UNFINISHED==__ 
-- saveDugga_ms.php __==finished==__ Should keep existing name. This filename is not based on CRUD because, in this particular case, a more general name is preferable as it better describes the microservice's function and avoids confusion with other services that handle similar functions.
+- processDuggaFile_ms.php __==finished==__ New filename: "processSubmittedDugga_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. 
+- saveDugga_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this particular case, a more general name is preferable as it better describes the microservice's function.
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
 
 <br>
@@ -2505,6 +2505,7 @@ UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 <br>
 
 ### processDuggaFile_ms.php
+__processDuggaFile_ms.php__ processes files within a dugga i.e. submitted PDF, ZIP files.
 
 __Querys used in this microservice:__
 
