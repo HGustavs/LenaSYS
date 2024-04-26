@@ -228,6 +228,7 @@ Show Dugga Service:
 ### logUserEvent_ms.php
 Creates a new userbased event in the log.db database (not MYSQL).
 
+__Querys used in this microservice:__
 
 _INSERT_ operation on the table __'userLogEntries'__ to add a new row with values for the following columns:
 - uid
@@ -249,6 +250,8 @@ INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, re
 
 ### logServiceEvent_ms.php
 Creates a new service event in the log.db database (not MYSQL). The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format).
+
+__Querys used in this microservice:__
 
 _INSERT_ operation on the table __'serviceLogEntries'__ to add a new row with values for the following columns:
 - uuid
@@ -291,6 +294,9 @@ __Conclusion:__ The purpose of the code is to ensure accurate identification and
 <br>
 
 ### readUsername_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - username
 
@@ -355,6 +361,9 @@ Uses the services __updateTableCourse__ to change the content of these columns:
 <br>
 
 ### createNewCodeExample_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user'__ to retrieve the value from the column:
 - username
 
@@ -411,6 +420,9 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 <br>
 
 ### createNewListentrie_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user'__ to retrieve the value from the column:
 - username
 
@@ -469,7 +481,9 @@ Uses the services __insertIntoTableVers__ to _insert_ into the table __vers__.
 <br>
 
 ### updateActiveCourse_ms.php
-updateActiveCourse_ms.php code is designed to handle the activation of a specific course version by updating the database table __'course'__ based on user input.
+__updateActiveCourse_ms.php__ code is designed to handle the activation of a specific course version by updating the database table __'course'__ based on user input.
+
+__Querys used in this microservice:__
 
 _UPDATE_ operation on the table __'course'__ to modify rows where:
 
@@ -493,6 +507,9 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### updateUser_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'user'__ to update the value of the column:
 - firstname
 
@@ -539,6 +556,9 @@ UPDATE user SET class=:class WHERE uid=:uid;
 <br>
 
 ### updateUserCourse_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'user_course'__ to update the value of the column:
 - examiner
 
@@ -577,6 +597,9 @@ UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;
 <br>
 
 ### createClass_ms.php
+
+__Querys used in this microservice:__
+
 _INSERT_ operation on the table __'class'__ to insert values into the following columns:
 - class
 - responsible
@@ -607,7 +630,9 @@ Uses service __updateUserPassword__ to _update_ the column "_password_" in the t
 <br>
 
 ### createUser_ms.php
-createUser_ms.php handles adding or updating user records and their enrollments in specific courses. The microservice checks if a user exists based on their username, creates new users if they don't exist, and then links them to courses in the database. If users already exist, it updates their course enrollment details. So this microservice is not a pure "create" operation but it is the main function.
+__createUser_ms.php__ handles adding or updating user records and their enrollments in specific courses. The microservice checks if a user exists based on their username, creates new users if they don't exist, and then links them to courses in the database. If users already exist, it updates their course enrollment details. So this microservice is not a pure "create" operation but it is the main function.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - uid
@@ -690,7 +715,9 @@ Depending on if a box with the set id exists or not an insert into the table __b
 <br>
 
 ### updateCodeExample_ms.php
-updateCodeExample_ms.php handles updates of code examples.
+__updateCodeExample_ms.php__ handles updates of code examples.
+
+__Querys used in this microservice:__
 
 _UPDATE_ operation on the table __'codeexample'__ to update the values of the columns:
 - runlink
@@ -756,6 +783,9 @@ DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
 <br>
 
 ### updateContentOfCodeExample_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'box'__ to update the values of the columns:
 - boxtitle
 - boxcontent
@@ -797,6 +827,9 @@ DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exam
 <br>
 
 ### updateBoxTitle_ms.php 
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'box'__ to update the value of the column:
 - boxtitle
 
@@ -811,6 +844,9 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 <br>
 
 ### deleteCodeExample_ms.php
+
+__Querys used in this microservice:__
+
 _DELETE_ operation on the table __'improw'__ to remove rows where:
 
 - The 'exampleid' value in the __'improw'__ table matches the value bound to :exampleid.
@@ -866,6 +902,9 @@ DELETE FROM listentries WHERE lid=:lid;
 <br>
 
 ### createNewCourse_ms.php
+
+__Querys used in this microservice:__
+
 _INSERT_ operation on the table __'course'__ to create new rows in the colums:
 - coursecode
 - coursename
@@ -885,6 +924,9 @@ INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) 
 <br>
 
 ### createCourseVersion_ms.php
+
+__Querys used in this microservice:__
+
 _INSERT_ operation on the table __'vers'__ to create new rows in the colums:
 - cid
 - coursecode
@@ -914,6 +956,9 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### updateCourseVersion_courseed_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'course'__ to update the value of these columns:
 - coursename
 - visibility
@@ -938,6 +983,9 @@ _SELECT_ operation on the table __'user'__ to get the value of the column:
 <br>
 
 ### updateActiveCourseVersion_courseed_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
 
@@ -1001,6 +1049,9 @@ Uses the services __setAsActiveCourse__ to change the content of these columns:
 <br>
 
 ### updateCourse_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - username
 
@@ -1028,6 +1079,9 @@ UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:co
 <br>
 
 ### createMOTD_ms.php
+
+__Querys used in this microservice:__
+
 _INSERT_ operation on the table __'settings'__ to create new rows in the colums:
 - mot 
 - readonly
@@ -1043,6 +1097,9 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 <br>
 
 ### deleteCourseMaterial_ms.php
+
+__Querys used in this microservice:__
+
 _DELETE_ operation on the table __'partresult'__ to delete rows where:
 
 - The 'cid' value in the __'partresult'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the  __'course'__ table is equal to the value bound to :deleted.
@@ -1220,6 +1277,9 @@ DELETE course FROM course WHERE visibility=:deleted;
 <br>
 
 ### readCourseedService_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user_course'__ to retrieve values from the column:
 - cid
 
@@ -1330,6 +1390,9 @@ SELECT motd,readonly FROM settings;
 <br>
 
 ### createDugga_ms.php
+
+__Querys used in this microservice:__
+
 _INSERT_ operation on the table __'quiz'__ to create new rows with values for the columns:
 - cid
 - autograde
@@ -1355,6 +1418,9 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 <br>
 
 ### updateDugga_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 - qname
 - autograde
@@ -1377,6 +1443,9 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 <br>
 
 ### deleteDugga_ms.php
+
+__Querys used in this microservice:__
+
 _DELETE_ operation on the table __'useranswer'__ to remove rows where the column:
 - quiz
 matches a specific value (`:qid`).
@@ -1401,6 +1470,9 @@ DELETE FROM quiz WHERE id=:qid;
 <br>
 
 ### createDuggaVariant_ms.php
+
+__Querys used in this microservice:__
+
 _INSERT_ operation into the table __'variant'__ to add a new row with values for the following columns:
 - quizID
 - creator
@@ -1419,6 +1491,9 @@ INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (:qi
 <br>
 
 ### updateDuggaVariant_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'variant'__ to update the value of the columns:
 - disabled
 - param
@@ -1435,6 +1510,9 @@ UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer 
 <br>
 
 ### deleteDuggaVariant_ms.php
+
+__Querys used in this microservice:__
+
 _DELETE_ operation on the table __'userAnswer'__ to remove rows where the column:
 - variant
 
@@ -1465,6 +1543,8 @@ DELETE FROM variant WHERE vid=:vid;
 <br>
 
 ### deleteFileLink_ms.php
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'fileLink'__ that retrieves the value of the column:
 - path
@@ -1530,6 +1610,8 @@ __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 ### updateGithubRepo_ms.php
 Update github repo in course updates the repo url and commit in SQLlite DB.
 
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'gitRepos'__ to update the values of the columns:
 - repoURL
 - lastCommit
@@ -1549,6 +1631,7 @@ Updates the metadata from the github repo if there's been a new commit.
 
 Please note, _refreshCheck_ and _newUpdateTime_ will later become their own microservices but are included in this microservice for now to ensure functionality. 
 
+__Querys used in this microservice:__
 
 __- refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit:__
 
@@ -1659,6 +1742,9 @@ Uses service __selectFromTableScore__ to _get_ information it requires from __Sc
 <br>
 
 ### readGroupValues_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'groups'__ to retrieve values from the columns:
 - groupKind
 - groupVal
@@ -1675,6 +1761,9 @@ SELECT groupKind,groupVal FROM groups;
 <br>
 
 ### readCourseGroupsAndMembers_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the tables __'user'__ and __'user_course'__ to retrieve values from the columns:
 - uid
 - username
@@ -1696,6 +1785,8 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 
 ### deleteListentries_ms.php
 Listentries are duggas, headers, tests etc. This microservice DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
+
+__Querys used in this microservice:__
 
 _DELETE_ operation on the table __'useranswer'__ to remove rows where:
 
@@ -1723,6 +1814,8 @@ DELETE FROM listentries WHERE lid = :lid
 ### removeListentries_ms.php (hides the listentrie, not deleting it)
 Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database). 
 
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'listentries'__ to update rows where:
 
 - The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
@@ -1735,6 +1828,9 @@ _UPDATE_ operation on the table __'listentries'__ to update rows where:
 <br>
 
 ### createListentrie_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'settings'__ to retrieve values from the columns:
 - motd
 - readonly
@@ -1782,6 +1878,9 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 
 ### updateOrder_ms.php
 Updates the order of the listentries of a course. Not to be confused with updateListentrie_ms.php.
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'listentries'__ to modify rows where:
 
 - The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
@@ -1798,6 +1897,9 @@ UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
 <br>
 
 ### updateListentrie_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'listentries'__ to retrieve the value from the column:
 - entryname
 
@@ -1855,6 +1957,9 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 <br>
 
 ### updateListentriesTabs_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'listentries'__ to modify rows with updated values for the column:
 - gradesystem
 
@@ -1871,6 +1976,9 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 <br>
 
 ### updateListentriesGradesystem_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - gradesystem
 
@@ -1885,6 +1993,9 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 <br>
 
 ### updateVisibleListentrie_ms.php
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - visibility (0 = Hidden, 1 = Public)
 
@@ -1901,6 +2012,8 @@ UPDATE listentries SET visibility = :listentryId;
 ### updateQuizDeadline_ms.php
 updateQuizDeadline_ms.php updates the deadline for a quiz (also referred to as a dugga).
 
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 - deadline
 - relativedeadline
@@ -1916,7 +2029,9 @@ UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=
 <br>
 
 ### readRemovedListentries_ms.php
-Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. This microservice is close related to the removeListentries_ms.php that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what readRemovedListentris_ms.php does.
+Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. __readRemovedListentries_ms.php__ is close related to the __removeListentries_ms.php__ that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what __readRemovedListentris_ms.php__ does.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'listentries'__ to retrieve all columns where:
 
@@ -1950,7 +2065,10 @@ Uses the services __setActiveCourseVersion__ to change the content of these colu
 
 <br>
 
-### updateActiveCourseVersion_sectioned_ms.php     
+### updateActiveCourseVersion_sectioned_ms.php   
+
+__Querys used in this microservice:__
+
 _UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
 
@@ -1986,7 +2104,9 @@ Uses service __selectFromTableGitFiles__ to _get_ information it requires from _
 <br>
 
 ### readUserDuggaFeedback_ms.php
-readUserDuggaFeedback_ms.php retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
+__readUserDuggaFeedback_ms.php__ retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'userduggafeedback'__ to select all columns where:
 
@@ -2014,6 +2134,9 @@ SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 <br>
 
 ### readSectionedService_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'user'__ to retrieve values from the column:
 - username
 
@@ -2292,7 +2415,9 @@ UPDATE user SET password=:PW WHERE uid=:userid;
 <br>
 
 ### readUserAnswer_ms.php
-readUserAnswer_ms.php manages and presents information about submitted duggor.
+__readUserAnswer_ms.php__ manages and presents information about submitted duggor.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'userAnswer'__ to retrieve the columns:
 - hash
@@ -2336,7 +2461,9 @@ SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:ve
 <br>
 
 ### updateActiveUsers_ms.php
-updateActiveUsers_ms.php checks if there are already active users recorded for a given hash and either inserts a new record or updates the existing count of active users.
+__updateActiveUsers_ms.php__ checks if there are already active users recorded for a given hash and either inserts a new record or updates the existing count of active users.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'groupdugga'__ to retrieve the value from the column:
 - active_users
@@ -2378,6 +2505,9 @@ UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 <br>
 
 ### processDuggaFile_ms.php
+
+__Querys used in this microservice:__
+
 _SELECT_ operation on the table __'submission'__ to retrieve the following columns for records that match a specific condition:
 - subid
 - vers
@@ -2434,7 +2564,9 @@ ORDER BY subid, fieldnme, updtime ASC;
 <br>
 
 ### saveDugga_ms.php
-saveDugga_ms.php allows the user to make multiple saves of dugga answers before final submission. The user can update their answer multiple times as needed, and the system manages these updates until an approved grade is received, which then blocks further submissions for that specific dugga.
+__saveDugga_ms.php__ allows the user to make multiple saves of dugga answers before final submission. The user can update their answer multiple times as needed, and the system manages these updates until an approved grade is received, which then blocks further submissions for that specific dugga.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the table __'userAnswer'__ to retrieve values from the columns:
 - password
@@ -2488,7 +2620,9 @@ INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted
 <br>
 
 ### readSubmittedDugga_ms.php
-readSubmittedDugga_ms.php retrieves submitted user responses (submitted duggas) from a database based on specific identifiers such as a hash value or a moment identifier.
+__readSubmittedDugga_ms.php__ retrieves submitted user responses (submitted duggas) from a database based on specific identifiers such as a hash value or a moment identifier.
+
+__Querys used in this microservice:__
 
 _SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve values from the columns:
 - vid
