@@ -52,7 +52,7 @@
                 </div>";
         }
 
-        function testProgressBar{
+        function testProgressBar(){
             echo "<div class='progressBar'>
                     <div class='progressBarLabels'>
                         <label>lenasys/dugga...</label>
@@ -61,7 +61,20 @@
                     <div class='progressBarBorder'>
                         <div class='progressBarIndicator'></div>
                     </div>
-                </div>"
+                </div>";
+        }
+
+        function testCheckBox($checkBoxText) {
+            echo "<div class='checkbox'>
+                    <input id='distEnvironment' type='checkbox'>
+                    <label for='distEnvironment'>".$checkBoxText."</label>
+                </div>";
+        }
+        function testInputField() {
+            echo "<div class='input-field'>
+                        <label for='databaseName'>Database Name</label>
+                        <input id='databaseName' type='text'>
+                    </div>";
         }
     ?>
 
@@ -81,6 +94,11 @@
             <div class="inner-wrapper">
                 <?php
                     testBodyText("Provide the following data for the data and user.");
+                    echo "<div class='input-grid'>";
+                    testInputField();
+                    testInputField();
+                    testCheckBox("Use Distributed Environment");
+                    echo "</div>";
                 ?>
             </div>
         </div>
@@ -105,14 +123,12 @@
             if(stepSelected>=6){
                 stepSelected = 6;
             }
-            console.log(stepSelected);
         }
         function breadCrumbDecr() {
             stepSelected -= 1;
             if(stepSelected<=1){
                 stepSelected = 1;
             }
-            console.log(stepSelected);
         }
     </script>
 </body>
