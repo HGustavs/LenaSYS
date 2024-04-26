@@ -3142,6 +3142,9 @@ function saveProperties() {
                 var formatPK = [];
                 for (var i = 0; i < arrayElementPK.length; i++) {
                     if (!(arrayElementPK[i] == '\n' || arrayElementPK[i] == '' || arrayElementPK[i] == ' ')) {
+                        if (Array.from(arrayElementPK[i])[0] != '*') { // Checks if line starts with a star ('*')
+                            arrayElementPK[i] = "*" + arrayElementPK[i];
+                        }
                         formatPK.push(arrayElementPK[i]);
                     }
                 }
@@ -3158,7 +3161,7 @@ function saveProperties() {
                 var formatArr = [];
                 for (var i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        if (Array.from(arrElementAttr[i])[0] != '-') {
+                        if (Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
                             arrElementAttr[i] = "-" + arrElementAttr[i];
                         }
                         formatArr.push(arrElementAttr[i]);
