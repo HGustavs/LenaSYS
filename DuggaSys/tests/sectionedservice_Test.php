@@ -44,56 +44,11 @@ $testsData = array(
         'filter-output' => serialize(
             array( // Filter what output to use in assert test, use none to use all ouput from service
                 'entries' => 
-                /* array(
-                    'entryname',
-                    'lid',
-                    'pos',
-                    'kind',
-                    'moment',
-                    'link',
-                    'visible',
-                    'highscoremode',
-                    'gradesys',
-                    'code_id',
-                    'deadline',
-                    'relativedeadline',
-                    'qrelease',
-                    'comments',
-                    'qstart',
-                    'grptype',
-                    'tabs',
-                    'feedbackenabled',
-                    'feedbackquestion',
-                    //'ts',
-                ),
-                */
                 'debug',
-                /*
-                'writeaccess',
-                'studentteacher',
-                'readaccess',
-                'coursename',
-                */
                 'coursevers',
                 'courseid',
-                /*
-                'links',
-                'duggor',
-                'results',
-                'versions',
-                'codeexamples',
-                'unmarked',
-                'startdate',
-                'enddate',
-                'groups',
-                */
                 'grpmembershp',
                 'grplst',
-                    /*
-                'userfeedback',
-                'feedbackquestion',
-                'avgfeedbackscore',
-                    */
             )
         ),
     ),
