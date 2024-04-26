@@ -142,7 +142,7 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {List<String>} elementIDs List of IDs for all elements that were moved.
+     * @param {Array<String>} elementIDs List of IDs for all elements that were moved.
      * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
      * @returns {Array<StateChange>} A new instance of the StateChange class.
@@ -365,6 +365,7 @@ class StateMachine {
      */
     save(stateChangeArray, newChangeType) {
         let currentChangedType;
+        let changeTypes;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (let i = 0; i < stateChangeArray.length; i++) {
@@ -404,10 +405,10 @@ class StateMachine {
                             for (let index = 0; index < newChangeType.length && isSoft; index++) {
                                 isSoft = newChangeType[index].isSoft;
                             }
-                            var changeTypes = newChangeType;
+                            changeTypes = newChangeType;
                         } else {
                             isSoft = newChangeType.isSoft;
-                            var changeTypes = [newChangeType];
+                            changeTypes = [newChangeType];
                         }
 
                         // Find last change with the same ids
@@ -1078,7 +1079,17 @@ var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
 var zoomAllowed = true; // To slow down zoom on touchpad.
 var lastZoomPos = new Point(0, 0); // placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
 var lastMousePosCoords = new Point(0, 0); // placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom)
-
+// We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
+// Zoom values for offsetting the mouse cursor positioning
+const cursorOffset = new Map([
+    [0.25, -15.01],
+    [0.5, -3],
+    [0.75, -0.775],
+    [1.25, 0.36],
+    [1.5, 0.555],
+    [2, 0.75],
+    [4, 0.9375],
+]);
 
 // Constants
 const textheight = 18;
@@ -1785,7 +1796,7 @@ document.addEventListener('keyup', function (e) {
         }
         return;
     }
-    if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
+    if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) toggleStepBack();
     if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
     if (isKeybindValid(e, keybinds.ESCAPE)) {
         escPressed = false; 
@@ -2239,7 +2250,7 @@ function mouseMode_onMouseUp(event) {
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
-function tup(event) {
+function tup() {
     mouseButtonDown = false;
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
@@ -2454,10 +2465,10 @@ function determineLineSelect(mouseX, mouseY) {
             // Get the points in polyline
             for (let j = 0; j < points.length - 1; j++) {
                 currentLineSegment = {
-                    x1: points[j].split(',')[0],
-                    x2: points[j + 1].split(',')[0],
-                    y1: points[j].split(',')[1],
-                    y2: points[j + 1].split(',')[1]
+                    x1: Number(points[j].split(',')[0]),
+                    x2: Number(points[j + 1].split(',')[0]),
+                    y1: Number(points[j].split(',')[1]),
+                    y2: Number(points[j + 1].split(',')[1])
                 }
                 // Used later to make sure the current mouse-position is in the span of a line.
                 highestX = Math.max(currentLineSegment.x1, currentLineSegment.x2);
@@ -3129,6 +3140,7 @@ function saveProperties() {
     const children = propSet.children;
 
     var propsChanged = {};
+    let formatArr;
 
     for (let index = 0; index < children.length; index++) {
         const child = children[index];
@@ -3146,7 +3158,7 @@ function saveProperties() {
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
-                var formatArr = [];
+                formatArr = [];
                 for (let i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         formatArr.push(arrElementAttr[i]);
@@ -3162,7 +3174,7 @@ function saveProperties() {
                 var elementFunc = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
-                var formatArr = [];
+                formatArr = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
                         formatArr.push(arrElementFunc[i]);
@@ -3528,22 +3540,10 @@ function clearContextLine() {
  */
 function screenToDiagramCoordinates(mouseX, mouseY) {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
-    // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
-    // We're tired.
-
-    // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
-    // Zoom values for offsetting the mouse cursor positioning
-    let cursorOffset = new Map();
-    cursorOffset.set(1.25, 0.36);
-    cursorOffset.set(1.5, 0.555);
-    cursorOffset.set(2, 0.75);
-    cursorOffset.set(4, 0.9375);
-    cursorOffset.set(0.75, -0.775);
-    cursorOffset.set(0.5, -3);
-    cursorOffset.set(0.25, -15.01);
     let zoom = cursorOffset.get(zoomfact) ?? 0;
 
-    return new Point(Math.round(mouseX / zoomfact - scrollx + zoom * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+    return new Point(
+        Math.round(mouseX / zoomfact - scrollx + zoom * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
         Math.round(mouseY / zoomfact - scrolly + zoom * scrolly + zoomOrigo.y)
     );
 }
@@ -3999,22 +3999,22 @@ function getLinesInsideCoordinateBox(selectionRect) {
  * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
 function lineIsInsideRect(selectionRect, line) {
-    var lineCoord1 = screenToDiagramCoordinates(
+    let lineCoord1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
     );
-    var lineCoord2 = screenToDiagramCoordinates(
+    let lineCoord2 = screenToDiagramCoordinates(
         line.getAttribute("x2"),
         line.getAttribute("y2")
     );
-    var lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
-    var lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
-    var lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
-    var lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
-    var leftX = selectionRect.x;
-    var topY = selectionRect.y;
-    var rightX = selectionRect.x + selectionRect.width;
-    var bottomY = selectionRect.y + selectionRect.height;
+    let lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
+    let lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
+    let lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
+    let lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
+    let leftX = selectionRect.x;
+    let topY = selectionRect.y;
+    let rightX = selectionRect.x + selectionRect.width;
+    let bottomY = selectionRect.y + selectionRect.height;
     return leftX <= lineLeftX && topY <= lineTopY && rightX >= lineRightX && bottomY >= lineBottomY;
     /* Code used to check for a point
     // Return true if any of the end points of the line are inside of the rect
@@ -4588,7 +4588,6 @@ function setReplayDelay(value) {
  */
 function setReplayRunning(state) {
     var button = document.getElementById("diagram-replay-switch");
-    var delaySlider = document.getElementById("replay-time");
     var stateSlider = document.getElementById("replay-range");
 
     if (state) {
@@ -4699,7 +4698,7 @@ function generateErTableString() {
         var currentRelationList = [];
         currentRelationList.push(relationList[i]);
         //Sort all lines that are connected to the current relation into lineList[]
-        var lineList = [];
+        let lineList = [];
         for (let j = 0; j < lines.length; j++) {
             //Get connected line from element
             if (relationList[i].id == lines[j].fromID) {
@@ -4725,7 +4724,7 @@ function generateErTableString() {
     for (let i = 0; i < entityList.length; i++) {
         var currentRow = [entityList[i]];
         //Sort all lines that are connected to the current entity into lineList[]
-        var lineList = [];
+        let lineList = [];
         for (let j = 0; j < lines.length; j++) {
             if (entityList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
@@ -4876,7 +4875,7 @@ function generateErTableString() {
                             else if (current.state == 'weak') {
                                 // Check if entity is in relation and check its cardinality
                                 if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
-                                    var exists = false; // Boolean representing if the other entity has already been visited
+                                    let exists = false; // Boolean representing if the other entity has already been visited
                                     for (let v = 0; v < visitedList.length; v++) {
                                         if (ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
@@ -4907,7 +4906,7 @@ function generateErTableString() {
                                 }
                                 // Check if entity is in relation and check its cardinality
                                 else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
-                                    var exists = false; // Boolean representing if the other entity has already been visited
+                                    let exists = false; // Boolean representing if the other entity has already been visited
                                     for (let v = 0; v < visitedList.length; v++) {
                                         if (ERRelationData[j][1][0].id == visitedList[v].id) {//|| ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
@@ -5010,7 +5009,7 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
+                        let exist = false; // If entity already exist in ERForeignData
                         for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5044,7 +5043,7 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
+                        let exist = false; // If entity already exist in ERForeignData
                         for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
@@ -5078,7 +5077,7 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
+                        let exist = false; // If entity already exist in ERForeignData
                         for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5152,7 +5151,7 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
+                        let exist = false; // If entity already exist in ERForeignData
                         for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5188,7 +5187,7 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
+                            let exist = false; // If entity already exist in ERForeignData
                             for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
@@ -5225,7 +5224,7 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
+                            let exist = false; // If entity already exist in ERForeignData
                             for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5299,7 +5298,7 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
+                        let exist = false; // If entity already exist in ERForeignData
                         for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5335,7 +5334,7 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
+                            let exist = false; // If entity already exist in ERForeignData
                             for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
@@ -5372,7 +5371,7 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
+                            let exist = false; // If entity already exist in ERForeignData
                             for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5447,7 +5446,7 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
+                        let exist = false; // If entity already exist in ERForeignData
                         for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -5483,7 +5482,7 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
+                            let exist = false; // If entity already exist in ERForeignData
                             for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
@@ -5520,7 +5519,7 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
+                            let exist = false; // If entity already exist in ERForeignData
                             for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
@@ -6003,14 +6002,14 @@ function setA4SizeFactor(e) {
 
 function toggleA4Horizontal() {
     document.getElementById("vRect").style.display = "block";
-    if (document.getElementById("a4Rect").style.display = "block") {
+    if (document.getElementById("a4Rect").style.display == "block") {
         document.getElementById("a4Rect").style.display = "none";
     }
 }
 
 function toggleA4Vertical() {
     document.getElementById("a4Rect").style.display = "block";
-    if (document.getElementById("vRect").style.display = "block") {
+    if (document.getElementById("vRect").style.display == "block") {
         document.getElementById("vRect").style.display = "none";
     }
 }
@@ -6242,12 +6241,13 @@ function hidePlacementType(){
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
 function zoomin(scrollEvent = undefined) {
+    let delta;
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact < 4) {
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
-            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+            delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
             }
@@ -6267,7 +6267,7 @@ function zoomin(scrollEvent = undefined) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
-            var delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
+            delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
             }
@@ -6336,12 +6336,13 @@ function zoomin(scrollEvent = undefined) {
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
 function zoomout(scrollEvent = undefined) {
+    let delta;
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact > 0.25) {
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
-            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+            delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
             }
@@ -6361,7 +6362,7 @@ function zoomout(scrollEvent = undefined) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
-            var delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
+            delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
             }
@@ -6432,7 +6433,7 @@ function zoomout(scrollEvent = undefined) {
 function zoomreset() {
     var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
-    var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+    let delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
         x: midScreen.x - zoomOrigo.x,
         y: midScreen.y - zoomOrigo.y
     }
@@ -6594,7 +6595,7 @@ function generateContextProperties() {
             //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
             //TODO: Find a way to do this dynamically as new diagram types are added
             if (element.kind != elementTypesNames.ERAttr) {
-                var typesToChangeTo = [];
+                let typesToChangeTo;
 
                 // If property canChangeTo is not set, or set to null, assign empty array
                 if (element.canChangeTo === undefined || element.canChangeTo === null) {
@@ -6606,7 +6607,7 @@ function generateContextProperties() {
                 }
                 // Create a dropdown menu for diagram type, if typesToChangeTo has any value(s)
                 if (typesToChangeTo.length > 0) {
-                    var selected = context[0].type;
+                    let selected = context[0].type;
                     str += `<div style='color:white'>Type</div>`;
                     str += '<select id="typeSelect">';
 
@@ -6672,8 +6673,7 @@ function generateContextProperties() {
                             break;
                     }
                 }
-            } else if (element.type == entityType.UML) { //Selected UML type
-                //If UML entity
+            } else if (element.type == entityType.UML) {
                 if (element.kind == elementTypesNames.UMLEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                     for (const property in element) {
@@ -6694,7 +6694,7 @@ function generateContextProperties() {
                                 break;
                         }
                     }
-                } else if (element.kind = 'UMLRelation') { //If UML inheritance
+                } else if (element.kind == elementTypesNames.UMLRelation) {
                     //ID MUST START WITH "elementProperty_"!!!!!
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6708,8 +6708,8 @@ function generateContextProperties() {
                     }
                     str += `<div style='color:white'>Inheritance</div>`;
                     //Creates drop down for changing state of ER elements
-                    var value;
-                    var selected = context[0].state;
+                    let value;
+                    let selected = context[0].state;
                     if (selected == undefined) {
                         selected = "disjoint"
                     }
@@ -6746,7 +6746,7 @@ function generateContextProperties() {
                                 break;
                         }
                     }
-                } else if (element.kind = 'IERelation') {
+                } else if (element.kind == elementTypesNames.IERelation) {
                     //ID MUST START WITH "elementProperty_"!!!!!
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6760,8 +6760,8 @@ function generateContextProperties() {
                     }
                     str += `<div style='color:white'>Inheritance</div>`;
                     //Creates drop down for changing state of IE elements
-                    var value;
-                    var selected = context[0].state;
+                    let value;
+                    let selected = context[0].state;
                     if (selected == undefined) {
                         selected = "disjoint"
                     }
@@ -7285,7 +7285,8 @@ function updateA4Size() {
 
     var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     //const a4Width = 794, a4Height = 1122;
-    const a4Width = 210 * pxlength, a4Height = 297 * pxlength;
+    const a4Width = 210 * pxlength
+    const a4Height = 297 * pxlength;
 
     vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
     vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
@@ -7319,8 +7320,8 @@ function updateGridPos() {
  * @description Calculates new positioning for the A4 template.
  */
 function updateA4Pos() {
-    var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-    var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
+    var OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
     var rect = document.getElementById("a4Rect");
     var vRect = document.getElementById("vRect");
     var text = document.getElementById("a4Text");
@@ -7423,7 +7424,7 @@ function removeMessage(element, timer) {
  */
 function toggleColorMenu(buttonID) {
     var button = document.getElementById(buttonID);
-    var menu = undefined;
+    let menu;
     var width = 0;
 
     // If the color menu's inner html is empty
@@ -7456,7 +7457,7 @@ function toggleColorMenu(buttonID) {
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
     } else {    // if the color menu's inner html is not empty, remove the content
-        var menu = button.children[0];
+        menu = button.children[0];
         menu.innerHTML = "";
         menu.style.visibility = "hidden";
         showdata();
@@ -7518,9 +7519,7 @@ function setElementColors(clickedCircleID) {
 function multipleColorsTest() {
     if (context.length > 1) {
         var fill = context[0].fill;
-        var stroke = context[0].stroke;
         var varyingFills = false;
-        var varyingStrokes = false;
         for (let i = 0; i < context.length; i++) {
             // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
@@ -7531,6 +7530,8 @@ function multipleColorsTest() {
                 varyingFills = true;
             }
             /*
+        var stroke = context[0].stroke;
+        var varyingStrokes = false;
             // Checks if there are varying stroke colors, but not if varying colors have already been detected
              if (stroke != context[i].stroke && !varyingStrokes) {
                  var button = document.getElementById("colorMenuButton2");
@@ -7690,7 +7691,7 @@ function clearLinesForElement(element) {
  * @param {boolean} targetGhost Is the line an ghostLine
  */
 function determineLine(line, targetGhost = false) {
-    var felem, telem, dx, dy
+    var felem, telem;
 
     felem = data[findIndex(data, line.fromID)];
 
@@ -7709,7 +7710,6 @@ function determineLine(line, targetGhost = false) {
     if (Math.abs(line.dy) > Math.abs(line.dx)) majorX = false;
 
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
-    var ctype = 0;
     if (overlapY || ((majorX) && (!overlapX))) {
         if (line.dx > 0) line.ctype = lineDirection.LEFT;
         else line.ctype = lineDirection.RIGHT;
@@ -8469,7 +8469,7 @@ function rotateArrowPoint(base, to, clockwise) {
     }
 }
 
-function drawArrowPoint(base, point, x, y, lineColor, line) {
+function drawArrowPoint(base, point, x, y, lineColor) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
     return `<polygon points=' 
@@ -8605,43 +8605,45 @@ function drawRulerBars(X, Y) {
     let svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
-    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    let pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     const lineRatio1 = 1;
     const lineRatio2 = 10;
     const lineRatio3 = 100;
 
-    var barY, barX = "";
-    var cordY = 0;
-    var cordX = 0;
+    let barY = "";
+    let barX = "";
+    let cordY = 0;
+    let cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
-    var pannedY = (Y - settings.ruler.ZF) / zoomfact;
-    var pannedX = (X - settings.ruler.ZF) / zoomfact;
+    let pannedY = (Y - settings.ruler.ZF) / zoomfact;
+    let pannedX = (X - settings.ruler.ZF) / zoomfact;
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact));
 
+    let verticalText
     if (zoomfact < 0.5) {
-        var verticalText = "writing-mode= 'vertical-lr'";
+        verticalText = "writing-mode= 'vertical-lr'";
     } else {
-        var verticalText = " ";
+        verticalText = " ";
     }
 
     //Calculate the visible range based on viewports dimenstions, current position and zoomfactor
-    var viewportHeight = window.innerHeight;
-    var viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
+    let viewportWidth = window.innerWidth;
 
-    var visibleRangeY = [
+    let visibleRangeY = [
         (pannedY*-1),
         (pannedY*-1 + viewportHeight)
     ];
-    var visibleRangeX = [
+    let visibleRangeX = [
         (pannedX*-1) ,
         (pannedX*-1 + viewportWidth)
     ];
 
 
     //Draw the Y-axis ruler positive side.
-    var lineNumber = (lineRatio3 - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {        
+    let lineNumber = (lineRatio3 - 1);
+    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (i > visibleRangeY[0] && i < visibleRangeY[1]) {
@@ -8667,9 +8669,9 @@ function drawRulerBars(X, Y) {
                     barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3){
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordY = cordY + 10
             }
@@ -8704,9 +8706,9 @@ function drawRulerBars(X, Y) {
                     barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3) {
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordY = cordY - 10;
             }
@@ -8743,9 +8745,9 @@ function drawRulerBars(X, Y) {
                     barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3){
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordX = cordX+10
             }
@@ -8780,9 +8782,9 @@ function drawRulerBars(X, Y) {
                     barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3) {
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordX = cordX - 10;
             }
@@ -8809,9 +8811,7 @@ function drawElement(element, ghosted = false) {
     let texth = Math.round(zoomfact * textheight);
     let hboxw = Math.round(element.width * zoomfact * 0.5);
     let hboxh = Math.round(element.height * zoomfact * 0.5);
-    let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
-    let sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
-  
+
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -9653,7 +9653,7 @@ function drawElementIERelation(element, ghosted) {
  * @param {number || null} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
  * @param {number || null} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
  */
-function updatepos(deltaX, deltaY) {
+function updatepos() {
     updateCSSForAllElements();
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
@@ -11562,7 +11562,7 @@ function updateLabelPos(newPosX, newPosY) {
     displaceFromLine(newPosX, newPosY);
 }
 
-function calculateProcentualDistance(objectLabel, x, y) {
+function calculateProcentualDistance(objectLabel) {
     // Math to calculate procentuall distance from/to centerpoint
     var diffrenceX = objectLabel.highX - objectLabel.lowX;
     var diffrenceY = objectLabel.highY - objectLabel.lowY;
@@ -12175,7 +12175,6 @@ function isDarkTheme() {
 function showdata() {
     updateContainerBounds();
     var str = "";
-    var courses = [];
     errorData = [];
     errorReset(data);
 
