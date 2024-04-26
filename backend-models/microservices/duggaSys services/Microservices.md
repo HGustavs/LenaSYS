@@ -83,7 +83,8 @@ The old name remains listed under "LIST OF MICROSERVICES" so that we can keep tr
 
 Shared microservices:
 
-- logging_ms.php __==UNFINISHED==__
+- logUserEvent_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
+- logServiceEvent_ms.php __==UNFINISHED==__
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - isSuperUser_ms.php __==UNFINISHED==__
@@ -224,8 +225,47 @@ Show Dugga Service:
 
 <br>
 
-### logging
-Uses a function in basic.php. 
+### logUserEvent_ms.php
+Creates a new userbased event in the log.db database.
+
+
+_INSERT_ operation on the table __'userLogEntries'__ to add a new row with values for the following columns:
+- uid
+- username
+- eventType
+- description
+- userAgent
+- remoteAddress
+
+```sql
+INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, remoteAddress) VALUES (:uid, :username, :eventType, :description, :userAgent, :remoteAddress);
+```
+
+<br>
+
+---
+
+<br>
+
+### logServiceEvent_ms.php
+Creates a new service event in the log.db database. The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format).
+
+_INSERT_ operation on the table __'serviceLogEntries'__ to add a new row with values for the following columns:
+- uuid
+- eventType
+- service
+- timestamp
+- userAgent
+- operatingSystem
+- browser
+- userid
+- info
+- referer
+- IP
+
+```sql
+INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent, operatingSystem, browser, userid, info, referer, IP) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent, :operatingSystem, :browser, :userid, :info, :referer, :IP);
+```
 
 <br>
 
