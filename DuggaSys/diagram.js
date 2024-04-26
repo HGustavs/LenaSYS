@@ -448,12 +448,28 @@ class StateMachine {
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                     lastLog.appendValuesFrom(stateChange);
                                     this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
+                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:                                    
+                                    lastLog.appendValuesFrom(stateChange);
+                                    
+                                    for (let change of stateChangeArray) {
+                                        change.id.forEach(id => {
+                                            let current_element = document.getElementById(id);
+                                            if (lastLog.id == id) {
+                                                lastLog.width += current_element.offsetWidth;
+                                                lastLog.height += current_element.offsetHeight; 
+                                            }
+                                        });
+                                    }
+                                    this.historyLog.push(lastLog);
+                                    this.currentHistoryIndex = this.historyLog.length - 1;
+                                    break;
+
+
                                 default:
                                     console.error(`Missing implementation for soft state change: ${stateChange}!`);
                                     break;
@@ -1239,7 +1255,7 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
-
+let hasResized = false; // checks if an element has been resized
 var preResizeHeight = []; // List with elements' and their starting height for box selection due to problems with resizing height
 var NOTEHeight = [];// List with NOTE Entities' real height
 
@@ -2224,6 +2240,10 @@ function mouseMode_onMouseUp(event) {
         }
     }
     hasPressedDelete = false;
+    if (hasResized) {
+        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+        hasResized = false;
+    }
 }
 
 /**
@@ -2707,7 +2727,8 @@ function mmoving(event) {
                 // Deduct the new position, giving us the total change
                 const xChange = -(tmp - elementData.x);
 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                //stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                hasResized = true;
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
@@ -12180,7 +12201,7 @@ function toggleBorderOfElements() {
 
         if (cssUrl == 'blackTheme.css') {
             //iterate through all the elements that have the class 'text'.
-            for (let i = 0; i < allTexts.length; i++) {
+            for (let i = 0; i < allTexts.length; i++) {                
                 let text = allTexts[i];
                 //assign their current stroke color to a variable.
                 let strokeColor = text.getAttribute('stroke');
@@ -12284,6 +12305,10 @@ function showdata() {
 
     // Iterate over programs
     for (var i = 0; i < data.length; i++) {
+        if (str.includes(data[i].toString())) {
+            let tempString = drawElement(data[i]);
+            str.replace(tempString, "");
+        }
         str += drawElement(data[i]);
     }
 
