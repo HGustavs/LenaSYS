@@ -49,6 +49,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - diagramservice.php  __WORK PAUSED in this service will continue when the service is fixed__
 - duggaedservice.php __==finished==__
 - fileedservice.php __==finished==__
+- gitcommitService.php 
 - highscoreservice.php __==finished==__
 - sectionedservice.php __==finished==__
 - profileservice.php __==finished==__
@@ -59,9 +60,24 @@ CRUD stands for the four basic operations for managing data in applications and 
 # LIST OF MICROSERVICES
 ---
 
-Please note that the microservices marked "UNFINISHED" in this documentation have remained unchanged since the group in 2023. These microservices still rely on the services described in the Database_related_micro_services.md. Once all the microservices are implemented, the Database_related_micro_services.md will become obsolete and therefore will be deleted. The microservices marked "finished" include complete documentation about the queries in this document.
+# OBSERVE
 
-Also note that __no renaming of microservices__ will take place until all microservices are implemented.
+Please note that the microservices marked __"UNFINISHED"__ in this documentation have remained __unchanged since the group in 2023__. These microservices __still rely__ on the services described in the Database_related_micro_services.md. Once all the microservices are implemented, the Database_related_micro_services.md will become obsolete and therefore will be deleted. The microservices marked __"finished"__ include complete documentation about the queries in this document.
+
+Also note that __no renaming of microservices__ will take place until all microservices are implemented. 
+
+<br>
+
+Here is how you search in the document:
+
+Example: 
+
+"Shared microservices:
+
+-retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to the new naming convention based on CRUD."
+
+_retrieveUsername_ms.php_ is the old name. _readUsername_ms.php_ is the new filename that the file will be renamed to later. When searching for a file in the document, look for the new file name. The queries handled by _retrieveUsername_ms.php_ will be found in the section for _Shared microservices_, under _readUsername_ms.php_.
+The old name remains listed under "LIST OF MICROSERVICES" so that we can keep track of them until we switch to the new names.
 
 <br>
 
@@ -73,7 +89,6 @@ Shared microservices:
 - isSuperUser_ms.php __==UNFINISHED==__
 - hasAccess_ms.php __==UNFINISHED==__
 - setActiveCourseversion_ms.php __==UNFINISHED==__
-- updateUserPassword_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
 - createNewVersionOfCourse_ms.php __==UNFINISHED==__
@@ -129,7 +144,19 @@ Duggaed Service:
 Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updataFileLink_ms.php __==UNFINISHED==__
+- updateFileLink_ms.php __==UNFINISHED==__
+
+<br>
+
+gitcommit Service:
+
+- clearGitFiles_ms.php __==UNFINISHED==__
+- updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
+- refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
+- fetchOldToken_ms.php __==UNFINISHED==__
+- insertIntoSQLite_ms.php __==UNFINISHED==__
+- newUpdateTime_ms.php __==UNFINISHED==__
+- refreshCheck_ms.php __==UNFINISHED==__
 
 <br>
 
@@ -149,7 +176,7 @@ Sectioned Service:
 - reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentrie_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updateListentriesGradesystem_ms.php __==UNFINISHED==__
+- updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - setVisibleListentrie_ms.php __==finished==__ New filename: "updateVisibleListentrie_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -164,9 +191,8 @@ Sectioned Service:
 
 Profile Service:
 
-- changeProfileValues_ms.php __==UNFINISHED==__
 - updateSecurityQuestion_ms.php __==UNFINISHED==__
-- updatePassword_ms.php __==UNFINISHED==__ 
+- updateUserPassword_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 
 <br>
 
@@ -281,21 +307,6 @@ __USED BY__
 
 Uses the services __updateTableCourse__ to change the content of these columns:
 - activeversion
-
-<br>
-
----
-
-<br>
-
-### updateUserPassword
-__USED BY__
-- changeUserPassword_accessed
-- changeProfileValues
-<br>
-
-Uses the services __updateTableUser__ to change the content of these columns:
-- password
 
 <br>
 
@@ -1462,6 +1473,127 @@ __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 <br>
 
 ---
+## ----------------------------- _gitCommitService_ -----------------------------
+---
+
+<br>
+<br>
+
+### clearGitFiles_ms.php
+
+<br>
+
+---
+
+<br>
+
+### updateGithubRepo_ms.php
+Update github repo in course updates the repo url and commit in SQLlite DB.
+
+_UPDATE_ operation on the table __'gitRepos'__ to update the values of the columns:
+- repoURL
+- lastCommit
+
+```sql
+UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :cid;
+```
+
+<br>
+
+---
+
+<br>
+
+### refreshGithubRepo_ms.php
+Updates the metadata from the github repo if there's been a new commit.
+
+Please note, _refreshCheck_ and _newUpdateTime_ will later become their own microservices but are included in this microservice for now to ensure functionality. 
+
+
+__- refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit:__
+
+_DELETE_ operation on the table __'gitFiles'__ to remove rows where the column:
+- cid
+
+matches a specific value (`:cid`).
+
+```sql
+DELETE FROM gitFiles WHERE cid = :cid;
+```
+
+
+_SELECT_ operation on the table __'gitRepos'__ to retrieve the values of the columns:
+- lastCommit
+- repoURL
+
+```sql
+SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid;
+```
+
+
+_UPDATE_ operation on the table __'gitRepos'__ to update the value of the column:
+- lastCommit
+
+```sql
+UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid;
+```
+
+
+__- refreshCheck: Decide how often the data can be updated, and if it can be updated again:__
+
+_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
+- updated
+
+```sql
+SELECT updated FROM course WHERE cid = :cid;
+```
+
+
+__- newUpdateTime: Updates the MySQL database to save the latest update time:__
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
+- updated
+
+```sql
+UPDATE course SET updated = :parsedTime WHERE cid = :cid;
+```
+
+<br>
+
+---
+
+<br>
+
+### fetchOldToken_ms.php
+
+<br>
+
+---
+
+<br>
+
+### insertIntoSQLite_ms.php
+
+<br>
+
+---
+<br>
+
+
+### newUpdateTime_ms.php
+
+<br>
+
+---
+<br>
+
+
+### refreshCheck_ms.php
+
+<br>
+<br>
+
+---
 ## ----------------------------- _highscoreService_ -----------------------------
 ---
 
@@ -1699,6 +1831,12 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 <br>
 
 ### updateListentriesGradesystem_ms.php
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- gradesystem
+
+```sql
+UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
+```
 
 <br>
 
@@ -2032,23 +2170,46 @@ SELECT * FROM listentries WHERE visible = '3'
 <br>
 <br>
 
-profileService - handles password changes and challenge question
-
-### changeProfileValues    
-(writter comment: i think this service is small enough as is )
-<br>
-
-Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
-Uses service __selectFromTableUser_course__ to _get_ information it requires from __user_course__.
-<br>
-
-Statements below are methods for _changeProfileValues_ and not services.
+ProfileService - handles password changes and challenge question
 
 #### updateSecurityQuestion
 Uses service __selectFromTableUser__ to _get_ information it requires from __user__.
 
-#### updatePassword
-Uses service __updateUserPassword__ to _get_ information it requires from __user__.
+<br>
+
+---
+
+<br>
+
+#### updateUserPassword_ms.php
+_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
+- password
+
+```sql
+SELECT password FROM user WHERE uid = :userid LIMIT 1;
+```
+
+_SELECT_ operation on the table __'user_course'__ to retrieve the value of the column:
+- access
+
+```sql
+SELECT access FROM user_course WHERE uid = :userid AND access = 'W' LIMIT 1;
+```
+
+_UPDATE_ operation on the table __'user'__ to update the values of the columns:
+- securityquestion
+- securityquestionanswer
+
+```sql
+UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid;
+```
+
+_UPDATE_ operation on the table __'user'__ to update the value of the column:
+- password
+
+```sql
+UPDATE user SET password=:PW WHERE uid=:userid;
+```
 
 <br>
 <br>
