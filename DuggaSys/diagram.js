@@ -9684,7 +9684,7 @@ function drawElementIEEntity(element, ghosted) {
 
     if(element.primaryKey && element.primaryKey.length > 0) {
         primaryKeyArray = element.primaryKey;
-        text.unshift(...primaryKeyArray); // adding primary keys to the beginning of the array
+        text.unshift(...primaryKeyArray);
     }
 
     let tHeight = texth * (text.length + 1) * lineHeight;
