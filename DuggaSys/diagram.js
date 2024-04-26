@@ -2694,30 +2694,34 @@ function mmoving(event) {
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth + (deltaX / zoomfact));
+                var originalWidth = elementData.width;
+                elementData.width = startWidth + (deltaX / zoomfact);
 
                 // Deduct the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
+                var widthChange = elementData.width - originalWidth;
 
                 // Fetch original x-position
-                tmp = elementData.x;
-                elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
-
+                var originalHeight = elementData.height;
+                elementData.height = startHeight * (elementData.width / startWidth);
                 // Deduct the new position, giving us the total change
-                const xChange = -(tmp - elementData.x);
+                var heightChange = elementData.height - originalHeight;
 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
+                var originalWidth = elementData.width;
+                elementData.width = startWidth - (deltaX / zoomfact);
 
                 // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
+                var widthChange = elementData.width - originalWidth;
 
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                var originalHeight = elementData.height;
+                elementData.height = startHeight * (elementData.width / startWidth);
+
+                var heightChange = elementData.height - originalHeight;
+
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
                 var tmp = elementData.height;
