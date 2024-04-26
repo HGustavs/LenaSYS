@@ -1507,6 +1507,8 @@ UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :ci
 ### refreshGithubRepo_ms.php
 Updates the metadata from the github repo if there's been a new commit.
 
+Please note, _refreshCheck_ and _newUpdateTime_ will later become their own microservices but are included in this microservice for now to ensure functionality. 
+
 
 __- refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit:__
 
@@ -1575,16 +1577,16 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 <br>
 
 ---
-
 <br>
+
 
 ### newUpdateTime_ms.php
 
 <br>
 
 ---
-
 <br>
+
 
 ### refreshCheck_ms.php
 
