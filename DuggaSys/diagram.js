@@ -7813,6 +7813,12 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             fromElement = tempElement;
         }
     }
+    // Prevent a line to be drawn between two ER entity.
+    if (fromElement.kind == toElement.kind && fromElement.kind == elementTypesNames.EREntity && toElement.kind == elementTypesNames.EREntity){
+        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name}- and ${toElement.name}-element`);
+        return;
+    }
+
     if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
         return;
