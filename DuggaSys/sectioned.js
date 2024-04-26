@@ -2574,20 +2574,32 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
-      //I don't know who did this but this call is not necessory
-      updateItem();
-      //Add class to element so it will be highlighted.
-      setTimeout(function () {
-        var element = document.getElementById('I' + updatedLidsection).firstChild;
-        if (element.tagName == 'DIV') {
-          element = element.firstChild;
-          element.classList.add("highlightChange");
-        } else if (element.tagName == 'A') {
-          document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
-        } else if (element.tagName == 'SPAN') {
-          document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
-        }
-      }, 200);
+      //If all information is correct -> item can be updated
+      if (window.bool10 == true && window.bool11 == true) {
+        updateItem();
+        //Toggle for alert when update a item
+        var element = document.getElementById("updateAlert");
+        element.classList.toggle("createAlertToggle");
+        //Set text for the alert when update a item
+        document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+        //Add class to element so it will be highlighted.
+        setTimeout(function () {
+          var element = document.getElementById('I' + updatedLidsection).firstChild;
+          if (element.tagName == 'DIV') {
+            element = element.firstChild;
+            element.classList.add("highlightChange");
+          } else if (element.tagName == 'A') {
+            document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
+          } else if (element.tagName == 'SPAN') {
+            document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
+          }
+        }, 200);
+        //Duration time for the alert before remove
+        setTimeout(function () {
+          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").innerHTML = "";
+        }, 3000);
+      }
 
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
