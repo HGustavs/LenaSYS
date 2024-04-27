@@ -1840,6 +1840,25 @@ function returnedSection(data) {
           }
         }
 
+                // github icon for moments (itemKind 4 is moments)
+                if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+                  str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+                    "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+                  str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
+                          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), getLocalStorage();'>`;
+                  str += "</td>";
+                }
+        
+                // github icon for code (itemKind 2 is code)
+                if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+                  str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+        
+                    "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+                  str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
+                          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
+                  str += "</td>";
+                }
+
         // Refresh button for moments
         if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='moment'>`;
@@ -1877,6 +1896,7 @@ function returnedSection(data) {
           str += "onclick='console.log(\"RefreshButton Clicked!\");'"
           str += "</td>";
         }
+
         // Tab example button
         if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
@@ -1905,7 +1925,6 @@ function returnedSection(data) {
           }
         }
 
-
         // Tab element button for heading
         if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
@@ -1926,7 +1945,6 @@ function returnedSection(data) {
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
           item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
-
 
           str += "</td>";
         }
@@ -1974,24 +1992,9 @@ function returnedSection(data) {
           str += "</td>";
         }
 
-        // github icon for moments (itemKind 4 is moments)
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), getLocalStorage();'>`;
-          str += "</td>";
-        }
 
-        // github icon for code (itemKind 2 is code)
-        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
 
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-          src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
-          str += "</td>";
-        }
+
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
