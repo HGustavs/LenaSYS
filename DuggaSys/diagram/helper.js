@@ -1,18 +1,4 @@
 /**
- * @description Creates an object with the selected x and y values.
- * @param {*} x
- * @param {*} y
- * @returns {Object} Returns object with x and y properties set.
- * @depricated Use new Point object instead!
- */
-function getPoint(x, y) {
-    return {
-        x: x,
-        y: y
-    };
-}
-
-/**
  * @description Creates a new rectangle from upper left point and lower right point.
  * @param {Point} topLeft
  * @param {Point} bottomRight

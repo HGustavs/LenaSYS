@@ -1045,7 +1045,7 @@ var startNodeRight = false;
 var startNodeDown = false;
 var startNodeUp = false;
 var containerStyle;
-var lastMousePos = getPoint(0, 0);
+var lastMousePos = new Point(0, 0);
 var dblPreviousTime = new Date().getTime(); // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
@@ -2629,7 +2629,7 @@ function mouseMode_onMouseMove(event) {
  * @param {MouseEvent} event Triggered mouse event.
  */
 function mmoving(event) {
-    lastMousePos = getPoint(event.clientX, event.clientY);
+    lastMousePos = new Point(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
@@ -4079,10 +4079,10 @@ function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4) {
 
 function getBoxSelectionPoints() {
     return {
-        n1: getPoint(startX, startY),
-        n2: getPoint(startX + deltaX, startY),
-        n3: getPoint(startX, startY + deltaY),
-        n4: getPoint(startX + deltaX, startY + deltaY),
+        n1: new Point(startX, startY),
+        n2: new Point(startX + deltaX, startY),
+        n3: new Point(startX, startY + deltaY),
+        n4: new Point(startX + deltaX, startY + deltaY),
     };
 }
 
@@ -4120,7 +4120,7 @@ function boxSelect_Update(mouseX, mouseY) {
         var coords = getBoxSelectionCoordinates();
 
         // Calculate top-left and bottom-right coordinates
-        var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
+        var topLeft = new Point(0, 0), bottomRight = new Point(0, 0);
 
         // left/right
         if (coords.n1.x < coords.n4.x) {
