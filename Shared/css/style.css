@@ -2256,13 +2256,12 @@ input.inactive-button {
 .inputwrapper select{
   border-radius: 0px;
 }
-#inputwrapper-name{
-  width: 440px;
-}
+
 #copyvers{
   margin-right: 0px;
 }
-#editCourse #visib{
+
+#editCourse {
   margin-right: 0px;
 }
 
@@ -2705,6 +2704,7 @@ label.login-label {
   text-align: start;
   border-radius: 0px;
   box-sizing: border-box;
+  margin-right: 10px;
 }
 
 .greyedout-textinput {
@@ -7719,11 +7719,6 @@ textarea#mrkdwntxt {
   z-index: 2000;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
-}
-
-#visib{
-  margin-right: 0px;
-  border-radius: 0px;
 }
 
 #saveCourse{
