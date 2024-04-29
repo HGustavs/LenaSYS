@@ -1374,7 +1374,7 @@ if($gradesys=="UNK") $gradesys=0;
 		);
 
 				function getDeletedEntries($opt){
-					
+					global $pdo;
 					pdoConnect();
 					session_start();
 					//This will enable fetching every listentry with visibility DELETED and will enable restoring deleted items
