@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------------------------------------------------------------------------
-// processDuggaFile.php - Function for processing files within a dugga i.e. submitted PDF, ZIP files
+// processDuggaFile_ms.php - Function for processing files within a dugga i.e. submitted PDF, ZIP files
 //---------------------------------------------------------------------------------------------------------------
 function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, $moment)
 {
