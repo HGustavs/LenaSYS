@@ -3,7 +3,7 @@
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
 	//include_once "../../coursesyspw.php";
-	include "../Shared/toast.php";
+	include_once "../Shared/toast.php";
 	pdoConnect();
 
 	error_reporting(E_ALL);

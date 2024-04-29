@@ -62,16 +62,16 @@ function updateCourse()
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 403:
-					alert(data.status + " Error \nplease insert valid git key");
+					toast("error",data.status + " Error \nplease insert valid git key",7);
 					break;
 				case 422:
-					alert(data.responseJSON.message + "\nDid not create/update token");
+					toast("error",data.responseJSON.message + "\nDid not create/update token",7);
 					break;
 				case 503:
-					alert(data.responseJSON.message + "\nDid not create/update token");
+					toast("error",data.responseJSON.message + "\nDid not create/update token",7);
 					break;
 				default:
-					alert("Something went wrong with updating git token and git URL...");
+					toast("error","Something went wrong with updating git token and git URL...",7);
 			}
 			dataCheck = false;
 		}
@@ -100,7 +100,7 @@ function updateCourse()
 				if(fetchGitHubRepo(courseGitURL)) {
 					localStorage.setItem('courseGitHubRepo', courseGitURL);
 					//If courseGitURL has a value, display a message stating the update (with github-link) worked
-					alert("Course " + coursename + " updated with new GitHub-link!"); 
+					toast("success","Course " + coursename + " updated with new GitHub-link!",5); 
 					updateGithubRepo(courseGitURL, cid);
 				}
 				//Else: get error message from the fetchGitHubRepo function.
@@ -108,12 +108,12 @@ function updateCourse()
 			} else {
 				localStorage.setItem('courseGitHubRepo', " ");
 				//If courseGitURL has no value, display an update message
-				alert("Course " + coursename + " updated!"); 
+				toast("success","Course " + coursename + " updated!",5); 
 			}
 		}
 		else
 		{
-			alert("Git token is missing/expired. Commits may not be able to be fetched"); 
+			toast("warning","Git token is missing/expired. Commits may not be able to be fetched",7); 
 		}
 	}
 }
@@ -160,7 +160,7 @@ function createNewCourse()
 		if(fetchGitHubRepo(courseGitURL)) {
 			localStorage.setItem('lastCC', true);
 			AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-			alert("New course, " + coursename + " added with GitHub-link!");
+			toast("success","New course, " + coursename + " added with GitHub-link!",5);
 			fetchLatestCommit(courseGitURL);
 		}
 		//Else: get error message from the fetchGitHubRepo function.
@@ -169,7 +169,7 @@ function createNewCourse()
 		//If courseGitURL has no value, update the course as usual.
 		localStorage.setItem('lastCC', true);
 		AJAXService("NEW", { coursename : coursename, coursecode : coursecode, courseGitURL : courseGitURL }, "COURSE");
-		alert("New course, " + coursename + " added!");
+		toast("success","New course, " + coursename + " added!",5);
 	}
 }
 
@@ -193,13 +193,13 @@ function fetchGitHubRepo(gitHubURL)
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					toast("error",data.responseJSON.message + "\nDid not create/update course",7);
 					break;
 				case 503:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					toast("error",data.responseJSON.message + "\nDid not create/update course",7);
 					break;
 				default:
-					alert("Something went wrong...");
+					toast("error","Something went wrong...",7);
 			}
 		 	dataCheck = false;
 		}
@@ -225,13 +225,13 @@ function fetchLatestCommit(gitHubURL)
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					toast("error",data.responseJSON.message + "\nDid not create/update course",7);
 					break;
 				case 503:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					toast("error",data.responseJSON.message + "\nDid not create/update course",7);
 					break;
 				default:
-					alert("Something went wrong...");
+					toast("error","Something went wrong...",7);
 			}
 		 	dataCheck = false;
 		}
@@ -256,13 +256,13 @@ function updateGithubRepo(githubURL, cid) {
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch(data.status){
 				case 422:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					toast("error",data.responseJSON.message + "\nDid not create/update course",7);
 					break;
 				case 503:
-					alert(data.responseJSON.message + "\nDid not create/update course");
+					toast("error",data.responseJSON.message + "\nDid not create/update course",7);
 					break;
 				default:
-					alert("Something went wrong...");
+					toast("error","Something went wrong...",7);
 			}
 		 	dataCheck = false;
 		}
@@ -483,11 +483,11 @@ function updateSettings() {
 		readonly = 0;
 	}
 	if (window.bool9 === true) {
-		alert('Version updated');
+		toast("success",'Version updated',5);
 		popupContainer.style.display = "none";
 		AJAXService("SETTINGS", {motd: messageElement.value, readonly: readonly}, "COURSE");
 	  } else {
-		alert("You have entered incorrect information");
+		toast("error","You have entered incorrect information",7);
 	  }
 }
 
@@ -507,7 +507,7 @@ function createVersion(){
   var enddate = $("#enddate").val();
 
 	if (versid=="" || versname=="") {
-		alert("Version Name and Version ID must be entered!");
+		toast("warning","Version Name and Version ID must be entered!",5);
 	} else {
 		if(coursevers=="null"){
 			makeactive=true;
@@ -860,9 +860,9 @@ function validateForm(formid) {
 		//Go through inputs until empty value found or all is iterated. Return true if any is empty and false if none is empty.
 		const isAnyEmpty = [...inputs].some(input => input.value === null || input.value.trim() === "");
 		if(isAnyEmpty) {
-			alert("Fill in all fields");
+			toast("warning","Fill in all fields",5);
 		} else {
-			alert("You have entered incorrect information...");
+			toast("error","You have entered incorrect information...",7);
 		}
 	}
 }
