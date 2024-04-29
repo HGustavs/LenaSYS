@@ -45,6 +45,14 @@
         }
 
         /**
+         * function set_permissions
+         * Set permission to access db for user.
+         */
+        public function set_permissions() {
+            // TODO: implement function
+        }
+
+        /**
          * Runs an sql file using the class variable pdo.
          */
         public function run_sql_file(string $file_name): bool {
