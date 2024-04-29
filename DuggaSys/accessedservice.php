@@ -101,7 +101,7 @@ if(checklogin() && $hasAccess) {
 				$query->bindParam(':cid', $cid);
 		}
 
-		if(/*$prop=="firstname"||$prop=="lastname"||$prop=="ssn"||*/$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+		if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
 				$query->bindParam(':uid', $uid);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
