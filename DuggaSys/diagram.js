@@ -8801,9 +8801,12 @@ function drawRulerBars(X, Y) {
  * @return Returns an string containing the elements that should be drawn.
  */
 function drawElement(element, ghosted = false) {
-    let str = "";
+    let divContent, style, cssClass;
     let texth = Math.round(zoomfact * textheight);
-  
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8811,10 +8814,6 @@ function drawElement(element, ghosted = false) {
     // Caclulate font width using some canvas magic
     canvasContext.font = `${texth}px ${canvasContext.font.split('px')[1]}`;
     let textWidth = canvasContext.measureText(element.name).width;
-
-    //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
-    //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
-    let actorFontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
 
     if (errorActive) {
         // Checking for errors regarding ER Entities
@@ -8824,25 +8823,49 @@ function drawElement(element, ghosted = false) {
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
     }
-
-    // drawElement functions get their closing div at end of switch
     switch (element.kind) {
+        case elementTypesNames.EREntity:
+            divContent = drawElementEREntity(element, boxw, boxh, linew, texth);
+            break;
         case elementTypesNames.UMLEntity:
-            str += drawElementUMLEntity(element, ghosted);
+            divContent = drawElementUMLEntity(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element'
+            break;
+        case elementTypesNames.IEEntity:
+            divContent = drawElementIEEntity(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element';
             break;
         case elementTypesNames.SDEntity:
-            str += drawElementSDEntity(element, ghosted);
+            divContent = drawElementSDEntity(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element';
+            break;
+        case elementTypesNames.ERRelation:
+            divContent = drawElementERRelation(element, boxw, boxh, linew);
+            break;
+        case elementTypesNames.ERAttr:
+            divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
+            break;
+        case elementTypesNames.UMLRelation:
+            divContent = drawElementUMLRelation(element, boxw, boxh, linew);
+            cssClass = 'uml-element';
+            break;
+        case elementTypesNames.IERelation:
+            divContent = drawElementIERelation(element, boxw, boxh, linew);
+            cssClass = 'ie-element';
+            style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
                 <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
                     <circle cx="16.5" cy="12.5" r="10.5" />
-                </g>`
-            str += drawElementState(element, ghosted, initVec);
+                </g>`;
+            divContent = drawElementState(element, initVec);
+            cssClass = 'uml-state';
+            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLFinalState:
             let finalVec = `
-                <g> 
+                <g>
                     <path 
                         d=" M 12,-0
                             C 18.623,-0 24,5.377 24,12
@@ -8857,58 +8880,56 @@ function drawElement(element, ghosted = false) {
                     <circle 
                         transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" 
                         cx="14.5" cy="14.5" r="5.5"
-                    /> 
-                </g>`
-            str += drawElementState(element, ghosted, finalVec);
+                    />
+                </g>`;
+            divContent = drawElementState(element, finalVec);
+            cssClass = 'uml-state';
+            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLSuperState:
-            str += drawElementSuperState(element, ghosted, textWidth);
-            break;
-        case elementTypesNames.IEEntity:
-            str += drawElementIEEntity(element, ghosted);
-            break;
-        case elementTypesNames.UMLRelation:
-            str += drawElementUMLRelation(element, ghosted);
-            break;
-        case elementTypesNames.IERelation:
-            str += drawElementIERelation(element, ghosted);
+            divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
+            cssClass = 'uml-Super';
             break;
         case elementTypesNames.sequenceActor:
-            str += drawElementSequenceActor(element, ghosted, textWidth);
+            divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             break;
         case elementTypesNames.sequenceObject:
-            str += drawElementSequenceObject(element, ghosted);
+            divContent = drawElementSequenceObject(element, boxw, boxh, linew);
             break;
         case elementTypesNames.sequenceActivation:
-            str += drawElementSequenceActivation(element, ghosted);
+            divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
             break;
         case elementTypesNames.sequenceLoopOrAlt:
-            str += drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor);
+            let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
+            divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
             break;
         case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
-            str += drawElementNote(element, ghosted);
-            break;
-        case elementTypesNames.EREntity:
-            str += drawElementEREntity(element, ghosted);
-            break;
-        case elementTypesNames.ERRelation:
-            str += drawElementERRelation(element, ghosted, textWidth);
-            break;
-        case elementTypesNames.ERAttr:
-            str += drawElementERAttr(element, ghosted, textWidth);
+            divContent = drawElementNote(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element';
             break;
     }
+
+    let lock = '';
     if (element.isLocked) {
-        str += `<img 
-                    id='pad_lock' 
-                    width='${zoomfact * 20}' 
-                    height='${zoomfact * 25}' 
-                    src='../Shared/icons/pad_lock.svg'
-                    alt='Padlock'
-                />`;
+        lock = `<img 
+                     id='pad_lock' 
+                     width='${zoomfact * 20}' 
+                     height='${zoomfact * 25}' 
+                     src='../Shared/icons/pad_lock.svg'
+                     alt='Padlock' 
+                 />`;
     }
-    str += "</div>";
-    return str;
+    style = style ?? `left:0; top:0; width:auto; height:auto; font-size:${texth}px; z-index:1;`;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    return `<div 
+                id='${element.id}' 
+                class='element ${cssClass}' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();' 
+                onmouseleave='mouseLeave();' 
+                style='${style}${ghostStr}' 
+            >${divContent}${lock}</div>`;
 }
 
 const splitLengthyLine = (s, max) => {
@@ -8949,13 +8970,26 @@ const drawText = (x, y, a, t, extra='') => {
             > ${t} </text>`;
 }
 
-function drawElementUMLEntity(element, ghosted) {
+function drawElementEREntity(element, boxw, boxh, linew, texth) {
+    const l = linew * 3;
+
+    let weak = '';
+    if (element.state == "weak") {
+        weak = `<rect
+                    x='${l}' 
+                    y='${l}' 
+                    width='${boxw - l * 2}' 
+                    height='${boxh - l * 2}'
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
+                />`;
+    }
+    let rect = drawRect(boxw, boxh, linew, element);
+    let text = drawText(boxw / 2, boxh / 2 + texth / 3, 'middle', element.name);
+    return drawSvg(boxw, boxh, rect + weak + text);
+}
+
+function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let str = "";
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
-    let texth = Math.round(zoomfact * textheight);
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
@@ -8966,16 +9000,6 @@ function drawElementUMLEntity(element, ghosted) {
     let fHeight = texth * (fText.length + 1) * lineHeight;
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
     updateElementHeight(UMLHeight, element, totalHeight + boxh)
-
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}' 
-                class='element uml-element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();' 
-                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
-            >`;
 
     // Header
     let height = texth * 2;
@@ -9002,13 +9026,42 @@ function drawElementUMLEntity(element, ghosted) {
     return str;
 }
 
-function drawElementSDEntity(element, ghosted){
+function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let str = "";
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let texth = Math.round(zoomfact * textheight);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(IEHeight, element, totalHeight + boxh)
+
+    let height = texth * 2;
+    let headRect = drawRect(boxw, height, linew, element);
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headRect + headText);
+    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
+
+    // Content, Attributes
+    const textBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let rect = drawRect(boxw, height, linew, element);
+        let contentSvg = drawSvg(boxw, height, rect + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += textBox(text, 'uml-content');
+    return str;
+}
+
+function drawElementSDEntity(element, boxw, boxh, linew, texth){
+    let str = "";
     let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
     const maxCharactersPerLine = Math.floor(boxw / texth * 1.75);
     const lineHeight = 1.5;
@@ -9018,16 +9071,6 @@ function drawElementSDEntity(element, ghosted){
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight =  tHeight - linew * 2 + texth * 2;
     updateElementHeight(SDHeight, element, totalHeight + boxh)
-
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}' 
-                class='element uml-element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();' 
-                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1};${ghostStr}'
-            >`
 
     let height = texth * 2;
     let headPath = `
@@ -9078,122 +9121,129 @@ function drawElementSDEntity(element, ghosted){
     return str;
 }
 
-function drawElementIEEntity(element, ghosted) {
-    let str = "";
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
-    let texth = Math.round(zoomfact * textheight);
-    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-    const lineHeight = 1.5;
+function drawElementERRelation(element, boxw, boxh, linew) {
+    let content;
+    let hboxw = boxw / 2;
+    let hboxh = boxh / 2;
+    const multioffs = 3;
 
-    const text = splitFull(element.attributes, maxCharactersPerLine);
-
-    let tHeight = texth * (text.length + 1) * lineHeight;
-    let totalHeight =  tHeight - linew * 2 + texth * 2;
-    updateElementHeight(IEHeight, element, totalHeight + boxh)
-
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}' 
-                class='element uml-element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();' 
-                style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
-            >`;
-
-    let height = texth * 2;
-    let headRect = drawRect(boxw, height, linew, element);
-    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
-    let headSvg = drawSvg(boxw, height, headRect + headText);
-    str += drawDiv( 'uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
-
-    // Content, Attributes
-    const textBox = (s, css) => {
-        let height = texth * (s.length + 1) * lineHeight + boxh;
-        let text = "";
-        for (let i = 0; i < s.length; i++) {
-            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
-        }
-        let rect = drawRect(boxw, height, linew, element);
-        let contentSvg = drawSvg(boxw, height, rect + text);
-        let style = `height:${height}px`;
-        return drawDiv(css, style, contentSvg);
+    let weak = "";
+    if (element.state == "weak") {
+        weak = `<polygon 
+                    points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
+                    class="text"
+                /> `;
     }
-
-    str += textBox(text, 'uml-content');
-    return str;
+    content += `<polygon 
+                    points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
+                    class="text"
+                />
+                ${weak}
+                <text 
+                    x='50%' y='50%' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle'
+                > ${element.name.slice(0, element.name.length)} </text>`;
+    return drawSvg(boxw, boxh, content);
 }
 
-function drawElementState(element, ghosted, vectorGraphic) {
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
+function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
+    let content;
+    let hboxw = boxw / 2;
+    let hboxh = boxh / 2;
+    const drawPath = (l, extra='') => {
+        return `<path 
+                    d="M${l},${hboxh} 
+                        Q${l},${l} ${hboxw},${l} 
+                        Q${boxw - l},${l} ${boxw - l},${hboxh} 
+                        Q${boxw - l},${boxh - l} ${hboxw},${boxh - l} 
+                        Q${l},${boxh - l} ${l},${hboxh}" 
+                    stroke='${element.stroke}' fill='${element.fill}' ${extra} stroke-width='${linew}' 
+                    class="text" 
+                />`;
+    }
+
+    if (element.state) {
+        let dash = (element.state == "computed") ? "stroke-dasharray='4 4'" : '';
+        content += drawPath(linew, dash);
+    }
+    let extra = '';
+    switch (element.state) {
+        case "multiple":
+            content += drawPath(linew * 3);
+            break;
+        case "weakKey":
+            content += `<line 
+                            x1="${(boxw - textWidth) / 2}" 
+                            y1="${hboxh + texth * 0.5 + 1}" 
+                            x2="${(boxw + textWidth) / 2}" 
+                            y2="${hboxh + texth * 0.5 + 1}" 
+                            stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"
+                        />`;
+            break;
+        case "primary":
+        case "candidate":
+            extra = `class='underline'`;
+            break;
+    }
+    content += `<text 
+                    x='${boxw / 2}' y='${hboxh}' ${extra} 
+                    dominant-baseline='middle' text-anchor='middle'
+                > ${element.name} </text>`;
+    return drawSvg(boxw, boxh, content);
+}
+
+function drawElementUMLRelation(element, boxw, boxh, linew) {
+    let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let poly = `
+        <polygon 
+            points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+        />`;
+    return drawSvg(boxw, boxh, poly);
+}
+
+function drawElementIERelation(element, boxw, boxh, linew) {
+    let content = "";
+    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`
+
+    if (element.state != inheritanceStateIE.OVERLAPPING) {
+        content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
+                    <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
+    }
+    return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+}
+
+function drawElementState(element, vectorGraphic) {
     const theme = document.getElementById("themeBlack");
     if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
         element.fill = color.WHITE;
     } else if (element.fill == color.WHITE && theme.href.includes('style')) {
         element.fill = color.BLACK;
     }
-    return `<div id="${element.id}" 
-                class="element uml-state"
-                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'>
-                <svg width="100%" height="100%" 
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg" 
-                    xml:space="preserve"
-                    style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                    ${vectorGraphic}
-                </svg>`;
+    return `<svg 
+                width="100%" height="100%" 
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg" 
+                xml:space="preserve"
+                style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+            > ${vectorGraphic} </svg>`;
 }
 
-function drawElementSuperState(element, ghosted, textWidth) {
-    let str = "";
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let linew = Math.round(strokewidth * zoomfact);
+function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
-
-    str += `<div id="${element.id}" 
-                class="element uml-Super"
-                style="margin-top:${boxh * 0.025}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-            >`;
 
     let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='20'`);
     let rectTwo = drawRect(textWidth + 40 * zoomfact, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
     let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`);
-    str += drawSvg(boxw, boxh, rectOne + rectTwo + text);
-    return str;
+    return drawSvg(boxw, boxh, rectOne + rectTwo + text);
 }
 
-function drawElementSequenceActor(element, ghosted, textWidth) {
-    let str = "";
+function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) {
     let content;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let texth = Math.round(zoomfact * textheight);
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}'
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
-            >`;
     content = `<path 
                     class="text" 
                     d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
@@ -9213,13 +9263,13 @@ function drawElementSequenceActor(element, ghosted, textWidth) {
                         class="text"
                         d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
                             v${boxw / 6}
-                            m-${(boxw / 4)},0
+                            m${-boxw / 4},0
                             h${boxw / 2}
-                            m-${(boxw / 4)},0
+                            m${-boxw / 4},0
                             v${boxw / 3}
                             l${boxw / 4},${boxw / 4}
-                            m${(boxw / 4) * -1},${(boxw / 4) * -1}
-                            l${(boxw / 4) * -1},${boxw / 4} "
+                            m${-boxw / 4},${-boxw / 4}
+                            l${-boxw / 4},${boxw / 4}"
                         stroke-width='${linew}'
                         stroke='${element.stroke}'
                         fill='transparent'
@@ -9227,7 +9277,7 @@ function drawElementSequenceActor(element, ghosted, textWidth) {
                     <rect 
                         class='text'
                         x='${(boxw - textWidth) / 2}'
-                        y='${boxw + (linew * 2)}'
+                        y='${boxw + linew * 2}'
                         width='${textWidth}'
                         height='${texth - linew}'
                         stroke='none'
@@ -9241,28 +9291,14 @@ function drawElementSequenceActor(element, ghosted, textWidth) {
                         text-anchor='middle'
                     > ${element.name} </text>
                 </g>`;
-    str += drawSvg(boxw, boxh, content);
-    return str;
+    return drawSvg(boxw, boxh, content);
 }
 
-function drawElementSequenceObject(element, ghosted) {
+function drawElementSequenceObject(element, boxw, boxh, linew) {
     let str = "";
     let content;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let texth = Math.round(zoomfact * textheight);
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}'
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
-            >`;
+
     content = `<path 
                     class="text" 
                     d="M ${boxw / 2 + linew},${boxw / 4 + linew}
@@ -9296,70 +9332,38 @@ function drawElementSequenceObject(element, ghosted) {
     return str;
 }
 
-function drawElementSequenceActivation(element, ghosted) {
-    let str = "";
+function drawElementSequenceActivation(element, boxw, boxh, linew) {
     let content;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
     var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
-    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}'
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1; ${ghostStr}'
-            >`;
+
     content = `<rect 
                     x='${linew}' y='${linew}' 
                     width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
                     rx='${sequenceCornerRadius * 3}' 
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
                 />`;
-    str += drawSvg(boxw, boxh, content);
-    return str;
+    return drawSvg(boxw, boxh, content);
 }
 
-function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
-    let str = "";
-    let content;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let texth = Math.round(zoomfact * textheight);
+function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
+    let fontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
+    element.altOrLoop = (element.alternatives.length > 1) ? "Alt" : "Loop";
 
-    let altLen = element.alternatives.length;
-    if (element.alternatives) boxh += 125 * zoomfact * altLen;
-    element.altOrLoop = (altLen > 1) ? "Alt" : "Loop";
-
-    let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}'
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1; ${ghostStr}'
-            >`;
-
-    content = `<rect 
-                    class='text'
-                    x='${linew}'
-                    y='${linew}'
-                    width='${boxw - linew * 2}'
-                    height='${boxh - linew * 2}'
-                    stroke-width='${linew}'
-                    stroke='${element.stroke}'
-                    fill='none'
-                    rx='${7 * zoomfact}'
-                    fill-opacity="0"
-                />`;
+    let content = `
+        <rect 
+            class='text'
+            x='${linew}'
+            y='${linew}'
+            width='${boxw - linew * 2}'
+            height='${boxh - linew * 2}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+            rx='${7 * zoomfact}'
+            fill-opacity="0"
+        />`;
     //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
-    if (element.alternatives.length > 0) {
+    if (element.alternatives.length) {
         for (let i = 1; i < element.alternatives.length; i++) {
             content += `<path class="text"
                             d="M ${boxw - linew},${(boxh / element.alternatives.length) * i}
@@ -9371,7 +9375,7 @@ function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
                         />`;
             content += drawText(linew * 2,
                 (boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2,
-                'auto', element.alternatives[i], `fill='${actorFontColor}'`
+                'auto', element.alternatives[i], `fill='${fontColor}'`
             );
         }
     }
@@ -9390,20 +9394,11 @@ function drawElementSequenceLoopOrAlt(element, ghosted, actorFontColor) {
                     fill='${element.fill}'
                 />`;
     let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
-    let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0], `fill=${actorFontColor}` );
-    str += drawSvg(boxw, boxh, content + textOne + textTwo);
-    return str;
+    let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0] ?? '', `fill=${fontColor}` );
+    return drawSvg(boxw, boxh, content + textOne + textTwo);
 }
 
-function drawElementNote(element, ghosted) {
-    let str = "";
-    let content;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let texth = Math.round(zoomfact * textheight);
-
+function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
@@ -9412,243 +9407,30 @@ function drawElementNote(element, ghosted) {
     let totalHeight = boxh * (1 + length) / 2;
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                    id='${element.id}' 
-                    class='element uml-element' 
-                    onmousedown='ddown(event);' 
-                    onmouseenter='mouseEnter();' 
-                    onmouseleave='mouseLeave();' 
-                    style='left:0; top:0; width:${boxw}px; font-size:${texth}px; z-index:1;${ghostStr}'
-                >`;
 
-    content += `<path class="text"
-                        d=" M ${linew},${linew}
-                            v ${boxh * (1 + length) / 2 - linew * 2}
-                            h ${boxw - linew * 2}
-                            v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
-                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
-                            h 1
-                            h -1
-                            v ${(boxh - linew * 2) * 0.5} 
-                            h ${(boxw - linew * 2) * 0.12}
-                            v 1
-                            v -1
-                            l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
-                            h -${(boxw - linew * 2) * 0.885} "
-                        stroke-width='${linew}'
-                        stroke='${element.stroke}'
-                        fill='${element.fill}'
-                    />`;
+    let content = `
+        <path class="text"
+            d=" M ${linew},${linew}
+                v ${boxh * (1 + length) / 2 - linew * 2}
+                h ${boxw - linew * 2}
+                v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
+                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                h 1
+                h -1
+                v ${(boxh - linew * 2) * 0.5} 
+                h ${(boxw - linew * 2) * 0.12}
+                v 1
+                v -1
+                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
+                h -${(boxw - linew * 2) * 0.885} "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`;
     for (let i = 0; i < text.length; i++) {
         content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
     }
-    str += drawSvg(boxw, boxh * (1 + length) / 2, content);
-    return str;
-}
-
-function drawElementUMLRelation(element, ghosted) {
-    let str = "";
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-    str += `<div 
-                id='${element.id}' 
-                class='element uml-element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;${ghostStr}'
-            >`;
-
-    let fill = (element.state == 'overlapping') ? 'black' : 'white';
-    let poly = `
-        <polygon 
-            points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:${fill}; stroke:black; stroke-width:${linew};'
-        />`;
-    str += drawSvg(boxw, boxh, poly);
-    return str;
-}
-
-function drawElementIERelation(element, ghosted) {
-    let str = "";
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-
-    str += `<div 
-                id='${element.id}' 
-                class='element ie-element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh / 2}px; z-index:1;${ghostStr}'
-            >`;
-
-    let content = "";
-    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`
-
-    if (element.state != inheritanceStateIE.OVERLAPPING) {
-        content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
-                    <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
-    }
-    str += drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
-    return str;
-}
-
-function drawElementEREntity(element, ghosted) {
-    let str = "";
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
-    let texth = Math.round(zoomfact * textheight);
-    const multioffs = 3;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-
-    str += `<div 
-                id='${element.id}' 
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1;${ghostStr}'
-            >`;
-
-    let weak = '';
-    if (element.state == "weak") {
-        weak = `<rect
-                    x='${linew * multioffs}' 
-                    y='${linew * multioffs}' 
-                    width='${boxw - (linew * multioffs * 2)}' 
-                    height='${boxh - (linew * multioffs * 2)}'
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
-                />`;
-    }
-    let rect = drawRect(boxw, boxh, linew, element);
-    let text = drawText(boxw / 2, boxh / 2 + texth / 3, 'middle', element.name);
-    str += drawSvg(boxw, boxh, rect + weak + text);
-    return str;
-}
-
-function drawElementERRelation(element, ghosted) {
-    let str = "";
-    let content;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var hboxw = Math.round(element.width * zoomfact * 0.5);
-    var texth = Math.round(zoomfact * textheight);
-    const multioffs = 3;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-
-    str += `<div 
-                id='${element.id}' 
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1;${ghostStr}'
-            >`;
-
-    let weak = "";
-    if (element.state == "weak") {
-        weak = `<polygon 
-                    points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
-                    class="text"
-                /> `;
-    }
-    content += `<polygon 
-                    points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
-                    class="text"
-                />
-                ${weak}
-                <text 
-                    x='50%' y='50%' 
-                    dominant-baseline='middle' 
-                    text-anchor='middle'
-                > ${element.name.slice(0, element.name.length)} </text>`;
-    str += drawSvg(boxw, boxh, content);
-    return str;
-}
-
-function drawElementERAttr(element, ghosted, textWidth) {
-    let str = "";
-    let content;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    var hboxw = Math.round(element.width * zoomfact * 0.5);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var texth = Math.round(zoomfact * textheight);
-    const multioffs = 3;
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
-
-    str += `<div 
-                id='${element.id}' 
-                class='element' 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'
-                style='left:0; top:0; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1;${ghostStr}'
-            >`;
-
-    if (element.state) {
-        let dash = (element.state == "computed") ? "stroke-dasharray='4 4'" : '';
-        content += `<path 
-                        d="M${linew},${hboxh} 
-                            Q${linew},${linew} ${hboxw},${linew} 
-                            Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                            Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                            Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' 
-                        class="text" 
-                    />`
-    }
-    let extra = '';
-    switch (element.state) {
-        case "multiple":
-            content += `<path 
-                            d="M${linew * multioffs},${hboxh} 
-                                Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
-                                Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
-                                Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
-                                Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                            stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' 
-                        />`;
-            break;
-        case "weakKey":
-            content += `<line 
-                            x1="${(boxw - textWidth) / 2}" 
-                            y1="${hboxh + texth * 0.5 + 1}" 
-                            x2="${(boxw + textWidth) / 2}" 
-                            y2="${hboxh + texth * 0.5 + 1}" 
-                            stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"
-                        />`;
-            break;
-        case "primary":
-        case "candidate":
-            extra = `class='underline'`;
-            break;
-    }
-    content += `<text 
-                    x='${boxw / 2}' y='${hboxh}' ${extra} 
-                    dominant-baseline='middle' text-anchor='middle'
-                > ${element.name} </text>`;
-    str += drawSvg(boxw, boxh, content);
-    return str;
+    return drawSvg(boxw, boxh * (1 + length) / 2, content);
 }
 
 /**
