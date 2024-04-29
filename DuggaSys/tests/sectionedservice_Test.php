@@ -7,9 +7,9 @@
  
  Documentation for how these tests are used can be found in Shared/Documentation/Test API
 
- The original code for the service that is tested in reorderListentries, changes the value of "moment", therefore these tests can only be performed once with a passing grades. Should another attempt be performed before reseting the database some test will undoubtedly fail.
+ The original code for the service that is tested in reorderListEntries, changes the value of "moment", therefore these tests can only be performed once with a passing grades. Should another attempt be performed before reseting the database some test will undoubtedly fail.
 
- The service used in test removeListentries, is never used
+ The service used in test removeListEntries, is never used
  The github related services "REFGIT" and "CREGITEX"  do not have tests for the time being. they were not completed at the time. They therefore need to be added to this file.
  The services changeActiveCourseVersion_sectioned and updateCourseVersion_sectioned are not in a functioning state, the tests for them are therefore not complete. 
 
@@ -90,25 +90,28 @@ $testsData = array(
         ),
     ),
     //---------------------------------------------------------------------------------------------------------------
-    // This test will test the micro-service deleteListentries and its curresponding part in the monolith called "DEL"
+    // This test will test the micro-service deleteListEntries and its curresponding part in the monolith called "DEL"
     //---------------------------------------------------------------------------------------------------------------
-    'deleteListentries' => array(
-        'expected-output' => '{"entries":[{"entryname":"PHP examples","lid":1001,"pos":0,"visible":1},{"entryname":"PHP Example 1","lid":1002,"pos":1,"visible":1},{"entryname":"PHP Example 2","lid":1003,"pos":2,"visible":1},{"entryname":"PHP Example 3","lid":1004,"pos":3,"visible":1},{"entryname":"Javascript examples","lid":1005,"pos":4,"visible":1},{"entryname":"JavaScript Example 1","lid":1006,"pos":5,"visible":1},{"entryname":"JavaScript Example 2","lid":1007,"pos":6,"visible":1},{"entryname":"JavaScript Example 3","lid":1008,"pos":7,"visible":1},{"entryname":"HTML5 examples","lid":1009,"pos":8,"visible":1},{"entryname":"HTML5 Example 1","lid":1010,"pos":9,"visible":1},{"entryname":"HTML5 Example 2","lid":1011,"pos":10,"visible":1},{"entryname":"HTML5 Example 3","lid":1012,"pos":11,"visible":1},{"entryname":"HTML5 Example 4","lid":1013,"pos":12,"visible":1},{"entryname":"HTML5 Example 5","lid":1014,"pos":13,"visible":1},{"entryname":"HTML5 Example 6","lid":1015,"pos":14,"visible":1},{"entryname":"HTML5 Example 7","lid":1016,"pos":15,"visible":1},{"entryname":"HTML5 Example 8","lid":1017,"pos":16,"visible":1},{"entryname":"Shader examples","lid":1018,"pos":17,"visible":1},{"entryname":"Shaderprogrammering","lid":1019,"pos":18,"visible":1},{"entryname":"Shaderprogrammering","lid":1020,"pos":19,"visible":1}],"debug":"NONE!","writeaccess":true,"studentteacher":false,"coursename":"Webbprogrammering","courseid":"1"}',
-        'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind)   
-                                  VALUES(5010,1,45656,'New Group',9011,6,5,0,22,'TOP', 0, 0, null);",
-        'query-after-test-1' => "DELETE FROM listentries WHERE lid > 5010;",
+    'deleteListEntries' => array(
+        'expected-output' => '{"entries":[{"entryname":"JavaScript-Code:","lid":1,"pos":1,"visible":1},{"entryname":"JS-TEST template 1","lid":4000,"pos":1,"visible":1},{"entryname":"JS-TEST template 2","lid":4001,"pos":1,"visible":1},{"entryname":"JS-TEST template 3","lid":4002,"pos":1,"visible":1},{"entryname":"JS-TEST template 4","lid":4003,"pos":1,"visible":1},{"entryname":"JS-TEST template 5","lid":4004,"pos":1,"visible":1},{"entryname":"JS-TEST template 6","lid":4005,"pos":1,"visible":1},{"entryname":"JS-TEST template 7","lid":4006,"pos":1,"visible":1},{"entryname":"JS-TEST template 8","lid":4007,"pos":1,"visible":1},{"entryname":"JS-TEST template 9","lid":4008,"pos":1,"visible":1},{"entryname":"JS-TEST template 10","lid":4009,"pos":1,"visible":1},{"entryname":"HTML-Code:","lid":2,"pos":2,"visible":1},{"entryname":"Html-test template 1","lid":5000,"pos":2,"visible":1},{"entryname":"Html-test template 2","lid":5001,"pos":2,"visible":1},{"entryname":"Html-test template 3","lid":5002,"pos":2,"visible":1},{"entryname":"Html-test template 4","lid":5003,"pos":2,"visible":1},{"entryname":"Html-test template 5","lid":5004,"pos":2,"visible":1},{"entryname":"Html-test template 6","lid":5005,"pos":2,"visible":1},{"entryname":"Html-test template 7","lid":5006,"pos":2,"visible":1},{"entryname":"Html-test template 8","lid":5007,"pos":2,"visible":1},{"entryname":"Html-test template 9","lid":5008,"pos":2,"visible":1},{"entryname":"Html-test template 10","lid":5009,"pos":2,"visible":1},{"entryname":"SQL-CODE:","lid":4,"pos":3,"visible":1},{"entryname":"SQL-TEST template 1","lid":3110,"pos":3,"visible":1},{"entryname":"SQL-TEST template 2","lid":3111,"pos":3,"visible":1},{"entryname":"SQL-TEST template 3","lid":3112,"pos":3,"visible":1},{"entryname":"SQL-TEST template 4","lid":3113,"pos":3,"visible":1},{"entryname":"SQL-TEST template 5","lid":3114,"pos":3,"visible":1},{"entryname":"SQL-TEST template 6","lid":3115,"pos":3,"visible":1},{"entryname":"SQL-TEST template 7","lid":3116,"pos":3,"visible":1},{"entryname":"SQL-TEST template 8","lid":3117,"pos":3,"visible":1},{"entryname":"SQL-TEST template 9","lid":3118,"pos":3,"visible":1},{"entryname":"SQL-TEST template 10","lid":3119,"pos":3,"visible":1},{"entryname":"PHP-CODE:","lid":5,"pos":4,"visible":1},{"entryname":"PHP-TEST template 1","lid":2110,"pos":4,"visible":1},{"entryname":"PHP-TEST template 2","lid":2111,"pos":4,"visible":1},{"entryname":"PHP-TEST template 3","lid":2112,"pos":4,"visible":1},{"entryname":"PHP-TEST template 4","lid":2113,"pos":4,"visible":1},{"entryname":"PHP-TEST template 5","lid":2114,"pos":4,"visible":1},{"entryname":"PHP-TEST template 6","lid":2115,"pos":4,"visible":1},{"entryname":"PHP-TEST template 7","lid":2116,"pos":4,"visible":1},{"entryname":"PHP-TEST template 8","lid":2117,"pos":4,"visible":1},{"entryname":"PHP-TEST template 9","lid":2118,"pos":4,"visible":1},{"entryname":"PHP-TEST template 10","lid":2119,"pos":4,"visible":1},{"entryname":"Other:","lid":6,"pos":5,"visible":1},{"entryname":"Inserttobedeleted","lid":5011,"pos":12,"visible":1}],"debug":"NONE!","writeaccess":false,"studentteacher":false,"coursename":"Testing-Course","courseid":"1885"}',
+        'query-before-test-1' => "INSERT INTO listentries(lid, cid, entryname, link, kind, pos, creator, visible, vers, gradesystem, highscoremode, feedbackenabled, feedbackquestion) VALUES (5011 ,1885, 'Inserttobedeleted', 'UNK', 4, 12, 2, 1, 1337, 1, 1, 0, 'UNK');",
+        'query-before-test-2' => "INSERT INTO quiz(cid) VALUES (1885);",
+        'query-before-test-3' => "SELECT MAX(id) AS did FROM quiz WHERE cid = 1885",
+        'query-before-test-4' => "SELECT MAX(lid) AS lid FROM listentries WHERE cid = 1885",
+        'variables-query-before-test-5' => "did, lid",
+        'query-before-test-5' => "INSERT INTO userAnswer (cid, quiz, variant, moment, useranswer, submitted, marked, vers, score, hash, password) VALUES(1885, ?, 3, ?, 'an answer', '2024-04-15 14:00:00', '2024-04-15 14:30:00', 1337, '0', 'ghj1ghj2', 'asddasdd');",
+        'query-after-test-1' => "DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;",
+        'query-after-test-2' => "DELETE FROM listentries WHERE lid = 5011;",
+        'query-after-test-3' => "DELETE FROM quiz WHERE cid = 1885 ORDER BY id DESC LIMIT 1;",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
                 'username' => 'mestr',
                 'password' => 'password',
-                'courseid'=> '1',
-                'coursename'=> '1',
-                'coursevers'=> '45656',
-                'comment'=> 'undefined',
+                'courseid' => 1885,
+                'coursevers'=> 1337,
                 'opt'=> 'DEL',
-                'lid'=> '5010',
-                'hash'=> 'UNK',
+                'lid'=> '5011',
             )
         ),
         'filter-output' => serialize(
@@ -127,10 +130,10 @@ $testsData = array(
             )),
     ),
     //-------------------------------------------------------------------------------------------------------------------
-    // This test will test the micro-service removeListentries and its curresponding part in the monolith called "DELETED"
+    // This test will test the micro-service removeListEntries and its curresponding part in the monolith called "DELETED"
     // THIS WILL FAIL THE FIRST TIME IT EXECUTES AFTER INSTALLING DATABASE!
     //-------------------------------------------------------------------------------------------------------------------
-    'removeListentries' => array(
+    'removeListEntries' => array(
         'expected-output' => '{"debug":"NONE!","writeaccess":true,"readaccess":true,"entries":[{"entryname":"PHP examples","visible":"1"},{"entryname":"PHP Example 1","visible":"1"},{"entryname":"PHP Example 2","visible":"1"},{"entryname":"PHP Example 3","visible":"1"},{"entryname":"Javascript examples","visible":"1"},{"entryname":"RemoveTest123","visible":"3"},{"entryname":"JavaScript Example 1","visible":"1"},{"entryname":"JavaScript Example 2","visible":"1"},{"entryname":"JavaScript Example 3","visible":"1"},{"entryname":"HTML5 examples","visible":"1"},{"entryname":"HTML5 Example 1","visible":"1"},{"entryname":"HTML5 Example 2","visible":"1"},{"entryname":"HTML5 Example 3","visible":"1"},{"entryname":"HTML5 Example 4","visible":"1"},{"entryname":"HTML5 Example 5","visible":"1"},{"entryname":"HTML5 Example 6","visible":"1"},{"entryname":"HTML5 Example 7","visible":"1"},{"entryname":"HTML5 Example 8","visible":"1"},{"entryname":"Shader examples","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"}]}',
         'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(1,45656,'RemoveTest123',9021,6,5,0,101,'TOP', 0, 0, null);",
         'query-before-test-2' => "SELECT lid FROM listentries WHERE entryname = 'RemoveTest123';",
@@ -214,9 +217,9 @@ $testsData = array(
         ),
     ),
     //------------------------------------------------------------------------------------------
-    // This test the microservice reorderListentries and the part of the monalith called "REORDER" 
+    // This test the microservice reorderListEntries and the part of the monalith called "REORDER" 
     //------------------------------------------------------------------------------------------
-    'reorderListentries' => array(
+    'reorderListEntries' => array(
         'expected-output' => '{"entries":[{"entryname":"PHP examples","lid":1001,"pos":0},{"entryname":"PHP Example 2","lid":1003,"pos":1},{"entryname":"PHP Example 1","lid":1002,"pos":2},{"entryname":"PHP Example 3","lid":1004,"pos":3},{"entryname":"Javascript examples","lid":1005,"pos":4},{"entryname":"JavaScript Example 1","lid":1006,"pos":5},{"entryname":"JavaScript Example 2","lid":1007,"pos":6},{"entryname":"JavaScript Example 3","lid":1008,"pos":7},{"entryname":"HTML5 examples","lid":1009,"pos":8},{"entryname":"HTML5 Example 1","lid":1010,"pos":9},{"entryname":"HTML5 Example 2","lid":1011,"pos":10},{"entryname":"HTML5 Example 3","lid":1012,"pos":11},{"entryname":"HTML5 Example 4","lid":1013,"pos":12},{"entryname":"HTML5 Example 5","lid":1014,"pos":13},{"entryname":"HTML5 Example 6","lid":1015,"pos":14},{"entryname":"HTML5 Example 7","lid":1016,"pos":15},{"entryname":"HTML5 Example 8","lid":1017,"pos":16},{"entryname":"Shader examples","lid":1018,"pos":17},{"entryname":"Shaderprogrammering","lid":1019,"pos":18},{"entryname":"Shaderprogrammering","lid":1020,"pos":19}],"coursename":"Webbprogrammering"}',
         'query-after-test-1' => "UPDATE listentries SET pos=1 WHERE lid=1002;",
         'query-after-test-2' => "UPDATE listentries SET pos=2 WHERE lid=1003;",
