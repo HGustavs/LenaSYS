@@ -2394,12 +2394,10 @@ function mouseLeave() {
  */
 function checkDeleteBtn() {
     if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-        if (deleteBtnX != 0 && !mouseOverElement) {
-            if (context.length > 0) removeElements(context);
-            if (contextLine.length > 0) removeLines(contextLine);
+        if (context.length > 0) removeElements(context);
+        if (contextLine.length > 0) removeLines(contextLine);
         updateSelection();
         return true;
-        }
     }
     return false;
 }
