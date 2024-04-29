@@ -1754,6 +1754,10 @@ document.addEventListener('keydown', function (e) {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
+
+    if (altPressed == true) {
+        mouseMode_onMouseUp();
+    }  
 });
 
 document.addEventListener('keyup', function (e) {
@@ -4101,9 +4105,9 @@ function boxSelect_Start(mouseX, mouseY) {
     boxSelectionInUse = true;
 }
 
-document.addEventListener("mouseleave", (event) => {  
+document.addEventListener("mouseleave", (event) => {
     if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
-      mouseMode_onMouseUp();
+        mouseMode_onMouseUp();
     }  
 });
 
