@@ -2090,217 +2090,6 @@ Dialog Box END
 /* --------------===============################================-------------- *
  *                                    Generic functions                            *
  * --------------================################================--------------*/
-
-#c td input{
-  float: none;
-}
-
-#avg-feedback, #median-feedback, #total-feedback{
-  font-size: 50px;
-  line-height: 1.3;
-  margin-bottom: -15px;
-}
-
-input.inactive-button {
-  background-color:var(--color-border);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 0px;
-  width: 110px;
-  height: 30px;
-  color: var(--color-text-header);
-  margin: 8px 2px 4px 2px;
-  font-size: 14px;
-  transition: 0.1s background-color;
-  float: left;
-  -webkit-appearance: none
-}
-
-.note {
-  font-size: 0.95em;
-}
-
-.cursorPointer {
-  cursor: pointer !important;
-}
-
-#playlink {
-  width: 216px;
-}
-
-#editContent td {
-  padding: 5px 5px 0px 5px;
-}
-
-#editContent select {
-  padding: 5px;
-  float: none;
-  width: 100%;
-  height: 30px;
-}
-
-#editContent input[type="number"] {
-  height: 30px;
-  border-color: rgb(169, 169, 169);
-}
-
-#editContent input[type="text"] {
-  height: 30px;
-  border-color: rgb(169, 169, 169);
-  width: 100%;
-}
-
-.inputwrapper{
-  display: flex;
-  justify-content: space-between;
-  width: 445px;
-  border-radius: 0px;
-}
-.inputwrapper select{
-  border-radius: 0px;
-}
-#inputwrapper-name{
-  width: 440px;
-}
-
-/* --------------===============################================-------------- *
- *                                    resulted.php                             *
- * --------------================################================--------------*/
-
-#gradeExportPopUp {
-  display: block;
-  padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
-  width: 350px;
-  min-height: 100px;
-  z-index: 9000;
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  margin-left: -178px;
-  box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-#gradeExportPopUpButton {
-  background-color: var(--color-primary);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 0px;
-  width: 110px;
-  height: 30px;
-  color: var(--color-text-header);
-  cursor: pointer;
-  margin-top: 6px;
-  margin-bottom: 2px;
-  margin-left: 115px;
-  font-size: 14px;
-  transition: 1s background-color;
-}
-
-#gradeExportPopUpButton:hover {
-  background-color: var(--color-primary-hover);
-  border-radius: 2px;
-}
-
-.passwordBlock{
-  width: 50%;
-  padding: 4px 0px;
-  background-color: var(--color-text-list);
-  border-radius: 3px;
-  cursor: pointer;
-}
-/*---===#===---*
-resulted.php END 
-*---====#===---*/
-/* --------------===============################================-------------- *
- *                                    sectioned.php                             *
- * --------------================################================--------------*/
-
-#editSection {
-  /*top: 50%;
-  left: 50%;
-  margin-top: -245px;
-  margin-left: -236px;*/
-}
-
-.statsdiv{
-  background-color: var(--color-text-primary);
-  color: var(--color-statistics);
-  width: 33%;
-  height: 150px;
-  text-align: center;
-  line-height: 2;
-  font-size: 20px;
-  margin-bottom: -15px;
-}
-
-#duggaFeedbackQuestion{
-  text-align: center;
-  color: var(--color-primary);
-}
-
-#statscontainer{
-  display: flex;
-  flex-direction: row;
-  justify-content:space-evenly;
-}
-
-#feedbacktablecontainer td{
-  text-align: center;
-}
-
-/*---===#===---*
-sectioned.php END 
-*---====#===---*/
-
-/* --------------===============################================-------------- *
- *                                    courseed.php                             *
- * --------------================################================--------------*/
- 
- #submitMotd{
-  margin-left: 340px;
-}
-
-/*---===#===---*
-courseed.php END 
-*---====#===---*/
-
-#copyvers{
-  margin-right: 0px;
-}
-#editCourse #visib{
-  margin-right: 0px;
-}
-
-#impwords,
-#impword {
-  max-width: 184px;
-  min-width: 184px;
-  margin-left: 0px;
-}
-
-#before,
-#after {
-  /*width: 226px;*/
-  width: 100%;
-}
-
-#playlink {
-  /*width: 216px;*/
-  width: 100%;
-}
-
-.templateSelect {
-  width: 150px !important
-}
-
-input {
-  border-radius: 2px;
-  border: 2px solid var(--color-border-2);
-  border-radius: 4px;
-  font-size: 16px;
-  padding-left: 5px;
-}
-
 .loginBox .inputwrapper {
   clear: both;
   width: 100%;
@@ -2406,6 +2195,227 @@ input {
 .loginBoxheader div:hover, .logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
+
+#c td input{
+  float: none;
+}
+
+#avg-feedback, #median-feedback, #total-feedback{
+  font-size: 50px;
+  line-height: 1.3;
+  margin-bottom: -15px;
+}
+
+input.inactive-button {
+  background-color:var(--color-border);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: var(--color-text-header);
+  margin: 8px 2px 4px 2px;
+  font-size: 14px;
+  transition: 0.1s background-color;
+  float: left;
+  -webkit-appearance: none
+}
+
+.note {
+  font-size: 0.95em;
+}
+
+.cursorPointer {
+  cursor: pointer !important;
+}
+
+#playlink {
+  width: 216px;
+}
+
+#editContent td {
+  padding: 5px 5px 0px 5px;
+}
+
+#editContent select {
+  padding: 5px;
+  float: none;
+  width: 100%;
+  height: 30px;
+}
+
+#editContent input[type="number"] {
+  height: 30px;
+  border-color: rgb(169, 169, 169);
+}
+
+#editContent input[type="text"] {
+  height: 30px;
+  border-color: rgb(169, 169, 169);
+  width: 100%;
+}
+
+.inputwrapper{
+  display: flex;
+  justify-content: space-between;
+  width: 445px;
+  border-radius: 0px;
+}
+.inputwrapper select{
+  border-radius: 0px;
+}
+#inputwrapper-name{
+  width: 440px;
+}
+
+#before,
+#after {
+  /*width: 226px;*/
+  width: 100%;
+}
+
+#playlink {
+  /*width: 216px;*/
+  width: 100%;
+}
+/*---===#===---*
+Generic functions END 
+*---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    resulted.php                             *
+ * --------------================################================--------------*/
+
+#gradeExportPopUp {
+  display: block;
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  width: 350px;
+  min-height: 100px;
+  z-index: 9000;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-left: -178px;
+  box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#gradeExportPopUpButton {
+  background-color: var(--color-primary);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: var(--color-text-header);
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-left: 115px;
+  font-size: 14px;
+  transition: 1s background-color;
+}
+
+#gradeExportPopUpButton:hover {
+  background-color: var(--color-primary-hover);
+  border-radius: 2px;
+}
+
+.passwordBlock{
+  width: 50%;
+  padding: 4px 0px;
+  background-color: var(--color-text-list);
+  border-radius: 3px;
+  cursor: pointer;
+}
+/*---===#===---*
+resulted.php END 
+*---====#===---*/
+/* --------------===============################================-------------- *
+ *                                    sectioned.php                             *
+ * --------------================################================--------------*/
+
+#editSection {
+  /*top: 50%;
+  left: 50%;
+  margin-top: -245px;
+  margin-left: -236px;*/
+}
+
+.statsdiv{
+  background-color: var(--color-text-primary);
+  color: var(--color-statistics);
+  width: 33%;
+  height: 150px;
+  text-align: center;
+  line-height: 2;
+  font-size: 20px;
+  margin-bottom: -15px;
+}
+
+#duggaFeedbackQuestion{
+  text-align: center;
+  color: var(--color-primary);
+}
+
+#statscontainer{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+}
+
+#feedbacktablecontainer td{
+  text-align: center;
+}
+
+#copyvers{
+  margin-right: 0px;
+}
+
+#editCourse #visib{
+  margin-right: 0px;
+}
+/*---===#===---*
+sectioned.php END 
+*---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    courseed.php                             *
+ * --------------================################================--------------*/
+ 
+ #submitMotd{
+  margin-left: 340px;
+}
+
+/*---===#===---*
+courseed.php END 
+*---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    codeviewer.php                             *
+ * --------------================################================--------------*/
+#impwords,
+#impword {
+  max-width: 184px;
+  min-width: 184px;
+  margin-left: 0px;
+}
+
+.templateSelect {
+  width: 150px !important
+}
+/*---===#===---*
+codeviewer.php END 
+*---====#===---*/
+
+input {
+  border-radius: 2px;
+  border: 2px solid var(--color-border-2);
+  border-radius: 4px;
+  font-size: 16px;
+  padding-left: 5px;
+}
+
+
 
 label.login-label {
   display: block;
