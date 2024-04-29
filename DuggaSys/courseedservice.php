@@ -562,7 +562,7 @@ foreach ($queryz->fetchAll(PDO::FETCH_ASSOC) as $row) {
 }
 
 //Delete course matterial from courses that have been marked as deleted.
-/* $deleted = 3;
+/*$deleted = 3;
 $query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 
@@ -571,13 +571,16 @@ if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
 
-}
+}*/
 
 
 //user_participant
 $query = $pdo->prepare("DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;");
 $query->bindParam(':deleted', $deleted);
- if(!$query->execute()) {
+try{
+	$query->execute();
+}
+catch(Exception $e){
 	$error=$query->errorInfo();
 	$debug="Error reading courses\n".$error[2];
 }
@@ -668,7 +671,7 @@ $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
-} */
+}
 
 
 try{
@@ -696,9 +699,9 @@ if (!$query->execute()) {
 	$debug = "Error reading courses\n" . $error[2];
 } else {
 
-	$myfile = fopen("a22natth.txt", "w") or die("unable to open file");
+	/*$myfile = fopen("a22natth.txt", "w") or die("unable to open file");
 	fwrite($myfile, "hejg!!!j" );
-	fclose($myfile);
+	fclose($myfile);*/
 
 	foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$writeAccess = false;
