@@ -14,7 +14,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";//workaround to make tests work, same is also done duggaedservice.php
+	$userid="1";//to make tests work, same is also done duggaedservice.php
 }
 
 $pw = getOP('pw');
@@ -304,7 +304,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid;");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,groups, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -321,17 +321,17 @@ if(checklogin() && $hasAccess) {
 
 	foreach($result as $row){
 		$entry = array(
-			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
-			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
-			'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
-			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
-			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
+			'username' => json_encode(['username' => $row['username']]),
+			'ssn' => json_encode(['ssn' => $row['ssn']]),
+			'firstname' => json_encode(['firstname' => $row['firstname']]),
+			'lastname' => json_encode(['lastname' => $row['lastname']]),
+			'class' => json_encode(['class' => $row['class']]),
 			'modified' => $row['modified'],
-			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
-			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
-			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-			'groups' => json_encode(['groups' => $row['groups'], 'uid' => $row['uid']]),
-			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid'] ,'recent' => $row['newly'],'requested' => $row['requestedpasswordchange']])
+			'examiner' => json_encode(['examiner' => $row['examiner']]),
+			'vers' => json_encode(['vers' => $row['vers']]),
+			'access' => json_encode(['access' => $row['access']]),
+			'groups' => json_encode(['groups' => $row['groups']]),
+			'requestedpasswordchange' => json_encode(['username' => $row['username'] ,'recent' => $row['newly'],'requested' => $row['requestedpasswordchange']])
 		);
 		array_push($entries, $entry);
 	}
