@@ -102,7 +102,6 @@ Accessed Service:
 - updateUser_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
-- changeUserPassword_accessed_ms.php __==UNFINISHED==__ 
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
@@ -630,15 +629,6 @@ _INSERT_ operation on the table __'class'__ to insert values into the following 
 ```sql
 INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES(:class, :responsible, :classname, :regcode, :classcode, :hp, :tempo, :hpProgress);
 ```
-
-<br>
-
----
-
-<br>
-
-### changeUserPassword_accessed
-Uses service __updateUserPassword__ to _update_ the column "_password_" in the table __user__. 
 
 <br>
 
