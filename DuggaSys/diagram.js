@@ -1901,6 +1901,10 @@ document.addEventListener("mouseleave", function (event) {
     if (event.toElement == null && event.relatedTarget == null) {
         pointerState = pointerStates.DEFAULT;
     }
+
+    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
+        mouseMode_onMouseUp();
+    }  
 });
 
 // --------------------------------------- Mouse Events    --------------------------------
@@ -4104,12 +4108,6 @@ function boxSelect_Start(mouseX, mouseY) {
     deltaY = 0;
     boxSelectionInUse = true;
 }
-
-document.addEventListener("mouseleave", (event) => {
-    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
-        mouseMode_onMouseUp();
-    }  
-});
 
 function boxSelect_Update(mouseX, mouseY) {
     if (boxSelectionInUse) {
