@@ -331,9 +331,10 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user
     'Add-user' => array(  
         //Pre-values
-        'expected-output' => '{"entries":[{"username":"{\"username\":\"Addtest123\"}","class":"{\"class\":\"testClass\"}"}],"classes":[{"class":"testClass"},{"class":"DVSUG13h"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
+        'expected-output' => '{"entries":[{"username":"{\"username\":\"Addtest123\"}","class":"{\"class\":\"AUclass123\"}"}],"classes":[{"class":"AUclass123"},{"class":"DVSUG13h"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = '1885';",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'Addtest123';",
+        'query-after-test-3' => "DELETE FROM class WHERE class = 'AUclass123';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -341,7 +342,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'username' => 'brom',
                 'password' => 'password',
                 'opt' => 'ADDUSR',
-                'newusers' => '[["471212-1234","Fname","Lname","Addtest123@student.his.se","testClass","HT-14",0]]',
+                'newusers' => '[["471212-1234","Fname","Lname","Addtest123@student.his.se","AUclass123","HT-14",0]]',
                 'courseid' => '1885',
                 'coursevers'=> '1337'
             )),
