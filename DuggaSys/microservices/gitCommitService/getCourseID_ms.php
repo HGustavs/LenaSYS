@@ -4,6 +4,8 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
 function getCourseID($githubURL) {
+
+    global $pdo;
     // Connect to database and start session
     pdoConnect();
     session_start();
