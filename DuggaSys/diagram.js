@@ -1407,7 +1407,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         //actorOrObject: "actor",
         canChangeTo: null,
@@ -1420,7 +1420,7 @@ var defaults = {
         fill: "#FFFFFF",
         stroke: "#000000",
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         //actorOrObject: "object",
         canChangeTo: null,
@@ -1433,7 +1433,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 30,
-        height: 300,
+        height: 100,
         type: "SE",
         canChangeTo: null,
         minWidth: 30,
@@ -2374,6 +2374,40 @@ function mouseEnter() {
     if (!mouseButtonDown && mouseMode != mouseModes.PLACING_ELEMENT) {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
+    }
+}
+
+/**
+ * @description Activates when a sequence activation element is selected and the mouse enter a lifeline.
+ */
+function mouseEnterSeq(event){
+
+    if(elementTypeSelected === elementTypes.sequenceActivation){
+        const target = event.target;
+        const targetId = target.id;
+        snapSAToLifeline(targetId);
+    }
+}
+
+/**
+ * @description Makes the sequence activation to snap to a lifeline. While in ghost mode.
+ */
+function snapSAToLifeline(targetId) {
+    
+    const lifeline = document.getElementById(targetId);
+    if (lifeline) {
+
+       for (let i = 0; i < data.length; i++ ){
+               
+            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
+                if(ghostElement){
+                    const element = data[i];
+                    const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
+                    ghostElement.x = newXGhost;
+                }     
+                updatepos(0, 0);              
+            }
+        }       
     }
 }
 
@@ -8954,7 +8988,7 @@ function drawElement(element, ghosted = false) {
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter(), mouseEnterSeq(event);' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
@@ -9025,7 +9059,7 @@ function drawElement(element, ghosted = false) {
     //actor or object is determined via the buttons in the context menu. the default is actor.
     else if (element.kind == "sequenceObject") {
         //svg for object.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter(), mouseEnterSeq(event);' onmouseleave='mouseLeave()';'
         style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
