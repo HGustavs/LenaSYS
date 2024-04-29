@@ -155,7 +155,7 @@ gitcommit Service:
 - refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
 - fetchOldToken_ms.php __==UNFINISHED==__
 - insertIntoSQLite_ms.php __==UNFINISHED==__
-- newUpdateTime_ms.php __==UNFINISHED==__
+- newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
 - refreshCheck_ms.php __==UNFINISHED==__
 
 <br>
@@ -1755,7 +1755,19 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 <br>
 
 
-### newUpdateTime_ms.php
+### updateTime_ms.php
+__updateTime_ms.php__ updates the MySQL database to save the latest update time.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
+- updated
+
+```sql
+UPDATE course SET updated=:parsedTime WHERE cid=:cid;
+```
 
 <br>
 
