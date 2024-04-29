@@ -3733,94 +3733,49 @@ function getExtension(filename) {
 function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
-    if (foundIndex > -1) {
-        const element = data[foundIndex];
-        let targetX;
-        let targetY;
-        var elementHeight = element.height;
 
-        // Change height if element is an UML Entity
-        for (let i = 0; i < UMLHeight.length; i++) {
-            if (element.id == UMLHeight[i].id) {
-                elementHeight = UMLHeight[i].height;
-            }
-        }
-        // Change height if element is an IE Entity
-        for (let i = 0; i < IEHeight.length; i++) {
-            if (element.id == IEHeight[i].id) {
-                elementHeight = IEHeight[i].height;
-            }
-        }
-        // Change height if element is an SD Entity
-        for (let i = 0; i < SDHeight.length; i++) {
-            if (element.id == SDHeight[i].id) {
-                elementHeight = SDHeight[i].height;
-            }
+    if (foundIndex < 0) return isOverlapping;
+
+    const element = data[foundIndex];
+    let eHeight = element.height;
+    let arr = [UMLHeight, IEHeight, SDHeight, NOTEHeight];
+
+    arr.forEach(entityHeights => {
+        entityHeights.forEach(entity => {
+            if (element.id == entity.id) eHeight = entity.height
+        });
+    })
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id === id) continue;
+        if (context.includes(data[i])) break;
+        if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState ||
+            data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor ||
+            data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject ||
+            data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt
+        ) {
+            break;
         }
 
-        for (let i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                elementHeight = NOTEHeight[i].height;
-            }
+        const x2 = data[i].x + data[i].width;
+        let y2 = data[i].y + data[i].height;
+
+        arr.forEach(entityHeights => {
+            entityHeights.forEach(entity => {
+                if (data[i].id == entity.id) y2 = data[i].y + entity.height;
+            });
+        });
+
+        if (x < x2 &&
+            x + element.width > data[i].x &&
+            y < y2 &&
+            y + eHeight > data[i].y
+        ) {
+            isOverlapping = true;
+            break;
         }
-        targetX = x //(x / zoomfact);
-        targetY = y//(y / zoomfact);
-
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].id === id) continue
-
-            // Doesn't compare if the other element is moving
-            var compare = true;
-            if (context.length > 1) {
-                for (let j = 0; j < context.length; j++) {
-                    if (data[i].id == context[j].id && !data[i].isLocked) {
-                        compare = false;
-                        break;
-                    }
-                }
-            }
-            if (compare) {
-                //COMPARED ELEMENT
-                const compX2 = data[i].x + data[i].width;
-                var compY2 = data[i].y + data[i].height;
-
-                // Change height if element is an UML Entity
-                for (let j = 0; j < UMLHeight.length; j++) {
-                    if (data[i].id == UMLHeight[j].id) {
-                        compY2 = data[i].y + UMLHeight[j].height;
-                    }
-                }
-                // Change height if element is an IE Entity
-                for (let j = 0; j < IEHeight.length; j++) {
-                    if (data[i].id == IEHeight[j].id) {
-                        compY2 = data[i].y + IEHeight[j].height;
-                    }
-                }
-                // Change height if element is an SD Entity
-                for (let j = 0; j < SDHeight.length; j++) {
-                    if (data[i].id == SDHeight[j].id) {
-                        compY2 = data[i].y + SDHeight[j].height;
-                    }
-                }
-                //if its overlapping with a super state, just break since that is allowed.
-                if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState) {
-                    isOverlapping = false;
-                }
-                //if its overlapping with a sequence actor, just break since that is allowed.
-                else if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || 
-                    (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) ||
-                    (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) 
-                {
-                    isOverlapping = false;
-                } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
-                    (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
-                    isOverlapping = true;
-                    break;
-                }
-            }
-        }
-        return isOverlapping;
     }
+    return isOverlapping;
 }
 
 /**
