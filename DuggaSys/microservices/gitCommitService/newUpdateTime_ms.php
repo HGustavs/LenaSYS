@@ -14,7 +14,7 @@ function newUpdateTime ($currentTime, $cid) {
     // Formats the UNIX timestamp into datetime
     $parsedTime = date("Y-m-d H:i:s", $currentTime); 
 
-    // Fetching the latest update of the course from the MySQL database
+    // update the latest update timestamp of the course from the MySQL database
     global $pdo;
     $query = $pdo->prepare('UPDATE course SET updated = :parsedTime WHERE cid = :cid;');
     $query->bindParam(':cid', $cid);
