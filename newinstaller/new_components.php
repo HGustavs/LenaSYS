@@ -67,6 +67,7 @@
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
                         <input id='$inputId' type='text'>";
+                        //Check if there is a class and text for accessory text e.g. tip or warning, present if there is present.
                         if(isset($accClass) && isset($accText)){
                             echo "<p class='$accClass'>".$accText."</p>";
                         }
