@@ -153,7 +153,7 @@ gitcommit Service:
 - clearGitFiles_ms.php __==UNFINISHED==__
 - updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
 - refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
-- fetchOldToken_ms.php __==UNFINISHED==__
+- fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
 - insertIntoSQLite_ms.php __==UNFINISHED==__
 - newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
 - refreshCheck_ms.php __==UNFINISHED==__
@@ -1739,7 +1739,16 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 
 <br>
 
-### fetchOldToken_ms.php
+### readGitToken_ms.php
+__Includes neither original service files nor microservices.__
+
+__Querys used in this microservice:__
+
+This SQL query retrieves the `gitToken` from the `gitRepos` table for a specific course identified by the `cid`:
+
+```sql
+SELECT gitToken FROM gitRepos WHERE cid=:cid;
+```
 
 <br>
 
