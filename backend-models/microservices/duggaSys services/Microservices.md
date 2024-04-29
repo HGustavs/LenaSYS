@@ -144,7 +144,7 @@ Duggaed Service:
 Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updateFileLink_ms.php __==UNFINISHED==__
+- updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
 
@@ -1631,13 +1631,39 @@ DELETE FROM fileLink WHERE fileid=:fid;
 
 <br>
 
-### updataFileLink
-Uses the services __updateTableFileLink__ to change the content of these columns:
+### updateFileLink_ms.php
+__updateFileLink_ms.php__ handles writing to files and updates filesize in fileLink.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
+
+__Querys used in this microservice:__
+
+_UPDATE_ operation on the table __'fileLink'__ to update the value of the columns:
 - filesize
-There exist tree different versions of this update, with different _WHERE_ cases.
-__WHERE__ kind __AND__ filename;
-__WHERE__ cid __AND__ kind __AND__ filename;
-__WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
+- uploaddate (set to the current date and time)
+
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE kind=:kindid AND filename=:filename;
+```
+
+
+_UPDATE_ operation on the table __'fileLink'__ to update the values of the columns:
+- filesize
+- uploaddate (set to the current date and time)
+
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;
+```
+
+
+_UPDATE_ operation on the table __'fileLink'__ to update the values of the columns:
+- filesize
+- uploaddate (set to the current time)
+
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;
+```
 
 <br>
 <br>
