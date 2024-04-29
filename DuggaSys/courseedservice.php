@@ -86,12 +86,21 @@ if (checklogin()) {
 		// The code for modification using sessions
 		if (strcmp($opt, "DEL") === 0) {
 		} else if (strcmp($opt, "NEW") === 0) {
-			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
-
+			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp,courseGitURL) VALUES(:coursecode,:coursename,0,:usrid,7.5,:courseGitURL)");
 			$query->bindParam(':usrid', $userid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':courseGitURL', $courseGitURL); // for github url
+			try{
+				$query->execute();
+			}
+			catch(Exception $e){
+				$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
+				$query->bindParam(':usrid', $userid);
+				$query->bindParam(':coursecode', $coursecode);
+				$query->bindParam(':coursename', $coursename);
+				$query->execute();
+			}
 
 			if (!$query->execute()) {
 				$error = $query->errorInfo();
@@ -460,14 +469,23 @@ if (checklogin()) {
 				$debug = "Error duplicate course name\n" . $error[2];
 			}
 		} else if (strcmp($opt, "UPDATE") === 0) {
-			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
-
+			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode,courseGitURL=:courseGitURL WHERE cid=:cid;");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':visibility', $visibility);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':courseGitURL', $courseGitURL);
-
+			try{
+				$query->execute();
+			}
+			catch(Exception $e){
+				$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':coursename', $coursename);
+				$query->bindParam(':visibility', $visibility);
+				$query->bindParam(':coursecode', $coursecode);
+				$query->execute();
+			}
 			if (!$query->execute()) {
 				$error = $query->errorInfo();
 				$debug = "Error updating entries\n" . $error[2];
@@ -510,7 +528,7 @@ if (checklogin()) {
 			} else {
 				$momentlist = array();
 				foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-					$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
+					$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;");
 
 					print_r($row['coursename'] . $row['visibility'] . $row['coursecode']);
 					$query->bindParam(':cid', $cid);
@@ -518,6 +536,17 @@ if (checklogin()) {
 					$query->bindParam(':visibility', $row['visibility']);
 					$query->bindParam(':coursecode', $row['coursecode']);
 					$query->bindParam(':courseGitURL', $courseGitURL);
+					try{
+						$query->execute();
+					}
+					catch(Exception $e){
+						$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
+						$query->bindParam(':cid', $cid);
+						$query->bindParam(':coursename', $row['coursename']);
+						$query->bindParam(':visibility', $row['visibility']);
+						$query->bindParam(':coursecode', $row['coursecode']);
+						$query->execute();
+					}
 
 					if (!$query->execute()) {
 						$error = $query->errorInfo();
@@ -698,10 +727,6 @@ if (!$query->execute()) {
 
 	$debug = "Error reading courses\n" . $error[2];
 } else {
-
-	/*$myfile = fopen("a22natth.txt", "w") or die("unable to open file");
-	fwrite($myfile, "hejg!!!j" );
-	fclose($myfile);*/
 
 	foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 		$writeAccess = false;
