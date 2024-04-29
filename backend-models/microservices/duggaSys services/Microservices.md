@@ -144,18 +144,19 @@ Duggaed Service:
 Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
-- updateFileLink_ms.php __==UNFINISHED==__
+- updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
 
 gitcommit Service:
 
+- getCourseID __==finished==__ New filename: "readCourseID_ms.php" according to new nameconvention based on CRUD.
 - clearGitFiles_ms.php __==UNFINISHED==__
 - updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
 - refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
-- fetchOldToken_ms.php __==UNFINISHED==__
-- insertIntoSQLite_ms.php __==UNFINISHED==__
-- newUpdateTime_ms.php __==UNFINISHED==__
+- fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
+- insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepo_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
+- newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
 - refreshCheck_ms.php __==UNFINISHED==__
 
 <br>
@@ -1631,13 +1632,39 @@ DELETE FROM fileLink WHERE fileid=:fid;
 
 <br>
 
-### updataFileLink
-Uses the services __updateTableFileLink__ to change the content of these columns:
+### updateFileLink_ms.php
+__updateFileLink_ms.php__ handles writing to files and updates filesize in fileLink.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
+
+__Querys used in this microservice:__
+
+_UPDATE_ operation on the table __'fileLink'__ to update the value of the columns:
 - filesize
-There exist tree different versions of this update, with different _WHERE_ cases.
-__WHERE__ kind __AND__ filename;
-__WHERE__ cid __AND__ kind __AND__ filename;
-__WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
+- uploaddate (set to the current date and time)
+
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE kind=:kindid AND filename=:filename;
+```
+
+
+_UPDATE_ operation on the table __'fileLink'__ to update the values of the columns:
+- filesize
+- uploaddate (set to the current date and time)
+
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;
+```
+
+
+_UPDATE_ operation on the table __'fileLink'__ to update the values of the columns:
+- filesize
+- uploaddate (set to the current time)
+
+```sql
+UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;
+```
 
 <br>
 <br>
@@ -1647,6 +1674,21 @@ __WHERE__ vers __AND__ cid __AND__ kind __AND__ filename;
 ---
 
 <br>
+<br>
+
+### readCourseID_ms.php
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ insertIntoSQLite_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
+- cid
+
+```sql
+SELECT cid FROM course WHERE courseGitURL = :githubURL;
+```
+
 <br>
 
 ### clearGitFiles_ms.php
@@ -1739,7 +1781,16 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 
 <br>
 
-### fetchOldToken_ms.php
+### readGitToken_ms.php
+__Includes neither original service files nor microservices.__
+
+__Querys used in this microservice:__
+
+This SQL query retrieves the `gitToken` from the `gitRepos` table for a specific course identified by the `cid`:
+
+```sql
+SELECT gitToken FROM gitRepos WHERE cid=:cid;
+```
 
 <br>
 
@@ -1747,7 +1798,23 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 
 <br>
 
-### insertIntoSQLite_ms.php
+### syncGitRepo_ms.php
+__Include original service files:__ sessions.php, basic.php, gitfetchService.php
+
+__Querys used in this microservice:__
+
+The SQL query performs an _INSERT OR REPLACE_ operation on the table __'gitRepos'__. It inserts a new record or replaces an existing record into the following columns:
+- cid
+- repoName
+- repoURL
+- lastCommit
+- gitToken
+
+- The operation ensures that if a record already exists with the same primary key (`cid`), it is replaced with the new values; otherwise, a new record is created.
+
+```sql
+INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) VALUES (:cid, :repoName, :repoURL, :lastCommit, :gitToken)
+```
 
 <br>
 
@@ -1755,7 +1822,19 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 <br>
 
 
-### newUpdateTime_ms.php
+### updateTime_ms.php
+__updateTime_ms.php__ updates the MySQL database to save the latest update time.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
+- updated
+
+```sql
+UPDATE course SET updated=:parsedTime WHERE cid=:cid;
+```
 
 <br>
 
