@@ -8969,73 +8969,76 @@ function drawElement(element, ghosted = false) {
     //sequence actor and its life line and also the object since they can be switched via options pane.
     else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
+        str += '<div>';
 
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`
-        str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text"
-                d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-                    v${boxw / 6}
-                    m-${(boxw / 4)},0
-                    h${boxw / 2}
-                    m-${(boxw / 4)},0
-                    v${boxw / 3}
-                    l${boxw / 4},${boxw / 4}
-                    m${(boxw / 4) * -1},${(boxw / 4) * -1}
-                    l${(boxw / 4) * -1},${boxw / 4}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='transparent'
+            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
+            style='left:0px; top:0px; width:${boxw}px; height:${boxh}px; font-size:${texth}px; z-index:1;`;
+
+            if (context.includes(element)) {
+                str += `z-index: 1;`;
+            }
+            if (ghosted) {
+                str += `pointer-events: none; opacity: ${ghostPreview};`;
+            }
+            str += `'>`;
+            str += `<svg width='${boxw}' height='${boxh}'>`;
+            //svg for the life line
+            str += `<path class="text" 
+            d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+            V${boxh}
+            "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            stroke-dasharray='${linew * 3},${linew * 3}'
+            fill='transparent'
             />`;
-        //svg for the actor name text, it has a background rect for ease of readability.
-        //make the rect fit the text if the text isn't too big
-        if (!tooBig) {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${xAnchor - (textWidth / 2)}'
-                    y='${boxw + (linew * 2)}'
-                    width='${textWidth}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
+            str += `<g>`
+            str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
+            str += `<path class="text"
+                    d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                        v${boxw / 6}
+                        m-${(boxw / 4)},0
+                        h${boxw / 2}
+                        m-${(boxw / 4)},0
+                        v${boxw / 3}
+                        l${boxw / 4},${boxw / 4}
+                        m${(boxw / 4) * -1},${(boxw / 4) * -1}
+                        l${(boxw / 4) * -1},${boxw / 4}
+                    "
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='transparent'
                 />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        }
-        //else just make a boxw width rect and adjust the text to fit this new rect better
-        else {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${linew}'
-                    y='${boxw + (linew * 2)}'
-                    width='${boxw - linew}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-        }
-        str += `</g>`;
-        str += `</svg>`;
+            //svg for the actor name text, it has a background rect for ease of readability.
+            //make the rect fit the text if the text isn't too big
+            if (!tooBig) {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                        x='${xAnchor - (textWidth / 2)}'
+                        y='${boxw + (linew * 2)}'
+                        width='${textWidth}'
+                        height='${texth - linew}'
+                        stroke='none'
+                        fill='${element.fill}'
+                    />`;
+                str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
+            }
+            //else just make a boxw width rect and adjust the text to fit this new rect better
+            else {
+                //rect for sitting behind the actor text
+                str += `<rect class='text'
+                        x='${linew}'
+                        y='${boxw + (linew * 2)}'
+                        width='${boxw - linew}'
+                        height='${texth - linew}'
+                        stroke='none'
+                        fill='${element.fill}'
+                    />`;
+                str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
+            }
+            str += `</g>`;
+            str += `</svg>`;
+        str += '<div>';
     }
     //actor or object is determined via the buttons in the context menu. the default is actor.
     else if (element.kind == "sequenceObject") {
