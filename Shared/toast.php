@@ -2,7 +2,8 @@
     const types = Object.freeze( { 
         WARNING: "warning", 
         ERROR: "error", 
-        SUCCESS: "success"
+        SUCCESS: "success",
+        UNDO: "undo"
     }); 
     // Close the toast by clicking the X icon
     function closeToast(toastDiv) {
@@ -13,7 +14,7 @@
         }
     }
     // Create a toast notification
-    function toast(type, text, duration) {
+    function toast(type, text, duration, arguments = null) {
         // We locate the container for all toasts
         const toastContainer = document.getElementById('toastContainer');
         // The toast div is created
@@ -83,6 +84,13 @@
                 typeIcon.innerHTML = types.ERROR;
                 typeText.innerHTML = "Error";
                 toastDiv.classList.add(types.ERROR);
+                break;
+            case types.UNDO:
+                typeIcon.innerHTML = types.UNDO;
+                toastLeft.classList.add("clickable")
+                toastLeft.setAttribute( "onClick", "javascript: "+arguments);
+                typeText.innerHTML = "Notice";
+                toastDiv.classList.add(types.UNDO);
                 break;
             // We create a default situation in case no type is given.
             // The default toast will not have an icon nor heading.
