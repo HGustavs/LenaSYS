@@ -99,7 +99,6 @@ if (checklogin()) {
 				$query->bindParam(':usrid', $userid);
 				$query->bindParam(':coursecode', $coursecode);
 				$query->bindParam(':coursename', $coursename);
-				$query->execute();
 			}
 
 			if (!$query->execute()) {
@@ -484,7 +483,6 @@ if (checklogin()) {
 				$query->bindParam(':coursename', $coursename);
 				$query->bindParam(':visibility', $visibility);
 				$query->bindParam(':coursecode', $coursecode);
-				$query->execute();
 			}
 			if (!$query->execute()) {
 				$error = $query->errorInfo();
@@ -545,7 +543,6 @@ if (checklogin()) {
 						$query->bindParam(':coursename', $row['coursename']);
 						$query->bindParam(':visibility', $row['visibility']);
 						$query->bindParam(':coursecode', $row['coursecode']);
-						$query->execute();
 					}
 
 					if (!$query->execute()) {
@@ -704,11 +701,12 @@ if (!$query->execute()) {
 
 
 try{
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
 	//$query->bindParam(':cid', $cid);
 	$query->execute();
 }
 catch(Exception $e){
+	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 	$error = $query->errorInfo();
 }
 
@@ -721,11 +719,10 @@ catch(Exception $e){
 
 */
 
-
 if (!$query->execute()) {
 	$error = $query->errorInfo();
-
 	$debug = "Error reading courses\n" . $error[2];
+
 } else {
 
 	foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -756,7 +753,7 @@ if (!$query->execute()) {
 					'activeversion' => $row['activeversion'],
 					'activeedversion' => $row['activeedversion'],
 					'registered' => $isRegisteredToCourse,
-					//'courseGitURL' => $row['courseGitURL']
+					'courseGitURL' => $row['courseGitURL']
 				)
 			);
 		}
