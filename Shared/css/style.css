@@ -9576,6 +9576,24 @@ margin:2px;
   padding-left: 2pt;
 }
 
+.toast .clickable {
+  border-radius: 4px;
+  height: fit-content;
+  background-color: var(--color-primary);
+  color: var(--color-text-header);
+}
+
+.toast .clickable .typeIcon {
+  cursor: pointer;
+  margin: 1rem 0 1rem 0;
+}
+
+.toast .clickable:hover {
+  background-color: #80eb80;
+  color: var(--color-text-label);
+  cursor: pointer;
+}
+
 .toast div:nth-child(2) {
   grid-area: "textDiv";
 }
@@ -9643,7 +9661,7 @@ margin:2px;
 }
 
 #toastContainer {
-  min-height: 100vw;
+  min-height: fit-content;
   display: flex;
   flex-direction: column;
   right: 0;
