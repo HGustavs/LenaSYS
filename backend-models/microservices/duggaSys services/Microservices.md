@@ -151,7 +151,7 @@ Fileed Service:
 gitcommit Service:
 
 - getCourseID __==finished==__ New filename: "readCourseID_ms.php" according to new nameconvention based on CRUD.
-- clearGitFiles_ms.php __==UNFINISHED==__
+- clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.
 - updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
 - refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
 - fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
@@ -1691,7 +1691,17 @@ SELECT cid FROM course WHERE courseGitURL = :githubURL;
 
 <br>
 
-### clearGitFiles_ms.php
+### deleteGitFiles_ms.php
+__deleteGitFiles_ms.php__ clear the gitFiles table in SQLite db when a course has been updated with a new github repo.
+
+__Include original service files:__ sessions.php, basic.php
+
+_DELETE_ operation on the table __'gitFiles'__ to remove records where:
+- `cid` matches the specified course ID (`:cid`).
+
+```sql
+DELETE FROM gitFiles WHERE cid = :cid;
+```
 
 <br>
 
@@ -1724,6 +1734,7 @@ Updates the metadata from the github repo if there's been a new commit.
 Please note, _refreshCheck_ and _newUpdateTime_ will later become their own microservices but are included in this microservice for now to ensure functionality.
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
+__Include microservice:__ deleteGitFiles_ms.php
 
 __Querys used in this microservice:__
 
