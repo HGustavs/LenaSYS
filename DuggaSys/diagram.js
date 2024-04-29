@@ -3198,118 +3198,58 @@ function saveProperties() {
  * Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {
-    // Set lineKind
-    var radio1 = document.getElementById("lineRadio1");
-    var radio2 = document.getElementById("lineRadio2");
-    var radio3 = document.getElementById("lineRadio3");
-    var radio4 = document.getElementById("lineRadio4");
-    var label = document.getElementById("lineLabel");
-    var startLabel = document.getElementById("lineStartLabel");
-    var endLabel = document.getElementById("lineEndLabel");
-    var startIcon = document.getElementById("lineStartIcon");
-    var endIcon = document.getElementById("lineEndIcon");
-    var lineType = document.getElementById("lineType");
-    var line = contextLine[0];
+    let label = document.getElementById("lineLabel");
+    let startLabel = document.getElementById("lineStartLabel");
+    let endLabel = document.getElementById("lineEndLabel");
+    let startIcon = document.getElementById("lineStartIcon");
+    let endIcon = document.getElementById("lineEndIcon");
+    let lineType = document.getElementById("lineType");
+    let cardinality = document.getElementById('propertyCardinality');
+    let line = contextLine[0];
 
-    if (radio1 != null && radio1.checked && line.kind != radio1.value) {
-        line.kind = radio1.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio1.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else if (radio2 != null && radio2.checked && line.kind != radio2.value) {
-        line.kind = radio2.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio2.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else if (radio3 != null && radio3.checked && line.kind != radio3.value) {
-        line.kind = radio3.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio3.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    } else if (radio4 != null && radio4.checked && line.kind != radio4.value) {
-        line.kind = radio4.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {kind: radio4.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-    }
-    // Check if this element exists
-    if (!!document.getElementById('propertyCardinality')) {
-        // Change line - cardinality
-        var cardinalityInputValue = document.getElementById('propertyCardinality').value;
+    let radio = [
+        document.getElementById("lineRadio1"),
+        document.getElementById("lineRadio2"),
+        document.getElementById("lineRadio3"),
+        document.getElementById("lineRadio4"),
+    ];
+    radio.forEach(r => {
+        if (r && r.checked && line.kind != r.value) {
+            line.kind = r.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, {kind: r.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+        }
+    });
 
-        if (line.cardinality != undefined && cardinalityInputValue == "") {
+    if (cardinality) {
+        if (cardinality.value == "") {
             delete line.cardinality;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        } else if (line.cardinality != cardinalityInputValue && cardinalityInputValue != "") {
-            line.cardinality = cardinalityInputValue;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: cardinalityInputValue}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        } else {
+            changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
         }
     }
+    changeAttribute(line, 'label', label, {label: label.value});
 
-    if (line.label != label.value) {
-        label.value = label.value.trim();
-        line.label = label.value
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {label: label.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
-    // UML or IE line
     if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
-        // Start label, near side
-        if (line.startLabel != startLabel.value) {
-            startLabel.value = startLabel.value.trim();
-            line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // End label, opposite side
-        if (line.endLabel != endLabel.value) {
-            endLabel.value = endLabel.value.trim();
-            line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (line.startIcon != startIcon.value) {
-            line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (line.endIcon != endIcon.value) {
-            line.endIcon = endIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
+        changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});
+        changeAttribute(line, 'endLabel', endLabel, {endLabel: endLabel.value});
+        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
+        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
     }
-    //NOTE line
-    if (line.type == 'NOTE') {
-        // Start label, near side
-        if (line.startLabel != startLabel.value) {
-            startLabel.value = startLabel.value.trim();
-            line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // End label, opposite side
-        if (line.endLabel != endLabel.value) {
-            endLabel.value = endLabel.value.trim();
-            line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (line.startIcon != startIcon.value) {
-            line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (line.endIcon != endIcon.value) {
-            line.endIcon = endIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    }
-    // SD line
     if (line.type == entityType.SD) {
-        if (line.innerType != lineType.value) {
-            lineType.value = lineType.value.trim();
-            line.innerType = lineType.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {innerType: lineType.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (line.startIcon != startIcon.value) {
-            line.startIcon = startIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (line.endIcon != endIcon.value) {
-            line.endIcon = endIcon.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
+        changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
+        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
+        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
     }
     showdata();
+}
+
+const changeAttribute = (line, attribute, updated, list) => {
+    if (line[attribute] != updated.value) {
+        line[attribute] = updated.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    }
 }
 
 /**
