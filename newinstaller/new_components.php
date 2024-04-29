@@ -3,7 +3,7 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-  
+  <!-- <script src="new_components.js*"></script> -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
@@ -63,12 +63,14 @@
                     </div>
                 </div>";
         }
-
-        function testInputField($inputId, $inputLabel) {
+        function testInputField($inputId, $inputLabel, $accClass, $accText) {
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
-                        <input id='$inputId' type='text'>
-                </div>";
+                        <input id='$inputId' type='text'>";
+                        if(isset($accClass) && isset($accText)){
+                            echo "<p class='$accClass'>".$accText."</p>";
+                        }
+            echo "</div>";
         }
 
         function testCheckBox($checkBoxId, $checkBoxText) {
@@ -79,7 +81,7 @@
         }
     ?>
 
-    <div class="page">
+    <div class="page" id="page1">
         <div class="banner">
             <h1 class="header-1">Installer <b>LenaSYS</b> </h1>
         </div>
@@ -96,15 +98,15 @@
                 <?php
                     testBodyText("Provide the following data for the data and user.");
                     echo "<div class='input-grid'>";
-                    testInputField("databaseName","Database Name");
-                    testInputField("mySQLUser", "MySQL user");
-                    testInputField("hostname", "Hostname");
-                    testInputField("mySQLUserPW", "MySQL user password");
-                    testCheckBox("distEnvironment","Use Distributed Environment");
-                    testCheckBox("iniDatabaseTrans","Initialize database as transaction");
-                    echo "<div class='grid-element-span'>";
-                    testCheckBox("overwriteDatabase","Overwrite existing database and user names");
-                    echo "</div>";
+                        testInputField("databaseName","Database Name","","");
+                        testInputField("mySQLUser", "MySQL user", "", "");
+                        testInputField("hostname", "Hostname", "tip","Usaually set to localhost" );
+                        testInputField("mySQLUserPW", "MySQL user password", "", "");
+                        testCheckBox("distEnvironment","Use Distributed Environment");
+                        testCheckBox("iniDatabaseTrans","Initialize database as transaction");
+                        echo "<div class='grid-element-span'>";
+                            testCheckBox("overwriteDatabase","Overwrite existing database and user names");
+                        echo "</div>";
                     echo "</div>";
                 ?>
             </div>
