@@ -8,7 +8,7 @@ include_once "../../gitfetchService.php";
 global $pdo;
 
 //--------------------------------------------------------------------------------------------------
-// clearGitFiles: Clear the gitFiles table in SQLite db when a course has been updated with a new github repo
+// clearGitFiles: Clear the gitFiles table in SQLite db when a course has been updated with a new github repo. This function is used by other github microservices.
 //--------------------------------------------------------------------------------------------------
 
 function clearGitFiles($cid) {
