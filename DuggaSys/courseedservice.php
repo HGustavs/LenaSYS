@@ -588,7 +588,7 @@ foreach ($queryz->fetchAll(PDO::FETCH_ASSOC) as $row) {
 }
 
 //Delete course matterial from courses that have been marked as deleted.
-/*$deleted = 3;
+$deleted = 3;
 $query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 
@@ -597,7 +597,7 @@ if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
 
-}*/
+}
 
 
 //user_participant
@@ -610,7 +610,8 @@ catch(Exception $e){
 	$error=$query->errorInfo();
 	$debug="Error reading courses\n".$error[2];
 }
-
+	
+	
 //useranswer
 $query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
@@ -700,14 +701,12 @@ if (!$query->execute()) {
 }
 
 
+$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
 try{
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
-	//$query->bindParam(':cid', $cid);
 	$query->execute();
 }
 catch(Exception $e){
 	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
-	$error = $query->errorInfo();
 }
 
 /*
