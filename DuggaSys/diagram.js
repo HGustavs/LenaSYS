@@ -2678,6 +2678,8 @@ function mmoving(event) {
             break;
         case pointerStates.CLICKED_NODE:
             let isX;
+            let isR;
+            let isUP;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -2702,77 +2704,32 @@ function mmoving(event) {
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                var tmp = elementData.width;
-                elementData.width = (startWidth + (deltaX / zoomfact));
-
-                // Deduct the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-
-                // Fetch original x-position
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-
-                let widthChange = movementXChange(elementData,startX,deltaX);
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height
-                var tmp = elementData.height;
-                elementData.height = (startHeight - (deltaY / zoomfact));
-
-                // Deduct the new height, giving us the total change
-                const heightChange = -(tmp - elementData.height);
-
-                // Adds a deep clone of the element to preResizeHeight if it isn't in it
-                let foundID = false;
-                if (preResizeHeight == undefined) {
-                    let resizedElement = structuredClone(elementData);
-                    preResizeHeight.push(resizedElement);
-                } else {
-                    for (let i = 0; i < preResizeHeight.length; i++) {
-                        if (elementData.id == preResizeHeight[i].id) {
-                            foundID = true;
-                        }
-                    }
-                    if (!foundID) {
-                        let resizedElement = structuredClone(elementData);
-                        preResizeHeight.push(resizedElement);
-                    }
-                }
+                isUP = false;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height
-                var tmp = elementData.height;
-                elementData.height = (startHeight + (deltaY / zoomfact));
-
-                // Deduct the new height, giving us the total change
-                const heightChange = -(tmp - elementData.height);
+                // Fetch original height// Deduct the new height, giving us the total change
+                isUP = true;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
                 isX = false;
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
 
-                // Adds a deep clone of the element to preResizeHeight if it isn't in it
-                let foundID = false;
-                if (preResizeHeight == undefined) {
-                    let resizedElement = structuredClone(elementData);
-                    preResizeHeight.push(resizedElement);
-                } else {
-                    for (let i = 0; i < preResizeHeight.length; i++) {
-                        if (elementData.id == preResizeHeight[i].id) {
-                            foundID = true;
-                        }
-                    }
-                    if (!foundID) {
-                        let resizedElement = structuredClone(elementData);
-                        preResizeHeight.push(resizedElement);
-                    }
-                }
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
+
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
 
@@ -2804,23 +2761,53 @@ function movementPosChange(element,start,delta, isX){
         elem = element.x;
     }
     else {
-        element.y = screenToDiagramCoordinates(0, (start - delta + 20)).y;
+        element.y = screenToDiagramCoordinates(0, (start - delta )).y;
         elem = element.y;
     }
 
     // Deduct the new position, giving us the total change
     return -(tmp - elem);
 }
-function movementXChange(element,start,delta){
+function movementXChange(element,start,delta,isR){
 
     let tmp = element.width;
-    element.width = (start - (delta / zoomfact));
+    if (isR){
+        element.width = (start - (delta / zoomfact));
+    }
+    else{
+        element.width = (start + (delta / zoomfact));
+    }
+
 
     // Remove the new width, giving us the total change
     return -(tmp - element.width);
+}
 
-
-
+function movementYChange(element,start,delta,isUp,preResizeHeight){
+    // Adds a deep clone of the element to preResizeHeight if it isn't in it
+    let tmp = element.height;
+    if (isUp){
+        element.height = (start + (delta / zoomfact));
+    }
+    else{
+        element.height = (start - (delta / zoomfact));
+    }
+    let foundID = false;
+    if (preResizeHeight == undefined) {
+        let resizedElement = structuredClone(element);
+        preResizeHeight.push(resizedElement);
+    } else {
+        for (let i = 0; i < preResizeHeight.length; i++) {
+            if (element.id == preResizeHeight[i].id) {
+                foundID = true;
+            }
+        }
+        if (!foundID) {
+            let resizedElement = structuredClone(element);
+            preResizeHeight.push(resizedElement);
+        }
+    }
+    return -(tmp - element.height);
 }
 //#endregion ===================================================================================
 //#region ================================ ELEMENT MANIPULATION ================================
