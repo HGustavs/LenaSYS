@@ -77,26 +77,7 @@ class StateChange {
 
         if (timestamp != undefined) this.time = timestamp;
         else this.time = new Date().getTime();
-    }
-
-    /**
-     * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
-     * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
-     */
-    appendValuesFrom(changes) {
-        var propertys = Object.getOwnPropertyNames(changes);
-
-        // For every value in change
-        propertys.forEach(key => {
-
-            /**
-             * If the key is not blacklisted, set to the new value
-             */
-            if (key == "id") return; // Ignore this keys.
-            this[key] = changes[key];
-        });
-
-    }
+    }    
 }
 
 /**
@@ -379,7 +360,7 @@ class StateMachine {
                 if (this.historyLog.length > 0) {
 
                     // Get the last state in historyLog
-                    var lastLog = this.historyLog[this.historyLog.length - 1];
+                    let lastLog = this.historyLog[this.historyLog.length - 1];
 
                     // Check if the element is the same
                     var sameElements = true;
@@ -442,20 +423,22 @@ class StateMachine {
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
-                        for (let i = 0; i < changeTypes.length; i++) {
-                            const currentChangedType = changeTypes[i];
-
+                        for (let j = 0; j < changeTypes.length; j++) {
+                            const currentChangedType = changeTypes[j];
+                            let changeType;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                    lastLog.appendValuesFrom(stateChange);
+                                    lastLog = appendValuesFrom(lastLog, stateChange);
                                     this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:                                    
-                                    lastLog.appendValuesFrom(stateChange);
-                                    
+                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:      
+                                    //this function stops working if an object is put into historyLog
+                                    //that isn't a reference to lastLog
+                                    lastLog = appendValuesFrom(lastLog, stateChange);
+                                    //temporary object used to just send the values of lastLog but not the reference
                                     for (let change of stateChangeArray) {
                                         change.id.forEach(id => {
                                             let current_element = document.getElementById(id);
@@ -464,8 +447,9 @@ class StateMachine {
                                                 lastLog.height += current_element.offsetHeight; 
                                             }
                                         });
-                                    }
-                                    this.historyLog.push(lastLog);
+                                    }                    
+                                    let tempObj = {...lastLog};
+                                    this.historyLog.push(tempObj);
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
 
@@ -509,11 +493,8 @@ class StateMachine {
         // Remove ghost only if stepBack while creating edge
         if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
 
-        clearContext();
-        clearContextLine();
-        showdata();
+        
         this.scrubHistory(this.currentHistoryIndex);
-        updatepos(0, 0);
         displayMessage(messageTypes.SUCCESS, "Changes reverted!");
         disableIfDataEmpty();
     }
@@ -586,18 +567,17 @@ class StateMachine {
 
         if (!Array.isArray(state.id)) state.id = [state.id];
 
-        for (var i = 0; i < state.id.length; i++) {
+        for (let i = 0; i < state.id.length; i++) {
             // Find object
-            var object;
+            let object;
             if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
             else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
-
+            
             // If an object was found
             if (object) {
                 // For every key, apply the changes
                 keys.forEach(key => {
-                    if (key == "id" || key == "time") return; // Ignore this keys.
-                    object[key] = state[key];
+                    if (key != "id" || key != "time") object[key] = state[key]; // Ignore this keys.
                 });
             } else { // If no object was found - create one
                 var temp = {};
@@ -3912,6 +3892,26 @@ function subMenuCycling(subMenu) {
     }
 }
 
+/**
+     * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
+     * @param {StateChange} target StateChange to edit
+     * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
+     */
+function appendValuesFrom(target, changes) {
+    var propertys = Object.getOwnPropertyNames(changes);
+    console.log(propertys);
+    // For every value in change
+    propertys.forEach(key => {
+
+        /**
+         * If the key is not blacklisted, set to the new value
+         */
+        if (key == "id") return; // Ignore this keys.
+        target[key] = changes[key];
+    });
+    console.log(target);
+    return target;
+}
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS ======================================
 
@@ -12306,10 +12306,12 @@ function showdata() {
     // Iterate over programs
     for (var i = 0; i < data.length; i++) {
         if (str.includes(data[i].toString())) {
-            let tempString = drawElement(data[i]);
+            let tempString = drawElement(data[i]);            
             str.replace(tempString, "");
         }
-        str += drawElement(data[i]);
+        let tempString = drawElement(data[i]); 
+        //console.log(tempString + " " + i);
+        str += tempString;
     }
 
     if (ghostElement) {
