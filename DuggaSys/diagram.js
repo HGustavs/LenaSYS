@@ -9408,7 +9408,7 @@ function drawElementNote(element, ghosted) {
     const lineHeight = 1.5;
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
-    let length = (text.length > 4) ? text.length : 4;
+    let length = (text.length > 2) ? text.length : 2;
     let totalHeight = boxh * (1 + length) / 2;
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
