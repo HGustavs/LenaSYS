@@ -3684,40 +3684,17 @@ function setPos(objects, x, y) {
     updatepos(0, 0);
 }
 
-function findUMLEntityFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
-        return 1;
+function isLineConnectedTo(line, kind) {
+    let result = null;
+    switch (kind) {
+        case data[findIndex(data, line.fromID)].kind:
+            result = -1;
+            break;
+        case data[findIndex(data, line.toID)].kind:
+            result = 1;
+            break;
     }
-    return null;
-}
-
-function findUMLInheritanceFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
-        return 1;
-    }
-    return null;
-}
-
-function findEntityFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
-        return 1;
-    }
-    return null;
-}
-
-function findAttributeFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
-        return 1;
-    }
-    return null;
+    return result;
 }
 
 /**
@@ -6884,10 +6861,11 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
+            let UMLConnection = isLineConnectedTo(contextLine[0], elementTypesNames.UMLEntity);
             if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (let i = 0; i < value.length; i++) {
-                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                    if (i != 1 && UMLConnection != null || i != 2 && UMLConnection == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
                             str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
@@ -6900,7 +6878,7 @@ function generateContextProperties() {
             } else if (contextLine[0].type == entityType.ER) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
                 for (var i = 0; i < value.length - 1; i++) {
-                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                    if (i != 1 && UMLConnection != null || i != 2 && UMLConnection == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
                             str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
@@ -6912,8 +6890,8 @@ function generateContextProperties() {
                 }
             }
             if (contextLine[0].type == entityType.ER) {
-                if (findAttributeFromLine(contextLine[0]) == null) {
-                    if (findEntityFromLine(contextLine[0]) != null) {
+                if (isLineConnectedTo(contextLine[0], elementTypesNames.ERAttr) == null) {
+                    if (isLineConnectedTo(contextLine[0], elementTypesNames.EREntity) != null) {
                         str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
                         str += `<option value=''>None</option>`
                         Object.keys(lineCardinalitys).forEach(cardinality => {
@@ -7901,7 +7879,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         };
 
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
-        if (findEntityFromLine(newLine) != null) {
+        if (isLineConnectedTo(newLine, elementTypesNames.EREntity) != null) {
             if (cardinal != undefined) {
                 newLine.cardinality = cardinal;
             }
@@ -8278,7 +8256,7 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
         posY = ty + (offsetOnLine * (fy - ty) / distance);
     }
 
-    if (findEntityFromLine(line) == -1) {
+    if (isLineConnectedTo(line, elementTypesNames.EREntity) == -1) {
         if (line.ctype == lineDirection.UP) {
             if (f.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
