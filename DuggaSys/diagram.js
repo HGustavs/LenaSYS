@@ -1695,6 +1695,7 @@ document.addEventListener('keydown', function (e) {
     // Moving object with arrows
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
+        e.preventDefault();
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
                 overlapDetected = true;
@@ -1710,6 +1711,7 @@ document.addEventListener('keydown', function (e) {
     }
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
+        e.preventDefault();
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
                 overlapDetected = true;
@@ -1725,6 +1727,7 @@ document.addEventListener('keydown', function (e) {
     }
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
+        e.preventDefault();
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
                 overlapDetected = true;
@@ -1740,6 +1743,7 @@ document.addEventListener('keydown', function (e) {
     }
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
+        e.preventDefault();
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
                 overlapDetected = true;
