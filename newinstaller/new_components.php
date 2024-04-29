@@ -3,7 +3,7 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-  <!-- <script src="new_components.js*"></script> -->
+  <script src="new_components.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
@@ -128,29 +128,4 @@
             testProgressBar();
         ?>
     </div>
-    <script>
-        var stepSelected = 1;
-
-        function breadCrumbActive() {
-            var breadcrumbs = document.getElementsByClassName("breadcrumb");
-            for(breadcrumb of breadcrumbs){
-                breadcrumb.classList.remove("breadcrumb-selected");
-            }
-            document.getElementById('bcStep'+stepSelected).classList.add("breadcrumb-selected");
-        }
-
-        function breadCrumbInc() {
-            stepSelected += 1;
-            if(stepSelected>=6){
-                stepSelected = 6;
-            }
-        }
-
-        function breadCrumbDecr() {
-            stepSelected -= 1;
-            if(stepSelected<=1){
-                stepSelected = 1;
-            }
-        }
-    </script>
 </body>
