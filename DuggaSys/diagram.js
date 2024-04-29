@@ -2695,20 +2695,7 @@ function mmoving(event) {
             var minWidth = elementData.minWidth; // Declare the minimal with of an object
             var minHeight = elementData.minHeight; // Declare the minimal height of an object
 
-            // Sets different min-values for ERRelation
-            if (elementData.kind === "ERRelation") {
-                minHeight = 60;
-                minWidth = 60; 
-            }
-
             deltaX = startX - event.clientX;
-
-            if (elementData.kind == elementTypesNames.UMLEntity ||
-                elementData.kind == elementTypesNames.IEEntity ||
-                elementData.kind == elementTypesNames.SDEntity) { // Declare the minimal height of an object
-                minHeight = 0;
-            }
-
             deltaY = startY - event.clientY;
 
             // Functionality for the four different nodes
@@ -9382,16 +9369,17 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
     let length = (text.length > 4) ? text.length : 4;
-    let totalHeight = boxh * (1 + length) / 2;
+    let totalHeight = boxh + texth * length;
+    console.log(totalHeight, element);
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
     let content = `
         <path class="text"
             d=" M ${linew},${linew}
-                v ${boxh * (1 + length) / 2 - linew * 2}
+                v ${boxh + (texth * length) - linew * 2}
                 h ${boxw - linew * 2}
-                v -${boxh * (1 + length) / 2 - linew * 2 - (boxh - linew * 2) * 0.5}  
+                v -${boxh + (texth * length) - linew * 2 - (boxh - linew * 2) * 0.5}  
                 l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
                 h 1
                 h -1
@@ -9408,7 +9396,7 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     for (let i = 0; i < text.length; i++) {
         content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
     }
-    return drawSvg(boxw, boxh * (1 + length) / 2, content);
+    return drawSvg(boxw, boxh + texth * length, content);
 }
 
 /**
