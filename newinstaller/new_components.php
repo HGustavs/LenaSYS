@@ -63,19 +63,19 @@
                     </div>
                 </div>";
         }
-
-        function testCheckBox($checkBoxText) {
-            echo "<div class='checkbox'>
-                    <input id='distEnvironment' type='checkbox'>
-                    <label for='distEnvironment'>".$checkBoxText."</label>
+        function testInputField($inputId, $inputLabel) {
+            echo "<div class='input-field'>
+                        <label for='$inputId'>$inputLabel</label>
+                        <input id='$inputId' type='text'>
                 </div>";
         }
-        function testInputField() {
-            echo "<div class='input-field'>
-                        <label for='databaseName'>Database Name</label>
-                        <input id='databaseName' type='text'>
-                    </div>";
+        function testCheckBox($checkBoxId, $checkBoxText) {
+            echo "<div class='checkbox'>
+                    <input id='$checkBoxId' type='checkbox'>
+                    <label for='$checkBoxId'>".$checkBoxText."</label>
+                </div>";
         }
+       
     ?>
 
     <div class="page">
@@ -95,9 +95,15 @@
                 <?php
                     testBodyText("Provide the following data for the data and user.");
                     echo "<div class='input-grid'>";
-                    testInputField();
-                    testInputField();
-                    testCheckBox("Use Distributed Environment");
+                    testInputField("databaseName","Database Name");
+                    testInputField("mySQLUser", "MySQL user");
+                    testInputField("hostname", "Hostname");
+                    testInputField("mySQLUserPW", "MySQL user password");
+                    testCheckBox("distEnvironment","Use Distributed Environment");
+                    testCheckBox("iniDatabaseTrans","Initialize database as transaction");
+                    echo "<div class='grid-element-span'>";
+                    testCheckBox("overwriteDatabase","Overwrite existing database and user names");
+                    echo "</div>";
                     echo "</div>";
                 ?>
             </div>
