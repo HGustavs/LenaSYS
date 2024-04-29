@@ -63,19 +63,20 @@
                     </div>
                 </div>";
         }
+
         function testInputField($inputId, $inputLabel) {
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
                         <input id='$inputId' type='text'>
                 </div>";
         }
+
         function testCheckBox($checkBoxId, $checkBoxText) {
             echo "<div class='checkbox'>
                     <input id='$checkBoxId' type='checkbox'>
                     <label for='$checkBoxId'>".$checkBoxText."</label>
                 </div>";
         }
-       
     ?>
 
     <div class="page">
@@ -87,7 +88,7 @@
                 testBreadcrumb()
             ?>
         <div class="content">
-        <?php
+            <?php
                 $testHeader2 = "Create New Database & User";
                 testHeader2($testHeader2);
             ?>
@@ -108,6 +109,7 @@
                 ?>
             </div>
         </div>
+
         <?php
             testButton("Back","Continue");
             testProgressBar();
@@ -130,6 +132,7 @@
                 stepSelected = 6;
             }
         }
+
         function breadCrumbDecr() {
             stepSelected -= 1;
             if(stepSelected<=1){
