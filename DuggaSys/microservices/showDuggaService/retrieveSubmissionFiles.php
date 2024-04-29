@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------------------------------------------------------------------------
-// processDuggaFile.php - Function for processing files within a dugga i.e. submitted PDF, ZIP files
+// retrieveSubmissionFiles.php - Retreive all submissions Uses service selectFromTableSubmission to get information it requires from submission.
 //---------------------------------------------------------------------------------------------------------------
 function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, $moment)
 {

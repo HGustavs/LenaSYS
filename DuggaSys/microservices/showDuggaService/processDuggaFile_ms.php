@@ -1,8 +1,6 @@
 <?php 
 //---------------------------------------------------------------------------------------------------------------
-// retrieveDuggaFiles - processDuggaFile
-// loaddugga: userAnswer
-// processDuggaFile: submission
+// processDuggaFile_ms.php
 // Search with hash Uses service selectFromTableSubmission to get information it requires from submission.
 // If no match on hash, retreive all submissions Uses service selectFromTableSubmission to get information it requires from submission.
 //---------------------------------------------------------------------------------------------------------------
@@ -86,26 +84,26 @@ $isFileSubmitted="UNK";
 
 $debug="NONE!";	
 
-// if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment != "UNK"){
-// 	if((isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
-// 		isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
-// 		isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))) {
-// 		$hash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
-// 		$hashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-// 		$variant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-// 	}
-// 	else{
-// 		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
-// 		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-// 		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-// 	}
-// }else{
-// 	$debug="Could not find the requested dugga!";
-// }
+if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment != "UNK"){
+	if((isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+		isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
+		isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))) {
+		$hash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
+		$hashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+		$variant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+	}
+	else{
+		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+	}
+}else{
+	$debug="Could not find the requested dugga!";
+}
 
 $log_uuid = getOP('log_uuid');
 $info="opt: ".$opt." courseid: ".$courseid." coursevers: ".$coursevers." duggaid: ".$duggaid." moment: ".$moment." segment: ".$segment." answer: ".$answer;
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "retrieveDuggaFiles_ms.php",$userid,$info);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "processDuggaFiles_ms.php",$userid,$info);
 
 
 //------------------------------------------------------------------------------------------------
