@@ -63,15 +63,18 @@
                     </div>
                 </div>";
         }
-        function testInputField($inputId, $inputLabel, $accClass, $accText) {
+        function testInputField($inputId, $inputLabel) {
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
-                        <input id='$inputId' type='text'>";
-                        //Check if there is a class and text for accessory text e.g. tip or warning, present if there is present.
-                        if(isset($accClass) && isset($accText)){
-                            echo "<p class='$accClass'>".$accText."</p>";
-                        }
-            echo "</div>";
+                        <input id='$inputId' type='text'>
+                </div>";
+        }
+        function testInputFieldAccText($inputId, $inputLabel, $accClass, $accText) {
+            echo "<div class='input-field'>
+                        <label for='$inputId'>$inputLabel</label>
+                        <input id='$inputId' type='text'>              
+                        <p class='$accClass'>".$accText."</p>        
+                </div>";
         }
 
         function testCheckBox($checkBoxId, $checkBoxText) {
@@ -79,6 +82,13 @@
                     <input id='$checkBoxId' type='checkbox'>
                     <label for='$checkBoxId'>".$checkBoxText."</label>
                 </div>";
+        }
+        function testCheckBoxAccText($checkBoxId, $checkBoxText, $accClass, $accText) {
+            echo "<div class='checkbox'>
+                    <input id='$checkBoxId' type='checkbox'>
+                    <label for='$checkBoxId'>".$checkBoxText."</label>
+                    </div>
+                    <p class='$accClass'>".$accText."</p>";
         }
     ?>
 
@@ -99,14 +109,14 @@
                 <?php
                     testBodyText("Provide the following data for the data and user.");
                     echo "<div class='input-grid'>";
-                        testInputField("databaseName","Database Name","","");
-                        testInputField("mySQLUser", "MySQL user", "", "");
-                        testInputField("hostname", "Hostname", "tip","Usaually set to localhost" );
-                        testInputField("mySQLUserPW", "MySQL user password", "", "");
+                        testInputField("databaseName","Database Name");
+                        testInputField("mySQLUser", "MySQL user");
+                        testInputFieldAccText("hostname", "Hostname", "tip","Usaually set to localhost" );
+                        testInputField("mySQLUserPW", "MySQL user password");
                         testCheckBox("distEnvironment","Use Distributed Environment");
                         testCheckBox("iniDatabaseTrans","Initialize database as transaction");
                         echo "<div class='grid-element-span'>";
-                            testCheckBox("overwriteDatabase","Overwrite existing database and user names");
+                        testCheckBoxAccText("overwriteDatabase","Overwrite existing database and user names", "warning", "WARNING! Overwriting databases and users cannot be undone!");
                         echo "</div>";
                     echo "</div>";
                 ?>
