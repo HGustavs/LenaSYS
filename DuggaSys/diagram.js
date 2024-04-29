@@ -6817,10 +6817,6 @@ function drawLineProperties(line) {
             let optSD = option(SDLineType, line.innerType);
             str += select('lineType', optSD, false);
             break;
-        case entityType.SE:
-            break;
-        case entityType.NOTE:
-            break;
     }
     str += saveButton('changeLineProperties();');
     return str;
