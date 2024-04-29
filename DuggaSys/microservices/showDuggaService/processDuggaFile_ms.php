@@ -26,7 +26,6 @@ function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, 
 		$result = $query->execute();
 		$rows = $query->fetchAll();
 	}
-	
 	// Store current day in string
 	$today = date("Y-m-d H:i:s");
 	

@@ -147,15 +147,15 @@ if($gradesys=="UNK") $gradesys=0;
 		            if($ha || $studentTeacher)$showgrp=explode('_',$showgrp)[0];
 		            foreach($query->fetchAll() as $row) {
 		                $grpmembershp=$row['groups'];
-		                $idx=strpos($grpmembershp,$showgrp);
-		                while($idx!==false){
-		                    $grp=substr($grpmembershp,$idx,strpos($grpmembershp,' ',$idx)-$idx);
-		                    $email=$row['email'];
-		                    if(is_null($email)){
-		                        $email=$row['username']."@student.his.se";
-		                    }
-							array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
-		                    $idx=strpos($grpmembershp,$showgrp,$idx+1);
+						if (!empty($grpmembershp)){
+							$grpletters = $grpmembershp[0] . $grpmembershp[1];
+							if (strpos($showgrp, $grpletters)!==false){
+								$email=$row['email'];
+								if(is_null($email)){
+									$email=$row['username']."@student.his.se";
+								}
+								array_push($grplst, array($row['groups'],$row['firstname'],$row['lastname'],$email));
+							}
 		                }
 		            }
 		            sort($grplst);

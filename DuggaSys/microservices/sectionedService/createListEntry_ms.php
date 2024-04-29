@@ -5,7 +5,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "../sharedMicroservices/createNewListentrie_ms.php";
+include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
 
 pdoConnect();
