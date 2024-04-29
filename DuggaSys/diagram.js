@@ -3248,11 +3248,15 @@ function changeLineProperties() {
     // SE (Sequence) line
     if (line.type == entityType.SE) {
         if (line.startIcon != startIcon.value) {
+            console.log("using: if (line.startIcon != startIcon.value)")
             line.startIcon = startIcon.value
+            console.log(`StartIcon.value: ${startIcon.value}`);
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
+            console.log("using: if (line.endIcon != endIcon.value)")
             line.endIcon = endIcon.value
+            console.log(`EndIcon.value: ${endIcon.value}`);
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
@@ -3273,10 +3277,12 @@ function changeLineProperties() {
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
+            console.log("(icon) is this being used?");
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
+            console.log("(icon)is this being used?");
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
@@ -6965,7 +6971,7 @@ function generateContextProperties() {
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
                 str += `/>`;
             }
-
+            // Creates line kinds for SE
             if (contextLine[0].type == entityType.SE) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px; text-align: center;">Label</h3>`;
                 str += `<input id="lineLabel" style="text-align: center; display: block; margin: auto;" maxlength="50" type="text" placeholder="Label..."`;
@@ -7105,6 +7111,7 @@ function generateContextProperties() {
             }
             //generate the dropdown for SD line icons.
             if (contextLine[0].type == entityType.SD) {
+                console.log(`Used contextLine[0].type == entityType.SD`);
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with SD, and add them to the drop down as options
@@ -7129,6 +7136,8 @@ function generateContextProperties() {
                         //If the lines in context happen to be matching something in the drop down, it is set as selected.
                         if (contextLine[0].endIcon == icon) {
                             str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
+                            console.log("icon is " + icon);
+                            console.log("startIcon is " + contextLine[0].startIcon);
                         }
                         //else, its not matching and the option is just added to the dropdown normally.
                         else {
@@ -7151,6 +7160,7 @@ function generateContextProperties() {
             }
 
             if (contextLine[0].type == entityType.SE) {
+                console.log(`Used contextLine[0].type == entityType.SE`);
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with SD, and add them to the drop down as options
@@ -7159,6 +7169,8 @@ function generateContextProperties() {
                         //If the lines in context happen to be matching something in the drop down, it is set as selected.
                         if (contextLine[0].startIcon == icon) {
                             str += `<option value='${SELineIcons[icon]}' selected>${SELineIcons[icon]}</option>`;
+                            console.log("icon is " + icon);
+                            console.log("startIcon is " + contextLine[0].startIcon);
                         }
                         //else, its not matching and the option is just added to the dropdown normally.
                         else {
@@ -7176,6 +7188,8 @@ function generateContextProperties() {
                         //If the lines in context happen to be matching something in the drop down, it is set as selected.
                         if (contextLine[0].endIcon == icon) {
                             str += `<option value='${SELineIcons[icon]}' selected>${SELineIcons[icon]}</option>`;
+                            console.log("icon is " + icon);
+                            console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
                         }
                         //else, its not matching and the option is just added to the dropdown normally.
                         else {
