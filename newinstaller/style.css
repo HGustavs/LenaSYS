@@ -203,6 +203,15 @@ input[type=checkbox] {
     margin-top: 0.25rem;
 }
 
+.success {
+    font-family: var(--body-font);
+    font-size: var(--text-small);
+    color: var(--success-text);
+    font-style: italic;
+    padding-left: 0.25rem;
+    margin-top: 0.25rem;
+}
+
 .backButton {
     font-family: var(--body-font);
     background-color: transparent;
