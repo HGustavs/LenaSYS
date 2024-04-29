@@ -1,7 +1,7 @@
 <?php
 
 //---------------------------------------------------------------------------------------------------------------
-// profileService - handles password changes and challenge question when you click on your profile when logged in
+// Handles password changes when logged in. Click on profile and then change password.
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
