@@ -321,7 +321,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //Add user
     'Add-user' => array(  
         //Pre-values
-        'expected-output' => '{"output":"PLACEHOLDER"}',
+        'expected-output' => '{"entries":[{"username":"{\"username\":\"Addtest123\"}","class":"{\"class\":\"testClass\"}"}],"classes":[{"class":"testClass"},{"class":"DVSUG13h"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = '1885';",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'Addtest123';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
