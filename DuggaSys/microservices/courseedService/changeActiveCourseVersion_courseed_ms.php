@@ -5,7 +5,7 @@
 // course version this Microservice can be used.
 //---------------------------------------------------------------------------------------------------------------
 
-// Set the correct time zone
+// Setting the correct time zone
 date_default_timezone_set("Europe/Stockholm");
 
 // Basic includes for this ms to work
