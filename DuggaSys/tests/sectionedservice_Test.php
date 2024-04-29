@@ -93,16 +93,13 @@ $testsData = array(
     // This test will test the micro-service deleteListEntries and its curresponding part in the monolith called "DEL"
     //---------------------------------------------------------------------------------------------------------------
     'deleteListEntries' => array(
-        'expected-output' => '{"entries":[{"entryname":"JavaScript-Code:","lid":1,"pos":1,"visible":1},{"entryname":"JS-TEST template 1","lid":4000,"pos":1,"visible":1},{"entryname":"JS-TEST template 2","lid":4001,"pos":1,"visible":1},{"entryname":"JS-TEST template 3","lid":4002,"pos":1,"visible":1},{"entryname":"JS-TEST template 4","lid":4003,"pos":1,"visible":1},{"entryname":"JS-TEST template 5","lid":4004,"pos":1,"visible":1},{"entryname":"JS-TEST template 6","lid":4005,"pos":1,"visible":1},{"entryname":"JS-TEST template 7","lid":4006,"pos":1,"visible":1},{"entryname":"JS-TEST template 8","lid":4007,"pos":1,"visible":1},{"entryname":"JS-TEST template 9","lid":4008,"pos":1,"visible":1},{"entryname":"JS-TEST template 10","lid":4009,"pos":1,"visible":1},{"entryname":"HTML-Code:","lid":2,"pos":2,"visible":1},{"entryname":"Html-test template 1","lid":5000,"pos":2,"visible":1},{"entryname":"Html-test template 2","lid":5001,"pos":2,"visible":1},{"entryname":"Html-test template 3","lid":5002,"pos":2,"visible":1},{"entryname":"Html-test template 4","lid":5003,"pos":2,"visible":1},{"entryname":"Html-test template 5","lid":5004,"pos":2,"visible":1},{"entryname":"Html-test template 6","lid":5005,"pos":2,"visible":1},{"entryname":"Html-test template 7","lid":5006,"pos":2,"visible":1},{"entryname":"Html-test template 8","lid":5007,"pos":2,"visible":1},{"entryname":"Html-test template 9","lid":5008,"pos":2,"visible":1},{"entryname":"Html-test template 10","lid":5009,"pos":2,"visible":1},{"entryname":"SQL-CODE:","lid":4,"pos":3,"visible":1},{"entryname":"SQL-TEST template 1","lid":3110,"pos":3,"visible":1},{"entryname":"SQL-TEST template 2","lid":3111,"pos":3,"visible":1},{"entryname":"SQL-TEST template 3","lid":3112,"pos":3,"visible":1},{"entryname":"SQL-TEST template 4","lid":3113,"pos":3,"visible":1},{"entryname":"SQL-TEST template 5","lid":3114,"pos":3,"visible":1},{"entryname":"SQL-TEST template 6","lid":3115,"pos":3,"visible":1},{"entryname":"SQL-TEST template 7","lid":3116,"pos":3,"visible":1},{"entryname":"SQL-TEST template 8","lid":3117,"pos":3,"visible":1},{"entryname":"SQL-TEST template 9","lid":3118,"pos":3,"visible":1},{"entryname":"SQL-TEST template 10","lid":3119,"pos":3,"visible":1},{"entryname":"PHP-CODE:","lid":5,"pos":4,"visible":1},{"entryname":"PHP-TEST template 1","lid":2110,"pos":4,"visible":1},{"entryname":"PHP-TEST template 2","lid":2111,"pos":4,"visible":1},{"entryname":"PHP-TEST template 3","lid":2112,"pos":4,"visible":1},{"entryname":"PHP-TEST template 4","lid":2113,"pos":4,"visible":1},{"entryname":"PHP-TEST template 5","lid":2114,"pos":4,"visible":1},{"entryname":"PHP-TEST template 6","lid":2115,"pos":4,"visible":1},{"entryname":"PHP-TEST template 7","lid":2116,"pos":4,"visible":1},{"entryname":"PHP-TEST template 8","lid":2117,"pos":4,"visible":1},{"entryname":"PHP-TEST template 9","lid":2118,"pos":4,"visible":1},{"entryname":"PHP-TEST template 10","lid":2119,"pos":4,"visible":1},{"entryname":"Other:","lid":6,"pos":5,"visible":1},{"entryname":"Inserttobedeleted","lid":5011,"pos":12,"visible":1}],"debug":"NONE!","writeaccess":false,"studentteacher":false,"coursename":"Testing-Course","courseid":"1885"}',
-        'query-before-test-1' => "INSERT INTO listentries(lid, cid, entryname, link, kind, pos, creator, visible, vers, gradesystem, highscoremode, feedbackenabled, feedbackquestion) VALUES (5011 ,1885, 'Inserttobedeleted', 'UNK', 4, 12, 2, 1, 1337, 1, 1, 0, 'UNK');",
-        'query-before-test-2' => "INSERT INTO quiz(cid) VALUES (1885);",
-        'query-before-test-3' => "SELECT MAX(id) AS did FROM quiz WHERE cid = 1885",
-        'query-before-test-4' => "SELECT MAX(lid) AS lid FROM listentries WHERE cid = 1885",
-        'variables-query-before-test-5' => "did, lid",
-        'query-before-test-5' => "INSERT INTO userAnswer (cid, quiz, variant, moment, useranswer, submitted, marked, vers, score, hash, password) VALUES(1885, ?, 3, ?, 'an answer', '2024-04-15 14:00:00', '2024-04-15 14:30:00', 1337, '0', 'ghj1ghj2', 'asddasdd');",
-        'query-after-test-1' => "DELETE FROM userAnswer ORDER BY aid DESC LIMIT 1;",
-        'query-after-test-2' => "DELETE FROM listentries WHERE lid = 5011;",
-        'query-after-test-3' => "DELETE FROM quiz WHERE cid = 1885 ORDER BY id DESC LIMIT 1;",
+        'expected-output' => '{"entries":[{"entryname":"Inserttobedeleted"},{"entryname":"JavaScript-Code:"},{"entryname":"JS-TEST template 1"},{"entryname":"JS-TEST template 2"},{"entryname":"JS-TEST template 3"},{"entryname":"JS-TEST template 4"},{"entryname":"JS-TEST template 5"},{"entryname":"JS-TEST template 6"},{"entryname":"JS-TEST template 7"},{"entryname":"JS-TEST template 8"},{"entryname":"JS-TEST template 9"},{"entryname":"JS-TEST template 10"},{"entryname":"HTML-Code:"},{"entryname":"Html-test template 1"},{"entryname":"Html-test template 2"},{"entryname":"Html-test template 3"},{"entryname":"Html-test template 4"},{"entryname":"Html-test template 5"},{"entryname":"Html-test template 6"},{"entryname":"Html-test template 7"},{"entryname":"Html-test template 8"},{"entryname":"Html-test template 9"},{"entryname":"Html-test template 10"},{"entryname":"SQL-CODE:"},{"entryname":"SQL-TEST template 1"},{"entryname":"SQL-TEST template 2"},{"entryname":"SQL-TEST template 3"},{"entryname":"SQL-TEST template 4"},{"entryname":"SQL-TEST template 5"},{"entryname":"SQL-TEST template 6"},{"entryname":"SQL-TEST template 7"},{"entryname":"SQL-TEST template 8"},{"entryname":"SQL-TEST template 9"},{"entryname":"SQL-TEST template 10"},{"entryname":"PHP-CODE:"},{"entryname":"PHP-TEST template 1"},{"entryname":"PHP-TEST template 2"},{"entryname":"PHP-TEST template 3"},{"entryname":"PHP-TEST template 4"},{"entryname":"PHP-TEST template 5"},{"entryname":"PHP-TEST template 6"},{"entryname":"PHP-TEST template 7"},{"entryname":"PHP-TEST template 8"},{"entryname":"PHP-TEST template 9"},{"entryname":"PHP-TEST template 10"},{"entryname":"Other:"}],"debug":"NONE!","coursename":"Testing-Course"}',
+        'query-before-test-1' => "INSERT INTO listentries(cid, entryname, kind, creator, visible, vers) VALUES (1885, 'Inserttobedeleted', 4, 2, 1, 1337);",
+        'query-before-test-2' => "SELECT MAX(lid) AS lid FROM listentries",
+        'variables-query-before-test-3' => "lid",
+        'query-before-test-3' => "INSERT INTO userAnswer (cid, variant, moment, useranswer, submitted, marked, vers, hash, password) VALUES(1885, 3, ?, 'an answer to be deleted', '2024-04-15 14:00:00', '2024-04-15 14:30:00', 1337, 'ghj1ghj2', 'asddasdd');",
+        'query-after-test-1' => "DELETE FROM userAnswer WHERE useranswer = 'an answer to be deleted';",
+        'query-after-test-2' => "DELETE FROM listentries WHERE entryname = 'Inserttobedeleted';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
@@ -111,22 +108,16 @@ $testsData = array(
                 'courseid' => 1885,
                 'coursevers'=> 1337,
                 'opt'=> 'DEL',
-                'lid'=> '5011',
+                'lid'=> '<!query-before-test-2!><*[0]["lid"]*>',
             )
         ),
         'filter-output' => serialize(
             array( // Filter what output to use in assert test, use none to use all ouput from service
                 'entries' => array(
                     'entryname',
-                    'lid',
-                    'pos',
-                    'visible',
                 ),
                 'debug',
-                'writeaccess',
-                'studentteacher',
                 'coursename',
-                'courseid',
             )),
     ),
     //-------------------------------------------------------------------------------------------------------------------
