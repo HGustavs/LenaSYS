@@ -2604,9 +2604,6 @@ function mouseMode_onMouseMove(event) {
         case mouseModes.EDGE_CREATION:
             mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
-            /*if (target != null){
-                snapSAToLifeline();
-            }*/
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
 
@@ -3894,8 +3891,7 @@ function setMouseMode(mode) {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
     }
-
-    if(mouseMode == mouseModes.POINTER){
+    if (mouseMode == mouseModes.POINTER) {
         elementTypeSelected = null;
     }
 }
