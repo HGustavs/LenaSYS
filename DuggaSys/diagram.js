@@ -1400,7 +1400,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         canChangeTo: null,
         minWidth: 100,
@@ -1412,7 +1412,7 @@ var defaults = {
         fill: "#FFFFFF",
         stroke: "#000000",
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         canChangeTo: null,
         minWidth: 100,
@@ -1424,7 +1424,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 30,
-        height: 300,
+        height: 100,
         type: "SE",
         canChangeTo: null,
         minWidth: 30,
@@ -2361,6 +2361,34 @@ function mouseEnter() {
     if (!mouseButtonDown && mouseMode != mouseModes.PLACING_ELEMENT) {
         mouseOverElement = true;
         containerStyle.cursor = "pointer";
+    }
+}
+
+/**
+ * @description Triggers when the mouse hoovers over an sequence lifeline.
+ */
+function mouseEnterSeq(event) {
+    if (elementTypeSelected === elementTypes.sequenceActivation) {
+        const target = event.target;
+        const targetId = target.id;
+        snapSAToLifeline(targetId); 
+    }
+}
+
+/**
+ * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
+ */
+function snapSAToLifeline(targetId) {
+    const lifeline = document.getElementById(targetId);
+    if (lifeline) {
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
+                const element = data[i];
+                const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
+                ghostElement.x = newXGhost;
+                updatepos(0, 0);
+            }
+        }
     }
 }
 
@@ -3823,6 +3851,9 @@ function setMouseMode(mode) {
     } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
+    }
+    if (mouseMode == mouseModes.POINTER) {
+        elementTypeSelected = null;
     }
 }
 
@@ -8771,7 +8802,8 @@ function drawElement(element, ghosted = false) {
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
-
+    let mouseEnter = '';
+  
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8857,9 +8889,11 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
+            mouseEnter = 'mouseEnterSeq(event);';
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
+            mouseEnter = 'mouseEnterSeq(event);';
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
@@ -8873,7 +8907,6 @@ function drawElement(element, ghosted = false) {
             cssClass = 'uml-element';
             break;
     }
-
     let lock = '';
     if (element.isLocked) {
         lock = `<img 
@@ -8891,7 +8924,7 @@ function drawElement(element, ghosted = false) {
                 id='${element.id}' 
                 class='element ${cssClass}' 
                 onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
+                onmouseenter='mouseEnter();${mouseEnter}' 
                 onmouseleave='mouseLeave();' 
                 style='${style}${ghostStr}' 
             >${divContent}${lock}</div>`;
