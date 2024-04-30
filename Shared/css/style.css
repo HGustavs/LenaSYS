@@ -7032,6 +7032,14 @@ only screen and (max-device-width: 568px) {
   background-color: #ffd369;
 }
 
+/* Link chain icon centered vertically */
+
+.centered-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* FAB bubble list container */
 
 .fab-btn-list  {
