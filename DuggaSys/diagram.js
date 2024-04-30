@@ -441,13 +441,14 @@ class StateMachine {
                                     // it only stores the changes originally and after this it stores the whole size
                                     for (let change of stateChangeArray) {
                                         change.id.forEach(id => {
-                                            let currentElement = data[findIndex(data, id)];
+                                            let currentElement = document.getElementById(id);
                                             console.log(currentElement)
                                             if (lastLog.id == id) {
                                                 //add this but for (x, y) aswell
-                                                lastLog.width += currentElement.width;
-                                                lastLog.height += currentElement.height; 
+                                                lastLog.width += currentElement.offsetWidth;
+                                                lastLog.height += currentElement.offsetHeight; 
                                                 if (movedAndResized) {
+                                                    currentElement = data[findIndex(data, id)];
                                                     lastLog.x = currentElement.x;
                                                     lastLog.y = currentElement.y;
                                                 }
