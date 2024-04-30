@@ -472,7 +472,7 @@ function refreshGithubRepo(courseid, user) {
         $("#githubPopupWindow").css("display", "flex");
       }
       else {
-        alert(data);
+        toast("",data,7);
       }
       dataCheck = true;
     },
@@ -481,13 +481,13 @@ function refreshGithubRepo(courseid, user) {
       switch (data.status) {
         case 403:
         case 422:
-          alert(data.responseJSON.message + "\nDid not update course");
+          toast("error",data.responseJSON.message + "\nDid not update course",7);
           break;
         case 503:
-          alert(data.responseJSON.message + "\nDid not update course");
+          toast("error",data.responseJSON.message + "\nDid not update course",7);
           break;
         default:
-          alert("Something went wrong...");
+          toast("error","Something went wrong...",7);
       }
       dataCheck = false;
     }
@@ -516,10 +516,10 @@ function updateGithubRepo(githubURL, cid, githubKey) {
         case 403:
         case 422:
         case 503:
-          alert(data.responseJSON.message + "\nFailed to update github repo");
+          toast("error",data.responseJSON.message + "\nFailed to update github repo",7);
           break;
         default:
-          alert("Something went wrong...");
+          toast("error","Something went wrong...",7);
       }
       dataCheck = false;
     }
@@ -547,10 +547,10 @@ function fetchGitHubRepo(gitHubURL) {
       switch (data.status) {
         case 422:
         case 503:
-          alert(data.responseJSON.message + "\nDid not update course, double check github link?");
+          toast("error",data.responseJSON.message + "\nDid not update course, double check github link?",7);
           break;
         default:
-          alert("Something went wrong...");
+          toast("error","Something went wrong...",7);
       }
       dataCheck = false;
     }
@@ -1052,7 +1052,7 @@ function updateSelectedDir() {
     success: function (data) {
       console.log('POST-request call successful');
       console.log("Response: ", data);
-      alert('Directory has been updated succesfully')
+      toast("success",'Directory has been updated succesfully',5)
 
       // Parse the JSON response
       var response;
@@ -1075,7 +1075,7 @@ function updateSelectedDir() {
       console.error('Update failed:', error);
       console.log("Status: ", status);
       console.log("Error: ", error);
-      alert('Directory update failed')
+      toast("error",'Directory update failed',7)
     }
   });
 }
@@ -1264,7 +1264,7 @@ function createVersion() {
   newversid = param.versid;
 
   if (param.versid == "" || param.versname == "") {
-    alert("Version Name and Version ID must be entered!");
+    toast("warning","Version Name and Version ID must be entered!",7);
   } else {
     if (param.copycourse != "None") {
       // Create a copy of course version
@@ -3342,11 +3342,15 @@ function createExamples(momentID, isManual) {
 // When the user is watching the course page, set isActivelyFocused to true
 $(window).on('focus', function () {
   isActivelyFocused = true;
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
+
 });
 
 // When the user stops watching the course page, set isActivelyFocused to false
 $(window).on('blur', function () {
   isActivelyFocused = false;
+  console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
+  
 });
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
@@ -3844,8 +3848,7 @@ function validateForm(formid) {
 
     // If fields empty
     if (sName == null || sName == "") {
-      alert("Fill in all fields");
-
+      toast("warning","Fill in all fields",5);
     }
 
     //Name is a duplicate
@@ -3854,7 +3857,7 @@ function validateForm(formid) {
     }
     else if (getCourseElements().indexOf(sName) >= 0) {
       window.bool11 = false;
-      alert('Name already exists, choose another one');
+      toast("error",'Name already exists, choose another one',7);
     } else {
       window.bool11 = true;
     }
@@ -3889,7 +3892,7 @@ function validateForm(formid) {
         document.getElementById("updateAlert").innerHTML = "";
       }, 3000);
     } else {
-      alert("You have entered incorrect information");
+      toast("error","You have entered incorrect information",7);
     }
   }
   // validates the github moment from github integration (the github icon)
@@ -3898,7 +3901,7 @@ function validateForm(formid) {
 
     // Validate fields here. For example, check if fields are not empty
     if (selectedDir == "" || selectedDir == null) {
-      alert("Pick directory");
+      toast("warning","Pick directory",5);
       return;
     }
 
@@ -3913,7 +3916,7 @@ function validateForm(formid) {
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
-      alert("Fill in all fields");
+      toast("warning","Fill in all fields",5);
 
     }
     // If all information is correct
@@ -3923,7 +3926,7 @@ function validateForm(formid) {
       $('#newCourseVersion input').val("");
 
     } else {
-      alert("You have entered incorrect information");
+      toast("Error","You have entered incorrect information",5);
     }
   }
 
@@ -3933,7 +3936,7 @@ function validateForm(formid) {
 
     // If fields empty
     if (eversName == null || eversName == "") {
-      alert("Fill in all fields");
+      toast("warning","Fill in all fields",5);
 
     }
 
@@ -3943,7 +3946,7 @@ function validateForm(formid) {
       updateVersion();
       resetMOTDCookieForCurrentCourse();
     } else {
-      alert("You have entered incorrect information");
+      toast("error","You have entered incorrect information",7);
     }
   }
 
@@ -4089,7 +4092,7 @@ function fetchGitCodeExamples(courseid){
   var filteredFiles = [];
 
   if(filePath == "" || githubURL == "" || fileName == ""){
-    return alert('Fill in all boxes!');
+    return toast("warning",'Fill in all boxes!',5);
   }
 
   var folderPath = getParentFolderOfFile(filePath);

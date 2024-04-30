@@ -147,25 +147,25 @@ function verifyUserInputForm(input) {
 
 	// Verify first name
 	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
-		alert(verifyString);
+		toast("error",verifyString, 7);
 		return false;
 	}
 
 	// Verify last name
 	if(verifyString = validateName(input[2])) {		// Returns null if there is no error
-		alert(verifyString);
+		toast("error",verifyString, 7);
 		return false;
 	}
 
 	// Verify email
 	if(verifyString = validateEmail(input[3])) {	// Returns null if there is no error
-		alert(verifyString);
+		toast("error",verifyString, 7);
 		return false;
 	}
 
 	// Verify term
 	if(verifyString = validateTerm(input[5])) {	// Returns null if there is no error
-		alert(verifyString);
+		toast("error",verifyString, 7);
 		return false;
 	}
 

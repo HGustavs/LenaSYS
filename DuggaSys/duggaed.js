@@ -149,7 +149,7 @@ function updateDugga() {
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
   if($("#qstart").val()=="") {
-		alert("Missing Start Date");
+		toast("warning","Missing Start Date",7);
 		return;
   }
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
@@ -160,11 +160,11 @@ function updateDugga() {
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
-      alert("Missing Deadline 1");
+      toast("warning","Missing Deadline 1",7);
       return;
   }
   if(deadline < qstart) {
-		alert(`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`);
+		toast("error",`Deadline before start:\nDeadline: ${deadline} - Start: ${qstart}`,7);
 		return;
   }
   if($("#deadline2").val()!=""){
