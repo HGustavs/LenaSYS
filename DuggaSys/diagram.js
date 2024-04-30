@@ -2345,35 +2345,33 @@ function mouseEnter() {
     }
 }
 
-
-function mouseEnterSeq(event){
-    if(elementTypeSelected === elementTypes.sequenceActivation){
+/**
+ * @description Triggers when the mouse hoovers over an sequence lifeline.
+ */
+function mouseEnterSeq(event) {
+    if (elementTypeSelected === elementTypes.sequenceActivation) {
         const target = event.target;
         const targetId = target.id;
-        snapSAToLifeline(targetId);
+        snapSAToLifeline(targetId); 
     }
 }
 
-
+/**
+ * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
+ */
 function snapSAToLifeline(targetId) {
-    
     const lifeline = document.getElementById(targetId);
     if (lifeline) {
-
-        for (let i = 0; i < data.length; i++ ){
-               
+        for (let i = 0; i < data.length; i++) {
             if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
-                
                 const element = data[i];
                 const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
                 ghostElement.x = newXGhost;
-               
-                updatepos(0, 0);              
+                updatepos(0, 0);
             }
         }
     }
 }
-
 
 /**
  * @description change cursor style when mouse is hovering over the container.
