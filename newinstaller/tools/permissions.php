@@ -6,7 +6,7 @@
          * Check if php has access to modify a file or directory.
          */
         public static function has_permission(string $path): bool {
-            // TODO: implement function.
+            return is_readable($path) && is_writable($path);
         }
 
         /**
@@ -14,7 +14,7 @@
          * Get the permissions set on a file or directory.
          */
         public static function get_permissions(string $path): array {
-            // TODO: implement function.
+            
         }
 
         /**
