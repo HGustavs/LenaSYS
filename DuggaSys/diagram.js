@@ -7814,7 +7814,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
     }
     // Prevent a line to be drawn between two ER entity.
-    if (fromElement.kind == toElement.kind && fromElement.kind == elementTypesNames.EREntity && toElement.kind == elementTypesNames.EREntity){
+    if (fromElement.kind == elementTypesNames.EREntity && toElement.kind == elementTypesNames.EREntity){
         displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name}- and ${toElement.name}-element`);
         return;
     }
