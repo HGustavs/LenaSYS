@@ -8889,7 +8889,6 @@ function drawElement(element, ghosted = false) {
                      alt='Padlock' 
                  />`;
     }
-    console.log(zLevel, element.kind);
     style = style ?? `left:0; top:0; width:auto; height:auto; font-size:${texth}px; z-index:${zLevel};`;
     let ghostPreview = ghostLine ? 0 : 0.4;
     let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
