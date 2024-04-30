@@ -142,7 +142,7 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {List<String>} elementIDs List of IDs for all elements that were moved.
+     * @param {Array<String>} elementIDs List of IDs for all elements that were moved.
      * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
      * @returns {Array<StateChange>} A new instance of the StateChange class.
@@ -243,7 +243,7 @@ class StateChangeFactory {
         var lineIDs = [];
 
         // For every object in the lines array, add them to lineIDs
-        for (var index = 0; index < lines.length; index++) {
+        for (let index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
 
@@ -365,9 +365,10 @@ class StateMachine {
      */
     save(stateChangeArray, newChangeType) {
         let currentChangedType;
+        let changeTypes;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
-        for (var i = 0; i < stateChangeArray.length; i++) {
+        for (let i = 0; i < stateChangeArray.length; i++) {
 
             var stateChange = stateChangeArray[i];
 
@@ -391,7 +392,7 @@ class StateMachine {
                     } else { // Perform history comparisions
                         if (Array.isArray(lastLog.id)) {
                             if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                            for (var index = 0; index < lastLog.id.length && sameElements; index++) {
+                            for (let index = 0; index < lastLog.id.length && sameElements; index++) {
                                 var id_found = lastLog.id[index];
 
                                 if (!stateChange.id.includes(id_found)) sameElements = false;
@@ -401,25 +402,25 @@ class StateMachine {
                         }
 
                         if (Array.isArray(newChangeType)) {
-                            for (var index = 0; index < newChangeType.length && isSoft; index++) {
+                            for (let index = 0; index < newChangeType.length && isSoft; index++) {
                                 isSoft = newChangeType[index].isSoft;
                             }
-                            var changeTypes = newChangeType;
+                            changeTypes = newChangeType;
                         } else {
                             isSoft = newChangeType.isSoft;
-                            var changeTypes = [newChangeType];
+                            changeTypes = [newChangeType];
                         }
 
                         // Find last change with the same ids
                         var timeLimit = 10; // Timelimit on history append in seconds
-                        for (var index = this.historyLog.length - 1; index >= 0; index--) {
+                        for (let index = this.historyLog.length - 1; index >= 0; index--) {
                             // Check so if the changeState is not an created-object
                             if (this.historyLog[index].created != undefined) continue;
 
                             var sameIds = true;
                             if (stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
 
-                            for (var idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
+                            for (let idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
                                 if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
                             }
 
@@ -527,7 +528,7 @@ class StateMachine {
     scrubHistory(endIndex) {
         this.gotoInitialState();
 
-        for (var i = 0; i <= endIndex; i++) {
+        for (let i = 0; i <= endIndex; i++) {
             this.restoreState(this.historyLog[i]);
         }
 
@@ -570,7 +571,7 @@ class StateMachine {
 
         if (!Array.isArray(state.id)) state.id = [state.id];
 
-        for (var i = 0; i < state.id.length; i++) {
+        for (let i = 0; i < state.id.length; i++) {
             // Find object
             var object;
             if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
@@ -671,7 +672,7 @@ class StateMachine {
                 stopStateIndex = 0;
             }
 
-            for (var i = startStateIndex; i <= stopStateIndex; i++) {
+            for (let i = startStateIndex; i <= stopStateIndex; i++) {
                 self.restoreState(self.historyLog[i]);
 
                 if (settings.replay.delay != startDelay) {
@@ -799,6 +800,7 @@ const elementTypesNames = {
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
+    UMLRelation: "UMLRelation",
 }
 
 /**
@@ -829,11 +831,11 @@ const messageTypes = {
  */
 const attrState = {
     NORMAL: "normal",
+    PRIMARY: "primary",
     WEAK: "weakKey",
+    COMPUTED: "computed",
     MULTIPLE: "multiple",
     CANDIDATE: "candidate",
-    PRIMARY: "primary",
-    COMPUTED: "computed",
 };
 
 /**
@@ -1028,17 +1030,14 @@ const CIRCLE = iconCircleDirections(25);
 // Data and html building variables
 var service = [];
 var str = "";
-var defs = "";
 var container;
 
 // Interaction variables - unknown if all are needed
 var deltaX = 0, deltaY = 0, startX, startY;
-var startTop, startLeft;
 var sscrollx, sscrolly;
 var cwidth, cheight;
 var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
-var hasRecursion = false;
 var startWidth;
 var startHeight;
 var startNodeLeft = false;
@@ -1077,20 +1076,24 @@ var zoomfact = 1.0;
 var scrollx = 100;
 var scrolly = 100;
 var zoomOrigo = new Point(0, 0); // Zoom center coordinates relative to origo
-var camera = new Point(0, 0); // Relative to coordinate system origo
-var lastZoomPos = new Point(0, 0); // placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
-var lastMousePosCoords = new Point(0, 0); //placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom)
 var zoomAllowed = true; // To slow down zoom on touchpad.
 var lastZoomPos = new Point(0, 0); // placeholder for the previous zoom position relative to the screen (Screen position for previous zoom)
 var lastMousePosCoords = new Point(0, 0); // placeholder for the previous mouse coordinates relative to the diagram (Coordinates for the previous zoom)
-
+// We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
+// Zoom values for offsetting the mouse cursor positioning
+const cursorOffset = new Map([
+    [0.25, -15.01],
+    [0.5, -3],
+    [0.75, -0.775],
+    [1.25, 0.36],
+    [1.5, 0.555],
+    [2, 0.75],
+    [4, 0.9375],
+]);
 
 // Constants
-const elementwidth = 200;
-const elementheight = 50;
 const textheight = 18;
 const strokewidth = 2.0;
-const baseline = 10;
 const color = {
     WHITE: "#ffffff",
     BLACK: "#000000",
@@ -1123,20 +1126,9 @@ const MENU_COLORS = [
 ]
 const strokeColors = [color.GREY];
 
-// Zoom values for offsetting the mouse cursor positioning
-const zoom1_25 = 0.36;
-const zoom1_5 = 0.555;
-const zoom2 = 0.75;
-const zoom4 = 0.9375;
-const zoom0_75 = -0.775;
-const zoom0_5 = -3;
-const zoom0_25 = -15.01;
-
 var errorActive = false;
 
 // Arrow drawing stuff - diagram elements, diagram lines and labels 
-var lines = [];
-var elements = [];
 var lineLabelList = [];
 
 // Currently clicked object list
@@ -1146,11 +1138,10 @@ var contextLine = []; // Contains the currently selected line(s).
 var previousContextLine = [];
 var determinedLines = null; // Last calculated line(s) clicked.
 var deltaExceeded = false;
+const maxDeltaBeforeExceeded = 2;
 var targetElement = null;
 var targetElementDiv;
 var targetLabel = null;
-
-const maxDeltaBeforeExceeded = 2;
 
 // Currently hold down buttons
 var ctrlPressed = false;
@@ -1227,11 +1218,8 @@ var settings = {
 };
 
 // Demo data - read / write from service later on
-
-var diagramToLoad = "";
 var cid = "";
 var cvers = "";
-var diagramToLoadContent = "";
 
 var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
@@ -1255,7 +1243,6 @@ var ghostLine = null;
  * @see constructElementOfType() For creating new elements with default values.
  */
 var defaults = {
-
     EREntity: {
         name: "Entity",
         kind: "EREntity",
@@ -1267,18 +1254,22 @@ var defaults = {
         state: 'normal',
         attributes: ['-attribute'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 50,
     },
     ERRelation: {
         name: "Relation",
         kind: "ERRelation",
         fill: color.WHITE,
         stroke: color.BLACK,
-        width: 60,
-        height: 60,
+        width: 90,
+        height: 90,
         type: "ER",
         state: 'normal',
-        canChangeTo: Object.values(relationType)
+        canChangeTo: Object.values(relationType),
+        minWidth: 60,
+        minHeight: 60,
     },
     ERAttr: {
         name: "Attribute",
@@ -1288,10 +1279,19 @@ var defaults = {
         width: 90,
         height: 45,
         type: "ER",
-        state: 'normal'
+        state: 'normal',
+        minWidth: 90,
+        minHeight: 45,
     },
-    Ghost: {name: "Ghost", kind: "ERAttr", fill: color.WHITE, stroke: color.BLACK, width: 5, height: 5, type: "ER"},
-
+    Ghost: {
+        name: "Ghost",
+        kind: "ERAttr",
+        fill: color.WHITE,
+        stroke: color.BLACK,
+        width: 5,
+        height: 5,
+        type: "ER"
+    },
     UMLEntity: {
         name: "Class",
         kind: "UMLEntity",
@@ -1302,8 +1302,10 @@ var defaults = {
         type: "UML",
         attributes: ['-Attribute'],
         functions: ['+Function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
-    },     //<-- UML functionality
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
+    },
     UMLRelation: {
         name: "Inheritance",
         kind: "UMLRelation",
@@ -1312,20 +1314,24 @@ var defaults = {
         width: 60,
         height: 60,
         type: "UML",
-        canChangeTo: Object.values(relationType)
-    }, //<-- UML functionality
+        canChangeTo: Object.values(relationType),
+        minWidth: 60,
+        minHeight: 60,
+    },
     IEEntity: {
         name: "IEEntity",
         kind: "IEEntity",
         stroke: color.BLACK,
         fill: color.WHITE,
         width: 200,
-        height: 0,
+        height: 0, // Extra height when resizing larger than text.
         type: "IE",
         attributes: ['-Attribute'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
-    },     //<-- IE functionality
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
+    },
     IERelation: {
         name: "Inheritance",
         kind: "IERelation",
@@ -1334,21 +1340,24 @@ var defaults = {
         width: 50,
         height: 50,
         type: "IE",
-        canChangeTo: Object.values(relationType)
-    }, //<-- IE inheritence functionality
+        canChangeTo: Object.values(relationType),
+        minWidth: 50,
+        minHeight: 50,
+    }, 
     SDEntity: {
         name: "State",
         kind: "SDEntity",
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 200,
-        height: 50,
+        height: 0, // Extra height when resizing larger than text.
         type: "SD",
         attributes: ['do: func'],
         functions: ['+function'],
-        canChangeTo: ["UML", "ER", "IE", "SD"]
-    }, //<-- SD functionality
-
+        canChangeTo: ["UML", "ER", "IE", "SD"],
+        minWidth: 150,
+        minHeight: 0,
+    },
     UMLInitialState: {
         name: "UML Initial State",
         kind: "UMLInitialState",
@@ -1357,8 +1366,10 @@ var defaults = {
         width: 60,
         height: 60,
         type: "SD",
-        canChangeTo: null
-    }, // UML Initial state.
+        canChangeTo: null,
+        minWidth: 60,
+        minHeight: 60,
+    },
     UMLFinalState: {
         name: "UML Final State",
         kind: "UMLFinalState",
@@ -1367,8 +1378,10 @@ var defaults = {
         width: 60,
         height: 60,
         type: "SD",
-        canChangeTo: null
-    }, // UML Final state.
+        canChangeTo: null,
+        minWidth: 60,
+        minHeight: 60,
+    },
     UMLSuperState: {
         name: "UML Super State",
         kind: "UMLSuperState",
@@ -1377,8 +1390,10 @@ var defaults = {
         width: 500,
         height: 500,
         type: "SD",
-        canChangeTo: null
-    },  // UML Super State.
+        canChangeTo: null,
+        minWidth: 200,
+        minHeight: 150,
+    }, 
     sequenceActor: {
         name: "name",
         kind: "sequenceActor",
@@ -1387,9 +1402,10 @@ var defaults = {
         width: 100,
         height: 500,
         type: "SE",
-        //actorOrObject: "actor",
-        canChangeTo: null
-    }, // sequence actor
+        canChangeTo: null,
+        minWidth: 100,
+        minHeight: 100,
+    },
     sequenceObject: {
         name: "name",
         kind: "sequenceObject",
@@ -1398,9 +1414,10 @@ var defaults = {
         width: 100,
         height: 500,
         type: "SE",
-        //actorOrObject: "object",
-        canChangeTo: null
-    }, // sequence object
+        canChangeTo: null,
+        minWidth: 100,
+        minHeight: 50,
+    },
     sequenceActivation: {
         name: "Activation",
         kind: "sequenceActivation",
@@ -1409,8 +1426,10 @@ var defaults = {
         width: 30,
         height: 100,
         type: "SE",
-        canChangeTo: null
-    }, // Sequence Activation.
+        canChangeTo: null,
+        minWidth: 30,
+        minHeight: 50,
+    },
     sequenceLoopOrAlt: {
         kind: "sequenceLoopOrAlt",
         fill: color.WHITE,
@@ -1418,11 +1437,12 @@ var defaults = {
         width: 750,
         height: 300,
         type: "SE",
-        alternatives: ["alternative1", "alternative2", "alternative3"],
+        alternatives: ["alternative1"],
         altOrLoop: "Alt",
-        canChangeTo: null
-    }, // Sequence Loop or Alternative.
-
+        canChangeTo: null,
+        minWidth: 150,
+        minHeight: 50,
+    }, 
     note: {
         name: "Note",
         kind: "note",
@@ -1432,10 +1452,13 @@ var defaults = {
         height: 50,
         type: "NOTE",
         attributes: ['Note'],
-    },  // Note.
+        minWidth: 150,
+        minHeight: 50,
+    },
 }
 
 var defaultLine = {kind: "Normal"};
+
 //#endregion ===================================================================================
 //#region ================================ INIT AND SETUP ======================================
 
@@ -1450,10 +1473,6 @@ window.addEventListener("DOMContentLoaded", () => {
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
  */
-
-var allLinesFromEntiAndRela = [];
-var allLinesFromAttributes = [];
-var allLinesBetweenAttributesToEntiAndRel = [];
 
 // Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
 var countUsedAttributes = 0;
@@ -1777,7 +1796,7 @@ document.addEventListener('keyup', function (e) {
         }
         return;
     }
-    if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) {toggleStepBack();};
+    if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) toggleStepBack();
     if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
     if (isKeybindValid(e, keybinds.ESCAPE)) {
         escPressed = false; 
@@ -2231,7 +2250,7 @@ function mouseMode_onMouseUp(event) {
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
  */
-function tup(event) {
+function tup() {
     mouseButtonDown = false;
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
@@ -2435,6 +2454,7 @@ function getLinesFromBackLayer() {
  * @param {Number} mouseY
  */
 function determineLineSelect(mouseX, mouseY) {
+    let currentLineSegment;
     var allLines = getLinesFromBackLayer();
     var bLayerLineIDs = []
 
@@ -2457,7 +2477,7 @@ function determineLineSelect(mouseX, mouseY) {
         radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
     }
 
-    for (var i = 0; i < allLines.length; i++) {
+    for (let i = 0; i < allLines.length; i++) {
         // Copy the IDs.
         bLayerLineIDs[i] = allLines[i].id;
 
@@ -2471,12 +2491,12 @@ function determineLineSelect(mouseX, mouseY) {
 
             var points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
-            for (var j = 0; j < points.length - 1; j++) {
+            for (let j = 0; j < points.length - 1; j++) {
                 currentLineSegment = {
-                    x1: points[j].split(',')[0],
-                    x2: points[j + 1].split(',')[0],
-                    y1: points[j].split(',')[1],
-                    y2: points[j + 1].split(',')[1]
+                    x1: Number(points[j].split(',')[0]),
+                    x2: Number(points[j + 1].split(',')[0]),
+                    y1: Number(points[j].split(',')[1]),
+                    y2: Number(points[j + 1].split(',')[1])
                 }
                 // Used later to make sure the current mouse-position is in the span of a line.
                 highestX = Math.max(currentLineSegment.x1, currentLineSegment.x2);
@@ -2675,8 +2695,8 @@ function mmoving(event) {
                     y: data[findIndex(data, targetElement.id)].y
                 }
                 var targetPos = {
-                    x: 1 * targetElementDiv.style.left.substr(0, targetElementDiv.style.left.length - 2),
-                    y: 1 * targetElementDiv.style.top.substr(0, targetElementDiv.style.top.length - 2)
+                    x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
+                    y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
                 };
                 targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
                 targetDelta = {
@@ -2700,29 +2720,16 @@ function mmoving(event) {
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
-            var minWidth = 20; // Declare the minimal with of an object
-            var minHeight = 50; // Declare the minimal height of an object
-
-            // Sets different min-values for ERRelation
-            if (elementData.kind === "ERRelation") {
-                minHeight = 60;
-                minWidth = 60; 
-            }
+            var minWidth = elementData.minWidth; // Declare the minimal with of an object
+            var minHeight = elementData.minHeight; // Declare the minimal height of an object
 
             deltaX = startX - event.clientX;
+            deltaY = startY - event.clientY;
 
-            if (elementData.kind == "UMLEntity" || elementData.kind == "IEEntity") { // Declare the minimal height of an object
-                minHeight = 0;
-            }
-            if (elementData.kind === "SDEntity") {
-                deltaY = (startY - event.clientY) / 2;
-            } else {
-                deltaY = startY - event.clientY;
-            }
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var tmp = elementData.width;
+                let tmp = elementData.width;
                 elementData.width = (startWidth + (deltaX / zoomfact));
 
                 // Deduct the new width, giving us the total change
@@ -2738,7 +2745,7 @@ function mmoving(event) {
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var tmp = elementData.width;
+                let tmp = elementData.width;
                 elementData.width = (startWidth - (deltaX / zoomfact));
 
                 // Remove the new width, giving us the total change
@@ -2748,7 +2755,7 @@ function mmoving(event) {
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
-                var tmp = elementData.height;
+                let tmp = elementData.height;
                 elementData.height = (startHeight - (deltaY / zoomfact));
 
                 // Deduct the new height, giving us the total change
@@ -2773,7 +2780,7 @@ function mmoving(event) {
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height
-                var tmp = elementData.height;
+                let tmp = elementData.height;
                 elementData.height = (startHeight + (deltaY / zoomfact));
 
                 // Deduct the new height, giving us the total change
@@ -2842,16 +2849,15 @@ function makeRandomID() {
     var characters = 'ABCDEF0123456789';
     var charactersLength = characters.length;
     while (true) {
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
             str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
-
-        if (settings.misc.randomidArray === undefined || settings.misc.randomidArray.length == 0) { //always add first id
+        if (!settings.misc.randomidArray) { //always add first id
             settings.misc.randomidArray.push(str);
             return str;
         } else {
-            var check = settings.misc.randomidArray.includes(str); //if check is true the id already exists
-            if (check == true) {
+            //if check is true the id already exists
+            if (settings.misc.randomidArray.includes(str)) {
                 str = "";
             } else {
                 settings.misc.randomidArray.push(str);
@@ -2868,7 +2874,7 @@ function makeRandomID() {
  * @returns {Number} Index for the searched item OR -1 for a miss.
  */
 function findIndex(arr, id) {
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         if (arr[i].id == id) return i;
     }
     return -1;
@@ -2904,7 +2910,7 @@ function removeElements(elementArray, stateMachineShouldSave = true) {
     var linesToRemove = [];
     var elementsToRemove = [];
 
-    for (var i = 0; i < elementArray.length; i++) { // Find VALID items to remove
+    for (let i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function (line) {
             return line.fromID == elementArray[i].id || line.toID == elementArray[i].id;
         }));
@@ -2942,14 +2948,14 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     var anyRemoved = false;
 
     // Removes from the two arrays that keep track of the attributes connections. 
-    for (var i = 0; i < linesArray.length; i++) {
-        for (j = 0; j < allAttrToEntityRelations.length; j++) {
+    for (let i = 0; i < linesArray.length; i++) {
+        for (let j = 0; j < allAttrToEntityRelations.length; j++) {
             if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
                 allAttrToEntityRelations.splice(j, 1);
                 countUsedAttributes--;
             }
         }
-        for (k = 0; k < attrViaAttrToEnt.length; k++) {
+        for (let k = 0; k < attrViaAttrToEnt.length; k++) {
             if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
                 attrViaAttrToEnt.splice(k, 1);
                 attrViaAttrCounter--;
@@ -3055,7 +3061,7 @@ function changeState() {
         //If not attribute, also save the current type and check if kind also should be updated
         if (element.kind != elementTypesNames.ERAttr) {
             if (oldType != newType) {
-                var newKind = element.kind;
+                let newKind = element.kind;
                 newKind = newKind.replace(oldType, newType);
                 element.kind = newKind;
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3065,18 +3071,18 @@ function changeState() {
                 stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
             }
         }
-        var property = document.getElementById("propertySelect").value;
+        let property = document.getElementById("propertySelect").value;
         element.state = property;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (element.type == entityType.UML) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.UMLEntity) {
-            var property = document.getElementById("propertySelect").value;
+            let property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3089,12 +3095,12 @@ function changeState() {
     } else if (element.type == entityType.IE) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
         if (element.kind != elementTypesNames.IEEntity) {
-            var property = document.getElementById("propertySelect").value;
+            let property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3105,7 +3111,7 @@ function changeState() {
         }
     } else if (element.type == entityType.SD) {
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3116,7 +3122,7 @@ function changeState() {
         }
     } else if (element.type == entityType.SE) {
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3127,7 +3133,7 @@ function changeState() {
         }
     } else if (element.type == 'NOTE') {
         if (oldType != newType) {
-            var newKind = element.kind;
+            let newKind = element.kind;
             newKind = newKind.replace(oldType, newType);
             element.kind = newKind;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -3149,8 +3155,9 @@ function saveProperties() {
     const children = propSet.children;
 
     var propsChanged = {};
+    let formatArr;
 
-    for (var index = 0; index < children.length; index++) {
+    for (let index = 0; index < children.length; index++) {
         const child = children[index];
         const propName = child.id.split(`_`)[1];
         switch (propName) {
@@ -3166,8 +3173,8 @@ function saveProperties() {
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
-                var formatArr = [];
-                for (var i = 0; i < arrElementAttr.length; i++) {
+                formatArr = [];
+                for (let i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         formatArr.push(arrElementAttr[i]);
                     }
@@ -3182,8 +3189,8 @@ function saveProperties() {
                 var elementFunc = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
-                var formatArr = [];
-                for (var i = 0; i < arrElementFunc.length; i++) {
+                formatArr = [];
+                for (let i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
                         formatArr.push(arrElementFunc[i]);
                     }
@@ -3307,18 +3314,6 @@ function changeLineProperties() {
             lineType.value = lineType.value.trim();
             line.innerType = lineType.value
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {innerType: lineType.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // Start label, near side
-        if (line.startLabel != startLabel.value) {
-            startLabel.value = startLabel.value.trim();
-            line.startLabel = startLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startLabel: startLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        // End label, opposite side
-        if (line.endLabel != endLabel.value) {
-            endLabel.value = endLabel.value.trim();
-            line.endLabel = endLabel.value
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endLabel: endLabel.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
@@ -3560,25 +3555,11 @@ function clearContextLine() {
  */
 function screenToDiagramCoordinates(mouseX, mouseY) {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
-    // These are the constant values that the expression should spit out anyway. If you add more zoom levels please do not come to us.
-    // We're tired.
+    let zoom = cursorOffset.get(zoomfact) ?? 0;
 
-    // We found out that the relation between 0.125 -> 4 and 0.36->-64 looks like an X^2 equation.
-    var zoomX = 0;
-
-    // ZOOM IN
-    if (zoomfact == 1.25) zoomX = zoom1_25;
-    if (zoomfact == 1.5) zoomX = zoom1_5;
-    if (zoomfact == 2) zoomX = zoom2;
-    if (zoomfact == 4) zoomX = zoom4;
-
-    // ZOOM OUT
-    if (zoomfact == 0.75) zoomX = zoom0_75;
-    if (zoomfact == 0.5) zoomX = zoom0_5;
-    if (zoomfact == 0.25) zoomX = zoom0_25;
-
-    return new Point(Math.round((mouseX / zoomfact - scrollx) + zoomX * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
-        Math.round((mouseY / zoomfact - scrolly) + zoomX * scrolly + zoomOrigo.y)
+    return new Point(
+        Math.round(mouseX / zoomfact - scrollx + zoom * scrollx + 2 + zoomOrigo.x), // the 2 makes mouse hover over container
+        Math.round(mouseY / zoomfact - scrolly + zoom * scrolly + zoomOrigo.y)
     );
 }
 
@@ -3718,40 +3699,17 @@ function setPos(objects, x, y) {
     updatepos(0, 0);
 }
 
-function findUMLEntityFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLEntity).kind) {
-        return 1;
+function isLineConnectedTo(line, kind) {
+    let result = null;
+    switch (kind) {
+        case data[findIndex(data, line.fromID)].kind:
+            result = -1;
+            break;
+        case data[findIndex(data, line.toID)].kind:
+            result = 1;
+            break;
     }
-    return null;
-}
-
-function findUMLInheritanceFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.UMLRelation).kind) {
-        return 1;
-    }
-    return null;
-}
-
-function findEntityFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.EREntity).kind) {
-        return 1;
-    }
-    return null;
-}
-
-function findAttributeFromLine(lineObj) {
-    if (data[findIndex(data, lineObj.fromID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
-        return -1;
-    } else if (data[findIndex(data, lineObj.toID)].kind == constructElementOfType(elementTypes.ERAttr).kind) {
-        return 1;
-    }
-    return null;
+    return result;
 }
 
 /**
@@ -3774,25 +3732,25 @@ function entityIsOverlapping(id, x, y) {
         var elementHeight = element.height;
 
         // Change height if element is an UML Entity
-        for (var i = 0; i < UMLHeight.length; i++) {
+        for (let i = 0; i < UMLHeight.length; i++) {
             if (element.id == UMLHeight[i].id) {
                 elementHeight = UMLHeight[i].height;
             }
         }
         // Change height if element is an IE Entity
-        for (var i = 0; i < IEHeight.length; i++) {
+        for (let i = 0; i < IEHeight.length; i++) {
             if (element.id == IEHeight[i].id) {
                 elementHeight = IEHeight[i].height;
             }
         }
         // Change height if element is an SD Entity
-        for (var i = 0; i < SDHeight.length; i++) {
+        for (let i = 0; i < SDHeight.length; i++) {
             if (element.id == SDHeight[i].id) {
                 elementHeight = SDHeight[i].height;
             }
         }
 
-        for (var i = 0; i < NOTEHeight.length; i++) {
+        for (let i = 0; i < NOTEHeight.length; i++) {
             if (element.id == NOTEHeight[i].id) {
                 elementHeight = NOTEHeight[i].height;
             }
@@ -3800,13 +3758,13 @@ function entityIsOverlapping(id, x, y) {
         targetX = x //(x / zoomfact);
         targetY = y//(y / zoomfact);
 
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i].id === id) continue
 
             // Doesn't compare if the other element is moving
             var compare = true;
             if (context.length > 1) {
-                for (var j = 0; j < context.length; j++) {
+                for (let j = 0; j < context.length; j++) {
                     if (data[i].id == context[j].id && !data[i].isLocked) {
                         compare = false;
                         break;
@@ -3819,19 +3777,19 @@ function entityIsOverlapping(id, x, y) {
                 var compY2 = data[i].y + data[i].height;
 
                 // Change height if element is an UML Entity
-                for (var j = 0; j < UMLHeight.length; j++) {
+                for (let j = 0; j < UMLHeight.length; j++) {
                     if (data[i].id == UMLHeight[j].id) {
                         compY2 = data[i].y + UMLHeight[j].height;
                     }
                 }
                 // Change height if element is an IE Entity
-                for (var j = 0; j < IEHeight.length; j++) {
+                for (let j = 0; j < IEHeight.length; j++) {
                     if (data[i].id == IEHeight[j].id) {
                         compY2 = data[i].y + IEHeight[j].height;
                     }
                 }
                 // Change height if element is an SD Entity
-                for (var j = 0; j < SDHeight.length; j++) {
+                for (let j = 0; j < SDHeight.length; j++) {
                     if (data[i].id == SDHeight[j].id) {
                         compY2 = data[i].y + SDHeight[j].height;
                     }
@@ -3841,7 +3799,10 @@ function entityIsOverlapping(id, x, y) {
                     isOverlapping = false;
                 }
                 //if its overlapping with a sequence actor, just break since that is allowed.
-                if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject)) {
+                else if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || 
+                    (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) ||
+                    (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) 
+                {
                     isOverlapping = false;
                 } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
                     (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
@@ -3959,7 +3920,7 @@ function onMouseModeEnabled() {
 function onMouseModeDisabled() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
+    for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
 
@@ -4015,7 +3976,7 @@ function getLinesInsideCoordinateBox(selectionRect) {
     var allLines = document.getElementById("svgbacklayer").children;
     var tempLines = [];
     var bLayerLineIDs = [];
-    for (var i = 0; i < allLines.length; i++) {
+    for (let i = 0; i < allLines.length; i++) {
         if (lineIsInsideRect(selectionRect, allLines[i])) {
             bLayerLineIDs[i] = allLines[i].id;
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
@@ -4033,22 +3994,22 @@ function getLinesInsideCoordinateBox(selectionRect) {
  * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
 function lineIsInsideRect(selectionRect, line) {
-    var lineCoord1 = screenToDiagramCoordinates(
+    let lineCoord1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
     );
-    var lineCoord2 = screenToDiagramCoordinates(
+    let lineCoord2 = screenToDiagramCoordinates(
         line.getAttribute("x2"),
         line.getAttribute("y2")
     );
-    var lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
-    var lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
-    var lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
-    var lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
-    var leftX = selectionRect.x;
-    var topY = selectionRect.y;
-    var rightX = selectionRect.x + selectionRect.width;
-    var bottomY = selectionRect.y + selectionRect.height;
+    let lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
+    let lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
+    let lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
+    let lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
+    let leftX = selectionRect.x;
+    let topY = selectionRect.y;
+    let rightX = selectionRect.x + selectionRect.width;
+    let bottomY = selectionRect.y + selectionRect.height;
     return leftX <= lineLeftX && topY <= lineTopY && rightX >= lineRightX && bottomY >= lineBottomY;
     /* Code used to check for a point
     // Return true if any of the end points of the line are inside of the rect
@@ -4173,15 +4134,15 @@ function boxSelect_Update(mouseX, mouseY) {
             bottomRight.y = coords.n1.y;
         }
 
-        var rect = getRectFromPoints(topLeft, bottomRight);
+        let rect = getRectFromPoints(topLeft, bottomRight);
 
         if (ctrlPressed) {
-            var markedEntities = getElementsInsideCoordinateBox(rect);
+            let markedEntities = getElementsInsideCoordinateBox(rect);
 
             // Remove entity from markedEntities if it was already marked.
             markedEntities = markedEntities.filter(entity => !previousContext.includes(entity));
 
-            var markedLines = getLinesInsideCoordinateBox(rect);
+            let markedLines = getLinesInsideCoordinateBox(rect);
             markedLines = markedLines.filter(line => !previousContextLine.includes(line));
 
             clearContext();
@@ -4192,11 +4153,11 @@ function boxSelect_Update(mouseX, mouseY) {
             contextLine = contextLine.concat(markedLines);
             contextLine = contextLine.concat(previousContextLine);
         } else if (altPressed) {
-            var markedEntities = getElementsInsideCoordinateBox(rect);
+            let markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context if the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
 
-            var markedLines = getLinesInsideCoordinateBox(rect);
+            let markedLines = getLinesInsideCoordinateBox(rect);
             previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
 
             context = [];
@@ -4413,13 +4374,13 @@ function toggleEntityLocked() {
     var ids = []
     var lockbtn = document.getElementById("lockbtn");
     var locked = true;
-    for (var i = 0; i < context.length; i++) {
+    for (let i = 0; i < context.length; i++) {
         if (!context[i].isLocked) {
             locked = false;
             break;
         }
     }
-    for (var i = 0; i < context.length; i++) {
+    for (let i = 0; i < context.length; i++) {
         if (!locked) {
             context[i].isLocked = true;
             lockbtn.value = "Unlock";
@@ -4622,7 +4583,6 @@ function setReplayDelay(value) {
  */
 function setReplayRunning(state) {
     var button = document.getElementById("diagram-replay-switch");
-    var delaySlider = document.getElementById("replay-time");
     var stateSlider = document.getElementById("replay-range");
 
     if (state) {
@@ -4640,7 +4600,7 @@ function setReplayRunning(state) {
 function toggleErTable() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
+    for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
     // Add the diagramActive to current diagramIcon
@@ -4667,7 +4627,7 @@ function toggleErTable() {
 function toggleTestCase() {
     // Remove all "active" classes in nav bar
     var navButtons = document.getElementsByClassName("toolbarMode");
-    for (var i = 0; i < navButtons.length; i++) {
+    for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
     // Add the diagramActive to current diagramIcon
@@ -4717,7 +4677,7 @@ function generateErTableString() {
     var ERRelationData = [];
 
     // Sort the data[] elements into entity-, attr- and relationList
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
 
         if (data[i].kind == elementTypesNames.EREntity) {
             entityList.push(data[i]);
@@ -4728,13 +4688,13 @@ function generateErTableString() {
         }
     }
     //For each relation in relationList
-    for (var i = 0; i < relationList.length; i++) {
+    for (let i = 0; i < relationList.length; i++) {
         //List containing relation-element and connected entities
         var currentRelationList = [];
         currentRelationList.push(relationList[i]);
         //Sort all lines that are connected to the current relation into lineList[]
-        var lineList = [];
-        for (var j = 0; j < lines.length; j++) {
+        let lineList = [];
+        for (let j = 0; j < lines.length; j++) {
             //Get connected line from element
             if (relationList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
@@ -4744,8 +4704,8 @@ function generateErTableString() {
         }
 
         //Identify every connected entity to relations
-        for (var j = 0; j < lineList.length; j++) {
-            for (var k = 0; k < entityList.length; k++) {
+        for (let j = 0; j < lineList.length; j++) {
+            for (let k = 0; k < entityList.length; k++) {
                 if (entityList[k].id == lineList[j].fromID || entityList[k].id == lineList[j].toID) {
                     //Push in entity, line cardinality and kind
                     currentRelationList.push([entityList[k], lineList[j].cardinality, lineList[j].kind]);
@@ -4756,11 +4716,11 @@ function generateErTableString() {
         ERRelationData.push(currentRelationList);
     }
     //For each entity in entityList
-    for (var i = 0; i < entityList.length; i++) {
+    for (let i = 0; i < entityList.length; i++) {
         var currentRow = [entityList[i]];
         //Sort all lines that are connected to the current entity into lineList[]
-        var lineList = [];
-        for (var j = 0; j < lines.length; j++) {
+        let lineList = [];
+        for (let j = 0; j < lines.length; j++) {
             if (entityList[i].id == lines[j].fromID) {
                 lineList.push(lines[j]);
             } else if (entityList[i].id == lines[j].toID) {
@@ -4770,8 +4730,8 @@ function generateErTableString() {
         // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
         var currentEntityAttrList = [];
         var idList = [];
-        for (var j = 0; j < lineList.length; j++) {
-            for (var h = 0; h < attrList.length; h++) {
+        for (let j = 0; j < lineList.length; j++) {
+            for (let h = 0; h < attrList.length; h++) {
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
                     currentEntityAttrList.push(attrList[h]);
                     currentRow.push(attrList[h]);
@@ -4781,10 +4741,10 @@ function generateErTableString() {
         }
         var parentAttribeList = []; //list of parent attributes
 
-        for (var j = 0; j < currentEntityAttrList.length; j++) {
+        for (let j = 0; j < currentEntityAttrList.length; j++) {
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
             var attrLineList = [];
-            for (var h = 0; h < lines.length; h++) {
+            for (let h = 0; h < lines.length; h++) {
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
                 if ((currentEntityAttrList[j].id == lines[h].toID ||
                         currentEntityAttrList[j].id == lines[h].fromID) &&
@@ -4795,13 +4755,13 @@ function generateErTableString() {
             }
 
             //Compare each line in attrLineList to each attribute.
-            for (var h = 0; h < attrLineList.length; h++) {
-                for (var k = 0; k < attrList.length; k++) {
+            for (let h = 0; h < attrLineList.length; h++) {
+                for (let k = 0; k < attrList.length; k++) {
                     //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
                     if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
                         //Iterate over saved IDs
                         var hits = 0;
-                        for (var p = 0; p < idList.length; p++) {
+                        for (let p = 0; p < idList.length; p++) {
                             //If the ID of the attribute already exists, then increase hits and break the loop.
                             if (idList[p] == attrList[k].id) {
                                 hits++;
@@ -4839,7 +4799,7 @@ function generateErTableString() {
     var weakEntityList = formatERWeakEntities(ERAttributeData);
 
     // Iterate over every strong entity
-    for (var i = 0; i < strongEntityList.length; i++) {
+    for (let i = 0; i < strongEntityList.length; i++) {
         var visitedList = []; // A list which contains entities that has been vistited in this codeblock
         var queue = []; // Queue for each entity's relation
         queue.push(strongEntityList[i][0]); // Push in the current entity
@@ -4847,12 +4807,12 @@ function generateErTableString() {
         while (queue.length > 0) {
             var current = queue.shift(); // Get current entity by removing first entity in queue
             // For current entity, iterate through every relation
-            for (var j = 0; j < ERRelationData.length; j++) {
+            for (let j = 0; j < ERRelationData.length; j++) {
                 // Check if relation is valid, (relation, entity1, entity2)
                 if (ERRelationData[j].length >= 3) {
                     if (ERRelationData[j][0].state == 'weak') {
                         var visited = false;    // Boolean representing if the current entity has already been visited
-                        for (var v = 0; v < visitedList.length; v++) {
+                        for (let v = 0; v < visitedList.length; v++) {
                             if (current.id == visitedList[v].id) {
                                 visited = true;
                                 break;
@@ -4865,16 +4825,16 @@ function generateErTableString() {
                                 // Check if entity is in relation and check its cardinality
                                 if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
                                     // Iterate through weak entities and find its ID
-                                    for (var k = 0; k < weakEntityList.length; k++) {
+                                    for (let k = 0; k < weakEntityList.length; k++) {
                                         // ID match
                                         if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
                                             // Iterate through strong entities and find its ID
-                                            for (var l = 0; l < strongEntityList.length; l++) {
+                                            for (let l = 0; l < strongEntityList.length; l++) {
                                                 // ID match
                                                 if (strongEntityList[l][0].id == current.id) {
                                                     var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
                                                     // Iterate through key list
-                                                    for (var m = 0; m < strongEntityList[l][1].length; m++) {
+                                                    for (let m = 0; m < strongEntityList[l][1].length; m++) {
                                                         tempList.push(strongEntityList[l][1][m]) // Push in key
                                                     }
                                                     weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4887,15 +4847,15 @@ function generateErTableString() {
                                 // Check if entity is in relation and check its cardinality
                                 else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
                                     // Iterate through weak entities and find its ID
-                                    for (var k = 0; k < weakEntityList.length; k++) {
+                                    for (let k = 0; k < weakEntityList.length; k++) {
                                         // ID match
                                         if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
                                             // Iterate through strong entities and find its ID
-                                            for (var l = 0; l < strongEntityList.length; l++) {
+                                            for (let l = 0; l < strongEntityList.length; l++) {
                                                 // ID match
                                                 if (strongEntityList[l][0].id == current.id) {
                                                     var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
-                                                    for (var m = 0; m < strongEntityList[l][1].length; m++) {
+                                                    for (let m = 0; m < strongEntityList[l][1].length; m++) {
                                                         tempList.push(strongEntityList[l][1][m]) // Push in key
                                                     }
                                                     weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4910,8 +4870,8 @@ function generateErTableString() {
                             else if (current.state == 'weak') {
                                 // Check if entity is in relation and check its cardinality
                                 if (current.id == ERRelationData[j][1][0].id && ERRelationData[j][1][1] == 'ONE') {
-                                    var exists = false; // Boolean representing if the other entity has already been visited
-                                    for (var v = 0; v < visitedList.length; v++) {
+                                    let exists = false; // Boolean representing if the other entity has already been visited
+                                    for (let v = 0; v < visitedList.length; v++) {
                                         if (ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
                                             break;
@@ -4920,15 +4880,15 @@ function generateErTableString() {
                                     // If not already visited
                                     if (!exists) {
                                         // Iterate through weak entities and find its ID. (Entity that should have keys)
-                                        for (var k = 0; k < weakEntityList.length; k++) {
+                                        for (let k = 0; k < weakEntityList.length; k++) {
                                             // ID match
                                             if (weakEntityList[k][0].id == ERRelationData[j][2][0].id) {
                                                 // Iterate through weak entities and find its ID (Entity that should give keys)
-                                                for (var l = 0; l < weakEntityList.length; l++) {
+                                                for (let l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
                                                         var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
-                                                        for (var m = 0; m < weakEntityList[l][1].length; m++) {
+                                                        for (let m = 0; m < weakEntityList[l][1].length; m++) {
                                                             tempList.push(weakEntityList[l][1][m]) // Push in key
                                                         }
                                                         weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4941,8 +4901,8 @@ function generateErTableString() {
                                 }
                                 // Check if entity is in relation and check its cardinality
                                 else if (current.id == ERRelationData[j][2][0].id && ERRelationData[j][2][1] == 'ONE') {
-                                    var exists = false; // Boolean representing if the other entity has already been visited
-                                    for (var v = 0; v < visitedList.length; v++) {
+                                    let exists = false; // Boolean representing if the other entity has already been visited
+                                    for (let v = 0; v < visitedList.length; v++) {
                                         if (ERRelationData[j][1][0].id == visitedList[v].id) {//|| ERRelationData[j][2][0].id == visitedList[v].id) {
                                             exists = true;
                                             break;
@@ -4951,15 +4911,15 @@ function generateErTableString() {
                                     // If not already visited
                                     if (!exists) {
                                         // Iterate through weak entities and find its ID. (Entity that should have keys)
-                                        for (var k = 0; k < weakEntityList.length; k++) {
+                                        for (let k = 0; k < weakEntityList.length; k++) {
                                             // ID match
                                             if (weakEntityList[k][0].id == ERRelationData[j][1][0].id) {
                                                 // Iterate through weak entities and find its ID (Entity that should give keys)
-                                                for (var l = 0; l < weakEntityList.length; l++) {
+                                                for (let l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
                                                         var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
-                                                        for (var m = 0; m < weakEntityList[i][1].length; m++) {
+                                                        for (let m = 0; m < weakEntityList[i][1].length; m++) {
                                                             tempList.push(weakEntityList[l][1][m]); // Push in key
                                                         }
                                                         weakEntityList[k][1].push(tempList); // Add list to the weak entities.
@@ -4980,12 +4940,12 @@ function generateErTableString() {
     }
     var tempWeakList = [];
     // Update the weak entity list to accomodate the new list of weak keys
-    for (var i = 0; i < weakEntityList.length; i++) {
+    for (let i = 0; i < weakEntityList.length; i++) {
         var row = []; // New formatted weak entity row
         row.push(weakEntityList[i][0]); // Push in weak entity, as usual, [0] is entity
         row.push([]); // Push in empty list to contain the keys
         // In the weak entity's key list, iterate and check if current is an array
-        for (var j = 0; j < weakEntityList[i][1].length; j++) {
+        for (let j = 0; j < weakEntityList[i][1].length; j++) {
             if (Array.isArray(weakEntityList[i][1][j])) {
                 var strongWeakKEy = []; // List that will have the the entities and strong/weak keys required
                 var current = weakEntityList[i][1][j]; // Select the first list for the current entity
@@ -4997,13 +4957,13 @@ function generateErTableString() {
                     // Check if algorithm should go deeper, if the last element is an array, go deeper 
                     if ((temp[temp.length - 1].length > 0)) {
                         //Iterate through the list, push every attribute
-                        for (var k = 0; k < temp.length - 1; k++) {
+                        for (let k = 0; k < temp.length - 1; k++) {
                             strongWeakKEy.push(temp[k]); // Push in entity and / or keys
                         }
                         queue.push(temp[temp.length - 1]); // Push in list into queue
                     } else {
                         //Iterate through the list, push every attribute
-                        for (var k = 0; k < temp.length; k++) {
+                        for (let k = 0; k < temp.length; k++) {
                             strongWeakKEy.push(temp[k]); // Push in entity and / or keys
                         }
                     }
@@ -5016,7 +4976,7 @@ function generateErTableString() {
             }
         }
         //Iterate through the entity's list and push in normal and multivalued attributes
-        for (var j = 0; j < weakEntityList[i].length; j++) {
+        for (let j = 0; j < weakEntityList[i].length; j++) {
             // If not array, check if normal or multivalued
             if (!Array.isArray(weakEntityList[i][j])) {
                 if (weakEntityList[i][j].state == 'normal') {
@@ -5033,7 +4993,7 @@ function generateErTableString() {
     var allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
 
     //Iterate through all relations
-    for (var i = 0; i < ERRelationData.length; i++) {
+    for (let i = 0; i < ERRelationData.length; i++) {
         if (ERRelationData[i].length >= 3) {
             var foreign = []; // Array with entities foreign keys
             // Case 1, two strong entities in relation
@@ -5044,8 +5004,8 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        let exist = false; // If entity already exist in ERForeignData
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5056,18 +5016,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5078,8 +5038,8 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        let exist = false; // If entity already exist in ERForeignData
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 exist = true;
@@ -5090,18 +5050,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push(ERRelationData[i][1][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5112,8 +5072,8 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        let exist = false; // If entity already exist in ERForeignData
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5124,18 +5084,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5144,22 +5104,22 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {//MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
 
                                 }
@@ -5167,11 +5127,11 @@ function generateErTableString() {
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5186,8 +5146,8 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        let exist = false; // If entity already exist in ERForeignData
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5198,18 +5158,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5222,8 +5182,8 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            let exist = false; // If entity already exist in ERForeignData
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                     exist = true;
@@ -5234,18 +5194,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5259,8 +5219,8 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            let exist = false; // If entity already exist in ERForeignData
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                     exist = true;
@@ -5271,18 +5231,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push(ERRelationData[i][2][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5292,33 +5252,33 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') { // MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5333,8 +5293,8 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        let exist = false; // If entity already exist in ERForeignData
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5345,18 +5305,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5369,8 +5329,8 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            let exist = false; // If entity already exist in ERForeignData
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                     exist = true;
@@ -5381,18 +5341,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5406,8 +5366,8 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            let exist = false; // If entity already exist in ERForeignData
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                     exist = true;
@@ -5418,18 +5378,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push(ERRelationData[i][2][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5439,22 +5399,22 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {//MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
 
                                 }
@@ -5462,11 +5422,11 @@ function generateErTableString() {
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5481,8 +5441,8 @@ function generateErTableString() {
                     if (ERForeignData.length < 1) {
                         ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                     } else {
-                        var exist = false; // If entity already exist in ERForeignData
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        let exist = false; // If entity already exist in ERForeignData
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 exist = true;
@@ -5493,18 +5453,18 @@ function generateErTableString() {
                         }
                     }
                     //Find current entity and iterate through its attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         //Second ONE-side entity
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             foreign.push(ERRelationData[i][2][0]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign.push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find current entity and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //First ONE-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                             ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5517,8 +5477,8 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][2][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            let exist = false; // If entity already exist in ERForeignData
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                     exist = true;
@@ -5529,18 +5489,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                                 foreign.push(ERRelationData[i][1][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][2][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5554,8 +5514,8 @@ function generateErTableString() {
                         if (ERForeignData.length < 1) {
                             ERForeignData.push([ERRelationData[i][1][0]]); // Push in first ONE-side entity
                         } else {
-                            var exist = false; // If entity already exist in ERForeignData
-                            for (var j = 0; j < ERForeignData.length; j++) {
+                            let exist = false; // If entity already exist in ERForeignData
+                            for (let j = 0; j < ERForeignData.length; j++) {
                                 //First ONE-side entity
                                 if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                     exist = true;
@@ -5566,18 +5526,18 @@ function generateErTableString() {
                             }
                         }
                         //Find current entity and iterate through its attributes
-                        for (var j = 0; j < allEntityList.length; j++) {
+                        for (let j = 0; j < allEntityList.length; j++) {
                             //Second ONE-side entity
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push(ERRelationData[i][2][0]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign.push(allEntityList[j][1][k]);
                                 }
                             }
                         }
                         //Find current entity and push found foreign attributes
-                        for (var j = 0; j < ERForeignData.length; j++) {
+                        for (let j = 0; j < ERForeignData.length; j++) {
                             //First ONE-side entity
                             if (ERForeignData[j][0].id == ERRelationData[i][1][0].id) {
                                 ERForeignData[j].push(foreign); // Every key-attribute is pushed into array
@@ -5587,22 +5547,22 @@ function generateErTableString() {
                 } else if (ERRelationData[i][1][1] == 'MANY' && ERRelationData[i][2][1] == 'MANY') {//MANY to MANY relation, key from both is stored together with relation
                     ERForeignData.push([ERRelationData[i][0]]); // //Push in relation
                     //Find currentEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][1][0].id) {
                             foreign.push([ERRelationData[i][1][0]]);
                             // Push every key in the key list located at [1]
-                            for (var k = 0; k < allEntityList[j][1].length; k++) {
+                            for (let k = 0; k < allEntityList[j][1].length; k++) {
                                 foreign[0].push(allEntityList[j][1][k]);
                             }
                         }
                     }
                     //Find otherEntity and find its key-attributes
-                    for (var j = 0; j < allEntityList.length; j++) {
+                    for (let j = 0; j < allEntityList.length; j++) {
                         if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                             if (allEntityList[j][0].id == ERRelationData[i][2][0].id) {
                                 foreign.push([ERRelationData[i][2][0]]);
                                 // Push every key in the key list located at [1]
-                                for (var k = 0; k < allEntityList[j][1].length; k++) {
+                                for (let k = 0; k < allEntityList[j][1].length; k++) {
                                     foreign[1].push(allEntityList[j][1][k]);
 
                                 }
@@ -5610,11 +5570,11 @@ function generateErTableString() {
                         }
                     }
                     //Find relation in ERForeignData and push found foreign attributes
-                    for (var j = 0; j < ERForeignData.length; j++) {
+                    for (let j = 0; j < ERForeignData.length; j++) {
                         //MANY-side entity
                         if (ERForeignData[j][0].id == ERRelationData[i][0].id) {
                             //Every key-attribute is pushed into array
-                            for (var k = 0; k < foreign.length; k++) {
+                            for (let k = 0; k < foreign.length; k++) {
                                 ERForeignData[j].push(foreign[k]);
                             }
                         }
@@ -5624,14 +5584,14 @@ function generateErTableString() {
         }
     }
     // Iterate and add each entity's foreign attribute to the correct place
-    for (var i = 0; i < ERForeignData.length; i++) {
+    for (let i = 0; i < ERForeignData.length; i++) {
         // Iterate throught all entities
-        for (var j = 0; j < allEntityList.length; j++) {
+        for (let j = 0; j < allEntityList.length; j++) {
             // Check if correct entity were found
             if (ERForeignData[i][0].id == allEntityList[j][0].id) {
                 var row = [];
                 // Push in every foreign attribute
-                for (var k = 1; k < ERForeignData[i].length; k++) {
+                for (let k = 1; k < ERForeignData[i].length; k++) {
                     row.push(ERForeignData[i][k]); // Push in entity
                 }
                 allEntityList[j].push(row); // Push in list
@@ -5639,20 +5599,20 @@ function generateErTableString() {
         }
     }
     // Actual creating the string. Step one, strong / normal entities
-    for (var i = 0; i < allEntityList.length; i++) {
+    for (let i = 0; i < allEntityList.length; i++) {
         var currentString = ''; // Current table row
         if (allEntityList[i][0].state == 'normal') {
             currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
             var existPrimary = false; // Determine if a primary key exist
             // ITerate and determine if primary keys are present
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (allEntityList[i][1][j].state == 'primary') {
                     existPrimary = true;
                     break;
                 }
             }
             // Once again iterate through through the entity's key attributes and add them to string
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 // Print only primary keys if at least one is present
                 if (existPrimary) {
                     if (allEntityList[i][1][j].state == 'primary') {
@@ -5677,7 +5637,7 @@ function generateErTableString() {
             // Check if entity has foreign keys, aka last element is an list
             if (Array.isArray(allEntityList[i][allEntityList[i].length - 1])) {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                for (let j = 2; j < allEntityList[i].length - 1; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5690,13 +5650,13 @@ function generateErTableString() {
                 var lastList = allEntityList[i].length - 1;
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
-                    for (var k = 0; k < allEntityList[i][lastList].length; k++) {
+                    for (let k = 0; k < allEntityList[i][lastList].length; k++) {
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
                         // Iterate through all the lists with foreign keys
-                        for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                        for (let l = 0; l < allEntityList[i][lastList][k].length; l++) {
                             // If element is array, aka strong key for weak entity
                             if (Array.isArray(allEntityList[i][lastList][k][l])) {
-                                for (var m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
                                     currentString += `${allEntityList[i][lastList][k][l][m].name}`;
                                 }
                             } else {
@@ -5708,7 +5668,7 @@ function generateErTableString() {
                 }
             } else {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length; j++) {
+                for (let j = 2; j < allEntityList[i].length; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5724,12 +5684,12 @@ function generateErTableString() {
             stringList.push(currentString);
         }
     }
-    for (var i = 0; i < allEntityList.length; i++) {
+    for (let i = 0; i < allEntityList.length; i++) {
         var currentString = ''; // Current table row
         if (allEntityList[i][0].state == 'weak') {
             currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
             // Once again iterate through through the entity's key attributes and add them to string
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (!Array.isArray(allEntityList[i][1][j])) {
                     // Print only weakKeys
                     if (allEntityList[i][1][j].state == 'weakKey') {
@@ -5738,10 +5698,10 @@ function generateErTableString() {
                 }
             }
             // Once again iterate through through the entity's key attributes and add them to string
-            for (var j = 0; j < allEntityList[i][1].length; j++) {
+            for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (Array.isArray(allEntityList[i][1][j])) {
                     currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
-                    for (var k = 0; k < allEntityList[i][1][j].length; k++) {
+                    for (let k = 0; k < allEntityList[i][1][j].length; k++) {
                         currentString += `${allEntityList[i][1][j][k].name}`;
                     }
                     currentString += `</span>, `;
@@ -5750,7 +5710,7 @@ function generateErTableString() {
             // Check if entity has foreign keys, aka last element is an list
             if (Array.isArray(allEntityList[i][allEntityList[i].length - 1])) {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length - 1; j++) {
+                for (let j = 2; j < allEntityList[i].length - 1; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5761,13 +5721,13 @@ function generateErTableString() {
                 var lastList = allEntityList[i].length - 1;
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
-                    for (var k = 0; k < allEntityList[i][lastList].length; k++) {
+                    for (let k = 0; k < allEntityList[i][lastList].length; k++) {
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
                         // Iterate through all the lists with foreign keys
-                        for (var l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                        for (let l = 0; l < allEntityList[i][lastList][k].length; l++) {
                             // If element is array, aka strong key for weak entity
                             if (Array.isArray(allEntityList[i][lastList][k][l])) {
-                                for (var m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
                                     currentString += `${allEntityList[i][lastList][k][l][m].name}`;
                                 }
                             } else {
@@ -5779,7 +5739,7 @@ function generateErTableString() {
                 }
             } else {
                 // Again iterate through the list and push in only normal attributes
-                for (var j = 2; j < allEntityList[i].length; j++) {
+                for (let j = 2; j < allEntityList[i].length; j++) {
                     //Not array
                     if (!Array.isArray(allEntityList[i][j])) {
                         if (allEntityList[i][j].state == 'normal') {
@@ -5796,17 +5756,17 @@ function generateErTableString() {
         }
     }
     // Iterate through ERForeignData to find many to many relation
-    for (var i = 0; i < ERForeignData.length; i++) {
+    for (let i = 0; i < ERForeignData.length; i++) {
         // If relation is exist in ERForeignData
         if (ERForeignData[i][0].kind == elementTypesNames.ERRelation) {
             var currentString = '';
             currentString += `<p>${ERForeignData[i][0].name} (`; // Push in relation's name
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add left side of relation
-            for (var j = 0; j < ERForeignData[i][1].length; j++) {
+            for (let j = 0; j < ERForeignData[i][1].length; j++) {
                 // If element is array, aka strong key for weak entity
                 if (Array.isArray(ERForeignData[i][1][j])) {
-                    for (var l = 0; l < ERForeignData[i][1][j].length; l++) {
+                    for (let l = 0; l < ERForeignData[i][1][j].length; l++) {
                         currentString += `${ERForeignData[i][1][j][l].name}`;
                     }
                 } else {
@@ -5816,10 +5776,10 @@ function generateErTableString() {
             currentString += `</span>, `;
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add right side of relation
-            for (var j = 0; j < ERForeignData[i][2].length; j++) {
+            for (let j = 0; j < ERForeignData[i][2].length; j++) {
                 // If element is array, aka strong key for weak entity
                 if (Array.isArray(ERForeignData[i][2][j])) {
-                    for (var l = 0; l < ERForeignData[i][2][j].length; l++) {
+                    for (let l = 0; l < ERForeignData[i][2][j].length; l++) {
                         currentString += `${ERForeignData[i][2][j][l].name}`;
                     }
                 } else {
@@ -5832,8 +5792,8 @@ function generateErTableString() {
         }
     }
     // Adding multi-valued attributes to the string
-    for (var i = 0; i < allEntityList.length; i++) {
-        for (var j = 2; j < allEntityList[i].length; j++) {
+    for (let i = 0; i < allEntityList.length; i++) {
+        for (let j = 2; j < allEntityList[i].length; j++) {
             // Write out multi attributes
             if (allEntityList[i][j].state == 'multiple') {
                 // add the multiple attribute as relation
@@ -5844,7 +5804,7 @@ function generateErTableString() {
                     multipleString += `${allEntityList[i][0].name}`;
                     // If element is array, aka strong key for weak entity
                     if (Array.isArray(allEntityList[i][1][k])) {
-                        for (var l = 0; l < allEntityList[i][1][k].length; l++) {
+                        for (let l = 0; l < allEntityList[i][1][k].length; l++) {
                             multipleString += `${allEntityList[i][1][k][l].name}`;
                         }
                     } else {
@@ -5861,7 +5821,7 @@ function generateErTableString() {
     }
     //Add each string element in stringList[] into a single string.
     var stri = "";
-    for (var i = 0; i < stringList.length; i++) {
+    for (let i = 0; i < stringList.length; i++) {
         stri += new String(stringList[i] + "\n\n");
     }
     //if its empty, show a message instead.
@@ -5879,36 +5839,36 @@ function generateErTableString() {
 function formatERStrongEntities(ERData) {
     var temp = []; // The formated list of strong/normal entities 
     // Iterating through all entities
-    for (var i = 0; i < ERData.length; i++) {
+    for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'normal') {
             var row = []; // The formated row
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
             var keys = []; // The key attributes (primary, candidate and weakKey)
             // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'candidate') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
                     keys.push(ERData[i][j]);
                 }
             }
             row.push(keys); // Pushing all keys from the entity
             // Pushing in remaining attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'normal') {
                     row.push(ERData[i][j]);
                 }
             }
             // Pushing in remaining multivalued attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
                 }
@@ -5927,36 +5887,36 @@ function formatERStrongEntities(ERData) {
 function formatERWeakEntities(ERData) {
     var temp = []; // The formated list of weak entities 
     // Iterating through all entities
-    for (var i = 0; i < ERData.length; i++) {
+    for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'weak') {
             var row = []; // The formated row
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
             var keys = []; // The key attributes (weakKey, primary and candidate)
             // Pushing in weak keys first to ensure that the first key in a weak entity is weak
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
                     keys.push(ERData[i][j]);
                 }
             }
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'candidate') {
                     keys.push(ERData[i][j]);
                 }
             }
             row.push(keys); // Pushing all keys from the entity
             // Pushing in remaining attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'normal') {
                     row.push(ERData[i][j]);
                 }
             }
             // Pushing in remaining multivalued attributes
-            for (var j = 1; j < ERData[i].length; j++) {
+            for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'multiple') {
                     row.push(ERData[i][j]);
                 }
@@ -6037,14 +5997,14 @@ function setA4SizeFactor(e) {
 
 function toggleA4Horizontal() {
     document.getElementById("vRect").style.display = "block";
-    if (document.getElementById("a4Rect").style.display = "block") {
+    if (document.getElementById("a4Rect").style.display == "block") {
         document.getElementById("a4Rect").style.display = "none";
     }
 }
 
 function toggleA4Vertical() {
     document.getElementById("a4Rect").style.display = "block";
-    if (document.getElementById("vRect").style.display = "block") {
+    if (document.getElementById("vRect").style.display == "block") {
         document.getElementById("vRect").style.display = "none";
     }
 }
@@ -6276,12 +6236,13 @@ function hidePlacementType(){
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
 function zoomin(scrollEvent = undefined) {
+    let delta;
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact < 4) {
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
-            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+            delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
             }
@@ -6301,7 +6262,7 @@ function zoomin(scrollEvent = undefined) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
-            var delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
+            delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
             }
@@ -6370,12 +6331,13 @@ function zoomin(scrollEvent = undefined) {
  * @param {MouseEvent} scrollEvent The current mouse event.
  */
 function zoomout(scrollEvent = undefined) {
+    let delta;
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact > 0.25) {
             var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
-            var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+            delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
             }
@@ -6395,7 +6357,7 @@ function zoomout(scrollEvent = undefined) {
         var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
-            var delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
+            delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
             }
@@ -6466,7 +6428,7 @@ function zoomout(scrollEvent = undefined) {
 function zoomreset() {
     var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
-    var delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
+    let delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
         x: midScreen.x - zoomOrigo.x,
         y: midScreen.y - zoomOrigo.y
     }
@@ -6560,7 +6522,7 @@ function propFieldSelected(isSelected) {
  */
 function textboxFormatString(arr) {
     var content = '';
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         content += arr[i] + '\n';
     }
     return content;
@@ -6589,7 +6551,7 @@ function generateContextProperties() {
         //Hide properties and show the other options
         propSet.classList.add('options-fieldset-hidden');
         propSet.classList.remove('options-fieldset-show');
-        for (var i = 0; i < menuSet.length; i++) {
+        for (let i = 0; i < menuSet.length; i++) {
             menuSet[i].classList.add('options-fieldset-show');
             menuSet[i].classList.remove('options-fieldset-hidden');
         }
@@ -6597,7 +6559,7 @@ function generateContextProperties() {
         //Show properties and hide the other options
         propSet.classList.add('options-fieldset-show');
         propSet.classList.remove('options-fieldset-hidden');
-        for (var i = 0; i < menuSet.length; i++) {
+        for (let i = 0; i < menuSet.length; i++) {
             menuSet[i].classList.add('options-fieldset-hidden');
             menuSet[i].classList.remove('options-fieldset-show');
         }
@@ -6618,7 +6580,7 @@ function generateContextProperties() {
         if (context.length == 1 && contextLine.length == 0) {//Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
@@ -6628,7 +6590,7 @@ function generateContextProperties() {
             //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
             //TODO: Find a way to do this dynamically as new diagram types are added
             if (element.kind != elementTypesNames.ERAttr) {
-                var typesToChangeTo = [];
+                let typesToChangeTo;
 
                 // If property canChangeTo is not set, or set to null, assign empty array
                 if (element.canChangeTo === undefined || element.canChangeTo === null) {
@@ -6640,7 +6602,7 @@ function generateContextProperties() {
                 }
                 // Create a dropdown menu for diagram type, if typesToChangeTo has any value(s)
                 if (typesToChangeTo.length > 0) {
-                    var selected = context[0].type;
+                    let selected = context[0].type;
                     str += `<div style='color:white'>Type</div>`;
                     str += '<select id="typeSelect">';
 
@@ -6648,7 +6610,7 @@ function generateContextProperties() {
                     if (elementHasLines(element)) {
                         str += '<option selected ="selected" value=' + selected + '>' + selected + '</option>';
                     } else {
-                        for (i = 0; i < typesToChangeTo.length; i++) {
+                        for (let i = 0; i < typesToChangeTo.length; i++) {
                             if (selected != typesToChangeTo[i]) {
                                 str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
                             } else if (selected == typesToChangeTo[i]) {
@@ -6687,7 +6649,7 @@ function generateContextProperties() {
                 }
 
                 str += '<select id="propertySelect">';
-                for (i = 0; i < value.length; i++) {
+                for (let i = 0; i < value.length; i++) {
                     if (selected != value[i]) {
                         str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                     } else if (selected == value[i]) {
@@ -6706,8 +6668,7 @@ function generateContextProperties() {
                             break;
                     }
                 }
-            } else if (element.type == entityType.UML) { //Selected UML type
-                //If UML entity
+            } else if (element.type == entityType.UML) {
                 if (element.kind == elementTypesNames.UMLEntity) {
                     //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
                     for (const property in element) {
@@ -6728,7 +6689,7 @@ function generateContextProperties() {
                                 break;
                         }
                     }
-                } else if (element.kind = 'UMLRelation') { //If UML inheritance
+                } else if (element.kind == elementTypesNames.UMLRelation) {
                     //ID MUST START WITH "elementProperty_"!!!!!
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6742,8 +6703,8 @@ function generateContextProperties() {
                     }
                     str += `<div style='color:white'>Inheritance</div>`;
                     //Creates drop down for changing state of ER elements
-                    var value;
-                    var selected = context[0].state;
+                    let value;
+                    let selected = context[0].state;
                     if (selected == undefined) {
                         selected = "disjoint"
                     }
@@ -6753,7 +6714,7 @@ function generateContextProperties() {
                     }
 
                     str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
                             str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                         } else if (selected == value[i]) {
@@ -6780,7 +6741,7 @@ function generateContextProperties() {
                                 break;
                         }
                     }
-                } else if (element.kind = 'IERelation') {
+                } else if (element.kind == elementTypesNames.IERelation) {
                     //ID MUST START WITH "elementProperty_"!!!!!
                     for (const property in element) {
                         switch (property.toLowerCase()) {
@@ -6794,8 +6755,8 @@ function generateContextProperties() {
                     }
                     str += `<div style='color:white'>Inheritance</div>`;
                     //Creates drop down for changing state of IE elements
-                    var value;
-                    var selected = context[0].state;
+                    let value;
+                    let selected = context[0].state;
                     if (selected == undefined) {
                         selected = "disjoint"
                     }
@@ -6804,7 +6765,7 @@ function generateContextProperties() {
                         value = Object.values(inheritanceStateIE);
                     }
                     str += '<select id="propertySelect">';
-                    for (i = 0; i < value.length; i++) {
+                    for (let i = 0; i < value.length; i++) {
                         if (selected != value[i]) {
                             str += '<option value=' + value[i] + '>' + value[i] + '</option>';
                         } else if (selected == value[i]) {
@@ -6905,7 +6866,7 @@ function generateContextProperties() {
             //Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
@@ -6918,10 +6879,24 @@ function generateContextProperties() {
 
             value = Object.values(lineKind);
             //this creates line kinds for UML IE AND ER
-            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == entityType.ER || contextLine[0].type == 'NOTE') {
+            let UMLConnection = isLineConnectedTo(contextLine[0], elementTypesNames.UMLEntity);
+            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-                for (var i = 0; i < value.length; i++) {
-                    if (i != 1 && findUMLEntityFromLine(contextLine[0]) != null || i != 2 && findUMLEntityFromLine(contextLine[0]) == null) {
+                for (let i = 0; i < value.length; i++) {
+                    if (i != 1 && UMLConnection != null || i != 2 && UMLConnection == null) {
+                        if (selected == value[i]) {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        } else {
+                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
+                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
+                        }
+                    }
+                }
+            } else if (contextLine[0].type == entityType.ER) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+                for (var i = 0; i < value.length - 1; i++) {
+                    if (i != 1 && UMLConnection != null || i != 2 && UMLConnection == null) {
                         if (selected == value[i]) {
                             str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
                             str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
@@ -6933,8 +6908,8 @@ function generateContextProperties() {
                 }
             }
             if (contextLine[0].type == entityType.ER) {
-                if (findAttributeFromLine(contextLine[0]) == null) {
-                    if (findEntityFromLine(contextLine[0]) != null) {
+                if (isLineConnectedTo(contextLine[0], elementTypesNames.ERAttr) == null) {
+                    if (isLineConnectedTo(contextLine[0], elementTypesNames.EREntity) != null) {
                         str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
                         str += `<option value=''>None</option>`
                         Object.keys(lineCardinalitys).forEach(cardinality => {
@@ -6952,7 +6927,7 @@ function generateContextProperties() {
                     }
                 }
             }
-            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == entityType.IE) || (contextLine[0].type == entityType.SD || contextLine[0].type == 'NOTE')) {
+            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == 'NOTE')) {
                 str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
                 str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
                 str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
@@ -6964,6 +6939,23 @@ function generateContextProperties() {
                 str += `/>`;
                 str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
                 if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+                str += `/>`;
+            } else if ((contextLine[0].type == entityType.IE)) {
+                str += `<span id="lineLabel"`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `${contextLine[0].label}`;
+                str += `/span>`;
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
+                str += `<input id="lineStartLabel" maxlength="50" type="text" placeholder="Start cardinality"`;
+                if (contextLine[0].startLabel && contextLine[0].startLabel != "") str += `value="${contextLine[0].startLabel}"`;
+                str += `/>`;
+                str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
+                if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
+                str += `/>`;
+            } else if (contextLine[0].type == entityType.SD) {
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+                str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
+                str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
+                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
                 str += `/>`;
             }
             if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
@@ -7149,7 +7141,7 @@ function generateContextProperties() {
             //Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
@@ -7162,18 +7154,18 @@ function generateContextProperties() {
             //Show properties and hide the other options
             propSet.classList.add('options-fieldset-show');
             propSet.classList.remove('options-fieldset-hidden');
-            for (var i = 0; i < menuSet.length; i++) {
+            for (let i = 0; i < menuSet.length; i++) {
                 menuSet[i].classList.add('options-fieldset-hidden');
                 menuSet[i].classList.remove('options-fieldset-show');
             }
             var locked = true;
-            for (var i = 0; i < context.length; i++) {
+            for (let i = 0; i < context.length; i++) {
                 if (!context[i].isLocked) {
                     locked = false;
                     break;
                 }
             }
-            str += `<br></br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
+            str += `<br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
         }
     }
     propSet.innerHTML = str;
@@ -7211,7 +7203,7 @@ function toggleOptionsPane() {
 function generateToolTips() {
     var toolButtons = document.getElementsByClassName("key_tooltip");
 
-    for (var index = 0; index < toolButtons.length; index++) {
+    for (let index = 0; index < toolButtons.length; index++) {
         const element = toolButtons[index];
         var id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
@@ -7289,7 +7281,8 @@ function updateA4Size() {
 
     var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     //const a4Width = 794, a4Height = 1122;
-    const a4Width = 210 * pxlength, a4Height = 297 * pxlength;
+    const a4Width = 210 * pxlength
+    const a4Height = 297 * pxlength;
 
     vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
     vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
@@ -7305,38 +7298,38 @@ function updateGridPos() {
     var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
     var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
     var bLayer = document.getElementById("grid");
-    bLayer.setAttribute('x', gridOffsetX);
-    bLayer.setAttribute('y', gridOffsetY);
+    bLayer.setAttribute('x', gridOffsetX.toString());
+    bLayer.setAttribute('y', gridOffsetY.toString());
 
     // origo x axis line position
     bLayer = document.getElementById("origoX");
-    bLayer.setAttribute('y1', gridOffsetY);
-    bLayer.setAttribute('y2', gridOffsetY);
+    bLayer.setAttribute('y1', gridOffsetY.toString());
+    bLayer.setAttribute('y2', gridOffsetY.toString());
 
     // origo y axis line position
     bLayer = document.getElementById("origoY");
-    bLayer.setAttribute('x1', gridOffsetX);
-    bLayer.setAttribute('x2', gridOffsetX);
+    bLayer.setAttribute('x1', gridOffsetX.toString());
+    bLayer.setAttribute('x2', gridOffsetX.toString());
 }
 
 /**
  * @description Calculates new positioning for the A4 template.
  */
 function updateA4Pos() {
-    var OffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-    var OffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
+    var OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
     var rect = document.getElementById("a4Rect");
     var vRect = document.getElementById("vRect");
     var text = document.getElementById("a4Text");
 
-    vRect.setAttribute('x', OffsetX);
-    vRect.setAttribute('y', OffsetY);
+    vRect.setAttribute('x', OffsetX.toString());
+    vRect.setAttribute('y', OffsetY.toString());
 
-    rect.setAttribute('x', OffsetX);
-    rect.setAttribute('y', OffsetY);
+    rect.setAttribute('x', OffsetX.toString());
+    rect.setAttribute('y', OffsetY.toString());
 
-    text.setAttribute('x', (OffsetX + (780 * zoomfact)));
-    text.setAttribute('y', (OffsetY - 5));
+    text.setAttribute('x', (OffsetX + (780 * zoomfact)).toString());
+    text.setAttribute('y', (OffsetY - 5).toString());
 }
 
 /**
@@ -7427,7 +7420,7 @@ function removeMessage(element, timer) {
  */
 function toggleColorMenu(buttonID) {
     var button = document.getElementById(buttonID);
-    var menu = undefined;
+    let menu;
     var width = 0;
 
     // If the color menu's inner html is empty
@@ -7436,7 +7429,7 @@ function toggleColorMenu(buttonID) {
         menu.style.visibility = "visible";
         if (menu.id === "BGColorMenu") {
             // Create svg circles for each element in the "colors" array
-            for (var i = 0; i < MENU_COLORS.length; i++) {
+            for (let i = 0; i < MENU_COLORS.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="BGColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${MENU_COLORS[i]}" onclick="setElementColors('BGColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
@@ -7444,7 +7437,7 @@ function toggleColorMenu(buttonID) {
             }
         } else {
             // Create svg circles for each element in the "strokeColors" array
-            for (var i = 0; i < strokeColors.length; i++) {
+            for (let i = 0; i < strokeColors.length; i++) {
                 menu.innerHTML += `<svg class="colorCircle" xmlns="http://www.w3.org/2000/svg" width="50" height="50">
             <circle id="strokeColorCircle${i}" class="colorCircle" cx="25" cy="25" r="20" fill="${strokeColors[i]}" onclick="setElementColors('strokeColorCircle${i}')" stroke='${color.BLACK}' stroke-width="2"/>
             </svg>`;
@@ -7460,7 +7453,7 @@ function toggleColorMenu(buttonID) {
         var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
     } else {    // if the color menu's inner html is not empty, remove the content
-        var menu = button.children[0];
+        menu = button.children[0];
         menu.innerHTML = "";
         menu.style.visibility = "hidden";
         showdata();
@@ -7480,7 +7473,7 @@ function setElementColors(clickedCircleID) {
     if (menu.id == "BGColorMenu") {
         var index = id.replace("BGColorCircle", "") * 1;
         var color = MENU_COLORS[index];
-        for (var i = 0; i < context.length; i++) {
+        for (let i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
             /*
@@ -7500,7 +7493,7 @@ function setElementColors(clickedCircleID) {
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
         var index = id.replace("strokeColorCircle", "") * 1;
         var color = strokeColors[index];
-        for (var i = 0; i < context.length; i++) {
+        for (let i = 0; i < context.length; i++) {
             context[i].stroke = color;
             elementIDs[i] = context[i].id;
         }
@@ -7522,10 +7515,8 @@ function setElementColors(clickedCircleID) {
 function multipleColorsTest() {
     if (context.length > 1) {
         var fill = context[0].fill;
-        var stroke = context[0].stroke;
         var varyingFills = false;
-        var varyingStrokes = false;
-        for (var i = 0; i < context.length; i++) {
+        for (let i = 0; i < context.length; i++) {
             // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
                 var button = document.getElementById("colorMenuButton1");
@@ -7535,6 +7526,8 @@ function multipleColorsTest() {
                 varyingFills = true;
             }
             /*
+        var stroke = context[0].stroke;
+        var varyingStrokes = false;
             // Checks if there are varying stroke colors, but not if varying colors have already been detected
              if (stroke != context[i].stroke && !varyingStrokes) {
                  var button = document.getElementById("colorMenuButton2");
@@ -7565,6 +7558,7 @@ function multipleColorsTest() {
  * @returns {Number} 1 or -1 depending in the resulting calculation.
  */
 function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
+    let ax, ay, bx, by, toElementA, toElementB, sortval, parentx, parenty;
     // Get dx dy centered on association end e.g. invert vector if necessary
     var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
     var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
@@ -7693,7 +7687,7 @@ function clearLinesForElement(element) {
  * @param {boolean} targetGhost Is the line an ghostLine
  */
 function determineLine(line, targetGhost = false) {
-    var felem, telem, dx, dy
+    var felem, telem;
 
     felem = data[findIndex(data, line.fromID)];
 
@@ -7712,7 +7706,6 @@ function determineLine(line, targetGhost = false) {
     if (Math.abs(line.dy) > Math.abs(line.dx)) majorX = false;
 
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
-    var ctype = 0;
     if (overlapY || ((majorX) && (!overlapX))) {
         if (line.dx > 0) line.ctype = lineDirection.LEFT;
         else line.ctype = lineDirection.RIGHT;
@@ -7810,7 +7803,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
     var exists = false;
-    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+    for (let i = 0; i < allAttrToEntityRelations.length; i++) {
         if (toElement.id == allAttrToEntityRelations[i]) {
             exists = true;
             break;
@@ -7822,7 +7815,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
 
     // Adding elements to the array that carries attributes connected to attributes without being directly connected to an entity or relation
-    for (i = 0; i < allAttrToEntityRelations.length; i++) {
+    for (let i = 0; i < allAttrToEntityRelations.length; i++) {
         if (fromElement.kind === elementTypesNames.ERAttr && toElement.kind === elementTypesNames.ERAttr && fromElement.id == allAttrToEntityRelations[i]) {
             attrViaAttrToEnt[attrViaAttrCounter] = toElement.id;
             attrViaAttrCounter++;
@@ -7878,7 +7871,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         });
         var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
         var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
-        for (i = 0; i < allAttrToEntityRelations.length; i++) {
+        for (let i = 0; i < allAttrToEntityRelations.length; i++) {
             if (allAttrToEntityRelations[i] == fromElement.id) {
                 allAttrToEntityRelations.splice(i, 1);
                 countUsedAttributes--;
@@ -7904,7 +7897,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         };
 
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
-        if (findEntityFromLine(newLine) != null) {
+        if (isLineConnectedTo(newLine, elementTypesNames.EREntity) != null) {
             if (cardinal != undefined) {
                 newLine.cardinality = cardinal;
             }
@@ -8273,15 +8266,15 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(line.cardinality).width / 4;
     if (offsetOnLine > distance * 0.5) {
-        posX = fx + (offsetOnLine * (tx - fx) / distance) * tweakOffset;
-        posY = fy + (offsetOnLine * (ty - fy) / distance) * tweakOffset;
+        posX = tx + (offsetOnLine * (fx - tx) / distance) * tweakOffset;
+        posY = ty + (offsetOnLine * (fy - ty) / distance) * tweakOffset;
     } else {
         // Set position on line for the given offset
-        posX = fx + (offsetOnLine * (tx - fx) / distance);
-        posY = fy + (offsetOnLine * (ty - fy) / distance);
+        posX = tx + (offsetOnLine * (fx - tx) / distance);
+        posY = ty + (offsetOnLine * (fy - ty) / distance);
     }
 
-    if (findEntityFromLine(line) == -1) {
+    if (isLineConnectedTo(line, elementTypesNames.EREntity) == -1) {
         if (line.ctype == lineDirection.UP) {
             if (f.top.indexOf(line.id) == 0) posX -= offset;
             else posX += offset;
@@ -8472,7 +8465,7 @@ function rotateArrowPoint(base, to, clockwise) {
     }
 }
 
-function drawArrowPoint(base, point, x, y, lineColor, line) {
+function drawArrowPoint(base, point, x, y, lineColor) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
     return `<polygon points=' 
@@ -8490,14 +8483,11 @@ function drawArrowPoint(base, point, x, y, lineColor, line) {
  */
 function redrawArrows(str) {
     // Clear all lines and update with dom object dimensions
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         clearLinesForElement(data[i]);
     }
 
-    // Make list of all connectors?
-    connectors = [];
-
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         determineLine(lines[i]);
     }
 
@@ -8508,12 +8498,12 @@ function redrawArrows(str) {
     }
 
     // Sort all association ends that number above 0 according to direction of line
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
     }
 
     // Draw each line using sorted line ends when applicable
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         str += drawLine(lines[i]);
     }
 
@@ -8522,7 +8512,7 @@ function redrawArrows(str) {
     }
 
     // Remove all neighbour maps from elements
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         delete data[i].neighbours;
     }
 
@@ -8607,47 +8597,49 @@ function drawRulerBars(X, Y) {
     //Get elements
     if (!settings.ruler.isRulerActive) return;
 
-    svgX = document.getElementById("ruler-x-svg");
-    svgY = document.getElementById("ruler-y-svg");
+    let svgX = document.getElementById("ruler-x-svg");
+    let svgY = document.getElementById("ruler-y-svg");
     //Settings - Ruler
 
-    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    let pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     const lineRatio1 = 1;
     const lineRatio2 = 10;
     const lineRatio3 = 100;
 
-    var barY, barX = "";
-    var cordY = 0;
-    var cordX = 0;
+    let barY = "";
+    let barX = "";
+    let cordY = 0;
+    let cordX = 0;
     settings.ruler.ZF = 100 * zoomfact;
-    var pannedY = (Y - settings.ruler.ZF) / zoomfact;
-    var pannedX = (X - settings.ruler.ZF) / zoomfact;
+    let pannedY = (Y - settings.ruler.ZF) / zoomfact;
+    let pannedX = (X - settings.ruler.ZF) / zoomfact;
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact));
 
+    let verticalText
     if (zoomfact < 0.5) {
-        var verticalText = "writing-mode= 'vertical-lr'";
+        verticalText = "writing-mode= 'vertical-lr'";
     } else {
-        var verticalText = " ";
+        verticalText = " ";
     }
 
     //Calculate the visible range based on viewports dimenstions, current position and zoomfactor
-    var viewportHeight = window.innerHeight;
-    var viewportWidth = window.innerWidth;
+    let viewportHeight = window.innerHeight;
+    let viewportWidth = window.innerWidth;
 
-    var visibleRangeY = [
+    let visibleRangeY = [
         (pannedY*-1),
         (pannedY*-1 + viewportHeight)
     ];
-    var visibleRangeX = [
+    let visibleRangeX = [
         (pannedX*-1) ,
         (pannedX*-1 + viewportWidth)
     ];
 
 
     //Draw the Y-axis ruler positive side.
-    var lineNumber = (lineRatio3 - 1);
-    for (i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {        
+    let lineNumber = (lineRatio3 - 1);
+    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (i > visibleRangeY[0] && i < visibleRangeY[1]) {
@@ -8673,9 +8665,9 @@ function drawRulerBars(X, Y) {
                     barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3){
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordY = cordY + 10
             }
@@ -8684,7 +8676,7 @@ function drawRulerBars(X, Y) {
     //Draw the Y-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordY = -10;
-    for (i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = -100 - settings.ruler.zoomY; i <= pannedY; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (-i > visibleRangeY[0] && -i < visibleRangeY[1]) {
@@ -8710,9 +8702,9 @@ function drawRulerBars(X, Y) {
                     barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3) {
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordY = cordY - 10;
             }
@@ -8723,7 +8715,7 @@ function drawRulerBars(X, Y) {
 
     //Draw the X-axis ruler positive side.
     lineNumber = (lineRatio3 - 1);
-    for (i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = 50 + settings.ruler.zoomX; i <= pannedX - (pannedX * 2) + cwidth; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (i > visibleRangeX[0] && i < visibleRangeX[1]) {
@@ -8749,9 +8741,9 @@ function drawRulerBars(X, Y) {
                     barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3){
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordX = cordX+10
             }
@@ -8760,7 +8752,7 @@ function drawRulerBars(X, Y) {
     //Draw the X-axis ruler negative side.
     lineNumber = (lineRatio3 - 101);
     cordX = -10;
-    for (i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
+    for (let i = -50 - settings.ruler.zoomX; i <= pannedX; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (-i > visibleRangeX[0] && -i < visibleRangeX[1]) {
@@ -8786,9 +8778,9 @@ function drawRulerBars(X, Y) {
                     barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
                 }
             }
-        }else{
+        } else {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
-            if(lineNumber === lineRatio3) {
+            if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 cordX = cordX - 10;
             }
@@ -8805,594 +8797,137 @@ function drawRulerBars(X, Y) {
  * @return Returns an string containing the elements that should be drawn.
  */
 function drawElement(element, ghosted = false) {
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    var str = "";
-    const multioffs = 3;
-
-    // Compute size variables
-    var linew = Math.round(strokewidth * zoomfact);
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
-    var texth = Math.round(zoomfact * textheight);
-    var hboxw = Math.round(element.width * zoomfact * 0.5);
-    var hboxh = Math.round(element.height * zoomfact * 0.5);
-    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    let divContent, style, cssClass;
+    let texth = Math.round(zoomfact * textheight);
+    let linew = Math.round(strokewidth * zoomfact);
+    let boxw = Math.round(element.width * zoomfact);
+    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let mouseEnter = '';
+  
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    canvasContext = canvas.getContext('2d');
-
-    //since toggleBorderOfElements checks the fill color to make sure we dont end up with white stroke on white fill, which is bad for IE and UML etc,
-    //we have to have another variable for those strokes that are irrlevant of the elements fill, like sequence actor or state superstate.
-    let actorFontColor;
-    actorFontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
-
+    let canvasContext = canvas.getContext('2d');
     // Caclulate font width using some canvas magic
     canvasContext.font = `${texth}px ${canvasContext.font.split('px')[1]}`;
-    var textWidth = canvasContext.measureText(element.name).width;
-
-    // If calculated size is larger than element width
-    const margin = 10 * zoomfact;
-    var tooBig = (textWidth >= (boxw - (margin * 2)));
-    var xAnchor = tooBig ? margin : hboxw;
-    var vAlignment = tooBig ? "left" : "middle";
+    let textWidth = canvasContext.measureText(element.name).width;
 
     if (errorActive) {
         // Checking for errors regarding ER Entities
         checkElementError(element);
-
         // Checks if element is involved with an error and outlines them in red
         for (let i = 0; i < errorData.length; i++) {
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
     }
-
-    //=============================================== <-- UML functionality
-    // TODO: Refactor each if into own function, then use it in switch
     switch (element.kind) {
+        case elementTypesNames.EREntity:
+            divContent = drawElementEREntity(element, boxw, boxh, linew, texth);
+            break;
         case elementTypesNames.UMLEntity:
-            str += drawElementUMLEntity(element, ghosted);
+            divContent = drawElementUMLEntity(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element'
+            break;
+        case elementTypesNames.IEEntity:
+            divContent = drawElementIEEntity(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element';
             break;
         case elementTypesNames.SDEntity:
-            str += drawElementSDEntity(element, ghosted);
+            divContent = drawElementSDEntity(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element';
+            break;
+        case elementTypesNames.ERRelation:
+            divContent = drawElementERRelation(element, boxw, boxh, linew);
+            break;
+        case elementTypesNames.ERAttr:
+            divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
+            break;
+        case elementTypesNames.UMLRelation:
+            divContent = drawElementUMLRelation(element, boxw, boxh, linew);
+            cssClass = 'uml-element';
+            break;
+        case elementTypesNames.IERelation:
+            divContent = drawElementIERelation(element, boxw, boxh, linew);
+            cssClass = 'ie-element';
+            style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
                 <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
                     <circle cx="16.5" cy="12.5" r="10.5" />
-                </g>`
-            str += drawElementState(element, ghosted, initVec);
+                </g>`;
+            divContent = drawElementState(element, initVec);
+            cssClass = 'uml-state';
+            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLFinalState:
             let finalVec = `
-                <g> 
-                    <path d="M12,-0C18.623,-0 24,5.377 24,12C24,18.623 18.623,24 12,24C5.377,24 -0,18.623 -0,12C-0,5.377 5.377,-0 12,-0ZM12,2C17.519,2 22,6.481 22,12C22,17.519 17.519,22 12,22C6.481,22 2,17.519 2,12C2,6.481 6.481,2 12,2Z"/>
-                    <circle transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" cx="14.5" cy="14.5" r="5.5"/> 
-                </g>`
-            str += drawElementState(element, ghosted, finalVec);
+                <g>
+                    <path 
+                        d=" M 12,-0
+                            C 18.623,-0 24,5.377 24,12
+                            C 24,18.623 18.623,24 12,24
+                            C 5.377,24 -0,18.623 -0,12
+                            C -0,5.377 5.377,-0 12,-0 Z
+                            M 12,2C17.519,2 22,6.481 22,12
+                            C 22,17.519 17.519,22 12,22
+                            C 6.481,22 2,17.519 2,12
+                            C 2,6.481 6.481,2 12,2 Z"
+                    />
+                    <circle 
+                        transform="matrix(1.06667,0,0,1.06667,-3.46667,-3.46667)" 
+                        cx="14.5" cy="14.5" r="5.5"
+                    />
+                </g>`;
+            divContent = drawElementState(element, finalVec);
+            cssClass = 'uml-state';
+            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLSuperState:
-            str += drawElementSuperState(element, ghosted, textWidth);
+            divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
+            cssClass = 'uml-Super';
             break;
-        case elementTypesNames.IEEntity:
-            str += drawElementIEEntity(element, ghosted);
+        case elementTypesNames.sequenceActor:
+            divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
+            mouseEnter = 'mouseEnterSeq(event);';
+            break;
+        case elementTypesNames.sequenceObject:
+            divContent = drawElementSequenceObject(element, boxw, boxh, linew);
+            mouseEnter = 'mouseEnterSeq(event);';
+            break;
+        case elementTypesNames.sequenceActivation:
+            divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
+            break;
+        case elementTypesNames.sequenceLoopOrAlt:
+            let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
+            divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
+            break;
+        case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
+            divContent = drawElementNote(element, boxw, boxh, linew, texth);
+            cssClass = 'uml-element';
             break;
     }
-    if (element.kind == elementTypesNames.UMLEntity) { // Removing this will trigger "else" causing errors
-    } else if (element.kind == elementTypesNames.UMLInitialState) {
-    } else if (element.kind == elementTypesNames.UMLFinalState) {
-    } else if (element.kind == elementTypesNames.UMLSuperState) {
-    } else if (element.kind == elementTypesNames.SDEntity) {
-    } else if (element.kind == 'UMLRelation') {
-        //div to encapuslate UML element
-        str += `<div id='${element.id}'	class='element uml-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-
-        //Overlapping UML-inheritance
-        if (element.state == 'overlapping') {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:black;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //Disjoint UML-inheritance
-        else {
-            str += `<polygon points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:white;stroke:black;stroke-width:${linew};'/>`;
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-        //=============================================== <-- IE functionality
-    //Check if the element is a IE entity
-    else if (element.kind == elementTypesNames.IEEntity) {
-    } else if (element.kind == elementTypesNames.IERelation) {
-        //div to encapuslate IE element
-        str += `<div id='${element.id}'	class='element ie-element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;height:${boxh / 2}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-
-        //svg for inheritance symbol
-        str += `<svg width='${boxw}' height='${boxh / 2}' style='transform:rotate(180deg);   stroke-width:${linew};'>`;
-
-        // Overlapping IE-inheritance
-
-        if (element.state == 'overlapping') {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />`
-        }
-        // Disjoint IE-inheritance
-        else {
-            str += `<circle cx="${(boxw / 2)}" cy="0" r="${(boxw / 2.08)}" fill="white"; stroke="black";'/>
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke="black"; />
-                <line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke="black" />
-                <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke="black" />`
-        }
-        //end of svg
-        str += `</svg>`;
-    }
-        //=============================================== <-- End of IE functionality
-        //=============================================== <-- Start Sequnece functionality
-    //sequence actor and its life line and also the object since they can be switched via options pane.
-    else if (element.kind == elementTypesNames.sequenceActor) {
-        //div to encapsulate sequence actor/object and its lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter(), mouseEnterSeq(event);' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`
-        str += `<circle cx="${(boxw / 2) + linew}" cy="${(boxw / 8) + linew}" r="${boxw / 8}px" fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'/>`;
-        str += `<path class="text"
-                d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-                    v${boxw / 6}
-                    m-${(boxw / 4)},0
-                    h${boxw / 2}
-                    m-${(boxw / 4)},0
-                    v${boxw / 3}
-                    l${boxw / 4},${boxw / 4}
-                    m${(boxw / 4) * -1},${(boxw / 4) * -1}
-                    l${(boxw / 4) * -1},${boxw / 4}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='transparent'
-            />`;
-        //svg for the actor name text, it has a background rect for ease of readability.
-        //make the rect fit the text if the text isn't too big
-        if (!tooBig) {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${xAnchor - (textWidth / 2)}'
-                    y='${boxw + (linew * 2)}'
-                    width='${textWidth}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${xAnchor}' y='${boxw + (texth / 2) + (linew * 2)}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        }
-        //else just make a boxw width rect and adjust the text to fit this new rect better
-        else {
-            //rect for sitting behind the actor text
-            str += `<rect class='text'
-                    x='${linew}'
-                    y='${boxw + (linew * 2)}'
-                    width='${boxw - linew}'
-                    height='${texth - linew}'
-                    stroke='none'
-                    fill='${element.fill}'
-                />`;
-            str += `<text class='text' x='${linew}' y='${boxw + texth}'>${element.name}</text>`;
-        }
-        str += `</g>`;
-        str += `</svg>`;
-    }
-    //actor or object is determined via the buttons in the context menu. the default is actor.
-    else if (element.kind == "sequenceObject") {
-        //svg for object.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter(),  mouseEnterSeq(event);' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the life line
-        str += `<path class="text" 
-        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
-        V${boxh}
-        "
-        stroke-width='${linew}'
-        stroke='${element.stroke}'
-        stroke-dasharray='${linew * 3},${linew * 3}'
-        fill='transparent'
-        />`;
-        str += `<g>`;
-        str += `<rect class='text'
-                x='${linew}'
-                y='${linew}'
-                width='${boxw - (linew * 2)}'
-                height='${(boxw / 2) - linew}'
-                rx='${sequenceCornerRadius}'
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}' 
-            />`;
-        str += `<text class='text' x='${xAnchor}' y='${((boxw / 2) - linew) / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-        str += `</g>`;
-        str += `</svg>`;
-    }
-
-    // Sequence activation 
-    else if (element.kind == 'sequenceActivation') {
-        //div to encapsulate sequence lifeline.
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;z-index:1;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the activation rect
-        str += `<rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' rx='${sequenceCornerRadius * 3}' stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'/>`;
-        str += `</svg>`;
-    }
-    // Sequence loop or alt
-    else if (element.kind == 'sequenceLoopOrAlt') {
-        //first, set a suggested height for the element based on the amount of alternatives
-        if (element.alternatives != null) {
-            //increase length of element to avoid squished alternatives
-            for (let i = 0; i < element.alternatives.length; i++) {
-                boxh += 125 * zoomfact;
-            }
-            //also set alt or loop to whatever is correct
-            //if it has more than one alternative its an alt, else its loop.
-            element.alternatives.length > 1 ? element.altOrLoop = "Alt" : element.altOrLoop = "Loop";
-        }
-
-        //div to encapsulate sequence loop 
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' 
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;`;
-
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}'>`;
-        //svg for the loop/alt rectangle
-        str += `<rect class='text'
-            x='${linew}'
-            y='${linew}'
-            width='${boxw - (linew * 2)}'
-            height='${boxh - (linew * 2)}'
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='none'
-            rx='${7 * zoomfact}'
-            fill-opacity="0"
-        />`;
-        //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
-        if ((element.alternatives != null) && (element.alternatives.length > 0)) {
-            for (let i = 1; i < element.alternatives.length; i++) {
-                str += `<path class="text"
-                d="M${boxw - linew},${(boxh / element.alternatives.length) * i}
-                    H${linew}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                stroke-dasharray='${linew * 3},${linew * 3}'
-                fill='transparent'
-                />`;
-                //text for each alternative
-                str += `<text x='${linew * 2}' y='${((boxh / element.alternatives.length) * i) + (texth / 1.5) + linew * 2}' fill='${actorFontColor}'>${element.alternatives[i]}</text>`;
-            }
-        }
-        //svg for the small label in top left corner
-        str += `<path 
-            d="M${(7 * zoomfact) + linew},${linew}
-                h${100 * zoomfact}
-                v${25 * zoomfact}
-                l${-12.5 * zoomfact},${12.5 * zoomfact}
-                H${linew}
-                V${linew + (7 * zoomfact)}
-                a${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />`;
-        //text in the label
-        str += `<text x='${50 * zoomfact + linew}' y='${18.75 * zoomfact + linew}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.altOrLoop}</text>`;
-        //text below the label
-        //TODO when actorFontColor is replaced with nonFilledElementPartStroke, change this to that.
-        str += `<text x='${linew * 2}' y='${37.5 * zoomfact + (linew * 3) + (texth / 1.5)}' fill='${actorFontColor}'>${element.alternatives[0]}</text>`;
-        str += `</svg>`;
-    }
-    //=============================================== <-- End of Sequnece functionality
-    //=============================================== <-- Start Note functionality
-    else if (element.kind == "note") {
-        const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
-        const theme = document.getElementById("themeBlack");
-        const splitLengthyLine = (str, max) => {
-            if (str.length <= max) return str;
-            else {
-                return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-            }
-        }
-
-        const text = element.attributes.map(line => {
-            return splitLengthyLine(line, maxCharactersPerLine);
-        }).flat();
-
-        elemAttri = text.length;
-
-        // Removes the previouse value in NOTEHeight for the element
-        for (var i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                NOTEHeight.splice(i, 1);
-            }
-        }
-        // Calculate and store the NOTEEntity's real height
-        var NOTEEntityHeight = {
-            id: element.id,
-            height: ((boxh + (boxh / 2)) / zoomfact)
-        }
-        NOTEHeight.push(NOTEEntityHeight);
-        if (element.fill == color.BLACK) {
-            element.stroke = color.WHITE;
-        } else if (element.fill == color.WHITE) {
-            element.stroke = color.BLACK;
-        }
-        //div to encapuslate note element
-        str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;`;
-        if (context.includes(element)) {
-            str += `z-index: 1;`;
-        }
-        if (ghosted) {
-            str += `pointer-events: none; opacity: ${ghostPreview};`;
-        }
-        str += `'>`;
-        //div to encapuslate note content
-        //Draw note-content if there exist at least one attribute
-        if (elemAttri <= 4) {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * 4 / 2)} '>`;
-            //path math to create the note entity
-            //the 4 sets the vertical size to be the same as having written 4 lines in the element
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * 4 / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * 4 / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        } else {
-            //svg for background
-            str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)} '>`;
-            //path math to create the note entity and scale it with every line after the 4th line.
-            str += `<path class="text"
-                d="M${linew},${linew}
-                    v${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2))}
-                    h${boxw - (linew * 2)}
-                    v-${(boxh / 2 + (boxh * elemAttri / 2) - (linew * 2)) - (boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}  
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h1
-                    h-1
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5} 
-                    h${(boxw - (linew * 2)) * 0.12}
-                    v1
-                    v-1
-                    l-${(boxw - (linew * 2)) * 0.12},-${(boxh / 2 + (boxh / 2) - (linew * 2)) * 0.5}
-                    h-${(boxw - (linew * 2)) * 0.885}
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-            for (var i = 0; i < elemAttri; i++) {
-                str += `<text class='text' x='0.5em' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='right'>${text[i]}</text>`;
-            }
-
-            //end of svg for background
-            str += `</svg>`;
-            // Draw note-content if there are no attributes.
-        }
-        //end of div for UML content
-        str += `</div>`;
-    }
-    //=============================================== <-- End of Note functionality
-    //=============================================== <-- Start ER functionality
-    //ER element
-    else {
-        // Create div & svg element
-        if (element.kind == elementTypesNames.EREntity) {
-            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
-        } else if (element.kind == elementTypesNames.ERAttr) {
-            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
-        } else if (element.kind == elementTypesNames.ERRelation) {
-            str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';' style='
-                            left:0px;
-                            top:0px;
-                            width:${boxw}px;
-                            height:${boxh}px;
-                            font-size:${texth}px;`;
-        }
-        if (context.includes(element)) str += `z-index: 1;`;
-        if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview}; `;
-        str += `'>`;
-        str += `<svg width='${boxw}' height='${boxh}' >`;
-        // Create svg 
-        if (element.kind == elementTypesNames.EREntity) {
-            var weak = "";
-
-            if (element.state == "weak") {
-                weak = `<rect x='${linew * multioffs}' y='${linew * multioffs}' width='${boxw - (linew * multioffs * 2)}' height='${boxh - (linew * multioffs * 2)}'
-                stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' /> 
-                `;
-            }
-
-            str += `<rect  class="text" x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}'
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' />
-                    ${weak}
-                    <text  class="text" x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text> 
-                    `;
-        } else if (element.kind == elementTypesNames.ERAttr) {
-            var dash = "";
-            var multi = "";
-
-            if (element.state == "computed") {
-                dash = "stroke-dasharray='4 4'";
-            }
-
-            if (element.state == "multiple") {
-                multi = `
-                        <path d="M${linew * multioffs},${hboxh} 
-                        Q${linew * multioffs},${linew * multioffs} ${hboxw},${linew * multioffs} 
-                        Q${boxw - (linew * multioffs)},${linew * multioffs} ${boxw - (linew * multioffs)},${hboxh} 
-                        Q${boxw - (linew * multioffs)},${boxh - (linew * multioffs)} ${hboxw},${boxh - (linew * multioffs)} 
-                        Q${linew * multioffs},${boxh - (linew * multioffs)} ${linew * multioffs},${hboxh}" 
-                        stroke='${element.stroke}' fill='${element.fill}' stroke-width='${linew}' />`;
-            }
-            if (element.state != undefined) {
-                str += `<path d="M${linew},${hboxh} 
-                                Q${linew},${linew} ${hboxw},${linew} 
-                                Q${boxw - linew},${linew} ${boxw - linew},${hboxh} 
-                                Q${boxw - linew},${boxh - linew} ${hboxw},${boxh - linew} 
-                                Q${linew},${boxh - linew} ${linew},${hboxh}" 
-                            stroke='${element.stroke}' fill='${element.fill}' ${dash} stroke-width='${linew}' class="text" />
-                            
-                            ${multi}
-                            <text x='${xAnchor}' y='${hboxh}' `;
-            }
-            if (element.state == "candidate" || element.state == 'primary') {
-                str += `class='underline'`;
-            }
-            str += `dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>
-            `;
-
-            if (element.state == "weakKey") {
-                // Calculates how far to the left X starts
-                var diff = xAnchor - textWidth / 2;
-                diff = diff < 0 ? 0 - diff + 10 : 0;
-                str += `<line x1="${xAnchor - textWidth / 2 + diff}" y1="${hboxh + texth * 0.5 + 1}" x2="${xAnchor + textWidth / 2 + diff}" y2="${hboxh + texth * 0.5 + 1}" stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"/>`;
-            }
-        } else if (element.kind == elementTypesNames.ERRelation) {
-            var numOfLetters = element.name.length;
-            if (tooBig) {
-                var tempName = "";
-                var maxTextWidth = boxw - margin;
-
-                if (element.state == "weak") maxTextWidth -= (linew * multioffs) * 2;
-
-                for (var i = 0; i < element.name.length; i++) {
-                    tempName += element.name[i];
-                    if (canvasContext.measureText(tempName).width > maxTextWidth) {
-                        numOfLetters = tempName.length - 1;
-                        break;
-                    }
-                }
-            }
-            var weak = "";
-            if (element.state == "weak") {
-                weak = `<polygon points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
-                    `;
-                xAnchor += linew * multioffs;
-                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
-                    ${weak}`;
-                str += `<text x='50%' y='50%' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
-            } else {
-                str += `<polygon points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
-                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' class="text"/>
-                    ${weak}`;
-                str += `<text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name.slice(0, numOfLetters)}</text>`;
-            }
-        }
-        str += "</svg>";
-    }
-    //=============================================== <-- End ER functionality
+    let lock = '';
     if (element.isLocked) {
-        str += `<img id="pad_lock" width='${zoomfact * 20}' height='${zoomfact * 25}' src="../Shared/icons/pad_lock.svg"/>`;
+        lock = `<img 
+                     id='pad_lock' 
+                     width='${zoomfact * 20}' 
+                     height='${zoomfact * 25}' 
+                     src='../Shared/icons/pad_lock.svg'
+                     alt='Padlock' 
+                 />`;
     }
-    str += "</div>";
-    return str;
+    style = style ?? `left:0; top:0; width:auto; height:auto; font-size:${texth}px; z-index:1;`;
+    let ghostPreview = ghostLine ? 0 : 0.4;
+    let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
+    return `<div 
+                id='${element.id}' 
+                class='element ${cssClass}' 
+                onmousedown='ddown(event);' 
+                onmouseenter='mouseEnter();${mouseEnter}' 
+                onmouseleave='mouseLeave();' 
+                style='${style}${ghostStr}' 
+            >${divContent}${lock}</div>`;
 }
 
 const splitLengthyLine = (s, max) => {
@@ -9416,13 +8951,43 @@ function updateElementHeight(arr, element, height) {
     });
 }
 
-function drawElementUMLEntity(element, ghosted) {
+const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
+const drawSvg = (w, h, s, extra='') =>`<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
+const drawRect = (w, h, l, e, extra=`fill='${e.fill}'`) => {
+    return `<rect 
+                class='text' x='${l}' y='${l}' 
+                width='${w - l * 2}' height='${h - l * 2}' 
+                stroke-width='${l}' stroke='${e.stroke}' 
+                ${extra} 
+            />`;
+}
+const drawText = (x, y, a, t, extra='') => {
+    return `<text
+                class='text' x='${x}' y='${y}' 
+                dominant-baseline='auto' text-anchor='${a}' ${extra}
+            > ${t} </text>`;
+}
+
+function drawElementEREntity(element, boxw, boxh, linew, texth) {
+    const l = linew * 3;
+
+    let weak = '';
+    if (element.state == "weak") {
+        weak = `<rect
+                    x='${l}' 
+                    y='${l}' 
+                    width='${boxw - l * 2}' 
+                    height='${boxh - l * 2}'
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
+                />`;
+    }
+    let rect = drawRect(boxw, boxh, linew, element);
+    let text = drawText(boxw / 2, boxh / 2 + texth / 3, 'middle', element.name);
+    return drawSvg(boxw, boxh, rect + weak + text);
+}
+
+function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let str = "";
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
-    let texth = Math.round(zoomfact * textheight);
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
@@ -9433,17 +8998,6 @@ function drawElementUMLEntity(element, ghosted) {
     let fHeight = texth * (fText.length + 1) * lineHeight;
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
     updateElementHeight(UMLHeight, element, totalHeight + boxh)
-
-    str += `<div 
-            id='${element.id}' 
-            class='element uml-element' 
-            onmousedown='ddown(event);' 
-            onmouseenter='mouseEnter();' 
-            onmouseleave='mouseLeave()';' 
-            style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index:1;`;
-
-    if (ghosted) str += `pointer-events:none; opacity:${ghostPreview};`;
-    str += `'>`;
 
     // Header
     let height = texth * 2;
@@ -9470,171 +9024,8 @@ function drawElementUMLEntity(element, ghosted) {
     return str;
 }
 
-function drawElementSDEntity(element, ghosted){
-    let ghostPreview = ghostLine ? 0 : 0.4;
+function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let str = "";
-    // Compute size variables
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let texth = Math.round(zoomfact * textheight);
-    let hboxw = Math.round(element.width * zoomfact * 0.5);
-    let hboxh = Math.round(element.height * zoomfact * 0.5);
-    let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
-
-    const maxCharactersPerLine = Math.floor(boxw / texth);
-
-    let textWidth = canvasContext.measureText(element.name).width;
-
-    // If calculated size is larger than element width
-    const margin = 10 * zoomfact;
-    let tooBig = (textWidth >= (boxw - (margin * 2)));
-    let xAnchor = tooBig ? margin : hboxw;
-    let vAlignment = tooBig ? "left" : "middle";
-
-    const splitLengthyLine = (str, max) => {
-        if (str.length <= max) return str;
-        else {
-            return [str.substring(0, max)].concat(splitLengthyLine(str.substring(max), max));
-        }
-    }
-
-    const text = element.attributes.map(line => {
-        return splitLengthyLine(line, maxCharactersPerLine);
-    }).flat();
-
-    elemAttri = text.length;
-
-    // Removes the previouse value in SDHeight for the element
-    for (let i = 0; i < SDHeight.length; i++) {
-        if (element.id == SDHeight[i].id) {
-            SDHeight.splice(i, 1);
-        }
-    }
-
-    // Calculate and store the SDEntity's real height
-    let SDEntityHeight = {
-        id: element.id,
-        height: ((boxh + (boxh / 2 + (boxh * elemAttri / 2))) / zoomfact)
-    }
-    SDHeight.push(SDEntityHeight);
-
-    //div to encapuslate SD element
-    /*str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();'
-        style='left:0px; top:0px; width:${boxw}px;font-size:${texth}px; z-index:1;'`;
-
-    if (context.includes(element)) {
-        str += `z-index: 1;`;
-    }
-    if (ghosted) {
-        str += `pointer-events: none; opacity: ${ghostPreview};`;
-    }
-    str += `'>`;*/
-    str += `<div id='${element.id}' class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave();' 
-        style='left:0px; top:0px; width:${boxw}px; font-size:${texth}px; z-index: ${context.includes(element) ? 1 : 0}; ${ghosted ? 'pointer-events: none; opacity: ' + ghostPreview + ';' : ''}'>`;
-
-    //div to encapuslate SD header
-    str += `<div style='width: ${boxw}; height: ${boxh - (linew * 2)}px;'>`;
-    //svg for SD header, background and text
-    str += `<svg width='${boxw}' height='${boxh}'>`;
-    str += `<path class="text" 
-            d="M${linew + cornerRadius},${(linew)}
-                h${(boxw - (linew * 2)) - (cornerRadius * 2)}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius)}
-                h${(boxw - (linew * 2)) * -1}
-                v${((boxh / 2 + (boxh / 2) - (linew * 2)) - (cornerRadius)) * -1}
-                a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${(cornerRadius) * -1}
-                z
-            "
-            stroke-width='${linew}'
-            stroke='${element.stroke}'
-            fill='${element.fill}'
-        />
-        
-        <text x='${xAnchor}' y='${hboxh}' dominant-baseline='middle' text-anchor='${vAlignment}'>${element.name}</text>`;
-    //end of svg for SD header
-    str += `</svg>`;
-    //end of div for SD header
-    str += `</div>`;
-
-    //div to encapuslate SD content
-
-    //Draw SD-content if there exist at least one attribute
-    if (elemAttri != 0) {
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh * elemAttri / 2)}px'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh / 2 + (boxh * elemAttri / 2)}'>`;
-        str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2 ))}
-                    v${(boxh * elemAttri / 2 + (boxh / 2) - (linew * 2)) - cornerRadius }
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-        for (let i = 0; i < elemAttri; i++) {
-            str += `<text x='${xAnchor}' y='${hboxh + boxh * i / 2}' dominant-baseline='middle' text-anchor='${vAlignment}'>${text[i]}</text>`;
-        }
-        //end of svg for background
-        str += `</svg>`;
-        // Draw SD-content if there are no attributes.
-    }
-    else {
-        str += `<div style='margin-top: ${-8 * zoomfact}px; height: ${boxh / 2 + (boxh / 2)}px'>`;
-        //svg for background
-        str += `<svg width='${boxw}' height='${boxh / 2 + (boxh / 2)}'>`;
-        str += `<path class="text"
-                d="M${linew},${(linew)}
-                    h${(boxw - (linew * 2))}
-                    v${(boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius * -1)},${cornerRadius}
-                    h${(boxw - (linew * 2) - (cornerRadius * 2)) * -1}
-                    a${cornerRadius},${cornerRadius} 0 0 1 ${(cornerRadius) * -1},${(cornerRadius) * -1}
-                    v${((boxh / 2 + (boxh / 2) - (linew * 2)) - cornerRadius) * -1}
-                    z
-                "
-                stroke-width='${linew}'
-                stroke='${element.stroke}'
-                fill='${element.fill}'
-            />`;
-        //end of svg for background
-        str += `</svg>`;
-    }
-    //end of div for SD content
-    str += `</div>`;
-    str += `</div>`;
-    return str;
-}
-const drawDiv = (c, style, s) => `<div class='${c}' style='${style}'> ${s} </div>`;
-const drawSvg = (w, h, s) =>`<svg width='${w}' height='${h}'> ${s} </svg>`;
-const drawRect = (w, h, l, e) => {
-    return `<rect 
-                class='text' x='${l}' y='${l}' 
-                width='${w - l * 2}' height='${h - l * 2}' 
-                stroke-width='${l}' stroke='${e.stroke}' fill='${e.fill}' 
-            />`;
-}
-const drawText = (x, y, a, t, extra='') => {
-    return `<text
-                class='text' x='${x}' y='${y}' 
-                dominant-baseline='auto' text-anchor='${a}' ${extra}
-            > ${t} </text>`;
-}
-
-function drawElementIEEntity(element, ghosted) {
-    let str = "";
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
-    let texth = Math.round(zoomfact * textheight);
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
@@ -9643,17 +9034,6 @@ function drawElementIEEntity(element, ghosted) {
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight =  tHeight - linew * 2 + texth * 2;
     updateElementHeight(IEHeight, element, totalHeight + boxh)
-
-    str += `<div 
-            id='${element.id}' 
-            class='element uml-element' 
-            onmousedown='ddown(event);' 
-            onmouseenter='mouseEnter();' 
-            onmouseleave='mouseLeave()';' 
-            style='left:0px; top:0px;width:${boxw}px;font-size:${texth}px;z-index:1;`;
-
-    if (ghosted) str += `pointer-events: none; opacity: ${ghostPreview};`;
-    str += `'>`;
 
     let height = texth * 2;
     let headRect = drawRect(boxw, height, linew, element);
@@ -9678,61 +9058,386 @@ function drawElementIEEntity(element, ghosted) {
     return str;
 }
 
-function drawElementState(element, ghosted, vectorGraphic) {
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-    var boxw = Math.round(element.width * zoomfact);
-    var boxh = Math.round(element.height * zoomfact);
+function drawElementSDEntity(element, boxw, boxh, linew, texth){
+    let str = "";
+    let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
+    const maxCharactersPerLine = Math.floor(boxw / texth * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    let tHeight = texth * (text.length + 1) * lineHeight;
+    let totalHeight =  tHeight - linew * 2 + texth * 2;
+    updateElementHeight(SDHeight, element, totalHeight + boxh)
+
+    let height = texth * 2;
+    let headPath = `
+        <path 
+            d="M ${linew + cornerRadius},${linew}
+                h ${boxw - linew * 2 - cornerRadius * 2}
+                a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
+                v ${height - linew * 2 - cornerRadius}
+                h ${(boxw - linew * 2) * -1}
+                v ${(height - linew * 2 - cornerRadius) * -1}
+                a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius * -1}
+                z"
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`
+    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headSvg = drawSvg(boxw, height, headPath + headText);
+    str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px;`, headSvg);
+
+    const drawBox = (s, css) => {
+        let height = texth * (s.length + 1) * lineHeight + boxh;
+        let text = "";
+        for (let i = 0; i < s.length; i++) {
+            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
+        }
+        let path = `
+            <path 
+                class="text"
+                d="M ${linew},${(linew)}
+                    h ${boxw - linew * 2}
+                    v ${height - linew * 2 - cornerRadius }
+                    a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius * -1},${cornerRadius}
+                    h ${(boxw - linew * 2 - cornerRadius * 2) * -1}
+                    a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius * -1},${cornerRadius * -1}
+                    v ${(height - linew * 2 - cornerRadius) * -1}
+                    z"
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
+        let contentSvg = drawSvg(boxw, height, path + text);
+        let style = `height:${height}px`;
+        return drawDiv(css, style, contentSvg);
+    }
+
+    str += drawBox(text, 'uml-content');
+    return str;
+}
+
+function drawElementERRelation(element, boxw, boxh, linew) {
+    let content;
+    let hboxw = boxw / 2;
+    let hboxh = boxh / 2;
+    const multioffs = 3;
+
+    let weak = "";
+    if (element.state == "weak") {
+        weak = `<polygon 
+                    points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
+                    class="text"
+                /> `;
+    }
+    content += `<polygon 
+                    points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
+                    class="text"
+                />
+                ${weak}
+                <text 
+                    x='50%' y='50%' 
+                    dominant-baseline='middle' 
+                    text-anchor='middle'
+                > ${element.name.slice(0, element.name.length)} </text>`;
+    return drawSvg(boxw, boxh, content);
+}
+
+function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
+    let content;
+    let hboxw = boxw / 2;
+    let hboxh = boxh / 2;
+    const drawPath = (l, extra='') => {
+        return `<path 
+                    d="M${l},${hboxh} 
+                        Q${l},${l} ${hboxw},${l} 
+                        Q${boxw - l},${l} ${boxw - l},${hboxh} 
+                        Q${boxw - l},${boxh - l} ${hboxw},${boxh - l} 
+                        Q${l},${boxh - l} ${l},${hboxh}" 
+                    stroke='${element.stroke}' fill='${element.fill}' ${extra} stroke-width='${linew}' 
+                    class="text" 
+                />`;
+    }
+
+    if (element.state) {
+        let dash = (element.state == "computed") ? "stroke-dasharray='4 4'" : '';
+        content += drawPath(linew, dash);
+    }
+    let extra = '';
+    switch (element.state) {
+        case "multiple":
+            content += drawPath(linew * 3);
+            break;
+        case "weakKey":
+            content += `<line 
+                            x1="${(boxw - textWidth) / 2}" 
+                            y1="${hboxh + texth * 0.5 + 1}" 
+                            x2="${(boxw + textWidth) / 2}" 
+                            y2="${hboxh + texth * 0.5 + 1}" 
+                            stroke="${element.stroke}" stroke-dasharray="${5 * zoomfact}" stroke-width="${linew}"
+                        />`;
+            break;
+        case "primary":
+        case "candidate":
+            extra = `class='underline'`;
+            break;
+    }
+    content += `<text 
+                    x='${boxw / 2}' y='${hboxh}' ${extra} 
+                    dominant-baseline='middle' text-anchor='middle'
+                > ${element.name} </text>`;
+    return drawSvg(boxw, boxh, content);
+}
+
+function drawElementUMLRelation(element, boxw, boxh, linew) {
+    let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let poly = `
+        <polygon 
+            points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
+            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+        />`;
+    return drawSvg(boxw, boxh, poly);
+}
+
+function drawElementIERelation(element, boxw, boxh, linew) {
+    let content = "";
+    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
+                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`
+
+    if (element.state != inheritanceStateIE.OVERLAPPING) {
+        content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
+                    <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
+    }
+    return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+}
+
+function drawElementState(element, vectorGraphic) {
     const theme = document.getElementById("themeBlack");
     if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
         element.fill = color.WHITE;
     } else if (element.fill == color.WHITE && theme.href.includes('style')) {
         element.fill = color.BLACK;
     }
-    return `<div id="${element.id}" 
-                class="element uml-state"
-                style="margin-top:${((boxh / 2.5))}px;width:${boxw}px;height:${boxh}px;z-index:1;${ghostAttr}" 
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'>
-                <svg width="100%" height="100%" 
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg" 
-                    xml:space="preserve"
-                    style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-                    ${vectorGraphic}
-                </svg>
-            </div>`;
+    return `<svg 
+                width="100%" height="100%" 
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg" 
+                xml:space="preserve"
+                style="fill:${element.fill};fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+            > ${vectorGraphic} </svg>`;
 }
 
-function drawElementSuperState(element, ghosted, textWidth) {
-    let ghostPreview = ghostLine ? 0 : 0.4;
-    const ghostAttr = (ghosted) ? `pointer-events: none; opacity: ${ghostPreview};` : "";
-    let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact);
-    let linew = Math.round(strokewidth * zoomfact);
+function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
-    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`)
-    return `<div id="${element.id}" 
-                class="element uml-Super"
-                style="margin-top:${((boxh * 0.025))}px;width:${boxw}px;height:${boxh}px;${ghostAttr}"
-                onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
-                onmouseleave='mouseLeave();'>
-                <svg width='${boxw}' height='${boxh}'>
-                    <rect x='${linew}' y='${linew}' width='${boxw - (linew * 2)}' height='${boxh - (linew * 2)}' fill="none" fill-opacity="0" stroke='${element.stroke}' stroke-width='${linew}' rx="20"/>
-                    <rect x='${linew}' y='${linew}' width="${textWidth + 40 * zoomfact}px" height="${50 * zoomfact}px" fill='${element.fill}' fill-opacity="1" stroke='${element.stroke}' stroke-width='${linew}' />
-                    ${text}
-                </svg>
-            </div>`;
+
+    let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='20'`);
+    let rectTwo = drawRect(textWidth + 40 * zoomfact, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`);
+    return drawSvg(boxw, boxh, rectOne + rectTwo + text);
+}
+
+function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) {
+    let content;
+    content = `<path 
+                    class="text" 
+                    d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                />
+                <g>
+                    <circle 
+                        cx="${(boxw / 2) + linew}" 
+                        cy="${(boxw / 8) + linew}" 
+                        r="${boxw / 8}px" 
+                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
+                    />
+                    <path 
+                        class="text"
+                        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                            v${boxw / 6}
+                            m${-boxw / 4},0
+                            h${boxw / 2}
+                            m${-boxw / 4},0
+                            v${boxw / 3}
+                            l${boxw / 4},${boxw / 4}
+                            m${-boxw / 4},${-boxw / 4}
+                            l${-boxw / 4},${boxw / 4}"
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='transparent'
+                    />
+                    <rect 
+                        class='text'
+                        x='${(boxw - textWidth) / 2}'
+                        y='${boxw + linew * 2}'
+                        width='${textWidth}'
+                        height='${texth - linew}'
+                        stroke='none'
+                        fill='${element.fill}'
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${boxw + texth / 2 + linew * 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    return drawSvg(boxw, boxh, content);
+}
+
+function drawElementSequenceObject(element, boxw, boxh, linew) {
+    let str = "";
+    let content;
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+
+    content = `<path 
+                    class="text" 
+                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
+                        V ${boxh}"
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    stroke-dasharray='${linew * 3},${linew * 3}'
+                    fill='transparent'
+                /> 
+                <g>
+                    <rect 
+                        class='text'
+                        x='${linew}'
+                        y='${linew}'
+                        width='${boxw - linew * 2}'
+                        height='${(boxw / 2) - linew}'
+                        rx='${sequenceCornerRadius}'
+                        stroke-width='${linew}'
+                        stroke='${element.stroke}'
+                        fill='${element.fill}' 
+                    />
+                    <text 
+                        class='text' 
+                        x='${boxw / 2}' 
+                        y='${(boxw / 2 - linew) / 2}' 
+                        dominant-baseline='middle' 
+                        text-anchor='middle'
+                    > ${element.name} </text>
+                </g>`;
+    str += drawSvg(boxw, boxh, content);
+    return str;
+}
+
+function drawElementSequenceActivation(element, boxw, boxh, linew) {
+    let content;
+    var sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+
+    content = `<rect 
+                    x='${linew}' y='${linew}' 
+                    width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
+                    rx='${sequenceCornerRadius * 3}' 
+                    stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}'
+                />`;
+    return drawSvg(boxw, boxh, content);
+}
+
+function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
+    let fontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
+    element.altOrLoop = (element.alternatives.length > 1) ? "Alt" : "Loop";
+
+    let content = `
+        <rect 
+            class='text'
+            x='${linew}'
+            y='${linew}'
+            width='${boxw - linew * 2}'
+            height='${boxh - linew * 2}'
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='none'
+            rx='${7 * zoomfact}'
+            fill-opacity="0"
+        />`;
+    //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+    if (element.alternatives.length) {
+        for (let i = 1; i < element.alternatives.length; i++) {
+            content += `<path class="text"
+                            d="M ${boxw - linew},${(boxh / element.alternatives.length) * i}
+                                H ${linew} "
+                            stroke-width='${linew}'
+                            stroke='${element.stroke}'
+                            stroke-dasharray='${linew * 3},${linew * 3}'
+                            fill='transparent'
+                        />`;
+            content += drawText(linew * 2,
+                (boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2,
+                'auto', element.alternatives[i], `fill='${fontColor}'`
+            );
+        }
+    }
+    //svg for the small label in top left corner
+    content += `<path 
+                    d="M ${(7 * zoomfact) + linew},${linew}
+                        h ${100 * zoomfact}
+                        v ${25 * zoomfact}
+                        l ${-12.5 * zoomfact},${12.5 * zoomfact}
+                        H ${linew}
+                        V ${linew + (7 * zoomfact)}
+                        a ${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
+                        z" 
+                    stroke-width='${linew}'
+                    stroke='${element.stroke}'
+                    fill='${element.fill}'
+                />`;
+    let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
+    let textTwo = drawText( linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0] ?? '', `fill=${fontColor}` );
+    return drawSvg(boxw, boxh, content + textOne + textTwo);
+}
+
+function drawElementNote(element, boxw, boxh, linew, texth) {
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    const text = splitFull(element.attributes, maxCharactersPerLine);
+    let length = (text.length > 4) ? text.length : 4;
+    let totalHeight = boxh + texth * length;
+    console.log(totalHeight, element);
+    updateElementHeight(NOTEHeight, element, totalHeight);
+    element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
+
+    let content = `
+        <path class="text"
+            d=" M ${linew},${linew}
+                v ${boxh + (texth * length) - linew * 2}
+                h ${boxw - linew * 2}
+                v -${boxh + (texth * length) - linew * 2 - (boxh - linew * 2) * 0.5}  
+                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                h 1
+                h -1
+                v ${(boxh - linew * 2) * 0.5} 
+                h ${(boxw - linew * 2) * 0.12}
+                v 1
+                v -1
+                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
+                h -${(boxw - linew * 2) * 0.885} "
+            stroke-width='${linew}'
+            stroke='${element.stroke}'
+            fill='${element.fill}'
+        />`;
+    for (let i = 0; i < text.length; i++) {
+        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+    }
+    return drawSvg(boxw, boxh + texth * length, content);
 }
 
 /**
  * @description Updates the elements translations and redraw lines.
- * @param {Interger} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
- * @param {Interger} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
+ * @param {number || null} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
+ * @param {number || null} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
  */
-function updatepos(deltaX, deltaY) {
+function updatepos() {
     updateCSSForAllElements();
     // Update svg backlayer -- place everyhing to draw OVER elements here
     var str = "";
@@ -9760,7 +9465,7 @@ function checkLineErrors(lines) {
     var line;
 
     // Error checking for lines
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         var fElement = data[findIndex(data, line.fromID)];
         var tElement = data[findIndex(data, line.toID)];
@@ -9780,20 +9485,18 @@ function checkLineErrors(lines) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkEREntityErrors(element) {
-    var keyQuantity;
-    var primaryCount;
-    var strongEntity;
-    var weakrelation;
+    let keyQuantity, primaryCount, strongEntity, weakrelation;
+    let fElement, fElement0, fElement1, tElement, tElement0, tElement1, line, line0, line1;
 
     // Checks for entities with the same name
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (element.name == data[i].name && element.id != data[i].id) {
             errorData.push(element);
         }
     }
 
     // Checks for entity connected to another entity
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
@@ -9807,13 +9510,13 @@ function checkEREntityErrors(element) {
     }
 
     // Checks if connected attribute is connected with another relation or entity
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -9827,7 +9530,7 @@ function checkEREntityErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -9843,19 +9546,19 @@ function checkEREntityErrors(element) {
     }
 
     // Checks for connection to attribute with more than 2 connections
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9869,7 +9572,7 @@ function checkEREntityErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9885,13 +9588,13 @@ function checkEREntityErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9905,7 +9608,7 @@ function checkEREntityErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -9923,10 +9626,9 @@ function checkEREntityErrors(element) {
     }
     if (element.state == "weak") {
         keyQuantity = 0;
-        primaryCount = 0;
         strongEntity = 0;
         weakrelation = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -9957,7 +9659,7 @@ function checkEREntityErrors(element) {
 
             // Checking for attributes with same name
             if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9971,7 +9673,7 @@ function checkEREntityErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -9987,7 +9689,7 @@ function checkEREntityErrors(element) {
 
             // Checking if weak entity is related to a strong entity or a weak entity with a relation
             if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak" && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10001,7 +9703,7 @@ function checkEREntityErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak" && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10028,7 +9730,7 @@ function checkEREntityErrors(element) {
             errorData.push(element);
         }
 
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -10048,7 +9750,7 @@ function checkEREntityErrors(element) {
     } else {
         keyQuantity = 0;
         primaryCount = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -10085,7 +9787,7 @@ function checkEREntityErrors(element) {
 
             // Checking for attributes with same name
             if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10099,7 +9801,7 @@ function checkEREntityErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10115,7 +9817,7 @@ function checkEREntityErrors(element) {
 
         }
 
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -10139,10 +9841,10 @@ function checkEREntityErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkERRelationErrors(element) {
-    var lineQuantity;
+    let lineQuantity, line, fElement, tElement;
 
     // Checks for relation connected to another relation
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
@@ -10156,13 +9858,13 @@ function checkERRelationErrors(element) {
     }
 
     // Checks if connected attribute is connected with another relation or entity
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10176,7 +9878,7 @@ function checkERRelationErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10192,19 +9894,19 @@ function checkERRelationErrors(element) {
     }
 
     // Checks for connection to attribute with more than 2 connections
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10218,7 +9920,7 @@ function checkERRelationErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10234,13 +9936,13 @@ function checkERRelationErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10254,7 +9956,7 @@ function checkERRelationErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -10272,12 +9974,12 @@ function checkERRelationErrors(element) {
     }
 
     // Checking for reletions with same name but different properties
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         if (element.name == data[i].name && element.id != data[i].id && data[i].kind == elementTypesNames.ERRelation) {
 
             // Checking if relations have same line types
             var linesChecked = [];
-            for (var k = 0; k < lines.length; k++) {
+            for (let k = 0; k < lines.length; k++) {
                 line = lines[k];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
@@ -10290,13 +9992,13 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10318,13 +10020,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10348,13 +10050,13 @@ function checkERRelationErrors(element) {
                     }
                     if (line.kind == "Double") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10376,13 +10078,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10412,13 +10114,13 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10440,13 +10142,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10470,13 +10172,13 @@ function checkERRelationErrors(element) {
                     }
                     if (line.kind == "Double") {
                         if (line.cardinality == "ONE") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10498,13 +10200,13 @@ function checkERRelationErrors(element) {
                             }
                         }
                         if (line.cardinality == "MANY") {
-                            for (var j = 0; j < lines.length; j++) {
+                            for (let j = 0; j < lines.length; j++) {
                                 line0 = lines[j];
                                 fElement0 = data[findIndex(data, line0.fromID)];
                                 tElement0 = data[findIndex(data, line0.toID)];
 
                                 var lineChecked = false;
-                                for (var l = 0; l < linesChecked.length; l++) {
+                                for (let l = 0; l < linesChecked.length; l++) {
                                     if (line0.id == linesChecked[l].id) lineChecked = true;
                                 }
 
@@ -10533,7 +10235,7 @@ function checkERRelationErrors(element) {
             }
 
             // Checking if reletions have the same attributes
-            for (var k = 0; k < lines.length; k++) {
+            for (let k = 0; k < lines.length; k++) {
                 line = lines[k];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
@@ -10549,7 +10251,7 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
-                    for (var j = 0; j < lines.length; j++) {
+                    for (let j = 0; j < lines.length; j++) {
                         line0 = lines[j];
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
@@ -10559,7 +10261,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10567,7 +10269,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10583,7 +10285,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10600,7 +10302,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10616,7 +10318,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10638,7 +10340,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10646,7 +10348,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10662,7 +10364,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10678,7 +10380,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10694,7 +10396,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10724,7 +10426,7 @@ function checkERRelationErrors(element) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
-                    for (var j = 0; j < lines.length; j++) {
+                    for (let j = 0; j < lines.length; j++) {
                         line0 = lines[j];
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
@@ -10734,7 +10436,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10742,7 +10444,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10758,7 +10460,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10775,7 +10477,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10791,7 +10493,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10813,7 +10515,7 @@ function checkERRelationErrors(element) {
                             attrFound = true;
                             attrLineFound = true;
 
-                            for (var l = 0; l < lines.length; l++) {
+                            for (let l = 0; l < lines.length; l++) {
                                 line1 = lines[l];
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
@@ -10821,7 +10523,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10837,7 +10539,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10854,7 +10556,7 @@ function checkERRelationErrors(element) {
                                 if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10870,7 +10572,7 @@ function checkERRelationErrors(element) {
                                 if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
                                     attrLineFound = false;
 
-                                    for (var m = 0; m < lines.length; m++) {
+                                    for (let m = 0; m < lines.length; m++) {
                                         line2 = lines[m];
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
@@ -10901,7 +10603,7 @@ function checkERRelationErrors(element) {
             // Checking if relations have the same amount of attributes
             var elementAttrCount = 0;
             var dataAttrCount = 0;
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line = lines[j];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
@@ -10927,13 +10629,13 @@ function checkERRelationErrors(element) {
     }
 
     // Checking for attribute with same name on relation
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10947,7 +10649,7 @@ function checkERRelationErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -10964,14 +10666,14 @@ function checkERRelationErrors(element) {
 
     if (element.state == "weak") {
         lineQuantity = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong line type to a relation
             if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state == "weak" && line.kind == "Normal") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -10985,7 +10687,7 @@ function checkERRelationErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state == "weak" && line.kind == "Normal") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -11005,7 +10707,7 @@ function checkERRelationErrors(element) {
 
             // Checking for more than one Normal line to a weak relation
             if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state != "weak") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -11019,7 +10721,7 @@ function checkERRelationErrors(element) {
                 }
             }
             if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state != "weak") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -11035,7 +10737,7 @@ function checkERRelationErrors(element) {
 
             // Checking for more than one double line to a weak relation
             if (fElement.id == element.id && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -11049,7 +10751,7 @@ function checkERRelationErrors(element) {
                 }
             }
             if (tElement.id == element.id && line.kind == "Double") {
-                for (var j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
@@ -11070,7 +10772,7 @@ function checkERRelationErrors(element) {
         }
     } else {
         lineQuantity = 0;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             line = lines[i];
             fElement = data[findIndex(data, line.fromID)];
             tElement = data[findIndex(data, line.toID)];
@@ -11092,18 +10794,17 @@ function checkERRelationErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkERAttributeErrors(element) {
-    for (var i = 0; i < lines.length; i++) {
+    let line, line0, line1;
+    let fElement, fElement0, fElement1;
+    let tElement, tElement0, tElement1;
+    for (let i = 0; i < lines.length; i++) {
         line = lines[i];
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        var line0;
-        var fElement0;
-        var tElement0;
-
         // Checking for non-normal attributes on a attribute
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11121,7 +10822,7 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11141,13 +10842,13 @@ function checkERAttributeErrors(element) {
 
         // Checking for 2nd line attribute connected with a 3rd attribute
         if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11161,7 +10862,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11177,13 +10878,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11197,7 +10898,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11214,13 +10915,13 @@ function checkERAttributeErrors(element) {
         }
         // Checking for 3rd line attribute connected with a 2nd attribute
         if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11234,7 +10935,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11250,13 +10951,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11270,7 +10971,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11288,7 +10989,7 @@ function checkERAttributeErrors(element) {
 
         // Attribute connected to more than one relation or entity
         if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11302,7 +11003,7 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11318,13 +11019,13 @@ function checkERAttributeErrors(element) {
 
         // 2nd line attribute connected to another relation or entity
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11338,7 +11039,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11354,13 +11055,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11374,7 +11075,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11391,13 +11092,13 @@ function checkERAttributeErrors(element) {
         }
         // Check for 1st line attribute connected in a 3 line attribute chain
         if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11411,7 +11112,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11427,13 +11128,13 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
                 if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11447,7 +11148,7 @@ function checkERAttributeErrors(element) {
                     }
                 }
                 if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
-                    for (var k = 0; k < lines.length; k++) {
+                    for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
@@ -11488,13 +11189,9 @@ function checkERAttributeErrors(element) {
             }
         }
 
-        var line0;
-        var fElement0;
-        var tElement0;
-
         // Checking for attributes on the same relation with the same name
         if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11508,7 +11205,7 @@ function checkERAttributeErrors(element) {
             }
         }
         if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11542,7 +11239,7 @@ function checkERAttributeErrors(element) {
         if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
             var currentAttr = fElement;
             var currentEntity = tElement;
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11571,7 +11268,7 @@ function checkERAttributeErrors(element) {
         if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
             var currentAttr = tElement;
             var currentEntity = fElement;
-            for (var j = 0; j < lines.length; j++) {
+            for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
@@ -11618,15 +11315,15 @@ function checkElementError(element) {
  * @param {Object} elements List of all elements.
  */
 function errorReset(elements) {
-    for (var i = 0; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
         elements[i].stroke = strokeColors;
     }
 }
 
 /**
  * @description Updates the Label position on the line.
- * @param {Interger} newPosX The position the mouse is at in the X-axis.
- * @param {Interger} newPosY The position the mouse is at in the Y-axis.
+ * @param {number} newPosX The position the mouse is at in the X-axis.
+ * @param {number} newPosY The position the mouse is at in the Y-axis.
  */
 function updateLabelPos(newPosX, newPosY) {
     targetLabel.labelMoved = true;
@@ -11649,7 +11346,7 @@ function updateLabelPos(newPosX, newPosY) {
     displaceFromLine(newPosX, newPosY);
 }
 
-function calculateProcentualDistance(objectLabel, x, y) {
+function calculateProcentualDistance(objectLabel) {
     // Math to calculate procentuall distance from/to centerpoint
     var diffrenceX = objectLabel.highX - objectLabel.lowX;
     var diffrenceY = objectLabel.highY - objectLabel.lowY;
@@ -11786,7 +11483,7 @@ function drawSelectionBox(str) {
             highX = context[0].x2;
             lowY = context[0].y1;
             highY = context[0].y2;
-            for (var i = 0; i < context.length; i++) {
+            for (let i = 0; i < context.length; i++) {
                 x1 = context[i].x1;
                 x2 = context[i].x2;
                 y1 = context[i].y1;
@@ -11800,7 +11497,7 @@ function drawSelectionBox(str) {
 
         var tempLines = [];
         if (contextLine.length > 0) {
-            for (var i = 0; i < contextLine.length; i++) {
+            for (let i = 0; i < contextLine.length; i++) {
                 if (contextLine[i] && contextLine[i].kind !== undefined) {
                     if (contextLine[i].kind === lineKind.DOUBLE) {
                         tempLines.push(document.getElementById(contextLine[i].id + "-1"));
@@ -11832,7 +11529,7 @@ function drawSelectionBox(str) {
             lineHighY = Math.max(tempY1, tempY2);
 
             // Loop through all selected lines and find highest and lowest x and y coordinates
-            for (var i = 0; i < tempLines.length; i++) {
+            for (let i = 0; i < tempLines.length; i++) {
                 var hasPoints = tempLines[i].getAttribute('points'); // Polyline
                 if (hasPoints != null) {
                     var points = hasPoints.split(' ');
@@ -11901,8 +11598,8 @@ function drawSelectionBox(str) {
  */
 function updateCSSForAllElements() {
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
-        var left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact))),
-            top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+        let top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta) {
             left -= deltaX;
@@ -11912,8 +11609,8 @@ function updateCSSForAllElements() {
         if (settings.grid.snapToGrid && useDelta) {
             if (element.kind == elementTypesNames.EREntity) {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
-                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                let objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
+                let objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
 
                 // Add the scroll values
                 left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 5)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -11924,8 +11621,8 @@ function updateCSSForAllElements() {
                 top -= ((elementData.height * zoomfact) / 2);
             } else if (element.kind != elementTypesNames.EREntity) {
                 // The element coordinates with snap point
-                var objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
-                var objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
+                let objX = Math.round((elementData.x - (deltaX * (1.0 / zoomfact)) - (settings.grid.gridSize * 3)) / settings.grid.gridSize) * settings.grid.gridSize;
+                let objY = Math.round((elementData.y - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
 
                 // Add the scroll values
                 left = Math.round((((objX - zoomOrigo.x) + (settings.grid.gridSize * 4)) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -11941,7 +11638,7 @@ function updateCSSForAllElements() {
     }
 
     // Update positions of all data elements based on the zoom level and view space coordinate
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         // Element data from the array
         var element = data[i];
         // Element DIV (dom-object)
@@ -12262,12 +11959,11 @@ function isDarkTheme() {
 function showdata() {
     updateContainerBounds();
     var str = "";
-    var courses = [];
     errorData = [];
     errorReset(data);
 
     // Iterate over programs
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         str += drawElement(data[i]);
     }
 
