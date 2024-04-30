@@ -434,11 +434,10 @@ class StateMachine {
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:      
-                                    //this function stops working if an object is put into historyLog
-                                    //that isn't a reference to lastLog
+                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    //temporary object used to just send the values of lastLog but not the reference
+                                    // loop to add the correct sizes to the changeState
+                                    // it only stores the changes originally and after this it stores the whole size
                                     for (let change of stateChangeArray) {
                                         change.id.forEach(id => {
                                             let current_element = document.getElementById(id);
@@ -447,13 +446,19 @@ class StateMachine {
                                                 lastLog.height += current_element.offsetHeight; 
                                             }
                                         });
-                                    }                    
-                                    let tempObj = {...lastLog};
-                                    this.historyLog.push(tempObj);
+                                    }
+                                    // not sure why but if you resize -> undo -> resize it starts
+                                    // to store the id as an array so this is just a check to counter that
+                                    // entirely possible this breaks something else                                    
+                                    if (Array.isArray(lastLog.id)) {
+                                        // yes, the double [0][0] is neccesarry to access the ID                                        
+                                        lastLog.id = lastLog.id[0][0];
+                                    }
+                                    // spreaading the values so that it doesn't keep the reference
+                                    console.log(lastLog);
+                                    this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
-
-
                                 default:
                                     console.error(`Missing implementation for soft state change: ${stateChange}!`);
                                     break;
@@ -3899,17 +3904,14 @@ function subMenuCycling(subMenu) {
      */
 function appendValuesFrom(target, changes) {
     var propertys = Object.getOwnPropertyNames(changes);
-    console.log(propertys);
     // For every value in change
     propertys.forEach(key => {
 
         /**
          * If the key is not blacklisted, set to the new value
          */
-        if (key == "id") return; // Ignore this keys.
-        target[key] = changes[key];
+        if (key != "id") target[key] = changes[key]; // Ignore this keys.
     });
-    console.log(target);
     return target;
 }
 //#endregion =====================================================================================
@@ -7733,7 +7735,7 @@ function determineLine(line, targetGhost = false) {
     var felem, telem, dx, dy
 
     felem = data[findIndex(data, line.fromID)];
-
+    if (!felem) return;
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
     telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
@@ -8005,7 +8007,7 @@ function drawLine(line, targetGhost = false) {
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
-
+    if (!felem || !telem) return;
     let str = "";
     let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
