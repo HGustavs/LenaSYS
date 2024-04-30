@@ -463,9 +463,14 @@ class StateMachine {
                                         // yes, the double [0][0] is neccesarry to access the ID                                        
                                         lastLog.id = lastLog.id[0][0];
                                     }
+                                    //console.log(this.historyLog[this.historyLog.length-1].id);
+                                    // since we only want to store the final resize, we keep removing the last element if it has the same id
+                                    // as the previous one
+                                    const lastEntry = this.historyLog[this.historyLog.length-1];
+                                    if (lastEntry.id == lastLog.id && lastEntry.type == newChangeType.flag) this.historyLog.splice(this.historyLog.length-1, 1);
+
                                     // spreaading the values so that it doesn't keep the reference
-                                    //console.log(lastLog);
-                                    this.historyLog.push({...lastLog});
+                                    this.historyLog.push({...lastLog, type: newChangeType.flag});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
