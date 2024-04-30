@@ -29,6 +29,7 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
+    <script src="./diagram/helper.js"></script>
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
@@ -309,12 +310,7 @@
                     </div> 
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
-                                <span class="placementTypeToolTipText"><b>ER relation</b><br>
-                                    <p>Represents how entities are associated with each other.</p>
-                                </span>
-                            </div>
+
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML Inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -323,6 +319,14 @@
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                 </span>
                             </div>
+
+                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
+                                <span class="placementTypeToolTipText"><b>ER relation</b><br>
+                                    <p>Represents how entities are associated with each other.</p>
+                                </span>
+                            </div>
+
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
