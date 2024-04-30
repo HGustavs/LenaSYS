@@ -425,7 +425,7 @@ class StateMachine {
                     } else { // Otherwise, simply modify the last entry.
                         for (let j = 0; j < changeTypes.length; j++) {
                             const currentChangedType = changeTypes[j];
-                            let changeType;
+                            let movedAndResized = false;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
@@ -433,20 +433,24 @@ class StateMachine {
                                     this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
-                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
+                                    movedAndResized = true;
+                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
                                     // loop to add the correct sizes to the changeState
                                     // it only stores the changes originally and after this it stores the whole size
                                     for (let change of stateChangeArray) {
                                         change.id.forEach(id => {
                                             let currentElement = data[findIndex(data, id)];
+                                            console.log(currentElement)
                                             if (lastLog.id == id) {
                                                 //add this but for (x, y) aswell
                                                 lastLog.width += currentElement.width;
                                                 lastLog.height += currentElement.height; 
-                                                lastLog.x += currentElement.x;
-                                                lastLog.y += currentElement.y;
+                                                if (movedAndResized) {
+                                                    lastLog.x = currentElement.x;
+                                                    lastLog.y = currentElement.y;
+                                                }
                                             }
                                         });
                                     }
@@ -458,7 +462,7 @@ class StateMachine {
                                         lastLog.id = lastLog.id[0][0];
                                     }
                                     // spreaading the values so that it doesn't keep the reference
-                                    console.log(lastLog);
+                                    //console.log(lastLog);
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
