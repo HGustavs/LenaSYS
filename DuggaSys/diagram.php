@@ -29,7 +29,11 @@
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
+    <script src="./diagram/point.js"></script>
+    <script src="./diagram/constants.js"></script>
+    <script src="./diagram/globals.js"></script>
     <script src="./diagram/helper.js"></script>
+    <script src="./diagram/errorHandling.js"></script>
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
