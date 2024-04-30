@@ -65,18 +65,45 @@
         
             // Get the file owner's UID
             $uid = fileowner($path);
-        
-            // Convert UID to username if possible
-            if (function_exists('posix_getpwuid')) {
-                $userInfo = posix_getpwuid($uid);
 
-                if (!$userInfo) {
-                    return (string)$uid;
-                }
-
-                return $userInfo['name'];
-            } else {
-                return (string)$uid; // Return UID as string if posix functions are not available
+            if (!function_exists('posix_getpwuid')) {
+                echo "function does not exist";
+                return (string)$uid;
             }
+
+            $userInfo = posix_getpwuid($uid);
+
+            if (!$userInfo) {
+                return (string)$uid;
+            }
+
+            return $userInfo['name'];
+        }
+
+        /**
+         * function get_group
+         * Get the group of a file or directory.
+         */
+        public static function get_group(string $path): string {
+            // Check if the file or directory exists
+            if (!file_exists($path)) {
+                return 'File or directory does not exist';
+            }
+        
+            // Get the file owner's UID
+            $gid = filegroup($path);
+
+            if (!function_exists('posix_getgrgid')) {
+                echo "function does not exist";
+                return (string)$gid;
+            }
+
+            $groupInfo = posix_getgrgid($gid);
+
+            if (!$groupInfo) {
+                return (string)$gid;
+            }
+
+            return $groupInfo['name'];
         }
     }
