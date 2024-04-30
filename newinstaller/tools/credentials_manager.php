@@ -11,7 +11,17 @@
          * save database credentials to file.
          */
         public function set_db_credentials(string $username, string $password) {
-            // TODO: Implement function.
+
+            $fileContent .= "\n";
+            $fileContent .= "define('DB_USER', '{$username}');\n";
+            $fileContent .= "define('DB_PASSWORD', '{$password}');\n";
+        
+
+            file_put_contents($this->path, $fileContent);
+
+            // Store credentials in class properties
+            $this->dbUser = $username;
+            $this->dbPassword = $password;
         }
 
         /**
@@ -60,5 +70,32 @@
          */
         public function get_db_name(): string {
             // TODO: Implement function.
+        }
+
+        private function check_file_exists(): bool {
+            $filePath = '../../../corusesyspw.php'; // Relative path to the credentials file
+            // Checks if file exists
+            if (!file_exists($filePath)) {
+                return false;
+            }
+            return true; // Return true if the file exists or was successfully created
+        }
+
+        private function configuration_exists(): bool {
+            if(!Permissions::has_permission($this->path)) {
+                return false;
+            }
+
+            if(!$this->check_file_exists()) {
+                file_put_contents($this->path, "<?php");
+            }
+
+            // Adds php-tag if file alredy exists without one.
+            $fileContent = file_get_contents($this->path);
+            if (!strpos($fileContent, '<?php')) {
+                $fileContent = "<?php";
+            }
+
+            return true;
         }
     }
