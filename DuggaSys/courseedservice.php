@@ -610,8 +610,9 @@ try{
 	$query->execute();
 }
 catch(Exception $e){
-	$error=$query->errorInfo();
-	$debug="Error reading courses\n".$error[2];
+	//as the column doesnt exist on any of the tables with old data this is left blank, uncomment for debugging
+	//$error = $query->errorInfo();
+	//$debug = "Error reading courses\n" . $error[2];
 }
 
 //useranswer
