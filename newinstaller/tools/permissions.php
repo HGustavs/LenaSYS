@@ -60,14 +60,13 @@
         public static function get_owner(string $path): string {
             // Check if the file or directory exists
             if (!file_exists($path)) {
-                return 'File or directory does not exist';
+                return "File or directory does not exist";
             }
         
             // Get the file owner's UID
             $uid = fileowner($path);
 
             if (!function_exists('posix_getpwuid')) {
-                echo "function does not exist";
                 return (string)$uid;
             }
 
@@ -94,7 +93,6 @@
             $gid = filegroup($path);
 
             if (!function_exists('posix_getgrgid')) {
-                echo "function does not exist";
                 return (string)$gid;
             }
 
@@ -105,5 +103,20 @@
             }
 
             return $groupInfo['name'];
+        }
+
+        /**
+         * function get_process_user
+         * get the user currently running the php server.
+         */
+        public static function get_process_user(): string {
+            if (!function_exists('posix_geteuid') || !function_exists('posix_getpwuid')) {
+                return "POSIX functions are not available";
+            }
+
+            $euid = posix_geteuid();
+            $userInfo = posix_getpwuid($euid);
+
+            return $userInfo ? $userInfo['name'] : "User information not available";
         }
     }
