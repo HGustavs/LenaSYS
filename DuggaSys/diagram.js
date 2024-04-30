@@ -2573,7 +2573,6 @@ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
  */
 function mouseMode_onMouseMove(event) {
     mouseOverLine = determineLineSelect(event.clientX, event.clientY);
-
     // Change cursor style if mouse pointer is over a line.
     if (mouseOverLine && !mouseButtonDown) {
         containerStyle.cursor = "pointer";
@@ -2586,7 +2585,6 @@ function mouseMode_onMouseMove(event) {
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
                 if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
                     ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
@@ -2630,10 +2628,8 @@ function mmoving(event) {
             updateA4Pos();
             // Update scroll position
             updatepos(null, null);
-
             // Update the ruler
             drawRulerBars(scrollx, scrolly);
-
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
@@ -2649,7 +2645,6 @@ function mmoving(event) {
             break;
         case pointerStates.CLICKED_ELEMENT:
             if (mouseMode != mouseModes.EDGE_CREATION) {
-
                 var prevTargetPos = {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
@@ -2663,23 +2658,18 @@ function mmoving(event) {
                     x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
                     y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
                 }
-
                 // Moving object
                 movingObject = true;
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
-
                 // We update position of connected objects
                 updatepos(deltaX, deltaY);
-
                 calculateDeltaExceeded();
             }
             break;
         case pointerStates.CLICKED_NODE:
-            let isX;
-            let isR;
-            let isUP;
+            let isX, isR, isUP;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -2699,73 +2689,57 @@ function mmoving(event) {
                 elementData.kind == elementTypesNames.SDEntity) { // Declare the minimal height of an object
                 minHeight = 0;
             }
-
             deltaY = startY - event.clientY;
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 isR = false;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
-
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 isUP = false;
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
                 isUP = true;
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
                 isX = false;
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
-
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 isUP = true;
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
                 isX = false;
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
-
                 isR = false;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
-
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 isUP = true;
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
                 isX = false;
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
-
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 isR = false;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
                 isUP = false;
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 isR = true;
@@ -2792,7 +2766,6 @@ function mmoving(event) {
             showdata()
             updatepos(null, null);
             break;
-
         default:
             mouseMode_onMouseMove(event);
             break;
@@ -2803,29 +2776,24 @@ function mmoving(event) {
 function movementPosChange(element,start,delta, isX){
     let tmp = (isX) ? element.x : element.y;
     let elem;
-    if (isX){
+    if (isX) {
         element.x = screenToDiagramCoordinates( (start - delta ),0).x;
         elem = element.x;
-    }
-    else {
+    } else {
         element.y = screenToDiagramCoordinates(0, (start - delta )).y;
         elem = element.y;
     }
-
     // Deduct the new position, giving us the total change
     return -(tmp - elem);
 }
-function movementXChange(element,start,delta,isR){
 
+function movementXChange(element,start,delta,isR){
     let tmp = element.width;
-    if (isR){
+    if (isR) {
         element.width = (start - (delta / zoomfact));
-    }
-    else{
+    } else {
         element.width = (start + (delta / zoomfact));
     }
-
-
     // Remove the new width, giving us the total change
     return -(tmp - element.width);
 }
@@ -2833,10 +2801,9 @@ function movementXChange(element,start,delta,isR){
 function movementYChange(element,start,delta,isUp,preResizeHeight){
     // Adds a deep clone of the element to preResizeHeight if it isn't in it
     let tmp = element.height;
-    if (isUp){
+    if (isUp) {
         element.height = (start + (delta / zoomfact));
-    }
-    else{
+    } else {
         element.height = (start - (delta / zoomfact));
     }
     let foundID = false;
@@ -2856,6 +2823,7 @@ function movementYChange(element,start,delta,isUp,preResizeHeight){
     }
     return -(tmp - element.height);
 }
+
 //#endregion ===================================================================================
 //#region ================================ ELEMENT MANIPULATION ================================
 
