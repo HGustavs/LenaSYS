@@ -6,12 +6,11 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 
 // Connect to database and start session
 pdoConnect();
-session_start();
+
 // Fetch all course versions
 function getCourseVersions($pdo) {
     $versions = [];
@@ -22,7 +21,6 @@ function getCourseVersions($pdo) {
         $versions = $query->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         error_log("Error reading versions: " . $e->getMessage());
-        echo "Error: " . $e->getMessage(); 
         return [];
     }
     return $versions;
