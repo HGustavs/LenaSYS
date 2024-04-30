@@ -2720,8 +2720,7 @@ function mmoving(event) {
                 // Deduct the new position, giving us the total change
                 const xChange = -(tmp - elementData.x);
 
-                //stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                hasResized = true;
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
                 var tmp = elementData.width;
