@@ -53,12 +53,30 @@
             return $info;
         }
         
-
         /**
          * function get_owner
          * Get the owner of a file or directory.
          */
         public static function get_owner(string $path): string {
-            // TODO: implement function.
-        } 
+            // Check if the file or directory exists
+            if (!file_exists($path)) {
+                return 'File or directory does not exist';
+            }
+        
+            // Get the file owner's UID
+            $uid = fileowner($path);
+        
+            // Convert UID to username if possible
+            if (function_exists('posix_getpwuid')) {
+                $userInfo = posix_getpwuid($uid);
+
+                if (!$userInfo) {
+                    return (string)$uid;
+                }
+
+                return $userInfo['name'];
+            } else {
+                return (string)$uid; // Return UID as string if posix functions are not available
+            }
+        }
     }
