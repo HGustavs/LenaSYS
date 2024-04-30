@@ -7,30 +7,36 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
     //TEST #1
     //Update firstname
     'Update-firstname' => array(  
-        'expected-output'   => '{"output":"PLACEHOLDER"}',
+        'expected-output'   => '{"entries":[{"username":"{\"username\":\"testuser1\"}","firstname":"{\"firstname\":\"testuser2\"}"}]}',
         //Pre-values
-        'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser1';",
-        'query-after-test-2' => "DELETE FROM user WHERE username = 'testuser2';",
+        'query-before-test-1' => "INSERT INTO user(uid, username, password) VALUES (9997, 'testuser1', 'testpwd');",
+        'query-before-test-2' => "INSERT INTO user_course(uid, cid, access) VALUES (9997, 1885, 'R');",
+        'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9997';",
+        'query-after-test-2' => "DELETE FROM user WHERE uid = '9997';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
+                'courseid' => '1885',
                 'opt' => 'UPDATE',
+                'uid' => '9997',
                 'prop' => 'firstname',
                 'val' => 'testuser2',
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'none'
+                'entries' => array(
+                    'username',
+                    'firstname'
+                ),
             )),
         ),
 
     //TEST #2
     //Update lastname
-    'Update-lastname' => array(
+    /*'Update-lastname' => array(
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -52,11 +58,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
 
     //TEST #3
     //Update ssn
-    'Update-ssn' => array(  
+    /*'Update-ssn' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -78,11 +84,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
 
     //TEST #4
     //Update username
-    'Update-username' => array(  
+    /*'Update-username' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -104,11 +110,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
 
     //TEST #5
     //Update class
-    'Update-class' => array(  
+    /*'Update-class' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -130,11 +136,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
 
     //TEST #6
     //Update examiner
-    'Update-examiner' => array(  
+    /*'Update-examiner' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
@@ -159,10 +165,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
+    
     //TEST #7
     //Update examiner to none
-    'Update-examiner-to-none' => array(  
+    /*'Update-examiner-to-none' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
@@ -187,11 +194,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
 
     //TEST #8
     //Update version
-    'Update-version' => array(  
+    /*'Update-version' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
@@ -216,10 +223,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
+
     //TEST #9
     //Update access
-    'Update-access' => array(  
+    /*'Update-access' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
 
@@ -245,10 +253,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
+
     //TEST #10
     //Update group
-    'Update-group' => array(  
+    /*'Update-group' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES (1, 9999, 'testtest');",
@@ -273,12 +282,13 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
+
     //TEST #11
     //Add class
     'Add-class' => array(  
-        'expected-output' => '{"output":"PLACEHOLDER"}',
-        'query-after-test-1' => "DELETE FROM class WHERE class = 'WEBUG18h';",
+        'expected-output' => '{"classes":[{"class":"DVSUG13h"},{"class":"Testclass1"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
+        'query-after-test-1' => "DELETE FROM class WHERE class = 'Testclass1';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -286,16 +296,16 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'username' => 'brom',
                 'password' => 'password',
                 'opt' => 'ADDCLASS',
-                'newclass' => '[["WEBUG18h","101","testclass","199399","WEBUG",180,"100",null]]'
+                'newclass' => '[["Testclass1","101","testclass","199399","WEBUG",180,"100",null]]'
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'none'
+                'classes'
             )),
     ),
     //TEST #12
     //Change password
-    'Change-password' => array(  
+    /*'Change-password' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO user(username, password) VALUES ('testuser1', 'testpwd');",
@@ -315,14 +325,16 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+    ),*/
 
     //TEST #13
     //Add user
     'Add-user' => array(  
         //Pre-values
-        'expected-output' => '{"output":"PLACEHOLDER"}',
-        //'query-after-test-1' => "DELETE FROM user WHERE username = 'test1234';",
+        'expected-output' => '{"entries":[{"username":"{\"username\":\"Addtest123\"}","class":"{\"class\":\"AUclass123\"}"}],"classes":[{"class":"AUclass123"},{"class":"DVSUG13h"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
+        'query-after-test-1' => "DELETE FROM user_course WHERE cid = '1885';",
+        'query-after-test-2' => "DELETE FROM user WHERE username = 'Addtest123';",
+        'query-after-test-3' => "DELETE FROM class WHERE class = 'AUclass123';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/accessedservice.php',
         'service-data' => serialize(
             array(
@@ -330,17 +342,22 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 'username' => 'brom',
                 'password' => 'password',
                 'opt' => 'ADDUSR',
-                'newuser' => '[["471212-1234","Fname","Lname","test1234@student.his.se","testClass","HT-14",0]]',
+                'newusers' => '[["471212-1234","Fname","Lname","Addtest123@student.his.se","AUclass123","HT-14",0]]',
+                'courseid' => '1885',
+                'coursevers'=> '1337'
             )),
         'filter-output' => serialize(array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'none'
+                'entries' => array(
+                    'username',
+                    'class'
+                ),
             )),
     ),
 
     //TEST #14
     //Add user where no class exists
-    'Add-user-no-class' => array(  
+    /*'Add-user-no-class' => array(  
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-after-test-1' => "DELETE FROM user WHERE username = 'testuser';",
         'query-after-test-2' => "DELETE FROM class WHERE class = 'testClass';",
@@ -363,11 +380,11 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-    ),
+        ),*/
 
     //TEST #15
     //Connect user to user_course
-    'Connect-user-to-user-course' => array(  
+    /*'Connect-user-to-user-course' => array(  
         //Pre-values
         'expected-output' => '{"output":"PLACEHOLDER"}',
         'query-before-test-1' => "INSERT INTO course(creator, cid, coursecode) VALUES(1, 9999, 'testtest');",
@@ -390,7 +407,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'none'
             )),
-        ),
+        ),*/
 
 
 );

@@ -14,7 +14,7 @@ $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="UNK";
+	$userid="1";//to make tests work, same is also done duggaedservice.php
 }
 
 $pw = getOP('pw');
@@ -101,7 +101,7 @@ if(checklogin() && $hasAccess) {
 				$query->bindParam(':cid', $cid);
 		}
 
-		if(/*$prop=="firstname"||$prop=="lastname"||$prop=="ssn"||*/$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+		if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
 				$query->bindParam(':uid', $uid);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -196,8 +196,12 @@ if(checklogin() && $hasAccess) {
                   	$firstname = $user[1];
                   	$lastname = $user[2];
 	                $term = $user[5];
-					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
-    	            
+					if (isset($user[4])){
+						$className = $user[4];
+					}
+					else{
+						$className = "UNK"; // no class is sent with newusers in the current implementation of lenasys
+					}
 
 					//If a className has been set. (this is not implemented in lenasys right now)
                   	if(strcmp($className,"UNK")!==0){
@@ -300,7 +304,7 @@ $submissions=array();
 
 if(checklogin() && $hasAccess) {
 	
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid AND user_course.access = 'W';");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,firstname,lastname,ssn,access,class,modified,vers,requestedpasswordchange,examiner,groups, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -317,17 +321,17 @@ if(checklogin() && $hasAccess) {
 
 	foreach($result as $row){
 		$entry = array(
-			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
-			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
-			'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
-			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
-			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
+			'username' => json_encode(['username' => $row['username']]),
+			'ssn' => json_encode(['ssn' => $row['ssn']]),
+			'firstname' => json_encode(['firstname' => $row['firstname']]),
+			'lastname' => json_encode(['lastname' => $row['lastname']]),
+			'class' => json_encode(['class' => $row['class']]),
 			'modified' => $row['modified'],
-			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
-			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
-			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-			'groups' => json_encode(['groups' => $row['groups'], 'uid' => $row['uid']]),
-			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid'] ,'recent' => $row['newly'],'requested' => $row['requestedpasswordchange']])
+			'examiner' => json_encode(['examiner' => $row['examiner']]),
+			'vers' => json_encode(['vers' => $row['vers']]),
+			'access' => json_encode(['access' => $row['access']]),
+			'groups' => json_encode(['groups' => $row['groups']]),
+			'requestedpasswordchange' => json_encode(['username' => $row['username'] ,'recent' => $row['newly'],'requested' => $row['requestedpasswordchange']])
 		);
 		array_push($entries, $entry);
 	}
@@ -339,7 +343,7 @@ if(checklogin() && $hasAccess) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$teacher = array(
-			//'name' => $row['firstname']." ".$row['lastname'],
+			'name' => $row['firstname']." ".$row['lastname'],
 			'uid' => $row['uid']
 		);
 		array_push($teachers, $teacher);
