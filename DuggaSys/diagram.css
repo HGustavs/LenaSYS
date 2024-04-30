@@ -302,14 +302,12 @@
 }
 .node.md {
     right: calc(50% - 4px);
-    left: calc(50% + 4px);
     bottom: 0; 
     cursor: row-resize;
 }
 
 .node.mu {
     right: calc(50% - 4px);
-    left: calc(50% + 4px);
     cursor: row-resize;
 }
 
