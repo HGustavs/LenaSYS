@@ -2745,7 +2745,7 @@ function mmoving(event) {
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-            }else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 isUP = true;
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
@@ -2757,7 +2757,7 @@ function mmoving(event) {
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-            }else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 isR = false;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
 
@@ -2767,7 +2767,7 @@ function mmoving(event) {
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-            }else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
 
