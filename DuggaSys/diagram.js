@@ -77,26 +77,7 @@ class StateChange {
 
         if (timestamp != undefined) this.time = timestamp;
         else this.time = new Date().getTime();
-    }
-
-    /**
-     * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
-     * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
-     */
-    appendValuesFrom(changes) {
-        var propertys = Object.getOwnPropertyNames(changes);
-
-        // For every value in change
-        propertys.forEach(key => {
-
-            /**
-             * If the key is not blacklisted, set to the new value
-             */
-            if (key == "id") return; // Ignore this keys.
-            this[key] = changes[key];
-        });
-
-    }
+    }    
 }
 
 /**
@@ -380,7 +361,7 @@ class StateMachine {
                 if (this.historyLog.length > 0) {
 
                     // Get the last state in historyLog
-                    var lastLog = this.historyLog[this.historyLog.length - 1];
+                    let lastLog = this.historyLog[this.historyLog.length - 1];
 
                     // Check if the element is the same
                     var sameElements = true;
@@ -443,16 +424,47 @@ class StateMachine {
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
-                        for (let i = 0; i < changeTypes.length; i++) {
-                            const currentChangedType = changeTypes[i];
-
+                        for (let j = 0; j < changeTypes.length; j++) {
+                            const currentChangedType = changeTypes[j];
+                            let movedAndResized = false;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                                    lastLog = appendValuesFrom(lastLog, stateChange);
+                                    this.historyLog.push({...lastLog});
+                                    this.currentHistoryIndex = this.historyLog.length - 1;
+                                    break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                                    lastLog.appendValuesFrom(stateChange);
-                                    this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
+                                    movedAndResized = true;
+                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                                    lastLog = appendValuesFrom(lastLog, stateChange);
+                                    // loop to add the correct sizes to the changeState
+                                    // it only stores the changes originally and after this it stores the whole size
+                                    for (let change of stateChangeArray) {
+                                        change.id.forEach(id => {
+                                            let currentElement = document.getElementById(id);
+                                            if (lastLog.id == id) {
+                                                //add this but for (x, y) aswell
+                                                lastLog.width += currentElement.offsetWidth;
+                                                lastLog.height += currentElement.offsetHeight; 
+                                                if (movedAndResized) {
+                                                    currentElement = data[findIndex(data, id)];
+                                                    lastLog.x = currentElement.x;
+                                                    lastLog.y = currentElement.y;
+                                                }
+                                            }
+                                        });
+                                    }
+                                    // not sure why but if you resize -> undo -> resize it starts
+                                    // to store the id as an array so this is just a check to counter that
+                                    // entirely possible this breaks something else                                    
+                                    if (Array.isArray(lastLog.id)) {
+                                        // yes, the double [0][0] is neccesarry to access the ID                                        
+                                        lastLog.id = lastLog.id[0][0];
+                                    }
+
+                                    // spreaading the values so that it doesn't keep the reference
+                                    this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -494,11 +506,8 @@ class StateMachine {
         // Remove ghost only if stepBack while creating edge
         if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
 
-        clearContext();
-        clearContextLine();
-        showdata();
+        
         this.scrubHistory(this.currentHistoryIndex);
-        updatepos(0, 0);
         displayMessage(messageTypes.SUCCESS, "Changes reverted!");
         disableIfDataEmpty();
     }
@@ -573,16 +582,15 @@ class StateMachine {
 
         for (let i = 0; i < state.id.length; i++) {
             // Find object
-            var object;
+            let object;
             if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
             else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
-
+            
             // If an object was found
             if (object) {
                 // For every key, apply the changes
                 keys.forEach(key => {
-                    if (key == "id" || key == "time") return; // Ignore this keys.
-                    object[key] = state[key];
+                    if (key != "id" || key != "time") object[key] = state[key]; // Ignore this keys.
                 });
             } else { // If no object was found - create one
                 var temp = {};
@@ -1231,7 +1239,7 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
-
+let hasResized = false; // checks if an element has been resized
 var preResizeHeight = []; // List with elements' and their starting height for box selection due to problems with resizing height
 var NOTEHeight = [];// List with NOTE Entities' real height
 
@@ -2265,6 +2273,10 @@ function mouseMode_onMouseUp(event) {
         }
     }
     hasPressedDelete = false;
+    if (hasResized) {
+        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+        hasResized = false;
+    }
 }
 
 /**
@@ -2888,7 +2900,9 @@ function makeRandomID() {
     var charactersLength = characters.length;
     while (true) {
         for (let i = 0; i < 6; i++) {
-            str += characters.charAt(Math.floor(Math.random() * charactersLength));
+            //document.querySelector can't find ID's if they begin with a number
+            if (i == 0) str += characters.charAt(Math.floor(Math.random() * (charactersLength-10)));
+            else str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         if (!settings.misc.randomidArray) { //always add first id
             settings.misc.randomidArray.push(str);
@@ -3826,6 +3840,23 @@ function subMenuCycling(subMenu) {
     }
 }
 
+/**
+     * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
+     * @param {StateChange} target StateChange to edit
+     * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
+     */
+function appendValuesFrom(target, changes) {
+    var propertys = Object.getOwnPropertyNames(changes);
+    // For every value in change
+    propertys.forEach(key => {
+
+        /**
+         * If the key is not blacklisted, set to the new value
+         */
+        if (key != "id") target[key] = changes[key]; // Ignore this keys.
+    });
+    return target;
+}
 //#endregion =====================================================================================
 //#region ================================ MOUSE MODE FUNCS ======================================
 
@@ -7683,7 +7714,7 @@ function determineLine(line, targetGhost = false) {
     var felem, telem;
 
     felem = data[findIndex(data, line.fromID)];
-
+    if (!felem) return;
     // Telem should be our ghost if argument targetGhost is true. Otherwise look through data array.
     telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
 
@@ -7960,7 +7991,7 @@ function drawLine(line, targetGhost = false) {
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
-
+    if (!felem || !telem) return;
     let str = "";
     let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
@@ -11898,7 +11929,7 @@ function toggleBorderOfElements() {
 
         if (cssUrl == 'blackTheme.css') {
             //iterate through all the elements that have the class 'text'.
-            for (let i = 0; i < allTexts.length; i++) {
+            for (let i = 0; i < allTexts.length; i++) {                
                 let text = allTexts[i];
                 //assign their current stroke color to a variable.
                 let strokeColor = text.getAttribute('stroke');
@@ -12001,7 +12032,12 @@ function showdata() {
 
     // Iterate over programs
     for (let i = 0; i < data.length; i++) {
-        str += drawElement(data[i]);
+        if (str.includes(data[i].toString())) {
+            let tempString = drawElement(data[i]);            
+            str.replace(tempString, "");
+        }
+        let tempString = drawElement(data[i]); 
+        str += tempString;
     }
 
     if (ghostElement) {
