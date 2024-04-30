@@ -6959,7 +6959,7 @@ only screen and (max-device-width: 568px) {
 /* Fix mobile-view for top FAB-button and Sectionlist heading */
 @media screen and (max-width: 680px) {
   .fixed-action-button2{
-    display:none !important;
+    display:none;
   }
 
   #showElements {
