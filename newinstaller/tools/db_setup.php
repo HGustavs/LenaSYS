@@ -20,11 +20,11 @@
                 $this->pdo->exec("CREATE DATABASE `$db_name`");
 
             } catch (PDOException $e) { 
-                return "Failed to create database. " . 
-                (!$force ? "Try using force." : "") . "\n";
+                return "Failed to create database {$db_name}. " . 
+                (!$force ? "Try using force." : $e);
             }
 
-            return "Successfully created database {$db_name}.\n";
+            return "Successfully created database {$db_name}.";
         }
 
         /**
@@ -33,7 +33,19 @@
          * Force first removes user.
          */
         public function create_user(string $user_name, string $hostname = "%", bool $force = false) {
-            // TODO: Implement function that creates user using class variables.
+            try {
+                if ($force) {
+                    $this->pdo->exec("DROP USER IF EXISTS `$user_name`");
+                }
+
+                $this->pdo->exec("CREATE USER `$user_name`");
+
+            } catch (PDOException $e) { 
+                return "Failed to create user {$user_name}@{$hostname}. " . 
+                (!$force ? "Try using force." : $e);
+            }
+
+            return "Successfully created user {$user_name}@{$hostname}.";
         }
 
         /**
