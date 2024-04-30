@@ -2360,9 +2360,6 @@ function snapSAToLifeline(targetId) {
     const lifeline = document.getElementById(targetId);
     if (lifeline) {
 
-        const lifelineRect = lifeline.getBoundingClientRect();
-        console.log(lifelineRect);
-
         for (let i = 0; i < data.length; i++ ){
                
             if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
