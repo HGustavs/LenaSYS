@@ -30,11 +30,11 @@ function refreshCheck($cid, $user) {
 
 
     $_SESSION["lastFetchTime"] = date("Y-m-d H:i:s", $currentTime);
-    $fethCooldown = $longdeadline - (time() - $updateTime);
-    if($fethCooldown<0){
+    $fetchCooldown = $longdeadline - (time() - $updateTime);
+    if($fetchCooldown<0){
         $_SESSION["fetchCooldown"]=0;
     }else{
-        $_SESSION["fetchCooldown"]=$fethCooldown;
+        $_SESSION["fetchCooldown"]=$fetchCooldown;
     }
     // Check if the user has superuser priviliges
     if($user == 1) { // 1 = superuser
@@ -43,12 +43,12 @@ function refreshCheck($cid, $user) {
             print "Too soon since last update, please wait.";
             return false;
         } else {
-            newUpdateTime($currentTime, $cid);
+            newUpdateTime($pdo, $currentTime, $cid);
             return true;
         }
     } else { 
         if(($currentTime - $_SESSION["updatetGitReposCooldown"][$cid]) > $longdeadline) { // Else use the long deadline
-            newUpdateTime($currentTime, $cid);
+            newUpdateTime($pdo, $currentTime, $cid);
             return true;
         } else {
             print "Too soon since last update, please wait.";
