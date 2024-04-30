@@ -440,10 +440,13 @@ class StateMachine {
                                     // it only stores the changes originally and after this it stores the whole size
                                     for (let change of stateChangeArray) {
                                         change.id.forEach(id => {
-                                            let current_element = document.getElementById(id);
+                                            let currentElement = data[findIndex(data, id)];
                                             if (lastLog.id == id) {
-                                                lastLog.width += current_element.offsetWidth;
-                                                lastLog.height += current_element.offsetHeight; 
+                                                //add this but for (x, y) aswell
+                                                lastLog.width += currentElement.width;
+                                                lastLog.height += currentElement.height; 
+                                                lastLog.x += currentElement.x;
+                                                lastLog.y += currentElement.y;
                                             }
                                         });
                                     }
@@ -12312,7 +12315,6 @@ function showdata() {
             str.replace(tempString, "");
         }
         let tempString = drawElement(data[i]); 
-        //console.log(tempString + " " + i);
         str += tempString;
     }
 
