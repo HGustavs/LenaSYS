@@ -9,7 +9,7 @@ RUN apt-get update && \
     libcurl4-openssl-dev \
     libzip-dev \
     zip \
-    && docker-php-ext-install pdo_mysql pdo_sqlite curl zip \
+    && docker-php-ext-install pdo_mysql pdo_sqlite curl zip posix \
     && rm -rf /var/lib/apt/lists/*
 
 # Increase PHP upload size
