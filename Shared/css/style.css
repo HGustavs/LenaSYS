@@ -9254,8 +9254,8 @@ border: none !important;
 /* END */
 
 /* This is used to highlight updated and new items (ex coursees, duggas)*/
-.highlightChange > a{
-  animation: glowAnimation 4s ease-out;
+.highlightChange > a {
+  animation: glowAnimation 8s ease-out;
 }
 @keyframes glowAnimation {
   0%{
@@ -9268,11 +9268,11 @@ border: none !important;
     text-shadow: 0px 0px 0px #FF0000;
   }
 }
-.highlightChange{
-  animation: glowAnimation 4s ease-out;
+.highlightChange {
+  animation: glowAnimation 8s ease-out;
 }
 
-.lineDiagramDark{
+.lineDiagramDark { 
   border: 2px solid var(--color-border-list);
   background-color: var(--color-sectioned-table-lo);
 }
