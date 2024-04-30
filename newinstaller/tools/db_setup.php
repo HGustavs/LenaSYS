@@ -52,16 +52,37 @@
          * function drop_db
          * Drops an existing database. 
          */
-        public function drop_db(string $db_name) { 
-            // TODO: implement function that drops db.
+        public function drop_db(string $db_name, bool $force = false): string { 
+            try {
+
+                if ($force) {
+                    $this->pdo->exec("DROP DATABASE `$db_name`");
+                } else {
+                    $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
+                }
+
+                return "Successfully removed database {$db_name}.";
+            } catch (PDOException $e) {
+                return "Failed to remove database {$db_name}. {$e}";
+            }
         }
 
         /**
          * function drop_user
          * removes an already existing user.
          */
-        public function drop_user(string $user_name, string $hostname = hostname) {
-            // TODO: Implement function that removes a user.
+        public function drop_user(string $user_name, string $hostname = "%", bool $force = false) {
+            try {
+                if ($force) {
+                    $this->pdo->exec("DROP USER `$user_name`@`$hostname`");
+                } else {
+                    $this->pdo->exec("DROP USER IF EXISTS `$user_name`@`$hostname`");
+                }
+
+                return "Successfully removed user {$user_name}.";
+            } catch (PDOException $e) {
+                return "Failed to remove user {$user_name}. {$e}";
+            }
         }
 
         /**
