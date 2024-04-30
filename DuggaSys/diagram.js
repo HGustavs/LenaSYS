@@ -2694,26 +2694,26 @@ function mmoving(event) {
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var originalWidth = elementData.width;
-                elementData.width = startWidth + (deltaX / zoomfact);
+                var tmp = elementData.width;
+                elementData.width = (startWidth + (deltaX / zoomfact));
 
                 // Deduct the new width, giving us the total change
-                var widthChange = elementData.width - originalWidth;
+                const widthChange = -(tmp - elementData.width);
 
                 // Fetch original x-position
                 var originalHeight = elementData.height;
                 elementData.height = startHeight * (elementData.width / startWidth);
                 // Deduct the new position, giving us the total change
-                var heightChange = elementData.height - originalHeight;
+                const xChange = -(tmp - elementData.x);
 
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 // Fetch original width
-                var originalWidth = elementData.width;
-                elementData.width = startWidth - (deltaX / zoomfact);
+                var tmp = elementData.width;
+                elementData.width = (startWidth - (deltaX / zoomfact));
 
                 // Remove the new width, giving us the total change
-                var widthChange = elementData.width - originalWidth;
+                const widthChange = -(tmp - elementData.width);
 
                 // Right node will never change the position of the element. We pass 0 as x and y movement.
                 var originalHeight = elementData.height;
