@@ -2041,48 +2041,6 @@ div .navButt:hover {
   border-radius: 2px;
 }
 
-#gradeExportPopUp {
-  display: block;
-  padding: 4px;
-  background-color: var(--color-background-2);
-  border: 2px solid var(--color-border);
-  width: 350px;
-  min-height: 100px;
-  z-index: 9000;
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  margin-left: -178px;
-  box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-#gradeExportPopUpButton {
-  background-color: var(--color-primary);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  border: 0px;
-  width: 110px;
-  height: 30px;
-  color: var(--color-text-header);
-  cursor: pointer;
-  margin-top: 6px;
-  margin-bottom: 2px;
-  margin-left: 115px;
-  font-size: 14px;
-  transition: 1s background-color;
-}
-
-#gradeExportPopUpButton:hover {
-  background-color: var(--color-primary-hover);
-  border-radius: 2px;
-}
-
-#editSection {
-  /*top: 50%;
-  left: 50%;
-  margin-top: -245px;
-  margin-left: -236px;*/
-}
-
 .loginBox textarea,
 #import {
   width: 100%;
@@ -2102,32 +2060,6 @@ div .navButt:hover {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-}
-
-#urlAndPwd{
-  border: 1px solid grey;
-  background-color: var(--color-background);
-  /*height: 95px;*/
-  padding: 9px 0px;
-  padding-left: 9px;
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-#urlAndPwd > *{
-
-}
-
-.testasd{
-
-}
-
-.testasd > *{
-  font-size: 15px;
-  margin: 0px;
-  padding: 0px;
 }
 
 .bold {
@@ -2152,42 +2084,114 @@ div .navButt:hover {
   padding: 8px;
   text-align: center;
 }
-
-#duggaFeedbackQuestion{
-  text-align: center;
-  color: var(--color-primary);
+/*---===#===---*
+Dialog Box END 
+*---====#===---*/
+/* --------------===============################================-------------- *
+ *                                    Generic functions                            *
+ * --------------================################================--------------*/
+.loginBox .inputwrapper {
+  clear: both;
+  width: 100%;
+  padding: 3px 0 3px 0;
+  line-height: 30px;
 }
 
-#statscontainer{
+.inputwrapper #startdate, .inputwrapper #enddate {
+  font-family:"Roboto";
+  color:#7f7f7f;
+}
+
+.loginBox .inputwrapper span {
+  float: left;
+}
+
+
+.loginBox .inputwrapperSmall {
+  clear: both;
+  width: 100%;
+  padding: 3px 0 3px 0;
+  height: 30px;
+  line-height: 30px;
+}
+
+.loginBox .inputwrapperSmall span {
+  float: right;
+}
+
+.loginBox .inputwrapperSmall input,
+.loginBox .inputwrapperSmall select {
+  float: right;
+  width: 50px;
+}
+
+.loginBox .inputwrapperSmall input[type="checkbox"] {
+  height: 24px;
+}
+
+
+.loginBox .inputwrapper input,
+.loginBox .inputwrapper select {
+  float: right;
+  width: 195px;
+}
+
+.loginBox .inputwrapper input[type="checkbox"] {
+  margin-right: 171px;
+  float: right;
+  height: 24px;
+  width: 24px;
+}
+
+.loginBox select {
+  width: 195px;
+  height: 30px;
+  line-height: 18px;
+  color: #6f6f6f;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border-2);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.loginBoxheader,
+.logoutBoxheader {
+  background-color: var(--color-primary);
+  vertical-align: bottom;
+  padding-left: 10px;
+  cursor: default;
   display: flex;
-  flex-direction: row;
-  justify-content:space-evenly;
+  justify-content: space-around;
 }
 
-.statsdiv{
-  background-color: var(--color-text-primary);
-  color: var(--color-statistics);
-  width: 33%;
-  height: 150px;
-  text-align: center;
-  line-height: 2;
-  font-size: 20px;
-  margin-bottom: -15px;
+.loginBoxheader h3,
+.logoutBoxheader h3 {
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: 0.5em;
+  color: var(--color-text-header);
+  width: 100%;
 }
 
-#feedbacktablecontainer td{
-  text-align: center;
-}
-
-.passwordBlock{
-  width: 50%;
-  padding: 4px 0px;
-  background-color: var(--color-text-list);
-  border-radius: 3px;
+.loginBoxheader div,
+.logoutBoxheader div {
+  padding: 4px 20px;
+  color: rgb(255, 255, 255);
   cursor: pointer;
+  background-color: rgb(199, 80, 80);
+  font-family: arial;
+  font-weight: bold;
 }
 
-#feedbacktablecontainer td input{
+.loginBoxheader div:hover, .logoutBoxheader div:hover {
+  background-color: #ce3d3d;
+}
+
+#c td input {
   float: none;
 }
 
@@ -2244,9 +2248,7 @@ input.inactive-button {
   border-color: rgb(169, 169, 169);
   width: 100%;
 }
-#submitMotd{
-  margin-left: 340px;
-}
+
 .inputwrapper{
   display: flex;
   justify-content: space-between;
@@ -2259,13 +2261,124 @@ input.inactive-button {
 #inputwrapper-name{
   width: 440px;
 }
-#copyvers{
-  margin-right: 0px;
+
+#before,
+#after {
+  width: 100%;
 }
-#editCourse #visib{
+
+#playlink {
+  width: 100%;
+}
+/*---===#===---*
+Generic functions END 
+*---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    resulted.php                             *
+ * --------------================################================--------------*/
+
+#gradeExportPopUp {
+  display: block;
+  padding: 4px;
+  background-color: var(--color-background-2);
+  border: 2px solid var(--color-border);
+  width: 350px;
+  min-height: 100px;
+  z-index: 9000;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  margin-left: -178px;
+  box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#gradeExportPopUpButton {
+  background-color: var(--color-primary);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: var(--color-text-header);
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-left: 115px;
+  font-size: 14px;
+  transition: 1s background-color;
+}
+
+#gradeExportPopUpButton:hover {
+  background-color: var(--color-primary-hover);
+  border-radius: 2px;
+}
+
+.passwordBlock {
+  width: 50%;
+  padding: 4px 0px;
+  background-color: var(--color-text-list);
+  border-radius: 3px;
+  cursor: pointer;
+}
+/*---===#===---*
+resulted.php END 
+*---====#===---*/
+/* --------------===============################================-------------- *
+ *                                    sectioned.php                             *
+ * --------------================################================--------------*/
+
+.statsdiv {
+  background-color: var(--color-text-primary);
+  color: var(--color-statistics);
+  width: 33%;
+  height: 150px;
+  text-align: center;
+  line-height: 2;
+  font-size: 20px;
+  margin-bottom: -15px;
+}
+
+#duggaFeedbackQuestion {
+  text-align: center;
+  color: var(--color-primary);
+}
+
+#statscontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+}
+
+#feedbacktablecontainer td {
+  text-align: center;
+}
+
+#copyvers {
   margin-right: 0px;
 }
 
+#editCourse #visib {
+  margin-right: 0px;
+}
+/*---===#===---*
+sectioned.php END 
+*---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    courseed.php                             *
+ * --------------================################================--------------*/
+ 
+ #submitMotd {
+  margin-left: 340px;
+}
+
+/*---===#===---*
+courseed.php END 
+*---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    codeviewer.php                             *
+ * --------------================################================--------------*/
 #impwords,
 #impword {
   max-width: 184px;
@@ -2273,20 +2386,12 @@ input.inactive-button {
   margin-left: 0px;
 }
 
-#before,
-#after {
-  /*width: 226px;*/
-  width: 100%;
-}
-
-#playlink {
-  /*width: 216px;*/
-  width: 100%;
-}
-
 .templateSelect {
   width: 150px !important
 }
+/*---===#===---*
+codeviewer.php END 
+*---====#===---*/
 
 input {
   border-radius: 2px;
@@ -2296,111 +2401,7 @@ input {
   padding-left: 5px;
 }
 
-.loginBox .inputwrapper {
-  clear: both;
-  width: 100%;
-  padding: 3px 0 3px 0;
-  /*height: 30px;*/
-  line-height: 30px;
-}
 
-.inputwrapper #startdate, .inputwrapper #enddate{
-  font-family:"Roboto";
-  color:#7f7f7f;
-}
-
-.loginBox .inputwrapper span {
-  float: left;
-}
-
-
-.loginBox .inputwrapperSmall {
-  clear: both;
-  width: 100%;
-  padding: 3px 0 3px 0;
-  height: 30px;
-  line-height: 30px;
-}
-
-.loginBox .inputwrapperSmall span {
-  float: right;
-}
-
-.loginBox .inputwrapperSmall input,
-.loginBox .inputwrapperSmall select {
-  float: right;
-  width: 50px;
-}
-
-.loginBox .inputwrapperSmall input[type="checkbox"] {
-  /* margin-right: 200px; */
-  height: 24px;
-}
-
-
-.loginBox .inputwrapper input,
-.loginBox .inputwrapper select {
-  float: right;
-  width: 195px;
-}
-
-.loginBox .inputwrapper input[type="checkbox"] {
-  margin-right: 171px;
-  float: right;
-  height: 24px;
-  width: 24px;
-}
-
-.loginBox select {
-  width: 195px;
-  height: 30px;
-  line-height: 18px;
-  color: #6f6f6f;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border-2);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  padding: 5px;
-  font-size: 14px;
-}
-
-.loginBoxheader,
-.logoutBoxheader{
-  background-color: var(--color-primary);
-  vertical-align: bottom;
-  padding-left: 10px;
-  cursor: default;
-  display: flex;
-  justify-content: space-around;
-}
-
-.loginBoxheader h3,
-.logoutBoxheader h3 {
-  font-size: 14px;
-  margin-top: 10px;
-  line-height: 0.5em;
-  color: var(--color-text-header);
-  width: 100%;
-}
-
-.loginBoxheader div,
-.logoutBoxheader div {
-  padding: 4px 20px;
-  /*position: absolute;
-  top: 4px;
-  right: 4px;*/
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  background-color: rgb(199, 80, 80);
-  font-family: arial;
-  font-weight: bold;
-}
-
-.loginBoxheader div:hover, .logoutBoxheader div:hover {
-  background-color: #ce3d3d;
-}
 
 label.login-label {
   display: block;
@@ -2443,7 +2444,7 @@ label.login-label {
   font-size: 0.8em;
 }
 
-.loginBox .submit{
+.loginBox .submit {
   width: 80px;
   height: 25px;
   color: var(--color-text-header);
@@ -2488,7 +2489,7 @@ label.login-label {
 .loginBox .hide {
   display: none;
 }
-#undoButton{
+#undoButton {
   position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
@@ -2497,7 +2498,7 @@ label.login-label {
   margin-right: 4px;
 }
 
-.logoutBox p{
+.logoutBox p {
   text-align: center;
 }
 .buttonLoginBox,
@@ -2517,19 +2518,19 @@ label.login-label {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-.buttonLogoutBox{
+.buttonLogoutBox {
   margin: 12px;
   width: 120px;
 }
 
 .buttonLoginBox:hover,
-.buttonLogoutBox:hover{
+.buttonLogoutBox:hover {
   background-color: var(--color-primary-hover);
   border-radius: 2px;
 }
 
 .loginBoxTable,
-.logoutBoxTable{
+.logoutBoxTable {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
@@ -2537,12 +2538,12 @@ label.login-label {
 }
 
 .loginboxTr,
-.logoutboxTr{
+.logoutboxTr {
   background-color: inherit;
 }
 
 #loginBoxTitle,
-#logoutBoxTitle{
+#logoutBoxTitle {
   font-size: 15px;
 }
 
@@ -2581,7 +2582,7 @@ label.login-label {
   background-color: var(--color-border-3);
 }
 
-.menu-drop-down:focus-within .drop-down{
+.menu-drop-down:focus-within .drop-down {
   display: block !important;
 }
 
@@ -2626,7 +2627,7 @@ label.login-label {
   padding: 8px 0px 8px 8px;
 }
 
-.drop-down-option-hover{
+.drop-down-option-hover {
   background-color: var(--color-background);
 }
 .drop-down-option-hover:hover {
@@ -2736,7 +2737,7 @@ label.login-label {
 }
 
 /* Used to reset the background color of input fields */
-.bg-color-change-invalid{
+.bg-color-change-invalid {
   background-color: #f57;
 }
 
@@ -2778,13 +2779,13 @@ button.option {
    }
 }
 
-#courseBtn{
+#courseBtn {
   margin-left: 8px;
   font-size: 12px;
   border-radius: 5px;
 }
 
-#yearBtn{
+#yearBtn {
   margin-left: 8px;
   font-size: 12px;
   border-radius: 5px;

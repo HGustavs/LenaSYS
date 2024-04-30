@@ -3342,11 +3342,15 @@ function createExamples(momentID, isManual) {
 // When the user is watching the course page, set isActivelyFocused to true
 $(window).on('focus', function () {
   isActivelyFocused = true;
+  console.log('User is focusing on course page, isActivelyFocused is now', isActivelyFocused);
+
 });
 
 // When the user stops watching the course page, set isActivelyFocused to false
 $(window).on('blur', function () {
   isActivelyFocused = false;
+  console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
+  
 });
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
