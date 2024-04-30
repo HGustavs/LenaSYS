@@ -967,7 +967,8 @@ const SDLineType = {
  */
 const SELineType = {
     STRAIGHT: "Straight",
-    SEGMENT: "Segment"
+    SEGMENT: "Segment",
+    DASHED: "Dashed"
 }
 
 /**
@@ -3248,15 +3249,11 @@ function changeLineProperties() {
     // SE (Sequence) line
     if (line.type == entityType.SE) {
         if (line.startIcon != startIcon.value) {
-            console.log("using: if (line.startIcon != startIcon.value)")
             line.startIcon = startIcon.value
-            console.log(`StartIcon.value: ${startIcon.value}`);
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
-            console.log("using: if (line.endIcon != endIcon.value)")
             line.endIcon = endIcon.value
-            console.log(`EndIcon.value: ${endIcon.value}`);
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
@@ -3277,12 +3274,10 @@ function changeLineProperties() {
         }
         if (line.startIcon != startIcon.value) {
             line.startIcon = startIcon.value
-            console.log("(icon) is this being used?");
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {startIcon: startIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
         if (line.endIcon != endIcon.value) {
             line.endIcon = endIcon.value
-            console.log("(icon)is this being used?");
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {endIcon: endIcon.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
@@ -7111,7 +7106,6 @@ function generateContextProperties() {
             }
             //generate the dropdown for SD line icons.
             if (contextLine[0].type == entityType.SD) {
-                console.log(`Used contextLine[0].type == entityType.SD`);
                 str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
                 str += `<option value=''>None</option>`;
                 //iterate through all the icons assicoated with SD, and add them to the drop down as options
@@ -7159,46 +7153,32 @@ function generateContextProperties() {
                 str += `</select>`;
             }
 
-            if (contextLine[0].type == entityType.SE) {
-                console.log(`Used contextLine[0].type == entityType.SE`);
-                str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-                str += `<option value=''>None</option>`;
-                //iterate through all the icons assicoated with SD, and add them to the drop down as options
+            if (contextLine[0].type == entityType.SE) {                
+                // Start Icon dropdown
+                str += `<label style="display: block">Start Icon:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`; // default none option
                 Object.keys(SELineIcons).forEach(icon => {
-                    if (contextLine[0].startIcon != undefined) {
-                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                        if (contextLine[0].startIcon == icon) {
-                            str += `<option value='${SELineIcons[icon]}' selected>${SELineIcons[icon]}</option>`;
-                            console.log("icon is " + icon);
-                            console.log("startIcon is " + contextLine[0].startIcon);
-                        }
-                        //else, its not matching and the option is just added to the dropdown normally.
-                        else {
-                            str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
-                    }
+                    const isSelected = contextLine[0].startIcon === SELineIcons[icon] ? "selected" : "";
+                    str += `<option value='${SELineIcons[icon]}' ${isSelected}>${SELineIcons[icon]}</option>`;
                 });
+                str += `</select>`;
 
-                str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
-                str += `<option value=''>None</option>`;
+                // End Icon dropdown
+                str += `<label style="display: block">End Icon:</label> <select id='lineEndIcon' onchange="changeLineProperties()">`;
+                str += `<option value=''>None</option>`; // default none option
                 Object.keys(SELineIcons).forEach(icon => {
-                    if (contextLine[0].endIcon != undefined) {
-                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                        if (contextLine[0].endIcon == icon) {
-                            str += `<option value='${SELineIcons[icon]}' selected>${SELineIcons[icon]}</option>`;
-                            console.log("icon is " + icon);
-                            console.log("startIcon is " + contextLine[0].startIcon.toUpperCase());
-                        }
-                        //else, its not matching and the option is just added to the dropdown normally.
-                        else {
-                            str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${SELineIcons[icon]}'>${SELineIcons[icon]}</option>`;
-                    }
+                    const isSelected = contextLine[0].endIcon === SELineIcons[icon] ? "selected" : "";
+                    str += `<option value='${SELineIcons[icon]}' ${isSelected}>${SELineIcons[icon]}</option>`;
                 });
+                str += `</select>`;
+            
+                // Line Type dropdown
+                str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
+                Object.keys(SELineType).forEach(type => {
+                    const isSelected = contextLine[0].innerType === type ? "selected" : "";
+                    str += `<option value='${type}' ${isSelected}>${SELineType[type]}</option>`;
+                });
+                str += `</select>`;
             }
             str += `<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
         }
