@@ -431,7 +431,7 @@ class StateMachine {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    this.historyLog.push(this.historyLog.splice(this.historyLog.indexOf(lastLog), 1)[0]);
+                                    this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
@@ -443,7 +443,6 @@ class StateMachine {
                                     for (let change of stateChangeArray) {
                                         change.id.forEach(id => {
                                             let currentElement = document.getElementById(id);
-                                            console.log(currentElement)
                                             if (lastLog.id == id) {
                                                 //add this but for (x, y) aswell
                                                 lastLog.width += currentElement.offsetWidth;
@@ -463,14 +462,9 @@ class StateMachine {
                                         // yes, the double [0][0] is neccesarry to access the ID                                        
                                         lastLog.id = lastLog.id[0][0];
                                     }
-                                    //console.log(this.historyLog[this.historyLog.length-1].id);
-                                    // since we only want to store the final resize, we keep removing the last element if it has the same id
-                                    // as the previous one
-                                    const lastEntry = this.historyLog[this.historyLog.length-1];
-                                    if (lastEntry.id == lastLog.id && lastEntry.type == newChangeType.flag) this.historyLog.splice(this.historyLog.length-1, 1);
 
                                     // spreaading the values so that it doesn't keep the reference
-                                    this.historyLog.push({...lastLog, type: newChangeType.flag});
+                                    this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -2853,7 +2847,9 @@ function makeRandomID() {
     var charactersLength = characters.length;
     while (true) {
         for (let i = 0; i < 6; i++) {
-            str += characters.charAt(Math.floor(Math.random() * charactersLength));
+            //document.querySelector can't find ID's if they begin with a number
+            if (i == 0) str += characters.charAt(Math.floor(Math.random() * (charactersLength-10)));
+            else str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         if (!settings.misc.randomidArray) { //always add first id
             settings.misc.randomidArray.push(str);
