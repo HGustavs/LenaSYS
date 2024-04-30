@@ -1169,9 +1169,9 @@ const subMenuEntity = [
 ]
 const subMenuRelation = [
     elementTypes.ERRelation,
+    elementTypes.ERAttr,
     elementTypes.UMLRelation,
     elementTypes.IERelation,
-    elementTypes.ERAttr,
 ]
 const subMenuUMLstate = [
     elementTypes.UMLInitialState,
