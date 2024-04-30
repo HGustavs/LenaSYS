@@ -2127,17 +2127,22 @@ function returnedSection(data) {
   }
 
 }
-
+ 
 function openCanvasLink(btnobj) {
-  link = btnobj.parentNode.parentNode.querySelector('a').href;
+  //Searches closest tr element and then searches for classes that contain the link.
+  parentTr = btnobj.closest('tr');
+  linkTd = parentTr.querySelector('.example.item.hidden, .example.item');
+  link = linkTd.querySelector('a').href;
   window.open(link, "_blank");
 }
 
 function showCanvasLinkBox(operation, btnobj) {
+  
   if (operation == "open") {
-
-    var canvasLink = btnobj.parentNode.parentNode.querySelector('a').href; // "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
-    //var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('a').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    //Searches closest tr element and then searches for classes that contain the link.
+    parentTr = btnobj.closest('tr');
+    linkTd = parentTr.querySelector('.example.item.hidden, .example.item');
+    canvasLink = linkTd.querySelector('a').href;
 
     if (canvasLink == null) {
       canvasLink = "ERROR: Failed to get canvas link.";
