@@ -1044,8 +1044,12 @@ var startNodeLeft = false;
 var startNodeRight = false;
 var startNodeDown = false;
 var startNodeUp = false;
+var startNodeUpRight = false;
+var startNodeUpLeft = false;
+var startNodeDownRight = false;
+var startNodeDownLeft = false;
 var containerStyle;
-var lastMousePos = getPoint(0, 0);
+var lastMousePos = new Point(0, 0);
 var dblPreviousTime = new Date().getTime(); // Used when determining if an element was doubleclicked.
 var dblClickInterval = 350; // 350 ms = if less than 350 ms between clicks -> Doubleclick was performed.
 var wasDblClicked = false;
@@ -1400,7 +1404,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         canChangeTo: null,
         minWidth: 100,
@@ -1412,7 +1416,7 @@ var defaults = {
         fill: "#FFFFFF",
         stroke: "#000000",
         width: 100,
-        height: 150,
+        height: 500,
         type: "SE",
         canChangeTo: null,
         minWidth: 100,
@@ -1424,7 +1428,7 @@ var defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 30,
-        height: 300,
+        height: 100,
         type: "SE",
         canChangeTo: null,
         minWidth: 30,
@@ -2078,6 +2082,10 @@ function mdown(event) {
             startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
             startNodeDown = event.target.classList.contains("md");
             startNodeUp = event.target.classList.contains("mu");
+            startNodeUpRight = event.target.classList.contains("tr");
+            startNodeUpLeft = event.target.classList.contains("tl");
+            startNodeDownRight = event.target.classList.contains("br");
+            startNodeDownLeft = event.target.classList.contains("bl");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -2365,6 +2373,34 @@ function mouseEnter() {
 }
 
 /**
+ * @description Triggers when the mouse hoovers over an sequence lifeline.
+ */
+function mouseEnterSeq(event) {
+    if (elementTypeSelected === elementTypes.sequenceActivation) {
+        const target = event.target;
+        const targetId = target.id;
+        snapSAToLifeline(targetId); 
+    }
+}
+
+/**
+ * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
+ */
+function snapSAToLifeline(targetId) {
+    const lifeline = document.getElementById(targetId);
+    if (lifeline) {
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
+                const element = data[i];
+                const newXGhost = element.x + (element.width / 2) - (ghostElement.width / 2);
+                ghostElement.x = newXGhost;
+                updatepos(0, 0);
+            }
+        }
+    }
+}
+
+/**
  * @description change cursor style when mouse is hovering over the container.
  */
 function mouseLeave() {
@@ -2585,7 +2621,6 @@ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
  */
 function mouseMode_onMouseMove(event) {
     mouseOverLine = determineLineSelect(event.clientX, event.clientY);
-
     // Change cursor style if mouse pointer is over a line.
     if (mouseOverLine && !mouseButtonDown) {
         containerStyle.cursor = "pointer";
@@ -2598,7 +2633,6 @@ function mouseMode_onMouseMove(event) {
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
                 var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
                 if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
                     ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
@@ -2629,7 +2663,7 @@ function mouseMode_onMouseMove(event) {
  * @param {MouseEvent} event Triggered mouse event.
  */
 function mmoving(event) {
-    lastMousePos = getPoint(event.clientX, event.clientY);
+    lastMousePos = new Point(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
@@ -2642,10 +2676,8 @@ function mmoving(event) {
             updateA4Pos();
             // Update scroll position
             updatepos(null, null);
-
             // Update the ruler
             drawRulerBars(scrollx, scrolly);
-
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
@@ -2661,7 +2693,6 @@ function mmoving(event) {
             break;
         case pointerStates.CLICKED_ELEMENT:
             if (mouseMode != mouseModes.EDGE_CREATION) {
-
                 var prevTargetPos = {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
@@ -2675,20 +2706,18 @@ function mmoving(event) {
                     x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
                     y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
                 }
-
                 // Moving object
                 movingObject = true;
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
-
                 // We update position of connected objects
                 updatepos(deltaX, deltaY);
-
                 calculateDeltaExceeded();
             }
             break;
         case pointerStates.CLICKED_NODE:
+            let isX, isR, isUP;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -2700,90 +2729,64 @@ function mmoving(event) {
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                let tmp = elementData.width;
-                elementData.width = (startWidth + (deltaX / zoomfact));
-
-                // Deduct the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-
-                // Fetch original x-position
-                tmp = elementData.x;
-                elementData.x = screenToDiagramCoordinates((startX - deltaX), 0).x;
-
-                // Deduct the new position, giving us the total change
-                const xChange = -(tmp - elementData.x);
-
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                // Fetch original width
-                let tmp = elementData.width;
-                elementData.width = (startWidth - (deltaX / zoomfact));
-
-                // Remove the new width, giving us the total change
-                const widthChange = -(tmp - elementData.width);
-
-                // Right node will never change the position of the element. We pass 0 as x and y movement.
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height
-                let tmp = elementData.height;
-                elementData.height = (startHeight - (deltaY / zoomfact));
-
-                // Deduct the new height, giving us the total change
-                const heightChange = -(tmp - elementData.height);
-
-                // Adds a deep clone of the element to preResizeHeight if it isn't in it
-                let foundID = false;
-                if (preResizeHeight == undefined) {
-                    let resizedElement = structuredClone(elementData);
-                    preResizeHeight.push(resizedElement);
-                } else {
-                    for (let i = 0; i < preResizeHeight.length; i++) {
-                        if (elementData.id == preResizeHeight[i].id) {
-                            foundID = true;
-                        }
-                    }
-                    if (!foundID) {
-                        let resizedElement = structuredClone(elementData);
-                        preResizeHeight.push(resizedElement);
-                    }
-                }
+                isUP = false;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height
-                let tmp = elementData.height;
-                elementData.height = (startHeight + (deltaY / zoomfact));
-
-                // Deduct the new height, giving us the total change
-                const heightChange = -(tmp - elementData.height);
-
-                // Fetch original y-position
-                // "+ 14" hardcoded, for some reason the superstate jumps up 14 pixels when using this node.
-                tmp = elementData.y;
-                elementData.y = screenToDiagramCoordinates(0, (startY - deltaY + 14)).y;
-
-                // Deduct the new position, giving us the total change
-                const yChange = -(tmp - elementData.y);
-
-                // Adds a deep clone of the element to preResizeHeight if it isn't in it
-                let foundID = false;
-                if (preResizeHeight == undefined) {
-                    let resizedElement = structuredClone(elementData);
-                    preResizeHeight.push(resizedElement);
-                } else {
-                    for (let i = 0; i < preResizeHeight.length; i++) {
-                        if (elementData.id == preResizeHeight[i].id) {
-                            foundID = true;
-                        }
-                    }
-                    if (!foundID) {
-                        let resizedElement = structuredClone(elementData);
-                        preResizeHeight.push(resizedElement);
-                    }
-                }
+                // Fetch original height// Deduct the new height, giving us the total change
+                isUP = true;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
+                //set movable height
+                isUP = true;
+                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
+                //set movable height
+                isUP = true;
+                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                isUP = false;
+                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+
+                isUP = false;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
+
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
 
@@ -2799,13 +2802,62 @@ function mmoving(event) {
             showdata()
             updatepos(null, null);
             break;
-
         default:
             mouseMode_onMouseMove(event);
             break;
     }
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
+}
+function movementPosChange(element,start,delta, isX){
+    let tmp = (isX) ? element.x : element.y;
+    let elem;
+    if (isX) {
+        element.x = screenToDiagramCoordinates( (start - delta ),0).x;
+        elem = element.x;
+    } else {
+        element.y = screenToDiagramCoordinates(0, (start - delta )).y;
+        elem = element.y;
+    }
+    // Deduct the new position, giving us the total change
+    return -(tmp - elem);
+}
+
+function movementXChange(element,start,delta,isR){
+    let tmp = element.width;
+    if (isR) {
+        element.width = (start - (delta / zoomfact));
+    } else {
+        element.width = (start + (delta / zoomfact));
+    }
+    // Remove the new width, giving us the total change
+    return -(tmp - element.width);
+}
+
+function movementYChange(element,start,delta,isUp,preResizeHeight){
+    // Adds a deep clone of the element to preResizeHeight if it isn't in it
+    let tmp = element.height;
+    if (isUp) {
+        element.height = (start + (delta / zoomfact));
+    } else {
+        element.height = (start - (delta / zoomfact));
+    }
+    let foundID = false;
+    if (preResizeHeight == undefined) {
+        let resizedElement = structuredClone(element);
+        preResizeHeight.push(resizedElement);
+    } else {
+        for (let i = 0; i < preResizeHeight.length; i++) {
+            if (element.id == preResizeHeight[i].id) {
+                foundID = true;
+            }
+        }
+        if (!foundID) {
+            let resizedElement = structuredClone(element);
+            preResizeHeight.push(resizedElement);
+        }
+    }
+    return -(tmp - element.height);
 }
 
 //#endregion ===================================================================================
@@ -3697,94 +3749,49 @@ function getExtension(filename) {
 function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
-    if (foundIndex > -1) {
-        const element = data[foundIndex];
-        let targetX;
-        let targetY;
-        var elementHeight = element.height;
 
-        // Change height if element is an UML Entity
-        for (let i = 0; i < UMLHeight.length; i++) {
-            if (element.id == UMLHeight[i].id) {
-                elementHeight = UMLHeight[i].height;
-            }
-        }
-        // Change height if element is an IE Entity
-        for (let i = 0; i < IEHeight.length; i++) {
-            if (element.id == IEHeight[i].id) {
-                elementHeight = IEHeight[i].height;
-            }
-        }
-        // Change height if element is an SD Entity
-        for (let i = 0; i < SDHeight.length; i++) {
-            if (element.id == SDHeight[i].id) {
-                elementHeight = SDHeight[i].height;
-            }
+    if (foundIndex < 0) return isOverlapping;
+
+    const element = data[foundIndex];
+    let eHeight = element.height;
+    let arr = [UMLHeight, IEHeight, SDHeight, NOTEHeight];
+
+    arr.forEach(entityHeights => {
+        entityHeights.forEach(entity => {
+            if (element.id == entity.id) eHeight = entity.height
+        });
+    })
+
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id === id) continue;
+        if (context.includes(data[i])) break;
+        if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState ||
+            data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor ||
+            data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject ||
+            data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt
+        ) {
+            break;
         }
 
-        for (let i = 0; i < NOTEHeight.length; i++) {
-            if (element.id == NOTEHeight[i].id) {
-                elementHeight = NOTEHeight[i].height;
-            }
+        const x2 = data[i].x + data[i].width;
+        let y2 = data[i].y + data[i].height;
+
+        arr.forEach(entityHeights => {
+            entityHeights.forEach(entity => {
+                if (data[i].id == entity.id) y2 = data[i].y + entity.height;
+            });
+        });
+
+        if (x < x2 &&
+            x + element.width > data[i].x &&
+            y < y2 &&
+            y + eHeight > data[i].y
+        ) {
+            isOverlapping = true;
+            break;
         }
-        targetX = x //(x / zoomfact);
-        targetY = y//(y / zoomfact);
-
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].id === id) continue
-
-            // Doesn't compare if the other element is moving
-            var compare = true;
-            if (context.length > 1) {
-                for (let j = 0; j < context.length; j++) {
-                    if (data[i].id == context[j].id && !data[i].isLocked) {
-                        compare = false;
-                        break;
-                    }
-                }
-            }
-            if (compare) {
-                //COMPARED ELEMENT
-                const compX2 = data[i].x + data[i].width;
-                var compY2 = data[i].y + data[i].height;
-
-                // Change height if element is an UML Entity
-                for (let j = 0; j < UMLHeight.length; j++) {
-                    if (data[i].id == UMLHeight[j].id) {
-                        compY2 = data[i].y + UMLHeight[j].height;
-                    }
-                }
-                // Change height if element is an IE Entity
-                for (let j = 0; j < IEHeight.length; j++) {
-                    if (data[i].id == IEHeight[j].id) {
-                        compY2 = data[i].y + IEHeight[j].height;
-                    }
-                }
-                // Change height if element is an SD Entity
-                for (let j = 0; j < SDHeight.length; j++) {
-                    if (data[i].id == SDHeight[j].id) {
-                        compY2 = data[i].y + SDHeight[j].height;
-                    }
-                }
-                //if its overlapping with a super state, just break since that is allowed.
-                if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState) {
-                    isOverlapping = false;
-                }
-                //if its overlapping with a sequence actor, just break since that is allowed.
-                else if ((data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor) || 
-                    (data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject) ||
-                    (data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt)) 
-                {
-                    isOverlapping = false;
-                } else if ((targetX < compX2) && (targetX + element.width) > data[i].x &&
-                    (targetY < compY2) && (targetY + elementHeight) > data[i].y) {
-                    isOverlapping = true;
-                    break;
-                }
-            }
-        }
-        return isOverlapping;
     }
+    return isOverlapping;
 }
 
 /**
@@ -3823,6 +3830,9 @@ function setMouseMode(mode) {
     } else {
         // Not implemented exception
         console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
+    }
+    if (mouseMode == mouseModes.POINTER) {
+        elementTypeSelected = null;
     }
 }
 
@@ -4043,10 +4053,10 @@ function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4) {
 
 function getBoxSelectionPoints() {
     return {
-        n1: getPoint(startX, startY),
-        n2: getPoint(startX + deltaX, startY),
-        n3: getPoint(startX, startY + deltaY),
-        n4: getPoint(startX + deltaX, startY + deltaY),
+        n1: new Point(startX, startY),
+        n2: new Point(startX + deltaX, startY),
+        n3: new Point(startX, startY + deltaY),
+        n4: new Point(startX + deltaX, startY + deltaY),
     };
 }
 
@@ -4084,7 +4094,7 @@ function boxSelect_Update(mouseX, mouseY) {
         var coords = getBoxSelectionCoordinates();
 
         // Calculate top-left and bottom-right coordinates
-        var topLeft = getPoint(0, 0), bottomRight = getPoint(0, 0);
+        var topLeft = new Point(0, 0), bottomRight = new Point(0, 0);
 
         // left/right
         if (coords.n1.x < coords.n4.x) {
@@ -8499,11 +8509,16 @@ function addNodes(element) {
     nodes += "<span id='ml' class='node ml'></span>";
     nodes += "<span id='md' class='node md'></span>";
     nodes += "<span id='mu' class='node mu'></span>";
+    nodes += "<span id='tl' class='node tl'></span>";
+    nodes += "<span id='tr' class='node tr'></span>";
+    nodes += "<span id='bl' class='node bl'></span>";
+    nodes += "<span id='br' class='node br'></span>";
 
     elementDiv.innerHTML += nodes;
-    const defaultNodeSize = 8;
 
-    var nodeSize = defaultNodeSize * zoomfact;
+    const defaultNodeSize = 8;
+    let nodeSize = defaultNodeSize * zoomfact;
+
     if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         var mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize + "px";
@@ -8523,26 +8538,54 @@ function addNodes(element) {
         muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
     }
 
-    var nodeSize = defaultNodeSize * zoomfact;
+    nodeSize = defaultNodeSize * zoomfact;
     var mrNode = document.getElementById("mr");
     var mlNode = document.getElementById("ml");
     var muNode = document.getElementById("mu");
     var mdNode = document.getElementById("md");
+    var tlNode = document.getElementById("tl");
+    var trNode = document.getElementById("tr");
+    var blNode = document.getElementById("bl");
+    var brNode = document.getElementById("br");
+
     mrNode.style.width = nodeSize + "px";
-    mlNode.style.width = nodeSize + "px";
-    mrNode.style.height = nodeSize + "px";
-    mlNode.style.height = nodeSize + "px";
     mrNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";
+    mrNode.style.height = nodeSize + "px";
+
+    mlNode.style.width = nodeSize + "px";
     mlNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";
+    mlNode.style.height = nodeSize + "px";
+
     muNode.style.width = nodeSize + "px";
     muNode.style.height = nodeSize + "px";
     muNode.style.top = "0%";
     muNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
+
     mdNode.style.width = nodeSize + "px";
     mdNode.style.height = nodeSize + "px";
-    mdNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
     mdNode.style.bottom = "0%";
+    mdNode.style.left = "calc(50% - " + (nodeSize / 2) + "px)";
 
+    let cornerNodeSize = defaultNodeSize * zoomfact;
+    tlNode.style.width = cornerNodeSize + "px";
+    tlNode.style.height = cornerNodeSize + "px";
+    tlNode.style.top = "0%";
+    tlNode.style.left = "0%";
+
+    trNode.style.width = cornerNodeSize + "px";
+    trNode.style.height = cornerNodeSize + "px";
+    trNode.style.top = "0%";
+    trNode.style.right = "0%";
+
+    blNode.style.width = cornerNodeSize + "px";
+    blNode.style.height = cornerNodeSize + "px";
+    blNode.style.bottom = "0%";
+    blNode.style.left = "0%";
+
+    brNode.style.width = cornerNodeSize + "px";
+    brNode.style.height = cornerNodeSize + "px";
+    brNode.style.bottom = "0%";
+    brNode.style.right = "0%";
 }
 
 /**
@@ -8772,7 +8815,8 @@ function drawElement(element, ghosted = false) {
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
     let zLevel = 1;
-
+    let mouseEnter = '';
+  
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8859,10 +8903,12 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
+            mouseEnter = 'mouseEnterSeq(event);';
             zLevel = 0;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
+            mouseEnter = 'mouseEnterSeq(event);';    
             zLevel = 0;
             break;
         case elementTypesNames.sequenceActivation:
@@ -8878,7 +8924,6 @@ function drawElement(element, ghosted = false) {
             cssClass = 'uml-element';
             break;
     }
-
     let lock = '';
     if (element.isLocked) {
         lock = `<img 
@@ -8896,7 +8941,7 @@ function drawElement(element, ghosted = false) {
                 id='${element.id}' 
                 class='element ${cssClass}' 
                 onmousedown='ddown(event);' 
-                onmouseenter='mouseEnter();' 
+                onmouseenter='mouseEnter();${mouseEnter}' 
                 onmouseleave='mouseLeave();' 
                 style='${style}${ghostStr}' 
             >${divContent}${lock}</div>`;

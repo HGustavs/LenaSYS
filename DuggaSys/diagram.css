@@ -293,22 +293,35 @@
 .node.mr {
     top: calc(50% - 4px);
     right: 0;
-    cursor: col-resize;
+    cursor: ew-resize;
 }
 .node.ml {
     top: calc(50% - 4px);
     left: 0;
-    cursor: col-resize;
+    cursor: ew-resize;
 }
 .node.md {
     right: calc(50% - 4px);
     bottom: 0; 
-    cursor: row-resize;
+    cursor: ns-resize;
 }
 
 .node.mu {
     right: calc(50% - 4px);
-    cursor: row-resize;
+    cursor: ns-resize;
+}
+.node.tr{
+    cursor: nesw-resize;
+}
+.node.tl{
+    cursor: nwse-resize;
+}
+
+.node.br{
+    cursor: nwse-resize;
+}
+.node.bl{
+    cursor: nesw-resize;
 }
 
 .underline{
