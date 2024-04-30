@@ -1221,10 +1221,13 @@ async function newItem(itemtitle) {
     if (element.tagName == 'DIV') {
       element = element.firstChild;
       element.classList.add("highlightChange");
+      element.scrollIntoView({behavior: 'smooth', block: 'center'});
     } else if (element.tagName == 'A') {
       document.getElementById('I' + collectedLid[0]).classList.add("highlightChange");
+      document.getElementById('I' + collectedLid[0]).scrollIntoView({behavior: 'smooth', block: 'center'});
     } else if (element.tagName == 'SPAN') {
       document.getElementById('I' + collectedLid[0]).firstChild.classList.add("highlightChange");
+      document.getElementById('I' + collectedLid[0]).firstChild.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
   }, 100);
   // Duration time for the alert before remove

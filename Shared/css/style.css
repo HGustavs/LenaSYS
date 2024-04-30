@@ -9254,7 +9254,7 @@ border: none !important;
 
 /* This is used to highlight updated and new items (ex coursees, duggas)*/
 .highlightChange > a{
-  animation: glowAnimation 4s ease-out;
+  animation: glowAnimation 8s ease-out;
 }
 @keyframes glowAnimation {
   0%{
@@ -9268,7 +9268,7 @@ border: none !important;
   }
 }
 .highlightChange{
-  animation: glowAnimation 4s ease-out;
+  animation: glowAnimation 8s ease-out;
 }
 
 .lineDiagramDark{
