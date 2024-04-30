@@ -2159,7 +2159,7 @@ Dialog Box END
 }
 
 .loginBoxheader,
-.logoutBoxheader{
+.logoutBoxheader {
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
