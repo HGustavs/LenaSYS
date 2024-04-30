@@ -8970,7 +8970,7 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == elementTypesNames.sequenceActor) {
         //div to encapsulate sequence actor/object and its lifeline.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px; width:${boxw + 4}px; height:${boxh}px; font-size:${texth}px; z-index:1;`;
+        style='left:0px; top:0px; width:${boxw + 4 * zoomfact}px; height:${boxh}px; font-size:${texth}px; z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
@@ -9041,7 +9041,7 @@ function drawElement(element, ghosted = false) {
     else if (element.kind == "sequenceObject") {
         //svg for object.
         str += `<div id='${element.id}'	class='element' onmousedown='ddown(event);' onmouseenter='mouseEnter();' onmouseleave='mouseLeave()';'
-        style='left:0px; top:0px;width:${boxw}px;height:${boxh}px;font-size:${texth}px;z-index:1;`;
+        style='left:0px; top:0px;width:${boxw + 4 * zoomfact}px; height:${boxh}px; font-size:${texth}px;z-index:1;`;
 
         if (context.includes(element)) {
             str += `z-index: 1;`;
