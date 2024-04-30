@@ -384,72 +384,33 @@ $testsData = array(
     // //-------------------------------------------------------------------------------
     // // This test the microservice changeActiveCourseVersion_sectioned and the part of the monalith called "CHGVERS" 
     // //-------------------------------------------------------------------------------
-    // 'changeActiveCourseVersion_sectioned' => array(
-    //     'expected-output'   => '',
+    'changeActiveCourseVersion_sectioned' => array(
+        'expected-output' => '{"entries":[{"entryname":"New Test","lid":"99999","gradesys":"0","tabs":"0" },{"entryname":"JavaScript-Code:","lid":"1","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 1","lid":"4000","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 2","lid":"4001","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 3","lid":"4002","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 4","lid":"4003","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 5","lid":"4004","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 6","lid":"4005","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 7","lid":"4006","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 8","lid":"4007","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 9","lid":"4008","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 10","lid":"4009","gradesys":null,"tabs":null},{"entryname":"HTML-Code:","lid":"2","gradesys":null,"tabs":null},{"entryname":"Html-test template 1","lid":"5000","gradesys":null,"tabs":null},{"entryname":"Html-test template 2","lid":"5001","gradesys":null,"tabs":null},{"entryname":"Html-test template 3","lid":"5002","gradesys":null,"tabs":null},{"entryname":"Html-test template 4","lid":"5003","gradesys":null,"tabs":null},{"entryname":"Html-test template 5","lid":"5004","gradesys":null,"tabs":null},{"entryname":"Html-test template 6","lid":"5005","gradesys":null,"tabs":null},{"entryname":"Html-test template 7","lid":"5006","gradesys":null,"tabs":null},{"entryname":"Html-test template 8","lid":"5007","gradesys":null,"tabs":null},{"entryname":"Html-test template 9","lid":"5008","gradesys":null,"tabs":null},{"entryname":"Html-test template 10","lid":"5009","gradesys":null,"tabs":null},{"entryname":"SQL-CODE:","lid":"4","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 1","lid":"3110","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 2","lid":"3111","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 3","lid":"3112","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 4","lid":"3113","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 5","lid":"3114","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 6","lid":"3115","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 7","lid":"3116","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 8","lid":"3117","gradesys":null,"tabs":null },{"entryname":"SQL-TEST template 9","lid":"3118","gradesys":null,"tabs":null },{"entryname":"SQL-TEST template 10","lid":"3119","gradesys":null,"tabs":null },{"entryname":"PHP-CODE:","lid":"5","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 1","lid":"2110","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 2","lid":"2111","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 3","lid":"2112","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 4","lid":"2113","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 5","lid":"2114","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 6","lid":"2115","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 7","lid":"2116","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 8","lid":"2117","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 9","lid":"2118","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 10","lid":"2119","gradesys":null,"tabs":null },{"entryname":"Other:","lid":"6","gradesys":null,"tabs":null }],"debug":"NONE!"}',
+        'query-before-test-1' => "INSERT INTO listentries (lid,cid,vers, entryname,gradesystem, tabs,highscoremode, groupKind,creator,visible) VALUES (99999,1885,1337,'New Test', 0 ,null , 0, null,101,1);",
+        'query-after-test-1' => "DELETE FROM listentries WHERE lid=99999",
+        'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
+        'service-data' => serialize(array( // Data that service needs to execute function
+            'opt' => 'UPDATETABS',
+            'username' => 'mestr',
+            'password' => 'password',
+            'courseid' => '1885',
+            'coursevers' => '1337',
+            'comment' => 'undefined',
+            'lid' => '99999', 
+            'tabs' => '1',
+            'hash' => 'UNK'
 
-    //     'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
-
-    //     'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
-    //     'service-data' => serialize(array( // Data that service needs to execute function
-    //         'opt' => 'UPDATETABS',
-    //         'username' => 'mestr',
-    //         'password' => 'password',
-    //         'courseid' => '2',
-    //         'coursename' => '2',
-    //         'coursevers' => '97732',
-    //         'comment' => 'undefined',
-    //         'lid' => '2008', 
-    //         'tabs' => '1',
-    //         'hash' => 'UNK'
-
-    //     )),
-    //     'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-    //         'entries' => array(
-    //             'entryname',
-    //             'lid',
-    //             'pos',
-    //             'kind',
-    //             'moment',
-    //             'link',
-    //             'visible',
-    //             'highscoremode',
-    //             'gradesys',
-    //             'code_id',
-    //             'deadline',
-    //             'relativedeadline',
-    //             'qrelease',
-    //             'comments',
-    //             'qstart',
-    //             'grptype',
-    //             'tabs',
-    //             'feedbackenabled',
-    //             'feedbackquestion',
-    //             //'ts'
-    //         ),
-    //         'debug',
-    //         'writeaccess',
-    //         'studentteacher',
-    //         'readaccess',
-    //         'coursename',
-    //         'coursevers',
-    //         'coursecode',
-    //         'courseid',
-    //         'links',
-    //         'duggor',
-    //         'results',
-    //         'versions',
-    //         'codeexamples',
-    //         'unmarked',
-    //         'startdate',
-    //         'enddate',
-    //         'groups',
-    //         'grpmembershp',
-    //         'grplst',
-    //         'userfeedback',
-    //         'feedbackquestion',
-    //         'avgfeedbackscore'
-    //     )),
-    // ),
+        )),
+        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+            'entries' => array(
+                'entryname',
+                'lid',
+                'gradesys',
+                'tabs',
+            ),
+            'debug',
+        )),
+    ),
 
     //--------------------------------------------------------------------------------------------------
     // This test the microservice setVisibleListentrie and the part of the monalith called "HIDDEN" 
