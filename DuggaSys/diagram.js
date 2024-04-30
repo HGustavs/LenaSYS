@@ -1904,7 +1904,13 @@ document.addEventListener("mouseleave", function (event) {
 
     if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
         mouseMode_onMouseUp();
-    }  
+    }
+});
+
+document.addEventListener("mouseout", function (event) {
+    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
+        mouseMode_onMouseUp();
+    }
 });
 
 // --------------------------------------- Mouse Events    --------------------------------
