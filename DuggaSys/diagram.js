@@ -8771,6 +8771,7 @@ function drawElement(element, ghosted = false) {
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let zLevel = 1;
 
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
@@ -8854,12 +8855,15 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
             cssClass = 'uml-Super';
+            zLevel = 0;
             break;
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
+            zLevel = 0;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
+            zLevel = 0;
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
@@ -8867,6 +8871,7 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.sequenceLoopOrAlt:
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
             divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
+            zLevel = 0;
             break;
         case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
             divContent = drawElementNote(element, boxw, boxh, linew, texth);
@@ -8884,7 +8889,8 @@ function drawElement(element, ghosted = false) {
                      alt='Padlock' 
                  />`;
     }
-    style = style ?? `left:0; top:0; width:auto; height:auto; font-size:${texth}px; z-index:1;`;
+    console.log(zLevel, element.kind);
+    style = style ?? `left:0; top:0; width:auto; height:auto; font-size:${texth}px; z-index:${zLevel};`;
     let ghostPreview = ghostLine ? 0 : 0.4;
     let ghostStr =  (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
     return `<div 
