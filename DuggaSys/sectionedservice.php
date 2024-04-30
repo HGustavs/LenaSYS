@@ -124,6 +124,7 @@ if(checklogin()){
 		}
 	}
 
+
 	$isSuperUserVar=isSuperUser($userid);
 	$ha = $haswrite || $isSuperUserVar;
 	if(strcmp($opt,"GRP")===0) {
