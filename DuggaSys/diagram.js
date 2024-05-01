@@ -1836,63 +1836,6 @@ function saveProperties() {
     updatepos(0, 0);
 }
 
-/**
- * Applies new changes to line attributes in the data array of lines.
- */
-function changeLineProperties() {
-    let label = document.getElementById("lineLabel");
-    let startLabel = document.getElementById("lineStartLabel");
-    let endLabel = document.getElementById("lineEndLabel");
-    let startIcon = document.getElementById("lineStartIcon");
-    let endIcon = document.getElementById("lineEndIcon");
-    let lineType = document.getElementById("lineType");
-    let cardinality = document.getElementById('propertyCardinality');
-    let line = contextLine[0];
-
-    let radio = [
-        document.getElementById("lineRadio1"),
-        document.getElementById("lineRadio2"),
-        document.getElementById("lineRadio3"),
-        document.getElementById("lineRadio4"),
-    ];
-    radio.forEach(r => {
-        if (r && r.checked && line.kind != r.value) {
-            line.kind = r.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, {kind: r.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
-    });
-
-    if (cardinality) {
-        if (cardinality.value == "") {
-            delete line.cardinality;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        } else {
-            changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
-        }
-    }
-    changeAttribute(line, 'label', label, {label: label.value});
-
-    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
-        changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});
-        changeAttribute(line, 'endLabel', endLabel, {endLabel: endLabel.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    if (line.type == entityType.SD) {
-        changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    showdata();
-}
-
-const changeAttribute = (line, attribute, updated, list) => {
-    if (line[attribute] != updated.value) {
-        line[attribute] = updated.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
-}
 
 /**
  * @description Puts all available elements of the data array into the context array.

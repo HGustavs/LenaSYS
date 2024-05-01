@@ -55,12 +55,12 @@ function drawRulerBars(X, Y) {
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
-                barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "'style='font-size: 10px''>" + cordY + "</text>";
+                barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
                 cordY = cordY + 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                    barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "'style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
+                    barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "' style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
                     barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
                 } else {
                     barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";

@@ -3,633 +3,290 @@
  * These fields can be used to modify the selected element/line.
  */
 function generateContextProperties() {
-    var propSet = document.getElementById("propertyFieldset");
-    var menuSet = document.getElementsByClassName('options-section');
+    let str = '';
+    const element = context[0];
+    const line = contextLine[0];
+    let propSet = document.getElementById("propertyFieldset");
+    let menuSet = document.getElementsByClassName('options-section');
 
-    var str = "<legend>Properties</legend>";
-    //No element or line selected
+    str += "<legend>Properties</legend>";
     if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
-        //Hide properties and show the other options
-        propSet.classList.add('options-fieldset-hidden');
-        propSet.classList.remove('options-fieldset-show');
-        for (let i = 0; i < menuSet.length; i++) {
-            menuSet[i].classList.add('options-fieldset-show');
-            menuSet[i].classList.remove('options-fieldset-hidden');
-        }
-    } else if (context.length == 0 && contextLine.length == 0 && (erTableToggle || testCaseToggle)) {// No element or line selected, but either erTableToggle or testCaseToggle is active.
-        //Show properties and hide the other options
-        propSet.classList.add('options-fieldset-show');
-        propSet.classList.remove('options-fieldset-hidden');
-        for (let i = 0; i < menuSet.length; i++) {
-            menuSet[i].classList.add('options-fieldset-hidden');
-            menuSet[i].classList.remove('options-fieldset-show');
-        }
+        showProperties(false, propSet, menuSet);
+    } else if ((context.length == 0 && contextLine.length == 0) && (erTableToggle || testCaseToggle)) {// No element or line selected, but either erTableToggle or testCaseToggle is active.
+        showProperties(true, propSet, menuSet);
     }
-
-    //If erTableToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
-    if (erTableToggle == true) {
-        str += `<div id="ERTable">`
-        var ertable = generateErTableString();
-        str += ertable;
-        str += `</div>`
-    } else if (testCaseToggle) {//If testCaseToggle is true, then display the current ER-table instead of anything else that would be visible in the "Properties" area.
-        str += '<div id="ERTable">'; //using same styling for now, maybe change later
-        str += generateStateDiagramInfo();
-        str += '</div>';
-    } else {
-        //One element selected, no lines
-        if (context.length == 1 && contextLine.length == 0) {//Show properties and hide the other options
-            propSet.classList.add('options-fieldset-show');
-            propSet.classList.remove('options-fieldset-hidden');
-            for (let i = 0; i < menuSet.length; i++) {
-                menuSet[i].classList.add('options-fieldset-hidden');
-                menuSet[i].classList.remove('options-fieldset-show');
-            }
-            //Get selected element
-            const element = context[0];
-
-            //Skip diagram type-dropdown if element does not have an UML equivalent, in this case only applies to ER attributes
-            //TODO: Find a way to do this dynamically as new diagram types are added
-            if (element.kind != elementTypesNames.ERAttr) {
-                let typesToChangeTo;
-
-                // If property canChangeTo is not set, or set to null, assign empty array
-                if (element.canChangeTo === undefined || element.canChangeTo === null) {
-                    typesToChangeTo = []
-                } else if (element.canChangeTo && element.canChangeTo.length > 0) { // If canChangeTo is set and containts any value, assign canChangeTo
-                    typesToChangeTo = element.canChangeTo
-                } else { // If canChangeTo is set but is empty, assign all types
-                    typesToChangeTo = Object.values(entityType);
-                }
-                // Create a dropdown menu for diagram type, if typesToChangeTo has any value(s)
-                if (typesToChangeTo.length > 0) {
-                    let selected = context[0].type;
-                    str += `<div style='color:white'>Type</div>`;
-                    str += '<select id="typeSelect">';
-
-                    //Only displays selected element in dropdown if it has any lines
-                    if (elementHasLines(element)) {
-                        str += '<option selected ="selected" value=' + selected + '>' + selected + '</option>';
-                    } else {
-                        for (let i = 0; i < typesToChangeTo.length; i++) {
-                            if (selected != typesToChangeTo[i]) {
-                                str += `<option value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
-                            } else if (selected == typesToChangeTo[i]) {
-                                str += `<option selected="selected" value="${typesToChangeTo[i]}"> ${typesToChangeTo[i]} </option>`;
-                            }
-                        }
-                    }
-                    str += '</select>';
-                }
-            }
-            //Selected ER type
-            if (element.type == entityType.ER) {
-                //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
-                for (const property in element) {
-                    switch (property.toLowerCase()) {
-                        case 'name':
-                            str += `<div style='color:white'>Name</div>`;
-                            str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                str += `<div style='color:white'>Variant</div>`;
-
-                //Creates drop down for changing state of ER elements
-                var value;
-                var selected = context[0].state;
-                if (selected == undefined) selected = "normal"
-                if (element.kind == elementTypesNames.ERAttr) {
-                    value = Object.values(attrState);
-                } else if (element.kind == elementTypesNames.EREntity) {
-                    value = Object.values(entityState);
-                } else if (element.kind == elementTypesNames.ERRelation) {
-                    value = Object.values(relationState);
-                }
-
-                str += '<select id="propertySelect">';
-                for (let i = 0; i < value.length; i++) {
-                    if (selected != value[i]) {
-                        str += '<option value=' + value[i] + '>' + value[i] + '</option>';
-                    } else if (selected == value[i]) {
-                        str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
-                    }
-                }
-                str += '</select>';
-            } else if (element.type == 'NOTE') {
-                for (const property in element) {
-                    switch (property.toLowerCase()) {
-                        case 'attributes':
-                            str += `<div style='color:white'>Attributes </div>`;
-                            str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            } else if (element.type == entityType.UML) {
-                if (element.kind == elementTypesNames.UMLEntity) {
-                    //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            case 'attributes':
-                                str += `<div style='color:white'>Attributes</div>`;
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                break;
-                            case 'functions':
-                                str += `<div style='color:white'>Functions</div>`;
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                } else if (element.kind == elementTypesNames.UMLRelation) {
-                    //ID MUST START WITH "elementProperty_"!!!!!
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='display:none;'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    str += `<div style='color:white'>Inheritance</div>`;
-                    //Creates drop down for changing state of ER elements
-                    let value;
-                    let selected = context[0].state;
-                    if (selected == undefined) {
-                        selected = "disjoint"
-                    }
-
-                    if (element.kind == "UMLRelation") {
-                        value = Object.values(inheritanceState);
-                    }
-
-                    str += '<select id="propertySelect">';
-                    for (let i = 0; i < value.length; i++) {
-                        if (selected != value[i]) {
-                            str += '<option value=' + value[i] + '>' + value[i] + '</option>';
-                        } else if (selected == value[i]) {
-                            str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
-                        }
-                    }
-                    str += '</select>';
-                }
-            } else if (element.type == entityType.IE) {//Selected IE type
-                //If IE entity
-                if (element.kind == elementTypesNames.IEEntity) {
-                    //ID MUST START WITH "elementProperty_"!!!!!1111!!!!!1111
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            case 'attributes':
-                                str += `<div style='color:white'>Attributes</div>`;
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                } else if (element.kind == elementTypesNames.IERelation) {
-                    //ID MUST START WITH "elementProperty_"!!!!!
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='display:none;'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' style='display:none;' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    str += `<div style='color:white'>Inheritance</div>`;
-                    //Creates drop down for changing state of IE elements
-                    let value;
-                    let selected = context[0].state;
-                    if (selected == undefined) {
-                        selected = "disjoint"
-                    }
-
-                    if (element.kind == elementTypesNames.IERelation) {
-                        value = Object.values(inheritanceStateIE);
-                    }
-                    str += '<select id="propertySelect">';
-                    for (let i = 0; i < value.length; i++) {
-                        if (selected != value[i]) {
-                            str += '<option value=' + value[i] + '>' + value[i] + '</option>';
-                        } else if (selected == value[i]) {
-                            str += '<option selected ="selected" value=' + value[i] + '>' + value[i] + '</option>';
-                        }
-                    }
-                    str += '</select>';
-                }
-            } else if (element.type == entityType.SD) {//Selected SD type
-                //if SDEntity kind
-                if (element.kind == elementTypesNames.SDEntity) {
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            case 'attributes':
-                                str += `<div style='color:white'>Attributes</div>`;
-                                /* find me str += `<div>`;
-                                 str += `<select id="SDOption">`;
-                                     str +=  `<option value ="Do: " selected>Do</option>`;
-                                     str += `<option value="Exit: ">Exit</option>`;
-                                 str += `</select>`;
-                                 str += `</div>`; */
-                                str += `<textarea id='elementProperty_${property}' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                } else if (element.kind == elementTypesNames.UMLSuperState) {
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' 
-                                            type='text' 
-                                            value='${element[property]}' 
-                                            maxlength='${20 * zoomfact}'
-                                            onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            } else if (element.type == entityType.SE) {//Selected sequence type
-                if (element.kind == elementTypesNames.sequenceActor) {
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                if (element.kind == 'sequenceObject') {
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'name':
-                                str += `<div style='color:white'>Name</div>`;
-                                str += `<input id='elementProperty_${property}' type='text' value='${element[property]}' onfocus='propFieldSelected(true)' onblur='propFieldSelected(false)'>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                } else if (element.kind == 'sequenceLoopOrAlt') {
-                    for (const property in element) {
-                        switch (property.toLowerCase()) {
-                            case 'alternatives':
-                                str += `<div>Each line is an alternative. Just one is a loop.`;
-                                //TODO in the future, this can be implemented as part of saveProperties and combine attribute and func and alternatives cases.
-                                str += `<textarea id='inputAlternatives' rows='4' style='width:98%;resize:none;'>${textboxFormatString(element[property])}</textarea>`;
-                                str += `</div>`;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
-            /// Creates button for selecting element background color if not a UML relation since they should not be able change color
-            if (element.kind != 'UMLRelation' && element.kind != elementTypesNames.IERelation) {
-                // Creates button for selecting element background color
-                str += `<div style="white">Color</div>`;
-                str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-                    `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-            }
-            str += `<br><br><input type="submit" value="Save" class='saveButton' onclick="setSequenceAlternatives();changeState();saveProperties();generateContextProperties();">`;
-        }
-        // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
-        if (contextLine.length == 1 && context.length == 0) {
-            //Show properties and hide the other options
-            propSet.classList.add('options-fieldset-show');
-            propSet.classList.remove('options-fieldset-hidden');
-            for (let i = 0; i < menuSet.length; i++) {
-                menuSet[i].classList.add('options-fieldset-hidden');
-                menuSet[i].classList.remove('options-fieldset-show');
-            }
-
-            str = "<legend>Properties</legend>";
-
-            var value;
-            var selected = contextLine[0].kind;
-            if (selected == undefined) selected = normal;
-
-            value = Object.values(lineKind);
-            //this creates line kinds for UML IE AND ER
-            let UMLConnection = isLineConnectedTo(contextLine[0], elementTypesNames.UMLEntity);
-            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-                for (let i = 0; i < value.length; i++) {
-                    if (i != 1 && UMLConnection != null || i != 2 && UMLConnection == null) {
-                        if (selected == value[i]) {
-                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
-                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
-                        } else {
-                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
-                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
-                        }
-                    }
-                }
-            } else if (contextLine[0].type == entityType.ER) {
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
-                for (var i = 0; i < value.length - 1; i++) {
-                    if (i != 1 && UMLConnection != null || i != 2 && UMLConnection == null) {
-                        if (selected == value[i]) {
-                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}' checked>`
-                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
-                        } else {
-                            str += `<input type="radio" id="lineRadio${i + 1}" name="lineKind" value='${value[i]}'>`
-                            str += `<label for='lineRadio${i + 1}'>${value[i]}</label><br>`
-                        }
-                    }
-                }
-            }
-            if (contextLine[0].type == entityType.ER) {
-                if (isLineConnectedTo(contextLine[0], elementTypesNames.ERAttr) == null) {
-                    if (isLineConnectedTo(contextLine[0], elementTypesNames.EREntity) != null) {
-                        str += `<label style="display: block">Cardinality: <select id='propertyCardinality'>`;
-                        str += `<option value=''>None</option>`
-                        Object.keys(lineCardinalitys).forEach(cardinality => {
-                            if (contextLine[0].cardinality != undefined && contextLine[0].cardinality == cardinality) {
-                                str += `<option value='${cardinality}' selected>${lineCardinalitys[cardinality]}</option>`;
-                            } else {
-                                str += `<option value='${cardinality}'>${lineCardinalitys[cardinality]}</option>`;
-                            }
-                        });
-                        str += `</select></label>`;
-                        str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
-                        str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
-                        if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
-                        str += `/>`;
-                    }
-                }
-            }
-            if ((contextLine[0].type == entityType.UML) || (contextLine[0].type == 'NOTE')) {
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
-                str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
-                str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
-                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
-                str += `/>`;
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
-                str += `<input id="lineStartLabel" maxlength="50" type="text" placeholder="Start cardinality"`;
-                if (contextLine[0].startLabel && contextLine[0].startLabel != "") str += `value="${contextLine[0].startLabel}"`;
-                str += `/>`;
-                str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
-                if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
-                str += `/>`;
-            } else if ((contextLine[0].type == entityType.IE)) {
-                str += `<span id="lineLabel"`;
-                if (contextLine[0].label && contextLine[0].label != "") str += `${contextLine[0].label}`;
-                str += `/span>`;
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`;
-                str += `<input id="lineStartLabel" maxlength="50" type="text" placeholder="Start cardinality"`;
-                if (contextLine[0].startLabel && contextLine[0].startLabel != "") str += `value="${contextLine[0].startLabel}"`;
-                str += `/>`;
-                str += `<input id="lineEndLabel" maxlength="50" type="text" placeholder="End cardinality"`;
-                if (contextLine[0].endLabel && contextLine[0].endLabel != "") str += `value="${contextLine[0].endLabel}"`;
-                str += `/>`;
-            } else if (contextLine[0].type == entityType.SD) {
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
-                str += `<div><button id="includeButton" type="button" onclick="setLineLabel(); changeLineProperties();">&#60&#60include&#62&#62</button></div>`;
-                str += `<input id="lineLabel" maxlength="50" type="text" placeholder="Label..."`;
-                if (contextLine[0].label && contextLine[0].label != "") str += `value="${contextLine[0].label}"`;
-                str += `/>`;
-            }
-            if (contextLine[0].type == entityType.UML || contextLine[0].type == entityType.IE || contextLine[0].type == 'NOTE') {
-                str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-                str += `<option value=''>None</option>`;
-                //iterate through all the icons assicoated with UML, like Arrow or Black Diamond and add them to the drop down as options
-                Object.keys(UMLLineIcons).forEach(icon => {
-                    if (contextLine[0].startIcon != undefined) {
-                        //this covers Triangle and Arrow.
-                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                        if (contextLine[0].startIcon.toUpperCase() == icon) {
-                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        }
-                            //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
-                        //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                        else if ((contextLine[0].startIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
-                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        } else if ((contextLine[0].startIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
-                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        }
-                        //else, its not matching and the option is just added to the dropdown normally.
-                        else {
-                            str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                    }
-                });
-                //iterate trough all icons associated with IE. add these icons to the drop down
-                //if the line in context has one of these lines in the starting position, just like for UML, it is automatically selected
-                Object.keys(IELineIcons).forEach(icon => {
-                    if (contextLine[0].startIcon != undefined) {
-                        //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
-                        //This means we have to manually check these and others like them
-                        if (contextLine[0].startIcon.toUpperCase() == icon) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //icon can be ZERO_MANY while start icon can be 0-M.
-                        else if ((contextLine[0].startIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers ZERO_ONE not being equal to 0-1
-                        else if ((contextLine[0].startIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers ONE not being equal to 1
-                        else if ((contextLine[0].startIcon.toUpperCase() == "1") && (icon == "ONE")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers FORCEDONE not being equal to 1!
-                        else if ((contextLine[0].startIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers ONE_MANY not being equal to 1-M
-                        else if ((contextLine[0].startIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers MANY not being equal to M
-                        else if ((contextLine[0].startIcon.toUpperCase() == "M") && (icon == "MANY")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        } else {
-                            str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                    }
-                });
-                str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
-                str += `<option value=''>None</option>`;
-                Object.keys(UMLLineIcons).forEach(icon => {
-                    if (contextLine[0].endIcon != undefined) {
-                        //this covers Triangle and Arrow.
-                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                        if (contextLine[0].endIcon.toUpperCase() == icon) {
-                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        }
-                            //white and diamond needs their own if statement since contextLine[0].startIcon can be White_Diamond,
-                        //while icon is WHITEDIAMOND. So I decided the most suitable way is to manually check it.
-                        else if ((contextLine[0].endIcon == "White_Diamond") && (icon == "WHITEDIAMOND")) {
-                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        } else if ((contextLine[0].endIcon == "Black_Diamond") && (icon == "BLACKDIAMOND")) {
-                            str += `<option value='${UMLLineIcons[icon]}' selected>${UMLLineIcons[icon]}</option>`;
-                        } else {
-                            str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                        }
-                    }
-                    //else, its not matching and the option is just added to the dropdown normally.
-                    else {
-                        str += `<option value='${UMLLineIcons[icon]}'>${UMLLineIcons[icon]}</option>`;
-                    }
-                });
-                Object.keys(IELineIcons).forEach(icon => {
-                    if (contextLine[0].endIcon != undefined) {
-                        //this only really covers WEAK, since the rest have a inconsistent naming scheme, like ONE_MANY; its also reffered to as 1-M
-                        //This means we have to manually check these and others like them
-                        if (contextLine[0].endIcon.toUpperCase() == icon) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //icon can be ZERO_MANY while start icon can be 0-M.
-                        else if ((contextLine[0].endIcon.toUpperCase() == "0-M") && (icon == "ZERO_MANY")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers ZERO_ONE not being equal to 0-1
-                        else if ((contextLine[0].endIcon.toUpperCase() == "0-1") && (icon == "ZERO_ONE")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers ONE not being equal to 1
-                        else if ((contextLine[0].endIcon.toUpperCase() == "1") && (icon == "ONE")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers FORCEDONE not being equal to 1!
-                        else if ((contextLine[0].endIcon.toUpperCase() == "1!") && (icon == "FORCEDONE")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers ONE_MANY not being equal to 1-M
-                        else if ((contextLine[0].endIcon.toUpperCase() == "1-M") && (icon == "ONE_MANY")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        }
-                        //this covers MANY not being equal to M
-                        else if ((contextLine[0].endIcon.toUpperCase() == "M") && (icon == "MANY")) {
-                            str += `<option value='${IELineIcons[icon]}' selected>${IELineIcons[icon]}</option>`;
-                        } else {
-                            str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${IELineIcons[icon]}'>${IELineIcons[icon]}</option>`;
-                    }
-                });
-                str += `</select>`;
-            }
-            //generate the dropdown for SD line icons.
-            if (contextLine[0].type == entityType.SD) {
-                str += `<label style="display: block">Icons:</label> <select id='lineStartIcon' onchange="changeLineProperties()">`;
-                str += `<option value=''>None</option>`;
-                //iterate through all the icons assicoated with SD, and add them to the drop down as options
-                Object.keys(SDLineIcons).forEach(icon => {
-                    if (contextLine[0].startIcon != undefined) {
-                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                        if (contextLine[0].startIcon == icon) {
-                            str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
-                        }
-                        //else, its not matching and the option is just added to the dropdown normally.
-                        else {
-                            str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
-                    }
-                });
-                str += `</select><select id='lineEndIcon' onchange="changeLineProperties()">`;
-                str += `<option value=''>None</option>`;
-                Object.keys(SDLineIcons).forEach(icon => {
-                    if (contextLine[0].endIcon != undefined) {
-                        //If the lines in context happen to be matching something in the drop down, it is set as selected.
-                        if (contextLine[0].endIcon == icon) {
-                            str += `<option value='${SDLineIcons[icon]}' selected>${SDLineIcons[icon]}</option>`;
-                        }
-                        //else, its not matching and the option is just added to the dropdown normally.
-                        else {
-                            str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
-                        }
-                    } else {
-                        str += `<option value='${SDLineIcons[icon]}'>${SDLineIcons[icon]}</option>`;
-                    }
-                });
-                str += `</select>`;
-                str += `<label style="display: block">Line Type:</label><select id='lineType' onchange='changeLineProperties()'>`;
-                Object.keys(SDLineType).forEach(type => {
-                    if (contextLine[0].innerType.localeCompare(type, undefined, {sensitivity: 'base'}) === 0) {
-                        str += `<option value='${SDLineType[type]}' selected>${SDLineType[type]}</option>`;
-                    } else {
-                        str += `<option value='${SDLineType[type]}' >${SDLineType[type]}</option>`;
-                    }
-                });
-                str += `</select>`;
-            }
-            str += `<br><br><input type="submit" class='saveButton' value="Save" onclick="changeLineProperties();">`;
-        }
-        //If more than one element is selected
-        if (context.length > 1) {
-            //Show properties and hide the other options
-            propSet.classList.add('options-fieldset-show');
-            propSet.classList.remove('options-fieldset-hidden');
-            for (let i = 0; i < menuSet.length; i++) {
-                menuSet[i].classList.add('options-fieldset-hidden');
-                menuSet[i].classList.remove('options-fieldset-show');
-            }
-            str += `<div style="color: white">Color</div>`;
-            str += `<button id="colorMenuButton1" class="colorMenuButton" onclick="toggleColorMenu('colorMenuButton1')" style="background-color: ${context[0].fill}">` +
-                `<span id="BGColorMenu" class="colorMenu"></span></button>`;
-        }
-
-        if (context.length > 0) {
-            //Show properties and hide the other options
-            propSet.classList.add('options-fieldset-show');
-            propSet.classList.remove('options-fieldset-hidden');
-            for (let i = 0; i < menuSet.length; i++) {
-                menuSet[i].classList.add('options-fieldset-hidden');
-                menuSet[i].classList.remove('options-fieldset-show');
-            }
-            var locked = true;
-            for (let i = 0; i < context.length; i++) {
-                if (!context[i].isLocked) {
-                    locked = false;
-                    break;
-                }
-            }
-            str += `<br><input type="submit" id="lockbtn" value="${locked ? "Unlock" : "Lock"}" class="saveButton" onclick="toggleEntityLocked();">`;
-        }
+    // display ER-table instead of properties
+    if (erTableToggle) {
+        str += `<div id="ERTable">${generateErTableString()}</div>`;
+        propSet.innerHTML = str;
+        return
+    }
+    // display SD info instead of properties
+    if (testCaseToggle) {
+        str += `<div id="ERTable">${generateStateDiagramInfo()}</div>`;
+        propSet.innerHTML = str;
+        return;
+    }
+    //One element selected, no lines
+    if (context.length == 1 && contextLine.length == 0) {
+        showProperties(true, propSet, menuSet);
+        str += drawElementProperties(element);
+    }
+    // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
+    if (context.length == 0 && contextLine.length == 1) {
+        showProperties(true, propSet, menuSet);
+        str += drawLineProperties(line);
+    }
+    //If more than one element is selected
+    if (context.length > 1) {
+        showProperties(true, propSet, menuSet);
+        str += colorSelection(element);
+    }
+    if (context.length > 0) {
+        showProperties(true, propSet, menuSet);
+        let locked = context.some(e => e.isLocked);
+        str += saveButton('toggleEntityLocked();', `id='lockbtn'`, locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
     multipleColorsTest();
 }
+const showProperties = (show, propSet, menuSet) => {
+    let a = (show) ? 'options-fieldset-show' : 'options-fieldset-hidden';
+    let b = (!show) ? 'options-fieldset-show' : 'options-fieldset-hidden';
+    propSet.classList.add(a);
+    propSet.classList.remove(b);
+    for (let i = 0; i < menuSet.length; i++) {
+        menuSet[i].classList.add(b);
+        menuSet[i].classList.remove(a);
+    }
+}
+
+const textarea = (name, property, element) => {
+    return `<div style='color:white'>${name}</div>
+            <textarea 
+                id='elementProperty_${property}' 
+                rows='4' style='width:98%;resize:none;'
+            >${textboxFormatString(element[property])}</textarea>`;
+}
+
+const nameInput = (element) => {
+    return `<div style='color:white'>Name</div>
+            <input 
+                id='elementProperty_name' 
+                type='text' 
+                value='${element.name}' 
+                onfocus='propFieldSelected(true)' 
+                onblur='propFieldSelected(false)'
+            >`;
+}
+
+const saveButton = (functions, id='', value='Save') => {
+    return `<br><br>
+            <input ${id}
+                type='submit' value='${value}' class='saveButton' 
+                onclick="${functions}"
+            >`;
+}
+const dropdown = (name, def, object, element) => {
+    let options = '';
+    let current = element.state ?? def;
+    Object.values(object).forEach(value => {
+        let s = (current == value) ? `selected ="selected"` : '';
+        options += `<option ${s} value='${value}'>${value}</option>`;
+    });
+    return `<div style='color:white'>${name}</div>
+            <select id="propertySelect">${options}</select>`;
+}
+const colorSelection = (element) => {
+    return `<div style="white">Color</div> 
+            <button 
+                id="colorMenuButton1" 
+                class="colorMenuButton" 
+                onclick="toggleColorMenu('colorMenuButton1')" 
+                style="background-color:${element.fill}"
+            >
+                <span id="BGColorMenu" class="colorMenu"></span>
+            </button>`;
+}
+
+function drawElementProperties(element) {
+    let str = '';
+    // Type dropdown
+    if (element.canChangeTo && element.kind != elementTypesNames.ERAttr) {
+        let single = `<option selected="selected" value='${element.type}'>${element.type}</option>`;
+        let options = (elementHasLines(element)) ? single : option(element.canChangeTo, element.type);
+        str += `<div style='color:white'>Type</div>`
+        str += select('typeSelect', options, false, false);
+    }
+    //TODO in the future, this can be implemented as part of saveProperties.
+    switch (element.kind) {
+        case elementTypesNames.EREntity:
+            str += nameInput(element);
+            str += dropdown('Variant', 'normal', entityState, element);
+            break;
+        case elementTypesNames.UMLEntity:
+            str += nameInput(element);
+            str += textarea('Attributes', 'attributes', element);
+            str += textarea('Functions', 'functions', element);
+            break;
+        case elementTypesNames.IEEntity:
+            str += nameInput(element);
+            str += textarea('Attributes', 'attributes', element);
+            break;
+        case elementTypesNames.SDEntity:
+            str += nameInput(element);
+            str += textarea('Attributes', 'attributes', element);
+            break;
+        case elementTypesNames.UMLSuperState:
+            str += nameInput(element); // this removed maxlength='${20 * zoomfact}' for name
+            break;
+        case elementTypesNames.ERRelation:
+            str += nameInput(element);
+            str += dropdown('Variant', 'normal', relationState, element);
+            break;
+        case elementTypesNames.ERAttr:
+            str += nameInput(element);
+            str += dropdown('Variant', 'normal', attrState, element);
+            break;
+        case elementTypesNames.UMLRelation:
+            str += nameInput(element);
+            str += dropdown('Inheritance', 'disjoint', inheritanceState, element);
+            break;
+        case elementTypesNames.IERelation:
+            str += nameInput(element);
+            str += dropdown('Inheritance', 'disjoint', inheritanceStateIE, element);
+            break;
+        case elementTypesNames.sequenceActor:
+            str += nameInput(element);
+            break;
+        case elementTypesNames.sequenceObject:
+            str += nameInput(element);
+            break;
+        case elementTypesNames.sequenceLoopOrAlt:
+            str += `<div>Each line is a alternative. Single alternative is a loop.
+                            <textarea 
+                                id='inputAlternatives' 
+                                rows='4' style='width:98%;resize:none;'
+                            >${textboxFormatString(element.alternatives)}</textarea>
+                        </div>`;
+            break;
+        case 'note': // This should follow elementTypesNames naming convension
+            str += textarea('Attributes', 'attributes', element);
+            break;
+    }
+    if (element.kind != elementTypesNames.UMLRelation &&
+        element.kind != elementTypesNames.IERelation
+    ) {
+        str += colorSelection(element);
+    }
+    str += saveButton('setSequenceAlternatives();changeState();saveProperties();generateContextProperties();');
+    return str;
+}
+
+const option = (object, icon) => {
+    let result = '';
+    Object.values(object).forEach(i => {
+        let selected = (i == icon) ? 'selected' : '';
+        result += `<option value='${i}' ${selected}>${i}</option>`;
+    });
+    return result;
+}
+
+const radio = (line, arr) => {
+    let result = `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+    arr.forEach(lineKind => {
+        let checked = (line.kind == lineKind) ? 'checked' : '';
+        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked}>
+                   <label for='lineRadio${lineKind}'>${lineKind}</label>
+                   <br>`
+    });
+    return result;
+}
+
+const select = (id, options, inclNone=true, inclChange=true) => {
+    let none = (inclNone) ? `<option value=''>None</option>` : '';
+    let change = (inclChange) ? 'onChange="changeLineProperties()"' : '';
+    return `<select id='${id}' ${change}>
+                ${none}
+                ${options}
+            </select>`;
+}
+
+const lineLabel = (id, placeholder, value) => {
+    return `<input id="${id}" maxlength="50" type="text" placeholder="${placeholder}" value="${value ?? ''}"/>`;
+}
+
+function drawLineProperties(line) {
+    let str = '';
+    switch (line.type) {
+        case entityType.ER:
+            str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
+            if (!findAttributeFromLine(line)) break;
+            str += `<label style="display: block">Cardinality:`;
+            let optER;
+            Object.keys(lineCardinalitys).forEach(cardinality => {
+                let selected =  (line.cardinality == cardinality) ? 'selected' : '';
+                optER += `<option value='${cardinality}' ${selected}>${lineCardinalitys[cardinality]}</option>`;
+            });
+            str += select('propertyCardinality', optER, true, false);
+            str += `</label>`;
+            str += includeLabel(line)
+            break;
+        case entityType.UML:
+            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += includeLabel(line);
+            str += cardinalityLabels(line);
+            str += iconSelection([UMLLineIcons, IELineIcons], line);
+            break;
+        case entityType.IE:
+            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += `<span id="lineLabel" ${line.label} /span>`; // Needed for cardinality, unsure why
+            str += cardinalityLabels(line);
+            str += iconSelection([UMLLineIcons, IELineIcons], line);
+            break;
+        case entityType.SD:
+            str += includeLabel(line)
+            str += iconSelection([SDLineIcons], line);
+            str += `<label style="display: block">Line Type:</label>`;
+            let optSD = option(SDLineType, line.innerType);
+            str += select('lineType', optSD, false);
+            break;
+    }
+    str += saveButton('changeLineProperties();');
+    return str;
+}
+
+const iconSelection = (arr, line) => {
+    let sOptions = '';
+    let eOptions = '';
+    arr.forEach(object => {
+        sOptions += option(object, line.startIcon)
+    });
+    arr.forEach(object => {
+        eOptions += option(object, line.endIcon)
+    });
+    return `<label style="display: block">Icons:</label>`
+        + select('lineStartIcon', sOptions)
+        + select('lineEndIcon', eOptions);
+}
+
+const includeLabel = (line) => {
+    return `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>
+                    <div>
+                        <button 
+                            id="includeButton" type="button" 
+                            onclick="setLineLabel(); changeLineProperties();"
+                        >&#60&#60include&#62&#62</button>
+                    </div>`
+        + lineLabel('lineLabel', 'Label', line.label);
+}
+
+const cardinalityLabels = (line) => {
+    return `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`
+        + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
+        + lineLabel('lineEndLabel', 'End cardinality', line.endLabel);
+}
+
 /**
  *
  * @description function for include button to the options panel,writes out << Include >>
@@ -2066,5 +1723,63 @@ function multipleColorsTest() {
                 varyingFills = true;
             }
         }
+    }
+}
+
+/**
+ * Applies new changes to line attributes in the data array of lines.
+ */
+function changeLineProperties() {
+    let label = document.getElementById("lineLabel");
+    let startLabel = document.getElementById("lineStartLabel");
+    let endLabel = document.getElementById("lineEndLabel");
+    let startIcon = document.getElementById("lineStartIcon");
+    let endIcon = document.getElementById("lineEndIcon");
+    let lineType = document.getElementById("lineType");
+    let cardinality = document.getElementById('propertyCardinality');
+    let line = contextLine[0];
+
+    let radio = [
+        document.getElementById("lineRadioNormal"),
+        document.getElementById("lineRadioDouble"),
+        document.getElementById("lineRadioDashed"),
+        document.getElementById("lineRadioRecursive"),
+    ];
+    radio.forEach(r => {
+        if (r && r.checked && line.kind != r.value) {
+            line.kind = r.value;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, {kind: r.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
+        }
+    });
+
+    if (cardinality) {
+        if (cardinality.value == "") {
+            delete line.cardinality;
+            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        } else {
+            changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
+        }
+    }
+    changeAttribute(line, 'label', label, {label: label.value});
+
+    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
+        changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});
+        changeAttribute(line, 'endLabel', endLabel, {endLabel: endLabel.value});
+        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
+        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+    }
+    if (line.type == entityType.SD) {
+        changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
+        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
+        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+    }
+    showdata();
+}
+
+const changeAttribute = (line, attribute, updated, list) => {
+    if (line[attribute] != updated.value) {
+        line[attribute] = updated.value;
+        stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
 }
