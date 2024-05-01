@@ -1821,8 +1821,7 @@ function checkERAttributeErrors(element) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkLineErrors(lines) {
-    var line;
-
+    let line;
     // Error checking for lines
     for (let i = 0; i < lines.length; i++) {
         line = lines[i];
@@ -1839,25 +1838,5 @@ function checkLineErrors(lines) {
     }
 }
 
-/**
- * @description Checks for errors and adds the element affected by the errors to a error list.
- * @param {Object} element Element to be checked for errors.
- */
-function checkElementError(element) {
-    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
-    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element)
-    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
 
-    // Check lines
-    checkLineErrors(lines);
-}
 
-/**
- * @description Sets every elements stroke to black.
- * @param {Object} elements List of all elements.
- */
-function errorReset(elements) {
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].stroke = strokeColors;
-    }
-}

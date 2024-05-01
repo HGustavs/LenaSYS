@@ -643,3 +643,16 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     }
     return drawSvg(boxw, boxh + texth * length, content);
 }
+
+/**
+ * @description Checks for errors and adds the element affected by the errors to a error list.
+ * @param {Object} element Element to be checked for errors.
+ */
+function checkElementError(element) {
+    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
+    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element)
+    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
+
+    // Check lines
+    checkLineErrors(lines);
+}

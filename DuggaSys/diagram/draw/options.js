@@ -7,15 +7,6 @@ function generateContextProperties() {
     var menuSet = document.getElementsByClassName('options-section');
 
     var str = "<legend>Properties</legend>";
-    /*
-        //a4 propteries
-        if (document.getElementById("a4Template").style.display === "block") {
-            str += `<text>Change the size of the A4</text>`;
-            str += `<input type="range" onchange="setA4SizeFactor(event)" min="100" max="200" value ="${settings.grid.a4SizeFactor*100}" id="slider">`;
-            str += `<br><button onclick="toggleA4Vertical()">Vertical</button>`;
-            str += `<button onclick="toggleA4Horizontal()">Horizontal</button>`;
-        } */
-
     //No element or line selected
     if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
         //Hide properties and show the other options
@@ -1952,4 +1943,128 @@ function generateStateDiagramInfo() {
         output = "The feature you are trying to use is linked to state diagrams and it appears you do not have any state elements placed. Please place a state element and try again."
     }
     return output;
+}
+/**
+ * @description Formats a list of strong/normal entities and their attributes.
+ * @param ERDATA A list of all entities and it's attributes
+ * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
+ */
+function formatERStrongEntities(ERData) {
+    var temp = []; // The formated list of strong/normal entities
+    // Iterating through all entities
+    for (let i = 0; i < ERData.length; i++) {
+        if (ERData[i][0].state == 'normal') {
+            var row = []; // The formated row
+            row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
+            var keys = []; // The key attributes (primary, candidate and weakKey)
+            // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'primary') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'candidate') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'weakKey') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            row.push(keys); // Pushing all keys from the entity
+            // Pushing in remaining attributes
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'normal') {
+                    row.push(ERData[i][j]);
+                }
+            }
+            // Pushing in remaining multivalued attributes
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'multiple') {
+                    row.push(ERData[i][j]);
+                }
+            }
+            temp.push(row); // Pushing the formated row to the temp list
+        }
+    }
+    return temp;
+}
+
+/**
+ * @description Formats a list of weak entities and their attributes.
+ * @param ERDATA A list of all entities and it's attributes
+ * @returns A formated list of all weak entities and their attributes. Keys for every entity are stored in [entityRow][1].
+ */
+function formatERWeakEntities(ERData) {
+    var temp = []; // The formated list of weak entities
+    // Iterating through all entities
+    for (let i = 0; i < ERData.length; i++) {
+        if (ERData[i][0].state == 'weak') {
+            var row = []; // The formated row
+            row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
+            var keys = []; // The key attributes (weakKey, primary and candidate)
+            // Pushing in weak keys first to ensure that the first key in a weak entity is weak
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'weakKey') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'primary') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'candidate') {
+                    keys.push(ERData[i][j]);
+                }
+            }
+            row.push(keys); // Pushing all keys from the entity
+            // Pushing in remaining attributes
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'normal') {
+                    row.push(ERData[i][j]);
+                }
+            }
+            // Pushing in remaining multivalued attributes
+            for (let j = 1; j < ERData[i].length; j++) {
+                if (ERData[i][j].state == 'multiple') {
+                    row.push(ERData[i][j]);
+                }
+            }
+            temp.push(row); // Pushing the formated row to the temp list
+        }
+    }
+    return temp;
+}
+
+/**
+ * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
+ * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
+ * @see propFieldState For seeing if any fieldset is currently selected.
+ */
+function propFieldSelected(isSelected) {
+    propFieldState = isSelected;
+}
+
+/**
+ * @description Tests if there are varying fill and/or stroke colors in the selected elements
+ */
+function multipleColorsTest() {
+    if (context.length > 1) {
+        var fill = context[0].fill;
+        var varyingFills = false;
+        for (let i = 0; i < context.length; i++) {
+            // Checks if there are varying fill colors, but not if varying colors have already been detected
+            if (fill != context[i].fill && !varyingFills) {
+                var button = document.getElementById("colorMenuButton1");
+                button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
+                var textNode = document.createTextNode("Multiple Color Values");
+                button.insertBefore(textNode, button.firstChild);
+                varyingFills = true;
+            }
+        }
+    }
 }

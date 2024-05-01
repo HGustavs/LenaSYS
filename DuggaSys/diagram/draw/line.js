@@ -524,10 +524,10 @@ function drawArrowPoint(base, point, x, y, lineColor) {
 
 /**
  * @description Removes all existing lines and draw them again
- * @param {String} str The string to add the created line elements to
  * @return String containing all the new lines-elements
  */
-function redrawArrows(str) {
+function redrawArrows() {
+    let str = '';
     // Clear all lines and update with dom object dimensions
     for (let i = 0; i < data.length; i++) {
         clearLinesForElement(data[i]);
@@ -699,6 +699,7 @@ function calculateLabelDisplacement(labelObject) {
     }
     return distanceToOuterlines;
 }
+
 function calculateProcentualDistance(objectLabel) {
     // Math to calculate procentuall distance from/to centerpoint
     var diffrenceX = objectLabel.highX - objectLabel.lowX;
@@ -739,5 +740,160 @@ function calculateProcentualDistance(objectLabel) {
         objectLabel.labelMovedY = -objectLabel.percentOfLine * diffrenceY;
     } else if (objectLabel.fromY > objectLabel.centerY) { //up to down
         objectLabel.labelMovedY = objectLabel.percentOfLine * diffrenceY;
+    }
+}
+
+/**
+ * @description Updates the Label position on the line.
+ * @param {number} newPosX The position the mouse is at in the X-axis.
+ * @param {number} newPosY The position the mouse is at in the Y-axis.
+ */
+function updateLabelPos(newPosX, newPosY) {
+    targetLabel.labelMoved = true;
+    if (newPosX + targetLabel.width < targetLabel.highX && newPosX - targetLabel.width > targetLabel.lowX) {
+        targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
+    } else if (newPosX - targetLabel.width < targetLabel.lowX) {
+        targetLabel.labelMovedX = (targetLabel.lowX + targetLabel.width - (targetLabel.centerX));
+    } else if (newPosX + targetLabel.width > targetLabel.highX) {
+        targetLabel.labelMovedX = (targetLabel.highX - targetLabel.width - (targetLabel.centerX));
+    }
+    if (newPosY + targetLabel.height < targetLabel.highY && newPosY - targetLabel.height > targetLabel.lowY) {
+        targetLabel.labelMovedY = (newPosY - (targetLabel.centerY));
+    } else if (newPosY - targetLabel.height < targetLabel.lowY) {
+        targetLabel.labelMovedY = (targetLabel.lowY + targetLabel.height - (targetLabel.centerY));
+    } else if (newPosY + targetLabel.height > targetLabel.highY) {
+        targetLabel.labelMovedY = (targetLabel.highY - targetLabel.height - (targetLabel.centerY));
+    }
+    calculateProcentualDistance(targetLabel);
+    calculateLabelDisplacement(targetLabel);
+    displaceFromLine(newPosX, newPosY);
+}
+
+/**
+ * @description Sorts all lines connected to an element on each side.
+ * @param {String} currentElementID Hexadecimal id for the element at current test index for sorting.
+ * @param {String} compareElementID Hexadecimal id for the element were comparing to.
+ * @param {Array<Object>} ends Array of all lines connected on this side.
+ * @param {String} elementid Hexadecimal id for element to perform sorting on.
+ * @param {Number} axis
+ * @returns {Number} 1 or -1 depending in the resulting calculation.
+ */
+function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
+    let ax, ay, bx, by, toElementA, toElementB, sortval, parentx, parenty;
+    // Get dx dy centered on association end e.g. invert vector if necessary
+    var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
+    var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
+    var parent = data[findIndex(data, elementid)];
+
+    // Retrieve opposite element - assume element center (for now)
+    if (currentElementLine.fromID == elementid) {
+        toElementA = (currentElementLine == ghostLine) ? ghostElement : data[findIndex(data, currentElementLine.toID)];
+    } else {
+        toElementA = data[findIndex(data, currentElementLine.fromID)];
+    }
+
+    if (compareElementLine.fromID == elementid) {
+        toElementB = (compareElementLine == ghostLine) ? ghostElement : data[findIndex(data, compareElementLine.toID)];
+    } else {
+        toElementB = data[findIndex(data, compareElementLine.fromID)];
+    }
+
+    if (toElementA.id === toElementB.id) {
+        return 0;
+    }
+
+    if (navigator.userAgent.indexOf("Chrome") !== -1) {
+        sortval = 1;
+    } else {
+        sortval = -1;
+    }
+
+    // If lines cross swap otherwise keep as is
+    if (axis == 0 || axis == 1) {
+        // Left side
+        ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
+        by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
+        if (axis == 0) parentx = parent.x1
+        else parentx = parent.x2;
+
+        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return sortval
+
+    } else if (axis == 2 || axis == 3) {
+        // Top / Bottom side
+        ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
+        bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
+        if (axis == 2) parenty = parent.y1
+        else parenty = parent.y2;
+
+        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return sortval
+    }
+
+    return -sortval;
+}
+
+/**
+ * @description Checks if the lines intersect and if the possible intersection point is within edges
+ * @param {Number} x1 Position 1
+ * @param {Number} y1 Position 1
+ * @param {Number} x2 Position 2
+ * @param {Number} y2 Position 2
+ * @param {Number} x3 Position 3
+ * @param {Number} y3 Position 3
+ * @param {Number} x4 Position 4
+ * @param {Number} y4 Position 4
+ * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
+ */
+
+function linetest(x1, y1, x2, y2, x3, y3, x4, y4) {
+    var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
+    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
+    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
+    if (isNaN(x) || isNaN(y)) {//Check if lines don't intersect
+        return false;
+    } else {//Check if intersection point is within edges
+        if (x1 >= x2) {
+            if (!(x2 <= x && x <= x1)) return false;
+        } else {
+            if (!(x1 <= x && x <= x2)) return false;
+        }
+
+        if (y1 >= y2) {
+            if (!(y2 <= y && y <= y1)) return false;
+        } else {
+            if (!(y1 <= y && y <= y2)) return false;
+        }
+
+        if (x3 >= x4) {
+            if (!(x4 <= x && x <= x3)) return false;
+        } else {
+            if (!(x3 <= x && x <= x4)) return false;
+        }
+
+        if (y3 >= y4) {
+            if (!(y4 <= y && y <= y3)) return false;
+        } else {
+            if (!(y3 <= y && y <= y4)) return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @description checks if the label should be detached.
+ * @param {Interger} newX The position the mouse is at in the X-axis.
+ * @param {Interger} newY The position the mouse is at in the Y-axis.
+ */
+function displaceFromLine(newX, newY) {
+    //calculates which side of the line the point is.
+    var y1 = targetLabel.fromY, y2 = targetLabel.toY, x1 = targetLabel.fromX, x2 = targetLabel.toX;
+    var distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
+    //deciding which side of the line the label should be
+    if (distance > 6000) {
+        targetLabel.labelGroup = 1;
+    } else if (distance < -6000) {
+        targetLabel.labelGroup = 2;
+    } else {
+        targetLabel.labelGroup = 0;
     }
 }

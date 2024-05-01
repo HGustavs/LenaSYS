@@ -1,5 +1,3 @@
-//#region ================================ GLOBAL VARIABLES ====================================
-
 // Data and html building variables
 var service = [];
 var str = "";
@@ -87,6 +85,7 @@ var propFieldState = false;
 
 // What kind of input mode that user is uing the cursor for.
 var mouseMode = mouseModes.POINTER;
+var mouseButtonDown = false;
 var previousMouseMode;
 
 // All different element types that can be placed by the user.
@@ -142,5 +141,3 @@ var NOTEHeight = [];// List with NOTE Entities' real height
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
-
-//#endregion ===================================================================================

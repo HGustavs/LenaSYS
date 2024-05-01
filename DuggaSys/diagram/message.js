@@ -52,9 +52,6 @@ function setTimerToMessage(element, time = 5000) {
     };
 }
 
-//-------------------------------------------------------------------------------------------------
-// Removes the message from DOM and removes all the variables that are used
-//-------------------------------------------------------------------------------------------------
 /**
  * @description Destroys a popup message.
  * @param {HTMLElement} element The message DOM element that should be destroyed.
