@@ -207,4 +207,49 @@ function appendValuesFrom(target, changes) {
     });
     return target;
 }
+
+/**
+ * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
+ * @return a boolean value depending on if it is darktheme or not.
+ */
+function isDarkTheme() {
+    if (localStorage.getItem('diagramTheme') != null) {
+        //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
+        let cssUrl = localStorage.getItem('diagramTheme');
+        //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
+        cssUrl = cssUrl.split("/").pop();
+
+        return cssUrl === 'blackTheme.css'
+    }
+}
+
+/**
+ * Generates a new hexadecimal ID that is not already stored to identify things in the program.
+ * @returns {String} Hexadecimal number represented as a string.
+ * @see randomidArray For an array of all generated IDs by this function.
+ */
+function makeRandomID() {
+    var str = "";
+    var characters = 'ABCDEF0123456789';
+    var charactersLength = characters.length;
+    while (true) {
+        for (let i = 0; i < 6; i++) {
+            //document.querySelector can't find ID's if they begin with a number
+            if (i == 0) str += characters.charAt(Math.floor(Math.random() * (charactersLength-10)));
+            else str += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        if (!settings.misc.randomidArray) { //always add first id
+            settings.misc.randomidArray.push(str);
+            return str;
+        } else {
+            //if check is true the id already exists
+            if (settings.misc.randomidArray.includes(str)) {
+                str = "";
+            } else {
+                settings.misc.randomidArray.push(str);
+                return str;
+            }
+        }
+    }
+}
 //#endregion =====================================================================================
