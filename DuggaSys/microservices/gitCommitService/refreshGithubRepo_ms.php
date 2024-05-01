@@ -15,6 +15,8 @@ include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../gitfetchService.php";
 include_once "./refreshCheck_ms.php";
+include_once "clearGitFiles_ms.php";
+
 
 global $pdo;
 
@@ -25,16 +27,7 @@ if(isset($_POST['action'])) {
         // refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit
         //--------------------------------------------------------------------------------------------------
         $cid = $_POST['cid'];
-        // Clear the gitfiles table before downloading repo
-        $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-        $query = $pdolite->prepare("DELETE FROM gitFiles WHERE cid = :cid"); 
-        $query->bindParam(':cid', $cid);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            echo "Error updating file entries" . $error[2];
-            $errorvar = $error[2];
-            print_r($error);
-            echo $errorvar;
+        clearGitFiles($cid);
         }
 
         // Get old commit and URL from Sqlite 

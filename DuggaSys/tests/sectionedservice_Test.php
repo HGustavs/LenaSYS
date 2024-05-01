@@ -7,9 +7,9 @@
  
  Documentation for how these tests are used can be found in Shared/Documentation/Test API
 
- The original code for the service that is tested in reorderListentries, changes the value of "moment", therefore these tests can only be performed once with a passing grades. Should another attempt be performed before reseting the database some test will undoubtedly fail.
+ The original code for the service that is tested in reorderListEntries, changes the value of "moment", therefore these tests can only be performed once with a passing grades. Should another attempt be performed before reseting the database some test will undoubtedly fail.
 
- The service used in test removeListentries, is never used
+ The service used in test removeListEntries, is never used
  The github related services "REFGIT" and "CREGITEX"  do not have tests for the time being. they were not completed at the time. They therefore need to be added to this file.
  The services changeActiveCourseVersion_sectioned and updateCourseVersion_sectioned are not in a functioning state, the tests for them are therefore not complete. 
 
@@ -51,54 +51,41 @@ $testsData = array(
         ),
     ),
     //---------------------------------------------------------------------------------------------------------------
-    // This test will test the micro-service deleteListentries and its curresponding part in the monolith called "DEL"
+    // This test will test the micro-service deleteListEntries and its curresponding part in the monolith called "DEL"
     //---------------------------------------------------------------------------------------------------------------
-    'deleteListentries' => array(
-        'expected-output' => '{"groups":{"No":["1","2","3","4","5","6","7","8"],"Le":["A","B","C","D","E","F","G","H"],"Vi":["I","II","III","IV","V","VI","VII","VIII"]},"debug":"NONE!","writeaccess":false,"studentteacher":false,"readaccess":false,"coursename":"UNK","coursevers":"UNK","coursecode":"UNK","courseid":"UNK","links":[],"duggor":[],"results":[],"versions":[{"cid":"1","coursecode":"DV12G","vers":"45656","versname":"HT15","coursename":"Webbprogrammering","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbprogrammering - HT15"},{"cid":"1","coursecode":"DV12G","vers":"45657","versname":"HT16","coursename":"Webbprogrammering","coursenamealt":"UNK","startdate":"2015-12-29 00:00:00","enddate":"2016-03-08 00:00:00","motd":"Webbprogrammering - HT16"},{"cid":"2","coursecode":"IT118G","vers":"97731","versname":"HT14","coursename":"Webbutveckling - datorgrafik","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbutveckling - datorgrafik - HT14"},{"cid":"2","coursecode":"IT118G","vers":"97732","versname":"HT15","coursename":"Webbutveckling - datorgrafik","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Webbutveckling - datorgrafik - HT15"},{"cid":"3","coursecode":"IT500G","vers":"1337","versname":"HT15","coursename":"Datorns grunder","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Datorns grunder - HT15"},{"cid":"4","coursecode":"IT301G","vers":"1338","versname":"HT15","coursename":"Software Engineering","coursenamealt":"UNK","startdate":"2014-12-29 00:00:00","enddate":"2015-03-08 00:00:00","motd":"Software Engineering - HT15"},{"cid":"305","coursecode":"IT308G","vers":"12305","versname":"HT15","coursename":"Objektorienterad programmering","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"307","coursecode":"IT115G","vers":"12307","versname":"HT15","coursename":"Datorns grunder","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"308","coursecode":"MA161G","vers":"12308","versname":"HT15","coursename":"Diskret matematik","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"309","coursecode":"DA322G","vers":"12309","versname":"HT15","coursename":"Operativsystem","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"312","coursecode":"IT326G","vers":"12312","versname":"HT15","coursename":"Distribuerade system","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"319","coursecode":"DV736A","vers":"12319","versname":"HT15","coursename":"Examensarbete i datavetenskap","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"324","coursecode":"IT108G","vers":"12324","versname":"HT15","coursename":"Webbutveckling - webbplatsdesign","coursenamealt":"UNK","startdate":null,"enddate":null,"motd":null},{"cid":"1885","coursecode":"G1337","vers":"1337","versname":"","coursename":"Testing-Course","coursenamealt":"Course for testing codeviewer","startdate":"2020-05-01 00:00:00","enddate":"2020-06-30 00:00:00","motd":"Code examples shows both templateid and boxid!"},{"cid":"1894","coursecode":"G420","vers":"52432","versname":"ST20","coursename":"Demo-Course","coursenamealt":"Chaos Theory - Conspiracy 64k Demo","startdate":"2020-05-01 00:00:00","enddate":"2020-06-30 00:00:00","motd":"Demo Course 2020 - All current duggas"}],"codeexamples":[],"unmarked":0,"startdate":"UNK","enddate":"UNK","grpmembershp":"UNK","grplst":[],"userfeedback":[],"feedbackquestion":"UNK","avgfeedbackscore":0}',
-        'query-before-test-1' => "INSERT INTO listentries (lid, cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind)   
-                                  VALUES(5020,1,45656,'New Group',9021,6,5,0,22,'TOP', 0, 0, null);",
-        'query-after-test-1' => "DELETE FROM listentries WHERE lid > 5009;",
+    'deleteListEntries' => array(
+        'expected-output' => '{"entries":[{"entryname":"JavaScript-Code:"},{"entryname":"JS-TEST template 1"},{"entryname":"JS-TEST template 2"},{"entryname":"JS-TEST template 3"},{"entryname":"JS-TEST template 4"},{"entryname":"JS-TEST template 5"},{"entryname":"JS-TEST template 6"},{"entryname":"JS-TEST template 7"},{"entryname":"JS-TEST template 8"},{"entryname":"JS-TEST template 9"},{"entryname":"JS-TEST template 10"},{"entryname":"HTML-Code:"},{"entryname":"Html-test template 1"},{"entryname":"Html-test template 2"},{"entryname":"Html-test template 3"},{"entryname":"Html-test template 4"},{"entryname":"Html-test template 5"},{"entryname":"Html-test template 6"},{"entryname":"Html-test template 7"},{"entryname":"Html-test template 8"},{"entryname":"Html-test template 9"},{"entryname":"Html-test template 10"},{"entryname":"SQL-CODE:"},{"entryname":"SQL-TEST template 1"},{"entryname":"SQL-TEST template 2"},{"entryname":"SQL-TEST template 3"},{"entryname":"SQL-TEST template 4"},{"entryname":"SQL-TEST template 5"},{"entryname":"SQL-TEST template 6"},{"entryname":"SQL-TEST template 7"},{"entryname":"SQL-TEST template 8"},{"entryname":"SQL-TEST template 9"},{"entryname":"SQL-TEST template 10"},{"entryname":"PHP-CODE:"},{"entryname":"PHP-TEST template 1"},{"entryname":"PHP-TEST template 2"},{"entryname":"PHP-TEST template 3"},{"entryname":"PHP-TEST template 4"},{"entryname":"PHP-TEST template 5"},{"entryname":"PHP-TEST template 6"},{"entryname":"PHP-TEST template 7"},{"entryname":"PHP-TEST template 8"},{"entryname":"PHP-TEST template 9"},{"entryname":"PHP-TEST template 10"},{"entryname":"Other:"}],"debug":"NONE!","coursename":"Testing-Course"}',
+        'query-before-test-1' => "INSERT INTO listentries(cid, entryname, kind, creator, visible, vers) VALUES (1885, 'Inserttobedeleted', 4, 2, 1, 1337);",
+        'query-before-test-2' => "SELECT MAX(lid) AS lid FROM listentries",
+        'variables-query-before-test-3' => "lid",
+        'query-before-test-3' => "INSERT INTO userAnswer (cid, variant, moment, useranswer, submitted, marked, vers, hash, password) VALUES(1885, 3, ?, 'an answer to be deleted', '2024-04-15 14:00:00', '2024-04-15 14:30:00', 1337, 'ghj1ghj2', 'asddasdd');",
+        'query-after-test-1' => "DELETE FROM userAnswer WHERE cid = 1885 AND useranswer = 'an answer to be deleted';",
+        'query-after-test-2' => "DELETE FROM listentries WHERE cid = 1885 AND entryname = 'Inserttobedeleted';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
-                'opt' => 'DEL',
-                'username' => 'mestr',
+                'username' => 'brom',
                 'password' => 'password',
-                'lid' => '5020'
+                'courseid' => 1885,
+                'coursevers'=> 1337,
+                'opt'=> 'DEL',
+                'lid'=> '<!query-before-test-2!><*[0]["lid"]*>',
             )
         ),
         'filter-output' => serialize(
-            array( // Filter what output to use in assert test, use none to use all ouput from service	
+            array( // Filter what output to use in assert test, use none to use all ouput from service
+                'entries' => array(
+                    'entryname',
+                ),
                 'debug',
-                'writeaccess',
-                'studentteacher',
-                'readaccess',
                 'coursename',
-                'coursevers',
-                'coursecode',
-                'courseid',
-                'links',
-                'duggor',
-                'results',
-                'versions',
-                'codeexamples',
-                'unmarked',
-                'startdate',
-                'enddate',
-                'groups',
-                'grpmembershp',
-                'grplst',
-                'userfeedback',
-                'feedbackquestion',
-                'avgfeedbackscore'
-            )
-        ),
+            )),
     ),
     //-------------------------------------------------------------------------------------------------------------------
-    // This test will test the micro-service removeListentries and its curresponding part in the monolith called "DELETED"
+    // This test will test the micro-service removeListEntries and its curresponding part in the monolith called "DELETED"
     // THIS WILL FAIL THE FIRST TIME IT EXECUTES AFTER INSTALLING DATABASE!
     //-------------------------------------------------------------------------------------------------------------------
-    'removeListentries' => array(
+    'removeListEntries' => array(
         'expected-output' => '{"debug":"NONE!","writeaccess":true,"readaccess":true,"entries":[{"entryname":"PHP examples","visible":"1"},{"entryname":"PHP Example 1","visible":"1"},{"entryname":"PHP Example 2","visible":"1"},{"entryname":"PHP Example 3","visible":"1"},{"entryname":"Javascript examples","visible":"1"},{"entryname":"RemoveTest123","visible":"3"},{"entryname":"JavaScript Example 1","visible":"1"},{"entryname":"JavaScript Example 2","visible":"1"},{"entryname":"JavaScript Example 3","visible":"1"},{"entryname":"HTML5 examples","visible":"1"},{"entryname":"HTML5 Example 1","visible":"1"},{"entryname":"HTML5 Example 2","visible":"1"},{"entryname":"HTML5 Example 3","visible":"1"},{"entryname":"HTML5 Example 4","visible":"1"},{"entryname":"HTML5 Example 5","visible":"1"},{"entryname":"HTML5 Example 6","visible":"1"},{"entryname":"HTML5 Example 7","visible":"1"},{"entryname":"HTML5 Example 8","visible":"1"},{"entryname":"Shader examples","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"},{"entryname":"Shaderprogrammering","visible":"1"}]}',
         'query-before-test-1' => "INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(1,45656,'RemoveTest123',9021,6,5,0,101,'TOP', 0, 0, null);",
         'query-before-test-2' => "SELECT lid FROM listentries WHERE entryname = 'RemoveTest123';",
@@ -182,9 +169,9 @@ $testsData = array(
         ),
     ),
     //------------------------------------------------------------------------------------------
-    // This test the microservice reorderListentries and the part of the monalith called "REORDER" 
+    // This test the microservice reorderListEntries and the part of the monalith called "REORDER" 
     //------------------------------------------------------------------------------------------
-    'reorderListentries' => array(
+    'reorderListEntries' => array(
         'expected-output' => '{"entries":[{"entryname":"PHP examples","lid":1001,"pos":0},{"entryname":"PHP Example 2","lid":1003,"pos":1},{"entryname":"PHP Example 1","lid":1002,"pos":2},{"entryname":"PHP Example 3","lid":1004,"pos":3},{"entryname":"Javascript examples","lid":1005,"pos":4},{"entryname":"JavaScript Example 1","lid":1006,"pos":5},{"entryname":"JavaScript Example 2","lid":1007,"pos":6},{"entryname":"JavaScript Example 3","lid":1008,"pos":7},{"entryname":"HTML5 examples","lid":1009,"pos":8},{"entryname":"HTML5 Example 1","lid":1010,"pos":9},{"entryname":"HTML5 Example 2","lid":1011,"pos":10},{"entryname":"HTML5 Example 3","lid":1012,"pos":11},{"entryname":"HTML5 Example 4","lid":1013,"pos":12},{"entryname":"HTML5 Example 5","lid":1014,"pos":13},{"entryname":"HTML5 Example 6","lid":1015,"pos":14},{"entryname":"HTML5 Example 7","lid":1016,"pos":15},{"entryname":"HTML5 Example 8","lid":1017,"pos":16},{"entryname":"Shader examples","lid":1018,"pos":17},{"entryname":"Shaderprogrammering","lid":1019,"pos":18},{"entryname":"Shaderprogrammering","lid":1020,"pos":19}],"coursename":"Webbprogrammering"}',
         'query-after-test-1' => "UPDATE listentries SET pos=1 WHERE lid=1002;",
         'query-after-test-2' => "UPDATE listentries SET pos=2 WHERE lid=1003;",
@@ -397,72 +384,33 @@ $testsData = array(
     // //-------------------------------------------------------------------------------
     // // This test the microservice changeActiveCourseVersion_sectioned and the part of the monalith called "CHGVERS" 
     // //-------------------------------------------------------------------------------
-    // 'changeActiveCourseVersion_sectioned' => array(
-    //     'expected-output'   => '',
+    'changeActiveCourseVersion_sectioned' => array(
+        'expected-output' => '{"entries":[{"entryname":"New Test","lid":"99999","gradesys":"0","tabs":"0" },{"entryname":"JavaScript-Code:","lid":"1","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 1","lid":"4000","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 2","lid":"4001","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 3","lid":"4002","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 4","lid":"4003","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 5","lid":"4004","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 6","lid":"4005","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 7","lid":"4006","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 8","lid":"4007","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 9","lid":"4008","gradesys":null,"tabs":null},{"entryname":"JS-TEST template 10","lid":"4009","gradesys":null,"tabs":null},{"entryname":"HTML-Code:","lid":"2","gradesys":null,"tabs":null},{"entryname":"Html-test template 1","lid":"5000","gradesys":null,"tabs":null},{"entryname":"Html-test template 2","lid":"5001","gradesys":null,"tabs":null},{"entryname":"Html-test template 3","lid":"5002","gradesys":null,"tabs":null},{"entryname":"Html-test template 4","lid":"5003","gradesys":null,"tabs":null},{"entryname":"Html-test template 5","lid":"5004","gradesys":null,"tabs":null},{"entryname":"Html-test template 6","lid":"5005","gradesys":null,"tabs":null},{"entryname":"Html-test template 7","lid":"5006","gradesys":null,"tabs":null},{"entryname":"Html-test template 8","lid":"5007","gradesys":null,"tabs":null},{"entryname":"Html-test template 9","lid":"5008","gradesys":null,"tabs":null},{"entryname":"Html-test template 10","lid":"5009","gradesys":null,"tabs":null},{"entryname":"SQL-CODE:","lid":"4","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 1","lid":"3110","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 2","lid":"3111","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 3","lid":"3112","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 4","lid":"3113","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 5","lid":"3114","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 6","lid":"3115","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 7","lid":"3116","gradesys":null,"tabs":null},{"entryname":"SQL-TEST template 8","lid":"3117","gradesys":null,"tabs":null },{"entryname":"SQL-TEST template 9","lid":"3118","gradesys":null,"tabs":null },{"entryname":"SQL-TEST template 10","lid":"3119","gradesys":null,"tabs":null },{"entryname":"PHP-CODE:","lid":"5","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 1","lid":"2110","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 2","lid":"2111","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 3","lid":"2112","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 4","lid":"2113","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 5","lid":"2114","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 6","lid":"2115","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 7","lid":"2116","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 8","lid":"2117","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 9","lid":"2118","gradesys":null,"tabs":null },{"entryname":"PHP-TEST template 10","lid":"2119","gradesys":null,"tabs":null },{"entryname":"Other:","lid":"6","gradesys":null,"tabs":null }],"debug":"NONE!"}',
+        'query-before-test-1' => "INSERT INTO listentries (lid,cid,vers, entryname,gradesystem, tabs,highscoremode, groupKind,creator,visible) VALUES (99999,1885,1337,'New Test', 0 ,null , 0, null,101,1);",
+        'query-after-test-1' => "DELETE FROM listentries WHERE lid=99999",
+        'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
+        'service-data' => serialize(array( // Data that service needs to execute function
+            'opt' => 'UPDATETABS',
+            'username' => 'mestr',
+            'password' => 'password',
+            'courseid' => '1885',
+            'coursevers' => '1337',
+            'comment' => 'undefined',
+            'lid' => '99999', 
+            'tabs' => '1',
+            'hash' => 'UNK'
 
-    //     'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
-
-    //     'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
-    //     'service-data' => serialize(array( // Data that service needs to execute function
-    //         'opt' => 'UPDATETABS',
-    //         'username' => 'mestr',
-    //         'password' => 'password',
-    //         'courseid' => '2',
-    //         'coursename' => '2',
-    //         'coursevers' => '97732',
-    //         'comment' => 'undefined',
-    //         'lid' => '2008', 
-    //         'tabs' => '1',
-    //         'hash' => 'UNK'
-
-    //     )),
-    //     'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
-    //         'entries' => array(
-    //             'entryname',
-    //             'lid',
-    //             'pos',
-    //             'kind',
-    //             'moment',
-    //             'link',
-    //             'visible',
-    //             'highscoremode',
-    //             'gradesys',
-    //             'code_id',
-    //             'deadline',
-    //             'relativedeadline',
-    //             'qrelease',
-    //             'comments',
-    //             'qstart',
-    //             'grptype',
-    //             'tabs',
-    //             'feedbackenabled',
-    //             'feedbackquestion',
-    //             //'ts'
-    //         ),
-    //         'debug',
-    //         'writeaccess',
-    //         'studentteacher',
-    //         'readaccess',
-    //         'coursename',
-    //         'coursevers',
-    //         'coursecode',
-    //         'courseid',
-    //         'links',
-    //         'duggor',
-    //         'results',
-    //         'versions',
-    //         'codeexamples',
-    //         'unmarked',
-    //         'startdate',
-    //         'enddate',
-    //         'groups',
-    //         'grpmembershp',
-    //         'grplst',
-    //         'userfeedback',
-    //         'feedbackquestion',
-    //         'avgfeedbackscore'
-    //     )),
-    // ),
+        )),
+        'filter-output' => serialize(array( // Filter what output to use in assert test, use none to use all ouput from service
+            'entries' => array(
+                'entryname',
+                'lid',
+                'gradesys',
+                'tabs',
+            ),
+            'debug',
+        )),
+    ),
 
     //--------------------------------------------------------------------------------------------------
     // This test the microservice setVisibleListentrie and the part of the monalith called "HIDDEN" 

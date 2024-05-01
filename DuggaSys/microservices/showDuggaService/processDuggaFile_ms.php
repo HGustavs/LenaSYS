@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------------------------------------------------------------------------
-// processDuggaFile_ms.php - Function for processing files within a dugga i.e. submitted PDF, ZIP files
+// processDuggafile_ms.php - Retreive all submissions Uses service selectFromTableSubmission to get information it requires from submission.
 //---------------------------------------------------------------------------------------------------------------
 function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, $moment)
 {
@@ -26,8 +26,6 @@ function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, 
 		$result = $query->execute();
 		$rows = $query->fetchAll();
 	}
-	//if the hash worked or the user was not a superuser then retrive the submission
-	
 	// Store current day in string
 	$today = date("Y-m-d H:i:s");
 	
