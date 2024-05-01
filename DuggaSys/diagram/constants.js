@@ -324,8 +324,6 @@ const ONE_LINE = iconLineDirections(10, 10);
 const TWO_LINE = iconLineDirections(10, 20);
 const CIRCLE = iconCircleDirections(25);
 
-//#endregion ===================================================================================
-
 const cursorOffset = new Map([
     [0.25, -15.01],
     [0.5, -3],
@@ -396,6 +394,7 @@ const subMenuSequence = [
     elementTypes.sequenceLoopOrAlt,
 ]
 
+//#endregion ===================================================================================
 //#region ================================ DEFAULTS ============================================
 
 /**

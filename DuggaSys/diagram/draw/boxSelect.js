@@ -30,3 +30,13 @@ function boxSelect_Draw() {
     }
     return str;
 }
+
+function getBoxSelectionPoints() {
+    return {
+        n1: new Point(startX, startY),
+        n2: new Point(startX + deltaX, startY),
+        n3: new Point(startX, startY + deltaY),
+        n4: new Point(startX + deltaX, startY + deltaY),
+    };
+}
+

@@ -843,7 +843,6 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis) 
  * @param {Number} y4 Position 4
  * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
-
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4) {
     var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges

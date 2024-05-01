@@ -1,34 +1,3 @@
-//#region ================================ HELPER FUNCTIONS ====================================
-
-/**
- * @description Creates a new rectangle from upper left point and lower right point.
- * @param {Point} topLeft
- * @param {Point} bottomRight
- * @returns {Object} Returns an object representing a rectangle with position and size.
- */
-function getRectFromPoints(topLeft, bottomRight) {
-    return {
-        x: topLeft.x,
-        y: topLeft.y,
-        width: bottomRight.x - topLeft.x,
-        height: bottomRight.y - topLeft.y,
-    };
-}
-
-/**
- * @description Checks if the second rectangle is within the first rectangle.
- * @param {*} left First rectangle
- * @param {*} right Second rectangle
- * @returns {Boolean} true if the right rectangle is within the left rectangle.
- */
-function rectsIntersect(left, right) {
-    return (
-        ((left.x + left.width) >= ((right.x) + (right.width * 0.75))) &&
-        ((left.y + left.height) > (right.y + right.height * 0.75)) &&
-        (left.x < right.x + 0.25 * right.width) && (left.y < right.y + 0.25 * right.height)
-    );
-}
-
 function isKeybindValid(e, keybind) {
     return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
@@ -67,48 +36,6 @@ function enumContainsPropertyValue(value, enumObject) {
 }
 
 /**
- * @description Creates a new rectangle from an element.
- * @param {Object} element Element with a x,y,width and height propery.
- * @returns
- */
-function getRectFromElement(element) {
-    // Corrects returned y position due to problems with resizing vertically
-    for (let i = 0; i < preResizeHeight.length; i++) {
-        if (element.id == preResizeHeight[i].id) {
-            let resizedY = element.y;
-            if (preResizeHeight[i].height < element.height) {
-                resizedY += (element.height - preResizeHeight[i].height) / 2
-            }
-            // Corrects returned y position due to problems with SE types
-
-            let elementY = resizedY;
-            if (element.type == entityType.SE) {
-                elementY += preResizeHeight[i].height / 3;
-            }
-
-            return {
-                x: element.x,
-                y: elementY,
-                width: element.width,
-                height: element.height
-            };
-        }
-    }
-
-    // Corrects returned y position due to problems with resizing vertically
-    let elementY = element.y;
-    if (element.type == entityType.SE) {
-        elementY += element.height / 3;
-    }
-    return {
-        x: element.x,
-        y: elementY,
-        width: element.width,
-        height: element.height,
-    };
-}
-
-/**
  * Searches an array for the specified item and returns its stored index in the array if found.
  * @param {Array} arr Array to search.
  * @param {*} id Item to determine index for.
@@ -120,6 +47,7 @@ function findIndex(arr, id) {
     }
     return -1;
 }
+
 function isLineConnectedTo(line, kind) {
     let result = null;
     switch (kind) {
@@ -190,6 +118,7 @@ function entityIsOverlapping(id, x, y) {
     }
     return isOverlapping;
 }
+
 /**
  * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
  * @param {StateChange} target StateChange to edit
@@ -224,7 +153,7 @@ function isDarkTheme() {
 }
 
 /**
- * Generates a new hexadecimal ID that is not already stored to identify things in the program.
+ * Generates a new hexadecimal ID that is not already stored to identify things.
  * @returns {String} Hexadecimal number represented as a string.
  * @see randomidArray For an array of all generated IDs by this function.
  */
@@ -252,4 +181,14 @@ function makeRandomID() {
         }
     }
 }
-//#endregion =====================================================================================
+
+function calculateDeltaExceeded() {
+    // Remember that mouse has moved out of starting bounds
+    if ((deltaX >= maxDeltaBeforeExceeded ||
+            deltaX <= -maxDeltaBeforeExceeded) ||
+        (deltaY >= maxDeltaBeforeExceeded ||
+            deltaY <= -maxDeltaBeforeExceeded)
+    ) {
+        deltaExceeded = true;
+    }
+}

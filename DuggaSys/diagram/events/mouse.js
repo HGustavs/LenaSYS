@@ -16,20 +16,6 @@ function mwheel(event) {
         }, 75); // This number decides the time between each zoom tick, in ms.
     }
 }
-/**
- * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
- */
-function checkDeleteBtn() {
-    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-        if (deleteBtnX != 0 && !mouseOverElement) {
-            if (context.length > 0) removeElements(context);
-            if (contextLine.length > 0) removeLines(contextLine);
-            updateSelection(null);
-            return true;
-        }
-    }
-    return false;
-}
 
 /**
  * @description Event function triggered when any mouse button is pressed down on top of the container.
@@ -255,6 +241,100 @@ function ddown(event) {
 }
 
 /**
+ * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
+ * @param {MouseEvent} event Triggered mouse event.
+ * @see pointerStates For all available states.
+ */
+function mup(event) {
+    if (!mouseOverLine && !mouseOverElement) {
+        setContainerStyles(mouseMode);
+    }
+    mouseButtonDown = false;
+    targetElement = null;
+    deltaX = startX - event.clientX;
+    deltaY = startY - event.clientY;
+
+    switch (pointerState) {
+        case pointerStates.DEFAULT:
+            mouseMode_onMouseUp(event);
+            break;
+        case pointerStates.CLICKED_CONTAINER:
+            if (event.target.id == "container") {
+                movingContainer = false;
+
+                if (!deltaExceeded) {
+                    if (mouseMode == mouseModes.EDGE_CREATION) {
+                        clearContext();
+                    } else if (mouseMode == mouseModes.POINTER) {
+                        updateSelection(null);
+                    }
+                    if (!ctrlPressed) clearContextLine();
+                }
+            }
+            break;
+        case pointerStates.CLICKED_LINE:
+            if (!deltaExceeded) {
+                updateSelectedLine(determinedLines);
+            }
+            if (mouseMode == mouseModes.BOX_SELECTION) {
+                mouseMode_onMouseUp(event);
+            }
+            break;
+        case pointerStates.CLICKED_LABEL:
+            updateSelectedLine(lines[findIndex(lines, determinedLines.labelLineID)]);
+            break;
+        case pointerStates.CLICKED_ELEMENT:
+            // If clicked element already was in context, update selection on mouse up
+            if (lastClickedElement != null && context.includes(lastClickedElement) && !movingObject) {
+                updateSelection(lastClickedElement);
+            }
+            movingObject = false;
+            // Special cases:
+            if (mouseMode == mouseModes.EDGE_CREATION) {
+                mouseMode_onMouseUp(event);
+
+                // Normal mode
+            } else if (deltaExceeded) {
+                if (context.length > 0) setPos(context, deltaX, deltaY);
+            }
+            break;
+        case pointerStates.CLICKED_NODE:
+            if (resizeOverlapping) {
+                // Reset to original state if overlapping is detected
+                var element = data[findIndex(data, context[0].id)];
+                element.width = originalWidth;
+                element.height = originalHeight;
+                element.x = originalX;
+                element.y = originalY;
+                // Update DOM with the original properties
+                const elementDOM = document.getElementById(element.id);
+                elementDOM.style.width = originalWidth + 'px';
+                elementDOM.style.height = originalHeight + 'px';
+                elementDOM.style.left = originalX + 'px';
+                elementDOM.style.top = originalY + 'px';
+                showdata()
+                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+                resizeOverlapping = false;
+            }
+            break;
+        default:
+            console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
+            break;
+    }
+    // Update all element positions on the screen
+    deltaX = 0;
+    deltaY = 0;
+    updatepos(0, 0);
+    drawRulerBars(scrollx, scrolly);
+
+    // Restore pointer state to normal
+    pointerState = pointerStates.DEFAULT;
+    deltaExceeded = false;
+
+    disableIfDataEmpty();
+}
+
+/**
  * @description Event function triggered when any mouse button is released on top of the toolbar.
  * @param {MouseEvent} event Triggered mouse event.
  * @see pointerStates For all available states.
@@ -283,3 +363,17 @@ function mouseLeave() {
     setContainerStyles(mouseMode);
 }
 
+/**
+ * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
+ */
+function checkDeleteBtn() {
+    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
+        if (deleteBtnX != 0 && !mouseOverElement) {
+            if (context.length > 0) removeElements(context);
+            if (contextLine.length > 0) removeLines(contextLine);
+            updateSelection(null);
+            return true;
+        }
+    }
+    return false;
+}

@@ -1,4 +1,3 @@
-// =============================================================================================
 //#region ================================ CLASSES =============================================
 
 /**
@@ -597,11 +596,11 @@ function showDiagramTypes() {
 document.addEventListener('contextmenu', event => { event.preventDefault(); });
 
 document.addEventListener('keydown', function (e) {
-    if (isKeybindValid(e, keybinds.LEFT_CONTROL) && ctrlPressed !== true) ctrlPressed = true;
-    if (isKeybindValid(e, keybinds.ALT) && altPressed !== true) altPressed = true;
-    if (isKeybindValid(e, keybinds.META) && ctrlPressed !== true) ctrlPressed = true;
+    if (isKeybindValid(e, keybinds.LEFT_CONTROL) && !ctrlPressed) ctrlPressed = true;
+    if (isKeybindValid(e, keybinds.ALT) && !altPressed) altPressed = true;
+    if (isKeybindValid(e, keybinds.META) && !ctrlPressed) ctrlPressed = true;
 
-    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true && settings.replay.active) {
+    if (isKeybindValid(e, keybinds.ESCAPE) && !escPressed && settings.replay.active) {
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
@@ -623,7 +622,7 @@ document.addEventListener('keydown', function (e) {
     // If the active element in DOM is not an "INPUT" "SELECT" "TEXTAREA"
     if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) return;
 
-    if (isKeybindValid(e, keybinds.ESCAPE) && escPressed != true) {
+    if (isKeybindValid(e, keybinds.ESCAPE) && !escPressed) {
         escPressed = true;
         if(context.length > 0 || contextLine.length > 0) {
             clearContext();
@@ -675,8 +674,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, 0, 1);
-        }
-        else {
+        } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
@@ -690,8 +688,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, 0, -1);
-        }
-        else {
+        } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
@@ -705,8 +702,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, 1, 0);
-        }
-        else {
+        } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
@@ -720,13 +716,12 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, -1, 0);
-        }
-        else {
+        } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
 
-    if (altPressed == true) {
+    if (altPressed) {
         mouseMode_onMouseUp();
     }  
 });
@@ -826,8 +821,7 @@ document.addEventListener('keyup', function (e) {
         if (localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
         if (localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
 
-        if (context.length !== 0){
-
+        if (context.length) {
             // Filter - keeps only the lines that are connectet to and from selected elements.
             var contextConnectedLines = lines.filter(line => {
                 return (context.filter(element => {
@@ -888,37 +882,30 @@ function mouseMode_onMouseUp(event) {
                 clearContextLine();
                 if (ghostElement && event.button == 0) {
                     addObjectToData(ghostElement, false);
-
                     // Check if the element to create would overlap others, returns if true
                     if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
                         displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
                         console.error("Failed to create an element as it overlaps other element(s)")
-
                         // Remove added element from data as it should remain
                         data.splice(data.length - 1, 1)
-
                         makeGhost();
                         showdata();
                         return;
                     }
-
                     //If not overlapping
                     stateMachine.save(StateChangeFactory.ElementCreated(ghostElement), StateChange.ChangeTypes.ELEMENT_CREATED);
                     makeGhost();
                     showdata();
                 }
                 break;
-                
             case mouseModes.EDGE_CREATION:
                 if (context.length > 1) {
                     // TODO: Change the static variable to make it possible to create different lines.
                     addLine(context[0], context[1], "Normal");
                     clearContext();
-
                     // Bust the ghosts
                     ghostElement = null;
                     ghostLine = null;
-
                     showdata();
                     updatepos(0, 0);
                 } else if (context.length === 1) {
@@ -928,15 +915,12 @@ function mouseMode_onMouseUp(event) {
                         // Create ghost line
                         ghostLine = {id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal"};
                     } else if (ghostElement !== null) {
-
                         // create a line from the element to itself
                         addLine(context[0], context[0], "Recursive");
                         clearContext();
-
                         // Bust the ghosts
                         ghostElement = null;
                         ghostLine = null;
-
                         showdata();
                         updatepos(0, 0);
                     } else {
@@ -967,100 +951,6 @@ function mouseMode_onMouseUp(event) {
 
 
 
-/**
- * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
- * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
- */
-
-function mup(event) {
-    if (!mouseOverLine && !mouseOverElement) {
-        setContainerStyles(mouseMode);
-    }
-    mouseButtonDown = false;
-    targetElement = null;
-    deltaX = startX - event.clientX;
-    deltaY = startY - event.clientY;
-
-    switch (pointerState) {
-        case pointerStates.DEFAULT:
-            mouseMode_onMouseUp(event);
-            break;
-        case pointerStates.CLICKED_CONTAINER:
-            if (event.target.id == "container") {
-                movingContainer = false;
-
-                if (!deltaExceeded) {
-                    if (mouseMode == mouseModes.EDGE_CREATION) {
-                        clearContext();
-                    } else if (mouseMode == mouseModes.POINTER) {
-                        updateSelection(null);
-                    }
-                    if (!ctrlPressed) clearContextLine();
-                }
-            }
-            break;
-        case pointerStates.CLICKED_LINE:
-            if (!deltaExceeded) {
-                updateSelectedLine(determinedLines);
-            }
-            if (mouseMode == mouseModes.BOX_SELECTION) {
-                mouseMode_onMouseUp(event);
-            }
-            break;
-        case pointerStates.CLICKED_LABEL:
-            updateSelectedLine(lines[findIndex(lines, determinedLines.labelLineID)]);
-            break;
-        case pointerStates.CLICKED_ELEMENT:
-            // If clicked element already was in context, update selection on mouse up
-            if (lastClickedElement != null && context.includes(lastClickedElement) && !movingObject) {
-                updateSelection(lastClickedElement);
-            }
-            movingObject = false;
-            // Special cases:
-            if (mouseMode == mouseModes.EDGE_CREATION) {
-                mouseMode_onMouseUp(event);
-
-                // Normal mode
-            } else if (deltaExceeded) {
-                if (context.length > 0) setPos(context, deltaX, deltaY);
-            }
-            break;
-        case pointerStates.CLICKED_NODE:
-            if (resizeOverlapping) {
-                // Reset to original state if overlapping is detected
-                var element = data[findIndex(data, context[0].id)];
-                element.width = originalWidth;
-                element.height = originalHeight;
-                element.x = originalX;
-                element.y = originalY;
-                // Update DOM with the original properties
-                const elementDOM = document.getElementById(element.id);
-                elementDOM.style.width = originalWidth + 'px';
-                elementDOM.style.height = originalHeight + 'px';
-                elementDOM.style.left = originalX + 'px';
-                elementDOM.style.top = originalY + 'px';
-                showdata()
-                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-                resizeOverlapping = false;
-            }
-            break;
-        default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);
-            break;
-    }
-    // Update all element positions on the screen
-    deltaX = 0;
-    deltaY = 0;
-    updatepos(0, 0);
-    drawRulerBars(scrollx, scrolly);
-
-    // Restore pointer state to normal
-    pointerState = pointerStates.DEFAULT;
-    deltaExceeded = false;
-
-    disableIfDataEmpty();
-}
 
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
@@ -1161,7 +1051,7 @@ function determineLineSelect(mouseX, mouseY) {
                 }
                 lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
 
-                if (lineWasHit == true && labelWasHit == false) {
+                if (lineWasHit && labelWasHit == false) {
                     // Return the current line that registered as a "hit".;
                     return lines.filter(function (line) {
                         return line.id == bLayerLineIDs[i];
@@ -1211,12 +1101,12 @@ function determineLineSelect(mouseX, mouseY) {
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
         // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke='${color.BLACK}' stroke-width="3" fill="red" /> '
         // ---------------------------
-        if (lineWasHit == true && labelWasHit == false) {
+        if (lineWasHit && labelWasHit) {
             // Return the current line that registered as a "hit".
             return lines.filter(function (line) {
                 return line.id == bLayerLineIDs[i];
             })[0];
-        } else if (labelWasHit == true) {
+        } else if (labelWasHit) {
             return lineLabelList.filter(function (label) {
                 return label.id == bLayerLineIDs[i] + "Label";
             })[0];
@@ -1607,62 +1497,6 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     redrawArrows();
 }
 
-/**
- * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
- * @see ghostElement
- */
-function makeGhost() {
-    ghostElement = constructElementOfType(elementTypeSelected);
-    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
-    ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
-    ghostElement.id = makeRandomID();
-    showdata();
-}
-
-/**
- * Creates a new element using the appropriate default values. These values are determined using the elementTypes enum.
- * @param {Number} type What type of element to construct.
- * @see elementTypes For all available values to pass as argument.
- * @returns {Object}
- */
-function constructElementOfType(type) {
-    let typeName = undefined;
-    let newElement = undefined;
-    for (const name in elementTypes) {
-        if (elementTypes[name] == type) {
-            typeName = name;
-            break;
-        }
-    }
-    if (typeName) {
-        let defaultElement = defaults[typeName];
-        newElement = {};
-        for (const property in defaultElement) {
-            newElement[property] = defaultElement[property];
-        }
-    }
-    return newElement;
-}
-
-/**
- * @description Returns all the lines (all sides) from given element.
- * @param {object} element
- * @returns {array} result
- */
-function getElementLines(element) {
-    return element.bottom.concat(element.right, element.top, element.left);
-}
-
-/**
- * @description Checks if the given element have lines connected to it or not.
- * @param {object} element
- * @returns {boolean} result
- */
-function elementHasLines(element) {
-    return (getElementLines(element).length > 0);
-}
-
 /** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
  * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
  * @see context For currently selected element.
@@ -1836,17 +1670,6 @@ function saveProperties() {
     updatepos(0, 0);
 }
 
-
-/**
- * @description Puts all available elements of the data array into the context array.
- */
-function selectAll() {
-    context = data;
-    contextLine = lines;
-    generateContextProperties();
-    showdata();
-}
-
 /**
  * Places a copy of all elements into the data array centered around the current mouse position.
  * @param {Array<Object>} elements List of all elements to paste into the data array.
@@ -1939,458 +1762,7 @@ function pasteClipboard(elements, elementsLines) {
     showdata();
 }
 
-/**
- * @description Sets ghostElement and ghostLine to null.
- */
-function clearGhosts() {
-    ghostElement = null;
-    ghostLine = null;
-}
-
-/**
- * @description Empties the context array of all selected elements.
- */
-function clearContext() {
-    if (context) {
-        context = [];
-        generateContextProperties();
-    }
-}
-
-/**
- * @description Empties the context array of all selected lines.
- */
-function clearContextLine() {
-    if (contextLine) {
-        contextLine = [];
-        generateContextProperties();
-    }
-}
-
 //#endregion ===================================================================================
-//#region ================================ ETC =================================================
-/**
- * @description Change the coordinates of data-objects
- * @param {Array<Object>} objects Array of objects that will be moved
- * @param {Number} x Coordinates along the x-axis to move
- * @param {Number} y Coordinates along the y-axis to move
- */
-function setPos(objects, x, y) {
-    var idList = [];
-    var overlappingObject = null;
-
-    // Check for overlaps
-    objects.forEach(obj => {
-        if (entityIsOverlapping(obj.id, obj.x - deltaX / zoomfact, obj.y - deltaY / zoomfact)) {
-            overlappingObject = obj;
-        }
-    });
-
-    if (overlappingObject) {
-        // If overlap is detected, move the overlapping object back by one step
-        var previousX = overlappingObject.x;
-        var previousY = overlappingObject.y;
-
-        // Move the object back one step 
-        overlappingObject.x -= (x / zoomfact);
-        overlappingObject.y -= (y / zoomfact);
-
-        // Check again if the adjusted position still overlaps
-        if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
-            // If it still overlaps, revert to the previous position
-            overlappingObject.x = previousX;
-            overlappingObject.y = previousY;
-
-            // Display error message
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        } else {
-            // If no longer overlaps after adjustment, proceed with saving the new position
-            idList.push(overlappingObject.id);
-        }
-    } else {
-        objects.forEach(obj => {
-            if (obj.isLocked) return;
-            if (settings.grid.snapToGrid) {
-                if (!ctrlPressed) {
-                    //Different snap points for entity and others
-                    if (obj.kind == elementTypesNames.EREntity) {
-                        // Calculate nearest snap point
-                        obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize * 2)) / settings.grid.gridSize) * settings.grid.gridSize;
-                        obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
-                    } else {
-                        obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
-                        obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
-                    }
-                    // Set the new snap point to center of element
-                    obj.x -= obj.width / 2;
-                    obj.y -= obj.height / 2;
-                } else {
-                    obj.x += (targetDelta.x / zoomfact);
-                    obj.y += ((targetDelta.y / zoomfact) + 25);
-                }
-            } else {
-                obj.x -= (x / zoomfact);
-                obj.y -= (y / zoomfact);
-            }
-            // Add the object-id to the idList
-            idList.push(obj.id);
-
-            // Make the coordinates without decimals
-            obj.x = Math.round(obj.x);
-            obj.y = Math.round(obj.y);
-        });
-        if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
-    }
-
-    // Update positions
-    updatepos(0, 0);
-}
-
-/**
- * @description Cycles to the next item in a submenu when the same keybind is pressed again.
- * @param {Array} subMenu What sub menu array to get elementType from
- */
-function subMenuCycling(subMenu) {
-    // Cycle through sub menu items
-    if (mouseMode == mouseModes.PLACING_ELEMENT && subMenu.includes(elementTypeSelected)) {
-        for (let i = 0; i < subMenu.length; i++) {
-            if (elementTypeSelected == subMenu[i]) {
-                setElementPlacementType(subMenu[(i+1) % subMenu.length]);
-                setMouseMode(mouseModes.PLACING_ELEMENT);
-                break;
-            }
-        }
-        return true;
-    }
-}
-
-//#endregion ============================================== ======================================
-//#region ================================ MOUSE MODE FUNCS ======================================
-
-/**
- * @description Changes the current mouse mode using argument enum value.
- * @param {mouseModes} mode What mouse mode to change into.
- * @see mouseModes For all available enum values.
- */
-function setMouseMode(mode) {
-    if (enumContainsPropertyValue(mode, mouseModes)) {
-        // Mode-specific activation/deactivation
-        onMouseModeDisabled();
-        mouseMode = mode;
-        setContainerStyles(mode);
-        onMouseModeEnabled();
-    } else {
-        // Not implemented exception
-        console.error("Invalid mode passed to setMouseMode method. Missing implementation?");
-    }
-    if (mouseMode == mouseModes.POINTER) {
-        elementTypeSelected = null;
-    }
-}
-
-/**
- * @description Changes the current visual cursor style for the user.
- * @param {Number} cursorMode containerStyle value. This will be translated into appropriate container style.
- */
-function setContainerStyles(cursorMode = mouseModes.POINTER) {
-    containerStyle = document.getElementById("container").style;
-
-    switch (cursorMode) {
-        case mouseModes.POINTER:
-            containerStyle.cursor = "grab";
-            break;
-        case mouseModes.BOX_SELECTION:
-            containerStyle.cursor = "crosshair";
-            break;
-        case mouseModes.PLACING_ELEMENT:
-            containerStyle.cursor = "default";
-            break;
-        case mouseModes.EDGE_CREATION:
-            containerStyle.cursor = "default";
-            break;
-        default:
-            break;
-    }
-}
-
-/**
- * @description Function triggered just AFTER the current mouse mode is changed.
- */
-function onMouseModeEnabled() {
-    // Add the diagramActive to current diagramIcon
-    if (mouseMode === mouseModes.PLACING_ELEMENT) {
-        document.getElementById("elementPlacement" + elementTypeSelected).classList.add("active");
-    } else {
-        document.getElementById("mouseMode" + mouseMode).classList.add("active");
-    }
-
-    switch (mouseMode) {
-        case mouseModes.POINTER:
-            break;
-        case mouseModes.PLACING_ELEMENT:
-            clearContext();
-            clearContextLine();
-            makeGhost();
-            break;
-        case mouseModes.EDGE_CREATION:
-            clearContext();
-            clearContextLine();
-            updatepos(0, 0);
-            break;
-        case mouseModes.BOX_SELECTION:
-            break;
-        default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeEnabled()!`);
-            break;
-    }
-}
-
-/**
- * @description Function triggered just BEFORE the current mouse mode is changed.
- */
-function onMouseModeDisabled() {
-    // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
-    for (let i = 0; i < navButtons.length; i++) {
-        if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
-    }
-
-    switch (mouseMode) {
-        case mouseModes.POINTER:
-            break;
-        case mouseModes.EDGE_CREATION:
-            ghostLine = null; // continues into mouseMode.PLACING_ELEMENT
-        // NO BREAK
-        case mouseModes.PLACING_ELEMENT:
-            ghostElement = null;
-            showdata();
-            break;
-        case mouseModes.BOX_SELECTION:
-            break;
-        default:
-            console.error(`State ${mouseMode} missing implementation at switch-case in onMouseModeDisabled()!`);
-            break;
-    }
-}
-
-function calculateDeltaExceeded() {
-    // Remember that mouse has moved out of starting bounds
-    if ((deltaX >= maxDeltaBeforeExceeded ||
-            deltaX <= -maxDeltaBeforeExceeded) ||
-        (deltaY >= maxDeltaBeforeExceeded ||
-            deltaY <= -maxDeltaBeforeExceeded)
-    ) {
-        deltaExceeded = true;
-    }
-}
-
-// --------------------------------------- Box Selection    --------------------------------
-// Returns all elements within the coordinate box
-function getElementsInsideCoordinateBox(selectionRect) {
-    var elements = [];
-    data.forEach(element => {
-
-        // Box collision test
-        if (rectsIntersect(selectionRect, getRectFromElement(element))) {
-            elements.push(element);
-        }
-    });
-    return elements;
-}
-
-/**
- * @description Checks whether the lines in the diagram is within the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
- * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
- */
-function getLinesInsideCoordinateBox(selectionRect) {
-    var allLines = document.getElementById("svgbacklayer").children;
-    var tempLines = [];
-    var bLayerLineIDs = [];
-    for (let i = 0; i < allLines.length; i++) {
-        if (lineIsInsideRect(selectionRect, allLines[i])) {
-            bLayerLineIDs[i] = allLines[i].id;
-            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
-            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
-            tempLines.push(lines.find(line => line.id == bLayerLineIDs[i]));
-        }
-    }
-    return tempLines;
-}
-
-/**
- * @description Checks if a entire line is inside of the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
- * @param {Object} line following the format of the lines contained within the children of svgbacklayer
- * @returns {Boolean} Returns true if the line is within the coordinate box, else false
- */
-function lineIsInsideRect(selectionRect, line) {
-    let lineCoord1 = screenToDiagramCoordinates(
-        line.getAttribute("x1"),
-        line.getAttribute("y1")
-    );
-    let lineCoord2 = screenToDiagramCoordinates(
-        line.getAttribute("x2"),
-        line.getAttribute("y2")
-    );
-    let lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
-    let lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
-    let lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
-    let lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
-    let leftX = selectionRect.x;
-    let topY = selectionRect.y;
-    let rightX = selectionRect.x + selectionRect.width;
-    let bottomY = selectionRect.y + selectionRect.height;
-    return leftX <= lineLeftX && topY <= lineTopY && rightX >= lineRightX && bottomY >= lineBottomY;
-    /* Code used to check for a point
-    // Return true if any of the end points of the line are inside of the rect
-    if (lineCoord1.x > leftX && lineCoord1.x < rightX && lineCoord1.y > topY && lineCoord1.y < bottomY) {
-        return true;
-    } else if (lineCoord2.x > leftX && lineCoord2.x < rightX && lineCoord2.y > topY && lineCoord2.y < bottomY) {
-        return true;
-    }*/
-}
-
-/**
- * @description Checks if a line intersects with any of the lines on the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
- * @param {Object} line following the format of the lines contained within the children of svgbacklayer
- * @returns {Boolean} Returns true if the line intersects with any of the sides of the coordinate box, else false
- */
-function intersectsBox(selectionRect, line) {
-    var tempCoords1 = screenToDiagramCoordinates(
-        line.getAttribute("x1"),
-        line.getAttribute("y1")
-    );
-    var tempCoords2 = screenToDiagramCoordinates(
-        line.getAttribute("x2"),
-        line.getAttribute("y2")
-    );
-
-    var x1 = tempCoords1.x;
-    var y1 = tempCoords1.y;
-    var x2 = tempCoords2.x;
-    var y2 = tempCoords2.y;
-
-    var leftX = selectionRect.x;
-    var topY = selectionRect.y;
-    var rightX = selectionRect.x + selectionRect.width;
-    var bottomY = selectionRect.y + selectionRect.height;
-
-    // Check intersection with the individual sides of the rect
-    let left = intersectsLine(x1, y1, x2, y2, leftX, topY, leftX, bottomY);
-    let right = intersectsLine(x1, y1, x2, y2, rightX, topY, rightX, bottomY);
-    let top = intersectsLine(x1, y1, x2, y2, leftX, topY, rightX, topY);
-    let bottom = intersectsLine(x1, y1, x2, y2, leftX, bottomY, rightX, bottomY);
-
-    // return true if the line intersects with any of the sides
-    return left || right || top || bottom;
-}
-
-/**
- * @description Checks if a line intersects with another line
- * @param {Number} xy x1 - y2 are for the first line and the rest are for the second line
- * @returns {Boolean} Returns true if lines intersect, else false
- */
-function intersectsLine(x1, y1, x2, y2, x3, y3, x4, y4) {
-    // calc line direction
-    var uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) /
-        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-    var uB = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) /
-        ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-
-    // if uA and uB are within the interval 0-1, the lines are intersecting
-    return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
-}
-
-function getBoxSelectionPoints() {
-    return {
-        n1: new Point(startX, startY),
-        n2: new Point(startX + deltaX, startY),
-        n3: new Point(startX, startY + deltaY),
-        n4: new Point(startX + deltaX, startY + deltaY),
-    };
-}
-
-function getBoxSelectionCoordinates() {
-    return {
-        n1: screenToDiagramCoordinates(startX, startY),
-        n2: screenToDiagramCoordinates(startX + deltaX, startY),
-        n3: screenToDiagramCoordinates(startX, startY + deltaY),
-        n4: screenToDiagramCoordinates(startX + deltaX, startY + deltaY),
-    };
-}
-
-
-function boxSelect_Update(mouseX, mouseY) {
-    if (boxSelectionInUse) {
-        // Update relative position form the starting position
-        deltaX = mouseX - startX;
-        deltaY = mouseY - startY;
-
-        calculateDeltaExceeded();
-
-        // Select all objects inside the box
-        var coords = getBoxSelectionCoordinates();
-
-        // Calculate top-left and bottom-right coordinates
-        var topLeft = new Point(0, 0), bottomRight = new Point(0, 0);
-
-        // left/right
-        if (coords.n1.x < coords.n4.x) {
-            topLeft.x = coords.n1.x;
-            bottomRight.x = coords.n4.x;
-        } else {
-            topLeft.x = coords.n4.x;
-            bottomRight.x = coords.n1.x;
-        }
-        // top/bottom
-        if (coords.n1.y < coords.n4.y) {
-            topLeft.y = coords.n1.y;
-            bottomRight.y = coords.n4.y;
-        } else {
-            topLeft.y = coords.n4.y;
-            bottomRight.y = coords.n1.y;
-        }
-
-        let rect = getRectFromPoints(topLeft, bottomRight);
-
-        if (ctrlPressed) {
-            let markedEntities = getElementsInsideCoordinateBox(rect);
-
-            // Remove entity from markedEntities if it was already marked.
-            markedEntities = markedEntities.filter(entity => !previousContext.includes(entity));
-
-            let markedLines = getLinesInsideCoordinateBox(rect);
-            markedLines = markedLines.filter(line => !previousContextLine.includes(line));
-
-            clearContext();
-            context = context.concat(markedEntities);
-            context = context.concat(previousContext);
-
-            clearContextLine();
-            contextLine = contextLine.concat(markedLines);
-            contextLine = contextLine.concat(previousContextLine);
-        } else if (altPressed) {
-            let markedEntities = getElementsInsideCoordinateBox(rect);
-            // Remove entity from previous context if the element is marked
-            previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
-
-            let markedLines = getLinesInsideCoordinateBox(rect);
-            previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
-
-            context = [];
-            context = previousContext;
-            clearContextLine();
-            contextLine = previousContextLine;
-        } else {
-            context = getElementsInsideCoordinateBox(rect);
-            contextLine = getLinesInsideCoordinateBox(rect);
-        }
-    }
-}
-
-//#endregion =====================================================================================
 //#region ================================ REPLAY ================================================
 
 /**
@@ -2637,626 +2009,6 @@ async function generateKeybindList() {
     } catch (error) {
         console.error(error);
     }
-}
-
-/**
- * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
- * @param {Number} x Absolute x-position in pixels from the left of the inner window.
- * @param {Number} y Absolute y-position in pixels from the top of the inner window.
- */
-function setRulerPosition(x, y) {
-    //40 is the size of the actual ruler and 51 is the toolbar on the left side
-    if (x >= 40 + 51) document.getElementById("ruler-x").style.left = x - 51 + "px";
-    if (y >= 40) document.getElementById("ruler-y").style.top = y + "px";
-}
-
-/**
- * @description Performs an update to the current grid size depending on the current zoom level.
- * @see zoomin Function where the zoom level increases.
- * @see zoomout Function where the zoom level decreases.
- */
-function updateGridSize() {
-    //Do not remore, for later us to make gridsize in 1cm.
-    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
-    settings.grid.gridSize = 10 * pxlength;
-
-    var bLayer = document.getElementById("grid");
-    bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
-    bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
-
-    bLayer.children[0].setAttribute('d', `M ${settings.grid.gridSize * zoomfact} 0 L 0 0 0 ${settings.grid.gridSize * zoomfact}`);
-
-    // Set width of origo line on the x axis
-    bLayer = document.getElementById("origoX");
-    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
-
-    // Set width of origo line on the y axis
-    bLayer = document.getElementById("origoY");
-    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
-
-    updateGridPos();
-}
-
-/**
- * @description Calculates new positioning for the background grid.
- */
-function updateGridPos() {
-    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-    var bLayer = document.getElementById("grid");
-    bLayer.setAttribute('x', gridOffsetX.toString());
-    bLayer.setAttribute('y', gridOffsetY.toString());
-
-    // origo x axis line position
-    bLayer = document.getElementById("origoX");
-    bLayer.setAttribute('y1', gridOffsetY.toString());
-    bLayer.setAttribute('y2', gridOffsetY.toString());
-
-    // origo y axis line position
-    bLayer = document.getElementById("origoY");
-    bLayer.setAttribute('x1', gridOffsetX.toString());
-    bLayer.setAttribute('x2', gridOffsetX.toString());
-}
-
-/**
- * @description Performs an update to the current A4 template size depending on the current zoom level.
- * @see zoomin Function where the zoom level increases.
- * @see zoomout Function where the zoom level decreases.
- */
-function updateA4Size() {
-    var rect = document.getElementById("a4Rect");
-    var vRect = document.getElementById("vRect");
-
-
-    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
-    //const a4Width = 794, a4Height = 1122;
-    const a4Width = 210 * pxlength
-    const a4Height = 297 * pxlength;
-
-    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
-    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
-    rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
-    rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
-    updateA4Pos();
-}
-
-/**
- * @description Calculates new positioning for the A4 template.
- */
-function updateA4Pos() {
-    var OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
-    var OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
-    var rect = document.getElementById("a4Rect");
-    var vRect = document.getElementById("vRect");
-    var text = document.getElementById("a4Text");
-
-    vRect.setAttribute('x', OffsetX.toString());
-    vRect.setAttribute('y', OffsetY.toString());
-
-    rect.setAttribute('x', OffsetX.toString());
-    rect.setAttribute('y', OffsetY.toString());
-
-    text.setAttribute('x', (OffsetX + (780 * zoomfact)).toString());
-    text.setAttribute('y', (OffsetY - 5).toString());
-}
-
-//#endregion =====================================================================================
-//#region ================================ ZOOM ==================================================
-
-/**
- * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
- * @param {MouseEvent} scrollEvent The current mouse event.
- */
-function zoomin(scrollEvent = undefined) {
-    let delta;
-    // If mousewheel is not used, we zoom towards origo (0, 0)
-    if (!scrollEvent) {
-        if (zoomfact < 4) {
-            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
-
-            delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
-                x: midScreen.x - zoomOrigo.x,
-                y: midScreen.y - zoomOrigo.y
-            }
-
-            //Update scroll x/y to center screen on new zoomOrigo
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
-            scrollx += delta.x * zoomfact;
-            scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
-
-            zoomOrigo.x = midScreen.x;
-            zoomOrigo.y = midScreen.y;
-        }
-    } else if (zoomfact < 4.0) { // ELSE zoom towards mouseCoordinates
-        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-
-        if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
-            delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
-                x: mouseCoordinates.x - zoomOrigo.x,
-                y: mouseCoordinates.y - zoomOrigo.y
-            }
-            //Update scroll variables with delta in order to move the screen to the new zoom position
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
-            scrollx += delta.x * zoomfact;
-            scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
-
-            //Set new zoomOrigo to the current mouse coordinates
-            zoomOrigo.x = mouseCoordinates.x;
-            zoomOrigo.y = mouseCoordinates.y;
-            lastMousePosCoords = mouseCoordinates;
-
-            //Save current mouse position (Position on the SCREEN, not coordinates in the diagram)
-            lastZoomPos.x = scrollEvent.clientX;
-            lastZoomPos.y = scrollEvent.clientY;
-        } else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) { //ELSE IF mouse has not moved, zoom towards same position as before.
-            zoomOrigo.x = lastMousePosCoords.x;
-            zoomOrigo.y = lastMousePosCoords.y;
-        }
-    }
-    //Update scroll variables to match the new zoomfact
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
-
-    switch (zoomfact) {
-        case 0.25:
-            zoomfact = 0.5;
-            break;
-        case 0.5:
-            zoomfact = 0.75;
-            break;
-        case 0.75:
-            zoomfact = 1.0;
-            break;
-        case 1.0:
-            zoomfact = 1.25;
-            break;
-        case 1.25:
-            zoomfact = 1.5;
-            break;
-        case 1.5:
-            zoomfact = 2.0;
-            break;
-        case 2.0:
-            zoomfact = 4.0;
-    }
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
-
-    updateGridSize();
-    updateA4Size();
-    showdata();
-
-    // Draw new rules to match the new zoomfact
-    drawRulerBars(scrollx, scrolly);
-}
-
-/**
- * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
- * @param {MouseEvent} scrollEvent The current mouse event.
- */
-function zoomout(scrollEvent = undefined) {
-    let delta;
-    // If mousewheel is not used, we zoom towards origo (0, 0)
-    if (!scrollEvent) {
-        if (zoomfact > 0.25) {
-            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
-
-            delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
-                x: midScreen.x - zoomOrigo.x,
-                y: midScreen.y - zoomOrigo.y
-            }
-
-            //Update scroll x/y to center screen on new zoomOrigo
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
-            scrollx += delta.x * zoomfact;
-            scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
-
-            zoomOrigo.x = midScreen.x;
-            zoomOrigo.y = midScreen.y;
-        }
-    } else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
-        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
-
-        if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
-            delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
-                x: mouseCoordinates.x - zoomOrigo.x,
-                y: mouseCoordinates.y - zoomOrigo.y
-            }
-
-            //Update scroll variables with delta in order to move the screen to the new zoom position
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
-            scrollx += delta.x * zoomfact;
-            scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
-
-            //Set new zoomOrigo to the current mouse coordinatest
-            zoomOrigo.x = mouseCoordinates.x;
-            zoomOrigo.y = mouseCoordinates.y;
-            lastMousePosCoords = mouseCoordinates;
-
-            //Save current mouse position (Position on the SCREEN, not coordinates in the diagram)
-            lastZoomPos.x = scrollEvent.clientX;
-            lastZoomPos.y = scrollEvent.clientY;
-        } else if (scrollEvent.clientX == lastZoomPos.x && scrollEvent.clientY == lastZoomPos.y) { //ELSE IF mouse has not moved, zoom towards same position as before.
-            zoomOrigo.x = lastMousePosCoords.x;
-            zoomOrigo.y = lastMousePosCoords.y;
-        }
-    }
-    //Update scroll variables to match the new zoomfact
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
-
-    switch (zoomfact) {
-        case 0.5:
-            zoomfact = 0.25;
-            break;
-        case 0.75:
-            zoomfact = 0.5;
-            break;
-        case 1.0:
-            zoomfact = 0.75;
-            break;
-        case 1.25:
-            zoomfact = 1.0;
-            break;
-        case 1.5:
-            zoomfact = 1.25;
-            break;
-        case 2.0:
-            zoomfact = 1.5;
-            break;
-        case 4.0:
-            zoomfact = 2.0;
-    }
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
-
-    updateGridSize();
-    updateA4Size();
-    showdata();
-
-    // Draw new rules to match the new zoomfact
-    drawRulerBars(scrollx, scrolly);
-}
-
-/**
- * @description Decreases or increases the zoomfactor to its original value zoomfactor = 1.0.
- */
-function zoomreset() {
-    var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
-
-    let delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
-        x: midScreen.x - zoomOrigo.x,
-        y: midScreen.y - zoomOrigo.y
-    }
-
-    //Update scroll x/y to center screen on new zoomOrigo
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
-    scrollx += delta.x * zoomfact;
-    scrolly += delta.y * zoomfact;
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
-
-    zoomOrigo.x = midScreen.x;
-    zoomOrigo.y = midScreen.y;
-
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
-
-    zoomfact = 1.0;
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
-
-    //update the grid when reseting zoom
-    updateGridSize();
-
-    // Update scroll position
-    showdata()
-
-    //update the rulerbars when reseting zoomfact
-    drawRulerBars(scrollx, scrolly);
-}
-
-/**
- * @description Zooms to desiredZoomfactor from center of diagram.
- */
-function zoomCenter(centerDiagram) {
-    zoomOrigo.x = centerDiagram.x;
-    zoomOrigo.y = centerDiagram.y;
-
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
-
-    zoomfact = desiredZoomfact;
-    document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
-
-    updateGridSize();
-    updateA4Size();
-
-    // Update scroll position - missing code for determining that center of screen should remain at new zoom factor
-    showdata();
-    drawRulerBars(scrollx, scrolly);
-}
-
-function determineZoomfact(maxX, maxY, minX, minY) {
-    // Resolution of the screen
-    var screenResolution = {
-        x: window.innerWidth,
-        y: window.innerHeight
-    };
-    // Checks if elements are within the window for the smalest zoomfact
-    desiredZoomfact = 0.25;
-    if (maxX - minX < ((screenResolution.x * 1.25 * 1.5) - 150) && maxY - minY < ((screenResolution.y * 1.25 * 1.5) - 100)) desiredZoomfact = 0.5;
-    if (maxX - minX < ((screenResolution.x * 1.25) - 150) && maxY - minY < ((screenResolution.y * 1.25) - 100)) desiredZoomfact = 0.75;
-    if (maxX - minX < (screenResolution.x - 150) && maxY - minY < screenResolution.y - 100) desiredZoomfact = 1.0;
-    if (maxX - minX < ((screenResolution.x * 0.75) - 150) && maxY - minY < ((screenResolution.y * 0.75) - 100)) desiredZoomfact = 1.25;
-    if (maxX - minX < ((screenResolution.x * 0.64) - 150) && maxY - minY < ((screenResolution.y * 0.64) - 100)) desiredZoomfact = 1.5;
-    if (maxX - minX < ((screenResolution.x * 0.5) - 150) && maxY - minY < ((screenResolution.y * 0.5) - 100)) desiredZoomfact = 2.0;
-    if (maxX - minX < ((screenResolution.x * 0.25) - 150) && maxY - minY < ((screenResolution.y * 0.25) - 100)) desiredZoomfact = 4.0;
-}
-
-
-//#endregion =====================================================================================
-//#region ================================ ADD LINE ==================================
-
-/**
- * @description Add an line between two elements. Also checks if the line is connected between right elements and is not exceed the allowed amount.
- * @param {Object} fromElement Element that the line is from.
- * @param {Object} toElement Element that the line is to.
- * @param {String} kind The kind of line that should be added.
- * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
- */
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
-    // All lines should go from EREntity, instead of to, to simplify offset between multiple lines.
-    if (toElement.kind == "EREntity"){
-        var tempElement = toElement;
-        toElement = fromElement;
-        fromElement = tempElement;
-    }
-    //If line is comming to ERRelation from weak entity it adds double line, else it will be single
-    if (toElement.kind == "ERRelation") {
-        if (fromElement.state == "weak") {
-            var tempElement = toElement;
-            toElement = fromElement;
-            fromElement = tempElement;
-            kind = "Double";
-        } else {
-            var tempElement = toElement;
-            toElement = fromElement;
-            fromElement = tempElement;
-        }
-    }
-    // Prevent a line to be drawn between two ER entity.
-    if (fromElement.kind == elementTypesNames.EREntity && toElement.kind == elementTypesNames.EREntity) {
-        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name}- and ${toElement.name}-element`);
-        return;
-    }
-
-    if (fromElement.id === toElement.id && !(fromElement.kind === elementTypesNames.SDEntity || toElement.kind === elementTypesNames.SDEntity)) {
-        displayMessage(messageTypes.ERROR, `Not possible to draw a line between: ${fromElement.name} and ${toElement.name}, they are the same element`);
-        return;
-    }
-    // Prevent a line to be drawn between elements of different types except the note type
-    if (fromElement.type != toElement.type && fromElement.type !== 'NOTE' && toElement.type !== 'NOTE') {
-        displayMessage(messageTypes.ERROR, `Not possible to draw lines between: ${fromElement.type}- and ${toElement.type}-elements`);
-        return;
-    }
-    //checks if a line is drawn to UMLInitialState.
-    if (toElement.kind == elementTypesNames.UMLInitialState) {
-        displayMessage(messageTypes.ERROR, `Not possible to draw lines to: ${toElement.kind}`);
-        return;
-    } else if (fromElement.kind == elementTypesNames.UMLFinalState) {
-        displayMessage(messageTypes.ERROR, `Not possible to draw lines from: ${fromElement.kind}`);
-        return;
-    }
-
-    // Helps to decide later on, after passing the tests after this loop and the next two loops if the value should be added
-    var exists = false;
-    for (let i = 0; i < allAttrToEntityRelations.length; i++) {
-        if (toElement.id == allAttrToEntityRelations[i]) {
-            exists = true;
-            break;
-        }
-        if (fromElement.id == allAttrToEntityRelations[i]) {
-            exists = true;
-            break;
-        }
-    }
-
-    // Adding elements to the array that carries attributes connected to attributes without being directly connected to an entity or relation
-    for (let i = 0; i < allAttrToEntityRelations.length; i++) {
-        if (fromElement.kind === elementTypesNames.ERAttr && toElement.kind === elementTypesNames.ERAttr && fromElement.id == allAttrToEntityRelations[i]) {
-            attrViaAttrToEnt[attrViaAttrCounter] = toElement.id;
-            attrViaAttrCounter++;
-            break;
-        } else if (fromElement.kind === elementTypesNames.ERAttr && toElement.kind === elementTypesNames.ERAttr && toElement.id == allAttrToEntityRelations[i]) {
-            attrViaAttrToEnt[attrViaAttrCounter] = fromElement.id;
-            attrViaAttrCounter++;
-            break;
-        }
-    }
-
-    // Adding attributes to the array that only carries attributes directly connected to entities or relations
-    if (!exists) {
-        if (toElement.kind == elementTypesNames.ERRelation) {
-            allAttrToEntityRelations[countUsedAttributes] = fromElement.id;
-            countUsedAttributes++;
-        } else {
-            allAttrToEntityRelations[countUsedAttributes] = toElement.id;
-            countUsedAttributes++;
-        }
-    }
-
-    // Filter the existing lines and gets the number of existing lines
-    var numOfExistingLines = lines.filter(function (line) {
-        return (fromElement.id === line.fromID &&
-            toElement.id === line.toID ||
-            fromElement.id === line.toID &&
-            toElement.id === line.fromID)
-    }).length;
-
-
-    // Define a boolean for special case that relation and entity can have 2 lines
-    var specialCase = (fromElement.kind === elementTypesNames.ERRelation &&
-        toElement.kind === elementTypesNames.EREntity ||
-        fromElement.kind === elementTypesNames.EREntity &&
-        toElement.kind === elementTypesNames.ERRelation
-    );
-
-    // Check rules for Recursive relations
-    if (fromElement.kind === elementTypesNames.ERRelation && fromElement.kind == "Normal" || toElement.kind === elementTypesNames.ERRelation && toElement.kind == "Normal") {
-        var relationID;
-        if (fromElement.kind === elementTypesNames.ERRelation) relationID = fromElement.id;
-        else relationID = toElement.id;
-
-        var linesFromRelation = lines.filter(line => {
-            return line.fromID == relationID || line.toID == relationID
-        });
-
-        var connElemsIds = [];
-        linesFromRelation.forEach(line => {
-            if (line.fromID == relationID) connElemsIds.push(line.toID);
-            else connElemsIds.push(line.fromID);
-        });
-        var hasRecursive = (connElemsIds.length == 2 && connElemsIds[0] == connElemsIds[1]);
-        var hasOtherLines = (numOfExistingLines == 1 && connElemsIds.length >= 2);
-        for (let i = 0; i < allAttrToEntityRelations.length; i++) {
-            if (allAttrToEntityRelations[i] == fromElement.id) {
-                allAttrToEntityRelations.splice(i, 1);
-                countUsedAttributes--;
-                break;
-            } else if (allAttrToEntityRelations[i] == toElement.id) {
-                allAttrToEntityRelations.splice(i, 1);
-                countUsedAttributes--;
-                break;
-            }
-        }
-        if (hasRecursive || hasOtherLines) {
-            displayMessage(messageTypes.ERROR, "Sorry, that is not possible");
-            return;
-        }
-    }
-    // If there is no existing lines or is a special case
-    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines <= 1)) {
-        var newLine = {
-            id: makeRandomID(),
-            fromID: fromElement.id,
-            toID: toElement.id,
-            kind: kind
-        };
-
-        // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
-        if (isLineConnectedTo(newLine, elementTypesNames.EREntity) != null) {
-            if (cardinal != undefined) {
-                newLine.cardinality = cardinal;
-            }
-        }
-        preProcessLine(newLine);
-        addObjectToLines(newLine, stateMachineShouldSave);
-        if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
-        return newLine;
-    } else {
-        displayMessage(messageTypes.ERROR, `Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
-    }
-}
-
-/**
- * @description Allows the line to be processed and edited just before it is created
- * @param {object} line Line to process
- */
-function preProcessLine(line) {
-    var felem, telem;
-
-    felem = data[findIndex(data, line.fromID)];
-    telem = data[findIndex(data, line.toID)];
-
-    //Sets the endIcon of the to-be-created line, if it an State entity
-    if ((felem.type === entityType.SD) && (telem.type === entityType.SD)) {
-        if (line.kind === 'Recursive') {
-            line.endIcon = '';
-        } else {
-            line.endIcon = 'ARROW';
-        }
-        line.innerType = SDLineType.STRAIGHT;
-    }
-}
-
-//#endregion =====================================================================================
-//#region ================================ Camera Functions     ================================
-
-/**
- * @description Centers the camera between the highest and lowest x and y values of all elements
- */
-function centerCamera() {
-    // Stops execution if there are no elements to center the camera around.
-    if (data.length == 0) {
-        displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
-        return;
-    }
-    // Centering needs to happen twice for it to work, temp solution
-    for (let i = 0; i < 2; i++) {
-        zoomfact = 1;
-
-        var minX = Math.min.apply(null, data.map(i => i.x))
-        var maxX = Math.max.apply(null, data.map(i => i.x + i.width))
-        var minY = Math.min.apply(null, data.map(i => i.y))
-        var maxY = Math.max.apply(null, data.map(i => i.y + i.height))
-        determineZoomfact(maxX, maxY, minX, minY);
-
-        // Center of screen in pixels
-        var centerScreen = {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2
-        };
-
-        // Center of diagram in coordinates
-        var centerDiagram = {
-            x: minX + ((maxX - minX) / 2),
-            y: minY + ((maxY - minY) / 2)
-        };
-
-        // Move camera to center of diagram
-        scrollx = centerDiagram.x * zoomfact;
-        scrolly = centerDiagram.y * zoomfact;
-
-        var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
-        document.getElementById("zoom-message").innerHTML = zoomfact + "x";
-
-        scrollx = middleCoordinate.x;
-        scrolly = middleCoordinate.y;
-
-        // Update screen
-        showdata();
-        updatepos();
-        updateGridPos();
-        updateGridSize();
-        drawRulerBars(scrollx, scrolly);
-        updateA4Pos();
-        updateA4Size();
-        zoomCenter(centerDiagram);
-    }
-    displayMessage(messageTypes.SUCCESS, `Centered the camera.`);
 }
 
 //#endregion =====================================================================================

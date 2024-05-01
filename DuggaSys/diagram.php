@@ -35,6 +35,7 @@
     <script src="./diagram/classes/stateChange.js"></script>
     <script src="./diagram/classes/stateChangeFactory.js"></script>
     <script src="./diagram/helper.js"></script>
+    <script src="./diagram/helpers/rect.js"></script>
     <script src="./diagram/errorHandling.js"></script>
     <script src="./diagram/theme.js"></script>
     <script src="./diagram/draw/element.js"></script>
@@ -47,7 +48,12 @@
     <script src="./diagram/message.js"></script>
     <script src="./diagram/toggle.js"></script>
     <script src="./diagram/draw/options.js"></script>
-    <script src="./diagram/calc.js"></script>
+    <script src="./diagram/helpers/context.js"></script>
+    <script src="./diagram/helpers/element.js"></script>
+    <script src="./diagram/helpers/boxSelect.js"></script>
+    <script src="./diagram/zoom.js"></script>
+    <script src="./diagram/camera.js"></script>
+    <script src="./diagram/helpers/mouseMode.js"></script>
     <script src="./diagram/events/mouse.js"></script>
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>

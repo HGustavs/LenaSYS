@@ -169,3 +169,102 @@ function updateSelection(element) {
     }
     generateContextProperties();
 }
+
+/**
+ * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
+ * @param {Number} x Absolute x-position in pixels from the left of the inner window.
+ * @param {Number} y Absolute y-position in pixels from the top of the inner window.
+ */
+function setRulerPosition(x, y) {
+    //40 is the size of the actual ruler and 51 is the toolbar on the left side
+    if (x >= 40 + 51) document.getElementById("ruler-x").style.left = x - 51 + "px";
+    if (y >= 40) document.getElementById("ruler-y").style.top = y + "px";
+}
+
+/**
+ * @description Performs an update to the current grid size depending on the current zoom level.
+ * @see zoomin Function where the zoom level increases.
+ * @see zoomout Function where the zoom level decreases.
+ */
+function updateGridSize() {
+    //Do not remore, for later us to make gridsize in 1cm.
+    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    settings.grid.gridSize = 10 * pxlength;
+
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
+    bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
+
+    bLayer.children[0].setAttribute('d', `M ${settings.grid.gridSize * zoomfact} 0 L 0 0 0 ${settings.grid.gridSize * zoomfact}`);
+
+    // Set width of origo line on the x axis
+    bLayer = document.getElementById("origoX");
+    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
+
+    // Set width of origo line on the y axis
+    bLayer = document.getElementById("origoY");
+    bLayer.style.strokeWidth = settings.grid.origoWidth * zoomfact;
+
+    updateGridPos();
+}
+
+/**
+ * @description Calculates new positioning for the background grid.
+ */
+function updateGridPos() {
+    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    var bLayer = document.getElementById("grid");
+    bLayer.setAttribute('x', gridOffsetX.toString());
+    bLayer.setAttribute('y', gridOffsetY.toString());
+
+    // origo x axis line position
+    bLayer = document.getElementById("origoX");
+    bLayer.setAttribute('y1', gridOffsetY.toString());
+    bLayer.setAttribute('y2', gridOffsetY.toString());
+
+    // origo y axis line position
+    bLayer = document.getElementById("origoY");
+    bLayer.setAttribute('x1', gridOffsetX.toString());
+    bLayer.setAttribute('x2', gridOffsetX.toString());
+}
+
+/**
+ * @description Performs an update to the current A4 template size depending on the current zoom level.
+ * @see zoomin Function where the zoom level increases.
+ * @see zoomout Function where the zoom level decreases.
+ */
+function updateA4Size() {
+    var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
+    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    //const a4Width = 794, a4Height = 1122;
+    const a4Width = 210 * pxlength
+    const a4Height = 297 * pxlength;
+
+    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    updateA4Pos();
+}
+
+/**
+ * @description Calculates new positioning for the A4 template.
+ */
+function updateA4Pos() {
+    var OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
+    var OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
+    var rect = document.getElementById("a4Rect");
+    var vRect = document.getElementById("vRect");
+    var text = document.getElementById("a4Text");
+
+    vRect.setAttribute('x', OffsetX.toString());
+    vRect.setAttribute('y', OffsetY.toString());
+
+    rect.setAttribute('x', OffsetX.toString());
+    rect.setAttribute('y', OffsetY.toString());
+
+    text.setAttribute('x', (OffsetX + (780 * zoomfact)).toString());
+    text.setAttribute('y', (OffsetY - 5).toString());
+}

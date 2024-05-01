@@ -333,12 +333,11 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth){
 }
 
 function drawElementERRelation(element, boxw, boxh, linew) {
-    let content;
+    let content, weak;
     let hboxw = boxw / 2;
     let hboxh = boxh / 2;
     const multioffs = 3;
 
-    let weak = "";
     if (element.state == "weak") {
         weak = `<polygon 
                     points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
@@ -346,7 +345,7 @@ function drawElementERRelation(element, boxw, boxh, linew) {
                     class="text"
                 /> `;
     }
-    content += `<polygon 
+    content = `<polygon 
                     points="${linew},${hboxh} ${hboxw},${linew} ${boxw - linew},${hboxh} ${hboxw},${boxh - linew}"  
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
                     class="text"
@@ -361,7 +360,7 @@ function drawElementERRelation(element, boxw, boxh, linew) {
 }
 
 function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
-    let content;
+    let content = '';
     let hboxw = boxw / 2;
     let hboxh = boxh / 2;
     const drawPath = (l, extra='') => {
@@ -644,15 +643,3 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     return drawSvg(boxw, boxh + texth * length, content);
 }
 
-/**
- * @description Checks for errors and adds the element affected by the errors to a error list.
- * @param {Object} element Element to be checked for errors.
- */
-function checkElementError(element) {
-    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
-    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element)
-    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
-
-    // Check lines
-    checkLineErrors(lines);
-}
