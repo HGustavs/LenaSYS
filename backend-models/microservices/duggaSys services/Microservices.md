@@ -41,21 +41,21 @@ CRUD stands for the four basic operations for managing data in applications and 
 # LIST OF ORIGINAL SERVICE FILES
 ---
 
-accessedservice.php ==finished==
-codeviewerService.php ==finished==
-contribution_loginbox_service.php : unclear if needed
-contributedservice.php : there is no documentation for this file unclear if needed
-courseedservice.php ==finished==
-diagramservice.php WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)
-duggaedservice.php ==finished==
-fileedservice.php ==finished==
-gitcommitService.php WORK PAUSED for development of microservices. Will continue when the service is fixed (group 3 is working on this)
-gitfetchService.php WORK PAUSED for development of microservices. Will continue when the service is fixed (group 3 is working on this)
-highscoreservice.php ==finished==
-profileservice.php ==finished==
-resultedservice.php ==finished==
-sectionedservice.php ==finished==
-showDuggaService.php ==finished==
+- accessedservice.php ==finished==
+- codeviewerService.php ==finished==
+- contribution_loginbox_service.php: _Ongoing research to find out if this service is needed._
+- contributedservice.php: _Ongoing research to find out if this service is needed._
+- courseedservice.php ==finished==
+- diagramservice.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)__
+- duggaedservice.php ==finished==
+- fileedservice.php ==finished==
+- gitcommitService.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 3 is working on this)__
+- gitfetchService.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 3 is working on this)__
+- highscoreservice.php ==finished==
+- profileservice.php ==finished==
+- resultedservice.php ==finished==
+- sectionedservice.php ==finished==
+- showDuggaService.php ==finished==
 
 ---
 # LIST OF MICROSERVICES
@@ -119,13 +119,13 @@ Codeviewer Service:
 
 Contribution Loginbox Service
 
-_Ongoing research if needed_
+- _Ongoing research if needed_
 
 <br>
 
 Contributed Service:
 
-_Ongoing research if needed_
+- _Ongoing research if needed_
 
 <br>
 
@@ -145,7 +145,7 @@ Courseed Service:
 
 Diagram Service:
 
-_WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)_
+- _WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)_
 
 <br>
 
