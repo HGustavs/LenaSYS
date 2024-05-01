@@ -703,10 +703,6 @@
 				
 		</div>
 <?php
-include_once "../Shared/database.php";
-include_once(__DIR__ . "/../../coursesyspw.php");
-pdoConnect();
-
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
 	//First query: Check if a row with same cid already exists. If not, insert into db.
@@ -788,15 +784,7 @@ function writeFilesInDir($path, $fileNames, $content){
 }
 
 function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam) {
-	try {
-		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
-		if(!defined("MYSQL_VERSION")) {
-			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
-		}
-	} catch (PDOException $e) {
-		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
-		exit;
-	}
+	global $pdo;
 	$count = count($fileNames);
 	for($i = 0; $i < $count; $i ++) {
 		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
@@ -821,15 +809,7 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 	}
 }
 function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
-	try {
-		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
-		if(!defined("MYSQL_VERSION")) {
-			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
-		}
-	} catch (PDOException $e) {
-		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
-		exit;
-	}
+	global $pdo;
 	//Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
 	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
 	$query->bindParam(':playlink', $fileNames[0]);
@@ -846,15 +826,7 @@ function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadU
 }
 
 function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
-	try {
-		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
-		if(!defined("MYSQL_VERSION")) {
-			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
-		}
-	} catch (PDOException $e) {
-		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
-		exit;
-	}
+	global $pdo;
 	$count = count($fileNames);
 	$boxContent = "Code";
 	$wordlistID = "3";
