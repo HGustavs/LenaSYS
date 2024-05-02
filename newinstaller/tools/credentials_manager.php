@@ -15,19 +15,20 @@
          * function set_db_credentials
          * save database credentials to file.
          */
-        public function set_db_credentials(string $user, string $password, string $host, string $name, bool $docker) {
+        public function set_db_credentials(string $user, string $password, string $host, string $name, bool $docker): array {
             $response = $this->configuration_exists();
             if(!$response['success']) {
                 return $response;
             }
 
-            // Creates table with data to store in file.
-            $fileContent .= "   \n";
-            $fileContent .= "   define('DB_USER', '$user');\n";
-            $fileContent .= "   define('DB_PASSWORD', '$password');\n";
-            $fileContent .= "   define('DB_HOST','$host')\n";
-            $fileContent .= "   define('DB_NAME','$name')\n";
-            $fileContent .= "   define('DB_USING_DOCKER', '" . ($docker ? 'true' : 'false') . "');";
+            // Fills file with provided data
+            $fileContent =  "<?php\n";
+            $fileContent .= "   define('DB_USER','{$user}');\n";
+            $fileContent .= "   define('DB_PASSWORD','{$password}');\n";
+            $fileContent .= "   define('DB_HOST','{$host}');\n";
+            $fileContent .= "   define('DB_NAME','{$name}');\n";
+            $fileContent .= "   define('DB_USING_DOCKER','" . ($docker ? "on" : "off") . "');\n";
+
 
             // Stores table of content inside the file.
             file_put_contents($this->path, $fileContent);
@@ -49,11 +50,11 @@
          * function set_db_user
          * set the db username
          */
-        public function set_db_user(string $user) {
-            if(!$this->set_db_parameter('DB_USER', $user)['success']) {   
+        public function set_db_user(string $user): array {
+            if(!$this->set_parameter('DB_USER', "{$user}")['success']) {   
                 return [
                     "success"=> false,
-                    "message"=> "Couldn't update database user with value of $user in file."
+                    "message"=> "Couldn't update database user with value of {$user} in file."
                 ];
             }
             
@@ -62,7 +63,7 @@
 
             return [
                 "success"=> true,
-                "message"=> "Successfully updated database user with value of $user in file."
+                "message"=> "Successfully updated database user with value of {$user} in file."
             ];
         }
 
@@ -70,11 +71,11 @@
          * function set_db_password
          * set the db password
          */
-        public function set_db_password(string $password) {
-            if(!$this->set_db_parameter('DB_PASSWORD', $password)['success']) {   
+        public function set_db_password(string $password): array {
+            if(!$this->set_parameter('DB_PASSWORD', "{$password}")['success']) {   
                 return [
                     "success"=> false,
-                    "message"=> "Couldn't update database password with value of $password in file."
+                    "message"=> "Couldn't update database password with value of {$password} in file."
                 ];
             }
             
@@ -83,7 +84,7 @@
 
             return [
                 "success"=> true,
-                "message"=> "Successfully updated database password with value of $password in file."
+                "message"=> "Successfully updated database password with value of {$password} in file."
             ];
         }
 
@@ -91,11 +92,11 @@
          * function set_hostname
          * set the db hostname
          */
-        public function set_hostname($hostname) {
-            if(!$this->set_db_parameter('DB_HOST', $hostname)['success']) {   
+        public function set_hostname($hostname): array {
+            if(!$this->set_parameter('DB_HOST', "{$hostname}")['success']) {   
                 return [
                     "success"=> false,
-                    "message"=> "Couldn't update database host with value of $hostname in file."
+                    "message"=> "Couldn't update database host with value of {$hostname} in file."
                 ];
             }
             
@@ -104,7 +105,7 @@
 
             return [
                 "success"=> true,
-                "message"=> "Successfully updated database host with value of $hostname in file."
+                "message"=> "Successfully updated database host with value of {$hostname} in file."
             ];
         }
     
@@ -112,11 +113,11 @@
          * function set_db_name
          * set the db name
          */
-        public function set_db_name(string $name) {
-            if(!$this->set_db_parameter('DB_NAME', $name)['success']) {   
+        public function set_db_name(string $name): array {
+            if(!$this->set_parameter('DB_NAME', "{$name}")['success']) {   
                 return [
                     "success"=> false,
-                    "message"=> "Couldn't update database name with value of $name in file."
+                    "message"=> "Couldn't update database name with value of {$name} in file."
                 ];
             }
             
@@ -125,7 +126,7 @@
 
             return [
                 "success"=> true,
-                "message"=> "Successfully updated database name with value of $name in file."
+                "message"=> "Successfully updated database name with value of {$name} in file."
             ];
         }
 
@@ -133,11 +134,11 @@
          * function set_db_docker
          * set the db docker state
          */
-        public function set_db_docker(string $docker) {
-            if(!$this->set_db_parameter('DB_USING_DOCKER', $docker)['success']) {   
+        public function using_docker(string $docker): array {
+            if(!$this->set_parameter('DB_USING_DOCKER', "{$docker}")['success']) {   
                 return [
                     "success"=> false,
-                    "message"=> "Couldn't update database docker state with value of $docker in file."
+                    "message"=> "Couldn't update database docker state with value of {$docker} in file."
                 ];
             }
             
@@ -146,7 +147,7 @@
 
             return [
                 "success"=> true,
-                "message"=> "Successfully updated database docker state with value of $docker in file."
+                "message"=> "Successfully updated database docker state with value of {$docker} in file."
             ];
         }
     
@@ -210,7 +211,7 @@
             if(!Permissions::has_permission($this->path)) {
                 return [
                     'success'=> false,
-                    'message'=> "Does not have permission to open file $this->path"
+                    'message'=> "Does not have permission to open file {$this->path}"
                 ];
             }
 
@@ -235,14 +236,14 @@
          * name is for insert name ex: define(DB_HOST)
          * value is for the value to be replaced with existing value.
          */
-        private function set_db_parameter(string $name, string $value) {
+        private function set_parameter(string $name, string $value): array {
             // Read the existing content from the file
             $fileContent = file_get_contents($this->path);
 
             // Define a pattern to find the existing DB_HOST definition
             // Assuming the host is defined like define('DB_HOST', 'current_value');
-            $pattern = "/define\('$name', '.*?'\);/";
-            $replacement = "define('DB_NAME', '$value');";
+            $pattern = "/define\('{$name}', '.*?'\);/";
+            $replacement = "define('DB_NAME', '{$value}');";
 
             // Check if the existing host is already defined in the file
             if (preg_match($pattern, $fileContent)) {
@@ -250,21 +251,21 @@
                 $fileContent = preg_replace($pattern, $replacement, $fileContent);
             } else {
                 // If DB_HOST is not defined, append the definition
-                $fileContent .= "\n$replacement\n";
+                $fileContent .= "\n{$replacement}\n";
             }
 
             // Write the updated content back to the file
-            if (file_put_contents($this->path, $fileContent) === false) {
+            if (!file_put_contents($this->path, $fileContent)) {
                 return [
                     "success"=> false,
-                    "message"=> "Failed to update $name wtih value $value in the configuration file."
+                    "message"=> "Failed to update {$name} wtih value {$value} in the configuration file."
                 ];
             }
 
             // Update the db_host property in the class
             return [
                 "success"=> true,
-                "message"=> "Successfully updated $name wtih value $value in the configuration file."
+                "message"=> "Successfully updated {$name} wtih value {$value} in the configuration file."
             ];
         }
     }
