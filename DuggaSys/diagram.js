@@ -953,6 +953,47 @@ function mouseMode_onMouseUp(event) {
     hasPressedDelete = false;
 }
 
+
+
+// this mess makes so that the resize only get's logged when mup() is triggered                
+// just having the if doesn't work since the save needs to be triggered after the user has finished moving
+
+/**
+ * @description stores the ResizeAndMoved in the historyLog array after mup has triggered
+ * @param {string[]} id id of the element
+ * @param {number} xChange change in x-position
+ * @param {number} yChange change in y-position
+ * @param {number} widthChange change in width
+ * @param {number} heightChange change in height
+ */
+function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
+    new Promise(resolve => {
+        resolve(hasResized);
+    }).then(() => {
+        if (hasResized) {                                    
+            stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+            hasResized = false;
+        }
+    });
+}
+
+/**
+ * @description stores the Resize in the historyLog array after mup has triggered
+ * @param {string[]} id id of the element
+ * @param {number} widthChange change in width
+ * @param {number} heightChange change in height
+ */
+function prepareElementResized(id, widthChange, heightChange) {
+    new Promise(resolve => {
+        resolve(hasResized);
+    }).then(() => {
+        if (hasResized) {                                    
+            stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+            hasResized = false;
+        }
+    });
+}
+
 /**
  * @description Event function triggered when the mouse has moved on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
@@ -1029,40 +1070,17 @@ function mmoving(event) {
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
                 
-                // this mess makes so that the resize only get's logged when mup() is triggered                
-                // just having the if doesn't work since the save needs to be triggered after the user has finished moving
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);                
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {
-                        stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementResized([elementData.id], widthChange, 0);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 isUP = false;
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementResized([elementData.id], 0, heightChange);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
                 isUP = true;
@@ -1070,14 +1088,7 @@ function mmoving(event) {
                 isX = false;
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 isUP = true;
@@ -1089,14 +1100,7 @@ function mmoving(event) {
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 isUP = true;
@@ -1106,14 +1110,7 @@ function mmoving(event) {
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange);
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 isR = false;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
@@ -1122,14 +1119,7 @@ function mmoving(event) {
                 isUP = false;
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange);
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
@@ -1137,14 +1127,7 @@ function mmoving(event) {
                 isUP = false;
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
-                new Promise(resolve => {
-                    resolve(hasResized);
-                }).then(() => {
-                    if (hasResized) {                        
-                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                        hasResized = false;
-                    }
-                });
+                prepareElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange);
             }
 
             document.getElementById(context[0].id).remove();
