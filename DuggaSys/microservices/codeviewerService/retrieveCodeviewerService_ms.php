@@ -5,7 +5,11 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once ("../../../Shared/basic.php");
 
-function retrieveCodeviewerService($opt, $pdo, $userid)
+
+//------------------------------------------------------------------------------------------------
+// Retrieve Information
+//------------------------------------------------------------------------------------------------
+function retrieveCodeviewerService($opt, $pdo, $userid, $debug)
 {
     include_once "../../../Shared/sessions.php";
 
@@ -55,9 +59,7 @@ function retrieveCodeviewerService($opt, $pdo, $userid)
     // TODO: Better handle a situation where there are no examples available
     if ($exampleCount > 0) {
 
-        //------------------------------------------------------------------------------------------------
-        // Retrieve Information
-        //------------------------------------------------------------------------------------------------
+
         // Read exampleid, examplename and runlink etc from codeexample and template
         $exampleName = "";
         $templateId = "";
