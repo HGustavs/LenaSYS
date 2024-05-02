@@ -5,6 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "retrieveResultedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -75,13 +76,5 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
     	array_push($tableInfo, $tableSubmissionInfo);
 	}
 
-	$returnArray = array(
-		'tableInfo' => $tableInfo,
-		'duggaFilterOptions' => $duggaFilterOptions
-	);
-
-	echo json_encode($returnArray);
-
+	retrieveResultedService($tableInfo, $tableSubmissionInfo);
 }
-
-?>
