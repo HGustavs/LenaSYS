@@ -4122,7 +4122,7 @@ function fetchGitCodeExamples(courseid){
 //Function to store Code Examples in directory and in database (metadata2.db)
 function storeCodeExamples(cid, codeExamplesContent, githubURL){
     var templateNo = updateTemplate();
-    var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
+    var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[], fileSize=[];
     //Push all file data into separate arrays and add them into one single array.
     codeExamplesContent.map(function(item) {
        decodedContent.push(atob(item.content.content));
@@ -4132,6 +4132,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
        downloadURL.push(item.content.download_url);
        filePath.push(item.content.path);
        fileType.push(item.content.type);
+       fileSize.push(item.content.size);
     });
 
     var AllJsonData = {
@@ -4143,7 +4144,8 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       downloadURLS: downloadURL,
       fileTypes: fileType,
       codeExamplesLinkParam: CeHiddenParameters,
-      templateid: templateNo
+      templateid: templateNo,
+      fileSizes: fileSize
     }
     //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
@@ -4156,7 +4158,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(response => response.text())
       .then(data => {
         //For testing/finding bugs/errors
-        console.log(data);
+        //console.log(data);
         confirmBox('closeConfirmBox');
       })
       .catch(error => {
