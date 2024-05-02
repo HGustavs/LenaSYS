@@ -97,12 +97,11 @@ class StateMachine {
                             isSoft = newChangeType.isSoft;
                             changeTypes = [newChangeType];
                         }
-
                         // Find last change with the same ids
                         var timeLimit = 10; // Timelimit on history append in seconds
                         for (let index = this.historyLog.length - 1; index >= 0; index--) {
                             // Check so if the changeState is not an created-object
-                            if (this.historyLog[index].created != undefined) continue;
+                            if (this.historyLog[index].created != undefined) {console.log(3);continue;}
 
                             var sameIds = true;
                             if (stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
@@ -133,17 +132,16 @@ class StateMachine {
                         for (let j = 0; j < changeTypes.length; j++) {
                             const currentChangedType = changeTypes[j];
                             let movedAndResized = false;
+                            let currentElement;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);                                    
-                                    const currentElement = data[findIndex(data, lastLog.id)];
-                                    lastLog.x = currentElement.x;
-                                    lastLog.y = currentElement.y;
-                                    lastLog.width = currentElement.width;
+                                    currentElement = data[findIndex(data, lastLog.id)];
+                                    lastLog.width = currentElement.width;   
                                     lastLog.height = currentElement.height;
                                     
-                                    console.log(lastLog);
+                                    // somehow the last element in historyLog get's overwritten with the same coordinates as the newest entry
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
@@ -151,22 +149,16 @@ class StateMachine {
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    // loop to add the correct sizes to the changeState
-                                    // it only stores the changes originally and after this it stores the whole size
-                                    for (let change of stateChangeArray) {
-                                        change.id.forEach(id => {
-                                            let currentElement = document.getElementById(id);
-                                            if (lastLog.id == id) {
-                                                lastLog.width += currentElement.offsetWidth;
-                                                lastLog.height += currentElement.offsetHeight;
-                                                if (movedAndResized) {
-                                                    currentElement = data[findIndex(data, id)];
-                                                    lastLog.x = currentElement.x;
-                                                    lastLog.y = currentElement.y;
-                                                    movedAndResized = false;
-                                                }
-                                            }
-                                        });
+                                    const id = stateChange.id[0];
+                                    currentElement = data[findIndex(data, id)];
+                                    if (lastLog.id == id) {
+                                        lastLog.width += currentElement.width;
+                                        lastLog.height += currentElement.height;
+                                        if (movedAndResized) {
+                                            lastLog.x = currentElement.x;
+                                            lastLog.y = currentElement.y;
+                                            movedAndResized = false;
+                                        }
                                     }
                                     // not sure why but if you resize -> undo -> resize it starts
                                     // to store the id as an array so this is just a check to counter that
@@ -177,7 +169,6 @@ class StateMachine {
                                     }
 
                                     // spreaading the values so that it doesn't keep the reference
-                                    console.log(lastLog);
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
@@ -188,7 +179,8 @@ class StateMachine {
                         }
                     }
                 } else {
-                    this.historyLog.push(stateChange);
+                    const current_element = data[findIndex(data, stateChange.id)];
+                    this.historyLog.push({...stateChange, width: current_element.width, height: current_element.height});
                     this.lastFlag = currentChangedType;
                     this.currentHistoryIndex = this.historyLog.length - 1;
                 }
@@ -956,7 +948,7 @@ function mouseMode_onMouseUp(event) {
 
 
 // this mess makes so that the resize only get's logged when mup() is triggered                
-// just having the if doesn't work since the save needs to be triggered after the user has finished moving
+// they could possibly be combined into one but would require a lot of extra checks to determine which save to do
 
 /**
  * @description stores the ResizeAndMoved in the historyLog array after mup has triggered
