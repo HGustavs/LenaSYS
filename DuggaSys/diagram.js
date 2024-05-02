@@ -1380,7 +1380,7 @@ function saveProperties() {
     const children = propSet.children;
 
     var propsChanged = {};
-    let formatArr;
+    let cleanedLines;
 
     for (let index = 0; index < children.length; index++) {
         const child = children[index];
@@ -1393,19 +1393,42 @@ function saveProperties() {
                     propsChanged.name = value;
                 }
                 break;
+            case 'primaryKey':
+                cleanedLines = [];
+                var textArea = child.value;
+                var lines = textArea.split('\n');
+                for (var i = 0; i < lines.length; i++) {
+                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
+                        if (Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
+                            lines[i] = "*" + lines[i];
+                        }
+                        cleanedLines.push(lines[i]);
+                    }
+                }
+                //Updates property
+                lines = cleanedLines;
+                element[propName] = lines;
+                propsChanged.primaryKey = lines;
+                break;
             case 'attributes':
                 //Get string from textarea
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
-                formatArr = [];
-                for (let i = 0; i < arrElementAttr.length; i++) {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        formatArr.push(arrElementAttr[i]);
+                cleanedLines = [];
+                for (let i = 0; i < arrElementAttr.length; i++)
+                {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' '))
+                    {
+                        if (Array.from(arrElementAttr[i])[0] != '-')
+                        { // Checks if line starts with a hyphen ('-')
+                            arrElementAttr[i] = "-" + arrElementAttr[i];
+                        }
+                        cleanedLines.push(arrElementAttr[i]);
                     }
                 }
                 //Update the attribute array
-                arrElementAttr = formatArr;
+                arrElementAttr = cleanedLines;
                 element[propName] = arrElementAttr;
                 propsChanged.attributes = arrElementAttr;
                 break;
@@ -1414,14 +1437,14 @@ function saveProperties() {
                 var elementFunc = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
-                formatArr = [];
+                cleanedLines = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
-                        formatArr.push(arrElementFunc[i]);
+                        cleanedLines.push(arrElementFunc[i]);
                     }
                 }
                 //Update the attribute array
-                arrElementFunc = formatArr;
+                arrElementFunc = cleanedLines;
                 element[propName] = arrElementFunc;
                 propsChanged.functions = arrElementFunc;
                 break;
