@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 
 error_reporting(E_ALL);
 
@@ -31,11 +31,14 @@ function customErrorHandler($errno, $errstr, $errfile, $errline) {
 			break;
 
 		default:
-			echo '<script> alert("Unknown error type: ['.$errno.'] '.$errstr.'\n error on line '.$errline.' in file '.$errfile.'"); </script>';
+		logUnknownError($errno, $errstr, $errfile, $errline);
 			break;
     }
 }
-
+function logUnknownError($errno, $errstr, $errfile, $errline) {
+    $errorMessage = "Unknown error type: [$errno] $errstr\nError on line $errline in file $errfile";
+    error_log($errorMessage); 
+}
 //set error handler
 set_error_handler("customErrorHandler");
 
@@ -572,5 +575,6 @@ function debug_to_console($data) {
 
 	echo "<script>console.log('Debug php array: " . $out . "');</script>";
 }
+ob_end_flush();
 
 ?>
