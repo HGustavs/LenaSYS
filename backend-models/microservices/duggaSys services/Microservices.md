@@ -44,7 +44,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 - accessedservice.php ==finished==
 - codeviewerService.php ==finished==
 - contribution_loginbox_service.php: WORK PAUSED due to the current non-functional state of this service
-- contributedservice.php: _Ongoing research to find out if this service is needed_
+- contributionservice.php: WORK PAUSED due to the current non-functional state of this service
 - courseedservice.php ==finished==
 - diagramservice.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)__
 - duggaedservice.php ==finished==
@@ -132,7 +132,7 @@ https://github.com/HGustavs/LenaSYS/blob/master/backend-models/functional-requir
 
 Contributed Service:
 
-- _Ongoing research if needed_
+- Based on the information given for the status of the Contribution Loginbox Service information, we are pausing the development of microservices for this service file.
 
 <br>
 
@@ -961,7 +961,7 @@ DELETE FROM listentries WHERE lid=:lid;
 <br>
 <br>
 
-WORK PAUSED given the current non-functional state of this service.
+_WORK PAUSED given the current non-functional state of this service._
 
 <br>
 <br>
@@ -973,7 +973,7 @@ WORK PAUSED given the current non-functional state of this service.
 <br>
 <br>
 
-_Ongoing research if needed._
+_WORK PAUSED given the current non-functional state of this service._
 
 <br>
 <br>
