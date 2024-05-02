@@ -8,8 +8,10 @@ $testsData = array(
     //------------------------------------------------------------------------------------------
     'setExaminer' => array(
         'expected-output' => '999',
+        'query-before-test-1' => "INSERT INTO user(uid, username, password) VALUES (9999, 'testuser1', 'testpwd');",
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
-        'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
+        'query-after-test-1' => "DELETE FROM user WHERE uid = '9999';",
+        'query-after-test-2' => "DELETE FROM user_course WHERE uid = '9999';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/updateUserCourse_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
@@ -29,8 +31,10 @@ $testsData = array(
 
     'setVers' => array(
         'expected-output' => '999',
+        'query-before-test-1' => "INSERT INTO user(uid, username, password) VALUES (9999, 'testuser1', 'testpwd');",
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
-        'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
+        'query-after-test-1' => "DELETE FROM user WHERE uid = '9999';",
+        'query-after-test-2' => "DELETE FROM user_course WHERE uid = '9999';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/updateUserCourse_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
@@ -51,8 +55,10 @@ $testsData = array(
 
     'setAccess' => array(
         'expected-output' => '999',
+        'query-before-test-1' => "INSERT INTO user(uid, username, password) VALUES (9999, 'testuser1', 'testpwd');",
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
-        'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
+        'query-after-test-1' => "DELETE FROM user WHERE uid = '9999';",
+        'query-after-test-2' => "DELETE FROM user_course WHERE uid = '9999';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/updateUserCourse_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
@@ -73,8 +79,10 @@ $testsData = array(
 
     'setGroup' => array(
         'expected-output' => '999',
+        'query-before-test-1' => "INSERT INTO user(uid, username, password) VALUES (9999, 'testuser1', 'testpwd');",
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
-        'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
+        'query-after-test-1' => "DELETE FROM user WHERE uid = '9999';",
+        'query-after-test-2' => "DELETE FROM user_course WHERE uid = '9999';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/updateUserCourse_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
