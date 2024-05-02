@@ -217,6 +217,7 @@ function ddown(event) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
                     targetElementDiv = document.getElementById(targetElement.id);
+                    canPressDeleteBtn = true;
                 }
             case mouseModes.EDGE_CREATION:
                 if (event.button == 2) return;
@@ -368,10 +369,11 @@ function mouseLeave() {
  */
 function checkDeleteBtn() {
     if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-        if (deleteBtnX != 0 && !mouseOverElement) {
+        if (canPressDeleteBtn == true) {
             if (context.length > 0) removeElements(context);
             if (contextLine.length > 0) removeLines(contextLine);
             updateSelection(null);
+            canPressDeleteBtn = false;
             return true;
         }
     }
