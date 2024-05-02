@@ -11,7 +11,7 @@
          * Create db using class variables.
          * Force first drops any existing database.
          */
-        public function create_db(string $db_name, bool $force = false): string {
+        public function create_db(string $db_name, bool $force = false): array {
             try {
                 if ($force) {
                     $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
@@ -20,11 +20,18 @@
                 $this->pdo->exec("CREATE DATABASE `$db_name`");
 
             } catch (PDOException $e) { 
-                return "Failed to create database {$db_name}. " . 
-                (!$force ? "Try using force." : $e);
+
+                return [
+                    'success' => false,
+                    'message' => "Failed to create database {$db_name}. " . 
+                    (!$force ? "Try using force." : $e)
+                ];
             }
 
-            return "Successfully created database {$db_name}.";
+            return [
+                'success' => true,
+                'message' => "Successfully created database {$db_name}."
+            ];
         }
 
         /**
@@ -32,7 +39,7 @@
          * Creates a new sql user.
          * Force first removes user.
          */
-        public function create_user(string $user_name, string $hostname = "%", bool $force = false) {
+        public function create_user(string $user_name, string $hostname = "%", bool $force = false): array {
             try {
                 if ($force) {
                     $this->pdo->exec("DROP USER IF EXISTS `$user_name`");
@@ -41,18 +48,25 @@
                 $this->pdo->exec("CREATE USER `$user_name`");
 
             } catch (PDOException $e) { 
-                return "Failed to create user {$user_name}@{$hostname}. " . 
-                (!$force ? "Try using force." : $e);
+                
+                return [
+                    'success' => false,
+                    'message' => "Failed to create user {$user_name}@{$hostname}. " . 
+                    (!$force ? "Try using force." : $e)
+                ];
             }
 
-            return "Successfully created user {$user_name}@{$hostname}.";
+            return [
+                'success' => true,
+                'message' => "Successfully created user {$user_name}@{$hostname}."
+            ];
         }
 
         /**
          * function drop_db
          * Drops an existing database. 
          */
-        public function drop_db(string $db_name, bool $force = false): string { 
+        public function drop_db(string $db_name, bool $force = false): array { 
             try {
 
                 if ($force) {
@@ -61,9 +75,15 @@
                     $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
                 }
 
-                return "Successfully removed database {$db_name}.";
+                return [
+                    'success' => true,
+                    'message' => "Successfully removed database {$db_name}."
+                ];
             } catch (PDOException $e) {
-                return "Failed to remove database {$db_name}. {$e}";
+                return [
+                    'success' => false,
+                    'message' => "Failed to remove database {$db_name}. {$e}"
+                ];
             }
         }
 
@@ -71,7 +91,7 @@
          * function drop_user
          * removes an already existing user.
          */
-        public function drop_user(string $user_name, string $hostname = "%", bool $force = false) {
+        public function drop_user(string $user_name, string $hostname = "%", bool $force = false): array {
             try {
                 if ($force) {
                     $this->pdo->exec("DROP USER `$user_name`@`$hostname`");
@@ -79,9 +99,15 @@
                     $this->pdo->exec("DROP USER IF EXISTS `$user_name`@`$hostname`");
                 }
 
-                return "Successfully removed user {$user_name}.";
+                return [
+                    'success' => true,
+                    'message' => "Successfully removed user {$user_name}."
+                ];
             } catch (PDOException $e) {
-                return "Failed to remove user {$user_name}. {$e}";
+                return [
+                    'success' => false,
+                    'message' => "Failed to remove user {$user_name}. " . $e->getMessage()
+                ];
             }
         }
 
@@ -90,7 +116,11 @@
          * Set permission to access db for user.
          */
         public function set_permissions(string $user_name, string $hostname, string $db_name) {
-            // TODO: implement function
+            try {
+                $this->pdo->exec("GRANT ");
+            } catch (PDOException $e) {
+
+            }
         }
 
         /**
