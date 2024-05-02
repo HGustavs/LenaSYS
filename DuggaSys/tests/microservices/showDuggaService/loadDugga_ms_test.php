@@ -3,7 +3,6 @@
 include "../../../../Shared/test.php";
 
 $testsData = array(
-
     'load dugga' => array(
         'expected-output' => '{"variant":"991","answer":"useranswer","variantanswer":"{variantanswer}","param":"{testparam}"}',
         'query-before-test-1' => "INSERT INTO variant (vid,param, variantanswer) VALUES (991,'{testparam}','{variantanswer}');",
@@ -24,7 +23,6 @@ $testsData = array(
             'answer',
             'variantanswer',
             'param',
-
         )),
     ),
 );
