@@ -19,6 +19,7 @@
             try {
 
                 $db_name = $db_name ?? $this->db_name;
+                $this->sanitize($db_name);
 
                 if ($force) {
                     $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
@@ -32,7 +33,7 @@
                 return [
                     'success' => false,
                     'message' => "Failed to create database {$db_name}. " . 
-                    (!$force ? "Try using force." : $e->getMessage())
+                    (!$force ? "Try using force. " : "") . $e->getMessage()
                 ];
             }
 
@@ -54,6 +55,8 @@
                 $hostname = $hostname ?? $this->hostname;
                 $hostname = $hostname ?? '%';
                 $password = $this->db_user_password;
+
+                $this->sanitize($user_name . $hostname);
 
                 if (empty($password)) {
                     return [
@@ -101,6 +104,7 @@
             try {
 
                 $db_name = $db_name ?? $this->db_name;
+                $this->sanitize($db_name);
 
                 if ($force) {
                     $this->pdo->exec("DROP DATABASE `$db_name`");
@@ -131,6 +135,8 @@
                 $hostname = $hostname ?? $this->hostname;
                 $hostname = $hostname ?? '%';
 
+                $this->sanitize($user_name . $hostname);
+
                 if ($force) {
                     $this->pdo->exec("DROP USER `$user_name`@`$hostname`");
                 } else {
@@ -160,6 +166,8 @@
                 $hostname = $hostname ?? $this->hostname;
                 $hostname = $hostname ?? '%';
 
+                $this->sanitize($db_name . $user_name . $hostname);
+
                 $this->pdo->exec("GRANT ALL PRIVILEGES ON `$db_name`.* TO `$user_name`@`$hostname`");
 
                 return [
@@ -181,5 +189,17 @@
          */
         public function run_sql_file(string $file_name): bool {
             // TODO: Implement function that runs an sql file.
+        }
+
+        /**
+         * function sanitize
+         * Sanitize data, only allow letters, numbers and underscores.
+         * Also ensure that they contain start and end of string.
+         */
+        private function sanitize(string $sql): string {
+            if (!preg_match('/^[a-zA-Z0-9_%]+$/', $sql)) {
+                throw new PDOException("Invalid sql detected.");
+            }
+            return $sql;
         }
     }
