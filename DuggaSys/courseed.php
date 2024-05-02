@@ -136,7 +136,12 @@ if(isset($_SESSION['uid'])){
 					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
 				</div>
-    			<div class='inputwrapper'><span>(optional) Insert Github Key:</span><input class='textinput' type='text' id='githubToken' placeholder='Leave blank for no key' /></div>
+    			<div class='inputwrapper'>
+					<span>(optional) Insert Github Key:</span>
+					<div class="formDialog" style="display: block; left:-175px; top:3px;"><span id="courseGithubKeyError" style="display: none; left:0px;" class="formDialogText">A Github key should be 40 characters</span></div>
+					<p id="dialog7" class="validationDialog">A Github key should be 40 characters</p>
+					<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='githubToken' name='githubToken' placeholder='Leave blank for no key' />
+				</div>				
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>

@@ -748,61 +748,48 @@ function setActiveCodes() {
 const regex = {
 	coursename: /^[A-ZÅÄÖa-zåäö]+( ?(- ?)?[A-ZÅÄÖa-zåäö]+)*$/,
 	coursecode: /^[a-zA-Z]{2}\d{3}[a-zA-Z]{1}$/,
-	courseGitURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
+	courseGitURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/,
+	githubToken: /^[a-zA-Z0-9_-]{40}$/	// Regex for GitHub key
 
 };
 
-//Validates single element against regular expression returning true if valid and false if invalid
 function elementIsValid(element) {
-	const inputwrapper = element.closest('.inputwrapper'); // Element where dialog and validation messages are.
-	const messageElement = inputwrapper.querySelector('.formDialogText'); //The dialog to show validation messages in
-	//Standard styling for a failed validation that will be changed if element passes validation
-	element.classList.add("bg-color-change-invalid");
-	//element.style.display = "block";
-	$(messageElement.id).fadeIn();
+    const inputwrapper = element.closest('.inputwrapper');
+    const messageElement = inputwrapper.querySelector('.formDialogText');
+    
+    // Reset initial validation styling and messages
+    element.classList.remove("bg-color-change-invalid");
+    $(messageElement).fadeOut();
 
-	//Check if value of element matches regex based on name attribute same as key for regex object
-	if(element.value.match(regex[element.name])) {
-		//Seperate validation for coursecodes since it should not be possible to submit form if course code is in use
-		if(element.name === "coursecode") {
-			//Check for duplicate course codes only if value of input is not same as the course code that will be editied
-			//This prevents it from being impossible to save course code without changing it
-			if(element.value !== element.dataset.origincode) {
-				if(activeCodes.includes(element.value)) {
-					messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
-					return false;
-				}
-			}
-		}
+    // Handle empty input for optional fields
+    if (element.value.trim() === "") {
+        element.removeAttribute("style");
+        if (element.name === "githubToken" || element.name === "courseGitURL") {
+            return true; // Optional fields
+        }
+    }
 
-		//Setting the style of the element represent being valid and not show
-		element.classList.remove("bg-color-change-invalid");
-		element.style.borderColor = "#383";
-		$(messageElement).fadeOut();
-		//messageElement.style.display = "none";
-		return true;
-	} else if(element.value.trim() === "") {
-		//If empty string or ettempty of only spaces remove styling and spaces and hide validation message
-		$(messageElement).fadeOut();
-		element.removeAttribute("style");
-		element.value = "";
-		//messageElement.style.display = "none";
-		element.classList.remove("bg-color-change-invalid");
+    // Check against regex and handle special cases
+    if (!element.value.match(regex[element.name])) {
+        element.classList.add("bg-color-change-invalid");
+        element.style.borderColor = "#E54";
+        $(messageElement).fadeIn();
+        if (element.name === "githubToken") {
+            messageElement.innerHTML = "A GitHub key should be 40 characters";
+        } else if (element.name === "coursecode") {
+            // Special handling for course codes
+            if (activeCodes.includes(element.value) && element.value !== element.dataset.origincode) {
+                messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+            } else {
+                messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
+            }
+        }
+        return false;
+    }
 
-		// The inputs for the git URLs are valid even when they're empty, since they're optional
-		if(element.name === "courseGitURL") {
-			return true;
-		}
-		return false;
-	}
-
-	//Change back to original validation error message if it has been changed when knowing course code is not duplicate
-	if(element.name === "coursecode") {
-		messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
-	}
-	$(messageElement).hide().fadeIn();
-	//Validation falied if getting here without returning
-	return false;
+    // If the input passes validation
+    element.style.borderColor = "#383";
+    return true;
 }
 
 
