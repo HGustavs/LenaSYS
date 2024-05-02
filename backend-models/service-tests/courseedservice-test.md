@@ -2,7 +2,7 @@
 =====================
 ---
 ## Test 1 - 79
-## Insert into course
+## New course
 =====================
 ---
 
@@ -75,7 +75,7 @@ SQL-query: DELETE FROM course WHERE coursecode = "G1338";
 ==============
 ---
 ## Test 2 - 116
-## Insert into vers
+## New version
 ==============
 ---
 
@@ -164,92 +164,11 @@ DELETE FROM course WHERE cid = 9999;
 
 ```
 
-==============
----
-## Test 3 - 138
-## Update course
-==============
----
-
-## Prerequisite
----
-
-## pre-req:
-
-```
-checklogin() 
-&&
-$ha == TRUE
-
-```
-### pre-values
-
-```
-$preValuesCourse = 
-{
-    9999,
-    1
-}
-
-INSERT INTO course($cid, creator) VALUES ($preValuesCourse[0], $preValuesCourse[1]);
-// add a course so we know it exits in the database before adding its vers.
-
-```
-
-## Send parameters input to courseedservice.php
----
-
-### Send
-
-```
-{
-    $cid = 9999;
-    $versid = 1337;
-}
-
-```
-
----
-## Gather service output
----
-
-### Output
-
-```
-    LastCourseCreated: [
-
-    ],
-    entries: [
-        {
-            cid:
-            coursecode:
-            vers:
-            versname:
-            coursename:
-            coursenamealt:
-        }
-    ],
-    debug:
-    writeaccess:
-    motd:
-    readonly:
-
-```
-
----
-### Remove inserted row from DB
----
-
-```
-SQL-query: 
-DELETE FROM course WHERE cid = 9999;
-
-```
 
 ==============
 ---
-## Test 4 - 152
-## Update vers
+## Test 3 - 152
+## Update version
 ==============
 ---
 
@@ -349,8 +268,8 @@ DELETE FROM course WHERE cid = 9999;
 
 ==============
 ---
-## Test 5 - 173
-## Update course
+## Test 4 - 173
+## Change course version
 ==============
 ---
 
@@ -432,8 +351,8 @@ DELETE FROM course WHERE cid = 9999;
 
 ==============
 ---
-## Test 6 - 181
-## INSERT INTO VERS
+## Test 5 - 181
+## Copy version
 ==============
 ---
 
@@ -546,8 +465,8 @@ DELETE FROM course WHERE cid = 9999;
 
 ==============
 ---
-## Test 7 - 433
-## Update course
+## Test 6 - 433
+## Get course
 ==============
 ---
 
@@ -626,9 +545,10 @@ DELETE FROM course WHERE cid = 9999;
 
 ```
 
+
 ==============
 ---
-## Test 8 - 456
+## Test 7 - 456
 ## Update course
 ==============
 ---
@@ -713,8 +633,8 @@ DELETE FROM course WHERE cid = 9999;
 
 ==============
 ---
-## Test 9 - 488
-## Insert setting
+## Test 8 - 488
+## New setting
 ==============
 ---
 
