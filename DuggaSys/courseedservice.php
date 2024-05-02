@@ -222,9 +222,11 @@ if (checklogin()) {
 					$debug = "Error reading quiz\n" . $error[2];
 				} else {
 					foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
-						$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,relativedeadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,relativedeadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
+						$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,relativedeadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,:qrel as qrelease,:deadl as deadline,relativedeadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
 						$ruery->bindParam(':oldid', $row['id']);
 						$ruery->bindParam(':newvers', $versid);
+						$ruery->bindParam(':qrel', $startdate);
+						$ruery->bindParam(':deadl', $enddate);
 						if (!$ruery->execute()) {
 							$error = $ruery->errorInfo();
 							$allOperationsSucceeded = false;
@@ -350,6 +352,7 @@ if (checklogin()) {
 				}
 
 				// Duplicate listentries
+				$momentlist = array();
 				$query = $pdo->prepare("SELECT * from listentries WHERE vers = :oldvers;");
 				$query->bindParam(':oldvers', $copycourse);
 				if (!$query->execute()) {
@@ -357,7 +360,6 @@ if (checklogin()) {
 					$allOperationsSucceeded = false;
 					$debug = "Error reading courses\n" . $error[2];
 				} else {
-					$momentlist = array();
 					foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 						$ruery = $pdo->prepare("INSERT INTO listentries (cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode) SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,:gubbe AS vers,moment,gradesystem,highscoremode from listentries WHERE lid = :olid;");
 						$ruery->bindParam(':olid', $row['lid']);
@@ -428,6 +430,52 @@ if (checklogin()) {
 							$error = $puery->errorInfo();
 							$allOperationsSucceeded = false;
 							$debug .= "Error updating after link\n" . $error[2];
+						}
+					}
+				}
+
+				// Duplicate userAnswer
+				$suery = $pdo->prepare("SELECT * from userAnswer WHERE vers = :oldvers;");
+				$suery->bindParam(':oldvers', $copycourse);
+				if (!$suery->execute()) {
+					$error = $suery->errorInfo();
+					$allOperationsSucceeded = false;
+					$debug = "Error reading courses\n" . $error[2];
+				} else {
+					foreach ($suery->fetchAll(PDO::FETCH_ASSOC) as $row) {
+						$ruery = $pdo->prepare("INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) SELECT cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,:man AS vers,creator,score from userAnswer WHERE aid = :olaid;");
+						$ruery->bindParam(':olaid', $row['aid']);
+						$ruery->bindParam(':man', $versid);
+						if (!$ruery->execute()) {
+							$error = $ruery->errorInfo();
+							$allOperationsSucceeded = false;
+							$debug .= "Error copying entry\n" . $error[2];
+						} else {
+							$momentlist[$row['aid']] = $pdo->lastInsertId();
+						}
+					}
+					// Update to correct moment
+					foreach ($momentlist as $key => $value) {
+						$ruery = $pdo->prepare("UPDATE userAnswer SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;");
+						$ruery->bindParam(':nyttmoment', $value);
+						$ruery->bindParam(':oldmoment', $key);
+						$ruery->bindParam(':updvers', $versid);
+						if (!$ruery->execute()) {
+							$error = $ruery->errorInfo();
+							$allOperationsSucceeded = false;
+							$debug .= "Error updating entry\n" . $error[2];
+						}
+					}
+					// Update to correct dugga
+					foreach ($duggalist as $key => $value) {
+						$puery = $pdo->prepare("UPDATE userAnswer SET quiz=:newquiz WHERE quiz=:oldquiz AND vers=:updvers;");
+						$puery->bindParam(':newquiz', $value);
+						$puery->bindParam(':oldquiz', $key);
+						$puery->bindParam(':updvers', $versid);
+						if (!$puery->execute()) {
+							$error = $puery->errorInfo();
+							$allOperationsSucceeded = false;
+							$debug .= "Error updating entry\n" . $error[2];
 						}
 					}
 				}

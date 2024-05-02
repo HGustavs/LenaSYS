@@ -75,7 +75,7 @@ Add "codeexample: Include" to the code, include should be where the other includ
  once the code is added remove code from your microservice that has the same functionality as getUid(see code example:getUid)
 ##### Codeexample: Include
 ```php
-include ('../shared_microservices/getUid_ms.php');
+include ('../sharedMicroservices/getUid_ms.php');
 getUid();
 ```
 ##### Codeexample: getUid

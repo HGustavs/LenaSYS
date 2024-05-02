@@ -2741,6 +2741,17 @@ label.login-label {
   background-color: #f57;
 }
 
+.color-change-invalid{
+  background-color: #f57 !important;
+  border-color: #E54;
+  border-width: 2px;
+}
+
+.color-change-valid{
+  border-color:#383;
+  border-width: 2px;
+}
+
 input.option {
   float: left;
 }
@@ -3070,6 +3081,7 @@ div.submit-button:disabled {
 
 .formDialog .formDialogText {
   width: 200px;
+  display: none;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
   text-align: center;
@@ -3089,34 +3101,48 @@ div.submit-button:disabled {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent var(--color-border-6);
+  border-color: transparent transparent transparent var(--color-text-list);
 }
 
-/* Tooltip */
+.formDialogWide .formDialogText {
+  width: 400px;
+  display: none;
+  color: var(--color-text-header);
+  background-color: var(--color-text-list);
+  text-align: center;
+  margin-top: 5px;
+  border-radius: 6px;
+  padding: 5px 0;
+  z-index: 5;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.formDialogWide .formDialogText::after {
+  content: "";
+  position: relative;
+  top: -22px;
+  left: -38%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-text-list) transparent ;
+}
 
 .versionDialog {
-  display: block;
-  top: -5px;
+  position:absolute;
+  display: inline;
+  margin-left: 55px;
 }
-
-#dialog2, #dialog, #dialog3, #dialog4 {
-  display: none;
-  left:0px;
+.formDialogSplitUp {
+  top: -5px; 
 }
-
-#dialogContainer {
-  left: -135px; 
+.formDialogSplitDown {
+  top: 12px; 
 }
-
-#dialogContainer2, #dialogContainer3 {
-  left: -120px; 
+.formDialogTextHalfDownShift{
+  top: 15px; 
 }
-
-#dialogContainer4 {
-  left: -110px; 
-  top: 5px;
-}
-
+/* Tooltip */
 .tooltipDugga {
   position: relative;
   display: inline-block;
@@ -5727,19 +5753,6 @@ only screen and (max-device-width: 568px) {
     /*top: 8%;
     left: 10%;*/
   }
-
-  #dialogContainer {
-    left: -165px;
-  }
-
-  #dialogContainer2, #dialogContainer3 {
-    left: -150px;
-  }
-
-  #dialogContainer4{
-    left: -139px;
-  }
-
   
   #searchNavButt{
     display: none;
@@ -6960,7 +6973,7 @@ only screen and (max-device-width: 568px) {
 /* Fix mobile-view for top FAB-button and Sectionlist heading */
 @media screen and (max-width: 680px) {
   .fixed-action-button2{
-    display:none !important;
+    display:none;
   }
 
   #showElements {
@@ -7030,6 +7043,14 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-lg:hover {
   background-color: #ffd369;
+}
+
+/* Link chain icon centered vertically */
+
+.centered-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* FAB bubble list container */
