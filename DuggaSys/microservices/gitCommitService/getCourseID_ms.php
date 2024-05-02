@@ -16,6 +16,7 @@ function getCourseID($githubURL) {
     // The "/" needs to be "&#47;" for the query to work
     $newURL = str_replace("/", "&#47;", $githubURL);
 
+    
     // Fetching from the database
     $query = $pdo->prepare('SELECT cid FROM course WHERE courseGitURL = :githubURL;');
     $query->bindParam(':githubURL', $newURL);
