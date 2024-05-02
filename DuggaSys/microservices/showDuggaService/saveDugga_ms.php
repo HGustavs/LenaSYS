@@ -8,6 +8,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveShowDuggaService.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
@@ -79,4 +80,36 @@ if(strcmp($opt,"SAVDU")==0){
 	}else{
 		$debug="Unable to save dugga!";
 	}
+
 }
+
+retrieveShowDuggaService(
+	$debug,
+	$param,
+	$answer,
+	$variantanswer,
+	$score,
+	$highscoremode,
+	$grade,
+	$submitted,
+	$marked,
+	$duggainfo,
+	$files,
+	$userfeedback,
+	$feedbackquestion,
+	$savedvariant,
+	$ishashindb,
+	$variantsize,
+	$variantvalue,
+	$password,
+	$hashvariant,
+	$isFileSubmitted,
+	$isTeacher, // isTeacher is true for both teachers and superusers
+	$variants,
+	$duggatitle,
+	$hash,
+	$hashpwd,
+	$opt,
+	$link,
+	$active,
+	$group);
