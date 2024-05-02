@@ -1,9 +1,13 @@
 <?php
     class DBSetup {
-        private $pdo, $db_name, $db_user, $hostname = null;
+        private $pdo, $db_name, $db_user, $db_user_password, $hostname = null;
 
-        public function __construct(PDO $pdo) {
+        public function __construct(PDO $pdo, string $db_name = null, string $db_user = null, string $db_user_password = null, string $hostname = '%') {
             $this->pdo = $pdo;
+            $this->db_name = $db_name;
+            $this->db_user = $db_user;
+            $this->db_user_password = $db_user_password;
+            $this->hostname = $hostname;
         }
 
         /**
@@ -43,16 +47,34 @@
          * Creates a new sql user.
          * Force first removes user.
          */
-        public function create_user(string $user_name = null, string $hostname = "%", bool $force = false): array {
+        public function create_user(string $user_name = null, string $password = null, string $hostname = null, bool $force = false): array {
             try {
 
                 $user_name = $user_name ?? $this->db_user;
+                $hostname = $hostname ?? $this->hostname;
+                $hostname = $hostname ?? '%';
+                $password = $this->db_user_password;
 
-                if ($force) {
-                    $this->pdo->exec("DROP USER IF EXISTS `$user_name`");
+                if (empty($password)) {
+                    return [
+                        'success'=> false,
+                        'message'=> 'Password was not provided for user {$user_name}@{$hostname}.'
+                    ];
                 }
 
-                $this->pdo->exec("CREATE USER `$user_name`");
+                if ($force) {
+                    $stmt = $this->pdo->prepare("DROP USER IF EXISTS :user@:host");
+                    $stmt->bindParam(':user', $user_name);
+                    $stmt->bindParam(':host', $hostname);
+                    $stmt->execute();
+                }
+
+                $stmt = $this->pdo->prepare("CREATE USER :user@:host IDENTIFIED BY :password");
+                $stmt->bindParam(':user', $user_name);
+                $stmt->bindParam(':host', $hostname);
+                $stmt->bindParam(':password', $password);
+                $stmt->execute();
+
                 $this->db_user = $user_name;
                 $this->hostname = $hostname;
 
@@ -102,10 +124,12 @@
          * function drop_user
          * removes an already existing user.
          */
-        public function drop_user(string $user_name = null, string $hostname = "%", bool $force = false): array {
+        public function drop_user(string $user_name = null, string $hostname = null, bool $force = false): array {
             try {
 
                 $user_name = $user_name ?? $this->db_user;
+                $hostname = $hostname ?? $this->hostname;
+                $hostname = $hostname ?? '%';
 
                 if ($force) {
                     $this->pdo->exec("DROP USER `$user_name`@`$hostname`");
@@ -129,10 +153,12 @@
          * function set_permissions
          * Set permission to access db for user.
          */
-        public function set_permissions(string $db_name = null, string $user_name = null, string $hostname = '%'): array {
+        public function set_permissions(string $db_name = null, string $user_name = null, string $hostname = null): array {
             try {
                 $db_name = $db_name ?? $this->db_name;
                 $user_name = $user_name ?? $this->db_user;
+                $hostname = $hostname ?? $this->hostname;
+                $hostname = $hostname ?? '%';
 
                 $this->pdo->exec("GRANT ALL PRIVILEGES ON `$db_name`.* TO `$user_name`@`$hostname`");
 
@@ -143,7 +169,9 @@
             } catch (PDOException $e) {
                 return [
                     'success' => false,
-                    'message' => "Failed to set permissions for {$user_name}@{$hostname} on {$db_name}: {$e->getMessage()}"
+                    'message' => $e->getCode() == 42000 
+                        ? "User does not exist. Failed to set permissions for {$user_name}@{$hostname} on {$db_name}."
+                        : "Failed to set permissions for {$user_name}@{$hostname} on {$db_name}: " . $e->getMessage()
                 ];
             }
         }
