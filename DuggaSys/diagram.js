@@ -66,8 +66,8 @@ class StateMachine {
                 // If history is present, perform soft/hard-check
                 if (this.historyLog.length > 0) {
 
-                    // Get the last state in historyLog
-                    let lastLog = this.historyLog[this.historyLog.length - 1];
+                    // Get the last state in historyLog (only values, not reference)
+                    let lastLog = {...this.historyLog[this.historyLog.length - 1]};
 
                     // Check if the element is the same
                     var sameElements = true;
@@ -115,7 +115,7 @@ class StateMachine {
                                 var temp = false;
                                 // If this historyLog is within the timeLimit
                                 if (((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit) {
-                                    lastLog = this.historyLog[index];
+                                    lastLog = {...this.historyLog[index]};
                                     temp = true;
                                 }
                                 sameElements = temp;
@@ -187,7 +187,7 @@ class StateMachine {
             } else {
                 console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
             }
-        }
+        }        
     }
 
     removeFutureStates() {
