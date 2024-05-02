@@ -46,6 +46,7 @@ function updateContainerBounds() {
 
 /**
  * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
+ * USED IN PHP
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
 function setSequenceAlternatives() {

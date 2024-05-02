@@ -158,10 +158,10 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data) {
 function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
     // Check if we are clicking withing the span.
-    return (circle_x < (c.x + lw / 2 + circle_radius)) &&
-        (circle_x > (c.x - lw / 2 - circle_radius)) &&
-        (circle_y < (c.y + lh / 2 + circle_radius)) &&
-        (circle_y > (c.y - lh / 2 - circle_radius));
+    return circle_x < c.x + lw / 2 + circle_radius &&
+        circle_x > c.x - lw / 2 - circle_radius &&
+        circle_y < c.y + lh / 2 + circle_radius &&
+        circle_y > c.y - lh / 2 - circle_radius;
 }
 
 /**

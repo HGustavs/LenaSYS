@@ -7,7 +7,7 @@ class Rect {
         this._height = height;
     }
 
-    static fromPoints(topLeft, botRight) {
+    static FromPoints(topLeft, botRight) {
         return new Rect(
             topLeft.x, topLeft.y,
             botRight.x - topLeft.x,
@@ -15,7 +15,7 @@ class Rect {
         );
     }
 
-    static fromElement(element) {
+    static FromElement(element) {
         return new Rect(
             element.x, element.y,
             document.getElementById(element.id).offsetWidth,
