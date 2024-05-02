@@ -30,6 +30,7 @@
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
     <script src="./diagram/classes/point.js"></script>
+    <script src="./diagram/classes/rect.js"></script>
     <script src="./diagram/constants.js"></script>
     <script src="./diagram/globals.js"></script>
     <script src="./diagram/classes/stateChange.js"></script>
