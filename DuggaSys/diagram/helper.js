@@ -88,25 +88,25 @@ function entityIsOverlapping(id, x, y) {
     })
 
     for (let i = 0; i < data.length; i++) {
-        if (data[i].id === id) continue;
-        if (context.includes(data[i])) break;
-        if (data[i].kind == elementTypesNames.UMLSuperState || element.kind == elementTypesNames.UMLSuperState ||
-            data[i].kind == elementTypesNames.sequenceActor || element.kind == elementTypesNames.sequenceActor ||
-            data[i].kind == elementTypesNames.sequenceObject || element.kind == elementTypesNames.sequenceObject ||
-            data[i].kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.sequenceLoopOrAlt
-        ) {
-            break;
+        if (data[i].id === id) continue; 
+        if (context.includes(data[i])) break; 
+       
+        //Checks if the objects are of the same type or allowed types for overlapping.
+        if ((data[i].kind !== element.kind && (( data[i].type === "SE") && (element.type === "SE"))) ||
+           ((data[i].kind !== element.kind && (((( data[i].kind === elementTypesNames.UMLSuperState) && (element.type === "SD"))) ||
+           (data[i].type === "SD" ) && (element.kind === elementTypesNames.UMLSuperState))))) {
+                continue; 
         }
 
         const x2 = data[i].x + data[i].width;
         let y2 = data[i].y + data[i].height;
-
+    
         arr.forEach(entityHeights => {
             entityHeights.forEach(entity => {
                 if (data[i].id == entity.id) y2 = data[i].y + entity.height;
             });
         });
-
+    
         if (x < x2 &&
             x + element.width > data[i].x &&
             y < y2 &&
