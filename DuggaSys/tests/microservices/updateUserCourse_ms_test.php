@@ -1,14 +1,12 @@
 <?php
 
-// This is a test-file for testing if it works to update data in the table UserCourse
-
 include "../../../Shared/test.php";
 
 $testsData = array(
     //------------------------------------------------------------------------------------------
-    // This tests the microservice updateActiveUsers_ms 
+    // This is a test-file for testing if it works to update data in the table UserCourse using microservice updateUserCourse_ms
     //------------------------------------------------------------------------------------------
-    'updateActiveUsers_ms' => array(
+    'updateUserCourse_ms' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 999);",
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'hjk4ert6';",
