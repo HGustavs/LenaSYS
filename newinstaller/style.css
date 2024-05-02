@@ -203,6 +203,15 @@ input[type=checkbox] {
     margin-top: 0.25rem;
 }
 
+.success {
+    font-family: var(--body-font);
+    font-size: var(--text-small);
+    color: var(--success-text);
+    font-style: italic;
+    padding-left: 0.25rem;
+    margin-top: 0.25rem;
+}
+
 .backButton {
     font-family: var(--body-font);
     background-color: transparent;
@@ -243,4 +252,33 @@ input[type=checkbox] {
 
 .backButton:active {
     box-shadow: -2px 2px 2px var(--text-dark);
+}
+
+.progressBar{
+    color: var(--text-dark);
+    font-family: var(--body-font);
+    font-style: italic;
+    font-size: 14px;
+    max-width: 60%;
+
+    .progressBarLabels{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: .25rem;
+    }
+
+    .progressBarBorder{
+        display: flex;
+        justify-content: space-between;
+        /* border: 1px solid var(--text-dark); */
+        background-color: var(--accent-color);
+        height: .75rem;
+    }
+
+    .progressBarIndicator{
+        font-style: italic;
+        background-color: var(--secondary-color);
+        width: 15%;
+
+    }
 }
