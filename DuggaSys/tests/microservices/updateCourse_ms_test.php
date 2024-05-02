@@ -10,12 +10,12 @@ $testsData = array(
     //------------------------------------------------------------------------------------------
     'update_course' => array(
         'expected-output' => '1',  
-        'query-before-test-1' => "INSERT INTO course (cid, coursename, coursecode, visibility, courseGitURL) VALUES (9999, 'Test Course', 'TEST001', 0, 'http://localhost/LenaSYS/DuggaSys/sectioned.php?courseid=1885&coursename=Testing-Course&coursevers=1337');",
-        'query-after-test-1' => "INSERT INTO course (cid, coursename, coursecode, visibility, courseGitURL) VALUES (1885, 'Test Course', 'TEST001', 0,  'http://localhost/LenaSYS/DuggaSys/sectioned.php?courseid=9999&coursename=Testing-Course&coursevers=1337');",
-        'service' => 'http://localhost/PathToYourService/updateCourse_ms.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/sectioned.php?courseid=1885&coursename=Testing-Course&coursevers=1337',
         'service-data' => serialize(
             array( 
                 'opt' => 'UPDATE',
+                'username' => 'brom',
+                'password' => 'password',
                 'cid' => 9999,
                 'coursename' => 'Updated Course',
                 'visibility' => 1,
