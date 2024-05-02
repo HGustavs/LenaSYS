@@ -36,6 +36,7 @@ $testsData = array(
             array( // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
+                'vers' => '9999',
                 'prop' => 'vers',
                 'courseid' => '3',
                 'uid' => '9999',
@@ -57,6 +58,7 @@ $testsData = array(
             array( // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
+                'access' => 'R',
                 'prop' => 'access',
                 'courseid' => '3',
                 'uid' => '9999',
@@ -78,6 +80,7 @@ $testsData = array(
             array( // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
+                'group' => 'No_2',
                 'prop' => 'group',
                 'courseid' => '3',
                 'uid' => '9999',
