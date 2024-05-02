@@ -23,13 +23,40 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <!-- To enable dark mode, these 2 files were added. -->
-	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
-	<script src="darkmodeToggle.js"></script>
+    <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+    <script src="darkmodeToggle.js"></script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
+    <script src="./diagram/classes/point.js"></script>
+    <script src="./diagram/constants.js"></script>
+    <script src="./diagram/globals.js"></script>
+    <script src="./diagram/classes/stateChange.js"></script>
+    <script src="./diagram/classes/stateChangeFactory.js"></script>
     <script src="./diagram/helper.js"></script>
+    <script src="./diagram/helpers/rect.js"></script>
+    <script src="./diagram/errorHandling.js"></script>
+    <script src="./diagram/theme.js"></script>
+    <script src="./diagram/draw/element.js"></script>
+    <script src="./diagram/draw/line.js"></script>
+    <script src="./diagram/draw/node.js"></script>
+    <script src="./diagram/draw/ruler.js"></script>
+    <script src="./diagram/draw/selection.js"></script>
+    <script src="./diagram/draw/boxSelect.js"></script>
+    <script src="./diagram/draw/update.js"></script>
+    <script src="./diagram/message.js"></script>
+    <script src="./diagram/toggle.js"></script>
+    <script src="./diagram/draw/options.js"></script>
+    <script src="./diagram/helpers/context.js"></script>
+    <script src="./diagram/helpers/element.js"></script>
+    <script src="./diagram/helpers/boxSelect.js"></script>
+    <script src="./diagram/zoom.js"></script>
+    <script src="./diagram/camera.js"></script>
+    <script src="./diagram/helpers/line.js"></script>
+    <script src="./diagram/helpers/mouse.js"></script>
+    <script src="./diagram/helpers/mouseMode.js"></script>
+    <script src="./diagram/events/mouse.js"></script>
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
