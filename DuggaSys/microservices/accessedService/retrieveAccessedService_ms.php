@@ -3,7 +3,7 @@
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 
-function retrieveAccessedService($pdo, $debug, $opt, $userid, $cid, $log_uuid, $newusers=""){
+function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt="", $newusers=""){
     $entries=array();
     $teachers=array();
     $classes=array();
