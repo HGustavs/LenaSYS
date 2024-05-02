@@ -82,12 +82,11 @@ class DBSetup {
             $this->db_user = $user_name;
             $this->hostname = $hostname;
 
+            return $this->handle_success("Successfully created user {$user_name}@{$hostname}.");
         } catch (PDOException $e) { 
             return $this->handle_exception($e, "Failed to create user {$user_name}@{$hostname}. " . 
             (!$force ? "Try using force." : $e->getMessage()));
         }
-
-        return $this->handle_success("Successfully created user {$user_name}@{$hostname}.");
     }
 
     /**
@@ -207,12 +206,12 @@ class DBSetup {
             }
             
         } catch (PDOException $e) {
-            return $this->handle_exception($e, "Failed to run sql file. ");
+            return $this->handle_exception($e, "SQL error. Failed to run SQL file. {$file_name}");
         } catch (Exception $e) {
-            return $this->handle_exception($e, "Failed to run sql file. ");
+            return $this->handle_exception($e, "File error. Failed to run SQL file. {$file_name}");
         }
     
-        return $this->handle_success("{$file_name} > query {$i} > 100% > Executed all queries sucessfully. ");
+        return $this->handle_success("{$file_name} > 100% > Executed all {$i} queries sucessfully. ");
     }
 
     /**
@@ -229,7 +228,7 @@ class DBSetup {
 
     /**
      * function sanitize_hostname
-     * Sanitize data, only allow letters, numbers and underscores.
+     * Sanitize data, only allow letters, numbers, underscores and %.
      * Also ensure that they contain start and end of string.
      */
     private function sanitize_hostname(string $sql): string {
@@ -292,7 +291,7 @@ class DBSetup {
         set_time_limit(0);
     
         if (!is_file($file)) {
-            throw new Exception('Could not open file {$file}');
+            throw new Exception("Could not open file {$file}");
         }
 
         if (!is_readable($file)) {
@@ -376,5 +375,4 @@ class DBSetup {
         // Return the array of queries
         return $queries;
     }
-    
 }
