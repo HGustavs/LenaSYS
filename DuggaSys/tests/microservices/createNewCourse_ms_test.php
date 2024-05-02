@@ -1,16 +1,17 @@
 <?php
 
-include "../../../Shared/test.php";
-ini_set('display_errors', 1);
 error_reporting(E_ALL);
 $testsData = array(
     //------------------------------------------------------------------------------------------
-    // Test for createNewCourse_ms.php
+    // Test for courseedService
     //------------------------------------------------------------------------------------------
     'insert_new_course' => array(
-        'expected-output' => '1', // need to figure this one out.
-        'query-before-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
-        'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
+        'expected-output' => '1', //change when retrieveCourseService done
+        'query-before-test-1' => " DELETE FROM course WHERE coursecode = 'TEST001';
+        INSERT INTO course (coursename, coursecode, visibility, courseGitURL) VALUES ('Updated-Course', 'UPD001', 0, 'http://localhost/LenaSYS/DuggaSys/sectioned.php?courseid=1885&coursename=Updated-Course&coursevers=1337');
+    ",
+        'query-
+        after-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/createNewCourse_ms.php',
         'service-data' => serialize(
             array( 
@@ -31,3 +32,4 @@ $testsData = array(
     ),
 );
 testHandler($testsData, true); // true = prettyprint (HTML), false = raw JSON
+?>
