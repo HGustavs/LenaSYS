@@ -300,6 +300,77 @@ $testsData = array(
         ),
     ),
 
+
+    //  //-----------------------------------------------------------------------------------------------------------  
+//  // This tests the microservice updateCourseVersion_sectioned and the part of the monolith called "UPDATEVRS" 
+//  //-----------------------------------------------------------------------------------------------------------
+'updateCourseVersion_sectioned' => array(
+    'expected-output'   => '{"success": true}', // Example JSON response indicating success
+ 
+    'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
+ 
+    'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
+    'service-data' => serialize(array( // Data that service needs to execute function
+        'opt' => 'UPDATEVRS',
+        'username' => 'mestr',
+        'password' => 'password',
+        'courseid' => '2',
+        'coursename' => '2',
+        'coursevers' => '97731',
+        'motd' => 'TEST TEXT',
+        'comment' => 'undefined',
+        'lid' => '2008', 
+        'tabs' => '1',
+        'hash' => 'UNK'
+    )),
+    'filter-output' => serialize(array( // Filter what output to use in assert test
+        'entries' => array(
+            'entryname',
+            'lid',
+            'pos',
+            'kind',
+            'moment',
+            'link',
+            'visible',
+            'highscoremode',
+            'gradesys',
+            'code_id',
+            'deadline',
+            'relativedeadline',
+            'qrelease',
+            'comments',
+            'qstart',
+            'grptype',
+            'tabs',
+            'feedbackenabled',
+            'feedbackquestion',
+            //'ts'
+        ),
+        'debug',
+        'writeaccess',
+        'studentteacher',
+        'readaccess',
+        'coursename',
+        'coursevers',
+        'coursecode',
+        'courseid',
+        'links',
+        'duggor',
+        'results',
+        'versions',
+        'codeexamples',
+        'unmarked',
+        'startdate',
+        'enddate',
+        'groups',
+        'grpmembershp',
+        'grplst',
+        'userfeedback',
+        'feedbackquestion',
+        'avgfeedbackscore'
+    )),
+ ),  
+ 
     //*******************************************************************************************/
     //       THIS SERVICE DOES NOT FUNCTION AS INTENDED, the test therefore is incompleat.      //
     //*******************************************************************************************/
