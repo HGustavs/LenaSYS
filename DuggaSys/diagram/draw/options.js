@@ -131,6 +131,7 @@ function drawElementProperties(element) {
             break;
         case elementTypesNames.IEEntity:
             str += nameInput(element);
+            str += textarea('Primary Key', 'primaryKey', element);
             str += textarea('Attributes', 'attributes', element);
             break;
         case elementTypesNames.SDEntity:
