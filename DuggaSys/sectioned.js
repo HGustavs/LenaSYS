@@ -1213,7 +1213,7 @@ async function newItem(itemtitle) {
   element.classList.toggle("createAlertToggle");
   // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
-  // Here we have to wait 1 tenth of a second so that the ajax service completes.
+  // Here we have to wait 2 tenth of a second so that the ajax service completes.
   setTimeout(function () {
     collectedLid.sort(function (a, b) {
       return b - a;
