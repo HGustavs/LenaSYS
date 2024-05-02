@@ -6,7 +6,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../Share/basic.php";
 include_once "../Share/sessions.php";
-include ('../share_microservices/getUid_ms.php');
+include ('../shareMicroservices/getUid_ms.php');
 
 
 // Connect to database and start session

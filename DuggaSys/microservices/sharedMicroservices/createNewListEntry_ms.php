@@ -1,6 +1,5 @@
 <?php
-
-
+include_once "retrieveUsername_ms.php";
 
 function createNewListentrie($pdo, $listEntry){
     $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
@@ -28,7 +27,8 @@ function createNewListentrie($pdo, $listEntry){
 	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 
 	// Logging for newly added items, USE retrieveUsername() when it is implemented. UNK temporary
-	logUserEvent($listEntry['userid'],"UNK",EventTypes::SectionItems, $listEntry['entryname']);
+    $username = retrieveUsername();
+	logUserEvent($listEntry['userid'],$username,EventTypes::SectionItems, $listEntry['entryname']);
     }
 
     if (!$query->execute()) {

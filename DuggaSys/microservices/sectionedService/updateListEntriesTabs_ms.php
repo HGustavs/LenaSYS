@@ -19,6 +19,6 @@ if(strcmp($opt,"UPDATETABS")===0){
 
     if(!$query->execute()){
         $error=$query->errorInfo();
-        $debug="ERROR THE DEADLINE QUERY FAILED".$error[2];
+        $debug="ERROR: Failed to update gradesystem. Details: ".$error[2];
     }
 }

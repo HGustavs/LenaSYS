@@ -5,6 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 
 pdoConnect();
 session_start();
@@ -13,7 +14,6 @@ $opt=getOP('opt');
 $vid=getOP('vid');
 $cid=getOP('cid');
 
-include_once "../shared_microservices/getUid_ms.php";
 $userid=getUid();
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
