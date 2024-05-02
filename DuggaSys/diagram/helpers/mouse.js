@@ -38,7 +38,6 @@ function determineLineSelect(mouseX, mouseY) {
         var hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
 
         if (hasPoints != null) {
-
             var points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
             for (let j = 0; j < points.length - 1; j++) {
@@ -66,7 +65,7 @@ function determineLineSelect(mouseX, mouseY) {
                 }
                 lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
 
-                if (lineWasHit && labelWasHit == false) {
+                if (lineWasHit && !labelWasHit) {
                     // Return the current line that registered as a "hit".;
                     return lines.filter(function (line) {
                         return line.id == bLayerLineIDs[i];
@@ -116,7 +115,7 @@ function determineLineSelect(mouseX, mouseY) {
         // Creates a circle with the same position and radius as the hitbox of the circle being sampled with.
         // document.getElementById("svgoverlay").innerHTML += '<circle cx="'+ circleHitBox.pos_x + '" cy="'+ circleHitBox.pos_y+ '" r="' + circleHitBox.radius + '" stroke='${color.BLACK}' stroke-width="3" fill="red" /> '
         // ---------------------------
-        if (lineWasHit && labelWasHit) {
+        if (lineWasHit && !labelWasHit) {
             // Return the current line that registered as a "hit".
             return lines.filter(function (line) {
                 return line.id == bLayerLineIDs[i];
@@ -147,10 +146,10 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data) {
     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
     // Check if we are clicking withing the span.
     return ((circle_x < (line_data.hX + circle_radius)) &&
-        (circle_x > (line_data.lX - circle_radius)) &&
-        (circle_y < (line_data.hY + circle_radius)) &&
-        (circle_y > (line_data.lY - circle_radius)) &&
-        (circle_radius >= distance)); // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
+            (circle_x > (line_data.lX - circle_radius)) &&
+            (circle_y < (line_data.hY + circle_radius)) &&
+            (circle_y > (line_data.lY - circle_radius)) &&
+            (circle_radius >= distance)); // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
 }
 
 /**
@@ -163,4 +162,31 @@ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
         (circle_x > (c.x - lw / 2 - circle_radius)) &&
         (circle_y < (c.y + lh / 2 + circle_radius)) &&
         (circle_y > (c.y - lh / 2 - circle_radius));
+}
+
+/**
+ * @description Triggers when the mouse hoovers over an sequence lifeline.
+ */
+function mouseEnterSeq(event) {
+    if (elementTypeSelected === elementTypes.sequenceActivation) {
+        const target = event.target;
+        const targetId = target.id;
+        snapSAToLifeline(targetId);
+    }
+}
+
+/**
+ * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
+ */
+function snapSAToLifeline(targetId) {
+    const lifeline = document.getElementById(targetId);
+    if (lifeline) {
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
+                const element = data[i];
+                ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
+                updatepos(0, 0);
+            }
+        }
+    }
 }

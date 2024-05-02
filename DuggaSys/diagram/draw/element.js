@@ -10,7 +10,7 @@ function drawElement(element, ghosted = false) {
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
     let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
-    let zLevel = 1;
+    let zLevel = 2;
     let mouseEnter = '';
 
     canvas = document.getElementById('canvasOverlay');
@@ -95,17 +95,17 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
             cssClass = 'uml-Super';
-            zLevel = 0;
+            zLevel = 1;
             break;
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 0;
+            zLevel = 1;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 0;
+            zLevel = 1;
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);

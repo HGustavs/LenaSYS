@@ -221,7 +221,7 @@ function drawLineProperties(line) {
     switch (line.type) {
         case entityType.ER:
             str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
-            if (!findAttributeFromLine(line)) break;
+            if (!isLineConnectedTo(line, elementTypesNames.ERAttr)) break;
             str += `<label style="display: block">Cardinality:`;
             let optER;
             Object.keys(lineCardinalitys).forEach(cardinality => {
@@ -1761,7 +1761,9 @@ function changeLineProperties() {
             changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
         }
     }
-    changeAttribute(line, 'label', label, {label: label.value});
+    if (label) {
+        changeAttribute(line, 'label', label, {label: label.value});
+    }
 
     if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
         changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});

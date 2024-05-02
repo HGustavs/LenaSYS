@@ -58,6 +58,7 @@ function mdown(event) {
 
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+        console.log(determinedLines)
 
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
@@ -185,7 +186,6 @@ function ddown(event) {
 
     // Used when determining time between clicks.
     if ((new Date().getTime() - dblPreviousTime) < dblClickInterval && event.button == 0) {
-
         wasDblClicked = true; // General purpose bool. True when doubleclick was performed.
 
         const element = data[findIndex(data, event.currentTarget.id)];
