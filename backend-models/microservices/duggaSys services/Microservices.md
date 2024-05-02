@@ -43,8 +43,8 @@ CRUD stands for the four basic operations for managing data in applications and 
 
 - accessedservice.php ==finished==
 - codeviewerService.php ==finished==
-- contribution_loginbox_service.php: _Ongoing research to find out if this service is needed._
-- contributedservice.php: _Ongoing research to find out if this service is needed._
+- contribution_loginbox_service.php: WORK PAUSED due to the current non-functional state of this service
+- contributionservice.php: WORK PAUSED due to the current non-functional state of this service
 - courseedservice.php ==finished==
 - diagramservice.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)__
 - duggaedservice.php ==finished==
@@ -119,13 +119,20 @@ Codeviewer Service:
 
 Contribution Loginbox Service
 
-- _Ongoing research if needed_
+- There is a functional requirements document regarding this service. There is mention of a "contribution page", which is assumed to be a contribution dugga. It is unclear exactly what this page is supposed to be, but the page is related to GitHub connectivity, which suggests it is supposed to be a page showing the different commits contributed by students to a project.
+
+Given the current non-functional state of this service and the lack of clarity regarding the intentions of its creators, it does not seem advisable to transition it into microservices at this time. Nevertheless, it is evident that considerable time and consideration have been invested in this service, as well as in the other files pertaining to the contribution page, thus it would not be prudent to delete it. 
+
+Based on this information, we are pausing the development of microservices for this service file.
+
+Functional requirements document:
+https://github.com/HGustavs/LenaSYS/blob/master/backend-models/functional-requirements/FRD_contribution_loginbox_service.md
 
 <br>
 
 Contributed Service:
 
-- _Ongoing research if needed_
+- Based on the information given for the status of the Contribution Loginbox Service information, we are pausing the development of microservices for this service file.
 
 <br>
 
@@ -954,7 +961,7 @@ DELETE FROM listentries WHERE lid=:lid;
 <br>
 <br>
 
-_Ongoing research if needed._
+_WORK PAUSED given the current non-functional state of this service._
 
 <br>
 <br>
@@ -966,7 +973,7 @@ _Ongoing research if needed._
 <br>
 <br>
 
-_Ongoing research if needed._
+_WORK PAUSED given the current non-functional state of this service._
 
 <br>
 <br>
