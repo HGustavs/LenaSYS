@@ -120,19 +120,19 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<div class="formDialog" style="display: block; left:-125px; top:-10px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
+					<div class="formDialog" style="display: block; left:-127px; top:-4px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<div class="formDialog" style="display: block; left:-125px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+					<div class="formDialog" style="display: block; left:-123px; top:2px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 					<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 				</div>
     			<div class="inputwrapper">
 					<span>GitHub URL:</span>
-					<div class="formDialog" style="display: block; left:-125px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+					<div class="formDialog" style="display: block; left:-118px; top:3px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
 					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
 				</div>
