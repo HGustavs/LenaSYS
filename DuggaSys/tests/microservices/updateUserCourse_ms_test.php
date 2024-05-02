@@ -6,7 +6,7 @@ $testsData = array(
     //------------------------------------------------------------------------------------------
     // This is a test-file for testing if it works to update data in the table UserCourse using microservice updateUserCourse_ms
     //------------------------------------------------------------------------------------------
-    'updateUserCourse_ms' => array(
+    'setExaminer' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
         'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
@@ -17,7 +17,7 @@ $testsData = array(
                 'password' => 'password',
                 'prop' => 'examiner',
                 'courseid' => '3',
-                'uid' => '9997',
+                'uid' => '9999',
             )
         ),
         'filter-output' => serialize(
@@ -27,7 +27,7 @@ $testsData = array(
         ),
     ),
 
-    'updateUserCourse_ms' => array(
+    'setVers' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
         'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
@@ -38,7 +38,7 @@ $testsData = array(
                 'password' => 'password',
                 'prop' => 'vers',
                 'courseid' => '3',
-                'uid' => '9997',
+                'uid' => '9999',
             )
         ),
         'filter-output' => serialize(
@@ -48,7 +48,7 @@ $testsData = array(
         ),
     ),
 
-    'updateUserCourse_ms' => array(
+    'setAccess' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
         'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
@@ -59,7 +59,7 @@ $testsData = array(
                 'password' => 'password',
                 'prop' => 'access',
                 'courseid' => '3',
-                'uid' => '9997',
+                'uid' => '9999',
             )
         ),
         'filter-output' => serialize(
@@ -69,7 +69,7 @@ $testsData = array(
         ),
     ),
 
-    'updateUserCourse_ms' => array(
+    'setGroup' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
         'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
@@ -80,7 +80,7 @@ $testsData = array(
                 'password' => 'password',
                 'prop' => 'group',
                 'courseid' => '3',
-                'uid' => '9997',
+                'uid' => '9999',
             )
         ),
         'filter-output' => serialize(
