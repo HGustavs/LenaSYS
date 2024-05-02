@@ -3881,7 +3881,7 @@ function validateForm(formid) {
         $("#githubPopupWindow").css("display", "none");
         updateGithubRepo(repoLink, cid, repoKey);
         // Refresh page after github link
-        location.reload();
+        //location.reload();
       }
     }
   }
