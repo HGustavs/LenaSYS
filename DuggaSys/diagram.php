@@ -23,12 +23,40 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <!-- To enable dark mode, these 2 files were added. -->
-	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
-	<script src="darkmodeToggle.js"></script>
+    <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+    <script src="darkmodeToggle.js"></script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
+    <script src="./diagram/classes/point.js"></script>
+    <script src="./diagram/constants.js"></script>
+    <script src="./diagram/globals.js"></script>
+    <script src="./diagram/classes/stateChange.js"></script>
+    <script src="./diagram/classes/stateChangeFactory.js"></script>
+    <script src="./diagram/helper.js"></script>
+    <script src="./diagram/helpers/rect.js"></script>
+    <script src="./diagram/errorHandling.js"></script>
+    <script src="./diagram/theme.js"></script>
+    <script src="./diagram/draw/element.js"></script>
+    <script src="./diagram/draw/line.js"></script>
+    <script src="./diagram/draw/node.js"></script>
+    <script src="./diagram/draw/ruler.js"></script>
+    <script src="./diagram/draw/selection.js"></script>
+    <script src="./diagram/draw/boxSelect.js"></script>
+    <script src="./diagram/draw/update.js"></script>
+    <script src="./diagram/message.js"></script>
+    <script src="./diagram/toggle.js"></script>
+    <script src="./diagram/draw/options.js"></script>
+    <script src="./diagram/helpers/context.js"></script>
+    <script src="./diagram/helpers/element.js"></script>
+    <script src="./diagram/helpers/boxSelect.js"></script>
+    <script src="./diagram/zoom.js"></script>
+    <script src="./diagram/camera.js"></script>
+    <script src="./diagram/helpers/line.js"></script>
+    <script src="./diagram/helpers/mouse.js"></script>
+    <script src="./diagram/helpers/mouseMode.js"></script>
+    <script src="./diagram/events/mouse.js"></script>
     <script src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
@@ -309,10 +337,19 @@
                     </div> 
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
+                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
                                 <span class="placementTypeToolTipText"><b>ER relation</b><br>
                                     <p>Represents how entities are associated with each other.</p>
+                                </span>
+                            </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
@@ -329,15 +366,6 @@
                                     <p>Change to IE inheritance</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
-                                </span>
-                            </div>
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
