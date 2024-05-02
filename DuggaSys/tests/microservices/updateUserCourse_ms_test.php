@@ -27,7 +27,7 @@ $testsData = array(
         ),
     ),
 
-    'updateActiveUsers_ms' => array(
+    'updateUserCourse_ms' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 999);",
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'hjk4ert6';",
@@ -48,7 +48,7 @@ $testsData = array(
         ),
     ),
 
-    'updateActiveUsers_ms' => array(
+    'updateUserCourse_ms' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 999);",
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'hjk4ert6';",
@@ -69,7 +69,7 @@ $testsData = array(
         ),
     ),
 
-    'updateActiveUsers_ms' => array(
+    'updateUserCourse_ms' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 999);",
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'hjk4ert6';",
