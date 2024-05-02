@@ -683,8 +683,11 @@
 					    <tr> 
 				            <td align='right'><input class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
 						</tr>
-						<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='fileName' placeholder='Name.type' value=''/></div>
-						<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/></div>
+						<div class='inputwrapper'>
+							<span>Name:</span>
+							<div class="formDialog" style="display: block; left:-125px; top:0px;"><span id="fileNameError" style="display: none; left:0px; bottom:5px;" class="formDialogText">Please use letters and digits, only</span></div>
+							<p id="dialogfileNameValidate" class="validationDialog">Please use letters and digits, only</p><input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput' type='text' id='fileName' placeholder='Name.type' value=''/></div>
+						<div class='inputwrapper'><span>GithubUrl:</span><input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/><p id="dialogGitValidate" class="validationDialog">Enter a valid github url</p></div>
 						<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='filePath' placeholder='no' value=''/></div>
                         
 					</table>
