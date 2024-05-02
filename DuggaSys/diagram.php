@@ -53,6 +53,8 @@
     <script src="./diagram/helpers/boxSelect.js"></script>
     <script src="./diagram/zoom.js"></script>
     <script src="./diagram/camera.js"></script>
+    <script src="./diagram/helpers/line.js"></script>
+    <script src="./diagram/helpers/mouse.js"></script>
     <script src="./diagram/helpers/mouseMode.js"></script>
     <script src="./diagram/events/mouse.js"></script>
     <script src="diagram.js"></script>

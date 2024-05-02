@@ -377,3 +377,27 @@ function checkDeleteBtn() {
     }
     return false;
 }
+
+/**
+ *  @description change cursor style if mouse position is over a selection box or the deletebutton.
+ */
+function mouseOverSelection(mouseX, mouseY) {
+    if (context.length > 0 || contextLine.length > 0) {
+        // If there is a selection box and mouse position is inside it.
+        if (mouseX > selectionBoxLowX && mouseX < selectionBoxHighX && mouseY > selectionBoxLowY && mouseY < selectionBoxHighY) {
+            containerStyle.cursor = "pointer";
+        }
+        // If mouse position is over the delete button.
+        else if (mouseX > deleteBtnX && mouseX < (deleteBtnX + deleteBtnSize) && mouseY > deleteBtnY && mouseY < (deleteBtnY + deleteBtnSize)) {
+            containerStyle.cursor = "pointer";
+        }
+        // Not inside selection box, nor over an element or line.
+        else if (!mouseOverElement && !mouseOverLine) {
+            setContainerStyles(mouseMode);
+        }
+    }
+    // There is no selection box, and mouse position is not over any element or line.
+    else if (!mouseOverElement && !mouseOverLine) {
+        setContainerStyles(mouseMode);
+    }
+}

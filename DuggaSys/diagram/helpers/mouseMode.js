@@ -121,3 +121,45 @@ function subMenuCycling(subMenu) {
         return true;
     }
 }
+
+/**
+ * @description Called on mouse moving if no pointer state has blocked the event in mmoving()-function.
+ */
+function mouseMode_onMouseMove(event) {
+    mouseOverLine = determineLineSelect(event.clientX, event.clientY);
+    // Change cursor style if mouse pointer is over a line.
+    if (mouseOverLine && !mouseButtonDown) {
+        containerStyle.cursor = "pointer";
+    } else if (!mouseOverElement) {
+        setContainerStyles(mouseMode);
+    }
+    switch (mouseMode) {
+        case mouseModes.EDGE_CREATION:
+            mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
+        case mouseModes.PLACING_ELEMENT:
+            if (ghostElement) {
+                var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
+                // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
+                if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
+                    ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
+                    ghostElement.y = Math.round(cords.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
+                } else {
+                    ghostElement.x = cords.x - (ghostElement.width / 2);
+                    ghostElement.y = cords.y - (ghostElement.height / 2);
+                }
+                showdata();
+                updatepos(0, 0);
+            }
+            break;
+        case mouseModes.POINTER:
+            mouseOverSelection(event.clientX, event.clientY);
+            break;
+        case mouseModes.BOX_SELECTION:
+            boxSelect_Update(event.clientX, event.clientY);
+            updatepos(0, 0);
+            mouseOverSelection(event.clientX, event.clientY);
+            break;
+        default:
+            break;
+    }
+}
