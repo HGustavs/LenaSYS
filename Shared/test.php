@@ -61,7 +61,7 @@ function doDBQuery($query, $data, $testsData, $testname){
     }
     $result = "Error executing query";
     // DB credentials
-    include_once("../../../coursesyspw.php");
+    include_once(__DIR__ . '/coursesyspw.php');
 
     // Connect to DB
     try {
@@ -199,7 +199,7 @@ function testHandler($testsData, $prettyPrint){
 function loginTest($user, $pwd, $prettyPrint){
 
     // Session includes login functionality
-    include_once "../../Shared/sessions.php";
+    include_once(__DIR__ . '/sessions.php');
 
     if (login($user, $pwd, true)) {
         $loginTestResult = "passed";
