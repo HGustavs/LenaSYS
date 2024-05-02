@@ -37,6 +37,7 @@ $testsData = array(
                 'opt' => 'UPDATEAU',
                 'username' => 'brom',
                 'password' => 'password',
+                'prop' => 'vers',
                 'courseid' => '2',
                 'coursevers' => '97732',
             )
@@ -58,6 +59,7 @@ $testsData = array(
                 'opt' => 'UPDATEAU',
                 'username' => 'brom',
                 'password' => 'password',
+                'prop' => 'access',
                 'courseid' => '2',
                 'coursevers' => '97732',
             )
@@ -79,6 +81,7 @@ $testsData = array(
                 'opt' => 'UPDATEAU',
                 'username' => 'brom',
                 'password' => 'password',
+                'prop' => 'groups',
                 'courseid' => '2',
                 'coursevers' => '97732',
             )
