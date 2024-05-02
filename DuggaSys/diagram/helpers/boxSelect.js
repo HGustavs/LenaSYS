@@ -34,12 +34,12 @@ function getElementsInsideCoordinateBox(selectionRect) {
  * @param {Rect} selectionRect returned from the getRectFromPoints() function
  * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
  */
-function getLinesInsideCoordinateBox(selectionRect) {
+function getLinesInsideCoordinateBox(rect) {
     var allLines = document.getElementById("svgbacklayer").children;
     var tempLines = [];
     var bLayerLineIDs = [];
     for (let i = 0; i < allLines.length; i++) {
-        if (lineIsInsideRect(selectionRect, allLines[i])) {
+        if (lineIsInsideRect(rect, allLines[i])) {
             bLayerLineIDs[i] = allLines[i].id;
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
@@ -51,35 +51,22 @@ function getLinesInsideCoordinateBox(selectionRect) {
 
 /**
  * @description Checks if a entire line is inside of the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Rect} rect returned from the getRectFromPoints() function
  * @param {Object} line following the format of the lines contained within the children of svgbacklayer
  * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
-function lineIsInsideRect(selectionRect, line) {
-    let lineCoord1 = screenToDiagramCoordinates(
+function lineIsInsideRect(rect, line) {
+    let l1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
     );
-    let lineCoord2 = screenToDiagramCoordinates(
+    let l2 = screenToDiagramCoordinates(
         line.getAttribute("x2"),
         line.getAttribute("y2")
     );
-    let lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
-    let lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
-    let lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
-    let lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
-    let leftX = selectionRect.x;
-    let topY = selectionRect.y;
-    let rightX = selectionRect.x + selectionRect.width;
-    let bottomY = selectionRect.y + selectionRect.height;
-    return leftX <= lineLeftX && topY <= lineTopY && rightX >= lineRightX && bottomY >= lineBottomY;
-    /* Code used to check for a point
-    // Return true if any of the end points of the line are inside of the rect
-    if (lineCoord1.x > leftX && lineCoord1.x < rightX && lineCoord1.y > topY && lineCoord1.y < bottomY) {
-        return true;
-    } else if (lineCoord2.x > leftX && lineCoord2.x < rightX && lineCoord2.y > topY && lineCoord2.y < bottomY) {
-        return true;
-    }*/
+    let midPoint = new Point((l1.x + l2.x) / 2, (l1.y + l2.y) / 2);
+    return rect.x <= midPoint.x && rect.y <= midPoint.y &&
+            rect.x2 >= midPoint.x && rect.y2 >= midPoint.y;
 }
 
 /**
