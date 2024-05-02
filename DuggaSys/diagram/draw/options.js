@@ -251,6 +251,13 @@ function drawLineProperties(line) {
             let optSD = option(SDLineType, line.innerType);
             str += select('lineType', optSD, false);
             break;
+        case entityType.SE:
+            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += iconSelection([SDLineIcons], line);
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+            str += lineLabel('lineLabel', 'Label', line.label);
+            break;
+
     }
     str += saveButton('changeLineProperties();');
     return str;
@@ -1773,6 +1780,10 @@ function changeLineProperties() {
     }
     if (line.type == entityType.SD) {
         changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
+        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
+        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+    }
+    if (line.type == entityType.SE) {
         changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
         changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
     }
