@@ -19,10 +19,11 @@
             try {
 
                 $db_name = $db_name ?? $this->db_name;
-                $this->sanitize($db_name);
-
+                
                 if ($force) {
                     $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
+                } else {
+                    $this->sanitize($db_name);
                 }
 
                 $this->pdo->exec("CREATE DATABASE `$db_name`");
@@ -54,15 +55,13 @@
                 $user_name = $user_name ?? $this->db_user;
                 $hostname = $hostname ?? $this->hostname;
                 $hostname = $hostname ?? '%';
-                $password = $this->db_user_password;
+                $password = $password ?? $this->db_user_password;
 
-                $this->sanitize($user_name . $hostname);
+                $this->sanitize($user_name);
+                $this->sanitize_hostname($hostname);
 
                 if (empty($password)) {
-                    return [
-                        'success'=> false,
-                        'message'=> 'Password was not provided for user {$user_name}@{$hostname}.'
-                    ];
+                    throw new PDOException("Password was not provided for user {$user_name}@{$hostname}.");
                 }
 
                 if ($force) {
@@ -104,11 +103,11 @@
             try {
 
                 $db_name = $db_name ?? $this->db_name;
-                $this->sanitize($db_name);
 
                 if ($force) {
                     $this->pdo->exec("DROP DATABASE `$db_name`");
                 } else {
+                    $this->sanitize($db_name);
                     $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
                 }
 
@@ -135,11 +134,11 @@
                 $hostname = $hostname ?? $this->hostname;
                 $hostname = $hostname ?? '%';
 
-                $this->sanitize($user_name . $hostname);
-
                 if ($force) {
                     $this->pdo->exec("DROP USER `$user_name`@`$hostname`");
                 } else {
+                    $this->sanitize($user_name);
+                    $this->sanitize_hostname($hostname);
                     $this->pdo->exec("DROP USER IF EXISTS `$user_name`@`$hostname`");
                 }
 
@@ -166,7 +165,8 @@
                 $hostname = $hostname ?? $this->hostname;
                 $hostname = $hostname ?? '%';
 
-                $this->sanitize($db_name . $user_name . $hostname);
+                $this->sanitize($db_name . $user_name);
+                $this->sanitize_hostname($hostname);
 
                 $this->pdo->exec("GRANT ALL PRIVILEGES ON `$db_name`.* TO `$user_name`@`$hostname`");
 
@@ -197,8 +197,20 @@
          * Also ensure that they contain start and end of string.
          */
         private function sanitize(string $sql): string {
+            if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $sql)) {
+                throw new PDOException("Invalid name detected.");
+            }
+            return $sql;
+        }
+
+        /**
+         * function sanitize_hostname
+         * Sanitize data, only allow letters, numbers and underscores.
+         * Also ensure that they contain start and end of string.
+         */
+        private function sanitize_hostname(string $sql): string {
             if (!preg_match('/^[a-zA-Z0-9_%]+$/', $sql)) {
-                throw new PDOException("Invalid sql detected.");
+                throw new PDOException("Invalid hostname detected.");
             }
             return $sql;
         }
