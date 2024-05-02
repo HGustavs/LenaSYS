@@ -39,17 +39,11 @@ class DBSetup {
 
         } catch (PDOException $e) { 
 
-            return [
-                'success' => false,
-                'message' => "Failed to create database {$db_name}. " . 
-                (!$force ? "Try using force. " : "") . $e->getMessage()
-            ];
+            $this->handle_exception($e, "Failed to create database {$db_name}. " . 
+            (!$force ? "Try using force. " : "") . $e->getMessage());
         }
 
-        return [
-            'success' => true,
-            'message' => "Successfully created database {$db_name}."
-        ];
+        return $this->handle_success("Successfully created database {$db_name}.");
     }
 
     /**
@@ -89,18 +83,11 @@ class DBSetup {
             $this->hostname = $hostname;
 
         } catch (PDOException $e) { 
-            
-            return [
-                'success' => false,
-                'message' => "Failed to create user {$user_name}@{$hostname}. " . 
-                (!$force ? "Try using force." : $e->getMessage())
-            ];
+            return $this->handle_exception($e, "Failed to create user {$user_name}@{$hostname}. " . 
+            (!$force ? "Try using force." : $e->getMessage()));
         }
 
-        return [
-            'success' => true,
-            'message' => "Successfully created user {$user_name}@{$hostname}."
-        ];
+        return $this->handle_success("Successfully created user {$user_name}@{$hostname}.");
     }
 
     /**
@@ -119,15 +106,9 @@ class DBSetup {
                 $this->pdo->exec("DROP DATABASE IF EXISTS `$db_name`");
             }
 
-            return [
-                'success' => true,
-                'message' => "Successfully removed database {$db_name}."
-            ];
+            return $this->handle_success("Successfully removed database {$db_name}.");
         } catch (PDOException $e) {
-            return [
-                'success' => false,
-                'message' => "Failed to remove database {$db_name}. {$e->getMessage()}"
-            ];
+            return $this->handle_exception($e, "Failed to remove database {$db_name}. {$e->getMessage()}");
         }
     }
 
@@ -150,15 +131,9 @@ class DBSetup {
                 $this->pdo->exec("DROP USER IF EXISTS `$user_name`@`$hostname`");
             }
 
-            return [
-                'success' => true,
-                'message' => "Successfully removed user {$user_name}."
-            ];
+            return $this->handle_success("Successfully removed user {$user_name}.");
         } catch (PDOException $e) {
-            return [
-                'success' => false,
-                'message' => "Failed to remove user {$user_name}. " . $e->getMessage()
-            ];
+            return $this->handle_exception($e, "Failed to remove user {$user_name}. ");
         }
     }
 
@@ -178,17 +153,12 @@ class DBSetup {
 
             $this->pdo->exec("GRANT ALL PRIVILEGES ON `$db_name`.* TO `$user_name`@`$hostname`");
 
-            return [
-                'success' => true,
-                'message' => "Successfully set permissions for {$user_name}@{$hostname} on {$db_name}."
-            ];
+            return $this->handle_success("Successfully set permissions for {$user_name}@{$hostname} on {$db_name}.");
         } catch (PDOException $e) {
-            return [
-                'success' => false,
-                'message' => $e->getCode() == 42000 
-                    ? "User does not exist. Failed to set permissions for {$user_name}@{$hostname} on {$db_name}."
-                    : "Failed to set permissions for {$user_name}@{$hostname} on {$db_name}: " . $e->getMessage()
-            ];
+
+            return $this->handle_exception($e, $e->getCode() == 42000 ?
+            "User does not exist. Failed to set permissions for {$user_name}@{$hostname} on {$db_name}." :
+            "Failed to set permissions for {$user_name}@{$hostname} on {$db_name}: ");
         }
     }
 
@@ -196,7 +166,7 @@ class DBSetup {
      * function run_sql_file
      * Runs an sql file using the class variable pdo.
      */
-    public function run_sql_file(string $file_name, string $callback = null, bool $verbose = false, string $db_name = null): array {
+    public function execute_sql_file(string $file_name, string $callback = null, bool $verbose = false, string $db_name = null): array {
         try {
             $db_name = $db_name ?? $this->db_name;
             $this->sanitize($db_name);
@@ -242,7 +212,7 @@ class DBSetup {
             return $this->handle_exception($e, "Failed to run sql file. ");
         }
     
-        return $this->handle_success("Successfully ran sql file. ");
+        return $this->handle_success("{$file_name} > query {$i} > 100% > Executed all queries sucessfully. ");
     }
 
     /**
@@ -322,7 +292,7 @@ class DBSetup {
         set_time_limit(0);
     
         if (!is_file($file)) {
-            throw new Exception('Could not open file');
+            throw new Exception('Could not open file {$file}');
         }
 
         if (!is_readable($file)) {
