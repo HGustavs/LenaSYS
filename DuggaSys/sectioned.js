@@ -1230,7 +1230,7 @@ async function newItem(itemtitle) {
       document.getElementById('I' + collectedLid[0]).firstChild.classList.add("highlightChange");
       document.getElementById('I' + collectedLid[0]).firstChild.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
-  }, 100);
+  }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
     $("#createAlert").removeClass("createAlertToggle");
