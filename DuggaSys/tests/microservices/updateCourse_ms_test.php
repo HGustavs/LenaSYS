@@ -10,7 +10,7 @@ $testsData = array(
     //------------------------------------------------------------------------------------------
     'update_course' => array(
         'expected-output' => '1',  
-        'service' => 'http://localhost/LenaSYS/DuggaSys/sectioned.php?courseid=1885&coursename=Testing-Course&coursevers=1337',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/createNewCourse_ms.php',
         'service-data' => serialize(
             array( 
                 'opt' => 'UPDATE',
