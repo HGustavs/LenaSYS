@@ -8,8 +8,8 @@ $testsData = array(
     //------------------------------------------------------------------------------------------
     'updateUserCourse_ms' => array(
         'expected-output' => '999',
-        'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 999);",
-        'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'hjk4ert6';",
+        'query-before-test-1' => "INSERT INTO user_course(uid,cid) VALUES('9999', 3);",
+        'query-after-test-1' => "DELETE FROM user_course WHERE uid = '9999';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/updateUserCourse_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
