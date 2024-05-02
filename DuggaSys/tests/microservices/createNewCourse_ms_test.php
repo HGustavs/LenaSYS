@@ -9,12 +9,12 @@ $testsData = array(
     //------------------------------------------------------------------------------------------
     'insert_new_course' => array(
         'expected-output' => '1', // need to figure this one out.
-     //   'query-before-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
-     // 'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
+        'query-before-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
+        'query-after-test-1' => "DELETE FROM course WHERE coursecode = 'TEST001';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/createNewCourse_ms.php',
         'service-data' => serialize(
             array( 
-+               'opt' => 'NEW',
+                'opt' => 'NEW',
                 'username' => 'brom',
                 'password' => 'password',
                 'coursename' => 'Test Course',
