@@ -3,6 +3,7 @@
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
 	//include_once "../../coursesyspw.php";
+	include_once "../Shared/toast.php";
 	pdoConnect();
 
 	error_reporting(E_ALL);
@@ -57,6 +58,7 @@
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
 	<script src="darkmodeToggle.js"></script>
+	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -190,7 +192,7 @@
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect centered-icon' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
@@ -235,7 +237,7 @@
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Test' onclick='createFABItem("3","New Test","undefined");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
+					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect centered-icon' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","undefined");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","undefined");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","undefined");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Message","undefined");'><i alt='message mark icon' class='material-icons'>format_quote</i></a></li>
@@ -268,7 +270,7 @@
 
 		<!-- Edit Section Dialog START -->
 
-		<div id='editSection'  onmouseover='quickValidateForm("editSection", "saveBtn");' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 
 			<div class='loginBoxheader'>
@@ -280,11 +282,9 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" style="margin-right:10px;"/>
-
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<div class="formDialog" style="display: block; left:0px; top:45px;">
+				<div class="formDialog" style="display: block; margin-left:40px; top:-35px;">
   		      		<span id="dialog10" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
@@ -303,7 +303,7 @@
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this)'/>
+								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
@@ -313,9 +313,9 @@
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlinehours'></select>
 							</span>
-							<span style='float:left'>
-								<p id="dialog8" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Deadline has to be between start date and end date</p>
-							</span>
+							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
+  		      					<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
+  		      				</div>
 					</div>
 					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
@@ -324,7 +324,6 @@
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
 					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
-					<p id="EndDialog1" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 				</div>
 
 				<!-- Error message, no duggas present-->
@@ -332,7 +331,7 @@
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
+					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
 				</div>
 			</div>
 		</div>
@@ -463,27 +462,44 @@
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
 			<div style='padding:5px;'>
-				<div class='inputwrapper'><span>Version ID:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog2" style="display: none; left:0px;" class="formDialogText">Only numbers(between 3-8 numbers)</span></div>
-				<!--<p id="dialog2" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Only numbers(between 3-8 numbers)</p>-->
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<!--<p id="dialog" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be A-Z 0-9.</p>-->
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-25px;"><span id="dialog3" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-				<!--<p id="dialog3" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>-->
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-12px;"><span id="dialog4" style="display: none; left:0px;" class="formDialogText">Prohibited symbols.</span></div>
-				<div class="formDialog" style="display: block; left:50px; top:4px;"><span id="dialog42" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols.</span></div>
-				<!--<p id="dialog4" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
-				<!--<p id="dialog42" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
+				<div class='inputwrapper'>
+					<span>Version ID:</span>
+					<div class="formDialog versionDialog" >
+						<span id="dialog2" class="formDialogText">3 to 8 numbers required</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
+				</div>
+				<div class='inputwrapper'>
+					<span>Version Name:</span>
+					<div class="formDialog versionDialog">
+						<span id="dialog" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
+				</div>
+				<div class='inputwrapper'>
+					<span>Start Date:</span>
+					<div class="formDialog versionDialog">
+						<span id="dialog3" class="formDialogText formDialogTextHalfDownShift">Start date has to be before end date</span>
+					</div>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>End Date:</span>
+					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='enddate' value='' />
+				</div>
+				<div class='inputwrapper'>
+					<span>MOTD:</span>
+					<div class="formDialog versionDialog" >
+						<span id="dialog4" class="formDialogText formDialogSplitUp">Prohibited symbols</span>
+						<span id="dialog42" class="formDialogText formDialogSplitDown">Max 50 characters</span>
+					</div>
+					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
+				</div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-				<p id="EndDialog2" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
-				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onclick="validateForm('newCourseVersion')" />
+				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onmouseover="quickValidateForm('newCourseVersion', 'submitCourseMotd');" onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
 	</div>
@@ -491,7 +507,7 @@
 
 <!-- Edit Version Dialog START -->
 
-<div id='editCourseVersion' onmouseover="validateVersionName('eversname', 'dialog5'); validateDate('estartdate','eenddate','dialog6'); validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 
 			<div class='loginBoxheader'>
@@ -502,19 +518,14 @@
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class="formDialog" style="display: block; left:50px; top:-5px;"><span id="dialog5" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Must be in of the form HTNN, VTNN or STNN</p>-->
+				<div class="formDialog" style="display: block; left:54px; top:-36px;"><span id="dialog5" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
-				<div class="formDialog" style="display: block; left:50px; top:-20px;"><span id="dialog6" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-				<!--<p id="dialog6" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Start date has to be before end date</p>-->
+				<div class="formDialog" style="display: block; left:54px; top:-50px;"><span id="dialog6" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
 				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<div class="formDialog" style="display: block; left:50px; top:-10px;"><span id="dialog9" style="display: none; left:0px;" class="formDialogText">Prohibited symbols</span></div>
-				<div class="formDialog" style="display: block; left:50px; top:6px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
-				<!--<p id="dialog9" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibted symbols</p>-->
-				<!--<p id="dialog92" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
+				<div class="formDialog" style="display: block; left:54px; top:-40px;"><span id="dialog9" style="display: none; left:0px;" class="formDialogText">Prohibited symbols</span></div>
+				<div class="formDialog" style="display: block; left:54px; top:-22px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
-				<p id="EndDialog3" style="font-size:11px; border:0px; margin-left: 10px; display:block;"></p>
 			</div>
 			<div style='padding:5px;'>
 				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
@@ -638,7 +649,7 @@
 				</form>
 			</div>
 			<div style='padding-top:15px; width: 464px;'>
-				<input id='saveRepo' class='submit-button' style='float:right; margin-right:5px;' type='button' value='Save' title='Save Changes' onclick='validateForm("githubPopupWindow");' />
+				<div id="buttonContainerSaveRepo"></div>
 			</div>
 		</div>
 	</div>
@@ -683,23 +694,23 @@
 <?php
 //Insert into gitRepo DB
 function insertIntoSqLiteGitRepo($cid, $githubURL){
-    //First query: Check if a row with same cid already exists. If not, insert into db.
-    $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-    $query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
-    $query->execute([$cid]);
-    $count = $query->fetchColumn();
+	//First query: Check if a row with same cid already exists. If not, insert into db.
+	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+	$query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
+	$query->execute([$cid]);
+	$count = $query->fetchColumn();
 
-    if($count > 0){
-        //A repo with the same cid primary key already exists. Do nothing.
-    } else {
-        $query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
-        $query->bindParam(':cid', $cid);
-        $query->bindParam(':repoURL', $githubURL);
-        if (!$query->execute()) {
-            $error = $query->errorInfo();
-            echo "Error updating entry in gitRepos" . $error[2];
-        }
-    }
+	if($count > 0){
+		//A repo with the same cid primary key already exists. Do nothing.
+	} else {
+		$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':repoURL', $githubURL);
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating entry in gitRepos" . $error[2];
+		}
+	}
 }
 
 //Insert files into gitFiles DB
@@ -761,27 +772,100 @@ function writeFilesInDir($path, $fileNames, $content){
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //Retrieval of JSON data sent through POST and GET
-    $cid = $_GET['cid'];
-    $githubURL = $_GET['githubURL'];
-    $postDataContent = file_get_contents('php://input');
-    $requestDataContent = json_decode($postDataContent, true);
-    $codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
-    $SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
-    $fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
-    $filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
-    $fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
-    $downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
-    $fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-    
-    $path = '../../LenaSYS/courses/' . $cid;
-    $pathCoursesRoot = '../../LenaSYS/courses';
+function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam) {
+	global $pdo;
+	$count = count($fileNames);
+	for($i = 0; $i < $count; $i ++) {
+		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
+		$query->bindParam(':filename', $fileNames[$i]);
+		$query->bindParam(':cid', $cid);
+		$query->execute();
+		$norows = $query->fetchColumn();
+		echo $norows;
+		if($norows == 0) {
+			//TODO: Kind value should be fixed to dynamic
+			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
+			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'3',:cid);");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':fileName', $fileNames[$i]);
+			if (!$query->execute()) {
+				$error = $query->errorInfo();
+				echo "Error updating entries" . $error[2];
+			} else {
+				echo "File stored successfully in fileLink";
+			}
+		}
+	}
+}
+function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
+	global $pdo;
+	//Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
+	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
+	$query->bindParam(':playlink', $fileNames[0]);
+	$query->bindParam(':templateno', $templateid);
+	$query->bindParam(':exampleid', $CeHiddenParam[0]);
+	$query->bindParam(':cid', $cid);
+	$query->bindParam(':cvers', $CeHiddenParam[3]);
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		echo "Error updating entries in codeexample" . $error[2];
+	} else{
+		echo "Row updated successfully in codeexample";
+	}
+}
 
-    writeCoursesDir($path, $pathCoursesRoot);
-    writeFilesInDir($path, $fileNames, $codeExamplesContent);
-    insertIntoSqLiteGitRepo($cid, $githubURL);
-    insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA);   
+function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
+	global $pdo;
+	$count = count($fileNames);
+	$boxContent = "Code";
+	$wordlistID = "3";
+	$y = 1;
+	for($i = 0; $i < $count; $i++){
+		//TODO: Change boxcontent to be named dynamicly.
+		// Maybe change filenameNoExt to something better named. Also what is wordlistid?
+		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
+		$query->bindParam(':boxid', $y);
+		$query->bindParam(':exampleid', $CeHiddenParam[0]);
+		$filenameNoExt = preg_replace('/\.[^.]*$/', "", $fileNames[$i]);
+		$query->bindParam(':boxtitle', $filenameNoExt);
+		$query->bindParam(':boxcontent', $boxContent);
+		$query->bindParam(':filename', $fileNames[$i]);
+		$query->bindParam(':wordlistid', $wordlistID);
+	    
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			echo "Error updating entries" . $error[2];
+		} else {
+			echo "File stored successfully in box";
+		}
+		$y++;
+	}
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	//Retrieval of JSON data sent through POST and GET
+	$cid = $_GET['cid'];
+	$githubURL = $_GET['githubURL'];
+	$postDataContent = file_get_contents('php://input');
+	$requestDataContent = json_decode($postDataContent, true);
+	$codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
+	$SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
+	$fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
+	$filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
+	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
+	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
+	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
+	$CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
+	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
+	$path = '../../LenaSYS/courses/' . $cid;
+	$pathCoursesRoot = '../../LenaSYS/courses';
+
+	writeCoursesDir($path, $pathCoursesRoot);
+	writeFilesInDir($path, $fileNames, $codeExamplesContent);
+	insertIntoSqLiteGitRepo($cid, $githubURL);
+	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
+	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
+	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
+	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 }
 ?>
 </body>

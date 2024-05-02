@@ -1374,31 +1374,31 @@ $array = array(
 	"avgfeedbackscore" => $avgfeedbackscore
 );
 
-function getDeletedEntries($opt){
-	pdoConnect();
-	session_start();
-		//This will enable fetching every listentry with visibility DELETED and will enable restoring deleted items
-	if(strcmp($opt,"DISPLAYDELETED")===0) {
-		$resultArray = array();
-		$query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
-		$query -> execute();
-		$result = $query -> fetchAll();
-		
-		foreach( $result as $row ) {
-			$resultArray = array($row);
-		}
-
-		return $resultArray;
-
-		if(!$query->execute()) {
-			if($query->errorInfo()[0] == 23000) {
-				$debug = "foreign key constraint.";
-			} else {
-				$debug = "Error.";
+				function getDeletedEntries($opt){
+					global $pdo;
+					pdoConnect();
+					session_start();
+					//This will enable fetching every listentry with visibility DELETED and will enable restoring deleted items
+				if(strcmp($opt,"DISPLAYDELETED")===0) {
+					$resultArray = array();
+					$query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
+					$query -> execute();
+					$result = $query -> fetchAll();
+					
+					foreach( $result as $row ) {
+    					$resultArray = array($row);
+						}
+						return $resultArray;
+					if(!$query->execute()) {
+						if($query->errorInfo()[0] == 23000) {
+							$debug = "foreign key constraint.";
+						} else {
+							$debug = "Error.";
+						}
+				  }
 			}
-		}
 	}
-}
+
 
 	echo json_encode($array);
 

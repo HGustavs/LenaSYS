@@ -13,6 +13,7 @@ var momentexists = 0;
 var resave = false;
 var versnme = "UNK";
 var versnr;
+var CeHiddenParameters = [];
 var motd = "UNK";
 var hideItemList = [];
 var hasDuggs = false;
@@ -471,7 +472,7 @@ function refreshGithubRepo(courseid, user) {
         $("#githubPopupWindow").css("display", "flex");
       }
       else {
-        alert(data);
+        toast("",data,7);
       }
       dataCheck = true;
     },
@@ -480,13 +481,13 @@ function refreshGithubRepo(courseid, user) {
       switch (data.status) {
         case 403:
         case 422:
-          alert(data.responseJSON.message + "\nDid not update course");
+          toast("error",data.responseJSON.message + "\nDid not update course",7);
           break;
         case 503:
-          alert(data.responseJSON.message + "\nDid not update course");
+          toast("error",data.responseJSON.message + "\nDid not update course",7);
           break;
         default:
-          alert("Something went wrong...");
+          toast("error","Something went wrong...",7);
       }
       dataCheck = false;
     }
@@ -515,10 +516,10 @@ function updateGithubRepo(githubURL, cid, githubKey) {
         case 403:
         case 422:
         case 503:
-          alert(data.responseJSON.message + "\nFailed to update github repo");
+          toast("error",data.responseJSON.message + "\nFailed to update github repo",7);
           break;
         default:
-          alert("Something went wrong...");
+          toast("error","Something went wrong...",7);
       }
       dataCheck = false;
     }
@@ -546,10 +547,10 @@ function fetchGitHubRepo(gitHubURL) {
       switch (data.status) {
         case 422:
         case 503:
-          alert(data.responseJSON.message + "\nDid not update course, double check github link?");
+          toast("error",data.responseJSON.message + "\nDid not update course, double check github link?",7);
           break;
         default:
-          alert("Something went wrong...");
+          toast("error","Something went wrong...",7);
       }
       dataCheck = false;
     }
@@ -724,6 +725,7 @@ function confirmBox(operation, item = null) {
     console.log("testworkornah?");
     $("#gitHubTemplate").css("display", "flex");
     gitTemplatePopupOutsideClickHandler();
+    fetchCodeExampleHiddenLinkParam(item);
   } else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
@@ -1006,6 +1008,7 @@ function deleteItem(item_lid = null) {
   item.classList.add("deleted");
 
   document.querySelector("#undoButton").style.display = "block";
+  toast("undo", "Undo deletion?", 15, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   delArr.push(lid);
   clearTimeout(delTimer);
@@ -1049,7 +1052,7 @@ function updateSelectedDir() {
     success: function (data) {
       console.log('POST-request call successful');
       console.log("Response: ", data);
-      alert('Directory has been updated succesfully')
+      toast("success",'Directory has been updated succesfully',5)
 
       // Parse the JSON response
       var response;
@@ -1072,7 +1075,7 @@ function updateSelectedDir() {
       console.error('Update failed:', error);
       console.log("Status: ", status);
       console.log("Error: ", error);
-      alert('Directory update failed')
+      toast("error",'Directory update failed',7)
     }
   });
 }
@@ -1219,10 +1222,13 @@ async function newItem(itemtitle) {
     if (element.tagName == 'DIV') {
       element = element.firstChild;
       element.classList.add("highlightChange");
+      element.scrollIntoView({behavior: 'smooth', block: 'center'});
     } else if (element.tagName == 'A') {
       document.getElementById('I' + collectedLid[0]).classList.add("highlightChange");
+      document.getElementById('I' + collectedLid[0]).scrollIntoView({behavior: 'smooth', block: 'center'});
     } else if (element.tagName == 'SPAN') {
       document.getElementById('I' + collectedLid[0]).firstChild.classList.add("highlightChange");
+      document.getElementById('I' + collectedLid[0]).firstChild.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
   }, 100);
   // Duration time for the alert before remove
@@ -1261,7 +1267,7 @@ function createVersion() {
   newversid = param.versid;
 
   if (param.versid == "" || param.versname == "") {
-    alert("Version Name and Version ID must be entered!");
+    toast("warning","Version Name and Version ID must be entered!",7);
   } else {
     if (param.copycourse != "None") {
       // Create a copy of course version
@@ -2121,17 +2127,22 @@ function returnedSection(data) {
   }
 
 }
-
+ 
 function openCanvasLink(btnobj) {
-  link = btnobj.parentNode.parentNode.querySelector('a').href;
+  //Searches closest tr element and then searches for classes that contain the link.
+  parentTr = btnobj.closest('tr');
+  linkTd = parentTr.querySelector('.example.item.hidden, .example.item');
+  link = linkTd.querySelector('a').href;
   window.open(link, "_blank");
 }
 
 function showCanvasLinkBox(operation, btnobj) {
+  
   if (operation == "open") {
-
-    var canvasLink = btnobj.parentNode.parentNode.querySelector('a').href; // "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('.internal-link').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
-    //var canvasLink = "<p><iframe src=\"" + btnobj.parentNode.parentNode.querySelector('a').href + "\" width=\"800\" height=\"1200\"></iframe></p>";
+    //Searches closest tr element and then searches for classes that contain the link.
+    parentTr = btnobj.closest('tr');
+    linkTd = parentTr.querySelector('.example.item.hidden, .example.item');
+    canvasLink = linkTd.querySelector('a').href;
 
     if (canvasLink == null) {
       canvasLink = "ERROR: Failed to get canvas link.";
@@ -2572,20 +2583,32 @@ $(window).keyup(function (event) {
     var submitButtonDisplay = ($('#submitBtn').css('display'));
     var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
-      //I don't know who did this but this call is not necessory
-      updateItem();
-      //Add class to element so it will be highlighted.
-      setTimeout(function () {
-        var element = document.getElementById('I' + updatedLidsection).firstChild;
-        if (element.tagName == 'DIV') {
-          element = element.firstChild;
-          element.classList.add("highlightChange");
-        } else if (element.tagName == 'A') {
-          document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
-        } else if (element.tagName == 'SPAN') {
-          document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
-        }
-      }, 200);
+      //If all information is correct -> item can be updated
+      if (window.bool10 == true && window.bool11 == true) {
+        updateItem();
+        //Toggle for alert when update a item
+        var element = document.getElementById("updateAlert");
+        element.classList.toggle("createAlertToggle");
+        //Set text for the alert when update a item
+        document.getElementById("updateAlert").innerHTML = "The item is now updated!";
+        //Add class to element so it will be highlighted.
+        setTimeout(function () {
+          var element = document.getElementById('I' + updatedLidsection).firstChild;
+          if (element.tagName == 'DIV') {
+            element = element.firstChild;
+            element.classList.add("highlightChange");
+          } else if (element.tagName == 'A') {
+            document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
+          } else if (element.tagName == 'SPAN') {
+            document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
+          }
+        }, 200);
+        //Duration time for the alert before remove
+        setTimeout(function () {
+          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").innerHTML = "";
+        }, 3000);
+      }
 
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
@@ -3335,7 +3358,7 @@ $(window).on('focus', function () {
 $(window).on('blur', function () {
   isActivelyFocused = false;
   console.log('User lost focus on course page, isActivelyFocused is now', isActivelyFocused);
-
+  
 });
 
 // Create an interval that checks if the window is focused and the updateInterval has passed, 
@@ -3373,35 +3396,36 @@ function validateVersionName(versionName, dialogid) {
   //var Name = /^[A-Za-z0-9_ \-.]+$/;
   var Name = /^(HT|VT|ST){1}\d{2}$/;
   var name = document.getElementById(versionName);
-  var x = document.getElementById(dialogid);
-  var val = document.getElementById(versionName).value;
+  var errorMsg = document.getElementById(dialogid);
 
   //if versionname is 2 capital letters, 2 numbers
-  if (val.match(Name)) {
-    $(x).fadeOut();
-    name.style.borderColor = "#383";
-    name.style.borderWidth = "2px";
-
-    //name.style.backgroundColor = "#fff";
-
+  if (name.value.match(Name)) {
+    $(errorMsg).fadeOut();
+    name.classList.add("color-change-valid");
+    name.classList.remove("color-change-invalid");
     name.style.backgroundColor = backgroundColorTheme;
-
-    //x.style.display = "none";
     if (versionName === 'versname') {
       window.bool3 = true;
     }
     if (versionName === 'eversname') {
       window.bool4 = true;
     }
-
     return true;
-  } else {
-    $(x).fadeIn();
-    name.style.borderColor = "#E54";
-    //name.style.backgroundColor = "#f57";
-    //x.style.display = "block";
-    name.style.borderWidth = "2px";
-
+  } else if (name.value.length > 0){
+    $(errorMsg).fadeIn();
+    name.classList.add("color-change-invalid");
+    name.classList.remove("color-change-valid");
+    if (versionName === 'versname') {
+      window.bool3 = false;
+    }
+    if (versionName === 'eversname') {
+      window.bool4 = false;
+    }
+    return false;
+  }else{
+    $(errorMsg).fadeOut();
+    name.classList.remove("color-change-invalid");
+    name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
       window.bool3 = false;
     }
@@ -3414,89 +3438,76 @@ function validateVersionName(versionName, dialogid) {
 
 // ------ Validate versionID ------
 function validateCourseID(courseid, dialogid) {
-
   //regex numbers, letters and dashes, between 3 and 8 numbers
   var Code = /^[0-9]{3,8}$/;
-  var code = document.getElementById(courseid);
-  var x2 = document.getElementById(dialogid);
-  var val = document.getElementById(courseid).value;
+  var cid = document.getElementById(courseid);
+  var errorMsg = document.getElementById(dialogid);
 
-  if (val.match(Code)) {
-    $(x2).fadeOut();
-    code.style.borderColor = "#383";
-    code.style.borderWidth = "2px";
-    //code.style.backgroundColor = "#fff";
-
-    code.style.backgroundColor = backgroundColorTheme;
-    //x2.style.display = "none";
+  if (cid.value.match(Code)) {
+    $(errorMsg).fadeOut();
+    cid.classList.add("color-change-valid");
+    cid.classList.remove("color-change-invalid");
+    cid.style.backgroundColor = backgroundColorTheme;
     window.bool = true;
-  } else {
-    $(x2).fadeIn();
-    code.style.borderColor = "#E54";
-    //code.style.backgroundColor = "#f57";
-    code.style.borderWidth = "2px";
-    //x2.innerHTML = "numbers, letters and dashes(between 3-8)";
-    //x2.style.display = "block";
+  } else if (cid.value.length > 0){
+    $(errorMsg).fadeIn();
+    cid.classList.add("color-change-invalid");
+    cid.classList.remove("color-change-valid");
+    window.bool = false;
+    return false;
+  }else{
+    $(errorMsg).fadeOut();
+    cid.classList.remove("color-change-invalid");
+    cid.classList.remove("color-change-valid");
     window.bool = false;
     return false;
   }
-
-  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === val);
+  const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === cid.value);
   if (versionIsValid) {
-    $(x2).fadeIn();
-    code.style.borderColor = "#E54";
-    //code.style.backgroundColor = "#f57";
-    code.style.borderWidth = "2px";
-    x2.innerHTML = "Version ID already exists, try another";
-    //x2.style.display = "block";
+    errorMsg.innerHTML = "Version ID already exists, try another";
+    $(errorMsg).fadeIn();
+    cid.classList.add("color-change-invalid");
+    cid.classList.remove("color-change-valid");
     window.bool = false;
   } else {
     return true;
   }
-
   return false
 }
 
-function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton) {
-  const saveButton = document.getElementById(submitButton);
+function validateMOTD(motd, syntaxdialogid, rangedialogid) {
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
-  var x4 = document.getElementById(syntaxdialogid);
-  var x8 = document.getElementById(rangedialogid);
+  var errorMsg1 = document.getElementById(syntaxdialogid);
+  var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
-    $(x4).fadeOut()
-    //x4.style.display = "none";
+    $(errorMsg1).fadeOut()
     window.bool9 = true;
   } else {
-    $(x4).fadeIn()
-    //x4.style.display = "block";
+    $(errorMsg1).fadeIn()
     window.bool9 = false;
   }
-
   if (emotd.value.match(EmotdRange)) {
-    $(x8).fadeOut()
-    //x8.style.display = "none";
+    $(errorMsg2).fadeOut()
     window.bool9 = true;
   } else {
-    $(x8).fadeIn()
-    //x8.style.display = "block";
+    $(errorMsg2).fadeIn()
     window.bool9 = false;
   }
-  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange)) {
-    //emotd.style.backgroundColor = "#ffff";
-
+  if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
     emotd.style.backgroundColor = backgroundColorTheme;
-    emotd.style.borderColor = "#383";
-    emotd.style.borderWidth = "2px";
-    saveButton.disabled = false;
+    emotd.classList.add("color-change-valid");
+    emotd.classList.remove("color-change-invalid");
     return true;
-  } else {
-    //emotd.style.backgroundColor = "#f57";
-    emotd.style.borderColor = "#E54";
-    emotd.style.borderWidth = "2px";
-    saveButton.disabled = true;
+  } else if (emotd.value.length > 0) {
+    emotd.classList.add("color-change-invalid");
+    emotd.classList.remove("color-change-valid");
     return false;
+  }else{
+    emotd.classList.remove("color-change-invalid");
+    emotd.classList.remove("color-change-valid");
+    return true;
   }
 }
 
@@ -3504,37 +3515,30 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton) {
 function validateDate(startDate, endDate, dialogID) {
   var sdate = document.getElementById(startDate);
   var edate = document.getElementById(endDate);
-  var x3 = document.getElementById(dialogID);
+  var errorMsg = document.getElementById(dialogID);
 
   var date1 = new Date(sdate.value);
   var date2 = new Date(edate.value);
 
   // If one of the dates is not filled in
   if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
-    sdate.style.borderColor = "#E54";
-    edate.style.borderColor = "#E54";
-    sdate.style.borderWidth = "2px";
-    edate.style.borderWidth = "2px";
-    //sdate.style.backgroundColor = "#f57";
-    //edate.style.backgroundColor = "#f57";
-    $(x3).fadeIn();
-    x3.innerHTML = "Both start date and end date must be filled in";
-    //x3.style.display = "block";
+    errorMsg.innerHTML = "Both start date and end date must be filled in";
+    $(errorMsg).fadeIn();
+    sdate.classList.add("color-change-invalid");
+    edate.classList.add("color-change-invalid");
+    sdate.classList.remove("color-change-valid");
+    edate.classList.remove("color-change-valid");
     return false;
   }
   // If start date is less than end date
   if (date1 < date2) {
-    sdate.style.borderColor = "#383";
-    edate.style.borderColor = "#383";
-    sdate.style.borderWidth = "2px";
-    edate.style.borderWidth = "2px";
-    //sdate.style.backgroundColor = "#fff";
-    //edate.style.backgroundColor = "#fff";
-
+    sdate.classList.add("color-change-valid");
+    edate.classList.add("color-change-valid");
+    sdate.classList.remove("color-change-invalid");
+    edate.classList.remove("color-change-invalid");
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
-    $(x3).fadeOut();
-    //x3.style.display = "none";
+    $(errorMsg).fadeOut();
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -3545,15 +3549,12 @@ function validateDate(startDate, endDate, dialogID) {
   }
   // If end date is less than start date
   if (date2 < date1) {
-    sdate.style.borderColor = "#E54";
-    edate.style.borderColor = "#E54";
-    //sdate.style.backgroundColor = "#f57";
-    //edate.style.backgroundColor = "#f57";
-    $(x3).fadeIn();
-    x3.innerHTML = "Start date has to be before end date";
-    //x3.style.display = "block";
-    sdate.style.borderWidth = "2px";
-    edate.style.borderWidth = "2px";
+    errorMsg.innerHTML = "Start date has to be before end date";
+    $(errorMsg).fadeIn();
+    sdate.classList.add("color-change-invalid");
+    edate.classList.add("color-change-invalid");
+    sdate.classList.remove("color-change-valid");
+    edate.classList.remove("color-change-valid");
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = false;
     }
@@ -3594,7 +3595,7 @@ function validateDate2(ddate, dialogid) {
     var ddate = document.getElementById(ddate);
     var deadlinehours = document.getElementById("deadlinehours");
     var deadlineminutes = document.getElementById("deadlineminutes");
-    var x = document.getElementById(dialogid);
+    var errorMsg = document.getElementById(dialogid);
     var deadline = new Date(ddate.value);
     deadline.setHours(deadlinehours.options[deadlinehours.selectedIndex].value, deadlineminutes.options[deadlineminutes.selectedIndex].value);
     // Dates from database
@@ -3603,34 +3604,27 @@ function validateDate2(ddate, dialogid) {
 
     // If deadline is between start date and end date
     if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
-      ddate.style.borderColor = "#383";
-      ddate.style.borderWidth = "2px";
+      $(errorMsg).fadeOut();
+      ddate.classList.add("color-change-valid");
+      ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
-      $(x).fadeOut();
-      //x.style.display = "none";
       window.bool8 = true;
-
       return true;
     } else if (!$("#absolutedeadlinecheck").is(":checked")) {
       // If absolute deadline is not being used
-      $(x).fadeIn();
-      ddate.style.borderWidth = "2px";
+      $(errorMsg).fadeIn();
+      ddate.classList.remove("color-change-valid");
+      ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
-      ddate.style.borderColor = "#aaa";
-      // x.style.display = "block";
       window.bool8 = true;
       return true;
-
     } else {
-      $(x).fadeIn();
-      ddate.style.borderColor = "#E54";
-      ddate.style.backgroundColor = "#f57";
-      //x.style.display = "block";
-      ddate.style.borderWidth = "2px";
+      $(errorMsg).fadeIn();
+      ddate.classList.add("color-change-invalid");
+      ddate.classList.remove("color-change-valid");
       window.bool8 = false;
     }
-  }
-  else {
+  } else {
     window.bool8 = true;
   }
   return false;
@@ -3638,25 +3632,26 @@ function validateDate2(ddate, dialogid) {
 
 function validateSectName(name) {
   initInputColorTheme();
-  var emotd = document.getElementById(name);
-  var tooltipTxt = document.getElementById("dialog10");
-  tooltipTxt.style.left = 50 + "px";
-  tooltipTxt.style.top = -50 + "px";
-  emotd.style.borderWidth = "2px";
-  // Valid string
-  if (emotd.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
-    emotd.style.borderColor = "#383";
-    emotd.style.borderWidth = "2px";
-    emotd.style.backgroundColor = inputColorTheme;
-    $('#dialog10').fadeOut();
+  var element = document.getElementById(name);
+  var errorMsg = document.getElementById("dialog10");
+  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+    $(errorMsg).fadeOut();
+    element.style.backgroundColor = inputColorTheme;
+    element.classList.add("color-change-valid");
+    element.classList.remove("color-change-invalid");
     window.bool10 = true;
     return true;
-  } else { // Invalid string
-    emotd.style.borderColor = "#E54";
-    emotd.style.backgroundColor = "#f57";
-    emotd.style.borderWidth = "2px";
+  } else if (element.value.length > 0) { //Invalid
+    $(errorMsg).fadeIn();
+    element.classList.add("color-change-invalid");
+    element.classList.remove("color-change-valid");
     window.bool10 = false;
-    $('#dialog10').fadeIn();
+    return false;
+  }else{
+    $(errorMsg).fadeOut();
+    element.classList.remove("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
     return false;
   }
 }
@@ -3717,107 +3712,47 @@ function getCourseElements() {
 function quickValidateForm(formid, submitButton) {
   const saveButton = document.getElementById(submitButton);
   var valid = true;
-  //Validates Item form
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
-    var deadDate = document.getElementById("setDeadlineValue").value;
     var item = document.getElementById("editSectionDialogTitle").innerHTML;
-    var endialog = document.getElementById("EndDialog1");
-    endialog.innerHTML = "";
-    valid = true;
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display;
-    valid = valid && validateSectName('sectionname');
+    valid = true;
+    valid &= validateSectName('sectionname');
 
     // Validates Deadline
     if (deadlinedisplayattribute != 'none') {
-      valid = valid && showCourseDate('setDeadlineValue', 'dialog8');
+      valid &= showCourseDate('setDeadlineValue', 'dialog8');
     }
-
-
-    //If fields empty
-    if (sName == null || sName == "") {
-      //alert("Fill in all fields");
-      //endialog.innerHTML += "Fill in all fields </br>";
-      valid = false;
-    }
+    //Empty check
+    valid &= !(sName == null || sName == "");
 
     //Name is a duplicate
-    if (sName == item) {
-      window.bool11 = true;
-
-    }
-
-    if (valid) {
-      saveButton.disabled = false;
-    } else {
-      saveButton.disabled = true;
-    }
-  }
-  //Validates new course version form
-  if (formid === 'newCourseVersion') {
+    window.bool11 |= sName == item
+    saveButton.disabled = !valid;
+  }else if (formid === 'newCourseVersion') {
     var versName = document.getElementById("versname").value;
     var versId = document.getElementById("cversid").value;
-    var endialog = document.getElementById("EndDialog2");
-    endialog.innerHTML = "";
     valid = true;
-    //Compilator is stupid. Cannot use one bool. Does not execute other methods if bool is already false.
-    valid2 = true;
-    valid3 = true;
-    valid4 = true;
+    valid &= validateCourseID('cversid', 'dialog2');
+    valid &= validateVersionName('versname', 'dialog');
+    valid &= validateDate('startdate', 'enddate', 'dialog3');
+    valid &= validateMOTD('vmotd', 'dialog4', 'dialog42');
 
-
-    valid = (valid && validateCourseID('cversid', 'dialog2'));
-
-    //valid = (valid && validateVersionName('versname', 'dialog')); >:|
-    valid2 = (valid2 && validateVersionName('versname', 'dialog'));
-
-    valid3 = (valid3 && validateDate('startdate', 'enddate', 'dialog3'));
-
-    valid4 = (valid4 && validateMOTD('vmotd', 'dialog4', 'dialog42', 'submitCourseMotd'));
-
-    valid = valid && valid2 && valid3 && valid4
-
-    //If fields empty
-    if (versName == null || versName == "", versId == null || versId == "") {
-      //alert("Fill in all fields");
-      //endialog.innerHTML += "Fill in all fields </br>";
-      valid = false;
-    }
-
-    if (valid) {
-      saveButton.disabled = false;
-    } else {
-      saveButton.disabled = true;
-    }
-  }
-
-  // validates edit course version form
-  if (formid === 'editCourseVersion') {
+    //Empty check
+    valid &= !(versName == null || versName == "", versId == null || versId == "");
+    saveButton.disabled = !valid;
+  } else if (formid === 'editCourseVersion') {
     var eversName = document.getElementById("eversname").value;
-    var endialog = document.getElementById("EndDialog3");
-    endialog.innerHTML = "";
     valid = true;
+    valid &= validateVersionName('eversname', 'dialog5');
+    valid &= validateDate('estartdate', 'eenddate', 'dialog6');
+    valid &= validateMOTD('eMOTD', 'dialog9', 'dialog92');
 
-    valid = valid && validateVersionName('eversname', 'dialog5')
-    valid = valid && validateDate('estartdate', 'eenddate', 'dialog6')
-    valid = valid && validateMOTD('eMOTD', 'dialog9', 'dialog92', 'submitEditCourse')
-
-    //If fields empty
-    if (eversName == null || eversName == "") {
-      //alert("Fill in all fields");
-      //endialog.innerHTML += "Fill in all fields </br>";
-      valid = false;
-    }
-
-
-    if (valid) {
-      saveButton.disabled = false;
-    } else {
-      saveButton.disabled = true;
-    }
+    //Empty check
+    valid &= !(eversName == null || eversName == "");
+    saveButton.disabled = !valid;
   }
-
 }
 
 
@@ -3833,8 +3768,7 @@ function validateForm(formid) {
 
     // If fields empty
     if (sName == null || sName == "") {
-      alert("Fill in all fields");
-
+      toast("warning","Fill in all fields",5);
     }
 
     //Name is a duplicate
@@ -3843,7 +3777,7 @@ function validateForm(formid) {
     }
     else if (getCourseElements().indexOf(sName) >= 0) {
       window.bool11 = false;
-      alert('Name already exists, choose another one');
+      toast("error",'Name already exists, choose another one',7);
     } else {
       window.bool11 = true;
     }
@@ -3878,7 +3812,7 @@ function validateForm(formid) {
         document.getElementById("updateAlert").innerHTML = "";
       }, 3000);
     } else {
-      alert("You have entered incorrect information");
+      toast("error","You have entered incorrect information",7);
     }
   }
   // validates the github moment from github integration (the github icon)
@@ -3887,7 +3821,7 @@ function validateForm(formid) {
 
     // Validate fields here. For example, check if fields are not empty
     if (selectedDir == "" || selectedDir == null) {
-      alert("Pick directory");
+      toast("warning","Pick directory",5);
       return;
     }
 
@@ -3902,7 +3836,7 @@ function validateForm(formid) {
 
     //If fields empty
     if (versName == null || versName == "", versId == null || versId == "") {
-      alert("Fill in all fields");
+      toast("warning","Fill in all fields",5);
 
     }
     // If all information is correct
@@ -3912,7 +3846,7 @@ function validateForm(formid) {
       $('#newCourseVersion input').val("");
 
     } else {
-      alert("You have entered incorrect information");
+      toast("Error","You have entered incorrect information",5);
     }
   }
 
@@ -3922,7 +3856,7 @@ function validateForm(formid) {
 
     // If fields empty
     if (eversName == null || eversName == "") {
-      alert("Fill in all fields");
+      toast("warning","Fill in all fields",5);
 
     }
 
@@ -3932,7 +3866,7 @@ function validateForm(formid) {
       updateVersion();
       resetMOTDCookieForCurrentCourse();
     } else {
-      alert("You have entered incorrect information");
+      toast("error","You have entered incorrect information",7);
     }
   }
 
@@ -4078,7 +4012,7 @@ function fetchGitCodeExamples(courseid){
   var filteredFiles = [];
 
   if(filePath == "" || githubURL == "" || fileName == ""){
-    return alert('Fill in all boxes!');
+    return toast("warning",'Fill in all boxes!',5);
   }
 
   var folderPath = getParentFolderOfFile(filePath);
@@ -4091,7 +4025,7 @@ function fetchGitCodeExamples(courseid){
       }
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
-      //Test here to view content in console. codeExamplesContent array elements contains alot of info. 
+      //Test here to view content in console. codeExamplesContent array elements contains alot of info.
       storeCodeExamples(cid, codeExamplesContent, githubURL);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
@@ -4187,6 +4121,7 @@ function fetchGitCodeExamples(courseid){
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
 function storeCodeExamples(cid, codeExamplesContent, githubURL){
+    var templateNo = updateTemplate();
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[];
     //Push all file data into separate arrays and add them into one single array.
     codeExamplesContent.map(function(item) {
@@ -4206,7 +4141,9 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       filePaths: filePath,
       fileURLS: fileURL,
       downloadURLS: downloadURL,
-      fileTypes: fileType
+      fileTypes: fileType,
+      codeExamplesLinkParam: CeHiddenParameters,
+      templateid: templateNo
     }
     //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
@@ -4219,15 +4156,19 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       .then(response => response.text())
       .then(data => {
         //For testing/finding bugs/errors
-        //console.log(data);
-
+        console.log(data);
         confirmBox('closeConfirmBox');
       })
       .catch(error => {
           console.error('Error calling PHP function:', error);
       });
 }
-  
+function updateTemplate() {
+  templateNo = $("#templateno").val();
+  $("#chooseTemplateContainer").css("display", "none");
+  var templateNo = $("#templateno").val();
+  return templateNo;
+}  
 function changetemplate(templateno) {
   $(".tmpl").each(function (index) {
     $(this).css("background", "#ccc");
@@ -4270,8 +4211,33 @@ function changetemplate(templateno) {
       boxes = 1;
       break;
   }
+  localStorage.setItem("boxAmount", boxes);
 }
-
+//TODO: add more error handling. Diffent query selector for test examples and new code examples >:(
+//td.example.item for parentTr. a.example-link for span
+function fetchCodeExampleHiddenLinkParam(codeExampleItem) {
+  var parentTr = codeExampleItem.closest('tr');
+  if (parentTr) {
+      var childTd = parentTr.querySelector('td.example.item.hidden');
+      var childDiv = childTd.querySelector('div.ellipsis.nowrap');
+      var span = childDiv.querySelector('span');
+      if (span) {
+          var hiddenLink = span.querySelector('a.hidden.internal-link');
+          if (hiddenLink) {
+              var url = new URL(hiddenLink.href);
+              var exampleId = url.searchParams.get('exampleid');
+              var courseId = url.searchParams.get('courseid');
+              var courseName = url.searchParams.get('coursename');
+              var cvers = url.searchParams.get('cvers');
+              var lid = url.searchParams.get('lid');
+              CeHiddenParameters.length = 0;
+              CeHiddenParameters.push(exampleId, courseId, courseName, cvers, lid);
+          } else {
+              console.log('Hidden link not found');
+          }
+      }
+  }
+}
 // In sectioned.js, each <img>-tag with a Github icon has an onClick, this "getLidFromButton" is an onClick function to send the "lid" into this document for use in hidden input.
 function getLidFromButton(lid) {
   document.getElementById('lidInput').value = lid;
