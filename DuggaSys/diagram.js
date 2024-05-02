@@ -136,7 +136,14 @@ class StateMachine {
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                    lastLog = appendValuesFrom(lastLog, stateChange);
+                                    lastLog = appendValuesFrom(lastLog, stateChange);                                    
+                                    const currentElement = data[findIndex(data, lastLog.id)];
+                                    lastLog.x = currentElement.x;
+                                    lastLog.y = currentElement.y;
+                                    lastLog.width = currentElement.width;
+                                    lastLog.height = currentElement.height;
+                                    
+                                    console.log(lastLog);
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
@@ -150,13 +157,13 @@ class StateMachine {
                                         change.id.forEach(id => {
                                             let currentElement = document.getElementById(id);
                                             if (lastLog.id == id) {
-                                                //add this but for (x, y) aswell
                                                 lastLog.width += currentElement.offsetWidth;
                                                 lastLog.height += currentElement.offsetHeight;
                                                 if (movedAndResized) {
                                                     currentElement = data[findIndex(data, id)];
                                                     lastLog.x = currentElement.x;
                                                     lastLog.y = currentElement.y;
+                                                    movedAndResized = false;
                                                 }
                                             }
                                         });
@@ -170,6 +177,7 @@ class StateMachine {
                                     }
 
                                     // spreaading the values so that it doesn't keep the reference
+                                    console.log(lastLog);
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
@@ -943,10 +951,6 @@ function mouseMode_onMouseUp(event) {
         }
     }
     hasPressedDelete = false;
-    if (hasResized) {
-        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-        hasResized = false;
-    }
 }
 
 /**
@@ -1024,23 +1028,40 @@ function mmoving(event) {
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                    hasResized = false;
+                
+                // this mess makes so that the resize only get's logged when mup() is triggered                
+                // just having the if doesn't work since the save needs to be triggered after the user has finished moving
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
-                    hasResized = false;
+
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {
+                        stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 isUP = false;
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-                    hasResized = false;
+
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
@@ -1048,9 +1069,14 @@ function mmoving(event) {
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
                 isX = false;
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                    hasResized = false;
+
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 //set movable height
@@ -1062,9 +1088,14 @@ function mmoving(event) {
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
                 isX = true;
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                    hasResized = false;
+
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
@@ -1074,9 +1105,14 @@ function mmoving(event) {
                 let yChange = movementPosChange(elementData,startY,deltaY,isX);
                 isR = true;
                 let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                    hasResized = false;
+
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 isR = false;
@@ -1085,9 +1121,14 @@ function mmoving(event) {
                 let xChange = movementPosChange(elementData,startX,deltaX,isX);
                 isUP = false;
                 let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                    hasResized = false;
+
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                        hasResized = false;
+                    }
                 });
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 isR = true;
@@ -1096,9 +1137,13 @@ function mmoving(event) {
                 isUP = false;
                 const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
-                new Promise(hasResized).then(() => {
-                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-                    hasResized = false;
+                new Promise(resolve => {
+                    resolve(hasResized);
+                }).then(() => {
+                    if (hasResized) {                        
+                        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                        hasResized = false;
+                    }
                 });
             }
 

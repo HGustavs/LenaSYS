@@ -58,7 +58,7 @@ function mdown(event) {
 
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-        console.log(determinedLines)
+        
 
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
@@ -330,7 +330,7 @@ function mup(event) {
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-
+    hasResized = true;
     disableIfDataEmpty();
 }
 
