@@ -13,9 +13,7 @@ $testsData = array(
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/createNewCourse_ms.php',
         'service-data' => serialize(
             array( 
-                'opt' => 'UPDATEAU',
-                'username' => 'brom',
-                'password' => 'password',
+               // 'opt' => 'NEW',Is needed?
                 'coursename' => 'Test Course',
                 'coursecode' => 'TEST001',
                 'courseGitURL' => 'http://localhost/LenaSYS/DuggaSys/sectioned.php?courseid=9999&coursename=Test%20Course&coursevers=8888'
