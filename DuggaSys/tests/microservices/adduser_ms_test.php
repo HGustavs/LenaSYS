@@ -9,7 +9,9 @@ $testsData = array(
     'updateActiveUsers_ms' => array(
         'expected-output' => '999',
         'query-before-test-1' => "INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES('test123','test@student.his.se','hacker','test','19910909-0000','test',now(),'WEBUG14h');",
-        'query-after-test-1' => "DELETE FROM user WHERE username = 'test';",
+        'query-after-test-1' => "DELETE FROM user_course WHERE username = 'test';",
+        'query-after-test-2' => "DELETE FROM user WHERE username = 'test';",
+
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/addUser_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
