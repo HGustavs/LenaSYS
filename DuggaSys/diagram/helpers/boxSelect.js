@@ -21,9 +21,8 @@ function boxSelect_End() {
 function getElementsInsideCoordinateBox(selectionRect) {
     var elements = [];
     data.forEach(element => {
-
         // Box collision test
-        if (rectsIntersect(selectionRect, getRectFromElement(element))) {
+        if (selectionRect.overlap(Rect.fromElement(element))) {
             elements.push(element);
         }
     });
@@ -129,7 +128,7 @@ function boxSelect_Update(mouseX, mouseY) {
             bottomRight.y = coords.n1.y;
         }
 
-        let rect = getRectFromPoints(topLeft, bottomRight);
+        let rect = Rect.fromPoints(topLeft, bottomRight);
 
         if (ctrlPressed) {
             let markedEntities = getElementsInsideCoordinateBox(rect);
