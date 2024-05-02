@@ -1213,7 +1213,7 @@ async function newItem(itemtitle) {
   element.classList.toggle("createAlertToggle");
   // Set text for the alert when create a New Item
   document.getElementById("createAlert").innerHTML = itemtitle + " has been created!";
-  // Here we have to wait 1 tenth of a second so that the ajax service completes.
+  // Here we have to wait 2 tenth of a second so that the ajax service completes.
   setTimeout(function () {
     collectedLid.sort(function (a, b) {
       return b - a;
@@ -1230,7 +1230,7 @@ async function newItem(itemtitle) {
       document.getElementById('I' + collectedLid[0]).firstChild.classList.add("highlightChange");
       document.getElementById('I' + collectedLid[0]).firstChild.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
-  }, 100);
+  }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
     $("#createAlert").removeClass("createAlertToggle");
