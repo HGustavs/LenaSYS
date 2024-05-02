@@ -13,13 +13,11 @@ $testsData = array(
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/updateUserCourse_ms.php',
         'service-data' => serialize(
             array( // Data that service needs to execute function
-                'opt' => 'UPDATEAU',
                 'username' => 'brom',
                 'password' => 'password',
+                'prop' => 'examiner',
                 'courseid' => '3',
-                'coursevers' => '97732',
-                'hash' => 'hjk4ert6',
-                'AUtoken' => 999
+                'uid' => '9997',
             )
         ),
         'filter-output' => serialize(
@@ -41,8 +39,6 @@ $testsData = array(
                 'password' => 'password',
                 'courseid' => '2',
                 'coursevers' => '97732',
-                'hash' => 'hjk4ert6',
-                'AUtoken' => 999
             )
         ),
         'filter-output' => serialize(
@@ -64,8 +60,6 @@ $testsData = array(
                 'password' => 'password',
                 'courseid' => '2',
                 'coursevers' => '97732',
-                'hash' => 'hjk4ert6',
-                'AUtoken' => 999
             )
         ),
         'filter-output' => serialize(
@@ -87,8 +81,6 @@ $testsData = array(
                 'password' => 'password',
                 'courseid' => '2',
                 'coursevers' => '97732',
-                'hash' => 'hjk4ert6',
-                'AUtoken' => 999
             )
         ),
         'filter-output' => serialize(
