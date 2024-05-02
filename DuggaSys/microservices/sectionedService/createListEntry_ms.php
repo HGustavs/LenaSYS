@@ -3,10 +3,10 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../shared_microservices/getUid_ms.php";
-include_once "../shared_microservices/retrieveUsername_ms.php";
-include_once "../shared_microservices/createNewListentrie_ms.php";
-include_once "../shared_microservices/createNewCodeExample_ms.php";
+include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../sharedMicroservices/retrieveUsername_ms.php";
+include_once "../sharedMicroservices/createNewListEntry_ms.php";
+include_once "../sharedMicroservices/createNewCodeExample_ms.php";
 
 pdoConnect();
 session_start();

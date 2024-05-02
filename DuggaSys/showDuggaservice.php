@@ -535,7 +535,8 @@ $array = array(
 		"hash" => $hash,
 		"hashpwd" => $hashpwd,
 		"opt" => $opt,
-		"link" => $link
+		"link" => $link,
+		"activeusers" => $active,
 
 	);
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
