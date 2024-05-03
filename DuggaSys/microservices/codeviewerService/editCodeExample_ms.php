@@ -2,6 +2,8 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
 session_start();
@@ -17,14 +19,7 @@ $sectionName=getOP('sectionname');
 $exampleName=getOP('examplename');
 $playlink=getOP('playlink');
 $debug="NONE!";
-$userid="";
-
-// Checks user id, if user has none a guest id is set
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";
-}
+$userid =getUid();
 
 if(strcmp('EDITEXAMPLE',$opt)===0){
 	if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
@@ -101,4 +96,6 @@ if(strcmp('EDITEXAMPLE',$opt)===0){
 		}
 	}
 }
-?>
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
+return;
