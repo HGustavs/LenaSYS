@@ -12,14 +12,13 @@ include_once "../../../Shared/sessions.php";
 
 function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers, $log_uuid){
 
-    $mass=array();
-    $entries=array();
-    $variants=array();
-    $files=array();
+    // Initialize arrays
+    $entries = array(); 
+    $variants = array();
+    $files = array();
     $duggaPages = array();
 
-    //fethces the coursecode and coursename so they can be used as title on the browser tab.
-    //The variable is used in duggaed.js with the 'sectionedPageTitle' id
+    // Retrieve course info
     $query = $pdo->prepare("SELECT coursename,coursecode,cid FROM course WHERE cid=:cid LIMIT 1");
     $query->bindParam(':cid', $cid);
 
@@ -40,6 +39,7 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
     if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
         $writeaccess = true;
 
+        // Retrieve quiz data
         $query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers,jsondeadline FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
         $query->bindParam(':cid', $cid);
         $query->bindParam(':coursevers', $coursevers);
@@ -50,16 +50,18 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
 
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 
+            // Retrieve variants for each quiz
             $queryz = $pdo->prepare("SELECT vid,quizID,param,variantanswer,modified,disabled FROM variant WHERE quizID=:qid ORDER BY vid;");
             $queryz->bindParam(':qid',  $row['id']);
-
+    
             if(!$queryz->execute()){
                 $error=$queryz->errorInfo();
                 $debug="Error updating entries".$error[2];
             }
-
+    
+            $mass=array(); 
             foreach($queryz->fetchAll(PDO::FETCH_ASSOC) as $rowz){
-
+    
                 $entryz = array(
                     "vid" => $rowz["vid"],
                     "param" => html_entity_decode($rowz["param"]),
@@ -71,11 +73,12 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
                     "cogwheelVariant" => $rowz["vid"],
                     "trashcanVariant" => $rowz["vid"]
                     );
-
+    
                 array_push($variants, html_entity_decode($rowz["variantanswer"]));
                 array_push($mass, $entryz);
             }
 
+            // Construct entry for each quiz
             $entry = array(
                 'variants' => $mass,
                 'did' => $row['id'],
@@ -95,16 +98,19 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
 
             array_push($entries, $entry);
         }
-        $dir = './templates';
+        
+        // Retrieve duggas templates
+        $dir = '../../templates';
         $giles = scandir($dir);
         foreach ($giles as $value){
             if(endsWith($value,".html")){
                 array_push($files,substr ( $value , 0, strlen($value)-5 ));
-                $duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
+                $duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents($dir . "/" . $value);
             }
         }
     }
 
+    // Construct final array
     $array = array(
         'entries' => $entries,
         'debug' => $debug,
