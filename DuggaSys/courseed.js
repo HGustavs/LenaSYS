@@ -754,38 +754,38 @@ const regex = {
 };
 
 function elementIsValid(element) {
-    const inputwrapper = element.closest('.inputwrapper');
-    const messageElement = inputwrapper.querySelector('.formDialogText');
-    
-    // Reset initial validation styling and messages
-    element.classList.remove("bg-color-change-invalid");
-    $(messageElement).fadeOut();
+	const inputwrapper = element.closest('.inputwrapper');
+	const messageElement = inputwrapper.querySelector('.formDialogText');
 
-    // Handle empty input for optional fields
-    if (element.value.trim() === "") {
-        element.removeAttribute("style");
-        if (element.name === "githubToken" || element.name === "courseGitURL") {
-            return true; // Optional fields
-        }
-    }
+	// Reset initial validation styling and messages
+	element.classList.remove("bg-color-change-invalid");
+	$(messageElement).fadeOut();
 
-    // Check against regex and handle special cases
-    if (!element.value.match(regex[element.name])) {
-        element.classList.add("bg-color-change-invalid");
-        element.style.borderColor = "#E54";
-        $(messageElement).fadeIn();
-        if (element.name === "githubToken") {
-            messageElement.innerHTML = "A GitHub key should be 40 characters";
-        } else if (element.name === "coursecode") {
-            // Special handling for course codes
-            if (activeCodes.includes(element.value) && element.value !== element.dataset.origincode) {
-                messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
-            } else {
-                messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
-            }
-        }
-        return false;
-    }
+// Handle empty input for optional fields
+	if (element.value.trim() === "") {
+		element.removeAttribute("style");
+		if (element.name === "githubToken" || element.name === "courseGitURL") {
+			return true; // Optional fields
+		}
+	}
+
+	// Check against regex and handle special cases
+	if (!element.value.match(regex[element.name])) {
+		element.classList.add("bg-color-change-invalid");
+		element.style.borderColor = "#E54";
+		$(messageElement).fadeIn();
+		if (element.name === "githubToken") {
+			messageElement.innerHTML = "A GitHub key should be 40 characters";
+		} else if (element.name === "coursecode") {
+			// Special handling for course codes
+			if (activeCodes.includes(element.value) && element.value !== element.dataset.origincode) {
+				messageElement.innerHTML = `${element.value} is already in use. Choose another.`;
+			} else {
+				messageElement.innerHTML = "2 Letters, 3 digits, 1 letter";
+		}
+		 }
+		return false;
+	}
 
     // If the input passes validation
     element.style.borderColor = "#383";
