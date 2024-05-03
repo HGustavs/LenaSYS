@@ -934,7 +934,6 @@
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state</p><br>
-                    <p id="tooltip-RESET_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
