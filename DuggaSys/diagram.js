@@ -1420,6 +1420,9 @@ function saveProperties() {
                 formatArr = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
+                        if (Array.from(arrElementFunc[i])[0] != '-') {
+                            `+${arrElementFunc[i]}`;
+                        }
                         formatArr.push(arrElementFunc[i]);
                     }
                 }
