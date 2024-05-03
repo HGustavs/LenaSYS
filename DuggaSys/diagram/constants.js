@@ -44,7 +44,8 @@ const keybinds = {
     TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
     SAVE_DIAGRAM: { key: "s", ctrl: true },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
-    RESET_DIAGRAM: { key: "i", ctrl: false},
+    RESET_DIAGRAM: { key: "i", ctrl: false}, //new keybind for reseting diagram
+    TOGGLE_TEST_CASE: { key: "u", ctrl: false}, //new keybind for Toggleing test case
 };
 
 /**
