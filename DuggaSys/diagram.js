@@ -140,8 +140,7 @@ class StateMachine {
                                     currentElement = data[findIndex(data, lastLog.id)];
                                     lastLog.width = currentElement.width;   
                                     lastLog.height = currentElement.height;
-                                    
-                                    // somehow the last element in historyLog get's overwritten with the same coordinates as the newest entry
+                                                                        
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
@@ -149,12 +148,14 @@ class StateMachine {
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
+                                    console.log(lastLog)
                                     const id = stateChange.id[0];
-                                    currentElement = data[findIndex(data, id)];
                                     if (lastLog.id == id) {
-                                        lastLog.width += currentElement.width;
-                                        lastLog.height += currentElement.height;
+                                        currentElement = document.getElementById(id);
+                                        lastLog.width += currentElement.offsetWidth;
+                                        lastLog.height += currentElement.offsetHeight;
                                         if (movedAndResized) {
+                                            currentElement = data[findIndex(data, id)];
                                             lastLog.x = currentElement.x;
                                             lastLog.y = currentElement.y;
                                             movedAndResized = false;
@@ -167,7 +168,7 @@ class StateMachine {
                                         // yes, the double [0][0] is neccesarry to access the ID
                                         lastLog.id = lastLog.id[0][0];
                                     }
-
+                                    // TODO: for some reason it runs on mdown and not mup, fix
                                     // spreaading the values so that it doesn't keep the reference
                                     this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
@@ -960,11 +961,11 @@ function mouseMode_onMouseUp(event) {
  */
 function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
     new Promise(resolve => {
-        resolve(hasResized);
+        resolve(historyHandler.hasUpdated);
     }).then(() => {
-        if (hasResized) {                                    
+        if (historyHandler.hasUpdated) {
             stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-            hasResized = false;
+            historyHandler.hasUpdated = false;
         }
     });
 }
@@ -977,11 +978,17 @@ function prepareElementMovedAndResized(id, xChange, yChange, widthChange, height
  */
 function prepareElementResized(id, widthChange, heightChange) {
     new Promise(resolve => {
-        resolve(hasResized);
+        console.log(1);
+        resolve(historyHandler.hasUpdated);
+        console.log(2);
     }).then(() => {
-        if (hasResized) {                                    
+        canResize = true;
+        console.log(3, hasResized);
+        if (historyHandler.hasUpdated) {
+            console.log(4);
             stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-            hasResized = false;
+            historyHandler.hasUpdated = false;
+            console.log(5);
         }
     });
 }

@@ -394,6 +394,13 @@ const subMenuSequence = [
     elementTypes.sequenceLoopOrAlt,
 ]
 
+// variables for resizing
+const historyHandler = {
+    canUpdate: false,
+    hasUpdated: false,
+    type: 0  //0 = resize, 1 = movedAndResized, 2 = moved. More can be added as needed
+}
+
 //#endregion ===================================================================================
 //#region ================================ DEFAULTS ============================================
 
