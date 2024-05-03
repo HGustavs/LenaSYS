@@ -3726,16 +3726,17 @@ function quickValidateForm(formid, submitButton) {
     var matchesGithubURL = regex.githubURL.test(githubURLInput.value);
     if(matchesFileName) {
       fileNameInput.classList.remove("bg-color-change-invalid");
-      document.getElementById("dialogfileNameValidate").style.display="none";
+      document.getElementById("fileNameError").style.display="none";
     }else {
       fileNameInput.classList.add("bg-color-change-invalid");
-      document.getElementById("dialogfileNameValidate").style.display="block";
+      document.getElementById("fileNameError").style.display="inline";
     }
     if(matchesGithubURL) {
       githubURLInput.classList.remove("bg-color-change-invalid");
-
+      document.getElementById("gitHubError").style.display="none";
     }else {
       githubURLInput.classList.add("bg-color-change-invalid");
+      document.getElementById("gitHubError").style.display="inline";
     }
   }
 
