@@ -655,7 +655,7 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer" onmouseover='quickValidateForm("gitHubTemplate","saveCourse")' style="display:none;">
+		<div id='gitHubTemplate' class="loginBoxContainer"  style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
 						<h3>Choose Template</h3>
@@ -676,12 +676,12 @@
 							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template9_butt.svg' /></td>
 							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template10_butt.svg' /></td>
 						</tr>
-						<div class="formDialog" style="display: block; top:0px; left: 125px;">
-							<span id="templateTableError" style="display: none; left:0px; bottom:5px;" class="formDialogText">Please chose a template</span>
-						</div>
 					</table>
 					<table id="templateOptions" width="100%">
-					</table>
+						</table>
+						<div class="formDialogWide">
+							<span id="templateTableError" class="formDialogText">Please chose a template for your code-example</span>
+						</div>
 					<table width="100%">
 					    <tr> 
 				            <td align='right'><input id="saveGitTemplate" class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
