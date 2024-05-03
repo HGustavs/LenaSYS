@@ -103,52 +103,38 @@
         toastDiv.classList.add('show', 'toast');
 
         function truncateOverflow(toastText) {
-        const maxChars = 70; // Set the maximum number of characters before truncating
-        const toastContent = toastText.textContent.trim();
-        if (toastContent.length > maxChars) {
-            // Truncate the content and add "..."
-            toastText.textContent = toastContent.slice(0, maxChars) + '...';
-            toastText.dataset.fullText = toastContent; // Store the full text in a data attribute
+            const maxChars = 70; // Set the maximum number of characters before truncating
+            const toastContent = toastText.textContent.trim();
+            if (toastContent.length > maxChars) {
+                // Truncate the content and add "..."
+                toastText.textContent = toastContent.slice(0, maxChars) + '...';
+                toastText.dataset.fullText = toastContent; // Store the full text in a data attribute
             }
         }
 
+    toastDiv.addEventListener('click', function(event) {
+        // Check if the click target is not the close button
+        if (!event.target.classList.contains('closeIcon')) {
+            const toastText = this.querySelector('.toastText');
+            const hasOverflow = toastText.scrollHeight > toastText.clientHeight;
+            const isExpanded = this.classList.contains('expanded');
 
-
-
-        toastDiv.addEventListener('click', function(event) {
-            // Check if the click target is not the close button
-            if (!event.target.classList.contains('closeIcon')) {
-
-
-                const toastText = this.querySelector('.toastText');
-                const hasOverflow = toastText.scrollHeight > toastText.clientHeight;
-                const isExpanded = this.classList.contains('expanded');
-
-
-                this.classList.toggle('expanded');
-                toastText.textContent = toastText.dataset.fullText || toastText.textContent;
+            this.classList.toggle('expanded');
+            toastText.textContent = toastText.dataset.fullText || toastText.textContent;
                    
-                    // If the toast is expanded, set the height to auto to show full text
-                    if (this.classList.contains('expanded'))
-                    {
-                        // Reset the height to auto to show full text
-                        toastText.style.height = 'auto';
-                    }
-                      // If the toast was previously expanded and is now collapsed, reset the height to 2rem
-                    if (isExpanded && !this.classList.contains('expanded'))
-                    {
-                        truncateOverflow(toastText); // Truncate overflow text
-                        toastText.style.height = '2.3rem';
-                    }
-
-
+            // If the toast is expanded, set the height to auto to show full text
+            if (this.classList.contains('expanded')){
+                // Reset the height to auto to show full text
+                toastText.style.height = 'auto';
             }
-        });
-
-
-        truncateOverflow(toastText); // Truncate overflow text initially
-
-
+            // If the toast was previously expanded and is now collapsed, reset the height to 2rem
+            if (isExpanded && !this.classList.contains('expanded')){
+                truncateOverflow(toastText); // Truncate overflow text
+                toastText.style.height = '2.3rem';
+            }
+        }
+    });
+    truncateOverflow(toastText); // Truncate overflow text initially
 
         // The duration of a toast decides how long it should be visible for
         // If no duration is given, the default duration should be 3 seconds.
