@@ -7,6 +7,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
+include_once "retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
@@ -58,8 +59,7 @@ createNewListentrie($pdo,array(
     "grptype" => $grptype,
 ));
 
-include_once "./retrieveSectionedService_ms.php";
-$data=retrieveSectionedService($debug,$opt,$pdo,$userid,$courseid,$coursevers,$log_uuid);
-echo json_encode($data);
 
+echo json_encode(retrieveSectionedService($debug,$opt,$pdo,$userid, $courseid, $coursevers, $log_uuid));
 return;
+?>

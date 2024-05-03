@@ -9,6 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -26,4 +27,4 @@ if($query->execute()) {
 }else{
     $debug="Failed to get listentries with visibility DELETED!";
 }
-echo json_encode($results);
+echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));

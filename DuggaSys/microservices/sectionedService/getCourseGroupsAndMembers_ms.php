@@ -10,6 +10,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../../coursesyspw.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -71,9 +72,10 @@ if(checklogin()){
 }
 
 
-include_once "./retrieveSectionedService_ms.php";
 $data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
 $data['grplst'] = $grplst;
 $data['grpmembershp'] = $grpmembershp;
 echo json_encode($data);
 return;
+
+?>

@@ -7,6 +7,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../../../Shared/sessions.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -25,6 +26,6 @@ function getCourseVersions($pdo) {
     }
     return $versions;
 }
-$versions = getCourseVersions($pdo);
-echo json_encode($versions);
+
+echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
 return;

@@ -7,6 +7,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../Share/basic.php";
 include_once "../Share/sessions.php";
 include ('../shareMicroservices/getUid_ms.php');
+include_once "retrieveSectionedService_ms.php";
 
 
 // Connect to database and start session
@@ -45,5 +46,5 @@ if (checklogin() && isSuperUser(getUid())){
 } else {
     echo "insufficient permissions.";
 }
-
+echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
 ?>

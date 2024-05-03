@@ -9,6 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
@@ -36,3 +37,7 @@ if($ha || $studentTeacher) {
         $debug="Error updating entries".$error[2];
     }
 }
+
+echo json_encode(retrieveSectionedService($debug,$opt,$pdo,$userid, $courseid, $coursevers, $log_uuid));
+
+?>

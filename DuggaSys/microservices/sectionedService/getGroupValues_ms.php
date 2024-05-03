@@ -13,6 +13,7 @@
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -34,4 +35,5 @@ if(checklogin()){
 	}
 }
 
+echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
 return;

@@ -4,6 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -115,4 +116,4 @@ if(strcmp($opt,"UPDATE")===0) {
     }
 }
 
-// add echo json_decode(retrieveSectionedService()); here
+echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));

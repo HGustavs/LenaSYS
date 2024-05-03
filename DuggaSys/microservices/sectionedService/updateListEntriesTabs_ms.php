@@ -3,6 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -22,3 +23,5 @@ if(strcmp($opt,"UPDATETABS")===0){
         $debug="ERROR: Failed to update gradesystem. Details: ".$error[2];
     }
 }
+
+echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));

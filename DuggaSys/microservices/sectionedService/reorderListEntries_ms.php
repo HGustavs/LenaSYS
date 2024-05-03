@@ -4,6 +4,7 @@
   include_once "../../../Shared/sessions.php";
   include_once "../../../Shared/basic.php";
   include_once "../sharedMicroservices/getUid_ms.php";
+  include_once "retrieveSectionedService_ms.php";
 
   pdoConnect();
   session_start();
@@ -39,5 +40,6 @@
     }
   }
 
-  echo json_encode(array('courseid' => $courseid, 'coursevers' => $coursevers, 'pos' => $pos, 'moment' => $moment, 'debug' => $debug));
+  echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
+  
   return;
