@@ -772,7 +772,7 @@ function writeFilesInDir($path, $fileNames, $content){
     }
 }
 
-function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam) {
+function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes) {
 	global $pdo;
 	$count = count($fileNames);
 	for($i = 0; $i < $count; $i ++) {
@@ -781,13 +781,13 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 		$norows = $query->fetchColumn();
-		echo $norows;
 		if($norows == 0) {
 			//TODO: Kind value should be fixed to dynamic
 			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
-			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'3',:cid);");
+			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:fileName,'3',:cid,:filesize);");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fileName', $fileNames[$i]);
+			$query->bindParam(':filesize', $fileSizes[$i]);
 			if (!$query->execute()) {
 				$error = $query->errorInfo();
 				echo "Error updating entries" . $error[2];
@@ -856,6 +856,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
 	$CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
 	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
+	$fileSizes = isset($requestDataContent['fileSizes']) ? $requestDataContent['fileSizes'] : null;
 	$path = '../../LenaSYS/courses/' . $cid;
 	$pathCoursesRoot = '../../LenaSYS/courses';
 
@@ -863,7 +864,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	writeFilesInDir($path, $fileNames, $codeExamplesContent);
 	insertIntoSqLiteGitRepo($cid, $githubURL);
 	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
-	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
+	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes);
 	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 }
