@@ -485,6 +485,7 @@ var defaults = {
         width: 200,
         height: 0, // Extra height when resizing larger than text.
         type: "IE",
+        primaryKey: ['*Primary Key'],
         attributes: ['-Attribute'],
         functions: ['+function'],
         canChangeTo: ["UML", "ER", "IE", "SD"],
