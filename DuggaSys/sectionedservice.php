@@ -194,7 +194,7 @@ if(checklogin()){
 		// The code for modification using sessions
 		if(strcmp($opt,"DEL")===0) {
 			// Delete foreign key references
-			$query = $pdo->prepare("DELETE FROM useranswer WHERE moment=:lid");
+			$query = $pdo->prepare("DELETE FROM userAnswer WHERE moment=:lid");
 			$query->bindParam(':lid', $sectid);
 
 			if(!$query->execute()) {
