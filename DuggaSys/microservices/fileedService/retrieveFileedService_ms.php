@@ -137,6 +137,6 @@ function retrieveFileedService($debug, $studentTeacher, $hasAccess, $pdo, $cid, 
         'supervisor' => $supervisor,
     );
 
-    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php", $userid, $info);
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveFileedService_ms.php", $userid, $info);
     return $array;
 }
