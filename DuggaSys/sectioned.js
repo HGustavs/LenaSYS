@@ -1008,13 +1008,13 @@ function deleteItem(item_lid = null) {
   item.classList.add("deleted");
 
   document.querySelector("#undoButton").style.display = "block";
-  toast("undo", "Undo deletion?", 15, "cancelDelete();");
+  toast("undo", "Undo deletion?", 5, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   delArr.push(lid);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60000);
+  }, 5000);
 }
 
 // Permanently delete elements.
