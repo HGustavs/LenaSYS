@@ -22,4 +22,6 @@ if(!$query->execute()){
     $debug="Error failed to update the gradesystem for a listentry: ".$error[2];
 }
 
-echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
+return;

@@ -24,4 +24,6 @@ if(strcmp($opt,"UPDATETABS")===0){
     }
 }
 
-echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
+return;

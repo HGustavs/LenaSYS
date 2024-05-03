@@ -32,4 +32,6 @@ if (checklogin()) { //This entire checklogin should be working by using the getU
     }
 }
 
-echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
+return;

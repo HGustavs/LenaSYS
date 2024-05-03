@@ -27,5 +27,3 @@ function getCourseVersions($pdo) {
     return $versions;
 }
 
-echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
-return;
