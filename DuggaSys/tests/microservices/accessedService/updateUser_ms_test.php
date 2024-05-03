@@ -2,8 +2,6 @@
 //------------------------------------------------------------------------------------------
 // Test for the microservice updateUser_ms
 // Tests that updating firstname, lastname, ssn, username and class works as expected
-// See documentation for how it works:
-// Shared/Documentation/Test API/Guide on how to use Test API.md  
 //------------------------------------------------------------------------------------------
 
 include "../../Shared/test.php";   // Include the test file where this is sent to
