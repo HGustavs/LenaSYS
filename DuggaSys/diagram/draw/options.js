@@ -252,6 +252,11 @@ function drawLineProperties(line) {
             let optSD = option(SDLineType, line.innerType);
             str += select('lineType', optSD, false);
             break;
+        case entityType.SE:  
+            str += includeSELabel(line)
+            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += iconSelection([SELineIcons], line);
+            break;
     }
     str += saveButton('changeLineProperties();');
     return str;
@@ -279,6 +284,11 @@ const includeLabel = (line) => {
                             onclick="setLineLabel(); changeLineProperties();"
                         >&#60&#60include&#62&#62</button>
                     </div>`
+        + lineLabel('lineLabel', 'Label', line.label);
+}
+
+const includeSELabel = (line) => {
+    return '<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>'
         + lineLabel('lineLabel', 'Label', line.label);
 }
 
@@ -1774,6 +1784,10 @@ function changeLineProperties() {
     }
     if (line.type == entityType.SD) {
         changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
+        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
+        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+    }
+    if (line.type == entityType.SE) {
         changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
         changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
     }
