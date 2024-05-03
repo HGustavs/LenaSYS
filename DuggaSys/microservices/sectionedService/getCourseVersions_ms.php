@@ -27,3 +27,7 @@ function getCourseVersions($pdo) {
     return $versions;
 }
 
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data['versions'] = getCourseVersions($pdo);
+echo json_encode($data);
+return;
