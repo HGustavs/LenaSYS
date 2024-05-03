@@ -15,6 +15,8 @@ $testsData = array(
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/accessedService/deleteCodeExample_ms.php',
         'service-data' => serialize(
             array(
+                'username' => 'brom',
+                'password' => 'password', 
                 'opt' => 'DELETEEXAMPLE',
                 'exampleid' => '1001', 
                 'boxid' => '501',
