@@ -607,7 +607,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
         }
     }
     //svg for the small label in top left corner
-    content += `<path 
+    content += `<path
                     d="M ${(7 * zoomfact) + linew},${linew}
                         h ${100 * zoomfact}
                         v ${25 * zoomfact}
@@ -628,35 +628,50 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
 function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
+    const linePositionRatio = 0.6;
+    const sideSpaceRatio = 0.1;
+    const lineShorteningRatio = 0.2;
+    const topMarginRatio = 1.0;
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
-    let length = (text.length > 4) ? text.length : 4;
+    let length = Math.ceil((boxh / texth) * 1.5);
+    length = (length > text.length) ? length : text.length;
+
     let totalHeight = boxh + texth * length;
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
+    const lineLength = boxw * (1 - 2 * sideSpaceRatio) * (1 - lineShorteningRatio);
+    const topMargin = texth * topMarginRatio;
+
     let content = `
         <path class="text"
-            d=" M ${linew},${linew}
-                v ${boxh + (texth * length) - linew * 2}
-                h ${boxw - linew * 2}
-                v -${boxh + (texth * length) - linew * 2 - (boxh - linew * 2) * 0.5}  
-                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
-                h 1
-                h -1
-                v ${(boxh - linew * 2) * 0.5} 
-                h ${(boxw - linew * 2) * 0.12}
-                v 1
-                v -1
-                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
-                h -${(boxw - linew * 2) * 0.885} "
+            d=" M ${sideSpaceRatio * boxw},${linew + topMargin}
+                v ${boxh + (texth * length) - linew * 2 - topMargin}
+                h ${boxw * (1 - 2 * sideSpaceRatio)}
+                v -${boxh + (texth * length) - linew * 2 - topMargin}
+                z "
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='${element.fill}'
         />`;
-    for (let i = 0; i < text.length; i++) {
-        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+
+    for (let i = 0; i <= length; i++) {
+        const y = texth * (i + linePositionRatio + topMarginRatio) * lineHeight;
+        content += `
+            <line x1="${sideSpaceRatio * boxw + (1 - sideSpaceRatio * 2) * boxw * 0.5 - lineLength * 0.5}"
+                  y1="${y + texth + topMargin}"
+                  x2="${sideSpaceRatio * boxw + (1 - sideSpaceRatio * 2) * boxw * 0.5 + lineLength * 0.5}"
+                  y2="${y + texth + topMargin}"
+                  style="stroke:${element.stroke};stroke-width:1" />`;
     }
+
+    for (let i = 0; i < text.length; i++) {
+        const y = texth * (i + 1 + topMarginRatio) * lineHeight;
+        const x = sideSpaceRatio * boxw * 1.75;
+        content += drawText(x, y + topMargin, 'start', text[i]);
+    }
+
     return drawSvg(boxw, boxh + texth * length, content);
 }
 
