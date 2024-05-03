@@ -7,7 +7,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 pdoConnect();
 session_start();
 
-$userid = getUid();
+getUid();
 
 $opt=getOP('opt');
 $templateNumber=getOP('templateno');
