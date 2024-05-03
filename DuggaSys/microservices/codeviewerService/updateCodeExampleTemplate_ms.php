@@ -18,7 +18,6 @@ $boxId=getOP('boxid');
 
 
 if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
-    $writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
     if(strcmp('SETTEMPL',$opt)===0){
         // Parse content array
         $content = getOP('content');
