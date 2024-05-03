@@ -12,6 +12,8 @@ $userid = getUid();
 $opt=getOP('opt');
 $templateNumber=getOP('templateno');
 
+if($exampleCount>0){
+
 if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
     $writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 
@@ -259,4 +261,5 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
         echo (json_encode(array('deleted' => true, 'debug' => $debug)));
         return;
     }
+}
 }
