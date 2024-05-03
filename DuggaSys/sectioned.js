@@ -708,7 +708,7 @@ function confirmBox(operation, item = null) {
     //deleteItem(active_lid);
     for(var i = 0; i <  hideItemList.length; i++) {
       console.log("item:" +  i);
-      deleteItem(removeItemList[i]);
+      deleteItem(hideItemList[i]);
     }
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
