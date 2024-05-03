@@ -3724,6 +3724,8 @@ function quickValidateForm(formid, submitButton) {
     var matchesFileName = regex.fileName.test(fileNameInput.value);
     var githubURLInput = document.getElementById("githubURL");
     var matchesGithubURL = regex.githubURL.test(githubURLInput.value);
+    var seveGitTemplate = document.getElementById("saveGitTemplate");
+    seveGitTemplate.disabled = true;
     if(matchesFileName) {
       fileNameInput.classList.remove("bg-color-change-invalid");
       document.getElementById("fileNameError").style.display="none";
@@ -3737,6 +3739,20 @@ function quickValidateForm(formid, submitButton) {
     }else {
       githubURLInput.classList.add("bg-color-change-invalid");
       document.getElementById("gitHubError").style.display="inline";
+    }
+    var templateTable = document.getElementById("templateTable");
+    if(templateno.value=="0") {
+      templateTable.classList.add("bg-color-change-invalid");
+      document.getElementById("templateTableError").style.display="block";
+    }else {
+      templateTable.classList.remove("bg-color-change-invalid");
+      document.getElementById("templateTableError").style.display="none";
+    }
+
+    if(matchesFileName && matchesGithubURL && templateno.value !="0") {
+      seveGitTemplate.disabled = false;
+    } else {
+      seveGitTemplate.disabled = true;
     }
   }
 
