@@ -1398,7 +1398,7 @@ function saveProperties() {
                 var lines = textArea.split('\n');
                 for (var i = 0; i < lines.length; i++) {
                     if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
-                        if (Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
+                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
                             lines[i] = "*" + lines[i];
                         }
                         cleanedLines.push(lines[i]);
@@ -1419,9 +1419,8 @@ function saveProperties() {
                 {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' '))
                     {
-                        if (Array.from(arrElementAttr[i])[0] != '-')
-                        { // Checks if line starts with a hyphen ('-')
-                            arrElementAttr[i] = "-" + arrElementAttr[i];
+                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
+                            `-${arrElementAttr[i]}`;
                         }
                         cleanedLines.push(arrElementAttr[i]);
                     }
@@ -1438,7 +1437,10 @@ function saveProperties() {
                 var arrElementFunc = elementFunc.split('\n');
                 cleanedLines = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
-                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
+                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
+                        if (Array.from(arrElementFunc[i])[0] != '+') {
+                            `+${arrElementFunc[i]}`;
+                        }
                         cleanedLines.push(arrElementFunc[i]);
                     }
                 }
