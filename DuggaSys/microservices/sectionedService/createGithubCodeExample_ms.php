@@ -30,7 +30,7 @@ if(strcmp($opt,"CREGITEX")===0) {
     $courseid = $e[0]['cid'];
     //Get dir from the listentrie that was clicked
     $githubDir = $e[0]['githubDir'];
-    $dirPath = "../courses/".$courseid."/Github/" . $githubDir;	
+    $dirPath = "../../../courses/".$courseid."/Github/" . $githubDir;	
     //Get the version of the course from where the button was pressed
     $coursevers = $e[0]['vers'];
 
@@ -250,7 +250,7 @@ if(strcmp($opt,"CREGITEX")===0) {
                             }	
                         }
                         if($exist==false){										
-                            $query = $pdo->prepare("SELECT boxid AS bid WHERE exampleid = :eid AND filename=:boxName;");
+                            $query = $pdo->prepare("SELECT boxid AS bid FROM box WHERE exampleid = :eid AND filename=:boxName;");
                             $query->bindParam(':eid', $eid); 
                             $query->bindParam(':boxName', $boxName);
                             $query->execute();
