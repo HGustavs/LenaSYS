@@ -10,6 +10,7 @@ function bfs($url, $cid, $opt)
     else{
         $url = getGitHubURL($url);
     }
+    
     $filesToIgnore = getIndexFile($url);
     $filesVisited = array();
     $visited = array();
