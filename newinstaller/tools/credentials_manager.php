@@ -242,8 +242,8 @@
 
             // Define a pattern to find the existing DB_HOST definition
             // Assuming the host is defined like define('DB_HOST', 'current_value');
-            $pattern = "/define\('{$name}', '.*?'\);/";
-            $replacement = "define('DB_NAME', '{$value}');";
+            $pattern = "/define\('{$name}','.*?'\);/";
+            $replacement = "define('{$name}','{$value}');";
 
             // Check if the existing host is already defined in the file
             if (preg_match($pattern, $fileContent)) {
