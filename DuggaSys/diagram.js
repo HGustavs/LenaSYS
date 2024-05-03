@@ -1401,6 +1401,9 @@ function saveProperties() {
                 formatArr = [];
                 for (let i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        if (element.kind == 'IEEntity' && Array.from(arrElementAttr[i])[0] != '-') {
+                            `-${arrElementAttr[i]}`;
+                        }
                         formatArr.push(arrElementAttr[i]);
                     }
                 }
