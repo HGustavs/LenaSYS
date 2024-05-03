@@ -9,8 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
-include_once  "./retrieveProfileService_ms.php";
+include_once "getUid_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -89,9 +88,11 @@ if (checklogin()) {
 	}
 }
 
+echo json_encode(array(
+	"success" => $success,
+	"status" => $status,
+	"debug" => $debug
+));
+
 // Log the end event of this service query.
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, __FILE__, $userid, $info);
-
-$array = retrieveProfileService($debug,$success,$status);
-echo json_encode($array);
-return;
