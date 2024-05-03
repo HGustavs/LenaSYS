@@ -501,7 +501,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         text-anchor='middle'
                     > ${element.name} </text>
                 </g>`;
-    return drawSvg(boxw + 4 * zoomfact, boxh, content);
+    return drawSvg(boxw, boxh, content);
 }
 
 function drawElementSequenceObject(element, boxw, boxh, linew) {
@@ -538,7 +538,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                         text-anchor='middle'
                     > ${element.name} </text>
                 </g>`;
-    str += drawSvg(boxw + 4 * zoomfact, boxh, content);
+    str += drawSvg(boxw, boxh, content);
     return str;
 }
 
