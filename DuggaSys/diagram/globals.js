@@ -140,3 +140,9 @@ var NOTEHeight = [];// List with NOTE Entities' real height
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
+
+// variables for resizing
+const historyHandler = {
+    hasUpdated: false,
+    mdownCounter: 0
+}

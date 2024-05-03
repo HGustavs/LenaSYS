@@ -172,6 +172,7 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
+    historyHandler.mdownCounter++;
 }
 
 /**
@@ -330,17 +331,7 @@ function mup(event) {
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-    //this should only run if the user has held down on a resize-node
-    new Promise(resolve => {
-        resolve(historyHandler.canUpdate);
-    }).then(() => {     
-        console.log(historyHandler.canUpdate, historyHandler.hasUpdated);
-        if (historyHandler.canUpdate) {
-            historyHandler.hasUpdated = true;
-            historyHandler.canUpdate = false;
-        }
-    });
-    console.log(":)");
+                        
     disableIfDataEmpty();
 }
 

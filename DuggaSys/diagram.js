@@ -125,7 +125,7 @@ class StateMachine {
                     }
                     // If NOT soft change, push new change onto history log
                     if (!isSoft || !sameElements) {
-                        this.historyLog.push(stateChange);
+                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
@@ -140,37 +140,49 @@ class StateMachine {
                                     currentElement = data[findIndex(data, lastLog.id)];
                                     lastLog.width = currentElement.width;   
                                     lastLog.height = currentElement.height;
-                                                                        
-                                    this.historyLog.push({...lastLog});
+                                                                                                
+                                    while (Array.isArray(lastLog.id)) {
+                                        lastLog.id = lastLog.id[0];
+                                    }
+                                    
+                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    console.log(lastLog)
-                                    const id = stateChange.id[0];
+                                                                        
+                                    // not sure why but if you resize -> undo -> resize it starts
+                                    // to store the id as an array so this is just a check to counter that
+                                    // entirely possible this breaks something else
+                                    while (Array.isArray(lastLog.id)) {
+                                        lastLog.id = lastLog.id[0];
+                                    }
+                                    let id = stateChange.id[0];
+                                    while (Array.isArray(id)) {
+                                        id = id[0];
+                                    }
                                     if (lastLog.id == id) {
-                                        currentElement = document.getElementById(id);
-                                        lastLog.width += currentElement.offsetWidth;
-                                        lastLog.height += currentElement.offsetHeight;
+                                        //currentElement = document.getElementById(id);
+                                        currentElement = data[findIndex(data, id)];
+                                        lastLog.width += currentElement.width;
+                                        lastLog.height += currentElement.height;
                                         if (movedAndResized) {
-                                            currentElement = data[findIndex(data, id)];
                                             lastLog.x = currentElement.x;
                                             lastLog.y = currentElement.y;
                                             movedAndResized = false;
                                         }
                                     }
-                                    // not sure why but if you resize -> undo -> resize it starts
-                                    // to store the id as an array so this is just a check to counter that
-                                    // entirely possible this breaks something else
-                                    if (Array.isArray(lastLog.id)) {
-                                        // yes, the double [0][0] is neccesarry to access the ID
-                                        lastLog.id = lastLog.id[0][0];
+                                    
+                                    // if the save() call comes from the same 
+                                    if (lastLog.changeType == newChangeType.flag && 
+                                        lastLog.counter == historyHandler.mdownCounter) {
+                                        this.historyLog.splice(this.historyLog.length-1, 1);
                                     }
-                                    // TODO: for some reason it runs on mdown and not mup, fix
-                                    // spreaading the values so that it doesn't keep the reference
-                                    this.historyLog.push({...lastLog});
+
+                                    // spreaading the values so that it doesn't keep the reference                                    
+                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -181,14 +193,26 @@ class StateMachine {
                     }
                 } else {
                     const current_element = data[findIndex(data, stateChange.id)];
-                    this.historyLog.push({...stateChange, width: current_element.width, height: current_element.height});
+                    this.historyLog.push({
+                        ...stateChange, 
+                        width: current_element.width, 
+                        height: current_element.height, 
+                        changeType: newChangeType.flag, 
+                        counter: historyHandler.mdownCounter
+                    });
                     this.lastFlag = currentChangedType;
                     this.currentHistoryIndex = this.historyLog.length - 1;
                 }
             } else {
                 console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
             }
-        }        
+        }   
+        
+        /*// removes arrys from the id attribute
+        while (Array.isArray(this.historyLog[this.historyLog.length-1])) {
+            this.historyLog[this.historyLog.length-1].id = this.historyLog[this.historyLog.length-1].id[0];
+        }*/
+        
     }
 
     removeFutureStates() {
@@ -946,8 +970,6 @@ function mouseMode_onMouseUp(event) {
     hasPressedDelete = false;
 }
 
-
-
 // this mess makes so that the resize only get's logged when mup() is triggered                
 // they could possibly be combined into one but would require a lot of extra checks to determine which save to do
 
@@ -960,14 +982,14 @@ function mouseMode_onMouseUp(event) {
  * @param {number} heightChange change in height
  */
 function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
-    new Promise(resolve => {
+    stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+    /* new Promise(resolve => {
         resolve(historyHandler.hasUpdated);
     }).then(() => {
         if (historyHandler.hasUpdated) {
-            stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             historyHandler.hasUpdated = false;
         }
-    });
+    }); */
 }
 
 /**
@@ -977,20 +999,14 @@ function prepareElementMovedAndResized(id, xChange, yChange, widthChange, height
  * @param {number} heightChange change in height
  */
 function prepareElementResized(id, widthChange, heightChange) {
-    new Promise(resolve => {
-        console.log(1);
+    stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+    /* new Promise(resolve => {
         resolve(historyHandler.hasUpdated);
-        console.log(2);
     }).then(() => {
-        canResize = true;
-        console.log(3, hasResized);
         if (historyHandler.hasUpdated) {
-            console.log(4);
-            stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             historyHandler.hasUpdated = false;
-            console.log(5);
         }
-    });
+    }); */
 }
 
 /**
