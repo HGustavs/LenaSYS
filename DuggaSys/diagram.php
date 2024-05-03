@@ -998,7 +998,7 @@
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
                     <br>
-                    <p id="tooltip-SAVE_DIAGRAM" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
+                    <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
                 </span>
             </div>
         </fieldset>
