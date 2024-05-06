@@ -26,7 +26,15 @@
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}))
+			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ 
+				verbose: 'true',
+				overwrite_db: 'true', 
+				overwrite_user: 'true',
+				add_test_data: 'true',
+				add_demo_course: 'true',
+				add_test_course_data: 'true',
+				language_support: ["html", "java", "php", "plain", "sql", "sr"],
+			}))
 		});
 
 		let sseReceiver = new SSEReceiver({
