@@ -704,7 +704,6 @@ function confirmBox(operation, item = null) {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
-    //deleteItem(active_lid);
     deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
@@ -785,10 +784,8 @@ function markedItems(item = null) {
         var tempKind = $(this).parents('tr').attr('value');
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
-          console.log("loop breaker: "+tempItem);
         } else {
           subItems.push(tempItem);
-          console.log("added: "+tempItem);
         }
       } else if (tempItem == active_lid) sectionStart = true;
     });
@@ -843,7 +840,6 @@ function markedItems(item = null) {
     hideVisibilityIcons();
 
   }
-  console.log(selectedItemList);
 }
 
 // Shows ghost and eye button
