@@ -177,6 +177,7 @@ Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
+- retrieveFileedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -1983,7 +1984,7 @@ SELECT vid, quizID, param, variantanswer, modified, disabled FROM variant WHERE 
 
 ### deleteFileLink_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveFileedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2026,7 +2027,7 @@ DELETE FROM fileLink WHERE fileid=:fid;
 __updateFileLink_ms.php__ handles writing to files and updates filesize in fileLink.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveFileedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2054,6 +2055,30 @@ _UPDATE_ operation on the table __'fileLink'__ to update the values of the colum
 
 ```sql
 UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;
+```
+
+
+<br>
+
+---
+
+<br>
+
+### retrieveFileedService_ms.php
+__Include original service files:__ basic.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve all columns:
+
+- Filters the results to include entries where:
+  - The 'kind' is 2, or
+  - The 'cid' matches the specified course ID (':cid') and 'vers' is not set (null), or
+  - The 'cid' matches the specified course ID (':cid') and 'vers' matches the specified version (':vers').
+  - Sorts the results first by the 'kind' column and then by 'filename'.
+
+```sql
+SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind, filename;
 ```
 
 <br>
