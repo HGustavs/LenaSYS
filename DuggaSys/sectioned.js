@@ -3708,10 +3708,58 @@ function getCourseElements() {
   }
   return list;
 }
+
+const regex = {
+	fileName: /^[A-ZÅÄÖa-zåäö\d]+( ?(- ?)?[A-ZÅÄÖa-zåäö\d]+)*$/,
+	githubURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
+};
+
 //Validate form but do not perform it.
 function quickValidateForm(formid, submitButton) {
   const saveButton = document.getElementById(submitButton);
   var valid = true;
+
+  if(formid === 'gitHubTemplate') {
+    var fileNameInput = document.getElementById("fileName");
+    var matchesFileName = regex.fileName.test(fileNameInput.value);
+    var githubURLInput = document.getElementById("githubURL");
+    var matchesGithubURL = regex.githubURL.test(githubURLInput.value);
+    var saveGitTemplate = document.getElementById("saveGitTemplate");
+    var templateTable = document.getElementById("templateTable");
+
+    saveGitTemplate.disabled = true;
+    
+    if(matchesFileName) {
+      fileNameInput.classList.remove("bg-color-change-invalid");
+      document.getElementById("fileNameError").style.display="none";
+    }else {
+      fileNameInput.classList.add("bg-color-change-invalid");
+      document.getElementById("fileNameError").style.display="inline";
+    }
+
+    if(matchesGithubURL) {
+      githubURLInput.classList.remove("bg-color-change-invalid");
+      document.getElementById("gitHubError").style.display="none";
+    }else {
+      githubURLInput.classList.add("bg-color-change-invalid");
+      document.getElementById("gitHubError").style.display="inline";
+    }
+
+    if(templateno.value=="0") {
+      templateTable.classList.add("bg-color-change-invalid");
+      document.getElementById("templateTableError").style.display="block";
+    }else {
+      templateTable.classList.remove("bg-color-change-invalid");
+      document.getElementById("templateTableError").style.display="none";
+    }
+
+    if(matchesFileName && matchesGithubURL && templateno.value !="0") {
+      saveGitTemplate.disabled = false;
+    } else {
+      saveGitTemplate.disabled = true;
+    }
+  }
+
   if (formid === 'editSection') {
     var sName = document.getElementById("sectionname").value;
     var item = document.getElementById("editSectionDialogTitle").innerHTML;
