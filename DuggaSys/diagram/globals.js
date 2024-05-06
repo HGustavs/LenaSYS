@@ -9,6 +9,7 @@ var sscrollx, sscrolly;
 var cwidth, cheight;
 var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
+var canPressDeleteBtn = false;
 var startWidth;
 var startHeight;
 var startNodeLeft = false;

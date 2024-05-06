@@ -1,5 +1,3 @@
-//#region ================================ ENUMS ===============================================
-
 /**
  * @description Keybinds that are used in the system. This is used to generate tooltips and for determining keyboard input logic.
  */
@@ -348,7 +346,6 @@ const cursorOffset = new Map([
     [4, 0.9375],
 ]);
 
-// Constants
 const textheight = 18;
 const strokewidth = 2.0;
 const color = {
@@ -633,4 +630,21 @@ var defaults = {
 
 var defaultLine = {kind: "Normal"};
 
-//#endregion ===================================================================================
+const sameConnectionForbidden = [
+    elementTypesNames.EREntity,
+    elementTypesNames.ERRelation,
+    elementTypesNames.UMLRelation,
+    elementTypesNames.IERelation,
+    elementTypesNames.UMLInitialState,
+    elementTypesNames.UMLFinalState,
+    elementTypesNames.sequenceActor,
+    elementTypesNames.sequenceObject,
+    elementTypesNames.sequenceLoopOrAlt,
+]
+const lineAlwaysFrom = [
+    elementTypesNames.EREntity,
+    elementTypesNames.UMLInitialState,
+];
+const lineAlwaysTo = [
+    elementTypesNames.UMLFinalState,
+];

@@ -246,16 +246,17 @@ function drawLineProperties(line) {
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
+            let optSD = option(SDLineType, line.innerType);
             str += includeLabel(line)
             str += iconSelection([SDLineIcons], line);
             str += `<label style="display: block">Line Type:</label>`;
-            let optSD = option(SDLineType, line.innerType);
             str += select('lineType', optSD, false);
             break;
         case entityType.SE:  
             str += includeSELabel(line)
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             break;
     }
     str += saveButton('changeLineProperties();');
