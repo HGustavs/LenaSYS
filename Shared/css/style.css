@@ -1431,6 +1431,7 @@ header td {
 #hamburgerIcon{
   transform: scale(1.8);
   margin-left: 10px;
+  color: white;
 }
 #courseVersionDropDown{
   vertical-align: top;
@@ -5660,7 +5661,7 @@ only screen and (max-device-width: 568px) {
 
   #navBurgerIcon { 
     display: block;
-    
+    color:white;
   }
  
   #navBurgerBox{
