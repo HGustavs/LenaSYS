@@ -1176,7 +1176,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="CODEVIEW"){
 			$.ajax({
-				url: "codeviewerService.php",
+				url: "../DuggaSys/microservices/codeviewerService/retrieveCodeviewerService_ms.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
