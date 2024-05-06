@@ -9,6 +9,9 @@ include_once "retrieveSectionedService_ms.php";
 pdoConnect();
 session_start();
 
+$courseid=getOP('courseid');
+$coursevers=getOP('coursevers');
+
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
 	if (isset($_SESSION['uid'])) {
 		$userid = $_SESSION['uid'];

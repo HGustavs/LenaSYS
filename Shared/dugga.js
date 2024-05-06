@@ -1075,15 +1075,40 @@ function AJAXService(opt,apara,kind)
 			success: returnedAccess
 		});
 	}if(kind=="SECTION" || kind=="GRP"){
-		$.ajax({
-			url: "sectionedservice.php",
-			type: "POST",
-			data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
-			dataType: "json", 
-			success: kind=="SECTION" ? returnedSection : returnedGroups
-		})
-
-  }else if(kind=="CONTRIBUTION"){
+		if(opt == "DELETE"){
+			$.ajax({
+				url: "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php",
+				type: "POST",
+				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+				dataType: "json", 
+				success: kind=="SECTION" ? returnedSection : returnedGroups
+			})
+		}else if(opt == "DEL"){
+			$.ajax({
+				url: "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php",
+				type: "POST",
+				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+				dataType: "json", 
+				success: kind=="SECTION" ? returnedSection : returnedGroups
+			})
+		}else if(opt == "NEW"){
+			$.ajax({
+				url: "../DuggaSys/microservices/sectionedService/createListEntry_ms.php",
+				type: "POST",
+				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+				dataType: "json", 
+				success: kind=="SECTION" ? returnedSection : returnedGroups
+			})
+		}else{
+			$.ajax({
+				url: "sectionedservice.php",
+				type: "POST",
+				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+				dataType: "json", 
+				success: kind=="SECTION" ? returnedSection : returnedGroups
+			})
+		}
+  	}else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
 				type: "POST",
