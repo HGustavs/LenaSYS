@@ -6,5 +6,5 @@ function retrieveResultedService($tableInfo, $duggaFilterOptions){
         'duggaFilterOptions' => $duggaFilterOptions
     );
 
-    echo json_encode($returnArray);
+    return $returnArray;
 }
