@@ -1000,7 +1000,6 @@ function prepareItem() {
 
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
-    console.log("deleteItem: " + item_lid[i]);
     lid = item_lid ? item_lid : $("#lid").val();
     item = document.getElementById("lid" + lid[i]);
     item.style.display = "none";
