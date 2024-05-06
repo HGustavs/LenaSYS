@@ -1128,13 +1128,9 @@ function movementWidthChange(element,start,delta,isR){
 function movementHeightChange(element,start,delta,isUp){
     // Adds a deep clone of the element to preResizeHeight if it isn't in it
     let tmp = element.height;
-    yChange = -(delta - element.y);
-    if (isUp) {
-        element.height = (start - yChange);
-    } else {
-        element.height = (start - (delta / zoomfact));
-    }
-    return -(tmp - element.height);
+    let yChange = -(delta - element.y);
+    element.height = (isUp) ? start - yChange : start - delta / zoomfact;
+    return element.height;
 
 }
 /**
