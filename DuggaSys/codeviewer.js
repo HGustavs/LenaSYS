@@ -2537,19 +2537,13 @@ function updateTemplate() {
             },
         });
 
-		        // AJAX request
-				$.ajax({
-					url: "../Shared/dugga.js",
-					type: "POST",
-					data: {
-						opt: "CODEVIEW",
-						courseid: courseid,
-						exampleid: exampleid,
-						cvers: cvers,
-						templateno: templateno,
-						content: flattenedContent // Send the flattened string
-					},
-				});
+		AJAXService("SETTEMPL", {
+			courseid: courseid,
+			exampleid: exampleid,
+			cvers: cvers,
+			templateno: templateno,
+			content: content
+		}, "CODEVIEW");
 codeviewer.js
 	} catch (e) {
 		alert("Error when updating template: " + e.message)
