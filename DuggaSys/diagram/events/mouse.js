@@ -27,6 +27,7 @@ function mdown(event) {
     // Mouse pressed over delete button for multiple elements
     if (event.button == 0) {
         if (context.length > 0 || contextLine.length > 0) {
+            canPressDeleteBtn = true;
             hasPressedDelete = checkDeleteBtn();
         }
     }
