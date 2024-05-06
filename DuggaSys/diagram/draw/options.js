@@ -323,11 +323,143 @@ function textboxFormatString(arr) {
     }
     return content;
 }
+
+const setRelation = (a, b, map, ids) => {
+    let aElem = data.find(e => e.id == a);
+    let bElem = data.find(e => e.id == b);
+    if (ids.includes(a)) map.get(aElem).push(bElem);
+    if (ids.includes(b)) map.get(bElem).push(aElem);
+};
+
+function handleEntity() {
+    let str = '';
+    return str;
+
+}
+function handleAttribute() {
+    let str = '';
+    return str;
+}
+function handleRelation() {
+    let str = '';
+    return str;
+}
+class Entry {
+    constructor(name, primary=[], weak=[], normal=[], foreign=[]) {
+        this.name = name;
+        this.primary = primary;
+        this.weak = weak;
+        this.normal = normal;
+        this.foreign = foreign;
+    }
+}
 /**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
  */
+function relationalModelER() {
+    let str = '';
+    let entries = [];
+    // Eller ERRel (ej 1.1) eller multiple
+
+    let elements = data.filter(e => e.kind == elementTypesNames.EREntity);
+    let elementIDs = elements.map(e => e.id);
+    let elemConnections = new Map();
+    elements.forEach(e => elemConnections.set(e, []));
+
+    let attributes = data.filter(e => e.kind == elementTypesNames.ERAttr);
+    let attributeIDs = attributes.map(e => e.id)
+    let attrConnections = new Map();
+    attributes.forEach(e => attrConnections.set(e, []));
+
+    let relations = data.filter(e => e.kind == elementTypesNames.ERRelation);
+    let relationIDs = relations.map(e => e.id);
+    let relConnections = new Map();
+    relations.forEach(e => relConnections.set(e, []));
+
+    lines.forEach(l => {
+        setRelation(l.fromID, l.toID, elemConnections, elementIDs);
+        setRelation(l.fromID, l.toID, attrConnections, attributeIDs);
+        setRelation(l.fromID, l.toID, relConnections, relationIDs);
+    });
+
+    /**
+     * Dont iclude computed.
+     * Primary underlined
+     * Foreign overlined
+     * Composite includes its childeren
+     * Multiple is own "Entity"
+     * 1-1 rel is foreign?
+     * Weak entity has other as primary foreign
+     *
+     */
+
+    /*
+                let style = '';
+                if (property.state == attrState.PRIMARY ||
+                    property.state == attrState.WEAK
+                ) {
+                    style = `style="text-decoration:underline"`;
+                }
+                // ERRel 1.1 -> overline
+                content.push(`<span ${style}>${property.name}</span>`);
+     */
+    const getAttrNormal = (a) => {
+        let aConnection = attrConnections.get(a)
+            .filter(e => e.kind == elementTypesNames.ERAttr && e.state == attrState.NORMAL);
+        return (aConnection.length) ? aConnection.map(e => e.name) : [a.name];
+    };
+
+    /*
+    elements.forEach((e) => {
+        let allConnections = elemConnections.get(e);
+        let attrCon = allConnections
+            .filter(p => p.kind == elementTypesNames.ERAttr);
+        let primary = attrCon
+            .filter(a => a.state == attrState.PRIMARY)
+            .map(a => `<span style="text-decoration:underline">${a.name}</span>`)
+        // Normal or Composite
+        let normal = attrCon
+            .filter(a => a.state == attrState.NORMAL)
+            .map(a => getAttrNormal(a))
+            .flat().join(', ');
+        let separator = (primary.length && normal) ? ', ' : '';
+        str += `<p>${e.name}( ${primary ?? ''}${separator}${normal ?? ''} )</p>`;
+    });
+    */
+    elements.forEach(e => {
+        let entry = new Entry(e.name);
+        let allConnections = elemConnections.get(e);
+        let attrCon = allConnections.filter(p => p.kind == elementTypesNames.ERAttr);
+        entry.primary = attrCon
+            .filter(a => a.state == attrState.PRIMARY)
+            .map(a => a.name);
+        entry.normal = attrCon
+            .filter(a => a.state == attrState.NORMAL)
+            .map(a => getAttrNormal(a))
+            .flat();
+        let relCon = allConnections.filter(r => r.kind == elementTypesNames.ERRelation);
+        let count = {};
+        //entry.foreign = relCon.forEach(r => count[r] ? count[r]++ : count[r] = 1);
+        console.log(entry);
+        entries.push(entry);
+    });
+    relations.forEach(r => {
+        if (r.status == relationState.WEAK) return;
+        let allConnections = relConnections.get(r);
+        let content = [];
+    })
+    attributes.forEach(a => {
+        if (a.state == attrState.MULTIPLE) {
+            let entry = new Entry(a.name, `${a.name}Key`);
+            entries.push(entry);
+        }
+    })
+    return str;
+}
+
 function generateErTableString() {
+    return relationalModelER();
     //TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
     //only useful information from entities, attributes and relations.
 

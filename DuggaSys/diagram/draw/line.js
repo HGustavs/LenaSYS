@@ -100,10 +100,10 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
-        if (line.startLabel && line.startLabel != '') {
+        if (line.startLabel) {
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
-        if (line.endLabel && line.endLabel != '') {
+        if (line.endLabel) {
             str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
         }
     } else {

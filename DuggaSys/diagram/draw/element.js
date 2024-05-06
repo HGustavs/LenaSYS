@@ -411,7 +411,6 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
                         />`;
             break;
         case "primary":
-        case "candidate":
             extra = `class='underline'`;
             break;
     }

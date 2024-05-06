@@ -135,7 +135,6 @@ const attrState = {
     WEAK: "weakKey",
     COMPUTED: "computed",
     MULTIPLE: "multiple",
-    CANDIDATE: "candidate",
 };
 
 /**
