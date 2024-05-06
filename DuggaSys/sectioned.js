@@ -1007,14 +1007,17 @@ function deleteItem(item_lid = null) {
   item.style.display = "none";
   item.classList.add("deleted");
 
+  
+
+  // Makes deletefunction sleep for the amount of time toast is active(value of undoTime).
+  let undoTime = 5;
   document.querySelector("#undoButton").style.display = "block";
-  toast("undo", "Undo deletion?", 5, "cancelDelete();");
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
+  toast("undo", "Undo deletion?", undoTime, "cancelDelete();");
   delArr.push(lid);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 5000);
+  }, undoTime * 1000);
 }
 
 // Permanently delete elements.
