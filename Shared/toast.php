@@ -141,14 +141,14 @@
         }
     } 
     function truncateOverflow(toastText) {
-            const maxChars = 70; // Set the maximum number of characters before truncating
-            const toastContent = toastText.textContent.trim();
-            if (toastContent.length > maxChars) {
-                // Truncate the content and add "..."
-                toastText.textContent = toastContent.slice(0, maxChars) + '...';
-                toastText.dataset.fullText = toastContent; // Store the full text in a data attribute
-            }
+        const maxChars = 70; // Set the maximum number of characters before truncating
+        const toastContent = toastText.textContent.trim();
+        if (toastContent.length > maxChars) {
+            // Truncate the content and add "..."
+            toastText.textContent = toastContent.slice(0, maxChars) + '...';
+            toastText.dataset.fullText = toastContent; // Store the full text in a data attribute
         }
+    }
 </script>
 <!-- This link makes it possible to use Google icons (open source and permitted by Henrik) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
