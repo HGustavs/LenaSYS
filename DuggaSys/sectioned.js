@@ -1111,7 +1111,7 @@ function hideMarkedItems() {
     var lid = hideItemList[i];
     AJAXService("SETVISIBILITY", {
       lid: lid,
-      visible: 0
+      visible: 3
     }, "SECTION");
     $("#editSection").css("display", "none");
   }

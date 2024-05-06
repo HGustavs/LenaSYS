@@ -16,7 +16,7 @@ function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectnam
 	$link = $pdo->lastInsertId();
 
 	$userid = getUid();
-	$username = retrieveUsername();
+	$username = retrieveUsername($pdo);
 	logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
 	return $link;

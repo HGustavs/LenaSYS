@@ -1141,7 +1141,7 @@ function AJAXService(opt,apara,kind)
 			})
 		}else if(opt == "SETVISIBILITY"){
 			$.ajax({
-				url: "DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php",
+				url: "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
