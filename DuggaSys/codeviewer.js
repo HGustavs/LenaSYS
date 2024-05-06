@@ -2550,7 +2550,6 @@ function updateTemplate() {
 						content: flattenedContent // Send the flattened string
 					},
 				});
-codeviewer.js
 	} catch (e) {
 		alert("Error when updating template: " + e.message)
 	}
