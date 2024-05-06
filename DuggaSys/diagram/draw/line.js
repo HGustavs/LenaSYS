@@ -426,7 +426,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             if (line.innerType == SDLineType.SEGMENT) {
                 // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
-            }       
+            }
     }
     return str;
 }
