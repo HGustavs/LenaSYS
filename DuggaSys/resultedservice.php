@@ -35,11 +35,19 @@ if(checklogin())
 
 if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	// Get data to display in table rows
-	$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers");
 
-	$query->bindParam(':cid', $cid);
-	$query->bindParam(':vers', $coursevers);
+	try{
+		$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment,last_Time_techer_visited FROM userAnswer WHERE cid=:cid AND vers=:vers");
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':vers', $coursevers);
+		$query->execute();
+	}
+	catch(Exception $e){
+		$query = $pdo->prepare("SELECT hash, password, submitted, timesSubmitted, timesAccessed, moment FROM userAnswer WHERE cid=:cid AND vers=:vers");
 
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':vers', $coursevers);
+	}
 	if(!$query->execute()) {
     	$error=$query->errorInfo();
 	}
@@ -65,11 +73,18 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 			}
 		}
 
+		if(isset($row['last_Time_techer_visited'])){
+			$teacherVisited = $row['last_Time_techer_visited'];
+		}
+		else{
+			$teacherVisited = null;
+		}
+
     	$tableSubmissionInfo = array(
         	'duggaName' => $duggaName,
         	'hash' => $row['hash'],
         	'password' => $row['password'],
-        	'teacher_visited' => $row['last_Time_techer_visited'],
+        	'teacher_visited' => $teacherVisited,
         	'submitted' => $row['submitted'],
 			'timesSubmitted' => $row['timesSubmitted'],
 			'timesAccessed' => $row['timesAccessed'],
