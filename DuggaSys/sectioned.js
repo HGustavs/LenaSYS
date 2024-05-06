@@ -15,7 +15,7 @@ var versnme = "UNK";
 var versnr;
 var CeHiddenParameters = [];
 var motd = "UNK";
-var hideItemList = [];
+var selectedItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
@@ -705,10 +705,10 @@ function confirmBox(operation, item = null) {
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     //deleteItem(active_lid);
-    deleteItem(hideItemList);
+    deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
-  } else if (operation == "hideItem" && !hideItemList.length == 0) {
-    hideMarkedItems(hideItemList)
+  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
+    hideMarkedItems(selectedItemList)
     $("#sectionHideConfirmBox").css("display", "none");
   } else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
@@ -738,8 +738,8 @@ function confirmBox(operation, item = null) {
     $("#gitHubTemplate").css("display", "none");
     purgeInputFieldsGitTemplate();
   }
-  else if (operation == "showItems" && !hideItemList.length == 0) {
-    showMarkedItems(hideItemList);
+  else if (operation == "showItems" && !selectedItemList.length == 0) {
+    showMarkedItems(selectedItemList);
     $("#sectionShowConfirmBox").css("display", "none");
   }
   document.addEventListener("keypress", event => {
@@ -797,38 +797,38 @@ function markedItems(item = null) {
 
 
   console.log("Active lid: " + active_lid);
-  if (hideItemList.length != 0) {
-    for (var i = 0; i < hideItemList.length; i++) {
-      if (hideItemList[i] === active_lid) {
-        hideItemList.splice(i, 1);
+  if (selectedItemList.length != 0) {
+    for (var i = 0; i < selectedItemList.length; i++) {
+      if (selectedItemList[i] === active_lid) {
+        selectedItemList.splice(i, 1);
         i--;
         var removed = true;
         console.log("Removed from list");
       }
       for (var j = 0; j < subItems.length; j++) {
-        if (hideItemList[i] === subItems[j]) {
-          $("#" + hideItemList[i] + "-checkbox").prop("checked", false);
-          hideItemList.splice(i, 1);
+        if (selectedItemList[i] === subItems[j]) {
+          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
+          selectedItemList.splice(i, 1);
           //console.log(subItems[j]+" Removed from list");
         }
       }
     } if (removed != true) {
-      hideItemList.push(active_lid);
+      selectedItemList.push(active_lid);
       console.log("Adding !empty list");
       for (var j = 0; j < subItems.length; j++) {
-        hideItemList.push(subItems[j]);
+        selectedItemList.push(subItems[j]);
         console.log(subItems[j]);
         $("#" + subItems[j] + "-checkbox").prop("checked", true);
       }
     }
   } else {
-    hideItemList.push(active_lid);
+    selectedItemList.push(active_lid);
     console.log("Added");
     for (var j = 0; j < subItems.length; j++) {
-      hideItemList.push(subItems[j]);
+      selectedItemList.push(subItems[j]);
     }
-    for (i = 0; i < hideItemList.length; i++) {
-      $("#" + hideItemList[i] + "-checkbox").prop("checked", true);
+    for (i = 0; i < selectedItemList.length; i++) {
+      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
       //console.log(hideItemList[i]+"-checkbox");
     }
     // Show ghost button when checkbox is checked
@@ -836,14 +836,14 @@ function markedItems(item = null) {
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
   }
-  if (hideItemList.length == 0) {
+  if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
     hideVisibilityIcons();
 
   }
-  console.log(hideItemList);
+  console.log(selectedItemList);
 }
 
 // Shows ghost and eye button
@@ -864,20 +864,20 @@ function hideVisibilityIcons() {
 //Changes visibility of hidden items
 function showMarkedItems() {
   hideVisibilityIcons();
-  for (i = 0; i < hideItemList.length; i++) {
-    var lid = hideItemList[i];
+  for (i = 0; i < selectedItemList.length; i++) {
+    var lid = selectedItemList[i];
     AJAXService("PUBLIC", {
       lid: lid
     }, "SECTION");
     $("#editSection").css("display", "none");
   }
-  hideItemList = [];
+  selectedItemList = [];
 }
 
 // Clear array of checked items - used in fabbuttons and in save to clear array.
 // Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList() {
-  hideItemList = [];
+  selectedItemList = [];
 }
 
 
@@ -1114,14 +1114,14 @@ function hideMarkedItems() {
   hideVisibilityIcons();
   document.querySelector('#hideElement').disabled = true;     //can be removed
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
-  for (i = 0; i < hideItemList.length; i++) {
-    var lid = hideItemList[i];
+  for (i = 0; i < selectedItemList.length; i++) {
+    var lid = selectedItemList[i];
     AJAXService("HIDDEN", {
       lid: lid
     }, "SECTION");
     $("#editSection").css("display", "none");
   }
-  hideItemList = [];
+  selectedItemList = [];
 }
 
 //----------------------------------------------------------------------------------
