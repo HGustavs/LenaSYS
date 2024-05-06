@@ -16,8 +16,6 @@ $templateNumber=getOP('templateno');
 $exampleId=getOP('exampleid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
-$boxId=getOP('boxid');
-
 
 if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
     if(strcmp('SETTEMPL',$opt)===0){
