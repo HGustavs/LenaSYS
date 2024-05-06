@@ -103,7 +103,7 @@ class DBSetup {
 
 			return $this->handle_success("Successfully removed database {$db_name}.");
 		} catch (PDOException $e) {
-			return $this->handle_exception($e, "Failed to remove database {$db_name}. {$e->getMessage()}");
+			return $this->handle_exception($e, "Failed to remove database {$db_name}");
 		}
 	}
 
@@ -172,7 +172,7 @@ class DBSetup {
 			$queries = $this->prepare_sql_file($file_name, ";", $verbose);
 			$this->handle_success("Successfully prepared SQL queries from file {$file_name}", $callback);
 			$this->pdo->exec("USE `$db_name`");
-
+			$last_printed_percentage = 0;
 			$totalQueries = sizeof($queries);
 			for ($i = 0; $i < $totalQueries; $i++) {
 				$stmt = $this->pdo->prepare($queries[$i]);
@@ -189,7 +189,7 @@ class DBSetup {
 
 				$progress = round(($i / $totalQueries) * 100, 0);
 				$current_query = substr($queries[$i], 0, 30);
-
+				
 				if ($verbose) {
 					$this->handle_success("{$file_name} > query {$i} > {$progress}% > {$current_query}...", $callback);
 				} else {
