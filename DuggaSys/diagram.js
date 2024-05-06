@@ -101,7 +101,7 @@ class StateMachine {
                         var timeLimit = 10; // Timelimit on history append in seconds
                         for (let index = this.historyLog.length - 1; index >= 0; index--) {
                             // Check so if the changeState is not an created-object
-                            if (this.historyLog[index].created != undefined) {console.log(3);continue;}
+                            if (this.historyLog[index].created != undefined) continue;
 
                             var sameIds = true;
                             if (stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
@@ -125,6 +125,15 @@ class StateMachine {
                     }
                     // If NOT soft change, push new change onto history log
                     if (!isSoft || !sameElements) {
+                        while (Array.isArray(stateChange.id)) {
+                            stateChange.id = stateChange.id[0];
+                        }
+
+                        // edits the last element if it's during the same resize
+                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.mdownCounter) {
+                            this.historyLog.splice(this.historyLog.length-1, 1);
+                        }
+
                         this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
@@ -135,6 +144,9 @@ class StateMachine {
                             let currentElement;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                                    console.log(stateChange, 1);
+                                    this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
+                                    break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);                                    
                                     currentElement = data[findIndex(data, lastLog.id)];
@@ -144,7 +156,7 @@ class StateMachine {
                                     while (Array.isArray(lastLog.id)) {
                                         lastLog.id = lastLog.id[0];
                                     }
-                                    
+
                                     this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
@@ -155,7 +167,6 @@ class StateMachine {
                                                                         
                                     // not sure why but if you resize -> undo -> resize it starts
                                     // to store the id as an array so this is just a check to counter that
-                                    // entirely possible this breaks something else
                                     while (Array.isArray(lastLog.id)) {
                                         lastLog.id = lastLog.id[0];
                                     }
@@ -163,21 +174,20 @@ class StateMachine {
                                     while (Array.isArray(id)) {
                                         id = id[0];
                                     }
-                                    if (lastLog.id == id) {
-                                        //currentElement = document.getElementById(id);
-                                        currentElement = data[findIndex(data, id)];
-                                        lastLog.width += currentElement.width;
-                                        lastLog.height += currentElement.height;
-                                        if (movedAndResized) {
-                                            lastLog.x = currentElement.x;
-                                            lastLog.y = currentElement.y;
-                                            movedAndResized = false;
-                                        }
+
+                                    // add the real values so that not just the chanegs gets stored
+                                    currentElement = data[findIndex(data, id)];
+                                    lastLog.width += currentElement.width;
+                                    lastLog.height += currentElement.height;
+                                    if (movedAndResized) {
+                                        lastLog.x = currentElement.x;
+                                        lastLog.y = currentElement.y;
+                                        movedAndResized = false;
                                     }
                                     
-                                    // if the save() call comes from the same 
-                                    if (lastLog.changeType == newChangeType.flag && 
-                                        lastLog.counter == historyHandler.mdownCounter) {
+                                    
+                                    // if the save() call comes from the same change-motion
+                                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.mdownCounter) {
                                         this.historyLog.splice(this.historyLog.length-1, 1);
                                     }
 
@@ -208,11 +218,12 @@ class StateMachine {
             }
         }   
         
-        /*// removes arrys from the id attribute
-        while (Array.isArray(this.historyLog[this.historyLog.length-1])) {
-            this.historyLog[this.historyLog.length-1].id = this.historyLog[this.historyLog.length-1].id[0];
-        }*/
-        
+        // removes arrys from the id attribute
+        for (let entry of this.historyLog) {
+            while (Array.isArray(entry.id)) {
+                entry.id = entry.id[0];
+            }
+        }        
     }
 
     removeFutureStates() {
