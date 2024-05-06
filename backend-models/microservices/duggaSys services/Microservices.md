@@ -168,6 +168,8 @@ Duggaed Service:
 - createDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- retrieveDuggaedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
+
 
 <br>
 
@@ -1627,7 +1629,7 @@ DELETE course FROM course WHERE visibility=:deleted;
 
 <br>
 
-### readCourseedService_ms.php
+### retrieveCourseedService_ms.php
 __Include original service files:__ sessions.php
 
 __Querys used in this microservice:__
@@ -1755,7 +1757,7 @@ _WORK PAUSED for development of microservices. Will continue when the service is
 
 ### createDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1785,6 +1787,7 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 
 ### updateDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1811,7 +1814,7 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 
 ### deleteDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1840,7 +1843,7 @@ DELETE FROM quiz WHERE id=:qid;
 
 ### createDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1863,6 +1866,7 @@ INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (:qi
 
 ### updateDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1883,7 +1887,7 @@ UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer 
 
 ### deleteDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1904,6 +1908,67 @@ _DELETE_ operation on the table __'variant'__ to remove rows where the column:
 
 ```sql
 DELETE FROM variant WHERE vid=:vid;
+```
+
+<br>
+
+---
+
+<br>
+
+### retrieveDuggaedService_ms.php
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'course'__ to retrieve values from the columns:
+- coursename
+- coursecode
+- cid
+
+- Only shows details for the specified course ID (':cid').
+- Returns only the first matching record to ensure a single result is shown.
+
+```sql
+SELECT coursename, coursecode, cid FROM course WHERE cid=:cid LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'quiz'__ to retrieve values from the columns:
+- id
+- cid
+- autograde
+- gradesystem
+- qname
+- quizFile
+- qstart
+- deadline
+- qrelease
+- modified
+- vers
+- jsondeadline
+
+- Filters results for quizzes specific to a given course ID (':cid') and course version (':coursevers').
+- Sorts the results by the quiz ID to ensure they are listed in ascending order. 
+
+```sql
+SELECT id, cid, autograde, gradesystem, qname, quizFile, qstart, deadline, qrelease, modified, vers, jsondeadline FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;
+```
+
+
+_SELECT_ operation on the table __'variant'__ to retrieve values from the columns:
+- vid
+- quizID
+- param
+- variantanswer
+- modified
+- disabled
+
+- Filters results to only include values that belong to a specific quiz ID (:qid').
+- Sorts the results by the variant ID in ascending order.
+
+```sql
+SELECT vid, quizID, param, variantanswer, modified, disabled FROM variant WHERE quizID=:qid ORDER BY vid;
 ```
 
 <br>
