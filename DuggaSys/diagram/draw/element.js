@@ -191,6 +191,15 @@ function drawText(x, y, a, t, extra = '') {
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const l = linew * 3;
 
+    
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const lineHeight = 1.5;
+
+    let totalHeight = linew * 2 + texth * 2;
+
+    updateElementHeight(ERHeight, element, totalHeight + boxh)
+
+
     let weak = '';
     if (element.state == "weak") {
         weak = `<rect
