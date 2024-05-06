@@ -2521,13 +2521,22 @@ function updateTemplate() {
 			var values = [$("#boxcontent_" + i).val(), $("#filename_" + i).val(), $("#wordlist_" + i).val()];
 			content.push(values);
 		}
-		AJAXService("SETTEMPL", {
-			courseid: courseid,
-			exampleid: exampleid,
-			cvers: cvers,
-			templateno: templateno,
-			content: content
-		}, "CODEVIEW");
+		var flattenedContent = content.flatMap(innerArray => innerArray).join(',');
+
+        // AJAX request
+        $.ajax({
+            url: "microservices/codeviewerService/updateCodeExampleTemplate_ms.php",
+            type: "POST",
+            data: {
+                opt: "SETTEMPL",
+                courseid: courseid,
+                exampleid: exampleid,
+                cvers: cvers,
+                templateno: templateno,
+                content: flattenedContent // Send the flattened string
+            },
+        }, "CODEVIEW");
+codeviewer.js
 	} catch (e) {
 		alert("Error when updating template: " + e.message)
 	}
