@@ -16,7 +16,6 @@ var versnr;
 var CeHiddenParameters = [];
 var motd = "UNK";
 var hideItemList = [];
-var removeItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
@@ -706,10 +705,7 @@ function confirmBox(operation, item = null) {
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     //deleteItem(active_lid);
-    for(var i = 0; i <  hideItemList.length; i++) {
-      console.log("item:" +  i);
-      deleteItem(hideItemList[i]);
-    }
+    deleteItem(hideItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !hideItemList.length == 0) {
     hideMarkedItems(hideItemList)
@@ -821,31 +817,6 @@ function markedItems(item = null) {
       console.log("Adding !empty list");
       for (var j = 0; j < subItems.length; j++) {
         hideItemList.push(subItems[j]);
-        console.log(subItems[j]);
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
-      }
-    }
-  } else if (removeItemList.length != 0) {
-    // For selecting items to be removed.
-    for (var i = 0; i < removeItemList.length; i++) {
-      if (removeItemList[i] === active_lid) {
-        removeItemList.splice(i, 1);
-        i--;
-        var removed = true;
-        console.log("Removed from list");
-      }
-      for (var j = 0; j < subItems.length; j++) {
-        if (removeItemList[i] === subItems[j]) {
-          $("#" + removeItemList[i] + "-checkbox").prop("checked", false);
-          removeItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
-        }
-      }
-    } if (removed != true) {
-      removeItemList.push(active_lid);
-      console.log("Adding !empty list");
-      for (var j = 0; j < subItems.length; j++) {
-        removeItemList.push(subItems[j]);
         console.log(subItems[j]);
         $("#" + subItems[j] + "-checkbox").prop("checked", true);
       }
@@ -1031,13 +1002,17 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = null) {
-  lid = item_lid ? item_lid : $("#lid").val();
-  item = document.getElementById("lid" + lid);
-  item.style.display = "none";
-  item.classList.add("deleted");
+function deleteItem(item_lid = []) {
+  for (var i = 0; i < item_lid.length; i++) {
+    console.log("deleteItem: " + item_lid[i]);
+    lid = item_lid ? item_lid : $("#lid").val();
+    item = document.getElementById("lid" + lid[i]);
+    item.style.display = "none";
+    item.classList.add("deleted");
+  
+    document.querySelector("#undoButton").style.display = "block";
+  }
 
-  document.querySelector("#undoButton").style.display = "block";
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   delArr.push(lid);
