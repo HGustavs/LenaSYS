@@ -345,7 +345,7 @@
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div style='text-align: center;'>
-					<h4>Are you sure you want to delete this item?</h4>
+					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
