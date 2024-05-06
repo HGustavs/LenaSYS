@@ -426,14 +426,6 @@ window.addEventListener("DOMContentLoaded", () => {
  * @see getData() For the VERY FIRST function called in the file.
  */
 
-// Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
-var countUsedAttributes = 0;
-var allAttrToEntityRelations = [];
-
-// Array for attributes connected with eachother
-var attrViaAttrToEnt = [];
-var attrViaAttrCounter = 0;
-
 // Global statemachine init, moved from onSetup
 stateMachine = new StateMachine(data, lines);
 
@@ -1229,19 +1221,6 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
 
     // Removes from the two arrays that keep track of the attributes connections. 
     for (let i = 0; i < linesArray.length; i++) {
-        for (let j = 0; j < allAttrToEntityRelations.length; j++) {
-            if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
-                allAttrToEntityRelations.splice(j, 1);
-                countUsedAttributes--;
-            }
-        }
-        for (let k = 0; k < attrViaAttrToEnt.length; k++) {
-            if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
-                attrViaAttrToEnt.splice(k, 1);
-                attrViaAttrCounter--;
-            }
-        }
-
         lines = lines.filter(function (line) {
             var shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
