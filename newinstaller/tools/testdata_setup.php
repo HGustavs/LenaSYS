@@ -1,44 +1,77 @@
 <?php
 class TestdataSetup {
+	private $sourceDirectory;
+	private $destinationDirectory;
 	private $callback;
 	
-	public function __construct($callback = null) {
+	public function __construct(string $sourceDirectory, string $destinationDirectory, $callback = null) {
+		$this->sourceDirectory = $sourceDirectory;
+		$this->destinationDirectory = $destinationDirectory;
 		$this->callback = $callback;
 	}
 
     /**
-     * Copies all non-dot files from one directory to another.
-     * Parameter: $fromDirectory Source directory path.
-     * Parameter: $toDirectory Destination directory path.
+     * Recursively copies all non-dot files from one directory to another.
+     * Parameter: $verbose Verbosity flag for detailed output.
      * return array Returns an array with a success status and a message.
      */
-	public function copy_test_files(string $fromDirectory, string $toDirectory): array {
+	public function copy_test_files(bool $verbose = false): array {
 		try {
-			if (!is_readable($fromDirectory)) {
+			if (!is_readable($this->sourceDirectory)) {
                 return $this->handle_exception("Source directory is not readable or does not exist.");
             }
 
-            if (!is_dir($toDirectory) && !mkdir($toDirectory, 0777, true)) {
+            if (!is_dir($this->destinationDirectory) && !mkdir($this->destinationDirectory, 0777, true)) {
                 return $this->handle_exception("Failed to create destination directory.");
             }
 
-			$dirIterator = new DirectoryIterator($fromDirectory);
+            $dirIterator = new RecursiveDirectoryIterator($this->sourceDirectory, RecursiveDirectoryIterator::SKIP_DOTS);
+            $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
 
-            foreach ($dirIterator as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    $srcFilePath = $fileinfo->getRealPath();
-                    $destFilePath = $toDirectory . '/' . $fileinfo->getFilename();
-
-                    if (!copy($srcFilePath, $destFilePath)) {
-                        return $this->handle_exception("Failed to copy {$fileinfo->getFilename()}.");
+            foreach ($iterator as $item) {
+                $destPath = $this->destinationDirectory . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+                if ($item->isDir()) {
+                    if (!is_dir($destPath) && !mkdir($destPath)) {
+                        return $this->handle_exception("Failed to create directory {$destPath}.");
+                    }
+                } else {
+                    if (!copy($item->getRealPath(), $destPath)) {
+                        return $this->handle_exception("Failed to copy {$item->getFilename()}.");
+                    }
+                    if ($verbose) {
+                        $this->handle_success("Copied '{$item->getRealPath()}' to '{$destPath}'");
                     }
                 }
             }
-			return $this->handle_success("Successfully filled {$toDirectory} with files from {$fromDirectory}.");
-		} catch (Exception $e) {
-			return $this->handle_exception($e->getMessage());
-		}
+            return $this->handle_success("Successfully copied files from {$this->sourceDirectory} to {$this->destinationDirectory}.");
+        } catch (Exception $e) {
+            return $this->handle_exception($e->getMessage());
+        }
 	}
+
+    /**
+     * Copies a specific course.
+     * Parameter: $course Name of the course directory.
+     * Parameter: $verbose Optional verbosity flag.
+     */
+    public function copy_course(string $course, bool $verbose = false) {
+		// Store original source & destination paths.
+        $originalSourceDirectory = $this->sourceDirectory;
+		$originalDestinationDirectory = $this->destinationDirectory;
+
+		// Temporarily updates source & destination paths to copy specific course.
+		$this->sourceDirectory .= '/' . $course;
+		$this->destinationDirectory .= '/' . $course;
+
+		// Store the result.
+		$result = $this->copy_test_files($verbose);
+
+		// Resets paths to original.
+		$this->sourceDirectory = $originalSourceDirectory;
+		$this->destinationDirectory = $originalDestinationDirectory;
+
+        return $result;
+    }
 
 	/**
      * Handles exceptions and returns a standardized array format.
