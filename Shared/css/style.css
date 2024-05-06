@@ -9656,15 +9656,21 @@ margin:2px;
 }
 
 .toastText {
-  font-family: Arial; 
-  grid-area: "text";
-  overflow-y: scroll;
+  font-family: Arial;
   width: 100%;
-  min-height: 2rem;
-  height: 3rem;
+  min-height:2.3rem;
+  height: 2.3rem;
   word-break: break-word;
-  text-align: start; 
+  text-align: start;
+  overflow: hidden;
 }
+
+
+.toast.expanded {
+  height: auto;
+  cursor: default;
+}
+
 
 .typeIcon {
   cursor: default;
