@@ -15,7 +15,7 @@ var versnme = "UNK";
 var versnr;
 var CeHiddenParameters = [];
 var motd = "UNK";
-var selectedItemList = [];
+let selectedItemList = [];
 var hasDuggs = false;
 var dateToday = new Date().getTime();
 var compareWeek = -604800000;
@@ -798,7 +798,7 @@ function markedItems(item = null) {
 
   console.log("Active lid: " + active_lid);
   if (selectedItemList.length != 0) {
-    for (var i = 0; i < selectedItemList.length; i++) {
+    for (let i = 0; i < selectedItemList.length; i++) {
       if (selectedItemList[i] === active_lid) {
         selectedItemList.splice(i, 1);
         i--;
@@ -865,7 +865,7 @@ function hideVisibilityIcons() {
 function showMarkedItems() {
   hideVisibilityIcons();
   for (i = 0; i < selectedItemList.length; i++) {
-    var lid = selectedItemList[i];
+    let lid = selectedItemList[i];
     AJAXService("PUBLIC", {
       lid: lid
     }, "SECTION");
@@ -1115,7 +1115,7 @@ function hideMarkedItems() {
   document.querySelector('#hideElement').disabled = true;     //can be removed
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
   for (i = 0; i < selectedItemList.length; i++) {
-    var lid = selectedItemList[i];
+    let lid = selectedItemList[i];
     AJAXService("HIDDEN", {
       lid: lid
     }, "SECTION");
