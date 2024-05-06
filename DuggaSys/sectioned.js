@@ -589,87 +589,46 @@ window.addEventListener('beforeunload', function (event) {
   }
 });
 
-// Close the "edit course version" and "new course version" windows by pressing the ESC button
+// Eventlistener for keydown
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#editCourseVersion").css("display", "none");
-    $("#newCourseVersion").css("display", "none");
-    $("#userFeedbackDialog").css("display", "none");
+    let link = document.getElementById("upIcon").href;
+    let popupIsOpen = closeOpenPopupForm();
+    if(!popupIsOpen){
+      console.log(link);
+      window.location.replace(link);
+    } else {
+      return
+    }
   }
 })
 
-// Close the "download github repo" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#githubPopupWindow").css("display", "none");
+//Put all current and newly created popup forms/modules here
+//If popup is open, it will be closed. 
+function closeOpenPopupForm(){
+  let allPopups = [
+    "#editCourseVersion",
+    "#newCourseVersion",
+    "#userFeedbackDialog",
+    "#githubPopupWindow",
+    "#sectionConfirmBox",
+    "#tabConfirmBox",
+    "#gitHubTemplate",
+    "#gitHubBox",
+    "#loginBox",
+    "#loadDuggaBox",
+    "#sectionHideConfirmBox",
+    "#sectionShowConfirmBox"
+  ];
+  for (let popup of allPopups){
+    if ($(popup).css("display") !== "none"){
+      $(popup).css("display","none");
+      return true;
+    }
   }
-})
-
-// Close the "Delete item" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#sectionConfirmBox").css("display", "none");
-  }
-})
-
-// Close the "Confirm tab" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#tabConfirmBox").css("display", "none");
-  }
-})
-
-// Close the "Choose template" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#gitHubTemplate").css("display", "none");
-  }
-})
-
-// Close the "Github moment" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#gitHubBox").css("display", "none");
-  }
-})
-
-// Close the "login" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#loginBox").css("display", "none");
-  }
-})
-
-// Close the "load dugga with hash" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#loadDuggaBox").css("display", "none");
-  }
-})
-
-// Close the "Confirm hiding" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#sectionHideConfirmBox").css("display", "none");
-  }
-})
-
-// Close the "Confirm show items" window by pressing the ESC button
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    toggleTab(false);
-    $("#sectionShowConfirmBox").css("display", "none");
-  }
-})
+  //No popup open
+  return false; 
+}
 
 function displaymessage() {
   $(".messagebox").css("display", "block");
