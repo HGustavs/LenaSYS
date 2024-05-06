@@ -19,6 +19,9 @@ include_once "retrieveSectionedService_ms.php";
 pdoConnect();
 session_start();
 
+$courseid = getOP('cid');
+$versid = getOP('vers');
+
 if(checklogin()){
 	$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
 

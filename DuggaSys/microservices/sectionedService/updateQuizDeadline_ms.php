@@ -17,6 +17,7 @@ session_start();
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $link=getOP('link');
+$versid = getOP('vers');
 
 $deadline=getOP('deadline');
 $relativedeadline=getOP('relativedeadline');

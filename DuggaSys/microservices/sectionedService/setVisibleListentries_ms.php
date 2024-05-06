@@ -18,6 +18,8 @@ session_start();
 // Retrieve parameters from the request 
 $lid = getOP('lid');
 $visible = getOP('visible');
+$courseid = getOP('cid');
+$versid = getOP('vers');
 
 
 // Permissions Check

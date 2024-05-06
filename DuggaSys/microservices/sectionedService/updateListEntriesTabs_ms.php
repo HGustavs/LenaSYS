@@ -12,6 +12,8 @@ session_start();
 $opt=getOP('opt');
 $sectid=getOP('lid');
 $tabs=getOP('tabs');
+$courseid = getOP('cid');
+$versid = getOP('vers');
 
 if(strcmp($opt,"UPDATETABS")===0){
     $query = $pdo->prepare("UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;");

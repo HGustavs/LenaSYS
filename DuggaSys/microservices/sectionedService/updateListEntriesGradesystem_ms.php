@@ -11,6 +11,8 @@ session_start();
 
 $sectid=getOP('lid');
 $gradesys=getOP('gradesys');
+$courseid = getOP('cid');
+$versid = getOP('vers');
 
 // need to be logged in and superuser
 $query = $pdo->prepare("UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;");

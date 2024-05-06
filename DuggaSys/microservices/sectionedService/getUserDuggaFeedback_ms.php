@@ -23,6 +23,7 @@ if (!checklogin()) {
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $moment=getOP('moment');
+$versid = getOP('vers');
 
 
 $userfeedback=array();

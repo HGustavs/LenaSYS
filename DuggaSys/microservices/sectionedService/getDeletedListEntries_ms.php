@@ -17,6 +17,9 @@ session_start();
 
 // Global variables
 $opt=getOP('opt');
+$courseid = getOP('cid');
+$versid = getOP('vers');
+
 $results = array();
 
 $query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
