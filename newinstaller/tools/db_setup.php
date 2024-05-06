@@ -103,7 +103,7 @@ class DBSetup {
 
 			return $this->handle_success("Successfully removed database {$db_name}.");
 		} catch (PDOException $e) {
-			return $this->handle_exception($e, "Failed to remove database {$db_name}");
+			return $this->handle_exception($e, "Failed to remove database {$db_name} {$e->getMessage()}");
 		}
 	}
 

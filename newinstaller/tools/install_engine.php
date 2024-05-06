@@ -5,6 +5,12 @@ foreach (glob("tools/*.php") as $tools) {
 }
 
 class InstallEngine {
+
+	/**
+	 * function run
+	 * Run all the necessary steps for installing the system.
+	 * $installation_data json string containing installation settings. 
+	 */
 	public static function run(string $installation_data) {
 		SSESender::start();
 		$settings = json_decode($installation_data);
@@ -13,7 +19,6 @@ class InstallEngine {
 		$verbose = $settings->verbose === 'true' ? true : false;
 		$overwrite_db = $settings->overwrite_db === 'true' ? true : false;
 		$overwrite_user = $settings->overwrite_user === 'true' ? true : false;
-
 
 		try {
 			$hostname = 'db';
@@ -55,11 +60,6 @@ class InstallEngine {
 			foreach ($languages as $language) {
 				$installer->execute_sql_file("../install/SQL/keywords_{$language}.sql", "callback");
 			}
-
-			SSESender::transmit_event("updateProgress", data: 98);
-			$installer->drop_user();
-			SSESender::transmit_event("updateProgress", data: 99);
-			$installer->drop_db();
 			SSESender::transmit_event("updateProgress", data: 100);
 			SSESender::transmit(data: "Installation completed", is_error: false);
 		} catch (Exception $e) {

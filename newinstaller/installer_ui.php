@@ -26,7 +26,7 @@
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}))
+			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ verbose: 'true', overwrite_db: 'true', overwrite_user: 'true'}))
 		});
 
         let sseReceiver = new SSEReceiver({
