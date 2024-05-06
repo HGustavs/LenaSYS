@@ -41,21 +41,21 @@ CRUD stands for the four basic operations for managing data in applications and 
 # LIST OF ORIGINAL SERVICE FILES
 ---
 
-- accessedservice.php ==finished==
-- codeviewerService.php ==finished==
-- contribution_loginbox_service.php: WORK PAUSED due to the current non-functional state of this service
-- contributionservice.php: WORK PAUSED due to the current non-functional state of this service
-- courseedservice.php ==finished==
+- accessedservice.php __==finished==__
+- codeviewerService.php __==finished==__
+- contribution_loginbox_service.php: __WORK PAUSED due to the current non-functional state of this service__
+- contributionservice.php: __WORK PAUSED due to the current non-functional state of this service__
+- courseedservice.php __==finished==__
 - diagramservice.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)__
-- duggaedservice.php ==finished==
-- fileedservice.php ==finished==
-- gitcommitService.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 3 is working on this)__
-- gitfetchService.php __WORK PAUSED for development of microservices. Will continue when the service is fixed (group 3 is working on this)__
-- highscoreservice.php ==finished==
-- profileservice.php ==finished==
-- resultedservice.php ==finished==
-- sectionedservice.php ==finished==
-- showDuggaService.php ==finished==
+- duggaedservice.php __==finished==__
+- fileedservice.php __==finished==__
+- gitcommitService.php __WORK PAUSED for development of microservices and/or tests. Will continue when the service is fixed (group 3 is working on this)__
+- gitfetchService.php __WORK PAUSED for development of microservices and/or tests. Will continue when the service is fixed (group 3 is working on this)__
+- highscoreservice.php __==finished==__
+- profileservice.php __==finished==__
+- resultedservice.php __==finished==__
+- sectionedservice.php __==finished==__
+- showDuggaService.php __==finished==__
 
 ---
 # LIST OF MICROSERVICES
@@ -104,6 +104,9 @@ Accessed Service:
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- retrieveAccessedService_ms.php __==finished==__ (But not tested) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
+
+__Note, all microservices related to accessservice.php have been created. As for working tests for these microservices, the work has been paused since accessedservice.php lacks an implemented frontend that allows the development of working tests. Tests cannot be created until the retrieveAccessedService_ms.php is tested, and for that, frontend functionality is needed. Group 3 is working on the frontend solution.__ 
 
 <br>
 
@@ -113,7 +116,8 @@ Codeviewer Service:
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfExample_ms.php __==finished==__ New filename: "updateContentOfExample_ms.php" according to new nameconvention based on CRUD and the main function of the ms.
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
-- deleteCodeExample_ms.php __==finished==__ New filename: "deleteCodeExample_ms.php" according to new nameconvention based on CRUD.
+- deleteCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- retrieveCodeViewerService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
 
 <br>
 
@@ -130,7 +134,7 @@ https://github.com/HGustavs/LenaSYS/blob/master/backend-models/functional-requir
 
 <br>
 
-Contributed Service:
+Contribution Service:
 
 - Based on the information given for the status of the Contribution Loginbox Service information, we are pausing the development of microservices for this service file.
 
@@ -142,11 +146,11 @@ Courseed Service:
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
-- copyCourseVersion_ms.php __==UNFINISHED==__
+- copyCourseVersion_ms.php __==UNFINISHED==__  
 - updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- retrieveCourseedService_ms.php __==finished==__ New filename: "readCourseedService_ms.php" according to new nameconvention based on CRUD.
+- retrieveCourseedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -164,6 +168,8 @@ Duggaed Service:
 - createDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteDuggaVariant_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- retrieveDuggaedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
+
 
 <br>
 
@@ -171,19 +177,20 @@ Fileed Service:
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
+- retrieveFileedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
 Gitcommit Service:
 
 - getCourseID __==finished==__ New filename: "readCourseID_ms.php" according to new nameconvention based on CRUD.
-- clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.
-- updateGithubRepo_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
+- clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.  
+- updateGithubRepo_ms.php __==UNFINISHED==__
 - refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
 - fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
 - insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepo_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
-- refreshCheck_ms.php __==UNFINISHED==__
+- refreshCheck_ms.php __==UNFINISHED==__ 
 
 __Observe, this microservices needs to be checked again to make sure they are working once group 3 has fixed the servicefile.__
 
@@ -192,7 +199,7 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 Gitfetch Service:
 
 - getGitHubURL_ms.php __==finished==__ New filename: "getGitHubAPIUrl_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
-- getGitHubURLCommit_ms.php __==UNFINISHED==__
+- getGitHubURLCommit_ms.php __==UNFINISHED==__ on hold pga att funktionalitet i servicefilen saknas
 - insertToFileLink_ms.php __==finished==__ New filename: "createFileLinkEntry_ms.php" according to new nameconvention based on CRUD.
 - insertToMetaData_ms.php __==finished==__ New filename: "createGitFilesMetadata_ms.php" according to new nameconvention based on CRUD.
 - downloadToWebServer_ms.php __==UNFINISHED==__
@@ -236,12 +243,12 @@ Sectioned Service:
 - setVisibleListentries_ms.php __==finished==__ New filename: "updateVisibleListentries_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateCourseVersion_sectioned_ms.php __==UNFINISHED==__
+- updateCourseVersion_sectioned_ms.php __==UNFINISHED==__ 
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
-- getCourseVersions_ms.php __==UNFINISHED==__
-- getGitReference_ms.php __==UNFINISHED==__
+- getCourseVersions_ms.php __==UNFINISHED==__ 
+- getGitReference_ms.php __==UNFINISHED==__  
 - getUserDuggaFeedback_ms.php __==finished==__ New filename: "readUserDuggaFeedback_ms.php" according to new nameconvention based on CRUD.
-- retrieveSectionedService_ms.php __==finished==__ New filename: "readSectionedService_ms.php" according to new nameconvention based on CRUD.
+- retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -249,7 +256,7 @@ Show Dugga Service:
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
 - processDuggaFile_ms.php __==finished==__ New filename: "processSubmittedDugga_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. 
-- saveDugga_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this particular case, a more general name is preferable as it better describes the microservice's function.
+- saveDugga_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this particular case, a more general name is preferable as it better describes the microservice's function better.
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
 
 <br>
@@ -744,6 +751,105 @@ ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bve
 ```
 
 <br>
+
+---
+
+<br>
+
+### retrieveAccessedService_ms.php
+__Include original service files:__ basic.php
+__Include microservice:__ retrieveUsername_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the tables __user__ and __user_course__ to retrieve user details and calculate how many minutes ago each user was added:
+- uid (as uid)
+- username
+- firstname
+- lastname
+- ssn
+- access
+- class
+- modified
+- vers
+- requestedpasswordchange
+- examiner
+- groups
+- TIME_TO_SEC(TIMEDIFF(now(), addedtime)) / 60 AS newly (Calculates the time difference between the current time and the addedtime value, converts this difference from seconds to minutes, and aliases it as value newly)
+
+Condition:
+- Filters records where cid value in __user_course__ table matches a specified value (placeholder :cid).
+- Only selects values where the uid values in both tables match.
+
+```sql
+SELECT user.uid as uid,username,firstname,lastname,ssn,access,class,modified,vers,requestedpasswordchange,examiner,groups, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid;
+```
+
+
+_SELECT_ operation on the table __user_course__ to retrieve unique user IDs where access level is 'W':
+- uid
+
+- The operation retrieves uid value from the __user_course__ table for entries where the access level is equal to 'W'.
+- It groups the results by uid value to ensure each user ID is listed only once, effectively filtering out duplicates and providing a list of unique users with 'W' access.
+
+```sql
+SELECT user_course.uid FROM user_course WHERE user_course.access = 'W' GROUP BY user_course.uid;
+```
+
+
+_SELECT_ operation on the table __'class'__ to retrieve all entries from the column:
+- class
+
+```sql
+SELECT class FROM class;
+```
+
+
+_SELECT_ operation on the table __'groups'__ to retrieve values from the columns:
+- groupval
+- groupkind
+- groupint
+
+- The results are ordered first by the 'groupkind' column and then by the 'groupint' column.
+
+```sql
+SELECT groupval, groupkind, groupint FROM `groups` ORDER BY groupkind, groupint;
+```
+
+
+_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+
+- The results are filtered to include only those entries where the 'cid' value matches a specified value (`:cid`), which is passed as a parameter to the query.
+
+```sql
+SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate FROM vers WHERE cid=:cid;
+```
+
+
+_SELECT_ operation on the tables __'course'__, __'userAnswer'__, and __'vers'__ to retrieve values from the columns:
+- cid (from 'course')
+- uid (from 'userAnswer')
+- vers (from 'vers')
+- versname (from 'vers')
+
+```sql
+SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE course.cid=:cid AND course.cid=userAnswer.cid AND vers.vers=userAnswer.vers AND userAnswer.vers!=activeversion;
+```
+ 
+- The 'course.cid=:cid' ensures results are for a specific course ID.
+- The 'course.cid=userAnswer.cid' joins the __'course'__ and __'userAnswer'__ tables on the course ID.
+- The 'vers.vers=userAnswer.vers' joins the __vers__ and __userAnswer__ tables on the version number.
+- The 'userAnswer.vers!=activeversion' filters out entries where the user's answer version is the current active version.
+
+<br>
 <br>
 
 ---
@@ -949,6 +1055,150 @@ _DELETE_ operation on the table __'listentries'__ to remove rows where:
 
 ```sql
 DELETE FROM listentries WHERE lid=:lid;
+```
+
+
+### retrieveCodeViewerService_ms.php
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
+- exampleid
+- sectionname
+- examplename
+- runlink
+- cid
+- cversion
+- beforeid
+- afterid
+- public
+
+```sql
+SELECT exampleid, sectionname, examplename, runlink, cid, cversion, beforeid, afterid, public FROM codeexample WHERE exampleid = :exampleid;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
+- exampleid
+- examplename
+- sectionname
+- runlink
+- public
+- templateid (from the joined __'template'__ table, aliased as templateid)
+- stylesheet (from the joined __'template'__ table)
+- numbox (from the joined 'template' table)
+
+Here are the conditions for the SQL query:
+
+- The query joins the __'codeexample'__ table with the __'template'__ table based on matching 'templateid' values.
+- The results are filtered by:
+    -'exampleid = :exampleid' to make sure the data matches a certain example, and 'cid = :courseID' to limit the data to a specific course ID.
+
+```sql
+SELECT exampleid, examplename, sectionname, runlink, public, template.templateid AS templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template templateid = codeexample.templateid WHERE exampleid = :exampleid AND cid = :courseID;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve data:
+- exampleid
+- sectionname
+- examplename
+- beforeid
+- afterid
+
+- 'cid' matches the specified course ID.
+- 'cversion' matches the specified course version.
+- Results are sorted by 'sectionname' and 'examplename'.
+
+```sql
+SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;
+```
+
+
+_SELECT_ operation on the table __'improw'__ to retrieve data:
+- boxid
+- istart
+- iend
+
+- The 'exampleid' matches the specified value provided by the parameter ':exampleid'. The results are then ordered by the 'istart' column.
+
+```sql
+SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;
+```
+
+
+_SELECT_ operation on the table __'word'__ to retrieve data:
+- wordlistid
+- word
+- label
+
+- Sorts the results by the 'wordlistid' column.
+
+```sql
+SELECT wordlistid, word, label FROM word ORDER BY wordlistid;
+```
+
+
+_SELECT_ operation on the table __'wordlist'__ to retrieve data:
+- wordlistid
+- wordlistname
+
+- Sorts the results by the 'wordlistid' column.
+
+```sql
+SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;
+```
+
+
+_SELECT_ operation on the table __'impwordlist'__ to retrieve data:
+- word
+- label
+
+- The 'exampleid' matches the specified value provided by the parameter ':exampleid'. The results are then sorted alphabetically by the 'word' column.
+
+```sql
+SELECT word, label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve data:
+- fileid
+- filename
+- kind
+
+- The 'cid' matches the specified value provided by the parameter ':cid'. The results are then sorted first by 'kind' in ascending order and then by 'filename' in ascending order.
+
+```sql
+SELECT fileid, filename, kind FROM fileLink WHERE cid = :cid ORDER BY kind, filename;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve data:
+- boxid
+- boxcontent
+- boxtitle
+- filename
+- wordlistid
+- segment
+- fontsize
+
+- The 'exampleid' matches the specified value provided by the parameter ':exampleid'. The results are then sorted in ascending order based on the 'boxid' column.
+
+```sql
+SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment, fontsize FROM box WHERE exampleid = :exampleid ORDER BY boxid;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve data:
+- filename
+- path
+- kind
+
+- Where either the 'cid' matches the specified value provided by the parameter ':cid' or 'isGlobal' is '1', and where the filename matches the specified value provided by the parameter ':fname' (case-insensitive comparison). The results are ordered by 'kind' in descending order, and only the first row is returned.
+
+```sql
+SELECT filename, path, kind FROM fileLink WHERE (cid = :cid OR isGlobal = '1') AND UPPER(filename) = UPPER(:fname) ORDER BY kind DESC LIMIT 1;
 ```
 
 <br>
@@ -1380,7 +1630,7 @@ DELETE course FROM course WHERE visibility=:deleted;
 
 <br>
 
-### readCourseedService_ms.php
+### retrieveCourseedService_ms.php
 __Include original service files:__ sessions.php
 
 __Querys used in this microservice:__
@@ -1508,7 +1758,7 @@ _WORK PAUSED for development of microservices. Will continue when the service is
 
 ### createDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1538,6 +1788,7 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 
 ### updateDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1564,7 +1815,7 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 
 ### deleteDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1593,7 +1844,7 @@ DELETE FROM quiz WHERE id=:qid;
 
 ### createDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1616,6 +1867,7 @@ INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (:qi
 
 ### updateDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1636,7 +1888,7 @@ UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer 
 
 ### deleteDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1660,6 +1912,67 @@ DELETE FROM variant WHERE vid=:vid;
 ```
 
 <br>
+
+---
+
+<br>
+
+### retrieveDuggaedService_ms.php
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'course'__ to retrieve values from the columns:
+- coursename
+- coursecode
+- cid
+
+- Only shows details for the specified course ID (':cid').
+- Returns only the first matching record to ensure a single result is shown.
+
+```sql
+SELECT coursename, coursecode, cid FROM course WHERE cid=:cid LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'quiz'__ to retrieve values from the columns:
+- id
+- cid
+- autograde
+- gradesystem
+- qname
+- quizFile
+- qstart
+- deadline
+- qrelease
+- modified
+- vers
+- jsondeadline
+
+- Filters results for quizzes specific to a given course ID (':cid') and course version (':coursevers').
+- Sorts the results by the quiz ID to ensure they are listed in ascending order. 
+
+```sql
+SELECT id, cid, autograde, gradesystem, qname, quizFile, qstart, deadline, qrelease, modified, vers, jsondeadline FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;
+```
+
+
+_SELECT_ operation on the table __'variant'__ to retrieve values from the columns:
+- vid
+- quizID
+- param
+- variantanswer
+- modified
+- disabled
+
+- Filters results to only include values that belong to a specific quiz ID (:qid').
+- Sorts the results by the variant ID in ascending order.
+
+```sql
+SELECT vid, quizID, param, variantanswer, modified, disabled FROM variant WHERE quizID=:qid ORDER BY vid;
+```
+
+<br>
 <br>
 
 ---
@@ -1671,7 +1984,7 @@ DELETE FROM variant WHERE vid=:vid;
 
 ### deleteFileLink_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveFileedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1714,7 +2027,7 @@ DELETE FROM fileLink WHERE fileid=:fid;
 __updateFileLink_ms.php__ handles writing to files and updates filesize in fileLink.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveFileedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1742,6 +2055,30 @@ _UPDATE_ operation on the table __'fileLink'__ to update the values of the colum
 
 ```sql
 UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;
+```
+
+
+<br>
+
+---
+
+<br>
+
+### retrieveFileedService_ms.php
+__Include original service files:__ basic.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve all columns:
+
+- Filters the results to include entries where:
+  - The 'kind' is 2, or
+  - The 'cid' matches the specified course ID (':cid') and 'vers' is not set (null), or
+  - The 'cid' matches the specified course ID (':cid') and 'vers' matches the specified version (':vers').
+  - Sorts the results first by the 'kind' column and then by 'filename'.
+
+```sql
+SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) ORDER BY kind, filename;
 ```
 
 <br>
