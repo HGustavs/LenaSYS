@@ -222,7 +222,6 @@ function drawLineProperties(line) {
     switch (line.type) {
         case entityType.ER:
             str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
-            if (!isLineConnectedTo(line, elementTypesNames.ERAttr)) break;
             str += `<label style="display: block">Cardinality:`;
             let optER;
             Object.keys(lineCardinalitys).forEach(cardinality => {
