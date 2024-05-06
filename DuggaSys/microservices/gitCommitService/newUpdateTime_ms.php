@@ -1,5 +1,6 @@
 <?php
-
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 
 //--------------------------------------------------------------------------------------------------
 // newUpdateTime: Updates the MySQL database to save the latest update time
