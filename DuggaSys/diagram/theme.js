@@ -3,9 +3,22 @@
  */
 function updateCSSForAllElements() {
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
+        let boxh = divObject.offsetHeight;
+    
         let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-        let top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-
+        let top;
+        if (elementData.kind === "UMLEntity" || elementData.kind === "SDEntity" || elementData.kind === "IEEntity") {
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / (zoomfact))) - (boxh / 2));
+        } else if (elementData.kind === "note") {
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / (zoomfact))) - (boxh / 3.5));
+        }else if (elementData.kind === "sequenceLoopOrAlt") {
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / (zoomfact))) - (boxh / 6.8));
+        } else {
+            top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        }
+    
+        divObject.style.left = left + 'px';
+        divObject.style.top = top + 'px';
         if (useDelta) {
             left -= deltaX;
             top -= deltaY;

@@ -58,7 +58,7 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IERelation:
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
-            style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+            style = `left:0; top:0; width:auto; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -441,7 +441,7 @@ function drawElementIERelation(element, boxw, boxh, linew) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`
     }
-    return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
 }
 
 function drawElementState(element, vectorGraphic) {
