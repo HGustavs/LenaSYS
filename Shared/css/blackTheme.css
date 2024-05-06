@@ -470,10 +470,22 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-light);
 }
-    /*A global styling for darkmode, added the class where there needed darkbackgrounds*/
+/*A global styling for darkmode, added the class where there needed darkbackgrounds*/
 .DarkModeBackgrounds{
-        background-color: var(--color-background);
-    } 
+    background-color: var(--color-background);
+} 
+
+.previewTable a{
+    color:white;
+}
+
+.previewTable tr:nth-child(odd){
+    background-color: var(--color-sectioned-table-lo);
+}
+.previewTable tr:nth-child(even){
+    background-color: var(--color-sectioned-table-hi);
+}
+
 
 /*A global styling for darkmode, a class for white text on darkbackgrounds*/
 .DarkModeText{
