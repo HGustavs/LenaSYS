@@ -1007,10 +1007,9 @@ function deleteItem(item_lid = null) {
   item.style.display = "none";
   item.classList.add("deleted");
 
-  
-
   // Makes deletefunction sleep for the amount of time toast is active(value of undoTime).
   let undoTime = 5;
+  
   document.querySelector("#undoButton").style.display = "block";
   toast("undo", "Undo deletion?", undoTime, "cancelDelete();");
   delArr.push(lid);
