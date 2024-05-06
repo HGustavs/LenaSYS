@@ -116,7 +116,8 @@ Codeviewer Service:
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfExample_ms.php __==finished==__ New filename: "updateContentOfExample_ms.php" according to new nameconvention based on CRUD and the main function of the ms.
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
-- deleteCodeExample_ms.php __==finished==__ New filename: "deleteCodeExample_ms.php" according to new nameconvention based on CRUD.
+- deleteCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- retrieveCodeViewerService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
 
 <br>
 
@@ -1051,6 +1052,150 @@ _DELETE_ operation on the table __'listentries'__ to remove rows where:
 
 ```sql
 DELETE FROM listentries WHERE lid=:lid;
+```
+
+
+### retrieveCodeViewerService_ms.php
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
+- exampleid
+- sectionname
+- examplename
+- runlink
+- cid
+- cversion
+- beforeid
+- afterid
+- public
+
+```sql
+SELECT exampleid, sectionname, examplename, runlink, cid, cversion, beforeid, afterid, public FROM codeexample WHERE exampleid = :exampleid;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
+- exampleid
+- examplename
+- sectionname
+- runlink
+- public
+- templateid (from the joined __'template'__ table, aliased as templateid)
+- stylesheet (from the joined __'template'__ table)
+- numbox (from the joined 'template' table)
+
+Here are the conditions for the SQL query:
+
+- The query joins the __'codeexample'__ table with the __'template'__ table based on matching 'templateid' values.
+- The results are filtered by:
+    -'exampleid = :exampleid' to make sure the data matches a certain example, and 'cid = :courseID' to limit the data to a specific course ID.
+
+```sql
+SELECT exampleid, examplename, sectionname, runlink, public, template.templateid AS templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template templateid = codeexample.templateid WHERE exampleid = :exampleid AND cid = :courseID;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve data:
+- exampleid
+- sectionname
+- examplename
+- beforeid
+- afterid
+
+- 'cid' matches the specified course ID.
+- 'cversion' matches the specified course version.
+- Results are sorted by 'sectionname' and 'examplename'.
+
+```sql
+SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;
+```
+
+
+_SELECT_ operation on the table __'improw'__ to retrieve data:
+- boxid
+- istart
+- iend
+
+- The 'exampleid' matches the specified value provided by the parameter ':exampleid'. The results are then ordered by the 'istart' column.
+
+```sql
+SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY istart;
+```
+
+
+_SELECT_ operation on the table __'word'__ to retrieve data:
+- wordlistid
+- word
+- label
+
+- Sorts the results by the 'wordlistid' column.
+
+```sql
+SELECT wordlistid, word, label FROM word ORDER BY wordlistid;
+```
+
+
+_SELECT_ operation on the table __'wordlist'__ to retrieve data:
+- wordlistid
+- wordlistname
+
+- Sorts the results by the 'wordlistid' column.
+
+```sql
+SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;
+```
+
+
+_SELECT_ operation on the table __'impwordlist'__ to retrieve data:
+- word
+- label
+
+- The 'exampleid' matches the specified value provided by the parameter ':exampleid'. The results are then sorted alphabetically by the 'word' column.
+
+```sql
+SELECT word, label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve data:
+- fileid
+- filename
+- kind
+
+- The 'cid' matches the specified value provided by the parameter ':cid'. The results are then sorted first by 'kind' in ascending order and then by 'filename' in ascending order.
+
+```sql
+SELECT fileid, filename, kind FROM fileLink WHERE cid = :cid ORDER BY kind, filename;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve data:
+- boxid
+- boxcontent
+- boxtitle
+- filename
+- wordlistid
+- segment
+- fontsize
+
+- The 'exampleid' matches the specified value provided by the parameter ':exampleid'. The results are then sorted in ascending order based on the 'boxid' column.
+
+```sql
+SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment, fontsize FROM box WHERE exampleid = :exampleid ORDER BY boxid;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve data:
+- filename
+- path
+- kind
+
+- Where either the 'cid' matches the specified value provided by the parameter ':cid' or 'isGlobal' is '1', and where the filename matches the specified value provided by the parameter ':fname' (case-insensitive comparison). The results are ordered by 'kind' in descending order, and only the first row is returned.
+
+```sql
+SELECT filename, path, kind FROM fileLink WHERE (cid = :cid OR isGlobal = '1') AND UPPER(filename) = UPPER(:fname) ORDER BY kind DESC LIMIT 1;
 ```
 
 <br>
