@@ -9278,22 +9278,17 @@ border: none !important;
 /* END */
 
 /* This is used to highlight updated and new items (ex coursees, duggas)*/
-.highlightChange > a {
+.highlightChange{
   animation: glowAnimation 8s ease-out;
 }
+
 @keyframes glowAnimation {
   0%{
-    text-shadow: 0px 0px 0px #FF0000;
+    background-color: var(--color-primary);
   }
-  50%{
-    text-shadow: 1px 1px 5px #FF0000;
+  100%{
+    background-color: none;
   }
-  0%{
-    text-shadow: 0px 0px 0px #FF0000;
-  }
-}
-.highlightChange {
-  animation: glowAnimation 8s ease-out;
 }
 
 .lineDiagramDark { 
