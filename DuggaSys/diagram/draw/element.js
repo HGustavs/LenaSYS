@@ -144,6 +144,7 @@ function drawElement(element, ghosted = false) {
 }
 
 const splitLengthyLine = (s, max) => {
+    if (max <= 1) return '';
     if (s.length <= max) return s;
     return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
 }
@@ -242,6 +243,7 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     const primaryKeyArray = element.primaryKey;
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
+
     const text = splitFull(element.attributes, maxCharactersPerLine);
 
     let tHeight = texth * (text.length + 1) * lineHeight;
