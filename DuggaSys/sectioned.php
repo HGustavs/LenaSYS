@@ -655,37 +655,55 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
+		<div id='gitHubTemplate' class="loginBoxContainer"  style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='confirmBox("closeConfirmBox");'>x</div>
 					</div>
-					<table width="100%">
+					<table id="templateTable" width="100%">
 						<tr>
 							<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
-								<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' />
+								<img class='templatethumbicon wiggle' onclick='changetemplate("1"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template1_butt.svg' />
 							</td>
-							<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2");' src='../Shared/icons/template2_butt.svg' /></td>
-							<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3");' src='../Shared/icons/template3_butt.svg' /></td>
-							<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4");' src='../Shared/icons/template4_butt.svg' /></td>
-							<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5");' src='../Shared/icons/template5_butt.svg' /></td>
-							<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6");' src='../Shared/icons/template6_butt.svg' /></td>
-							<td id="templat7" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("7");' src='../Shared/icons/template7_butt.svg' /></td>
-							<td id="templat8" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("8");' src='../Shared/icons/template8_butt.svg' /></td>
-							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9");' src='../Shared/icons/template9_butt.svg' /></td>
-							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template10_butt.svg' /></td>
+							<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template2_butt.svg' /></td>
+							<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template3_butt.svg' /></td>
+							<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template4_butt.svg' /></td>
+							<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template5_butt.svg' /></td>
+							<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template6_butt.svg' /></td>
+							<td id="templat7" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("7"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template7_butt.svg' /></td>
+							<td id="templat8" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("8"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template8_butt.svg' /></td>
+							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template9_butt.svg' /></td>
+							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template10_butt.svg' /></td>
 						</tr>
 					</table>
 					<table id="templateOptions" width="100%">
-					</table>
+						</table>
+						<div class="formDialogWide">
+							<span id="templateTableError" class="formDialogText">Please chose a template for your code-example</span>
+						</div>
 					<table width="100%">
 					    <tr> 
-				            <td align='right'><input class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
+				            <td align='right'><input id="saveGitTemplate" class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
 						</tr>
-						<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='fileName' placeholder='Name.type' value=''/></div>
-						<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/></div>
-						<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='filePath' placeholder='no' value=''/></div>
+						<div class='inputwrapper'>
+							<span>Name:</span>
+							<div class="formDialog">
+								<span id="fileNameError"  class="formDialogText">Please use letters and digits, only</span>
+							</div>
+							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value=''/>
+						</div>
+						<div class='inputwrapper'>
+							<span>GithubUrl:</span>
+							<div class="formDialog">
+								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+							</div>
+							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/>
+						</div>
+						<div class='inputwrapper'>
+							<span>Filepath:</span>
+							<input class='textinput' type='text' id='filePath' placeholder='no' value=''/>
+						</div>
                         
 					</table>
 				</div>
