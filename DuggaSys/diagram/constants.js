@@ -247,10 +247,24 @@ const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
 };
 
 /**
+ * @description Available options of icons to display at the end of lines connecting two SE elements.
+ */
+const SELineIcons = {//TODO: Replace with actual icons for the dropdown
+    ARROW: "ARROW"
+};
+
+/**
  * @description Available options of Line types between two SD elements
  */
 const SDLineType = {
     STRAIGHT: "Straight",
+    SEGMENT: "Segment"
+}
+
+/**
+ * @description Available options of Line types between two SE elements
+ */
+const SELineType = {
     SEGMENT: "Segment"
 }
 
