@@ -2,6 +2,7 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
 session_start();
@@ -101,4 +102,6 @@ if(strcmp('EDITEXAMPLE',$opt)===0){
 		}
 	}
 }
-?>
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
+return;
