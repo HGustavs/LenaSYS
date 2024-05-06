@@ -299,7 +299,6 @@ const cardinalityLabels = (line) => {
 }
 
 /**
- *
  * @description function for include button to the options panel,writes out << Include >>
  */
 function setLineLabel() {
