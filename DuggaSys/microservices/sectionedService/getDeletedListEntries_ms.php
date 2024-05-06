@@ -27,4 +27,5 @@ if($query->execute()) {
 }else{
     $debug="Failed to get listentries with visibility DELETED!";
 }
+
 echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));

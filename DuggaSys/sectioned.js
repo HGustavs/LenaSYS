@@ -863,8 +863,9 @@ function showMarkedItems() {
   hideVisibilityIcons();
   for (i = 0; i < hideItemList.length; i++) {
     var lid = hideItemList[i];
-    AJAXService("PUBLIC", {
-      lid: lid
+    AJAXService("SETVISIBILITY", {
+      lid: lid,
+      visible: 1
     }, "SECTION");
     $("#editSection").css("display", "none");
   }
@@ -1108,8 +1109,9 @@ function hideMarkedItems() {
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
   for (i = 0; i < hideItemList.length; i++) {
     var lid = hideItemList[i];
-    AJAXService("HIDDEN", {
-      lid: lid
+    AJAXService("SETVISIBILITY", {
+      lid: lid,
+      visible: 0
     }, "SECTION");
     $("#editSection").css("display", "none");
   }
