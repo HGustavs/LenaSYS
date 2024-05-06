@@ -21,6 +21,14 @@
         let progressBar = document.getElementById("progressBar");
 		const getCurrentValue = () => parseInt(progressBar.value);
 
+		fetch('installer.php', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}))
+		});
+
         let sseReceiver = new SSEReceiver({
             message: function(data) {
                 progressInfo.innerHTML = data + "<br>" + progressInfo.innerHTML;
