@@ -55,4 +55,9 @@ if(is_null($qid)||strcmp($qid,"UNK")===0){
 		}
 }
 
+include_once("retrieveDuggaedService_ms.php");
+$log_uuid=getOP('log__uuid');
+$retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
+echo json_encode($retrievedData);
+
 ?>
