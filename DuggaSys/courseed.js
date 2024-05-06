@@ -757,6 +757,9 @@ function elementIsValid(element) {
 	const inputwrapper = element.closest('.inputwrapper');
 	const messageElement = inputwrapper.querySelector('.formDialogText');
 
+	// Stop any ongoing animations
+	$(messageElement).stop(true, true);
+
 	// Reset initial validation styling and messages
 	element.classList.remove("bg-color-change-invalid");
 	$(messageElement).fadeOut();
