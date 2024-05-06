@@ -38,7 +38,7 @@ if($ha || $studentTeacher) {
     }
 }
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 $data['coursevers'] = $versid;
 echo json_encode($data);
 return;

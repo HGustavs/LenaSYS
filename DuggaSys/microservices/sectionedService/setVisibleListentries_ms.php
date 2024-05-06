@@ -20,11 +20,12 @@ $lid = getOP('lid');
 $visible = getOP('visible');
 $courseid = getOP('cid');
 $versid = getOP('vers');
+$uid = getUid();
 
 
 // Permissions Check
 
-if (checklogin() && isSuperUser(getUid())){
+if (checklogin() && isSuperUser($uid)){
 
     // prepare SQL query
     $query = $pdo->prepare("UPDATE listentries SET visible = :visible WHERE lid = :lid");

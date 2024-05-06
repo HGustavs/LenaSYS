@@ -30,6 +30,8 @@ $log_uuid=getOP('log_uuid');
 $debug = "NONE!";
 
 global $pdo;
+
+
 // Insert a new code example and update variables accordingly.
 if($link==-1) {
     $queryz2 = $pdo->prepare("SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1");
@@ -60,7 +62,7 @@ createNewListentrie($pdo,array(
 ));
 
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
 return;
 ?>

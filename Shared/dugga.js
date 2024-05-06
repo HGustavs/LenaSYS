@@ -1075,111 +1075,134 @@ function AJAXService(opt,apara,kind)
 			success: returnedAccess
 		});
 	}if(kind=="SECTION" || kind=="GRP"){
-		if(opt == "DELETE"){
+		switch (opt) {
+		case "DELETE":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "DEL"){
+			});
+			break;
+		case "DEL":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "NEW"){
+			});
+			break;
+		case "NEW":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/createListEntry_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "REORDER"){
+			});
+			break;
+		case "REORDER":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "UPDATE"){
+			});
+			break;
+		case "UPDATE":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "UPDATETABS"){
+			});
+			break;
+		case "UPDATETABS":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "UPDATEDEADLINE"){
+			});
+			break;
+		case "UPDATEDEADLINE":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "UPDATEVRS"){
+			});
+			break;
+		case "UPDATEVRS":
 			$.ajax({
 				url: "sectionedservice.php",//change when MS is created
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "SETVISIBILITY"){
+			});
+			break;
+		case "SETVISIBILITY":
 			$.ajax({
 				url: "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "REFGIT"){
+			});
+			break;
+		case "REFGIT":
 			$.ajax({
 				url: "sectionedservice.php",//change when MS is created
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "CREGITEX"){
+			});
+			break;
+		case "CREGITEX":
 			$.ajax({
 				url: "sectionedservice.php",//change when MS is created
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "GRP"){
+			});
+			break;
+		case "GRP":
 			$.ajax({
 				url: "..DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else if(opt == "CHGVERS"){
+			});
+			break;
+		case "CHGVERS":
 			$.ajax({
 				url: "..DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php",
 				type: "POST",
 				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
 				dataType: "json", 
 				success: kind=="SECTION" ? returnedSection : returnedGroups
-			})
-		}else{
+			});
+			break;
+		case "get":
+			$.ajax({
+				url: "../DuggaSys/microservices/sectionedService/getListEntries_ms.php",//Skapa en microservice till denna.
+				type: "POST",
+				data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+				dataType: "json", 
+				success: kind=="SECTION" ? returnedSection : returnedGroups
+			});
+			break;
+		default:
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",

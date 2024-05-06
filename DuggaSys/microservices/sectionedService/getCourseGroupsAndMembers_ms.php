@@ -72,7 +72,7 @@ if(checklogin()){
 }
 
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 $data['grplst'] = $grplst;
 $data['grpmembershp'] = $grpmembershp;
 echo json_encode($data);

@@ -17,6 +17,7 @@
   $order = getOP('order');
   $lid = getOP('lid');
   $opt = getOP('opt');
+  $uid = getUid();
 
   //Call the updateTableListentries service to update the pos & moment columns
 

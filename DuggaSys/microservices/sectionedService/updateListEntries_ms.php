@@ -30,6 +30,7 @@ $visibility=getOP('visibility');
 $grptype=getOP('grptype');
 $tabs=getOP('tabs');
 $gradesys=getOP('gradesys');
+$userid = getUid();
 
 if($feedbackenabled != 1){
 	$feedbackenabled = 0;
@@ -116,6 +117,6 @@ if(strcmp($opt,"UPDATE")===0) {
     }
 }
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
 return;
