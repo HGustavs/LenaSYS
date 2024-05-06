@@ -257,7 +257,6 @@ function drawLineProperties(line) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             str += lineLabel('lineLabel', 'Label', line.label);
             break;
-
     }
     str += saveButton('changeLineProperties();');
     return str;
