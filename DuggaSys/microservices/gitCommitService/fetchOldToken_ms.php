@@ -1,5 +1,9 @@
 <?php
 
+// Include basic application services!
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+
 function fetchOldToken($pdolite, $cid) {
 
     $query = $pdolite->prepare('SELECT gitToken FROM gitRepos WHERE cid=:cid');
