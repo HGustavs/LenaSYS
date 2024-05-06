@@ -55,11 +55,7 @@
 							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
 						</td>
 					</tr>
-					<tr class="loginboxTr">
-						<td class="nowrap">
-							<label class='text forgotPw' onclick='navigateToUrl("../DuggaSys/courseed.php")' title='Return to course page'>Login is only possible from course page!</label>
-						</td>
-					</tr>
+
 					<tr class="loginboxTr">
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
