@@ -1,9 +1,14 @@
 <?php
+//---------------------------------------------------------------------------------------------------------------
+// deleteFileLink_ms - Used when deleting files from a course
+//---------------------------------------------------------------------------------------------------------------
+
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "retrieveFileedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -17,6 +22,8 @@ $kind = getOP('kind');
 $filename = getOP('filename');
 $coursevers = getOP('coursevers');
 $userid = getUid();
+$debug = "NONE!";
+$log_uuid = getOP('log_uuid');
 
 // Permission checks
 if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid) || hasAccess($userid, $cid, 'sv')) {
@@ -25,14 +32,26 @@ if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUs
     $hasAccess = false;
 }
 
-if (!(checklogin() && $hasAccess))
+if (!(checklogin() && $hasAccess)) {
+    $debug = "Access not granted.";
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+    echo json_encode($retrieveArray);
     return;
+}
 
-if ($kind == 2 && (isSuperUser($userid) == false))
+if ($kind == 2 && (isSuperUser($userid) == false)) {
+    $debug = "Access not granted.";
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+    echo json_encode($retrieveArray);
     return;
+}
 
-if (!(strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))))
+if (!(strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)))) {
+    $debug = "OPT does not match.";
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+    echo json_encode($retrieveArray);
     return;
+}
 
 // Get the path
 $query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
@@ -67,8 +86,6 @@ if ($counted == 0) {
     if (!$query->execute()) {
         $error = $query->errorInfo();
         $debug = "Error updating file list " . $error[2];
-    } else {
-        $debug = "The file was deleted.";
     }
 
     // Deletes a file from the given directory
@@ -98,4 +115,5 @@ if ($counted == 0) {
     $debug = "This file is part of a code example. Remove it from there before removing the file.";
 }
 
-echo json_encode($debug);
+$retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+echo json_encode($retrieveArray);
