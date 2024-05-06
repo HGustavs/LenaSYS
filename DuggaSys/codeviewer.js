@@ -2535,7 +2535,21 @@ function updateTemplate() {
                 templateno: templateno,
                 content: flattenedContent // Send the flattened string
             },
-        }, "CODEVIEW");
+        });
+
+		        // AJAX request
+				$.ajax({
+					url: "../Shared/dugga.js",
+					type: "POST",
+					data: {
+						opt: "CODEVIEW",
+						courseid: courseid,
+						exampleid: exampleid,
+						cvers: cvers,
+						templateno: templateno,
+						content: flattenedContent // Send the flattened string
+					},
+				});
 codeviewer.js
 	} catch (e) {
 		alert("Error when updating template: " + e.message)
