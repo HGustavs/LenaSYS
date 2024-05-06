@@ -24,11 +24,13 @@ $visibility = getOP('visibility');
 if (checklogin() && isSuperUser(getUid())){
 
     // prepare SQL query
-    $query = $pdo->prepare("UPDATE listentries Set visibility = :listentryId");
+    $query = $pdo->prepare("UPDATE listentries SET visibility = :visibility WHERE listentryId = :listentryId");
+
 
     // Bind Parameters
-    $query->bindParam(':cisiblity', $visibility);
+    $query->bindParam(':visibility', $visibility);
     $query->bindParam(':listentryId', $listentryId);
+    
 
 
     // Query Execution
