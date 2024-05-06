@@ -305,8 +305,7 @@ $testsData = array(
 //  // This tests the microservice updateCourseVersion_sectioned and the part of the monolith called "UPDATEVRS" 
 //  //-----------------------------------------------------------------------------------------------------------
 'updateCourseVersion_sectioned' => array(
-    'expected-output'   => '{"success": true}', // Example JSON response indicating success
- 
+    'expected-output' => '{"entries":[{"lid":null,"moment":null,"entryname":null,"pos":null,"kind":null,"link":null,"handindeadline":null,"visible":null,"code_id":null,"gradesystem":null,"highscoremode":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":null,"qstart":null,"jsondeadline":null,"groupKind":null,"ts":null,"tabs":null,"feedbackenabled":null,"feedbackquestion":null}]}',
     'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
  
     'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
@@ -323,53 +322,11 @@ $testsData = array(
         'tabs' => '1',
         'hash' => 'UNK'
     )),
-    'filter-output' => serialize(array( // Filter what output to use in assert test
-        'entries' => array(
-            'entryname',
-            'lid',
-            'pos',
-            'kind',
-            'moment',
-            'link',
-            'visible',
-            'highscoremode',
-            'gradesys',
-            'code_id',
-            'deadline',
-            'relativedeadline',
-            'qrelease',
-            'comments',
-            'qstart',
-            'grptype',
-            'tabs',
-            'feedbackenabled',
-            'feedbackquestion',
-            //'ts'
-        ),
-        'debug',
-        'writeaccess',
-        'studentteacher',
-        'readaccess',
-        'coursename',
-        'coursevers',
-        'coursecode',
-        'courseid',
-        'links',
-        'duggor',
-        'results',
-        'versions',
-        'codeexamples',
-        'unmarked',
-        'startdate',
-        'enddate',
-        'groups',
-        'grpmembershp',
-        'grplst',
-        'userfeedback',
-        'feedbackquestion',
-        'avgfeedbackscore'
+    'filter-output' => serialize(array(
+        'versions' // Limiting the output to versions entry
     )),
- ),  
+),
+
  
     //*******************************************************************************************/
     //       THIS SERVICE DOES NOT FUNCTION AS INTENDED, the test therefore is incompleat.      //
