@@ -76,5 +76,10 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
     	array_push($tableInfo, $tableSubmissionInfo);
 	}
 
-	retrieveResultedService($tableInfo, $tableSubmissionInfo);
+	$returnArray = array(
+		'tableInfo' => $tableInfo,
+		'duggaFilterOptions' => $duggaFilterOptions
+	);
+
+	retrieveResultedService($tableInfo, $duggaFilterOptions);
 }
