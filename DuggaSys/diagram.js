@@ -426,14 +426,6 @@ window.addEventListener("DOMContentLoaded", () => {
  * @see getData() For the VERY FIRST function called in the file.
  */
 
-// Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
-var countUsedAttributes = 0;
-var allAttrToEntityRelations = [];
-
-// Array for attributes connected with eachother
-var attrViaAttrToEnt = [];
-var attrViaAttrCounter = 0;
-
 // Global statemachine init, moved from onSetup
 stateMachine = new StateMachine(data, lines);
 
@@ -665,6 +657,7 @@ document.addEventListener('keydown', function (e) {
 
     // Moving object with arrows
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
+        e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
@@ -679,6 +672,7 @@ document.addEventListener('keydown', function (e) {
         }
     }
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
+        e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
@@ -693,6 +687,7 @@ document.addEventListener('keydown', function (e) {
         }
     }
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
+        e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
@@ -707,6 +702,7 @@ document.addEventListener('keydown', function (e) {
         }
     }
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
+        e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
@@ -972,7 +968,6 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
-
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
@@ -1230,19 +1225,6 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
 
     // Removes from the two arrays that keep track of the attributes connections. 
     for (let i = 0; i < linesArray.length; i++) {
-        for (let j = 0; j < allAttrToEntityRelations.length; j++) {
-            if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
-                allAttrToEntityRelations.splice(j, 1);
-                countUsedAttributes--;
-            }
-        }
-        for (let k = 0; k < attrViaAttrToEnt.length; k++) {
-            if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
-                attrViaAttrToEnt.splice(k, 1);
-                attrViaAttrCounter--;
-            }
-        }
-
         lines = lines.filter(function (line) {
             var shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
@@ -1380,7 +1362,7 @@ function saveProperties() {
     const children = propSet.children;
 
     var propsChanged = {};
-    let formatArr;
+    let cleanedLines;
 
     for (let index = 0; index < children.length; index++) {
         const child = children[index];
@@ -1393,19 +1375,41 @@ function saveProperties() {
                     propsChanged.name = value;
                 }
                 break;
+            case 'primaryKey':
+                cleanedLines = [];
+                var textArea = child.value;
+                var lines = textArea.split('\n');
+                for (var i = 0; i < lines.length; i++) {
+                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
+                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
+                            lines[i] = "*" + lines[i];
+                        }
+                        cleanedLines.push(lines[i]);
+                    }
+                }
+                //Updates property
+                lines = cleanedLines;
+                element[propName] = lines;
+                propsChanged.primaryKey = lines;
+                break;
             case 'attributes':
                 //Get string from textarea
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
-                formatArr = [];
-                for (let i = 0; i < arrElementAttr.length; i++) {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        formatArr.push(arrElementAttr[i]);
+                cleanedLines = [];
+                for (let i = 0; i < arrElementAttr.length; i++)
+                {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' '))
+                    {
+                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
+                            `-${arrElementAttr[i]}`;
+                        }
+                        cleanedLines.push(arrElementAttr[i]);
                     }
                 }
                 //Update the attribute array
-                arrElementAttr = formatArr;
+                arrElementAttr = cleanedLines;
                 element[propName] = arrElementAttr;
                 propsChanged.attributes = arrElementAttr;
                 break;
@@ -1414,14 +1418,17 @@ function saveProperties() {
                 var elementFunc = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
-                formatArr = [];
+                cleanedLines = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
-                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
-                        formatArr.push(arrElementFunc[i]);
+                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
+                        if (Array.from(arrElementFunc[i])[0] != '+') {
+                            `+${arrElementFunc[i]}`;
+                        }
+                        cleanedLines.push(arrElementFunc[i]);
                     }
                 }
                 //Update the attribute array
-                arrElementFunc = formatArr;
+                arrElementFunc = cleanedLines;
                 element[propName] = arrElementFunc;
                 propsChanged.functions = arrElementFunc;
                 break;
