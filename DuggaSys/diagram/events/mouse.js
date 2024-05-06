@@ -1,3 +1,10 @@
+document.addEventListener('mousemove', function(event) {
+    if (mouseMode === mouseModes.EDGE_CREATION) { // Check if we are in the correct mode
+        console.log(`MouseMove - Window Mouse Position: X=${event.clientX}, Y=${event.clientY}`);
+        // If you're updating line coordinates here, you can log them as well
+    }
+});
+
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
  * @param {MouseEvent} event Triggered mouse event.
@@ -183,6 +190,7 @@ function ddown(event) {
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         hasPressedDelete = checkDeleteBtn();
     }
+    window.Event.clientX
 
     // Used when determining time between clicks.
     if ((new Date().getTime() - dblPreviousTime) < dblClickInterval && event.button == 0) {
@@ -209,20 +217,29 @@ function ddown(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
             case mouseModes.POINTER:
-            case mouseModes.BOX_SELECTION:
-                startX = event.clientX;
-                startY = event.clientY;
-
-                if (!altPressed) {
-                    pointerState = pointerStates.CLICKED_ELEMENT;
-                    targetElement = event.currentTarget;
-                    targetElementDiv = document.getElementById(targetElement.id);
-                }
+                case mouseModes.BOX_SELECTION:
+                    startX = event.clientX;
+                    startY = event.clientY;
+                    
+                    if (!altPressed) {
+                        pointerState = pointerStates.CLICKED_ELEMENT;
+                        targetElement = event.currentTarget;
+                        targetElementDiv = document.getElementById(targetElement.id);
+                    }
+            /*
+            case mouseModes.EDGE_CREATION mouse.js:227 
+            if (event.button == 2) return; mouse.js:231 
+            if (element != null && !context.includes(element))
+            */
             case mouseModes.EDGE_CREATION:
-                if (event.button == 2) return;
+                console.log(`MouseDown - Window Mouse Position: X=${event.clientX}, Y=${event.clientY}`);
+                var timestamp = new Date().toISOString();
+            
+                if (event.button == 2) return console.log(`Event.button == 2 ${timestamp}`);
                 const element = data[findIndex(data, event.currentTarget.id)];
                 // If element not in context, update selection on down click
                 if (element != null && !context.includes(element)) {
+                    console.log(`element != null && !context.includes(element) ${timestamp}`);
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     updateSelection(element);
                     lastClickedElement = null;
@@ -295,6 +312,7 @@ function mup(event) {
 
                 // Normal mode
             } else if (deltaExceeded) {
+                console.log(`else if (deltaExceeded)`);
                 if (context.length > 0) setPos(context, deltaX, deltaY);
             }
             break;

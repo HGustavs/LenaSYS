@@ -5,6 +5,7 @@
  * @returns {Object}
  */
 function constructElementOfType(type) {
+    console.log(`function constructElementOfType`);
     let typeName = undefined;
     let newElement = undefined;
     for (const name in elementTypes) {
@@ -69,6 +70,7 @@ function clearGhosts() {
  * @param {Number} y Coordinates along the y-axis to move
  */
 function setPos(elements, x, y) {
+    console.log(elements, x, y);
     var idList = [];
     var overlappingObject = null;
 

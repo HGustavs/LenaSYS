@@ -12,9 +12,9 @@ function drawLine(line, targetGhost = false) {
     let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
     let isSelected = contextLine.includes(line);
-
+    
     if (isSelected) lineColor = color.SELECTED;
-
+    
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
@@ -113,6 +113,7 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (isSelected) {
+        console.log(`if (isSelected) ${isSelected}`);
         str += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
                     y='${((fy + ty) / 2) - (2 * zoomfact)}' 

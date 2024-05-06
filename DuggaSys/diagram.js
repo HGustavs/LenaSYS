@@ -674,6 +674,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, 0, 1);
+            console.log(`setPos(context, 0, 1)`);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -688,6 +689,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, 0, -1);
+            console.log(`setPos(context, 0, -1)`);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -702,6 +704,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, 1, 0);
+            console.log(`setPos(context, 1, 0)`);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -716,6 +719,7 @@ document.addEventListener('keydown', function (e) {
         });
         if (!overlapDetected) {
             setPos(context, -1, 0);
+            console.log(`setPos(context, -1, 0)`);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
