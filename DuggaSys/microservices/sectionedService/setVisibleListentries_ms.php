@@ -4,9 +4,9 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-include_once "../Share/basic.php";
-include_once "../Share/sessions.php";
-include ('../shareMicroservices/getUid_ms.php');
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include ('../sharedMicroservices/getUid_ms.php');
 
 
 // Connect to database and start session
@@ -24,12 +24,12 @@ $visibility = getOP('visibility');
 if (checklogin() && isSuperUser(getUid())){
 
     // prepare SQL query
-    $query = $pdo->prepare("UPDATE listentries SET visibility = :visibility WHERE listentryId = :listentryId");
+    $query = $pdo->prepare("UPDATE listentries SET visible = :visible WHERE lid = :lid");
 
 
     // Bind Parameters
-    $query->bindParam(':visibility', $visibility);
-    $query->bindParam(':listentryId', $listentryId);
+    $query->bindParam(':visible', $visibility);
+    $query->bindParam(':lid', $listentryId);
     
 
 
