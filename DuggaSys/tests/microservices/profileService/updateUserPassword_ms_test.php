@@ -20,7 +20,6 @@ $testsData = array(
             'status',
         )),
     ),
-    
     'update password (teacher)' => array(
         'expected-output' => '{"success":false,"status":"teacher","debug":"NONE!"}',
         'query-before-test-1' => "INSERT INTO user(username, password, superuser) VALUES ('testteacher1', '\$2y\$10\$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2', 1);",
