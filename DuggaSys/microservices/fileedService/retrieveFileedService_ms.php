@@ -1,8 +1,7 @@
 <?php
-
 include_once "../../../Shared/basic.php";
 
-function retrieveFileedService($debug, $studentTeacher, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $info)
+function retrieveFileedService($debug, $studentTeacher, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind)
 {
     $entries = array();
     $files = array();
@@ -137,6 +136,8 @@ function retrieveFileedService($debug, $studentTeacher, $hasAccess, $pdo, $cid, 
         'supervisor' => $supervisor,
     );
 
+    $info = "opt: " . $opt . " cid: " . $cid . " coursevers: " . $coursevers . " fid: " . $fid. " filename: " . $filename . " kind: " . $kind;
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveFileedService_ms.php", $userid, $info);
+
     return $array;
 }
