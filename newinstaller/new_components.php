@@ -52,7 +52,7 @@
                 </div>";
         }
 
-        function testProgressBar(){
+        function testProgressBar() {
             echo "<div class='progressBar'>
                     <div class='progressBarLabels'>
                         <label>lenasys/dugga...</label>
@@ -70,7 +70,7 @@
                         <input id='$inputId' type='text'>
                 </div>";
         }
-        
+
         function testInputFieldAccText($inputId, $inputLabel, $accClass, $accText) {
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
