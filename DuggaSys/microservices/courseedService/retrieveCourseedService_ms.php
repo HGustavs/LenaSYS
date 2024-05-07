@@ -21,7 +21,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
     $userid=getUid();
 
     $info = "opt: " . $opt . " cid: " . $cid . " coursename: " . $coursename . " versid: " . $versid . " visibility: " . $visibility . " courseGitUrl: " . $courseGitURL;
-    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "courseedservice.php", $userid, $info);
+    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "retrieveCourseedService_ms.php", $userid, $info);
 
     $entries=array();
 
