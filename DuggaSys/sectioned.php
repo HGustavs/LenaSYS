@@ -299,7 +299,7 @@
 					<div id='inputwrapper-deadline' class='inputwrapper'>
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
-							<span style='float:right;margin-right:10px;'>
+							<span style='float:right'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
