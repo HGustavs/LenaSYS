@@ -972,7 +972,6 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
-
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
@@ -1008,7 +1007,6 @@ function mmoving(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
-            let isX, isR, isUP;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -1026,12 +1024,10 @@ function mmoving(event) {
                 let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                isR = true;
-                let widthChange = movementWidthChange(elementData,startWidth,deltaX,isR);
+                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                isUP = false;
-                const heightChange = movementHeightChange(elementData,startHeight,deltaY,isUP);
+                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
@@ -1046,45 +1042,33 @@ function mmoving(event) {
                 let tmpX = elementData.x;
                 let tmpH = elementData.height;
                 let tmpY = elementData.y;
-                let xChange = movementPosChange(elementData,startX,deltaX,true);
-                let widthChange = movementWidthChange(elementData,tmpW,tmpX,false);
-                let yChange = movementPosChange(elementData,startY,deltaY,false);
-                let heightChange = movementHeightChange(elementData,tmpH,tmpY,true);
+                let xChange = movementPosChange(elementData, startX, deltaX, true);
+                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                let yChange = movementPosChange(elementData, startY, deltaY, false);
+                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 let tmpH = elementData.height;
                 let tmpY = elementData.y;
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                isUP = true;
-                let heightChange = movementHeightChange(elementData,tmpH,tmpY,isUP);
-                isR = true;
-                let widthChange = movementWidthChange(elementData,startWidth,deltaX,isR);
+                let yChange = movementPosChange(elementData, startY, deltaY, false);
+                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 let tmpW = elementData.width;
                 let tmpX = elementData.x;
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                isR = false;
-                let widthChange = movementWidthChange(elementData,tmpW,tmpX,isR);
-                isUP = false;
-                let heightChange = movementHeightChange(elementData,startHeight,deltaY,isUP);
+                let xChange = movementPosChange(elementData, startX, deltaX, true);
+                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                let heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
-                isR = true;
-                let widthChange = movementWidthChange(elementData,startWidth,deltaX,isR);
-
-                isUP = false;
-                const heightChange = movementHeightChange(elementData,startHeight,deltaY,isUP);
-
+                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
-
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
-
             // Check if entity is overlapping
             resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
 
@@ -1104,32 +1088,24 @@ function mmoving(event) {
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
 }
+
 function movementPosChange(element,start,delta, isX){
-    let tmp = (isX) ? element.x : element.y;
-    let elem;
-    if (isX) {
-        element.x = screenToDiagramCoordinates( (start - delta ),0).x;
-        elem = element.x;
-    } else {
-        element.y = screenToDiagramCoordinates(0, (start - delta )).y;
-        elem = element.y;
-    }
+    let property = (isX) ? 'x' : 'y';
+    let x = (isX) ? start - delta : 0;
+    let y = (isX) ? 0 : start - delta;
+    let tmp = element[property];
+    element[property] = screenToDiagramCoordinates(x, y)[property];
     // Deduct the new position, giving us the total change
-    return -(tmp - elem);
+    return -(tmp - element[property]);
 }
 
-function movementWidthChange(element,start,delta,isR){
-    let xChange = -(delta - element.x);
-    element.width = (isR) ? start - delta / zoomfact : start - xChange;
-    // Remove the new width, giving us the total change
+function movementWidthChange(element, start, delta, isR){
+    element.width = (isR) ? start - delta / zoomfact : start + (delta - element.x);
     return element.width;
 }
 
-function movementHeightChange(element,start,delta,isUp){
-    // Adds a deep clone of the element to preResizeHeight if it isn't in it
-    let tmp = element.height;
-    let yChange = -(delta - element.y);
-    element.height = (isUp) ? start - yChange : start - delta / zoomfact;
+function movementHeightChange(element, start, delta, isUp){
+    element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
     return element.height;
 
 }
