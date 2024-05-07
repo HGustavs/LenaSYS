@@ -104,7 +104,7 @@ Accessed Service:
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
-- retrieveAccessedService_ms.php __==finished==__ (But not tested) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
+- retrieveAccessedService_ms.php __==finished==__ (But not tested, and therefore not implemented at the end of each microservice in the accessedService folder) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
 
 __Note, all microservices related to accessservice.php have been created. As for working tests for these microservices, the work has been paused since accessedservice.php lacks an implemented frontend that allows the development of working tests. Tests cannot be created until the retrieveAccessedService_ms.php is tested, and for that, frontend functionality is needed. Group 3 is working on the frontend solution.__ 
 
@@ -227,6 +227,7 @@ Profile Service:
 Resulted Service:
 
 - getUserAnswer_ms.php __==finished==__ New filename: "readUserAnswer_ms.php" according to new nameconvention based on CRUD.
+- retrieveResultedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -2542,14 +2543,14 @@ Includes no querys.
 
 The __retrieveProfileService_ms.php__ returns an array containing three key values (information about):
 
-- __success__ - boolean value ('true' or 'false') indicating whether the user's request to update the password or security question was successful or not. 'true' means the update was successful, and 'false' means it failed for some reason.
+- __success__ - ('true' or 'false') indicating whether the user's request to update the password or security question was successful or not. 'true' means the update was successful, and 'false' means it failed for some reason.
 
-- __status__ - string variable indicating the user's status or the outcome of the operation. Possible values include:
+- __status__ - Indicating the user's status or the outcome of the operation. Possible values include:
    - "teacher" - The user is a teacher or superuser and is not allowed to change their password or security question.
    - "wrongpassword" - The provided password does not match the one in the database.
    - An empty string ('""') if no specific statuses occur during the process.
 
-- __debug__ - string variable contains debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
+- __debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
 
 The microservice provide direct feedback from the server to the client about the result of the requested operation (either changing the password or security question).
 
@@ -2567,6 +2568,7 @@ The microservice provide direct feedback from the server to the client about the
 __readUserAnswer_ms.php__ manages and presents information about submitted duggor.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveResultedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2600,6 +2602,42 @@ _SELECT_ operation on the table __'listentries'__ to retrieve the columns:
 ```sql
 SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:vers AND (kind=3);
 ```
+
+
+<br>
+
+---
+
+<br>
+
+### retrieveResultedService_ms.php
+__Includes neither original service files nor microservices.__
+
+__Querys used in this microservice:__
+
+Includes no querys.
+
+
+The __retrieveResultedService_ms.php__ returns an array containing two key values (information about):
+
+- tableInfo - An array containing information about each student submission related to a specific course version. For each submission found in the database, the following information is stored in this array:
+   - __duggaName__ - The name of the assignment associated with the data.
+   - __hash__ - A unique hash value for the collection.
+   - __password__ - The password associated with the collection.
+   - __teacher_visited__ - The last time a teacher visited the collection.
+   - __submitted__ - Whether the assignment has been submitted.
+   - __timesSubmitted__ - The number of times the assignment has been submitted.
+   - __timesAccessed__ - The number of times the assignment has been accessed.
+   - __subCourse__ - The name of the sub-course, if applicable.
+   - __link__ - 
+
+- duggaFilterOptions - An array of filter options used to organize and filter the submissions based on different criterias.
+   - __entryname__ - The name of the entry.
+   - __kind__ - The type of entry.
+   - __lid__ - Link ID.
+   - __moment__ - 
+
+The microservice provides feedback about submissions and associated metadata for a course.
 
 <br>
 <br>
