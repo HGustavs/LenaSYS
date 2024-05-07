@@ -63,12 +63,14 @@
                     </div>
                 </div>";
         }
+
         function testInputField($inputId, $inputLabel) {
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
                         <input id='$inputId' type='text'>
                 </div>";
         }
+        
         function testInputFieldAccText($inputId, $inputLabel, $accClass, $accText) {
             echo "<div class='input-field'>
                         <label for='$inputId'>$inputLabel</label>
