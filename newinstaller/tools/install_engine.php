@@ -96,7 +96,7 @@ class InstallEngine {
 			// Run the installer
 			$totalOperations = count($operations);
 			$i = 0;
-			$start_flag = isset($settings->starting_step); // when true continue without running install step
+			$start_flag = isset($settings->starting_step) && $settings->starting_step != ""; // when true continue without running install step
 			foreach ($operations as $operationKey => $operation) {
 				if ($start_flag) {	// Allow installer to start on the n:th step 
 					if ($settings->starting_step == $operationKey) {
@@ -115,6 +115,8 @@ class InstallEngine {
 				$operation();  // Execute the operation
 				$i++;
 			}
+
+			SSESender::transmit_event("updateProgress", data: 100);
 		} catch (Exception $e) {
 			SSESender::transmit(data: [
 				"event" => "message",
@@ -123,8 +125,6 @@ class InstallEngine {
 				"success" => false,
 			]);
 		}
-
-		SSESender::transmit_event("updateProgress", data: 100);
 		SSESender::stop();
 	}
 
