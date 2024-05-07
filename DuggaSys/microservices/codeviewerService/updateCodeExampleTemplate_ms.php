@@ -23,6 +23,7 @@ $exampleId=getOP('exampleid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
 
+
 if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
     if(strcmp('SETTEMPL',$opt)===0){
         // Parse content array
@@ -34,17 +35,20 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
         $query->bindParam(':exampleid', $exampleId);
         $query->bindParam(':cid', $courseId);
         $query->bindParam(':cvers', $courseVersion);
+
         // Update code example to reflect change of template
         if(!$query->execute()) {
             $error=$query->errorInfo();
             $debug.="Error updating code example: ".$error[2];
         }
+
         // There are at least two boxes, create two boxes to start with
-        if($templateNumber==10) $boxCount=1;
-        if($templateNumber==1||$templateNumber==2) $boxCount=2;
-        if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
-        if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
-        if($templateNumber==9) $boxCount=5;
+        else if($templateNumber==10) $boxCount=1;
+        else if($templateNumber==1||$templateNumber==2) $boxCount=2;
+        else if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
+        else if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
+        else if($templateNumber==9) $boxCount=5;
+        
         // Create appropriate number of boxes
         for($i=1;$i<$boxCount+1;$i++){
             $kind = $multiArray[$i-1][0];
