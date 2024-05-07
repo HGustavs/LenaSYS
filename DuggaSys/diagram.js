@@ -2282,12 +2282,13 @@ function resetZoom(){
         };
 
         // Move camera to center of diagram
-        scrollx = centerScreen.x;
-        scrolly = centerScreen.y;
+        scrollx = centerScreen.x * zoomfact;
+        scrolly = centerScreen.y * zoomfact;
 
         var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
 
-        console.log(zoomfact);
+        scrollx = middleCoordinate.x + 98;
+        scrolly = middleCoordinate.y + 100;
 
         // Update screen
         showdata();
@@ -2297,7 +2298,6 @@ function resetZoom(){
         drawRulerBars(scrollx, scrolly);
         updateA4Pos();
         updateA4Size();
-        //zoomCenter(centerScreen);
     }
 }
 //#endregion =====================================================================================
