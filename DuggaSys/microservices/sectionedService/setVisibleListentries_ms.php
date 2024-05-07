@@ -36,9 +36,7 @@ if (checklogin() && isSuperUser($uid)){
     $query->bindParam(':visible', $visible);
     $query->bindParam(':lid', $lid);
 
-
     // Query Execution
-
     if ($query->execute()){
 
         // Optionally log to event

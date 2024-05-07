@@ -36,4 +36,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
         }
     }
 }
+
+include_once("retrieveDuggaedService_ms.php");
+$log_uuid=getOP('log__uuid');
+$coursevers = getOP('coursevers');
+$retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
+echo json_encode($retrievedData);
+
 ?>

@@ -5,6 +5,7 @@
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
 	include_once("../Shared/courses.php");
+	include_once "../Shared/toast.php";
 	// Database connection
 	pdoConnect();
 

@@ -111,11 +111,11 @@ function returned(data)
 	// User can choose template if no template has been chosen and the user has write access.
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
-			alert("A template has not been chosen for this example. Please choose one.");
+			toast("warning","A template has not been chosen for this example. Please choose one.",10);
 			$("#chooseTemplateContainer").css("display", "flex");
 			return;
 		} else {
-			alert("The administrator of this code example has not yet chosen a template.");
+			toast("error","The administrator of this code example has not yet chosen a template.", 10);
 			return;
 		}
 	}
