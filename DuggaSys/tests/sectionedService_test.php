@@ -305,11 +305,27 @@ $testsData = array(
 //  // This tests the microservice updateCourseVersion_sectioned and the part of the monolith called "UPDATEVRS" 
 //  //-----------------------------------------------------------------------------------------------------------
 'updateCourseVersion_sectioned' => array(
-    'expected-output' => '{"entries":[{"lid":null,"moment":null,"entryname":null,"pos":null,"kind":null,"link":null,"handindeadline":null,"visible":null,"code_id":null,"gradesystem":null,"highscoremode":null,"deadline":null,"relativedeadline":null,"qrelease":null,"comments":null,"qstart":null,"jsondeadline":null,"groupKind":null,"ts":null,"tabs":null,"feedbackenabled":null,"feedbackquestion":null}]}',
-    'query-after-test-1' => "UPDATE listentries SET tabs=null, gradesystem=0 WHERE lid=2008;",
- 
+    'expected-output' => serialize(array(
+        'versions' => array(
+            '1885' => array(
+                '1337' => array(
+                    'versname' => 'HT15',
+                    'copycourse' => '1337',
+                    'coursecode' => 'G1337',
+                    'coursename' => 'Testing-Course',
+                    'makeactive' => '2',
+                    'startdate' => '2020-05-01',
+                    'enddate' => '2020-06-30',
+                    'motd' => 'Code examples shows both templateid and boxid!',
+                    'log_uuid' => 'sOMYiX2zojCBUq0',
+                    'hash' => 'UNK'
+                )
+            )
+        )
+    )),
+    'query-after-test-1' => "UPDATE listentries SET tabs=1 WHERE lid=2008;",
     'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
-    'service-data' => serialize(array( // Data that service needs to execute function
+    'service-data' => serialize(array(
         'opt' => 'UPDATEVRS',
         'username' => 'mestr',
         'password' => 'password',
@@ -318,12 +334,12 @@ $testsData = array(
         'coursevers' => '97731',
         'motd' => 'TEST TEXT',
         'comment' => 'undefined',
-        'lid' => '2008', 
+        'lid' => '2008',
         'tabs' => '1',
         'hash' => 'UNK'
     )),
     'filter-output' => serialize(array(
-        'versions' // Limiting the output to versions entry
+        'versions'
     )),
 ),
 
