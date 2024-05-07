@@ -1,4 +1,8 @@
 <?php
+//------------------------------------------------
+// createDugga_ms.php - Used for creating a dugga.
+//------------------------------------------------
+
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
