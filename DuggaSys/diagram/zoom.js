@@ -91,6 +91,13 @@ function zoomin(scrollEvent = undefined) {
 
     // Draw new rules to match the new zoomfact
     drawRulerBars(scrollx, scrolly);
+
+    // moves the padlocks with the zoom
+    // the 5 and 8 are the default positions for 1x zoom, can be seen in diagram.css
+    document.querySelectorAll('#pad_lock').forEach(padLock => {
+        padLock.style.bottom = `${-5 * zoomfact}px`;
+        padLock.style.left = `${-8 * zoomfact}px`;
+    });
 }
 
 /**
@@ -187,6 +194,13 @@ function zoomout(scrollEvent = undefined) {
 
     // Draw new rules to match the new zoomfact
     drawRulerBars(scrollx, scrolly);
+    
+    // moves the padlocks with the zoom
+    // the 5 and 8 are the default positions for 1x zoom, can be seen in diagram.css
+    document.querySelectorAll('#pad_lock').forEach(padLock => {
+        padLock.style.bottom = `${-5 * zoomfact}px`;
+        padLock.style.left = `${-8 * zoomfact}px`;
+    });
 }
 
 /**
