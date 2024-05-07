@@ -220,6 +220,7 @@ Profile Service:
 
 - updateSecurityQuestion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserPassword_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- retrieveProfileService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -2453,7 +2454,7 @@ ProfileService handles password changes and challenge questions. To access these
 __updateSecurityQuestion_ms.php__ handles the updating of security questions for users. Changes to security questions are permitted only for non-superuser/non-teacher users and only if the correct password is entered.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2490,6 +2491,9 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 #### updateUserPassword_ms.php
 __updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated.
 
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
+
 __Querys used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
@@ -2520,6 +2524,34 @@ _UPDATE_ operation on the table __'user'__ to update the value of the column:
 ```sql
 UPDATE user SET password=:PW WHERE uid=:userid;
 ```
+
+<br>
+
+---
+
+<br>
+
+### retrieveProfileService_ms.php
+
+__Includes neither original service files nor microservices.__
+
+__Querys used in this microservice:__
+
+Includes no querys.
+
+
+The __retrieveProfileService_ms.php__ returns an array containing three key values (information about):
+
+- __success__ - boolean value ('true' or 'false') indicating whether the user's request to update the password or security question was successful or not. 'true' means the update was successful, and 'false' means it failed for some reason.
+
+- __status__ - string variable indicating the user's status or the outcome of the operation. Possible values include:
+   - "teacher" - The user is a teacher or superuser and is not allowed to change their password or security question.
+   - "wrongpassword" - The provided password does not match the one in the database.
+   - An empty string ('""') if no specific statuses occur during the process.
+
+- __debug__ - string variable contains debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
+
+The microservice provide direct feedback from the server to the client about the result of the requested operation (either changing the password or security question).
 
 <br>
 <br>
