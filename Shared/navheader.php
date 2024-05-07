@@ -92,7 +92,7 @@
 					echo"</div>";
 					echo "<div id='darkModeBurgerDiv'>";
 					echo "<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
-					echo "<img alt ='Dark' class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+					echo "<img alt ='Dark' class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg' title='Press for dark mode'></>";
 					echo "</a>";
 					echo "</a>";
 					echo"</div>";
@@ -103,7 +103,7 @@
 			// Home button original code <a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a>
 			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><img alt='home button icon' src='../Shared/icons/Home.svg'></div></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
+			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' title='Press for dark mode' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
@@ -227,11 +227,12 @@
 							echo "</td>";
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
+					
 							// Refresh button for Github repo in nav
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
-									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
+									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg' title='Refresh github repo'>";
 								echo "</span>";
 
 								//Check if user is super user
