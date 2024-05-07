@@ -54,7 +54,7 @@ function mdown(event) {
     if (event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+    if (!hasPressedDelete && !settings.replay.active) {
 
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
