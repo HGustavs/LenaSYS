@@ -589,13 +589,12 @@ window.addEventListener('beforeunload', function (event) {
   }
 });
 
-// Eventlistener for keydown
+// Eventlistener for keydown ESC
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     let link = document.getElementById("upIcon").href;
     let popupIsOpen = closeOpenPopupForm();
     if(!popupIsOpen){
-      console.log(link);
       window.location.replace(link);
     } else {
       return
@@ -603,7 +602,7 @@ document.addEventListener('keydown', function (event) {
   }
 })
 
-//Put all current and newly created popup forms/modules here
+//Put all current and newly created popup forms/modules in sectioned here
 //If popup is open, it will be closed. 
 function closeOpenPopupForm(){
   let allPopups = [
@@ -626,7 +625,6 @@ function closeOpenPopupForm(){
       return true;
     }
   }
-  //No popup open
   return false; 
 }
 
