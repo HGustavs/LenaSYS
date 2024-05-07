@@ -182,7 +182,6 @@
     display: block;
     position: absolute;
     background: inherit;
-    /* background-color: #fff; */
 }
 
 .element:has(#pad_lock) {

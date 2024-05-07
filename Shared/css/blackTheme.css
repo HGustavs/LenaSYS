@@ -1278,7 +1278,6 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     position: absolute;
     background: inherit;
     filter: invert(65%);
-    /* background-color: var(--color-background); */
 }
 
 .material-box {
