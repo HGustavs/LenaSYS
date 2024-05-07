@@ -3,6 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCodeviewerService_ms.php";
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 
@@ -14,8 +15,8 @@ session_start();
 $exampleId = getOP('exampleid');
 $boxId = getOP('boxid');
 $opt = getOP('opt');
-
-getUid();
+$debug="NONE!";
+$userid=getUid();
 
 $exampleCount = 0;
 
@@ -46,3 +47,6 @@ if ($exampleCount > 0) {
 		}
 	}
 }
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
+return;
