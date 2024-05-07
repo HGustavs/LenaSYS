@@ -1743,6 +1743,23 @@ SELECT motd,readonly FROM settings;
 ```
 
 
+This microservice gathers information and organizes it into an array that shows details about courses, their versions, access rights, and other settings. It checks who can see and use different parts of the system, removes courses that are no longer needed, and reports any problems it finds. 
+
+- __LastCourseCreated__ - When the last course was created.
+
+- __Entries__- List of courses. Including: course ID ('cid'), course name ('coursename'), course code ('coursecode'), visibility status ('visibility'), and active versions. It also indicates whether a user is registered for each course. 
+
+- __Versions__- Information about the different versions of the courses available. Inncluding: course version identifier ('vers'), version name ('versname'), and associated course names ('coursename' and 'coursenamealt'). 
+
+- __Debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
+
+- __WriteAccess__ - Whether the user has write access ('ha) or not, important for determining if the user can modify course information.
+
+- __MOTD (Message of the Day)__ - Displays notices or updates like general information, specific details relevant to daily operations or critical alerts.
+
+- __Readonly__- Whether the system is currently in a readonly mode not or. This affects how users can interact with the system's features and data.
+
+
 <br>
 <br>
 
