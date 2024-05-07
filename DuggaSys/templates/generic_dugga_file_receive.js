@@ -361,8 +361,8 @@ function createFileUploadArea(fileuploadfileds){
 		error +="<span>Bummer!</span>";
 		error +=" The extension "+inParams["extension"]+" is not allowed!</div>";
 
-		str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
-		str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
+		str += "<div class='instructionBox'>";
+		str += "<div class='submissionInstructions'>";
 		if (type === "pdf"){
 			str += "<h4>Pdf Submission and Preview</h4>";
 		} else if (type === "link"){

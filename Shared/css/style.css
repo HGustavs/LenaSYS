@@ -9764,4 +9764,19 @@ margin:2px;
   100% { transform: rotate(360deg); }
 }
 
+/*Styling for Submission Instructions*/
+
+.submissionInstructions{
+  height:20px;
+  background-color:#614875;
+  padding:9px;
+  color:#FFF;
+}
+
+.instructionBox{
+  border:1px solid #614875; 
+  margin: 5px auto; 
+  margin-bottom:10px;
+}
+
 /* END */
