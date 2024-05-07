@@ -2260,6 +2260,7 @@ function resetDiagramAlert() {
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if (refreshConfirm) {
         resetDiagram();
+        resetZoom();
     }
 }
 
@@ -2268,5 +2269,35 @@ function resetDiagramAlert() {
  */
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
+}
+
+function resetZoom(){
+    for (let i = 0; i < 2; i++) {
+        zoomfact = 1;
+
+        // Center of screen in pixels
+        var centerScreen = {
+            x: 100,
+            y: 100
+        };
+
+        // Move camera to center of diagram
+        scrollx = centerScreen.x;
+        scrolly = centerScreen.y;
+
+        var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+
+        console.log(zoomfact);
+
+        // Update screen
+        showdata();
+        updatepos();
+        updateGridPos();
+        updateGridSize();
+        drawRulerBars(scrollx, scrolly);
+        updateA4Pos();
+        updateA4Size();
+        //zoomCenter(centerScreen);
+    }
 }
 //#endregion =====================================================================================
