@@ -58,6 +58,7 @@ function mdown(event) {
     if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+      
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
@@ -137,7 +138,7 @@ function mdown(event) {
             }
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
-            pointerState = pointerStates.CLICKED_NODE;
+        pointerState = pointerStates.CLICKED_NODE;
             var element = data[findIndex(data, context[0].id)];
 
             // Save the original properties
@@ -170,6 +171,7 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
+    historyHandler.inputCounter++;
 }
 
 /**
@@ -329,7 +331,7 @@ function mup(event) {
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-
+                        
     disableIfDataEmpty();
 }
 
