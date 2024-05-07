@@ -23,8 +23,7 @@ $exampleId=getOP('exampleid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
 
-
-if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
+if(checklogin() && ($writeAccess=="w" || isSuperUser(getuid()) == true)) {
     $writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 
     if(strcmp('SETTEMPL',$opt)===0){
