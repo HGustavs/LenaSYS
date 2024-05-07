@@ -3077,7 +3077,6 @@ div.submit-button:disabled {
 .formDialog {
   position: relative;
   display: inline-block;
-  left: -100px;
 }
 
 .formDialog .formDialogText {
@@ -3112,8 +3111,6 @@ div.submit-button:disabled {
   background-color: var(--color-text-list);
   text-align: center;
   margin-top: 5px;
-  margin-left: auto;
-  margin-right: auto;
   border-radius: 6px;
   padding: 5px 0;
   z-index: 5;

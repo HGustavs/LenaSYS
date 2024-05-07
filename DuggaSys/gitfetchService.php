@@ -206,25 +206,24 @@ function bfs($url, $cid, $opt)
         // If unable to get file contents then it is logged into the specified textfile with
         // the specific http error code
         if($data === false || !$data) {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
-            curl_setopt($curl, CURLOPT_HEADER, 0);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            $response = json_decode(curl_exec($curl));
-            $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            $file = '../../LenaSYS/log/gitErrorLog.txt';
             if(strlen($token)<1)
             {
                 setcookie("missingToken", 1, time() + (5), "/");
-                $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code." Consider setting a token\n";
             }
             else
             {
+                $curl = curl_init($url);
+                curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                $response = json_decode(curl_exec($curl));
+                $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code."\n";
+                $file = '../../LenaSYS/log/gitErrorLog.txt';
+                
+                http_response_code($http_response_code);
+                error_log($message, 3, $file);
             }
-            
-            http_response_code($http_response_code);
-            error_log($message, 3, $file);
         }
         if ($data) {
             // Decodes the fetched data into JSON
