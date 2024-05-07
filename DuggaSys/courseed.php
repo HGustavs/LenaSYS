@@ -120,23 +120,28 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<div class="formDialog" style="display: block; left:-125px; top:-10px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
+					<div class="formDialog" style="display: block; left:-127px; top:-4px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 				</div>
     			<div class='inputwrapper'>
 					<span>Course code:</span>
-					<div class="formDialog" style="display: block; left:-125px; top:0px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+					<div class="formDialog" style="display: block; left:-123px; top:2px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 					<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 				</div>
     			<div class="inputwrapper">
 					<span>GitHub URL:</span>
-					<div class="formDialog" style="display: block; left:-125px; top:0px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
+					<div class="formDialog" style="display: block; left:-118px; top:3px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
 					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
 				</div>
-    			<div class='inputwrapper'><span>(optional) Insert Github Key:</span><input class='textinput' type='text' id='githubToken' placeholder='Leave blank for no key' /></div>
+    			<div class='inputwrapper'>
+					<span>(optional) Insert Github Key:</span>
+					<div class="formDialog" style="display: block; left:-175px; top:3px;"><span id="courseGithubKeyError" style="display: none; left:0px;" class="formDialogText">A Github key should be 40 characters</span></div>
+					<p id="dialog7" class="validationDialog">A Github key should be 40 characters</p>
+					<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='githubToken' name='githubToken' placeholder='Leave blank for no key' />
+				</div>				
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>
@@ -160,7 +165,7 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Server Settings START -->
 
-	<div id='editSettings' onmouseover="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd');" class='loginBoxContainer' style='display:none;' >
+	<div id='editSettings' onmouseover="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd');" class='loginBoxContainer' style='display:none;' >
     <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 
     		<div class='loginBoxheader'>
@@ -169,14 +174,14 @@ if(isset($_SESSION['uid'])){
     		</div>
     		<div style='padding:5px;'>
 
-    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog5', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
+    			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
     			<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 				
     		</div>
 			<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
-			<div class="formDialog" style="display: block; left:50px; top:-55px;"><span id="dialog5" style="display: none; left:0px; " class="formDialogText">Prohibited symbols</span></div>
+			<div class="formDialog" style="display: block; left:55; top:-72px;"><span id="dialog51" style="display: none; left:0px; " class="formDialogText">Prohibited symbols</span></div>
 			<!--<p id="dialog52" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
-			<div class="formDialog" style="display: block; left:50px; top:-30px;"><span id="dialog52" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
+			<div class="formDialog" style="display: block; left:55px; top:-78px;"><span id="dialog52" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
     		<div style='padding:5px;'>
     			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>
