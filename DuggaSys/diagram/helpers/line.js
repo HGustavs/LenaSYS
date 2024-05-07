@@ -76,6 +76,9 @@ function checkConnectionErrors(to, from) {
     if (diffrerentTypeError(from, to)) {
         return `Not possible to draw lines between: ${from.type}- and ${to.type}-elements`;
     }
+    if (limitEREntitiesToAttriutes(from, to)) {
+        return `ER attributes can only be attached to max 1 entity`;
+    }
     return '';
 }
 
@@ -112,4 +115,22 @@ function preProcessLine(line) {
         }
         line.innerType = SDLineType.STRAIGHT;
     }
+}
+
+/**
+ * @description Checks that an ER attribute only have 1 entity attached
+ * @param {object} from element line is from
+ * @param {object} to element line is to
+ * @returns {bool}
+ */
+const limitEREntitiesToAttriutes = (from, to) => {
+    if (from.kind != elementTypesNames.ERAttr && to.kind != elementTypesNames.ERAttr) return false;
+    const element = (from.kind == elementTypesNames.ERAttr)? from : to;
+    let connectedLines = 0;
+    for (let line of lines) {
+        if (line.fromID == element.id || line.toID == element.id) {
+            connectedLines++;
+        }
+    }
+    return connectedLines > 0;
 }
