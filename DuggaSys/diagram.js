@@ -238,18 +238,27 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     stepBack() {
-        // If there is no history => return
-        if (this.currentHistoryIndex == -1) {
-            return;
-        } else {
-            this.currentHistoryIndex--;
-        }
-
         // Remove ghost only if stepBack while creating edge
-        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
-
+        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
         
-        this.scrubHistory(this.currentHistoryIndex);
+        // keep going back while the time attribute is the same
+        do {
+            // If there is no history => return
+            if (this.currentHistoryIndex == -1) {
+                return;
+            } else {
+                this.currentHistoryIndex--;
+            }
+            
+            this.scrubHistory(this.currentHistoryIndex);
+
+            var doNextState = false;
+            if (this.historyLog[this.currentHistoryIndex - 1]) {
+                doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time);
+            }
+
+        } while (doNextState);
+        
         displayMessage(messageTypes.SUCCESS, "Changes reverted!");
         disableIfDataEmpty();
     }
@@ -982,11 +991,8 @@ function mouseMode_onMouseUp(event) {
     hasPressedDelete = false;
 }
 
-// this mess makes so that the resize only get's logged when mup() is triggered                
-// they could possibly be combined into one but would require a lot of extra checks to determine which save to do
-
 /**
- * @description stores the ResizeAndMoved in the historyLog array after mup has triggered
+ * @description stores the ResizeAndMoved in the historyLog array
  * @param {string[]} id id of the element
  * @param {number} xChange change in x-position
  * @param {number} yChange change in y-position
@@ -998,7 +1004,7 @@ function prepareElementMovedAndResized(id, xChange, yChange, widthChange, height
 }
 
 /**
- * @description stores the Resize in the historyLog array after mup has triggered
+ * @description stores the Resize in the historyLog array
  * @param {string[]} id id of the element
  * @param {number} widthChange change in width
  * @param {number} heightChange change in height
