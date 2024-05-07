@@ -1,6 +1,7 @@
 <?php
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveShowDuggaService_ms.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
@@ -27,4 +28,32 @@ if($active == null){
     $query->execute();
 }
 
-echo json_encode($active);
+echo json_encode(retrieveShowDuggaService(
+	$moment, 
+	$pdo, 
+	$courseid, 
+	$hash, 
+	$hashpwd, 
+	$coursevers, 
+	$duggaid, 
+	$opt, 
+	$group, 
+	$score, 
+	$highscoremode, 
+	$grade, 
+	$submitted,
+	$duggainfo,
+	$marked,
+	$userfeedback,
+	$feedbackquestion,
+	$files,
+	$savedvariant,
+	$ishashindb,
+	$variantsize,
+	$variantvalue,
+	$password,
+	$hashvariant,
+	$isFileSubmitted,
+	$variants,
+	$active
+	));

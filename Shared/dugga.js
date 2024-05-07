@@ -1100,29 +1100,19 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		//for testing
-		console.log("dugga.js (kind=='PDUGGA')\n"+"courseid="+querystring['courseid']+"\ndid="+querystring['did']+"\ncoursevers="+querystring['coursevers']+"\nmoment="+querystring['moment']+"\nsegment="+querystring['segment']);
+		let service_url = "showDuggaservice.php";
+		if(opt=="SAVDU"){
+			service_url = "../DuggaSys/microservices/showDuggaService/saveDugga_ms.php";
+		}
+		if(opt=="UPDATEAU"){
+			service_url = "../DuggaSys/microservices/showDuggaService/updateActiveUsers_ms.php";
+		}
 		$.ajax({
-			url: "showDuggaservice.php",
+			url: service_url,
 			type: "POST",
-
-			//Something is wrong with the line below, restored to an older version for now.
-			//data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+"&variant="+querystring['variantValue']+opt+para,
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
 			success: returnedDugga
-			// success: function(data){
-			// 	console.log(data);
-			// 	var phpData = JSON.parse(data);
-			// 	isTeacher = phpData.isTeacher;
-			// 	isFileSubmitted = phpData.isFileSubmitted;
-			// 	canSaveController(); 
-			// 	localStorageHandler(phpData);
-			// 	returnedDugga(phpData);
-			// 	setPassword(phpData.password); 
-			// 	enableTeacherVariantChange(phpData);
-			// 	handleHash();	//Makes sure hash is unique.
-			// }
 		});
 	}else if(kind=="RESULT"){
 			$.ajax({
