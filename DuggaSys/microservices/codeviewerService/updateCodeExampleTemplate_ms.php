@@ -17,6 +17,13 @@ session_start();
 
 getUid();
 
+// Checks and sets user rights
+if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){
+	$writeAccess="w";
+}else{
+	$writeAccess="s";
+}
+
 $opt=getOP('opt');
 $templateNumber=getOP('templateno');
 $exampleId=getOP('exampleid');
@@ -83,7 +90,7 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
             $query->bindValue(':boxcontent', $kind);
             $query->bindValue(':filename', $file);
             $query->bindValue(':wordlistid', $wordlist);
-            
+
             // Update code example to reflect change of template
             if(!$query->execute()) {
                 $error=$query->errorInfo();
