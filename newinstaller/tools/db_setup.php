@@ -103,7 +103,7 @@ class DBSetup {
 
 			return $this->handle_success("Successfully removed database {$db_name}.");
 		} catch (PDOException $e) {
-			return $this->handle_exception($e, "Failed to remove database {$db_name}. {$e->getMessage()}");
+			return $this->handle_exception($e, "Failed to remove database {$db_name} {$e->getMessage()}");
 		}
 	}
 
@@ -162,17 +162,17 @@ class DBSetup {
 	public function execute_sql_file(string $file_name, string $callback = null, bool $verbose = false, string $db_name = null): array {
 		try {
 			$db_name = $db_name ?? $this->db_name;
+			$callback = $callback ?? $this->callback;
 			$this->sanitize($db_name);
 
 			if (empty($db_name)) {
 				throw new Exception("No database selected. ");
 			}
 
-			$queries = $this->prepare_sql_file($file_name, ";");
-			$this->execute_callback("callback", "Successfully prepared SQL queries from file {$file_name}");
-
+			$queries = $this->prepare_sql_file($file_name, ";", $verbose);
+			$this->handle_success("Successfully prepared SQL queries from file {$file_name}", $callback);
 			$this->pdo->exec("USE `$db_name`");
-
+			$last_printed_percentage = 0;
 			$totalQueries = sizeof($queries);
 			for ($i = 0; $i < $totalQueries; $i++) {
 				$stmt = $this->pdo->prepare($queries[$i]);
@@ -189,12 +189,13 @@ class DBSetup {
 
 				$progress = round(($i / $totalQueries) * 100, 0);
 				$current_query = substr($queries[$i], 0, 30);
-
+				
 				if ($verbose) {
-					$this->execute_callback("$callback", "{$file_name} > query {$i} > {$progress}% > {$current_query}...");
+					$this->handle_success("{$file_name} > query {$i} > {$progress}% > {$current_query}...", $callback);
 				} else {
-					if ($progress % 10 == 0) {
-						$this->execute_callback("$callback", "{$file_name} > {$progress}%");
+					if ($progress >= $last_printed_percentage + 10 && $progress % 10 == 0) {
+						$this->handle_success("{$file_name} > {$progress}%", $callback);
+						$last_printed_percentage = $progress;
 					}
 				}
 			}
@@ -236,9 +237,9 @@ class DBSetup {
 	 * function execute_callback
 	 * Execute callback functions, and handle potential errors.
 	 */
-	private function execute_callback(string $callback, string $message) {
+	private function execute_callback(string $callback, $message, bool $sucess = true) {
 		if (is_callable($callback)) {
-			$callback($message); // Execute the callback
+			$callback($message, $sucess); // Execute the callback
 		} else {
 			throw new Exception("The provided callback function cannot be found.");
 		}
@@ -249,17 +250,8 @@ class DBSetup {
 	 * Universal way of handling exceptions.
 	 * Will return array of information.
 	 */
-	private function handle_exception($e, string $action): array {
-		if ($e instanceof PDOException || $e instanceof Exception) {
-			return [
-				"success"=> false,
-				"message"=> "{$action} {$e->getMessage()}"
-			];
-		}
-		return [
-			"success"=> false,
-			"message"=> "Unknown error"
-			];  
+	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
+		throw new Exception($e);
 	}
 
 	/**
@@ -267,7 +259,12 @@ class DBSetup {
 	 * Universal way of handling non-exceptions.
 	 * Will return array of information.
 	 */
-	private function handle_success(string $action) {
+	private function handle_success(string $action = "Success", $callback = null) {
+		$callback = $callback ?? $this->callback;
+		if (isset($callback)) {
+			$this->execute_callback($callback, $action, true);
+		}
+
 		return [
 			"success"=> true,
 			"message"=> $action
@@ -281,8 +278,9 @@ class DBSetup {
 	 * - Inline comments.
 	 * - Changing delimmiters.
 	 */
-	private function prepare_sql_file($file, $default_delimiter = ';') {
+	private function prepare_sql_file($file, $default_delimiter = ';', $verbose = false) {
 		set_time_limit(0);
+		$file_name = $file;
 	
 		if (!is_file($file)) {
 			throw new Exception("Could not open file {$file}");
@@ -297,6 +295,10 @@ class DBSetup {
 	
 		if (!is_resource($file)) {
 			throw new Exception('Could not open file');
+		}
+
+		if ($verbose) {
+			$this->handle_success("Successfully opened file {$file_name} as {$file}. ");
 		}
 	
 		$queries = array();
