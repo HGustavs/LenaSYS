@@ -1,4 +1,3 @@
-
 /* Import fonts Noto Sans and Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -29,10 +28,18 @@ html body {
     margin: 0;
 }
 
+#page1 { display: block; }
+#page2, #page3, #page4, #page5 { display: none; }
+
 .page {
+    display: none; /* Hide all pages by default */
     margin: 2rem;
     border: 1px solid var(--primary-color);
     background-color: var(--page-background);
+}
+
+.page.active {
+    display: block; /* Only the active page is shown */
 }
 
 /*  Create a padding for all content
@@ -262,7 +269,7 @@ input[type=checkbox] {
     font-family: var(--body-font);
     font-style: italic;
     font-size: 14px;
-    max-width: 60%;
+    max-width: 60%; 
 
     .progressBarLabels {
         display: flex;
