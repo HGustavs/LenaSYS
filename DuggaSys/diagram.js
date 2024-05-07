@@ -701,7 +701,7 @@ document.addEventListener('keydown', function (e) {
     }
 
     // Moving object with arrows
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
         e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
@@ -711,12 +711,16 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            setPos(context, 0, 1);
+            if (settings.grid.snapToGrid) 
+                setPos(context, 0, settings.grid.gridSize / 2);
+            else
+                setPos(context, 0, 1);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
+
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN)) {
         e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
@@ -726,12 +730,16 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            setPos(context, 0, -1);
+            if (settings.grid.snapToGrid) 
+                setPos(context, 0, -settings.grid.gridSize / 2);
+            else
+                setPos(context, 0, -1);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
+  
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)) {
         e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
@@ -741,12 +749,16 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            setPos(context, 1, 0);
+            if (settings.grid.snapToGrid) 
+                setPos(context, settings.grid.gridSize / 2, 0);
+            else
+                setPos(context, 1, 0);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
+  
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)) {
         e.preventDefault();
         let overlapDetected = false;
         context.forEach(obj => {
@@ -756,7 +768,10 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            setPos(context, -1, 0);
+            if (settings.grid.snapToGrid) 
+                setPos(context, -settings.grid.gridSize / 2, 0);
+            else
+                setPos(context, -1, 0);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -814,28 +829,32 @@ document.addEventListener('keyup', function (e) {
 
     // Entity / Class / State
     if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
-        if (subMenuCycling(subMenuEntity)) return;
+        if (subMenuCycling(subMenuEntity, 0)) return;
+        togglePlacementType(elementTypes.EREntity, 0);
         setElementPlacementType(elementTypes.EREntity);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Relation / Inheritance
     if (isKeybindValid(e, keybinds.PLACE_RELATION)){
-        if (subMenuCycling(subMenuRelation)) return;
+        if (subMenuCycling(subMenuRelation, 1)) return;
+        togglePlacementType(elementTypes.ERRelation, 1);
         setElementPlacementType(elementTypes.ERRelation);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // UML states
     if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
-        if (subMenuCycling(subMenuUMLstate)) return;
+        if (subMenuCycling(subMenuUMLstate, 9)) return;
+        togglePlacementType(elementTypes.UMLInitialState, 9);
         setElementPlacementType(elementTypes.UMLInitialState);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Sequence
     if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
-        if (subMenuCycling(subMenuSequence)) return;
+        if (subMenuCycling(subMenuSequence, 12)) return;
+        togglePlacementType(elementTypes.sequenceActor, 12);
         setElementPlacementType(elementTypes.sequenceActor);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
@@ -1067,7 +1086,6 @@ function mmoving(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
-            let isX, isR, isUP;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -1079,74 +1097,57 @@ function mmoving(event) {
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                isR = false;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);                
+                let tmpW = elementData.width;
+                let tmpX = elementData.x;
+                let xChange = movementPosChange(elementData, startX, deltaX, true);
+                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                isR = true;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
+                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 prepareElementResized([elementData.id], widthChange, 0);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                isUP = false;
-                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
+                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementResized([elementData.id], 0, heightChange);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
-                isUP = true;
-                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-
+                let tmpH = elementData.height;
+                let tmpY = elementData.y;
+                let yChange = movementPosChange(elementData, startY, deltaY, false);
+                const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 //set movable height
-                isUP = true;
-                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                isR = false;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-
+                let tmpW = elementData.width;
+                let tmpX = elementData.x;
+                let tmpH = elementData.height;
+                let tmpY = elementData.y;
+                let xChange = movementPosChange(elementData, startX, deltaX, true);
+                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                let yChange = movementPosChange(elementData, startY, deltaY, false);
+                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
-                isUP = true;
-                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                isR = true;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
+                let tmpH = elementData.height;
+                let tmpY = elementData.y;
+                let yChange = movementPosChange(elementData, startY, deltaY, false);
+                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 prepareElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange);
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
-                isR = false;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                isUP = false;
-                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
+                let tmpW = elementData.width;
+                let tmpX = elementData.x;
+                let xChange = movementPosChange(elementData, startX, deltaX, true);
+                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                let heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange);
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
-                isR = true;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-
-                isUP = false;
-                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-
+                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange);
             }
-
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
-
             // Check if entity is overlapping
             resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
 
@@ -1166,55 +1167,27 @@ function mmoving(event) {
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
 }
+
 function movementPosChange(element,start,delta, isX){
-    let tmp = (isX) ? element.x : element.y;
-    let elem;
-    if (isX) {
-        element.x = screenToDiagramCoordinates( (start - delta ),0).x;
-        elem = element.x;
-    } else {
-        element.y = screenToDiagramCoordinates(0, (start - delta )).y;
-        elem = element.y;
-    }
+    // mouse position is used causing the line to "jump" to the mous pos.
+    // The magic numebers are used to center the node middle with the mouse pointer
+    let property = (isX) ? 'x' : 'y';
+    let x = (isX) ? start - delta - 6 * zoomfact : 0;
+    let y = (isX) ? 0 : start - delta + 17 * zoomfact;
+    let tmp = element[property];
+    element[property] = screenToDiagramCoordinates(x, y)[property];
     // Deduct the new position, giving us the total change
-    return -(tmp - elem);
+    return -(tmp - element[property]);
 }
 
-function movementXChange(element,start,delta,isR){
-    let tmp = element.width;
-    if (isR) {
-        element.width = (start - (delta / zoomfact));
-    } else {
-        element.width = (start + (delta / zoomfact));
-    }
-    // Remove the new width, giving us the total change
-    return -(tmp - element.width);
+function movementWidthChange(element, start, delta, isR){
+    element.width = (isR) ? start - delta / zoomfact : start + delta - element.x;
+    return element.width;
 }
 
-function movementYChange(element,start,delta,isUp,preResizeHeight){
-    // Adds a deep clone of the element to preResizeHeight if it isn't in it
-    let tmp = element.height;
-    if (isUp) {
-        element.height = (start + (delta / zoomfact));
-    } else {
-        element.height = (start - (delta / zoomfact));
-    }
-    let foundID = false;
-    if (preResizeHeight == undefined) {
-        let resizedElement = structuredClone(element);
-        preResizeHeight.push(resizedElement);
-    } else {
-        for (let i = 0; i < preResizeHeight.length; i++) {
-            if (element.id == preResizeHeight[i].id) {
-                foundID = true;
-            }
-        }
-        if (!foundID) {
-            let resizedElement = structuredClone(element);
-            preResizeHeight.push(resizedElement);
-        }
-    }
-    return -(tmp - element.height);
+function movementHeightChange(element, start, delta, isUp){
+    element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
+    return element.height;
 
 }
 /**

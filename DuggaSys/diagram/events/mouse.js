@@ -138,7 +138,7 @@ function mdown(event) {
             }
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
-            pointerState = pointerStates.CLICKED_NODE;
+        pointerState = pointerStates.CLICKED_NODE;
             var element = data[findIndex(data, context[0].id)];
 
             // Save the original properties

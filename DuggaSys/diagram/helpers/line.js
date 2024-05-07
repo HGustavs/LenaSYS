@@ -20,7 +20,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
         [toElement, fromElement] = [fromElement, toElement];
     }
-
     let errorMessage = checkConnectionErrors(fromElement, toElement);
     if (errorMessage) {
         displayMessage(messageTypes.ERROR, errorMessage);
@@ -35,7 +34,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             toElement.id === line.fromID)
     }).length;
 
-    console.log(numOfExistingLines);
     // Define a boolean for special case that relation and entity can have 2 lines
     let specialCase = (
         fromElement.kind === elementTypesNames.ERRelation &&
@@ -67,7 +65,9 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 }
 
 function checkConnectionErrors(to, from) {
-    if (from.id == to.id && to.kind != elementTypesNames.SDEntity) {
+    if (from.id == to.id &&
+        (to.kind != elementTypesNames.SDEntity && to.kind != elementTypesNames.UMLEntity && to.kind != elementTypesNames.IEEntity)
+    ) {
         return `Not possible to draw a line between: ${from.name} and ${to.name}, they are the same element`;
     }
     if (sameTypeError(from, to, sameConnectionForbidden)) {
