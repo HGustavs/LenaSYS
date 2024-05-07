@@ -1218,17 +1218,15 @@ async function newItem(itemtitle) {
     collectedLid.sort(function (a, b) {
       return b - a;
     });
-    var element = document.getElementById('I' + collectedLid[0]).firstChild;
+
+    let element = document.getElementById('I' + collectedLid[0]).firstChild;
+
     if (element.tagName == 'DIV') {
-      element = element.firstChild;
-      element.classList.add("highlightChange");
-      element.scrollIntoView({behavior: 'smooth', block: 'center'});
-    } else if (element.tagName == 'A') {
-      document.getElementById('I' + collectedLid[0]).classList.add("highlightChange");
-      document.getElementById('I' + collectedLid[0]).scrollIntoView({behavior: 'smooth', block: 'center'});
-    } else if (element.tagName == 'SPAN') {
-      document.getElementById('I' + collectedLid[0]).firstChild.classList.add("highlightChange");
-      document.getElementById('I' + collectedLid[0]).firstChild.scrollIntoView({behavior: 'smooth', block: 'center'});
+      setCreatedDuggaAnimation(element.firstChild, 'DIV');
+    } else if (element.tagName == 'A') { // this is created links
+      setCreatedDuggaAnimation(element, 'A');
+    } else if (element.tagName == 'SPAN') { //this is for created messages
+      setCreatedDuggaAnimation(element, 'SPAN');
     }
   }, 200);
   // Duration time for the alert before remove
@@ -1238,6 +1236,22 @@ async function newItem(itemtitle) {
   }, 3000);
 
   // setTimeout(scrollToBottom, 200);  Scroll to the bottom to show newly created items.
+}
+
+//  This function assign the animation class "highlightChange"
+//  to the correct parent element depending on tagname
+const setCreatedDuggaAnimation = function(element, tag){
+  let parent = element.parentNode;
+  let grandParent = parent.parentNode;
+
+  // add animation to the parent class instead of grandparent if a link or message was created
+  // A is for links and SPAN is for messages
+  if(tag == "A" || tag == "SPAN"){ 
+    parent.parentNode.classList.add("highlightChange");
+  }
+  else{
+    grandParent.parentNode.classList.add("highlightChange");
+  }
 }
 
 //----------------------------------------------------------------------------------
