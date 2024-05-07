@@ -21,9 +21,8 @@ function boxSelect_End() {
 function getElementsInsideCoordinateBox(selectionRect) {
     var elements = [];
     data.forEach(element => {
-
         // Box collision test
-        if (rectsIntersect(selectionRect, getRectFromElement(element))) {
+        if (selectionRect.overlap(Rect.FromElement(element))) {
             elements.push(element);
         }
     });
@@ -35,12 +34,12 @@ function getElementsInsideCoordinateBox(selectionRect) {
  * @param {Rect} selectionRect returned from the getRectFromPoints() function
  * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
  */
-function getLinesInsideCoordinateBox(selectionRect) {
+function getLinesInsideCoordinateBox(rect) {
     var allLines = document.getElementById("svgbacklayer").children;
     var tempLines = [];
     var bLayerLineIDs = [];
     for (let i = 0; i < allLines.length; i++) {
-        if (lineIsInsideRect(selectionRect, allLines[i])) {
+        if (lineIsInsideRect(rect, allLines[i])) {
             bLayerLineIDs[i] = allLines[i].id;
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
             bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
@@ -52,50 +51,22 @@ function getLinesInsideCoordinateBox(selectionRect) {
 
 /**
  * @description Checks if a entire line is inside of the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Rect} rect returned from the getRectFromPoints() function
  * @param {Object} line following the format of the lines contained within the children of svgbacklayer
  * @returns {Boolean} Returns true if the line is within the coordinate box, else false
  */
-function lineIsInsideRect(selectionRect, line) {
-    let lineCoord1 = screenToDiagramCoordinates(
+function lineIsInsideRect(rect, line) {
+    let l1 = screenToDiagramCoordinates(
         line.getAttribute("x1"),
         line.getAttribute("y1")
     );
-    let lineCoord2 = screenToDiagramCoordinates(
+    let l2 = screenToDiagramCoordinates(
         line.getAttribute("x2"),
         line.getAttribute("y2")
     );
-    let lineLeftX = Math.min(lineCoord1.x, lineCoord2.x);
-    let lineTopY = Math.min(lineCoord1.y, lineCoord2.y);
-    let lineRightX = Math.max(lineCoord1.x, lineCoord2.x);
-    let lineBottomY = Math.max(lineCoord1.y, lineCoord2.y);
-    let leftX = selectionRect.x;
-    let topY = selectionRect.y;
-    let rightX = selectionRect.x + selectionRect.width;
-    let bottomY = selectionRect.y + selectionRect.height;
-    return leftX <= lineLeftX && topY <= lineTopY && rightX >= lineRightX && bottomY >= lineBottomY;
-    /* Code used to check for a point
-    // Return true if any of the end points of the line are inside of the rect
-    if (lineCoord1.x > leftX && lineCoord1.x < rightX && lineCoord1.y > topY && lineCoord1.y < bottomY) {
-        return true;
-    } else if (lineCoord2.x > leftX && lineCoord2.x < rightX && lineCoord2.y > topY && lineCoord2.y < bottomY) {
-        return true;
-    }*/
-}
-
-/**
- * @description Checks if a line intersects with any of the lines on the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
- * @param {Object} line following the format of the lines contained within the children of svgbacklayer
- * @returns {Boolean} Returns true if the line intersects with any of the sides of the coordinate box, else false
- */
-function getBoxSelectionCoordinates() {
-    return {
-        n1: screenToDiagramCoordinates(startX, startY),
-        n2: screenToDiagramCoordinates(startX + deltaX, startY),
-        n3: screenToDiagramCoordinates(startX, startY + deltaY),
-        n4: screenToDiagramCoordinates(startX + deltaX, startY + deltaY),
-    };
+    let midPoint = new Point((l1.x + l2.x) / 2, (l1.y + l2.y) / 2);
+    return rect.x <= midPoint.x && rect.y <= midPoint.y &&
+            rect.x2 >= midPoint.x && rect.y2 >= midPoint.y;
 }
 
 function boxSelect_Update(mouseX, mouseY) {
@@ -107,61 +78,39 @@ function boxSelect_Update(mouseX, mouseY) {
         calculateDeltaExceeded();
 
         // Select all objects inside the box
-        var coords = getBoxSelectionCoordinates();
+        let rect = Rect.FromPoints(
+            screenToDiagramCoordinates(startX, startY),
+            screenToDiagramCoordinates(startX + deltaX, startY + deltaY),
+        );
+        let topLeft = new Point(0, 0);
+        let botRight = new Point(0, 0);
+        topLeft.x = (rect.x < rect.x2) ? rect.x : rect.x2;
+        botRight.x = (rect.x < rect.x2) ? rect.x2 : rect.x;
+        topLeft.y = (rect.y < rect.y2) ? rect.y : rect.y2;
+        botRight.y = (rect.y < rect.y2) ? rect.y2 : rect.y;
 
-        // Calculate top-left and bottom-right coordinates
-        var topLeft = new Point(0, 0), bottomRight = new Point(0, 0);
-
-        // left/right
-        if (coords.n1.x < coords.n4.x) {
-            topLeft.x = coords.n1.x;
-            bottomRight.x = coords.n4.x;
-        } else {
-            topLeft.x = coords.n4.x;
-            bottomRight.x = coords.n1.x;
-        }
-        // top/bottom
-        if (coords.n1.y < coords.n4.y) {
-            topLeft.y = coords.n1.y;
-            bottomRight.y = coords.n4.y;
-        } else {
-            topLeft.y = coords.n4.y;
-            bottomRight.y = coords.n1.y;
-        }
-
-        let rect = getRectFromPoints(topLeft, bottomRight);
+        let box = Rect.FromPoints(topLeft, botRight);
+        let markedEntities = getElementsInsideCoordinateBox(box);
+        let markedLines = getLinesInsideCoordinateBox(box);
 
         if (ctrlPressed) {
-            let markedEntities = getElementsInsideCoordinateBox(rect);
-
             // Remove entity from markedEntities if it was already marked.
             markedEntities = markedEntities.filter(entity => !previousContext.includes(entity));
-
-            let markedLines = getLinesInsideCoordinateBox(rect);
             markedLines = markedLines.filter(line => !previousContextLine.includes(line));
-
             clearContext();
-            context = context.concat(markedEntities);
-            context = context.concat(previousContext);
-
+            context = context.concat(markedEntities).concat(previousContext);
             clearContextLine();
-            contextLine = contextLine.concat(markedLines);
-            contextLine = contextLine.concat(previousContextLine);
+            contextLine = contextLine.concat(markedLines).concat(previousContextLine);
         } else if (altPressed) {
-            let markedEntities = getElementsInsideCoordinateBox(rect);
             // Remove entity from previous context if the element is marked
             previousContext = previousContext.filter(entity => !markedEntities.includes(entity));
-
-            let markedLines = getLinesInsideCoordinateBox(rect);
             previousContextLine = previousContextLine.filter(line => !markedLines.includes(line));
-
-            context = [];
             context = previousContext;
             clearContextLine();
             contextLine = previousContextLine;
         } else {
-            context = getElementsInsideCoordinateBox(rect);
-            contextLine = getLinesInsideCoordinateBox(rect);
+            context = markedEntities;
+            contextLine = markedLines;
         }
     }
 }
