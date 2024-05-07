@@ -1024,7 +1024,6 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				async: false,
 				success: returnedCourse
             });
 		} else if (opt === "NEWVRS") {
@@ -1033,7 +1032,6 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				async: false,
 				success: returnedCourse
             });
         } else if (opt === "CPYVRS") {
@@ -1042,7 +1040,6 @@ function AJAXService(opt,apara,kind)
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				async: false,
 				success: returnedCourse
             });
         } else {
