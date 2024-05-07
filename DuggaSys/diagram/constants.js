@@ -1,5 +1,3 @@
-//#region ================================ ENUMS ===============================================
-
 /**
  * @description Keybinds that are used in the system. This is used to generate tooltips and for determining keyboard input logic.
  */
@@ -249,10 +247,24 @@ const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
 };
 
 /**
+ * @description Available options of icons to display at the end of lines connecting two SE elements.
+ */
+const SELineIcons = {//TODO: Replace with actual icons for the dropdown
+    ARROW: "ARROW"
+};
+
+/**
  * @description Available options of Line types between two SD elements
  */
 const SDLineType = {
     STRAIGHT: "Straight",
+    SEGMENT: "Segment"
+}
+
+/**
+ * @description Available options of Line types between two SE elements
+ */
+const SELineType = {
     SEGMENT: "Segment"
 }
 
@@ -334,7 +346,6 @@ const cursorOffset = new Map([
     [4, 0.9375],
 ]);
 
-// Constants
 const textheight = 18;
 const strokewidth = 2.0;
 const color = {
@@ -484,6 +495,7 @@ var defaults = {
         width: 200,
         height: 0, // Extra height when resizing larger than text.
         type: "IE",
+        primaryKey: ['*Primary Key'],
         attributes: ['-Attribute'],
         functions: ['+function'],
         canChangeTo: ["UML", "ER", "IE", "SD"],
@@ -617,4 +629,21 @@ var defaults = {
 
 var defaultLine = {kind: "Normal"};
 
-//#endregion ===================================================================================
+const sameConnectionForbidden = [
+    elementTypesNames.EREntity,
+    elementTypesNames.ERRelation,
+    elementTypesNames.UMLRelation,
+    elementTypesNames.IERelation,
+    elementTypesNames.UMLInitialState,
+    elementTypesNames.UMLFinalState,
+    elementTypesNames.sequenceActor,
+    elementTypesNames.sequenceObject,
+    elementTypesNames.sequenceLoopOrAlt,
+]
+const lineAlwaysFrom = [
+    elementTypesNames.EREntity,
+    elementTypesNames.UMLInitialState,
+];
+const lineAlwaysTo = [
+    elementTypesNames.UMLFinalState,
+];

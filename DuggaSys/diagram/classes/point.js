@@ -2,9 +2,6 @@
  * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector.
  */
 class Point {
-    x = 0;
-    y = 0;
-
     /**
      * @description Point contianing X & Y coordinates. Can also be used as a 2D-vector.
      * @param {number} startX
