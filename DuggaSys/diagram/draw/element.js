@@ -189,9 +189,15 @@ function drawText(x, y, a, t, extra = '') {
 }
 
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
+    //check if element height and minHeight is 0, if so set both to 50
+    if (element.height == 0 && element.minHeight == 0) {
+        console.log("Element height and minHeight is 0, setting both to 50");
+        element.height = 50;
+        element.minHeight = 50;
+    }
+    
     const l = linew * 3;
 
-    
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
