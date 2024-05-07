@@ -96,15 +96,32 @@ class InstallEngine {
 			// Run the installer
 			$totalOperations = count($operations);
 			$i = 0;
+			$start_flag = isset($settings->starting_step); // when true continue without running install step
 			foreach ($operations as $operationKey => $operation) {
+				if ($start_flag) {	// Allow installer to start on the n:th step 
+					if ($settings->starting_step == $operationKey) {
+						$start_flag = false;
+					} else {
+						continue;
+					}
+				}
+
 				// Calculate completion, adjusted by adding 1 to $i to reflect the correct number of completed operations.
-				$completion = round(($i / $totalOperations) * 100, 0);
+				$completion = round((($i+1) / $totalOperations) * 100, 0);
+				if ($completion > 99) {
+					$completion = 99;
+				}
 				SSESender::transmit_event("updateProgress", data: $completion);
 				$operation();  // Execute the operation
 				$i++;
 			}
 		} catch (Exception $e) {
-			SSESender::transmit(data: "Failed on step {$operationKey}: " . $e->getMessage(), is_error: true);
+			SSESender::transmit(data: [
+				"event" => "message",
+				"data" => "Failed on step {$operationKey}: {$e->getMessage()}",
+				"failed_step" => $operationKey,
+				"success" => false,
+			]);
 		}
 
 		SSESender::transmit_event("updateProgress", data: 100);
