@@ -299,7 +299,7 @@
 					<div id='inputwrapper-deadline' class='inputwrapper'>
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
-							<span style='float:right;margin-right:10px;'>
+							<span style='float:right'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
@@ -345,7 +345,7 @@
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div style='text-align: center;'>
-					<h4>Are you sure you want to delete this item?</h4>
+					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
