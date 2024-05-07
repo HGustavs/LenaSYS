@@ -95,7 +95,6 @@ if (checklogin()) {
 				$query->execute();
 			}
 			catch(Exception $e){
-				$userid = 1102;
 				$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
 				$query->bindParam(':usrid', $userid);
 				$query->bindParam(':coursecode', $coursecode);
