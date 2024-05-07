@@ -23,6 +23,9 @@ session_start();
 $uid = getUid();
 $courseid = getOP('cid');
 $versid = getOP('vers');
+$log_uuid=getOP('log_uuid');
+$opt=getOP('opt');
+$coursevers=getOP('coursevers');
 
 if(checklogin()){
 	$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");

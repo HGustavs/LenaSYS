@@ -31,6 +31,7 @@ $grptype=getOP('grptype');
 $tabs=getOP('tabs');
 $gradesys=getOP('gradesys');
 $userid = getUid();
+$log_uuid=getOP('log_uuid');
 
 if($feedbackenabled != 1){
 	$feedbackenabled = 0;

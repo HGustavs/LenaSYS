@@ -9,6 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
@@ -20,6 +21,8 @@ $opt=getOP('opt');
 $courseid = getOP('cid');
 $coursevers=getOP('coursevers');
 $versid = getOP('vers');
+$log_uuid=getOP('log_uuid');
+$userid=getUid();
 
 $results = array();
 

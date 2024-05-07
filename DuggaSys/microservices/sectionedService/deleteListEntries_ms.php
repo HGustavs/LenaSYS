@@ -13,6 +13,8 @@ session_start();
 
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
+$log_uuid=getOP('log_uuid');
+$opt=getOP('opt');
 
 $userid = getUid();
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.

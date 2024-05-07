@@ -18,6 +18,7 @@ $opt=getOP('opt');
 $courseid=getOP('courseid');
 $link=getOP('link');
 $versid = getOP('vers');
+$log_uuid=getOP('log_uuid');
 
 $deadline=getOP('deadline');
 $relativedeadline=getOP('relativedeadline');

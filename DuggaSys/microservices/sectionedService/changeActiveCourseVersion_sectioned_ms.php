@@ -22,6 +22,8 @@ if(isset($_SESSION['uid'])){
 
 $courseid = getOP('cid');
 $versid = getOP('vers');
+$log_uuid=getOP('log_uuid');
+$opt=getOP('opt');
 
 // Authorization
 $isSuperUserVar = isSuperUser($userid);
