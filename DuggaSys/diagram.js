@@ -130,11 +130,11 @@ class StateMachine {
                         }
 
                         // edits the last element if it's during the same resize
-                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.mdownCounter) {
+                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
                             this.historyLog.splice(this.historyLog.length-1, 1);
                         }
 
-                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
+                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
@@ -145,7 +145,7 @@ class StateMachine {
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                                     console.log(stateChange, 1);
-                                    this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
+                                    this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);                                    
@@ -157,7 +157,7 @@ class StateMachine {
                                         lastLog.id = lastLog.id[0];
                                     }
 
-                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
+                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
@@ -187,12 +187,12 @@ class StateMachine {
                                     
                                     
                                     // if the save() call comes from the same change-motion
-                                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.mdownCounter) {
+                                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
                                         this.historyLog.splice(this.historyLog.length-1, 1);
                                     }
 
                                     // spreaading the values so that it doesn't keep the reference                                    
-                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.mdownCounter});
+                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -208,7 +208,7 @@ class StateMachine {
                         width: current_element.width, 
                         height: current_element.height, 
                         changeType: newChangeType.flag, 
-                        counter: historyHandler.mdownCounter
+                        counter: historyHandler.inputCounter
                     });
                     this.lastFlag = currentChangedType;
                     this.currentHistoryIndex = this.historyLog.length - 1;
@@ -760,6 +760,7 @@ document.addEventListener('keydown', function (e) {
     if (altPressed) {
         mouseMode_onMouseUp();
     }  
+    historyHandler.inputCounter++;
 });
 
 document.addEventListener('keyup', function (e) {
@@ -994,13 +995,6 @@ function mouseMode_onMouseUp(event) {
  */
 function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
     stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-    /* new Promise(resolve => {
-        resolve(historyHandler.hasUpdated);
-    }).then(() => {
-        if (historyHandler.hasUpdated) {
-            historyHandler.hasUpdated = false;
-        }
-    }); */
 }
 
 /**
@@ -1011,13 +1005,6 @@ function prepareElementMovedAndResized(id, xChange, yChange, widthChange, height
  */
 function prepareElementResized(id, widthChange, heightChange) {
     stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-    /* new Promise(resolve => {
-        resolve(historyHandler.hasUpdated);
-    }).then(() => {
-        if (historyHandler.hasUpdated) {
-            historyHandler.hasUpdated = false;
-        }
-    }); */
 }
 
 /**

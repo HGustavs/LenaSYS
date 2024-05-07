@@ -172,7 +172,7 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
-    historyHandler.mdownCounter++;
+    historyHandler.inputCounter++;
 }
 
 /**

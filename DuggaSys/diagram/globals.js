@@ -144,5 +144,5 @@ var ghostLine = null;
 // variables for resizing
 const historyHandler = {
     hasUpdated: false,
-    mdownCounter: 0
+    inputCounter: 0
 }
