@@ -103,7 +103,7 @@ function showdata() {
     }
     if (ghostElement) {
         str += drawElement(ghostElement, true);
-    }1
+    }
     container.innerHTML = str;
     updatepos();
 }
