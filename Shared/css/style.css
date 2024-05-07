@@ -1431,6 +1431,7 @@ header td {
 #hamburgerIcon{
   transform: scale(1.8);
   margin-left: 10px;
+  color: white;
 }
 #courseVersionDropDown{
   vertical-align: top;
@@ -1554,6 +1555,7 @@ div .navButt:hover {
 .loggedout {
   /* Original --  background-color: var(--color-red);*/
   background-color: var(--color-border-primary2);
+  color: var(--color-text-logo);
 }
 
 .loggedout:hover {
@@ -5661,7 +5663,7 @@ only screen and (max-device-width: 568px) {
 
   #navBurgerIcon { 
     display: block;
-    
+    color:white;
   }
  
   #navBurgerBox{
