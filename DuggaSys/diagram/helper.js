@@ -79,7 +79,7 @@ function entityIsOverlapping(id, x, y) {
 
     const element = data[foundIndex];
     let eHeight = element.height;
-    let arr = [UMLHeight, IEHeight, SDHeight, ERHeight, NOTEHeight];
+    let arr = [UMLHeight, IEHeight, SDHeight, NOTEHeight];
 
     arr.forEach(entityHeights => {
         entityHeights.forEach(entity => {
