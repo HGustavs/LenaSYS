@@ -49,16 +49,16 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
         case elementTypesNames.ERAttr:
-            divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
+            divContent = drawElementERAttr(element, textWidth, boxw*1.3, boxh*1.3, linew, texth);
             break;
         case elementTypesNames.UMLRelation:
-            divContent = drawElementUMLRelation(element, boxw, boxh, linew);
+            divContent = drawElementUMLRelation(element, boxw*1.25, boxh*1.25, linew);
             cssClass = 'uml-element';
             break;
         case elementTypesNames.IERelation:
-            divContent = drawElementIERelation(element, boxw, boxh, linew);
+            divContent = drawElementIERelation(element, boxw*1.8, boxh*1.8, linew);
             cssClass = 'ie-element';
-            style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+          //  style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -382,12 +382,12 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
     let hboxh = boxh / 2;
     const drawPath = (l, extra='') => {
         return `<path 
-                    d="M${l},${hboxh} 
+                    d="M${l},${hboxh}
                         Q${l},${l} ${hboxw},${l} 
-                        Q${boxw - l},${l} ${boxw - l},${hboxh} 
+                        Q${boxw - l},${l} ${boxw - l},${hboxh}
                         Q${boxw - l},${boxh - l} ${hboxw},${boxh - l} 
-                        Q${l},${boxh - l} ${l},${hboxh}" 
-                    stroke='${element.stroke}' fill='${element.fill}' ${extra} stroke-width='${linew}' 
+                        Q${l},${boxh - l} ${l},${hboxh}"
+                    stroke='${element.stroke}' fill='${element.fill}' ${extra} stroke-width='${linew}'
                     class="text" 
                 />`;
     }
@@ -416,7 +416,7 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
             break;
     }
     content += `<text 
-                    x='${boxw / 2}' y='${hboxh}' ${extra} 
+                    x='${boxw / 2}' y='${hboxh}' ${extra}
                     dominant-baseline='middle' text-anchor='middle'
                 > ${element.name} </text>`;
     return drawSvg(boxw, boxh, content);
