@@ -1,5 +1,5 @@
 <?php
-include_once "retrieveUsername_ms.php";
+include_once "./retrieveUsername_ms.php";
 
 function createNewListentrie($pdo, $listEntry){
     $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
