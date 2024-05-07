@@ -129,24 +129,26 @@
         // The duration of a toast decides how long it should be visible for
         // If no duration is given, the default duration should be 3 seconds.
         if(duration == "" || duration == null) {
-            duration = 3;
+            duration = 0;
         }
         // After x amount of seconds, remove the show class from DIV
         // Creates a fadeout animation using css classes
-        setTimeout(function(){ toastDiv.className = toastDiv.className.replace("show", "fadeout"); }, duration*1000);
-        setTimeout(function(){ toastDiv.className = toastDiv.className.replace("fadeout", ""); }, 1*1000);
-        setTimeout(function(){ toastDiv.className = toastDiv.className.replace("show", "")}, duration*1000 + 900);
-        setTimeout(function(){ toastDiv.className = toastDiv.className.replace("fadeout", "")}, duration*1000 + 900);
+        if(duration !== 0){
+            setTimeout(function(){ toastDiv.className = toastDiv.className.replace("show", "fadeout"); }, duration*1000);
+            setTimeout(function(){ toastDiv.className = toastDiv.className.replace("fadeout", ""); }, 1*1000);
+            setTimeout(function(){ toastDiv.className = toastDiv.className.replace("show", "")}, duration*1000 + 900);
+            setTimeout(function(){ toastDiv.className = toastDiv.className.replace("fadeout", "")}, duration*1000 + 900);
+        }
     } 
     function truncateOverflow(toastText) {
-            const maxChars = 70; // Set the maximum number of characters before truncating
-            const toastContent = toastText.textContent.trim();
-            if (toastContent.length > maxChars) {
-                // Truncate the content and add "..."
-                toastText.textContent = toastContent.slice(0, maxChars) + '...';
-                toastText.dataset.fullText = toastContent; // Store the full text in a data attribute
-            }
+        const maxChars = 70; // Set the maximum number of characters before truncating
+        const toastContent = toastText.textContent.trim();
+        if (toastContent.length > maxChars) {
+            // Truncate the content and add "..."
+            toastText.textContent = toastContent.slice(0, maxChars) + '...';
+            toastText.dataset.fullText = toastContent; // Store the full text in a data attribute
         }
+    }
 </script>
 <!-- This link makes it possible to use Google icons (open source and permitted by Henrik) -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
