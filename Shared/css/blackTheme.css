@@ -479,13 +479,20 @@ body {
     color:white;
 }
 
+.previewTable th{
+    background-color: var(--color-background);
+}
+
+#InlPHPDocumentPrev{
+    background-color: var(--color-background);
+}
+
 .previewTable tr:nth-child(odd){
     background-color: var(--color-sectioned-table-lo);
 }
 .previewTable tr:nth-child(even){
     background-color: var(--color-sectioned-table-hi);
 }
-
 
 /*A global styling for darkmode, a class for white text on darkbackgrounds*/
 .DarkModeText{
