@@ -25,11 +25,14 @@ $courseVersion=getOP('cvers');
 
 
 if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
+    $writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
+
     if(strcmp('SETTEMPL',$opt)===0){
         // Parse content array
         $content = getOP('content');
         $cArray = explode(',', $content);
         $multiArray = array_chunk($cArray, 3);
+
         $query = $pdo->prepare( "UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
         $query->bindParam(':templateno', $templateNumber);
         $query->bindParam(':exampleid', $exampleId);
@@ -48,16 +51,19 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
         else if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
         else if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
         else if($templateNumber==9) $boxCount=5;
-        
+
         // Create appropriate number of boxes
         for($i=1;$i<$boxCount+1;$i++){
             $kind = $multiArray[$i-1][0];
             $file = $multiArray[$i-1][1];
             $wordlist = $multiArray[$i-1][2];
+
             $query = $pdo->prepare("SELECT * FROM box WHERE boxid = :i AND exampleid = :exampleid;");
+
             $query->bindParam(':i', $i);
             $query->bindParam(':exampleid', $exampleId);
             $query->execute();
+
             if($query->fetch(PDO::FETCH_ASSOC)){
                 // Update box, if it already exist
                 $query = $pdo->prepare("UPDATE box SET boxcontent = :boxcontent, filename = :filename, wordlistid = :wordlistid WHERE boxid = :i AND exampleid = :exampleid;");
@@ -71,11 +77,13 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser($_SESSION['uid']))) {
                 // Should be impossible to reach, only for safety
                 continue;
             }
+
             $query->bindParam(':i', $i);
             $query->bindParam(':exampleid', $exampleId);
             $query->bindValue(':boxcontent', $kind);
             $query->bindValue(':filename', $file);
             $query->bindValue(':wordlistid', $wordlist);
+            
             // Update code example to reflect change of template
             if(!$query->execute()) {
                 $error=$query->errorInfo();
