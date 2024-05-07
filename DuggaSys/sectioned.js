@@ -582,7 +582,7 @@ window.addEventListener('beforeunload', function (event) {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
     var lid = deletedElements[i].id.match(/\d+/)[0];
-    AJAXService("DEL", {
+    AJAXService("DELETE", {
       lid: lid
     }, "SECTION");
   }
@@ -1012,13 +1012,13 @@ function deleteItem(item_lid = null) {
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60000);
+  }, 60);
 }
 
 // Permanently delete elements.
 function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DEL", {
+    AJAXService("DELETE", {
       lid: delArr.pop()
     }, "SECTION");
   }
