@@ -768,28 +768,32 @@ document.addEventListener('keyup', function (e) {
 
     // Entity / Class / State
     if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
-        if (subMenuCycling(subMenuEntity)) return;
+        if (subMenuCycling(subMenuEntity, 0)) return;
+        togglePlacementType(elementTypes.EREntity, 0);
         setElementPlacementType(elementTypes.EREntity);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Relation / Inheritance
     if (isKeybindValid(e, keybinds.PLACE_RELATION)){
-        if (subMenuCycling(subMenuRelation)) return;
+        if (subMenuCycling(subMenuRelation, 1)) return;
+        togglePlacementType(elementTypes.ERRelation, 1);
         setElementPlacementType(elementTypes.ERRelation);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // UML states
     if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
-        if (subMenuCycling(subMenuUMLstate)) return;
+        if (subMenuCycling(subMenuUMLstate, 9)) return;
+        togglePlacementType(elementTypes.UMLInitialState, 9);
         setElementPlacementType(elementTypes.UMLInitialState);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Sequence
     if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
-        if (subMenuCycling(subMenuSequence)) return;
+        if (subMenuCycling(subMenuSequence, 12)) return;
+        togglePlacementType(elementTypes.sequenceActor, 12);
         setElementPlacementType(elementTypes.sequenceActor);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
