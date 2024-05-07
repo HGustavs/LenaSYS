@@ -9649,7 +9649,9 @@ margin:2px;
 }
 
 .toastText {
-  font-family: Arial;
+  font-family: Arial; 
+  grid-area: "text";
+  overflow-y: auto;
   width: 100%;
   min-height:2.3rem;
   height: 2.3rem;
