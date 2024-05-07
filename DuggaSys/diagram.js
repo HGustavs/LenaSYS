@@ -1090,9 +1090,11 @@ function mmoving(event) {
 }
 
 function movementPosChange(element,start,delta, isX){
+    // mouse position is used causing the line to "jump" to the mous pos.
+    // The magic numebers are used to center the node middle with the mouse pointer
     let property = (isX) ? 'x' : 'y';
-    let x = (isX) ? start - delta : 0;
-    let y = (isX) ? 0 : start - delta;
+    let x = (isX) ? start - delta - 6 * zoomfact : 0;
+    let y = (isX) ? 0 : start - delta + 17 * zoomfact;
     let tmp = element[property];
     element[property] = screenToDiagramCoordinates(x, y)[property];
     // Deduct the new position, giving us the total change
@@ -1100,7 +1102,7 @@ function movementPosChange(element,start,delta, isX){
 }
 
 function movementWidthChange(element, start, delta, isR){
-    element.width = (isR) ? start - delta / zoomfact : start + (delta - element.x);
+    element.width = (isR) ? start - delta / zoomfact : start + delta - element.x;
     return element.width;
 }
 
