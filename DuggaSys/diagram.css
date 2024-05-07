@@ -177,9 +177,15 @@
 }
 
 #pad_lock{
-    top: -45%;
+    bottom: -5px;
+    left: -8px;
     display: block;
-    position: relative;
+    position: absolute;
+    background-color: #fff;
+}
+
+.element:has(#pad_lock) {
+    overflow: visible;
 }
 
 #canvasOverlay{
