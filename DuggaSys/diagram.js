@@ -1013,64 +1013,119 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
+            const maxRatio = 0.4;
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                isR = false;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                if (context[0].kind == "sequenceActor") {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    const widthChange = movementXChange(elementData,startWidth,deltaX,false);
+                    const heightChange = movementYChange(elementData,startHeight,movementY,false,preResizeHeight);
+                    const xChange = movementPosChange(elementData,startX,deltaX,true);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);    
+                } else {
+                    isR = false;
+                    let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                    isX = true;
+                    let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                }
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                isR = true;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                if (context[0].kind == "sequenceActor") {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    const widthChange = movementXChange(elementData,startWidth,deltaX,true);
+                    const heightChange = movementYChange(elementData,startHeight,movementY,false,preResizeHeight);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);    
+                } else {
+                    isR = true;
+                    let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                    stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);    
+                }
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                isUP = false;
-                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-            } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height// Deduct the new height, giving us the total change
-                isUP = true;
-                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                if ((context[0].kind == "sequenceActor" &&
+                    (startHeight - (deltaY / zoomfact)) > startWidth / maxRatio) ||
+                    (context[0].kind != "sequenceActor" &&
+                    (startHeight - (deltaY / zoomfact)) > minHeight)) {
+                    isUP = false;
+                    const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                    stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);    
+                }
+            } else if (startNodeUp) {
+                if ((context[0].kind == "sequenceActor" &&
+                    (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) ||
+                    (context[0].kind != "sequenceActor" &&
+                    (startHeight + (deltaY / zoomfact)) > minHeight)) {
+                    isUP = true;
+                    const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                    isX = false;
+                    let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                }
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
-                //set movable height
-                isUP = true;
-                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                isR = false;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                if (context[0].kind == "sequenceActor") {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    const widthChange = movementXChange(elementData,startWidth,deltaX,false);
+                    const heightChange = movementYChange(elementData,startHeight,movementY,false,preResizeHeight);
+                    const xChange = movementPosChange(elementData,startX,deltaX,true);
+                    const yChange = movementPosChange(elementData,startY,-movementY,isX);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);    
+                } else {//set movable height
+                    isUP = true;
+                    let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                    isX = false;
+                    let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                    isR = false;
+                    let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                    isX = true;
+                    let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                }
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
-                //set movable height
-                isUP = true;
-                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                isX = false;
-                let yChange = movementPosChange(elementData,startY,deltaY,isX);
-                isR = true;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                if (context[0].kind == "sequenceActor") {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    const widthChange = movementXChange(elementData,startWidth,deltaX,true);
+                    const heightChange = movementYChange(elementData,startHeight,movementY,false,preResizeHeight);
+                    const yChange = movementPosChange(elementData,startY,-movementY,isX);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);    
+                } else {//set movable height
+                    isUP = true;
+                    let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                    isX = false;
+                    let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                    isR = true;
+                    let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                }
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
-                isR = false;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
-                isX = true;
-                let xChange = movementPosChange(elementData,startX,deltaX,isX);
-                isUP = false;
-                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                if (context[0].kind == "sequenceActor") {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    const widthChange = movementXChange(elementData,startWidth,deltaX,false);
+                    const heightChange = movementYChange(elementData,startHeight,movementY,false,preResizeHeight);
+                    const xChange = movementPosChange(elementData,startX,deltaX,true);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);    
+                } else {
+                    isR = false;
+                    let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                    isX = true;
+                    let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                    isUP = false;
+                    let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                }
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
-                isR = true;
-                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                if (context[0].kind == "sequenceActor") {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    const widthChange = movementXChange(elementData,startWidth,deltaX,true);
+                    const heightChange = movementYChange(elementData,startHeight,movementY,false,preResizeHeight);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);    
+                } else {
+                    isR = true;
+                    let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
 
-                isUP = false;
-                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                    isUP = false;
+                    const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
 
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                    stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                }
             }
 
             document.getElementById(context[0].id).remove();
