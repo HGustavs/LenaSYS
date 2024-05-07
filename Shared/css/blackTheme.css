@@ -391,6 +391,12 @@
 	color: var(--color-text-light);
 }
 
+.instructionBox{
+    border:1px solid #614875; 
+    margin: 5px auto; 
+    margin-bottom:10px;
+}
+
 /* BOXMENU STYLING START */
 .buttomenu2Style{
 	background-color: var(--color-background-codeviewer-nav);
