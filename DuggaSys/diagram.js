@@ -144,7 +144,6 @@ class StateMachine {
                             let currentElement;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                                    console.log(stateChange, 1);
                                     this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
@@ -164,7 +163,6 @@ class StateMachine {
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                                                        
                                     // not sure why but if you resize -> undo -> resize it starts
                                     // to store the id as an array so this is just a check to counter that
                                     while (Array.isArray(lastLog.id)) {
@@ -177,8 +175,8 @@ class StateMachine {
 
                                     // add the real values so that not just the chanegs gets stored
                                     currentElement = data[findIndex(data, id)];
-                                    lastLog.width += currentElement.width;
-                                    lastLog.height += currentElement.height;
+                                    lastLog.width = currentElement.width;
+                                    lastLog.height = currentElement.height;
                                     if (movedAndResized) {
                                         lastLog.x = currentElement.x;
                                         lastLog.y = currentElement.y;
@@ -277,7 +275,6 @@ class StateMachine {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
             }
         } while (doNextState);
-
         // Update diagram
         clearContext();
         showdata();
