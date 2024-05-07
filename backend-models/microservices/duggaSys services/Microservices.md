@@ -1241,7 +1241,7 @@ _WORK PAUSED given the current non-functional state of this service._
 
 ### createNewCourse_ms.php
 __Include original service files:__ sessions.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1267,7 +1267,7 @@ INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) 
 __createCourseVersion_ms.php__ creates a new version of an existing course.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1301,6 +1301,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 ### updateCourseVersion_ms.php
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
+__Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1331,7 +1332,7 @@ _SELECT_ operation on the table __'user'__ to get the value of the column:
 __updateActiveCourseVersion_courseed_ms.php__ takes an existing course and changes content of the activeversion column.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1399,6 +1400,7 @@ Uses the services __setAsActiveCourse__ to change the content of these columns:
 
 ### updateCourse_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1433,7 +1435,8 @@ __createMOTD_ms.php__ is called upon when the message of the day is changed in t
 The user must be a super user to be able to do this!
 
 __Include original service files:__ sessions.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
+
 
 __Querys used in this microservice:__
 
@@ -1455,6 +1458,7 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 __deleteCourseMaterial_ms.php__ deletes all courses and course material where visibility is 3.
 
 __Include original service files:__ sessions.php
+__Include microservice:__ retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1635,7 +1639,8 @@ DELETE course FROM course WHERE visibility=:deleted;
 <br>
 
 ### retrieveCourseedService_ms.php
-__Include original service files:__ sessions.php
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
 
@@ -3052,7 +3057,6 @@ _SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
 - enddate
 - motd
 
-```sql
 SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
 ```
 
