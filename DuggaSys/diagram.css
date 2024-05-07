@@ -176,12 +176,13 @@
     position: absolute;
 }
 
-#pad_lock{
+#pad_lock {
     bottom: -5px;
-    left: -8px;
+    left: 3px;
     display: block;
     position: absolute;
-    background-color: #fff;
+    background: inherit;
+    /* background-color: #fff; */
 }
 
 .element:has(#pad_lock) {
