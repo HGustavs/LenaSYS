@@ -1,5 +1,11 @@
 <?php
 
+//
+// This microservice is used on DuggaSys when you create a new code example for a course and chose a template to display that code
+// The microservice selects the selected template and retrieves a CSS-file containing the template to display on the page. The code for displaying different 
+// CSS-files can be found in codeviewerService.php and dugga.js
+//
+
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
