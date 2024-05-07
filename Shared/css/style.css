@@ -9805,4 +9805,8 @@ margin:2px;
   columns: 1; 
 }
 
+.submissionHistory{
+  font-style:italic;
+}
+
 /* END */
