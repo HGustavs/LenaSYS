@@ -31,7 +31,6 @@ $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
 
 if(checklogin() && ($writeAccess=="w" || isSuperUser(getuid()) == true)) {
-    $writeAccess="w"; // TODO: Redundant? Is set a couple of rows above
 
     if(strcmp('SETTEMPL',$opt)===0){
         // Parse content array
@@ -89,7 +88,7 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser(getuid()) == true)) {
             $query->bindValue(':boxcontent', $kind);
             $query->bindValue(':filename', $file);
             $query->bindValue(':wordlistid', $wordlist);
-
+            
             // Update code example to reflect change of template
             if(!$query->execute()) {
                 $error=$query->errorInfo();
