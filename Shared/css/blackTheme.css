@@ -623,7 +623,7 @@ body {
 }
 
 .instructions-content{
-    border: 2px solid  var(--color-sectioned-table-lo);
+    border: 1px solid  var(--color-sectioned-table-lo);
 } 
 
 .feedback-button:hover:after, .instructions-button:hover:after {
