@@ -1020,29 +1020,52 @@ function AJAXService(opt,apara,kind)
 		//for testing of the microservice, delete the if/else and uncomment the original ajax call below before merge
 		if(opt === "NEW"){
 			$.ajax({
-                url: "courseedservice.php",
+			        //url: "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
+				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedCourse
-            });
+			});
 		} else if (opt === "NEWVRS") {
-            $.ajax({
-                url: "courseedservice.php",
+			$.ajax({
+				//url: "../DuggaSys/microservices/courseedService/createCourseVersion_ms.php",
+				url: "courseedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				async: false, // Doesn't have time to finish with async before redirect
+				success: returnedCourse
+			});
+		} else if (opt === "CPYVRS") {
+			$.ajax({
+				url: "courseedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				async: false, // Doesn't have time to finish with async before redirect
+				success: returnedCourse
+			});
+		} else if (opt == "UPDATE"){
+			$.ajax({
+				//url: "../DuggaSys/microservices/courseedService/updateCourse_ms.php",
+				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedCourse
-            });
-        } else if (opt === "CPYVRS") {
-            $.ajax({
-                url: "courseedservice.php",
+			});
+			
+		} else if (opt == "SETTINGS") {
+			$.ajax({
+				//url: "../DuggaSys/microservices/courseedService/createMOTD_ms.php",
+				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
 				success: returnedCourse
-            });
-        } else {
+			});
+		} else {
 			$.ajax({
 				url : "courseedservice.php",
 				type: "POST",
@@ -1050,7 +1073,7 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedCourse
 			});
-        }
+		}
 	}else if(kind=="VARIANTPDUGGA"){
 		$.ajax({
 			url: "showDuggaservice.php",
