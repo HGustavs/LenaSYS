@@ -66,8 +66,8 @@ class StateMachine {
                 // If history is present, perform soft/hard-check
                 if (this.historyLog.length > 0) {
 
-                    // Get the last state in historyLog
-                    let lastLog = this.historyLog[this.historyLog.length - 1];
+                    // Get the last state in historyLog (only values, not reference)
+                    let lastLog = {...this.historyLog[this.historyLog.length - 1]};
 
                     // Check if the element is the same
                     var sameElements = true;
@@ -97,7 +97,6 @@ class StateMachine {
                             isSoft = newChangeType.isSoft;
                             changeTypes = [newChangeType];
                         }
-
                         // Find last change with the same ids
                         var timeLimit = 10; // Timelimit on history append in seconds
                         for (let index = this.historyLog.length - 1; index >= 0; index--) {
@@ -116,7 +115,7 @@ class StateMachine {
                                 var temp = false;
                                 // If this historyLog is within the timeLimit
                                 if (((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit) {
-                                    lastLog = this.historyLog[index];
+                                    lastLog = {...this.historyLog[index]};
                                     temp = true;
                                 }
                                 sameElements = temp;
@@ -126,51 +125,72 @@ class StateMachine {
                     }
                     // If NOT soft change, push new change onto history log
                     if (!isSoft || !sameElements) {
-                        this.historyLog.push(stateChange);
+                        while (Array.isArray(stateChange.id)) {
+                            stateChange.id = stateChange.id[0];
+                        }
+
+                        // edits the last element if it's during the same resize
+                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
+                            this.historyLog.splice(this.historyLog.length-1, 1);
+                        }
+
+                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
                         for (let j = 0; j < changeTypes.length; j++) {
                             const currentChangedType = changeTypes[j];
                             let movedAndResized = false;
+                            let currentElement;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                                    this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                                    break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                    lastLog = appendValuesFrom(lastLog, stateChange);
-                                    this.historyLog.push({...lastLog});
+                                    lastLog = appendValuesFrom(lastLog, stateChange);                                    
+                                    currentElement = data[findIndex(data, lastLog.id)];
+                                    lastLog.width = currentElement.width;   
+                                    lastLog.height = currentElement.height;
+                                                                                                
+                                    while (Array.isArray(lastLog.id)) {
+                                        lastLog.id = lastLog.id[0];
+                                    }
+
+                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    // loop to add the correct sizes to the changeState
-                                    // it only stores the changes originally and after this it stores the whole size
-                                    for (let change of stateChangeArray) {
-                                        change.id.forEach(id => {
-                                            let currentElement = document.getElementById(id);
-                                            if (lastLog.id == id) {
-                                                //add this but for (x, y) aswell
-                                                lastLog.width += currentElement.offsetWidth;
-                                                lastLog.height += currentElement.offsetHeight;
-                                                if (movedAndResized) {
-                                                    currentElement = data[findIndex(data, id)];
-                                                    lastLog.x = currentElement.x;
-                                                    lastLog.y = currentElement.y;
-                                                }
-                                            }
-                                        });
-                                    }
                                     // not sure why but if you resize -> undo -> resize it starts
                                     // to store the id as an array so this is just a check to counter that
-                                    // entirely possible this breaks something else
-                                    if (Array.isArray(lastLog.id)) {
-                                        // yes, the double [0][0] is neccesarry to access the ID
-                                        lastLog.id = lastLog.id[0][0];
+                                    while (Array.isArray(lastLog.id)) {
+                                        lastLog.id = lastLog.id[0];
+                                    }
+                                    let id = stateChange.id[0];
+                                    while (Array.isArray(id)) {
+                                        id = id[0];
                                     }
 
-                                    // spreaading the values so that it doesn't keep the reference
-                                    this.historyLog.push({...lastLog});
+                                    // add the real values so that not just the chanegs gets stored
+                                    currentElement = data[findIndex(data, id)];
+                                    lastLog.width = currentElement.width;
+                                    lastLog.height = currentElement.height;
+                                    if (movedAndResized) {
+                                        lastLog.x = currentElement.x;
+                                        lastLog.y = currentElement.y;
+                                        movedAndResized = false;
+                                    }
+                                    
+                                    
+                                    // if the save() call comes from the same change-motion
+                                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
+                                        this.historyLog.splice(this.historyLog.length-1, 1);
+                                    }
+
+                                    // spreaading the values so that it doesn't keep the reference                                    
+                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -180,14 +200,28 @@ class StateMachine {
                         }
                     }
                 } else {
-                    this.historyLog.push(stateChange);
+                    const current_element = data[findIndex(data, stateChange.id)];
+                    this.historyLog.push({
+                        ...stateChange, 
+                        width: current_element.width, 
+                        height: current_element.height, 
+                        changeType: newChangeType.flag, 
+                        counter: historyHandler.inputCounter
+                    });
                     this.lastFlag = currentChangedType;
                     this.currentHistoryIndex = this.historyLog.length - 1;
                 }
             } else {
                 console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
             }
-        }
+        }   
+        
+        // removes arrys from the id attribute
+        for (let entry of this.historyLog) {
+            while (Array.isArray(entry.id)) {
+                entry.id = entry.id[0];
+            }
+        }        
     }
 
     removeFutureStates() {
@@ -202,18 +236,27 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     stepBack() {
-        // If there is no history => return
-        if (this.currentHistoryIndex == -1) {
-            return;
-        } else {
-            this.currentHistoryIndex--;
-        }
-
         // Remove ghost only if stepBack while creating edge
-        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
-
+        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
         
-        this.scrubHistory(this.currentHistoryIndex);
+        // keep going back while the time attribute is the same
+        do {
+            // If there is no history => return
+            if (this.currentHistoryIndex == -1) {
+                return;
+            } else {
+                this.currentHistoryIndex--;
+            }
+            
+            this.scrubHistory(this.currentHistoryIndex);
+
+            var doNextState = false;
+            if (this.historyLog[this.currentHistoryIndex - 1]) {
+                doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time);
+            }
+
+        } while (doNextState);
+        
         displayMessage(messageTypes.SUCCESS, "Changes reverted!");
         disableIfDataEmpty();
     }
@@ -232,7 +275,6 @@ class StateMachine {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
             }
         } while (doNextState);
-
         // Update diagram
         clearContext();
         showdata();
@@ -735,6 +777,7 @@ document.addEventListener('keydown', function (e) {
     if (altPressed) {
         mouseMode_onMouseUp();
     }  
+    historyHandler.inputCounter++;
 });
 
 document.addEventListener('keyup', function (e) {
@@ -958,10 +1001,28 @@ function mouseMode_onMouseUp(event) {
         }
     }
     hasPressedDelete = false;
-    if (hasResized) {
-        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-        hasResized = false;
-    }
+}
+
+/**
+ * @description stores the ResizeAndMoved in the historyLog array
+ * @param {string[]} id id of the element
+ * @param {number} xChange change in x-position
+ * @param {number} yChange change in y-position
+ * @param {number} widthChange change in width
+ * @param {number} heightChange change in height
+ */
+function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
+    stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+}
+
+/**
+ * @description stores the Resize in the historyLog array
+ * @param {string[]} id id of the element
+ * @param {number} widthChange change in width
+ * @param {number} heightChange change in height
+ */
+function prepareElementResized(id, widthChange, heightChange) {
+    stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 }
 
 /**
@@ -1037,20 +1098,20 @@ function mmoving(event) {
                 let tmpX = elementData.x;
                 let xChange = movementPosChange(elementData, startX, deltaX, true);
                 let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                prepareElementResized([elementData.id], widthChange, 0);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+                prepareElementResized([elementData.id], 0, heightChange);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
                 let tmpH = elementData.height;
                 let tmpY = elementData.y;
                 let yChange = movementPosChange(elementData, startY, deltaY, false);
                 const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 let tmpW = elementData.width;
@@ -1061,7 +1122,7 @@ function mmoving(event) {
                 let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
                 let yChange = movementPosChange(elementData, startY, deltaY, false);
                 let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
                 let tmpH = elementData.height;
@@ -1069,18 +1130,18 @@ function mmoving(event) {
                 let yChange = movementPosChange(elementData, startY, deltaY, false);
                 let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                prepareElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange);
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 let tmpW = elementData.width;
                 let tmpX = elementData.x;
                 let xChange = movementPosChange(elementData, startX, deltaX, true);
                 let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
                 let heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange);
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+                prepareElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange);
             }
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);

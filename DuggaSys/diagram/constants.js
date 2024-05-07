@@ -404,7 +404,6 @@ const subMenuSequence = [
     elementTypes.sequenceActivation,
     elementTypes.sequenceLoopOrAlt,
 ]
-
 //#endregion ===================================================================================
 //#region ================================ DEFAULTS ============================================
 

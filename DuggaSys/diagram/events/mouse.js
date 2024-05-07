@@ -58,6 +58,7 @@ function mdown(event) {
     if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
+      
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
@@ -170,6 +171,7 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
+    historyHandler.inputCounter++;
 }
 
 /**
@@ -329,7 +331,7 @@ function mup(event) {
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-
+                        
     disableIfDataEmpty();
 }
 
