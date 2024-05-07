@@ -65,7 +65,6 @@ function mdown(event) {
 
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-        console.log(determinedLines)
 
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
@@ -232,10 +231,9 @@ function ddown(event) {
             if (element != null && !context.includes(element))
             */
             case mouseModes.EDGE_CREATION:
-                console.log(`MouseDown - Window Mouse Position: X=${event.clientX}, Y=${event.clientY}`);
                 var timestamp = new Date().toISOString();
             
-                if (event.button == 2) return console.log(`Event.button == 2 ${timestamp}`);
+                if (event.button == 2) return;
                 const element = data[findIndex(data, event.currentTarget.id)];
                 // If element not in context, update selection on down click
                 if (element != null && !context.includes(element)) {

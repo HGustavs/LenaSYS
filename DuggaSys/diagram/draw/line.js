@@ -23,13 +23,16 @@ function drawLine(line, targetGhost = false) {
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
     if (line.type == entityType.ER) {
+        console.log(`line.type == entityType.ER`);
         if (line.kind == lineKind.NORMAL) {
+            console.log(`line.kind == lineKind.NORMAL`);
             str += `<line 
                         id='${line.id}' 
                         x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
                         x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
                         stroke='${lineColor}' stroke-width='${strokewidth}'
                     />`;
+            console.log(str);
         } else if (line.kind == lineKind.DOUBLE) {
             let dy = -(tx - fx);
             let dx = ty - fy;
@@ -51,7 +54,9 @@ function drawLine(line, targetGhost = false) {
             str += double(-1, 2);
         }
     } else if ((line.type == entityType.SD && line.innerType == null) || (line.type == entityType.SD && line.innerType === SDLineType.STRAIGHT)) {
+        console.log(`line.type == entityType.SD && line.innerType == null) || (line.type == entityType.SD && line.innerType === SDLineType.STRAIGHT`);
         if (line.kind == lineKind.RECURSIVE) {
+            console.log(`line.kind == lineKind.RECURSIVE`);
             const length = 80 * zoomfact;
             const startX = fx - 10 * zoomfact;
             const startY = fy - 10 * zoomfact;
@@ -67,9 +72,11 @@ function drawLine(line, targetGhost = false) {
             str += `<line id='${line.id}' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
             str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
+            console.log(`(fy > ty) && (line.ctype == lineDirection.UP)`);
             offset.y1 = 1;
             offset.y2 = -7 + 3 / zoomfact;
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
+            console.log(`(fy < ty) && (line.ctype == lineDirection.DOWN)`);
             offset.y1 = -7 + 3 / zoomfact;
             offset.y2 = 1;
         }
@@ -82,6 +89,7 @@ function drawLine(line, targetGhost = false) {
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
+        console.log(`else { // UML, IE or SD`);
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
 
@@ -89,31 +97,37 @@ function drawLine(line, targetGhost = false) {
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
     if  (line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) {
+        console.log(`line.type == entityType.SD && line.innerType != SDLineType.SEGMENT`);
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
+            console.log(`line.startIcon == SDLineIcons.ARROW`);
             str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
         }
         if (line.endIcon == SDLineIcons.ARROW) {
+            console.log(`line.endIcon == SDLineIcons.ARROW`);
             str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
         }
     }
 
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
+        console.log(`felem.type != entityType.ER || telem.type != entityType.ER`);
         if (line.startLabel && line.startLabel != '') {
+            console.log(`line.startLabel && line.startLabel != ''`);
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
         if (line.endLabel && line.endLabel != '') {
+            console.log(`line.endLabel && line.endLabel != ''`);
             str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
         }
     } else {
         if (line.cardinality) {
+            console.log(`line.cardinality`);
             str += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
 
     if (isSelected) {
-        console.log(`if (isSelected) ${isSelected}`);
         str += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
                     y='${((fy + ty) / 2) - (2 * zoomfact)}' 
@@ -124,6 +138,7 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (line.label  && line.type !== entityType.IE) {
+        console.log(`line.label  && line.type !== entityType.IE`);
         //Get width of label's text through canvas
         var height = Math.round(zoomfact * textheight);
         var canvas = document.getElementById('canvasOverlay');
@@ -159,27 +174,33 @@ function drawLine(line, targetGhost = false) {
         if (!!targetLabel) var rememberTargetLabelID = targetLabel.id;
 
         if (!!lineLabelList[findIndex(lineLabelList, label.id)]) {
+            console.log(`!!lineLabelList[findIndex(lineLabelList, label.id)`);
             label.labelMovedX = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedX;
             label.labelMovedY = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedY;
             label.labelGroup = lineLabelList[findIndex(lineLabelList, label.id)].labelGroup;
             label.labelMoved = lineLabelList[findIndex(lineLabelList, label.id)].labelMoved;
             calculateProcentualDistance(label);
             if (label.labelGroup == 0) {
+                console.log(`label.labelGroup == 0`);
                 label.displacementX = 0;
                 label.displacementY = 0;
             } else if (label.labelGroup == 1) {
+                console.log(`label.labelGroup == 1`);
                 label.displacementX = calculateLabelDisplacement(label).storeX * zoomfact;
                 label.displacementY = calculateLabelDisplacement(label).storeY * zoomfact;
             } else if (label.labelGroup == 2) {
+                console.log(`label.labelGroup == 2`);
                 label.displacementX = -calculateLabelDisplacement(label).storeX * zoomfact;
                 label.displacementY = -calculateLabelDisplacement(label).storeY * zoomfact;
             }
             lineLabelList[findIndex(lineLabelList, label.id)] = label;
         } else {
+            console.log(`else {`);
             lineLabelList.push(label);
         }
 
         if (!!rememberTargetLabelID) {
+            console.log(`if (!!rememberTargetLabelID)`);
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
         // Label position for recursive edges
@@ -190,6 +211,7 @@ function drawLine(line, targetGhost = false) {
 
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
+            console.log(`line.kind === lineKind.RECURSIVE`);
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
@@ -208,6 +230,7 @@ function drawLine(line, targetGhost = false) {
                         ${labelValue}
                     </text>`;
         } else {
+            console.log(`else {`);
             str += `<rect
                         class='text cardinalityLabel'
                         id=${line.id + 'Label'}
