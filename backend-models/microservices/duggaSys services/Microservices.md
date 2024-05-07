@@ -199,12 +199,14 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 Gitfetch Service:
 
 - getGitHubURL_ms.php __==finished==__ New filename: "getGitHubAPIUrl_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
-- getGitHubURLCommit_ms.php __==UNFINISHED==__ on hold pga att funktionalitet i servicefilen saknas
+- getGitHubURLCommit_ms.php __==UNFINISHED==__ 
 - insertToFileLink_ms.php __==finished==__ New filename: "createFileLinkEntry_ms.php" according to new nameconvention based on CRUD.
 - insertToMetaData_ms.php __==finished==__ New filename: "createGitFilesMetadata_ms.php" according to new nameconvention based on CRUD.
-- downloadToWebServer_ms.php __==UNFINISHED==__
+- downloadToWebServer_ms.php __==finished==__ Should keep existing filename even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - getIndexFile_ms.php __==finished==__ New filename: "readIndexFile_ms.php" according to new nameconvention based on CRUD. 
 - bfs_ms.php __==finished==__ Should keep existing filename even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
+
+This service does not include a _retrieveGitFetchService_ms.php_ because each function within _gitfetchService.php_ is used internally (not called from JavaScript) to retrieve or handle data concerning GitHub repositories that are linked. No general data is returned each time _gitfetchService.php_ is executed. Each function performs a distinct task and returns a specific type of data. Therefore, a retrieve microservice would be unnecessary.
 
 __Observe, this microservices needs to be checked again to make sure they are working once group 3 has fixed the servicefile.__
 
@@ -247,7 +249,7 @@ Sectioned Service:
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php __==UNFINISHED==__ 
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
-- getCourseVersions_ms.php __==UNFINISHED==__ 
+- getCourseVersions_ms.php __==finished==__ New filename: "readCourseVersions_ms.php" according to new nameconvention based on CRUD. 
 - getGitReference_ms.php __==UNFINISHED==__  
 - getUserDuggaFeedback_ms.php __==finished==__ New filename: "readUserDuggaFeedback_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
@@ -334,11 +336,11 @@ __readUid_ms.php__ is primarily used for handling user identification and loggin
 
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
 
-__Session Control:__ Checks if there is a user ID (uid) present in the current session. If an ID exists, it is used; otherwise, the user ID is set to "guest", indicating that the user is not logged in.
+__Session control:__ Checks if there is a user ID (uid) present in the current session. If an ID exists, it is used; otherwise, the user ID is set to "guest", indicating that the user is not logged in.
 
 __Logging:__ Utilizes the information gathered to log a service event in the __serviceLogEntries__ table using the logServiceEvent function (defined in basic.php).
 
-__Return of User ID:__ The function returns the user ID, which is either the actual user ID from the session or "guest".
+__Return of user ID:__ The function returns the user ID, which is either the actual user ID from the session or "guest".
 
 __Conclusion:__ The purpose of the code is to ensure accurate identification and logging of users and their actions within the system.
 
@@ -2371,6 +2373,17 @@ INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, fi
 <br>
 
 ### downloadToWebServer_ms.php
+__Include original service files:__ sessions.php, basic.php, gitfetchService.php
+
+__Querys used in this microservice:__
+
+Includes no querys.
+
+__Function operation:__ Fetches the contents of a file from a remote URL and then saves it to a specified path on the server. Creates necessary directories if they do not exist and writes the file data to the local system.
+
+__Result handling:__ Errors in retrieving or saving the file are logged in __gitErrorLog.txt__-log file, including details of the failure and relevant URLs or paths.
+
+__Purpose:__ This function automates the updating and storage of files from GitHub repositories to a web server.
 
 <br>
 
@@ -2383,9 +2396,9 @@ __readIndexFile_ms.php__ retrieves the contents of an index file from a specific
 
 __Includes neither original service files nor microservices.__
 
-__Function Operation:__ It constructs a URL for an index file, sends a request using cURL, and checks the response code.
+__Function operation:__ It constructs a URL for an index file, sends a request using cURL, and checks the response code.
 
-__Result Handling:__ If the server responds with a 200 OK status, it reads and returns the contents of the file. If not, it returns false.
+__Result handling:__ If the server responds with a 200 OK status, it reads and returns the contents of the file. If not, it returns false.
 
 __Purpose:__ The function is designed to fetch and read an index file from a remote location, simplifying data retrieval from external servers.
 
@@ -2398,15 +2411,15 @@ __Purpose:__ The function is designed to fetch and read an index file from a rem
 ### bfs_ms.php
 BFS (breadth-first search) 
 
-__Function Operation:__ The function navigates through a GitHub repository using a Breadth-First Search (BFS) approach.
+__Function operation:__ The function navigates through a GitHub repository using a Breadth-First Search (BFS) approach.
 
-__GitHub API Requests:__ It constructs API URLs and sends requests to GitHub's API, optionally including a token for authentication.
+__GitHub API requests:__ It constructs API URLs and sends requests to GitHub's API, optionally including a token for authentication.
 
-__Data Handling:__ The function processes the API responses, extracting file and directory information.
+__Data dandling:__ The function processes the API responses, extracting file and directory information.
 
-__File and Directory Processing:__ Files are stored in a database and may be downloaded, while directories are further explored.
+__File and directory processing:__ Files are stored in a database and may be downloaded, while directories are further explored.
 
-__Error Handling:__ Errors, like connection failures or invalid responses, are logged for debugging.
+__Error handling:__ Errors, like connection failures or invalid responses, are logged for debugging.
 
 __Conclusion:__ bfs_ms.php manages repository traversal, file handling, and error logging for GitHub repositories.
 
@@ -3021,8 +3034,27 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 <br>
 
-### getCourseVersions
-Uses service __selectFromTableVers__ to _get_ information it requires from __vers__.
+### readCourseVersions_ms.php
+__readCourseVersions_ms.php__ fetches all course versions.
+
+__Include original service files:__ sessions.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
+
+```sql
+SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
+```
 
 <br>
 
