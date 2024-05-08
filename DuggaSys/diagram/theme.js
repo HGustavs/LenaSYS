@@ -4,7 +4,7 @@
 function updateCSSForAllElements() {
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
         let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-        let top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+        let top = Math.round((((elementData.y - zoomOrigo.y)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
         if (useDelta) {
             left -= deltaX;

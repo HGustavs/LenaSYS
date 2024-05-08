@@ -99,11 +99,11 @@ const defaults = {
         fill: color.WHITE,
         stroke: color.BLACK,
         width: 50,
-        height: 50,
+        height: 25,
         type: "IE",
         canChangeTo: Object.values(relationType),
         minWidth: 50,
-        minHeight: 50,
+        minHeight: 25,
     },
     SDEntity: {
         name: "State",
