@@ -43,7 +43,7 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
     $info = "opt: " . $opt . " courseId: " . $courseId . " courseVersion: " . $courseVersion . " exampleName: " . $exampleName . " sectionName: " . $sectionName . " exampleId: " . $exampleId;
 
     // Checks and sets user rights
-    if (checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))) {
+    if (checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st') || isSuperUser($userid))) {
         $writeAccess = "w";
     } else {
         $writeAccess = "s";
