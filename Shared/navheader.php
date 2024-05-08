@@ -56,24 +56,10 @@
 				if ($checkIfGithubURL) {
 					$updateTime = $row['updated'];
 				} else {
-<<<<<<< Updated upstream
-					$checkIfGithubURL = null;
-				}
-				if (isset($row['updated'])) {
-					$updateTime = $row['updated'];
-				}
-				else {
-					$updateTime = "No data found for the given course ID";
-=======
 					$updateTime = "No Github URL set";
->>>>>>> Stashed changes
 				}
 			} else {
 				// $row is false, which means no data was fetched
-				$updateTime = "No data found for the given course ID";
-			}
-			else {
-				$checkIfGithubURL = null;
 				$updateTime = "No data found for the given course ID";
 			}
 
