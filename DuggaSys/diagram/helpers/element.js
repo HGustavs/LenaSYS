@@ -47,7 +47,7 @@ function elementHasLines(element) {
  */
 function makeGhost() {
     ghostElement = constructElementOfType(elementTypeSelected);
-    var lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
+    const lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
     ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
     ghostElement.id = makeRandomID();
@@ -69,12 +69,12 @@ function clearGhosts() {
  * @param {Number} y Coordinates along the y-axis to move
  */
 function setPos(elements, x, y) {
-    var idList = [];
-    var overlappingObject = null;
+    const idList = [];
+    let overlappingObject = null;
 
     // Check for overlaps
     elements.forEach(elem => {
-        var newX, newY;
+        let newX, newY;
         if (settings.grid.snapToGrid) {
             if (!ctrlPressed) {
                 // Calculate nearest snap point
@@ -98,8 +98,8 @@ function setPos(elements, x, y) {
 
     if (overlappingObject) {
         // If overlap is detected, move the overlapping object back by one step
-        var previousX = overlappingObject.x;
-        var previousY = overlappingObject.y;
+        const previousX = overlappingObject.x;
+        const previousY = overlappingObject.y;
 
         // Move the object back one step
         overlappingObject.x -= (x / zoomfact);

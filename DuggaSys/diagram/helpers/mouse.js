@@ -5,27 +5,27 @@
  */
 function determineLineSelect(mouseX, mouseY) {
     let currentLineSegment;
-    var allLines = getLinesFromBackLayer();
-    var bLayerLineIDs = []
+    const allLines = getLinesFromBackLayer();
+    const bLayerLineIDs = [];
 
     // Current mouse XY
-    var cMouse_XY = {
+    const cMouse_XY = {
         x: mouseX,
         y: mouseY
     };
-    var currentline = {};
-    var lineData = {};
-    var lineCoeffs = {};
-    var highestX, lowestX, highestY, lowestY;
-    var lineWasHit = false;
-    var labelWasHit = false;
+    let currentline = {};
+    let lineData = {};
+    let lineCoeffs = {};
+    let highestX, lowestX, highestY, lowestY;
+    let lineWasHit = false;
+    let labelWasHit = false;
 
     // Position and radius of the circle hitbox that is used when
-    var circleHitBox = {
+    const circleHitBox = {
         pos_x: cMouse_XY.x, // Mouse pos X.
         pos_y: cMouse_XY.y, // Mouse pos Y.
         radius: 10 // This will determine the error margin, "how far away from the line we can click and still select it". Higer val = higher margin.
-    }
+    };
 
     for (let i = 0; i < allLines.length; i++) {
         // Copy the IDs.
@@ -35,10 +35,10 @@ function determineLineSelect(mouseX, mouseY) {
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
         bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
 
-        var hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
+        const hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
 
         if (hasPoints != null) {
-            var points = hasPoints.split(' '); // Split points attribute in pairs
+            const points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
             for (let j = 0; j < points.length - 1; j++) {
                 currentLineSegment = {
@@ -46,7 +46,7 @@ function determineLineSelect(mouseX, mouseY) {
                     x2: Number(points[j + 1].split(',')[0]),
                     y1: Number(points[j].split(',')[1]),
                     y2: Number(points[j + 1].split(',')[1])
-                }
+                };
                 // Used later to make sure the current mouse-position is in the span of a line.
                 highestX = Math.max(currentLineSegment.x1, currentLineSegment.x2);
                 lowestX = Math.min(currentLineSegment.x1, currentLineSegment.x2);
@@ -57,12 +57,12 @@ function determineLineSelect(mouseX, mouseY) {
                     lX: lowestX,
                     hY: highestY,
                     lY: lowestY
-                }
+                };
                 lineCoeffs = {
                     a: (currentLineSegment.y1 - currentLineSegment.y2),
                     b: (currentLineSegment.x2 - currentLineSegment.x1),
                     c: ((currentLineSegment.x1 - currentLineSegment.x2) * currentLineSegment.y1 + (currentLineSegment.y2 - currentLineSegment.y1) * currentLineSegment.x1)
-                }
+                };
                 lineWasHit = didClickLine(lineCoeffs.a, lineCoeffs.b, lineCoeffs.c, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius, lineData);
 
                 if (lineWasHit && !labelWasHit) {
@@ -91,21 +91,20 @@ function determineLineSelect(mouseX, mouseY) {
             lX: lowestX,
             hY: highestY,
             lY: lowestY
-        }
-
+        };
         // Coefficients of the general equation of the current line.
         lineCoeffs = {
             a: (currentline.y1 - currentline.y2),
             b: (currentline.x2 - currentline.x1),
             c: ((currentline.x1 - currentline.x2) * currentline.y1 + (currentline.y2 - currentline.y1) * currentline.x1)
-        }
+        };
         if (document.getElementById(bLayerLineIDs[i] + "Label")) {
-            var centerPoint = {
+            const centerPoint = {
                 x: lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].centerX + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].labelMovedX + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].displacementX,
                 y: lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].centerY + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].labelMovedY + lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].displacementY
-            }
-            var labelWidth = lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].width;
-            var labelHeight = lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].height;
+            };
+            const labelWidth = lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].width;
+            const labelHeight = lineLabelList[findIndex(lineLabelList, bLayerLineIDs[i] + "Label")].height;
             labelWasHit = didClickLabel(centerPoint, labelWidth, labelHeight, circleHitBox.pos_x, circleHitBox.pos_y, circleHitBox.radius);
         }
 
@@ -141,15 +140,14 @@ function getLinesFromBackLayer() {
  */
 function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data) {
     // Distance between line and circle center.
-    var distance = (Math.abs(a * circle_x + b * circle_y + c)) / Math.sqrt(a * a + b * b);
-
+    const distance = (Math.abs(a * circle_x + b * circle_y + c)) / Math.sqrt(a * a + b * b);
     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
     // Check if we are clicking withing the span.
     return ((circle_x < (line_data.hX + circle_radius)) &&
-            (circle_x > (line_data.lX - circle_radius)) &&
-            (circle_y < (line_data.hY + circle_radius)) &&
-            (circle_y > (line_data.lY - circle_radius)) &&
-            (circle_radius >= distance)); // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
+        (circle_x > (line_data.lX - circle_radius)) &&
+        (circle_y < (line_data.hY + circle_radius)) &&
+        (circle_y > (line_data.lY - circle_radius)) &&
+        (circle_radius >= distance)); // Check if circle radius >= distance. (If so is the case, the line is intersecting the circle)
 }
 
 /**

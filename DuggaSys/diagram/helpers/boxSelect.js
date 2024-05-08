@@ -19,7 +19,7 @@ function boxSelect_End() {
 
 // Returns all elements within the coordinate box
 function getElementsInsideCoordinateBox(selectionRect) {
-    var elements = [];
+    const elements = [];
     data.forEach(element => {
         // Box collision test
         if (selectionRect.overlap(Rect.FromElement(element))) {
@@ -35,9 +35,9 @@ function getElementsInsideCoordinateBox(selectionRect) {
  * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
  */
 function getLinesInsideCoordinateBox(rect) {
-    var allLines = document.getElementById("svgbacklayer").children;
-    var tempLines = [];
-    var bLayerLineIDs = [];
+    const allLines = document.getElementById("svgbacklayer").children;
+    const tempLines = [];
+    const bLayerLineIDs = [];
     for (let i = 0; i < allLines.length; i++) {
         if (lineIsInsideRect(rect, allLines[i])) {
             bLayerLineIDs[i] = allLines[i].id;
@@ -66,7 +66,7 @@ function lineIsInsideRect(rect, line) {
     );
     let midPoint = new Point((l1.x + l2.x) / 2, (l1.y + l2.y) / 2);
     return rect.x <= midPoint.x && rect.y <= midPoint.y &&
-            rect.x2 >= midPoint.x && rect.y2 >= midPoint.y;
+        rect.x2 >= midPoint.x && rect.y2 >= midPoint.y;
 }
 
 function boxSelect_Update(mouseX, mouseY) {

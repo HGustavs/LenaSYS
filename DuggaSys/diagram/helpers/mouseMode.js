@@ -81,7 +81,7 @@ function onMouseModeEnabled() {
  */
 function onMouseModeDisabled() {
     // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
+    const navButtons = document.getElementsByClassName("toolbarMode");
     for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
@@ -121,6 +121,7 @@ function subMenuCycling(subMenu, type) {
         }
         return true;
     }
+    return false;
 }
 
 /**
@@ -139,7 +140,7 @@ function mouseMode_onMouseMove(event) {
             mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
-                var cords = screenToDiagramCoordinates(event.clientX, event.clientY);
+                const cords = screenToDiagramCoordinates(event.clientX, event.clientY);
                 // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
                 if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
                     ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
