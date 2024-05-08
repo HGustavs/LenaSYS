@@ -125,7 +125,7 @@ function preProcessLine(line) {
  */
 const limitEREntitiesToAttriutes = (from, to) => {
     if (from.kind != elementTypesNames.ERAttr && to.kind != elementTypesNames.ERAttr) return false;
-    const element = (from.kind == elementTypesNames.ERAttr)? from : to;
+    const element = (from.kind == elementTypesNames.ERAttr) ? from : to;
     let connectedLines = 0;
     for (let line of lines) {
         if (line.fromID == element.id || line.toID == element.id) {
@@ -133,4 +133,4 @@ const limitEREntitiesToAttriutes = (from, to) => {
         }
     }
     return connectedLines > 0;
-}
+};

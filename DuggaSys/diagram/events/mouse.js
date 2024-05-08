@@ -326,7 +326,7 @@ function mup(event) {
     // Update all element positions on the screen
     deltaX = 0;
     deltaY = 0;
-    updatepos(0, 0);
+    updatepos();
     drawRulerBars(scrollx, scrolly);
 
     // Restore pointer state to normal

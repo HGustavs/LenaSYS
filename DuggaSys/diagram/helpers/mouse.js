@@ -183,7 +183,7 @@ function snapSAToLifeline(targetId) {
             if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
                 const element = data[i];
                 ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
-                updatepos(0, 0);
+                updatepos();
             }
         }
     }

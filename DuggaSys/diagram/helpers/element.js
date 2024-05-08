@@ -146,5 +146,5 @@ function setPos(elements, x, y) {
         if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
     }
     // Update positions
-    updatepos(0, 0);
+    updatepos();
 }

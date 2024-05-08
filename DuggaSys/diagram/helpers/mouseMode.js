@@ -66,7 +66,7 @@ function onMouseModeEnabled() {
         case mouseModes.EDGE_CREATION:
             clearContext();
             clearContextLine();
-            updatepos(0, 0);
+            updatepos();
             break;
         case mouseModes.BOX_SELECTION:
             break;
@@ -150,7 +150,7 @@ function mouseMode_onMouseMove(event) {
                     ghostElement.y = cords.y - (ghostElement.height / 2);
                 }
                 showdata();
-                updatepos(0, 0);
+                updatepos();
             }
             break;
         case mouseModes.POINTER:
@@ -158,7 +158,7 @@ function mouseMode_onMouseMove(event) {
             break;
         case mouseModes.BOX_SELECTION:
             boxSelect_Update(event.clientX, event.clientY);
-            updatepos(0, 0);
+            updatepos();
             mouseOverSelection(event.clientX, event.clientY);
             break;
         default:

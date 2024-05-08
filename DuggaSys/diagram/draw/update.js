@@ -105,7 +105,7 @@ function showdata() {
         str += drawElement(ghostElement, true);
     }
     container.innerHTML = str;
-    updatepos(null, null);
+    updatepos();
 }
 
 /**
