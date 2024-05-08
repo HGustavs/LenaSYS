@@ -3600,7 +3600,6 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name,dialog) {
-  console.log(name);
   initInputColorTheme();
   var element = document.getElementById(name);
   var errorMsg = document.getElementById(dialog);
@@ -3736,7 +3735,12 @@ function quickValidateForm(formid, submitButton) {
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display;
     valid = true;
-    valid &= validateSectName('sectionname');
+    valid &= validateSectName('sectionname','dialog10');
+    console.log('a22karja after name');
+    console.log(valid);
+    valid &= validateSectName('fdbckque','dialog11');
+    console.log('a22karja after question');
+    console.log(valid);
 
     // Validates Deadline
     if (deadlinedisplayattribute != 'none') {
