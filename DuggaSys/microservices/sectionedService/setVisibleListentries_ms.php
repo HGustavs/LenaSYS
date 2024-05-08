@@ -24,6 +24,7 @@ $versid = getOP('vers');
 $uid = getUid();
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
+$debug='NONE!';
 
 
 // Permissions Check

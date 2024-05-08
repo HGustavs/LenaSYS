@@ -32,6 +32,7 @@ $tabs=getOP('tabs');
 $gradesys=getOP('gradesys');
 $userid = getUid();
 $log_uuid=getOP('log_uuid');
+$debug='NONE!';
 
 if($feedbackenabled != 1){
 	$feedbackenabled = 0;

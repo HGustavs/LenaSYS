@@ -22,7 +22,7 @@ $courseid = getOP('courseid');
 $coursevers=getOP('coursevers');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
-$debug=getOP('debug');
+$debug='NONE!';
 $uid=getUid();
 
 $results = array();

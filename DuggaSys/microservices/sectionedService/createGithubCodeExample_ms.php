@@ -17,6 +17,7 @@ $highscoremode=getOP('highscoremode');
 $pos=getOP('pos');
 $lid=getOP('lid');
 $log_uuid=getOP('log_uuid');
+$debug = "NONE!";
 
 pdoConnect();
 session_start();

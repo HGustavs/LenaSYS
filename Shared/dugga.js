@@ -1127,50 +1127,50 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
-			if(kind=="SECTION" || kind=="GRP"){
-				$serviceURL = "sectionedservice.php"
-				switch (opt) {
+		}if(kind=="SECTION" || kind=="GRP"){
+			$serviceURL = "sectionedservice.php"
+			switch (opt) {
 				case "DELETE":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php";
 					break;
 				case "DEL":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
 					break;
 				case "NEW":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
 					break;
 				case "REORDER":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
 					break;
 				case "UPDATE":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
 					break;
 				case "UPDATETABS":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
 					break;
 				case "UPDATEDEADLINE":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
 					break;
 				case "UPDATEVRS":
-						$serviceURL= "sectionedservice.php";//change when MS i; created
+					$serviceURL= "sectionedservice.php";//change when MS i; created
 					break;
 				case "SETVISIBILITY":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php";
 					break;
 				case "REFGIT":
-						$serviceURL= "sectionedservice.php";//change when MS i; created
+					$serviceURL= "sectionedservice.php";//change when MS i; created
 					break;
 				case "CREGITEX":
-						$serviceURL= "sectionedservice.php";//change when MS i; created
+					$serviceURL= "sectionedservice.php";//change when MS i; created
 					break;
 				case "GRP":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
 					break;
 				case "CHGVERS":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+					$serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
 					break;
 				case "get":
-						$serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";//Skapa en microservice till denna.
+					$serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";//Skapa en microservice till denna.
 					break;
 				default:
 					$serviceURL= "sectionedservice.php";
@@ -1182,7 +1182,6 @@ function AJAXService(opt,apara,kind)
 					dataType: "json", 
 					success: kind=="SECTION" ? returnedSection : returnedGroups
 				})
-			  }
 			}
 			else if(kind=="GRP"){
     $.ajax({
