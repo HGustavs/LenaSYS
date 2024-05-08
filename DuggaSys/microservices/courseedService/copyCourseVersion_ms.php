@@ -61,13 +61,20 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 		$query->bindParam(':coursename', $coursename);
 		$query->bindParam(':coursenamealt', $coursenamealt);
 		$query->bindParam(':motd', $motd);
-		// if start and end dates are null, insert mysql null value into database
-		if ($startdate == "null") $query->bindValue(':startdate', null, PDO::PARAM_INT);
-		else $query->bindParam(':startdate', $startdate);
-		if ($enddate == "null") $query->bindValue(':enddate', null, PDO::PARAM_INT);
-		else $query->bindParam(':enddate', $enddate);
 
-	if (!$query->execute()) {
+		// if start and end dates are null, insert mysql null value into database
+		if ($startdate == "null"){
+			$query->bindValue(':startdate', null, PDO::PARAM_INT);
+		} else {
+			$query->bindParam(':startdate', $startdate);
+		}
+		if ($enddate == "null") {
+			$query->bindValue(':enddate', null, PDO::PARAM_INT);
+		}else{
+			$query->bindParam(':enddate', $enddate);
+		} 
+
+		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			$allOperationsSucceeded = false;
 			$debug = "Error updating entries\n" . $error[2];
@@ -82,7 +89,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 		$query = $pdo->prepare("SELECT * from quiz WHERE cid=:cid AND vers = :oldvers;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':oldvers', $copycourse);
-	if (!$query->execute()) {
+		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			$allOperationsSucceeded = false;
 			$debug = "Error reading quiz\n" . $error[2];
@@ -109,7 +116,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 					$allOperationsSucceeded = false;
 					$debug = "Error reading variants: " . $error[2];
 				} else {
-				foreach ($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz) {
+					foreach ($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz) {
 						$ruery = $pdo->prepare("INSERT INTO variant (quizID,param,variantanswer,modified,creator,disabled) SELECT :newquizid as quizID,param,variantanswer,modified,creator,disabled FROM variant WHERE vid = :oldvid;");
 						$ruery->bindParam(':oldvid', $rowz["vid"]);
 						$ruery->bindParam(':newquizid', $value);
@@ -128,7 +135,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 		$query = $pdo->prepare("SELECT * from codeexample WHERE cid=:cid AND cversion = :oldvers;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':oldvers', $copycourse);
-	if (!$query->execute()) {
+		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			$allOperationsSucceeded = false;
 			$debug = "Error reading codeexample: " . $error[2];
@@ -156,7 +163,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 					$allOperationsSucceeded = false;
 					$debug = "Error reading boxes: " . $error[2];
 				} else {
-				foreach ($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz) {
+					foreach ($buery->fetchAll(PDO::FETCH_ASSOC) as $rowz) {
 						// Make duplicate of all boxes for current code example and bind to the new copy
 						$ruery = $pdo->prepare("INSERT INTO box (boxid,exampleid,boxtitle,boxcontent,filename,settings,wordlistid,segment,fontsize) SELECT boxid,:newexampleid as exampleid,boxtitle,boxcontent,filename,settings,wordlistid,segment,fontsize FROM box WHERE boxid=:oldboxid and exampleid=:oldexampleid;");
 						$ruery->bindParam(':oldboxid', $rowz["boxid"]);
@@ -180,8 +187,8 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 					foreach ($pruery->fetchAll(PDO::FETCH_ASSOC) as $improwz) {
 						if ($pruery->rowCount() > 0) {
 							$qruery = $pdo->prepare("INSERT INTO improw (boxid,exampleid,istart,iend,irowdesc,updated,uid) SELECT boxid,:newexampleid as exampleid,istart,iend,irowdesc,updated,uid FROM improw WHERE exampleid=:oldexampleid and impid=:oldimpid and boxid=:oldboxid;");
-						$qruery->bindParam(':oldboxid', $improwz["boxid"]);
-						$qruery->bindParam(':oldimpid', $improwz["impid"]);
+							$qruery->bindParam(':oldboxid', $improwz["boxid"]);
+							$qruery->bindParam(':oldimpid', $improwz["impid"]);
 							$qruery->bindParam(':oldexampleid', $key);
 							$qruery->bindParam(':newexampleid', $value);
 							if (!$qruery->execute()) {
@@ -221,7 +228,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 		$momentlist = array();
 		$query = $pdo->prepare("SELECT * from listentries WHERE vers = :oldvers;");
 		$query->bindParam(':oldvers', $copycourse);
-	if (!$query->execute()) {
+		if (!$query->execute()) {
 			$error = $query->errorInfo();
 			$allOperationsSucceeded = false;
 			$debug = "Error reading courses\n" . $error[2];
@@ -229,7 +236,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 			foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 				$ruery = $pdo->prepare("INSERT INTO listentries (cid,entryname,link,kind,pos,creator,ts,code_id,visible,vers,moment,gradesystem,highscoremode) SELECT cid,entryname,link,kind,pos,creator,ts,code_id,visible,:gubbe AS vers,moment,gradesystem,highscoremode from listentries WHERE lid = :olid;");
 				$ruery->bindParam(':olid', $row['lid']);
-			$ruery->bindParam(':gubbe', $versid);
+				$ruery->bindParam(':gubbe', $versid);
 				if (!$ruery->execute()) {
 					$error = $ruery->errorInfo();
 					$allOperationsSucceeded = false;
@@ -303,7 +310,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 		// Duplicate userAnswer
 		$suery = $pdo->prepare("SELECT * from userAnswer WHERE vers = :oldvers;");
 		$suery->bindParam(':oldvers', $copycourse);
-	if (!$suery->execute()) {
+		if (!$suery->execute()) {
 			$error = $suery->errorInfo();
 			$allOperationsSucceeded = false;
 			$debug = "Error reading courses\n" . $error[2];
@@ -351,7 +358,7 @@ if ($ha && (strcmp($opt, "CPYVRS") === 0)) {
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':vers', $versid);
 
-		if (!$query->execute()) {
+			if (!$query->execute()) {
 				$error = $query->errorInfo();
 				$allOperationsSucceeded = false;
 				$debug = "Error updating entries\n" . $error[2];
