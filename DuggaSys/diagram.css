@@ -832,8 +832,6 @@
 }
 
 #vRect {
-    width: 1133px;
-    height: 794px;
     display:none; 
     stroke:rgb(50, 50, 50);
     stroke-width:2; 
