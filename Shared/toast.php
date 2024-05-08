@@ -57,21 +57,26 @@
         let toastYes = document.createElement('span');
         let toastNo = document.createElement('span');
 
+        // Creates the icon-element for each option.
         let yesIcon = document.createElement('span');
         let noIcon = document.createElement('span');
 
+        // Creates the text-element for each option (yes / no)
         let yesText = document.createElement('span');
         let noText = document.createElement('span');
 
+        // Inserts the text into each option
         yesText.innerHTML = "Yes";
         noText.innerHTML = "No";
 
+        // Creates an icon for each option
         yesIcon.innerHTML = "done";
         noIcon.innerHTML = "close";
 
         yesIcon.classList.add('material-symbols-outlined');
         noIcon.classList.add('material-symbols-outlined');
 
+        // Adds the styling to each button
         toastYes.classList.add('toastYes');
         toastNo.classList.add('toastNo');
 
@@ -91,6 +96,7 @@
         toastCenter.appendChild(toastText);
         toastRight.appendChild(closeIcon);
          
+        // Add the icon and text to the button elements
         toastYes.appendChild(yesIcon);
         toastYes.appendChild(yesText);
 
