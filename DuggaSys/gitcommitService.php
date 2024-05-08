@@ -44,6 +44,11 @@
 	// getCourseID: Fetch the course ID from MySQL with Github URL, then fetch the latest commit from the repo
 	//--------------------------------------------------------------------------------------------------
 
+	function putInLog($message){
+		$file = '../../LenaSYS/log/gitErrorLog.txt';
+		error_log($message, 3, $file);
+	}
+
 	function getCourseID($githubURL) {
 		// Connect to database and start session
 		pdoConnect();
@@ -103,7 +108,7 @@
 			print_r($error);
 			echo $errorvar;
 		} else {
-			bfs($url, $cid, "REFRESH");
+			bfs($url, $cid, "DOWNLOAD");
 		}
 	}
 

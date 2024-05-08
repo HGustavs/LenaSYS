@@ -299,7 +299,7 @@
 					<div id='inputwrapper-deadline' class='inputwrapper'>
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
-							<span style='float:right;margin-right:10px;'>
+							<span style='float:right'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
 								<select style='width:55px;' id='deadlineminutes'></select>
 								<select style='width:55px;' id='deadlinehours'></select>
@@ -345,7 +345,7 @@
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div style='text-align: center;'>
-					<h4>Are you sure you want to delete this item?</h4>
+					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
 			<div style='display:flex; align-items:center; justify-content: center;'>
@@ -655,37 +655,55 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer" style="display:none;">
+		<div id='gitHubTemplate' class="loginBoxContainer"  style="display:none;">
 				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='loginBoxheader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='confirmBox("closeConfirmBox");'>x</div>
 					</div>
-					<table width="100%">
+					<table id="templateTable" width="100%">
 						<tr>
 							<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
-								<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' />
+								<img class='templatethumbicon wiggle' onclick='changetemplate("1"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template1_butt.svg' />
 							</td>
-							<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2");' src='../Shared/icons/template2_butt.svg' /></td>
-							<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3");' src='../Shared/icons/template3_butt.svg' /></td>
-							<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4");' src='../Shared/icons/template4_butt.svg' /></td>
-							<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5");' src='../Shared/icons/template5_butt.svg' /></td>
-							<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6");' src='../Shared/icons/template6_butt.svg' /></td>
-							<td id="templat7" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("7");' src='../Shared/icons/template7_butt.svg' /></td>
-							<td id="templat8" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("8");' src='../Shared/icons/template8_butt.svg' /></td>
-							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9");' src='../Shared/icons/template9_butt.svg' /></td>
-							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template10_butt.svg' /></td>
+							<td id="templat2" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("2"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template2_butt.svg' /></td>
+							<td id="templat3" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("3"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template3_butt.svg' /></td>
+							<td id="templat4" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("4"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template4_butt.svg' /></td>
+							<td id="templat5" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("5"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template5_butt.svg' /></td>
+							<td id="templat6" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("6"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template6_butt.svg' /></td>
+							<td id="templat7" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("7"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template7_butt.svg' /></td>
+							<td id="templat8" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("8"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template8_butt.svg' /></td>
+							<td id="templat9" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("9"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template9_butt.svg' /></td>
+							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10"); quickValidateForm("gitHubTemplate","saveCourse")' src='../Shared/icons/template10_butt.svg' /></td>
 						</tr>
 					</table>
 					<table id="templateOptions" width="100%">
-					</table>
+						</table>
+						<div class="formDialogWide">
+							<span id="templateTableError" class="formDialogText">Please chose a template for your code-example</span>
+						</div>
 					<table width="100%">
 					    <tr> 
-				            <td align='right'><input class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
+				            <td align='right'><input id="saveGitTemplate" class='submit-button' type='button' value='Save' onclick='fetchGitCodeExamples(<?php echo $_GET["courseid"]; ?>);' /></td>
 						</tr>
-						<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='fileName' placeholder='Name.type' value=''/></div>
-						<div class='inputwrapper'><span>GithubUrl:</span><input class='textinput' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/></div>
-						<div class='inputwrapper'><span>Filepath:</span><input class='textinput' type='text' id='filePath' placeholder='no' value=''/></div>
+						<div class='inputwrapper'>
+							<span>Name:</span>
+							<div class="formDialog">
+								<span id="fileNameError"  class="formDialogText">Please use letters and digits, only</span>
+							</div>
+							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value=''/>
+						</div>
+						<div class='inputwrapper'>
+							<span>GithubUrl:</span>
+							<div class="formDialog">
+								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+							</div>
+							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/>
+						</div>
+						<div class='inputwrapper'>
+							<span>Filepath:</span>
+							<input class='textinput' type='text' id='filePath' placeholder='no' value=''/>
+						</div>
                         
 					</table>
 				</div>
@@ -772,7 +790,7 @@ function writeFilesInDir($path, $fileNames, $content){
     }
 }
 
-function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam) {
+function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes) {
 	global $pdo;
 	$count = count($fileNames);
 	for($i = 0; $i < $count; $i ++) {
@@ -781,13 +799,13 @@ function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $download
 		$query->bindParam(':cid', $cid);
 		$query->execute();
 		$norows = $query->fetchColumn();
-		echo $norows;
 		if($norows == 0) {
 			//TODO: Kind value should be fixed to dynamic
 			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
-			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:fileName,'3',:cid);");
+			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:fileName,'3',:cid,:filesize);");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fileName', $fileNames[$i]);
+			$query->bindParam(':filesize', $fileSizes[$i]);
 			if (!$query->execute()) {
 				$error = $query->errorInfo();
 				echo "Error updating entries" . $error[2];
@@ -856,6 +874,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
 	$CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
 	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
+	$fileSizes = isset($requestDataContent['fileSizes']) ? $requestDataContent['fileSizes'] : null;
 	$path = '../../LenaSYS/courses/' . $cid;
 	$pathCoursesRoot = '../../LenaSYS/courses';
 
@@ -863,7 +882,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	writeFilesInDir($path, $fileNames, $codeExamplesContent);
 	insertIntoSqLiteGitRepo($cid, $githubURL);
 	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
-	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam);
+	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes);
 	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
 }

@@ -1,7 +1,7 @@
 <?php
 // This microservice is used to retrieve a username from a specific userid (uid) 
 
-include_once "getUid_ms.php";
+include_once "./getUid_ms.php";
 
 function retrieveUsername($pdo)
 {

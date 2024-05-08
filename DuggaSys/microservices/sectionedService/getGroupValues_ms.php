@@ -13,10 +13,19 @@
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
+include_once "./retrieveSectionedService_ms.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
+
+$uid = getUid();
+$courseid = getOP('cid');
+$versid = getOP('vers');
+$log_uuid=getOP('log_uuid');
+$opt=getOP('opt');
+$coursevers=getOP('coursevers');
 
 if(checklogin()){
 	$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
@@ -34,4 +43,7 @@ if(checklogin()){
 	}
 }
 
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
 return;
+

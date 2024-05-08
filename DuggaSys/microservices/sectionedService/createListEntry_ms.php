@@ -7,6 +7,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
@@ -29,6 +30,8 @@ $log_uuid=getOP('log_uuid');
 $debug = "NONE!";
 
 global $pdo;
+
+
 // Insert a new code example and update variables accordingly.
 if($link==-1) {
     $queryz2 = $pdo->prepare("SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1");
@@ -42,24 +45,23 @@ if($link==-1) {
     $link = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
 }
 
-createNewListentrie($pdo,array(
-    "cid" => $courseid,
-    "coursevers" => $coursevers,
-    "userid" => $userid,
-    "entryname" => $sectname,
-    "link" => $link,
-    "kind" => $kind,
-    "comment" => $comments,
-    "visible" => $visibility,
-    "highscoremode" => $highscoremode,
-    "pos" => $pos,
-    "gradesys" => $gradesys,
-    "tabs" => $tabs,
-    "grptype" => $grptype,
-));
+createNewListEntry($pdo,
+    $courseid,
+    $coursevers,
+    $userid,
+    $sectname,
+    $link,
+    $kind,
+    $comments,
+    $visibility,
+    $highscoremode,
+    $pos,
+    $gradesys,
+    $tabs,
+    $grptype);
 
-include_once "./retrieveSectionedService_ms.php";
-$data=retrieveSectionedService($debug,$opt,$pdo,$userid,$courseid,$coursevers,$log_uuid);
+
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
-
 return;
+?>

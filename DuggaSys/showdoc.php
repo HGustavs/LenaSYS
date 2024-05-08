@@ -1,5 +1,5 @@
 <?php
-	ini_set("auto_detect_line_endings", true);
+	//ini_set("auto_detect_line_endings", true);
 	include_once "../Shared/basic.php";
 	include_once "../Shared/sessions.php";
 		
@@ -96,11 +96,27 @@
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fname', $fname);
 			$query->bindParam(':vers', $coursevers);
-			$result = $query->execute();
+			try{
+				$result = $query->execute();
+			}
+			catch(Exception $e){
+				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and (vers is null OR vers=:vers) and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':fname', $fname);
+				$query->bindParam(':vers', $coursevers);
+				$result = $query->execute();
+			}
+			
 			if($row = $query->fetch(PDO::FETCH_ASSOC)){
 				$filekind=$row['kind'];
 				$filename = $row['filename'];
-				$path = $row['path'];
+				if(isset($row['path'])){
+					$path = $row['path'];
+				}
+				else{
+					$path = null;
+				}
+				
 		
 				if($filekind==1){
 					// Link
