@@ -214,7 +214,8 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 
 __Highscore Service:__
 
-- highscoreservice_ms.php __==UNFINISHED==__
+- highscoreservice_ms.php __==finished==__ New filename: "readHighscore_ms.php" according to new nameconvention based on CRUD.
+- retrieveHighscoreService_ms.php __==UNFINISHED==__
 
 <br>
 
@@ -2510,15 +2511,46 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 ---
 
 <br>
-(writers comment: i belive this service is small enough as is)
 
-### highscoreservice
-Return max ten passed scores.
-Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
+### readHighscore_ms.php
+__readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
+
+__SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve values from the columns:
+- username
+- score
+
+- 'userAnswer.grade > 1': Filters to include only records where the user's grade is greater than 1, indicating passing scores.
+- Filters the results to those related to a specific quiz (':did') and a specific moment or part of the quiz (':lid').
+- Orders the results by score in ascending order, displaying the lowest scores first.
+- Restricts the output to the top 10 records based on the ascending order of scores.
+
+```sql
+SELECT username, score FROM userAnswer, user WHERE userAnswer.grade > 1 AND userAnswer.quiz = :did AND userAnswer.moment = :lid ORDER BY score ASC LIMIT 10;
+```
+
+
+_SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve values from the columns:
+- username
+- score
+
+- Filters the results to include only those records where the quiz ID matches ':did' and the moment or part of the quiz matches ':lid'.
+- Restricts the output to only the first record found.
+
+```sql
+SELECT username, score FROM userAnswer, user WHERE userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;
+```
+
 <br>
 
-Return score for a specific test.
-Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
+---
+
+<br>
+
+### retrieveHighscoreService_ms.php
 
 <br>
 <br>
