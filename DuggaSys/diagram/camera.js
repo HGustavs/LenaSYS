@@ -4,7 +4,7 @@
 function centerCamera() {
     // Stops execution if there are no elements to center the camera around.
     if (data.length == 0) {
-        displayMessage(messageTypes.ERROR, "Error: There are no elements to center to!");
+        centerToOrigo();
         return;
     }
     // Centering needs to happen twice for it to work, temp solution
@@ -50,4 +50,34 @@ function centerCamera() {
         zoomCenter(centerDiagram);
     }
     displayMessage(messageTypes.SUCCESS, `Centered the camera.`);
+}
+
+function centerToOrigo(){
+    for (let i = 0; i < 2; i++) {
+        zoomfact = 1;
+
+        // Center of screen in pixels
+        var centerScreen = {
+            x: 100,
+            y: 100
+        };
+
+        // Move camera to center of diagram
+        scrollx = centerScreen.x * zoomfact;
+        scrolly = centerScreen.y * zoomfact;
+
+        var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+
+        scrollx = middleCoordinate.x + 98;
+        scrolly = middleCoordinate.y + 100;
+
+        // Update screen
+        showdata();
+        updatepos();
+        updateGridPos();
+        updateGridSize();
+        drawRulerBars(scrollx, scrolly);
+        updateA4Pos();
+        updateA4Size();
+    }
 }
