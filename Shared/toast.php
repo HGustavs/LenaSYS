@@ -56,6 +56,22 @@
         // toastYes / toastNo = the toast confirm buttons (used for CONFIRM type)
         let toastYes = document.createElement('span');
         let toastNo = document.createElement('span');
+
+        let yesIcon = document.createElement('span');
+        let noIcon = document.createElement('span');
+
+        let yesText = document.createElement('span');
+        let noText = document.createElement('span');
+
+        yesText.innerHTML = "Yes";
+        noText.innerHTML = "No";
+
+        yesIcon.innerHTML = "done";
+        noIcon.innerHTML = "close";
+
+        yesIcon.classList.add('material-symbols-outlined');
+        noIcon.classList.add('material-symbols-outlined');
+
         toastYes.classList.add('toastYes');
         toastNo.classList.add('toastNo');
 
@@ -75,6 +91,12 @@
         toastCenter.appendChild(toastText);
         toastRight.appendChild(closeIcon);
          
+        toastYes.appendChild(yesIcon);
+        toastYes.appendChild(yesText);
+
+        toastNo.appendChild(noIcon);
+        toastNo.appendChild(noText);
+
         // Add the toast div to the toast container (containing all toasts)
         toastContainer.appendChild(toastDiv);
        
@@ -111,8 +133,6 @@
                 toastCenter.appendChild(toastButtonBox);
                 toastButtonBox.appendChild(toastYes);
                 toastButtonBox.appendChild(toastNo);
-                toastYes.innerHTML = "Yes"
-                toastNo.innerHTML = "No"
                 toastDiv.classList.add(types.CONFIRM);
                 break;
             // We create a default situation in case no type is given.
