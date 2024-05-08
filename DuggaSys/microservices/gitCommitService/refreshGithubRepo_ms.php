@@ -15,7 +15,7 @@ include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../gitfetchService.php";
 include_once "./refreshCheck_ms.php";
-include_once "clearGitFiles_ms.php";
+include_once "./clearGitFiles_ms.php";
 
 
 global $pdo;

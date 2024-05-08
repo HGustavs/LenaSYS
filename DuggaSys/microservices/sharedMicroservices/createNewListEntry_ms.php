@@ -1,5 +1,5 @@
 <?php
-include_once "retrieveUsername_ms.php";
+include_once ".7retrieveUsername_ms.php";
 
 function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link, $kind, $comment, $visible, $highscoremode, $pos, $gradesys, $tabs, $grptype){
     $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
