@@ -43,6 +43,7 @@ const keybinds = {
     SAVE_DIAGRAM: { key: "s", ctrl: true },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
     RESET_DIAGRAM: { key: "i", ctrl: false},
+    TOGGLE_TEST_CASE: { key: "u", ctrl: false},
 };
 
 /**
