@@ -583,7 +583,7 @@ window.addEventListener('beforeunload', function (event) {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
     var lid = deletedElements[i].id.match(/\d+/)[0];
-    AJAXService("DEL", {
+    AJAXService("DELETE", {
       lid: lid
     }, "SECTION");
   }
@@ -865,8 +865,9 @@ function showMarkedItems() {
   hideVisibilityIcons();
   for (i = 0; i < hideItemList.length; i++) {
     var lid = hideItemList[i];
-    AJAXService("PUBLIC", {
-      lid: lid
+    AJAXService("SETVISIBILITY", {
+      lid: lid,
+      visible: 1
     }, "SECTION");
     $("#editSection").css("display", "none");
   }
@@ -1014,13 +1015,13 @@ function deleteItem(item_lid = null) {
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60000);
+  }, 60);
 }
 
 // Permanently delete elements.
 function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DEL", {
+    AJAXService("DELETE", {
       lid: delArr.pop()
     }, "SECTION");
   }
@@ -1111,8 +1112,9 @@ function hideMarkedItems() {
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
   for (i = 0; i < hideItemList.length; i++) {
     var lid = hideItemList[i];
-    AJAXService("HIDDEN", {
-      lid: lid
+    AJAXService("SETVISIBILITY", {
+      lid: lid,
+      visible: 3
     }, "SECTION");
     $("#editSection").css("display", "none");
   }

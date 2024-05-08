@@ -1,7 +1,6 @@
 <?php
 /*
-* Retrieives ALL listentries with DELETED visibility (visible=3)
-* returns an array containing the rows
+* Retrieives ALL listentries 
 */
 
 date_default_timezone_set("Europe/Stockholm");
@@ -17,22 +16,10 @@ pdoConnect();
 session_start();
 
 // Global variables
+$uid = getUid();
 $opt=getOP('opt');
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
 $coursevers=getOP('coursevers');
-$versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
-$userid=getUid();
-
-$results = array();
-
-$query = $pdo->prepare("SELECT * FROM listentries WHERE visible = '3'");
-if($query->execute()) {
-    while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-        array_push($results, $row);
-    }
-}else{
-    $debug="Failed to get listentries with visibility DELETED!";
-}
 
 echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));
