@@ -14,6 +14,7 @@ $query->bindParam(':hash', $hash);
 $query->execute();
 $result = $query->fetch();
 $active = $result['active_users'];
+$debug="NONE!";	
 
 if($active == null){
     $query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
@@ -55,5 +56,6 @@ echo json_encode(retrieveShowDuggaService(
 	$hashvariant,
 	$isFileSubmitted,
 	$variants,
-	$active
+	$active,
+	$debug
 	));

@@ -110,8 +110,7 @@ if(strcmp($opt,"SAVDU")==0){
     makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
     $description = $courseid." ".$duggaid." ".$moment." ".$answer;
 
-	if(	!isSuperUser($userid) && // Teachers cannot submit
-	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"])){
+	if(	!isSuperUser($userid)/*Teachers cant submit*/ && isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && isset($_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"])){
 		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
 		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
 		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];	
@@ -189,5 +188,6 @@ echo json_encode(
 		$hashvariant,
 		$isFileSubmitted,
 		$variants,
-		$active
+		$active,
+		$debug
 	));

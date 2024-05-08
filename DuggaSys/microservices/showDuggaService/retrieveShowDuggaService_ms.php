@@ -30,7 +30,8 @@ function retrieveShowDuggaService(
 	$hashvariant,
 	$isFileSubmitted,
 	$variants,
-	$active
+	$active,
+	$debug
 	){
 
 	if(checklogin()){
