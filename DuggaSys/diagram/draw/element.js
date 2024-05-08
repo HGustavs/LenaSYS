@@ -533,7 +533,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
 
     content = `<path 
                     class="text" 
-                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
+                    d="M ${boxw / 2},${boxw / 4 + linew}
                         V ${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
