@@ -637,24 +637,24 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     const text = splitFull(element.attributes, maxCharactersPerLine);
     let length = (text.length > 4) ? text.length : 4;
     let totalHeight = boxh + texth * length;
+    const maxWidth = (boxw - linew * 2);
+    const maxHeight = (boxh + (texth * length) - linew * 2)
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
     let content = `
         <path class="text"
-            d=" M ${linew},${linew}
+            d=" M ${maxWidth - (23 * zoomfact)},${linew}
+                h -${maxWidth - (23 * zoomfact)}
                 v ${boxh + (texth * length) - linew * 2}
                 h ${boxw - linew * 2}
-                v -${boxh + (texth * length) - linew * 2 - (boxh - linew * 2) * 0.5}  
-                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+                v -${maxHeight - (23 * zoomfact)}
+                l -${23.5 * zoomfact}, -${23 * zoomfact}
                 h 1
                 h -1
-                v ${(boxh - linew * 2) * 0.5} 
-                h ${(boxw - linew * 2) * 0.12}
-                v 1
-                v -1
-                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
-                h -${(boxw - linew * 2) * 0.885} "
+                v ${23 * zoomfact}
+                h ${22 * zoomfact}
+                z"
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='${element.fill}'
