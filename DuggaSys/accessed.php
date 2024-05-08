@@ -129,10 +129,15 @@
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 	        <li onclick="showCreateUserPopup();">
-							<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
-									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
-							</a>
-					</li>
+				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
+					<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
+				</a>
+			</li>
+			<li onclick="showCreateUserPopup();">
+				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
+					<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
+				</a>
+			</li>
 		</ol>
 	</div>
 	<div id="editpopover" style="display:none;"></div>
