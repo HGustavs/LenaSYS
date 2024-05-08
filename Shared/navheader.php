@@ -40,6 +40,14 @@
 			global $pdo;
 			$query = $pdo->prepare('SELECT updated, courseGitURL FROM course WHERE cid = :cid;');
 			$query->bindParam(':cid', $_SESSION['courseid']);
+			try{
+				$query->execute();
+			}
+			catch(Exception $e){
+				$query = $pdo->prepare('SELECT updated FROM course WHERE cid = :cid;');
+				$query->bindParam(':cid', $_SESSION['courseid']);
+				$query->execute();
+			}
 			
 			// Add error handling for the execute function
 			if (!$query->execute()) {
@@ -52,15 +60,14 @@
 			
 			if ($row !== false) {
 				// Now we know $row is an array and we can safely access its elements
-				$checkIfGithubURL = $row['courseGitURL'];
-				if ($checkIfGithubURL) {
-					$updateTime = $row['updated'];
+				//$checkIfGithubURL = $row['courseGitURL'];
+				if(isset($row['courseGitURL'])){
+					$checkIfGithubURL = $row['courseGitURL'];
 				} else {
-					$updateTime = "No Github URL set";
+					$checkIfGithubURL = null;
+					// $row is false, which means no data was fetched
+					$updateTime = "No data found for the given course ID";
 				}
-			} else {
-				// $row is false, which means no data was fetched
-				$updateTime = "No data found for the given course ID";
 			}
 
 
@@ -686,46 +693,45 @@ function hamburgerToggle() {
 }
 
 //count down the fetch cooldown
-let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
+const gitFetchCooldownMin = document.getElementById("gitFetchMin");
+const gitFetchCooldownSec = document.getElementById("gitFetchSec");
+const cooldownHolder = document.getElementById("cooldownHolder");
 
-document.addEventListener("DOMContentLoaded", function() {
-    gitFetchCooldownMin = document.getElementById("gitFetchMin");
-    gitFetchCooldownSec = document.getElementById("gitFetchSec");
-    cooldownHolder = document.getElementById("cooldownHolder");
-
-    if (gitFetchCooldownMin && gitFetchCooldownSec) { // Check if elements exist
-        setInterval(function() 
+setInterval(
+	function() 
+	{
+		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
 		{
-            if (gitFetchCooldownSec.innerHTML > 0 || gitFetchCooldownMin.innerHTML > 0) {
-                gitFetchCooldownSec.innerHTML -= 1;
-                if (gitFetchCooldownSec.innerHTML < 0) 
-				{
-                    gitFetchCooldownMin.innerHTML -= 1;
-                    gitFetchCooldownSec.innerHTML = 59;
-                }
-            } 
-			else 
+			gitFetchCooldownSec.innerHTML-=1;
+			if(gitFetchCooldownSec.innerHTML<0)
 			{
-                cooldownHolder.style.display = "none";
-            }
-        }, 1000);
-    }
-});
+				gitFetchCooldownMin.innerHTML-=1;
+				gitFetchCooldownSec.innerHTML=59;
+			}
+			
+		}
+		else
+		{
+			cooldownHolder.style.display="none";
+		}
+	}, 1000
+);
 
-function resetGitFetchTimer(superuser) {
-    if (cooldownHolder && cooldownHolder.style.display == "none") {
-        cooldownHolder.style.display = "block";
-        if (superuser == 1) 
+function resetGitFetchTimer(superuser)
+{
+	if(cooldownHolder.style.display=="none"){
+		cooldownHolder.style.display="block";
+		if(superuser==1)
 		{
-            gitFetchCooldownMin.innerHTML = 4;
-            gitFetchCooldownSec.innerHTML = 59;
-        } 
-		else 
+			gitFetchCooldownMin.innerHTML=4;
+			gitFetchCooldownSec.innerHTML=59;
+		}
+		else
 		{
-            gitFetchCooldownMin.innerHTML = 9;
-        	gitFetchCooldownSec.innerHTML = 59;
-        }
-    }
+			gitFetchCooldownMin.innerHTML=9;
+			gitFetchCooldownSec.innerHTML=59;
+		}
+	}
 }
 
 </script>
