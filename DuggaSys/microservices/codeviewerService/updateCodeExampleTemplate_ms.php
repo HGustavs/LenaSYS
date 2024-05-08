@@ -15,7 +15,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 pdoConnect();
 session_start();
 
-getUid();
+$userid = getUid();
 
 // Checks and sets user rights
 if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){
@@ -24,15 +24,13 @@ if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $co
 	$writeAccess="s";
 }
 
-$userid = getUid();
-
 $opt=getOP('opt');
 $templateNumber=getOP('templateno');
 $exampleId=getOP('exampleid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
 
-if(checklogin() && ($writeAccess=="w" || isSuperUser(getuid()) == true)) {
+if(checklogin() && ($writeAccess=="w" || isSuperUser($userid) == true)) {
 
     if(strcmp('SETTEMPL',$opt)===0){
         // Parse content array
