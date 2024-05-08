@@ -2307,6 +2307,11 @@ function removeLocalDiagram(item) {
  */
 function resetDiagramAlert() {
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
+    
+    if(data.length == 0){
+        resetZoom();
+    }
+    
     if (refreshConfirm) {
         resetDiagram();
     }
@@ -2319,4 +2324,33 @@ function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
+function resetZoom(){
+    for (let i = 0; i < 2; i++) {
+        zoomfact = 1;
+
+        // Center of screen in pixels
+        var centerScreen = {
+            x: 100,
+            y: 100
+        };
+
+        // Move camera to center of diagram
+        scrollx = centerScreen.x * zoomfact;
+        scrolly = centerScreen.y * zoomfact;
+
+        var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+
+        scrollx = middleCoordinate.x + 98;
+        scrolly = middleCoordinate.y + 100;
+
+        // Update screen
+        showdata();
+        updatepos();
+        updateGridPos();
+        updateGridSize();
+        drawRulerBars(scrollx, scrolly);
+        updateA4Pos();
+        updateA4Size();
+    }
+}
 //#endregion =====================================================================================
