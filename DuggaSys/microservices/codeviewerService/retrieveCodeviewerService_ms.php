@@ -8,8 +8,7 @@ include_once ("../../../Shared/basic.php");
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-function retrieveCodeviewerService($opt, $pdo, $userid, $debug)
-{
+function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
     include_once "../../../Shared/sessions.php";
 
     // Connect to database and start session
@@ -145,17 +144,17 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug)
 
                 if ($filekind == 2) {
                     // Global
-                    $file = "../courses/global/" . $filename;
+                    $file = "../../../courses/global/" . $filename;
                 } else if ($filekind == 3) {
                     // Course Local
                     if ($path == null)
-                        $file = "../courses/" . $courseId . "/" . $filename;
+                        $file = "../../../courses/" . $courseId . "/" . $filename;
                     else
-                        $file = "../courses/" . $courseId . "/Github/" . $path;
+                        $file = "../../../courses/" . $courseId . "/Github/" . $path;
 
                 } else if ($filekind == 4) {
                     // Local
-                    $file = "../courses/" . $courseId . "/" . $courseVersion . "/" . $path;
+                    $file = "../../../courses/" . $courseId . "/" . $courseVersion . "/" . $path;
                 } else {
                     $file = "UNK";
                 }
