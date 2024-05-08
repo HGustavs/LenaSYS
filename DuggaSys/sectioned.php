@@ -301,13 +301,13 @@
 							<span>Absolute</span>
 							<span style='float:right'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
-								<select style='width:55px;' id='deadlineminutes'></select>
-								<select style='width:55px;' id='deadlinehours'></select>
+								<select style='width:55px; margin-right: 10px;' id='deadlineminutes'></select>
+								<select style='width:55px; margin-right: 10px;' id='deadlinehours'></select>
 								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
-							<span style='float:right;margin-right:10px;'>
+							<span style='float:right;'>
 								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineamount'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
@@ -327,7 +327,7 @@
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div style='padding:20px;'>
+				<div style='padding:10px;'>
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
@@ -608,26 +608,28 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div class='inputwrapper'>
-					<span>Github Directory:</span>
-						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
-							<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
-							<?php
-								// Gets "cid" via getOPG.
-								$cid = getOPG('courseid');
-								// Traverses the github map for the respective course, only fetches directories.
-								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
-								foreach ($dirs as $dir) {
-									$dirname = basename($dir);
-									// Creates an option for each directory containing the string "Examples". 
-									echo "<option value='$dirname'>$dirname</option>";	
-								}			
-							?>
-						</select>
-					</div>
+				<div style="padding:5px;";>
+						<div class='inputwrapper'>
+							<span>Github Directory:</span>
+								<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
+								<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
+								<?php
+									// Gets "cid" via getOPG.
+									$cid = getOPG('courseid');
+									// Traverses the github map for the respective course, only fetches directories.
+									$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
+									foreach ($dirs as $dir) {
+										$dirname = basename($dir);
+										// Creates an option for each directory containing the string "Examples". 
+										echo "<option value='$dirname'>$dirname</option>";	
+									}			
+								?>
+							</select>
+						</div>
+				</div>
 				<input type="hidden" name="lid" id="lidInput">
 				<!-- Hidden input using the "lid" from "getLidFromButton" -->
-				<input type="submit" name="githubInsert" value="Submit!">
+				<input type="submit" class="submit-button" name="githubInsert" value="Submit">
 			</div>
 		</div>
 	</form>
