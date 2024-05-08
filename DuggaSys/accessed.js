@@ -98,6 +98,10 @@ function showAddUserPopup() {
 	$("#addUser").css("display", "flex");
 }
 
+function showRemoveUserPopup() {
+	$("#removeUser").css("display", "flex");
+}
+
 function showCreateClassPopup() {
 	$("#createClass").css("display", "flex");
 }
