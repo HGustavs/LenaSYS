@@ -35,8 +35,8 @@
 				<div class="inner-wrapper">
                 	<?php
 						echo "<div class='grid-element-span'>";
-							checkBox("distEnvironment","Use Distributed Environment");
-							checkBox("iniDatabaseTrans","Initialize database as transaction");
+							checkBox("windows-installer","Windows installer");
+							checkBox("mac-linux-installer","Linux & Mac installer");
 						echo "</div>";
                 	?>
             	</div>

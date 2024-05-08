@@ -114,8 +114,8 @@ html, body {
 /*  Container that sets padding for the main content of the
     installer window, including the .body-text and .input-grid  */
 .inner-wrapper {
+    display: grid;
     padding: 2rem;
-    padding-top: 0;
 }
 
 .body-text {
@@ -162,7 +162,10 @@ html, body {
 
 /*  Lets the last cell of the .input-grid span 2 columns */
 .grid-element-span {
+    display: grid;
     grid-area: 4 / 1 / 5 / 3;
+    grid-column-gap: 2rem; /* Keeps current horizontal gap */
+    grid-row-gap: 1rem; /* Increases vertical gap between grid items */
 }
 
 /*  Sets label above corresponding input field  */
@@ -211,14 +214,17 @@ input[type=text]:focus {
 
 .checkbox {
     display: flex;
+    align-items: flex-start;
     font-size: var(--text-medium);
 }
 
 .checkbox label {
+    margin-left: 0.5rem;
     font-family: var(--body-font)
 }
 
 input[type=checkbox] {
+    margin: 0.25rem;
     accent-color: var(--primary-color);
 }
 
