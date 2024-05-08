@@ -1,4 +1,3 @@
-
 /* Import fonts Noto Sans and Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -25,21 +24,49 @@
     --text-small: 12px;
 }
 
-html body {
-    margin: 0;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
+html, body {
+    height: 100%; /* Ensures that the HTML and body take full height of the viewport */
+    width: 100%; /* Ensures full width */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+    overflow-x: hidden; /* Prevents horizontal scrollbar */
+}
+
+#page2, #page3, #page4, #page5 { display: none; }
+
 .page {
-    margin: 2rem;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack children vertically */
+    height: calc(100vh - 4rem); /* Subtract double the margin if any */
+    width: calc(100% - 4rem); /* Adjust width to accommodate left and right margins */
+    margin: 2rem; /* Remove any margin */
     border: 1px solid var(--primary-color);
     background-color: var(--page-background);
+    position: relative; /* Ensures that position is relative to the viewport */
 }
 
 /*  Create a padding for all content
     inside the installer window */
 .wrapper {
-    padding: 3rem;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack children vertically */
+    flex-grow: 1; /* Takes up all available space */
+    padding: 3rem; /* Provide padding for content within wrapper */
     padding-top: 2.5rem;
+    overflow-y: auto; /* Allows scrolling within the wrapper */
+}
+
+.content {
+    flex-grow: 1; /* Allows this element to expand and fill available space */
+    display: flex; /* Optional, depending on your specific needs */
+    flex-direction: column; /* Stack children of .content vertically */
+    overflow-y: auto; /* Allows scrolling within content if necessary */
 }
 
 /*  Creates the purple background behind .header-1  */
@@ -179,6 +206,7 @@ input[type=text]:focus {
 .buttonContainer {
     display: flex;
     justify-content: space-between;
+    margin-top: auto; /* Pushes the button container to the bottom */
 }
 
 .checkbox {
@@ -262,7 +290,7 @@ input[type=checkbox] {
     font-family: var(--body-font);
     font-style: italic;
     font-size: 14px;
-    max-width: 60%;
+    max-width: 60%; 
 
     .progressBarLabels {
         display: flex;

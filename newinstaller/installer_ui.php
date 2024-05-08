@@ -3,58 +3,65 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Installer Progress</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<?php include 'tools/components.php'; ?>
+	<script defer src="installer_ui.js"></script>
+	<script defer src="tools/components.js"></script>
+	<script defer src="tools/sse_receiver.js"></script>
 </head>
 <body>
-	<h1>Installation Progress</h1>
+	<!-- <h1>Installation Progress</h1>
 	<div>
 		Progress: <span id="progressPercentage">0%</span>
 	</div>
 	<progress id="progressBar" value="0" max="100"></progress>
 	<div style="height: 200px; overflow: scroll;">
 		<span id="progress"></span>
+	</div> -->
+
+	<div id="page1" class="page">
+		<div class="banner">
+            <h1 class="header-1">Welcome to <b>LenaSYS</b> </h1>
+        </div>
+		<div class="wrapper">
+			<?php
+                breadcrumb()
+            ?>
+			<div class="content">
+				<?php
+					header2("Select your OS installer");
+				?>
+				<div class="inner-wrapper">
+                	<?php
+						echo "<div class='grid-element-span'>";
+							checkBox("distEnvironment","Use Distributed Environment");
+							checkBox("iniDatabaseTrans","Initialize database as transaction");
+						echo "</div>";
+                	?>
+            	</div>
+			</div>
+			<?php
+				button("Back", "Continue");
+			?>
+		</div>
 	</div>
 
-	<script src="tools/sse_receiver.js"></script>
-	<script>
-		let progressInfo = document.getElementById("progress");
-		let progressPercentage = document.getElementById("progressPercentage");
-		let progressBar = document.getElementById("progressBar");
-		const getCurrentValue = () => parseInt(progressBar.value);
+	<div id="page2" class="page">
+		<h1>hej</h1>
+	</div>
 
-		fetch('installer.php', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}))
-		});
+	<div id="page3" class="page">
 
-		let sseReceiver = new SSEReceiver({
-			message: function(data) {
-				progressInfo.innerHTML = data + "<br>" + progressInfo.innerHTML;
-			},
-			updateProgress: function(data) {
-				let targetValue = parseInt(data);
-				let distance = Math.abs(targetValue - getCurrentValue());
-				let speedFactor = Math.max(4, distance / 100);
-				let increment = (targetValue - getCurrentValue()) / (100 * speedFactor);
+	</div>
 
-				if (targetValue === 100) {
-					progressBar.value = 100;
-					progressPercentage.innerHTML = "100%";
-				}
+	<div id="page4" class="page">
 
-				function update() {
-					if ((increment > 0 && getCurrentValue() < targetValue) && !(getCurrentValue() > targetValue)) {
-						progressBar.value += increment;
-						progressPercentage.innerHTML = Math.round(progressBar.value) + "%";
-						requestAnimationFrame(update);
-					}
-				}
-				
-				update();
-			}
-		});
-	</script>
+	</div>
+
+	<div id="page5" class="page">
+
+	</div>
+
 </body>
 </html>
