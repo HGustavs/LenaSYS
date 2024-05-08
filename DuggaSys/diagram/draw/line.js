@@ -376,10 +376,27 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    if (line.specialCase) {
+        let offsetX = line.specialCase ? line.offsetX / 2 : 0;
+        let offsetY = line.specialCase ? line.offsetY / 2 : 0;
+
+        // Calculate the points with offsets
+        let points = `  
+                    ${fx + offset.x1 + (offsetX * zoomfact)},
+                    ${fy + offset.y1 + (offsetY * zoomfact)} ${fx + offset.x1 - dx + (offsetX * zoomfact)},
+                    ${fy + offset.y1 - dy + (offsetY * zoomfact)} ${tx + offset.x2 + dx + (offsetX * zoomfact)},
+                    ${ty + offset.y2 + dy + (offsetY * zoomfact)} ${tx + offset.x2 + (offsetX * zoomfact)},
+                    ${ty + offset.y2 + (offsetY * zoomfact)}
+                    `;
+
+
+        let polylineSVG = `<polyline id='${line.id}' points='${points}' fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' marker-end="url(#arrow)"/>`;
+
+        return polylineSVG;
+    }
     return `<polyline 
                 id='${line.id}' 
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}'
             />`;
 
 }
@@ -555,6 +572,20 @@ function redrawArrows() {
     // Sort all association ends that number above 0 according to direction of line
     for (let i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
+    }
+
+    // Recalculate the offsets for all the specialCase lines
+    for (var i = 0; i < lines.length; i++) {
+
+        // Skip if line doesnt have any offsets
+        if (lines[i].otherLinesCount == 0) {
+            continue;
+        }
+
+        // Recalculate the offset for the line
+        if (lines[i].specialCase) {
+            calculateLineOffset(lines[i]);
+        }
     }
 
     // Draw each line using sorted line ends when applicable

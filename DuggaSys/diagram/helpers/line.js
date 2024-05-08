@@ -41,16 +41,67 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         fromElement.kind === elementTypesNames.EREntity &&
         toElement.kind === elementTypesNames.ERRelation
     );
+
+    // Defina a boolean for special case for sequence diagrams where multiple lines are allowed
+    var specialCaseSequence = (
+        fromElement.kind === elementTypesNames.sequenceActor &&
+        toElement.kind === elementTypesNames.sequenceActor ||
+        fromElement.kind === elementTypesNames.sequenceObject &&
+        toElement.kind === elementTypesNames.sequenceObject
+    );
+
     // If there is no existing lines or is a special case
-    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines === 1)) {
+    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines === 1) || specialCaseSequence) {
         let newLine = {
             id: makeRandomID(),
+            specialCase: false,
+            otherLinesCount: 0,
+            offsetX: 0,
+            offsetY: 0,
             fromID: fromElement.id,
             toID: toElement.id,
             kind: kind
         };
 
-        // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
+        // If the line is a special case where you need to allow multiple lines, set the special case to true
+        if (specialCaseSequence) {
+            var linesBetween = lines.filter(function (line) {
+                return (fromElement.id === line.fromID &&
+                    toElement.id === line.toID ||
+                    fromElement.id === line.toID &&
+                    toElement.id === line.fromID)
+            });
+
+            if (linesBetween.length > 0) {
+                x1 = fromElement.x1;
+                y1 = fromElement.y1;
+                x2 = toElement.x1;
+                y2 = toElement.y1;
+                newLine.otherLinesCount = linesBetween.length;
+
+                // Calculate differences in x and y coordinates
+                var dx = Math.abs(x2 - x1);
+                var dy = Math.abs(y2 - y1);
+                // Check if the elements are more horizontally, vertically, or diagonally aligned
+                if (dx > dy && (Math.abs(dx-dy) > 150)) {
+                    // Horizontally aligned, adjust offsetX
+                    newLine.offsetY = (x2 > x1) ? (linesBetween.length *10) : -(linesBetween.length *10);
+                    newLine.offsetX = 0;
+                } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
+                    // Vertically aligned, adjust offsetY
+                    newLine.offsetY = 0;
+                    newLine.offsetX = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10);
+                } else {
+                    // Diagonally aligned, adjust both offsetX and offsetY
+                    newLine.offsetX = (x2 < x1) ? (linesBetween.length *10) : -(linesBetween.length *10);
+                    newLine.offsetY = (y2 > y1) ? (linesBetween.length *10) : -(linesBetween.length *10);
+                }
+            }
+
+
+            newLine.specialCase = true;
+        }
+
         if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {
             if (cardinal) newLine.cardinality = cardinal;
         }
@@ -63,6 +114,45 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
     return result;
 }
+
+/**
+ * @description Calculates the correct offset for x and y coordinates for the line to be drawn between two elements.
+ * @param {Object} fromElement Element that the line is from.
+ * @param {Object} toElement Element that the line is to.
+ * @param {Line} line The line that should be corrected.
+ */
+function calculateLineOffset(line) {
+    // Get the from and to elements
+    var fromElement = data[findIndex(data, line.fromID)];
+    var toElement = data[findIndex(data, line.toID)];
+
+    if (line.otherLinesCount > 0) {
+        x1 = fromElement.x1;
+        y1 = fromElement.y1;
+        x2 = toElement.x1;
+        y2 = toElement.y1;
+
+        // Calculate differences in x and y coordinates
+        var dx = Math.abs(x2 - x1);
+        var dy = Math.abs(y2 - y1);
+        // Check if the elements are more horizontally, vertically, or diagonally aligned
+        if (dx > dy && (Math.abs(dx-dy) > 150)) {
+            // Horizontally aligned, adjust offsetX
+            line.offsetY = (x2 > x1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetX based on direction
+            line.offsetX = 0; // No vertical offset
+        } else if (dx < dy && (Math.abs(dy-dx) > 150)) {
+            // Vertically aligned, adjust offsetY
+            line.offsetY = 0; // No horizontal offset
+            line.offsetX = (y2 > y1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetY based on direction
+        } else {
+            // Diagonally aligned, adjust both offsetX and offsetY
+            line.offsetX = (x2 < x1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetX based on direction
+            line.offsetY = (y2 > y1) ? (line.otherLinesCount * 20) : -(line.otherLinesCount * 20); // Adjust offsetY based on direction
+        }
+        console.log("offsetX: " + line.offsetX + " offsetY: " + line.offsetY);
+    }
+}
+
 
 function checkConnectionErrors(to, from) {
     if (from.id == to.id &&
