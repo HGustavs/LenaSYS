@@ -115,7 +115,6 @@ function mdown(event) {
                         }
                         break;
                     }
-
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if (context.length > 0) {
