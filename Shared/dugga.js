@@ -1100,15 +1100,8 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
-		let service_url = "showDuggaservice.php";
-		if(opt=="SAVDU"){
-			service_url = "../DuggaSys/microservices/showDuggaService/saveDugga_ms.php";
-		}
-		if(opt=="UPDATEAU"){
-			service_url = "../DuggaSys/microservices/showDuggaService/updateActiveUsers_ms.php";
-		}
 		$.ajax({
-			url: service_url,
+			url: "showDuggaservice.php",
 			type: "POST",
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
