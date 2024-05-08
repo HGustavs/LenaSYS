@@ -9658,6 +9658,13 @@ margin:2px;
 }
 
 
+.toastButtonBox {
+  float: left;
+  margin: 0 auto;
+  width: 100%;
+}
+
+
 .toast.expanded {
   height: auto;
   cursor: default;
