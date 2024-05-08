@@ -32,6 +32,7 @@
     <script src="./diagram/classes/point.js"></script>
     <script src="./diagram/classes/rect.js"></script>
     <script src="./diagram/constants.js"></script>
+    <script src="./diagram/defaults.js"></script>
     <script src="./diagram/globals.js"></script>
     <script src="./diagram/classes/stateChange.js"></script>
     <script src="./diagram/classes/stateChangeFactory.js"></script>
