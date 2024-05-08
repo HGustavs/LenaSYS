@@ -2,6 +2,7 @@
 session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
+include_once "../Shared/toast.php";
 pdoConnect();
 
 if (file_exists("../.git/refs/heads/master")) {
@@ -33,6 +34,7 @@ if(isset($_SESSION['uid'])){
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 
 	<script src="darkmodeToggle.js"></script>
+	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -140,10 +142,18 @@ if(isset($_SESSION['uid'])){
 					<select class='selectinput' id='visib'></select>
 				</div>
     		</div>
-    		<div style='float:right; padding-top:20px; width: 464px;' >
-    			<input id='saveCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourse')" />
-    		</div>
-      </div>
+			<div style='float:right; padding-top:20px; width: 464px;' >
+				<div id="buttonContainerDeleteCourse"></div>
+				<div id="buttonContainerSaveCourse"></div>
+				<div class="form-popup" id="myForm">
+					<form action="" class="form-popup_container DarkModeBackgrounds">
+						<h1 Class="DarkModeText" style="font-size:24px; padding-bottom:50px; padding-top:60px; border-bottom: 2px solid #ccc;">Are you sure? </h1>
+						<button id="deleteCourseButtonYes" type="button" onclick="closeDeleteForm()">Yes</button>
+						<button id="deleteCourseButtonNo" type="button" onclick="closeDeleteForm()">No</button>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
 

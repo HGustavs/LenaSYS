@@ -15,6 +15,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";     
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCourseedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -24,8 +25,23 @@ $opt=getOP('opt');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
 
+$debug="NONE!";
+
+$ha = null;
+$isSuperUserVar = false;
+
+// Login is checked
+if (checklogin()) {
+	if (isset($_SESSION['uid'])) {
+		$userid = $_SESSION['uid'];
+	} else {
+		$userid = "UNK";
+	}
+	$isSuperUserVar = isSuperUser($userid);
+	$ha = $isSuperUserVar;
+}
 // Updates the message of the day 
-if(checklogin() && isSuperUser(getUid()) == true) {
+if($ha) {
     $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
     $query->bindParam(':motd', $motd);
     
@@ -40,3 +56,6 @@ if(checklogin() && isSuperUser(getUid()) == true) {
         $debug="Error updating entries\n".$error[2];
     }
 }
+
+
+echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));

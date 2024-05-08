@@ -22,7 +22,7 @@ $courseid = getOP('cid');
 $coursevers=getOP('coursevers');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
-$userid=getUid();
+$uid=getUid();
 
 $results = array();
 
