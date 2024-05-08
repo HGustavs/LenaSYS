@@ -4,12 +4,13 @@
  * @param {boolean} targetGhost Is the targeted line an ghost line
  */
 function drawLine(line, targetGhost = false) {
+    let str = "";
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
     if (!felem || !telem) return;
-    let str = "";
-    let strokeDash = (line.kind == lineKind.DASHED) ? "10" : "0";
+    line.type = (telem.type == entityType.note) ? telem.type : felem.type;
+    let strokeDash = (line.kind == lineKind.DASHED || line.type == entityType.note) ? "10" : "0";
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
     let isSelected = contextLine.includes(line);
 
@@ -18,8 +19,6 @@ function drawLine(line, targetGhost = false) {
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-    line.type = (telem.type == entityType.note) ? telem.type : felem.type;
-    if (line.type == entityType.note) strokeDash = "10";
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
     if (line.type == entityType.ER) {
@@ -50,22 +49,9 @@ function drawLine(line, targetGhost = false) {
             str += double(1, 1);
             str += double(-1, 2);
         }
-    } else if ((line.type == entityType.SD && line.innerType == null) || (line.type == entityType.SD && line.innerType === SDLineType.STRAIGHT)) {
+    } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
-            const length = 80 * zoomfact;
-            const startX = fx - 10 * zoomfact;
-            const startY = fy - 10 * zoomfact;
-            const endX = fx - 25 * zoomfact;
-            const endY = fy - 15 * zoomfact;
-            const cornerX = fx + length;
-            const cornerY = fy - length;
-
-            str += `<line id='${line.id}' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
-            str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<line id='${line.id}' x1='${endX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${endY + offset.y1 - 40 * zoomfact}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-            str += `<polygon id='${line.id}' class='diagram-umlicon-darkmode' points='${endX + offset.x1 - 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact},${endX + offset.x1},${endY + offset.y1 - 34 * zoomfact},${endX + offset.x1 + 5 * zoomfact},${endY + offset.y1 - 44 * zoomfact}' fill='${lineColor}'/>`;
+            str += drawRecursive(fx, fy, offset, line, lineColor);
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
             offset.y2 = -7 + 3 / zoomfact;
@@ -82,13 +68,16 @@ function drawLine(line, targetGhost = false) {
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
+        if (line.kind == lineKind.RECURSIVE) {
+            str += drawRecursive(fx, fy, offset, line, lineColor);
+        }
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    if  (line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) {
+    if  ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
@@ -299,6 +288,23 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
             > ${label} </text>`;
 }
 
+function drawRecursive(fx, fy, offset, line, lineColor) {
+    let str = '';
+    const length = 40 * zoomfact;
+    const startX = fx;
+    const startY = fy + 20 * zoomfact;
+    const endX = fx;
+    const cornerX = fx + length;
+    const cornerY = fy;
+
+    str += `<line id='${line.id}' x1='${startX + offset.x1 - 17 * zoomfact}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
+    str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+    str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+    str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
+    str += iconPoly(SD_ARROW[lineDirection.RIGHT], fx, startY, lineColor, color.BLACK);
+    return str;
+}
+
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
 
@@ -426,7 +432,10 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             if (line.innerType == SDLineType.SEGMENT) {
                 // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
+            } else if (line.type == entityType.SE) {
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             }
+            break;
     }
     return str;
 }
