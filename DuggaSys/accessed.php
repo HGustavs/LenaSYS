@@ -184,7 +184,7 @@
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 			<li onclick="showRemoveUserPopup();">
 				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Remove user'>
-					<img class="fab-icon" src="../Shared/icons/createUser.svg">
+					<img class="fab-icon" src="../Shared/icons/remove_user_icon.svg">
 				</a>
 			</li>
 			<li onclick="showAddUserPopup();">
