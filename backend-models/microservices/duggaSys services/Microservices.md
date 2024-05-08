@@ -82,7 +82,7 @@ The old name remains listed under "LIST OF MICROSERVICES" so that we can keep tr
 
 <br>
 
-Shared microservices:
+__Shared microservices:__
 
 - logUserEvent_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - logServiceEvent_ms.php __==UNFINISHED==__
@@ -98,7 +98,7 @@ Shared microservices:
 
 <br>
 
-Accessed Service:
+__Accessed Service:__
 
 - updateUser_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -110,7 +110,7 @@ __Note, all microservices related to accessservice.php have been created. As for
 
 <br>
 
-Codeviewer Service:
+__Codeviewer Service:__
 
 - settingCodeexampleTemplate_ms.php __==UNFINISHED==__
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
@@ -121,7 +121,7 @@ Codeviewer Service:
 
 <br>
 
-Contribution Loginbox Service
+__Contribution Loginbox Service:__
 
 - There is a functional requirements document regarding this service. There is mention of a "contribution page", which is assumed to be a contribution dugga. It is unclear exactly what this page is supposed to be, but the page is related to GitHub connectivity, which suggests it is supposed to be a page showing the different commits contributed by students to a project.
 
@@ -134,13 +134,13 @@ https://github.com/HGustavs/LenaSYS/blob/master/backend-models/functional-requir
 
 <br>
 
-Contribution Service:
+__Contribution Service:__
 
 - Based on the information given for the status of the Contribution Loginbox Service information, we are pausing the development of microservices for this service file.
 
 <br>
 
-Courseed Service:
+__Courseed Service:__
 
 - createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -154,13 +154,13 @@ Courseed Service:
 
 <br>
 
-Diagram Service:
+__Diagram Service:__
 
 - _WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)_
 
 <br>
 
-Duggaed Service:
+__Duggaed Service:__
 
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -173,7 +173,7 @@ Duggaed Service:
 
 <br>
 
-Fileed Service:
+__Fileed Service:__
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
@@ -181,7 +181,7 @@ Fileed Service:
 
 <br>
 
-Gitcommit Service:
+__Gitcommit Service:__
 
 - getCourseID __==finished==__ New filename: "readCourseID_ms.php" according to new nameconvention based on CRUD.
 - clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.  
@@ -196,7 +196,7 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 
 <br>
 
-Gitfetch Service:
+__Gitfetch Service:__
 
 - getGitHubURL_ms.php __==finished==__ New filename: "getGitHubAPIUrl_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - getGitHubURLCommit_ms.php __==UNFINISHED==__ 
@@ -212,13 +212,13 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 
 <br>
 
-Highscore Service:
+__Highscore Service:__
 
 - highscoreservice_ms.php __==UNFINISHED==__
 
 <br>
 
-Profile Service:
+__Profile Service:__
 
 - updateSecurityQuestion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserPassword_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -226,14 +226,14 @@ Profile Service:
 
 <br>
 
-Resulted Service:
+__Resulted Service:__
 
 - getUserAnswer_ms.php __==finished==__ New filename: "readUserAnswer_ms.php" according to new nameconvention based on CRUD.
 - retrieveResultedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
-Sectioned Service:
+__Sectioned Service:__
 
 - getGroupValues_ms.php __==finished==__ New filename: "readGroupValues_ms.php" according to new nameconvention based on CRUD.
 - getCourseGroupsAndMembers_ms.php __==finished==__ New filename: "readCourseGroupsAndMembers_ms.php" according to new nameconvention based on CRUD.
@@ -247,7 +247,7 @@ Sectioned Service:
 - setVisibleListentries_ms.php __==finished==__ New filename: "updateVisibleListentries_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateCourseVersion_sectioned_ms.php __==UNFINISHED==__ 
+- updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
 - getCourseVersions_ms.php __==finished==__ New filename: "readCourseVersions_ms.php" according to new nameconvention based on CRUD. 
 - getGitReference_ms.php __==UNFINISHED==__  
@@ -256,7 +256,7 @@ Sectioned Service:
 
 <br>
 
-Show Dugga Service:
+__Show Dugga Service:__
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
 - processDuggaFile_ms.php __==finished==__ New filename: "processSubmittedDugga_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. 
@@ -3018,17 +3018,25 @@ SELECT * FROM listentries WHERE visible = '3'
 
 <br>
 
-### updateCourseVersion_sectioned
-Uses the services __updateTableVers__ to change the content of these columns:
-- motd
+### updateCourseVersion_sectioned_ms.php
+__updateCourseVersion_sectioned_ms.php__ is used for editing a course version. The user must either have write permissions, be a superuser, or be a teacher.
 
-Uses the services __updateTableVers__ to change the content of these columns:
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, setAsActiveCourse_ms.php, retrieveSectionedService_ms.php
+
+__Querys used in this microservice:__
+
+_UPDATE_ operation on the table __'vers'__ to update the values of the columns:
 - versname
 - startdate
 - enddate
+- motd
 
-Uses the services __setActiveCourseVersion__ to change the content of these columns:
-- activeversion
+- Where the course ID ('cid'), course code ('coursecode'), and version number ('vers') match the specified parameters. 
+
+```sql
+UPDATE vers SET versname=:versname, startdate=:startdate, enddate=:enddate, motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;
+```
 
 <br>
 
