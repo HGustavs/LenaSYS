@@ -18,11 +18,12 @@ session_start();
 
 // Global variables
 $opt=getOP('opt');
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
 $coursevers=getOP('coursevers');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
-$userid=getUid();
+$debug=getOP('debug');
+$uid=getUid();
 
 $results = array();
 

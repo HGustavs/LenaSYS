@@ -16,7 +16,7 @@ $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
 $userid=getUid();
 $coursevers=getOP('coursevers');
-$courseid=getOP('cid');
+$courseid=getOP('courseid');
 
 // Fetch all course versions
 function getCourseVersions($pdo) {

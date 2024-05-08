@@ -21,5 +21,6 @@ $opt=getOP('opt');
 $courseid = getOP('courseid');
 $coursevers=getOP('coursevers');
 $log_uuid=getOP('log_uuid');
+$debug = "NONE!";
 
 echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));

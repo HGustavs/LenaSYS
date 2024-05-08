@@ -18,7 +18,8 @@ session_start();
 // Retrieve parameters from the request 
 $lid = getOP('lid');
 $visible = getOP('visible');
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
+$coursevers = getOP('coursevers');
 $versid = getOP('vers');
 $uid = getUid();
 $log_uuid=getOP('log_uuid');

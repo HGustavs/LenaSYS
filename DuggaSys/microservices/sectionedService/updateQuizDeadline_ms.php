@@ -16,9 +16,11 @@ session_start();
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
+$coursevers = getOP('coursevers');
 $link=getOP('link');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
+$debug = "NONE!";
 
 $deadline=getOP('deadline');
 $relativedeadline=getOP('relativedeadline');
