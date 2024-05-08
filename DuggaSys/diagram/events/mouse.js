@@ -58,7 +58,7 @@ function mdown(event) {
     if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-      
+
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
@@ -219,7 +219,7 @@ function ddown(event) {
                     targetElementDiv = document.getElementById(targetElement.id);
                     canPressDeleteBtn = true;
                 }
-                // TODO: Should this be missing a break?
+            // TODO: Should this be missing a break?
             case mouseModes.EDGE_CREATION:
                 if (event.button == 2) return;
                 const element = data[findIndex(data, event.currentTarget.id)];
@@ -332,7 +332,7 @@ function mup(event) {
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-                        
+
     disableIfDataEmpty();
 }
 

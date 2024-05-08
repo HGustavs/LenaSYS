@@ -2,7 +2,7 @@
  * @description Translate all elements to the correct coordinate
  */
 function updateCSSForAllElements() {
-    function updateElementDivCSS(elementData, divObject, useDelta = false) {
+    function updateElementDivCSS(elementData, divObject, useDelta, element) {
         let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
         let top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
 
@@ -44,20 +44,20 @@ function updateCSSForAllElements() {
 
     // Update positions of all data elements based on the zoom level and view space coordinate
     for (let i = 0; i < data.length; i++) {
-        var element = data[i];
+        const element = data[i];
         // Element DIV (dom-object)
-        var elementDiv = document.getElementById(element.id);
-        if (elementDiv != null) {
+        const elementDiv = document.getElementById(element.id);
+        if (elementDiv) {
             // If the element was clicked and our mouse movement is not null
-            var inContext = deltaX != null && findIndex(context, element.id) != -1;
-            var useDelta = (inContext && movingObject);
-            var fillColor;
-            var fontColor;
-            var weakKeyUnderline;
-            var disjointLine1Color;
-            var disjointLine2Color;
+            const inContext = deltaX && findIndex(context, element.id) != -1;
+            let useDelta = inContext && movingObject;
+            let fillColor;
+            let fontColor;
+            let weakKeyUnderline;
+            let disjointLine1Color;
+            let disjointLine2Color;
             if (data[i].isLocked) useDelta = false;
-            updateElementDivCSS(element, elementDiv, useDelta);
+            updateElementDivCSS(element, elementDiv, useDelta, element);
 
             // Edge creation does not highlight selected elements
             if (mouseMode != mouseModes.EDGE_CREATION) {
@@ -66,12 +66,12 @@ function updateCSSForAllElements() {
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if (markedOverOne()) {
+                        if (markedOverOne(inContext)) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
                             fillColor.style.fill = element.fill;
-                            fontContrast();
+                            fontColor.style.fill = fontContrast(element, fontColor);
                         }
                     }
                 }
@@ -80,12 +80,12 @@ function updateCSSForAllElements() {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if (markedOverOne()) {
+                        if (markedOverOne(inContext)) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
                             fillColor.style.fill = element.fill;
-                            fontContrast();
+                            fontColor.style.fill = fontContrast(element, fontColor);
                         }
                     }
                 }
@@ -94,12 +94,12 @@ function updateCSSForAllElements() {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if (markedOverOne()) {
+                        if (markedOverOne(inContext)) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
                             fillColor.style.fill = element.fill;
-                            fontContrast();
+                            fontColor.style.fill = fontContrast(element, fontColor);
                         }
                     }
                 }
@@ -109,12 +109,12 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
 
-                        if (markedOverOne()) {
+                        if (markedOverOne(inContext)) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
                             fillColor.style.fill = element.fill;
-                            fontContrast();
+                            fontColor.style.fill = fontContrast(element, fontColor);
                         }
                     }
                 } else { // Update normal elements, and relations
@@ -123,7 +123,7 @@ function updateCSSForAllElements() {
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    if (markedOverOne()) {
+                    if (markedOverOne(inContext)) {
                         fillColor.style.fill = color.LIGHT_PURPLE;
                         fontColor.style.fill = color.WHITE;
                         if (element.state == "weakKey") {
@@ -143,7 +143,7 @@ function updateCSSForAllElements() {
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.BLACK;
                             if (element.fill == color.BLACK) {
@@ -159,7 +159,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         fillColor.style.fill = `${element.fill}`;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                     }
                 }
                 // Update IEEntity
@@ -168,7 +168,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         fillColor.style.fill = `${element.fill}`;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                     }
                 }
                 // Update SDEntity
@@ -177,7 +177,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
                         fillColor.style.fill = `${element.fill}`;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                     }
                 }
                 // Update Elements with double borders.
@@ -186,7 +186,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
                         fillColor.style.fill = `${element.fill}`;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                     }
                 } else { // Update normal elements, and relations
                     fillColor = elementDiv.children[0].children[0];
@@ -194,9 +194,9 @@ function updateCSSForAllElements() {
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     disjointLine1Color = elementDiv.children[0].children[2];
                     disjointLine2Color = elementDiv.children[0].children[3];
-                    if (markedOverOne()) {
+                    if (markedOverOne(inContext)) {
                         fillColor.style.fill = `${element.fill}`;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.WHITE;
                         } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
@@ -214,7 +214,7 @@ function updateCSSForAllElements() {
                         }
                     } else {
                         fillColor.style.fill = element.fill;
-                        fontContrast();
+                        fontColor.style.fill = fontContrast(element, fontColor);
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.BLACK;
                             if (element.fill == color.BLACK) {
@@ -228,19 +228,19 @@ function updateCSSForAllElements() {
     }
     // Also update ghost if there is one
     if (ghostElement) {
-        var ghostDiv = document.getElementById(ghostElement.id);
+        const ghostDiv = document.getElementById(ghostElement.id);
 
         if (ghostDiv) {
-            updateElementDivCSS(ghostElement, ghostDiv)
+            updateElementDivCSS(ghostElement, ghostDiv, false);
         }
     }
 
-    function fontContrast() {
+    function fontContrast(element, fontColor) {
         //check if the fill color is black or pink, if so the font color is set to white
-        fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
+        return (element.fill == color.BLACK || element.fill == color.PINK) ? color.WHITE : color.BLACK;
     }
 
-    function markedOverOne() {
+    function markedOverOne(inContext) {
         //If more than one element is marked.
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
