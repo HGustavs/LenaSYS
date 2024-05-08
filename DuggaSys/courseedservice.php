@@ -91,18 +91,18 @@ if (checklogin()) {
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':courseGitURL', $courseGitURL); // for github url
-			try{
+			try {
 				$query->execute();
 			}
-			catch(Exception $e){
+			catch(Exception $e) {
 				$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator,hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
 				$query->bindParam(':usrid', $userid);
 				$query->bindParam(':coursecode', $coursecode);
 				$query->bindParam(':coursename', $coursename);
-				try{
+				try {
 					$query->execute();
 				}
-				catch(Exception $e){
+				catch(Exception $e) {
 					$error = $query->errorInfo();
 					$debug = "Error updating entries\n" . $error[2];
 				}
