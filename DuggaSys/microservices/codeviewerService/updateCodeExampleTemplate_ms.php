@@ -24,6 +24,8 @@ if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $co
 	$writeAccess="s";
 }
 
+$userid = getUid();
+
 $opt=getOP('opt');
 $templateNumber=getOP('templateno');
 $exampleId=getOP('exampleid');
@@ -51,7 +53,7 @@ if(checklogin() && ($writeAccess=="w" || isSuperUser(getuid()) == true)) {
         }
 
         // There are at least two boxes, create two boxes to start with
-        else if($templateNumber==10) $boxCount=1;
+        if($templateNumber==10) $boxCount=1;
         else if($templateNumber==1||$templateNumber==2) $boxCount=2;
         else if($templateNumber==3||$templateNumber==4 ||$templateNumber==8) $boxCount=3;
         else if($templateNumber==5||$templateNumber==6 ||$templateNumber==7) $boxCount=4;
