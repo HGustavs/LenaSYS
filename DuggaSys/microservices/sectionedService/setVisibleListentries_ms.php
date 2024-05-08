@@ -4,9 +4,10 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-include_once "../Share/basic.php";
-include_once "../Share/sessions.php";
-include ('../shareMicroservices/getUid_ms.php');
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include ('../sharedMicroservices/getUid_ms.php');
+include_once "retrieveSectionedService_ms.php";
 
 
 // Connect to database and start session
@@ -15,24 +16,27 @@ session_start();
 
 
 // Retrieve parameters from the request 
-$listentryId = getOP('listentryId');
-$visibility = getOP('visibility');
+$lid = getOP('lid');
+$visible = getOP('visible');
+$courseid = getOP('cid');
+$versid = getOP('vers');
+$uid = getUid();
+$log_uuid=getOP('log_uuid');
+$opt=getOP('opt');
 
 
 // Permissions Check
 
-if (checklogin() && isSuperUser(getUid())){
+if (checklogin() && isSuperUser($uid)){
 
     // prepare SQL query
-    $query = $pdo->prepare("UPDATE listentries Set visibility = :listentryId");
+    $query = $pdo->prepare("UPDATE listentries SET visible = :visible WHERE lid = :lid");
 
     // Bind Parameters
-    $query->bindParam(':cisiblity', $visibility);
-    $query->bindParam(':listentryId', $listentryId);
-
+    $query->bindParam(':visible', $visible);
+    $query->bindParam(':lid', $lid);
 
     // Query Execution
-
     if ($query->execute()){
 
         // Optionally log to event
@@ -45,5 +49,9 @@ if (checklogin() && isSuperUser(getUid())){
 } else {
     echo "insufficient permissions.";
 }
+
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
+return;
 
 ?>

@@ -4,6 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -29,6 +30,8 @@ $visibility=getOP('visibility');
 $grptype=getOP('grptype');
 $tabs=getOP('tabs');
 $gradesys=getOP('gradesys');
+$userid = getUid();
+$log_uuid=getOP('log_uuid');
 
 if($feedbackenabled != 1){
 	$feedbackenabled = 0;
@@ -115,4 +118,6 @@ if(strcmp($opt,"UPDATE")===0) {
     }
 }
 
-// add echo json_decode(retrieveSectionedService()); here
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
+return;

@@ -3,21 +3,27 @@
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
+// Include basic application services!
+date_default_timezone_set("Europe/Stockholm");
+include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 
-function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCreated, $isSuperUserVar){
-    // Include basic application services!
-    date_default_timezone_set("Europe/Stockholm");
-    include_once "../../../Shared/sessions.php";
-    
-    pdoConnect();
+function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuperUserVar){ 
+
+    $opt = getOP('opt');
+    $cid = getOP('cid');
+    $coursename = getOP('coursename');
+    $visibility = getOP('visib');
+    $versid = getOP('versid');
+    $courseGitURL = getOP('courseGitURL');
+    $log_uuid = getOP('log_uuid');
+    $userid=getUid();
+
+    $info = "opt: " . $opt . " cid: " . $cid . " coursename: " . $coursename . " versid: " . $versid . " visibility: " . $visibility . " courseGitUrl: " . $courseGitURL;
+    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "retrieveCourseedService_ms.php", $userid, $info);
+
     $entries=array();
-    // TODO change later to microservice when php isn't shit
-    if(isset($_SESSION['uid'])){
-        $userid=$_SESSION['uid'];
-    } else{
-        $userid="UNK";
-    }
 
     $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
     $queryreg->bindParam(':uid', $userid);
@@ -176,8 +182,6 @@ function retrieveCourseedService($pdo, $ha, $debug, $writeAccess, $LastCourseCre
         'motd' => $motd,
         'readonly' => $readonly
     );
-
-    //echo json_encode($array);
 
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php",$userid,$info);
 

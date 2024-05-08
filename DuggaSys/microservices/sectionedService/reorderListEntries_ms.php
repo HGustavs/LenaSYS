@@ -4,6 +4,7 @@
   include_once "../../../Shared/sessions.php";
   include_once "../../../Shared/basic.php";
   include_once "../sharedMicroservices/getUid_ms.php";
+  include_once "retrieveSectionedService_ms.php";
 
   pdoConnect();
   session_start();
@@ -16,6 +17,8 @@
   $order = getOP('order');
   $lid = getOP('lid');
   $opt = getOP('opt');
+  $uid = getUid();
+  $log_uuid=getOP('log_uuid');
 
   //Call the updateTableListentries service to update the pos & moment columns
 
@@ -39,5 +42,6 @@
     }
   }
 
-  echo json_encode(array('courseid' => $courseid, 'coursevers' => $coursevers, 'pos' => $pos, 'moment' => $moment, 'debug' => $debug));
+  $data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+  echo json_encode($data);
   return;

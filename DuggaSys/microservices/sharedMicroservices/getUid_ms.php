@@ -8,6 +8,8 @@ include_once "../../../Shared/basic.php";
 
 function getUid()
 {
+    checklogin();
+
     // Checks user id, if user has none a guest id is set
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];

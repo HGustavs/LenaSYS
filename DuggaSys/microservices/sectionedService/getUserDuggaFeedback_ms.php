@@ -8,6 +8,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -22,6 +23,8 @@ if (!checklogin()) {
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $moment=getOP('moment');
+$versid = getOP('vers');
+$log_uuid=getOP('log_uuid');
 
 
 $userfeedback=array();
@@ -63,6 +66,7 @@ if(strcmp($opt,"GETUF")==0){
         $avgfeedbackscore = $result['avgScore'];
     }
 }
-echo json_encode(array('userfeedback'=> $userfeedback,'avgfeedbackscore' => $avgfeedbackscore));
 
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+echo json_encode($data);
 return;
