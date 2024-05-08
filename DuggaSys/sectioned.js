@@ -331,8 +331,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Set Lid
   $("#lid").val(lid);
 
-  validateSectName('sectionname','dialog10');
-  validateSectName('fdbckque','dialog11');
+  validateSectionName('sectionname','dialog10');
+  validateSectionName('feedBackQuestion','dialog11');
 
   // Display Dialog
   $("#editSection").css("display", "flex");
@@ -345,7 +345,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     if (feedbackenabled == 1) {
       $("#fdbck").prop("checked", true);
       $("#inputwrapper-FeedbackQuestion").css("display", "block");
-      $("#fdbckque").val(feedbackquestion);
+      $("#feedBackQuestion").val(feedbackquestion);
     } else {
       $("#fdbck").prop("checked", false);
       $("#inputwrapper-FeedbackQuestion").css("display", "none");
@@ -936,7 +936,7 @@ function prepareItem() {
 
   if ($('#fdbck').prop('checked')) {
     param.feedback = 1;
-    param.feedbackquestion = $("#fdbckque").val();
+    param.feedbackquestion = $("#feedBackQuestion").val();
   } else {
     param.feedback = 0;
     param.feedbackquestion = null;
@@ -3602,7 +3602,7 @@ function validateDate2(ddate, dialogid) {
   return false;
 }
 
-function validateSectName(name,dialog) {
+function validateSectionName(name,dialog) {
   initInputColorTheme();
   var element = document.getElementById(name);
   var errorMsg = document.getElementById(dialog);
@@ -3738,12 +3738,8 @@ function quickValidateForm(formid, submitButton) {
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display;
     valid = true;
-    valid &= validateSectName('sectionname','dialog10');
-    console.log('a22karja after name');
-    console.log(valid);
-    valid &= validateSectName('fdbckque','dialog11');
-    console.log('a22karja after question');
-    console.log(valid);
+    valid &= validateSectionName('sectionname','dialog10');
+    valid &= validateSectionName('feedBackQuestion','dialog11');
 
     // Validates Deadline
     if (deadlinedisplayattribute != 'none') {

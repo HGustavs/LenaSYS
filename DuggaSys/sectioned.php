@@ -281,7 +281,6 @@
 				<input type='hidden' id='lid' value='Toddler' />
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
-					<!-- a22karja -->
 					<span>Name:</span>
 					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname','dialog10')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
@@ -324,10 +323,9 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<!-- a22karja -->
 					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'>
 					<span>Student Feedback Question:</span>
-					<input type="input" onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('fdbckque','dialog11')" class='textinput' id='fdbckque' value='How would you grade the dugga' ></input>
+					<input type="input" onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('feedBackQuestion','dialog11')" class='textinput' id='feedBackQuestion' value='How would you grade the dugga' ></input>
 					</div>
 					<div class="formDialog" style="display: block;  margin-left:40px;">
   		      			<span id="dialog11" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
