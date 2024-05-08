@@ -66,7 +66,7 @@
 		<div class='loginBox' style='width:494px;'>
 			<div>
 				<div class='loginBoxheader'>
-					<h3>Add user</h3>
+					<h3>Create user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
 				<div class="content-wrapper">
@@ -123,7 +123,6 @@
 		</div>
 	</div>
 
-	<!-- Add User Dialog START -->
 	<div id='addUser' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:494px;'>
 			<div>
