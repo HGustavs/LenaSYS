@@ -3858,7 +3858,7 @@ function validateForm(formid) {
     }
     // If all information is correct
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
-      alert('New version created');
+      toast('success','New version created', 5);
       createVersion();
       $('#newCourseVersion input').val("");
 
@@ -3879,9 +3879,9 @@ function validateForm(formid) {
 
     // If all information is correct
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
-      alert('Version updated');
       updateVersion();
       resetMOTDCookieForCurrentCourse();
+      toast('success','Version updated', 7);
     } else {
       toast("error","You have entered incorrect information",7);
     }
