@@ -93,7 +93,6 @@ function entityIsOverlapping(id, x, y) {
 
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
-
             // Sequence life-lines can be placed on activations
             if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") && element.kind === "sequenceActivation") continue;
 
@@ -102,8 +101,8 @@ function entityIsOverlapping(id, x, y) {
             else if (element.type === "SE" && (data[i].kind === "sequenceLoopOrAlt" || data[i].kind === "sequenceActivation")) continue;
 
             // Superstates can be placed on state-diagram elements and vice versa
-            else if (data[i].kind === elementTypesNames.UMLSuperState && element.type === "SD") continue;
-            else if (data[i].type === "SD" && element.kind === elementTypesNames.UMLSuperState) continue;
+            else if (data[i].kind === elementTypesNames.UMLSuperState && !backgroundElement.includes(element.kind)) continue;
+            else if (!backgroundElement.includes(data[i].kind) && element.kind === elementTypesNames.UMLSuperState) continue;
         }
 
         const x2 = data[i].x + data[i].width;
