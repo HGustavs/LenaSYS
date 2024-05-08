@@ -37,7 +37,7 @@ function determineLineSelect(mouseX, mouseY) {
 
         const hasPoints = allLines[i].getAttribute('points'); // If line has attribute point (polyline)
 
-        if (hasPoints != null) {
+        if (hasPoints) {
             const points = hasPoints.split(' '); // Split points attribute in pairs
             // Get the points in polyline
             for (let j = 0; j < points.length - 1; j++) {

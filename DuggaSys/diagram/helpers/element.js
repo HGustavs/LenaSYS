@@ -74,22 +74,15 @@ function setPos(elements, x, y) {
 
     // Check for overlaps
     elements.forEach(elem => {
-        let newX, newY;
-        if (settings.grid.snapToGrid) {
-            if (!ctrlPressed) {
-                // Calculate nearest snap point
-                newX = Math.round((elem.x + elem.width / 2 - (x * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                newY = Math.round((elem.y + elem.height / 2 - (y * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                // Set the new snap point to center of element
-                newX -= elem.width / 2;
-                newY -= elem.height / 2;
-            } else {
-                newX += (targetDelta.x / zoomfact);
-                newY += ((targetDelta.y / zoomfact) + 25);
-            }
-        } else {
-            newX -= (x / zoomfact);
-            newY -= (y / zoomfact);
+        let newX = elem.x - deltaX / zoomfact;
+        let newY = elem.y - deltaY / zoomfact;
+        if (settings.grid.snapToGrid && !ctrlPressed) {
+            // Calculate nearest snap point
+            newX = Math.round((elem.x + elem.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * settings.grid.gridSize / 2;
+            newY = Math.round((elem.y + elem.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * settings.grid.gridSize / 2;
+            // Set the new snap point to center of element
+            newX -= elem.width / 2;
+            newY -= elem.height / 2;
         }
         if (entityIsOverlapping(elem.id, newX, newY)) {
             overlappingObject = elem;
@@ -102,8 +95,8 @@ function setPos(elements, x, y) {
         const previousY = overlappingObject.y;
 
         // Move the object back one step
-        overlappingObject.x -= (x / zoomfact);
-        overlappingObject.y -= (y / zoomfact);
+        overlappingObject.x -= x / zoomfact;
+        overlappingObject.y -= y / zoomfact;
 
         // Check again if the adjusted position still overlaps
         if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
@@ -120,30 +113,24 @@ function setPos(elements, x, y) {
     } else {
         elements.forEach(obj => {
             if (obj.isLocked) return;
-            if (settings.grid.snapToGrid) {
-                if (!ctrlPressed) {
-                    // Calculate nearest snap point
-                    obj.x = Math.round((obj.x + obj.width / 2 - (x * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                    obj.y = Math.round((obj.y + obj.height / 2 - (y * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                    // Set the new snap point to center of element
-                    obj.x -= obj.width / 2;
-                    obj.y -= obj.height / 2;
-                } else {
-                    obj.x += (targetDelta.x / zoomfact);
-                    obj.y += ((targetDelta.y / zoomfact) + 25);
-                }
+            if (settings.grid.snapToGrid && !ctrlPressed) {
+                // Calculate nearest snap point
+                obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+                obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+                // Set the new snap point to center of element
+                obj.x -= obj.width / 2;
+                obj.y -= obj.height / 2;
             } else {
                 obj.x -= (x / zoomfact);
                 obj.y -= (y / zoomfact);
             }
             // Add the object-id to the idList
             idList.push(obj.id);
-
             // Make the coordinates without decimals
             obj.x = Math.round(obj.x);
             obj.y = Math.round(obj.y);
         });
-        if (idList.length != 0) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
+        if (idList.length) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
     }
     // Update positions
     updatepos();

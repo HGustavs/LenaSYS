@@ -724,8 +724,11 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) setPos(context, 0, settings.grid.gridSize / 2);
-            else setPos(context, 0, 1);
+            if (settings.grid.snapToGrid) {
+                setPos(context, 0, settings.grid.gridSize / 2);
+            } else {
+                setPos(context, 0, 1);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -741,8 +744,11 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) setPos(context, 0, -settings.grid.gridSize / 2);
-            else setPos(context, 0, -1);
+            if (settings.grid.snapToGrid) {
+                setPos(context, 0, -settings.grid.gridSize / 2);
+            } else {
+                setPos(context, 0, -1);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -758,8 +764,11 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) setPos(context, settings.grid.gridSize / 2, 0);
-            else setPos(context, 1, 0);
+            if (settings.grid.snapToGrid) {
+                setPos(context, settings.grid.gridSize / 2, 0);
+            } else {
+                setPos(context, 1, 0);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -775,8 +784,11 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) setPos(context, -settings.grid.gridSize / 2, 0);
-            else setPos(context, -1, 0);
+            if (settings.grid.snapToGrid) {
+                setPos(context, -settings.grid.gridSize / 2, 0);
+            } else {
+                setPos(context, -1, 0);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
