@@ -4528,7 +4528,6 @@ div.reset-pw:hover{
 
 .dropdown-list-container {
   padding: 8px;
-  width: 200px;
   color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;

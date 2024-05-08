@@ -379,7 +379,8 @@
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' '>"; //Dropdown menu for when hovering the search bar
 					if($requestedService=="accessed.php"){
-						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Webug13h, 2020-02-29 13:37</p>";
+						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> 
+						<b>Ex:</b> Johan Karlson 2020-02-29 13:37</p>";
 					}
 					if($requestedService=="duggaed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> template name, name, date <br> <b>Ex:</b> color-dugga</p>";
