@@ -396,9 +396,12 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
     }
     return `<polyline 
                 id='${line.id}' 
-                points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}'
+                points='${fx + offset.x1},
+                ${fy + offset.y1} ${fx + offset.x1 - dx},
+                ${fy + offset.y1 - dy} ${tx + offset.x2 + dx},
+                ${ty + offset.y2 + dy} ${tx + offset.x2},
+                ${ty + offset.y2}'            
             />`;
-
 }
 
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {

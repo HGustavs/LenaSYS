@@ -44,10 +44,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
     // Defina a boolean for special case for sequence diagrams where multiple lines are allowed
     var specialCaseSequence = (
-        fromElement.kind === elementTypesNames.sequenceActor &&
-        toElement.kind === elementTypesNames.sequenceActor ||
-        fromElement.kind === elementTypesNames.sequenceObject &&
-        toElement.kind === elementTypesNames.sequenceObject
+        fromElement.kind === elementTypesNames.sequenceActivation &&
+        toElement.kind === elementTypesNames.sequenceActivation
     );
 
     // If there is no existing lines or is a special case
