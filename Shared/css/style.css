@@ -2167,7 +2167,7 @@ Dialog Box END
   padding-left: 10px;
   cursor: default;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .loginBoxheader h3,
@@ -2705,7 +2705,7 @@ label.login-label {
   text-align: start;
   border-radius: 0px;
   box-sizing: border-box;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .greyedout-textinput {
@@ -9691,6 +9691,21 @@ margin:2px;
   position: fixed;
   z-index: 10000;
   min-width: 20%;
+}
+
+.content-wrapper {
+  margin-top: .5rem;
+  padding: .5rem;
+}
+
+#createUser .flexwrapper {
+  /* margin-top: .75rem; */
+  margin-bottom: .75rem;
+}
+
+#createUser .flex-end{
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media only screen and (max-width: 460px) {

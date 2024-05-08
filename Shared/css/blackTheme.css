@@ -1276,7 +1276,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   
  .textinput {
     color:white;
-    background-color: black;
+    background-color: var(--color-background);
 }
 
  #emakeactive {
