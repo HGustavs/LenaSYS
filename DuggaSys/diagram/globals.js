@@ -39,6 +39,9 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variable for drawing a line
+var isCurrentlyDrawing = false;
+
 // Variables for resizing
 var originalWidth = 0;
 var originalHeight = 0;

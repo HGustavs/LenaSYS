@@ -1,13 +1,15 @@
 /**
- * @description Constructs an string containing the svg line-elements of the inputted line object in parameter.
+ * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
- * @param {boolean} targetGhost Is the targeted line an ghost line
+ * @param {boolean} targetGhost Is the targeted line a ghost line
  */
 function drawLine(line, targetGhost = false) {
+
     let str = "";
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
+    console.log(`To element: ${telem}, From element: ${felem}, Mouse: ${event.clientX}`);
     if (!felem || !telem) return;
     line.type = (telem.type == entityType.note) ? telem.type : felem.type;
     let strokeDash = (line.kind == lineKind.DASHED || line.type == entityType.note) ? "10" : "0";
@@ -18,6 +20,13 @@ function drawLine(line, targetGhost = false) {
 
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+
+    console.log(isCurrentlyDrawing);
+
+    if (isCurrentlyDrawing){
+        tx = event.clientX;
+        ty = event.clientY;
+    }
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
@@ -227,6 +236,7 @@ function getLineAttrubutes(f, t, ctype) {
         y1: 0,
         y2: 0,
     }
+    console.log(`From: ${f.cx} To: ${t.cx} CType: ${ctype}`);
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;

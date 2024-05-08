@@ -5,7 +5,8 @@
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal, isCurrentlyDrawing = true) {
+
     let result;
 
     if (lineAlwaysFrom.includes(toElement.kind) ||
@@ -23,6 +24,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     let errorMessage = checkConnectionErrors(fromElement, toElement);
     if (errorMessage) {
         displayMessage(messageTypes.ERROR, errorMessage);
+        isCurrentlyDrawing = false;
         return;
     }
     // Filter the existing lines and gets the number of existing lines
@@ -56,9 +58,14 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
         preProcessLine(newLine);
         addObjectToLines(newLine, stateMachineShouldSave);
-        if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
+
+        if (successMessage) {
+            isCurrentlyDrawing = false;
+            displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
+        }
         result = newLine;
     } else {
+        isCurrentlyDrawing = false;
         displayMessage(messageTypes.ERROR, `Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
     }
     return result;
