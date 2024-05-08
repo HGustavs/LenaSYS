@@ -2587,7 +2587,7 @@ The __retrieveProfileService_ms.php__ returns an array containing three key valu
 
 - __debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
 
-The microservice provide direct feedback from the server to the client about the result of the requested operation (either changing the password or security question).
+The microservice provide direct feedback from the server about the result of the requested operation (either changing the password or security question).
 
 <br>
 <br>
@@ -2688,6 +2688,7 @@ The microservice provides feedback about submissions and associated metadata for
 __readGroupValues_ms.php__ is called upon when a group is clicked on.
 
 __Include original service files:__ sessions.php
+__Include microservices:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2737,7 +2738,7 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2768,7 +2769,7 @@ DELETE FROM listentries WHERE lid = :lid
 Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database).
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2838,7 +2839,7 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 Updates the order of the listentries of a course. Not to be confused with __updateListentrie_ms.php__.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2859,7 +2860,7 @@ UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
 
 ### updateListentries_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2921,6 +2922,7 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 
 ### updateListentriesTabs_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2941,6 +2943,7 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 
 ### updateListentriesGradesystem_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2959,7 +2962,7 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 
 ### updateVisibleListentries_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2980,6 +2983,7 @@ UPDATE listentries SET visibility = :listentryId;
 __updateQuizDeadline_ms.php__ updates the deadline for a quiz (also referred to as a dugga).
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3001,6 +3005,7 @@ UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=
 Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. __readRemovedListentries_ms.php__ is close related to the __removeListentries_ms.php__ that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what __readRemovedListentris_ms.php__ does.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3048,6 +3053,7 @@ UPDATE vers SET versname=:versname, startdate=:startdate, enddate=:enddate, motd
 __updateActiveCourseVersion_sectioned_ms.php__ updates the active version of a course.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3068,6 +3074,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 __readCourseVersions_ms.php__ fetches all course versions.
 
 __Include original service files:__ sessions.php
+__Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
 
@@ -3082,6 +3089,7 @@ _SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
 - enddate
 - motd
 
+```sql
 SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
 ```
 
@@ -3107,6 +3115,7 @@ Uses service __selectFromTableGitFiles__ to _get_ information it requires from _
 __readUserDuggaFeedback_ms.php__ retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3135,7 +3144,7 @@ SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 
 <br>
 
-### readSectionedService_ms.php
+### retrieveSectionedService_ms.php
 __Include original service files:__ sessions.php, basic.php
 
 __Querys used in this microservice:__
@@ -3325,6 +3334,24 @@ _SELECT_ operation on the table __'listentries'_ to retrieve all columns where:
 ```sql
 SELECT * FROM listentries WHERE visible = '3'
 ```
+
+
+The microservice gathers and organizes information into an array that provides details about courses, their versions, quizzes, user interactions, and permissions settings. It supports the interface by delivering information needed to correctly display and manage course content and student interactions. It´s basically gathering and sharing information about courses with users, making sure it fits what they are allowed to see and do.
+
+- __Entries__ - Lists courses with details such as course ID ('cid'), course name ('coursename'), course code ('coursecode'), and visibility status. It also indicates whether a user is registered for each course and provides information on active versions.
+
+- __Versions__- Includes information on the different versions of the courses available, identification details for each version of a course such as ('vers'), version names ('versname'), and associated course names ('coursename' and 'coursenamealt').
+
+-__Quizzes and assignments__ - Information about quizzes and assignments for each course version, including names, release dates, deadlines, and relative deadlines.
+
+- __User-specific data__ - Personalized data such as group memberships, submitted assignments, grades, and feedback on user performance.
+
+- __Permissions__ - Checks and confirms user permissions to ensure appropriate access to course information based on the user's role.
+
+- __Supporting resources__ - Manages links to extra resources and code examples that add to the course material.
+
+- __Debugging__ - Logs of any issues encountered during the execution of the function.
+
 
 <br>
 <br>
