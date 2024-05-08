@@ -350,8 +350,8 @@ svg text {
 	white-space: nowrap;
 }
 .previewTable tr {
-		display: table-row;
-		vertical-align: inherit;
+	display: table-row;
+	vertical-align: inherit;
 }
 .previewTable th {
 	font-weight: bold;
@@ -361,7 +361,6 @@ svg text {
 	padding-left: 10px;
 }
 .previewTable td {
-	padding-right: 30px;
 	padding-left: 10px;
 	width: 1px;
 }
