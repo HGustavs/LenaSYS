@@ -646,8 +646,8 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
         <path class="text"
             d=" M ${maxWidth - (23 * zoomfact)},${linew}
                 h -${maxWidth - (23 * zoomfact)}
-                v ${boxh + (texth * length) - linew * 2}
-                h ${boxw - linew * 2}
+                v ${maxHeight}
+                h ${maxWidth}
                 v -${maxHeight - (23 * zoomfact)}
                 l -${23.5 * zoomfact}, -${23 * zoomfact}
                 h 1
