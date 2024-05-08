@@ -123,6 +123,29 @@
 		</div>
 	</div>
 
+	<!-- Add User Dialog START -->
+	<div id='addUser' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:494px;'>
+			<div>
+				<div class='loginBoxheader'>
+					<h3>Add user</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>Choose user:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
+
 	<!-- Add User Dialog END -->
 
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
@@ -133,7 +156,7 @@
 					<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
 				</a>
 			</li>
-			<li onclick="showCreateUserPopup();">
+			<li onclick="showAddUserPopup();">
 				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
 					<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
 				</a>
