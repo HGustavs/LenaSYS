@@ -27,7 +27,7 @@ function createNewListentrie($pdo, $listEntry){
 	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 
 	// Logging for newly added items, USE retrieveUsername() when it is implemented. UNK temporary
-    $username = retrieveUsername($pdo);
+    $username = retrieveUsername();
 	logUserEvent($listEntry['userid'],$username,EventTypes::SectionItems, $listEntry['entryname']);
     }
 

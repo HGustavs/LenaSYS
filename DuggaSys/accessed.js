@@ -176,7 +176,8 @@ function verifyUserInputForm(input) {
 // validateName(name)
 // Returns null if there are NO errors, otherwise a descripitve error message as string.
 //---------------------------------------------------------------------------------------------------
-function validateName(name) {
+function validateName(name)
+{
 	const length = name.length;
 	if(length < 2)	return 'Name is too short\nMinimum two characters';	// Too short
 	if(length > 50)	return 'Name is too long\nMaximum 50 characters';	// Too long
@@ -188,35 +189,36 @@ function validateName(name) {
 	return null;	// The provided name is alright
 }
 
-function tooltipFirst() {
-	
-	let fnameInputBox = document.getElementById('addFirstname');
-	let fname = document.getElementById('addFirstname').value;
-	let error = validateName(fname);
+function validateFirstName() { return validateName(document.getElementById('addFirstname').value); }
+function validateLastName() { return validateName(document.getElementById('addLastname').value); }
 
-	if(error && fname.length > 0) {		// Error, fade in tooltip
+function tooltipFirst()
+{
+	var error = validateFirstName();
+	var fnameInputBox = document.getElementById('addFirstname');
+
+	if(error && document.getElementById('addFirstname').value.length > 0) {	// Error, fade in tooltip
 		document.getElementById('tooltipFirst').innerHTML = error;
 		$('#tooltipFirst').fadeIn();
-		fnameInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
+		fnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
 		$('#tooltipFirst').fadeOut();
-		fnameInputBox.style.backgroundColor = 'var(--color-background)';
+		fnameInputBox.style.backgroundColor = '#fff';
 	}
 }
 
-function tooltipLast() {
+function tooltipLast()
+{
+	var error = validateLastName();
+	var lnameInputBox = document.getElementById('addLastname');
 
-	let lnameInputBox = document.getElementById('addLastname');
-	let lname = document.getElementById('addLastname').value;
-	let error = validateName(lname);
-
-	if(error && lname.length > 0) {		// Error, fade in tooltip
+	if(error && document.getElementById('addLastname').value.length > 0) {	// Error, fade in tooltip
 		document.getElementById('tooltipLast').innerHTML = error;
 		$('#tooltipLast').fadeIn();
-		lnameInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
+		lnameInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
 		$('#tooltipLast').fadeOut();
-		lnameInputBox.style.backgroundColor = 'var(--color-background)';
+		lnameInputBox.style.backgroundColor = '#fff';
 	}
 }
 
@@ -224,7 +226,8 @@ function tooltipLast() {
 // validateEmail(email)
 // Returns null if there are NO errors, otherwise a descripitve error message as string.
 //---------------------------------------------------------------------------------------------------
-function validateEmail(email) {
+function validateEmail(email)
+{
 	const length = email.length;
 	const delimiter = email.indexOf('@');	// Delimiter of the @ in an email
 
@@ -244,19 +247,18 @@ function validateEmail(email) {
 	return null;	// The provided email is correct!
 }
 
-function tooltipEmail() {
-	
-	let emailInputBox = document.getElementById('addEmail');
-	let email = document.getElementById('addEmail').value;
-	let error = validateEmail(email);
+function tooltipEmail()
+{
+	var error = validateEmail(document.getElementById('addEmail').value);
+	var emailInputBox = document.getElementById('addEmail');
 
-	if(error && email.length > 0) {	// Error, fade in tooltip
+	if(error && document.getElementById('addEmail').value.length > 0) {	// Error, fade in tooltip
 		document.getElementById('tooltipEmail').innerHTML = error;
 		$('#tooltipEmail').fadeIn();
-		emailInputBox.style.backgroundColor = 'var(--color-red)';
+		emailInputBox.style.backgroundColor = '#f57';
 	} else {															// No error, fade out tooltip
 		$('#tooltipEmail').fadeOut();
-		emailInputBox.style.backgroundColor = 'var(--color-background)';
+		emailInputBox.style.backgroundColor = '#fff';
 	}
 }
 
@@ -265,23 +267,23 @@ function tooltipEmail() {
 // Returns null if there are NO errors, otherwise a descripitve error message as string.
 //---------------------------------------------------------------------------------------------------
 
-function validateTerm(term) {
+function validateTerm(term)
+{
 	if(term.match(/^(HT-|VT-)\d{2}$/gm) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
 	return null; //the provided term is correct
 }
+function tooltipTerm()
+{
+	var error = validateTerm(document.getElementById('addTerm').value);
+	var termInputBox = document.getElementById('addTerm');
 
-function tooltipTerm() {
-	let error = validateTerm(document.getElementById('addTerm').value);
-	let termInputBox = document.getElementById('addTerm');
-	let term = document.getElementById('addTerm').value;
-
-	if(error && term.length > 0) {	// Error, fade in tooltip
+	if(error && document.getElementById('addTerm').value.length > 0) {	// Error, fade in tooltip
 		document.getElementById('tooltipTerm').innerHTML = error;
 		$('#tooltipTerm').fadeIn();
-		termInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
+		termInputBox.style.backgroundColor = '#f57';
+	} else {															// No error, fade out tooltip
 		$('#tooltipTerm').fadeOut();
-		termInputBox.style.backgroundColor = 'var(--color-background)';
+		termInputBox.style.backgroundColor = '#fff';
 	}
 }
 

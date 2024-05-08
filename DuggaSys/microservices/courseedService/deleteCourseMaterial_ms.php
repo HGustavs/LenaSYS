@@ -5,26 +5,10 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
 include_once "../../../Shared/sessions.php";
-include_once "./retrieveCourseedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
-
-$debug="NONE!";
-$ha = null;
-$isSuperUserVar = false;
-
-// Login is checked
-if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
-	$isSuperUserVar = isSuperUser($userid);
-	$ha = $isSuperUserVar;
-}
 
 //Delete course matterial from courses that have been marked as deleted.
 $deleted = 3;
@@ -187,5 +171,3 @@ if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
 }
-
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));

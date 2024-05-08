@@ -65,7 +65,7 @@ html body {
     margin-bottom: .5rem;
 }
 
-.breadcrumb-selected {
+.breadcrumb-selected{
     color: var(--primary-color);
     font-weight: bold;
 }
@@ -146,11 +146,11 @@ html body {
 
 /*  Declaration of Font-family this way is
     not optimal, but increase readability   */
-.input-field label {
+.input-field label{
     font-family: var(--body-font)
 }
 
-.input-field input {
+.input-field input{
     font-family: var(--body-font)
 }
 
@@ -186,7 +186,7 @@ input[type=text]:focus {
     font-size: var(--text-medium);
 }
 
-.checkbox label {
+.checkbox label{
     font-family: var(--body-font)
 }
 
@@ -198,15 +198,6 @@ input[type=checkbox] {
     font-family: var(--body-font);
     font-size: var(--text-small);
     color: var(--warning-text);
-    font-style: italic;
-    padding-left: 0.25rem;
-    margin-top: 0.25rem;
-}
-
-.success {
-    font-family: var(--body-font);
-    font-size: var(--text-small);
-    color: var(--success-text);
     font-style: italic;
     padding-left: 0.25rem;
     margin-top: 0.25rem;
@@ -252,35 +243,4 @@ input[type=checkbox] {
 
 .backButton:active {
     box-shadow: -2px 2px 2px var(--text-dark);
-}
-
-/*  This code is nested CSS. It's a relatively new CSS
-    functionality. If you are unfamiliar with it, more information
-    and some examples can be found here --> https://drafts.csswg.org/css-nesting-1/ */
-.progressBar {
-    color: var(--text-dark);
-    font-family: var(--body-font);
-    font-style: italic;
-    font-size: 14px;
-    max-width: 60%;
-
-    .progressBarLabels {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: .25rem;
-    }
-
-    .progressBarBorder {
-        display: flex;
-        justify-content: space-between;
-        background-color: var(--accent-color);
-        height: .75rem;
-    }
-
-    .progressBarIndicator {
-        font-style: italic;
-        background-color: var(--secondary-color);
-        width: 15%;
-
-    }
 }

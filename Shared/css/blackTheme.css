@@ -391,12 +391,6 @@
 	color: var(--color-text-light);
 }
 
-.instructionBox{
-    border:1px solid #614875; 
-    margin: 5px auto; 
-    margin-bottom:10px;
-}
-
 /* BOXMENU STYLING START */
 .buttomenu2Style{
 	background-color: var(--color-background-codeviewer-nav);
@@ -476,29 +470,10 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-light);
 }
-/*A global styling for darkmode, added the class where there needed darkbackgrounds*/
+    /*A global styling for darkmode, added the class where there needed darkbackgrounds*/
 .DarkModeBackgrounds{
-    background-color: var(--color-background);
-} 
-
-.previewTable a{
-    color:white;
-}
-
-.previewTable th{
-    background-color: var(--color-background);
-}
-
-#InlPHPDocumentPrev{
-    background-color: var(--color-background);
-}
-
-.previewTable tr:nth-child(odd){
-    background-color: var(--color-sectioned-table-lo);
-}
-.previewTable tr:nth-child(even){
-    background-color: var(--color-sectioned-table-hi);
-}
+        background-color: var(--color-background);
+    } 
 
 /*A global styling for darkmode, a class for white text on darkbackgrounds*/
 .DarkModeText{
@@ -623,7 +598,7 @@ body {
 }
 
 .instructions-content{
-    border: 1px solid  var(--color-sectioned-table-lo);
+    border: 2px solid  var(--color-sectioned-table-lo);
 } 
 
 .feedback-button:hover:after, .instructions-button:hover:after {
@@ -1276,7 +1251,7 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   
  .textinput {
     color:white;
-    background-color: var(--color-background);
+    background-color: black;
 }
 
  #emakeactive {

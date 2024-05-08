@@ -108,13 +108,12 @@ function onMouseModeDisabled() {
  * @description Cycles to the next item in a submenu when the same keybind is pressed again.
  * @param {Array} subMenu What sub menu array to get elementType from
  */
-function subMenuCycling(subMenu, type) {
+function subMenuCycling(subMenu) {
     // Cycle through sub menu items
     if (mouseMode == mouseModes.PLACING_ELEMENT && subMenu.includes(elementTypeSelected)) {
         for (let i = 0; i < subMenu.length; i++) {
             if (elementTypeSelected == subMenu[i]) {
-                togglePlacementType(subMenu[(i + 1) % subMenu.length], type);
-                setElementPlacementType(subMenu[(i + 1) % subMenu.length]);
+                setElementPlacementType(subMenu[(i+1) % subMenu.length]);
                 setMouseMode(mouseModes.PLACING_ELEMENT);
                 break;
             }

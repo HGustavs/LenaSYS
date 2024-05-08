@@ -131,7 +131,6 @@ function drawElementProperties(element) {
             break;
         case elementTypesNames.IEEntity:
             str += nameInput(element);
-            str += textarea('Primary Key', 'primaryKey', element);
             str += textarea('Attributes', 'attributes', element);
             break;
         case elementTypesNames.SDEntity:
@@ -222,6 +221,7 @@ function drawLineProperties(line) {
     switch (line.type) {
         case entityType.ER:
             str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
+            if (!isLineConnectedTo(line, elementTypesNames.ERAttr)) break;
             str += `<label style="display: block">Cardinality:`;
             let optER;
             Object.keys(lineCardinalitys).forEach(cardinality => {
@@ -245,17 +245,11 @@ function drawLineProperties(line) {
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
-            let optSD = option(SDLineType, line.innerType);
             str += includeLabel(line)
             str += iconSelection([SDLineIcons], line);
             str += `<label style="display: block">Line Type:</label>`;
+            let optSD = option(SDLineType, line.innerType);
             str += select('lineType', optSD, false);
-            break;
-        case entityType.SE:  
-            str += includeSELabel(line)
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
-            str += iconSelection([SELineIcons], line);
-            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
             break;
     }
     str += saveButton('changeLineProperties();');
@@ -287,11 +281,6 @@ const includeLabel = (line) => {
         + lineLabel('lineLabel', 'Label', line.label);
 }
 
-const includeSELabel = (line) => {
-    return '<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>'
-        + lineLabel('lineLabel', 'Label', line.label);
-}
-
 const cardinalityLabels = (line) => {
     return `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`
         + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
@@ -299,6 +288,7 @@ const cardinalityLabels = (line) => {
 }
 
 /**
+ *
  * @description function for include button to the options panel,writes out << Include >>
  */
 function setLineLabel() {
@@ -1783,10 +1773,6 @@ function changeLineProperties() {
     }
     if (line.type == entityType.SD) {
         changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    if (line.type == entityType.SE) {
         changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
         changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
     }

@@ -40,8 +40,4 @@ if (!$stmt->execute()) {
     $debug = "Error updating entries" . $error[2];
 }
 
-include_once("retrieveDuggaedService_ms.php");
-$log_uuid=getOP('log__uuid');
-$coursevers = getOP('coursevers');
-$retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
-echo json_encode($retrievedData);
+echo json_encode($debug);

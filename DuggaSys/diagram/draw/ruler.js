@@ -26,7 +26,7 @@ function drawRulerBars(X, Y) {
 
     let verticalText
     if (zoomfact < 0.5) {
-        verticalText = "writing-mode='vertical-lr'";
+        verticalText = "writing-mode= 'vertical-lr'";
     } else {
         verticalText = " ";
     }
@@ -36,41 +36,41 @@ function drawRulerBars(X, Y) {
     let viewportWidth = window.innerWidth;
 
     let visibleRangeY = [
-        pannedY * -1,
-        pannedY * -1 + viewportHeight
+        (pannedY*-1),
+        (pannedY*-1 + viewportHeight)
     ];
     let visibleRangeX = [
-        pannedX * -1 ,
-        pannedX * -1 + viewportWidth
+        (pannedX*-1) ,
+        (pannedX*-1 + viewportWidth)
     ];
 
 
     //Draw the Y-axis ruler positive side.
     let lineNumber = (lineRatio3 - 1);
-    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - pannedY * 2 + cheight; i += lineRatio1 * zoomfact * pxlength) {
+    for (let i = 100 + settings.ruler.zoomY; i <= pannedY - (pannedY * 2) + cheight; i += (lineRatio1 * zoomfact * pxlength)) {
         lineNumber++;
         //Check wether the line that will be drawn is within the visible range
         if (i > visibleRangeY[0] && i < visibleRangeY[1]) {
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                barY += `<line class='ruler-line' x1='0px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
-                barY += `<text class='ruler-text' x='10' y='${pannedY + i + 10}' style='font-size: 10px'>${cordY}</text>`;
+                barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
+                barY += "<text class='ruler-text' x='10' y='" + (pannedY + i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
                 cordY = cordY + 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                    barY += `<text class='ruler-text' x='20' y='${pannedY + i + 10}' style='font-size: 8px'>${cordY - 10 + lineNumber / 10}</text>`;
-                    barY += `<line class='ruler-line' x1='20px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
+                    barY += "<text class='ruler-text' x='20' y='" + (pannedY + i + 10) + "' style='font-size: 8px''>" + (cordY - 10 + lineNumber / 10) + "</text>";
+                    barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
                 } else {
-                    barY += `<line class='ruler-line' x1='25px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
+                    barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
                 }
             } else if (zoomfact > 0.75) {
                 //milli
                 if ((lineNumber) % 5 == 0) {
-                    barY += `<line class='ruler-line' x1='32px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
+                    barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "'/>";
                 } else {
-                    barY += `<line class='ruler-line' x1='35px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}' />`;
+                    barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY + i) + "' x2='40px' y2='" + (pannedY + i) + "' />";
                 }
             }
         } else {
@@ -91,23 +91,23 @@ function drawRulerBars(X, Y) {
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                barY += `<line class='ruler-line' x1='0px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}' />`;
-                barY += `<text class='ruler-text' x='10' y='${pannedY - i + 10}' style='font-size: 10px'>${cordY}</text>`;
+                barY += "<line class='ruler-line' x1='0px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
+                barY += "<text class='ruler-text' x='10' y='" + (pannedY - i + 10) + "' style='font-size: 10px''>" + cordY + "</text>";
                 cordY = cordY - 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordY + 10 - lineNumber / 10) != 0) {
-                    barY += `<text class='ruler-text' x='20' y='${pannedY - i + 10}' style='font-size: 8px'>${cordY + 10 - lineNumber / 10}</text>`;
-                    barY += `<line class='ruler-line' x1='20px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}' />`;
+                    barY += "<text class='ruler-text' x='20' y='" + (pannedY - i + 10) + "' style='font-size: 8px''>" + (cordY + 10 - lineNumber / 10) + "</text>";
+                    barY += "<line class='ruler-line' x1='20px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
                 } else {
-                    barY += `<line class='ruler-line' x1='25px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}' />`;
+                    barY += "<line class='ruler-line' x1='25px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "' />";
                 }
             } else if (zoomfact > 0.75) {
                 //milli
                 if ((lineNumber) % 5 == 0) {
-                    barY += `<line class='ruler-line' x1='32px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}'/>`;
+                    barY += "<line class='ruler-line' x1='32px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
                 } else {
-                    barY += `<line class='ruler-line' x1='35px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}'/>`;
+                    barY += "<line class='ruler-line' x1='35px' y1='" + (pannedY - i) + "' x2='40px' y2='" + (pannedY - i) + "'/>";
                 }
             }
         } else {
@@ -130,23 +130,23 @@ function drawRulerBars(X, Y) {
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                barX += `<line class='ruler-line' x1='${i + pannedX}' y1='0' x2='${i + pannedX}' y2='40px'/>`;
-                barX += `<text class='ruler-text' x='${i + 5 + pannedX}'${verticalText}' y='15' style='font-size: 10px'>${cordX}</text>`;
+                barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='0' x2='" + (i + pannedX) + "' y2='40px'/>";
+                barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='15' style='font-size: 10px'>" + cordX + "</text>";
                 cordX = cordX + 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                    barX += `<text class='ruler-text' x='${i + 5 + pannedX}'${verticalText}' y='25' style='font-size: 8px'>${cordX - 10 + lineNumber / 10}</text>`;
-                    barX += `<line class='ruler-line' x1='${i + pannedX}' y1='20' x2='${i + pannedX}' y2='40px'/>`;
+                    barX += "<text class='ruler-text' x='" + (i + 5 + pannedX) + "'" + verticalText + "' y='25' style='font-size: 8px'>" + (cordX - 10 + lineNumber / 10) + "</text>";
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='20' x2='" + (i + pannedX) + "' y2='40px'/>";
                 } else {
-                    barX += `<line class='ruler-line' x1='${i + pannedX}' y1='25' x2='${i + pannedX}' y2='40px'/>`;
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='25' x2='" + (i + pannedX) + "' y2='40px'/>";
                 }
             } else if (zoomfact > 0.75) {
                 //milli
                 if ((lineNumber) % 5 == 0) {
-                    barX += `<line class='ruler-line' x1='${i + pannedX}' y1='32' x2='${i + pannedX}' y2='40px'/>`;
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='32' x2='" + (i + pannedX) + "' y2='40px'/>";
                 } else {
-                    barX += `<line class='ruler-line' x1='${i + pannedX}' y1='35' x2='${i + pannedX}' y2='40px'/>`;
+                    barX += "<line class='ruler-line' x1='" + (i + pannedX) + "' y1='35' x2='" + (i + pannedX) + "' y2='40px'/>";
                 }
             }
         } else {
@@ -167,23 +167,23 @@ function drawRulerBars(X, Y) {
             //Check if a full line should be drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                barX += `<line class='ruler-line' x1='${pannedX - i}' y1='0' x2='${pannedX - i}' y2='40px'/>`;
-                barX += `<text class='ruler-text' x='${pannedX - i + 5}' ${verticalText} y='15' style='font-size: 10px'>${cordX}</text>`;
+                barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='0' x2='" + (pannedX - i) + "' y2='40px'/>";
+                barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='15'style='font-size: 10px'>" + cordX + "</text>";
                 cordX = cordX - 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordX + 10 - lineNumber / 10) != 0) {
-                    barX += `<text class='ruler-text' x='${pannedX - i + 5}' ${verticalText} y='25' style='font-size: 8px'>${cordX + 10 - lineNumber / 10}</text>`;
-                    barX += `<line class='ruler-line' x1='${pannedX - i}' y1='20' x2='${pannedX - i}' y2='40px'/>`;
+                    barX += "<text class='ruler-text' x='" + (pannedX - i + 5) + "'" + verticalText + "' y='25'style='font-size: 8px'>" + (cordX + 10 - lineNumber / 10) + "</text>";
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='20' x2='" + (pannedX - i) + "' y2='40px'/>";
                 } else {
-                    barX += `<line class='ruler-line' x1='${pannedX - i}' y1='25' x2='${pannedX - i}' y2='40px'/>`;
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='25' x2='" + (pannedX - i) + "' y2='40px'/>";
                 }
             } else if (zoomfact > 0.75) {
                 //milli
                 if ((lineNumber) % 5 == 0) {
-                    barX += `<line class='ruler-line' x1='${pannedX - i}' y1='32' x2='${pannedX - i}' y2='40px'/>`;
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='32' x2='" + (pannedX - i) + "' y2='40px'/>";
                 } else {
-                    barX += `<line class='ruler-line' x1='${pannedX - i}' y1='35' x2='${pannedX - i}' y2='40px'/>`;
+                    barX += "<line class='ruler-line' x1='" + (pannedX - i) + "' y1='35' x2='" + (pannedX - i) + "' y2='40px'/>";
                 }
             }
         } else {

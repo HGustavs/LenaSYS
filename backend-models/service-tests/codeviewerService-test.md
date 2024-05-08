@@ -1,7 +1,7 @@
 #codeviewerService
 
 **********
-##New example  Line 71
+##Prepare data  Line 71
 **********
 
 
@@ -72,7 +72,7 @@ output{
 ```
 
 ***
-##New template  Line 96
+##SETTEMPL  Line 96
 ***
 ###pre-req:
 ```
@@ -156,7 +156,7 @@ output{
 
 
 ***
-##Update example Line 160
+##EDITEXAMPLE Line 160
 ***
 ###pre-req:
 ```
@@ -225,7 +225,7 @@ output{
 ```
 
 ***
-##Update content Line 234
+##EDITCONTENT Line 234
 ***
 ###pre-req:
 ```
@@ -293,7 +293,7 @@ output{
 ```
 
 ***
-##Update titel line 281
+##EDITTITLE line 281
 ***
 ###pre-req:
 ```
@@ -333,7 +333,7 @@ output{
 ```
 
 ***
-##Delete Example Line 294
+##DELEXAMPLE Line 294
 ***
 
 

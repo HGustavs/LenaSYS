@@ -346,7 +346,7 @@ function hidePlacementType(){
     while (true) {
         if (document.getElementById("togglePlacementTypeBox" + i)) {
             document.getElementById("togglePlacementTypeBox" + i).classList.remove("activeTogglePlacementTypeBox");
-        } else if (!document.getElementById("togglePlacementTypeBox" + i) && !document.getElementById("togglePlacementTypeButton" + (i + 1))) {
+        } else if (document.getElementById("togglePlacementTypeBox" + i) == null && document.getElementById("togglePlacementTypeButton" + (i + 1)) == null) {
             break;
         }
         i++;

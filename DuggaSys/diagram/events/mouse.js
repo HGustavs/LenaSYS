@@ -27,7 +27,6 @@ function mdown(event) {
     // Mouse pressed over delete button for multiple elements
     if (event.button == 0) {
         if (context.length > 0 || contextLine.length > 0) {
-            canPressDeleteBtn = true;
             hasPressedDelete = checkDeleteBtn();
         }
     }
@@ -56,9 +55,11 @@ function mdown(event) {
 
     // Check if no element has been clicked or delete button has been pressed.
     if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-      
+        console.log(determinedLines)
+
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
@@ -138,7 +139,7 @@ function mdown(event) {
             }
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
-        pointerState = pointerStates.CLICKED_NODE;
+            pointerState = pointerStates.CLICKED_NODE;
             var element = data[findIndex(data, context[0].id)];
 
             // Save the original properties
@@ -171,7 +172,6 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
-    historyHandler.inputCounter++;
 }
 
 /**
@@ -217,7 +217,6 @@ function ddown(event) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
                     targetElementDiv = document.getElementById(targetElement.id);
-                    canPressDeleteBtn = true;
                 }
             case mouseModes.EDGE_CREATION:
                 if (event.button == 2) return;
@@ -331,7 +330,7 @@ function mup(event) {
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-                        
+
     disableIfDataEmpty();
 }
 
@@ -368,13 +367,11 @@ function mouseLeave() {
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
  */
 function checkDeleteBtn() {
-    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && 
-        lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-        if (canPressDeleteBtn == true) {
+    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
+        if (deleteBtnX != 0 && !mouseOverElement) {
             if (context.length > 0) removeElements(context);
             if (contextLine.length > 0) removeLines(contextLine);
             updateSelection(null);
-            canPressDeleteBtn = false;
             return true;
         }
     }

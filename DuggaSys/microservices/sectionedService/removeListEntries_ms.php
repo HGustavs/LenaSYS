@@ -4,15 +4,9 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
-
-$courseid=getOP('courseid');
-$coursevers=getOP('coursevers');
-$log_uuid=getOP('log_uuid');
-$opt=getOP('opt');
 
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
 	if (isset($_SESSION['uid'])) {
@@ -36,7 +30,3 @@ if (checklogin()) { //This entire checklogin should be working by using the getU
         }
     }
 }
-
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-echo json_encode($data);
-return;

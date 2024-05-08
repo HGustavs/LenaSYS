@@ -64,39 +64,37 @@
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:494px;'>
-			<div>
-				<div class='loginBoxheader'>
-					<h3>Add user</h3>
-					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			<div class='loginBoxheader'>
+				<h3>Add user</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
+			<div style='padding:5px;'>
+				<input type='hidden' id='uid' value='Toddler' />
+				<div class='flexwrapper'>
+					<span>First Name:</span>
+					<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 				</div>
-				<div class="content-wrapper">
-					<input type='hidden' id='uid' value='Toddler' />
-					<div class='flexwrapper'>
-						<span>First Name:</span>
-						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-					</div>
-					<div class='flexwrapper'>
-						<span>Last Name:</span>
-						<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
-					</div>
-					<div class='flexwrapper'>
-						<span>Term:</span>
-						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm()" onkeyup="tooltipTerm()">
-					</div>
-					<div class='flexwrapper'>
-						<span>Email:</span>
-						<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
-					</div>
-					<div class="flex-end">
-						<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
-					</div>
+				<div class='flexwrapper'>
+					<span>Last Name:</span>
+					<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
 				</div>
-      		</div>
-     	</div>
+				<div class='flexwrapper'>
+					<span>Term:</span>
+					<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="HT-11" class='textinput' id='addTerm'onchange="tooltipTerm()" onkeyup="tooltipTerm()">
+				</div>
+				<div class='flexwrapper'>
+					<span>Email:</span>
+					<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
+					<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
+				</div>
+			</div>
+			 <div style='padding:5px;display:flex;justify-content: flex-end;'>
+        <input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
+      </div>
+     </div>
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>

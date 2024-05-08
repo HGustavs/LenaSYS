@@ -9,7 +9,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
@@ -22,8 +21,6 @@ if(isset($_SESSION['uid'])){
 
 $courseid = getOP('cid');
 $versid = getOP('vers');
-$log_uuid=getOP('log_uuid');
-$opt=getOP('opt');
 
 // Authorization
 $isSuperUserVar = isSuperUser($userid);
@@ -39,10 +36,3 @@ if($ha || $studentTeacher) {
         $debug="Error updating entries".$error[2];
     }
 }
-
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-$data['coursevers'] = $versid;
-echo json_encode($data);
-return;
-
-?>

@@ -9,7 +9,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -23,25 +22,8 @@ $coursenamealt=getOP('coursenamealt');
 $versname=getOP('versname');
 $versid=getOP('versid');
 $motd=getOP('motd');
-$startdate = getOP('startdate');
-$enddate = getOP('enddate');
-$makeactive = getOP('makeactive');
-$debug = "NONE!";
-$ha = null;
-$isSuperUserVar = false;
 
-// Login is checked
-if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
-	$isSuperUserVar = isSuperUser($userid);
-	$ha = $isSuperUserVar;
-}
-
-if($ha) {
+if(checklogin() && isSuperUser(getUid()) == true) {
   $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate,:motd);");
 
 	$query->bindParam(':cid', $cid);
@@ -70,8 +52,8 @@ if($ha) {
 		$debug="Error inserting entries\n".$error[2];
 	} 
 
-	// if specified, sets the course as active
-	if($makeactive==3){
+  // if specified, sets the course as active
+  if($makeactive==3){
 		$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $versid);
@@ -83,8 +65,5 @@ if($ha) {
 
 	// Logging for create a fresh course version
 	$description=$cid." ".$versid;
-	logUserEvent($userid, retrieveUsername($pdo), EventTypes::AddCourseVers, $description);
+	logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
 }
-
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
-

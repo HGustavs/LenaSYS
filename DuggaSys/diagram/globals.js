@@ -9,7 +9,6 @@ var sscrollx, sscrolly;
 var cwidth, cheight;
 var deleteBtnX = 0, deleteBtnY = 0;
 var deleteBtnSize = 0;
-var canPressDeleteBtn = false;
 var startWidth;
 var startHeight;
 var startNodeLeft = false;
@@ -135,15 +134,10 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
+let hasResized = false; // checks if an element has been resized
 var preResizeHeight = []; // List with elements' and their starting height for box selection due to problems with resizing height
 var NOTEHeight = [];// List with NOTE Entities' real height
 
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
-
-// variables for resizing
-const historyHandler = {
-    hasUpdated: false,
-    inputCounter: 0
-}

@@ -5,10 +5,8 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../../../Shared/sessions.php";
+include_once "../../../Shared/sessions.php";     
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "./retrieveCourseedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -18,24 +16,9 @@ session_start();
 $coursename = getOP('coursename');
 $coursecode = getOP('coursecode');
 $courseGitURL = getOP('courseGitURL');
-$debug = "NONE!";
-$ha = null;
-$isSuperUserVar = false;
 
-$LastCourseCreated = array();
-
-// Login is checked
-if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
-	$isSuperUserVar = isSuperUser($userid);
-	$ha = $isSuperUserVar;
-}
-
-if($ha) {
+// checks that the user is a superuser and logged in
+if(checklogin() && isSuperUser(getUid()) == true) {
     $userid = getUid();   
 
     // insert into database 
@@ -53,26 +36,16 @@ if($ha) {
         $debug="Error updating entries\n".$error[2];
     }
 
-    
-    // Retrieve last course created
-    $query_1 = $pdo->prepare("SELECT cid FROM course ORDER BY cid DESC LIMIT 1");
-    $query_1->execute();
-    if (!$query_1->execute()) {
-        $error = $query_1->errorInfo();
-        $debug = "Error reading courses\n" . $error[2];
-    } else {
-        foreach ($query_1->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            array_push(
-                $LastCourseCreated,
-                array(
-                    'LastCourseCreatedId' => $row['cid'],
-                )
-            );
-        }
+    $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
+    $query->bindParam(':uid', $userid);
+    $query->execute();
+    $username;
+    // This while is only performed if userid was set through _SESSION['uid'] check above, a guest will not have it's username set, USED FOR LOGGING
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $username = $row['username'];
     }
+    
     // Logging for creating new course
     $description = $coursename . " " . $coursecode . " " . $courseGitURL . " " . "Hidden";
-    logUserEvent($userid, retrieveUsername($pdo), EventTypes::AddCourse, $description);
+    logUserEvent($userid, $username, EventTypes::AddCourse, $description);
 }
-
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuperUserVar));

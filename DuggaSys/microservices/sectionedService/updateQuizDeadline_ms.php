@@ -8,7 +8,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -17,8 +16,6 @@ session_start();
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $link=getOP('link');
-$versid = getOP('vers');
-$log_uuid=getOP('log_uuid');
 
 $deadline=getOP('deadline');
 $relativedeadline=getOP('relativedeadline');
@@ -46,8 +43,4 @@ if(checklogin()){
 		}
 	}
 }
-
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-echo json_encode($data);
-return;
 ?>

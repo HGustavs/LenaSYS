@@ -74,24 +74,7 @@ function setPos(elements, x, y) {
 
     // Check for overlaps
     elements.forEach(elem => {
-        var newX, newY;
-        if (settings.grid.snapToGrid) {
-            if (!ctrlPressed) {
-                // Calculate nearest snap point
-                newX = Math.round((elem.x + elem.width / 2 - (x * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                newY = Math.round((elem.y + elem.height / 2 - (y * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                // Set the new snap point to center of element
-                newX -= elem.width / 2;
-                newY -= elem.height / 2;
-            } else {
-                newX += (targetDelta.x / zoomfact);
-                newY += ((targetDelta.y / zoomfact) + 25);
-            }
-        } else {
-            newX -= (x / zoomfact);
-            newY -= (y / zoomfact);
-        }
-        if (entityIsOverlapping(elem.id, newX, newY)) {
+        if (entityIsOverlapping(elem.id, elem.x - deltaX / zoomfact, elem.y - deltaY / zoomfact)) {
             overlappingObject = elem;
         }
     });
@@ -122,9 +105,15 @@ function setPos(elements, x, y) {
             if (obj.isLocked) return;
             if (settings.grid.snapToGrid) {
                 if (!ctrlPressed) {
-                    // Calculate nearest snap point
-                    obj.x = Math.round((obj.x + obj.width / 2 - (x * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                    obj.y = Math.round((obj.y + obj.height / 2 - (y * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+                    //Different snap points for entity and others
+                    if (obj.kind == elementTypesNames.EREntity) {
+                        // Calculate nearest snap point
+                        obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize * 2)) / settings.grid.gridSize) * settings.grid.gridSize;
+                        obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / settings.grid.gridSize) * settings.grid.gridSize;
+                    } else {
+                        obj.x = Math.round((obj.x - (x * (1.0 / zoomfact)) + (settings.grid.gridSize)) / settings.grid.gridSize) * settings.grid.gridSize;
+                        obj.y = Math.round((obj.y - (y * (1.0 / zoomfact))) / (settings.grid.gridSize * 0.5)) * (settings.grid.gridSize * 0.5);
+                    }
                     // Set the new snap point to center of element
                     obj.x -= obj.width / 2;
                     obj.y -= obj.height / 2;

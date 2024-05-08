@@ -5,12 +5,11 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
-include_once "retrieveResultedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
+
 
 $coursevers=getOP('vers');
 $opt = getOP('opt');
@@ -19,7 +18,11 @@ $tableInfo = array();
 $duggaFilterOptions = array();
 $duggaName = "UNK";
 $subCourse = "UNK";
-$userid = getUid();
+$userid="student";
+
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+}
 
 if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	// Get data to display in table rows
@@ -72,6 +75,13 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
     	array_push($tableInfo, $tableSubmissionInfo);
 	}
 
-	$returnArray = retrieveResultedService($tableInfo, $duggaFilterOptions);
+	$returnArray = array(
+		'tableInfo' => $tableInfo,
+		'duggaFilterOptions' => $duggaFilterOptions
+	);
+
 	echo json_encode($returnArray);
+
 }
+
+?>

@@ -66,8 +66,8 @@ class StateMachine {
                 // If history is present, perform soft/hard-check
                 if (this.historyLog.length > 0) {
 
-                    // Get the last state in historyLog (only values, not reference)
-                    let lastLog = {...this.historyLog[this.historyLog.length - 1]};
+                    // Get the last state in historyLog
+                    let lastLog = this.historyLog[this.historyLog.length - 1];
 
                     // Check if the element is the same
                     var sameElements = true;
@@ -97,6 +97,7 @@ class StateMachine {
                             isSoft = newChangeType.isSoft;
                             changeTypes = [newChangeType];
                         }
+
                         // Find last change with the same ids
                         var timeLimit = 10; // Timelimit on history append in seconds
                         for (let index = this.historyLog.length - 1; index >= 0; index--) {
@@ -115,7 +116,7 @@ class StateMachine {
                                 var temp = false;
                                 // If this historyLog is within the timeLimit
                                 if (((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit) {
-                                    lastLog = {...this.historyLog[index]};
+                                    lastLog = this.historyLog[index];
                                     temp = true;
                                 }
                                 sameElements = temp;
@@ -125,72 +126,51 @@ class StateMachine {
                     }
                     // If NOT soft change, push new change onto history log
                     if (!isSoft || !sameElements) {
-                        while (Array.isArray(stateChange.id)) {
-                            stateChange.id = stateChange.id[0];
-                        }
-
-                        // edits the last element if it's during the same resize
-                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
-                            this.historyLog.splice(this.historyLog.length-1, 1);
-                        }
-
-                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                        this.historyLog.push(stateChange);
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
                         for (let j = 0; j < changeTypes.length; j++) {
                             const currentChangedType = changeTypes[j];
                             let movedAndResized = false;
-                            let currentElement;
                             switch (currentChangedType) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                                    this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
-                                    break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                    lastLog = appendValuesFrom(lastLog, stateChange);                                    
-                                    currentElement = data[findIndex(data, lastLog.id)];
-                                    lastLog.width = currentElement.width;   
-                                    lastLog.height = currentElement.height;
-                                                                                                
-                                    while (Array.isArray(lastLog.id)) {
-                                        lastLog.id = lastLog.id[0];
-                                    }
-
-                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                                    lastLog = appendValuesFrom(lastLog, stateChange);
+                                    this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
+                                    // loop to add the correct sizes to the changeState
+                                    // it only stores the changes originally and after this it stores the whole size
+                                    for (let change of stateChangeArray) {
+                                        change.id.forEach(id => {
+                                            let currentElement = document.getElementById(id);
+                                            if (lastLog.id == id) {
+                                                //add this but for (x, y) aswell
+                                                lastLog.width += currentElement.offsetWidth;
+                                                lastLog.height += currentElement.offsetHeight;
+                                                if (movedAndResized) {
+                                                    currentElement = data[findIndex(data, id)];
+                                                    lastLog.x = currentElement.x;
+                                                    lastLog.y = currentElement.y;
+                                                }
+                                            }
+                                        });
+                                    }
                                     // not sure why but if you resize -> undo -> resize it starts
                                     // to store the id as an array so this is just a check to counter that
-                                    while (Array.isArray(lastLog.id)) {
-                                        lastLog.id = lastLog.id[0];
-                                    }
-                                    let id = stateChange.id[0];
-                                    while (Array.isArray(id)) {
-                                        id = id[0];
+                                    // entirely possible this breaks something else
+                                    if (Array.isArray(lastLog.id)) {
+                                        // yes, the double [0][0] is neccesarry to access the ID
+                                        lastLog.id = lastLog.id[0][0];
                                     }
 
-                                    // add the real values so that not just the chanegs gets stored
-                                    currentElement = data[findIndex(data, id)];
-                                    lastLog.width = currentElement.width;
-                                    lastLog.height = currentElement.height;
-                                    if (movedAndResized) {
-                                        lastLog.x = currentElement.x;
-                                        lastLog.y = currentElement.y;
-                                        movedAndResized = false;
-                                    }
-                                    
-                                    
-                                    // if the save() call comes from the same change-motion
-                                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
-                                        this.historyLog.splice(this.historyLog.length-1, 1);
-                                    }
-
-                                    // spreaading the values so that it doesn't keep the reference                                    
-                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                                    // spreaading the values so that it doesn't keep the reference
+                                    this.historyLog.push({...lastLog});
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -200,28 +180,14 @@ class StateMachine {
                         }
                     }
                 } else {
-                    const current_element = data[findIndex(data, stateChange.id)];
-                    this.historyLog.push({
-                        ...stateChange, 
-                        width: current_element.width, 
-                        height: current_element.height, 
-                        changeType: newChangeType.flag, 
-                        counter: historyHandler.inputCounter
-                    });
+                    this.historyLog.push(stateChange);
                     this.lastFlag = currentChangedType;
                     this.currentHistoryIndex = this.historyLog.length - 1;
                 }
             } else {
                 console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
             }
-        }   
-        
-        // removes arrys from the id attribute
-        for (let entry of this.historyLog) {
-            while (Array.isArray(entry.id)) {
-                entry.id = entry.id[0];
-            }
-        }        
+        }
     }
 
     removeFutureStates() {
@@ -236,27 +202,18 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     stepBack() {
+        // If there is no history => return
+        if (this.currentHistoryIndex == -1) {
+            return;
+        } else {
+            this.currentHistoryIndex--;
+        }
+
         // Remove ghost only if stepBack while creating edge
-        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
-        
-        // keep going back while the time attribute is the same
-        do {
-            // If there is no history => return
-            if (this.currentHistoryIndex == -1) {
-                return;
-            } else {
-                this.currentHistoryIndex--;
-            }
-            
-            this.scrubHistory(this.currentHistoryIndex);
+        if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts()
 
-            var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex - 1]) {
-                doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time);
-            }
-
-        } while (doNextState);
         
+        this.scrubHistory(this.currentHistoryIndex);
         displayMessage(messageTypes.SUCCESS, "Changes reverted!");
         disableIfDataEmpty();
     }
@@ -275,6 +232,7 @@ class StateMachine {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
             }
         } while (doNextState);
+
         // Update diagram
         clearContext();
         showdata();
@@ -467,6 +425,14 @@ window.addEventListener("DOMContentLoaded", () => {
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
  */
+
+// Variables also used in addLine function, allAttrToEntityRelations saves all attributes connected to a entity or relation
+var countUsedAttributes = 0;
+var allAttrToEntityRelations = [];
+
+// Array for attributes connected with eachother
+var attrViaAttrToEnt = [];
+var attrViaAttrCounter = 0;
 
 // Global statemachine init, moved from onSetup
 stateMachine = new StateMachine(data, lines);
@@ -698,8 +664,7 @@ document.addEventListener('keydown', function (e) {
     }
 
     // Moving object with arrows
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
-        e.preventDefault();
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
@@ -708,17 +673,12 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
-                setPos(context, 0, settings.grid.gridSize / 2);
-            else
-                setPos(context, 0, 1);
+            setPos(context, 0, 1);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN)) {
-        e.preventDefault();
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
@@ -727,17 +687,12 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
-                setPos(context, 0, -settings.grid.gridSize / 2);
-            else
-                setPos(context, 0, -1);
+            setPos(context, 0, -1);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-  
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)) {
-        e.preventDefault();
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
@@ -746,17 +701,12 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
-                setPos(context, settings.grid.gridSize / 2, 0);
-            else
-                setPos(context, 1, 0);
+            setPos(context, 1, 0);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-  
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)) {
-        e.preventDefault();
+    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT) && !settings.grid.snapToGrid) {
         let overlapDetected = false;
         context.forEach(obj => {
             if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
@@ -765,10 +715,7 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
-                setPos(context, -settings.grid.gridSize / 2, 0);
-            else
-                setPos(context, -1, 0);
+            setPos(context, -1, 0);
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -777,7 +724,6 @@ document.addEventListener('keydown', function (e) {
     if (altPressed) {
         mouseMode_onMouseUp();
     }  
-    historyHandler.inputCounter++;
 });
 
 document.addEventListener('keyup', function (e) {
@@ -826,32 +772,28 @@ document.addEventListener('keyup', function (e) {
 
     // Entity / Class / State
     if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
-        if (subMenuCycling(subMenuEntity, 0)) return;
-        togglePlacementType(elementTypes.EREntity, 0);
+        if (subMenuCycling(subMenuEntity)) return;
         setElementPlacementType(elementTypes.EREntity);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Relation / Inheritance
     if (isKeybindValid(e, keybinds.PLACE_RELATION)){
-        if (subMenuCycling(subMenuRelation, 1)) return;
-        togglePlacementType(elementTypes.ERRelation, 1);
+        if (subMenuCycling(subMenuRelation)) return;
         setElementPlacementType(elementTypes.ERRelation);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // UML states
     if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
-        if (subMenuCycling(subMenuUMLstate, 9)) return;
-        togglePlacementType(elementTypes.UMLInitialState, 9);
+        if (subMenuCycling(subMenuUMLstate)) return;
         setElementPlacementType(elementTypes.UMLInitialState);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Sequence
     if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
-        if (subMenuCycling(subMenuSequence, 12)) return;
-        togglePlacementType(elementTypes.sequenceActor, 12);
+        if (subMenuCycling(subMenuSequence)) return;
         setElementPlacementType(elementTypes.sequenceActor);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
@@ -1001,28 +943,10 @@ function mouseMode_onMouseUp(event) {
         }
     }
     hasPressedDelete = false;
-}
-
-/**
- * @description stores the ResizeAndMoved in the historyLog array
- * @param {string[]} id id of the element
- * @param {number} xChange change in x-position
- * @param {number} yChange change in y-position
- * @param {number} widthChange change in width
- * @param {number} heightChange change in height
- */
-function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-}
-
-/**
- * @description stores the Resize in the historyLog array
- * @param {string[]} id id of the element
- * @param {number} widthChange change in width
- * @param {number} heightChange change in height
- */
-function prepareElementResized(id, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+    if (hasResized) {
+        stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
+        hasResized = false;
+    }
 }
 
 /**
@@ -1048,6 +972,7 @@ function mmoving(event) {
             calculateDeltaExceeded();
             break;
         case pointerState.CLICKED_LINE:
+
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
@@ -1083,6 +1008,7 @@ function mmoving(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
+            let isX, isR, isUP;
             var index = findIndex(data, context[0].id);
             var elementData = data[index];
 
@@ -1094,57 +1020,67 @@ function mmoving(event) {
 
             // Functionality for the four different nodes
             if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementResized([elementData.id], widthChange, 0);
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], widthChange, 0), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementResized([elementData.id], 0, heightChange);
+                isUP = false;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                stateMachine.save(StateChangeFactory.ElementResized([elementData.id], 0, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
             } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
+                isUP = true;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
                 //set movable height
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
+                isUP = true;
+                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
                 //set movable height
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange);
+                isUP = true;
+                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                isX = false;
+                let yChange = movementPosChange(elementData,startY,deltaY,isX);
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                let heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange);
+                isR = false;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+                isX = true;
+                let xChange = movementPosChange(elementData,startX,deltaX,isX);
+                isUP = false;
+                let heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange);
+                isR = true;
+                let widthChange = movementXChange(elementData,startWidth,deltaX,isR);
+
+                isUP = false;
+                const heightChange = movementYChange(elementData,startHeight,deltaY,isUP,preResizeHeight);
+
+                stateMachine.save(StateChangeFactory.ElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
             }
+
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
+
             // Check if entity is overlapping
             resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
 
@@ -1164,27 +1100,55 @@ function mmoving(event) {
     //Sets the rules to current position on screen.
     setRulerPosition(event.clientX, event.clientY);
 }
-
 function movementPosChange(element,start,delta, isX){
-    // mouse position is used causing the line to "jump" to the mous pos.
-    // The magic numebers are used to center the node middle with the mouse pointer
-    let property = (isX) ? 'x' : 'y';
-    let x = (isX) ? start - delta - 6 * zoomfact : 0;
-    let y = (isX) ? 0 : start - delta + 17 * zoomfact;
-    let tmp = element[property];
-    element[property] = screenToDiagramCoordinates(x, y)[property];
+    let tmp = (isX) ? element.x : element.y;
+    let elem;
+    if (isX) {
+        element.x = screenToDiagramCoordinates( (start - delta ),0).x;
+        elem = element.x;
+    } else {
+        element.y = screenToDiagramCoordinates(0, (start - delta )).y;
+        elem = element.y;
+    }
     // Deduct the new position, giving us the total change
-    return -(tmp - element[property]);
+    return -(tmp - elem);
 }
 
-function movementWidthChange(element, start, delta, isR){
-    element.width = (isR) ? start - delta / zoomfact : start + delta - element.x;
-    return element.width;
+function movementXChange(element,start,delta,isR){
+    let tmp = element.width;
+    if (isR) {
+        element.width = (start - (delta / zoomfact));
+    } else {
+        element.width = (start + (delta / zoomfact));
+    }
+    // Remove the new width, giving us the total change
+    return -(tmp - element.width);
 }
 
-function movementHeightChange(element, start, delta, isUp){
-    element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
-    return element.height;
+function movementYChange(element,start,delta,isUp,preResizeHeight){
+    // Adds a deep clone of the element to preResizeHeight if it isn't in it
+    let tmp = element.height;
+    if (isUp) {
+        element.height = (start + (delta / zoomfact));
+    } else {
+        element.height = (start - (delta / zoomfact));
+    }
+    let foundID = false;
+    if (preResizeHeight == undefined) {
+        let resizedElement = structuredClone(element);
+        preResizeHeight.push(resizedElement);
+    } else {
+        for (let i = 0; i < preResizeHeight.length; i++) {
+            if (element.id == preResizeHeight[i].id) {
+                foundID = true;
+            }
+        }
+        if (!foundID) {
+            let resizedElement = structuredClone(element);
+            preResizeHeight.push(resizedElement);
+        }
+    }
+    return -(tmp - element.height);
 
 }
 /**
@@ -1266,6 +1230,19 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
 
     // Removes from the two arrays that keep track of the attributes connections. 
     for (let i = 0; i < linesArray.length; i++) {
+        for (let j = 0; j < allAttrToEntityRelations.length; j++) {
+            if (linesArray[i].toID == allAttrToEntityRelations[j] || linesArray[i].fromID == allAttrToEntityRelations[j]) {
+                allAttrToEntityRelations.splice(j, 1);
+                countUsedAttributes--;
+            }
+        }
+        for (let k = 0; k < attrViaAttrToEnt.length; k++) {
+            if (linesArray[i].toID == attrViaAttrToEnt[k] || linesArray[i].fromID == attrViaAttrToEnt[k]) {
+                attrViaAttrToEnt.splice(k, 1);
+                attrViaAttrCounter--;
+            }
+        }
+
         lines = lines.filter(function (line) {
             var shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
@@ -1403,7 +1380,7 @@ function saveProperties() {
     const children = propSet.children;
 
     var propsChanged = {};
-    let cleanedLines;
+    let formatArr;
 
     for (let index = 0; index < children.length; index++) {
         const child = children[index];
@@ -1416,41 +1393,19 @@ function saveProperties() {
                     propsChanged.name = value;
                 }
                 break;
-            case 'primaryKey':
-                cleanedLines = [];
-                var textArea = child.value;
-                var lines = textArea.split('\n');
-                for (var i = 0; i < lines.length; i++) {
-                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
-                            lines[i] = "*" + lines[i];
-                        }
-                        cleanedLines.push(lines[i]);
-                    }
-                }
-                //Updates property
-                lines = cleanedLines;
-                element[propName] = lines;
-                propsChanged.primaryKey = lines;
-                break;
             case 'attributes':
                 //Get string from textarea
                 var elementAttr = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementAttr = elementAttr.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementAttr.length; i++)
-                {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' '))
-                    {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
-                            `-${arrElementAttr[i]}`;
-                        }
-                        cleanedLines.push(arrElementAttr[i]);
+                formatArr = [];
+                for (let i = 0; i < arrElementAttr.length; i++) {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
+                        formatArr.push(arrElementAttr[i]);
                     }
                 }
                 //Update the attribute array
-                arrElementAttr = cleanedLines;
+                arrElementAttr = formatArr;
                 element[propName] = arrElementAttr;
                 propsChanged.attributes = arrElementAttr;
                 break;
@@ -1459,17 +1414,14 @@ function saveProperties() {
                 var elementFunc = child.value;
                 //Create an array from string where newline seperates elements
                 var arrElementFunc = elementFunc.split('\n');
-                cleanedLines = [];
+                formatArr = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
-                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
-                        if (Array.from(arrElementFunc[i])[0] != '+') {
-                            `+${arrElementFunc[i]}`;
-                        }
-                        cleanedLines.push(arrElementFunc[i]);
+                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) {
+                        formatArr.push(arrElementFunc[i]);
                     }
                 }
                 //Update the attribute array
-                arrElementFunc = cleanedLines;
+                arrElementFunc = formatArr;
                 element[propName] = arrElementFunc;
                 propsChanged.functions = arrElementFunc;
                 break;

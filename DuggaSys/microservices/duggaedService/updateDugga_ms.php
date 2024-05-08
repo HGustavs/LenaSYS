@@ -59,12 +59,4 @@ if(strcmp($opt,"SAVDUGGA")===0){
     }
 
 }
-
-include_once("retrieveDuggaedService_ms.php");
-$log_uuid=getOP('log__uuid');
-$cid = getOP('cid');
-$coursevers = getOP('coursevers');
-$retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
-echo json_encode($retrievedData);
-
 ?>

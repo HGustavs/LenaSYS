@@ -12,7 +12,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveCourseedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -22,32 +21,19 @@ session_start();
 $opt=getOP('opt');
 $courseid=getOP('cid');
 $versid=getOP('vers');
-$debug="NONE!";
 
-$ha = null;
-$isSuperUserVar = false;
+// Login is checked for function to run
+if(checklogin() && isSuperUser(getUid()) == true) {
 
-// Login is checked
-if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
-	$isSuperUserVar = isSuperUser($userid);
-	$ha = $isSuperUserVar;
-}
-
-if ($ha) {
 	if(strcmp($opt,"CHGVERS")===0) {
+
 		$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 		$query->bindParam(':cid', $courseid);
 		$query->bindParam(':vers', $versid);
+
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error updating entries".$error[2];
 		}
-	}
+  }
 }
-
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));

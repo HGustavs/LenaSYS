@@ -12,7 +12,6 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "retrieveFileedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -28,7 +27,6 @@ $contents = getOP('contents');
 $userid = getUid();
 $username = retrieveUsername($pdo);
 $debug = "NONE!";
-$log_uuid = getOP('log_uuid');
 
 
 // Check access
@@ -40,29 +38,25 @@ if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUs
 
 if (strcmp($opt, "SAVEFILE") !== 0) {
     $debug = "You can only update a file through the file editor";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-    echo json_encode($retrieveArray);
+    echo json_encode($debug);
     return;
 }
 
 if (!checklogin()) {
     $debug = "You need to be logged in to update a file";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-    echo json_encode($retrieveArray);
+    echo json_encode($debug);
     return;
 }
 
 if (!$hasAccess) {
     $debug = "Access denied";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-    echo json_encode($retrieveArray);
+    echo json_encode($debug);
     return;
 }
 
 if ($kind == 2 && !(isSuperUser($userid))) {
     $debug = "Access denied: Only superusers can update global files";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-    echo json_encode($retrieveArray);
+    echo json_encode($debug);
     return;
 }
 
@@ -88,16 +82,14 @@ switch ($kind) {
 // Check if file exists at set path
 if (!file_exists($currcwd)) {
     $debug = "No such file exists";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-    echo json_encode($retrieveArray);
+    echo json_encode($debug);
     return;
 }
 
 // Try writing to file
 if (!file_put_contents($currcwd, html_entity_decode($contents))) {
     $debug = "Something went wrong when updating the file";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-    echo json_encode($retrieveArray);
+    echo json_encode($debug);
     return;
 }  
 
@@ -130,5 +122,4 @@ if (!$query->execute()) {
 
 logUserEvent($userid, $username, EventTypes::EditFile, $description);
 
-$retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
-echo json_encode($retrieveArray);
+echo json_encode($debug);

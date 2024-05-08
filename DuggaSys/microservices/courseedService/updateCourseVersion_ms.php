@@ -6,8 +6,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../../coursesyspw.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "./retrieveCourseedService_ms.php";
 
 // Connect to the database and start the session
 pdoConnect();
@@ -23,38 +21,30 @@ $courseGitURL = getOP('courseGitURL');
 
 // Get user identification
 $userid = isset($_SESSION['uid']) ? $_SESSION['uid'] : "UNK";
-$username = retrieveUsername($pdo);
+$username = getUsername($userid);
 
-$debug="NONE!";
+// Update course information
+$updateSuccessful = updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL);
 
-$ha = null;
-$isSuperUserVar = false;
-
-// Login is checked
-if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
-	$isSuperUserVar = isSuperUser($userid);
-	$ha = $isSuperUserVar;
+// Handle errors if update fails
+if (!$updateSuccessful) {
+    $error = "Error updating course information.";
+    // Log the error
+    logError($error);
+} else {
+    // Log the successful course update
+    logCourseEditEvent($userid, $username, $coursename, $coursecode, $visibility);
 }
 
-if ($ha){
-    // Update course information
-    $updateSuccessful = updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL);
-    // Handle errors if update fails
-    if (!$updateSuccessful) {
-        $debug = "Error updating course information.";
-    }     
-    $visibilityName = getVisibilityName($visibility);
-    $description = "$coursename $coursecode $visibilityName";
-    logUserEvent($userid, $username, "EditCourse", $description);
+// Function to get the username based on userid
+function getUsername($userid) {
+    global $pdo;
+    $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
+    $query->bindParam(':uid', $userid);
+    $query->execute();
+    $row = $query->fetch(PDO::FETCH_ASSOC);
+    return ($row) ? $row['username'] : "Guest";
 }
-
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
-
 
 // Function to update course information in the database
 function updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL) {
@@ -66,6 +56,13 @@ function updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL
     $query->bindParam(':coursecode', $coursecode);
     $query->bindParam(':courseGitURL', $courseGitURL);
     return $query->execute();
+}
+
+// Function to log successful course edit event
+function logCourseEditEvent($userid, $username, $coursename, $coursecode, $visibility) {
+    $visibilityName = getVisibilityName($visibility);
+    $description = "$coursename $coursecode $visibilityName";
+    logUserEvent($userid, $username, "EditCourse", $description);
 }
 
 // Function to get the visibility name
@@ -84,3 +81,9 @@ function getVisibilityName($visibility) {
     }
 }
 
+// log errors
+function logError($error) {
+    // Log the error message
+    error_log($error);
+    // Additional logging actions can be added if required
+}

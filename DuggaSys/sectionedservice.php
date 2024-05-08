@@ -943,29 +943,13 @@ $ha = (checklogin() && ($haswrite || $isSuperUserVar));
 $duggor=array();
 $releases=array();
 
-try{
-	$query = $pdo->prepare("SELECT id,qname,qrelease,deadline,relativedeadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
-	$query->bindParam(':cid', $courseid);
-	$query->bindParam(':vers', $coursevers);
-	$query->execute();
-}
-catch(Exception $e){
-	$query = $pdo->prepare("SELECT id,qname,qrelease,deadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
-	$query->bindParam(':cid', $courseid);
-	$query->bindParam(':vers', $coursevers);
-}
-try{
-	$query->execute();
-}
-catch(Exception $e){
+$query = $pdo->prepare("SELECT id,qname,qrelease,deadline,relativedeadline FROM quiz WHERE cid=:cid AND vers=:vers ORDER BY qname");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':vers', $coursevers);
+
+if(!$query->execute()) {
 	$error=$query->errorInfo();
 	$debug="Error reading entries".$error[2];
-}
-if(isset($row['relativedeadline'])){
-	$relativedeadlineTemp = $row['relativedeadline'];
-}
-else{
-	$relativedeadlineTemp = null;
 }
 
 // Create "duggor" array to store information about quizes and create "releases" to perform checks
@@ -974,7 +958,7 @@ foreach($query->fetchAll() as $row) {
 	$releases[$row['id']]=array(
 			'release' => $row['qrelease'],
 			'deadline' => $row['deadline'],
-			'relativedeadline' => $relativedeadlineTemp
+			'relativedeadline' => $row['relativedeadline']
 	);
 	array_push(
 		$duggor,
@@ -983,7 +967,7 @@ foreach($query->fetchAll() as $row) {
 			'qname' => $row['qname'],
 			'release' => $row['qrelease'],
 			'deadline' => $row['deadline'],
-			'relativedeadline' => $relativedeadlineTemp
+			'relativedeadline' => $row['relativedeadline']
 		)
 	);
 }
@@ -1076,17 +1060,7 @@ if($cvisibility){
 			WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
-	try{
-		$result=$query->execute();
-	}
-	catch(Exception $e){
-		$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind, 
-			 ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id 
-			WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
-		$query->bindParam(':cid', $courseid);
-		$query->bindParam(':coursevers', $coursevers);
-		$query->execute();
-	}
+	$result=$query->execute();
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -1094,15 +1068,6 @@ if($cvisibility){
 	}
 
 	foreach($query->fetchAll() as $row) {
-		//only need to check one, since then we know if we are on old data or not
-		if(isset($row['handindeadline'])){
-			$handindeadlineTemp = $row['handindeadline'];
-			$relativedeadlineTemp = $row['relativedeadline'];
-		}
-		else{
-			$handindeadlineTemp = null;
-			$relativedeadlineTemp = null;
-		}
 		if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&($haswrite==true||$studentTeacher==true))){
 				array_push(
 					$entries,
@@ -1113,13 +1078,13 @@ if($cvisibility){
 						'kind' => $row['kind'],
 						'moment' => $row['moment'],
 						'link'=> $row['link'],
-						'handindeadline'=> $handindeadlineTemp,
+						'handindeadline'=> $row['handindeadline'],
 						'visible'=> $row['visible'],
 						'highscoremode'=> $row['highscoremode'],
 						'gradesys' => $row['gradesystem'],
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
-						'relativedeadline'=> $relativedeadlineTemp,
+						'relativedeadline'=> $row['relativedeadline'],
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
 						'qstart' => $row['qstart'],
@@ -1155,34 +1120,45 @@ $links=array();
 $versions=array();
 $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
 // After column 'motd' exist on all releases the outer if-statement can be removed.
-try{
-	$query->execute();
-}
-catch(Exception $e){
+if(!$query->execute()) {
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-	$query->execute();
-}
-foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-	if(isset($row['motd'])){
-		$motdTemp = $row['motd'];
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading courses".$error[2];
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$versions,
+				array(
+					'cid' => $row['cid'],
+					'coursecode' => $row['coursecode'],
+					'vers' => $row['vers'],
+					'versname' => $row['versname'],
+					'coursename' => $row['coursename'],
+					'coursenamealt' => $row['coursenamealt'],
+					'startdate' => $row['startdate'],
+					'enddate' => $row['enddate'],
+				)
+			);
+		}
 	}
-	else{
-		$motdTemp = null;
+}else{
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push(
+			$versions,
+			array(
+				'cid' => $row['cid'],
+				'coursecode' => $row['coursecode'],
+				'vers' => $row['vers'],
+				'versname' => $row['versname'],
+				'coursename' => $row['coursename'],
+				'coursenamealt' => $row['coursenamealt'],
+				'startdate' => $row['startdate'],
+				'enddate' => $row['enddate'],
+				'motd' => $row['motd']
+			)
+		);
 	}
-	array_push(
-		$versions,
-		array(
-			'cid' => $row['cid'],
-			'coursecode' => $row['coursecode'],
-			'vers' => $row['vers'],
-			'versname' => $row['versname'],
-			'coursename' => $row['coursename'],
-			'coursenamealt' => $row['coursenamealt'],
-			'startdate' => $row['startdate'],
-			'enddate' => $row['enddate'],
-			'motd' => $motdTemp
-		)
-	);
 }
 $codeexamples = array();
 
@@ -1223,37 +1199,48 @@ if($ha || $studentTeacher){
 
 	$versions=array();
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
-	try{
-		$query->execute();
-	}
-	catch(Exception $e){
+	// After column 'motd' exist on all releases the outer if-statement can be removed.
+	if(!$query->execute()) {
 		$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-		$query->execute();
-	}
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		if(isset($row['motd'])){
-			$motdTemp = $row['motd'];
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error reading courses".$error[2];
+		}else{
+			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+				array_push(
+					$versions,
+					array(
+						'cid' => $row['cid'],
+						'coursecode' => $row['coursecode'],
+						'vers' => $row['vers'],
+						'versname' => $row['versname'],
+						'coursename' => $row['coursename'],
+						'coursenamealt' => $row['coursenamealt'],
+						'startdate' => $row['startdate'],
+						'enddate' => $row['enddate'],
+					)
+				);
+			}
 		}
-		else{
-			$motdTemp = null;
-		}	
-		array_push(
-			$versions,
-			array(
-				'cid' => $row['cid'],
-				'coursecode' => $row['coursecode'],
-				'vers' => $row['vers'],
-				'versname' => $row['versname'],
-				'coursename' => $row['coursename'],
-				'coursenamealt' => $row['coursenamealt'],
-				'startdate' => $row['startdate'],
-				'enddate' => $row['enddate'],
-				'motd' => $motdTemp
-			)
-		);
+	}else{
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$versions,
+				array(
+					'cid' => $row['cid'],
+					'coursecode' => $row['coursecode'],
+					'vers' => $row['vers'],
+					'versname' => $row['versname'],
+					'coursename' => $row['coursename'],
+					'coursenamealt' => $row['coursenamealt'],
+					'startdate' => $row['startdate'],
+					'enddate' => $row['enddate'],
+					'motd' => $row['motd']
+				)
+			);
+		}
 	}
 	$codeexamples=array();
-	
 
 	// New Example
 	array_push($codeexamples,array('exampleid' => "-1",'cid' => '','examplename' => '','sectionname' => 'New Example','runlink' => "",'cversion' => ""));
