@@ -1042,6 +1042,7 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "CPYVRS":
 				$.ajax({
+					//url: "../DuggaSys/microservices/courseedService/copyCourseVersion_ms.php",
 					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
