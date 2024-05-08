@@ -146,4 +146,4 @@ var ghostLine = null;
 const historyHandler = {
     hasUpdated: false,
     inputCounter: 0
-}
+};

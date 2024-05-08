@@ -26,30 +26,39 @@ class Rect {
     get x() {
         return this._x;
     }
+
     get y() {
         return this._y;
     }
+
     get width() {
         return this._width;
     }
+
     get height() {
         return this._height;
     }
+
     get x2() {
         return this.x + this.width;
     }
+
     get y2() {
         return this.y + this.height;
     }
+
     set x(x) {
         this._x = x;
     }
+
     set y(y) {
         this._y = y;
     }
+
     set width(width) {
         this._width = width;
     }
+
     set height(height) {
         this._height = height;
     }
@@ -57,23 +66,27 @@ class Rect {
     get topLeft() {
         return new Point(this.x, this.y);
     }
+
     get topRight() {
-        return new Point(this.x + this.width , this.y);
+        return new Point(this.x + this.width, this.y);
     }
+
     get botLeft() {
         return new Point(this.x, this.y + this.height);
     }
+
     get botRight() {
         return new Point(this.x + this.width, this.y + this.height);
     }
 
     overlap(other) {
-        return (
-            this.x + this.width > other.x + other.width * 0.75 &&
-            this.y + this.height > other.y + other.height * 0.75 &&
-            this.x < other.x + 0.25 * other.width &&
-            this.y < other.y + 0.25 * other.height
-        );
+        const lower = 0.25;
+        const upper = 0.75;
+        let x1 = this.x < other.x + lower * other.width;
+        let x2 = this.x + this.width > other.x + other.width * upper;
+        let y1 = this.y < other.y + lower * other.height;
+        let y2 = this.y + this.height > other.y + other.height * upper;
+        return x1 && x2 && y1 && y2;
     }
 
 }

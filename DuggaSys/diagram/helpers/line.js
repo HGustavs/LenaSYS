@@ -82,7 +82,7 @@ function checkConnectionErrors(to, from) {
     return '';
 }
 
-const sameTypeError = (from, to, arr) => {
+function sameTypeError(from, to, arr) {
     let result = false;
     arr.forEach((type) => {
         if (from.kind == type && to.kind == type) {
@@ -92,7 +92,7 @@ const sameTypeError = (from, to, arr) => {
     return result;
 }
 
-const diffrerentTypeError = (from, to) => {
+function diffrerentTypeError(from, to) {
     return from.type != to.type && from.type !== 'NOTE' && to.type !== 'NOTE';
 }
 
@@ -101,7 +101,7 @@ const diffrerentTypeError = (from, to) => {
  * @param {object} line Line to process
  */
 function preProcessLine(line) {
-    var felem, telem;
+    let felem, telem;
 
     felem = data[findIndex(data, line.fromID)];
     telem = data[findIndex(data, line.toID)];
@@ -125,7 +125,7 @@ function preProcessLine(line) {
  */
 const limitEREntitiesToAttriutes = (from, to) => {
     if (from.kind != elementTypesNames.ERAttr && to.kind != elementTypesNames.ERAttr) return false;
-    const element = (from.kind == elementTypesNames.ERAttr)? from : to;
+    const element = (from.kind == elementTypesNames.ERAttr) ? from : to;
     let connectedLines = 0;
     for (let line of lines) {
         if (line.fromID == element.id || line.toID == element.id) {
@@ -133,4 +133,4 @@ const limitEREntitiesToAttriutes = (from, to) => {
         }
     }
     return connectedLines > 0;
-}
+};

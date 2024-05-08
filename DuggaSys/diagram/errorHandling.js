@@ -1825,8 +1825,8 @@ function checkLineErrors(lines) {
     // Error checking for lines
     for (let i = 0; i < lines.length; i++) {
         line = lines[i];
-        var fElement = data[findIndex(data, line.fromID)];
-        var tElement = data[findIndex(data, line.toID)];
+        const fElement = data[findIndex(data, line.fromID)];
+        const tElement = data[findIndex(data, line.toID)];
 
         //Checking for cardinality
         if ((fElement.kind == elementTypesNames.EREntity && tElement.kind == elementTypesNames.ERRelation) || (tElement.kind == elementTypesNames.EREntity && fElement.kind == elementTypesNames.ERRelation)) {
@@ -1843,9 +1843,9 @@ function checkLineErrors(lines) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkElementError(element) {
-    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element)
-    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element)
-    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element)
+    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element);
+    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element);
+    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element);
 
     // Check lines
     checkLineErrors(lines);
