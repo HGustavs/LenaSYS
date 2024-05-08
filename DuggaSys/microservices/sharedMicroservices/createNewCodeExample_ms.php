@@ -1,6 +1,6 @@
 <?php
-include_once "getUid_ms.php";
-include_once "retrieveUsername_ms.php";
+include_once "./getUid_ms.php";
+include_once "./retrieveUsername_ms.php";
 
 function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid, $templateNumber=0){
 	if (!is_null($exampleid)){
