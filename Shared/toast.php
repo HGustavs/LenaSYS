@@ -3,8 +3,7 @@
         WARNING: "warning", 
         ERROR: "error", 
         SUCCESS: "success",
-        UNDO: "undo",
-        CONFIRM: "confirm"
+        UNDO: "undo"
     }); 
     // Close the toast by clicking the X icon
     function closeToast(toastDiv) {
@@ -52,18 +51,6 @@
         let toastText = document.createElement('p');
         toastText.classList.add('toastText');
 
-        // The toast confirm options are created
-        // toastYes / toastNo = the toast confirm buttons (used for CONFIRM type)
-        let toastYes = document.createElement('span');
-        let toastNo = document.createElement('span');
-        toastYes.classList.add('toastYes');
-        toastNo.classList.add('toastNo');
-
-        // The toast buttonbox is created
-        // toastButtonBox = the toast confirm button
-        let toastButtonBox = document.createElement('div');
-        toastButtonBox.classList.add('toastButtonBox');
-
         // Adds the smaller toast divs to the bigger toast div
         toastDiv.appendChild(toastLeft);
         toastDiv.appendChild(toastCenter);
@@ -104,16 +91,6 @@
                 toastLeft.setAttribute( "onClick", "javascript: "+arguments);
                 typeText.innerHTML = "Notice";
                 toastDiv.classList.add(types.UNDO);
-                break;
-            case types.CONFIRM:
-                typeIcon.innerHTML = "Help";
-                typeText.innerHTML = "Error";
-                toastCenter.appendChild(toastButtonBox);
-                toastButtonBox.appendChild(toastYes);
-                toastButtonBox.appendChild(toastNo);
-                toastYes.innerHTML = "Yes"
-                toastNo.innerHTML = "No"
-                toastDiv.classList.add(types.CONFIRM);
                 break;
             // We create a default situation in case no type is given.
             // The default toast will not have an icon nor heading.
