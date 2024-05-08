@@ -743,7 +743,7 @@
                          onclick='setElementPlacementType(16); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
                          onmousedown="holdPlacementButtonDown(16)">
-                         <img src="../Shared/icons/eye_icon.svg" alt="Sequence activation"/>
+                         <img src="../Shared/icons/eye_icon.svg" alt="Sequence activation" class="white-icon"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Creates an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>

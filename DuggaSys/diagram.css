@@ -699,9 +699,13 @@
     background: var(--color-primary-light);
     border: solid 1px var(--color-border-2);
 }
+.white-icon {
+    filter: brightness(0) invert(1);
+}
 .placementTypeBoxIcons img{
     width:34px;
     height:34px;
+    filter: brightness(0) invert(1);
 }
 .placementTypeToolTipText{
     top:0%;
