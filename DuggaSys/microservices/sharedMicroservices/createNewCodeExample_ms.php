@@ -2,7 +2,7 @@
 include_once "getUid_ms.php";
 include_once "retrieveUsername_ms.php";
 
-function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid, $templateNumber=null){
+function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid, $templateNumber=0){
 	if (!is_null($exampleid)){
 		$sname = $sectname . ($exampleid + 1);
 	}else{
@@ -13,9 +13,7 @@ function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectnam
 	$query2->bindParam(':cversion', $coursevers);
 	$query2->bindParam(':ename', $sectname);
 	$query2->bindParam(':sname', $sname);
-	if (!is_null($templateNumber)){
-		$query2->bindParam(":templateid", $templateNumber);
-	}
+	$query2->bindParam(":templateid", $templateNumber);
 	if (!$query2->execute()) {
 		$error = $query2->errorInfo();
 		$debug = "Error updating entries" . $error[2];

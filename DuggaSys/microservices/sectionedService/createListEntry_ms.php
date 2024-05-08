@@ -45,21 +45,20 @@ if($link==-1) {
     $link = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
 }
 
-createNewListentrie($pdo,array(
-    "cid" => $courseid,
-    "coursevers" => $coursevers,
-    "userid" => $userid,
-    "entryname" => $sectname,
-    "link" => $link,
-    "kind" => $kind,
-    "comment" => $comments,
-    "visible" => $visibility,
-    "highscoremode" => $highscoremode,
-    "pos" => $pos,
-    "gradesys" => $gradesys,
-    "tabs" => $tabs,
-    "grptype" => $grptype,
-));
+createNewListEntry($pdo,
+    $courseid,
+    $coursevers,
+    $userid,
+    $sectname,
+    $link,
+    $kind,
+    $comments,
+    $visibility,
+    $highscoremode,
+    $pos,
+    $gradesys,
+    $tabs,
+    $grptype);
 
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
