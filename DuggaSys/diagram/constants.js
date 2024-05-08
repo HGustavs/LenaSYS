@@ -14,9 +14,9 @@ const keybinds = {
     PLACE_ENTITY: {key: "3", ctrl: false},
     PLACE_RELATION: {key: "4", ctrl: false},
     EDGE_CREATION: {key: "5", ctrl: false},
-    STATE_INITIAL: { key: "6" , ctrl: false },
-    SEQ_LIFELINE: { key: "7", ctrl: false },
-    NOTE_ENTITY: { key: "8", ctrl: false },
+    STATE_INITIAL: {key: "6", ctrl: false},
+    SEQ_LIFELINE: {key: "7", ctrl: false},
+    NOTE_ENTITY: {key: "8", ctrl: false},
     ZOOM_IN: {key: "+", ctrl: true, meta: true},
     ZOOM_OUT: {key: "-", ctrl: true, meta: true},
     ZOOM_RESET: {key: "0", ctrl: true, meta: true},
@@ -25,7 +25,7 @@ const keybinds = {
     TOGGLE_RULER: {key: "t", ctrl: false},
     TOGGLE_SNAPGRID: {key: "s", ctrl: false},
     TOGGLE_DARKMODE: {key: "d", ctrl: false},
-    CENTER_CAMERA: {key:"home", ctrl: false},
+    CENTER_CAMERA: {key: "home", ctrl: false},
     OPTIONS: {key: "o", ctrl: false},
     ENTER: {key: "enter", ctrl: false},
     COPY: {key: "c", ctrl: true, meta: true},
@@ -39,9 +39,9 @@ const keybinds = {
     TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
     TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
     TOGGLE_ER_TABLE: {key: "e", ctrl: false},
-    TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
-    SAVE_DIAGRAM: { key: "s", ctrl: true },
-    LOAD_DIAGRAM: { key: "l", ctrl: true },
+    TOGGLE_ERROR_CHECK: {key: "h", ctrl: false},
+    SAVE_DIAGRAM: {key: "s", ctrl: true},
+    LOAD_DIAGRAM: {key: "l", ctrl: true},
 };
 
 /**
@@ -99,7 +99,7 @@ const elementTypesNames = {
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "Note",
     UMLRelation: "UMLRelation",
-}
+};
 
 /**
  * @description Used by the mup and mmoving functions to determine what was clicked in ddown/mdown.
@@ -213,7 +213,7 @@ const lineDirection = {
     DOWN: 'BT',
     RIGHT: 'RL',
     LEFT: 'LR',
-}
+};
 
 /**
  * @description Available options of icons to display at the end of lines connecting two UML elements.
@@ -259,14 +259,14 @@ const SELineIcons = {//TODO: Replace with actual icons for the dropdown
 const SDLineType = {
     STRAIGHT: "Straight",
     SEGMENT: "Segment"
-}
+};
 
 /**
  * @description Available options of Line types between two SE elements
  */
 const SELineType = {
     SEGMENT: "Segment"
-}
+};
 
 /**
  * @description Polyline [x, y] coordinates of a line icon. For all element pair orientations
@@ -277,37 +277,37 @@ const TRIANGLE = {
     'BT': [[-10, 20], [0, 0], [10, 20], [-10, 20]],
     'LR': [[-20, -10], [0, 0], [-20, 10], [-20, -10]],
     'RL': [[20, -10], [0, 0], [20, 10], [20, -10]]
-}
+};
 const WEAK_TRIANGLE = {
     'TB': [[-10, -5], [0, -25], [10, -5], [-10, -5]],
     'BT': [[-10, 5], [0, 25], [10, 5], [-10, 5]],
     'LR': [[-5, -10], [-25, 0], [-5, 10], [-5, -10]],
     'RL': [[5, -10], [25, 0], [5, 10], [5, -10]],
-}
+};
 const DIAMOND = {
     'TB': [[-10, -20], [0, 0], [10, -20], [0, -40], [-10, -20]],
     'BT': [[-10, 20], [0, 0], [10, 20], [0, 40], [-10, 20]],
     'RL': [[20, -10], [0, 0], [20, 10], [40, 0], [20, -10]],
     'LR': [[-20, -10], [0, 0], [-20, 10], [-40, 0], [-20, -10]],
-}
+};
 const MANY = {
     'TB': [[-10, 5], [0, -15], [10, 5]],
     'BT': [[-10, -5], [0, 15], [10, -5]],
     'LR': [[5, -10], [-15, 0], [5, 10]],
     'RL': [[-5, -10], [15, 0], [-5, 10]],
-}
+};
 const ARROW = {
     'TB': [[-10, -20], [0, 0], [10, -20]],
     'BT': [[-10, 20], [0, 0], [10, 20]],
     'LR': [[-20, -10], [0, 0], [-20, 10]],
     'RL': [[20, -10], [0, 0], [20, 10]]
-}
+};
 const SD_ARROW = {
     'TB': [[-5, -10], [0, 0], [5, -10], [-5, -10]],
     'BT': [[-5, 10], [0, 0], [5, 10], [-5, 10]],
     'LR': [[-10, -5], [0, 0], [-10, 5], [-10, -5]],
     'RL': [[10, -5], [0, 0], [10, 5], [10, -5]],
-}
+};
 
 /**
  *@description Gives x1, y1, x2, y2 position of a line for a line icon. For all element pair orientations
@@ -377,7 +377,7 @@ const MENU_COLORS = [
     color.ORANGE,
     color.BLUE,
     color.BLACK,
-]
+];
 const strokeColors = [color.GREY];
 
 /**
@@ -388,24 +388,24 @@ const subMenuEntity = [
     elementTypes.UMLEntity,
     elementTypes.IEEntity,
     elementTypes.SDEntity,
-]
+];
 const subMenuRelation = [
     elementTypes.ERRelation,
     elementTypes.ERAttr,
     elementTypes.UMLRelation,
     elementTypes.IERelation,
-]
+];
 const subMenuUMLstate = [
     elementTypes.UMLInitialState,
     elementTypes.UMLFinalState,
     elementTypes.UMLSuperState,
-]
+];
 const subMenuSequence = [
     elementTypes.sequenceActor,
     elementTypes.sequenceObject,
     elementTypes.sequenceActivation,
     elementTypes.sequenceLoopOrAlt,
-]
+];
 
 /**
  * Groups for error checking. Used in addLine().
@@ -420,7 +420,7 @@ const sameConnectionForbidden = [
     elementTypesNames.sequenceActor,
     elementTypesNames.sequenceObject,
     elementTypesNames.sequenceLoopOrAlt,
-]
+];
 const lineAlwaysFrom = [
     elementTypesNames.EREntity,
     elementTypesNames.UMLInitialState,
