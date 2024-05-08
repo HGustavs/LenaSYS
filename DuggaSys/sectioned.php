@@ -270,7 +270,7 @@
 
 		<!-- Edit Section Dialog START -->
 
-		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 
 			<div class='loginBoxheader'>
@@ -281,10 +281,11 @@
 				<input type='hidden' id='lid' value='Toddler' />
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
+					<!-- a22karja -->
 					<span>Name:</span>
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" oninput="validateSectName('sectionname','dialog10')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<div class="formDialog" style="display: block; margin-left:40px; top:-35px;">
+				<div class="formDialog" style="display: block;  top:-35px;">
   		      		<span id="dialog10" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
@@ -323,7 +324,14 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<!-- a22karja -->
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'>
+					<span>Student Feedback Question:</span>
+					<input type="input" oninput="validateSectName('fdbckque','dialog11')" class='textinput' id='fdbckque' value='How would you grade the dugga' ></input>
+					</div>
+					<div class="formDialog" style="display: block;  ">
+  		      			<span id="dialog11" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+  		      		</div>
 				</div>
 
 				<!-- Error message, no duggas present-->

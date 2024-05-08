@@ -3599,10 +3599,11 @@ function validateDate2(ddate, dialogid) {
   return false;
 }
 
-function validateSectName(name) {
+function validateSectName(name,dialog) {
+  console.log(name);
   initInputColorTheme();
   var element = document.getElementById(name);
-  var errorMsg = document.getElementById("dialog10");
+  var errorMsg = document.getElementById(dialog);
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     $(errorMsg).fadeOut();
     element.style.backgroundColor = inputColorTheme;
