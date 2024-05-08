@@ -95,23 +95,24 @@ class InstallEngine {
 		try {
 			// Run the installer
 			$totalOperations = count($operations);
+			$skippedOperations = 0;
 			$i = 0;
 			$start_flag = isset($settings->starting_step) && $settings->starting_step != ""; // when true continue without running install step
 			foreach ($operations as $operationKey => $operation) {
+				// Calculate completion, adjusted by adding 1 to $i to reflect the correct number of completed operations.
+				$completion = round((($i+2) / ($totalOperations - $skippedOperations)) * 100, 0);
+				$completion = $completion > 99 ? 99 : $completion;
+				SSESender::transmit_event("updateProgress", data: $completion);
+
 				if ($start_flag) {	// Allow installer to start on the n:th step 
 					if ($settings->starting_step == $operationKey) {
 						$start_flag = false;
 					} else {
+						$skippedOperations++;
 						continue;
 					}
 				}
 
-				// Calculate completion, adjusted by adding 1 to $i to reflect the correct number of completed operations.
-				$completion = round((($i+1) / $totalOperations) * 100, 0);
-				if ($completion > 99) {
-					$completion = 99;
-				}
-				SSESender::transmit_event("updateProgress", data: $completion);
 				$operation();  // Execute the operation
 				$i++;
 			}
