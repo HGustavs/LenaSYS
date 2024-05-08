@@ -112,7 +112,7 @@ __Note, all microservices related to accessservice.php have been created. As for
 
 __Codeviewer Service:__
 
-- settingCodeexampleTemplate_ms.php __==UNFINISHED==__
+- updateCodeExampleTemplate_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfExample_ms.php __==finished==__ New filename: "updateContentOfExample_ms.php" according to new nameconvention based on CRUD and the main function of the ms.
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
@@ -863,13 +863,59 @@ SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE 
 <br>
 <br>
 
-### settingCodeexampleTemplate
-Updates the template for the code boxes in LenaSYS.
+### updateCodeExampleTemplate_ms.php
+__updateCodeExampleTemplate_ms.php__ is used on DuggaSys when you create a new code example for a course and chose a template to display that code. The microservice selects the selected template and retrieves a CSS-file containing the template to display on the page. The code for displaying different CSS-files can be found in codeviewerService.php and dugga.js.
 
-Uses service __updateTableCodeexample__ to set templateid recived from input, that value is also placed in the variable __templateNumber__. 
-The number of boxes created depends on on the value of _templateNumber_. 
-The contents of all boxes are gatherd with the service __selectFromTableBox__.
-Depending on if a box with the set id exists or not an insert into the table __box__, using service __insertIntoTableBox__, or an update, using __updateTableBox__, is performed. 
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ getUid_ms.php
+
+__Querys used in this microservice:__
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
+- templateid
+
+- Filters the records to update only those entries where the example ID ('exampleid'), course ID ('cid'), and course version ('cversion') match the specified parameters.
+
+```sql
+UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve all columns:
+
+- Filters the results to include only the records where the box ID ('boxid') matches the specified ':i' and the example ID ('exampleid') matches the specified ':exampleid'.
+
+```sql
+SELECT * FROM box WHERE boxid = :i AND exampleid = :exampleid;
+```
+
+
+_UPDATE_ operation on the table __'box'__ to update the values of the columns:
+- boxcontent
+- filename
+- wordlistid
+
+- Update is applied specifically to the box with the specified box ID (':i') and example ID (':exampleid'). 
+
+```sql
+UPDATE box SET boxcontent = :boxcontent, filename = :filename, wordlistid = :wordlistid WHERE boxid = :i AND exampleid = :exampleid;
+```
+
+
+_INSERT_ operation into the table __'box'__ to add a new row with values for the following columns:
+- boxid
+- exampleid
+- boxtitle
+- boxcontent
+- settings
+- filename
+- wordlistid
+- fontsize
+
+```sql
+INSERT INTO box(boxid, exampleid, boxtitle, boxcontent, settings, filename, wordlistid, fontsize) VALUES (:i, :exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid, :fontsize);
+```
 
 <br>
 
