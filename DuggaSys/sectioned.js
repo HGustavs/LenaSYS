@@ -331,6 +331,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Set Lid
   $("#lid").val(lid);
 
+  validateSectName('sectionname','dialog10');
+  validateSectName('fdbckque','dialog11');
+
   // Display Dialog
   $("#editSection").css("display", "flex");
 
