@@ -49,16 +49,16 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
         case elementTypesNames.ERAttr:
-            divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
+            divContent = drawElementERAttr(element, textWidth, boxw*1.3, boxh*1.3, linew, texth);
             break;
         case elementTypesNames.UMLRelation:
-            divContent = drawElementUMLRelation(element, boxw, boxh, linew);
+            divContent = drawElementUMLRelation(element, boxw*1.25, boxh*1.25, linew);
             cssClass = 'uml-element';
             break;
         case elementTypesNames.IERelation:
-            divContent = drawElementIERelation(element, boxw, boxh, linew);
+            divContent = drawElementIERelation(element, boxw*1.8, boxh*1.8, linew);
             cssClass = 'ie-element';
-            style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+            // style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
