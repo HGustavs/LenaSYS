@@ -452,18 +452,17 @@ function filePreviewClose(){
         fileview.removeChild(fileview.firstChild);
     }
 }
-document.addEventListener('keyup', function(event){
-    if (event.key === 'Escape') {
-        filePreviewClose();
-    }
-});
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keyup', function (event) {
     if (event.key === 'Escape') {
         let link = document.getElementById("upIcon").href;
         let isPopupOpen = checkIfPopupIsOpen();
         if (!isPopupOpen) {
             window.location.assign(link);
         }
+        filePreviewClose();
+    }
+    if (event.key === 'x') {
+        filePreviewClose();
     }
     // ---------------------------------------------------
     // Toggle to hide fab-button to click through it with CTRL
