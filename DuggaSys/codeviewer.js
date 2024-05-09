@@ -5098,3 +5098,31 @@ function toggleTitleDescription(toCheck){
       	box.classList.remove('visuallyhidden');
 	}
 }
+
+document.addEventListener('keydown', function(event){
+	if (event.key === 'Escape') {
+		let link = document.getElementById("upIcon").href;
+	    let isOpenPopup = closeCurrOpenPopupForm();
+		if (!isOpenPopup) {
+			window.location.assign(link);
+		} else {
+			return
+		}
+	}
+})
+
+function closeCurrOpenPopupForm(){
+	let allPopups = [
+		"#editExample",
+		"#editContent",
+		"#chooseTemplate",
+	];
+
+	for (let popup of allPopups){
+		if ($(popup).css("display") !== "none"){
+			$(popup).css("display","none");
+			return true;
+		}
+	}
+	return false;
+}
