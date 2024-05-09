@@ -452,23 +452,24 @@ function filePreviewClose(){
         fileview.removeChild(fileview.firstChild);
     }
 }
-
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keyup', function(event){
     if (event.key === 'Escape') {
-        let link = document.getElementById("upIcon").href;
         var fileview = document.querySelector(".fileView");
         $(".fileViewContainer").hide();
         $(".fileViewWindow").hide();
         while (fileview.firstChild) {
             fileview.removeChild(fileview.firstChild);
         }
-        console.log(link);
-        let isPopupOpen = checkIfPopupIsOpen()
+    }
+});
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        let link = document.getElementById("upIcon").href;
+        let isPopupOpen = checkIfPopupIsOpen();
+        //let isBlockedPopupOpen = checkIfBlockedPopupIsOpen();
         if (!isPopupOpen) {
             console.log("window location is reached");
             window.location.assign(link);
-        } else {
-            return
         }
     }
     // ---------------------------------------------------
@@ -1045,28 +1046,16 @@ document.addEventListener('DOMContentLoaded', function (){
 //---------------------------------------------
 //Add all current and newly created popups/modules in allPopups for ESC button not to override
 function checkIfPopupIsOpen() {
-    let hiddenCheck = true;
 	let allPopups = [
 		"#addFile",
+        ".fileViewWindow",
+        ".previewWindow"
 	];
-    let allHiddenPopups = [
-        "#fileViewWindow",
-        "#previewWindow"
-    ];
 	for (let popup of allPopups) {
 		if ($(popup).css("display") !== "none") {
+            console.log(popup, "is open");
 			return true;
 		}
 	}
-    for (let hiddenPopup of allHiddenPopups) {
-        let element = document.getElementById(hiddenPopup);
-        if (window.getComputedStyle(element).visibility !== "hidden") {
-            console.log(hiddenPopup, "inside checkvisibility")
-            hiddenCheck = false;
-        }
-    }
-    if (!hiddenCheck) {
-        return true;
-    } 
 	return false;
 }
