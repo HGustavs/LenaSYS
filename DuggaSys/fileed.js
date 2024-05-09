@@ -1038,15 +1038,15 @@ document.addEventListener('DOMContentLoaded', function (){
 //---------------------------------------------
 //Add all current and newly created popups/modules in allPopups for ESC button not to override
 function checkIfPopupIsOpen() {
-	let allPopups = [
-		"#addFile",
+    let allPopups = [
+        "#addFile",
         ".fileViewWindow",
         ".previewWindow"
-	];
-	for (let popup of allPopups) {
-		if ($(popup).css("display") !== "none") {
-			return true;
-		}
-	}
-	return false;
+    ];
+    for (let popup of allPopups) {
+        if ($(popup).css("display") !== "none") {
+            return true;
+        }
+    }
+    return false;
 }
