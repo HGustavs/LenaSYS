@@ -467,16 +467,16 @@ document.addEventListener('keyup', function (event) {
     // ---------------------------------------------------
     // Toggle to hide fab-button to click through it with CTRL
     //----------------------------------------------------
-	if(event.key === 'Control'){
-        var element = document.getElementById('fabButton');
-		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
-			element.style.opacity = "1";
-			element.style.pointerEvents = "auto";
-		}else{
+    if (event.key === 'Control') {
+        let element = document.getElementById('fabButton');
+        if (window.getComputedStyle(element, null).getPropertyValue("opacity") != "1") {
+            element.style.opacity = "1";
+            element.style.pointerEvents = "auto";
+        } else {
             element.style.opacity = "0.3";
-			element.style.pointerEvents = "none";
-		}	
-	}
+            element.style.pointerEvents = "none";
+        }	
+    }
 });
 
 //---------------------------------------------------------------------------------------------
