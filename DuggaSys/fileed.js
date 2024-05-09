@@ -445,7 +445,7 @@ function fileDownload(name, path, extension){
 
 // Close the file preview window by 'x' button or ESC key ----
 function filePreviewClose(){
-    var fileview = document.querySelector(".fileView");
+    let fileview = document.querySelector(".fileView");
     $(".fileViewContainer").hide();
     $(".fileViewWindow").hide();
     while(fileview.firstChild){
@@ -454,21 +454,14 @@ function filePreviewClose(){
 }
 document.addEventListener('keyup', function(event){
     if (event.key === 'Escape') {
-        var fileview = document.querySelector(".fileView");
-        $(".fileViewContainer").hide();
-        $(".fileViewWindow").hide();
-        while (fileview.firstChild) {
-            fileview.removeChild(fileview.firstChild);
-        }
+        filePreviewClose();
     }
 });
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
         let link = document.getElementById("upIcon").href;
         let isPopupOpen = checkIfPopupIsOpen();
-        //let isBlockedPopupOpen = checkIfBlockedPopupIsOpen();
         if (!isPopupOpen) {
-            console.log("window location is reached");
             window.location.assign(link);
         }
     }
@@ -1053,7 +1046,6 @@ function checkIfPopupIsOpen() {
 	];
 	for (let popup of allPopups) {
 		if ($(popup).css("display") !== "none") {
-            console.log(popup, "is open");
 			return true;
 		}
 	}
