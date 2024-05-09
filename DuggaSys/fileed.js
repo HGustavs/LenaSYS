@@ -454,14 +454,36 @@ function filePreviewClose(){
 }
 
 document.addEventListener('keydown', function (event) {
-    var fileview = document.querySelector(".fileView");
     if (event.key === 'Escape') {
+        let link = document.getElementById("upIcon").href;
+        var fileview = document.querySelector(".fileView");
         $(".fileViewContainer").hide();
         $(".fileViewWindow").hide();
         while (fileview.firstChild) {
             fileview.removeChild(fileview.firstChild);
         }
+        console.log(link);
+        let isPopupOpen = checkIfPopupIsOpen()
+        if (!isPopupOpen) {
+            console.log("window location is reached");
+            window.location.assign(link);
+        } else {
+            return
+        }
     }
+    // ---------------------------------------------------
+    // Toggle to hide fab-button to click through it with CTRL
+    //----------------------------------------------------
+	if(event.key === 'Control'){
+        var element = document.getElementById('fabButton');
+		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
+			element.style.opacity = "1";
+			element.style.pointerEvents = "auto";
+		}else{
+            element.style.opacity = "0.3";
+			element.style.pointerEvents = "none";
+		}	
+	}
 });
 
 //---------------------------------------------------------------------------------------------
@@ -1020,22 +1042,31 @@ document.addEventListener('DOMContentLoaded', function (){
  function updateAce(data){
     editor.getSession().setValue(data);
 }
-
-// ---------------------------------------------------
-// Toggle to hide fab-button to click through it with CTRL
-//----------------------------------------------------
-
-document.addEventListener('keydown', function(e) {
-	var element = document.getElementById('fabButton');
-	if(e.keyCode === 17){
-		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
-			element.style.opacity = "1";
-			element.style.pointerEvents = "auto";
-		}else{
-            element.style.opacity = "0.3";
-			element.style.pointerEvents = "none";
-		}	
+//---------------------------------------------
+//Add all current and newly created popups/modules in allPopups for ESC button not to override
+function checkIfPopupIsOpen() {
+    let hiddenCheck = true;
+	let allPopups = [
+		"#addFile",
+	];
+    let allHiddenPopups = [
+        "#fileViewWindow",
+        "#previewWindow"
+    ];
+	for (let popup of allPopups) {
+		if ($(popup).css("display") !== "none") {
+			return true;
+		}
 	}
-});
-
-
+    for (let hiddenPopup of allHiddenPopups) {
+        let element = document.getElementById(hiddenPopup);
+        if (window.getComputedStyle(element).visibility !== "hidden") {
+            console.log(hiddenPopup, "inside checkvisibility")
+            hiddenCheck = false;
+        }
+    }
+    if (!hiddenCheck) {
+        return true;
+    } 
+	return false;
+}
