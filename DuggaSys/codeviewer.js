@@ -5099,10 +5099,10 @@ function toggleTitleDescription(toCheck){
 	}
 }
 
-document.addEventListener('keydown', function(event){
+document.addEventListener('keyup', function(event){
 	if (event.key === 'Escape') {
 		let link = document.getElementById("upIcon").href;
-	    let isOpenPopup = closeCurrOpenPopupForm();
+	    let isOpenPopup = checkIfPopupIsOpen();
 		if (!isOpenPopup) {
 			window.location.assign(link);
 		} else {
@@ -5111,16 +5111,17 @@ document.addEventListener('keydown', function(event){
 	}
 })
 
-function closeCurrOpenPopupForm(){
+function checkIfPopupIsOpen() {
 	let allPopups = [
-		"#editExample",
-		"#editContent",
-		"#chooseTemplate",
+		"#editExampleContainer",
+		"#editContentContainer",
+		"#chooseTemplateContainer",
+		"#burgerMenu",
+		".previewWindowContainer loginBoxContainer"
 	];
-
 	for (let popup of allPopups){
 		if ($(popup).css("display") !== "none"){
-			$(popup).css("display","none");
+			console.log(popup);
 			return true;
 		}
 	}
