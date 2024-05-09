@@ -5121,7 +5121,6 @@ function checkIfPopupIsOpen() {
 	];
 	for (let popup of allPopups){
 		if ($(popup).css("display") !== "none"){
-			console.log(popup);
 			return true;
 		}
 	}
