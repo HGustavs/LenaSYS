@@ -5117,7 +5117,7 @@ function checkIfPopupIsOpen() {
 		"#editContentContainer",
 		"#chooseTemplateContainer",
 		"#burgerMenu",
-		".previewWindowContainer loginBoxContainer"
+		".previewWindowContainer.loginBoxContainer"
 	];
 	for (let popup of allPopups){
 		if ($(popup).css("display") !== "none"){
