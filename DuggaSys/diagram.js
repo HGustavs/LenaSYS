@@ -664,7 +664,6 @@ document.addEventListener('keydown', function (e) {
             hideSavePopout();
         } else {
             let propField = document.getElementById("elementProperty_name");
-            changeState();
             saveProperties();
             propField.blur();
         }
@@ -1305,116 +1304,6 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     contextLine = [];
     showdata();
     redrawArrows();
-}
-
-/** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
- * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
- * @see context For currently selected element.
- */
-function changeState() {
-    const element = context[0],
-        oldType = element.type,
-        newType = document.getElementById("typeSelect")?.value || undefined;
-    const oldRelation = element.state;
-    const newRelation = document.getElementById("propertySelect")?.value || undefined;
-
-    // If we are changing types and the element has lines, we should not change
-    if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)) {
-        displayMessage("error", `
-            Can't change type from \"${oldType}\" to \"${newType}\" as
-            different diagrams should not be able to connect to each other.`
-        );
-        return;
-        // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType && oldRelation == newRelation) {
-        return;
-    } else if (element.type == entityType.ER) {
-        //If not attribute, also save the current type and check if kind also should be updated
-        if (element.kind != elementTypesNames.ERAttr) {
-            if (oldType != newType) {
-                let newKind = element.kind;
-                newKind = newKind.replace(oldType, newType);
-                element.kind = newKind;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
-            if (newType != undefined) {
-                element.type = newType;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
-        }
-        let property = document.getElementById("propertySelect").value;
-        element.state = property;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type == entityType.UML) {
-        //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.UMLEntity) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-
-    } else if (element.type == entityType.IE) {
-        //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.IEEntity) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == entityType.SD) {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == entityType.SE) {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == 'NOTE') {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    }
-    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 }
 
 /**

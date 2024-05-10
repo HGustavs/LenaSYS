@@ -22,13 +22,20 @@ function elementHasLines(element) {
  */
 function makeGhost() {
     ghostElement = Element.FromKind(elementTypeSelected);
-    const lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
-    ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
-    ghostElement.id = makeRandomID();
+    setGhostPosition(lastMousePos.x, lastMousePos.y);
     showdata();
 }
 
+function setGhostPosition(x, y) {
+    const lastMousePosition = screenToDiagramCoordinates(x, y);
+    if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
+        ghostElement.x = Math.round(lastMousePosition.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
+        ghostElement.y = Math.round(lastMousePosition.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
+    } else {
+        ghostElement.x = lastMousePosition.x - (ghostElement.width / 2);
+        ghostElement.y = lastMousePosition.y - (ghostElement.height / 2);
+    }
+}
 /**
  * @description Sets ghostElement and ghostLine to null.
  */

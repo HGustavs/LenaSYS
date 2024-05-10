@@ -114,13 +114,6 @@ function colorSelection(element) {
 
 function drawElementProperties(element) {
     let str = '';
-    // Type dropdown
-    if (element.canChangeTo && element.kind != elementTypesNames.ERAttr) {
-        let single = `<option selected="selected" value='${element.type}'>${element.type}</option>`;
-        let options = (elementHasLines(element)) ? single : option(element.canChangeTo, element.type);
-        str += `<div style='color:${color.WHITE};'>Type</div>`;
-        str += select('typeSelect', options, false, false);
-    }
     //TODO in the future, this can be implemented as part of saveProperties.
     switch (element.kind) {
         case elementTypesNames.EREntity:
@@ -183,7 +176,7 @@ function drawElementProperties(element) {
     ) {
         str += colorSelection(element);
     }
-    str += saveButton('setSequenceAlternatives();changeState();saveProperties();generateContextProperties();');
+    str += saveButton('setSequenceAlternatives();saveProperties();generateContextProperties();');
     return str;
 }
 
