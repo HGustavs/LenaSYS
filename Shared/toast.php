@@ -15,7 +15,7 @@
         }
     }
     // Create a toast notification
-    function toast(type, text, duration, arguments = null) {
+    function toast(type, text, duration, arguments = null, arguments2 = null) {
         // We locate the container for all toasts
         const toastContainer = document.getElementById('toastContainer');
         // The toast div is created
@@ -139,6 +139,8 @@
                 toastCenter.appendChild(toastButtonBox);
                 toastButtonBox.appendChild(toastYes);
                 toastButtonBox.appendChild(toastNo);
+                toastYes.setAttribute( "onClick", "javascript: "+arguments);
+                toastNo.setAttribute( "onClick", "javascript: "+arguments2);
                 toastDiv.classList.add(types.CONFIRM);
                 break;
             // We create a default situation in case no type is given.

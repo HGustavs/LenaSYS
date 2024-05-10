@@ -23,7 +23,6 @@ $(document).ready(function () {
 	});
 });
 
-toast("confirm", "Test", 0);
 AJAXService("GET", {}, "COURSE");
 
 //----------------------------------------
