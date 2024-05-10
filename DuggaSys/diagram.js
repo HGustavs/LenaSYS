@@ -664,6 +664,7 @@ document.addEventListener('keydown', function (e) {
             hideSavePopout();
         } else {
             let propField = document.getElementById("elementProperty_name");
+            changeState();
             saveProperties();
             propField.blur();
         }
@@ -1307,6 +1308,26 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
 }
 
 /**
+ * @description When properties are saved this updates the element to the selected state.
+ * @see context For currently selected element.
+ */
+function changeState() {
+    const element = context[0];
+    const oldRelation = element.state;
+    const newRelation = document.getElementById("propertySelect")?.value || undefined;
+    if (newRelation && oldRelation != newRelation) {
+        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+                let property = document.getElementById("propertySelect").value;
+                element.state = property;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
+            }
+        }
+    }
+}
+
+/**
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
 function saveProperties() {
@@ -1314,77 +1335,38 @@ function saveProperties() {
     const element = context[0];
     const children = propSet.children;
     const propsChanged = {};
-    let cleanedLines;
 
-    for (let index = 0; index < children.length; index++) {
-        const child = children[index];
-        const propName = child.id.split(`_`)[1];
-        switch (propName) {
-            case "name":
-                const value = child.value.trim();
-                if (value && value.length > 0) {
-                    element[propName] = value;
-                    propsChanged.name = value;
-                }
-                break;
-            case 'primaryKey':
-                cleanedLines = [];
-                const textArea = child.value;
-                let lines = textArea.split('\n');
-                for (let i = 0; i < lines.length; i++) {
-                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
-                            lines[i] = "*" + lines[i];
-                        }
-                        cleanedLines.push(lines[i]);
-                    }
-                }
-                //Updates property
-                lines = cleanedLines;
-                element[propName] = lines;
-                propsChanged.primaryKey = lines;
-                break;
-            case 'attributes':
-                //Get string from textarea
-                const elementAttr = child.value;
-                //Create an array from string where newline seperates elements
-                let arrElementAttr = elementAttr.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementAttr.length; i++) {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
-                            `-${arrElementAttr[i]}`;
-                        }
-                        cleanedLines.push(arrElementAttr[i]);
-                    }
-                }
-                //Update the attribute array
-                arrElementAttr = cleanedLines;
-                element[propName] = arrElementAttr;
-                propsChanged.attributes = arrElementAttr;
-                break;
-            case 'functions':
-                //Get string from textarea
-                const elementFunc = child.value;
-                //Create an array from string where newline seperates elements
-                let arrElementFunc = elementFunc.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementFunc.length; i++) {
-                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
-                        if (Array.from(arrElementFunc[i])[0] != '+') {
-                            `+${arrElementFunc[i]}`;
-                        }
-                        cleanedLines.push(arrElementFunc[i]);
-                    }
-                }
-                //Update the attribute array
-                arrElementFunc = cleanedLines;
-                element[propName] = arrElementFunc;
-                propsChanged.functions = arrElementFunc;
-                break;
-            default:
-                break;
+    for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        const inputTag = child.id;
+        if (inputTag == "elementProperty_name") {
+            let value = child.value;
+            element.name = value;
+            propsChanged.name = value;
+            continue;
         }
+        const addToLine = (name, symbol) => {
+            if (inputTag == `elementProperty_${name}`) {
+                let lines = child.value.trim().split("\n");
+                for (let j = 0; j < lines.length; j++) {
+                    if (lines[j] && lines[j].trim()) {
+                        if (Array.from(lines[j])[0] != symbol) {
+                            lines[j] = symbol + lines[j];
+                        }
+                    }
+                }
+                element[name] = lines;
+                propsChanged[name] = lines;
+            }
+        };
+        // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
+        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+            addToLine("attributes", "");
+            continue;
+        }
+        addToLine("primaryKey", "*");
+        addToLine("attributes", "-");
+        addToLine("functions", "+");
     }
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();

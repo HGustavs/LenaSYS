@@ -176,7 +176,7 @@ function drawElementProperties(element) {
     ) {
         str += colorSelection(element);
     }
-    str += saveButton('setSequenceAlternatives();saveProperties();generateContextProperties();');
+    str += saveButton('setSequenceAlternatives();changeState();saveProperties();generateContextProperties();');
     return str;
 }
 

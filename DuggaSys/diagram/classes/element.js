@@ -115,7 +115,7 @@ class Element {
         return new Element({
             name: "Relation",
             type: entityType.ER,
-            kind: elementTypesNames.EREntity,
+            kind: elementTypesNames.ERRelation,
             state: attrState.NORMAL,
             width: 90,
             height: 90,
