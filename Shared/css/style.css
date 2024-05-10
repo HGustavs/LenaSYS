@@ -9617,8 +9617,29 @@ margin:2px;
   grid-area: "closeDiv";
 }
 
-.toast div:first-child, .toast div:nth-child(3) {
-  width: fit-content;
+.toastNo, .toastYes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 5px 10px;
+  color: white;
+}
+
+.toastNo {
+ background-color: var(--color-red);
+}
+
+.toastNo:hover {
+  background-color: var(--color-red-hover);
+}
+.toastYes {
+  background-color: var(--color-green);
+}
+
+.toastYes:hover {
+  background-color: #008000;
 }
 
 .warning {
@@ -9631,6 +9652,10 @@ margin:2px;
 
 .error {
   background-color: rgb(243, 129, 129);
+}
+
+.confirm {
+  background-color: #ecf7ff;
 }
 
 .toast.show {
@@ -9655,6 +9680,14 @@ margin:2px;
   word-break: break-word;
   text-align: start;
   overflow: hidden;
+}
+
+
+.toastButtonBox {
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 100%;
 }
 
 
