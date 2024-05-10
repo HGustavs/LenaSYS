@@ -12,6 +12,11 @@ $opt=getOP('opt');
 $exampleId=getOP('exampleid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
+$playlink=getOP('playlink');
+$exampleName=getOP('examplename');
+$sectionName=getOP('sectionname');
+$beforeId=getOP('beforeid');
+$afterId=getOP('afterid');
 $debug="NONE!";
 $userid=getUid();
 
@@ -32,11 +37,11 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)){
 }
 
 if(strcmp('EDITEXAMPLE',$opt)===0){
-	$playlink=getOP('playlink');
-	$exampleName=getOP('examplename');
-	$sectionName=getOP('sectionname');
-	$beforeId=getOP('beforeid');
-	$afterId=getOP('afterid');
+	if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
+	if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
+	if(isset($_POST['sectionname'])) {$sectionName = $_POST['sectionname'];}
+	if(isset($_POST['beforeid'])) {$beforeId = $_POST['beforeid'];}
+	if(isset($_POST['afterid'])) {$afterId = $_POST['afterid'];}
 
 	// Change content of example
 	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
