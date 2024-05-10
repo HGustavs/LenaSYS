@@ -9654,6 +9654,10 @@ margin:2px;
   background-color: rgb(243, 129, 129);
 }
 
+.confirm {
+  background-color: #d8eeff;
+}
+
 .toast.show {
   display: grid; 
   -webkit-animation: fadein 0.5s;

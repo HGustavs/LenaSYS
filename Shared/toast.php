@@ -135,7 +135,7 @@
                 break;
             case types.CONFIRM:
                 typeIcon.innerHTML = "Help";
-                typeText.innerHTML = "Error";
+                typeText.innerHTML = "Confirm";
                 toastCenter.appendChild(toastButtonBox);
                 toastButtonBox.appendChild(toastYes);
                 toastButtonBox.appendChild(toastNo);
