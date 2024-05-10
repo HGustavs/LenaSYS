@@ -930,20 +930,26 @@ document.addEventListener('click', function(e){
 //----------------------------------------------------------------------------------
 // Keyboard shortcuts - Edit functionality in the accessed table
 //----------------------------------------------------------------------------------
-document.addEventListener("keyup", function(event)
+document.addEventListener('keyup', function(event)
 {
-  if (event.keyCode === 13)
-  {
-    // If user presses key: Enter (13)
-    // if group dropdown is open, update and close it
-    if (typeof(activeElement) !== "undefined")
-    	updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
-    // update current cell
-    updateCellInternal();
-  } else if (event.keyCode === 27) {
-    // If user presses key: Escape (27)
-    clearUpdateCellInternal();
-  }
+	if (event.key === 'Enter') {
+		// if group dropdown is open, update and close it
+		if (typeof(activeElement) !== "undefined") {
+			updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
+		}
+		// update current cell
+		updateCellInternal();
+	} 
+	if (event.key === 'Escape') {
+		let link = document.getElementById("upIcon").href;
+		clearUpdateCellInternal();
+		let popupIsOpen = checkIfPopupIsOpen();
+		if (!popupIsOpen) {
+			window.location.assign(link);
+		} else {
+			return;
+		}
+	}
 });
 
 //----------------------------------------------------------------------------------
@@ -1071,4 +1077,17 @@ function closeArrow(arrowElement){
 		"-moz-transform": "rotate(0deg)",
 		"transform": "rotate(0deg)"
 	});
+}
+//Insert all new Popups/Modules in allPopups. Else ESC button will override
+function checkIfPopupIsOpen() {
+	let allPopups = [
+		"#addUser",
+		"#createUser"
+	];
+	for (let popup of allPopups) {
+		if ($(popup).css("display") !== "none") {
+			return true;
+		}
+	}
+	return false;
 }
