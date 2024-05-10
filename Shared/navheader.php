@@ -701,30 +701,31 @@ function hamburgerToggle() {
 }
 
 //count down the fetch cooldown
-const gitFetchCooldownMin = document.getElementById("gitFetchMin");
-const gitFetchCooldownSec = document.getElementById("gitFetchSec");
-const cooldownHolder = document.getElementById("cooldownHolder");
+let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
 
-setInterval(
-	function() 
-	{
-		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
+document.addEventListener("DOMContentLoaded", function() {
+    gitFetchCooldownMin = document.getElementById("gitFetchMin");
+    gitFetchCooldownSec = document.getElementById("gitFetchSec");
+    cooldownHolder = document.getElementById("cooldownHolder");
+
+    if (gitFetchCooldownMin && gitFetchCooldownSec) { // Check if elements exist
+        setInterval(function() 
 		{
-			gitFetchCooldownSec.innerHTML-=1;
-			if(gitFetchCooldownSec.innerHTML<0)
+            if (gitFetchCooldownSec.innerHTML > 0 || gitFetchCooldownMin.innerHTML > 0) {
+                gitFetchCooldownSec.innerHTML -= 1;
+                if (gitFetchCooldownSec.innerHTML < 0) 
+				{
+                    gitFetchCooldownMin.innerHTML -= 1;
+                    gitFetchCooldownSec.innerHTML = 59;
+                }
+            } 
+			else 
 			{
-				gitFetchCooldownMin.innerHTML-=1;
-				gitFetchCooldownSec.innerHTML=59;
-			}
-			
-		}
-		else
-		{
-			cooldownHolder.style.display="none";
-		}
-	}, 1000
-);
-
+                cooldownHolder.style.display = "none";
+            }
+        }, 1000);
+    }
+});
 function resetGitFetchTimer(superuser)
 {
 	if(cooldownHolder.style.display=="none"){
