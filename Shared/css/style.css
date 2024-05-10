@@ -2257,8 +2257,9 @@ input.inactive-button {
   width: 445px;
   border-radius: 0px;
 }
-.inputwrapper select{
+.inputwrapper select {
   border-radius: 0px;
+  margin-right: 0px;
 }
 
 #before,
@@ -2705,7 +2706,6 @@ label.login-label {
   text-align: start;
   border-radius: 0px;
   box-sizing: border-box;
-  /* margin-right: 10px; */
 }
 
 .greyedout-textinput {
