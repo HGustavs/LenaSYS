@@ -49,7 +49,6 @@ function retrieveHighscoreService($pdo, $duggaid, $variant, $debug){
             $query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
             $query->bindParam(':did', $duggaid);
             $query->bindParam(':lid', $variant);
-            $query->bindParam(':user', $_SESSION["loginname"]);
         
             if(!$query->execute()){
                 $error=$query->errorInfo();
