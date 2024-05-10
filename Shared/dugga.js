@@ -1127,79 +1127,69 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedAccess
 			});
-		}if(kind=="SECTION" || kind=="GRP"){
-			$serviceURL = "sectionedservice.php"
-			switch (opt) {
-				case "DELETE":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php";
-					break;
-				case "DEL":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
-					break;
-				case "NEW":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
-					break;
-				case "REORDER":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
-					break;
-				case "UPDATE":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
-					break;
-				case "UPDATETABS":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
-					break;
-				case "UPDATEDEADLINE":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
-					break;
-				case "UPDATEVRS":
-					$serviceURL= "sectionedservice.php";//change when MS i; created
-					break;
-				case "SETVISIBILITY":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php";
-					break;
-				case "REFGIT":
-					$serviceURL= "sectionedservice.php";//change when MS i; created
-					break;
-				case "CREGITEX":
-					$serviceURL= "sectionedservice.php";//change when MS i; created
-					break;
-				case "GRP":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
-					break;
-				case "CHGVERS":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
-					break;
-				case "get":
-					$serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";//Skapa en microservice till denna.
-					break;
-				default:
-					$serviceURL= "sectionedservice.php";
-				}
-				$.ajax({
-					url: $serviceURL,
-					type: "POST",
-					data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
-					dataType: "json", 
-					success: kind=="SECTION" ? returnedSection : returnedGroups
-				})
-			}
-			else if(kind=="GRP"){
-    $.ajax({
-      url: "sectionedservice.php",
-      //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
-      type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
-      dataType: "json",
-      success: returnedGroups
-    });
-  }else if(kind=="CONTRIBUTION"){
-			$.ajax({
-				url: "contributionservice.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
-				dataType: "json",
-				success: returnedSection
-			});
+	}if(kind=="SECTION" || kind=="GRP"){
+		let serviceURL = "sectionedservice.php"
+		switch (opt) {
+			case "DELETE":
+				serviceURL= "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php";
+				break;
+			case "DEL":
+				serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
+				break;
+			case "NEW":
+				serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
+				break;
+			case "REORDER":
+				serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
+				break;
+			case "UPDATE":
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
+				break;
+			case "UPDATETABS":
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
+				break;
+			case "UPDATEDEADLINE":
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
+				break;
+			case "UPDATEVRS":
+				serviceURL= "sectionedservice.php";//change when MS i; created
+				break;
+			case "SETVISIBILITY":
+				serviceURL= "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php";
+				break;
+			case "REFGIT":
+				serviceURL= "sectionedservice.php";//change when MS i; created
+				break;
+			case "CREGITEX":
+				serviceURL= "sectionedservice.php";//change when MS i; created
+				break;
+			case "GRP":
+				serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
+				break;
+			case "CHGVERS":
+				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+				break;
+			case "get":
+				serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";//Skapa en microservice till denna.
+				break;
+			default:
+				serviceURL= "sectionedservice.php";
+		}
+		$.ajax({
+			url: serviceURL,
+			type: "POST",
+			data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+			dataType: "json", 
+			success: kind=="SECTION" ? returnedSection : returnedGroups
+		})
+	}else if(kind=="CONTRIBUTION"){
+		$.ajax({
+			url: "contributionservice.php",
+			type: "POST",
+			data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedSection
+		});
 	}else if(kind=="DIAGRAM"){
 			$.ajax({
 				url: "diagramservice.php",
