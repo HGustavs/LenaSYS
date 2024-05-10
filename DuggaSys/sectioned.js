@@ -646,7 +646,11 @@ function showSaveButton() {
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
+
+  // console.log("Clicked id" + active_lid)
+  // console.log("Selected IDs:" + selectedItemList)
   if (operation == "openConfirmBox") {
+    // console.log(collectedLid);
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
   } else if (operation == "openHideConfirmBox") {
@@ -661,6 +665,11 @@ function confirmBox(operation, item = null) {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
+    if(!selectedItemList.includes(active_lid)){
+      selectedItemList.push(active_lid); // Push clicked item to selectedItemList before it's items are deleted
+    }
+    // console.log("Clicked id" + active_lid)
+    // console.log("Selected IDs:" + selectedItemList)
     deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
