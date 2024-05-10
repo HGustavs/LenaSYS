@@ -63,7 +63,7 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='loginBox'>
 			<div>
 				<div class='loginBoxheader'>
 					<h3>Create user</h3>
@@ -123,8 +123,8 @@
 		</div>
 	</div>
 
-	<div id='addUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+	<div id='addUser' class='loginBoxContainer'>
+		<div class='loginBox'>
 			<div>
 				<div class='loginBoxheader'>
 					<h3>Add user</h3>
@@ -134,7 +134,7 @@
 					<input type='hidden' id='uid' value='Toddler' />
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
-						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
 						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 						<datalist id="users_dropdown">
 							<option value="User 1"></option>
@@ -150,8 +150,8 @@
      	</div>
 	</div>
 
-	<div id='removeUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+	<div id='removeUser' class='loginBoxContainer'>
+		<div class='loginBox'>
 			<div>
 				<div class='loginBoxheader'>
 					<h3>Remove user</h3>
@@ -161,7 +161,7 @@
 					<input type='hidden' id='uid' value='Toddler' />
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
-						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
 						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 						<datalist id="users_dropdown">
 							<option value="User 1"></option>
