@@ -177,9 +177,15 @@
 }
 
 #pad_lock{
-    top: -45%;
+    top: -5px;
+    left: 3px;
     display: block;
-    position: relative;
+    position: absolute;
+    background: inherit;
+}
+
+.element:has(#pad_lock) {
+    overflow: visible;
 }
 
 #canvasOverlay{
