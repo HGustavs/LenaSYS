@@ -24,9 +24,8 @@ $testsData = array(
         'filter-output' => serialize(
             array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'entries' => array(
                     'debug'
-                ),
+             
             )
         ),
     ),
