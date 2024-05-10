@@ -1,29 +1,4 @@
 /**
- * Creates a new element using the appropriate default values. These values are determined using the elementTypes enum.
- * @param {Number} type What type of element to construct.
- * @see elementTypes For all available values to pass as argument.
- * @returns {Object}
- */
-function constructElementOfType(type) {
-    let typeName = undefined;
-    let newElement = undefined;
-    for (const name in elementTypes) {
-        if (elementTypes[name] == type) {
-            typeName = name;
-            break;
-        }
-    }
-    if (typeName) {
-        let defaultElement = defaults[typeName];
-        newElement = {};
-        for (const property in defaultElement) {
-            newElement[property] = defaultElement[property];
-        }
-    }
-    return newElement;
-}
-
-/**
  * @description Returns all the lines (all sides) from given element.
  * @param {object} element
  * @returns {array} result
@@ -46,7 +21,7 @@ function elementHasLines(element) {
  * @see ghostElement
  */
 function makeGhost() {
-    ghostElement = constructElementOfType(elementTypeSelected);
+    ghostElement = Element.FromKind(elementTypeSelected);
     const lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
     ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
     ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
