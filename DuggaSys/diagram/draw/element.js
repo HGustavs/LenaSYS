@@ -193,8 +193,8 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
     
     //check if element height and minHeight is 0, if so set both to 50
     if (element.height == 0 && element.minHeight == 0) {
-        element.height = 50;
         element.minHeight = 50;
+        element.height = element.minHeight;
         // update boxh to 50
         boxh = 50;
     }
