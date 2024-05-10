@@ -34,6 +34,7 @@
 				add_test_data: 'true',
 				add_demo_course: 'true',
 				add_test_course_data: 'true',
+				add_test_files: "true",
 				language_support: ["html", "java", "php", "plain", "sql", "sr"],
 				starting_step: "",
 			}))
