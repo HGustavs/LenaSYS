@@ -250,6 +250,29 @@ function bfs($url, $cid, $opt)
 
                 echo json_encode($response);
             }
+        } else {
+            // If unable to get file contents then it is logged into the specified textfile with
+            // the specific http error code
+            if($data === false || !$data) {
+                if(strlen($token)<1)
+                {
+                    setcookie("missingToken", 1, time() + (5), "/");
+                }
+                else
+                {
+                    $curl = curl_init($url);
+                    curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+                    curl_setopt($curl, CURLOPT_HEADER, 0);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                    $response = json_decode(curl_exec($curl));
+                    $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code."\n";
+                    $file = '../../LenaSYS/log/gitErrorLog.txt';
+                    
+                    http_response_code($http_response_code);
+                    error_log($message, 3, $file);
+                }
+            }
         }
     }
 
