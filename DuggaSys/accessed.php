@@ -136,11 +136,7 @@
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown">
-							<option value="User 1"></option>
-							<option value="User 2"></option>
-							<option value="User 3"></option>
-						</datalist>
+						<datalist id="users_dropdown"></datalist>
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
