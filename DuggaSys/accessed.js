@@ -115,6 +115,10 @@ function hideCreateUserPopup() {
 	$("#createUser").css("display", "none");
 }
 
+function hideAddUserPopup() {
+	$("#addUser").css("display", "none");
+}
+
 function hideCreateClassPopup() {
 	$("#createClass").css("display", "none");
 }
@@ -122,7 +126,17 @@ function hideCreateClassPopup() {
 //----------------------------------------------------------------------------
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
-
+function addUserToCourse() {
+	let dropdown = document.getElementById("users_dropdown")
+	let selectedOption = dropdown.options[dropdown.selectedIndex];
+	let uid = selectedOption.getAttribute("data-uid");
+	AJAXService("ADDUSR", {
+		cid: querystring['courseid'],
+		uid: uid,
+		coursevers: querystring['coursevers']
+	}, "ACCESS");
+	hideAddUserPopup();
+}
 function addSingleUser() {
 
 	var newUser = new Array();

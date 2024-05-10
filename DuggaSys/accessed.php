@@ -139,7 +139,7 @@
 						<datalist id="users_dropdown"></datalist>
 					</div>
 					<div class="flex-end">
-						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
+						<input class='submit-button' type='button' value='Save' onclick='addUserToCourse();' />
 					</div>
 				</div>
       		</div>
