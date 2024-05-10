@@ -82,7 +82,7 @@ const nameInput = (element) => {
 
 const saveButton = (functions, id='', value='Save') => {
     return `<br><br>
-            <input ${id}
+            <input id='${id}'
                 type='submit' value='${value}' class='saveButton' 
                 onclick="${functions}"
             >`;
@@ -197,16 +197,16 @@ const radio = (line, arr) => {
     let result = `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
     arr.forEach(lineKind => {
         let checked = (line.kind == lineKind) ? 'checked' : '';
-        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked}>
+        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked} onchange='changeLineProperties();'>
                    <label for='lineRadio${lineKind}'>${lineKind}</label>
                    <br>`
-    });
+    });    
     return result;
 }
 
 const select = (id, options, inclNone=true, inclChange=true) => {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
-    let change = (inclChange) ? 'onChange="changeLineProperties()"' : '';
+    let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
     return `<select id='${id}' ${change}>
                 ${none}
                 ${options}
@@ -1740,6 +1740,57 @@ function multipleColorsTest() {
  * Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {
+    const line = contextLine[0];
+    const changes = {};
+
+    // saves kind of line (normal, dashed, double, etc)
+    for (let radio of document.querySelectorAll('#propertyFieldset input[type=radio]')) {
+        if (radio && radio.checked) {
+            changes.kind = radio.value;
+        }
+    }
+
+    // saves cardinalities for ER attributes
+    const cardinalityER = document.getElementById('propertyCardinality');
+    if (cardinalityER) {
+        changes.cardinality = cardinalityER.value;
+    }
+
+    // saves the label
+    const label = document.getElementById('lineLabel');
+    if (label) {
+        changes.label = label.value;
+    }
+
+    // adds the rest of the attributes for the specific entity
+    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
+        changes.startLabel = document.getElementById("lineStartLabel").value;
+        changes.endLabel = document.getElementById("lineEndLabel").value;
+        changes.startIcon = document.getElementById("lineStartIcon").value;
+        changes.endIcon = document.getElementById("lineEndIcon").value;
+    }
+    if (line.type == entityType.SD) {
+        changes.innerType = document.getElementById("lineType").value;
+        changes.startIcon = document.getElementById("lineStartIcon").value;
+        changes.endIcon = document.getElementById("lineEndIcon").value;
+    }
+    if (line.type == entityType.SE) {
+        changes.startIcon = document.getElementById("lineStartIcon").value;
+        changes.endIcon = document.getElementById("lineEndIcon").value;
+    }
+
+    // updates the line
+    for (const [key, value] of Object.entries(changes)) {
+        line[key] = value;
+    }
+    
+    // save all the changes
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, changes), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    showdata();
+}
+
+/*function changeLineProperties() {
     let label = document.getElementById("lineLabel");
     let startLabel = document.getElementById("lineStartLabel");
     let endLabel = document.getElementById("lineEndLabel");
@@ -1798,4 +1849,4 @@ const changeAttribute = (line, attribute, updated, list) => {
         line[attribute] = updated.value;
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
-}
+}*/
