@@ -246,10 +246,12 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
 
 function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let str = "";
-    const primaryKeyArray = element.primaryKey;
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
     const text = splitFull(element.attributes, maxCharactersPerLine);
+    const primaryKeys = element.primaryKey;
+    // Adds each string from the primaryKey property first in the text array.
+    if (primaryKeys) text.unshift(...primaryKeys);
 
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight = tHeight - linew * 2 + texth * 2;
@@ -261,21 +263,16 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let headSvg = drawSvg(boxw, height, headRect + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
-    // Adds each string from the primaryKey property first in the text array.
-    if (primaryKeyArray && primaryKeyArray.length > 0) {
-        text.unshift(...primaryKeyArray);
-    }
 
     // Content, Attributes
     const textBox = (s, css) => {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
         for (let i = 0; i < s.length; i++) {
-            if (i < primaryKeyArray.length) {
+            if (i < primaryKeys.length) {
                 // Writes the text.
                 text += drawText('0.5em',
-                    texth * (i + 1) * lineHeight,
-                    'start', s[i],
+                    texth * (i + 1) * lineHeight, 'start', s[i],
                     'style="text-decoration-line:underline;"');
             } else {
                 text += drawText('0.5em',
