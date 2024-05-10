@@ -735,7 +735,7 @@ function insertIntoSqLiteGitRepo($cid, $githubURL){
 function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA){
     $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
     $successInsert = true;
-    $count = count($fileNames);
+    $count = $fileNames == null ? 0 : count($fileNames);
     for($i = 0; $i < $count; $i++){
         $query = $pdoLite->prepare('REPLACE INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
         $query->bindParam(':cid', $cid);
@@ -775,7 +775,7 @@ function writeCoursesDir($path, $pathCoursesRoot){
 function writeFilesInDir($path, $fileNames, $content){
     $WriteFilesSuccess = true;
     $success = true;
-    $count = count($content);
+    $count = $content == null ? 0 : count($content);
     for($i = 0; $i < $count; $i++){
         $WriteFilesSuccess = file_put_contents($path . '/' . $fileNames[$i], $content[$i]);
         if($WriteFilesSuccess === false){
@@ -792,7 +792,7 @@ function writeFilesInDir($path, $fileNames, $content){
 
 function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes) {
 	global $pdo;
-	$count = count($fileNames);
+	$count = $fileNames == null ? 0 : count($fileNames);
 	for($i = 0; $i < $count; $i ++) {
 		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
 		$query->bindParam(':filename', $fileNames[$i]);
@@ -834,7 +834,7 @@ function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadU
 
 function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
 	global $pdo;
-	$count = count($fileNames);
+	$count = $fileNames == null ? 0 : count($fileNames);
 	$boxContent = "Code";
 	$wordlistID = "3";
 	$y = 1;
