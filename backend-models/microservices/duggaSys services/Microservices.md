@@ -1402,7 +1402,7 @@ __Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCours
 
 __Querys used in this microservice:__
 
-_INSERT_ operation into the table __'vers'__ to add a new row with values for the following columns:
+_INSERT_ operation on the table __'vers'__ to add a new row with values for the following columns:
 - cid
 - coursecode
 - vers
@@ -1427,7 +1427,7 @@ SELECT * FROM quiz WHERE cid=:cid AND vers = :oldvers;
 ```
 
 
-_INSERT_ operation into the table __'quiz'__ to add a new row with values for the following columns based on a selected record:
+_INSERT_ operation on the table __'quiz'__ to add a new row with values for the following columns based on a selected record:
 - cid
 - autograde
 - gradesystem
@@ -1451,7 +1451,7 @@ FROM quiz WHERE id = :oldid;
 
 _SELECT_ operation on the table __'variant'__ to retrieve all columns:
 
-- Filters the results to include only those records where the variant ID matches the specified ':quizid'. 
+- Filters the results to include only those variants where the 'quizID' matches the specified ':quizid'.
 
 ```sql
 SELECT * FROM variant WHERE quizID=:quizid;
@@ -1466,7 +1466,7 @@ _INSERT_ operation into the table __'variant'__ to add a new row with values for
 - creator
 - disabled
 
-- Where the values for the new row should be copied from an existing variant record identified by ID ':oldvid'. The new entry will use the quiz ID ':newquizid'. 
+- Where the values for the new row are copied from an existing variant record identified by ID ':oldvid'. The new entry will use the quiz ID ':newquizid'. 
 
 ```sql
 INSERT INTO variant (quizID, param, variantanswer, modified, creator, disabled) SELECT :newquizid AS quizID, param, variantanswer, modified, creator, disabled FROM variant  WHERE vid = :oldvid;
@@ -1571,13 +1571,10 @@ _INSERT_ operation into the table __'impwordlist'__ to add a new row with values
 - updated
 - uid
 
-- The values for the new row should be copied from an existing 'impwordlist' record identified by example ID ':oldexampleid' and word ID ':oldwordid'. The new entry will use the new example ID ':newexampleid'.
+- The values for the new row are copied from an existing 'impwordlist' record identified by example ID ':oldexampleid' and word ID ':oldwordid'. The new entry will use the new example ID ':newexampleid'.
 
 ```sql
-INSERT INTO impwordlist (exampleid, word, label, updated, uid) 
-SELECT :newexampleid AS exampleid, word, label, updated, uid 
-FROM impwordlist 
-WHERE exampleid = :oldexampleid AND wordid = :oldwordid;
+INSERT INTO impwordlist (exampleid, word, label, updated, uid) SELECT :newexampleid AS exampleid, word, label, updated, uid FROM impwordlist WHERE exampleid = :oldexampleid AND wordid = :oldwordid;
 ```
 
 
@@ -1652,51 +1649,74 @@ UPDATE codeexample SET beforeid=:newexample WHERE beforeid=:oldexample AND cvers
 ```
 
 
-
-
-
-
-Uses service __createNewVersionOfCourse__ to makes _inserts_ into the table __Vers__.
-<br>
-
-Uses service __selectFromTableQuiz__ to _get_ information it requires from __quiz__.
-Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. (copys values from a row into a new insert, with new _vers_ number)
-<br>
-
-Uses service __selectFromTableVariant__ to _get_ information it requires from __variant__.
-Uses service __insertIntoTableVariant__ to makes _inserts_ into the table __variant__. (copys values from a row into a new insert, with new _quizID_ number)
-<br>
-
-Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
-Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__. (copys values from a row into a new insert, with new _quizID_ number)
-<br>
-
-Uses service __selectFromTableBox__ to _get_ information it requires from __box__.
-Uses service __insertIntoTableBox__ to makes _inserts_ into the table __box__. (copys values from a row into a new insert, with new _exampleid_ number)
-<br>
-
-Uses service __selectFromTableImprow__ to _get_ information it requires from __improw__.
-Uses service __insertIntoTableImprow__ to makes _inserts_ into the table __improw__. (copys values from a row into a new insert, with new _exampleid_ number)
-<br>
-
-Uses service __selectFromTableImpwordlist__ to _get_ information it requires from __impwordlist__.
-Uses service __insertIntoTableImpwordlist__ to makes _inserts_ into the table __impwordlist__. (copys values from a row into a new insert, with new _exampleid_ number)
-<br>
-
-Uses the services __updateTableListentries__ to change the content of these columns:
-- moment
-
-Uses the services __updateTableListentries__ to change the content of these columns:
-- link
-
-Uses the services __updateTableCodeexample__ to change the content of these columns:
-- beforeid
-
-Uses the services __updateTableCodeexample__ to change the content of these columns:
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
 - afterid
 
-Uses the services __setAsActiveCourse__ to change the content of these columns:
+- The update only affects 'codeexample' records where 'afterid' matches ':oldexample' and the course version matches ':updvers'.
+
+```sql
+UPDATE codeexample SET afterid=:newexample WHERE afterid=:oldexample AND cversion=:updvers;
+``` 
+
+
+_SELECT_ operation on the table __'userAnswer'__ to retrieve all columns:
+
+- Filters the results to include only those records where the version ('vers') matches the specified ':oldvers'. 
+
+```sql
+SELECT * FROM userAnswer WHERE vers = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'userAnswer'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- quiz
+- variant
+- moment
+- grade
+- uid
+- useranswer
+- submitted
+- marked
+- vers
+- creator
+- score
+
+- The values for the new row are copied from an existing 'userAnswer' record identified by ID (':olaid'). The new entry will use the new version identifier (':man').
+
+```sql
+INSERT INTO userAnswer (cid, quiz, variant, moment, grade, uid, useranswer, submitted, marked, vers, creator, score) SELECT cid, quiz, variant, moment, grade, uid, useranswer, submitted, marked, :man AS vers, creator, score FROM userAnswer WHERE aid = :olaid;
+```
+
+
+_UPDATE_ operation on the table __'userAnswer'__ to update the value of the column:
+- moment
+
+- The update only affects the 'userAnswer' records where 'moment' matches the specified ':oldmoment' and the version matches ':updvers'. 
+
+```sql
+UPDATE userAnswer SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'userAnswer'__ to update the value of the column:
+- quiz
+
+- The update only applies to 'userAnswer' records where the 'quiz' identifier matches the specified ':oldquiz' and the version matches ':updvers'. 
+
+```sql
+UPDATE userAnswer SET quiz=:newquiz WHERE quiz=:oldquiz AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
+
+- The update only affects the 'course' record where the course ID ('cid') matches the specified ':cid'. 
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid;
+```
 
 <br>
 
