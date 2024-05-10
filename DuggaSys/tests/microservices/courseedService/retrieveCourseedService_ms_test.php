@@ -36,8 +36,9 @@ $testsData = array(
     //TEST #2
     'Retrieve-deleted-course-superuser' => array(
         'expected-output' => '{"entries":[{"cid":"1002","coursename":"Old Course","visibility":"3","registered":false}]}',
-        'query-before-test-1' => "INSERT INTO course(cid, coursename, visibility) VALUES (1002, 'Old Course', 3);",
-        'query-before-test-2' => "INSERT INTO user(uid, username) VALUES (9998, 'superuser');",
+        //Pre-values
+        'query-before-test-1' => "INSERT INTO user(uid, username) VALUES (9998, 'superuser');", // Insert user first
+        'query-before-test-2' => "INSERT INTO course(cid, coursename, visibility, creator) VALUES (1002, 'Old Course', 3, 9998);", // Then insert course
         'query-after-test-1' => "DELETE FROM course WHERE cid = '1002';",
         'query-after-test-2' => "DELETE FROM user WHERE uid = '9998';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/retrieveCourseedService_ms.php',
