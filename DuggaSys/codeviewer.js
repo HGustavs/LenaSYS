@@ -5098,3 +5098,30 @@ function toggleTitleDescription(toCheck){
       	box.classList.remove('visuallyhidden');
 	}
 }
+//-------------------------------------------------
+// EventListener for Escape keyup
+//-------------------------------------------------
+document.addEventListener('keyup', function(event){
+	if (event.key === 'Escape') {
+		let link = document.getElementById("upIcon").href;
+		let isOpenPopup = checkIfPopupIsOpen();
+		if (!isOpenPopup) {
+			window.location.assign(link);
+		}
+	}
+});
+function checkIfPopupIsOpen() {
+	let allPopups = [
+		"#editExampleContainer",
+		"#editContentContainer",
+		"#chooseTemplateContainer",
+		"#burgerMenu",
+		".previewWindowContainer.loginBoxContainer"
+	];
+	for (let popup of allPopups) {
+		if ($(popup).css("display") !== "none"){
+			return true;
+		}
+	}
+	return false;
+}
