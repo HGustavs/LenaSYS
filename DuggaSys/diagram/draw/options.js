@@ -1757,7 +1757,7 @@ function changeLineProperties() {
     }
 
     // saves the label
-    const label = document.getElementById('lineLabel');
+    const label = document.getElementById('lineLabel');    
     if (label) {
         changes.label = label.value;
     }
@@ -1779,13 +1779,15 @@ function changeLineProperties() {
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
 
+    //changes = appendValuesFrom(changes, line);
+
     // updates the line
     for (const [key, value] of Object.entries(changes)) {
         line[key] = value;
     }
     
     // save all the changes
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, changes), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, line), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
 
     showdata();
 }

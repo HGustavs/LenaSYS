@@ -141,17 +141,9 @@ class StateMachine {
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
                         for (let j = 0; j < changeTypes.length; j++) {
-                            const currentChangedType = changeTypes[j];
-                            let movedAndResized = false;
                             let currentElement;
-                            switch (currentChangedType) {
+                            switch (changeTypes[j]) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                                    // ===================================================
-
-                                    // current solution works but it brings the bugs of:
-                                    // * labels can't be clicked properly if undone
-
-                                    // ===================================================
                                     // checks so that the exact same thing doesn't get logged twice
                                     if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
                                         this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
@@ -159,7 +151,7 @@ class StateMachine {
                                     }
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                    lastLog = appendValuesFrom(lastLog, stateChange);                                    
+                                    lastLog = appendValuesFrom(lastLog, stateChange);
                                     currentElement = data[findIndex(data, lastLog.id)];
                                     lastLog.width = currentElement.width;   
                                     lastLog.height = currentElement.height;
@@ -172,14 +164,14 @@ class StateMachine {
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
+                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
+                                    movedAndResized = true;
+                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:                                    
                                     movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    // not sure why but if you resize -> undo -> resize it starts
-                                    // to store the id as an array so this is just a check to counter that
-                                    while (Array.isArray(lastLog.id)) {
-                                        lastLog.id = lastLog.id[0];
-                                    }
+                                    
+                                    // the id is sometimes stored as an array so this is needed to get the actual value
                                     let id = stateChange.id[0];
                                     while (Array.isArray(id)) {
                                         id = id[0];
@@ -189,12 +181,8 @@ class StateMachine {
                                     currentElement = data[findIndex(data, id)];
                                     lastLog.width = currentElement.width;
                                     lastLog.height = currentElement.height;
-                                    if (movedAndResized) {
-                                        lastLog.x = currentElement.x;
-                                        lastLog.y = currentElement.y;
-                                        movedAndResized = false;
-                                    }
-                                    
+                                    lastLog.x = currentElement.x;
+                                    lastLog.y = currentElement.y;                                    
                                     
                                     // if the save() call comes from the same change-motion
                                     if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
@@ -343,9 +331,8 @@ class StateMachine {
         for (let i = 0; i < state.id.length; i++) {
             // Find object
             let object;
-            if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
-            else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
-            
+            if (data[findIndex(data, state.id[i])]) object = data[findIndex(data, state.id[i])];
+            else if (lines[findIndex(lines, state.id[i])]) object = lines[findIndex(lines, state.id[i])];
             // If an object was found
             if (object) {
                 // For every key, apply the changes
