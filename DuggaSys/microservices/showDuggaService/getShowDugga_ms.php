@@ -1,16 +1,25 @@
 <?php
+date_default_timezone_set("Europe/Stockholm");
+
+// Include basic application services!
+//---------------------------------------
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "retrieveShowDuggaService_ms.php";
+include_once('./retrieveShowDuggaService_ms.php');
+
 
 pdoConnect(); // Connect to database and start session
 session_start();
 
-$query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
-$query->bindParam(':hash', $hash);
-$query->execute();
-$result = $query->fetch();
-$active = $result['active_users'];
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+	$loginname=$_SESSION['loginname'];
+	$lastname=$_SESSION['lastname'];
+	$firstname=$_SESSION['firstname'];
+}else{
+	$userid="guest";		
+} 	
+
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
@@ -73,20 +82,25 @@ $isFileSubmitted="UNK";
 
 $debug="NONE!";	
 
-if($active == null){
-    $query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
-    $query->bindParam(':hash', $hash);
-    $query->bindParam(':AUtoken', $AUtoken);
-    $query->execute();
+if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment != "UNK"){
+	if((isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
+		isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
+		isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))) {
+		$hash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
+		$hashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+		$variant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+	}
+	else{
+		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
+		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
+		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+	}
 }else{
-    $newToken = (int)$active + (int)$AUtoken;
-    $query = $pdo->prepare("UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;");
-    $query->bindParam(':hash', $hash);
-    $query->bindParam(':AUtoken', $newToken);
-    $query->execute();
+	$debug="Could not find the requested dugga!";
 }
 
-echo json_encode(retrieveShowDuggaService(
+echo json_encode(
+retrieveShowDuggaService(
 	$moment, 
 	$pdo, 
 	$courseid, 
@@ -115,4 +129,8 @@ echo json_encode(retrieveShowDuggaService(
 	$variants,
 	$active,
 	$debug
-	));
+	)
+)
+
+
+?>
