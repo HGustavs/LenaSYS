@@ -190,7 +190,7 @@ __Gitcommit Service:__
 - fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
 - insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepo_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
-- refreshCheck_ms.php __==UNFINISHED==__ 
+- refreshCheck_ms.php __==finished==__ New filename: "updateThrottle_ms.php", vague connection to CRUD, more based on what the actual function of the code is.
 
 __Observe, this microservices needs to be checked again to make sure they are working once group 3 has fixed the servicefile.__
 
@@ -2464,7 +2464,7 @@ __deleteGitFiles_ms.php__ clear the gitFiles table in SQLite db when a course ha
 __Include original service files:__ sessions.php, basic.php
 
 _DELETE_ operation on the table __'gitFiles'__ to remove records where:
-- `cid` matches the specified course ID (`:cid`).
+- 'cid' matches the specified course ID (':cid').
 
 ```sql
 DELETE FROM gitFiles WHERE cid = :cid;
@@ -2498,24 +2498,10 @@ UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :ci
 ### refreshGithubRepo_ms.php
 Updates the metadata from the github repo if there's been a new commit.
 
-Please note, _refreshCheck_ and _newUpdateTime_ will later become their own microservices but are included in this microservice for now to ensure functionality.
-
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
-__Include microservice:__ deleteGitFiles_ms.php
+__Include microservice:__ refreshCheck_ms.php, clearGitFiles_ms.php
 
 __Querys used in this microservice:__
-
-__- refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit:__
-
-_DELETE_ operation on the table __'gitFiles'__ to remove rows where the column:
-- cid
-
-matches a specific value (`:cid`).
-
-```sql
-DELETE FROM gitFiles WHERE cid = :cid;
-```
-
 
 _SELECT_ operation on the table __'gitRepos'__ to retrieve the values of the columns:
 - lastCommit
@@ -2533,26 +2519,6 @@ _UPDATE_ operation on the table __'gitRepos'__ to update the value of the column
 UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid;
 ```
 
-
-__- refreshCheck: Decide how often the data can be updated, and if it can be updated again:__
-
-_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
-- updated
-
-```sql
-SELECT updated FROM course WHERE cid = :cid;
-```
-
-
-__- newUpdateTime: Updates the MySQL database to save the latest update time:__
-
-_UPDATE_ operation on the table __'course'__ to update the value of the column:
-- updated
-
-```sql
-UPDATE course SET updated = :parsedTime WHERE cid = :cid;
-```
-
 <br>
 
 ---
@@ -2562,9 +2528,11 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 ### readGitToken_ms.php
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__
+__Querys used in this microservice:__ 
 
-This SQL query retrieves the `gitToken` from the `gitRepos` table for a specific course identified by the `cid`:
+
+_SELECT_ operation on the table __'gitRepos'__ to retrieve the value of the column:
+- gitToken
 
 ```sql
 SELECT gitToken FROM gitRepos WHERE cid=:cid;
@@ -2581,14 +2549,14 @@ __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
 __Querys used in this microservice:__
 
-The SQL query performs an _INSERT OR REPLACE_ operation on the table __'gitRepos'__. It inserts a new record or replaces an existing record into the following columns:
+_INSERT OR REPLACE_ operation on the table __'gitRepos'__. It inserts a new record or replaces an existing record into the following columns:
 - cid
 - repoName
 - repoURL
 - lastCommit
 - gitToken
 
-- The operation ensures that if a record already exists with the same primary key (`cid`), it is replaced with the new values; otherwise, a new record is created.
+- The operation ensures that if a record already exists with the same primary key ('cid'), it is replaced with the new values; otherwise, a new record is created.
 
 ```sql
 INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) VALUES (:cid, :repoName, :repoURL, :lastCommit, :gitToken)
@@ -2603,7 +2571,7 @@ INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) V
 ### updateTime_ms.php
 __updateTime_ms.php__ updates the MySQL database to save the latest update time.
 
-__Include original service files:__ sessions.php, basic.php
+__Includes neither original service files nor microservices.__
 
 __Querys used in this microservice:__
 
@@ -2620,7 +2588,21 @@ UPDATE course SET updated=:parsedTime WHERE cid=:cid;
 <br>
 
 
-### refreshCheck_ms.php
+### updateThrottle_ms.php
+__updateThrottle_ms-php__ checks if database updates for a course are allowed by comparing the last update time against predefined intervals and user privileges. It enforces cooldowns using session variables to prevent too frequent updates. Superusers are granted shorter update intervals.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ newUpdateTime_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
+- updated
+
+```sql
+SELECT updated FROM course WHERE cid = :cid;
+```
+
 
 <br>
 <br>
