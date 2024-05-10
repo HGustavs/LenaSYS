@@ -88,6 +88,7 @@ function entityIsOverlapping(id, x, y) {
     });
 
     for (let i = 0; i < data.length; i++) {
+        console.log(data[i].kind, element.kind, )
         if (data[i].id === id) continue;
         if (context.includes(data[i])) break;
 
@@ -101,8 +102,14 @@ function entityIsOverlapping(id, x, y) {
             else if (element.type === "SE" && (data[i].kind === "sequenceLoopOrAlt" || data[i].kind === "sequenceActivation")) continue;
 
             // Superstates can be placed on state-diagram elements and vice versa
-            else if (data[i].kind === elementTypesNames.UMLSuperState && !backgroundElement.includes(element.kind)) continue;
-            else if (!backgroundElement.includes(data[i].kind) && element.kind === elementTypesNames.UMLSuperState) continue;
+            else if (!backgroundElement.includes(element.kind) &&
+                (data[i].kind === elementTypesNames.UMLSuperState ||
+                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+            ) continue;
+            else if (!backgroundElement.includes(data[i].kind) &&
+                (element.kind === elementTypesNames.UMLSuperState ||
+                element.kind === elementTypesNames.sequenceLoopOrAlt)
+            ) continue;
         }
 
         const x2 = data[i].x + data[i].width;
