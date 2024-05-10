@@ -146,7 +146,7 @@ __Courseed Service:__
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
-- copyCourseVersion_ms.php __==UNFINISHED==__  
+- copyCourseVersion_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 - updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -1396,7 +1396,266 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 <br>
 
-### copyCourseVersion
+### copyCourseVersion_ms.php
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php, createNewListEntry_ms.php, createNewCodeExample_ms.php
+
+__Querys used in this microservice:__
+
+_INSERT_ operation into the table __'vers'__ to add a new row with values for the following columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
+
+```sql
+INSERT INTO vers(cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd) VALUES (:cid, :coursecode, :vers, :versname, :coursename, :coursenamealt, :startdate, :enddate, :motd);
+```
+
+
+_SELECT_ operation on the table __'quiz'__ to retrieve all columns:
+
+- Filters the results to include only those quiz records where the course ID ('cid') matches the specified ':cid' and the version ('vers') matches the specified ':oldvers'.
+
+```sql
+SELECT * FROM quiz WHERE cid=:cid AND vers = :oldvers;
+```
+
+
+_INSERT_ operation into the table __'quiz'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- autograde
+- gradesystem
+- qname
+- quizFile
+- qrelease
+- deadline
+- relativedeadline
+- modified
+- creator
+- vers
+
+- Values for the new row are copied from an existing quiz record identified by ID ':oldid', with adjustments made to some values: release date (':qrel'), deadline (':deadl'), and version (':newvers').
+
+```sql
+INSERT INTO quiz (cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, relativedeadline, modified, creator, vers) 
+SELECT cid, autograde, gradesystem, qname, quizFile, :qrel AS qrelease, :deadl AS deadline, relativedeadline, modified, creator, :newvers AS vers 
+FROM quiz WHERE id = :oldid;
+```
+
+
+_SELECT_ operation on the table __'variant'__ to retrieve all columns:
+
+- Filters the results to include only those records where the variant ID matches the specified ':quizid'. 
+
+```sql
+SELECT * FROM variant WHERE quizID=:quizid;
+```
+
+
+_INSERT_ operation into the table __'variant'__ to add a new row with values for the following columns based on a selected record:
+- quizID
+- param
+- variantanswer
+- modified
+- creator
+- disabled
+
+- Where the values for the new row should be copied from an existing variant record identified by ID ':oldvid'. The new entry will use the quiz ID ':newquizid'. 
+
+```sql
+INSERT INTO variant (quizID, param, variantanswer, modified, creator, disabled) SELECT :newquizid AS quizID, param, variantanswer, modified, creator, disabled FROM variant  WHERE vid = :oldvid;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve all columns:
+
+- Filters the results to include only those records where the course ID matches the specified ':cid' and the course version matches ':oldvers'. 
+
+```sql
+SELECT * FROM codeexample WHERE cid=:cid AND cversion = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'codeexample'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- examplename
+- sectionname
+- beforeid
+- afterid
+- runlink
+- cversion
+- public
+- updated
+- uid
+- templateid
+
+- The values for the new row are copied from an existing code example record identified by ID ':oldid'. The new entry will use the course version ':newvers'.
+
+```sql
+INSERT INTO codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, updated, uid, templateid) SELECT cid, examplename, sectionname, beforeid, afterid, runlink, :newvers AS cversion, public, updated, uid, templateid FROM codeexample WHERE exampleid = :oldid;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve all columns:
+
+- Filters the results to include only those records where the example ID matches the specified ':exampleid'.
+
+```sql
+SELECT * FROM box WHERE exampleid=:exampleid;
+```
+
+
+_INSERT_ operation on the table __'box'__ to add a new row with values for the following columns based on a selected record:
+- boxid
+- exampleid
+- boxtitle
+- boxcontent
+- filename
+- settings
+- wordlistid
+- segment
+- fontsize
+
+- Values for the new row are copied from a box identified by box ID (':oldboxid)' and example ID (':oldexampleid'). The new entry are using a new example ID ':newexampleid'.
+
+```sql
+INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, segment, fontsize) SELECT boxid, :newexampleid AS exampleid, boxtitle, boxcontent, filename, settings, wordlistid, segment, fontsize FROM box WHERE boxid = :oldboxid AND exampleid = :oldexampleid;
+```
+
+
+_SELECT_ operation on the table __'improw'__ to retrieve all columns:
+
+- Filters the results to include only those records where the example ID matches the specified ':oldexampleid'.
+
+```sql
+SELECT * FROM improw WHERE exampleid=:oldexampleid;
+```
+
+
+_INSERT_ operation on the table __'improw'__ to add a new row with values for the following columns based on a selected record:
+- boxid
+- exampleid
+- istart
+- iend
+- irowdesc
+- updated
+- uid
+
+- The values for the new row are copied from an existing 'improw' record and identified by: example ID (':oldexampleid'), impid (':oldimpid'), and box ID (:oldboxid'). The new entry will use the new example ID ':newexampleid'. 
+
+```sql
+INSERT INTO improw (boxid, exampleid, istart, iend, irowdesc, updated, uid) SELECT boxid, :newexampleid AS exampleid, istart, iend, irowdesc, updated, uid
+FROM improw WHERE exampleid = :oldexampleid AND impid = :oldimpid AND boxid = :oldboxid;
+```
+
+
+_SELECT_ operation on the table __'impwordlist'__ to retrieve all columns:
+
+- Filters the results to include only those records where the example ID matches the specified ':oldexampleid'. 
+
+```sql
+SELECT * FROM impwordlist WHERE exampleid=:oldexampleid;
+```
+
+
+_INSERT_ operation into the table __'impwordlist'__ to add a new row with values for the following columns based on a selected record:
+- exampleid
+- word
+- label
+- updated
+- uid
+
+- The values for the new row should be copied from an existing 'impwordlist' record identified by example ID ':oldexampleid' and word ID ':oldwordid'. The new entry will use the new example ID ':newexampleid'.
+
+```sql
+INSERT INTO impwordlist (exampleid, word, label, updated, uid) 
+SELECT :newexampleid AS exampleid, word, label, updated, uid 
+FROM impwordlist 
+WHERE exampleid = :oldexampleid AND wordid = :oldwordid;
+```
+
+
+_SELECT_ operation on the table __'listentries'__ to retrieve all columns:
+
+- Filters the results to include only those records where the version identifier ('vers') matches the specified ':oldvers'. 
+
+```sql
+SELECT * FROM listentries WHERE vers = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'listentries'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- entryname
+- link
+- kind
+- pos
+- creator
+- ts (timestamp)
+- code_id
+- visible
+- vers
+- moment
+- gradesystem
+- highscoremode
+
+- The values for the new row are copied from an existing 'listentries' record identified by list ID (':olid'). The new entry will use the version identifier ':gubbe'.
+
+```sql
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, ts, code_id, visible, vers, moment, gradesystem, highscoremode) SELECT cid, entryname, link, kind, pos, creator, ts, code_id, visible, :gubbe AS vers, moment, gradesystem, highscoremode FROM listentries WHERE lid = :olid;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- moment
+
+- The update only affects the 'listentries' records where 'moment' matches the specified ':oldmoment' and the version matches ':updvers'. 
+
+```sql
+UPDATE listentries SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- link
+
+- The update only affects the 'listentries' records where 'link' matches the specified ':oldquiz' and the version matches ':updvers'. 
+
+```sql
+UPDATE listentries SET link=:newquiz WHERE link=:oldquiz AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- link
+
+- The update only affects 'listentries' records where 'link' is equal to ':oldexample' and the version equals ':updvers'. 
+
+```sql
+UPDATE listentries SET link=:newexample WHERE link=:oldexample AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
+- beforeid
+
+- The update only affects 'codeexample' records where the 'beforeid' matches ':oldexample' and the course version matches ':updvers'. 
+
+```sql
+UPDATE codeexample SET beforeid=:newexample WHERE beforeid=:oldexample AND cversion=:updvers;
+```
+
+
+
+
+
+
 Uses service __createNewVersionOfCourse__ to makes _inserts_ into the table __Vers__.
 <br>
 
@@ -2516,6 +2775,7 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 __readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservices:__ retrieveHighscoreService_ms.php 
 
 __Querys used in this microservice:__
 
