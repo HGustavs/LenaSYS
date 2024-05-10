@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", function() {
         // Show the requested page
         const targetPage = document.getElementById(pageId);
         if (targetPage) {
-            targetPage.style.display = 'block';
-        } else {
+            console.log("showing " + pageId);
+            targetPage.style.display = 'flex';
+        } else {    
             console.error("Page not found:", pageId);
         }
     }
@@ -22,13 +23,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Attach event listeners to all navigation buttons inside pages
     document.querySelectorAll('.page-nav').forEach(button => {
         button.addEventListener('click', function() {
-            console.log("jfasijdfoiajsndfiansdoifnaghapiudgnapjsdgnapdngaisujdgni");
             const pageId = this.getAttribute('data-target');
-            navigateTo(pageId);
+            navigateTo("page" + pageId);
         });
     });
 
-    start_installer(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}));
+    //start_installer(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}));
 
     function start_installer(settings) {
         fetch('installer.php', {
