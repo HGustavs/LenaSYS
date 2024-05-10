@@ -40,7 +40,7 @@ var mouseOverElement = false;
 var mouseOverLine = false;
 
 // Variable for drawing a line
-var isCurrentlyDrawing = false;
+var isCurrentlyDrawing = true;
 
 // Variables for resizing
 var originalWidth = 0;
