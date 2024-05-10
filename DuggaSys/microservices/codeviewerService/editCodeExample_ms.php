@@ -22,11 +22,23 @@ $debug="NONE!";
 $userid=getUid();
 
 if(strcmp('EDITEXAMPLE',$opt)===0){
-	if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
-	if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
-	if(isset($_POST['sectionname'])) {$sectionName = $_POST['sectionname'];}
-	if(isset($_POST['beforeid'])) {$beforeId = $_POST['beforeid'];}
-	if(isset($_POST['afterid'])) {$afterId = $_POST['afterid'];}
+
+	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+	$query->bindParam(':exampleid', $exampleId);
+	  $query->execute();
+  
+	  while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+		  $exampleCount++;
+		  $exampleId=$row['exampleid'];
+		  $exampleName=$row['examplename'];
+		  $courseID=$row['cid'];
+		  $cversion=$row['cversion'];
+		  $beforeId=$row['beforeid'];
+		  $afterId=$row['afterid'];
+		  $public=$row['public'];
+		  $sectionName=$row['sectionname'];
+		  $playlink=$row['runlink'];
+	  }
 
 	// Change content of example
 	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
