@@ -190,6 +190,14 @@ function drawText(x, y, a, t, extra = '') {
 
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const l = linew * 3;
+    
+    //check if element height and minHeight is 0, if so set both to 50
+    if (element.height == 0 && element.minHeight == 0) {
+        element.minHeight = 50;
+        element.height = element.minHeight;
+        // update boxh to 50
+        boxh = 50;
+    }
 
     let weak = '';
     if (element.state == "weak") {
