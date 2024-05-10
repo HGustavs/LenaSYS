@@ -722,6 +722,11 @@ function resetGitFetchTimer(superuser) {
             gitFetchCooldownSec.innerHTML = 59;
         } 
 		else 
+function resetGitFetchTimer(superuser)
+{
+	if(cooldownHolder.style.display=="none"){
+		cooldownHolder.style.display="block";
+		if(superuser==1)
 		{
             gitFetchCooldownMin.innerHTML = 9;
         	gitFetchCooldownSec.innerHTML = 59;
