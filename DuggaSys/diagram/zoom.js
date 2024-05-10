@@ -91,6 +91,11 @@ function zoomin(scrollEvent = undefined) {
 
     // Draw new rules to match the new zoomfact
     drawRulerBars(scrollx, scrolly);
+
+    document.querySelectorAll('#pad_lock').forEach(padLock => {
+        padLock.style.bottom = `${-5 * zoomfact}px`;
+        padLock.style.left = `${3 * zoomfact}px`;
+    });
 }
 
 /**
@@ -187,6 +192,11 @@ function zoomout(scrollEvent = undefined) {
 
     // Draw new rules to match the new zoomfact
     drawRulerBars(scrollx, scrolly);
+
+    document.querySelectorAll('#pad_lock').forEach(padLock => {
+        padLock.style.bottom = `${-5 * zoomfact}px`;
+        padLock.style.left = `${3 * zoomfact}px`;
+    });
 }
 
 /**
