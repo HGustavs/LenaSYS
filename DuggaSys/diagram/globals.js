@@ -39,6 +39,9 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variable for drawing a line
+var isCurrentlyDrawing = true;
+
 // Variables for resizing
 var originalWidth = 0;
 var originalHeight = 0;
@@ -147,4 +150,4 @@ var ghostLine = null;
 const historyHandler = {
     hasUpdated: false,
     inputCounter: 0
-};
+}
