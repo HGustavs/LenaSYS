@@ -31,9 +31,16 @@ $testsData = array(
         // TODO: Update the filter-output after test.php allows double-nested arrays
         'filter-output' => serialize(
             array(
-                'variants'
+                'entries' => array(
+                    'variants' => array( // This array cannot be added
+                        'vid',
+                        'param',
+                        'variantanswer',
+                        'disabled'
+                    ),
+                ),
             )
-        ),
+        )
     ),
 );
 
