@@ -2276,6 +2276,13 @@ function returnedHighscore(data) {
 //----------------------------------------------------------------------------------
 
 //En if or else sats som kollar ifall drawswimlane existerar ska placeras någonstans här- där funktionen endast kallas vid existerande//
+
+//ex
+//if (typeof drawSwimlanes === 'function') {
+//} else {
+  //console.log("drawSwimlanes function is not available");
+//}
+
 function drawSwimlanes() {
   // Resets the swimlane SVG
   document.getElementById("swimlaneSVG").innerHTML = "";
