@@ -5,13 +5,13 @@ $testsData = array(
     'updateDugga_ms' => array(
         'expected-output' => '{"debug":"NONE!","motd":"TESTING-MOTD-DELETE","readonly":"1"}',
         'query-after-test-1' => 'DELETE FROM settings WHERE motd="TESTING-MOTD-DELETE"',
-        'service' => 'http://localhost/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/createMOTD_ms.php',
         'service-data' => serialize(
             array(
                 'opt' => 'SETTINGS',
                 'motd' => 'TESTING-MOTD-DELETE',
-                'readonly' => 'readonly',
-                'username' => 'mestr',
+                'readonly' => '1',
+                'username' => 'brom',
                 'password' => 'password',
             )
         ),
