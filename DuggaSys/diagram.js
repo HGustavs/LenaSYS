@@ -1418,18 +1418,11 @@ function pasteClipboard(elements, elementsLines) {
     const cy = (y2 - y1) / 2;
     const mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
 
+    const clone = (obj) => Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+
     const connectedLines = [];
     // For every line that shall be copied, create a temp object, for kind and connection tracking
-    elementsLines.forEach(line => {
-        const temp = {
-            id: line.id,
-            fromID: line.fromID,
-            toID: line.toID,
-            kind: line.kind,
-            cardinality: line.cardinality
-        };
-        connectedLines.push(temp);
-    });
+    elementsLines.forEach(line => connectedLines.push(clone(line)));
     // An mapping between oldElement ID and the new element ID
     const idMap = {};
     const newElements = [];
@@ -1442,30 +1435,20 @@ function pasteClipboard(elements, elementsLines) {
 
         connectedLines.forEach(line => {
             if (line.fromID == element.id) line.fromID = idMap[element.id];
-            else if (line.toID == element.id) line.toID = idMap[element.id];
+            if (line.toID == element.id) line.toID = idMap[element.id];
         });
+        // Copy element
+        const elementObj = clone(element);
+        elementObj.id = idMap[element.id];
+        elementObj.x = mousePosInPixels.x + (element.x - x1);
+        elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        // Create the new object
-        const elementObj = {
-            name: element.name,
-            x: mousePosInPixels.x + (element.x - x1),
-            y: mousePosInPixels.y + (element.y - y1),
-            width: element.width,
-            height: element.height,
-            kind: element.kind,
-            id: idMap[element.id],
-            state: element.state,
-            fill: element.fill,
-            stroke: element.stroke,
-            type: element.type,
-            attributes: element.attributes,
-            functions: element.functions
-        };
         newElements.push(elementObj);
         addObjectToData(elementObj, false);
     });
 
     // Create the new lines but do not saved in stateMachine
+    // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
     connectedLines.forEach(line => {
         newLines.push(
             addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false, line.cardinality)
