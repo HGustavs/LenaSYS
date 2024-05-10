@@ -5,7 +5,7 @@
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {:
+function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
     let result;
 
     if (lineAlwaysFrom.includes(toElement.kind) ||
@@ -56,7 +56,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         }
         preProcessLine(newLine);
         addObjectToLines(newLine, stateMachineShouldSave);
-
         if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
         result = newLine;
     } else {
