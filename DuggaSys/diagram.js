@@ -346,8 +346,8 @@ class StateMachine {
         for (let i = 0; i < state.id.length; i++) {
             // Find object
             let object;
-            if (data[findIndex(data, state.id[i])] != undefined) object = data[findIndex(data, state.id[i])];
-            else if (lines[findIndex(lines, state.id[i])] != undefined) object = lines[findIndex(lines, state.id[i])];
+            if (data[findIndex(data, state.id[i])]) object = data[findIndex(data, state.id[i])];
+            else if (lines[findIndex(lines, state.id[i])]) object = lines[findIndex(lines, state.id[i])];
             // If an object was found
             if (object) {
                 // For every key, apply the changes
