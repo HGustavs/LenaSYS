@@ -419,8 +419,7 @@ $testsData = array(
             }
         ]
     }',
-    'query-after-test-1' => "UPDATE listentries SET tabs=1 WHERE lid=2008;",
-    'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedservice.php',
+    'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedService.php',
     'service-data' => serialize(array(
         'opt' => 'UPDATEVRS',
         'username' => 'mestr',
