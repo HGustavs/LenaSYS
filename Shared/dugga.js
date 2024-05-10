@@ -1175,32 +1175,82 @@ function AJAXService(opt,apara,kind)
 				success: returnedGroup
 			});
 	}else if(kind=="CODEVIEW"){
-			$.ajax({
-				url: "codeviewerService.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returned,
-				error: returnedError
-			});
+		switch (opt){
+			case "EDITEXAMPLE":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url: "../DuggaSys/microservices/codeviewerService/editCodeExample_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned,
+					error: returnedError
+				});
+				break;
+			case "DELEXAMPLE":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url : "../DuggaSys/microservices/codeviewerService/deleteCodeExample_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned,
+					error: returnedError
+				});
+				break;
+			default:
+				$.ajax({
+					url: "codeviewerService.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned,
+					error: returnedError
+				});
+		}
 	}else if(kind=="BOXCONTENT"){
-		$.ajax({
-			url: "codeviewerService.php",
-			//url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returned
-		});
+		switch (opt){
+			case "EDITCONTENT":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url : "../DuggaSys/microservices/codeviewerService/editContentOfExample_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned
+				});
+				break;
+			default:
+				$.ajax({
+					url: "codeviewerService.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned
+				});
+			}
 	}else if(kind=="BOXTITLE"){
-		$.ajax({
-			url: "codeviewerService.php",
-			//url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedTitle
-		});
+		switch (opt){
+			case "EDITTITLE":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returnedTitle
+				});
+				break;
+			default:
+				$.ajax({
+					url: "codeviewerService.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returnedTitle
+				});
+		}
+	
 	// }else if(kind=="STATS") {
 	// 	$.ajax({
 	// 		url: "stats.php",
