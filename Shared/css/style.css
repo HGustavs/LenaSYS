@@ -1677,13 +1677,6 @@ div .navButt:hover {
     }
 }
 
-@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
-  .fab-btn-list2{
-    position: absolute;
-    left:200px;
-  }
-}
-
 /*MEDIA QUERIES FOR HAMBURGER MENU IN ANALYTICS.PHP*/
 @media only screen and (max-width: 700px) {
   .GS2, .CO2, .PG2, .OP2, .BP2, .SU2, .SS2, .SC2, .FF2, .PF2{display:none;}
@@ -7076,19 +7069,36 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 0px;
-  margin: 20px 0px 0px -7px;
+  padding: 18px 0px 0px;
+  margin: 0px 0px 0px -10px;
   left: auto;
   width: 100%;
   list-style: none;
   text-align: center;
-  top:20px;
+  top:25px;
 }
+
+
+@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
+  .fab-btn-list2{
+    padding: 18px 0px 0px;
+    margin: -15px 0px 0px -57px;
+  }
+}
+
+@media only screen and (max-width: 430px), only screen and (orientation:portrait) {
+  .fab-btn-list2{
+
+  }
+}
+
+/*padding: 18px 0px 0px;
+margin: 0px 0px 0px -3px;*/
 
 @media screen and (max-height: 600px) {
   .fab-btn-list2{
     top: 30px;
-    left: 245px;
+    left: 45px;
     transform: rotate(90deg);
     transform-origin: top left;
   }
