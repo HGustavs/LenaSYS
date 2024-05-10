@@ -318,30 +318,28 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
     } */
 
     // Recursive function to filter nested arrays
-    function filterNestedArrays($response, $filter)
+    function filterNestedArrays($response, $filter, $depthCounter)
     {
         $filteredResponse = array();
-
-        //var_dump($response);
-        //var_dump($filter);
 
         foreach ($response as $key => $value) {
             // Check if the key exists in the filter
 
-            echo $key . " ";
             if (isset($filter[$key])) {
-
                 // If the filter for this key is an array, recursively filter the nested array
                 if (is_array($filter[$key])) {
                     if (is_array($value)) {
-                        var_dump($value);
                         echo "YES ";
-                        $filteredResponse[$key] = filterNestedArrays($value, $filter[$key]);           
+
+                        $filteredResponse[$key] = filterNestedArrays($value[0], $filter[$key], $depthCounter + 1);      
                     } else {
                         // If the value is not an array, include it directly
                         echo "NOQWE ";
                         $filteredResponse[$key] = $value;
                     }
+                } else {
+                    echo $key . " ";
+                    $filteredResponse[$key] = $value;
                 }
             }
         }
@@ -354,7 +352,7 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
         if ($optionArray === "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         } else {
-            $curlResponseJSONFiltered = filterNestedArrays($curlResponseJSON, $filter);
+            $curlResponseJSONFiltered = filterNestedArrays($curlResponseJSON, $filter, 0);
         }
     }
 

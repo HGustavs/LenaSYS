@@ -32,13 +32,13 @@ $testsData = array(
         'filter-output' => serialize(
             array(
                 'entries' => array(
-                    'variants' => array( // This array cannot be added
-                        'vid',
-                        'param',
-                        'variantanswer',
-                        'disabled'
-                    ),
-                ),
+                    'variants' => array(
+                        'vid'=>"",
+                        'param'=>"",
+                        'variantanswer'=>"",
+                        'disabled'=>""
+                    )
+                )
             )
         )
     ),
