@@ -930,12 +930,12 @@ document.addEventListener('click', function(e){
 //----------------------------------------------------------------------------------
 // Keyboard shortcuts - Edit functionality in the accessed table
 //----------------------------------------------------------------------------------
-document.addEventListener('keydown', function(event)
+document.addEventListener('keyup', function(event)
 {
 	if (event.key === 'Enter') {
 		// if group dropdown is open, update and close it
 		if (typeof(activeElement) !== "undefined") {
-		updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
+			updateAndCloseGroupDropdown(activeElement.parentElement.lastChild);
 		}
 		// update current cell
 		updateCellInternal();
