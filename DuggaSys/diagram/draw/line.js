@@ -27,7 +27,7 @@ function drawLine(line, targetGhost = false) {
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-
+    // Follows the cursor while drawing the line
     if (isCurrentlyDrawing){
         tx = event.clientX;
         ty = event.clientY;
