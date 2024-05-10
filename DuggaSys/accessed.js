@@ -1060,7 +1060,7 @@ function loadUsersToDropdown() {
 	$.ajax({
 		url: 'accessedservice.php',
 		type: 'POST',
-		data: { opt: 'RETRIEVE', action: 'users'}, // Sending the value of $opt
+		data: { opt: 'RETRIEVE', action: 'users'},
 		success: function(response) {
 			usersJson = response.substring(0, response.indexOf('{"entries":'));
 			let responseData = JSON.parse(usersJson);
@@ -1070,6 +1070,13 @@ function loadUsersToDropdown() {
 				let user = responseData.users[i];
 				filteredUsers.push(user);
 			}
+			let dropdownList = document.getElementById("users_dropdown");
+			filteredUsers.forEach(user => {
+				let option = document.createElement("option");
+				option.textContent = user.username;
+				option.setAttribute("data-uid", user.uid);
+				dropdownList.appendChild(option);
+			});
 		},
 		error: function(xhr, status, error) {
 			console.error(error);
