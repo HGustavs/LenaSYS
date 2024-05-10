@@ -483,7 +483,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
     let content;
     content = `<path 
                     class="text" 
-                    d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
+                    d="M${boxw / 2},${boxw / 4 + linew} V${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
                     stroke-dasharray='${linew * 3},${linew * 3}'
@@ -491,14 +491,14 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                 />
                 <g>
                     <circle 
-                        cx="${(boxw / 2) + linew}" 
+                        cx="${(boxw / 2) }" 
                         cy="${(boxw / 8) + linew}" 
                         r="${boxw / 8}px" 
                         fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
                     />
                     <path 
                         class="text"
-                        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                        d="M${(boxw / 2)},${(boxw / 4) + linew}
                             v${boxw / 6}
                             m${-boxw / 4},0
                             h${boxw / 2}
@@ -538,7 +538,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
 
     content = `<path 
                     class="text" 
-                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
+                    d="M ${boxw / 2},${boxw / 4 + linew}
                         V ${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
