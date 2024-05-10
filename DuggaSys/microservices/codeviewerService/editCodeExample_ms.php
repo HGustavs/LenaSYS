@@ -10,35 +10,33 @@ session_start();
 
 $opt=getOP('opt');
 $exampleId=getOP('exampleid');
-$boxId=getOP('boxid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
-$beforeId=getOP('beforeid');
-$afterId=getOP('afterid');
-$sectionName=getOP('sectionname');
-$exampleName=getOP('examplename');
-$playlink=getOP('playlink');
 $debug="NONE!";
 $userid=getUid();
 
-if(strcmp('EDITEXAMPLE',$opt)===0){
+$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+$query->bindParam(':exampleid', $exampleId);
+$query->execute();
 
-	$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
-	$query->bindParam(':exampleid', $exampleId);
-	  $query->execute();
-  
-	  while ($row = $query->fetch(PDO::FETCH_ASSOC)){
-		  $exampleCount++;
-		  $exampleId=$row['exampleid'];
-		  $exampleName=$row['examplename'];
-		  $courseID=$row['cid'];
-		  $cversion=$row['cversion'];
-		  $beforeId=$row['beforeid'];
-		  $afterId=$row['afterid'];
-		  $public=$row['public'];
-		  $sectionName=$row['sectionname'];
-		  $playlink=$row['runlink'];
-	  }
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+  	$exampleId=$row['exampleid'];
+  	$exampleName=$row['examplename'];
+	$courseID=$row['cid'];
+	$cversion=$row['cversion'];
+	$beforeId=$row['beforeid'];
+	$afterId=$row['afterid'];
+	$public=$row['public'];
+	$sectionName=$row['sectionname'];
+	$playlink=$row['runlink'];
+}
+
+if(strcmp('EDITEXAMPLE',$opt)===0){
+	$playlink=getOP('playlink');
+	$exampleName=getOP('examplename');
+	$sectionName=getOP('sectionname');
+	$beforeId=getOP('beforeid');
+	$afterId=getOP('afterid');
 
 	// Change content of example
 	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
