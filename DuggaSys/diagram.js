@@ -155,7 +155,7 @@ class StateMachine {
                                     lastLog = appendValuesFrom(lastLog, stateChange);
                                     
                                     // the id is sometimes stored as an array so this is needed to get the actual value
-                                    let id = stateChange.id[0];
+                                    let id = stateChange.id;
                                     while (Array.isArray(id)) {
                                         id = id[0];
                                     }
@@ -167,7 +167,7 @@ class StateMachine {
                                     lastLog.x = currentElement.x;
                                     lastLog.y = currentElement.y;                                    
                                     
-                                    // if the save() call comes from the same change-motion
+                                    // if the save() call comes from the same change-motion, remove the last entry
                                     if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
                                         this.historyLog.splice(this.historyLog.length-1, 1);
                                     }
@@ -183,11 +183,11 @@ class StateMachine {
                         }
                     }
                 } else {
-                    const current_element = data[findIndex(data, stateChange.id)];
+                    const currentElement = data[findIndex(data, stateChange.id)];
                     this.historyLog.push({
                         ...stateChange, 
-                        width: current_element.width, 
-                        height: current_element.height, 
+                        width: currentElement.width, 
+                        height: currentElement.height, 
                         changeType: newChangeType.flag, 
                         counter: historyHandler.inputCounter
                     });
