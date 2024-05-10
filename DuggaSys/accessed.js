@@ -661,7 +661,7 @@ function updateCellCallback(rowno, colno, column, tableid) {
 function rowFilter(row) {
 	var obj = JSON.parse(row["access"]);
 	var searchtermArray;
-	if (accessFilter.indexOf(obj.access) > -1) {
+	if (accessFilter.indexOf(obj.access) > -2) {
 		if (searchterm == "") {
 			return true;
 		} else {
