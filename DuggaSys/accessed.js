@@ -94,10 +94,6 @@ function showCreateUserPopup() {
 	$("#createUser").css("display", "flex");
 }
 
-function showAddUserPopup() {
-	$("#addUser").css("display", "flex");
-}
-
 function showCreateClassPopup() {
 	$("#createClass").css("display", "flex");
 }

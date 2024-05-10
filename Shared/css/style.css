@@ -9692,20 +9692,6 @@ margin:2px;
   min-width: 20%;
 }
 
-.content-wrapper {
-  margin-top: .5rem;
-  padding: .5rem;
-}
-
-#createUser .flexwrapper, #addUser .flexwrapper {
-  margin-bottom: .75rem;
-}
-
-#createUser .flex-end, #addUser .flex-end{
-  display: flex;
-  justify-content: flex-end;
-}
-
 @media only screen and (max-width: 460px) {
   .toast:first-child {
     margin: 2rem 0 0 0;
@@ -9767,52 +9753,6 @@ margin:2px;
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-/* END */
-/*Styling for Submission Instructions*/
-
-.submissionInstructions{
-  height:20px;
-  background-color:#614875;
-  padding:9px;
-  color:#FFF;
-}
-
-.instructionBox{
-  border:1px solid #614875; 
-  margin: 5px auto; 
-  margin-bottom:10px;
-}
-
-.instructions-content{
-  -webkit-columns: 1;
-  -moz-columns: 1; 
-  columns: 1; 
-}
-
-#InlPHPDocumentPrev{
-  min-height:100px;
-  background:#f8f8ff;
-  padding:10px;
-  border-top:2px 2px solid #d3d3d3;
-}
-
-#InlPHPZipPrev{
-  min-height:100px;
-  padding:10px;
-  border-top:2px 2px solid #d3d3d3;
-  border-bottom:2px 2px solid #d3d3d3;
-}
-
-#tomten{
-  -webkit-columns: 1; 
-  -moz-columns: 1; 
-  columns: 1; 
-}
-
-.submissionHistory{
-  font-style:italic;
 }
 
 /* END */
