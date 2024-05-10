@@ -12,44 +12,59 @@
 	<script defer src="tools/sse_receiver.js"></script>
 </head>
 <body>
-	<!-- <h1>Installation Progress</h1>
-	<div>
-		Progress: <span id="progressPercentage">0%</span>
-	</div>
-	<progress id="progressBar" value="0" max="100"></progress>
-	<div style="height: 200px; overflow: scroll;">
-		<span id="progress"></span>
-	</div> -->
-
+	
 	<div id="page1" class="page">
 		<div class="banner">
-            <h1 class="header-1">Welcome to <b>LenaSYS</b> </h1>
-        </div>
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
 		<div class="wrapper">
-			<?php
-                breadcrumb()
-            ?>
+			<?php breadcrumb(5, 1); ?>
 			<div class="content">
-				<?php
-					header2("Select your OS installer");
-				?>
+				<?php header2("Select your OS installer"); ?>
 				<div class="inner-wrapper">
-                	<?php
-						echo "<div class='grid-element-span'>";
-							checkBox("windows-installer","Windows installer");
-							checkBox("mac-linux-installer","Linux & Mac installer");
-						echo "</div>";
-                	?>
-            	</div>
+					<?php
+						$buttons = [
+							'windows' => 'Windows',
+							'linux' => 'Linux',
+							'mac' => 'Mac OS'
+						];
+						
+						radioButtons('os-installer', $buttons, 'windows');
+					?>
+				</div>
 			</div>
-			<?php
-				button("Back", "Continue");
-			?>
+			<?php navigationButtons(1, 2); ?>
 		</div>
 	</div>
 
 	<div id="page2" class="page">
-		<h1>hej</h1>
+		<div class="banner">
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
+		<div class="wrapper">
+			<?php
+				breadcrumb(5, 2);
+			?>
+			<div class="content">
+				<?php
+					header2("Select installation options");
+				?>
+				<div class="inner-wrapper">
+					<?php
+						$buttons = [
+							'create-db' => 'Create new MySQL DB',
+							'create-user' => 'Create new MySQL user'
+						];
+						$active = ['create-db', 'create-user'];
+
+						checkBoxes('creation-settings', $buttons, $active);
+					?>
+				</div>
+			</div>
+			<?php
+				navigationButtons(1, 3);
+			?>
+		</div>
 	</div>
 
 	<div id="page3" class="page">

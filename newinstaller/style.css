@@ -212,18 +212,18 @@ input[type=text]:focus {
     margin-top: auto; /* Pushes the button container to the bottom */
 }
 
-.checkbox {
+.checkbox, .radiobutton {
     display: flex;
     align-items: flex-start;
     font-size: var(--text-medium);
 }
 
-.checkbox label {
+.checkbox label, .radiobutton label {
     margin-left: 0.5rem;
     font-family: var(--body-font)
 }
 
-input[type=checkbox] {
+input[type=checkbox], input[type=radio] {
     margin: 0.25rem;
     accent-color: var(--primary-color);
 }

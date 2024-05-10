@@ -1,86 +1,90 @@
 <?php
-    $value1 = null;
-    $value2 = null;
-    function button($value1,$value2) {
-        echo "<div class='buttonContainer'>";
-        echo "<button class='backButton' onclick='breadCrumbDecr(); breadCrumbActive();'>".$value1."</button>";
-        echo "<button class='progressButton' onclick='breadCrumbInc(); breadCrumbActive();'>".$value2."</button>";
-        echo "</div>";
-    }
+	function navigationButtons($previousPage, $nextPage) {
+		echo "<div class='buttonContainer'>";
+		echo "<button class='backButton page-nav' data-target='{$previousPage}' onclick='breadCrumbDecr(); breadCrumbActive();'>Previous</button>";
+		echo "<button class='progressButton page-nav' data-target='{$nextPage}' onclick='breadCrumbInc(); breadCrumbActive();'>Next</button>";
+		echo "</div>";
+	}
 
-    function breadcrumb() {
-        echo "<div>
-                <ul class='breadcrumbs'>
-                    <li id='bcStep1' class='breadcrumb breadcrumb-selected'>Step 1</li><span class='arrow_icon'>
-                        &gt;
-                        </span>
-                    <li id='bcStep2' class='breadcrumb'>Step 2</li><span class='arrow_icon'>
-                        &gt;
-                        </span>
-                    <li id='bcStep3' class='breadcrumb'>Step 3</li><span class='arrow_icon'>
-                        &gt;
-                        </span>
-                    <li id='bcStep4' class='breadcrumb'>Step 4</li><span class='arrow_icon'>
-                        &gt;
-                        </span>
-                    <li id='bcStep5' class='breadcrumb'>Step 5</li><span class='arrow_icon'>
-                        &gt;
-                        </span>
-                    <li id='bcStep6' class='breadcrumb'>Step 6</li>
-                </ul>
-            </div>";
-    }
+	function defaultButton($title, $class = "", $onclick = "") {
+		echo "<button class='progressButton' onclick='{$onclick}'>{$title}</button>";
+	}
+	
+	function breadcrumb(int $n, int $active) {
+		echo "<div>";
+		echo "<ul class='breadcrumbs'>";
 
-    function header2($header2Text) {
-        echo "<div>
-            <h2 class='header-2'>".$header2Text."</h2>
-            </div>";
-    }
+		for ($i = 1; $i < $n+1; $i++) {
+			$current_active = $i == $active ? "breadcrumb-selected" : "";
+			echo "<li class='breadcrumb {$current_active}'>Step {$i}</li>";
+			if ($i != $n) {
+				echo "<span class='arrow_icon'>&gt;</span>";
+			}
+		}
 
-    function bodyText($bodyText) {
-        echo "<div class='body-text'>
-            <p>".$bodyText."</p>
-            </div>";
-    }
+		echo "</ul>";
+		echo "</div>\n";
+	}
 
-    function progressBar() {
-        echo "<div class='progressBar'>
-                <div class='progressBarLabels'>
-                    <label>lenasys/dugga...</label>
-                    <label>15%</label>
-                </div>
-                <div class='progressBarBorder'>
-                    <div class='progressBarIndicator'></div>
-                </div>
-            </div>";
-    }
+	function header2($header2Text) {
+		echo "<div>
+			<h2 class='header-2'>".$header2Text."</h2>
+			</div>";
+	}
 
-    function inputField($inputId, $inputLabel) {
-        echo "<div class='input-field'>
-                    <label for='$inputId'>$inputLabel</label>
-                    <input id='$inputId' type='text'>
-            </div>";
-    }
+	function bodyText($bodyText) {
+		echo "<div class='body-text'>
+			<p>".$bodyText."</p>
+			</div>";
+	}
 
-    function inputFieldAccText($inputId, $inputLabel, $accClass, $accText) {
-        echo "<div class='input-field'>
-                    <label for='$inputId'>$inputLabel</label>
-                    <input id='$inputId' type='text'>              
-                    <p class='$accClass'>".$accText."</p>        
-            </div>";
-    }
+	function progressBar() {
+		echo "<div class='progressBar'>
+				<div class='progressBarLabels'>
+					<label>lenasys/dugga...</label>
+					<label>15%</label>
+				</div>
+				<div class='progressBarBorder'>
+					<div class='progressBarIndicator'></div>
+				</div>
+			</div>";
+	}
 
-    function checkBox($checkBoxId, $checkBoxText) {
-        echo "<div class='checkbox'>
-                <input id='$checkBoxId' type='checkbox'>
-                <label for='$checkBoxId'>".$checkBoxText."</label>
-            </div>";
-    }
-    function checkBoxAccText($checkBoxId, $checkBoxText, $accClass, $accText) {
-        echo "<div class='checkbox'>
-                <input id='$checkBoxId' type='checkbox'>
-                <label for='$checkBoxId'>".$checkBoxText."</label>
-                </div>
-                <p class='$accClass'>".$accText."</p>";
-    }
-?>
+	function inputField($inputId, $inputLabel) {
+		echo "<div class='input-field'>
+					<label for='$inputId'>$inputLabel</label>
+					<input id='$inputId' type='text'>
+			</div>";
+	}
+
+	function inputFieldAccText($inputId, $inputLabel, $accClass, $accText) {
+		echo "<div class='input-field'>
+					<label for='$inputId'>$inputLabel</label>
+					<input id='$inputId' type='text'>              
+					<p class='$accClass'>".$accText."</p>        
+			</div>";
+	}
+
+	function radioButtons($radioGroupName, $buttons, $checkedId = null) {
+		echo "<div class='grid-element-span'>";
+		foreach ($buttons as $id => $label) {
+			$checked = ($id === $checkedId) ? "checked" : "";
+			echo "<div class='radiobutton'>
+					<input id='$id' type='radio' name='$radioGroupName' $checked>
+					<label for='$id'>$label</label>
+				  </div>";
+		}
+		echo "</div>";
+	}
+
+	function checkBoxes($checkboxGroupName, $checkboxes, $checkedIds = []) {
+		echo "<div class='grid-element-span'>";
+		foreach ($checkboxes as $id => $label) {
+			$checked = in_array($id, $checkedIds) ? "checked" : "";
+			echo "<div class='checkbox'>
+					<input id='$id' type='checkbox' name='{$checkboxGroupName}[]' $checked>
+					<label for='$id'>$label</label>
+				  </div>";
+		}
+		echo "</div>";
+	}
