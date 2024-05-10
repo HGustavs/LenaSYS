@@ -17,12 +17,23 @@ class TestdataSetup {
 	 */
 	public function copy_test_files(bool $verbose = false): array {
 		try {
-			if (!is_readable($this->sourceDirectory)) {
-				return $this->handle_exception("Source directory is not readable or does not exist.");
+			$real_source = realpath($this->sourceDirectory) == "" ? $this->sourceDirectory : realpath($this->sourceDirectory);
+			$real_destination = realpath($this->destinationDirectory) == "" ? $this->destinationDirectory : realpath($this->destinationDirectory);
+
+			if (!is_dir($this->sourceDirectory)) {
+				return $this->handle_exception("{$real_source} is not a directory.");
 			}
 
-			if (!is_dir($this->destinationDirectory) && !mkdir($this->destinationDirectory, 0777, true)) {
+			if (!is_readable($this->sourceDirectory)) {
+				return $this->handle_exception("Source directory ({$real_source}) is not readable.");
+			}
+
+			if (!is_dir($this->destinationDirectory) && !mkdir($real_destination, 0777, true)) {
 				return $this->handle_exception("Failed to create destination directory.");
+			}
+
+			if (!is_readable($this->destinationDirectory)) {
+				return $this->handle_exception("Source directory ({$real_destination}) is not readable.");
 			}
 
 			$dirIterator = new RecursiveDirectoryIterator($this->sourceDirectory, RecursiveDirectoryIterator::SKIP_DOTS);
@@ -43,7 +54,7 @@ class TestdataSetup {
 					}
 				}
 			}
-			return $this->handle_success("Successfully copied files from {$this->sourceDirectory} to {$this->destinationDirectory}.");
+			return $this->handle_success("Successfully copied files from {$real_source} to {$real_destination}.");
 		} catch (Exception $e) {
 			return $this->handle_exception($e->getMessage());
 		}
@@ -81,14 +92,7 @@ class TestdataSetup {
 	 * return array
 	 */
 	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
-		$message = $action . (is_string($e) ? $e : $e->getMessage());
-		if ($callback && is_callable($callback)) {
-			$callback($message, false);
-		}
-		return [
-			"success"=> false,
-			"message"=> $message
-		];
+		throw new Exception($e);
 	}
 
 	/**
@@ -100,7 +104,7 @@ class TestdataSetup {
 	private function handle_success(string $action = "Success", $callback = null): array {
 		$callback = $callback ?? $this->callback;
 		if (isset($callback) && is_callable($callback)) {
-			$callback($action, true);
+			$callback($action, false);
 		}
 		return [
 			"success"=> true,
