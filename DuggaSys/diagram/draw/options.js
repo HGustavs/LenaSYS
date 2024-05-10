@@ -83,7 +83,7 @@ function nameInput(element) {
 
 function saveButton(functions, id = '', value = 'Save') {
     return `<br><br>
-            <input ${id}
+            <input id='${id}'
                 type='submit' value='${value}' class='saveButton' 
                 onclick="${functions}"
             >`;
@@ -200,16 +200,16 @@ function radio(line, arr) {
     let result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
     arr.forEach(lineKind => {
         let checked = (line.kind == lineKind) ? 'checked' : '';
-        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked}>
+        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked} onchange='changeLineProperties();'>
                    <label for='lineRadio${lineKind}'>${lineKind}</label>
                    <br>`
-    });
+    });    
     return result;
 }
 
 function select(id, options, inclNone = true, inclChange = true) {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
-    let change = (inclChange) ? 'onChange="changeLineProperties()"' : '';
+    let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
     return `<select id='${id}' ${change}>
                 ${none}
                 ${options}
@@ -1753,62 +1753,52 @@ function multipleColorsTest() {
  * Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {
-    let label = document.getElementById("lineLabel");
-    let startLabel = document.getElementById("lineStartLabel");
-    let endLabel = document.getElementById("lineEndLabel");
-    let startIcon = document.getElementById("lineStartIcon");
-    let endIcon = document.getElementById("lineEndIcon");
-    let lineType = document.getElementById("lineType");
-    let cardinality = document.getElementById('propertyCardinality');
-    let line = contextLine[0];
+    const line = contextLine[0];
+    const changes = {};
 
-    let radio = [
-        document.getElementById("lineRadioNormal"),
-        document.getElementById("lineRadioDouble"),
-        document.getElementById("lineRadioDashed"),
-        document.getElementById("lineRadioRecursive"),
-    ];
-    radio.forEach(r => {
-        if (r && r.checked && line.kind != r.value) {
-            line.kind = r.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, {kind: r.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
-    });
-
-    if (cardinality) {
-        if (cardinality.value == "") {
-            delete line.cardinality;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        } else {
-            changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
+    // saves kind of line (normal, dashed, double, etc)
+    for (let radio of document.querySelectorAll('#propertyFieldset input[type=radio]')) {
+        if (radio && radio.checked) {
+            changes.kind = radio.value;
         }
     }
+
+    // saves cardinalities for ER attributes
+    const cardinalityER = document.getElementById('propertyCardinality');
+    if (cardinalityER) {
+        changes.cardinality = cardinalityER.value;
+    }
+
+    // saves the label
+    const label = document.getElementById('lineLabel');    
     if (label) {
-        changeAttribute(line, 'label', label, {label: label.value});
+        changes.label = label.value;
     }
 
+    // adds the rest of the attributes for the specific entity
     if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
-        changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});
-        changeAttribute(line, 'endLabel', endLabel, {endLabel: endLabel.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+        changes.startLabel = document.getElementById("lineStartLabel").value;
+        changes.endLabel = document.getElementById("lineEndLabel").value;
+        changes.startIcon = document.getElementById("lineStartIcon").value;
+        changes.endIcon = document.getElementById("lineEndIcon").value;
     }
     if (line.type == entityType.SD) {
-        changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+        changes.innerType = document.getElementById("lineType").value;
+        changes.startIcon = document.getElementById("lineStartIcon").value;
+        changes.endIcon = document.getElementById("lineEndIcon").value;
     }
     if (line.type == entityType.SE) {
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
+        changes.startIcon = document.getElementById("lineStartIcon").value;
+        changes.endIcon = document.getElementById("lineEndIcon").value;
     }
-    showdata();
-}
 
-function changeAttribute(line, attribute, updated, list) {
-    if (line[attribute] != updated.value) {
-        line[attribute] = updated.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    // updates the line
+    for (const [key, value] of Object.entries(changes)) {
+        line[key] = value;
     }
+    
+    // save all the changes
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, line), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+
+    showdata();
 }

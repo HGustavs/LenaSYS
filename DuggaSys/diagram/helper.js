@@ -206,3 +206,21 @@ function calculateDeltaExceeded() {
         deltaExceeded = true;
     }
 }
+
+/**
+ * @description compare if 2 objects contain the same values. Allows for certain keys to be ignored
+ * @param {object} obj1 first object
+ * @param {object} obj2 second object
+ * @param {string[]} ignore array of keys to ingore
+ * @returns {boolean}
+ */
+function sameObjects(obj1, obj2, ignore = []) {    
+    // remove the values in the "ignore" array
+    for (let item of ignore) {
+        if (obj1[item]) delete obj1[item];
+        if (obj2[item]) delete obj2[item];
+    }    
+
+    // JSON.stringify() is needed to compare the values
+    return JSON.stringify(obj1) == JSON.stringify(obj2);
+}
