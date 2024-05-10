@@ -42,6 +42,7 @@ const keybinds = {
     TOGGLE_ERROR_CHECK: {key: "h", ctrl: false},
     SAVE_DIAGRAM: {key: "s", ctrl: true},
     LOAD_DIAGRAM: {key: "l", ctrl: true},
+    TEST_CASE: {key: "t", ctrl: true, alt: true},
 };
 
 /**
