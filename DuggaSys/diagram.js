@@ -106,19 +106,6 @@ class StateMachine {
                             for (let idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
                                 if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
                             }
-
-                            /*// If the found element has the same ids.
-                            if (sameIds) {
-                                var temp = false;
-                                // If this historyLog is within the timeLimit
-                                if (((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit) {
-                                    lastLog = {...this.historyLog[index]};
-                                    temp = true;
-                                    console.log('?');
-                                }
-                                sameElements = temp;
-                                break;
-                            }*/
                         }
                     }
                     // If NOT soft change, push new change onto history log
@@ -164,10 +151,6 @@ class StateMachine {
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                                    movedAndResized = true;
-                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:                                    
-                                    movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
                                     

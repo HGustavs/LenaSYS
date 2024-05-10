@@ -1779,8 +1779,6 @@ function changeLineProperties() {
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
 
-    //changes = appendValuesFrom(changes, line);
-
     // updates the line
     for (const [key, value] of Object.entries(changes)) {
         line[key] = value;
@@ -1791,64 +1789,3 @@ function changeLineProperties() {
 
     showdata();
 }
-
-/*function changeLineProperties() {
-    let label = document.getElementById("lineLabel");
-    let startLabel = document.getElementById("lineStartLabel");
-    let endLabel = document.getElementById("lineEndLabel");
-    let startIcon = document.getElementById("lineStartIcon");
-    let endIcon = document.getElementById("lineEndIcon");
-    let lineType = document.getElementById("lineType");
-    let cardinality = document.getElementById('propertyCardinality');
-    let line = contextLine[0];
-
-    let radio = [
-        document.getElementById("lineRadioNormal"),
-        document.getElementById("lineRadioDouble"),
-        document.getElementById("lineRadioDashed"),
-        document.getElementById("lineRadioRecursive"),
-    ];
-    radio.forEach(r => {
-        if (r && r.checked && line.kind != r.value) {
-            line.kind = r.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, {kind: r.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
-    });
-
-    if (cardinality) {
-        if (cardinality.value == "") {
-            delete line.cardinality;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        } else {
-            changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
-        }
-    }
-    if (label) {
-        changeAttribute(line, 'label', label, {label: label.value});
-    }
-
-    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
-        changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});
-        changeAttribute(line, 'endLabel', endLabel, {endLabel: endLabel.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    if (line.type == entityType.SD) {
-        changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    if (line.type == entityType.SE) {
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    showdata();
-}
-
-const changeAttribute = (line, attribute, updated, list) => {
-    if (line[attribute] != updated.value) {
-        line[attribute] = updated.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
-}*/

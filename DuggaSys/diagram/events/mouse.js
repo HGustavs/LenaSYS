@@ -255,10 +255,12 @@ function mup(event) {
     //let id = event.target.id;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
-    //console.log(pointerState, pointerStates); 
+    
+    // makes sure that the id isn't in an array if a line is selected
     while (determinedLines && Array.isArray(determinedLines.id)) {
         determinedLines.id = determinedLines.id[0];
     }
+    
     switch (pointerState) {
         case pointerStates.DEFAULT:
             mouseMode_onMouseUp(event);
