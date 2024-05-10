@@ -4527,13 +4527,15 @@ div.reset-pw:hover{
 }
 
 .dropdown-list-container {
+  margin-left:-1%;
   padding: 8px;
   color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;
   display: none;
   position: absolute;
-  background: var(--color-background);
+  background: #EAE8EB;
+  border-radius: 0px 0px 25px 25px;
   box-shadow: 2px 2px 8px #888;
   margin-top: 5px;
 }
