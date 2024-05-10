@@ -11,20 +11,20 @@ function centerCamera() {
     for (let i = 0; i < 2; i++) {
         zoomfact = 1;
 
-        var minX = Math.min.apply(null, data.map(i => i.x))
-        var maxX = Math.max.apply(null, data.map(i => i.x + i.width))
-        var minY = Math.min.apply(null, data.map(i => i.y))
-        var maxY = Math.max.apply(null, data.map(i => i.y + i.height))
+        const minX = Math.min.apply(null, data.map(i => i.x));
+        const maxX = Math.max.apply(null, data.map(i => i.x + i.width));
+        const minY = Math.min.apply(null, data.map(i => i.y));
+        const maxY = Math.max.apply(null, data.map(i => i.y + i.height));
         determineZoomfact(maxX, maxY, minX, minY);
 
         // Center of screen in pixels
-        var centerScreen = {
+        const centerScreen = {
             x: window.innerWidth / 2,
             y: window.innerHeight / 2
         };
 
         // Center of diagram in coordinates
-        var centerDiagram = {
+        const centerDiagram = {
             x: minX + ((maxX - minX) / 2),
             y: minY + ((maxY - minY) / 2)
         };
@@ -33,7 +33,7 @@ function centerCamera() {
         scrollx = centerDiagram.x * zoomfact;
         scrolly = centerDiagram.y * zoomfact;
 
-        var middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
+        const middleCoordinate = screenToDiagramCoordinates(centerScreen.x, centerScreen.y);
         document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
         scrollx = middleCoordinate.x;

@@ -3,8 +3,9 @@
  * @param {Object} element The target element to add nodes to.
  */
 function addNodes(element) {
-    var elementDiv = document.getElementById(element.id)
-    var nodes = "";
+    let mrNode, mlNode, muNode, mdNode, tlNode, trNode, blNode, brNode;
+    const elementDiv = document.getElementById(element.id);
+    let nodes = "";
     nodes += "<span id='mr' class='node mr'></span>";
     nodes += "<span id='ml' class='node ml'></span>";
     nodes += "<span id='md' class='node md'></span>";
@@ -20,7 +21,7 @@ function addNodes(element) {
     let nodeSize = defaultNodeSize * zoomfact;
 
     if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
-        var mdNode = document.getElementById("md");
+        mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize + "px";
         mdNode.style.height = nodeSize + "px";
         mdNode.style.left = "calc(50% - " + (nodeSize / 4) + "px)";
@@ -28,8 +29,8 @@ function addNodes(element) {
     }
 
     if (element.kind == "UMLSuperState") {
-        var mdNode = document.getElementById("md");
-        var muNode = document.getElementById("mu");
+        mdNode = document.getElementById("md");
+        muNode = document.getElementById("mu");
         mdNode.style.width = nodeSize + "px";
         muNode.style.width = nodeSize + "px";
         mdNode.style.height = nodeSize + "px";
@@ -39,14 +40,14 @@ function addNodes(element) {
     }
 
     nodeSize = defaultNodeSize * zoomfact;
-    var mrNode = document.getElementById("mr");
-    var mlNode = document.getElementById("ml");
-    var muNode = document.getElementById("mu");
-    var mdNode = document.getElementById("md");
-    var tlNode = document.getElementById("tl");
-    var trNode = document.getElementById("tr");
-    var blNode = document.getElementById("bl");
-    var brNode = document.getElementById("br");
+    mrNode = document.getElementById("mr");
+    mlNode = document.getElementById("ml");
+    muNode = document.getElementById("mu");
+    mdNode = document.getElementById("md");
+    tlNode = document.getElementById("tl");
+    trNode = document.getElementById("tr");
+    blNode = document.getElementById("bl");
+    brNode = document.getElementById("br");
 
     mrNode.style.width = nodeSize + "px";
     mrNode.style.top = "calc(50% - " + (nodeSize / 2) + "px)";

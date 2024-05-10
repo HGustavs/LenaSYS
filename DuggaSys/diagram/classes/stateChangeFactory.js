@@ -8,14 +8,13 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementCreated(element) {
-        var values = {kind: element.kind};
+        const values = {kind: element.kind};
 
         // Get the keys of the values that is unique from default
         var uniqueKeysArr = Object.keys(element).filter(key => {
             if (key === 'x' || key === 'y') return true;
-            return (Object.keys(defaults[element.kind]).filter(value => {
-                return defaults[element.kind][value] === element[key];
-            }).length === 0);
+            return (Object.keys(defaults[element.kind])
+                .filter(value => defaults[element.kind][value] === element[key]).length === 0);
         });
 
         // For every unique value set it into the change
@@ -30,13 +29,11 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementsDeleted(elements) {
-        var ids = [];
-
+        const ids = [];
         // For every object in the array, get id and add it to the array ids
         elements.forEach(element => {
             ids.push(element.id);
         });
-
         return new StateChange(ids);
     }
 
@@ -47,13 +44,13 @@ class StateChangeFactory {
      * @returns {Array<StateChange>} A new instance of the StateChange class.
      */
     static ElementsMoved(elementIDs, moveX, moveY) {
-        var changesArr = [];
-        var timeStamp = new Date().getTime();
+        const changesArr = [];
+        const timeStamp = new Date().getTime();
 
         if (moveX == 0 && moveY == 0) return;
 
         elementIDs.forEach(id => {
-            var values = {};
+            const values = {};
             var obj = data[findIndex(data, id)];
 
             if (obj === undefined) return;
@@ -72,11 +69,10 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementResized(elementIDs, changeX, changeY) {
-        var values = {
+        const values = {
             width: changeX,
             height: changeY
         };
-
         return new StateChange(elementIDs, values);
     }
 
@@ -89,7 +85,7 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY) {
-        var values = {
+        const values = {
             x: moveX,
             y: moveY,
             width: changeX,
@@ -104,7 +100,7 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementAttributesChanged(elementID, changeList) {
-        var values = {};
+        const values = {};
         // For every attribut in changeList, add it to values
         Object.keys(changeList).forEach(key => {
             values[key] = changeList[key];
@@ -117,20 +113,15 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static LineAdded(line) {
-        var values = {};
-
+        const values = {};
         // Get the keys of the values that is unique from default
-        var uniqueKeysArr = Object.keys(line).filter(key => {
-            return (Object.keys(defaultLine).filter(value => {
-                return defaultLine[value] == line[key];
-            }).length == 0);
+        const uniqueKeysArr = Object.keys(line).filter(key => {
+            return (Object.keys(defaultLine).filter(value => defaultLine[value] == line[key]).length == 0);
         });
-
         // For every unique value set it into the change
         uniqueKeysArr.forEach(key => {
             values[key] = line[key];
         });
-
         return new StateChange(line.id, values);
     }
 
@@ -139,13 +130,11 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static LinesRemoved(lines) {
-        var lineIDs = [];
-
+        const lineIDs = [];
         // For every object in the lines array, add them to lineIDs
         for (let index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
-
         return new StateChange(lineIDs);
     }
 
@@ -155,18 +144,15 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementsAndLinesDeleted(elements, lines) {
-        var allIDs = [];
-
+        const allIDs = [];
         // Add all element IDs to the id-list
         elements.forEach(element => {
             allIDs.push(element.id)
         });
-
         // Add all line IDs to the id-list
         lines.forEach(line => {
             allIDs.push(line.id)
         });
-
         return new StateChange(allIDs);
     }
 
@@ -176,38 +162,40 @@ class StateChangeFactory {
      * @returns {Array<StateChange>} A new instance of the StateChange class.
      */
     static ElementsAndLinesCreated(elements, lines) {
-        var changesArr = [];
-        var timeStamp = new Date().getTime();
+        const changesArr = [];
+        const timeStamp = new Date().getTime();
 
         // Filter out defaults from each element and add them to allObj
         elements.forEach(elem => {
-            var values = {kind: elem.kind};
+            const values = {kind: elem.kind};
 
-            var uniqueKeysArr = Object.keys(elem).filter(key => {
+            const uniqueKeysArr = Object.keys(elem).filter(key => {
                 if (key === 'x' || key === 'y') return true;
                 return (Object.keys(defaults[elem.kind]).filter(value => {
                     return defaults[elem.kind][value] == elem[key];
                 }).length == 0);
             });
 
-            uniqueKeysArr.forEach(key => values[key] = elem[key]);
+            uniqueKeysArr.forEach(key => {
+                values[key] = elem[key];
+            });
             changesArr.push(new StateChange(elem.id, values, timeStamp));
         });
 
         // Filter out defaults from each line and add them to allObj
         lines.forEach(line => {
-            var values = {};
+            const values = {};
 
-            var uniqueKeysArr = Object.keys(line).filter(key => {
+            const uniqueKeysArr = Object.keys(line).filter(key => {
                 return (Object.keys(defaultLine).filter(value => {
                     return defaultLine[value] == line[key];
                 }).length == 0);
             });
-
-            uniqueKeysArr.forEach(key => values[key] = line[key]);
+            uniqueKeysArr.forEach(key => {
+                values[key] = line[key];
+            });
             changesArr.push(new StateChange(line.id, values, timeStamp));
         });
-
         return changesArr;
     }
 }

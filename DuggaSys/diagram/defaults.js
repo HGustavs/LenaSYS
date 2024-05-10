@@ -2,7 +2,7 @@
  * @description All default values for element types. These will be applied to new elements created via the construction function ONLY.
  * @see constructElementOfType() For creating new elements with default values.
  */
-var defaults = {
+const defaults = {
     EREntity: {
         name: "Entity",
         kind: "EREntity",
@@ -216,6 +216,6 @@ var defaults = {
         minWidth: 150,
         minHeight: 50,
     },
-}
+};
 
-var defaultLine = {kind: "Normal"};
+const defaultLine = {kind: "Normal"};
