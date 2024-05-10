@@ -2275,6 +2275,7 @@ function returnedHighscore(data) {
 // drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
+//En if or else sats som kollar ifall drawswimlane existerar ska placeras någonstans här- där funktionen endast kallas vid existerande//
 function drawSwimlanes() {
   // Resets the swimlane SVG
   document.getElementById("swimlaneSVG").innerHTML = "";
