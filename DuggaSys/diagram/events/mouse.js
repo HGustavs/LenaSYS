@@ -55,10 +55,10 @@ function mdown(event) {
     if (event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+    if (!hasPressedDelete && !settings.replay.active) {
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-      
+
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
@@ -115,7 +115,6 @@ function mdown(event) {
                         }
                         break;
                     }
-
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if (context.length > 0) {
@@ -138,8 +137,8 @@ function mdown(event) {
             }
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
-        pointerState = pointerStates.CLICKED_NODE;
-            var element = data[findIndex(data, context[0].id)];
+            pointerState = pointerStates.CLICKED_NODE;
+            const element = data[findIndex(data, context[0].id)];
 
             // Save the original properties
             originalWidth = element.width;
@@ -151,7 +150,7 @@ function mdown(event) {
             startHeight = data[findIndex(data, context[0].id)].height;
 
             //startNodeRight = !event.target.classList.contains("mr");
-            startNodeLeft = event.target.classList.contains("ml")
+            startNodeLeft = event.target.classList.contains("ml");
             startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
             startNodeDown = event.target.classList.contains("md");
             startNodeUp = event.target.classList.contains("mu");
@@ -191,7 +190,7 @@ function ddown(event) {
         const element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0) {
             event.preventDefault(); // Needed in order for focus() to work properly
-            var input = document.getElementById("elementProperty_name");
+            const input = document.getElementById("elementProperty_name");
             if (input !== null) {
                 input.focus();
                 input.setSelectionRange(0, input.value.length); // Select the whole text.
@@ -219,6 +218,7 @@ function ddown(event) {
                     targetElementDiv = document.getElementById(targetElement.id);
                     canPressDeleteBtn = true;
                 }
+            // TODO: Should this be missing a break?
             case mouseModes.EDGE_CREATION:
                 if (event.button == 2) return;
                 const element = data[findIndex(data, event.currentTarget.id)];
@@ -308,7 +308,7 @@ function mup(event) {
         case pointerStates.CLICKED_NODE:
             if (resizeOverlapping) {
                 // Reset to original state if overlapping is detected
-                var element = data[findIndex(data, context[0].id)];
+                const element = data[findIndex(data, context[0].id)];
                 element.width = originalWidth;
                 element.height = originalHeight;
                 element.x = originalX;
@@ -319,7 +319,7 @@ function mup(event) {
                 elementDOM.style.height = originalHeight + 'px';
                 elementDOM.style.left = originalX + 'px';
                 elementDOM.style.top = originalY + 'px';
-                showdata()
+                showdata();
                 displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 resizeOverlapping = false;
             }
@@ -331,13 +331,13 @@ function mup(event) {
     // Update all element positions on the screen
     deltaX = 0;
     deltaY = 0;
-    updatepos(0, 0);
+    updatepos();
     drawRulerBars(scrollx, scrolly);
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-                        
+
     disableIfDataEmpty();
 }
 
@@ -374,9 +374,10 @@ function mouseLeave() {
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
  */
 function checkDeleteBtn() {
-    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && 
-        lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-        if (canPressDeleteBtn == true) {
+    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) &&
+        lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)
+    ) {
+        if (canPressDeleteBtn) {
             if (context.length > 0) removeElements(context);
             if (contextLine.length > 0) removeLines(contextLine);
             updateSelection(null);

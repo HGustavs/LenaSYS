@@ -21,14 +21,14 @@ class StateMachine {
         this.initialState = {
             elements: [],
             lines: []
-        }
+        };
         initialElements.forEach(element => {
-            var obj = {};
+            const obj = {};
             Object.assign(obj, element);
             this.initialState.elements.push(obj)
         });
         initialLines.forEach(line => {
-            var obj = {};
+            const obj = {};
             Object.assign(obj, line);
             this.initialState.lines.push(obj)
         });
@@ -56,7 +56,7 @@ class StateMachine {
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (let i = 0; i < stateChangeArray.length; i++) {
-            var stateChange = stateChangeArray[i];
+            const stateChange = stateChangeArray[i];
 
             if (stateChange instanceof StateChange) {
                 // Remove the history entries that are after current index
@@ -72,7 +72,7 @@ class StateMachine {
                     var isSoft = true;
 
                     // Change is creation of elements, no need for history comparisions
-                    if (stateChange.created != undefined) {
+                    if (stateChange.created) {
                         sameElements = false;
                     } else { // Perform history comparisions
                         if (Array.isArray(lastLog.id)) {
@@ -123,7 +123,11 @@ class StateMachine {
                             this.historyLog.splice(this.historyLog.length-1, 1);
                         }
 
-                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                        this.historyLog.push({
+                            ...stateChange,
+                            changeType: newChangeType.flag,
+                            counter: historyHandler.inputCounter
+                        });
                         this.lastFlag = newChangeType;
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
@@ -140,14 +144,18 @@ class StateMachine {
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
                                     currentElement = data[findIndex(data, lastLog.id)];
-                                    lastLog.width = currentElement.width;   
+                                    lastLog.width = currentElement.width;
                                     lastLog.height = currentElement.height;
-                                                                                                
+
                                     while (Array.isArray(lastLog.id)) {
                                         lastLog.id = lastLog.id[0];
                                     }
 
-                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                                    this.historyLog.push({
+                                        ...lastLog,
+                                        changeType: newChangeType.flag,
+                                        counter: historyHandler.inputCounter
+                                    });
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
@@ -169,11 +177,15 @@ class StateMachine {
                                     
                                     // if the save() call comes from the same change-motion, remove the last entry
                                     if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
-                                        this.historyLog.splice(this.historyLog.length-1, 1);
+                                        this.historyLog.splice(this.historyLog.length - 1, 1);
                                     }
 
                                     // spreaading the values so that it doesn't keep the reference                                    
-                                    this.historyLog.push({...lastLog, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                                    this.historyLog.push({
+                                        ...lastLog,
+                                        changeType: newChangeType.flag,
+                                        counter: historyHandler.inputCounter
+                                    });
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 default:
@@ -197,14 +209,14 @@ class StateMachine {
             } else {
                 console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
             }
-        }   
-        
+        }
+
         // removes arrys from the id attribute
         for (let entry of this.historyLog) {
             while (Array.isArray(entry.id)) {
                 entry.id = entry.id[0];
             }
-        }        
+        }
     }
 
     removeFutureStates() {
@@ -221,7 +233,7 @@ class StateMachine {
     stepBack() {
         // Remove ghost only if stepBack while creating edge
         if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
-        
+
         // keep going back while the time attribute is the same
         do {
             // If there is no history => return
@@ -230,7 +242,7 @@ class StateMachine {
             } else {
                 this.currentHistoryIndex--;
             }
-            
+
             this.scrubHistory(this.currentHistoryIndex);
 
             var doNextState = false;
@@ -239,7 +251,7 @@ class StateMachine {
             }
 
         } while (doNextState);
-        
+
         displayMessage(messageTypes.SUCCESS, "Changes reverted!");
         disableIfDataEmpty();
     }
@@ -261,7 +273,7 @@ class StateMachine {
         // Update diagram
         clearContext();
         showdata();
-        updatepos(0, 0);
+        updatepos();
         displayMessage(messageTypes.SUCCESS, "Changes reverse reverted!")
     }
 
@@ -276,7 +288,7 @@ class StateMachine {
         clearContext();
         clearContextLine();
         showdata();
-        updatepos(0, 0);
+        updatepos();
     }
 
     /**
@@ -367,7 +379,7 @@ class StateMachine {
         });
         clearContext();
         showdata();
-        updatepos(0, 0);
+        updatepos();
     }
 
     /**
@@ -422,7 +434,7 @@ class StateMachine {
             // Update diagram
             clearContext();
             showdata();
-            updatepos(0, 0);
+            updatepos();
 
 
             document.getElementById("replay-range").value = cri;
@@ -483,17 +495,17 @@ function getData() {
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
-    togglePlacementType(0, 0)
-    togglePlacementType(1, 1)
-    togglePlacementType(9, 9)
-    togglePlacementType(12, 12)
+    togglePlacementType(0, 0);
+    togglePlacementType(1, 1);
+    togglePlacementType(9, 9);
+    togglePlacementType(12, 12);
 }
 
 /**
  * @description Used to determine the tools shown depending on diagram type.
  */
 function showDiagramTypes() {
-    var firstShown = false; // used to not hide the first button in either category
+    let firstShown = false; // used to not hide the first button in either category
 
     // ER buttons
     if (diagramType.ER) { // if this type should be here, add functions to it
@@ -609,7 +621,9 @@ function showDiagramTypes() {
 
 // --------------------------------------- Window Events    --------------------------------
 
-document.addEventListener('contextmenu', event => { event.preventDefault(); });
+document.addEventListener('contextmenu', event => {
+    event.preventDefault();
+});
 
 document.addEventListener('keydown', function (e) {
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && !ctrlPressed) ctrlPressed = true;
@@ -640,7 +654,7 @@ document.addEventListener('keydown', function (e) {
 
     if (isKeybindValid(e, keybinds.ESCAPE) && !escPressed) {
         escPressed = true;
-        if(context.length > 0 || contextLine.length > 0) {
+        if (context.length > 0 || contextLine.length > 0) {
             clearContext();
             clearContextLine();
         } else {
@@ -655,27 +669,27 @@ document.addEventListener('keydown', function (e) {
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
-    if (isKeybindValid(e, keybinds.ZOOM_IN)){
+    if (isKeybindValid(e, keybinds.ZOOM_IN)) {
         e.preventDefault();
         zoomin();
     }
-    if (isKeybindValid(e, keybinds.ZOOM_OUT)){
+    if (isKeybindValid(e, keybinds.ZOOM_OUT)) {
         e.preventDefault();
         zoomout();
     }
 
-    if (isKeybindValid(e, keybinds.ZOOM_RESET)){
+    if (isKeybindValid(e, keybinds.ZOOM_RESET)) {
         e.preventDefault();
         zoomreset();
     }
 
-    if (isKeybindValid(e, keybinds.SELECT_ALL)){
+    if (isKeybindValid(e, keybinds.SELECT_ALL)) {
         e.preventDefault();
         document.getElementById("mouseMode0").click();
         selectAll();
     }
 
-    if (isKeybindValid(e, keybinds.CENTER_CAMERA)){
+    if (isKeybindValid(e, keybinds.CENTER_CAMERA)) {
         e.preventDefault();
     }
 
@@ -690,10 +704,11 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
+            if (settings.grid.snapToGrid) {
                 setPos(context, 0, settings.grid.gridSize / 2);
-            else
+            } else {
                 setPos(context, 0, 1);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -709,15 +724,16 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
+            if (settings.grid.snapToGrid) {
                 setPos(context, 0, -settings.grid.gridSize / 2);
-            else
+            } else {
                 setPos(context, 0, -1);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-  
+
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)) {
         e.preventDefault();
         let overlapDetected = false;
@@ -728,15 +744,16 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
+            if (settings.grid.snapToGrid) {
                 setPos(context, settings.grid.gridSize / 2, 0);
-            else
+            } else {
                 setPos(context, 1, 0);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
     }
-  
+
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)) {
         e.preventDefault();
         let overlapDetected = false;
@@ -747,10 +764,11 @@ document.addEventListener('keydown', function (e) {
             }
         });
         if (!overlapDetected) {
-            if (settings.grid.snapToGrid) 
+            if (settings.grid.snapToGrid) {
                 setPos(context, -settings.grid.gridSize / 2, 0);
-            else
+            } else {
                 setPos(context, -1, 0);
+            }
         } else {
             displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         }
@@ -758,19 +776,21 @@ document.addEventListener('keydown', function (e) {
 
     if (altPressed) {
         mouseMode_onMouseUp();
-    }  
+    }
     historyHandler.inputCounter++;
 });
 
 document.addEventListener('keyup', function (e) {
-    var pressedKey = e.key.toLowerCase();
+    const pressedKey = e.key.toLowerCase();
 
     hidePlacementType();
     // Toggle modifiers when released
     if (pressedKey == keybinds.LEFT_CONTROL.key) ctrlPressed = false;
     if (pressedKey == keybinds.ALT.key) altPressed = false;
     if (pressedKey == keybinds.META.key) {
-        setTimeout(() => { ctrlPressed = false; }, 1000);
+        setTimeout(() => {
+            ctrlPressed = false;
+        }, 1000);
     }
 
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
@@ -787,7 +807,7 @@ document.addEventListener('keyup', function (e) {
     if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
     if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
     if (isKeybindValid(e, keybinds.ESCAPE)) {
-        escPressed = false; 
+        escPressed = false;
         closeModal();
     }
     if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
@@ -807,7 +827,7 @@ document.addEventListener('keyup', function (e) {
     }
 
     // Entity / Class / State
-    if (isKeybindValid(e, keybinds.PLACE_ENTITY)){
+    if (isKeybindValid(e, keybinds.PLACE_ENTITY)) {
         if (subMenuCycling(subMenuEntity, 0)) return;
         togglePlacementType(elementTypes.EREntity, 0);
         setElementPlacementType(elementTypes.EREntity);
@@ -815,7 +835,7 @@ document.addEventListener('keyup', function (e) {
     }
 
     // Relation / Inheritance
-    if (isKeybindValid(e, keybinds.PLACE_RELATION)){
+    if (isKeybindValid(e, keybinds.PLACE_RELATION)) {
         if (subMenuCycling(subMenuRelation, 1)) return;
         togglePlacementType(elementTypes.ERRelation, 1);
         setElementPlacementType(elementTypes.ERRelation);
@@ -863,7 +883,7 @@ document.addEventListener('keyup', function (e) {
 
         if (context.length) {
             // Filter - keeps only the lines that are connectet to and from selected elements.
-            var contextConnectedLines = lines.filter(line => {
+            const contextConnectedLines = lines.filter(line => {
                 return (context.filter(element => {
                     return line.toID == element.id || line.fromID == element.id
                 })).length > 1
@@ -882,27 +902,27 @@ document.addEventListener('keyup', function (e) {
         e.preventDefault();
         toggleKeybindList();
     }
-})
+});
 
 window.addEventListener("resize", updateRulers);
 
 window.onfocus = function () {
     altPressed = false;
     ctrlPressed = false;
-}
+};
 
 document.addEventListener("mouseleave", function (event) {
     if (event.toElement == null && event.relatedTarget == null) {
         pointerState = pointerStates.DEFAULT;
     }
 
-    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
+    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {
         mouseMode_onMouseUp();
     }
 });
 
 document.addEventListener("mouseout", function (event) {
-    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {  
+    if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {
         mouseMode_onMouseUp();
     }
 });
@@ -917,7 +937,7 @@ document.addEventListener("mouseout", function (event) {
 function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
         switch (mouseMode) {
-            case mouseModes.PLACING_ELEMENT:       
+            case mouseModes.PLACING_ELEMENT:
                 clearContext();
                 clearContextLine();
                 if (ghostElement && event.button == 0) {
@@ -925,9 +945,9 @@ function mouseMode_onMouseUp(event) {
                     // Check if the element to create would overlap others, returns if true
                     if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
                         displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
-                        console.error("Failed to create an element as it overlaps other element(s)")
+                        console.error("Failed to create an element as it overlaps other element(s)");
                         // Remove added element from data as it should remain
-                        data.splice(data.length - 1, 1)
+                        data.splice(data.length - 1, 1);
                         makeGhost();
                         showdata();
                         return;
@@ -947,7 +967,7 @@ function mouseMode_onMouseUp(event) {
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
-                    updatepos(0, 0);
+                    updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
                         elementTypeSelected = elementTypes.Ghost;
@@ -962,7 +982,7 @@ function mouseMode_onMouseUp(event) {
                         ghostElement = null;
                         ghostLine = null;
                         showdata();
-                        updatepos(0, 0);
+                        updatepos();
                     } else {
                         clearContext();
                         ghostElement = null;
@@ -1024,7 +1044,7 @@ function mmoving(event) {
             updateGridPos();
             updateA4Pos();
             // Update scroll position
-            updatepos(null, null);
+            updatepos();
             // Update the ruler
             drawRulerBars(scrollx, scrolly);
             calculateDeltaExceeded();
@@ -1037,15 +1057,15 @@ function mmoving(event) {
             break;
         case pointerStates.CLICKED_LABEL:
             updateLabelPos(event.clientX, event.clientY);
-            updatepos(null, null);
+            updatepos();
             break;
         case pointerStates.CLICKED_ELEMENT:
             if (mouseMode != mouseModes.EDGE_CREATION) {
-                var prevTargetPos = {
+                const prevTargetPos = {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
-                }
-                var targetPos = {
+                };
+                let targetPos = {
                     x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
                     y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
                 };
@@ -1053,23 +1073,23 @@ function mmoving(event) {
                 targetDelta = {
                     x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
                     y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-                }
+                };
                 // Moving object
                 movingObject = true;
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
                 // We update position of connected objects
-                updatepos(deltaX, deltaY);
+                updatepos();
                 calculateDeltaExceeded();
             }
             break;
         case pointerStates.CLICKED_NODE:
-            var index = findIndex(data, context[0].id);
-            var elementData = data[index];
+            const index = findIndex(data, context[0].id);
+            const elementData = data[index];
 
-            var minWidth = elementData.minWidth; // Declare the minimal with of an object
-            var minHeight = elementData.minHeight; // Declare the minimal height of an object
+            const minWidth = elementData.minWidth; // Declare the minimal with of an object
+            const minHeight = elementData.minHeight; // Declare the minimal height of an object
 
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
@@ -1094,7 +1114,7 @@ function mmoving(event) {
                 let yChange = movementPosChange(elementData, startY, deltaY, false);
                 const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
-            } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 //set movable height
                 let tmpW = elementData.width;
                 let tmpX = elementData.x;
@@ -1105,7 +1125,7 @@ function mmoving(event) {
                 let yChange = movementPosChange(elementData, startY, deltaY, false);
                 let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
-            } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 //set movable height
                 let tmpH = elementData.height;
                 let tmpY = elementData.y;
@@ -1113,14 +1133,14 @@ function mmoving(event) {
                 let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 prepareElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange);
-            } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 let tmpW = elementData.width;
                 let tmpX = elementData.x;
                 let xChange = movementPosChange(elementData, startX, deltaX, true);
                 let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
                 let heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange);
-            } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth){
+            } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange);
@@ -1128,7 +1148,7 @@ function mmoving(event) {
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
             // Check if entity is overlapping
-            resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y)
+            resizeOverlapping = entityIsOverlapping(context[0].id, elementData.x, elementData.y);
 
             // Update element in DOM
             const elementDOM = document.getElementById(context[0].id);
@@ -1136,8 +1156,8 @@ function mmoving(event) {
             elementDOM.style.height = elementData.height + 'px';
             elementDOM.style.left = elementData.x + 'px';
             elementDOM.style.top = elementData.y + 'px';
-            showdata()
-            updatepos(null, null);
+            showdata();
+            updatepos();
             break;
         default:
             mouseMode_onMouseMove(event);
@@ -1147,7 +1167,7 @@ function mmoving(event) {
     setRulerPosition(event.clientX, event.clientY);
 }
 
-function movementPosChange(element,start,delta, isX){
+function movementPosChange(element, start, delta, isX) {
     // mouse position is used causing the line to "jump" to the mous pos.
     // The magic numebers are used to center the node middle with the mouse pointer
     let property = (isX) ? 'x' : 'y';
@@ -1159,23 +1179,24 @@ function movementPosChange(element,start,delta, isX){
     return -(tmp - element[property]);
 }
 
-function movementWidthChange(element, start, delta, isR){
+function movementWidthChange(element, start, delta, isR) {
     element.width = (isR) ? start - delta / zoomfact : start + delta - element.x;
     return element.width;
 }
 
-function movementHeightChange(element, start, delta, isUp){
+function movementHeightChange(element, start, delta, isUp) {
     element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
     return element.height;
 
 }
+
 /**
  * @description When diagram page is loaded, check if preferred theme is stored in local storage.
  */
 document.addEventListener("DOMContentLoaded", () => {
     const stylesheet = document.getElementById("themeBlack");
     if (localStorage.getItem("diagramTheme")) stylesheet.href = localStorage.getItem("diagramTheme");
-})
+});
 
 //#endregion ===================================================================================
 //#region ================================ ELEMENT MANIPULATION ================================
@@ -1207,8 +1228,8 @@ function addObjectToLines(object, stateMachineShouldSave = true) {
  */
 function removeElements(elementArray, stateMachineShouldSave = true) {
     // Find all lines that should be deleted first
-    var linesToRemove = [];
-    var elementsToRemove = [];
+    let linesToRemove = [];
+    let elementsToRemove = [];
 
     for (let i = 0; i < elementArray.length; i++) { // Find VALID items to remove
         linesToRemove = linesToRemove.concat(lines.filter(function (line) {
@@ -1244,12 +1265,12 @@ function removeElements(elementArray, stateMachineShouldSave = true) {
  * @param {Boolean} stateMachineShouldSave If the state machine should log this change to allow undoing.
  */
 function removeLines(linesArray, stateMachineShouldSave = true) {
-    var anyRemoved = false;
+    let anyRemoved = false;
 
     // Removes from the two arrays that keep track of the attributes connections. 
     for (let i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function (line) {
-            var shouldRemove = (line != linesArray[i]);
+            const shouldRemove = (line != linesArray[i]);
             if (shouldRemove) {
                 anyRemoved = true;
             }
@@ -1274,15 +1295,15 @@ function changeState() {
     const element = context[0],
         oldType = element.type,
         newType = document.getElementById("typeSelect")?.value || undefined;
-    var oldRelation = element.state;
-    var newRelation = document.getElementById("propertySelect")?.value || undefined;
+    const oldRelation = element.state;
+    const newRelation = document.getElementById("propertySelect")?.value || undefined;
 
     // If we are changing types and the element has lines, we should not change
     if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)) {
         displayMessage("error", `
             Can't change type from \"${oldType}\" to \"${newType}\" as
             different diagrams should not be able to connect to each other.`
-        )
+        );
         return;
         // If we are changing to the same type, (simply pressed save without changes), do nothing.
     } else if (oldType == newType && oldRelation == newRelation) {
@@ -1383,8 +1404,7 @@ function saveProperties() {
     const propSet = document.getElementById("propertyFieldset");
     const element = context[0];
     const children = propSet.children;
-
-    var propsChanged = {};
+    const propsChanged = {};
     let cleanedLines;
 
     for (let index = 0; index < children.length; index++) {
@@ -1400,9 +1420,9 @@ function saveProperties() {
                 break;
             case 'primaryKey':
                 cleanedLines = [];
-                var textArea = child.value;
-                var lines = textArea.split('\n');
-                for (var i = 0; i < lines.length; i++) {
+                const textArea = child.value;
+                let lines = textArea.split('\n');
+                for (let i = 0; i < lines.length; i++) {
                     if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
                         if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
                             lines[i] = "*" + lines[i];
@@ -1417,14 +1437,12 @@ function saveProperties() {
                 break;
             case 'attributes':
                 //Get string from textarea
-                var elementAttr = child.value;
+                const elementAttr = child.value;
                 //Create an array from string where newline seperates elements
-                var arrElementAttr = elementAttr.split('\n');
+                let arrElementAttr = elementAttr.split('\n');
                 cleanedLines = [];
-                for (let i = 0; i < arrElementAttr.length; i++)
-                {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' '))
-                    {
+                for (let i = 0; i < arrElementAttr.length; i++) {
+                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
                         if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
                             `-${arrElementAttr[i]}`;
                         }
@@ -1438,9 +1456,9 @@ function saveProperties() {
                 break;
             case 'functions':
                 //Get string from textarea
-                var elementFunc = child.value;
+                const elementFunc = child.value;
                 //Create an array from string where newline seperates elements
-                var arrElementFunc = elementFunc.split('\n');
+                let arrElementFunc = elementFunc.split('\n');
                 cleanedLines = [];
                 for (let i = 0; i < arrElementFunc.length; i++) {
                     if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
@@ -1461,7 +1479,7 @@ function saveProperties() {
     }
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
-    updatepos(0, 0);
+    updatepos();
 }
 
 /**
@@ -1479,7 +1497,7 @@ function pasteClipboard(elements, elementsLines) {
     * Calculate the coordinate for the top-left pos (x1, y1)
     * and the coordinate for the bottom-right (x2, y2)
     * */
-    var x1, x2, y1, y2;
+    let x1, x2, y1, y2;
     elements.forEach(element => {
         if (element.x < x1 || x1 === undefined) x1 = element.x;
         if (element.y < y1 || y1 === undefined) y1 = element.y;
@@ -1487,27 +1505,26 @@ function pasteClipboard(elements, elementsLines) {
         if ((element.y + element.height) > y2 || y2 === undefined) y2 = (element.y + element.height);
     });
 
-    var cx = (x2 - x1) / 2;
-    var cy = (y2 - y1) / 2;
-    var mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
+    const cx = (x2 - x1) / 2;
+    const cy = (y2 - y1) / 2;
+    const mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
 
-    var connectedLines = [];
+    const connectedLines = [];
     // For every line that shall be copied, create a temp object, for kind and connection tracking
     elementsLines.forEach(line => {
-        var temp = {
+        const temp = {
             id: line.id,
             fromID: line.fromID,
             toID: line.toID,
             kind: line.kind,
             cardinality: line.cardinality
-        }
+        };
         connectedLines.push(temp);
     });
     // An mapping between oldElement ID and the new element ID
-    var idMap = {};
-
-    var newElements = [];
-    var newLines = [];
+    const idMap = {};
+    const newElements = [];
+    const newLines = [];
 
     // For every copied element create a new one and add to data
     elements.forEach(element => {
@@ -1520,7 +1537,7 @@ function pasteClipboard(elements, elementsLines) {
         });
 
         // Create the new object
-        var elementObj = {
+        const elementObj = {
             name: element.name,
             x: mousePosInPixels.x + (element.x - x1),
             y: mousePosInPixels.y + (element.y - y1),
@@ -1535,7 +1552,7 @@ function pasteClipboard(elements, elementsLines) {
             attributes: element.attributes,
             functions: element.functions
         };
-        newElements.push(elementObj)
+        newElements.push(elementObj);
         addObjectToData(elementObj, false);
     });
 
@@ -1564,7 +1581,7 @@ function pasteClipboard(elements, elementsLines) {
  * @param {Number} sliderValue The value of the slider
  */
 function changeReplayState(sliderValue) {
-    var timestampKeys = Object.keys(settings.replay.timestamps);
+    const timestampKeys = Object.keys(settings.replay.timestamps);
 
     // If the last timestamp is selected, goto the last state in the diagram.
     if (timestampKeys.length - 1 == sliderValue) {
@@ -1598,13 +1615,13 @@ function toggleReplay() {
         return;
     }
     // Get DOM-elements for styling
-    var replayBox = document.getElementById("diagram-replay-box");
-    var optionsPane = document.getElementById("options-pane");
-    var toolbar = document.getElementById("diagram-toolbar");
-    var ruler = document.getElementById("rulerOverlay");
-    var zoomIndicator = document.getElementById("zoom-message-box");
-    var replyMessage = document.getElementById("diagram-replay-message");
-    var zoomContainer = document.getElementById("zoom-container");
+    const replayBox = document.getElementById("diagram-replay-box");
+    const optionsPane = document.getElementById("options-pane");
+    const toolbar = document.getElementById("diagram-toolbar");
+    const ruler = document.getElementById("rulerOverlay");
+    const zoomIndicator = document.getElementById("zoom-message-box");
+    const replyMessage = document.getElementById("diagram-replay-message");
+    const zoomContainer = document.getElementById("zoom-container");
 
     if (settings.replay.active) {
         // Restore the diagram to state before replay-mode
@@ -1625,8 +1642,8 @@ function toggleReplay() {
         settings.replay.timestamps = {0: 0}; // Clear the array with all timestamp.
 
         stateMachine.historyLog.forEach(historyEntry => {
-            var lastKeyIndex = Object.keys(settings.replay.timestamps).length - 1;
-            var lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
+            const lastKeyIndex = Object.keys(settings.replay.timestamps).length - 1;
+            const lastKey = Object.keys(settings.replay.timestamps)[lastKeyIndex];
             if (settings.replay.timestamps[lastKey] != historyEntry.time) {
                 settings.replay.timestamps[stateMachine.historyLog.indexOf(historyEntry)] = historyEntry.time
             }
@@ -1671,7 +1688,7 @@ function exitReplayMode() {
  * @description Sets the replay-delay value
  */
 function setReplayDelay(value) {
-    var replayDelayMap = {
+    const replayDelayMap = {
         1: 0.1,
         2: 0.25,
         3: 0.50,
@@ -1681,7 +1698,7 @@ function setReplayDelay(value) {
         7: 1.5,
         8: 1.75,
         9: 2
-    }
+    };
     settings.replay.delay = replayDelayMap[value];
     document.getElementById("replay-time-label").innerHTML = `Delay (${settings.replay.delay}s)`;
     clearInterval(stateMachine.replayTimer);
@@ -1693,8 +1710,8 @@ function setReplayDelay(value) {
  * @param {boolean} state The state if the replay-mode is running
  */
 function setReplayRunning(state) {
-    var button = document.getElementById("diagram-replay-switch");
-    var stateSlider = document.getElementById("replay-range");
+    const button = document.getElementById("diagram-replay-switch");
+    const stateSlider = document.getElementById("replay-range");
 
     if (state) {
         button.innerHTML = '<div class="diagramIcons" onclick="clearInterval(stateMachine.replayTimer);setReplayRunning(false)"><img src="../Shared/icons/pause.svg" alt="Pause"><span class="toolTipText" style="top: -80px;"><b>Pause</b><br><p>Pause history of changes made to the diagram</p><br></span></div>';
@@ -1712,9 +1729,9 @@ function setReplayRunning(state) {
  * @description Toggles the movement of elements ON/OFF.
  */
 function toggleEntityLocked() {
-    var ids = []
-    var lockbtn = document.getElementById("lockbtn");
-    var locked = true;
+    const ids = [];
+    const lockbtn = document.getElementById("lockbtn");
+    let locked = true;
     for (let i = 0; i < context.length; i++) {
         if (!context[i].isLocked) {
             locked = false;
@@ -1733,7 +1750,7 @@ function toggleEntityLocked() {
     }
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids, {isLocked: !locked}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
-    updatepos(0, 0);
+    updatepos();
 }
 
 /**
@@ -1776,13 +1793,13 @@ function holdPlacementButtonUp() {
  * @see keybinds All available keybinds currently configured
  */
 function generateToolTips() {
-    var toolButtons = document.getElementsByClassName("key_tooltip");
+    const toolButtons = document.getElementsByClassName("key_tooltip");
 
     for (let index = 0; index < toolButtons.length; index++) {
         const element = toolButtons[index];
-        var id = element.id.split("-")[1];
+        const id = element.id.split("-")[1];
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
-            var str = "Keybinding: ";
+            let str = "Keybinding: ";
 
             if (keybinds[id].ctrl) str += "CTRL + ";
             str += '"' + keybinds[id].key.toUpperCase() + '"';
@@ -1838,7 +1855,7 @@ function exportWithHistory() {
     stateMachine.removeFutureStates();
 
     // The content of the save file
-    var objToSave = {
+    const objToSave = {
         historyLog: stateMachine.historyLog,
         initialState: stateMachine.initialState
     };
@@ -1859,14 +1876,14 @@ function storeDiagramInLocalStorage(key) {
         // Remove all future states to the history
         stateMachine.removeFutureStates();
         // The content of the save file
-        var objToSave = {
+        const objToSave = {
             historyLog: stateMachine.historyLog,
             initialState: stateMachine.initialState
         };
 
         // Sets the autosave diagram first, if it is not already set.
         if (!localStorage.getItem("diagrams")) {
-            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`
+            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`;
             localStorage.setItem("diagrams", s);
         }
         // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
@@ -1886,13 +1903,13 @@ function storeDiagramInLocalStorage(key) {
  */
 function exportWithoutHistory() {
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
-    var objToSave = {
+    const objToSave = {
         data: [],
         lines: [],
     };
-    var keysToIgnore = ["top", "left", "right", "bottom", "x1", "x2", "y1", "y2", "cx", "cy"];
+    let keysToIgnore = ["top", "left", "right", "bottom", "x1", "x2", "y1", "y2", "cx", "cy"];
     data.forEach(obj => {
-        var filteredObj = {
+        const filteredObj = {
             kind: obj.kind
         };
 
@@ -1909,9 +1926,9 @@ function exportWithoutHistory() {
         objToSave.data.push(filteredObj);
     });
 
-    keysToIgnore = ["dx", "dy", "ctype"]
+    keysToIgnore = ["dx", "dy", "ctype"];
     lines.forEach(obj => {
-        var filteredObj = {};
+        const filteredObj = {};
         Object.keys(obj).forEach(objKey => {
             // If they key is ignore => return
             if (keysToIgnore.includes(objKey)) return;
@@ -1964,7 +1981,7 @@ function loadMockupDiagram(path) {
  */
 function getFileContent(files) {
     return new Promise((resolve, reject) => {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = () => {
             resolve(reader.result);
         };
@@ -1977,8 +1994,9 @@ function getFileContent(files) {
  * @description Load the content of a file to the diagram-data. This will remove previous data
  */
 async function loadDiagram(file = null, shouldDisplayMessage = true) {
-    if (file === null) {
-        var fileInput = document.getElementById("importDiagramFile");
+    let temp;
+    if (!file) {
+        const fileInput = document.getElementById("importDiagramFile");
 
         // If not an json-file is inputted => return
         if (getExtension(fileInput.value) != "json") {
@@ -1988,8 +2006,8 @@ async function loadDiagram(file = null, shouldDisplayMessage = true) {
 
         try {
             // Get filepath
-            var file1 = fileInput.files[0];
-            var temp = await getFileContent(file1);
+            const file1 = fileInput.files[0];
+            temp = await getFileContent(file1);
             temp = JSON.parse(temp);
         } catch (error) {
             console.error(error);
@@ -2015,7 +2033,7 @@ async function loadDiagram(file = null, shouldDisplayMessage = true) {
     } else if (temp.data && temp.lines) {
         // Set data and lines to the values of the export file
         temp.data.forEach(element => {
-            var elDefault = defaults[element.kind];
+            const elDefault = defaults[element.kind];
             Object.keys(elDefault).forEach(defaultKey => {
                 if (!element[defaultKey]) {
                     element[defaultKey] = elDefault[defaultKey];
@@ -2050,14 +2068,14 @@ async function loadDiagram(file = null, shouldDisplayMessage = true) {
 }
 
 function showModal() {
-    var modal = document.querySelector('.loadModal');
-    var overlay = document.querySelector('.loadModalOverlay');
-    var container = document.querySelector('#loadContainer');
+    const modal = document.querySelector('.loadModal');
+    const overlay = document.querySelector('.loadModalOverlay');
+    const container = document.querySelector('#loadContainer');
     let diagramKeys;
     let localDiagrams;
 
     let local = localStorage.getItem("diagrams");
-    if (local != null) {
+    if (local) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
         diagramKeys = Object.keys(localDiagrams);
@@ -2068,17 +2086,17 @@ function showModal() {
     }
 
     // If no items were found for loading in 
-    if (diagramKeys === undefined || diagramKeys.length === 0) {
-        var p = document.createElement('p');
-        var pText = document.createTextNode('No saves could be found');
+    if (!diagramKeys || diagramKeys.length === 0) {
+        const p = document.createElement('p');
+        const pText = document.createTextNode('No saves could be found');
 
         p.appendChild(pText);
         container.appendChild(p);
     } else {
         for (let i = 0; i < diagramKeys.length; i++) {
             let wrapper = document.createElement('div');
-            var btn = document.createElement('button');
-            var btnText = document.createTextNode(diagramKeys[i]);
+            const btn = document.createElement('button');
+            const btnText = document.createTextNode(diagramKeys[i]);
 
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
@@ -2102,8 +2120,8 @@ function showModal() {
 }
 
 function closeModal() {
-    var modal = document.querySelector('.loadModal');
-    var overlay = document.querySelector('.loadModalOverlay');
+    const modal = document.querySelector('.loadModal');
+    const overlay = document.querySelector('.loadModalOverlay');
 
     modal.classList.add('hiddenLoad');
     overlay.classList.add('hiddenLoad');
@@ -2115,7 +2133,7 @@ function closeModal() {
  */
 function loadDiagramFromLocalStorage(key) {
     if (localStorage.getItem("diagrams")) {
-        var diagramFromLocalStorage = localStorage.getItem("diagrams");
+        let diagramFromLocalStorage = localStorage.getItem("diagrams");
         diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
         let obj = JSON.parse(diagramFromLocalStorage);
         if (obj[key] === undefined) {
@@ -2179,12 +2197,12 @@ function saveDiagramAs() {
     let fileName = elem.value;
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth()+1}` :  currentDate.getMonth()+1; // Note: January is month 0
-    const day = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` :  currentDate.getDate();
-    const hours = currentDate.getHours()< 10 ? `0${currentDate.getHours()}` :  currentDate.getHours();
+    const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1; // Note: January is month 0
+    const day = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : currentDate.getDate();
+    const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : currentDate.getHours();
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
-    const seconds = currentDate.getSeconds()< 10 ? `0${currentDate.getSeconds()}` :  currentDate.getSeconds();
-    const formattedDate = year + "-" + month + "-" + day+' ';
+    const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
+    const formattedDate = year + "-" + month + "-" + day + ' ';
     const formattedTime = hours + ":" + minutes + ":" + seconds;
     if (fileName.trim() == "") {
         fileName = "diagram " + formattedDate + formattedTime;
@@ -2202,7 +2220,7 @@ function saveDiagramAs() {
     for (let i = 0; i < names.length; i++) {
         if (names[i] == fileName) {
             hideSavePopout();
-            showOverridePopout()
+            showOverridePopout();
             return;
         }
     }
@@ -2227,7 +2245,7 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true) {
     } else if (temp.data && temp.lines) {
         // Set data and lines to the values of the export file
         temp.data.forEach(element => {
-            var elDefault = defaults[element.kind];
+            const elDefault = defaults[element.kind];
             Object.keys(elDefault).forEach(defaultKey => {
                 if (!element[defaultKey]) {
                     element[defaultKey] = elDefault[defaultKey];
@@ -2292,4 +2310,5 @@ function resetDiagramAlert() {
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
+
 //#endregion =====================================================================================
