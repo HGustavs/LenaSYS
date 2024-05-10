@@ -3624,6 +3624,12 @@ function validateSectName(name) {
     return false;
   }
 }
+let i = 1;
+function validateSectName(name) {
+     console.log("validateSectName() has run "+i+" times.");
+     i++;
+     
+}
 
 // ------ Recursive functions to retrieve the deepest DOM element ------
 function unNestElement(node) {
