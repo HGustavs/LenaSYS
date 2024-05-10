@@ -5,7 +5,7 @@ include_once "../../../../Shared/test.php";
 $testsData = array(
     
     'deleteFileLink_ms' => array(
-        'expected-output' => '{"debug":[{"The file was deleted"}]}',
+        'expected-output' => '{"debug":"The file was deleted"}',
 
         'query-before-test-1' => "INSERT INTO fileLink (fileid, filename, kind, cid, uploaddate) VALUES (9999, 'testFile.html', 1, 1885, NOW())",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/fileedService/deleteFileLink_ms.php',
@@ -25,7 +25,7 @@ $testsData = array(
             array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'entries' => array(
-                    'none'
+                    'debug'
                 ),
             )
         ),
