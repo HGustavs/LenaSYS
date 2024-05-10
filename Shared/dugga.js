@@ -1161,7 +1161,7 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "sectionedservice.php";//change when MS i; created
 				break;
 			case "CREGITEX":
-				serviceURL= "sectionedservice.php";//change when MS i; created
+				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
 				break;
 			case "GRP":
 				serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
