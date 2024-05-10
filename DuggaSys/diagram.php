@@ -1220,8 +1220,11 @@
                     <span style="margin-right:5px">Filename:</span>
                     <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
                 </div>
-                <div class="button-row">
+                <div class="button-row" style="display: block; margin: 0 auto;">
                     <input type="submit" class="submit-button" onclick="saveDiagramAs(); hideSavePopout();" value="Save"/>
+                    <label style="display: block; margin: 0 auto;">
+                        <input id="serverCheck" type="checkbox">Save to server
+                    </label>
                 </div>
             </div>
         </div>

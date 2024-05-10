@@ -1889,7 +1889,6 @@ function exportWithHistory() {
  * @param {string} key The name/key of the diagram
  */
 function storeDiagramInLocalStorage(key) {
-
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
@@ -1912,10 +1911,35 @@ function storeDiagramInLocalStorage(key) {
 
         let localDiagrams = JSON.parse(local);
         localDiagrams[key] = objToSave;
-        localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+
+        if (!document.getElementById('serverCheck').checked) {
+            localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+        } else {
+            saveToServer(localDiagrams[key]);
+        }
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
+}
+
+function saveToServer(diagram) {
+    //console.log(diagram);
+    const id = makeRandomID();
+    const data = {
+        id: id,
+        diagram: diagram
+    }
+    console.log(data);
+    const options = {
+        method: 'PUT',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+
+    fetch('./aaaaaaaaaaaaaaaa', options)
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
 }
 
 /**
