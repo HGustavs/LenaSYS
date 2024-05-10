@@ -2,28 +2,38 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
 session_start();
 
 $opt=getOP('opt');
 $exampleId=getOP('exampleid');
-$boxId=getOP('boxid');
 $courseId=getOP('courseid');
 $courseVersion=getOP('cvers');
+$playlink=getOP('playlink');
+$exampleName=getOP('examplename');
+$sectionName=getOP('sectionname');
 $beforeId=getOP('beforeid');
 $afterId=getOP('afterid');
-$sectionName=getOP('sectionname');
-$exampleName=getOP('examplename');
-$playlink=getOP('playlink');
 $debug="NONE!";
-$userid="";
+$userid=getUid();
 
-// Checks user id, if user has none a guest id is set
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";
+$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+$query->bindParam(':exampleid', $exampleId);
+$query->execute();
+
+while ($row = $query->fetch(PDO::FETCH_ASSOC)){
+  	$exampleId=$row['exampleid'];
+  	$exampleName=$row['examplename'];
+	$courseID=$row['cid'];
+	$cversion=$row['cversion'];
+	$beforeId=$row['beforeid'];
+	$afterId=$row['afterid'];
+	$public=$row['public'];
+	$sectionName=$row['sectionname'];
+	$playlink=$row['runlink'];
 }
 
 if(strcmp('EDITEXAMPLE',$opt)===0){
@@ -101,4 +111,6 @@ if(strcmp('EDITEXAMPLE',$opt)===0){
 		}
 	}
 }
-?>
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
+return;
