@@ -28,6 +28,7 @@ $className = getOP('className');
 $username = getOP('username');
 $addedtime = getOP('addedtime');
 $val = getOP('val');
+$action = getOP('action');
 $newusers = getOP('newusers');
 $newclass = getOP('newclass');
 $coursevers = getOP('coursevers');
@@ -285,7 +286,20 @@ if(checklogin() && $hasAccess) {
 				}
         	}
 		} // End of foreach user
-	} // End ADD_USER
+		// End ADD_USER
+	} else if (strcmp($opt,"RETRIEVE")==0) {
+		if ($action === "users") {
+			$query = $pdo->prepare("SELECT uid, username FROM user");
+			if ($query->execute()) {
+				$users = $query->fetchAll(PDO::FETCH_ASSOC);
+				$response = array("success" => true, "users" => $users);
+				echo json_encode($response);
+			} else {
+				$response = array("success" => false, "message" => "Failed to fetch users.");
+				echo json_encode($response);
+			}
+		}
+	}
 }
 
 

@@ -96,6 +96,7 @@ function showCreateUserPopup() {
 
 function showAddUserPopup() {
 	$("#addUser").css("display", "flex");
+	loadUsersToDropdown();
 }
 
 function showCreateClassPopup() {
@@ -1053,6 +1054,28 @@ function compare(a, b) {
 				return 0;
 		}
 
+}
+
+function loadUsersToDropdown() {
+	$.ajax({
+		url: 'accessedservice.php',
+		type: 'POST',
+		data: { opt: 'RETRIEVE', action: 'users'}, // Sending the value of $opt
+		success: function(response) {
+			usersJson = response.substring(0, response.indexOf('{"entries":'));
+			let responseData = JSON.parse(usersJson);
+			let filteredUsers = [];
+			let length = responseData.users.length;
+			for (let i = 0; i < length; i++) {
+				let user = responseData.users[i];
+				filteredUsers.push(user);
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error(error);
+		}
+	});
+	
 }
 
 function openArrow(element){
