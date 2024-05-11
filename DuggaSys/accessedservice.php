@@ -312,6 +312,26 @@ if(checklogin() && $hasAccess) {
 				echo json_encode($response);
 			}
 		}
+	} else if (strcmp($opt, "USERTOTABLE") == 0) {
+		if ($action === "COURSE") {
+			$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,term,creator,vers,vershistory) VALUES(:uid, :cid,'R',:term,:creator,:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
+			$stmt->bindParam(':uid', $uid);
+			$stmt->bindParam(':cid', $cid);
+			$stmt->bindParam(':term', $term);
+			$stmt->bindParam(':creator', $userid);
+			$stmt->bindParam(':vers', $coursevers);
+			$stmt->bindParam(':avers', $coursevers);
+			$stmt->bindParam(':bvers', $coursevers);
+			try {
+				if(!$stmt->execute()) {
+					$error=$stmt->errorInfo();
+					$debug.="Error connecting user to course: ".$error[2];
+				}
+			}catch(Exception $e) {
+				$debug.="Error connecting user to course: ".$e->getMessage();
+
+			}
+		}
 	}
 }
 

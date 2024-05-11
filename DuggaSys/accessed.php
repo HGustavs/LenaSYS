@@ -142,7 +142,7 @@
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+						<input placeholder="HT-11" class='textinput' id='addTermAdd' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
@@ -170,7 +170,7 @@
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+						<input placeholder="HT-11" class='textinput' id='addTermRemove' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
