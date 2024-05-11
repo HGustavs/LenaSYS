@@ -287,10 +287,10 @@ function validateTerm(term) {
 	return null; //the provided term is correct
 }
 
-function tooltipTerm() {
-	let error = validateTerm(document.getElementById('addTerm').value);
-	let termInputBox = document.getElementById('addTerm');
-	let term = document.getElementById('addTerm').value;
+function tooltipTerm(element) {
+	let error = validateTerm(element.value);
+	let termInputBox = element;
+	let term = element.value;
 
 	if(error && term.length > 0) {	// Error, fade in tooltip
 		document.getElementById('tooltipTerm').innerHTML = error;
