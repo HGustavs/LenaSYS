@@ -134,7 +134,58 @@ function hideRemoveUserPopup() {
 //----------------------------------------------------------------------------
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
-
+function addUserToCourse() {
+	let input = document.getElementById('addUsername').value;
+	let term = $("#addTermUsr").val();
+	$.ajax({
+		type: 'POST',
+		url: 'accessedservice.php',
+		data: {
+			opt: 'RETRIEVE',
+			action: 'USER',
+			username: input
+		},
+		success: function(response) {
+			userJson = response.substring(0, response.indexOf('{"entries":'));
+			let responseData = JSON.parse(userJson);
+			let uid = responseData.user[0].uid;
+			AJAXService("USERTOTABLE", {
+				courseid: querystring['courseid'],
+				uid: uid,
+				term: term,
+				coursevers: querystring['coursevers'],
+				action: 'COURSE'
+			}, "ACCESS");
+		},
+		error: function(xhr, status, error) {
+			console.error("Error", error);
+		}
+	});
+	/*$.ajax({
+		type: 'POST',
+		url: 'accessedservice.php',
+		data: {
+			opt: 'ADDUSR',
+			action: 'COURSE',
+			courseid: querystring['courseid'],
+			uid: uid,
+			username: input,
+			coursevers: querystring['coursevers']
+		},
+		success: function(response) {
+			//console.log(response);
+		},
+		error: function(xhr, status, error) {
+			console.error("Error", error);
+		}
+	});
+	/*AJAXService("ADDUSR", {
+		courseid: querystring['courseid'],
+		uid: uid,
+		coursevers: querystring['coursevers']
+	}, "ACCESS");*/
+	hideAddUserPopup();
+}
 function addSingleUser() {
 
 	var newUser = new Array();
