@@ -1103,15 +1103,51 @@ function mmoving(event) {
             deltaY = startY - event.clientY;
 
             // Functionality for the four different nodes
-            if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
-            } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementResized([elementData.id], widthChange, 0);
+            if (startNodeLeft && elementData && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                let newWidth = startWidth + (deltaX / zoomfact);  
+                let tmpW = Math.max(minWidth, newWidth);  
+                let widthChange = tmpW - elementData.width;  
+            
+                let tmpX = elementData.x - widthChange; 
+            
+                if (context[0] && context[0].kind == "sequenceActor") {
+                    let deltaHeight = widthChange; 
+                    let tmpH = Math.max(minHeight, elementData.height + deltaHeight);  
+                    let tmpY = elementData.y - (deltaHeight / 2); 
+            
+                    elementData.height = tmpH;
+                    elementData.y = tmpY;
+                    
+
+                    let yChange = tmpY - elementData.y;
+                    let heightChange = tmpH - elementData.height;
+                }
+                    elementData.width = tmpW;
+                    elementData.x = tmpX;  
+                
+                    
+                    prepareElementResized([elementData.id], widthChange, 0);
+        
+        } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+            let tmpW = Math.max(minWidth, startWidth - (deltaX / zoomfact));
+            let widthChange = tmpW - elementData.width;  
+            
+            let tmpX = elementData.x; 
+          
+            if (context[0] && context[0].kind == "sequenceActor") {
+                let deltaHeight = widthChange; 
+                let tmpH = Math.max(minHeight, elementData.height + deltaHeight);  
+                let tmpY = elementData.y - (deltaHeight / 2); 
+                
+                elementData.height = tmpH;
+                elementData.y = tmpY;
+                
+                let yChange = tmpY - elementData.y;
+                let heightChange = tmpH - elementData.height;
+            }
+            elementData.width = tmpW;
+            elementData.x = tmpX;
+            prepareElementResized([elementData.id], widthChange, 0);
             } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementResized([elementData.id], 0, heightChange);
