@@ -122,6 +122,14 @@ function hideCreateClassPopup() {
 	$("#createClass").css("display", "none");
 }
 
+function hideAddUserPopup() {
+	$("#addUser").css("display", "none");
+}
+
+function hideRemoveUserPopup() {
+	$("#removeUser").css("display", "none");
+}
+
 //----------------------------------------------------------------------------
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
@@ -1094,4 +1102,31 @@ function checkIfPopupIsOpen() {
 		}
 	}
 	return false;
+}
+function loadUsersToDropdown() {
+	$.ajax({
+		url: 'accessedservice.php',
+		type: 'POST',
+		data: { opt: 'RETRIEVE', action: 'USERS'},
+		success: function(response) {
+			usersJson = response.substring(0, response.indexOf('{"entries":'));
+			let responseData = JSON.parse(usersJson);
+			let filteredUsers = [];
+			let length = responseData.users.length;
+			for (let i = 0; i < length; i++) {
+				let user = responseData.users[i];
+				filteredUsers.push(user);
+			}
+			let dropdownList = document.getElementById("users_dropdown2");
+			filteredUsers.forEach(user => {
+				let option = document.createElement("option");
+				option.text = user.username;
+				dropdownList.appendChild(option);
+			});
+		},
+		error: function(xhr, status, error) {
+			console.error(error);
+		}
+	});
+	
 }
