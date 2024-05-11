@@ -54,7 +54,7 @@ if(isset($_SESSION['uid'])){
 	</div>
 
 	<!-- version identification -->
-	<div id="version" class='version' style='display:none'>Master hash <br /><?php echo $version ?></div>
+	<div id="version" class='version diplay_none'>Master hash <br /><?php echo $version ?></div>
 
 	<!-- content END -->
 
@@ -63,7 +63,7 @@ if(isset($_SESSION['uid'])){
 	?>
 
 	<!-- Server Msg -->
-	<div id="servermsgcontainer" class="alertmsg" style="display:none;">
+	<div id="servermsgcontainer" class="alertmsg diplay_none">
 			<h3 id="servermsgtitle">Message of the day</h3>
 			<p id="servermsg"></p>
 			<input type='button' id="MOTDbutton" value='Close' class='submit-button' onclick='hideServerMessage()'/>
@@ -71,7 +71,7 @@ if(isset($_SESSION['uid'])){
 	<!-- Server Msg END -->
 
 <!-- New Course Section Dialog START -->
-<div id='newCourse' class='loginBoxContainer' style='display:none;'>
+<div id='newCourse' class='loginBoxContainer diplay_none'>
     <div id=loginBox_DarkMode class='loginBox DarkModeBackgrounds DarkModeText'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
@@ -147,7 +147,7 @@ if(isset($_SESSION['uid'])){
 					<select class='selectinput' id='visib'></select>
 				</div>
     		</div>
-			<div style='float:right; padding-top:20px; width: 464px;' >
+			<div id='editCourseButtonPlacement' >
 				<div id="buttonContainerDeleteCourse"></div>
 				<div id="buttonContainerSaveCourse"></div>
 				<div class="form-popup" id="myForm">

@@ -2348,6 +2348,10 @@ Fonts
 
 /*---END---*/
 
+.diplay_none{
+  display:none
+}
+
 .errorMessage{
   display: none; 
   left:0px;
@@ -2533,6 +2537,12 @@ sectioned.php END
   display: block; 
   left:55; 
   top:-72px;
+}
+
+#editCourseButtonPlacement{
+  float:right; 
+  padding-top:20px; 
+  width: 464px;
 }
 
 /*---===#===---*
