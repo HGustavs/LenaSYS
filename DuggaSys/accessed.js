@@ -1169,7 +1169,7 @@ function loadUsersToDropdown() {
 				let user = responseData.users[i];
 				filteredUsers.push(user);
 			}
-			let dropdownList = document.getElementById("users_dropdown2");
+			let dropdownList = document.getElementById("users_dropdown_remove");
 			filteredUsers.forEach(user => {
 				let option = document.createElement("option");
 				option.value = user.username;

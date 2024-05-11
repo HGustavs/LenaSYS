@@ -135,8 +135,8 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown2" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown1">
+						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_add">
 						</datalist>
 					</div>
 					<div class='flexwrapper'>
@@ -164,8 +164,8 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown2" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown2"></datalist>
+						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_remove"></datalist>
 					</div>
 					<div class='flexwrapper'>
 						<span>Term:</span>
