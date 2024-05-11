@@ -100,6 +100,7 @@ function showAddUserPopup() {
 
 function showRemoveUserPopup() {
 	$("#removeUser").css("display", "flex");
+	loadUsersToDropdown();
 }
 
 function showCreateClassPopup() {
@@ -1120,7 +1121,7 @@ function loadUsersToDropdown() {
 			let dropdownList = document.getElementById("users_dropdown2");
 			filteredUsers.forEach(user => {
 				let option = document.createElement("option");
-				option.text = user.username;
+				option.value = user.username;
 				dropdownList.appendChild(option);
 			});
 		},

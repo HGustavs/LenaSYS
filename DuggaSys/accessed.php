@@ -84,7 +84,7 @@
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm()" onkeyup="tooltipTerm()">
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class='flexwrapper'>
 						<span>Email:</span>
@@ -135,12 +135,14 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<input type="text" name="product" list="users_dropdown2" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 						<datalist id="users_dropdown1">
-							<option value="User 1"></option>
-							<option value="User 2"></option>
-							<option value="User 3"></option>
 						</datalist>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
@@ -162,12 +164,13 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown2">
-							<option value="User 1"></option>
-							<option value="User 2"></option>
-							<option value="User 3"></option>
-						</datalist>
+						<input type="text" name="product" list="users_dropdown2" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown2"></datalist>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
