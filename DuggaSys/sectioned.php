@@ -841,6 +841,11 @@ function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS,
 	$wordlistID = "3";
 	$y = 1;
 	for($i = 0; $i < $count; $i++){
+		if (pathinfo($fileNames[$i], PATHINFO_EXTENSION) === 'txt') {
+			$boxContent = "Document";
+		} else if (stripos($fileNames[$i], 'output') !== false) {
+			$boxContent = "IFRAME";
+		}
 		//TODO: Change boxcontent to be named dynamicly.
 		// Maybe change filenameNoExt to something better named. Also what is wordlistid?
 		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
