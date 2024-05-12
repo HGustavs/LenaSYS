@@ -136,7 +136,7 @@ function hideRemoveUserPopup() {
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
 function addUserToCourse() {
-	let input = document.getElementById('addUsername').value;
+	let input = document.getElementById('addUsernameAdd').value;
 	let term = $("#addTermAdd").val();
 	$.ajax({
 		type: 'POST',
@@ -163,6 +163,32 @@ function addUserToCourse() {
 		}
 	});
 	hideAddUserPopup();
+}
+function removeUserFromCourse() {
+	let input = document.getElementById('addUsernameRemove').value;
+	$.ajax({
+		type: 'POST',
+		url: 'accessedservice.php',
+		data: {
+			opt: 'RETRIEVE',
+			action: 'USER',
+			username: input
+		},
+		success: function(response) {
+			userJson = response.substring(0, response.indexOf('{"entries":'));
+			let responseData = JSON.parse(userJson);
+			let uid = responseData.user[0].uid;
+			AJAXService("DELETE", {
+				courseid: querystring['courseid'],
+				uid: uid,
+				action: 'COURSE'
+			}, "ACCESS");
+		},
+		error: function(xhr, status, error) {
+			console.error("Error", error);
+		}
+	});
+	hideRemoveUserPopup();
 }
 function addSingleUser() {
 

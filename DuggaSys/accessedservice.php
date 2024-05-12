@@ -332,6 +332,21 @@ if(checklogin() && $hasAccess) {
 
 			}
 		}
+	} else if (strcmp($opt, "DELETE") == 0) {
+		if ($action === "COURSE") {
+			$query = $pdo->prepare("DELETE FROM user_course WHERE uid=:uid AND cid=:cid;");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':cid', $cid);
+			try {
+				if(!$stmt->execute()) {
+					$error=$stmt->errorInfo();
+					$debug.="Error deleting user from course: ".$error[2];
+				}
+			}catch(Exception $e) {
+				$debug.="Error deleting user from course: ".$e->getMessage();
+
+			}
+		}
 	}
 }
 
