@@ -338,7 +338,7 @@ if(checklogin() && $hasAccess) {
 			$query->bindParam(':uid', $uid);
 			$query->bindParam(':cid', $cid);
 			try {
-				if(!$stmt->execute()) {
+				if(!$query->execute()) {
 					$error=$stmt->errorInfo();
 					$debug.="Error deleting user from course: ".$error[2];
 				}
