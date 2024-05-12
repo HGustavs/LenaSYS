@@ -58,7 +58,9 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IERelation:
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
-            style = `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+            style = element.name == "Inheritance" ?
+             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;` :
+             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
