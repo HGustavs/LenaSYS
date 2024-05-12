@@ -1150,7 +1150,8 @@ function closeArrow(arrowElement){
 function checkIfPopupIsOpen() {
 	let allPopups = [
 		"#addUser",
-		"#createUser"
+		"#createUser",
+		"#removeUser"
 	];
 	for (let popup of allPopups) {
 		if ($(popup).css("display") !== "none") {
