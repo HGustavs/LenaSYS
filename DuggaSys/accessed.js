@@ -94,13 +94,14 @@ function showCreateUserPopup() {
 	$("#createUser").css("display", "flex");
 }
 
-function showAddUserPopup() {
+function showAddUserPopup(id) {
 	$("#addUser").css("display", "flex");
+	loadUsersToDropdown(id);
 }
 
-function showRemoveUserPopup() {
+function showRemoveUserPopup(id) {
 	$("#removeUser").css("display", "flex");
-	loadUsersToDropdown();
+	loadUsersToDropdown(id);
 }
 
 function showCreateClassPopup() {
@@ -1155,7 +1156,7 @@ function checkIfPopupIsOpen() {
 	}
 	return false;
 }
-function loadUsersToDropdown() {
+function loadUsersToDropdown(id) {
 	$.ajax({
 		url: 'accessedservice.php',
 		type: 'POST',
@@ -1169,7 +1170,7 @@ function loadUsersToDropdown() {
 				let user = responseData.users[i];
 				filteredUsers.push(user);
 			}
-			let dropdownList = document.getElementById("users_dropdown_remove");
+			let dropdownList = document.getElementById(id);
 			filteredUsers.forEach(user => {
 				let option = document.createElement("option");
 				option.value = user.username;
