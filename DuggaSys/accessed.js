@@ -162,29 +162,6 @@ function addUserToCourse() {
 			console.error("Error", error);
 		}
 	});
-	/*$.ajax({
-		type: 'POST',
-		url: 'accessedservice.php',
-		data: {
-			opt: 'ADDUSR',
-			action: 'COURSE',
-			courseid: querystring['courseid'],
-			uid: uid,
-			username: input,
-			coursevers: querystring['coursevers']
-		},
-		success: function(response) {
-			//console.log(response);
-		},
-		error: function(xhr, status, error) {
-			console.error("Error", error);
-		}
-	});
-	/*AJAXService("ADDUSR", {
-		courseid: querystring['courseid'],
-		uid: uid,
-		coursevers: querystring['coursevers']
-	}, "ACCESS");*/
 	hideAddUserPopup();
 }
 function addSingleUser() {
