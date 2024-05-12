@@ -137,7 +137,7 @@ function hideRemoveUserPopup() {
 //----------------------------------------------------------------------------
 function addUserToCourse() {
 	let input = document.getElementById('addUsername').value;
-	let term = $("#addTermUsr").val();
+	let term = $("#addTermAdd").val();
 	$.ajax({
 		type: 'POST',
 		url: 'accessedservice.php',

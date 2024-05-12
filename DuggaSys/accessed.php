@@ -135,7 +135,7 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsername' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 						<datalist id="users_dropdown_add">
 						</datalist>
 					</div>
@@ -145,7 +145,7 @@
 						<input placeholder="HT-11" class='textinput' id='addTermAdd' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class="flex-end">
-						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
+						<input class='submit-button' type='button' value='Save' onclick='addUserToCourse();' />
 					</div>
 				</div>
       		</div>
