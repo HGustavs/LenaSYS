@@ -670,7 +670,7 @@ function toRadians(angle) {
 function changeDay() {
   if(firstSelWeek != null && secondSelWeek != null){  
     if (firstSelWeek > secondSelWeek){
-      alert("Second week can't be earlier than first week");
+      toast("error","Second week can't be earlier than first week", 10);
     } else {
       AJAXService("updateday", {
         userid: localStorage.getItem('GitHubUser'),

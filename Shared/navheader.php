@@ -107,7 +107,7 @@
 					echo"</div>";
 					echo "<div id='darkModeBurgerDiv'>";
 					echo "<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
-					echo "<img alt ='Dark' class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+					echo "<img alt ='Dark' class='navBurgerButt' title='Toggle theme' src='../Shared/icons/ThemeToggle.svg'></>";
 					echo "</a>";
 					echo "</a>";
 					echo"</div>";
@@ -118,7 +118,7 @@
 			// Home button original code <a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a>
 			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><img alt='home button icon' src='../Shared/icons/Home.svg'></div></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
+			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' title='Toggle theme' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
@@ -246,7 +246,7 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
-									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
+									echo "<img alt='refresh icon' id='refreshIMG' title='Refresh GitHub repo' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
 
 								//Check if user is super user
@@ -358,7 +358,7 @@
 							//Adding dark mode button to the teacher burger menu
 							echo "<div id='darkModeBurgerTeacher'>";
 							echo "<a id='darkModeBurgerT' onclick = 'burgerToggleDarkmode()'>";
-							echo "<img alt ='Dark' class='burgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+							echo "<img alt ='Dark' class='burgerButt' title='Toggle theme' src='../Shared/icons/ThemeToggle.svg'></>";
 							// not working yet
 							echo "<a class = 'burgerButtText'onclick = 'burgerToggleDarkmode()'> Change Theme </a>";
 							echo "</a>";
@@ -701,30 +701,31 @@ function hamburgerToggle() {
 }
 
 //count down the fetch cooldown
-const gitFetchCooldownMin = document.getElementById("gitFetchMin");
-const gitFetchCooldownSec = document.getElementById("gitFetchSec");
-const cooldownHolder = document.getElementById("cooldownHolder");
+let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
 
-setInterval(
-	function() 
-	{
-		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
+document.addEventListener("DOMContentLoaded", function() {
+    gitFetchCooldownMin = document.getElementById("gitFetchMin");
+    gitFetchCooldownSec = document.getElementById("gitFetchSec");
+    cooldownHolder = document.getElementById("cooldownHolder");
+
+    if (gitFetchCooldownMin && gitFetchCooldownSec) { // Check if elements exist
+        setInterval(function() 
 		{
-			gitFetchCooldownSec.innerHTML-=1;
-			if(gitFetchCooldownSec.innerHTML<0)
+            if (gitFetchCooldownSec.innerHTML > 0 || gitFetchCooldownMin.innerHTML > 0) {
+                gitFetchCooldownSec.innerHTML -= 1;
+                if (gitFetchCooldownSec.innerHTML < 0) 
+				{
+                    gitFetchCooldownMin.innerHTML -= 1;
+                    gitFetchCooldownSec.innerHTML = 59;
+                }
+            } 
+			else 
 			{
-				gitFetchCooldownMin.innerHTML-=1;
-				gitFetchCooldownSec.innerHTML=59;
-			}
-			
-		}
-		else
-		{
-			cooldownHolder.style.display="none";
-		}
-	}, 1000
-);
-
+                cooldownHolder.style.display = "none";
+            }
+        }, 1000);
+    }
+});
 function resetGitFetchTimer(superuser)
 {
 	if(cooldownHolder.style.display=="none"){
