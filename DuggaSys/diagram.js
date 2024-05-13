@@ -1927,19 +1927,15 @@ function saveToServer(diagram) {
     const id = makeRandomID();
     const data = {
         id: id,
-        diagram: diagram
+        diagram: stateMachine.historyLog
     }
-    console.log(data);
-    const options = {
-        method: 'PUT',
-        headers: {'Content-type': 'application/json'},
-        body: JSON.stringify(data)
-    };
-
-    fetch('./aaaaaaaaaaaaaaaa', options)
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.log(error))
+    $.ajax({
+        method: "POST",
+        url: "./diagram/backend/createFile.php",
+        data: data
+    }).done(response => {
+        console.log(response);
+    });
 }
 
 /**

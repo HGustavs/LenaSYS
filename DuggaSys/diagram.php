@@ -22,12 +22,14 @@
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <!-- To enable dark mode, these 2 files were added. -->
-    <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
-    <script src="darkmodeToggle.js"></script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+    <!-- To enable dark mode, these 2 files were added. -->
+    <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+    <script src="darkmodeToggle.js"></script>
+    <!-- Included to be able to save files to the server -->
     <script src="../Shared/dugga.js"></script>
+    <script src="./fileed.js"></script>
     <script src="../Shared/markdown.js"></script>
     <script src="./diagram/classes/point.js"></script>
     <script src="./diagram/classes/rect.js"></script>
