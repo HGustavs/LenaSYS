@@ -1094,57 +1094,30 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
-            // Functionality for the four different nodes
-            if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            // Functionality Left/Right resize
+            if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 let tmpW = elementData.width;
                 let tmpX = elementData.x;
                 let xChange = movementPosChange(elementData, startX, deltaX, true);
                 let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
                 prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
-            } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+            } else if ((startNodeRight || startNodeUpRight || startNodeDownRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
                 let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 prepareElementResized([elementData.id], widthChange, 0);
-            } else if (startNodeDown && (startHeight - (deltaY / zoomfact)) > minHeight) {
+            }
+            // Functionality Up/Down resize
+            if ((startNodeDown || startNodeDownLeft || startNodeDownRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
                 const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 prepareElementResized([elementData.id], 0, heightChange);
-            } else if (startNodeUp && (startHeight + (deltaY / zoomfact)) > minHeight) {
+            } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
                 let tmpH = elementData.height;
                 let tmpY = elementData.y;
                 let yChange = movementPosChange(elementData, startY, deltaY, false);
                 const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
                 prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
-            } else if (startNodeUpLeft && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                //set movable height
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
-            } else if (startNodeUpRight && (startHeight + (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                //set movable height
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                let heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementMovedAndResized([elementData.id], 0, yChange, widthChange, heightChange);
-            } else if (startNodeDownLeft && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                let heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, heightChange);
-            } else if (startNodeDownRight && (startHeight - (deltaY / zoomfact)) > minHeight && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementMovedAndResized([elementData.id], 0, 0, widthChange, heightChange);
             }
+
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
             // Check if entity is overlapping
