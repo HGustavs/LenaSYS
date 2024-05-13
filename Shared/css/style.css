@@ -1889,6 +1889,10 @@ div .navButt:hover {
   margin: 10px 0px;
 }
 
+#login, #logout {
+  max-width: fit-content;
+}
+
 .loginBox,
 .logoutBox{
   padding: 4px;
@@ -2535,7 +2539,7 @@ label.login-label {
 .logoutBoxTable {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
-  margin-left: -2px;
+  margin: 10px 10px 0 10px;
   background-color: transparent;
 }
 
