@@ -303,15 +303,4 @@ class Element {
             height: 5,
         });
     }
-
-    get heightFromDocument() {
-        return this.height;
-    }
 }
-
-/**
- * TODO: Change all to element
- * pasteClipboard
- * makeGhost
- * construction of element type
- */
