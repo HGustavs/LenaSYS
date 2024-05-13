@@ -1,15 +1,17 @@
 /**
- * @description Centers the camera between the highest and lowest x and y values of all elements
+ * @description Centers the camera between the highest and lowest x and y values of all elements or if no element the camera moves to start position
  */
 function centerCamera() {
     let centerToOrigo = false;
     let offsetX = 0;
     let offsetY = 0;
 
-    // Stops execution if there are no elements to center the camera around.
+    // If there is no element then the camera moves to start position (X = 100 and Y = 100).
     if (data.length == 0) {
         centerToOrigo = true;
+        // offsetX is 98 because if not, X is going to be at 2 and it have to be at 100.
         offsetX = 98;
+        // offsetY is 100 because if not, Y is going to be at 0 and it have to be at 100.
         offsetY = 100;
     }
     // Centering needs to happen twice for it to work, temp solution
