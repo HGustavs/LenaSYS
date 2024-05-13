@@ -353,9 +353,9 @@ function filterOutput($response, $filter)
     foreach ($response as $key => $value) {
         if (array_key_exists($key, $filter)) {
             // If the filter for this key is an array, recursively filter the nested array
-            for ($i = 0; $i < count($value); $i++) {
-                echo $i;
-                $value[$i];
+            $index = count($value);
+
+            for ($i = 0; $i < $index; $i++) {
                 $filteredResponse[$key][$i] = filterOutput($value[$i], $filter[$key]);
             }
         }   
