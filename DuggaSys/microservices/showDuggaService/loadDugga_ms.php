@@ -3,6 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveShowDuggaService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -56,15 +57,3 @@ if($hash!="UNK"){
     }
 
 }
-
-echo json_encode(
-    array(
-        'variant'=>$variant, 
-        'answer'=> $answer, 
-        'variantanswer'=>$variantanswer,
-        'param'=>$param,
-        'newcourseid'=>$row,
-        'newcoursevers'=>$newcoursevers,
-        'newduggaid'=>$newduggaid
-    )
-);

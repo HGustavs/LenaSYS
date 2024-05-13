@@ -1,85 +1,74 @@
 <?php
-// Set the default timezone
+
 date_default_timezone_set("Europe/Stockholm");
 
-// Include necessary files
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "./retrieveCourseedService_ms.php";
 
-// Connect to the database and start the session
+// Connect to database and start session.
 pdoConnect();
 session_start();
 
-// Initialize variables
-$opt = getOP('opt');
-$cid = getOP('cid');
-$coursename = getOP('coursename');
-$visibility = getOP('visib');
-$coursecode = getOP('coursecode');
-$courseGitURL = getOP('courseGitURL');
-
-// Get user identification
-$userid = isset($_SESSION['uid']) ? $_SESSION['uid'] : "UNK";
-$username = retrieveUsername($pdo);
+$opt=getOP('opt');
+$cid=getOP('cid');
+$coursecode=getOP('coursecode');
+$coursename=getOP('coursename');
+$coursenamealt=getOP('coursenamealt');
+$versname=getOP('versname');
+$versid=getOP('versid');
+$makeactive=getOP('makeactive');
+$motd=getOP('motd');
+$enddate=getOP('enddate');
+$startdate=getOP('startdate');
 
 $debug="NONE!";
-
-$ha = null;
-$isSuperUserVar = false;
-
+$isSuperUserVar=false;
+$ha=false;
+$userid=getUid();
 // Login is checked
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 	$ha = $isSuperUserVar;
 }
 
-if ($ha){
-    // Update course information
-    $updateSuccessful = updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL);
-    // Handle errors if update fails
-    if (!$updateSuccessful) {
-        $debug = "Error updating course information.";
-    }     
-    $visibilityName = getVisibilityName($visibility);
-    $description = "$coursename $coursecode $visibilityName";
-    logUserEvent($userid, $username, "EditCourse", $description);
+if($ha) {
+
+	if (strcmp($opt, "UPDATEVRS") === 0) {
+		$query = $pdo->prepare("UPDATE vers SET motd=:motd,versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':coursecode', $coursecode);
+		$query->bindParam(':vers', $versid);
+		$query->bindParam(':versname', $versname);
+		$query->bindParam(':motd', $motd);
+
+		if($startdate=="UNK"){
+			$query->bindValue(':startdate', null,PDO::PARAM_INT);
+		}else {
+			$query->bindParam(':startdate', $startdate);
+		}
+		if($enddate=="UNK"){ 
+			$query->bindValue(':enddate', null,PDO::PARAM_INT);
+		}else {
+			$query->bindParam(':enddate', $enddate);
+		}
+		if (!$query->execute()) {
+			$error = $query->errorInfo();
+			$debug = "Error updating entries\n" . $error[2];
+		}
+		if ($makeactive == 3) {
+			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':vers', $versid);
+
+			if (!$query->execute()) {
+				$error = $query->errorInfo();
+				$debug = "Error updating entries\n" . $error[2];
+			}
+		}
+	}
 }
 
 echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
-
-
-// Function to update course information in the database
-function updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL) {
-    global $pdo;
-    $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid");
-    $query->bindParam(':cid', $cid);
-    $query->bindParam(':coursename', $coursename);
-    $query->bindParam(':visibility', $visibility);
-    $query->bindParam(':coursecode', $coursecode);
-    $query->bindParam(':courseGitURL', $courseGitURL);
-    return $query->execute();
-}
-
-// Function to get the visibility name
-function getVisibilityName($visibility) {
-    switch ($visibility) {
-        case 0:
-            return "Hidden";
-        case 1:
-            return "Public";
-        case 2:
-            return "Login";
-        case 3:
-            return "Deleted";
-        default:
-            return "Unknown";
-    }
-}
-
