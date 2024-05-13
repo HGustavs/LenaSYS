@@ -5,7 +5,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Include necessary files
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../../../../coursesyspw.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "./retrieveCourseedService_ms.php";
 
