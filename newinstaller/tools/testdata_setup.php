@@ -28,10 +28,6 @@ class TestdataSetup {
 				return $this->handle_exception("Source directory ({$real_source}) is not readable.");
 			}
 
-			if (!is_dir($this->destinationDirectory) && !mkdir($real_destination, 0777, true)) {
-				return $this->handle_exception("Failed to create destination directory.");
-			}
-
 			if (!is_readable($this->destinationDirectory)) {
 				return $this->handle_exception("Source directory ({$real_destination}) is not readable.");
 			}
