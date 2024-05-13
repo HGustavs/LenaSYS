@@ -84,7 +84,6 @@ The old name remains listed under "LIST OF MICROSERVICES" so that we can keep tr
 
 __Shared microservices:__
 
-- logUserEvent_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - logServiceEvent_ms.php __==UNFINISHED==__
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
@@ -275,31 +274,6 @@ __Show Dugga Service:__
 
 ---
 ## ----------------------------- _shared_microservices_ -----------------------------
----
-
-<br>
-
-### logUserEvent_ms.php
-__logUserEvent_ms.php__ creates a new userbased event in the log.db database (not MYSQL).
-
-__Includes neither original service files nor microservices.__
-
-__Querys used in this microservice:__
-
-_INSERT_ operation on the table __'userLogEntries'__ to add a new row with values for the following columns:
-- uid
-- username
-- eventType
-- description
-- userAgent
-- remoteAddress
-
-```sql
-INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, remoteAddress) VALUES (:uid, :username, :eventType, :description, :userAgent, :remoteAddress);
-```
-
-<br>
-
 ---
 
 <br>
