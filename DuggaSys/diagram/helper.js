@@ -88,7 +88,6 @@ function entityIsOverlapping(id, x, y) {
     });
 
     for (let i = 0; i < data.length; i++) {
-        console.log(data[i].kind, element.kind, )
         if (data[i].id === id) continue;
         if (context.includes(data[i])) break;
 
