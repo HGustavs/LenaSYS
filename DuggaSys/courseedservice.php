@@ -601,10 +601,16 @@ $deleted = 3;
 //announcement
 $query = $pdo->prepare("DELETE announcement FROM course,announcement WHERE course.visibility=:deleted AND announcement.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
+try {
+	$query->execute();
+}
+catch(exception $e) {
+	//has to be empty for old database, use code below for debugging
+}
+/*if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
-}
+}*/
 
 //announcementlog
 $query = $pdo->prepare("DELETE ANNOUNCEMENTLOG FROM course,ANNOUNCEMENTLOG WHERE course.visibility=:deleted AND ANNOUNCEMENTLOG.cid = course.cid;");
@@ -727,10 +733,16 @@ if (!$query->execute()) {
 //shregister
 $query = $pdo->prepare("DELETE shregister FROM course,shregister WHERE course.visibility=:deleted AND shregister.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
+try {
+	$query->execute();
+}
+catch(Exception $e) {
+	//has to be empty for old database, use code below for debugging
+}
+/*if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
-}
+}*/
 
 //submission-----may not have course.cid 
 $query = $pdo->prepare("DELETE submission FROM course,submission WHERE course.visibility=:deleted AND submission.cid = course.cid;");
@@ -751,10 +763,16 @@ if (!$query->execute()) {
 //timesheet
 $query = $pdo->prepare("DELETE timesheet FROM course,timesheet WHERE course.visibility=:deleted AND timesheet.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
+try {
+	$query->execute();
+}
+catch(Exception $e) {
+	//has to be empty for old database, use code below for debugging
+}
+/*if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
-}
+}*/
 
 //user_participant
 $query = $pdo->prepare("DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;");
@@ -779,10 +797,16 @@ if (!$query->execute()) {
 //userduggafeedback
 $query = $pdo->prepare("DELETE userduggafeedback FROM course,userduggafeedback WHERE course.visibility=:deleted AND userduggafeedback.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
+try {
+	$query->execute();
+}
+catch(Exception $e) {
+	//has to be empty for old database, use code below for debugging
+}
+/*if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
-}
+}*/
 
 //user_course
 $query = $pdo->prepare("DELETE user_course FROM course,user_course WHERE course.visibility=:deleted AND user_course.cid = course.cid;");
