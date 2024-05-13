@@ -428,3 +428,8 @@ const lineAlwaysFrom = [
 const lineAlwaysTo = [
     elementTypesNames.UMLFinalState,
 ];
+
+const backgroundElement = [
+    elementTypesNames.UMLSuperState,
+    elementTypesNames.sequenceLoopOrAlt,
+];

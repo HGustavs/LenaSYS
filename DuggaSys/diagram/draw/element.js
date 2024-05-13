@@ -178,6 +178,14 @@ function drawText(x, y, a, t, extra = '') {
 
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const l = linew * 3;
+    
+    //check if element height and minHeight is 0, if so set both to 50
+    if (element.height == 0 && element.minHeight == 0) {
+        element.minHeight = 50;
+        element.height = element.minHeight;
+        // update boxh to 50
+        boxh = 50;
+    }
 
     let weak = '';
     if (element.state == "weak") {
@@ -229,10 +237,12 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
 
 function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let str = "";
-    const primaryKeyArray = element.primaryKey;
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
     const text = splitFull(element.attributes, maxCharactersPerLine);
+    const primaryKeys = element.primaryKey;
+    // Adds each string from the primaryKey property first in the text array.
+    if (primaryKeys) text.unshift(...primaryKeys);
 
     let height = texth * 2;
     let headRect = drawRect(boxw, height, linew, element);
@@ -240,21 +250,16 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let headSvg = drawSvg(boxw, height, headRect + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
-    // Adds each string from the primaryKey property first in the text array.
-    if (primaryKeyArray && primaryKeyArray.length > 0) {
-        text.unshift(...primaryKeyArray);
-    }
 
     // Content, Attributes
     const textBox = (s, css) => {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
         for (let i = 0; i < s.length; i++) {
-            if (i < primaryKeyArray.length) {
+            if (i < primaryKeys.length) {
                 // Writes the text.
                 text += drawText('0.5em',
-                    texth * (i + 1) * lineHeight,
-                    'start', s[i],
+                    texth * (i + 1) * lineHeight, 'start', s[i],
                     'style="text-decoration-line:underline;"');
             } else {
                 text += drawText('0.5em',
@@ -453,7 +458,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
     let content;
     content = `<path 
                     class="text" 
-                    d="M${boxw / 2 + linew},${boxw / 4 + linew} V${boxh}"
+                    d="M${boxw / 2},${boxw / 4 + linew} V${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
                     stroke-dasharray='${linew * 3},${linew * 3}'
@@ -461,14 +466,14 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                 />
                 <g>
                     <circle 
-                        cx="${(boxw / 2) + linew}" 
+                        cx="${(boxw / 2) }" 
                         cy="${(boxw / 8) + linew}" 
                         r="${boxw / 8}px" 
                         fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
                     />
                     <path 
                         class="text"
-                        d="M${(boxw / 2) + linew},${(boxw / 4) + linew}
+                        d="M${(boxw / 2)},${(boxw / 4) + linew}
                             v${boxw / 6}
                             m${-boxw / 4},0
                             h${boxw / 2}
@@ -508,7 +513,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
 
     content = `<path 
                     class="text" 
-                    d="M ${boxw / 2 + linew},${boxw / 4 + linew}
+                    d="M ${boxw / 2},${boxw / 4 + linew}
                         V ${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
@@ -613,19 +618,17 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
 
     let content = `
         <path class="text"
-            d=" M ${linew},${linew}
-                v ${boxh + (texth * length) - linew * 2}
-                h ${boxw - linew * 2}
-                v -${boxh + (texth * length) - linew * 2 - (boxh - linew * 2) * 0.5}  
-                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5} 
+            d=" M ${maxWidth - (23 * zoomfact)},${linew}
+                h -${maxWidth - (23 * zoomfact)}
+                v ${maxHeight}
+                h ${maxWidth}
+                v -${maxHeight - (23 * zoomfact)}
+                l -${23.5 * zoomfact}, -${23 * zoomfact}
                 h 1
                 h -1
-                v ${(boxh - linew * 2) * 0.5} 
-                h ${(boxw - linew * 2) * 0.12}
-                v 1
-                v -1
-                l -${(boxw - linew * 2) * 0.12},-${(boxh - linew * 2) * 0.5}
-                h -${(boxw - linew * 2) * 0.885} "
+                v ${23 * zoomfact}
+                h ${22 * zoomfact}
+                z"
             stroke-width='${linew}'
             stroke='${element.stroke}'
             fill='${element.fill}'

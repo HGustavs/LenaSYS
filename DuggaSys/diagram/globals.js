@@ -39,6 +39,9 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variable for drawing a line
+var isCurrentlyDrawing = true;
+
 // Variables for resizing
 var originalWidth = 0;
 var originalHeight = 0;
@@ -133,6 +136,8 @@ var data = []; // List of all elements in diagram
 var lines = []; // List of all lines in diagram
 var errorData = []; // List of all elements with an error in diagram
 
+let hasResized = false; // checks if an element has been resized
+
 // Ghost element is used for placing new elements. DO NOT PLACE GHOST ELEMENTS IN DATA ARRAY UNTILL IT IS PRESSED!
 var ghostElement = null;
 var ghostLine = null;
@@ -141,4 +146,4 @@ var ghostLine = null;
 const historyHandler = {
     hasUpdated: false,
     inputCounter: 0
-};
+}

@@ -56,7 +56,6 @@ class StateMachine {
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
 
         for (let i = 0; i < stateChangeArray.length; i++) {
-
             const stateChange = stateChangeArray[i];
 
             if (stateChange instanceof StateChange) {
@@ -65,7 +64,6 @@ class StateMachine {
 
                 // If history is present, perform soft/hard-check
                 if (this.historyLog.length > 0) {
-
                     // Get the last state in historyLog (only values, not reference)
                     let lastLog = {...this.historyLog[this.historyLog.length - 1]};
 
@@ -87,7 +85,6 @@ class StateMachine {
                         } else {
                             if (lastLog.id != stateChange.id) sameElements = false;
                         }
-
                         if (Array.isArray(newChangeType)) {
                             for (let index = 0; index < newChangeType.length && isSoft; index++) {
                                 isSoft = newChangeType[index].isSoft;
@@ -109,18 +106,6 @@ class StateMachine {
                             for (let idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
                                 if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
                             }
-
-                            // If the found element has the same ids.
-                            if (sameIds) {
-                                var temp = false;
-                                // If this historyLog is within the timeLimit
-                                if (((new Date().getTime() / 1000) - (this.historyLog[index].time / 1000)) < timeLimit) {
-                                    lastLog = {...this.historyLog[index]};
-                                    temp = true;
-                                }
-                                sameElements = temp;
-                                break;
-                            }
                         }
                     }
                     // If NOT soft change, push new change onto history log
@@ -130,8 +115,12 @@ class StateMachine {
                         }
 
                         // edits the last element if it's during the same resize
-                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
-                            this.historyLog.splice(this.historyLog.length - 1, 1);
+                        if (lastLog.changeType == newChangeType.flag && 
+                            lastLog.counter == historyHandler.inputCounter &&
+                            (newChangeType.flag == StateChange.ChangeTypes.ELEMENT_RESIZED || 
+                            newChangeType.flag == StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED)
+                        ) {
+                            this.historyLog.splice(this.historyLog.length-1, 1);
                         }
 
                         this.historyLog.push({
@@ -143,16 +132,14 @@ class StateMachine {
                         this.currentHistoryIndex = this.historyLog.length - 1;
                     } else { // Otherwise, simply modify the last entry.
                         for (let j = 0; j < changeTypes.length; j++) {
-                            const currentChangedType = changeTypes[j];
-                            let movedAndResized = false;
                             let currentElement;
-                            switch (currentChangedType) {
+                            switch (changeTypes[j]) {
                                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                                    this.historyLog.push({
-                                        ...stateChange,
-                                        changeType: newChangeType.flag,
-                                        counter: historyHandler.inputCounter
-                                    });
+                                    // checks so that the exact same thing doesn't get logged twice
+                                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
+                                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
+                                        this.currentHistoryIndex = this.historyLog.length - 1;
+                                    }
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
@@ -172,15 +159,11 @@ class StateMachine {
                                     this.currentHistoryIndex = this.historyLog.length - 1;
                                     break;
                                 case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                                    movedAndResized = true;
                                 case StateChange.ChangeTypes.ELEMENT_RESIZED:
                                     lastLog = appendValuesFrom(lastLog, stateChange);
-                                    // not sure why but if you resize -> undo -> resize it starts
-                                    // to store the id as an array so this is just a check to counter that
-                                    while (Array.isArray(lastLog.id)) {
-                                        lastLog.id = lastLog.id[0];
-                                    }
-                                    let id = stateChange.id[0];
+                                    
+                                    // the id is sometimes stored as an array so this is needed to get the actual value
+                                    let id = stateChange.id;
                                     while (Array.isArray(id)) {
                                         id = id[0];
                                     }
@@ -189,13 +172,10 @@ class StateMachine {
                                     currentElement = data[findIndex(data, id)];
                                     lastLog.width = currentElement.width;
                                     lastLog.height = currentElement.height;
-                                    if (movedAndResized) {
-                                        lastLog.x = currentElement.x;
-                                        lastLog.y = currentElement.y;
-                                        movedAndResized = false;
-                                    }
-
-                                    // if the save() call comes from the same change-motion
+                                    lastLog.x = currentElement.x;
+                                    lastLog.y = currentElement.y;                                    
+                                    
+                                    // if the save() call comes from the same change-motion, remove the last entry
                                     if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
                                         this.historyLog.splice(this.historyLog.length - 1, 1);
                                     }
@@ -215,12 +195,12 @@ class StateMachine {
                         }
                     }
                 } else {
-                    const current_element = data[findIndex(data, stateChange.id)];
+                    const currentElement = data[findIndex(data, stateChange.id)];
                     this.historyLog.push({
-                        ...stateChange,
-                        width: current_element.width,
-                        height: current_element.height,
-                        changeType: newChangeType.flag,
+                        ...stateChange, 
+                        width: currentElement.width, 
+                        height: currentElement.height, 
+                        changeType: newChangeType.flag, 
                         counter: historyHandler.inputCounter
                     });
                     this.lastFlag = currentChangedType;

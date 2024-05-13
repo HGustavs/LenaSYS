@@ -55,7 +55,7 @@ function mdown(event) {
     if (event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+    if (!hasPressedDelete && !settings.replay.active) {
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
 
@@ -252,9 +252,15 @@ function mup(event) {
     }
     mouseButtonDown = false;
     targetElement = null;
+    //let id = event.target.id;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
-
+    
+    // makes sure that the id isn't in an array if a line is selected
+    while (determinedLines && Array.isArray(determinedLines.id)) {
+        determinedLines.id = determinedLines.id[0];
+    }
+    
     switch (pointerState) {
         case pointerStates.DEFAULT:
             mouseMode_onMouseUp(event);
@@ -273,7 +279,7 @@ function mup(event) {
                 }
             }
             break;
-        case pointerStates.CLICKED_LINE:
+        case pointerStates.CLICKED_LINE:            
             if (!deltaExceeded) {
                 updateSelectedLine(determinedLines);
             }
