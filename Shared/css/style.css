@@ -7069,31 +7069,14 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 18px 0px 0px;
-  margin: 0px 0px 0px -10px;
-  left: auto;
+  padding: 28px 25px 0px 0px;
+  margin: 0px;
+  left: -55px;
   width: 100%;
   list-style: none;
   text-align: center;
-  top:25px;
+  z-index: 100;
 }
-
-
-@media only screen and (max-width: 800px), only screen and (orientation:portrait) {
-  .fab-btn-list2{
-    padding: 18px 0px 0px;
-    margin: -15px 0px 0px -57px;
-  }
-}
-
-@media only screen and (max-width: 430px), only screen and (orientation:portrait) {
-  .fab-btn-list2{
-
-  }
-}
-
-/*padding: 18px 0px 0px;
-margin: 0px 0px 0px -3px;*/
 
 @media screen and (max-height: 600px) {
   .fab-btn-list2{
