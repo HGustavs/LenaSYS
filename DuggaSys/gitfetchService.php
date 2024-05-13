@@ -254,19 +254,15 @@ function bfs($url, $cid, $opt)
                 $response = array(
                     'message' => "The JSON-file is invalid"
                 );
-
                 echo json_encode($response);
             }
         } else {
             // If unable to get file contents then it is logged into the specified textfile with
             // the specific http error code
             if($data === false || !$data) {
-                if(strlen($token)<1)
-                {
+                if(strlen($token)<1) {
                     setcookie("missingToken", 1, time() + (5), "/");
-                }
-                else
-                {
+                } else {
                     $curl = curl_init($url);
                     curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
                     curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -282,7 +278,6 @@ function bfs($url, $cid, $opt)
             }
         }
     }
-
     // Close multi handle
     curl_multi_close($mh);
 }
