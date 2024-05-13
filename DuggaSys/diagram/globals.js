@@ -39,6 +39,9 @@ var hasPressedDelete = false;
 var mouseOverElement = false;
 var mouseOverLine = false;
 
+// Variable for drawing a line
+var isCurrentlyDrawing = true;
+
 // Variables for resizing
 var originalWidth = 0;
 var originalHeight = 0;
@@ -135,6 +138,7 @@ var errorData = []; // List of all elements with an error in diagram
 var UMLHeight = []; // List with UML Entities' real height
 var IEHeight = []; // List with IE Entities' real height
 var SDHeight = []; // List with SD Entities' real height
+let hasResized = false; // checks if an element has been resized
 var preResizeHeight = []; // List with elements' and their starting height for box selection due to problems with resizing height
 var NOTEHeight = [];// List with NOTE Entities' real height
 
@@ -146,4 +150,4 @@ var ghostLine = null;
 const historyHandler = {
     hasUpdated: false,
     inputCounter: 0
-};
+}

@@ -46,6 +46,7 @@ const keybinds = {
     SAVE_DIAGRAM: { key: "s", ctrl: true },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
     RESET_DIAGRAM: { key: "i", ctrl: false},
+    TEST_CASE: {key: "t", ctrl: true, alt: true},
 };
 
 /**
@@ -431,4 +432,9 @@ const lineAlwaysFrom = [
 ];
 const lineAlwaysTo = [
     elementTypesNames.UMLFinalState,
+];
+
+const backgroundElement = [
+    elementTypesNames.UMLSuperState,
+    elementTypesNames.sequenceLoopOrAlt,
 ];

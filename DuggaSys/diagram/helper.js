@@ -93,7 +93,6 @@ function entityIsOverlapping(id, x, y) {
 
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
-
             // Sequence life-lines can be placed on activations
             if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") && element.kind === "sequenceActivation") continue;
 
@@ -102,8 +101,14 @@ function entityIsOverlapping(id, x, y) {
             else if (element.type === "SE" && (data[i].kind === "sequenceLoopOrAlt" || data[i].kind === "sequenceActivation")) continue;
 
             // Superstates can be placed on state-diagram elements and vice versa
-            else if (data[i].kind === elementTypesNames.UMLSuperState && element.type === "SD") continue;
-            else if (data[i].type === "SD" && element.kind === elementTypesNames.UMLSuperState) continue;
+            else if (!backgroundElement.includes(element.kind) &&
+                (data[i].kind === elementTypesNames.UMLSuperState ||
+                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+            ) continue;
+            else if (!backgroundElement.includes(data[i].kind) &&
+                (element.kind === elementTypesNames.UMLSuperState ||
+                element.kind === elementTypesNames.sequenceLoopOrAlt)
+            ) continue;
         }
 
         const x2 = data[i].x + data[i].width;
@@ -199,4 +204,22 @@ function calculateDeltaExceeded() {
     ) {
         deltaExceeded = true;
     }
+}
+
+/**
+ * @description compare if 2 objects contain the same values. Allows for certain keys to be ignored
+ * @param {object} obj1 first object
+ * @param {object} obj2 second object
+ * @param {string[]} ignore array of keys to ingore
+ * @returns {boolean}
+ */
+function sameObjects(obj1, obj2, ignore = []) {    
+    // remove the values in the "ignore" array
+    for (let item of ignore) {
+        if (obj1[item]) delete obj1[item];
+        if (obj2[item]) delete obj2[item];
+    }    
+
+    // JSON.stringify() is needed to compare the values
+    return JSON.stringify(obj1) == JSON.stringify(obj2);
 }

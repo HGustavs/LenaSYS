@@ -1273,6 +1273,15 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 #diagram-message > div.error {
     background-color: rgb(252, 58, 44);
 }
+
+#pad_lock {
+    bottom: -5px;
+    left: 3px;
+    display: block;
+    position: absolute;
+    background: inherit;
+    filter: invert(65%);
+}
   
  .textinput {
     color:white;
