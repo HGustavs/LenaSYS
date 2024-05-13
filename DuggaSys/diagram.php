@@ -709,7 +709,7 @@
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/eye_icon.svg" alt="sequnece diagram lifeline"/>
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
