@@ -19,15 +19,16 @@ function fetchDiagram() {
     let did=search("did");
     const id=search("id");
 
-    if(cid=="UNK"&&folder!=null)
+    if(cid=="UNK"&&folder!=null) {
         cid=folder;
-    else
+    } else {
         cid=1894;
-    if(did=="UNK"&&id!=null)
+    }
+    if(did=="UNK"&&id!=null) {
         did=id;
-    else
+    } else {
         did=21;
-           
+    }
     response = getCourseId(cid, did);
     return response;
 }
@@ -42,10 +43,9 @@ function getCourseId (courseId, did) {
         }).done((res) => {
             response = res;
         })
-           
+        
         return response;
-        }
-    catch (error) {
+        } catch (error) {
         console.error(error);
     }
 }
@@ -56,12 +56,12 @@ function getCourseId (courseId, did) {
 */
 function getInstructions(fileName) {
     const instructions = DiagramResponse.instructions
-    if(instructions.length > 0){
+    if(instructions.length > 0) {
         for (let index = 0; index < instructions.length; index++) {
-            if(instructions[index][2]==fileName){
+            if(instructions[index][2]==fileName) {
                 window.parent.document.getElementById("assignment_discrb").innerHTML = instructions[index][3];
             }
-            if(instructions[index][5]==fileName){
+            if(instructions[index][5]==fileName) {
                 window.parent.document.getElementById("diagram_instructions").innerHTML = instructions[index][6];
             }
         }
