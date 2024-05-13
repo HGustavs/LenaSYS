@@ -41,14 +41,13 @@ $testsData = array(
         ),
         'filter-output' => serialize(
             array( // Filter what output to use in assert test, use none to use all ouput from service
-                'entries' => 
                 'debug',
                 'coursevers',
                 'courseid',
                 'grpmembershp',
-                'grplst',
+                'grplst'
             )
-        ),
+        )
     ),
     //---------------------------------------------------------------------------------------------------------------
     // This test will test the micro-service deleteListEntries and its curresponding part in the monolith called "DEL"
