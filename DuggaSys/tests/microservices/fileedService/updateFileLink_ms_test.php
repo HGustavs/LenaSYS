@@ -100,18 +100,26 @@ testHandler($testsData, true); // 2nd argument (prettyPrint): true = prettyprint
 //------------------------------------------------------------------------------------------
 
 // Paths to test files
-$paths = [
+/*$paths = [
     "C:/xampp/htdocs/LenaSYS/courses/global/GlobalUpdateFileLinkTestFile.txt",
     "C:/xampp/htdocs/LenaSYS/courses/1885/CourseLocalUpdateFileLinkTestFile.txt",
     "C:/xampp/htdocs/LenaSYS/courses/1885/1337/VersionLocalUpdateFileLinkTestFile.txt"
+];*/
+$paths = [
+    "../../../../courses/global/GlobalUpdateFileLinkTestFile.txt",
+    "../../../../courses/1885/CourseLocalUpdateFileLinkTestFile.txt",
+    "../../../../courses/1885/1337/VersionLocalUpdateFileLinkTestFile.txt"
 ];
 
 // Delete test files
 foreach ($paths as $path) {
     if (file_exists($path)) {
         if (!unlink($path)) {
-            $debug .= "Error deleting file: $path\n";
+            $debug .= "Error deleting file: $path<br>";
         }
+    }
+    else{
+        $debug .= "File at path $path doesn't exist<br>";
     }
 }
 
@@ -120,7 +128,6 @@ if (empty($debug)) {
 }
 
 echo "<strong>Problems handling test files:</strong> " . $debug;
-
 
 // Creates file using curl request
 function createTestFile($filename, $kind, $debug) {
