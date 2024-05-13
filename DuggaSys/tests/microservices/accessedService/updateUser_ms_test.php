@@ -4,7 +4,7 @@
 // Tests that updating firstname, lastname, ssn, username and class works as expected
 //------------------------------------------------------------------------------------------
 
-include "../../Shared/test.php";   // Include the test file where this is sent to
+include "../../../../Shared/test.php";   // Include the test file where this is sent to
 
 $testsData = array(   // Test-data is saved on this array that is then tested in test.php file
 
