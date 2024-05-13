@@ -991,9 +991,9 @@ function deleteItem(selectedItemList) {
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
-      lid: delArr.pop()
+  for (var i = selectedItemList.length - 1; i >= 0; --i) {
+    AJAXService("DEL", {
+      lid: selectedItemList.pop()
     }, "SECTION");
   }
   $("#editSection").css("display", "none");
