@@ -646,7 +646,11 @@ function showSaveButton() {
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
+
+  // console.log("Clicked id" + active_lid)
+  // console.log("Selected IDs:" + selectedItemList)
   if (operation == "openConfirmBox") {
+    // console.log(collectedLid);
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
   } else if (operation == "openHideConfirmBox") {
@@ -661,6 +665,11 @@ function confirmBox(operation, item = null) {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
+    if(!selectedItemList.includes(active_lid)){
+      selectedItemList.push(active_lid); // Push clicked item to selectedItemList before it's items are deleted
+    }
+    // console.log("Clicked id" + active_lid)
+    // console.log("Selected IDs:" + selectedItemList)
     deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
@@ -956,23 +965,28 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = []) {
-  for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val();
-    item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
-    item.classList.add("deleted");
-  
-    document.querySelector("#undoButton").style.display = "block";
-  }
+function deleteItem(selectedItemList) {
+  // lid = item_lid ? item_lid : $("#lid").val();
+  // item = document.getElementById("lid" + lid);
+  // console.log(item);
 
-  toast("undo", "Undo deletion?", 15, "cancelDelete();");
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
+  for(id of selectedItemList) {
+    let row = document.getElementById(`I${id}`).parentNode;
+    console.log(row);
+    row.style.display = "none";
+    row.classList.add("deleted");
+  }
+  
+  // Makes deletefunction sleep for the amount of time toast is active(value of undoTime).
+  let undoTime = 5;
+
+  document.querySelector("#undoButton").style.display = "block";
+  toast("undo", "Undo deletion?", undoTime, "cancelDelete();");
   delArr.push(lid);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);
+  }, undoTime * 1000);
 }
 
 // Permanently delete elements.
