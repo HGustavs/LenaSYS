@@ -2443,6 +2443,11 @@ label.login-label {
   font-size: 0.8em;
 }
 
+.nameLabel {
+  pointer-events: none;
+  fill: #000; /* Sets the text color */
+}
+
 .loginBox .submit {
   width: 80px;
   height: 25px;

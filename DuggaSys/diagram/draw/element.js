@@ -511,12 +511,12 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         fill='${element.fill}'
                     />
                     <text 
-                        class='text' 
+                        class='nameLabel' 
                         x='${boxw / 2}' 
                         y='${boxw + texth / 2 + linew * 2}' 
                         dominant-baseline='middle' 
                         text-anchor='middle'
-                    > ${element.name} </text>
+                    >${element.name}</text>
                 </g>`;
     return drawSvg(boxw, boxh, content);
 }
@@ -573,6 +573,7 @@ function drawElementSequenceActivation(element, boxw, boxh, linew) {
 }
 
 function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
+    
     let fontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
     element.altOrLoop = (element.alternatives.length > 1) ? "Alt" : "Loop";
 
@@ -602,7 +603,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
                         />`;
             content += drawText(linew * 2,
                 (boxh / element.alternatives.length) * i + texth / 1.5 + linew * 2,
-                'auto', element.alternatives[i], `fill='${fontColor}'`
+                'auto', element.alternatives[i], `fill='${fontColor.BLACK}'`
             );
         }
     }
