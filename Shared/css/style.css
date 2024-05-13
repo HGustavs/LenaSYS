@@ -2398,7 +2398,9 @@ Generic functions END
   font-size: 14px;
   transition: 1s background-color;
 }
-
+#accessImg {
+  display: flex;
+}
 #gradeExportPopUpButton:hover {
   background-color: var(--color-primary-hover);
   border-radius: 2px;
