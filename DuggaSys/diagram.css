@@ -823,6 +823,11 @@
     z-index: -11;
 }
 
+
+#a4Rect, #vRect {
+    display: none; 
+}
+
 #a4Rect {
     stroke:rgb(50, 50, 50);
     stroke-width:2;

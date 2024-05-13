@@ -124,13 +124,17 @@ function toggleTestCase() {
  * @description Toggles the A4 template ON/OFF.
  */
 function toggleA4Template() {
-    const template = document.getElementById("a4Template");
+    const template = document.getElementById("a4Template");    
+    const a4Rect = document.getElementById("a4Rect");
+    const vRect = document.getElementById("vRect");
 
     // Toggle active class on button
     document.getElementById("a4TemplateToggle").classList.toggle("active");
 
     if (template.style.display == "block") {
         template.style.display = "none";
+        vRect.style.display = "none";
+        a4Rect.style.display = "none";
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
@@ -153,18 +157,20 @@ function setA4SizeFactor(e) {
     updateA4Size();
 }
 
-function toggleA4Horizontal() {
-    document.getElementById("vRect").style.display = "block";
-    if (document.getElementById("a4Rect").style.display == "block") {
-        document.getElementById("a4Rect").style.display = "none";
-    }
+function toggleA4Vertical() {
+    const vRect = document.getElementById("vRect");
+    const a4Rect = document.getElementById("a4Rect");
+    
+    vRect.style.display = "none";  // Hide horizontal
+    a4Rect.style.display = "block";  // Show vertical
 }
 
-function toggleA4Vertical() {
-    document.getElementById("a4Rect").style.display = "block";
-    if (document.getElementById("vRect").style.display == "block") {
-        document.getElementById("vRect").style.display = "none";
-    }
+function toggleA4Horizontal() {
+    const vRect = document.getElementById("vRect");
+    const a4Rect = document.getElementById("a4Rect");
+    
+    a4Rect.style.display = "none";  // Hide vertical
+    vRect.style.display = "block";  // Show horizontal
 }
 
 /**
