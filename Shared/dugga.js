@@ -1106,6 +1106,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
+				//url: "../DuggaSys/microservices/highscoreService/highscoreservice_ms.php",
 				url: "highscoreservice.php",
 				type: "POST",
 				data: "opt="+opt+para+"&hash="+hash,
@@ -1129,6 +1130,18 @@ function AJAXService(opt,apara,kind)
 				success: returnedAccess
 			});
 	}else if(kind=="SECTION"){
+		switch (opt){
+			case "UPDATEVRS":
+				$.ajax({
+					//url: "../DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php",
+					url: "sectionedservice.php",
+					type: "POST",
+					data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+					dataType: "json",
+					async: false,
+					success: returnedSection
+				});
+			default:
 				$.ajax({
 					url: "sectionedservice.php",
 					type: "POST",
@@ -1136,17 +1149,18 @@ function AJAXService(opt,apara,kind)
 					dataType: "json",
 					success: returnedSection
 				});
-			}
-			else if(kind=="GRP"){
-    $.ajax({
-      url: "sectionedservice.php",
-      //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
-      type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
-      dataType: "json",
-      success: returnedGroups
-    });
-  }else if(kind=="CONTRIBUTION"){
+				
+		}
+	} else if(kind=="GRP"){
+		$.ajax({
+			url: "sectionedservice.php",
+			//url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
+			type: "POST",
+			data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedGroups
+		});
+	}else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
 				type: "POST",
@@ -1163,21 +1177,32 @@ function AJAXService(opt,apara,kind)
 				success: returnedSection
 			});
 	}else if(kind=="PDUGGA"){
+		let service_url = "../DuggaSys/microservices/showDuggaService/getShowDugga_ms.php";
+		switch (opt) {
+			case "SAVDU":
+				service_url = "../DuggaSys/microservices/showDuggaService/saveDugga_ms.php";
+				break;
+			case "UPDATEAU":
+				service_url = "../DuggaSys/microservices/showDuggaService/updateActiveUsers_ms.php";
+				break;
+			default:
+				break;
+		}
 		$.ajax({
-			url: "showDuggaservice.php",
+			url: service_url,
 			type: "POST",
 			data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&hash="+hash+"&password="+pwd+"&opt="+opt+para+"&variant="+variantValue,
 			datatype: "json",
 			success: returnedDugga
 		});
 	}else if(kind=="RESULT"){
-			$.ajax({
-				url: "resultedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedResults
-			});
+		$.ajax({
+			url: "resultedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedResults
+		});
 	}else if(kind=="GROUP"){
 			$.ajax({
 				url: "groupedservice.php",
@@ -1187,32 +1212,82 @@ function AJAXService(opt,apara,kind)
 				success: returnedGroup
 			});
 	}else if(kind=="CODEVIEW"){
-			$.ajax({
-				url: "codeviewerService.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returned,
-				error: returnedError
-			});
+		switch (opt){
+			case "EDITEXAMPLE":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url: "../DuggaSys/microservices/codeviewerService/editCodeExample_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned,
+					error: returnedError
+				});
+				break;
+			case "DELEXAMPLE":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url : "../DuggaSys/microservices/codeviewerService/deleteCodeExample_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned,
+					error: returnedError
+				});
+				break;
+			default:
+				$.ajax({
+					url: "codeviewerService.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned,
+					error: returnedError
+				});
+		}
 	}else if(kind=="BOXCONTENT"){
-		$.ajax({
-			url: "codeviewerService.php",
-			//url : "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returned
-		});
+		switch (opt){
+			case "EDITCONTENT":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url : "../DuggaSys/microservices/codeviewerService/editContentOfExample_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned
+				});
+				break;
+			default:
+				$.ajax({
+					url: "codeviewerService.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returned
+				});
+			}
 	}else if(kind=="BOXTITLE"){
-		$.ajax({
-			url: "codeviewerService.php",
-			//url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedTitle
-		});
+		switch (opt){
+			case "EDITTITLE":
+				$.ajax({
+					url: "codeviewerService.php",
+					//url: "../DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returnedTitle
+				});
+				break;
+			default:
+				$.ajax({
+					url: "codeviewerService.php",
+					type: "POST",
+					data: "opt="+opt+para,
+					dataType: "json",
+					success: returnedTitle
+				});
+		}
+	
 	// }else if(kind=="STATS") {
 	// 	$.ajax({
 	// 		url: "stats.php",
