@@ -690,7 +690,7 @@
                             <p>Represents the passage of time.</p>
                             <p>Shows events that occur to an object during the process.</p>
                             <br>
-                            <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton12" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -705,7 +705,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -715,7 +715,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -763,7 +763,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -773,7 +773,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -821,7 +821,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -831,7 +831,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -877,7 +877,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -887,7 +887,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->

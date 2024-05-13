@@ -16,6 +16,8 @@ const keybinds = {
     EDGE_CREATION: {key: "5", ctrl: false},
     STATE_INITIAL: {key: "6", ctrl: false},
     SEQ_LIFELINE: {key: "7", ctrl: false},
+    STATE_SEQUENCE: {key: "7", ctrl: false},
+    SEQUENCE_OBJECT: {key: "7", ctrl: false},
     NOTE_ENTITY: {key: "8", ctrl: false},
     ZOOM_IN: {key: "+", ctrl: true, meta: true},
     ZOOM_OUT: {key: "-", ctrl: true, meta: true},
