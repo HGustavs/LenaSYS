@@ -11,6 +11,7 @@ $testsData = array(
         'query-before-test-2' => "INSERT INTO quiz (id, cid, qname, vers) VALUES (2147483647, 1885, 'IShouldBeDeleted', 1337);",
         'query-after-test-1' => "DELETE FROM quiz WHERE id = 2147483646;",
         'query-after-test-2' => "DELETE FROM quiz WHERE id = 2147483647;", // In case the microservice fails
+        
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/duggaedService/deleteDugga_ms.php',
         'service-data' => serialize(
             array(
