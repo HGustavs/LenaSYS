@@ -614,6 +614,30 @@ if (!$query->execute()) {
     $debug = "Error reading courses\n" . $error[2];
 }
 
+$query = $pdo->prepare("DELETE improw FROM course,improw,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND improw.exampleid=codeexample.exampleid;");
+$query->bindParam(':deleted', $deleted);
+
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE box FROM box,codeexample,course WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND box.exampleid=codeexample.exampleid;");
+$query->bindParam(':deleted', $deleted);
+
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE impwordlist FROM course,impwordlist,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND impwordlist.exampleid=codeexample.exampleid;");
+$query->bindParam(':deleted', $deleted);
+
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
 //codeexample
 $query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
@@ -647,6 +671,13 @@ if (!$query->execute()) {
 
 //fileLink
 $query = $pdo->prepare("DELETE fileLink FROM course,fileLink WHERE course.visibility=:deleted AND fileLink.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE useranswer FROM course,listentries,useranswer WHERE course.visibility=:deleted AND listentries.cid = course.cid AND useranswer.moment = listentries.lid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
     $error = $query->errorInfo();
