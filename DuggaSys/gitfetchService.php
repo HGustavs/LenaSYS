@@ -199,15 +199,20 @@ function bfs($url, $cid, $opt)
         curl_multi_remove_handle($mh, $ch);
 
         if ($httpCode == 200) {
+            // Decodes the fetched data into JSON
             $json = json_decode($data, true);
             if($opt == "GETCOMMIT"){
                 return $json['sha'];
             }
+            // Loops through each item fetched in the JSON data
             if ($json) {
                 foreach ($json as $item) {
+                    // Checks if the fetched item is of type 'file'
                     if ($item['type'] == 'file') {
+                        //If an index file has been found, check against the content of the index file
                         if ($item['name'] != ".gitignore") {
                             if ($filesToIgnore) {
+                                // If the file is not part of files to ignore, resume (Index file)
                                 if (!in_array($item['name'], $filesToIgnore) && !in_array($item['name'], $filesVisited)) {
                                     if ($opt == "REFRESH") {
                                         insertToMetaData($cid, $item);
@@ -219,6 +224,7 @@ function bfs($url, $cid, $opt)
                                         array_push($filesVisited,$item['name']);
                                     }
                                 }
+                                // Otherwise, fetch and download all files
                             } else {
                                 if (!in_array($item['name'], $filesVisited)) {
                                     if ($opt == "REFRESH") {
@@ -233,6 +239,7 @@ function bfs($url, $cid, $opt)
                                 }
                             }
                         }
+                        // Checks if the fetched item is of type 'dir'
                     } else if ($item['type'] == 'dir') {
                         if (!in_array($item['url'], $visited)) {
                             array_push($visited, $item['url']);
