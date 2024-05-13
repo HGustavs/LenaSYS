@@ -5,8 +5,8 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-include_once "../Shared/basic.php";
-include_once "../Shared/sessions.php";
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 include_once "./retrieveCourseedService_ms.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 
@@ -14,25 +14,6 @@ include_once "../sharedMicroservices/getUid_ms.php";
 // Connect to database and start session
 pdoConnect();
 session_start();
- 
-$opt = getOP('opt');
-$cid = getOP('cid');
-$coursename = getOP('coursename');
-$visibility = getOP('visib');
-$activevers = getOP('activevers');
-$activeedvers = getOP('activeedvers');
-$versid = getOP('versid');
-$versname = getOP('versname');
-$coursenamealt = getOP('coursenamealt');
-$coursecode = getOP('coursecode');
-$copycourse = getOP('copycourse');
-$startdate = getOP('startdate');
-$enddate = getOP('enddate');
-$makeactive = getOP('makeactive');
-$motd = getOP('motd');
-$readonly = getOP('readonly');
-$courseGitURL = getOP('courseGitURL'); // for github url 
-$LastCourseCreated = array();
 
 $userid=getUid();
 $ha = null;
@@ -49,5 +30,5 @@ if (checklogin()) {
 	$ha = $isSuperUserVar;
 }
 
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuperUserVar));
+echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
 
