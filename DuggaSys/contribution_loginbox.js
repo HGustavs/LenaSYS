@@ -173,7 +173,7 @@ function git_logout()
   
     if(username == null || username == "" || !(typeof(username) === 'string'))
     {
-      alert("invalid input of username");
+      toast("error", "invalid input of username", 10);
     }
     else
     {
@@ -324,7 +324,7 @@ function git_logout()
         }
       }
       else
-        alert("invalid data returned from git-data");
+        toast("error","invalid data returned from git-data", 10);
   
     }
   
@@ -338,7 +338,7 @@ function git_logout()
         userExists_Git = data;
       }
       else
-        alert("invalid data returned from git-data");
+        toast("error","invalid data returned from git-data", 10);
   
       return userExists_Git;
   
