@@ -350,11 +350,14 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint)
 function filterOutput($response, $filter)
 {
     $filteredResponse = array();
-
     foreach ($response as $key => $value) {
         if (array_key_exists($key, $filter)) {
             // If the filter for this key is an array, recursively filter the nested array
-            $filteredResponse[$key] = array(filterOutput($value[0], $filter[$key]));
+            for ($i = 0; $i < count($value); $i++) {
+                echo $i;
+                $value[$i];
+                $filteredResponse[$key][$i] = filterOutput($value[$i], $filter[$key]);
+            }
         }   
         else if (in_array($key, $filter)) {
             // If the value is not an array, include it directly
