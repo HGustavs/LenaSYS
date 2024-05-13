@@ -188,3 +188,33 @@ function snapSAToLifeline(targetId) {
         }
     }
 }
+
+function getGroupHeight(targetId , element) {
+    //     // SVG string
+    //     const parser = new DOMParser();
+    // const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
+    // const svg = svgDoc.documentElement;
+    
+    // Get the object by its ID
+    //const objectById = getElementById(element.id);
+    console.log(element.id);
+    // Check if the object exists
+    if (objectById) {
+        // Object found, you can now manipulate it
+        console.log("Object found:", objectById);
+    } else {
+        // Object not found
+        console.log("Object not found.");
+    }
+    
+        // Get the <g> element
+        const gElement = svg.querySelector('g');
+    
+        // Get the bounding box of the <g> element
+        const bbox = gElement.getBBox();
+    
+        // Retrieve the height of the <g> element
+        const gHeight = bbox.height;
+    
+        console.log("Height of <g> element:", gHeight);
+    }
