@@ -690,7 +690,7 @@
                             <p>Represents the passage of time.</p>
                             <p>Shows events that occur to an object during the process.</p>
                             <br>
-                            <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton12" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -705,7 +705,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -715,7 +715,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -724,14 +724,14 @@
                                 <p>Creates an activation box.</p>
                                 <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                           </div>     
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Object</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
                         </div>
@@ -748,7 +748,7 @@
                             <p>Creates an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                             <br>
-                            <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton16" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -763,7 +763,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -773,7 +773,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -782,14 +782,14 @@
                                 <p>Creates an activation box.</p>
                                 <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>     
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
                         </div>
@@ -806,7 +806,7 @@
                             <p>Creates an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                             <br>
-                            <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton13" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -821,7 +821,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -831,7 +831,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -840,14 +840,14 @@
                                 <p>Creates an activation box.</p>
                                 <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>     
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
                         </div>
@@ -862,7 +862,7 @@
                          <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                         <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -877,7 +877,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
@@ -887,7 +887,7 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -896,14 +896,14 @@
                                 <p>Creates an activation box.</p>
                                 <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                                 <br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>      
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
-                                <p id="tooltip-SEQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
                         </div>
