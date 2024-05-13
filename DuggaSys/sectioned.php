@@ -284,8 +284,8 @@
 					<span>Name:</span>
 					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname','dialog10')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<div class="formDialog" style="display: block; margin-left:40px; top:-35px;">
-  		      		<span id="dialog10" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+				<div class="formDialog" style="display: block;">
+  		      		<span id="dialog10"  class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
@@ -327,8 +327,8 @@
 					<span>Student Feedback Question:</span>
 					<input type="input" onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('feedBackQuestion','dialog11')" class='textinput' id='feedBackQuestion' value='How would you grade the dugga' ></input>
 					</div>
-					<div class="formDialog" style="display: block;  margin-left:40px;">
-  		      			<span id="dialog11" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+					<div class="formDialog">
+  		      			<span id="dialog11" style="display: none;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      		</div>
 				</div>
 
