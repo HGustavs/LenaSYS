@@ -84,7 +84,6 @@ The old name remains listed under "LIST OF MICROSERVICES" so that we can keep tr
 
 __Shared microservices:__
 
-- logServiceEvent_ms.php __==UNFINISHED==__
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - isSuperUser_ms.php __==UNFINISHED==__
@@ -274,34 +273,6 @@ __Show Dugga Service:__
 
 ---
 ## ----------------------------- _shared_microservices_ -----------------------------
----
-
-<br>
-
-### logServiceEvent_ms.php
-Creates a new service event in the log.db database (not MYSQL). The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format).
-
-__Querys used in this microservice:__
-
-_INSERT_ operation on the table __'serviceLogEntries'__ to add a new row with values for the following columns:
-- uuid
-- eventType
-- service
-- timestamp
-- userAgent
-- operatingSystem
-- browser
-- userid
-- info
-- referer
-- IP
-
-```sql
-INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent, operatingSystem, browser, userid, info, referer, IP) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent, :operatingSystem, :browser, :userid, :info, :referer, :IP);
-```
-
-<br>
-
 ---
 
 <br>
