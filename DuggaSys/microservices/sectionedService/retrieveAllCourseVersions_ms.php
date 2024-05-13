@@ -1,5 +1,9 @@
 <?php
 
+//
+// This is a microservice to get every courseversion of courses so we seed groups to every courseversion
+//
+
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
