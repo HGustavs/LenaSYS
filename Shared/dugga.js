@@ -1129,6 +1129,18 @@ function AJAXService(opt,apara,kind)
 				success: returnedAccess
 			});
 	}else if(kind=="SECTION"){
+		switch (opt){
+			case "UPDATEVRS":
+				$.ajax({
+					//url: "../DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php",
+					url: "sectionedservice.php",
+					type: "POST",
+					data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para+"&hash="+hash,
+					dataType: "json",
+					async: false,
+					success: returnedSection
+				});
+			default:
 				$.ajax({
 					url: "sectionedservice.php",
 					type: "POST",
@@ -1136,17 +1148,18 @@ function AJAXService(opt,apara,kind)
 					dataType: "json",
 					success: returnedSection
 				});
-			}
-			else if(kind=="GRP"){
-    $.ajax({
-      url: "sectionedservice.php",
-      //url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
-      type: "POST",
-      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
-      dataType: "json",
-      success: returnedGroups
-    });
-  	}else if(kind=="CONTRIBUTION"){
+				
+		}
+	} else if(kind=="GRP"){
+		$.ajax({
+			url: "sectionedservice.php",
+			//url: "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php",
+			type: "POST",
+			data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedGroups
+		});
+	}else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
 				type: "POST",
