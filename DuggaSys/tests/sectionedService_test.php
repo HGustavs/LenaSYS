@@ -417,7 +417,7 @@ $testsData = array(
     //--------------------------------------------------------------------------------------------------
 
     'setVisibleListentrieHIDDEN' => array(
-        'expected-output'   => '{"entries":[{"entryname":"HIDDENTEST123","lid":100000,"visible":0}]}',
+        'expected-output'   => '{"entries":[{"entryname":"HIDDENTEST123","visible":0}]}',
         'query-before-test-1' => "INSERT INTO course(cid, creator) VALUES (9999, 1);",
         'query-before-test-2' => "INSERT INTO listentries (cid,vers, entryname, visible,creator) VALUES(9999,888,'HIDDENTEST123',0,101);",
         'query-before-test-3' => "SELECT lid FROM listentries WHERE entryname = 'HIDDENTEST123';",
