@@ -5109,7 +5109,7 @@ document.addEventListener('keyup', function(event){
 			window.location.assign(link);
 		}
 	}
-});
+},true);
 function checkIfPopupIsOpen() {
 	let allPopups = [
 		"#editExampleContainer",

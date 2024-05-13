@@ -453,14 +453,9 @@ function filePreviewClose(){
     }
 }
 
-document.addEventListener('keydown', function (event) {
-    var fileview = document.querySelector(".fileView");
+document.addEventListener('keyup', function (event) {
     if (event.key === 'Escape') {
-        $(".fileViewContainer").hide();
-        $(".fileViewWindow").hide();
-        while (fileview.firstChild) {
-            fileview.removeChild(fileview.firstChild);
-        }
+        cancelPreview();
     }
 });
 
