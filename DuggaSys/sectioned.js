@@ -956,29 +956,28 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = []) {
-  for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val();
-    item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
-    item.classList.add("deleted");
-  
-    document.querySelector("#undoButton").style.display = "block";
-  }
+function deleteItem(item_lid = null) {
+  lid = item_lid ? item_lid : $("#lid").val();
+  item = document.getElementById("lid" + lid);
+  item.style.display = "none";
+  item.classList.add("deleted");
 
-  toast("undo", "Undo deletion?", 15, "cancelDelete();");
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
+  // Makes deletefunction sleep for the amount of time toast is active(value of undoTime).
+  let undoTime = 5;
+  
+  document.querySelector("#undoButton").style.display = "block";
+  toast("undo", "Undo deletion?", undoTime, "cancelDelete();");
   delArr.push(lid);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);
+  }, undoTime * 1000);
 }
 
 // Permanently delete elements.
 function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
+    AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
   }
