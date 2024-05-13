@@ -1889,8 +1889,7 @@ div .navButt:hover {
   margin: 10px 0px;
 }
 
-#login,
-#logout{
+#login, #logout {
   max-width: fit-content;
 }
 
