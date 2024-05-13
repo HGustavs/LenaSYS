@@ -106,7 +106,7 @@
 		<!-- Scroll up END -->
 
 		<!-- MOTD dropdown -->
-		<div id='motdArea' style='display: none;'>
+		<div id='motdArea' class='display_none'>
 			<?php
 				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
@@ -170,7 +170,7 @@
 
 			<!-- Hide button -->
 		
-			<div class='fixed-action-button3 sectioned3 diplay_none'  id="HIDEStatic">
+			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
 				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 				<input id='addElement'  type='button' value='+' style="top:-493px; margin-right:10px;" class='submit-button-newitem' title='New Item'>
@@ -322,7 +322,7 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select  id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select  id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper diplay_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
