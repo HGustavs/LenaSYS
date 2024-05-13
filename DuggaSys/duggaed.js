@@ -1148,7 +1148,7 @@ function renderSortOptionsDugga(col,status,colname) {
 		str = "";
 		/*
 		if(col == "headingAddButton"){
-			str += "<input type='button' value='+' style='float:left;'  onclick='showDuggaSubmitButton(); newDugga();'>";
+			str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
 		}
 		else{
 			if (status ==- 1) {

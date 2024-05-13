@@ -162,17 +162,18 @@
 
 		<div id='Sectionlist'>
 
-		<div id="coureInfoStyle" class='course'>
+		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
 			
 			<!-- Undo button -->
-			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" onclick="cancelDelete();">
+			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
 			<!-- Undo button END -->
 
 			<!-- Hide button -->
 		
-			<div class='fixed-action-button3 sectioned3 diplay_none'  id="HIDEStatic">
-				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
-				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+				<!-- <input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 				<input id='addElement'  type='button' value='+' style="top:-493px; margin-right:10px;" class='submit-button-newitem' title='New Item'>
 			</div>
 		
@@ -269,22 +270,22 @@
 
 		<!-- Edit Section Dialog START -->
 
-		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer'>
-		<div id='editSection_loginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
+		<div id='editSection' onkeyup="validateSectName('sectionname');" onmouseover="validateSectName('sectionname'); validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 			</div>
-			<div class='padding_5px'>
+			<div style='padding:5px;'>
 				<input type='hidden' id='lid' value='Toddler' />
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
 					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<div id="nameErrorForm" class="formDialog">
-  		      		<span id="dialog10" class="formDialogText errorMessage">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+				<div class="formDialog" style="display: block; margin-left:40px; top:-35px;">
+  		      		<span id="dialog10" style="display: none; left:0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
@@ -300,35 +301,35 @@
 							<span>Absolute</span>
 							<span style='float:right'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
-								<select id='deadlineminutes'></select>
-								<select id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
+								<select style='width:55px;' id='deadlineminutes'></select>
+								<select style='width:55px;' id='deadlinehours'></select>
+								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
-							<span style='float:right;'>
-								<select id='relativedeadlinetype'></select>
-								<select  id='relativedeadlineamount'></select>
-								<select  id='relativedeadlineminutes'></select>
-								<select  id='relativedeadlinehours'></select>
+							<span style='float:right;margin-right:10px;'>
+								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
+								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineamount'></select>
+								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
+								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlinehours'></select>
 							</span>
-							<div class="formDialogWide" id="deadlineForm">
-  		      					<span id="dialog8" class="formDialogText">Deadline has to be between start date and end date</span>
+							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
+  		      					<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
   		      				</div>
 					</div>
 					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
-					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select  id='visib'></select></div>
-					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select  id='grptype'></select></div>
-					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper diplay_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
+					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
+					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div class='padding_10px'>
-					<input id='deleteDugga' class='submit-button' type='button' value='Delete' onclick='deleteItem();' />
-					<input id='closeDugga' class='submit-button' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
+				<div style='padding:20px;'>
+					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
 					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
 				</div>
