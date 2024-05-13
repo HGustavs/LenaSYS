@@ -28,7 +28,6 @@ $testsData = array(
                 'password' => 'password'
             )
         ),
-        // TODO: Update the filter-output after test.php allows double-nested arrays
         'filter-output' => serialize(
             array(
                 'entries' => array(
