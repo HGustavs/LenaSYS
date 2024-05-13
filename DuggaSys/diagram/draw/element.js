@@ -152,18 +152,6 @@ function splitFull(e, max) {
     return e.map(line => splitLengthyLine(line, max)).flat()
 }
 
-function updateElementHeight(arr, element, height) {
-    // Removes the previouse value in IEHeight for the element
-    for (let i = 0; i < arr.length; i++) {
-        if (element.id == arr[i].id) arr.splice(i, 1);
-    }
-    // Calculate and store the IEEntity's real height
-    arr.push({
-        id: element.id,
-        height: height
-    });
-}
-
 function drawDiv(c, style, s) {
     return `<div class='${c}' style='${style}'> ${s} </div>`;
 }
@@ -214,11 +202,6 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     const aText = splitFull(element.attributes, maxCharactersPerLine);
     const fText = splitFull(element.functions, maxCharactersPerLine);
 
-    let aHeight = texth * (aText.length + 1) * lineHeight;
-    let fHeight = texth * (fText.length + 1) * lineHeight;
-    let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
-    updateElementHeight(UMLHeight, element, totalHeight + boxh);
-
     // Header
     let height = texth * 2;
     let headRect = drawRect(boxw, height, linew, element);
@@ -250,10 +233,6 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
     const text = splitFull(element.attributes, maxCharactersPerLine);
-
-    let tHeight = texth * (text.length + 1) * lineHeight;
-    let totalHeight = tHeight - linew * 2 + texth * 2;
-    updateElementHeight(IEHeight, element, totalHeight + boxh);
 
     let height = texth * 2;
     let headRect = drawRect(boxw, height, linew, element);
@@ -300,10 +279,6 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     const lineHeight = 1.5;
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
-
-    let tHeight = texth * (text.length + 1) * lineHeight;
-    let totalHeight = tHeight - linew * 2 + texth * 2;
-    updateElementHeight(SDHeight, element, totalHeight + boxh);
 
     let height = texth * 2;
     let headPath = `
@@ -633,11 +608,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
 function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
-
     const text = splitFull(element.attributes, maxCharactersPerLine);
-    let length = (text.length > 4) ? text.length : 4;
-    let totalHeight = boxh + texth * length;
-    updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
     let content = `

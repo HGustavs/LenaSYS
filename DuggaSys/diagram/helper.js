@@ -73,19 +73,7 @@ function getExtension(filename) {
 
 function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
-    const foundIndex = findIndex(data, id);
-
-    if (foundIndex < 0) return isOverlapping;
-
-    const element = data[foundIndex];
-    let eHeight = element.height;
-    let arr = [UMLHeight, IEHeight, SDHeight, NOTEHeight];
-
-    arr.forEach(entityHeights => {
-        entityHeights.forEach(entity => {
-            if (element.id == entity.id) eHeight = entity.height
-        });
-    });
+    const element = document.getElementById(id);
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].id === id) continue;
@@ -106,19 +94,13 @@ function entityIsOverlapping(id, x, y) {
             else if (data[i].type === "SD" && element.kind === elementTypesNames.UMLSuperState) continue;
         }
 
-        const x2 = data[i].x + data[i].width;
-        let y2 = data[i].y + data[i].height;
+        let eRect = element.getBoundingClientRect();
+        let iRect = document.getElementById(data[i].id).getBoundingClientRect();
 
-        arr.forEach(entityHeights => {
-            entityHeights.forEach(entity => {
-                if (data[i].id == entity.id) y2 = data[i].y + entity.height;
-            });
-        });
-
-        if (x < x2 &&
-            x + element.width > data[i].x &&
-            y < y2 &&
-            y + eHeight > data[i].y
+        if (!(eRect.top > iRect.bottom ||
+            eRect.right < iRect.left ||
+            eRect.bottom < iRect.top ||
+            eRect.left > iRect.right)
         ) {
             isOverlapping = true;
             break;
