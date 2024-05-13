@@ -152,8 +152,9 @@ class Element {
 
     static DefaultUMLRelation() {
         return new Element({
-            type: "Class Relation",
-            kind: "UMLRelation",
+            name: "Class Relation",
+            type: entityType.UML,
+            kind: elementTypesNames.UMLRelation,
             width: 60,
             height: 60,
             minWidth: 60,
@@ -164,8 +165,8 @@ class Element {
     static DefaultIEEntity() {
         return new Element({
             name: "IE Entity",
-            type: "IE",
-            kind: "IEEntity",
+            type: entityType.IE,
+            kind: elementTypesNames.IEEntity,
             width: 200,
             minWidth: 150,
             primaryKey: ['*Primary Key'],
@@ -177,8 +178,8 @@ class Element {
     static DefaultIERelation() {
         return new Element({
             name: "IE Relation",
-            type: "IE",
-            kind: "IERelation",
+            type: entityType.IE,
+            kind: elementTypesNames.IERelation,
             width: 50,
             height: 50,
             minWidth: 50,
@@ -189,8 +190,8 @@ class Element {
     static DefaultSDEntity() {
         return new Element({
             name: "SD Entity",
-            type: "SD",
-            kind: "SDEntity",
+            type: entityType.SD,
+            kind: elementTypesNames.SDEntity,
             width: 200,
             minWidth: 150,
             attributes: ['do: func'],
@@ -201,8 +202,8 @@ class Element {
     static DefaultUMLInititalState() {
         return new Element({
             name: "Initial State",
-            type: "SD",
-            kind: "UMLInitialState",
+            type: entityType.SD,
+            kind: elementTypesNames.UMLInitialState,
             width: 60,
             height: 60,
             minWidth: 60,
@@ -214,8 +215,8 @@ class Element {
     static DefaultUMLFinalState() {
         return new Element({
             name: "Final State",
-            type: "SD",
-            kind: "UMLFinalState",
+            type: entityType.SD,
+            kind: elementTypesNames.UMLFinalState,
             width: 60,
             height: 60,
             minWidth: 60,
@@ -227,8 +228,8 @@ class Element {
     static DefaultUMLSuperState() {
         return new Element({
             name: "Super State",
-            type: "SD",
-            kind: "UMLSuperState",
+            type: entityType.SD,
+            kind: elementTypesNames.UMLSuperState,
             width: 500,
             height: 500,
             minWidth: 200,
@@ -239,8 +240,8 @@ class Element {
     static DefaultSequenceActor() {
         return new Element({
             name: "Actor",
-            type: "SE",
-            kind: "sequenceActor",
+            type: entityType.SE,
+            kind: elementTypesNames.sequenceActor,
             width: 100,
             height: 500,
             minWidth: 100,
@@ -251,8 +252,8 @@ class Element {
     static DefaultSequenceObject() {
         return new Element({
             name: "Object",
-            type: "SE",
-            kind: "sequenceObject",
+            type: entityType.SE,
+            kind: elementTypesNames.sequenceObject,
             width: 100,
             height: 500,
             minWidth: 100,
@@ -263,8 +264,8 @@ class Element {
     static DefaultSequenceActivation() {
         return new Element({
             name: "Activation",
-            type: "SE",
-            kind: "sequenceActivation",
+            type: entityType.SE,
+            kind: elementTypesNames.sequenceActivation,
             width: 30,
             height: 100,
             minWidth: 30,
@@ -275,8 +276,8 @@ class Element {
     static DefaultSequenceLoopOrAlt() {
         return new Element({
             name: "Loop or Alt",
-            type: "SE",
-            kind: "sequenceLoopOrAlt",
+            type: entityType.SE,
+            kind: elementTypesNames.sequenceLoopOrAlt,
             width: 750,
             height: 300,
             minWidth: 150,
@@ -289,7 +290,7 @@ class Element {
     static DefaultNote() {
         return new Element({
             name: "Note",
-            type: "NOTE",
+            type: entityType.note,
             kind: "note",
             width: 200,
             height: 50,
@@ -302,8 +303,8 @@ class Element {
     static DefaultGhost() {
         return new Element({
             name: "Ghost",
-            type: "ER",
-            kind: "ERAttr",
+            type: entityType.ER,
+            kind: elementTypesNames.ERAttr,
             width: 5,
             height: 5,
         });
