@@ -100,7 +100,7 @@ class Element {
 
     static DefaultEREntity() {
         return new Element({
-            name: "Entity",
+            name: "ER Entity",
             type: entityType.ER,
             kind: elementTypesNames.EREntity,
             state: entityState.NORMAL,
@@ -152,7 +152,7 @@ class Element {
 
     static DefaultUMLRelation() {
         return new Element({
-            type: "UML",
+            type: "Class Relation",
             kind: "UMLRelation",
             width: 60,
             height: 60,
@@ -163,7 +163,7 @@ class Element {
 
     static DefaultIEEntity() {
         return new Element({
-            name: "IEEntity",
+            name: "IE Entity",
             type: "IE",
             kind: "IEEntity",
             width: 200,
@@ -176,6 +176,7 @@ class Element {
 
     static DefaultIERelation() {
         return new Element({
+            name: "IE Relation",
             type: "IE",
             kind: "IERelation",
             width: 50,
@@ -187,7 +188,7 @@ class Element {
 
     static DefaultSDEntity() {
         return new Element({
-            name: "State",
+            name: "SD Entity",
             type: "SD",
             kind: "SDEntity",
             width: 200,
@@ -199,6 +200,7 @@ class Element {
 
     static DefaultUMLInititalState() {
         return new Element({
+            name: "Initial State",
             type: "SD",
             kind: "UMLInitialState",
             width: 60,
@@ -211,6 +213,7 @@ class Element {
 
     static DefaultUMLFinalState() {
         return new Element({
+            name: "Final State",
             type: "SD",
             kind: "UMLFinalState",
             width: 60,
@@ -223,7 +226,7 @@ class Element {
 
     static DefaultUMLSuperState() {
         return new Element({
-            name: "UML Super State",
+            name: "Super State",
             type: "SD",
             kind: "UMLSuperState",
             width: 500,
@@ -235,7 +238,7 @@ class Element {
 
     static DefaultSequenceActor() {
         return new Element({
-            name: "name",
+            name: "Actor",
             type: "SE",
             kind: "sequenceActor",
             width: 100,
@@ -247,7 +250,7 @@ class Element {
 
     static DefaultSequenceObject() {
         return new Element({
-            name: "name",
+            name: "Object",
             type: "SE",
             kind: "sequenceObject",
             width: 100,
@@ -271,6 +274,7 @@ class Element {
 
     static DefaultSequenceLoopOrAlt() {
         return new Element({
+            name: "Loop or Alt",
             type: "SE",
             kind: "sequenceLoopOrAlt",
             width: 750,
@@ -297,6 +301,7 @@ class Element {
 
     static DefaultGhost() {
         return new Element({
+            name: "Ghost",
             type: "ER",
             kind: "ERAttr",
             width: 5,
