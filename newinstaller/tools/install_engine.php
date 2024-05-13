@@ -41,7 +41,17 @@ class InstallEngine {
 
 		try {
 			$installer = new DBSetup(pdo: $pdo, db_name: "LenaSYStest", db_user: "LenaTest", db_user_password: "test", hostname:"%", callback: "callback");
-			$operations = InstallEngine::construct_installation_queue($installer, $settings);
+			$testDataSetup = new TestdataSetup("../install/courses", "../courses", callback: "callback");
+			$operations = InstallEngine::construct_installation_queue($installer, $testDataSetup, $settings);
+
+			if ($verbose) {
+				$temp = "Will perform the following operations to install the system: ";
+				foreach ($operations as $name => $op) {
+					$temp .= $name . ", ";
+				}
+				SSESender::transmit($temp);
+			}
+
 		} catch (Exception $e) {
 			SSESender::transmit(data: "Encountered error while constructing installation queue: {$e}", is_error: true);
 		}
@@ -88,8 +98,7 @@ class InstallEngine {
 	 * Each index contains a key: name of current step
 	 * and a value, callback function for installation step. 
 	 */
-	private static function construct_installation_queue(DBSetup $installer, $settings): array { 
-
+	private static function construct_installation_queue(DBSetup $installer, TestdataSetup $testdataSetup, $settings): array { 
 		// Read settings
 		$verbose = $settings->verbose === 'true' ? true : false;
 		$overwrite_db = $settings->overwrite_db === 'true' ? true : false;
@@ -97,6 +106,7 @@ class InstallEngine {
 		$add_test_data = $settings->add_test_data === 'true' ? true : false;
 		$add_demo_course = $settings->add_demo_course === 'true' ? true : false;
 		$add_test_course_data = $settings->add_test_course_data === 'true' ? true : false;
+		$add_test_files = $settings->add_test_files === 'true' ? true : false;
 	
 		// Add mandatory installer operations
 		$operations = [
@@ -120,6 +130,19 @@ class InstallEngine {
 				SSESender::transmit("Adding language support for {$language}");
 			}
 			$operations["add_language_support_{$language}"] = InstallEngine::createLanguageOperation($installer, $language);
+		}
+
+		// Add optional test files
+		if ($add_test_files) {
+			$operations['copy_test_file_1'] = function() use ($testdataSetup, $verbose) {
+				$testdataSetup->copy_course("1", $verbose);
+			};
+			$operations['copy_test_file_2'] = function() use ($testdataSetup, $verbose) {
+				$testdataSetup->copy_course("2", $verbose);
+			};
+			$operations['copy_test_file_global'] = function() use ($testdataSetup, $verbose) {
+				$testdataSetup->copy_course("global", $verbose);
+			};
 		}
 
 		// Add optional modules to install queue
