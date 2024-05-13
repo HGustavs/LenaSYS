@@ -635,13 +635,13 @@ function displaymessage() {
 function showSubmitButton() {
   $(".submitDugga").css("display", "inline-block");
   $(".updateDugga").css("display", "none");
-  $(".closeDugga").css("display", "inline-block");
+  $("#closeDugga").css("display", "inline-block");
 }
 
 function showSaveButton() {
   $(".submitDugga").css("display", "none");
   $(".updateDugga").css("display", "block");
-  $(".closeDugga").css("display", "block");
+  $("#closeDugga").css("display", "block");
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog

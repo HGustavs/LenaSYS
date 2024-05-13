@@ -2269,6 +2269,97 @@ input.inactive-button {
 #playlink {
   width: 100%;
 }
+
+/*---===#===---*
+  padding styles
+*---====#===---*/
+
+.padding_5px{
+  padding: 5px;
+}
+
+.padding_10px{
+  padding: 10px;
+} 
+
+.padding_15px{
+  padding: 15px;
+} 
+
+.padding_20px{
+  padding: 20px;
+} 
+
+.padding_25px{
+  padding: 25px;
+}
+
+.padding-right_5px{
+  padding-right: 5px;
+}
+
+.padding-right_10px{
+  padding-right: 10px;
+}
+
+.padding-right_15px{
+  padding-right: 15px;
+}
+
+.padding-right_20px{
+  padding-right: 20px;
+}
+
+.padding-right_25px{
+  padding-right: 25px;
+}
+
+.padding-left_5px{
+  padding-left: 5px;
+}
+
+.padding-left_10px{
+  padding-left: 10px;
+}
+
+.padding-left_15px{
+  padding-left: 15px;
+}
+
+.padding-left_20px{
+  padding-left: 20px;
+}
+
+.padding-left_25px{
+  padding-left: 25px;
+}
+
+/*---END---*/
+/*---===#===---*
+  Margin
+*---====#===---*/
+
+
+/*---END---*/
+
+/*---===#===---*
+Fonts
+*---====#===---*/
+.italic{
+  font-style:italic;
+}
+
+/*---END---*/
+
+.diplay_none{
+  display:none
+}
+
+.errorMessage{
+  display: none; 
+  left:0px;
+}
+
 /*---===#===---*
 Generic functions END 
 *---====#===---*/
@@ -2358,7 +2449,149 @@ resulted.php END
 
 #editCourse {
   margin-right: 0px;
+  display:none;
 }
+
+#coureInfoStyle{
+  display:flex; 
+  align-items:center; 
+  justify-content:flex-end;
+}
+
+#undoButton {
+  position: absolute; 
+  padding-right:5px; 
+  margin-right:164px; 
+  display: none;
+}
+
+/* Fix mobile-view for top FAB-button and Sectionlist heading */
+@media screen and (max-width: 680px) {
+  .fixed-action-button2{
+    display:none;
+  }
+
+  #showElements {
+    margin-right: 10px !important;
+  }
+
+  #course-label {
+    min-width: 135px;
+    margin-right: 150px;
+  }
+}
+@media only screen and (max-width: 430px),
+only screen and (max-device-width: 568px) {
+  #course-label {
+    font-size: 12px;
+    margin-right: 25px;
+  }
+  #showElements, #hideElement {
+    display: none;
+  }
+}
+
+.submit-button-newitem{
+  padding-right:5px; 
+  margin-right: 10px;
+}
+
+input.submit-button-newitem {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  background-color: var(--color-accent);
+  border: 0px;
+  width: 35px;
+  height: 25px;
+  color: rgb(97, 73, 116);
+  cursor: pointer;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: 0px;
+  font-size: 16px;
+  text-align: center;
+  transition: 1s background-color;
+  -webkit-appearance: none;
+  float: right;
+}
+
+input.submit-button-newitem:hover {
+  transition: 0.4s;
+  background-color: rgb(283, 233, 126);
+}
+
+#editSection {
+  display:none;
+}
+
+#editSection_loginBox {
+  width: 460px;
+}
+
+#nameErrorForm {
+  display: block; 
+  left:55px; 
+  top:-30px;
+}
+
+#deadlineminutes {
+  width:55px; 
+  margin-right: 10px;
+}
+
+#deadlinehours {
+  width:55px; 
+  margin-right: 10px;
+}
+
+#absolutedeadlinecheck {
+  margin:3px 5px; 
+  height:20px
+}
+
+#relativedeadlinetype {
+  width:130px;
+  margin:0 0 0 10px;
+}
+
+#relativedeadlineamount {
+  width:55px;
+  margin:0 0 0 10px;
+}
+
+#relativedeadlineminutes {
+  width:55px;
+  margin:0 0 0 10px;
+}
+
+#relativedeadlinehours {
+  width:55px;
+  margin:0 0 0 10px;
+}
+
+#deadlineForm {
+  display: block; 
+  left:40px; 
+  top:-35px;
+}
+
+#dialog8 {
+  font-size:11px; 
+  border:0px; 
+  margin-left: 20px; 
+  display:none;
+}
+
+#deleteDugga {
+  display:none; 
+  float:left;
+}
+
+#closeDugga {
+  display:block; 
+  float:left;
+}
+
 /*---===#===---*
 sectioned.php END 
 *---====#===---*/
@@ -2367,8 +2600,93 @@ sectioned.php END
  *                                    courseed.php                             *
  * --------------================################================--------------*/
  
- #submitMotd {
+ #loginBox_DarkMode {
+  width:464px;  
+  overflow:hidden;
+ }
+
+ #submitMotd { 
   margin-left: 340px;
+}
+
+#newCourse_Name_formDialog {
+  display: block; 
+  left:-125px; 
+  top:-8px;
+}
+
+
+#newCourse_Code_formDialog {
+  display: block; 
+  left:-125px; 
+  top:0px;
+}
+
+#newGithubformDialog {
+  display: block; 
+  left:-125px; 
+  top:0px;
+}
+
+#editCourse_Name_formDialog {
+  display: block; 
+  left:-127px; 
+  top:-4px;
+}
+
+
+#editCourse_Code_formDialog {
+  display: block; 
+  left:-123px; 
+  top:2px;
+}
+
+#editGithub_formDialog {
+  display: block; 
+  left:-118px; 
+  top:3px;
+}
+
+#GithubKey_formDialog{
+  display: block; 
+  left:-175px; 
+  top:3px;
+}
+
+/*font style for "are you shure?*/
+#deleteQustion {
+  font-size:24px; 
+  padding-bottom:50px; 
+  padding-top:60px; 
+  border-bottom: 2px solid #ccc;
+}
+
+#editSettings{
+  display:none;
+}
+
+#editSettings_loginBox{
+  width:464px; 
+  overflow:hidden;
+}
+
+/*placemets for error text in server settings*/
+#error50{
+  display: block; 
+  left:55px; 
+  top:-78px;
+}
+
+#errorSymbol{
+  display: block; 
+  left:55; 
+  top:-72px;
+}
+
+#editCourseButtonPlacement{
+  float:right; 
+  padding-top:20px; 
+  width: 464px;
 }
 
 /*---===#===---*
@@ -2487,9 +2805,6 @@ label.login-label {
 
 .loginBox .hide {
   display: none;
-}
-#undoButton {
-  position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
 .loginBox td {
@@ -2849,30 +3164,6 @@ div.submit-button.new-user {
 }
 div.submit-button.new-user:hover {
     background-color: var(--color-new-user-hover);
-}
-
-input.submit-button-newitem {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  background-color: var(--color-accent);
-  border: 0px;
-  width: 35px;
-  height: 25px;
-  color: rgb(97, 73, 116);
-  cursor: pointer;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  margin-left: 0px;
-  font-size: 16px;
-  text-align: center;
-  transition: 1s background-color;
-  -webkit-appearance: none;
-  float: right;
-}
-
-input.submit-button-newitem:hover {
-  transition: 0.4s;
-  background-color: rgb(283, 233, 126);
 }
 
 input.diagram-sidebar-buttons {
@@ -6970,33 +7261,6 @@ only screen and (max-device-width: 568px) {
   right: 24px;
   z-index: 1;
   touch-action: none;
-}
-
-
-/* Fix mobile-view for top FAB-button and Sectionlist heading */
-@media screen and (max-width: 680px) {
-  .fixed-action-button2{
-    display:none;
-  }
-
-  #showElements {
-    margin-right: 10px !important;
-  }
-
-  #course-label {
-    min-width: 135px;
-    margin-right: 150px;
-  }
-}
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 568px) {
-  #course-label {
-    font-size: 12px;
-    margin-right: 25px;
-  }
-  #showElements, #hideElement {
-    display: none;
-  }
 }
 
 #Courselist div.fixed-action-button a:hover {
