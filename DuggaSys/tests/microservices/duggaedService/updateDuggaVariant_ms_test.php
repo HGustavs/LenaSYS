@@ -3,7 +3,7 @@ include_once "../../../../Shared/test.php";
 
 $testsData = array(
     'updateDuggaVariant_ms' => array(
-        'expected-output' => '{"variants":["Answer 123"]}',
+        'expected-output' => '{"entries":[{"variants":[{"param":"Not empty","variantanswer":"Answer 123","disabled":0}]}]}',
 
         'query-before-test-1' => "INSERT INTO quiz (cid, qname, vers) VALUES (1885, 'toBeDeleted', 1337);",
         'query-before-test-2' => "SELECT MAX(id) AS qid FROM quiz",
@@ -33,10 +33,9 @@ $testsData = array(
             array(
                 'entries' => array(
                     'variants' => array(
-                        'vid'=>"",
-                        'param'=>"",
-                        'variantanswer'=>"",
-                        'disabled'=>""
+                        'param',
+                        'variantanswer',
+                        'disabled'
                     )
                 )
             )

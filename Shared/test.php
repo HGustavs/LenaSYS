@@ -272,87 +272,13 @@ function callServiceTest($service, $data, $filter, $QueryReturnJSON, $prettyPrin
 
     $curlResponseJSON = json_decode($curlResponse, true);
 
-    /* // Only include JSON same as filter
-    foreach ($filter as $option => $optionArray) {
-        // If none do not filter
-        if ($optionArray === "none") {
-            $curlResponseJSONFiltered = $curlResponseJSON;
-        } else {
-            foreach ($curlResponseJSON as $key => $value) {
-                // Check if respons key exists in filter
-                if (in_array($key, $filter)) {
-                    // Not to store if array, handled further down
-                    if (!(is_array($optionArray))) {
-                        $curlResponseJSONFiltered[$key] = $value;
-                    }
-                }
-                // Check what to save in array
-                if (is_array($curlResponseJSON[$key])) {
-                    foreach ($curlResponseJSON[$key] as $inside => $insideValue) {
-                        if ((is_array($insideValue))) {
-                            foreach ($insideValue as $inside2 => $insideValue2) {
-                                if (is_array($optionArray)) {
-                                    foreach ($optionArray as $insideFilter) {
-                                        if ($inside2 == $insideFilter) {
-                                            $curlResponseJSONFiltered[$key][$inside][$inside2] = $insideValue2;
-                                        }
-                                        if (is_array($insideValue2)) {
-                                            foreach ($insideValue2 as $inside3 => $insideValue3) {
-                                                if ((is_array($insideFilter))) {
-                                                    foreach ($insideFilter as $insideFilter2) {
-                                                        if ($inside3 == $insideFilter2) {
-                                                            $curlResponseJSONFiltered[$key][$inside][$inside2][$inside3] = $insideValue3;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    } */
-
-    // Recursive function to filter nested arrays
-    function filterNestedArrays($response, $filter, $depthCounter)
-    {
-        $filteredResponse = array();
-
-        foreach ($response as $key => $value) {
-            // Check if the key exists in the filter
-
-            if (isset($filter[$key])) {
-                // If the filter for this key is an array, recursively filter the nested array
-                if (is_array($filter[$key])) {
-                    if (is_array($value)) {
-                        echo "YES ";
-
-                        $filteredResponse[$key] = filterNestedArrays($value[0], $filter[$key], $depthCounter + 1);      
-                    } else {
-                        // If the value is not an array, include it directly
-                        echo "NOQWE ";
-                        $filteredResponse[$key] = $value;
-                    }
-                } else {
-                    echo $key . " ";
-                    $filteredResponse[$key] = $value;
-                }
-            }
-        }
-        return $filteredResponse;
-    }
-
     // Only include JSON same as filter
     foreach ($filter as $option => $optionArray) {
         // If none do not filter
         if ($optionArray === "none") {
             $curlResponseJSONFiltered = $curlResponseJSON;
         } else {
-            $curlResponseJSONFiltered = filterNestedArrays($curlResponseJSON, $filter, 0);
+            $curlResponseJSONFiltered = filterOutput($curlResponseJSON, $filter);
         }
     }
 
@@ -420,6 +346,22 @@ function assertEqualTest($valueExpected, $valueOuput, $prettyPrint)
     );
 }
 
+// Recursive function for filter-output
+function filterOutput($response, $filter)
+{
+    $filteredResponse = array();
+
+    foreach ($response as $key => $value) {
+        if (array_key_exists($key, $filter)) {
+            // If the filter for this key is an array, recursively filter the nested array
+            $filteredResponse[$key] = array(filterOutput($value[0], $filter[$key]));
+        }   
+        else if (in_array($key, $filter)) {
+            // If the value is not an array, include it directly
+            $filteredResponse[$key] = $value;
+        }
+    }
+    return $filteredResponse;
+}
 
 // Version 1.5 (Increment when new change in code)
-?>
