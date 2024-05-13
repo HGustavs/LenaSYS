@@ -68,7 +68,37 @@
 	</div>
 
 	<div id="page3" class="page">
+	<div class="banner">
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
+		<div class="wrapper">
+			<?php
+				breadcrumb(5, 3);
+			?>
+			<div class="content">
+				<?php
+					header2("Create new database & user");
+					bodyText("Provide the following data for the database and user");
+				?>
+				<div class="inner-wrapper">
+					<div class="input-grid">
+						<?php
+							inputField("db-name", "Database name:");
+							inputField("db-user", "MySQL user:");
+							inputFieldWithTip('db-host', 'Hostname:', 'Tip: Usually set to "localhost"');
+							inputField("db-password", "MySQL user password:");
 
+							checkbox("distEnvironment", "Use Distributed Environment");
+							checkbox("iniDatabaseTransfer", "Initialize database as transaction");
+							checkboxWithWarning("overwriteDatabase", "Overwrite existing database and user names", "WARNING! Overwriting databases and users cannot be undone!");
+						?>
+					</div>
+				</div>
+			</div>
+			<?php
+				navigationButtons(2, 4);
+			?>
+		</div>
 	</div>
 
 	<div id="page4" class="page">

@@ -22,6 +22,7 @@
     --text-large: 16px;
     --text-medium: 14px;
     --text-small: 12px;
+    --text-xs: 10px;
 }
 
 *,
@@ -31,42 +32,40 @@
 }
 
 html, body {
-    height: 100%; /* Ensures that the HTML and body take full height of the viewport */
-    width: 100%; /* Ensures full width */
-    margin: 0; /* Removes default margin */
-    padding: 0; /* Removes default padding */
-    overflow-x: hidden; /* Prevents horizontal scrollbar */
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 #page2, #page3, #page4, #page5 { display: none; }
 
 .page {
-    display: flex; /* Enable flexbox */
-    flex-direction: column; /* Stack children vertically */
-    height: calc(100vh - 4rem); /* Subtract double the margin if any */
-    width: calc(100% - 4rem); /* Adjust width to accommodate left and right margins */
-    margin: 2rem; /* Remove any margin */
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 4rem);
+    width: calc(100% - 4rem);
+    margin: 2rem;
     border: 1px solid var(--primary-color);
     background-color: var(--page-background);
-    position: relative; /* Ensures that position is relative to the viewport */
+    position: relative;
 }
 
 /*  Create a padding for all content
     inside the installer window */
 .wrapper {
-    display: flex; /* Enable flexbox */
-    flex-direction: column; /* Stack children vertically */
-    flex-grow: 1; /* Takes up all available space */
-    padding: 3rem; /* Provide padding for content within wrapper */
-    padding-top: 2.5rem;
-    overflow-y: auto; /* Allows scrolling within the wrapper */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    overflow-y: auto;
 }
 
 .content {
-    flex-grow: 1; /* Allows this element to expand and fill available space */
-    display: flex; /* Optional, depending on your specific needs */
-    flex-direction: column; /* Stack children of .content vertically */
-    overflow-y: auto; /* Allows scrolling within content if necessary */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /*  Creates the purple background behind .header-1  */
@@ -115,12 +114,13 @@ html, body {
     installer window, including the .body-text and .input-grid  */
 .inner-wrapper {
     display: grid;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
 }
 
 .body-text {
     font-family: var(--body-font);
-    margin-bottom: 2.5rem;
+    margin: 0;
+    margin-left: 2rem;
 }
 
 /* Group of all input fields + labels*/
@@ -177,11 +177,12 @@ html, body {
 /*  Declaration of Font-family this way is
     not optimal, but increase readability   */
 .input-field label {
-    font-family: var(--body-font)
+    font-family: var(--body-font);
+    font-size: var(--text-medium);
 }
 
 .input-field input {
-    font-family: var(--body-font)
+    font-family: var(--body-font);
 }
 
 input[type=text] {
@@ -230,11 +231,12 @@ input[type=checkbox], input[type=radio] {
 
 .warning {
     font-family: var(--body-font);
-    font-size: var(--text-small);
+    font-size: var(--text-xs);
     color: var(--warning-text);
     font-style: italic;
-    padding-left: 0.25rem;
-    margin-top: 0.25rem;
+    padding-left: 1.75rem;
+    margin: 0;
+    margin-top: -0.5rem;
 }
 
 .success {

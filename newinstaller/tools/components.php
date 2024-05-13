@@ -33,9 +33,7 @@
 	}
 
 	function bodyText($bodyText) {
-		echo "<div class='body-text'>
-			<p>".$bodyText."</p>
-			</div>";
+		echo "<p class='body-text'>".$bodyText."</p>";
 	}
 
 	function progressBar() {
@@ -57,6 +55,14 @@
 			</div>";
 	}
 
+	function inputFieldWithTip($inputId, $inputLabel, $tipText) {
+		echo "<div class='input-field'>
+					<label for='$inputId'>$inputLabel</label>
+					<input id='$inputId' type='text'>
+					<p class='tip'>$tipText</p>
+			</div>";
+	}
+
 	function inputFieldAccText($inputId, $inputLabel, $accClass, $accText) {
 		echo "<div class='input-field'>
 					<label for='$inputId'>$inputLabel</label>
@@ -74,6 +80,23 @@
 					<label for='$id'>$label</label>
 				  </div>";
 		}
+		echo "</div>";
+	}
+
+	function checkbox($checkboxId, $checkboxText) {
+		echo "<div class='checkbox'>";
+		echo "	<input id='$checkboxId' type='checkbox'>";
+		echo "	<label for='$checkboxId'>$checkboxText</label>";
+		echo "</div>";
+	}
+
+	function checkboxWithWarning($checkboxId, $checkboxText, $warningText) {
+		echo "<div class='grid-element-span'>";
+		echo "	<div class='checkbox'>";
+		echo "		<input id='$checkboxId' type='checkbox'>";
+		echo "		<label for='$checkboxId'>$checkboxText</label>";
+		echo "	</div>";
+		echo "	<p class='warning'>$warningText</p>";
 		echo "</div>";
 	}
 
