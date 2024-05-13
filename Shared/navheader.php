@@ -370,12 +370,12 @@
 			// Sort dialog - accessed / resulted /fileed					
 			//old search bar for resulted
       if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
-					echo "<td id='testSearchContainer' class='navButt'>";
+					echo "<td id='testSearchContainer' class='navSearchWrapper'>";
 
 					if ($requestedService == "fileed.php")
 						echo   "<form onsubmit='event.preventDefault()' autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();'/></form>";
 					else
-						echo   "<form onsubmit='event.preventDefault()' autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
+						echo   "<form onsubmit='event.preventDefault()' autocomplete='off' display:'none'><input class='navSearch' id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' '>"; //Dropdown menu for when hovering the search bar
 					if($requestedService=="accessed.php"){

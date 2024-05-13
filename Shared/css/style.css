@@ -1413,6 +1413,17 @@ header td {
   height: 32px;
 }
 
+/*Needed because navButt aplies a clicking effect on the element*/
+.navSearchWrapper {
+  width: 29px;
+  vertical-align: middle;
+  margin-top: 9px;
+}
+
+.navSearch {
+  margin-top:5%;
+}
+
 #downloadButt {
   margin-top: 2px;
   height: 40px;
@@ -4537,7 +4548,7 @@ div.reset-pw:hover{
   background: var(--color-sectioned-table-lo);
   border-radius: 0px 0px 25px 25px;
   box-shadow: 2px 2px 8px #888;
-  margin-top: 5px;
+  margin-top: -2px;
 }
 
 #sortOptions {
