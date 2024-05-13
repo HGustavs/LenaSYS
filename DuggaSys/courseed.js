@@ -746,7 +746,7 @@ function elementIsValid(element) {
 	// Stop any ongoing animations
 	$(messageElement).stop(true, true);
 
-	//Remove neutral tag when element is assesed.
+	//Remove neutral tag when element is assessed.
 	element.classList.remove("color-change-neutral");
 
 	// Handle empty input for optional fields
