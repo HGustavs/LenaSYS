@@ -7075,19 +7075,13 @@ only screen and (max-device-width: 568px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  z-index: 100;
+  z-index: 1000;
 }
 
 @media only screen and (max-width: 430px) {
   .fab-btn-list2 {
-    position: absolute;
-    padding: 28px 25px 0px 0px;
-    margin: 0px;
     left: 55px;
-    width: 100%;
-    list-style: none;
-    text-align: center;
-    z-index: 100;
+    
   }
 }
 
