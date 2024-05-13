@@ -756,6 +756,7 @@ function elementIsValid(element) {
 			$(messageElement).fadeOut();
 			element.classList.add("color-change-neutral");
     		element.classList.remove("color-change-invalid");
+			element.classList.remove("color-change-valid");
 			return true; // Optional fields
 		}
 	}
