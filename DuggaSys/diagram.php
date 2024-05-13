@@ -975,7 +975,7 @@
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
-                    <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding:</p>
+                    <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding: "CTRL + ALT + T"</p>
                 </span>
             </div>
         </fieldset> 
@@ -998,7 +998,7 @@
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
                     <br>
-                    <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
+                    <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding: "CTRL + S"</p>
                 </span>
             </div>
         </fieldset>
@@ -1009,7 +1009,7 @@
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram</p>
                     <br>
-                    <p id="tooltip-Load_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "L"-->
+                    <p id="tooltip-Load_diagram" class="key_tooltip">Keybinding: "CTRL + L"</p>
                 </span>
             </div>
         </fieldset>
