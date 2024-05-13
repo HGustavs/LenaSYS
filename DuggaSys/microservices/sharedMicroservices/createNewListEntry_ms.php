@@ -1,34 +1,32 @@
 <?php
-include_once "retrieveUsername_ms.php";
+include_once ".7retrieveUsername_ms.php";
 
-function createNewListentrie($pdo, $listEntry){
+function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link, $kind, $comment, $visible, $highscoremode, $pos, $gradesys, $tabs, $grptype){
     $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
 	VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind)");
-    $query->bindParam(':cid', $listEntry['cid']);
-    $query->bindParam(':cvs', $listEntry['coursevers']);
-    $query->bindParam(':usrid', $listEntry['userid']);
-    $query->bindParam(':entryname', $listEntry['entryname']);
-    $query->bindParam(':link', $listEntry['link']);
-    $query->bindParam(':kind', $listEntry['kind']);
-    $query->bindParam(':comment', $listEntry['comment']);
-    $query->bindParam(':visible', $listEntry['visible']);
-    $query->bindParam(':highscoremode', $listEntry['highscoremode']);
-    $query->bindParam(':pos', $listEntry['pos']);
+    $query->bindParam(':cid', $cid);
+    $query->bindParam(':cvs', $coursevers);
+    $query->bindParam(':usrid', $userid);
+    $query->bindParam(':entryname', $entryname);
+    $query->bindParam(':link', $link);
+    $query->bindParam(':kind', $kind);
+    $query->bindParam(':comment', $comment);
+    $query->bindParam(':visible', $visible);
+    $query->bindParam(':highscoremode', $highscoremode);
+    $query->bindParam(':pos', $pos);
 
-    if ($listEntry['kind'] == 4) {
-	$query->bindParam(':gradesys', $listEntry['gradesys']);
+    if ($kind == 4) {
+	$query->bindParam(':gradesys', $gradesys);
     } else {
-	$query->bindParam(':gradesys', $listEntry['tabs']);
+	$query->bindParam(':gradesys', $tabs);
     }
 
-    if ($listEntry['grptype'] != "UNK") {
-	$query->bindParam(':groupkind', $listEntry['grptype']);
+    if ($grptype != "UNK") {
+	$query->bindParam(':groupkind', $grptype);
     } else {
 	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
-
-	// Logging for newly added items, USE retrieveUsername() when it is implemented. UNK temporary
-    $username = retrieveUsername($pdo);
-	logUserEvent($listEntry['userid'],$username,EventTypes::SectionItems, $listEntry['entryname']);
+	$username = retrieveUsername($pdo);
+	logUserEvent($userid ,$username,EventTypes::SectionItems, $entryname);
     }
 
     if (!$query->execute()) {

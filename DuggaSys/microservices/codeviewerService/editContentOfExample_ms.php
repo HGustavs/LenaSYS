@@ -2,6 +2,8 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
 session_start();
@@ -18,6 +20,7 @@ $fontsize = getOP('fontsize');
 $addedRows = getOP('addedRows');
 $removedRows = getOP('removedRows');
 $debug="NONE!";
+$userid=getUid();
 
 if(strcmp('EDITCONTENT',$opt)===0) {
     $query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");
@@ -56,5 +59,6 @@ if(strcmp('EDITCONTENT',$opt)===0) {
         }
     }
 }
-
-?>
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
+return;

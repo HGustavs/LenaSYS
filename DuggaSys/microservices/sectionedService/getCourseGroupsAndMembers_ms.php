@@ -9,8 +9,8 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../../../../coursesyspw.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "../../../Shared/coursesyspw.php";
+include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();

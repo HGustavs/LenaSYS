@@ -82,10 +82,8 @@ The old name remains listed under "LIST OF MICROSERVICES" so that we can keep tr
 
 <br>
 
-Shared microservices:
+__Shared microservices:__
 
-- logUserEvent_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
-- logServiceEvent_ms.php __==UNFINISHED==__
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - isSuperUser_ms.php __==UNFINISHED==__
@@ -98,7 +96,7 @@ Shared microservices:
 
 <br>
 
-Accessed Service:
+__Accessed Service:__
 
 - updateUser_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -110,9 +108,9 @@ __Note, all microservices related to accessservice.php have been created. As for
 
 <br>
 
-Codeviewer Service:
+__Codeviewer Service:__
 
-- settingCodeexampleTemplate_ms.php __==UNFINISHED==__
+- updateCodeExampleTemplate_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD. 
 - editCodeExample_ms.php __==finished==__ New filename: "updateCodeExample_ms.php" according to new nameconvention based on CRUD.
 - editContentOfExample_ms.php __==finished==__ New filename: "updateContentOfExample_ms.php" according to new nameconvention based on CRUD and the main function of the ms.
 - editBoxTitle_ms.php __==finished==__ New filename: "updateBoxTitle_ms.php" according to new nameconvention based on CRUD.
@@ -121,7 +119,7 @@ Codeviewer Service:
 
 <br>
 
-Contribution Loginbox Service
+__Contribution Loginbox Service:__
 
 - There is a functional requirements document regarding this service. There is mention of a "contribution page", which is assumed to be a contribution dugga. It is unclear exactly what this page is supposed to be, but the page is related to GitHub connectivity, which suggests it is supposed to be a page showing the different commits contributed by students to a project.
 
@@ -134,19 +132,19 @@ https://github.com/HGustavs/LenaSYS/blob/master/backend-models/functional-requir
 
 <br>
 
-Contribution Service:
+__Contribution Service:__
 
 - Based on the information given for the status of the Contribution Loginbox Service information, we are pausing the development of microservices for this service file.
 
 <br>
 
-Courseed Service:
+__Courseed Service:__
 
 - createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
-- copyCourseVersion_ms.php __==UNFINISHED==__  
+- copyCourseVersion_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 - updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -154,13 +152,13 @@ Courseed Service:
 
 <br>
 
-Diagram Service:
+__Diagram Service:__
 
 - _WORK PAUSED for development of microservices. Will continue when the service is fixed (group 1 is working on this)_
 
 <br>
 
-Duggaed Service:
+__Duggaed Service:__
 
 - createDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateDugga_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -173,7 +171,7 @@ Duggaed Service:
 
 <br>
 
-Fileed Service:
+__Fileed Service:__
 
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
@@ -181,7 +179,7 @@ Fileed Service:
 
 <br>
 
-Gitcommit Service:
+__Gitcommit Service:__
 
 - getCourseID __==finished==__ New filename: "readCourseID_ms.php" according to new nameconvention based on CRUD.
 - clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.  
@@ -190,13 +188,13 @@ Gitcommit Service:
 - fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
 - insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepo_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
-- refreshCheck_ms.php __==UNFINISHED==__ 
+- refreshCheck_ms.php __==finished==__ New filename: "updateThrottle_ms.php", vague connection to CRUD, more based on what the actual function of the code is.
 
 __Observe, this microservices needs to be checked again to make sure they are working once group 3 has fixed the servicefile.__
 
 <br>
 
-Gitfetch Service:
+__Gitfetch Service:__
 
 - getGitHubURL_ms.php __==finished==__ New filename: "getGitHubAPIUrl_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - getGitHubURLCommit_ms.php __==UNFINISHED==__ 
@@ -212,13 +210,14 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 
 <br>
 
-Highscore Service:
+__Highscore Service:__
 
-- highscoreservice_ms.php __==UNFINISHED==__
+- highscoreservice_ms.php __==finished==__ New filename: "readHighscore_ms.php" according to new nameconvention based on CRUD.
+- retrieveHighscoreService_ms.php __==UNFINISHED==__
 
 <br>
 
-Profile Service:
+__Profile Service:__
 
 - updateSecurityQuestion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateUserPassword_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -226,14 +225,14 @@ Profile Service:
 
 <br>
 
-Resulted Service:
+__Resulted Service:__
 
 - getUserAnswer_ms.php __==finished==__ New filename: "readUserAnswer_ms.php" according to new nameconvention based on CRUD.
 - retrieveResultedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
-Sectioned Service:
+__Sectioned Service:__
 
 - getGroupValues_ms.php __==finished==__ New filename: "readGroupValues_ms.php" according to new nameconvention based on CRUD.
 - getCourseGroupsAndMembers_ms.php __==finished==__ New filename: "readCourseGroupsAndMembers_ms.php" according to new nameconvention based on CRUD.
@@ -247,7 +246,7 @@ Sectioned Service:
 - setVisibleListentries_ms.php __==finished==__ New filename: "updateVisibleListentries_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateCourseVersion_sectioned_ms.php __==UNFINISHED==__ 
+- updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
 - getCourseVersions_ms.php __==finished==__ New filename: "readCourseVersions_ms.php" according to new nameconvention based on CRUD. 
 - getGitReference_ms.php __==UNFINISHED==__  
@@ -256,7 +255,7 @@ Sectioned Service:
 
 <br>
 
-Show Dugga Service:
+__Show Dugga Service:__
 
 - updateActiveUsers_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD despite the mixed functions of the ms.
 - processDuggaFile_ms.php __==finished==__ New filename: "processSubmittedDugga_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. 
@@ -274,59 +273,6 @@ Show Dugga Service:
 
 ---
 ## ----------------------------- _shared_microservices_ -----------------------------
----
-
-<br>
-
-### logUserEvent_ms.php
-__logUserEvent_ms.php__ creates a new userbased event in the log.db database (not MYSQL).
-
-__Includes neither original service files nor microservices.__
-
-__Querys used in this microservice:__
-
-_INSERT_ operation on the table __'userLogEntries'__ to add a new row with values for the following columns:
-- uid
-- username
-- eventType
-- description
-- userAgent
-- remoteAddress
-
-```sql
-INSERT INTO userLogEntries (uid, username, eventType, description, userAgent, remoteAddress) VALUES (:uid, :username, :eventType, :description, :userAgent, :remoteAddress);
-```
-
-<br>
-
----
-
-<br>
-
-### logServiceEvent_ms.php
-Creates a new service event in the log.db database (not MYSQL). The timestamp used is an integer containing the number of milliseconds since 1970-01-01 00:00 (default javascript date format).
-
-__Querys used in this microservice:__
-
-_INSERT_ operation on the table __'serviceLogEntries'__ to add a new row with values for the following columns:
-- uuid
-- eventType
-- service
-- timestamp
-- userAgent
-- operatingSystem
-- browser
-- userid
-- info
-- referer
-- IP
-
-```sql
-INSERT INTO serviceLogEntries (uuid, eventType, service, timestamp, userAgent, operatingSystem, browser, userid, info, referer, IP) VALUES (:uuid, :eventType, :service, :timestamp, :userAgent, :operatingSystem, :browser, :userid, :info, :referer, :IP);
-```
-
-<br>
-
 ---
 
 <br>
@@ -863,13 +809,59 @@ SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE 
 <br>
 <br>
 
-### settingCodeexampleTemplate
-Updates the template for the code boxes in LenaSYS.
+### updateCodeExampleTemplate_ms.php
+__updateCodeExampleTemplate_ms.php__ is used on DuggaSys when you create a new code example for a course and chose a template to display that code. The microservice selects the selected template and retrieves a CSS-file containing the template to display on the page. The code for displaying different CSS-files can be found in codeviewerService.php and dugga.js.
 
-Uses service __updateTableCodeexample__ to set templateid recived from input, that value is also placed in the variable __templateNumber__. 
-The number of boxes created depends on on the value of _templateNumber_. 
-The contents of all boxes are gatherd with the service __selectFromTableBox__.
-Depending on if a box with the set id exists or not an insert into the table __box__, using service __insertIntoTableBox__, or an update, using __updateTableBox__, is performed. 
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ getUid_ms.php
+
+__Querys used in this microservice:__
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
+- templateid
+
+- Filters the records to update only those entries where the example ID ('exampleid'), course ID ('cid'), and course version ('cversion') match the specified parameters.
+
+```sql
+UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve all columns:
+
+- Filters the results to include only the records where the box ID ('boxid') matches the specified ':i' and the example ID ('exampleid') matches the specified ':exampleid'.
+
+```sql
+SELECT * FROM box WHERE boxid = :i AND exampleid = :exampleid;
+```
+
+
+_UPDATE_ operation on the table __'box'__ to update the values of the columns:
+- boxcontent
+- filename
+- wordlistid
+
+- Update is applied specifically to the box with the specified box ID (':i') and example ID (':exampleid'). 
+
+```sql
+UPDATE box SET boxcontent = :boxcontent, filename = :filename, wordlistid = :wordlistid WHERE boxid = :i AND exampleid = :exampleid;
+```
+
+
+_INSERT_ operation into the table __'box'__ to add a new row with values for the following columns:
+- boxid
+- exampleid
+- boxtitle
+- boxcontent
+- settings
+- filename
+- wordlistid
+- fontsize
+
+```sql
+INSERT INTO box(boxid, exampleid, boxtitle, boxcontent, settings, filename, wordlistid, fontsize) VALUES (:i, :exampleid, :boxtitle, :boxcontent, :settings, :filename, :wordlistid, :fontsize);
+```
 
 <br>
 
@@ -1349,48 +1341,327 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 <br>
 
-### copyCourseVersion
-Uses service __createNewVersionOfCourse__ to makes _inserts_ into the table __Vers__.
-<br>
+### copyCourseVersion_ms.php
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php, createNewListEntry_ms.php, createNewCodeExample_ms.php
 
-Uses service __selectFromTableQuiz__ to _get_ information it requires from __quiz__.
-Uses service __insertIntoTableQuiz__ to makes _inserts_ into the table __quiz__. (copys values from a row into a new insert, with new _vers_ number)
-<br>
+__Querys used in this microservice:__
 
-Uses service __selectFromTableVariant__ to _get_ information it requires from __variant__.
-Uses service __insertIntoTableVariant__ to makes _inserts_ into the table __variant__. (copys values from a row into a new insert, with new _quizID_ number)
-<br>
+_INSERT_ operation on the table __'vers'__ to add a new row with values for the following columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
 
-Uses service __selectFromTableCodeexample__ to _get_ information it requires from __codeexample__.
-Uses service __insertIntoTableCodeexample__ to makes _inserts_ into the table __codeexample__. (copys values from a row into a new insert, with new _quizID_ number)
-<br>
+```sql
+INSERT INTO vers(cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd) VALUES (:cid, :coursecode, :vers, :versname, :coursename, :coursenamealt, :startdate, :enddate, :motd);
+```
 
-Uses service __selectFromTableBox__ to _get_ information it requires from __box__.
-Uses service __insertIntoTableBox__ to makes _inserts_ into the table __box__. (copys values from a row into a new insert, with new _exampleid_ number)
-<br>
 
-Uses service __selectFromTableImprow__ to _get_ information it requires from __improw__.
-Uses service __insertIntoTableImprow__ to makes _inserts_ into the table __improw__. (copys values from a row into a new insert, with new _exampleid_ number)
-<br>
+_SELECT_ operation on the table __'quiz'__ to retrieve all columns:
 
-Uses service __selectFromTableImpwordlist__ to _get_ information it requires from __impwordlist__.
-Uses service __insertIntoTableImpwordlist__ to makes _inserts_ into the table __impwordlist__. (copys values from a row into a new insert, with new _exampleid_ number)
-<br>
+- Filters the results to include only those quiz records where the course ID ('cid') matches the specified ':cid' and the version ('vers') matches the specified ':oldvers'.
 
-Uses the services __updateTableListentries__ to change the content of these columns:
+```sql
+SELECT * FROM quiz WHERE cid=:cid AND vers = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'quiz'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- autograde
+- gradesystem
+- qname
+- quizFile
+- qrelease
+- deadline
+- relativedeadline
+- modified
+- creator
+- vers
+
+- Values for the new row are copied from an existing quiz record identified by ID ':oldid', with adjustments made to some values: release date (':qrel'), deadline (':deadl'), and version (':newvers').
+
+```sql
+INSERT INTO quiz (cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, relativedeadline, modified, creator, vers) 
+SELECT cid, autograde, gradesystem, qname, quizFile, :qrel AS qrelease, :deadl AS deadline, relativedeadline, modified, creator, :newvers AS vers 
+FROM quiz WHERE id = :oldid;
+```
+
+
+_SELECT_ operation on the table __'variant'__ to retrieve all columns:
+
+- Filters the results to include only those variants where the 'quizID' matches the specified ':quizid'.
+
+```sql
+SELECT * FROM variant WHERE quizID=:quizid;
+```
+
+
+_INSERT_ operation into the table __'variant'__ to add a new row with values for the following columns based on a selected record:
+- quizID
+- param
+- variantanswer
+- modified
+- creator
+- disabled
+
+- Where the values for the new row are copied from an existing variant record identified by ID ':oldvid'. The new entry will use the quiz ID ':newquizid'. 
+
+```sql
+INSERT INTO variant (quizID, param, variantanswer, modified, creator, disabled) SELECT :newquizid AS quizID, param, variantanswer, modified, creator, disabled FROM variant  WHERE vid = :oldvid;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve all columns:
+
+- Filters the results to include only those records where the course ID matches the specified ':cid' and the course version matches ':oldvers'. 
+
+```sql
+SELECT * FROM codeexample WHERE cid=:cid AND cversion = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'codeexample'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- examplename
+- sectionname
+- beforeid
+- afterid
+- runlink
+- cversion
+- public
+- updated
+- uid
+- templateid
+
+- The values for the new row are copied from an existing code example record identified by ID ':oldid'. The new entry will use the course version ':newvers'.
+
+```sql
+INSERT INTO codeexample (cid, examplename, sectionname, beforeid, afterid, runlink, cversion, public, updated, uid, templateid) SELECT cid, examplename, sectionname, beforeid, afterid, runlink, :newvers AS cversion, public, updated, uid, templateid FROM codeexample WHERE exampleid = :oldid;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve all columns:
+
+- Filters the results to include only those records where the example ID matches the specified ':exampleid'.
+
+```sql
+SELECT * FROM box WHERE exampleid=:exampleid;
+```
+
+
+_INSERT_ operation on the table __'box'__ to add a new row with values for the following columns based on a selected record:
+- boxid
+- exampleid
+- boxtitle
+- boxcontent
+- filename
+- settings
+- wordlistid
+- segment
+- fontsize
+
+- Values for the new row are copied from a box identified by box ID (':oldboxid)' and example ID (':oldexampleid'). The new entry are using a new example ID ':newexampleid'.
+
+```sql
+INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, segment, fontsize) SELECT boxid, :newexampleid AS exampleid, boxtitle, boxcontent, filename, settings, wordlistid, segment, fontsize FROM box WHERE boxid = :oldboxid AND exampleid = :oldexampleid;
+```
+
+
+_SELECT_ operation on the table __'improw'__ to retrieve all columns:
+
+- Filters the results to include only those records where the example ID matches the specified ':oldexampleid'.
+
+```sql
+SELECT * FROM improw WHERE exampleid=:oldexampleid;
+```
+
+
+_INSERT_ operation on the table __'improw'__ to add a new row with values for the following columns based on a selected record:
+- boxid
+- exampleid
+- istart
+- iend
+- irowdesc
+- updated
+- uid
+
+- The values for the new row are copied from an existing 'improw' record and identified by: example ID (':oldexampleid'), impid (':oldimpid'), and box ID (:oldboxid'). The new entry will use the new example ID ':newexampleid'. 
+
+```sql
+INSERT INTO improw (boxid, exampleid, istart, iend, irowdesc, updated, uid) SELECT boxid, :newexampleid AS exampleid, istart, iend, irowdesc, updated, uid
+FROM improw WHERE exampleid = :oldexampleid AND impid = :oldimpid AND boxid = :oldboxid;
+```
+
+
+_SELECT_ operation on the table __'impwordlist'__ to retrieve all columns:
+
+- Filters the results to include only those records where the example ID matches the specified ':oldexampleid'. 
+
+```sql
+SELECT * FROM impwordlist WHERE exampleid=:oldexampleid;
+```
+
+
+_INSERT_ operation into the table __'impwordlist'__ to add a new row with values for the following columns based on a selected record:
+- exampleid
+- word
+- label
+- updated
+- uid
+
+- The values for the new row are copied from an existing 'impwordlist' record identified by example ID ':oldexampleid' and word ID ':oldwordid'. The new entry will use the new example ID ':newexampleid'.
+
+```sql
+INSERT INTO impwordlist (exampleid, word, label, updated, uid) SELECT :newexampleid AS exampleid, word, label, updated, uid FROM impwordlist WHERE exampleid = :oldexampleid AND wordid = :oldwordid;
+```
+
+
+_SELECT_ operation on the table __'listentries'__ to retrieve all columns:
+
+- Filters the results to include only those records where the version identifier ('vers') matches the specified ':oldvers'. 
+
+```sql
+SELECT * FROM listentries WHERE vers = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'listentries'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- entryname
+- link
+- kind
+- pos
+- creator
+- ts (timestamp)
+- code_id
+- visible
+- vers
+- moment
+- gradesystem
+- highscoremode
+
+- The values for the new row are copied from an existing 'listentries' record identified by list ID (':olid'). The new entry will use the version identifier ':gubbe'.
+
+```sql
+INSERT INTO listentries (cid, entryname, link, kind, pos, creator, ts, code_id, visible, vers, moment, gradesystem, highscoremode) SELECT cid, entryname, link, kind, pos, creator, ts, code_id, visible, :gubbe AS vers, moment, gradesystem, highscoremode FROM listentries WHERE lid = :olid;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - moment
 
-Uses the services __updateTableListentries__ to change the content of these columns:
+- The update only affects the 'listentries' records where 'moment' matches the specified ':oldmoment' and the version matches ':updvers'. 
+
+```sql
+UPDATE listentries SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - link
 
-Uses the services __updateTableCodeexample__ to change the content of these columns:
+- The update only affects the 'listentries' records where 'link' matches the specified ':oldquiz' and the version matches ':updvers'. 
+
+```sql
+UPDATE listentries SET link=:newquiz WHERE link=:oldquiz AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- link
+
+- The update only affects 'listentries' records where 'link' is equal to ':oldexample' and the version equals ':updvers'. 
+
+```sql
+UPDATE listentries SET link=:newexample WHERE link=:oldexample AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
 - beforeid
 
-Uses the services __updateTableCodeexample__ to change the content of these columns:
+- The update only affects 'codeexample' records where the 'beforeid' matches ':oldexample' and the course version matches ':updvers'. 
+
+```sql
+UPDATE codeexample SET beforeid=:newexample WHERE beforeid=:oldexample AND cversion=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
 - afterid
 
-Uses the services __setAsActiveCourse__ to change the content of these columns:
+- The update only affects 'codeexample' records where 'afterid' matches ':oldexample' and the course version matches ':updvers'.
+
+```sql
+UPDATE codeexample SET afterid=:newexample WHERE afterid=:oldexample AND cversion=:updvers;
+``` 
+
+
+_SELECT_ operation on the table __'userAnswer'__ to retrieve all columns:
+
+- Filters the results to include only those records where the version ('vers') matches the specified ':oldvers'. 
+
+```sql
+SELECT * FROM userAnswer WHERE vers = :oldvers;
+```
+
+
+_INSERT_ operation on the table __'userAnswer'__ to add a new row with values for the following columns based on a selected record:
+- cid
+- quiz
+- variant
+- moment
+- grade
+- uid
+- useranswer
+- submitted
+- marked
+- vers
+- creator
+- score
+
+- The values for the new row are copied from an existing 'userAnswer' record identified by ID (':olaid'). The new entry will use the new version identifier (':man').
+
+```sql
+INSERT INTO userAnswer (cid, quiz, variant, moment, grade, uid, useranswer, submitted, marked, vers, creator, score) SELECT cid, quiz, variant, moment, grade, uid, useranswer, submitted, marked, :man AS vers, creator, score FROM userAnswer WHERE aid = :olaid;
+```
+
+
+_UPDATE_ operation on the table __'userAnswer'__ to update the value of the column:
+- moment
+
+- The update only affects the 'userAnswer' records where 'moment' matches the specified ':oldmoment' and the version matches ':updvers'. 
+
+```sql
+UPDATE userAnswer SET moment=:nyttmoment WHERE moment=:oldmoment AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'userAnswer'__ to update the value of the column:
+- quiz
+
+- The update only applies to 'userAnswer' records where the 'quiz' identifier matches the specified ':oldquiz' and the version matches ':updvers'. 
+
+```sql
+UPDATE userAnswer SET quiz=:newquiz WHERE quiz=:oldquiz AND vers=:updvers;
+```
+
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
+
+- The update only affects the 'course' record where the course ID ('cid') matches the specified ':cid'. 
+
+```sql
+UPDATE course SET activeversion=:vers WHERE cid=:cid;
+```
 
 <br>
 
@@ -2138,7 +2409,7 @@ __deleteGitFiles_ms.php__ clear the gitFiles table in SQLite db when a course ha
 __Include original service files:__ sessions.php, basic.php
 
 _DELETE_ operation on the table __'gitFiles'__ to remove records where:
-- `cid` matches the specified course ID (`:cid`).
+- 'cid' matches the specified course ID (':cid').
 
 ```sql
 DELETE FROM gitFiles WHERE cid = :cid;
@@ -2172,24 +2443,10 @@ UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :ci
 ### refreshGithubRepo_ms.php
 Updates the metadata from the github repo if there's been a new commit.
 
-Please note, _refreshCheck_ and _newUpdateTime_ will later become their own microservices but are included in this microservice for now to ensure functionality.
-
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
-__Include microservice:__ deleteGitFiles_ms.php
+__Include microservice:__ refreshCheck_ms.php, clearGitFiles_ms.php
 
 __Querys used in this microservice:__
-
-__- refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit:__
-
-_DELETE_ operation on the table __'gitFiles'__ to remove rows where the column:
-- cid
-
-matches a specific value (`:cid`).
-
-```sql
-DELETE FROM gitFiles WHERE cid = :cid;
-```
-
 
 _SELECT_ operation on the table __'gitRepos'__ to retrieve the values of the columns:
 - lastCommit
@@ -2207,26 +2464,6 @@ _UPDATE_ operation on the table __'gitRepos'__ to update the value of the column
 UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid;
 ```
 
-
-__- refreshCheck: Decide how often the data can be updated, and if it can be updated again:__
-
-_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
-- updated
-
-```sql
-SELECT updated FROM course WHERE cid = :cid;
-```
-
-
-__- newUpdateTime: Updates the MySQL database to save the latest update time:__
-
-_UPDATE_ operation on the table __'course'__ to update the value of the column:
-- updated
-
-```sql
-UPDATE course SET updated = :parsedTime WHERE cid = :cid;
-```
-
 <br>
 
 ---
@@ -2236,9 +2473,11 @@ UPDATE course SET updated = :parsedTime WHERE cid = :cid;
 ### readGitToken_ms.php
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__
+__Querys used in this microservice:__ 
 
-This SQL query retrieves the `gitToken` from the `gitRepos` table for a specific course identified by the `cid`:
+
+_SELECT_ operation on the table __'gitRepos'__ to retrieve the value of the column:
+- gitToken
 
 ```sql
 SELECT gitToken FROM gitRepos WHERE cid=:cid;
@@ -2255,14 +2494,14 @@ __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
 __Querys used in this microservice:__
 
-The SQL query performs an _INSERT OR REPLACE_ operation on the table __'gitRepos'__. It inserts a new record or replaces an existing record into the following columns:
+_INSERT OR REPLACE_ operation on the table __'gitRepos'__. It inserts a new record or replaces an existing record into the following columns:
 - cid
 - repoName
 - repoURL
 - lastCommit
 - gitToken
 
-- The operation ensures that if a record already exists with the same primary key (`cid`), it is replaced with the new values; otherwise, a new record is created.
+- The operation ensures that if a record already exists with the same primary key ('cid'), it is replaced with the new values; otherwise, a new record is created.
 
 ```sql
 INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) VALUES (:cid, :repoName, :repoURL, :lastCommit, :gitToken)
@@ -2277,7 +2516,7 @@ INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) V
 ### updateTime_ms.php
 __updateTime_ms.php__ updates the MySQL database to save the latest update time.
 
-__Include original service files:__ sessions.php, basic.php
+__Includes neither original service files nor microservices.__
 
 __Querys used in this microservice:__
 
@@ -2294,7 +2533,21 @@ UPDATE course SET updated=:parsedTime WHERE cid=:cid;
 <br>
 
 
-### refreshCheck_ms.php
+### updateThrottle_ms.php
+__updateThrottle_ms-php__ checks if database updates for a course are allowed by comparing the last update time against predefined intervals and user privileges. It enforces cooldowns using session variables to prevent too frequent updates. Superusers are granted shorter update intervals.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ newUpdateTime_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
+- updated
+
+```sql
+SELECT updated FROM course WHERE cid = :cid;
+```
+
 
 <br>
 <br>
@@ -2464,15 +2717,47 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 ---
 
 <br>
-(writers comment: i belive this service is small enough as is)
 
-### highscoreservice
-Return max ten passed scores.
-Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
+### readHighscore_ms.php
+__readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ retrieveHighscoreService_ms.php 
+
+__Querys used in this microservice:__
+
+__SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve values from the columns:
+- username
+- score
+
+- 'userAnswer.grade > 1': Filters to include only records where the user's grade is greater than 1, indicating passing scores.
+- Filters the results to those related to a specific quiz (':did') and a specific moment or part of the quiz (':lid').
+- Orders the results by score in ascending order, displaying the lowest scores first.
+- Restricts the output to the top 10 records based on the ascending order of scores.
+
+```sql
+SELECT username, score FROM userAnswer, user WHERE userAnswer.grade > 1 AND userAnswer.quiz = :did AND userAnswer.moment = :lid ORDER BY score ASC LIMIT 10;
+```
+
+
+_SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve values from the columns:
+- username
+- score
+
+- Filters the results to include only those records where the quiz ID matches ':did' and the moment or part of the quiz matches ':lid'.
+- Restricts the output to only the first record found.
+
+```sql
+SELECT username, score FROM userAnswer, user WHERE userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;
+```
+
 <br>
 
-Return score for a specific test.
-Uses service __selectFromTableScore__ to _get_ information it requires from __Score__ and __userAnswer__. 
+---
+
+<br>
+
+### retrieveHighscoreService_ms.php
 
 <br>
 <br>
@@ -2587,7 +2872,7 @@ The __retrieveProfileService_ms.php__ returns an array containing three key valu
 
 - __debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
 
-The microservice provide direct feedback from the server to the client about the result of the requested operation (either changing the password or security question).
+The microservice provide direct feedback from the server about the result of the requested operation (either changing the password or security question).
 
 <br>
 <br>
@@ -2688,6 +2973,7 @@ The microservice provides feedback about submissions and associated metadata for
 __readGroupValues_ms.php__ is called upon when a group is clicked on.
 
 __Include original service files:__ sessions.php
+__Include microservices:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2737,7 +3023,7 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2768,7 +3054,7 @@ DELETE FROM listentries WHERE lid = :lid
 Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database).
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2838,7 +3124,7 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 Updates the order of the listentries of a course. Not to be confused with __updateListentrie_ms.php__.
 
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2859,7 +3145,7 @@ UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
 
 ### updateListentries_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2921,6 +3207,7 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 
 ### updateListentriesTabs_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2941,6 +3228,7 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 
 ### updateListentriesGradesystem_ms.php
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2959,7 +3247,7 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 
 ### updateVisibleListentries_ms.php
 __Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -2980,6 +3268,7 @@ UPDATE listentries SET visibility = :listentryId;
 __updateQuizDeadline_ms.php__ updates the deadline for a quiz (also referred to as a dugga).
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3001,6 +3290,7 @@ UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=
 Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. __readRemovedListentries_ms.php__ is close related to the __removeListentries_ms.php__ that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what __readRemovedListentris_ms.php__ does.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3018,17 +3308,25 @@ SELECT * FROM listentries WHERE visible = '3'
 
 <br>
 
-### updateCourseVersion_sectioned
-Uses the services __updateTableVers__ to change the content of these columns:
-- motd
+### updateCourseVersion_sectioned_ms.php
+__updateCourseVersion_sectioned_ms.php__ is used for editing a course version. The user must either have write permissions, be a superuser, or be a teacher.
 
-Uses the services __updateTableVers__ to change the content of these columns:
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, setAsActiveCourse_ms.php, retrieveSectionedService_ms.php
+
+__Querys used in this microservice:__
+
+_UPDATE_ operation on the table __'vers'__ to update the values of the columns:
 - versname
 - startdate
 - enddate
+- motd
 
-Uses the services __setActiveCourseVersion__ to change the content of these columns:
-- activeversion
+- Where the course ID ('cid'), course code ('coursecode'), and version number ('vers') match the specified parameters. 
+
+```sql
+UPDATE vers SET versname=:versname, startdate=:startdate, enddate=:enddate, motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;
+```
 
 <br>
 
@@ -3040,6 +3338,7 @@ Uses the services __setActiveCourseVersion__ to change the content of these colu
 __updateActiveCourseVersion_sectioned_ms.php__ updates the active version of a course.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3060,6 +3359,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 __readCourseVersions_ms.php__ fetches all course versions.
 
 __Include original service files:__ sessions.php
+__Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
 
@@ -3074,6 +3374,7 @@ _SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
 - enddate
 - motd
 
+```sql
 SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
 ```
 
@@ -3099,6 +3400,7 @@ Uses service __selectFromTableGitFiles__ to _get_ information it requires from _
 __readUserDuggaFeedback_ms.php__ retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
 
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -3127,7 +3429,7 @@ SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 
 <br>
 
-### readSectionedService_ms.php
+### retrieveSectionedService_ms.php
 __Include original service files:__ sessions.php, basic.php
 
 __Querys used in this microservice:__
@@ -3317,6 +3619,24 @@ _SELECT_ operation on the table __'listentries'_ to retrieve all columns where:
 ```sql
 SELECT * FROM listentries WHERE visible = '3'
 ```
+
+
+The microservice gathers and organizes information into an array that provides details about courses, their versions, quizzes, user interactions, and permissions settings. It supports the interface by delivering information needed to correctly display and manage course content and student interactions. It´s basically gathering and sharing information about courses with users, making sure it fits what they are allowed to see and do.
+
+- __Entries__ - Lists courses with details such as course ID ('cid'), course name ('coursename'), course code ('coursecode'), and visibility status. It also indicates whether a user is registered for each course and provides information on active versions.
+
+- __Versions__- Includes information on the different versions of the courses available, identification details for each version of a course such as ('vers'), version names ('versname'), and associated course names ('coursename' and 'coursenamealt').
+
+-__Quizzes and assignments__ - Information about quizzes and assignments for each course version, including names, release dates, deadlines, and relative deadlines.
+
+- __User-specific data__ - Personalized data such as group memberships, submitted assignments, grades, and feedback on user performance.
+
+- __Permissions__ - Checks and confirms user permissions to ensure appropriate access to course information based on the user's role.
+
+- __Supporting resources__ - Manages links to extra resources and code examples that add to the course material.
+
+- __Debugging__ - Logs of any issues encountered during the execution of the function.
+
 
 <br>
 <br>

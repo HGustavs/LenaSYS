@@ -1,18 +1,77 @@
 <?php
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveShowDuggaService_ms.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
-
-$hash=getOP('hash');
-$AUtoken=getOP('AUtoken');
 
 $query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
 $query->bindParam(':hash', $hash);
 $query->execute();
 $result = $query->fetch();
 $active = $result['active_users'];
+$opt=getOP('opt');
+$courseid=getOP('courseid');
+$coursevers=getOP('coursevers');
+$duggaid=getOP('did');
+$moment=getOP('moment');
+$segment=getOP('segment');
+$answer=getOP('answer');
+$highscoremode=getOP('highscoremode');
+$setanswer=gettheOP('setanswer');
+$showall=getOP('showall');
+$contactable=getOP('contactable');
+$rating=getOP('score');
+$entryname=getOP('entryname');
+$hash=getOP('hash');
+$hashpwd=getOP('password');
+$password=getOP('password');
+$AUtoken=getOP('AUtoken');
+$variantvalue= getOP('variant');
+$hashvariant="UNK";
+$duggatitle="UNK";
+$duggatitle=getOP('qname');
+$link="UNK";
+
+$showall="true";
+$param = "UNK";
+$savedanswer = "";
+$highscoremode = "";
+$quizfile = "UNK";
+$grade = "UNK";
+$submitted = "";
+$marked ="";
+
+$insertparam = false;
+$score = 0;
+$timeUsed;
+$stepsUsed;
+$duggafeedback = "UNK";
+$variants=array();
+$variantsize;
+$ishashindb = false;
+$timesSubmitted = 0;
+$timesAccessed = 0;
+
+$savedvariant="UNK";
+$newvariant="UNK";
+$savedanswer="UNK";
+$isIndb=false;
+$variantsize="UNK";
+$variantvalue="UNK";
+$files= array();
+$isTeacher=false;
+// Create empty array for dugga info!
+$duggainfo=array();
+$duggainfo['deadline']="UNK";
+$duggainfo['qrelease']="UNK";
+$hr=false;
+$userfeedback="UNK";
+$feedbackquestion="UNK";
+$isFileSubmitted="UNK";
+
+$debug="NONE!";	
 
 if($active == null){
     $query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
@@ -27,4 +86,33 @@ if($active == null){
     $query->execute();
 }
 
-echo json_encode($active);
+echo json_encode(retrieveShowDuggaService(
+	$moment, 
+	$pdo, 
+	$courseid, 
+	$hash, 
+	$hashpwd, 
+	$coursevers, 
+	$duggaid, 
+	$opt, 
+	$group, 
+	$score, 
+	$highscoremode, 
+	$grade, 
+	$submitted,
+	$duggainfo,
+	$marked,
+	$userfeedback,
+	$feedbackquestion,
+	$files,
+	$savedvariant,
+	$ishashindb,
+	$variantsize,
+	$variantvalue,
+	$password,
+	$hashvariant,
+	$isFileSubmitted,
+	$variants,
+	$active,
+	$debug
+	));
