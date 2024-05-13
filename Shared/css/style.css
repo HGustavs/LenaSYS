@@ -1897,6 +1897,7 @@ div .navButt:hover {
   color: var(--color-text-list);
   min-height: 100px;
   min-width: 200px;
+  max-width: fit-content;
   max-height: 80%;
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
@@ -2535,7 +2536,7 @@ label.login-label {
 .logoutBoxTable {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
-  margin-left: -2px;
+  margin: 10px 10px 0 10px;
   background-color: transparent;
 }
 
