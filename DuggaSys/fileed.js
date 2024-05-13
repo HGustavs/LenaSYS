@@ -454,15 +454,10 @@ function filePreviewClose(){
 }
 document.addEventListener('keyup', function (event) {
     if (event.key === 'Escape') {
-        let link = document.getElementById("upIcon").href;
-        let isPopupOpen = checkIfPopupIsOpen();
-        if (!isPopupOpen) {
-            window.location.assign(link);
-        }
-        filePreviewClose();
+        cancelPreview();
     }
     if (event.key === 'x') {
-        filePreviewClose();
+        cancelPreview();
     }
     // ---------------------------------------------------
     // Toggle to hide fab-button to click through it with CTRL
@@ -1034,19 +1029,4 @@ document.addEventListener('DOMContentLoaded', function (){
 
  function updateAce(data){
     editor.getSession().setValue(data);
-}
-//---------------------------------------------
-//Add all current and newly created popups/modules in allPopups for ESC button not to override
-function checkIfPopupIsOpen() {
-    let allPopups = [
-        "#addFile",
-        ".fileViewWindow",
-        ".previewWindow"
-    ];
-    for (let popup of allPopups) {
-        if ($(popup).css("display") !== "none") {
-            return true;
-        }
-    }
-    return false;
 }
