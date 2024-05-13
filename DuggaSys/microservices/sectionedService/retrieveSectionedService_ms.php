@@ -1,8 +1,11 @@
 <?php
 
 
-// Include basic application services!
+// Include basic application services
 include_once "../../../Shared/basic.php";
+
+// Include services for information retrieval
+include_once "getCourseVersions_ms.php";
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
@@ -190,49 +193,9 @@ function retrieveSectionedService($debug="NONE!",$opt,$pdo,$userid, $courseid, $
 
     $links=array();
 
-    $versions=array();
-    $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
-    // After column 'motd' exist on all releases the outer if-statement can be removed.
-    if(!$query->execute()) {
-        $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-        if(!$query->execute()) {
-            $error=$query->errorInfo();
-            $debug="Error reading courses".$error[2];
-        }else{
-            foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-                array_push(
-                    $versions,
-                    array(
-                        'cid' => $row['cid'],
-                        'coursecode' => $row['coursecode'],
-                        'vers' => $row['vers'],
-                        'versname' => $row['versname'],
-                        'coursename' => $row['coursename'],
-                        'coursenamealt' => $row['coursenamealt'],
-                        'startdate' => $row['startdate'],
-                        'enddate' => $row['enddate'],
-                    )
-                );
-            }
-        }
-    }else{
-        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-            array_push(
-                $versions,
-                array(
-                    'cid' => $row['cid'],
-                    'coursecode' => $row['coursecode'],
-                    'vers' => $row['vers'],
-                    'versname' => $row['versname'],
-                    'coursename' => $row['coursename'],
-                    'coursenamealt' => $row['coursenamealt'],
-                    'startdate' => $row['startdate'],
-                    'enddate' => $row['enddate'],
-                    'motd' => $row['motd']
-                )
-            );
-        }
-    }
+    // Retrieve Course Versions from microservice 'getCourseVersions_ms.php'
+    $versions = getCourseVersions($pdo);
+
     $codeexamples = array();
 
     if($ha || $studentTeacher){
@@ -270,49 +233,6 @@ function retrieveSectionedService($debug="NONE!",$opt,$pdo,$userid, $courseid, $
             array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename']));
         }
 
-        $versions=array();
-        $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
-        // After column 'motd' exist on all releases the outer if-statement can be removed.
-        if(!$query->execute()) {
-            $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-            if(!$query->execute()) {
-                $error=$query->errorInfo();
-                $debug="Error reading courses".$error[2];
-            }else{
-                foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-                    array_push(
-                        $versions,
-                        array(
-                            'cid' => $row['cid'],
-                            'coursecode' => $row['coursecode'],
-                            'vers' => $row['vers'],
-                            'versname' => $row['versname'],
-                            'coursename' => $row['coursename'],
-                            'coursenamealt' => $row['coursenamealt'],
-                            'startdate' => $row['startdate'],
-                            'enddate' => $row['enddate'],
-                        )
-                    );
-                }
-            }
-        }else{
-            foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-                array_push(
-                    $versions,
-                    array(
-                        'cid' => $row['cid'],
-                        'coursecode' => $row['coursecode'],
-                        'vers' => $row['vers'],
-                        'versname' => $row['versname'],
-                        'coursename' => $row['coursename'],
-                        'coursenamealt' => $row['coursenamealt'],
-                        'startdate' => $row['startdate'],
-                        'enddate' => $row['enddate'],
-                        'motd' => $row['motd']
-                    )
-                );
-            }
-        }
         $codeexamples=array();
 
         // New Example
