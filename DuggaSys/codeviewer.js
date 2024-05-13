@@ -77,7 +77,7 @@ function setup() {
 			cvers: cvers
 		}, "CODEVIEW");
 	} catch (e) {
-		alert("Error while setting up: " + e.message)
+		toast("error","Error while setting up: " + e.message, 10);
 	}
 }
 
@@ -268,7 +268,7 @@ function returned(data)
 
 	// Create boxes
 	if (retData['numbox'] > retData['box'].length) {
-		alert("Number of boxes is inconsistent\n" + retData['numbox'] + "\n" + retData['box'].length);
+		toast("error", "Number of boxes is inconsistent\n" + retData['numbox'] + "\n" + retData['box'].length, 10);
 	}
 
 	for (var i = 0; i < retData['numbox']; i++) {
@@ -484,7 +484,7 @@ function handleFiles(files, boxnumber) {
 		// This command is important to activate reader
 		console.log(reader.readAsText(file));
 	} else {
-		alert("FILETYPE [" + filetype + "] NOT SUPPORTED")
+		toast("error", "FILETYPE [" + filetype + "] NOT SUPPORTED", 10);
 	}
 
     reader.onload = event => {
@@ -950,7 +950,7 @@ function editImpRows(editType)
 
 	} else if (enterPress === false){
 		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
-		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
+		toast("error", "Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!", 10);
 	}
 }
 
@@ -1010,7 +1010,7 @@ function updateContent(file, content, boxnumber)
 				addedRows = [];
 				removedRows = [];
 			} catch (e) {
-				alert("Error when updating content: " + e.message);
+				toast("error","Error when updating content: " + e.message, 10);
 			}
 			console.log("Timeout");
 			setTimeout("location.reload()", 500); //SETBACK TO 500
@@ -1021,7 +1021,7 @@ function updateContent(file, content, boxnumber)
 				AJAXService("EDITTITLE", {exampleid: querystring['exampleid'], courseid: querystring['courseid'], boxid: box[0], boxtitle: document.querySelector("#boxtitle").textContent}, "BOXTITLE");
 				console.log("Ajaxservice, Qstring:Exampleid, Qstring:courseid; ", querystring[exampleid], querystring['courseid']);
 			} catch (e) {
-				alert("Error when updating content: " + e.message);
+				toast("error","Error when updating content: " + e.message, 10);
 			}
 		}
 	}
@@ -1484,7 +1484,7 @@ function maketoken(kind, val, from, to, rowno) {
 
 function error(str, val, row) {
 	var debug = "Tokenizer error: " + str + val + " at row " + row;
-	alert("Tokenizer Error: " + str + val + " at row " + row);
+	toast("error","Tokenizer Error: " + str + val + " at row " + row, 10);
 }
 
 //----------------------------------------------------------------------------------
@@ -2529,7 +2529,7 @@ function updateTemplate() {
 			content: content
 		}, "CODEVIEW");
 	} catch (e) {
-		alert("Error when updating template: " + e.message)
+		toast("error","Error when updating template: " + e.message, 10);
 	}
 }
 

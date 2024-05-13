@@ -61,7 +61,8 @@ function updateCourse() {
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch (data.status) {
 				case 403:
-					toast("error", data.status + " Error \nplease insert valid git key", 7);
+					toast("error", "Error " + data.status +  ": \nData limit reached, did not download files", 7);
+					closeWindows();
 					break;
 				case 422:
 					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
