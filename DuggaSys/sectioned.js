@@ -966,13 +966,10 @@ function prepareItem() {
 //----------------------------------------------------------------------------------
 
 function deleteItem(selectedItemList) {
-  // lid = item_lid ? item_lid : $("#lid").val();
-  // item = document.getElementById("lid" + lid);
-  // console.log(item);
 
   for(id of selectedItemList) {
     let row = document.getElementById(`I${id}`).parentNode;
-    console.log(row);
+    // console.log(row);
     row.style.display = "none";
     row.classList.add("deleted");
   }
@@ -991,7 +988,7 @@ function deleteItem(selectedItemList) {
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = selectedItemList.length - 1; i >= 0; --i) {
+  for (let i = selectedItemList.length - 1; i >= 0; --i) {
     AJAXService("DEL", {
       lid: selectedItemList.pop()
     }, "SECTION");
@@ -1003,8 +1000,8 @@ function deleteAll() {
 // Cancel deletion
 function cancelDelete() {
   clearTimeout(delTimer);
-  var deletedElements = document.querySelectorAll(".deleted")
-  for (i = 0; i < deletedElements.length; i++) {
+  let deletedElements = document.querySelectorAll(".deleted")
+  for (let i = 0; i < deletedElements.length; i++) {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
@@ -2064,15 +2061,6 @@ function returnedSection(data) {
 
     document.getElementById('Sectionlist').innerHTML += str;
     $("#newCourseVersion").css("display", "block");
-
-
-
-
-  }
-  
-  //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
-  for(var i = 0; i < delArr.length; i++){
-    document.getElementById("lid"+delArr[i]).style.display="none";
   }
 
   // Reset checkboxes
