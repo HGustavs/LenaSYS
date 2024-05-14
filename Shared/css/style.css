@@ -4037,6 +4037,9 @@ span.arrow {
 #accessTable td:nth-child(1), #quiz td:nth-child(1),#fileLink td:nth-child(1),#resultTable td:nth-child(1){
   text-align: center;
 }
+#edit___accessTable___tbl {
+  width: 25px;
+}
 
 #accessTable td span{
   padding: 0px;
@@ -4118,7 +4121,6 @@ div.reset-pw:hover{
   transition: 0.2s;
   filter: brightness(1.05);
 }
-
 
 .show{
   display:block;
@@ -9937,11 +9939,11 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper, #addUser .flexwrapper, #removeUser .flexwrapper  {
+#createUser .flexwrapper, #addUser .flexwrapper, #removeUser .flexwrapper, #editUser .flexwrapper  {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #addUser .flex-end, #removeUser .flex-end{
+#createUser .flex-end, #addUser .flex-end, #removeUser .flex-end, #editUser .flex-end{
   display: flex;
   justify-content: flex-end;
 }
