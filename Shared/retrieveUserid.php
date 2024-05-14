@@ -1,5 +1,5 @@
 <?php
-include_once ("../Shared/database.php");
+include_once ("./database.php");
 pdoConnect();
 
 $uname = strval($_GET['uname']);
