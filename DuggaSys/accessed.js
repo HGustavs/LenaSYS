@@ -104,6 +104,10 @@ function showRemoveUserPopup(id) {
 	loadUsersToDropdown(id);
 }
 
+function showEditUserPopup(id) {
+	$("#editUser").css("display", "flex");
+}
+
 function showCreateClassPopup() {
 	$("#createClass").css("display", "flex");
 }
@@ -130,6 +134,10 @@ function hideAddUserPopup() {
 
 function hideRemoveUserPopup() {
 	$("#removeUser").css("display", "none");
+}
+
+function hideEditUserPopup(id) {
+	$("#editUser").css("display", "none");
 }
 
 //----------------------------------------------------------------------------
@@ -554,6 +562,17 @@ function renderCell(col, celldata, cellid) {
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
 		str += "Reset PW";
+	} else if (col == "edit") {
+
+		if (parseFloat(obj.recent) < 1440) {
+			str = "<div class= 'new-user' style='display:block;margin:auto;float:none;text-align:center;'";
+		} else {
+			str = "<div style='display:block;margin:auto;float:none;text-align:center;'";
+		}
+		// When implementing onClick, place it here.
+		str += "'>";
+		str += "<img alt='settings icon' tabindex='0' class='whiteIcon' style='align-item: center;cursor: pointer;' src='../Shared/icons/Cogwheel.svg' 'title='Edit Server Settings' onclick='showEditUserPopup()'>";
+		str += "</div>";
 	} else if (col == "groups") {
 		if (obj.groups == null) {
 			tgroups = [];
@@ -599,12 +618,12 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
 	str = "";
 	if (status == -1) {
-		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0); applyEvenOddClasses();'>${colname}</span>`;
 	} else if (status == 0) {
-		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1); applyEvenOddClasses();'>
 		${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 	} else {
-		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0); applyEvenOddClasses();'>
 		${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 	}
 	addToSortDropdown(colname, col);
@@ -764,12 +783,13 @@ function returnedAccess(data) {
 			firstname: "First name",
 			lastname: "Last name",
 			modified: "Last Modified",
-			requestedpasswordchange: "Password"
+			requestedpasswordchange: "Password",
+			edit: "Edit"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	var colOrder = ["username","firstname", "lastname", "modified", "requestedpasswordchange"]
+	var colOrder = ["username","firstname", "lastname", "modified", "requestedpasswordchange", "edit"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
@@ -793,6 +813,7 @@ function returnedAccess(data) {
 	if (shouldReRender) {
 		shouldReRender = false;
 		myTable.renderTable();
+		applyEvenOddClasses();
 	}
 }
 
