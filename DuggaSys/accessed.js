@@ -106,7 +106,6 @@ function showRemoveUserPopup(id) {
 
 function showEditUserPopup(id) {
 	$("#editUser").css("display", "flex");
-	loadUsersToDropdown(id);
 }
 
 function showCreateClassPopup() {
