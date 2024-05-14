@@ -184,7 +184,7 @@
 		<div class='loginBox'>
 			<div>
 				<div class='loginBoxheader'>
-					<h3>Edit user</h3>
+					<h3>Edit user (placeholder)</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
 				<div class="content-wrapper">

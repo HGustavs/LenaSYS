@@ -4031,6 +4031,9 @@ span.arrow {
 #accessTable td:nth-child(1), #quiz td:nth-child(1),#fileLink td:nth-child(1),#resultTable td:nth-child(1){
   text-align: center;
 }
+#edit___accessTable___tbl {
+  width: 25px;
+}
 
 #accessTable td span{
   padding: 0px;
