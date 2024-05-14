@@ -30,6 +30,7 @@ $testsData = array(
                 'grptype' => 'Updated',
                 'deadline' => '2024-05-16 16:00:00',
                 'relativedeadline' => 'senare',
+                'pos' => '5',
                 'feedback' => 1,
                 'feedbackquestion' => 'Question updated',
                 'username' => 'mestr',
