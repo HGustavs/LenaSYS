@@ -86,7 +86,6 @@ __Shared microservices:__
 
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
-- isSuperUser_ms.php __==UNFINISHED==__
 - hasAccess_ms.php __==UNFINISHED==__
 - setActiveCourseversion_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -308,20 +307,6 @@ _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 
 ```sql
 SELECT username FROM user WHERE uid = :uid;
-```
-
-<br>
-
----
-
-<br>
-
-### isSuperUser
-Uses a function in Session.php. 
-```
-Returns superuser status of user
-@param int $userId User ID of the user to look up
-@return true false. True if superuser false if not
 ```
 
 <br>
