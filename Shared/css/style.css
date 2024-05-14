@@ -7253,13 +7253,27 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 18px 0px 0px;
-  margin: 0px 0px 0px -3px;
-  left: auto;
+  padding: 28px 25px 0px 0px;
+  margin: 0px;
+  left: -55px;
   width: 100%;
   list-style: none;
   text-align: center;
-  top: 25px;
+  display: none;
+}
+
+#olFabBtnList2{
+  height:fit-content;
+}
+
+#FABStatic2{
+  z-index:2;
+}
+
+@media only screen and (max-width: 430px) {
+  .fab-btn-list2 {
+    left: 55px;
+  }
 }
 
 @media screen and (max-height: 600px) {
