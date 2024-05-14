@@ -13,9 +13,9 @@ $testsData = array(
                 'versid' => 333,
                 'versname' => 'HT10',
                 'coursecode' => 'UNK',
-                'startdate'	"2024-05-07",
-                'enddate' =>"2024-05-24",
-                'motd' =>	"UNK",
+                'startdate'	'2024-05-07',
+                'enddate' =>'2024-05-24',
+                'motd' =>	'UNK',
                 'opt' => 'UPDATEVRS',
               
             )
