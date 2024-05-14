@@ -3,8 +3,8 @@
     session_start();
     
     // Include basic application services!
-    include_once "../Shared/sessions.php";
-    include_once "../Shared/basic.php";
+    include_once "./sessions.php";
+    include_once "./basic.php";
 
     // Connect to database
     pdoConnect();
