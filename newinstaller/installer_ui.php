@@ -18,9 +18,11 @@
 			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
 		</div>
 		<div class="wrapper">
-			<?php breadcrumb(5, 1); ?>
+			<?php breadcrumb(6, 1); ?>
 			<div class="content">
-				<?php header2("Select your OS installer"); ?>
+				<?php 
+					header2("Select your OS installer");
+				?>
 				<div class="inner-wrapper">
 					<?php
 						$buttons = [
@@ -43,11 +45,12 @@
 		</div>
 		<div class="wrapper">
 			<?php
-				breadcrumb(5, 2);
+				breadcrumb(6, 2);
 			?>
 			<div class="content">
 				<?php
 					header2("Select installation options");
+					bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.");
 				?>
 				<div class="inner-wrapper">
 					<?php
@@ -73,7 +76,7 @@
 		</div>
 		<div class="wrapper">
 			<?php
-				breadcrumb(5, 3);
+				breadcrumb(6, 3);
 			?>
 			<div class="content">
 				<?php
@@ -107,7 +110,7 @@
 		</div>
 		<div class="wrapper">
 			<?php
-				breadcrumb(5, 4);
+				breadcrumb(6, 4);
 			?>
 			<div class="content">
 				<?php
@@ -130,7 +133,54 @@
 	</div>
 
 	<div id="page5" class="page">
+		<div class="banner">
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
+		<div class="wrapper">
+			<?php
+				breadcrumb(6, 5);
+			?>
+			<div class="content">
+				<?php
+					header2("Prepopulate with sample data");
+					bodyText("Select the sample data you want to prepopulate LenaSYS with.");
+				?>
+				<div class="inner-wrapper">
+					<div class="input-flex">
+						<?php
+							$buttons = [
+								'test-course' => 'Include test-course',
+								'demo-course' => 'Include demo-course',
+								'test-files' => 'Include test-files',
+								'language-support' => 'Include language-support'
+							];
+							$active = ['test-course', 'demo-course', 'test-files', 'language-support'];
 
+							checkBoxes('creation-settings', $buttons, $active);
+
+							$buttons = [
+								'lang-html' => 'HTML',
+								'lang-php' => 'PHP',
+								'lang-js' => 'JAVASCRIPT',
+								'lang-plain' => 'PLAIN TEXT',
+								'lang-sql' => 'SQL',
+								'lang-sr' => 'SR'
+							];
+							$active = ['lang-html', 'lang-php', 'lang-js', 'lang-plain', 'lang-sql', 'lang-sr'];
+
+							checkBoxesWithColumns('creation-settings', $buttons, $active);
+						?>
+					</div>
+				</div>
+			</div>
+			<?php
+				navigationButtons(4, 6);
+			?>
+		</div>
+	</div>
+
+	<div id="page6" class="page">
+		
 	</div>
 
 </body>

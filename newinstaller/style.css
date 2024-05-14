@@ -132,6 +132,16 @@ html, body {
     grid-row-gap: 1rem;
 }
 
+/* Same as .input-grid, but specific for the sub-grid used for language support checkboxes found at page 5 */
+.input-sub-grid {
+    display: grid;
+    margin-left: 2rem;
+    grid-template-columns: 8rem 8rem;
+    grid-template-rows: repeat(auto, 1fr);
+    grid-column-gap: 2rem;
+    grid-row-gap: 0.25rem;
+}
+
 .input-flex {
     display: flex;
     flex-direction: column;
@@ -170,6 +180,7 @@ html, body {
 /*  Lets the last cell of the .input-grid span 2 columns */
 .grid-element-span {
     display: grid;
+    width: max-content;
     grid-area: 4 / 1 / 5 / 3;
     grid-column-gap: 2rem; /* Keeps current horizontal gap */
     grid-row-gap: 1rem; /* Increases vertical gap between grid items */
@@ -224,16 +235,21 @@ input[type=text]:focus {
     display: flex;
     align-items: flex-start;
     font-size: var(--text-medium);
+    cursor: pointer;
 }
 
 .checkbox label, .radiobutton label {
-    margin-left: 0.5rem;
-    font-family: var(--body-font)
+    padding-left: 0.5rem;
+    font-family: var(--body-font);
+    user-select: none;
+    cursor: pointer;
 }
 
 input[type=checkbox], input[type=radio] {
     margin: 0.25rem;
+    margin-right: 0;
     accent-color: var(--primary-color);
+    cursor: pointer;
 }
 
 .warning {

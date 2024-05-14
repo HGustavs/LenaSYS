@@ -1,9 +1,13 @@
 let progressInfo = document.getElementById("progress");
 let progressPercentage = document.getElementById("progressPercentage");
 let progressBar = document.getElementById("progressBar");
+
+let checkboxToggle = document.getElementById("language-support");
+
 const getCurrentValue = () => parseInt(progressBar.value);
 
 document.addEventListener("DOMContentLoaded", function() {
+    // Navigation functionality to handle SPA navigations
     function navigateTo(pageId) {
         // Hide all pages
         document.querySelectorAll('.page').forEach(page => {
@@ -28,8 +32,34 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    //start_installer(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}));
+    // Function to toggle language support checkboxes clickable or not.
+    function updateCheckboxState() {
+        // Gets all checkboxes within the input-sub-grid div.
+        let subCheckboxes = document.querySelectorAll("#page5 div.input-sub-grid input");
+        let subCheckboxText = document.querySelectorAll("#page5 div.input-sub-grid label");
 
+        // Checks every element with classname checkbox within input-sub-grid class.
+        subCheckboxes.forEach(checkbox => {
+            if (checkboxToggle.checked) {
+                checkbox.disabled = false;
+            } else {
+                checkbox.disabled = true;
+            }
+        });
+
+        subCheckboxText.forEach(checkboxText => {
+            if (checkboxToggle.checked) {
+                checkboxText.style.opacity = '1';
+            } else {
+                checkboxText.style.opacity = '0.7';
+            }
+        });
+    }
+
+    // Add eventlistener to the last checkbox, this is the test-data checkbox from page 5.
+    checkboxToggle.addEventListener('click', updateCheckboxState);
+
+    //start_installer(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}));
     function start_installer(settings) {
         fetch('installer.php', {
             method: 'POST',
