@@ -68,7 +68,7 @@
 	</div>
 
 	<div id="page3" class="page">
-	<div class="banner">
+		<div class="banner">
 			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
 		</div>
 		<div class="wrapper">
@@ -102,7 +102,31 @@
 	</div>
 
 	<div id="page4" class="page">
-
+	<div class="banner">
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
+		<div class="wrapper">
+			<?php
+				breadcrumb(5, 4);
+			?>
+			<div class="content">
+				<?php
+					header2("Enter root user credentials");
+					bodyText("Provide the credentials for the database root user");
+				?>
+				<div class="inner-wrapper">
+					<div class="input-flex">
+						<?php
+							inputField("root-user", "Root username:");
+							inputField("root-password", "Root password:");
+						?>
+					</div>
+				</div>
+			</div>
+			<?php
+				navigationButtons(3, 5);
+			?>
+		</div>
 	</div>
 
 	<div id="page5" class="page">
