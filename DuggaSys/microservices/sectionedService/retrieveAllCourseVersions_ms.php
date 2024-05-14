@@ -18,7 +18,6 @@ $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
 
-
 if (strcmp($coursevers, "null")!==0) {
 	// Fetches the course versions for a particular course id
 	$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
