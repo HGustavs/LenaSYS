@@ -650,6 +650,7 @@ function showSaveButton() {
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
+
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
@@ -665,6 +666,9 @@ function confirmBox(operation, item = null) {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
+    if(!selectedItemList.includes(active_lid)){
+      selectedItemList.push(active_lid); // Push clicked item to selectedItemList before its items are deleted
+    }
     deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
@@ -750,11 +754,10 @@ function markedItems(item = null) {
         }
       } else if (tempItem == active_lid) sectionStart = true;
     });
-
   }
 
-
   console.log("Active lid: " + active_lid);
+  
   if (selectedItemList.length != 0) {
     for (let i = 0; i < selectedItemList.length; i++) {
       if (selectedItemList[i] === active_lid) {
@@ -767,7 +770,6 @@ function markedItems(item = null) {
         if (selectedItemList[i] === subItems[j]) {
           $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
           selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
         }
       }
     } if (removed != true) {
@@ -960,30 +962,33 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = []) {
-  for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val();
-    item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
-    item.classList.add("deleted");
-  
-    document.querySelector("#undoButton").style.display = "block";
-  }
+function deleteItem(selectedItemList) {
 
-  toast("undo", "Undo deletion?", 15, "cancelDelete();");
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
+  for(id of selectedItemList) {
+    let row = document.getElementById(`I${id}`).parentNode;
+    // console.log(row);
+    row.style.display = "none";
+    row.classList.add("deleted");
+  }
+  
+  // Makes deletefunction sleep for the amount of time toast is active(value of undoTime).
+  let undoTime = 5;
+
+  document.querySelector("#undoButton").style.display = "block";
+  toast("undo", "Undo deletion?", undoTime, "cancelDelete();");
   delArr.push(lid);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);
+  }, undoTime * 1000);
+  
 }
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
-      lid: delArr.pop()
+  for (let i = selectedItemList.length - 1; i >= 0; --i) {
+    AJAXService("DEL", {
+      lid: selectedItemList.pop()
     }, "SECTION");
   }
   $("#editSection").css("display", "none");
@@ -993,8 +998,8 @@ function deleteAll() {
 // Cancel deletion
 function cancelDelete() {
   clearTimeout(delTimer);
-  var deletedElements = document.querySelectorAll(".deleted")
-  for (i = 0; i < deletedElements.length; i++) {
+  let deletedElements = document.querySelectorAll(".deleted")
+  for (let i = 0; i < deletedElements.length; i++) {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
@@ -1569,12 +1574,12 @@ function returnedSection(data) {
             if (itemKind === 3) {
               if (isLoggedIn) {
                 str += "<td class='LightBox" + hideState + "'>";
-                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
               }
             } else if (itemKind === 4) {
               if (isLoggedIn) {
                 str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
               }
             }
             str += "</td>";
@@ -1584,7 +1589,7 @@ function returnedSection(data) {
         if (retdata['writeaccess']) {
           if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
             str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
 
           }
           str += "</td>";
@@ -1625,7 +1630,7 @@ function returnedSection(data) {
           if (isLoggedIn) {
             // Styling for Section row
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
           }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
@@ -1640,7 +1645,7 @@ function returnedSection(data) {
         } else if (itemKind === 3) {
           if (retdata['writeaccess']) {
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' title='Quiz' src='../Shared/icons/PenT.svg'></div>";
           }
 
           if (item['highscoremode'] != 0 && itemKind == 3) {
@@ -1652,7 +1657,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 4) {
           str += "<td class='LightBoxFilled" + hideState + "'>";
-          str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
+          str += "<div ><img alt='pen icon dugga' title='Moment' src='../Shared/icons/list_docfiles.svg'></div>";
 
           // New moment bool equals true
           momentexists = item['lid'];
@@ -2054,15 +2059,6 @@ function returnedSection(data) {
 
     document.getElementById('Sectionlist').innerHTML += str;
     $("#newCourseVersion").css("display", "block");
-
-
-
-
-  }
-  
-  //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
-  for(var i = 0; i < delArr.length; i++){
-    document.getElementById("lid"+delArr[i]).style.display="none";
   }
 
   // Reset checkboxes
@@ -3864,7 +3860,7 @@ function validateForm(formid) {
     }
     // If all information is correct
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
-      alert('New version created');
+      toast('success','New version created', 5);
       createVersion();
       $('#newCourseVersion input').val("");
 
@@ -3885,9 +3881,9 @@ function validateForm(formid) {
 
     // If all information is correct
     if (window.bool4 === true && window.bool6 === true && window.bool9 === true) {
-      alert('Version updated');
       updateVersion();
       resetMOTDCookieForCurrentCourse();
+      toast('success','Version updated', 7);
     } else {
       toast("error","You have entered incorrect information",7);
     }
@@ -3898,6 +3894,7 @@ function validateForm(formid) {
     var repoKey = $("#gitAPIKey").val();
     var cid = $("#cidTrue").val();
     if (repoLink) {
+      //Check if fetchGitHubRepo returns true
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
