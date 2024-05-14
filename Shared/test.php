@@ -62,7 +62,7 @@ function doDBQuery($query, $data, $testsData, $testname)
     }
     $result = "Error executing query";
     // DB credentials
-    include_once __DIR__ . "/../../coursesyspw.php";
+    include_once "./coursesyspw.php";
 
     // Connect to DB
     try {
