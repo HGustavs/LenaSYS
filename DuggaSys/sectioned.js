@@ -2288,7 +2288,7 @@ function drawSwimlanes() {
 
   var momentno = 0;
 
-  // If the drawswimlane exist it will be called here
+  // If the drawswimlane exist it will be called here 
   if (typeof drawSwimlanes === 'function') {
   } else {
     console.log("drawSwimlanes function is not available");
