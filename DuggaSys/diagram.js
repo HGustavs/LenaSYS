@@ -1916,22 +1916,24 @@ function storeDiagramInLocalStorage(key) {
             localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
         } else {
             document.getElementById('serverCheck').checked = false;
-            saveToServer(localDiagrams[key]);
+            saveToServer();
         }
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
 
-async function saveToServer(diagram) {
+async function saveToServer() {
     // create a bigger ID in order to hold more files
     // bad idea to generate a new ID each time, an ID should be made in the beginning and cached instead
     const id = makeRandomID() + makeRandomID();;
     const data = {
         id: id,
         extension: "json",
+        path: "saved_diagrams/",
         diagram: stateMachine.historyLog
     }
+    // save a json file
     await $.ajax({
         method: "POST",
         url: "./diagram/backend/createFile.php",
@@ -1939,14 +1941,15 @@ async function saveToServer(diagram) {
     }).done(response => {
         console.log(response);
     });
-    
+    /*
+    // delete a json file 
     await $.ajax({
         method: "POST",
         url: "./diagram/backend/removeFile.php",
         data: data
     }).done(response => {
         console.log(response);
-    });
+    });*/
 }
 
 /**
