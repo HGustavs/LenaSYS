@@ -3599,6 +3599,7 @@ function validateDate2(ddate, dialogid) {
   return false;
 }
 
+
 function validateSectionName(name,dialog) {
   initInputColorTheme();
   var element = document.getElementById(name);
