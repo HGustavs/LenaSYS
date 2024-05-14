@@ -1187,7 +1187,9 @@ async function newItem(itemtitle) {
     } else if (element.tagName == 'SPAN') { //this is for created messages
       setCreatedDuggaAnimation(element, 'SPAN');
     }
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 200);
+
   // Duration time for the alert before remove
   setTimeout(function () {
     $("#createAlert").removeClass("createAlertToggle");
