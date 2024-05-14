@@ -1,7 +1,10 @@
 <?php
-//echo print_r($_POST);
-$file = fopen("diagram.json", "w") or die("failed");
-fwrite($file, json_encode($_POST)."\n");
+if (!isset($_POST["id"])) {
+    echo "missing id";
+}
+// create and write to the file
+$file = fopen("diagram_".$_POST["id"].".".$_POST["extension"], "w") or die("failed");
+fwrite($file, json_encode($_POST['diagram'])."\n");
 fclose($file);
-echo "file created";
+
 ?>

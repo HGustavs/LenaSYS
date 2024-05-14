@@ -1923,10 +1923,11 @@ function storeDiagramInLocalStorage(key) {
 }
 
 function saveToServer(diagram) {
-    //console.log(diagram);
-    const id = makeRandomID();
+    // create a bigger ID in order to hold more files
+    const id = makeRandomID() + makeRandomID();;
     const data = {
         id: id,
+        extension: "json",
         diagram: stateMachine.historyLog
     }
     $.ajax({
