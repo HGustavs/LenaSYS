@@ -1136,19 +1136,23 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php";
 				break;
 			case "DEL":
-				serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
+				serviceURL= "sectionedservice.php"; // Change when possible
+				//serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
 				break;
 			case "NEW":
-				serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
+				serviceURL= "sectionedservice.php"; // Change when possible
+				//serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
 				break;
 			case "REORDER":
 				serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
 				break;
 			case "UPDATE":
-				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
+				serviceURL= "sectionedservice.php"; // Change when possible	
+				//serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
 				break;
 			case "UPDATETABS":
-				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
+				serviceURL= "sectionedservice.php"; // Change when possible	
+				//serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
 				break;
 			case "UPDATEDEADLINE":
 				serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
@@ -1171,8 +1175,9 @@ function AJAXService(opt,apara,kind)
 			case "CHGVERS":
 				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
 				break;
-			case "get":
-				serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";//Skapa en microservice till denna.
+			case "get":	
+				serviceURL= "sectionedservice.php"; // Change when possible
+				//serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php"; //Skapa en microservice till denna.
 				break;
 			default:
 				serviceURL= "sectionedservice.php";
