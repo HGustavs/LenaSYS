@@ -39,9 +39,9 @@ if(strcmp('EDITCONTENT',$opt)===0) {
             $query = $pdo->prepare("INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (:boxid,:exampleid,:istart,:iend,:uid);");
             $query->bindValue(':boxid', $boxId);
             $query->bindValue(':exampleid', $exampleId);
-            $query->bindValue(':istart', $row[1]);
-            $query->bindValue(':iend', $row[2]);
-            $query->bindValue(':uid', $_SESSION['uid']);
+            $query->bindValue(':istart', $row[0]);
+            $query->bindValue(':iend', $row[1]);
+            $query->bindValue(':uid', $userid);
             $query->execute();
         }
     }
@@ -52,9 +52,9 @@ if(strcmp('EDITCONTENT',$opt)===0) {
             $row = explode(",", $match);
             $query = $pdo->prepare("DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;");
             $query->bindValue(':boxid', $boxId);
-        $query->bindValue(':exampleid', $exampleId);
-            $query->bindValue(':istart', $row[1]);
-            $query->bindValue(':iend', $row[2]);
+            $query->bindValue(':exampleid', $exampleId);
+            $query->bindValue(':istart', $row[0]);
+            $query->bindValue(':iend', $row[1]);
             $query->execute();
         }
     }
