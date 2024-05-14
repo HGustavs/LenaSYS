@@ -2931,6 +2931,11 @@ label.login-label {
   border-width: 2px;
 }
 
+.color-change-neutral{
+  border-color: var(--color-border-2);
+  border-width: 2px;
+}
+
 input.option {
   float: left;
 }
