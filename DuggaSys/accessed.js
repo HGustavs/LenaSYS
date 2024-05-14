@@ -535,12 +535,12 @@ function renderCell(col, celldata, cellid) {
 function renderSortOptions(col, status, colname) {
 	str = "";
 	if (status == -1) {
-		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>${colname}</span>`;
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0); applyEvenOddClasses();'>${colname}</span>`;
 	} else if (status == 0) {
-		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1)'>
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",1); applyEvenOddClasses();'>
 		${colname}<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>`;
 	} else {
-		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0)'>
+		str += `<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"${col}\",0); applyEvenOddClasses();'>
 		${colname}<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>`;
 	}
 	addToSortDropdown(colname, col);
@@ -729,6 +729,7 @@ function returnedAccess(data) {
 	if (shouldReRender) {
 		shouldReRender = false;
 		myTable.renderTable();
+		applyEvenOddClasses();
 	}
 }
 
