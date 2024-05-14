@@ -2284,6 +2284,13 @@ function drawSwimlanes() {
 
   var momentno = 0;
 
+   // If the drawswimlane exist it will be called here
+   if (typeof drawSwimlanes === 'function') {
+  } else {
+    console.log("drawSwimlanes function is not available");
+  }
+
+
   for (var i = 0; i < retdata['entries'].length; i++) {
     var deadline = new Date(retdata['entries'][i].deadline);
     var start = new Date(retdata['entries'][i].qstart);
