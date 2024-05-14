@@ -1108,6 +1108,22 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
+            // Resize equally in both directions by modifying delta
+            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState) {
+                let delta;
+                if (startNodeUpLeft) {
+                    delta = Math.max(deltaX, deltaY);
+                } else if (startNodeDownRight) {
+                    delta = Math.min(deltaX, deltaY);
+                } else if (startNodeDownLeft) {
+                    delta = Math.max(deltaX, -deltaY);
+                } else if (startNodeUpRight) {
+                    delta = Math.max(-deltaX, deltaY);
+                }
+                deltaX = (startNodeUpRight) ? -delta : delta;
+                deltaY = (startNodeDownLeft) ? -delta : delta;
+            }
+
             // Functionality Left/Right resize
             if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 let tmpW = elementData.width;
