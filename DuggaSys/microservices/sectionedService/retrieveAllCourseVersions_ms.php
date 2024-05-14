@@ -1,7 +1,7 @@
 <?php
 
 //
-// This is a microservice to get every courseversion of courses so we seed groups to every courseversion
+// This microservice retrieves all the course version for a particular and calculates the number of groups
 //
 
 date_default_timezone_set("Europe/Stockholm");
@@ -21,7 +21,7 @@ $coursevers=getOP('coursevers');
 
 
 if (strcmp($coursevers, "null")!==0) {
-	// Get every coursevers of courses so we seed groups to every courseversion
+	// Fetches the course versions for a particular course id
 	$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
 	$stmt->bindParam(":cid", $courseid);
 	$stmt->execute();
