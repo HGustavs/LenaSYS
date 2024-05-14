@@ -7078,6 +7078,10 @@ only screen and (max-device-width: 568px) {
   z-index: 1000;
 }
 
+#FABStatic2{
+  z-index:10000;
+}
+
 @media only screen and (max-width: 430px) {
   .fab-btn-list2 {
     left: 55px;
