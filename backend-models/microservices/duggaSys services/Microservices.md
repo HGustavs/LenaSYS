@@ -86,7 +86,6 @@ __Shared microservices:__
 
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
-- hasAccess_ms.php __==UNFINISHED==__
 - setActiveCourseversion_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
@@ -307,25 +306,6 @@ _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 
 ```sql
 SELECT username FROM user WHERE uid = :uid;
-```
-
-<br>
-
----
-
-<br>
-
-### hasAccess
-
-This function is currently housed in session.php and might therefore not be something that should be transitioned to a micro service..
-
-```
-Check if a specified user ID has the requested access on a specified course
-
-@param int __$userId__ User ID of the user to look up
-@param int $courseId ID of the course to look up access for
-@param string $access_type A single letter denoting read or write access (r and w respectively)
-@return bool Returns true if the user has the requested access on the course and false if they don't.
 ```
 
 <br>
