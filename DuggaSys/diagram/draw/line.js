@@ -514,35 +514,31 @@ function calculateArrowBase(from, to, size) {
  * @param {Point} to The coordinates/Point where the line between @param base and the element end
  * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
  */
-function rotateArrowPoint(base, to, clockwise) {
-    /*
-        To create the actual arrow we need the corners.
-        We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
-        The rotation is done by applying the vector rotation math that states:
-        Point(x,y) rotated 90 degrees clockwise = Point(y, -1 * x) or,
-        Point(x,y) rotated 90 degrees counter-clockwise = Point(-1 * y, x).
-        The "rotated" value can then be added to the base to get a corner.
-    */
-    if (clockwise) {
-        let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
-        point.add(base);
-        return point;
-    } else {
-        let point = new Point(-1 * (to.y - base.y) / 2, (to.x - base.x) / 2);
-        point.add(base);
-        return point;
-    }
-}
+ function rotateArrowPoint(base, point, clockwise) {
+    const angle = Math.PI / 4; 
+    const direction = clockwise ? 1 : -1; 
+    const dx = point.x - base.x;
+    const dy = point.y - base.y;
+ 
+ 
+        return {
+            x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
+            y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
+        };
+     }
+     
 
-function drawArrowPoint(base, point, x, y, lineColor) {
+function drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
-    return `<polygon points=' 
-        ${right.x} ${right.y},
-        ${point.x} ${point.y}, 
-        ${left.x} ${left.y}' 
-        stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-}
+ 
+    return `
+    <svg width="100" height="100">
+        <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
+            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
+    </svg>
+    `;
+ }
 
 
 /**
