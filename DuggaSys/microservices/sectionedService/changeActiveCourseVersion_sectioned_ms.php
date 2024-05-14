@@ -24,6 +24,7 @@ $courseid = getOP('cid');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
+$debug="NONE!";
 
 // Authorization
 $isSuperUserVar = isSuperUser($userid);
