@@ -7076,10 +7076,11 @@ only screen and (max-device-width: 568px) {
   list-style: none;
   text-align: center;
   z-index: 1000;
+  height:fit-content;
 }
 
 #FABStatic2{
-  z-index:10000;
+  z-index:2;
 }
 
 @media only screen and (max-width: 430px) {
