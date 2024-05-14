@@ -9,6 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -25,4 +26,13 @@ if (strcmp($coursevers, "null")!==0) {
 	$stmt->execute();
 	$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 	$totalGroups = 24 * count($courseversions);
+
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="ERROR: Failed to retrieve course versions. Details: ".$error[2];
+	}
 }
+
+$data = retrieveSectionedService($debug, $opt, $pdo, null, $courseid, $coursevers, null);
+echo json_encode($data);
+return;
