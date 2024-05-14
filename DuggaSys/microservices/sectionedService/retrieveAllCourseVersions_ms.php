@@ -1,7 +1,7 @@
 <?php
 
 //
-// This microservice retrieves all the course version for a particular and calculates the number of groups
+// This microservice retrieves all the course version for a particular course and calculates the number of groups
 //
 
 date_default_timezone_set("Europe/Stockholm");
