@@ -102,7 +102,7 @@
 	</div>
 
 	<div id="page4" class="page">
-	<div class="banner">
+		<div class="banner">
 			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
 		</div>
 		<div class="wrapper">
