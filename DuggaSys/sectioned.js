@@ -2275,11 +2275,6 @@ function returnedHighscore(data) {
 // drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
-if (typeof drawSwimlanes === 'function') {
-} else {
-  console.log("drawSwimlanes function is not available");
-}
-
 function drawSwimlanes() {
   // Resets the swimlane SVG
   document.getElementById("swimlaneSVG").innerHTML = "";
@@ -2293,7 +2288,7 @@ function drawSwimlanes() {
 
   var momentno = 0;
 
-  //kollar om drawswimlane blir kallad
+  // If the drawswimlane exist it will be called here
   if (typeof drawSwimlanes === 'function') {
   } else {
     console.log("drawSwimlanes function is not available");
