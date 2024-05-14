@@ -104,6 +104,11 @@ function showRemoveUserPopup(id) {
 	loadUsersToDropdown(id);
 }
 
+function showEditUserPopup(id) {
+	$("#editUser").css("display", "flex");
+	loadUsersToDropdown(id);
+}
+
 function showCreateClassPopup() {
 	$("#createClass").css("display", "flex");
 }
@@ -130,6 +135,10 @@ function hideAddUserPopup() {
 
 function hideRemoveUserPopup() {
 	$("#removeUser").css("display", "none");
+}
+
+function hideEditUserPopup(id) {
+	$("#editUser").css("display", "none");
 }
 
 //----------------------------------------------------------------------------
@@ -544,18 +553,6 @@ function renderCell(col, celldata, cellid) {
 		str = `<div class='access-dropdown' id='${col}_${obj.uid}'><Div >${trueTeacher}</Div>
 		<img class='sortingArrow' src='../Shared/icons/desc_black.svg'/>
 		${makeDivItemStudent(obj.access, ["Teacher", "Student", "Student teacher"], ["W", "R", "ST"])}</select>`;
-	} else if (col == "edit") {
-
-		if (parseFloat(obj.recent) < 1440) {
-			str = "<div class='submit-button editAccess new-user' style='display:block;margin:auto;float:none;'";
-		} else {
-			str = "<div class='submit-button editAccess' style='display:block;margin:auto;float:none;'";
-		}
-		// When implementing onClick, place it here.
-		str += "'>";
-		str += "Edit";
-		str += "<img alt='settings icon' tabindex='0' class='whiteIcon' style='margin-left:5px;align-item: center;justify-content: center;vertical-align: middle;' src='../Shared/icons/Cogwheel.svg' 'title='Edit Server Settings'>"
-		str += "</div>";
 	} else if (col == "requestedpasswordchange") {
 
 		if (parseFloat(obj.recent) < 1440) {
@@ -566,6 +563,17 @@ function renderCell(col, celldata, cellid) {
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 		str += "resetPw(\"" + obj.uid + "\",\"" + obj.username + "\"); return false;'>";
 		str += "Reset PW";
+	} else if (col == "edit") {
+
+		if (parseFloat(obj.recent) < 1440) {
+			str = "<div class= 'new-user' style='display:block;margin:auto;float:none;text-align:center;'";
+		} else {
+			str = "<div style='display:block;margin:auto;float:none;text-align:center;'";
+		}
+		// When implementing onClick, place it here.
+		str += "'>";
+		str += "<img alt='settings icon' tabindex='0' class='whiteIcon' style='align-item: center;cursor: pointer;' src='../Shared/icons/Cogwheel.svg' 'title='Edit Server Settings' onclick='showEditUserPopup()'>";
+		str += "</div>";
 	} else if (col == "groups") {
 		if (obj.groups == null) {
 			tgroups = [];

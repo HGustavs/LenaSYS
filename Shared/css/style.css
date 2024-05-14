@@ -4105,20 +4105,6 @@ div.reset-pw:hover{
   filter: brightness(1.05);
 }
 
-div.editAccess{
-  width:30%;
-  padding: 0px 5px;
-  margin-left:20px;
-  background-color: var(--color-accent);
-  color: var(--color-text-primary-darker);
-}
-div.editAccess:hover{
-  background-color: var(--color-accent-hover);
-  transition: 0.2s;
-  filter: brightness(1.05);
-}
-
-
 .show{
   display:block;
 }
