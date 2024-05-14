@@ -524,7 +524,7 @@ svg text {
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
     overflow:scroll;
 }
-.dugga-col .loginBoxheader{
+.dugga-col .formBoxHeader{
     padding:5px;
     padding-bottom:10px;
     margin-top:0; 
@@ -692,7 +692,7 @@ svg text {
  #transformInfoBox {
 	 width: 100%;
  }
- #transformInfoBox .loginBoxheader {
+ #transformInfoBox .formBoxHeader {
 	 width: 100%;
  }
  .transformContainer {

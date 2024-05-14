@@ -155,7 +155,7 @@ function toggleloginnewpass(){
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
-		$("#loginBox").css("display", "flex");
+		$("#formBox").css("display", "flex");
     $("#login").hide();
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
@@ -172,7 +172,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#formBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -181,7 +181,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#formBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -1699,7 +1699,7 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	$("#loginBox").css("display","flex");
+	$("#formBox").css("display","flex");
 	/*$("#overlay").css("display","block");*/
 	$("#username").focus();
 
@@ -1715,7 +1715,7 @@ function showLoginPopup()
 
 function hideLoginPopup()
 {
-		$("#loginBox").css("display","none");
+		$("#formBox").css("display","none");
 		/*$("#overlay").css("display","none");*/
 
 		window.removeEventListener("keypress", loginEventHandler, false);
