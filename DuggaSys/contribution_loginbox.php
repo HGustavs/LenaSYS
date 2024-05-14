@@ -62,9 +62,9 @@
 <div id="overlay" style="display:none"></div>
 
 	<!-- Login Box Start! -->
-<div id='loginBox' class='loginBoxContainer' style="display:none;">
-        <div id='login' class='loginBox' style="display:"> <!-- Initial login screen display -->
-            <div class="loginBoxheader">
+<div id='formBox' class='loginBoxContainer' style="display:none;">
+        <div id='login' class='formBox' style="display:"> <!-- Initial login screen display -->
+            <div class="formBoxHeader">
                 <h3>Login</h3>
                 <div class="cursorPointer" onclick="contribution_closeLogin();">x</div>
             </div>
@@ -101,8 +101,8 @@
 
     <!-- User exists login start -->
 
-    <div id='UserExistslogin' class='loginBox' style="display:none"> <!-- Initial login screen display -->
-            <div class="loginBoxheader">
+    <div id='UserExistslogin' class='formBox' style="display:none"> <!-- Initial login screen display -->
+            <div class="formBoxHeader">
                 <h3>Login</h3>
                 <div class="cursorPointer" onclick="contribution_closeLogin();">x</div>
             </div>
@@ -146,8 +146,8 @@
 
     <!-- New git-user creation start -->
 
-    <div id='newGit-UserCreation' class='loginBox' style="display:none"> <!-- Initial login screen display -->
-            <div class="loginBoxheader">
+    <div id='newGit-UserCreation' class='formBox' style="display:none"> <!-- Initial login screen display -->
+            <div class="formBoxHeader">
                 <h3>Login</h3>
                 <div class="cursorPointer" onclick="contribution_closeLogin();">x</div>
             </div>

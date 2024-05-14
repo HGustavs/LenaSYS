@@ -1026,8 +1026,8 @@
     <div class="loadModalOverlay hiddenLoad"></div>
 
     <div id="overrideContainer" class="loginBoxContainer" style="display:none">
-        <div class="loginBox">
-            <div class="loginBoxheader">
+        <div class="formBox">
+            <div class="formBoxHeader">
                 <h3>
                     Filename already exists
                 </h3>
@@ -1206,8 +1206,8 @@
         <p>Press "ESCAPE" to exit the replay-mode.</p>
     </div>
     <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
-        <div class="loginBox">
-            <div class="loginBoxheader">
+        <div class="formBox">
+            <div class="formBoxHeader">
                 <h3>
                     Save current diagram as
                 </h3>

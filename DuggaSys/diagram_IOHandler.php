@@ -146,8 +146,8 @@ of which folder in the repository 'save' on the server to load.
       ?>
 
       <!-- The Appearance menu. Default state is display: none; -->
-      <div id="appearance" class='loginBox' style='display: none;'>
-          <div class='loginBoxheader'>
+      <div id="appearance" class='formBox' style='display: none;'>
+          <div class='formBoxHeader'>
               <h3>Apperance</h3>
               <div class='cursorPointer' onclick='toggleApperanceElement()'>x</div>
           </div>
