@@ -3596,7 +3596,6 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name) {
-  initInputColorTheme();
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
