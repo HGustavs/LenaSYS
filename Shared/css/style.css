@@ -885,6 +885,7 @@ p {
   color: var(--color-text-header);
   background-color: #50a750;
   text-align: center;
+  animation-duration: 0.2s;
 }
 
 #Sectionlist .moment {
