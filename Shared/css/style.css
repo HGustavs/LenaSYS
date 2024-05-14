@@ -5823,7 +5823,7 @@ only screen and (max-device-width: 568px) {
 
   #versionCog, #versionPlus, #editStudent,
   #githubPopupWindow,#testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement, #messagedialog, #refreshIMG, #accessImg{
+  #editCourse, #announcement, #messagedialog, #refreshIMG, #accessImg {
     display: none;
   }
 }
