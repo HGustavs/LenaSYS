@@ -10,12 +10,13 @@ include_once "./retrieveSectionedService_ms.php";
 pdoConnect();
 session_start();
 
-$sectid=getOP('lid');
-$gradesys=getOP('gradesys');
+$sectid = getOP('lid');
+$gradesys = getOP('gradesys');
 $courseid = getOP('courseid');
 $coursevers = getOP('coursevers');
-$log_uuid=getOP('log_uuid');
-$opt=getOP('opt');
+$log_uuid = getOP('log_uuid');
+$opt = getOP('opt');
+$debug = "NONE!";
 
 $userid = getUid();
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
@@ -24,11 +25,11 @@ if (checklogin()) { //This entire checklogin should be working by using the getU
         // need to be logged in and superuser
         $query = $pdo->prepare("UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;");
         $query->bindParam(':lid', $sectid);
-        $query->bindParam(':gradesys',$gradesys);
+        $query->bindParam(':gradesys', $gradesys);
 
-        if(!$query->execute()){
-            $error=$query->errorInfo();
-            $debug="Error failed to update the gradesystem for a listentry: ".$error[2];
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            $debug = "Error failed to update the gradesystem for a listentry: " . $error[2];
         }
     }
 }

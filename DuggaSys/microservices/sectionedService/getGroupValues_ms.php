@@ -21,11 +21,12 @@ pdoConnect();
 session_start();
 
 $uid = getUid();
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
 $coursevers=getOP('coursevers');
+$debug='NONE!';
 
 if(checklogin()){
 	$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
