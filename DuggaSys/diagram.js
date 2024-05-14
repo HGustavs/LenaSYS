@@ -1930,7 +1930,7 @@ async function saveToServer() {
     const data = {
         id: id,
         extension: "json",
-        path: "saved_diagrams/",
+        path: "../../../../../../../home/ubuntu/saved_diagrams/",
         diagram: stateMachine.historyLog
     }
     // save a json file
