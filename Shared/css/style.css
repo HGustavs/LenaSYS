@@ -1893,7 +1893,7 @@ div .navButt:hover {
   max-width: fit-content;
 }
 
-.loginBox,
+.formBox,
 .logoutBox{
   padding: 4px;
   background-color: var(--color-background-2);
@@ -2049,7 +2049,7 @@ div .navButt:hover {
   border-radius: 2px;
 }
 
-.loginBox textarea,
+.formBox textarea,
 #import {
   width: 100%;
   height: 200px;
@@ -2061,7 +2061,7 @@ div .navButt:hover {
   padding: 5px;
 }
 
-.loginBox textarea,
+.formBox textarea,
 #receipt {
   width: 100%;
   height: 72px;
@@ -2098,7 +2098,7 @@ Dialog Box END
 /* --------------===============################================-------------- *
  *                                    Generic functions                            *
  * --------------================################================--------------*/
-.loginBox .inputwrapper {
+.formBox .inputwrapper {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
@@ -2110,12 +2110,12 @@ Dialog Box END
   color:#7f7f7f;
 }
 
-.loginBox .inputwrapper span {
+.formBox .inputwrapper span {
   float: left;
 }
 
 
-.loginBox .inputwrapperSmall {
+.formBox .inputwrapperSmall {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
@@ -2123,35 +2123,35 @@ Dialog Box END
   line-height: 30px;
 }
 
-.loginBox .inputwrapperSmall span {
+.formBox .inputwrapperSmall span {
   float: right;
 }
 
-.loginBox .inputwrapperSmall input,
-.loginBox .inputwrapperSmall select {
+.formBox .inputwrapperSmall input,
+.formBox .inputwrapperSmall select {
   float: right;
   width: 50px;
 }
 
-.loginBox .inputwrapperSmall input[type="checkbox"] {
+.formBox .inputwrapperSmall input[type="checkbox"] {
   height: 24px;
 }
 
 
-.loginBox .inputwrapper input,
-.loginBox .inputwrapper select {
+.formBox .inputwrapper input,
+.formBox .inputwrapper select {
   float: right;
   width: 195px;
 }
 
-.loginBox .inputwrapper input[type="checkbox"] {
+.formBox .inputwrapper input[type="checkbox"] {
   margin-right: 171px;
   float: right;
   height: 24px;
   width: 24px;
 }
 
-.loginBox select {
+.formBox select {
   width: 195px;
   height: 30px;
   line-height: 18px;
@@ -2166,7 +2166,7 @@ Dialog Box END
   font-size: 14px;
 }
 
-.loginBoxheader,
+.formBoxHeader,
 .logoutBoxheader {
   background-color: var(--color-primary);
   vertical-align: bottom;
@@ -2176,7 +2176,7 @@ Dialog Box END
   justify-content: space-between;
 }
 
-.loginBoxheader h3,
+.formBoxHeader h3,
 .logoutBoxheader h3 {
   font-size: 14px;
   margin-top: 10px;
@@ -2185,7 +2185,7 @@ Dialog Box END
   width: 100%;
 }
 
-.loginBoxheader div,
+.formBoxHeader div,
 .logoutBoxheader div {
   padding: 4px 20px;
   color: rgb(255, 255, 255);
@@ -2195,7 +2195,7 @@ Dialog Box END
   font-weight: bold;
 }
 
-.loginBoxheader div:hover, .logoutBoxheader div:hover {
+.formBoxHeader div:hover, .logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
 
@@ -2613,17 +2613,17 @@ label.login-label {
   overflow: auto;
 }
 
-.loginBox form,
+.formBox form,
 .logoutBox form {
   padding-bottom: 20px;
 }
 
-.loginBox .text,
+.formBox .text,
 .logoutBox .text {
   font-size: 0.8em;
 }
 
-.loginBox .submit {
+.formBox .submit {
   width: 80px;
   height: 25px;
   color: var(--color-text-header);
@@ -2633,7 +2633,7 @@ label.login-label {
   margin-left: 1px;
 }
 
-.loginBox .cancel {
+.formBox .cancel {
   width: 80px;
   height: 25px;
   color: #333;
@@ -2644,7 +2644,7 @@ label.login-label {
   margin-left: 1px;
 }
 
-.loginBox .forgotPw {
+.formBox .forgotPw {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -2661,18 +2661,18 @@ label.login-label {
 }
 
 
-.loginBox .form-control {
+.formBox .form-control {
   margin: 3px 0px 3px 0px;
 }
 
-.loginBox .hide {
+.formBox .hide {
   display: none;
 }
 #undoButton {
   position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
-.loginBox td {
+.formBox td {
   margin-left: 4px;
   margin-right: 4px;
 }
@@ -5935,11 +5935,6 @@ only screen and (max-device-width: 568px) {
     transform: scale(0.6, 0.6);
     left: 4px;
   }
-
-  .loginBox {
-    /*top: 8%;
-    left: 10%;*/
-  }
   
   #searchNavButt{
     display: none;
@@ -7553,7 +7548,7 @@ only screen and (max-device-width: 568px) {
   display: none;
 }
 
-.loginBoxheade, .fileViewHeader {
+.formBoxHeader, .fileViewHeader {
   text-align:left;
 }
 

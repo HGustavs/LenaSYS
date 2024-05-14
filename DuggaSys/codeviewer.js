@@ -4807,18 +4807,18 @@ $(document).mousedown(function (e) {
 	var box = $(e.target);
 	if ($('#burgerMenu').is(e.target) || $('#burgerMenu').has(e.target).length !== 0) { //is the burger menu or its descendants clicked?
 		isClickedElementBox = true;
-	} else if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+	} else if (box[0].classList.contains("formBox")) { // is the clicked element a formBox?
 		isClickedElementBox = true;
-	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+	} else if ((findAncestor(box[0], "formBox") != null) // or is it inside a formBox?
 		&&
-		(findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+		(findAncestor(box[0], "formBox").classList.contains("formBox"))) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
 	}
 });
 
-// Close the loginbox when clicking outside it.
+// Close the formBox when clicking outside it.
 $(document).mouseup(function (e) {
 	// Click outside the burger menu
 	var notTarget = !$('#burgerMenu').is(e.target) && !$('#codeBurger').is(e.target) // if the burger menu is visible and the target of the click isn't the container or button...
@@ -4827,10 +4827,10 @@ $(document).mouseup(function (e) {
 		closeBurgerMenu();
 	}
 
-	// Click outside the loginBox
-	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+	// Click outside the formBox
+	if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) // if the target of the click isn't the container...
 		&&
-		$('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		$('.formBox').has(e.target).length === 0 // ... nor a descendant of the container
 		&&
 		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
@@ -4937,7 +4937,7 @@ function showIframe(path, name, kind) {
         
         // Display the preview window and append hideIframe() to the close window button 
         previewWindow = document.querySelector(".previewWindow");
-		previewWindow.classList.add("loginBox");
+		previewWindow.classList.add("formBox");
         previewWindow.style.display = "block";
         document.querySelector(".editFilePart").style.display = "none";
 
