@@ -3,7 +3,7 @@ if (@include_once "../vendor/autoload.php") {
 	if (class_exists('Minishlink\WebPush\WebPush') && defined('PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY') && defined('PUSH_NOTIFICATIONS_VAPID_PRIVATE_KEY') && defined('PUSH_NOTIFICATIONS_VAPID_EMAIL')) {
 		// The two ifs above can't be combined into single if because the class does not exist directly after import, so a seperate php statement is needed
 
-		include_once "../Shared/sessions.php";
+		include_once "./sessions.php";
 
 		/**
 		* Sends a push notification to the specified user
