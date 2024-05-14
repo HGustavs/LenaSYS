@@ -1110,7 +1110,7 @@ function mmoving(event) {
             
                 let tmpX = elementData.x - widthChange; 
             
-                if (context[0] && context[0].kind == "sequenceActor") {
+                if (context[0] && context[0].kind == "sequenceActor" || context[0] && context[0].kind == "sequenceObject") {
                     let deltaHeight = widthChange; 
                     let tmpH = Math.max(minHeight, elementData.height + deltaHeight);  
                     let tmpY = elementData.y - (deltaHeight / 2); 
@@ -1134,7 +1134,7 @@ function mmoving(event) {
             
             let tmpX = elementData.x; 
           
-            if (context[0] && context[0].kind == "sequenceActor") {
+            if (context[0] && context[0].kind == "sequenceActor" || context[0] && context[0].kind == "sequenceObject") {
                 let deltaHeight = widthChange; 
                 let tmpH = Math.max(minHeight, elementData.height + deltaHeight);  
                 let tmpY = elementData.y - (deltaHeight / 2); 
