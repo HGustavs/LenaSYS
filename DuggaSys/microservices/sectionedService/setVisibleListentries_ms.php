@@ -50,7 +50,6 @@ if (checklogin() && isSuperUser($uid)){
 } else {
     $debug = "insufficient permissions.";
 }
-
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $versid, $log_uuid);
 echo json_encode($data);
 return;
