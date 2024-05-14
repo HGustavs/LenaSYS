@@ -3080,15 +3080,9 @@ div.submit-button:disabled {
 
 /* Form Pointing Dialogs */
 
-#dialog10 {
-  display: none;
-  left: 100px;
-}
-
 .formDialog {
   position: relative;
   display: inline-block;
-  left: -100px;
 }
 
 .formDialog .formDialogText {

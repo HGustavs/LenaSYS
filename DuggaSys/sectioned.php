@@ -285,7 +285,7 @@
 					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
 				<div class="formDialog" style="display: block; margin-left:40px; top:-35px;">
-  		      		<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+  		      		<span id="dialog10" style="display: none; left: 0px;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
@@ -691,14 +691,14 @@
 						<div class='inputwrapper'>
 							<span>Name:</span>
 							<div class="formDialog">
-								<span id="fileNameError"  class="formDialogText">Please use letters and digits, only</span>
+								<span id="fileNameError" style="left: -100px;"  class="formDialogText">Please use letters and digits, only</span>
 							</div>
 							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value=''/>
 						</div>
 						<div class='inputwrapper'>
 							<span>GithubUrl:</span>
 							<div class="formDialog">
-								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+								<span id="gitHubError" style="left: -100px;" class="formDialogText">Enter a valid github url</span>
 							</div>
 							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/>
 						</div>
