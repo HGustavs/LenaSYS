@@ -42,17 +42,17 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         toElement.kind === elementTypesNames.ERRelation
     );
 
-    // Defina a boolean for special case for sequence diagrams where multiple lines are allowed
-    var specialCaseSequence = (
+    // Defina a boolean for sequence activation case for sequence diagrams where multiple lines are allowed
+    var isSD = (
         fromElement.kind === elementTypesNames.sequenceActivation &&
         toElement.kind === elementTypesNames.sequenceActivation
     );
 
-    // If there is no existing lines or is a special case
-    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines === 1) || specialCaseSequence) {
+    // If there is no existing lines or is a special case or is a sequence activation case
+    if (numOfExistingLines === 0 || (specialCase && numOfExistingLines === 1) || isSD) {
         let newLine = {
             id: makeRandomID(),
-            specialCase: false,
+            isSD: false,
             otherLinesCount: 0,
             offsetX: 0,
             offsetY: 0,
@@ -61,8 +61,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             kind: kind
         };
 
-        // If the line is a special case where you need to allow multiple lines, set the special case to true
-        if (specialCaseSequence) {
+        // If the line is connected to sequence activations you need to allow multiple lines, set isSD case to true
+        if (isSD) {
             var linesBetween = lines.filter(function (line) {
                 return (fromElement.id === line.fromID &&
                     toElement.id === line.toID ||
@@ -97,7 +97,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             }
 
 
-            newLine.specialCase = true;
+            newLine.isSD = true;
         }
 
         if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {
@@ -114,9 +114,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 }
 
 /**
- * @description Calculates the correct offset for x and y coordinates for the line to be drawn between two elements.
- * @param {Object} fromElement Element that the line is from.
- * @param {Object} toElement Element that the line is to.
+ * @description Calculates the correct offset for x and y coordinates for the line to be drawn between two sequence activations.
  * @param {Line} line The line that should be corrected.
  */
 function calculateLineOffset(line) {

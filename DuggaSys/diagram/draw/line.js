@@ -376,9 +376,9 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
-    if (line.specialCase) {
-        let offsetX = line.specialCase ? line.offsetX / 2 : 0;
-        let offsetY = line.specialCase ? line.offsetY / 2 : 0;
+    if (line.isSD) {
+        let offsetX = line.isSD ? line.offsetX / 2 : 0;
+        let offsetY = line.isSD ? line.offsetY / 2 : 0;
 
         // Calculate the points with offsets
         let points = `  
@@ -574,7 +574,7 @@ function redrawArrows() {
         sortElementAssociations(data[i]);
     }
 
-    // Recalculate the offsets for all the specialCase lines
+    // Recalculate the offsets for all the sequence activation lines
     for (var i = 0; i < lines.length; i++) {
 
         // Skip if line doesnt have any offsets
@@ -583,7 +583,7 @@ function redrawArrows() {
         }
 
         // Recalculate the offset for the line
-        if (lines[i].specialCase) {
+        if (lines[i].isSD) {
             calculateLineOffset(lines[i]);
         }
     }
