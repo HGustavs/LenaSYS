@@ -23,6 +23,7 @@ $versid = getOP('vers');
 $uid = getUid();
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
+$debut = "NONE!";
 
 
 // Permissions Check
@@ -42,16 +43,14 @@ if (checklogin() && isSuperUser($uid)){
         // Optionally log to event
         // logUserEvent($userid, $username, EventTypes::UpdateListentryVisibility, $listentryId);
 
-        echo "Visibility update successfully.";
+        $debug = "Visibility update successfully.";
     } else {
-        echo "Error updating visibility.";
+        $debug = "Error updating visibility.";
     }
 } else {
-    echo "insufficient permissions.";
+    $debug = "insufficient permissions.";
 }
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
 return;
-
-?>
