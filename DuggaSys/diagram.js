@@ -784,11 +784,6 @@ document.addEventListener('keydown', function (e) {
         showModal();
     }
 
-    if (isKeybindValid(e, keybinds.TEST_CASE)) {
-        e.preventDefault();
-        toggleTestCase();
-    }
-
     if (altPressed) {
         mouseMode_onMouseUp();
     }
@@ -866,7 +861,7 @@ document.addEventListener('keyup', function (e) {
     }
 
     // Sequence
-    if (isKeybindValid(e, keybinds.SEQ_LIFELINE)) {
+    if (isKeybindValid(e, keybinds.SQ_LIFELINE)) {
         if (subMenuCycling(subMenuSequence, 12)) return;
         togglePlacementType(elementTypes.sequenceActor, 12);
         setElementPlacementType(elementTypes.sequenceActor);
