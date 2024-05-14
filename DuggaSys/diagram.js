@@ -457,6 +457,17 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("loadingSpinner").style.display = "none";
 });
 
+//event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenToolbar function with the right parameters
+for (let i = 0; i <= 20; i++) { // Assuming the range is from 0 to 20
+    let element = document.getElementById("elementPlacement" + i);
+    if (element) {
+        // Add event listener for contextmenu
+        element.addEventListener("contextmenu", function(event) {
+            rightClickOpenToolbar(event, i);
+        });
+    }
+}
+
 /**
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
@@ -1765,6 +1776,14 @@ function holdPlacementButtonDown(num) {
             togglePlacementTypeBox(num);
         }
     }, 500);
+}
+
+/**
+ * @description Function to open a bubtoolbar when rightclicking a button
+ */
+function rightClickOpenToolbar(event, num) {
+    event.preventDefault();
+    togglePlacementTypeBox(num);
 }
 
 /**
