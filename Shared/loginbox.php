@@ -72,27 +72,25 @@
 				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">
-					<tr>
-						<td>
-							<label id="loginBoxTitle">Enter your username to reset the password</label>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
-							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+				<div class="loginBoxTable">
+					<div>
+						<label id="loginBoxTitle">Enter your username to reset the password</label>
+					</div>
+					<div class="loginboxTr">
+						<div>
+							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
+						</div>
+					</div>
+					<div class="loginboxTr">
 						<!-- Message displayed when using wrong password or username -->
-						<td id="message2";></td>
-					</tr>
-				</table>
+						<div id="message2"></div>
+					</div>
+				</div>
 			</div>
 			<tr>
 				<td>
