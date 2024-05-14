@@ -132,6 +132,13 @@ html, body {
     grid-row-gap: 1rem;
 }
 
+.input-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */
 @media (max-width: 768px) {
@@ -234,9 +241,9 @@ input[type=checkbox], input[type=radio] {
     font-size: var(--text-xs);
     color: var(--warning-text);
     font-style: italic;
-    padding-left: 1.75rem;
+    padding-left: 2.2rem;
     margin: 0;
-    margin-top: -0.5rem;
+    margin-top: -0.85rem;
 }
 
 .success {
