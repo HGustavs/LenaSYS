@@ -764,12 +764,13 @@ function returnedAccess(data) {
 			firstname: "First name",
 			lastname: "Last name",
 			modified: "Last Modified",
-			requestedpasswordchange: "Password"
+			requestedpasswordchange: "Password",
+			edit: "Edit"
 		},
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	var colOrder = ["username","firstname", "lastname", "modified", "requestedpasswordchange"]
+	var colOrder = ["username","firstname", "lastname", "modified", "requestedpasswordchange", "edit"]
 	if (typeof myTable === "undefined") { // only create a table if none exists
 		myTable = new SortableTable({
 			data: tabledata,
