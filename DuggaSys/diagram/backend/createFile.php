@@ -23,7 +23,8 @@ if (!isset($_POST["id"])) {
 }
 $path = realpath($_POST["path"]);
 // create and write to the file
-$file = fopen($_POST["path"]."diagram_".$_POST["id"].".".$_POST["extension"], "w");
+echo $path."diagram_".$_POST["id"].".".$_POST["extension"];
+$file = fopen($path."diagram_".$_POST["id"].".".$_POST["extension"], "w");
 file_put_contents($file, json_encode($_POST['diagram'])."\n");
 fclose($file);
 echo "file done";
