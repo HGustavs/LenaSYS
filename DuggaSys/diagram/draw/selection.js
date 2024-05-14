@@ -46,7 +46,7 @@ function drawSelectionBox() {
         str += `<rect width='${highX - lowX}' height='${highY - lowY}' x='${lowX}' y='${lowY}' style="fill:transparent; stroke-width:1.5; stroke:${color.SELECTED};" />`;
 
         // Calculate delete button size by size and zoomfact
-        deleteBtnSize = Math.min(50, Math.max(15, ((highY - lowY) / 3 * zoomfact)));
+        deleteBtnSize = Math.min(40, Math.max(15, ((highY - lowY) / 5 * zoomfact)));
 
         // Place the delete button outside the top-right corner of the selection box
         deleteBtnX = highX; 
