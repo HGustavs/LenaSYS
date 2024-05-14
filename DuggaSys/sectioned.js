@@ -2275,13 +2275,10 @@ function returnedHighscore(data) {
 // drawSwimlanes: Draws schedule for deaadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
-//En if or else sats som kollar ifall drawswimlane existerar ska placeras någonstans här- där funktionen endast kallas vid existerande//
-
-//ex
-//if (typeof drawSwimlanes === 'function') {
-//} else {
-  //console.log("drawSwimlanes function is not available");
-//}
+if (typeof drawSwimlanes === 'function') {
+} else {
+  console.log("drawSwimlanes function is not available");
+}
 
 function drawSwimlanes() {
   // Resets the swimlane SVG
@@ -2295,6 +2292,12 @@ function drawSwimlanes() {
   var current = new Date();
 
   var momentno = 0;
+
+  //kollar om drawswimlane blir kallad
+  if (typeof drawSwimlanes === 'function') {
+  } else {
+    console.log("drawSwimlanes function is not available");
+  }
 
   for (var i = 0; i < retdata['entries'].length; i++) {
     var deadline = new Date(retdata['entries'][i].deadline);
