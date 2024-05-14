@@ -7,8 +7,8 @@ $testsData = array(
     // This tests the microservice updateActiveUsers_ms 
     //------------------------------------------------------------------------------------------
     'updateActiveUsers_ms' => array(
-        'expected-output' => '999',
-        'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 999);",
+        'expected-output' => '3',
+        'query-before-test-1' => "INSERT INTO groupdugga(hash,active_users) VALUES('hjk4ert6', 3);",
         'query-after-test-1' => "DELETE FROM groupdugga WHERE hash = 'hjk4ert6';",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/showDuggaService/updateActiveUsers_ms.php',
         'service-data' => serialize(
@@ -19,7 +19,7 @@ $testsData = array(
                 'courseid' => '2',
                 'coursevers' => '97732',
                 'hash' => 'hjk4ert6',
-                'AUtoken' => 999
+                'AUtoken' => 3
             )
         ),
         'filter-output' => serialize(
