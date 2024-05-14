@@ -1,9 +1,9 @@
 <?php
 
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
+include_once "./sessions.php";
+include_once "./basic.php";
 
-include_once "../../coursesyspw.php";
+include_once "./coursesyspw.php";
 
 $opt=getOP('opt');
 
