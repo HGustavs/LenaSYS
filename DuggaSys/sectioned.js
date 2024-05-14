@@ -647,10 +647,7 @@ function showSaveButton() {
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
 
-  // console.log("Clicked id" + active_lid)
-  // console.log("Selected IDs:" + selectedItemList)
   if (operation == "openConfirmBox") {
-    // console.log(collectedLid);
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionConfirmBox").css("display", "flex");
   } else if (operation == "openHideConfirmBox") {
@@ -666,10 +663,8 @@ function confirmBox(operation, item = null) {
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     if(!selectedItemList.includes(active_lid)){
-      selectedItemList.push(active_lid); // Push clicked item to selectedItemList before it's items are deleted
+      selectedItemList.push(active_lid); // Push clicked item to selectedItemList before its items are deleted
     }
-    // console.log("Clicked id" + active_lid)
-    // console.log("Selected IDs:" + selectedItemList)
     deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
@@ -755,11 +750,10 @@ function markedItems(item = null) {
         }
       } else if (tempItem == active_lid) sectionStart = true;
     });
-
   }
 
-
   console.log("Active lid: " + active_lid);
+  
   if (selectedItemList.length != 0) {
     for (let i = 0; i < selectedItemList.length; i++) {
       if (selectedItemList[i] === active_lid) {
@@ -772,7 +766,6 @@ function markedItems(item = null) {
         if (selectedItemList[i] === subItems[j]) {
           $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
           selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
         }
       }
     } if (removed != true) {
@@ -984,6 +977,7 @@ function deleteItem(selectedItemList) {
   delTimer = setTimeout(() => {
     deleteAll();
   }, undoTime * 1000);
+  
 }
 
 // Permanently delete elements.
