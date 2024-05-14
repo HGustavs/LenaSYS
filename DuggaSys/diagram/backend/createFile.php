@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 /*// Start the session
 session_start();
 
@@ -21,7 +22,7 @@ if (!isset($_POST["id"])) {
 }
 
 // create and write to the file
-$file = fopen($_POST["path"]."diagram_".$_POST["id"].".".$_POST["extension"], "w") or die("failed");
+$file = fopen($_POST["path"]."diagram_".$_POST["id"].".".$_POST["extension"], "w");
 fwrite($file, json_encode($_POST['diagram'])."\n");
 fclose($file);
 echo "file done";
