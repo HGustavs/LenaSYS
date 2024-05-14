@@ -614,7 +614,7 @@ function closeOpenPopupForm(){
     "#tabConfirmBox",
     "#gitHubTemplate",
     "#gitHubBox",
-    "#loginBox",
+    "#formBox",
     "#loadDuggaBox",
     "#sectionHideConfirmBox",
     "#sectionShowConfirmBox"
@@ -2501,11 +2501,11 @@ function mouseDown(e) {
 
   var box = $(e.target);
 
-  // Is the clicked element a loginbox? or is it inside a loginbox?
-  if (box[0].classList.contains("loginBox")) {
+  // Is the clicked element a formBox? or is it inside a formBox?
+  if (box[0].classList.contains("formBox")) {
     isClickedElementBox = true;
-  } else if ((findAncestor(box[0], "loginBox") != null) &&
-    (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+  } else if ((findAncestor(box[0], "formBox") != null) &&
+    (findAncestor(box[0], "formBox").classList.contains("formBox"))) {
     isClickedElementBox = true;
   } else {
     isClickedElementBox = false;
@@ -2520,8 +2520,8 @@ function mouseDown(e) {
 function mouseUp(e) {
   /* If the target of the click isn't the container nor a descendant of the container,
      or if we have clicked inside box and dragged it outside and released it */
-  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
-    $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+  if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) &&
+    $('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
     event.preventDefault();
 

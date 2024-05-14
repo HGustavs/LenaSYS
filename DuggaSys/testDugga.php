@@ -92,9 +92,9 @@
 
 	</div>
 
-	<!-- LoginBox (receiptbox) Start! -->
-	<div id='receiptBox' class="loginBox" style="display:none">
-		<div class='loginBoxheader'><h3>Receipt - Dugga answers</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
+	<!-- FormBox (receiptbox) Start! -->
+	<div id='receiptBox' class="formBox" style="display:none">
+		<div class='formBoxHeader'><h3>Receipt - Dugga answers</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 		<div id='receiptInfo'></div>
 		<textarea id="receipt" autofocus readonly></textarea>
 		<div class="button-row">

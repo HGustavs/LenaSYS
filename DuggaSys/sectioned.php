@@ -271,9 +271,9 @@
 		<!-- Edit Section Dialog START -->
 
 		<div id='editSection' onmouseover="validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 
-			<div class='loginBoxheader'>
+			<div class='formBoxHeader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 			</div>
@@ -290,7 +290,7 @@
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
-						If they don't, change the width of loginbox select in the CSS file -->
+						If they don't, change the width of formBox select in the CSS file -->
 					<select id='type' value='type' onchange='changedType(document.getElementById("type").value);'></select>
 					</div>
 					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
@@ -339,8 +339,8 @@
 
 	<!-- Confirm Section Dialog START -->
 	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='formBoxHeader'>
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
@@ -358,8 +358,8 @@
 
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
+			<div class='formBoxHeader'>
 					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
 			</div>
@@ -373,8 +373,8 @@
 
 	<!-- Confirm Section Hide Dialog START -->
 	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='formBoxHeader'>
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
@@ -391,8 +391,8 @@
 
 	<!-- Confirm Section Hide Dialog START -->
 	<div id='sectionShowConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div class='formBoxHeader'>
 					<h3>Confirm show items</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
@@ -409,8 +409,8 @@
 
 	<!-- Cofirm Section Tab Dialog START -->
 	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox' style='width:460px;'>
+			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
@@ -439,8 +439,8 @@
 
 	<!-- Confirm Missing Material Dialog START -->
 	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:460px;'>
-				<div class='loginBoxheader'>
+		<div class='formBox' style='width:460px;'>
+				<div class='formBoxHeader'>
 					<h3>Error: Missing material</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
@@ -456,8 +456,8 @@
 
 		<!-- New Version Dialog START -->
 		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
-    	<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
-			<div class='loginBoxheader'>
+    	<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+			<div class='formBoxHeader'>
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
@@ -508,9 +508,9 @@
 <!-- Edit Version Dialog START -->
 
 <div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 
-			<div class='loginBoxheader'>
+			<div class='formBoxHeader'>
 				<h3>Edit Course Version</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
@@ -536,8 +536,8 @@
 
 <!-- Group Members Table START -->
 <div id='grptblContainer' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox'>
-			<div class='loginBoxheader'>
+		<div class='formBox'>
+			<div class='formBoxHeader'>
 				<h3>Group Members</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
@@ -551,8 +551,8 @@
 
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:500px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox' style='width:500px;'>
+			<div class='formBoxHeader'>
 				<h3>Highscore</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
@@ -565,8 +565,8 @@
 
 	<!-- User Feedback Dialog START -->
     <div id='userFeedbackDialog' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' id='variantBox'>
-        <div class='loginBoxheader'>
+      <div class='formBox' id='variantBox'>
+        <div class='formBoxHeader'>
           <h3 id="userFeedbackTitle">User Feedback</h3> 
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
@@ -585,8 +585,8 @@
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
 	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
+			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
 				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
@@ -603,8 +603,8 @@
 	<!-- github moments box  -->
 	<form action="" method="POST" id="form">
 		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
-			<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
-				<div class='loginBoxheader'>
+			<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+				<div class='formBoxHeader'>
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
@@ -636,8 +636,8 @@
 	
 	<!--error window opened when github repo not found-->
 	<div id="githubPopupWindow" class="loginBoxContainer" style="display: none;">
-		<div class="loginBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
-			<div class= "loginBoxheader">
+		<div class="formBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
+			<div class= "formBoxHeader">
   					<h3>Github repo</h3>
 		  			<div class='cursorPointer'	onclick='closeWindows();'>x</div>
 			</div>
@@ -658,8 +658,8 @@
 
 	<!-- github template  -->
 		<div id='gitHubTemplate' class="loginBoxContainer"  style="display:none;">
-				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
-					<div class='loginBoxheader'>
+				<div id='chooseTemplate' class='formBox DarkModeBackgrounds' style='width:464px;'>
+					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='confirmBox("closeConfirmBox");'>x</div>
 					</div>
