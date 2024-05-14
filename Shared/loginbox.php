@@ -26,45 +26,44 @@
   <div id="overlay" style="display:none"></div>
 
 	<!-- Login Box Start! -->
-  <!--  <div id='loginBox' class="loginBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
     <div id='loginBox' class="loginBoxContainer" style="display:none;">
 		<div id='login' class="loginBox DarkModeBackgrounds DarkModeText">
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
-			<form action="" id="loginForm" method="post">
-				<table class="loginBoxTable">
-					<tr class="loginboxTr">
-						<td>
+				<form action="" id="loginForm" method="post">
+				<div class="loginBoxTable">
+					<div class="loginboxTr">
+						<div>
 							Sign in
-						</td>
-					</tr>
-					<tr  class="loginboxTr">
-						<td>
-							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
+							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td class="nowrap">
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div class="nowrap">
 							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
+						</div>
+					</div>
+					<div class="loginboxTr">
 						<!-- Message displayed when using wrong password or username -->
-						<td id="message";></td>
-					</tr>
-				</table>
+						<div id="message"></div>
+					</div>
+				</div>
 			</form>
 		</div>
 		<div id='newpassword' class='newpassword DarkModeBackgrounds DarkModeText' style="display:none">
