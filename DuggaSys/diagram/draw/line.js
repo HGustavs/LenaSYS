@@ -44,6 +44,7 @@ function drawLine(line, targetGhost = false) {
                         stroke='${lineColor}' stroke-width='${strokewidth}'
                     />`;
         } else if (line.kind == lineKind.DOUBLE) {
+            console.log(`line.kind == lineKind.DOUBLE`)
             let dy = -(tx - fx);
             let dx = ty - fy;
             let len = Math.sqrt((dx * dx) + (dy * dy));
@@ -64,6 +65,8 @@ function drawLine(line, targetGhost = false) {
             str += double(-1, 2);
         }
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
+
+        console.log(`line.type == entityType.SD && line.innerType != SDLineType.SEGMENT`)
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
@@ -83,6 +86,7 @@ function drawLine(line, targetGhost = false) {
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
+            console.log(`line.kind == lineKind.RECURSIVE`);
             str += drawRecursive(fx, fy, offset, line, lineColor);
         }
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);

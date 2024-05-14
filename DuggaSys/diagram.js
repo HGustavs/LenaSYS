@@ -974,6 +974,7 @@ function mouseMode_onMouseUp(event) {
                 break;
             case mouseModes.EDGE_CREATION:
                 if (context.length > 1) {
+                    console.log(`context.length > 1`);
                     // TODO: Change the static variable to make it possible to create different lines.
                     addLine(context[0], context[1], "Normal");
                     clearContext();
