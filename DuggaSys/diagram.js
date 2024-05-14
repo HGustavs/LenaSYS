@@ -1108,7 +1108,7 @@ function mmoving(event) {
             deltaY = startY - event.clientY;
 
             // Functionality Left/Right resize
-            if (startNodeLeft && elementData && (startWidth + (deltaX / zoomfact)) > minWidth) {
+            if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 let newWidth = startWidth + (deltaX / zoomfact);  
                 let tmpW = Math.max(minWidth, newWidth);  
                 let widthChange = tmpW - elementData.width;  
@@ -1133,7 +1133,7 @@ function mmoving(event) {
 
                     prepareElementResized([elementData.id], widthChange, 0);
 
-                } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                } else if (startNodeRight || startNodeUpRight || startNodeDownRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
                     let tmpW = Math.max(minWidth, startWidth - (deltaX / zoomfact));
                     let widthChange = tmpW - elementData.width;  
         
