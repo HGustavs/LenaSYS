@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/../Shared/database.php');
-require_once(dirname(__FILE__) . '/constants.php');
+require_once(dirname(__FILE__) . '/.database.php');
+require_once(dirname(__FILE__) . '/.constants.php');
 
 if(session_id()==""){
     $maxlifetime = 18000;
