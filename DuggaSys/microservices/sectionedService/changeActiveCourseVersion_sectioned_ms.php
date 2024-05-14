@@ -20,11 +20,12 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
+$coursevers = getOP('coursevers');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
-$debug="NONE!";
+$debug = "NONE!";
 
 // Authorization
 $isSuperUserVar = isSuperUser($userid);

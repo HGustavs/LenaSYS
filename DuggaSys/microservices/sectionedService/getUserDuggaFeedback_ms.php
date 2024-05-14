@@ -25,6 +25,8 @@ $courseid=getOP('courseid');
 $moment=getOP('moment');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
+$coursevers=getOP('coursevers');
+$debug='NONE!';
 
 
 $userfeedback=array();

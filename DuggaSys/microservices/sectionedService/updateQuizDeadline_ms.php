@@ -22,6 +22,7 @@ $log_uuid = getOP('log_uuid');
 $deadline = getOP('deadline');
 $relativedeadline = getOP('relativedeadline');
 $debug = "NONE!";
+
 $studentTeacher = false;
 
 //checklogin and session code should be replaced with getuid (is not working) when getuid is fixed

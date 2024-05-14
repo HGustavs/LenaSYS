@@ -18,6 +18,7 @@ session_start();
 $opt = getOP('opt');
 $courseid = getOP('courseid');
 $coursecode = getOP('coursecode');
+$coursevers = getOP('coursevers');
 $versid = getOP('versid');
 $motd = getOP('motd');
 $versname = getOP('versname');
