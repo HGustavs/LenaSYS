@@ -10,7 +10,6 @@ $testsData = array(
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/updateCourseVersion_ms.php',
         'service-data' => serialize(
             array(
-                // Data that service needs to execute function
                 'username' => 'brom',
                 'password' => 'password',
                 'opt' => 'UPDATEVRS',
@@ -26,7 +25,7 @@ $testsData = array(
         ),
         'filter-output' => serialize(
             array(
-                'versions'
+                'none'
             )
         ),
     ),
