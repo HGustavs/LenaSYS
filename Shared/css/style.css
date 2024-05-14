@@ -7075,6 +7075,7 @@ only screen and (max-device-width: 568px) {
   width: 100%;
   list-style: none;
   text-align: center;
+  display: none;
 }
 
 #olFabBtnList2{
