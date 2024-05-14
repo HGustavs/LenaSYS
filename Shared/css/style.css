@@ -3256,7 +3256,6 @@ div.submit-button:disabled {
 .formDialog {
   position: relative;
   display: inline-block;
-  left: -100px;
 }
 
 .formDialog .formDialogText {
