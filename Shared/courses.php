@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../Shared/database.php');
+require_once(dirname(__FILE__) . './database.php');
 
 //---------------------------------------------------------------------------------------------------------------
 // courseexists - Checks if a cerain course exists or not
