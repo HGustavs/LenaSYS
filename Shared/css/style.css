@@ -9911,11 +9911,11 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper, #addUser .flexwrapper, #removeUser .flexwrapper  {
+#createUser .flexwrapper, #addUser .flexwrapper, #removeUser .flexwrapper, #editUser .flexwrapper  {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #addUser .flex-end, #removeUser .flex-end{
+#createUser .flex-end, #addUser .flex-end, #removeUser .flex-end, #editUser .flex-end{
   display: flex;
   justify-content: flex-end;
 }
