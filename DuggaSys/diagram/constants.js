@@ -15,7 +15,7 @@ const keybinds = {
     PLACE_RELATION: {key: "4", ctrl: false},
     EDGE_CREATION: {key: "5", ctrl: false},
     STATE_INITIAL: {key: "6", ctrl: false},
-    SEQ_LIFELINE: {key: "7", ctrl: false},
+    SQ_LIFELINE: {key: "7", ctrl: false},
     STATE_SEQUENCE: {key: "7", ctrl: false},
     SEQUENCE_OBJECT: {key: "7", ctrl: false},
     NOTE_ENTITY: {key: "8", ctrl: false},
@@ -45,8 +45,7 @@ const keybinds = {
     TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
     SAVE_DIAGRAM: { key: "s", ctrl: true },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
-    RESET_DIAGRAM: { key: "i", ctrl: false},
-    TEST_CASE: {key: "t", ctrl: true, alt: true},
+    RESET_DIAGRAM: { key: "i", ctrl: false}
 };
 
 /**
