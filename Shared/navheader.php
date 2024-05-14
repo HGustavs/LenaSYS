@@ -11,7 +11,7 @@
 			
 
 			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
-			include_once "../Shared/basic.php";
+			include_once "./basic.php";
 			pdoConnect();
 
 			// As we always include the navheader - we can add the code that saves the current course ID to the session here.
