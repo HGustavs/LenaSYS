@@ -1,6 +1,6 @@
 <?php
 
-// This tests the microservice updateListentrie and the part of the monalith called "UPDATE" 
+// This tests the microservice updateListentries_ms.php
 
 include_once "../../../../Shared/test.php";
 
