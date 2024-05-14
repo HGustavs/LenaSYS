@@ -143,7 +143,6 @@ function getIndexFile($url) {
 
 function bfs($url, $cid, $opt) 
 {
-    $counter = 0;
     // Different URL depending on operation
     date_default_timezone_set("Europe/Stockholm");
     if($opt == "GETCOMMIT"){
@@ -206,7 +205,6 @@ function bfs($url, $cid, $opt)
                 if($opt == "GETCOMMIT"){
                     return $json['sha'];
                 }
-                $counter += 1;
                 // Loops through each item fetched in the JSON data
                 if ($json) {
                     foreach ($json as $item) {
