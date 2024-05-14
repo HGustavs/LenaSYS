@@ -111,3 +111,15 @@
 		}
 		echo "</div>";
 	}
+
+	function checkBoxesWithColumns($checkboxGroupName, $checkboxes, $checkedIds = []) {
+		echo "<div class='input-sub-grid'>";
+		foreach ($checkboxes as $id => $label) {
+			$checked = in_array($id, $checkedIds) ? "checked" : "";
+			echo "<div class='checkbox'>
+					<input id='$id' type='checkbox' name='{$checkboxGroupName}[]' $checked>
+					<label for='$id'>$label</label>
+				  </div>";
+		}
+		echo "</div>";
+	}
