@@ -754,7 +754,7 @@ function elementIsValid(element) {
 		if (element.name === "githubToken" || element.name === "courseGitURL") {
 			$(messageElement).fadeOut();
 			element.classList.add("color-change-neutral");
-    		element.classList.remove("color-change-invalid");
+			element.classList.remove("color-change-invalid");
 			element.classList.remove("color-change-valid");
 			return true; // Optional fields
 		}
@@ -781,7 +781,7 @@ function elementIsValid(element) {
 	// If the input passes validation
 	$(messageElement).fadeOut();
 	element.classList.add("color-change-valid");
-    element.classList.remove("color-change-invalid");
+	element.classList.remove("color-change-invalid");
 	return true;
 }
 
