@@ -243,8 +243,6 @@ function drawLineProperties(line) {
             break;
         case entityType.IE:
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
-            str += `<span id="lineLabel" ${line.label} /span>`; // Needed for cardinality, unsure why
-            str += cardinalityLabels(line);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
@@ -1776,7 +1774,7 @@ function changeLineProperties() {
     }
 
     // adds the rest of the attributes for the specific entity
-    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
+    if (line.type == entityType.UML) {
         changes.startLabel = document.getElementById("lineStartLabel").value;
         changes.endLabel = document.getElementById("lineEndLabel").value;
         changes.startIcon = document.getElementById("lineStartIcon").value;
@@ -1787,7 +1785,7 @@ function changeLineProperties() {
         changes.startIcon = document.getElementById("lineStartIcon").value;
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
-    if (line.type == entityType.SE) {
+    if ((line.type == entityType.SE) || (line.type == entityType.IE)) {
         changes.startIcon = document.getElementById("lineStartIcon").value;
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
