@@ -1172,7 +1172,7 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "CREGITEX":
 				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
-				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php";
 				break;
 			case "GRP":
 				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
