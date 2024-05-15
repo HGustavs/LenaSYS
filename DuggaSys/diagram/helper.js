@@ -151,6 +151,18 @@ function appendValuesFrom(target, changes) {
 }
 
 /**
+ * @description function to get ID from any level of nested array
+ * @param {any[]} array with id
+ * @returns the id
+ */
+function getIdFromArray(array) {
+    while (Array.isArray(array)) {
+        array = array[0];
+    }
+    return array;
+}
+
+/**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
  * @return a boolean value depending on if it is darktheme or not.
  */
