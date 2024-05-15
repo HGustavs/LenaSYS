@@ -1031,16 +1031,6 @@ function prepareElementMovedAndResized(id, xChange, yChange, widthChange, height
 }
 
 /**
- * @description stores the Resize in the historyLog array
- * @param {string[]} id id of the element
- * @param {number} widthChange change in width
- * @param {number} heightChange change in height
- */
-function prepareElementResized(id, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-}
-
-/**
  * @description Event function triggered when the mouse has moved on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
@@ -1107,29 +1097,30 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
+            let xChange, yChange, widthChange, heightChange;
             // Functionality Left/Right resize
             if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
                 let tmpW = elementData.width;
                 let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
+                xChange = movementPosChange(elementData, startX, deltaX, true);
+                widthChange = movementWidthChange(elementData, tmpW, tmpX, false);                
             } else if ((startNodeRight || startNodeUpRight || startNodeDownRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementResized([elementData.id], widthChange, 0);
+                widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
             }
+
             // Functionality Up/Down resize
             if ((startNodeDown || startNodeDownLeft || startNodeDownRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementResized([elementData.id], 0, heightChange);
+                heightChange = movementHeightChange(elementData, startHeight, deltaY, false);            
             } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
                 // Fetch original height// Deduct the new height, giving us the total change
                 let tmpH = elementData.height;
                 let tmpY = elementData.y;
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
+                yChange = movementPosChange(elementData, startY, deltaY, false);
+                heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
             }
+
+            // store the changes in the history
+            prepareElementMovedAndResized([elementData.id], xChange, yChange, widthChange, heightChange);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
