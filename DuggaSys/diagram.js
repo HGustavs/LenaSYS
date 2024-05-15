@@ -88,14 +88,7 @@ class StateMachine {
                             counter: historyHandler.inputCounter
                         });
                     }
-                    break;
-                case StateChange.ChangeTypes.ELEMENT_MOVED:    
-                    this.pushToHistoryLog({
-                        ...stateChange,
-                        changeType: newChangeType.flag,
-                        counter: historyHandler.inputCounter
-                    });
-                    break;
+                    break;                
                 case StateChange.ChangeTypes.ELEMENT_RESIZED:                            
                     // add the real values so that not just the chanegs gets stored
                     currentElement = data[findIndex(data, id)];
@@ -110,6 +103,18 @@ class StateMachine {
                     }
                     
                     // spreaading the values so that it doesn't keep the reference                                    
+                    this.pushToHistoryLog({
+                        ...stateChange,
+                        changeType: newChangeType.flag,
+                        counter: historyHandler.inputCounter
+                    });
+                    break;
+                // these don't have anything special so just add the entries
+                case StateChange.ChangeTypes.ELEMENT_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_DELETED:
+                case StateChange.ChangeTypes.LINE_CREATED:
+                case StateChange.ChangeTypes.LINE_DELETED:
+                case StateChange.ChangeTypes.ELEMENT_MOVED:    
                     this.pushToHistoryLog({
                         ...stateChange,
                         changeType: newChangeType.flag,
