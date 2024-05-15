@@ -457,13 +457,13 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("loadingSpinner").style.display = "none";
 });
 
-//event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenToolbar function with the right parameters
+//event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
 for (let i = 0; i <= 20; i++) { // Assuming the range is from 0 to 20
     let element = document.getElementById("elementPlacement" + i);
     if (element) {
         // Add event listener for contextmenu
         element.addEventListener("contextmenu", function(event) {
-            rightClickOpenToolbar(event, i);
+            rightClickOpenSubtoolbar(event, i);
         });
     }
 }
@@ -1779,10 +1779,9 @@ function holdPlacementButtonDown(num) {
 }
 
 /**
- * @description Function to open a bubtoolbar when rightclicking a button
+ * @description Function to open a subtoolbar when rightclicking a button
  */
-function rightClickOpenToolbar(event, num) {
-    event.preventDefault();
+function rightClickOpenSubtoolbar(event, num) {
     togglePlacementTypeBox(num);
 }
 
