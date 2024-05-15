@@ -42,8 +42,8 @@ class InstallEngine {
 		try {
 			$installer = new DBSetup(pdo: $pdo, db_name: "LenaSYStest", db_user: "LenaTest", db_user_password: "test", hostname:"%", callback: "callback");
 			$testDataSetup = new TestdataSetup("../install/courses", "../courses", callback: "callback");
-			$credentials_manager = new CredentialsManager("../../", callback: "callback");
-			$operations = InstallEngine::construct_installation_queue($installer, $credentials_manager, $testDataSetup, $settings);
+			$configuration_manager = new ConfigurationManager("../../coursesyspw.php", callback: "callback", verbose: $verbose);
+			$operations = InstallEngine::construct_installation_queue($installer, $configuration_manager, $testDataSetup, $settings);
 
 			if ($verbose) {
 				$temp = "Will perform the following operations to install the system: ";
@@ -101,7 +101,7 @@ class InstallEngine {
 	 * Each index contains a key: name of current step
 	 * and a value, callback function for installation step. 
 	 */
-	private static function construct_installation_queue(DBSetup $installer, CredentialsManager $cm, TestdataSetup $testdataSetup, $settings): array { 
+	private static function construct_installation_queue(DBSetup $installer, ConfigurationManager $cm, TestdataSetup $testdataSetup, $settings): array { 
 		// Read settings
 		$verbose = $settings->verbose === 'true' ? true : false;
 		$overwrite_db = $settings->overwrite_db === 'true' ? true : false;
@@ -131,7 +131,15 @@ class InstallEngine {
 				$installer->execute_sql_file("../Shared/SQL/init_db.sql", verbose: $verbose);
 			},
 			"save_credentials" => function() use ($cm, $settings, $using_docker) {
-				$cm->set_db_credentials($settings->username, $settings->password, $settings->hostname, $settings->db_name, $using_docker);
+				$parameters = [
+					"DB_USER" => $settings->username,
+					"DB_PASSWORD" => $settings->password,
+					"DB_HOST" => $settings->hostname,
+					"DB_NAME" => $settings->db_name,
+					"DB_USING_DOCKER" => $using_docker,
+				];
+
+				$cm->set_parameters($parameters);
 			}
 		];
 
