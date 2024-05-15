@@ -1724,8 +1724,7 @@ function exportWithHistory() {
  * @description Stores the current diagram as JSON in localstorage
  * @param {string} key The name/key of the diagram
  */
-function storeDiagramInLocalStorage(key) {
-    
+function storeDiagramInLocalStorage(key) {    
     if (stateMachine.currentHistoryIndex == -1) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
     } else {
