@@ -2921,12 +2921,7 @@ SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:ve
 ### retrieveResultedService_ms.php
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__
-
-Includes no querys.
-
-
-The __retrieveResultedService_ms.php__ returns an array containing two key values (information about):
+__retrieveResultedService_ms.php__ returns an array containing two key values (information about):
 
 - tableInfo - An array containing information about each student submission related to a specific course version. For each submission found in the database, the following information is stored in this array:
    - __duggaName__ - The name of the assignment associated with the data.
