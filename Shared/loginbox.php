@@ -34,37 +34,37 @@
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<form action="" id="loginForm" method="post">
-				<table class="loginBoxTable">
-					<tr class="loginboxTr">
-						<td>
-							
-						</td>
-					</tr>
-					<tr  class="loginboxTr">
-						<td>
-							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+				<div class="loginBoxTable">
+					<div class="loginboxTr">
+						<div>
+							Sign in
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
+							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td class="nowrap">
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div class="nowrap">
 							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
+						</div>
+					</div>
+					<div class="loginboxTr">
 						<!-- Message displayed when using wrong password or username -->
-						<td id="message";></td>
-					</tr>
-				</table>
+						<div id="message"></div>
+					</div>
+				</div>
 			</form>
 		</div>
 		<div id='newpassword' class='newpassword DarkModeBackgrounds DarkModeText' style="display:none">
@@ -73,33 +73,29 @@
 				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">
-					<tr>
-						<td>
-							<label id="loginBoxTitle">Enter your username to reset the password</label>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
-							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+				<div class="loginBoxTable">
+					<div>
+						<label id="loginBoxTitle">Enter your username to reset the password</label>
+					</div>
+					<div class="loginboxTr">
+						<div>
+							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+						</div>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
+						</div>
+					</div>
+					<div class="loginboxTr">
 						<!-- Message displayed when using wrong password or username -->
-						<td id="message2";></td>
-					</tr>
-				</table>
+						<div id="message2"></div>
+					</div>
+				</div>
 			</div>
-			<tr>
-				<td>
-					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
-				</td>
-			</tr>
+			<div>
+            	<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+        	</div>
 		</div>
 		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader'>
