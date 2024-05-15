@@ -457,8 +457,6 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("loadingSpinner").style.display = "none";
 });
 
-
-
 /**
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
  * @see getData() For the VERY FIRST function called in the file.
@@ -624,12 +622,26 @@ function showDiagramTypes() {
 // --------------------------------------- Window Events    --------------------------------
 
 //event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
-for (let i = 0; i <= 20; i++) { // Assuming the range is from 0 to 20
+
+
+// get the elementPlacement button with the highest number and use that for a range in the for loop
+const elements = document.querySelectorAll('[id^="elementPlacement"]');
+let maxNum = 0;
+elements.forEach(element => {
+    const num = parseInt(element.id.replace('elementPlacement', ''), 10);
+    if (num > maxNum) {
+        maxNum = num;
+    }
+});
+
+for (let i = 0; i <= maxNum; i++) {
     let element = document.getElementById("elementPlacement" + i);
     if (element) {
-        // Add event listener for contextmenu
-        element.addEventListener("contextmenu", function() {
-            rightClickOpenSubtoolbar(i);
+        // Add event listener for click
+        element.addEventListener("mousedown", function(event) {
+            if (event.button === 2) { 
+                rightClickOpenSubtoolbar(i);
+            }
         });
     }
 }
