@@ -3128,20 +3128,23 @@ div.submit-button:disabled {
   top: 50%;
 }
 
-/* .formDialogTextWide {
+.formDialogWide .formDialogText {
+  width: 400px;
   display: none;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
-  font-size: 12px;
-  border-radius: 6px;
-  line-height: 14px;
   text-align: center;
-  padding: 5px;
-  right: 100%;
-  width: 200px;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 6px;
+  padding: 5px 0;
+  z-index: 5;
+  font-size: 12px;
+  line-height: 14px;
 }
 
-#formDialogWide {
+.formDialogWide .formDialogText::after {
   content: "";
   position: relative;
   top: -22px;
@@ -3149,10 +3152,6 @@ div.submit-button:disabled {
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent var(--color-text-list) transparent ;
-} */
-
-#deadlineDialog {
-
 }
 
 .formDialogSplitUp {
