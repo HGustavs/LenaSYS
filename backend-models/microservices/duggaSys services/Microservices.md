@@ -211,7 +211,7 @@ __Observe, this microservices needs to be checked again to make sure they are wo
 __Highscore Service:__
 
 - highscoreservice_ms.php __==finished==__ New filename: "readHighscore_ms.php" according to new nameconvention based on CRUD.
-- retrieveHighscoreService_ms.php __==UNFINISHED==__
+- retrieveHighscoreService_ms.php __==finished==__ Should keep existing filename even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 
 <br>
 
@@ -2684,37 +2684,21 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 <br>
 
 ### readHighscore_ms.php
-__readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking.
+__readHighscore_ms.php__ is managing user sessions, handling errors, fetching highscores (through 'retrieveHighscoreService_ms.php'), and communicating these results back to the client.
 
 __Include original service files:__ sessions.php, basic.php
 __Include microservices:__ retrieveHighscoreService_ms.php 
 
-__Querys used in this microservice:__
-
-__SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve values from the columns:
-- username
-- score
-
-- 'userAnswer.grade > 1': Filters to include only records where the user's grade is greater than 1, indicating passing scores.
-- Filters the results to those related to a specific quiz (':did') and a specific moment or part of the quiz (':lid').
-- Orders the results by score in ascending order, displaying the lowest scores first.
-- Restricts the output to the top 10 records based on the ascending order of scores.
-
-```sql
-SELECT username, score FROM userAnswer, user WHERE userAnswer.grade > 1 AND userAnswer.quiz = :did AND userAnswer.moment = :lid ORDER BY score ASC LIMIT 10;
-```
+__Includes neither original service files nor microservices.__
 
 
-_SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve values from the columns:
-- username
-- score
+__Session management:__ Checks if a user is logged in by checking the user's ID in the session. If no user ID is found, it defaults to "1", indicating that the user is not logged in. This is used for determining which user's scores to retrieve or verify if the user has permission to see highscores. 
 
-- Filters the results to include only those records where the quiz ID matches ':did' and the moment or part of the quiz matches ':lid'.
-- Restricts the output to only the first record found.
+__Debugging:__ Initially set to "NONE!". Sshow any errors or important notes about how the database operations went. 
 
-```sql
-SELECT username, score FROM userAnswer, user WHERE userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;
-```
+__Calling 'retrieveHighscoreService':__ This function handles the actual retrieval of scores. 'readHighscore_ms.php' passes necessary parameters ($pdo, $duggaid, $variant, $debug) to 'retrieveHighscoreService_ms.php', which then queries the database and fetches the scores.
+
+__Results:__ After fetching the scores, the result is formated into an array and then encoded into JSON. It´s then sen back to the client. The JSON data includes the highscores and relevant debugging information.
 
 <br>
 
@@ -2723,6 +2707,46 @@ SELECT username, score FROM userAnswer, user WHERE userAnswer.quiz = :did AND us
 <br>
 
 ### retrieveHighscoreService_ms.php
+__readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking.
+
+__Include original service files:__ sessions.php, basic.php
+
+
+__Highscores:__ Collects the best scores from users who have successfully passed a section of a quiz. It pulls these scores from a database and lists each user's name along with their score for the specific quiz and section.
+
+__User:__ Checks if the score of the person currently logged in is among the top scores. If it is, their position is noted in the list. If not, the function runs another query to find and report that user’s own score separately.
+
+__Debug:__ Provides details about any problems encountered during the services operation. This could include error messages from failed SQL queries. 
+
+
+__Querys used in this microservice:__
+
+ _SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve the columns:
+- username
+- score
+
+- Filters records where the 'grade' column in 'userAnswer' is greater than 1.
+- Filters records where the 'quiz' column in 'userAnswer' matches (':did') and the 'moment' column matches (':lid').
+- Results are ordered by the 'score' in ascending order.
+- Limits the results to the top 10 records based on the ascending order of 'score'.
+
+__Note, the query only selects scores associated with users that have returned a dugga with a passing grade (i.e. 1).__
+
+```sql
+SELECT username, score FROM userAnswer, user WHERE userAnswer.grade > 1 AND userAnswer.quiz = :did AND userAnswer.moment = :lid ORDER BY score ASC LIMIT 10;
+```
+
+
+_SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve the columns:
+- username
+- score
+
+- Filters records where the 'quiz' column in the table 'userAnswer' matches (':did') and the 'moment' column matches (':lid').
+- The query limits the results to just one record.
+
+```sql
+SELECT username, score FROM userAnswer, user WHERE userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;
+```
 
 <br>
 <br>
