@@ -797,10 +797,22 @@ function quickValidateForm(formid, submitButton) {
 
 	//If all inputs were valid create course or update course depending on id of form
 	if (numberOfValidInputs === inputs.length) {
-		saveButton.disabled = false;
-		return true;
+		try {
+			saveButton.disabled = false;
+		}
+		catch(err) {
+			err.message;
+		}
+		finally {
+			return true;
+		}
 	} else {
-		saveButton.disabled = true;
+		try {
+			saveButton.disabled = true;
+		}
+		catch(err) {
+			err.message;
+		}
 	}
 	return false;
 }
