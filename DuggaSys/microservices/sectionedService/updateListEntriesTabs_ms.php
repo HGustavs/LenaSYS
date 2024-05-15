@@ -10,25 +10,25 @@ include_once "./retrieveSectionedService_ms.php";
 pdoConnect();
 session_start();
 
-$opt=getOP('opt');
-$sectid=getOP('lid');
-$tabs=getOP('tabs');
+$opt = getOP('opt');
+$sectid = getOP('lid');
+$tabs = getOP('tabs');
 $courseid = getOP('courseid');
 $coursevers = getOP('coursevers');
-$log_uuid=getOP('log_uuid');
-$debug='NONE!';
-
+$log_uuid = getOP('log_uuid');
+$debug = "NONE!";
 $userid = getUid();
+
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
     if (isSuperUser($userid)) {
-        if(strcmp($opt,"UPDATETABS")===0){
-            $query = $pdo->prepare("UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;");
+        if (strcmp($opt, "UPDATETABS") === 0) {
+            $query = $pdo->prepare("UPDATE listentries SET tabs=:tabs WHERE lid=:lid;");
             $query->bindParam(':lid', $sectid);
-            $query->bindParam(':tabs',$tabs);
+            $query->bindParam(':tabs', $tabs);
 
-            if(!$query->execute()){
-                $error=$query->errorInfo();
-                $debug="ERROR: Failed to update gradesystem. Details: ".$error[2];
+            if (!$query->execute()) {
+                $error = $query->errorInfo();
+                $debug = "ERROR: Failed to update tabs. Details: " . $error[2];
             }
         }
     }
@@ -36,4 +36,3 @@ if (checklogin()) { //This entire checklogin should be working by using the getU
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
-return;
