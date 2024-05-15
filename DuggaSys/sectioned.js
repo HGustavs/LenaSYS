@@ -3821,12 +3821,11 @@ function validateForm(formid) {
       setTimeout(function () {
         var element = document.getElementById('I' + updatedLidsection).firstChild;
         if (element.tagName == 'DIV') {
-          element = element.firstChild;
-          element.classList.add("highlightChange");
+          setCreatedDuggaAnimation(element.firstChild, 'DIV');
         } else if (element.tagName == 'A') {
-          document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
+          setCreatedDuggaAnimation(element, 'A');
         } else if (element.tagName == 'SPAN') {
-          document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
+          setCreatedDuggaAnimation(element, 'SPAN');
         }
       }, 200);
       //Duration time for the alert before remove
