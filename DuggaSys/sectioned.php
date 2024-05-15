@@ -306,7 +306,6 @@ function updateGithubDir($pdo, $githubDir, $lid)
 								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");' />
 							</span>
 							<br />
-							<div class="dialogwrapper">
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
 							<span style='float:right;margin-right:10px;'>
 								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
@@ -314,9 +313,8 @@ function updateGithubDir($pdo, $githubDir, $lid)
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlinehours'></select>
 							</span>
-							<div id="deadlineDialog" class="formDialog formDialogWide" style="display: block; left:40px; top:-35px;">
-								<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText formDialogTextWide">Deadline has to be between start date and end date</span>
-							</div>
+							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
+								<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
 							</div>
 						</div>
 						<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->

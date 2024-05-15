@@ -3073,6 +3073,7 @@ div.submit-button:disabled {
 }
 
 /* ----------------------Form Pointing Dialogs START ---------------------- */
+/* Apart from special cases further down, all of these are taken out of normal flow and are attached to the left of the input */
 .dialogwrapper {
   position: relative;
   display: block;
@@ -3087,7 +3088,7 @@ div.submit-button:disabled {
   border-radius: 6px;
   position: absolute;
   z-index: 5;
-  right: calc(100% + 6px); /*6px is the static space of the arrow located in ::after*/
+  right: calc(100% + 6px); /*6px is the static (not changing) space of the arrow located in ::after*/
   transform: translateY(-50%);
   top: 50%;
 }
@@ -3118,16 +3119,7 @@ div.submit-button:disabled {
 
 /* Special cases */
 
-.formDialogWide {
-  display: block;
-  border-radius: 6px;
-  position: absolute;
-  z-index: 5;
-  right: calc(100% + 6px); /*6px is the static space of the arrow located in ::after*/
-  transform: translateY(-50%);
-  top: 50%;
-}
-
+/*The formDialogWide is used when validation text is supposed to be shown under the element. It also needs static position in order to take up space*/
 .formDialogWide .formDialogText {
   width: 400px;
   display: none;
