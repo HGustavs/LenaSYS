@@ -7075,9 +7075,9 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 28px 25px 0px 0px;
-  margin: 0px;
-  left: -55px;
+  padding: 1.8rem 1.5rem 0rem 0rem;
+  margin: 0rem;
+  left: -3.5rem;
   width: 100%;
   list-style: none;
   text-align: center;
@@ -7094,7 +7094,7 @@ only screen and (max-device-width: 568px) {
 
 @media only screen and (max-width: 430px) {
   .fab-btn-list2 {
-    left: 55px;
+    left: 3.4rem;
   }
 }
 
