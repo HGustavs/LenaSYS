@@ -37,7 +37,7 @@ $testsData = array(
                 ),
                 'duggaFilterOptions'
             )
-        ),
+        )
     ),
 );
 

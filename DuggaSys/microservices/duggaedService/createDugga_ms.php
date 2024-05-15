@@ -6,7 +6,7 @@
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "retrieveDuggaedService_ms.php";
+include_once "./retrieveDuggaedService_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
 

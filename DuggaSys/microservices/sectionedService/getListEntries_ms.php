@@ -1,7 +1,7 @@
 <?php
 /*
-* Retrieives ALL listentries 
-*/
+ * Retrieives ALL listentries 
+ */
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -9,7 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -17,9 +17,10 @@ session_start();
 
 // Global variables
 $uid = getUid();
-$opt=getOP('opt');
+$opt = getOP('opt');
 $courseid = getOP('courseid');
-$coursevers=getOP('coursevers');
-$log_uuid=getOP('log_uuid');
+$coursevers = getOP('coursevers');
+$log_uuid = getOP('log_uuid');
+$debug = "NONE!";
 
 echo json_encode(retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid));

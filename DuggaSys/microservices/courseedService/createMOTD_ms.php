@@ -13,7 +13,9 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../../../Shared/sessions.php";     
+
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "./retrieveCourseedService_ms.php";
 
@@ -24,9 +26,8 @@ session_start();
 $opt=getOP('opt');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
-
 $debug="NONE!";
-
+$userid=getUid();
 $ha = null;
 $isSuperUserVar = false;
 
@@ -58,4 +59,5 @@ if($ha) {
 }
 
 
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
+$data=retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar);
+echo json_encode($data);

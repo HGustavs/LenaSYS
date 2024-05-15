@@ -2,7 +2,8 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
-include ('../sharedMicroservices/getUid_ms.php');
+include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCodeviewerService_ms.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
@@ -14,8 +15,8 @@ session_start();
 $exampleId=getOP('exampleid');
 $boxId=getOP('boxid');
 $opt=getOP('opt');
-
-getUid();
+$debug="NONE!";
+$userid=getUid();
 
 
 $query1 = $pdo->prepare("DELETE FROM improw WHERE exampleid=:exampleid;");
@@ -59,6 +60,6 @@ if(!$query5->execute()) {
     echo (json_encode(array('writeaccess' => 'w', 'debug' => $error[2])));
     return;
 }
-echo (json_encode(array('deleted' => true, 'debug' => $debug)));
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
 return;
-?>

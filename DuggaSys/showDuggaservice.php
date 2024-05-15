@@ -20,7 +20,7 @@ if(isset($_SESSION['uid'])){
 	$lastname=$_SESSION['lastname'];
 	$firstname=$_SESSION['firstname'];
 }else{
-	$userid="student";		
+	$userid="guest";		
 } 	
 
 $opt=getOP('opt');

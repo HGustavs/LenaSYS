@@ -12,7 +12,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "retrieveFileedService_ms.php";
+include_once "./retrieveFileedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
