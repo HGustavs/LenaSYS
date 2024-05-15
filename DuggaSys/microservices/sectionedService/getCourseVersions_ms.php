@@ -4,21 +4,6 @@
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
-
-// Include basic application services!
-include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
-
-// Connect to database and start session
-pdoConnect();
-
-$log_uuid=getOP('log_uuid');
-$opt=getOP('opt');
-$userid=getUid();
-$coursevers=getOP('coursevers');
-$courseid=getOP('courseid');
-$debug='NONE!';
-
 // Fetch all course versions
 function getCourseVersions($pdo) {
     $versions = array();
