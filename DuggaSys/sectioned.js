@@ -949,7 +949,7 @@ function prepareItem() {
   //}
 
   //Place element at bottom if the user has scrolled all the way down, otherwise at the top. (Stopgap solution)
-  let screenPos = 0
+  let screenPos = 1
   if(Math.floor(window.scrollY) === (document.documentElement.scrollHeight - document.documentElement.offsetHeight) 
   && document.documentElement.scrollHeight > document.documentElement.clientHeight) {
    screenPos = document.getElementById("Sectionlistc").childElementCount;
