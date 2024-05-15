@@ -77,64 +77,48 @@ class StateMachine {
             const id = stateChange.id;
             lastLog.id = getIdFromArray(lastLog.id);
 
-            if (!newChangeType.isSoft) {                            
-                // edits the last element if it's during the same resize
-                if (lastLog.changeType == newChangeType.flag && 
-                    lastLog.counter == historyHandler.inputCounter &&
-                    newChangeType.flag == StateChange.ChangeTypes.ELEMENT_RESIZED
-                ) {
-                    this.historyLog.splice(this.historyLog.length-1, 1);
-                }
-
-                this.pushToHistoryLog({
-                    ...stateChange,
-                    changeType: newChangeType.flag,
-                    counter: historyHandler.inputCounter
-                });
-            } else {                
-                let currentElement;                                            
-                switch (newChangeType) {
-                    case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                        // checks so that the exact same thing doesn't get logged twice
-                        if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
-                            this.pushToHistoryLog({
-                                ...stateChange, 
-                                changeType: newChangeType.flag, 
-                                counter: historyHandler.inputCounter
-                            });
-                        }
-                        break;
-                    case StateChange.ChangeTypes.ELEMENT_MOVED:    
+            let currentElement;
+            switch (newChangeType) {
+                case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                    // checks so that the exact same thing doesn't get logged twice
+                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
                         this.pushToHistoryLog({
-                            ...stateChange,
-                            changeType: newChangeType.flag,
+                            ...stateChange, 
+                            changeType: newChangeType.flag, 
                             counter: historyHandler.inputCounter
                         });
-                        break;
-                    case StateChange.ChangeTypes.ELEMENT_RESIZED:                            
-                        // add the real values so that not just the chanegs gets stored
-                        currentElement = data[findIndex(data, id)];
-                        stateChange.width = currentElement.width;
-                        stateChange.height = currentElement.height;
-                        stateChange.x = currentElement.x;
-                        stateChange.y = currentElement.y;
-                        
-                        // if the save() call comes from the same change-motion, remove the last entry
-                        if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
-                            this.historyLog.splice(this.historyLog.length - 1, 1);
-                        }
-                        
-                        // spreaading the values so that it doesn't keep the reference                                    
-                        this.pushToHistoryLog({
-                            ...stateChange,
-                            changeType: newChangeType.flag,
-                            counter: historyHandler.inputCounter
-                        });
-                        break;
-                    default:
-                        console.error(`Missing implementation for soft state change: ${stateChange}!`);
-                        break;
-                }                
+                    }
+                    break;
+                case StateChange.ChangeTypes.ELEMENT_MOVED:    
+                    this.pushToHistoryLog({
+                        ...stateChange,
+                        changeType: newChangeType.flag,
+                        counter: historyHandler.inputCounter
+                    });
+                    break;
+                case StateChange.ChangeTypes.ELEMENT_RESIZED:                            
+                    // add the real values so that not just the chanegs gets stored
+                    currentElement = data[findIndex(data, id)];
+                    stateChange.width = currentElement.width;
+                    stateChange.height = currentElement.height;
+                    stateChange.x = currentElement.x;
+                    stateChange.y = currentElement.y;
+                    
+                    // if the save() call comes from the same change-motion, remove the last entry
+                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
+                        this.historyLog.splice(this.historyLog.length - 1, 1);
+                    }
+                    
+                    // spreaading the values so that it doesn't keep the reference                                    
+                    this.pushToHistoryLog({
+                        ...stateChange,
+                        changeType: newChangeType.flag,
+                        counter: historyHandler.inputCounter
+                    });
+                    break;
+                default:
+                    console.error(`Missing implementation for soft state change: ${stateChange}!`);
+                    break;
             }
         }
     }
