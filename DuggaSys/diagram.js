@@ -6,8 +6,8 @@
 class StateMachine {
     /**
      * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
-     * @param {Array<Object>} initialElements All elements that should be stored in the initial state.
-     * @param {*} initialLines All lines that should be stored in the initial state.
+     * @param {Array<Element>} initialElements All elements that should be stored in the initial state.
+     * @param {Array<Object>} initialLines All lines that should be stored in the initial state.
      */
     constructor(initialElements, initialLines) {
         /**
@@ -15,23 +15,12 @@ class StateMachine {
          */
         this.historyLog = [];
 
-        /**
-         * Our initial data values
-         */
         this.initialState = {
             elements: [],
             lines: []
         };
-        initialElements.forEach(element => {
-            const obj = {};
-            Object.assign(obj, element);
-            this.initialState.elements.push(obj)
-        });
-        initialLines.forEach(line => {
-            const obj = {};
-            Object.assign(obj, line);
-            this.initialState.lines.push(obj)
-        });
+        this.initialElements = initialElements.map(e => Object.assign({}, e));
+        this.initialLines = initialLines.map(l => Object.assign({}, l));
 
         /**
          * @type StateChange.ChangeTypes
@@ -292,7 +281,7 @@ class StateMachine {
     }
 
     /**
-     * @description Restore an given state
+     * @description Restore a given state
      * @param {StateChange} state The state that should be restored
      */
     restoreState(state) {
@@ -316,8 +305,8 @@ class StateMachine {
                 }
             });
             // If the array is not empty remove the objects
-            if (linesToRemove.length != 0) removeLines(linesToRemove, false);
-            if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
+            if (linesToRemove.length) removeLines(linesToRemove, false);
+            if (elementsToRemove.length) removeElements(elementsToRemove, false);
             return;
         }
 
@@ -325,10 +314,7 @@ class StateMachine {
 
         for (let i = 0; i < state.id.length; i++) {
             // Find object
-            let object;
-            if (data[findIndex(data, state.id[i])]) object = data[findIndex(data, state.id[i])];
-            else if (lines[findIndex(lines, state.id[i])]) object = lines[findIndex(lines, state.id[i])];
-            // If an object was found
+            let object = data.find(e => e.id == state.id[i]) ?? lines.find(e => e.id == state.id[i]);
             if (object) {
                 // For every key, apply the changes
                 keys.forEach(key => {

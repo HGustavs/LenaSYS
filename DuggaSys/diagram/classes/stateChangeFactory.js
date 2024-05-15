@@ -21,7 +21,7 @@ class StateChangeFactory {
         uniqueKeysArr.forEach(key => {
             values[key] = element[key];
         });
-        return new StateChange(element.id, values);
+        return new StateChange(element.id, values, null);
     }
 
     /**
@@ -29,12 +29,7 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementsDeleted(elements) {
-        const ids = [];
-        // For every object in the array, get id and add it to the array ids
-        elements.forEach(element => {
-            ids.push(element.id);
-        });
-        return new StateChange(ids);
+        return new StateChange(elements.map(e => e.id), null, null);
     }
 
     /**
@@ -54,8 +49,8 @@ class StateChangeFactory {
             var obj = data[findIndex(data, id)];
 
             if (obj === undefined) return;
-            if (moveX != 0) values.x = obj.x;
-            if (moveY != 0) values.y = obj.y;
+            if (moveX) values.x = obj.x;
+            if (moveY) values.y = obj.y;
             changesArr.push(new StateChange(obj.id, values, timeStamp))
         });
 
@@ -69,15 +64,11 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementResized(elementIDs, changeX, changeY) {
-        const values = {
-            width: changeX,
-            height: changeY
-        };
-        return new StateChange(elementIDs, values);
+        return new StateChange(elementIDs, {width: changeX, height: changeY}, null);
     }
 
     /**
-     * @param {List<String>} elementIDs List of IDs for all elements that were moved and resized.
+     * @param {Array<String>} elementIDs List of IDs for all elements that were moved and resized.
      * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
      * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
@@ -85,13 +76,7 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY) {
-        const values = {
-            x: moveX,
-            y: moveY,
-            width: changeX,
-            height: changeY
-        };
-        return new StateChange(elementIDs, values);
+        return new StateChange(elementIDs, {x: moveX, y: moveY, width: changeX, height: changeY}, null);
     }
 
     /**
@@ -100,12 +85,7 @@ class StateChangeFactory {
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementAttributesChanged(elementID, changeList) {
-        const values = {};
-        // For every attribut in changeList, add it to values
-        Object.keys(changeList).forEach(key => {
-            values[key] = changeList[key];
-        });
-        return new StateChange(elementID, values);
+        return new StateChange(elementID, changeList, null);
     }
 
     /**
@@ -122,7 +102,7 @@ class StateChangeFactory {
         uniqueKeysArr.forEach(key => {
             values[key] = line[key];
         });
-        return new StateChange(line.id, values);
+        return new StateChange(line.id, values, null);
     }
 
     /**
@@ -135,7 +115,7 @@ class StateChangeFactory {
         for (let index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
-        return new StateChange(lineIDs);
+        return new StateChange(lineIDs, null, null);
     }
 
     /**
@@ -153,7 +133,7 @@ class StateChangeFactory {
         lines.forEach(line => {
             allIDs.push(line.id)
         });
-        return new StateChange(allIDs);
+        return new StateChange(allIDs, null, null);
     }
 
     /**
