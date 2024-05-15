@@ -256,12 +256,6 @@ if(checklogin()){
 
 					$link=$pdo->lastInsertId();
 			}
-			//Change position of elements one increment up to make space for insertion.
-			$query = $pdo->prepare("UPDATE listentries SET pos = pos+1 WHERE cid = :cid and vers = :cvs and pos >= :pos");
-			$query->bindParam(":cid", $courseid);
-			$query->bindParam(":cvs", $coursevers);
-			$query->bindParam(":pos", $pos);
-			$query->execute();
 
 			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) 
 														VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
@@ -572,20 +566,12 @@ if(checklogin()){
 				if ($counted == 0) {
 					
 
-					//Get the position of the related moment
-					$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid = :cid and lid = :lid");
+					//Get the last position in the listenries to add new course at the bottom
+					$query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
 					$query->bindParam(":cid", $courseid);
-					$query->bindParam(":lid", $lid);
 					$query->execute();
 					$e = $query->fetchAll();
-					$pos = $e[0]['pos'] + 1; //Get position under the moment
-
-					//Move elements up from insertion.
-					$query = $pdo->prepare("UPDATE listentries SET pos = pos+1 WHERE cid = :cid and vers = :cvs and pos >= :pos");
-					$query->bindParam(":cid", $courseid);
-					$query->bindParam(":cvs", $coursevers);
-					$query->bindParam(":pos", $pos);
-					$query->execute();
+					$pos = $e[0]['pos'] + 1; //Gets the last filled position+1 to put the new codexample at
 
 					//select the files that has should be in the codeexample
 					$fileCount = count($groupedFiles);
