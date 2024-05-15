@@ -2,7 +2,6 @@
  * @description Translate all elements to the correct coordinate
  */
 function updateCSSForAllElements() {
-    function updateElementDivCSS(elementData, divObject, useDelta = false) {
         function updateElementDivCSS(elementData, divObject, useDelta = false) {
             let eRect = divObject.getBoundingClientRect();
             let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx / zoomfact));
