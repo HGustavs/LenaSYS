@@ -186,8 +186,8 @@
 				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-				<input id='addElement'  type='button' value='+' style="margin-right:20px; top:-493px" class='submit-button-newitem' title='New Item' >
-				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
+				<input id='addElement'  type='button' value='+' style="margin-right:20px; top:-493px; position:fixed;" class='submit-button-newitem' title='New Item' >
+				<ol class='fab-btn-list2' id='olFabBtnList2' reversed id='fabBtnList2'>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
