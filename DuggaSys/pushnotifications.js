@@ -2,7 +2,7 @@
 
 $(function() {
 
-	let sendPushRegistrationToServer = function(subscription, deregister) {
+	var sendPushRegistrationToServer = function(subscription, deregister) {
 		$.ajax({
 			url: "pushnotifications.php",
 			type: "POST",
@@ -17,7 +17,7 @@ $(function() {
 	};
 
 
-	let subscribe = function() {
+	var subscribe = function() {
 		$("#notificationsToggle")[0].disabled = true;
 
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
@@ -44,7 +44,7 @@ $(function() {
 		});
 	};
 
-	let unsubscribe = function() {
+	var unsubscribe = function() {
 		$("#notificationsToggle")[0].disabled = true;
 
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
@@ -62,7 +62,7 @@ $(function() {
 		});
 	};
 
-	let updateTextAndButton = function(subscribed) {
+	var updateTextAndButton = function(subscribed) {
 		if (subscribed) {
 			$("#notificationsText").html("Push notifications are activated on this device.");
 			$("#notificationsToggle").off("click").on("click", unsubscribe).html("Deactivate push notifications");
@@ -74,7 +74,7 @@ $(function() {
 		}
 	};
 
-	let initialiseState = function() {
+	var initialiseState = function() {
 		if (!('showNotification' in ServiceWorkerRegistration.prototype) || !('PushManager' in window)) {
 			$("#notificationsText").html("Push notifications not supported in this browser").css('color', '#a00'); // Notification or PushManager support not found
 			return;
@@ -84,12 +84,11 @@ $(function() {
 			return;
 		}
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-			serviceWorkerRegistration.pushManager
-				.getSubscription()
-				.then((subscription) => {
-					updateTextAndButton(subscription);
+			serviceWorkerRegistration.pushManager.getSubscription()
+				.then(function(subscription) {
+					updateTextAndButton(subscription !== null);
 				})
-				.catch((err) => {
+				.catch(function(err) {
 					console.log('Error during getSubscription()', err);
 				});
 		});

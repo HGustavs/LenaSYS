@@ -20,24 +20,13 @@
 		let progressPercentage = document.getElementById("progressPercentage");
 		let progressBar = document.getElementById("progressBar");
 		const getCurrentValue = () => parseInt(progressBar.value);
-		let progressBarLocked = false;
 
 		fetch('installer.php', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ 
-				verbose: 'false',
-				overwrite_db: 'true', 
-				overwrite_user: 'true',
-				add_test_data: 'true',
-				add_demo_course: 'true',
-				add_test_course_data: 'true',
-				add_test_files: "true",
-				language_support: ["html", "java", "php", "plain", "sql", "sr"],
-				starting_step: "",
-			}))
+			body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}))
 		});
 
 		let sseReceiver = new SSEReceiver({
@@ -49,7 +38,6 @@
 				let distance = Math.abs(targetValue - getCurrentValue());
 				let speedFactor = Math.max(4, distance / 100);
 				let increment = (targetValue - getCurrentValue()) / (100 * speedFactor);
-				progressBarLocked = false;
 
 				if (targetValue === 100) {
 					progressBar.value = 100;
@@ -57,7 +45,7 @@
 				}
 
 				function update() {
-					if ((increment > 0 && getCurrentValue() < targetValue) && !(getCurrentValue() > targetValue) && !progressBarLocked) {
+					if ((increment > 0 && getCurrentValue() < targetValue) && !(getCurrentValue() > targetValue)) {
 						progressBar.value += increment;
 						progressPercentage.innerHTML = Math.round(progressBar.value) + "%";
 						requestAnimationFrame(update);
@@ -65,9 +53,6 @@
 				}
 				
 				update();
-			},
-			error:function(data) {
-				progressBarLocked = true;
 			}
 		});
 	</script>

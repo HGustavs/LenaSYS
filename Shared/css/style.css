@@ -1413,17 +1413,6 @@ header td {
   height: 32px;
 }
 
-/*Needed because navButt aplies a clicking effect on the element*/
-.navSearchWrapper {
-  width: 29px;
-  vertical-align: middle;
-  margin-top: 9px;
-}
-
-.navSearch {
-  margin-top:5%;
-}
-
 #downloadButt {
   margin-top: 2px;
   height: 40px;
@@ -1857,7 +1846,6 @@ div .navButt:hover {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 8000;
   margin:0 auto;
-  display:none;
 }
 
 .loginHashContainer {
@@ -1900,10 +1888,6 @@ div .navButt:hover {
   margin: 10px 0px;
 }
 
-#login, #logout {
-  max-width: fit-content;
-}
-
 .loginBox,
 .logoutBox{
   padding: 4px;
@@ -1915,7 +1899,6 @@ div .navButt:hover {
   max-height: 80%;
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-  width:494px;
 }
 
 #receiptBox{
@@ -2274,9 +2257,8 @@ input.inactive-button {
   width: 445px;
   border-radius: 0px;
 }
-.inputwrapper select {
+.inputwrapper select{
   border-radius: 0px;
-  margin-right: 0px;
 }
 
 #before,
@@ -2287,91 +2269,6 @@ input.inactive-button {
 #playlink {
   width: 100%;
 }
-
-/*---===#===---*
-  padding styles
-*---====#===---*/
-
-.padding_5px{
-  padding: 5px;
-}
-
-.padding_10px{
-  padding: 10px;
-} 
-
-.padding_15px{
-  padding: 15px;
-} 
-
-.padding_20px{
-  padding: 20px;
-} 
-
-.padding_25px{
-  padding: 25px;
-}
-
-.padding-right_5px{
-  padding-right: 5px;
-}
-
-.padding-right_10px{
-  padding-right: 10px;
-}
-
-.padding-right_15px{
-  padding-right: 15px;
-}
-
-.padding-right_20px{
-  padding-right: 20px;
-}
-
-.padding-right_25px{
-  padding-right: 25px;
-}
-
-.padding-left_5px{
-  padding-left: 5px;
-}
-
-.padding-left_10px{
-  padding-left: 10px;
-}
-
-.padding-left_15px{
-  padding-left: 15px;
-}
-
-.padding-left_20px{
-  padding-left: 20px;
-}
-
-.padding-left_25px{
-  padding-left: 25px;
-}
-
-/*---END---*/
-
-/*---===#===---*
-Fonts
-*---====#===---*/
-.italic{
-  font-style:italic;
-}
-
-/*---END---*/
-
-.diplay_none{
-  display:none
-}
-
-.errorMessage{
-  display: none; 
-  left:0px;
-}
-
 /*---===#===---*
 Generic functions END 
 *---====#===---*/
@@ -2409,9 +2306,7 @@ Generic functions END
   font-size: 14px;
   transition: 1s background-color;
 }
-#accessImg {
-  display: flex;
-}
+
 #gradeExportPopUpButton:hover {
   background-color: var(--color-primary-hover);
   border-radius: 2px;
@@ -2463,7 +2358,6 @@ resulted.php END
 
 #editCourse {
   margin-right: 0px;
-  display:none;
 }
 /*---===#===---*
 sectioned.php END 
@@ -2473,93 +2367,8 @@ sectioned.php END
  *                                    courseed.php                             *
  * --------------================################================--------------*/
  
- #loginBox_DarkMode {
-  width:464px;  
-  overflow:hidden;
- }
-
- #submitMotd { 
+ #submitMotd {
   margin-left: 340px;
-}
-
-#newCourse_Name_formDialog {
-  display: block; 
-  left:-125px; 
-  top:-8px;
-}
-
-
-#newCourse_Code_formDialog {
-  display: block; 
-  left:-125px; 
-  top:0px;
-}
-
-#newGithubformDialog {
-  display: block; 
-  left:-125px; 
-  top:0px;
-}
-
-#editCourse_Name_formDialog {
-  display: block; 
-  left:-127px; 
-  top:-4px;
-}
-
-
-#editCourse_Code_formDialog {
-  display: block; 
-  left:-123px; 
-  top:2px;
-}
-
-#editGithub_formDialog {
-  display: block; 
-  left:-118px; 
-  top:3px;
-}
-
-#GithubKey_formDialog{
-  display: block; 
-  left:-175px; 
-  top:3px;
-}
-
-/*font style for "are you shure?*/
-#deleteQustion {
-  font-size:24px; 
-  padding-bottom:50px; 
-  padding-top:60px; 
-  border-bottom: 2px solid #ccc;
-}
-
-#editSettings{
-  display:none;
-}
-
-#editSettings_loginBox{
-  width:464px; 
-  overflow:hidden;
-}
-
-/*placemets for error text in server settings*/
-#error50{
-  display: block; 
-  left:55px; 
-  top:-78px;
-}
-
-#errorSymbol{
-  display: block; 
-  left:55; 
-  top:-72px;
-}
-
-#editCourseButtonPlacement{
-  float:right; 
-  padding-top:20px; 
-  width: 464px;
 }
 
 /*---===#===---*
@@ -2723,7 +2532,7 @@ label.login-label {
 .logoutBoxTable {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
-  margin: 10px 10px 0 10px;
+  margin-left: -2px;
   background-color: transparent;
 }
 
@@ -2896,6 +2705,7 @@ label.login-label {
   text-align: start;
   border-radius: 0px;
   box-sizing: border-box;
+  /* margin-right: 10px; */
 }
 
 .greyedout-textinput {
@@ -2939,11 +2749,6 @@ label.login-label {
 
 .color-change-valid{
   border-color:#383;
-  border-width: 2px;
-}
-
-.color-change-neutral{
-  border-color: var(--color-border-2);
   border-width: 2px;
 }
 
@@ -3272,6 +3077,7 @@ div.submit-button:disabled {
 .formDialog {
   position: relative;
   display: inline-block;
+  left: -100px;
 }
 
 .formDialog .formDialogText {
@@ -3358,7 +3164,6 @@ div.submit-button:disabled {
   left: -100px;
   font-size: 12px;
   line-height: 14px;
-  display:none;
 }
 
 .tooltipDugga .tooltipDuggatext::after {
@@ -4048,9 +3853,6 @@ span.arrow {
 #accessTable td:nth-child(1), #quiz td:nth-child(1),#fileLink td:nth-child(1),#resultTable td:nth-child(1){
   text-align: center;
 }
-#edit___accessTable___tbl {
-  width: 25px;
-}
 
 #accessTable td span{
   padding: 0px;
@@ -4080,14 +3882,6 @@ span.arrow {
 
 .accessTable_counter span {
   margin-left: 5px;
-}
-
-#accessTable___body tr.even {
-  background-color: var(--color-sectioned-table-hi); 
-}
-
-#accessTable___body tr.odd {
-  background-color: var(--color-sectioned-table-lo); 
 }
 
 .access-dropdown-content{
@@ -4132,6 +3926,7 @@ div.reset-pw:hover{
   transition: 0.2s;
   filter: brightness(1.05);
 }
+
 
 .show{
   display:block;
@@ -4733,15 +4528,15 @@ div.reset-pw:hover{
 
 .dropdown-list-container {
   padding: 8px;
+  width: 200px;
   color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;
   display: none;
   position: absolute;
-  background: var(--color-sectioned-table-lo);
-  border-radius: 0px 0px 25px 25px;
+  background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
-  margin-top: -2px;
+  margin-top: 5px;
 }
 
 #sortOptions {
@@ -5848,7 +5643,7 @@ only screen and (max-device-width: 568px) {
 
   #versionCog, #versionPlus, #editStudent,
   #githubPopupWindow,#testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement, #messagedialog, #refreshIMG, #accessImg {
+  #editCourse, #announcement, #messagedialog, #refreshIMG{
     display: none;
   }
 }
@@ -7274,27 +7069,13 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 28px 25px 0px 0px;
-  margin: 0px;
-  left: -55px;
+  padding: 18px 0px 0px;
+  margin: 0px 0px 0px -3px;
+  left: auto;
   width: 100%;
   list-style: none;
   text-align: center;
-  display: none;
-}
-
-#olFabBtnList2{
-  height:fit-content;
-}
-
-#FABStatic2{
-  z-index:2;
-}
-
-@media only screen and (max-width: 430px) {
-  .fab-btn-list2 {
-    left: 55px;
-  }
+  top: 25px;
 }
 
 @media screen and (max-height: 600px) {
@@ -9836,29 +9617,8 @@ margin:2px;
   grid-area: "closeDiv";
 }
 
-.toastNo, .toastYes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  cursor: pointer;
-  padding: 5px 10px;
-  color: white;
-}
-
-.toastNo {
- background-color: var(--color-red);
-}
-
-.toastNo:hover {
-  background-color: var(--color-red-hover);
-}
-.toastYes {
-  background-color: var(--color-green);
-}
-
-.toastYes:hover {
-  background-color: #008000;
+.toast div:first-child, .toast div:nth-child(3) {
+  width: fit-content;
 }
 
 .warning {
@@ -9871,10 +9631,6 @@ margin:2px;
 
 .error {
   background-color: rgb(243, 129, 129);
-}
-
-.confirm {
-  background-color: #fecc56;
 }
 
 .toast.show {
@@ -9899,14 +9655,6 @@ margin:2px;
   word-break: break-word;
   text-align: start;
   overflow: hidden;
-}
-
-
-.toastButtonBox {
-  display: flex;
-  justify-content: space-around;
-  margin: 0 auto;
-  width: 100%;
 }
 
 
@@ -9950,11 +9698,12 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper, #addUser .flexwrapper, #removeUser .flexwrapper, #editUser .flexwrapper  {
+#createUser .flexwrapper {
+  /* margin-top: .75rem; */
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #addUser .flex-end, #removeUser .flex-end, #editUser .flex-end{
+#createUser .flex-end{
   display: flex;
   justify-content: flex-end;
 }

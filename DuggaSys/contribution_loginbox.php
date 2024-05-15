@@ -1,7 +1,3 @@
-<?php 
-    include_once "../Shared/toast.php";
-?>
-
 <style>	
 	.loginFail {
 		animation: loginFail 2s;

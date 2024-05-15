@@ -186,17 +186,17 @@
 				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
 			<div class='fixed-action-button2 sectioned2'  id="FABStatic2" style="display:none">
-				<input id='addElement'  type='button' value='+' style="margin-right:20px; top:-493px; position:fixed;" class='submit-button-newitem' title='New Item' >
-				<ol class='fab-btn-list2' id='olFabBtnList2' reversed id='fabBtnList2'>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect centered-icon' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-					<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
-				</ol>
+				<input id='addElement'  type='button' value='+' style="margin-right:20px; top:-493px" class='submit-button-newitem' title='New Item' >
+				<ol class='fab-btn-list2' style='display: none;'  reversed id='fabBtnList2'>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","TOP");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Test' onclick='createFABItem("3","New Test","TOP");'><img alt='test document icon' class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect centered-icon' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Quote","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
+					</ol>
 			</div>
 			
 			<!-- Hide button -->
@@ -270,8 +270,7 @@
 
 		<!-- Edit Section Dialog START -->
 
-		<div id='editSection' onmouseover="validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
-
+		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 
 			<div class='loginBoxheader'>
@@ -283,11 +282,10 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectionName('sectionname','dialog10')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
 				<div class="formDialog" style="display: block;">
   		      		<span id="dialog10"  class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
-
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
@@ -303,13 +301,13 @@
 							<span>Absolute</span>
 							<span style='float:right'>
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
-								<select style='width:55px; margin-right: 10px;' id='deadlineminutes'></select>
-								<select style='width:55px; margin-right: 10px;' id='deadlinehours'></select>
+								<select style='width:55px;' id='deadlineminutes'></select>
+								<select style='width:55px;' id='deadlinehours'></select>
 								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
-							<span style='float:right;'>
+							<span style='float:right;margin-right:10px;'>
 								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineamount'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
@@ -325,21 +323,15 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'>
-					<span>Student Feedback Question:</span>
-					<input type="input" onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectionName('feedBackQuestion','dialog11')" class='textinput' id='feedBackQuestion' value='How would you grade the dugga' ></input>
-					</div>
-					<div class="formDialog">
-  		      			<span id="dialog11" style="display: none;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
-  		      		</div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div style='padding:10px;'>
+				<div style='padding:20px;'>
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" onmouseover='quickValidateForm("saveBtn");' style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
+					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
 				</div>
 			</div>
 		</div>
@@ -616,28 +608,26 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div style="padding:5px;";>
-						<div class='inputwrapper'>
-							<span>Github Directory:</span>
-								<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
-								<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
-								<?php
-									// Gets "cid" via getOPG.
-									$cid = getOPG('courseid');
-									// Traverses the github map for the respective course, only fetches directories.
-									$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
-									foreach ($dirs as $dir) {
-										$dirname = basename($dir);
-										// Creates an option for each directory containing the string "Examples". 
-										echo "<option value='$dirname'>$dirname</option>";	
-									}			
-								?>
-							</select>
-						</div>
-				</div>
+				<div class='inputwrapper'>
+					<span>Github Directory:</span>
+						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
+							<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
+							<?php
+								// Gets "cid" via getOPG.
+								$cid = getOPG('courseid');
+								// Traverses the github map for the respective course, only fetches directories.
+								$dirs = glob("../courses/$cid/Github/*", GLOB_ONLYDIR);
+								foreach ($dirs as $dir) {
+									$dirname = basename($dir);
+									// Creates an option for each directory containing the string "Examples". 
+									echo "<option value='$dirname'>$dirname</option>";	
+								}			
+							?>
+						</select>
+					</div>
 				<input type="hidden" name="lid" id="lidInput">
 				<!-- Hidden input using the "lid" from "getLidFromButton" -->
-				<input type="submit" class="submit-button" name="githubInsert" value="Submit">
+				<input type="submit" name="githubInsert" value="Submit!">
 			</div>
 		</div>
 	</form>
@@ -699,14 +689,14 @@
 						<div class='inputwrapper'>
 							<span>Name:</span>
 							<div class="formDialog">
-								<span id="fileNameError" style="left: -100px;"  class="formDialogText">Please use letters and digits, only</span>
+								<span id="fileNameError"  class="formDialogText">Please use letters and digits, only</span>
 							</div>
 							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value=''/>
 						</div>
 						<div class='inputwrapper'>
 							<span>GithubUrl:</span>
 							<div class="formDialog">
-								<span id="gitHubError" style="left: -100px;" class="formDialogText">Enter a valid github url</span>
+								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
 							</div>
 							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/>
 						</div>

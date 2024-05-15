@@ -23,13 +23,8 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="profile.js"></script>
-	<?php
-	if (defined('PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY')) {
-	?>
-		<script src="pushnotifications.js"></script>
-	<?php
-	}
-	?>
+
+	<script src="pushnotifications.js"></script>
 </head>
 <body>
 

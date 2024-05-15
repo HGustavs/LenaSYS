@@ -24,18 +24,16 @@ class SSESender {
 	 * Sends data to an SSE stream
 	 * Formats array data to json. 
 	 */
-	public static function transmit($data = null, bool $is_error = false): void {
+	public static function transmit(string $data = null, bool $is_error = false): void {
 		if (connection_aborted()) {
 			exit;
 		}
 
-		if (is_string($data)) {
-			$data = [
-				"success" => !$is_error,
-				"event" => "message",
-				"data" => $data,
-			];
-		}
+		$data = [
+			"success" => !$is_error,
+			"event" => "message",
+			"data" => $data,
+		];
 
 		if (is_array($data)) {
 			$data = json_encode($data);

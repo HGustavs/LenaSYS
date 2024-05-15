@@ -14,9 +14,7 @@ class SSEReceiver {
 	handleMessage(event) {
 		let data = JSON.parse(event.data);
 		if (!data.success) {
-			if (this.callbacks.error) {
-				this.callbacks.error(data.data);
-			}
+			alert(data.data);
 		}
 
 		switch (data.event) {
