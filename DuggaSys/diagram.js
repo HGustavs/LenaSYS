@@ -622,8 +622,6 @@ function showDiagramTypes() {
 // --------------------------------------- Window Events    --------------------------------
 
 //event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
-
-
 // get the elementPlacement button with the highest number and use that for a range in the for loop
 const elements = document.querySelectorAll('[id^="elementPlacement"]');
 let maxNum = 0;
