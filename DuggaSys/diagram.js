@@ -110,19 +110,27 @@ class StateMachine {
                     });
                     break;
                 // these don't have anything special so just add the entries
-                case StateChange.ChangeTypes.ELEMENT_CREATED:
-                case StateChange.ChangeTypes.LINE_CREATED:
-                case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
                 case StateChange.ChangeTypes.ELEMENT_DELETED:
                 case StateChange.ChangeTypes.LINE_DELETED:
                 case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
-                case StateChange.ChangeTypes.ELEMENT_MOVED:    
-                console.log(stateChange);
+                    this.pushToHistoryLog({
+                        ...stateChange,
+                        changeType: newChangeType.flag,
+                        counter: historyHandler.inputCounter,
+                        deleted: true
+                    });
+                    console.log({...this.historyLog});
+                    break;
+                case StateChange.ChangeTypes.ELEMENT_CREATED:
+                case StateChange.ChangeTypes.LINE_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_MOVED:
                     this.pushToHistoryLog({
                         ...stateChange,
                         changeType: newChangeType.flag,
                         counter: historyHandler.inputCounter
                     });
+                    console.log({...this.historyLog});
                     break;
                 default:
                     console.error(`Missing implementation for soft state change: ${stateChange}!`);
@@ -219,9 +227,8 @@ class StateMachine {
     restoreState(state) {
         // Get all keys from the state.
         var keys = Object.keys(state);
-
         // If there is only an key that is ID in the state, delete those objects
-        if (keys.length == 2 && keys[0] == "id") {
+        if (keys.length == 2 && keys[0] == "id" || keys.includes('deleted')) {
             var elementsToRemove = [];
             var linesToRemove = [];
 
