@@ -457,16 +457,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("loadingSpinner").style.display = "none";
 });
 
-//event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
-for (let i = 0; i <= 20; i++) { // Assuming the range is from 0 to 20
-    let element = document.getElementById("elementPlacement" + i);
-    if (element) {
-        // Add event listener for contextmenu
-        element.addEventListener("contextmenu", function() {
-            rightClickOpenSubtoolbar(i);
-        });
-    }
-}
+
 
 /**
  * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
@@ -631,6 +622,17 @@ function showDiagramTypes() {
 //#region ================================ EVENTS ==============================================
 
 // --------------------------------------- Window Events    --------------------------------
+
+//event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
+for (let i = 0; i <= 20; i++) { // Assuming the range is from 0 to 20
+    let element = document.getElementById("elementPlacement" + i);
+    if (element) {
+        // Add event listener for contextmenu
+        element.addEventListener("contextmenu", function() {
+            rightClickOpenSubtoolbar(i);
+        });
+    }
+}
 
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
