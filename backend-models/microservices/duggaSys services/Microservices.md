@@ -2696,7 +2696,7 @@ __Session management:__ Checks if a user is logged in by checking the user's ID 
 
 __Debugging:__ Initially set to "NONE!". Sshow any errors or important notes about how the database operations went. 
 
-__Calling 'retrieveHighscoreService':__ This function handles the actual retrieval of scores. 'readHighscore_ms.php' passes necessary parameters ($pdo, $duggaid, $variant, $debug) to 'retrieveHighscoreService_ms.php', which then queries the database and fetches the scores.
+__Calling 'retrieveHighscoreService_ms.php':__ This function handles the actual retrieval of scores. 'readHighscore_ms.php' passes necessary parameters ($pdo, $duggaid, $variant, $debug) to 'retrieveHighscoreService_ms.php', which then queries the database and fetches the scores.
 
 __Results:__ After fetching the scores, the result is formated into an array and then encoded into JSON. It´s then sen back to the client. The JSON data includes the highscores and relevant debugging information.
 
