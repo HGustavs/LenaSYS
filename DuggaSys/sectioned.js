@@ -331,9 +331,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Set Lid
   $("#lid").val(lid);
 
-  validateSectionName('sectionname','dialog10');
-
-
   // Display Dialog
   $("#editSection").css("display", "flex");
 
@@ -345,7 +342,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     if (feedbackenabled == 1) {
       $("#fdbck").prop("checked", true);
       $("#inputwrapper-FeedbackQuestion").css("display", "block");
-      $("#feedBackQuestion").val(feedbackquestion);
+      $("#fdbckque").val(feedbackquestion);
     } else {
       $("#fdbck").prop("checked", false);
       $("#inputwrapper-FeedbackQuestion").css("display", "none");
@@ -355,7 +352,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     $('#inputwrapper-Feedback').css("display", "none");
     $("#fdbck").prop("checked", false);
   }
-  validateSectionName('feedBackQuestion','dialog11');
 }
 // Handles the logic behind the checkbox for absolute deadline
 function checkDeadlineCheckbox(e, check) {
@@ -939,7 +935,7 @@ function prepareItem() {
 
   if ($('#fdbck').prop('checked')) {
     param.feedback = 1;
-    param.feedbackquestion = $("#feedBackQuestion").val();
+    param.feedbackquestion = $("#fdbckque").val();
   } else {
     param.feedback = 0;
     param.feedbackquestion = null;
@@ -3599,10 +3595,10 @@ function validateDate2(ddate, dialogid) {
   return false;
 }
 
-function validateSectionName(name,dialog) {
+function validateSectName(name) {
   initInputColorTheme();
   var element = document.getElementById(name);
-  var errorMsg = document.getElementById(dialog);
+  var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
     $(errorMsg).fadeOut();
     element.style.backgroundColor = inputColorTheme;
@@ -3735,9 +3731,7 @@ function quickValidateForm(formid, submitButton) {
     var deadlinepart = document.getElementById('inputwrapper-deadline');
     var deadlinedisplayattribute = deadlinepart.style.display;
     valid = true;
-    valid &= validateSectionName('sectionname','dialog10');
-    if ($("#fdbck").prop('checked')) 
-      valid &= validateSectionName('feedBackQuestion','dialog11');
+    valid &= validateSectName('sectionname');
 
     // Validates Deadline
     if (deadlinedisplayattribute != 'none') {
@@ -4013,19 +4007,10 @@ function contactStudent(entryname, username) {
 // Displays the feedback question input on enable-button toggle.
 //------------------------------------------------------------------------------
 function showFeedbackquestion() {
-  const saveButton = document.getElementById('saveBtn');
-  var errorMsg = document.getElementById('dialog11');
-
   if ($("#fdbck").prop('checked')) {
     $("#inputwrapper-FeedbackQuestion").css("display", "block");
-    if(!validateSectionName('feedBackQuestion','dialog11')){
-      $(errorMsg).fadeIn();
-      saveButton.disabled = false;
-    }
   } else {
     $("#inputwrapper-FeedbackQuestion").css("display", "none");
-    saveButton.disabled = !validateSectionName('sectionname','dialog10');
-    $(errorMsg).fadeOut();
   }
 }
 
