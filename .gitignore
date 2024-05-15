@@ -13,6 +13,7 @@ gitErrorLog.txt
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 *.db
+.vscode
 
 *diff*.txt
 *branch*.txt
