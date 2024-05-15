@@ -3818,11 +3818,12 @@ function validateForm(formid) {
       setTimeout(function () {
         var element = document.getElementById('I' + updatedLidsection).firstChild;
         if (element.tagName == 'DIV') {
-          setCreatedDuggaAnimation(element.firstChild, 'DIV');
+          element = element.firstChild;
+          element.classList.add("highlightChange");
         } else if (element.tagName == 'A') {
-          setCreatedDuggaAnimation(element, 'A');
+          document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
         } else if (element.tagName == 'SPAN') {
-          setCreatedDuggaAnimation(element, 'SPAN');
+          document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
         }
       }, 200);
       //Duration time for the alert before remove
