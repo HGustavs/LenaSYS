@@ -200,6 +200,7 @@
 						<?php
 							defaultButton("Install LenaSYS", "", "start_installer()");
 						?>
+					</div>
 				</div>
 			</div>
 			<?php
