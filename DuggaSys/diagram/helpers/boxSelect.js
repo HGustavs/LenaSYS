@@ -22,7 +22,7 @@ function getElementsInsideCoordinateBox(selectionRect) {
     const elements = [];
     data.forEach(element => {
         // Box collision test
-        if (selectionRect.overlap(Rect.FromElement(element))) {
+        if (selectionRect.partialOverlap(Rect.FromElement(element))) {
             elements.push(element);
         }
     });
@@ -65,8 +65,8 @@ function lineIsInsideRect(rect, line) {
         line.getAttribute("y2")
     );
     let midPoint = new Point((l1.x + l2.x) / 2, (l1.y + l2.y) / 2);
-    return rect.x <= midPoint.x && rect.y <= midPoint.y &&
-        rect.x2 >= midPoint.x && rect.y2 >= midPoint.y;
+    return rect.left <= midPoint.x && rect.top <= midPoint.y &&
+        rect.right >= midPoint.x && rect.bottom >= midPoint.y;
 }
 
 function boxSelect_Update(mouseX, mouseY) {
@@ -84,10 +84,10 @@ function boxSelect_Update(mouseX, mouseY) {
         );
         let topLeft = new Point(0, 0);
         let botRight = new Point(0, 0);
-        topLeft.x = (rect.x < rect.x2) ? rect.x : rect.x2;
-        botRight.x = (rect.x < rect.x2) ? rect.x2 : rect.x;
-        topLeft.y = (rect.y < rect.y2) ? rect.y : rect.y2;
-        botRight.y = (rect.y < rect.y2) ? rect.y2 : rect.y;
+        topLeft.x = (rect.left < rect.right) ? rect.left : rect.right;
+        botRight.x = (rect.left < rect.right) ? rect.right : rect.left;
+        topLeft.y = (rect.top < rect.bottom) ? rect.top : rect.bottom;
+        botRight.y = (rect.top < rect.bottom) ? rect.bottom : rect.top;
 
         let box = Rect.FromPoints(topLeft, botRight);
         let markedEntities = getElementsInsideCoordinateBox(box);

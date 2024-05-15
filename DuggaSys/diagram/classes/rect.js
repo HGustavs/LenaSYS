@@ -1,10 +1,10 @@
 class Rect {
 
     constructor(x = 0, y = 0, width = 0, height = 0) {
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     static FromPoints(topLeft, botRight) {
@@ -23,20 +23,26 @@ class Rect {
         );
     }
 
-    get x() {
-        return this._x;
+    static FromDOMRect(rect) {
+        return new Rect(
+            rect.left, rect.top, rect.width, rect.height
+        )
     }
 
-    get y() {
-        return this._y;
+    get top() {
+        return this.y;
     }
 
-    get width() {
-        return this._width;
+    get bottom() {
+        return this.y + this.height;
     }
 
-    get height() {
-        return this._height;
+    get left() {
+        return this.x;
+    }
+
+    get right() {
+        return this.x + this.width;
     }
 
     get x2() {
@@ -45,22 +51,6 @@ class Rect {
 
     get y2() {
         return this.y + this.height;
-    }
-
-    set x(x) {
-        this._x = x;
-    }
-
-    set y(y) {
-        this._y = y;
-    }
-
-    set width(width) {
-        this._width = width;
-    }
-
-    set height(height) {
-        this._height = height;
     }
 
     get topLeft() {
@@ -79,7 +69,7 @@ class Rect {
         return new Point(this.x + this.width, this.y + this.height);
     }
 
-    overlap(other) {
+    partialOverlap(other) {
         const lower = 0.25;
         const upper = 0.75;
         let x1 = this.x < other.x + lower * other.width;
@@ -89,4 +79,10 @@ class Rect {
         return x1 && x2 && y1 && y2;
     }
 
+    overlap(b) {
+        return !(this.top > b.bottom ||
+            this.right < b.left ||
+            this.bottom < b.top ||
+            this.left > b.right)
+    }
 }
