@@ -111,10 +111,13 @@ class StateMachine {
                     break;
                 // these don't have anything special so just add the entries
                 case StateChange.ChangeTypes.ELEMENT_CREATED:
-                case StateChange.ChangeTypes.ELEMENT_DELETED:
                 case StateChange.ChangeTypes.LINE_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_DELETED:
                 case StateChange.ChangeTypes.LINE_DELETED:
+                case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
                 case StateChange.ChangeTypes.ELEMENT_MOVED:    
+                console.log(stateChange);
                     this.pushToHistoryLog({
                         ...stateChange,
                         changeType: newChangeType.flag,
