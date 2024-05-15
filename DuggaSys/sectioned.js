@@ -3564,7 +3564,6 @@ function showCourseDate(ddate, dialogid) {
 
 // ------ Validates if deadline is between start and end date ------
 function validateDate2(ddate, dialogid) {
-  initInputColorTheme();
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
 
@@ -3607,7 +3606,6 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name) {
-  initInputColorTheme();
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
