@@ -7,9 +7,9 @@ $testsData = array(
     'deleteDugga_ms' => array(
         'expected-output' => '{"entries":[{"qname":"deleteDuggaTest"}]}',
         
-        'query-before-test-1' => "INSERT INTO quiz (id, cid, qname, vers) VALUES (99999, 1885, 'deleteDuggaTest', 1337);",
+        'query-before-test-1' => "INSERT INTO quiz (id, cid, qname, vers) VALUES (99998, 1885, 'deleteDuggaTest', 1337);",
         'query-before-test-2' => "INSERT INTO quiz (id, cid, qname, vers) VALUES (99999, 1885, 'IShouldBeDeleted', 1337);",
-        'query-after-test-1' => "DELETE FROM quiz WHERE id = 99999;",
+        'query-after-test-1' => "DELETE FROM quiz WHERE id = 99998;",
         'query-after-test-2' => "DELETE FROM quiz WHERE id = 99999;", // In case the microservice fails
         
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/duggaedService/deleteDugga_ms.php',
