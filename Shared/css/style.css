@@ -1893,7 +1893,8 @@ div .navButt:hover {
   max-width: fit-content;
 }
 
-.formBox,
+.formBox, 
+.loginBox,
 .logoutBox{
   padding: 4px;
   background-color: var(--color-background-2);
@@ -2049,7 +2050,8 @@ div .navButt:hover {
   border-radius: 2px;
 }
 
-.formBox textarea,
+.formBox textarea, 
+.loginBox textarea,
 #import {
   width: 100%;
   height: 200px;
@@ -2061,7 +2063,8 @@ div .navButt:hover {
   padding: 5px;
 }
 
-.formBox textarea,
+.formBox textarea, 
+.loginBox textarea,
 #receipt {
   width: 100%;
   height: 72px;
@@ -2098,24 +2101,28 @@ Dialog Box END
 /* --------------===============################================-------------- *
  *                                    Generic functions                            *
  * --------------================################================--------------*/
-.formBox .inputwrapper {
+.formBox .inputwrapper, 
+.loginBox .inputwrapper {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
   line-height: 30px;
 }
 
-.inputwrapper #startdate, .inputwrapper #enddate {
+.inputwrapper #startdate, 
+.inputwrapper #enddate {
   font-family:"Roboto";
   color:#7f7f7f;
 }
 
-.formBox .inputwrapper span {
+.formBox .inputwrapper span, 
+.loginBox .inputwrapper span {
   float: left;
 }
 
 
-.formBox .inputwrapperSmall {
+.formBox .inputwrapperSmall, 
+.loginBox .inputwrapperSmall {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
@@ -2123,35 +2130,43 @@ Dialog Box END
   line-height: 30px;
 }
 
-.formBox .inputwrapperSmall span {
+.formBox .inputwrapperSmall span, 
+.loginBox .inputwrapperSmall span {
   float: right;
 }
 
 .formBox .inputwrapperSmall input,
-.formBox .inputwrapperSmall select {
+.formBox .inputwrapperSmall select,
+.loginBox .inputwrapperSmall input,
+.loginBox .inputwrapperSmall select {
   float: right;
   width: 50px;
 }
 
-.formBox .inputwrapperSmall input[type="checkbox"] {
+.formBox .inputwrapperSmall input[type="checkbox"],
+.loginBox .inputwrapperSmall input[type="checkbox"]{
   height: 24px;
 }
 
 
 .formBox .inputwrapper input,
-.formBox .inputwrapper select {
+.formBox .inputwrapper select,
+.loginBox .inputwrapper input,
+.loginBox .inputwrapper select {
   float: right;
   width: 195px;
 }
 
-.formBox .inputwrapper input[type="checkbox"] {
+.formBox .inputwrapper input[type="checkbox"],
+.loginBox .inputwrapper input[type="checkbox"] {
   margin-right: 171px;
   float: right;
   height: 24px;
   width: 24px;
 }
 
-.formBox select {
+.formBox select,
+.loginBox select {
   width: 195px;
   height: 30px;
   line-height: 18px;
@@ -2167,6 +2182,7 @@ Dialog Box END
 }
 
 .formBoxHeader,
+.loginBoxheader,
 .logoutBoxheader {
   background-color: var(--color-primary);
   vertical-align: bottom;
@@ -2177,6 +2193,7 @@ Dialog Box END
 }
 
 .formBoxHeader h3,
+.loginBoxheader h3,
 .logoutBoxheader h3 {
   font-size: 14px;
   margin-top: 10px;
@@ -2186,6 +2203,7 @@ Dialog Box END
 }
 
 .formBoxHeader div,
+.loginBoxheader div,
 .logoutBoxheader div {
   padding: 4px 20px;
   color: rgb(255, 255, 255);
@@ -2195,7 +2213,9 @@ Dialog Box END
   font-weight: bold;
 }
 
-.formBoxHeader div:hover, .logoutBoxheader div:hover {
+.formBoxHeader div:hover, 
+.loginBoxheader div:hover,
+.logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
 
@@ -2614,16 +2634,19 @@ label.login-label {
 }
 
 .formBox form,
+.loginBox form,
 .logoutBox form {
   padding-bottom: 20px;
 }
 
 .formBox .text,
+.loginBox .text,
 .logoutBox .text {
   font-size: 0.8em;
 }
 
-.formBox .submit {
+.formBox .submit,
+ .loginBox .submit {
   width: 80px;
   height: 25px;
   color: var(--color-text-header);
@@ -2633,7 +2656,8 @@ label.login-label {
   margin-left: 1px;
 }
 
-.formBox .cancel {
+.formBox .cancel,
+.loginBox .cancel {
   width: 80px;
   height: 25px;
   color: #333;
@@ -2644,7 +2668,8 @@ label.login-label {
   margin-left: 1px;
 }
 
-.formBox .forgotPw {
+.formBox .forgotPw,
+.loginBox .forgotPw  {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -2661,18 +2686,22 @@ label.login-label {
 }
 
 
-.formBox .form-control {
+.formBox .form-control,
+.loginBox .form-control {
   margin: 3px 0px 3px 0px;
 }
 
-.formBox .hide {
+.formBox .hide,
+.loginBox .hide {
   display: none;
 }
+
 #undoButton {
   position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
-.formBox td {
+.formBox td,
+.loginBox td {
   margin-left: 4px;
   margin-right: 4px;
 }
@@ -2680,6 +2709,7 @@ label.login-label {
 .logoutBox p {
   text-align: center;
 }
+
 .buttonLoginBox,
 .buttonLogoutBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -7548,7 +7578,7 @@ only screen and (max-device-width: 568px) {
   display: none;
 }
 
-.formBoxHeader, .fileViewHeader {
+.formBoxHeader, .loginBoxheader, .fileViewHeader {
   text-align:left;
 }
 

@@ -558,7 +558,7 @@ body {
     box-shadow: none;
 }
 
-.formBox,
+.formBox, .loginBox,
 .logoutBox{
   background-color: var(--color-background);
   color: var(--color-text-light);
@@ -997,12 +997,12 @@ input{
 /* END */
 
 /* Style for fieldset elements in #Show Test" editor.  START */
-.formBox select{
+.formBox select, .loginBox select{
     background-color: #212121;
     color:white;
 }
 
-.formBox textarea, #receipt{
+.formBox textarea, .loginBox textarea, #receipt{
     background-color: #212121;
     color:white;
 }
