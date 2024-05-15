@@ -140,15 +140,7 @@ function mouseMode_onMouseMove(event) {
             mouseOverSelection(event.clientX, event.clientY); // This case defaults to mouseModes.PLACING_ELEMENT, however the effect this method provides is currently only for EDGE_CREATION
         case mouseModes.PLACING_ELEMENT:
             if (ghostElement) {
-                const cords = screenToDiagramCoordinates(event.clientX, event.clientY);
-                // If not in EDGE_CREATION AND in snap to grid, calculate the closest snap-point
-                if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
-                    ghostElement.x = Math.round(cords.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
-                    ghostElement.y = Math.round(cords.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
-                } else {
-                    ghostElement.x = cords.x - (ghostElement.width / 2);
-                    ghostElement.y = cords.y - (ghostElement.height / 2);
-                }
+                setGhostPosition(event.clientX, event.clientY);
                 showdata();
                 updatepos();
             }
