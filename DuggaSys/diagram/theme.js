@@ -3,9 +3,20 @@
  */
 function updateCSSForAllElements() {
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
-        let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-        let top = Math.round((((elementData.y - zoomOrigo.y) - (settings.grid.gridSize / 2)) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-
+        function updateElementDivCSS(elementData, divObject, useDelta = false) {
+            let eRect = divObject.getBoundingClientRect();
+            let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx / zoomfact));
+            let top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact)) + (scrolly / zoomfact);
+            // Heigth calculation is inconsistent between elements. scrolly might be calculated wrong
+            if (elementData.kind == elementTypesNames.UMLEntity ||
+                elementData.kind == elementTypesNames.IEEntity ||
+                elementData.kind == elementTypesNames.SDEntity) {
+                top -= eRect.height / 2;
+            } else if (elementData.kind == "note") {
+                top -= eRect.height / 4
+            } else if (elementData.kind == elementTypesNames.IERelation) {
+                top += eRect.height / 2
+            }
         if (useDelta) {
             left -= deltaX;
             top -= deltaY;
