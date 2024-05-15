@@ -109,10 +109,10 @@ class StateMachine {
                         counter: historyHandler.inputCounter
                     });
                     break;
-                // these don't have anything special so just add the entries
                 case StateChange.ChangeTypes.ELEMENT_DELETED:
                 case StateChange.ChangeTypes.LINE_DELETED:
                 case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
+                    // deleted elements need the extra attribute in order to be stored properly
                     this.pushToHistoryLog({
                         ...stateChange,
                         changeType: newChangeType.flag,
@@ -121,6 +121,7 @@ class StateMachine {
                     });
                     console.log({...this.historyLog});
                     break;
+                // these don't have anything special so just add the entries
                 case StateChange.ChangeTypes.ELEMENT_CREATED:
                 case StateChange.ChangeTypes.LINE_CREATED:
                 case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
