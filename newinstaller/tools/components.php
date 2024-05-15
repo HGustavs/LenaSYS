@@ -6,8 +6,20 @@
 		echo "</div>";
 	}
 
+	function singleNavigationButton($nextSequence, $targetPage) {
+		echo "<div class='buttonContainer'>";
+
+		if (strtolower($nextSequence) !== "next") {
+			echo "<button class='backButton page-nav' data-target='{$targetPage}' onclick='breadCrumbDecr(); breadCrumbActive();'>Previous</button>";
+		} else {
+			echo "<button class='progressButton page-nav' data-target='{$targetPage}' onclick='breadCrumbInc(); breadCrumbActive();'>Next</button>";
+		}
+
+		echo "</div>";
+	}
+
 	function defaultButton($title, $class = "", $onclick = "") {
-		echo "<button class='progressButton' onclick='{$onclick}'>{$title}</button>";
+		echo "<button class='defaultButton $class' onclick='{$onclick}'>{$title}</button>";
 	}
 	
 	function breadcrumb(int $n, int $active) {

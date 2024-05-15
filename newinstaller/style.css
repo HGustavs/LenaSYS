@@ -271,13 +271,24 @@ input[type=checkbox], input[type=radio] {
     margin-top: 0.25rem;
 }
 
+.defaultButton {
+    font-family: var(--body-font);
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    width: 9.5rem;
+    height: 2.85rem;
+    padding: .75rem;
+    font-size: var(--text-large);
+}
+
 .backButton {
     font-family: var(--body-font);
     background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-    width: 100px;
-    height: 45px;
+    width: 6.25rem;
+    height: 2.85rem;
     padding: .75rem;
     font-size: var(--text-large);
 }
@@ -287,19 +298,20 @@ input[type=checkbox], input[type=radio] {
     background-color: var(--primary-color);
     color: var(--text-light);
     border: 1px solid var(--primary-color);
-    width: 100px;
-    height: 45px;
+    width: 6.25rem;
+    height: 2.85rem;
     padding: .75rem;
+    margin-left: auto; /* Correctly positions the single button used at page 1 & 6, without impacting position for rest of pages. Keep this */
     font-size: var(--text-large);
 }
 
-.progressButton:hover {
+.defaultButton:hover, .progressButton:hover {
     cursor: pointer;
     background-color: var(--primary-color-hover);
     box-shadow: 1px 1px 1px var(--text-dark);
 }
 
-.progressButton:active {
+.defaultButton:active, .progressButton:active {
     background-color: var(--primary-color-active);
     box-shadow: 2px 2px 2px var(--text-dark);
 }
