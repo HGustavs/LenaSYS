@@ -63,9 +63,9 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Add user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
@@ -100,8 +100,8 @@
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox' style='width:464px;'>
+			<div class='formBoxHeader'>
 				<h3>Add class</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
@@ -121,6 +121,63 @@
 				<div id='classErrorText' style='color:rgb(199, 80, 80); margin-top:10px; text-align:center;'></div>
 			</div>
 		</div>
+	</div>
+
+	<div id='addUser' class='loginBoxContainer'>
+		<div class='formBox'>
+			<div>
+				<div class='formBoxHeader'>
+					<h3>Add user</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>Choose user:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
+						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsernameAdd' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_add">
+						</datalist>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTermAdd' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Save' onclick='addUserToCourse();' />
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
+
+	<div id='removeUser' class='loginBoxContainer'>
+		<div class='formBox'>
+			<div>
+				<div class='formBoxHeader'>
+					<h3>Remove user</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>Choose user:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
+						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addUsernameRemove' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_remove"></datalist>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTermRemove' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Save' onclick='removeUserFromCourse();' />
+					</div>
+				</div>
+      		</div>
+     	</div>
 	</div>
 
 	<!-- Add User Dialog END -->

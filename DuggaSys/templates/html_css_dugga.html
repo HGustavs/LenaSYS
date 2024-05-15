@@ -19,13 +19,13 @@
          
             <div id="target-col" class="dugga-col" >
                 <div>
-                    <div><h2 class='loginBoxheader' >Webbplatsutseende som skall skapas</h2><p style="margin:10px;"><strong>Extrakrav: </strong><span id="target-text"></span></p></div>
+                    <div><h2 class='formBoxHeader' >Webbplatsutseende som skall skapas</h2><p style="margin:10px;"><strong>Extrakrav: </strong><span id="target-text"></span></p></div>
                     <div id="target-window" ><img id="target-window-img" src="" /></div>
                 </div>
             </div> 
             <div id="input-col" class="dugga-col">
                 <div style="width:100%; height:100%; position:relative;">
-                    <div><h2 class='loginBoxheader'>Skriv/klistra in kod</h2></div>
+                    <div><h2 class='formBoxHeader'>Skriv/klistra in kod</h2></div>
                     <div id="input-col-content"><textarea id="content-window" onkeyup="processpreview(); canSaveController();"></textarea></div>
                     <div id="input-col-URL"><label>Adress (URL) till din publicerad version:</label><br>
                         <input id="url-input" type="text" name="url" placeholder="http://wwwlab.iit.his.se/<ditt login>/<sökvägen till din dugga>" onkeyup="canSaveController();">
@@ -35,15 +35,15 @@
             </div> 
             <div id="preview-col" class="dugga-col">
                 <div>
-                    <div id="code-preview-label"><h2 class='loginBoxheader'>Förhandsgranskning av inklistrad programkod</h2></div>
+                    <div id="code-preview-label"><h2 class='formBoxHeader'>Förhandsgranskning av inklistrad programkod</h2></div>
                     <div  id="code-preview-window-wrapper"><iframe id="code-preview-window"></iframe></div>
-                    <div id="url-preview-label"><h2 class='loginBoxheader'>Förhandsgranskning av publicerad kod</h2><p>Skall se identisk ut med ovan ovanstående.</p></div>
+                    <div id="url-preview-label"><h2 class='formBoxHeader'>Förhandsgranskning av publicerad kod</h2><p>Skall se identisk ut med ovan ovanstående.</p></div>
                     <div id="url-preview-window-wrapper"><div id="url-preview-window"></div></div>
                 </div>
             </div> 
             <div id="validation-col" class="dugga-col">
                 <div>
-                    <div id="validation-label"><h2 class='loginBoxheader'>Validering</h2></div>
+                    <div id="validation-label"><h2 class='formBoxHeader'>Validering</h2></div>
                     <div id="validation-content">
                         <div id="url-validation-window"></div>
                 </div>
@@ -54,8 +54,8 @@
 
 <!-- <div id='duggaInfoBox' class="loginBoxContainer" style="display:none"> -->
     <div style="display:none">
-  <div class="loginBox"  style="max-width:350px;">
-    <div class='loginBoxheader'>
+  <div class="formBox"  style="max-width:350px;">
+    <div class='formBoxHeader'>
         <h3>Dugga - HTML/CSS</h3>
         <div class='cursorPointer' onclick="hideDuggaInfoPopup()">x</div>
     </div>
@@ -78,8 +78,8 @@
 </div>
 
 <div id="duggaStats" class="loginBoxContainer" style="display:none;position:absolute;top:0;right:0;">
-  <div class="loginBox">
-    <div class='loginBoxheader'>
+  <div class="formBox">
+    <div class='formBoxHeader'>
         <h3>Dugga Stats</h3>
         <div class='cursorPointer' onclick="hideDuggaStatsPopup()">x</div>
     </div>

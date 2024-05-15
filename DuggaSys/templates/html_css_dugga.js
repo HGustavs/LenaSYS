@@ -290,7 +290,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			var iframeX = $("#preview-col").width();
 			var iframeY = $("#preview-col").height();
 
-			document.getElementById("url-preview-label").innerHTML = '<div id="url-preview-label" style=""><h2 class="loginBoxheader" style="padding:5px; padding-bottom:10px; margin-top:0; color:#FFF;overflow:hidden; text-align:center;">Förhandsgranskning av publicerad kod</h2></div>';
+			document.getElementById("url-preview-label").innerHTML = '<div id="url-preview-label" style=""><h2 class="formBoxHeader" style="padding:5px; padding-bottom:10px; margin-top:0; color:#FFF;overflow:hidden; text-align:center;">Förhandsgranskning av publicerad kod</h2></div>';
 			document.getElementById("url-preview-window").innerHTML= '<iframe style="pointer-events: none; width: '+800+'px; height:'+768+'px; border: 1px solid black; overflow:scroll; transform:scale('+iframeX/800+'); transform-origin:0 0; box-sizing:border-box;" src="'+userUrl+'"></iframe>';
 
 			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";

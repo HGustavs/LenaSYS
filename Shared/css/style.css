@@ -1888,6 +1888,11 @@ div .navButt:hover {
   margin: 10px 0px;
 }
 
+#login, #logout {
+  max-width: fit-content;
+}
+
+.formBox, 
 .loginBox,
 .logoutBox{
   padding: 4px;
@@ -2043,6 +2048,7 @@ div .navButt:hover {
   border-radius: 2px;
 }
 
+.formBox textarea, 
 .loginBox textarea,
 #import {
   width: 100%;
@@ -2055,6 +2061,7 @@ div .navButt:hover {
   padding: 5px;
 }
 
+.formBox textarea, 
 .loginBox textarea,
 #receipt {
   width: 100%;
@@ -2092,6 +2099,7 @@ Dialog Box END
 /* --------------===============################================-------------- *
  *                                    Generic functions                            *
  * --------------================################================--------------*/
+.formBox .inputwrapper, 
 .loginBox .inputwrapper {
   clear: both;
   width: 100%;
@@ -2099,16 +2107,19 @@ Dialog Box END
   line-height: 30px;
 }
 
-.inputwrapper #startdate, .inputwrapper #enddate {
+.inputwrapper #startdate, 
+.inputwrapper #enddate {
   font-family:"Roboto";
   color:#7f7f7f;
 }
 
+.formBox .inputwrapper span, 
 .loginBox .inputwrapper span {
   float: left;
 }
 
 
+.formBox .inputwrapperSmall, 
 .loginBox .inputwrapperSmall {
   clear: both;
   width: 100%;
@@ -2117,27 +2128,34 @@ Dialog Box END
   line-height: 30px;
 }
 
+.formBox .inputwrapperSmall span, 
 .loginBox .inputwrapperSmall span {
   float: right;
 }
 
+.formBox .inputwrapperSmall input,
+.formBox .inputwrapperSmall select,
 .loginBox .inputwrapperSmall input,
 .loginBox .inputwrapperSmall select {
   float: right;
   width: 50px;
 }
 
-.loginBox .inputwrapperSmall input[type="checkbox"] {
+.formBox .inputwrapperSmall input[type="checkbox"],
+.loginBox .inputwrapperSmall input[type="checkbox"]{
   height: 24px;
 }
 
 
+.formBox .inputwrapper input,
+.formBox .inputwrapper select,
 .loginBox .inputwrapper input,
 .loginBox .inputwrapper select {
   float: right;
   width: 195px;
 }
 
+.formBox .inputwrapper input[type="checkbox"],
 .loginBox .inputwrapper input[type="checkbox"] {
   margin-right: 171px;
   float: right;
@@ -2145,6 +2163,7 @@ Dialog Box END
   width: 24px;
 }
 
+.formBox select,
 .loginBox select {
   width: 195px;
   height: 30px;
@@ -2160,6 +2179,7 @@ Dialog Box END
   font-size: 14px;
 }
 
+.formBoxHeader,
 .loginBoxheader,
 .logoutBoxheader {
   background-color: var(--color-primary);
@@ -2170,6 +2190,7 @@ Dialog Box END
   justify-content: space-between;
 }
 
+.formBoxHeader h3,
 .loginBoxheader h3,
 .logoutBoxheader h3 {
   font-size: 14px;
@@ -2179,6 +2200,7 @@ Dialog Box END
   width: 100%;
 }
 
+.formBoxHeader div,
 .loginBoxheader div,
 .logoutBoxheader div {
   padding: 4px 20px;
@@ -2189,7 +2211,9 @@ Dialog Box END
   font-weight: bold;
 }
 
-.loginBoxheader div:hover, .logoutBoxheader div:hover {
+.formBoxHeader div:hover, 
+.loginBoxheader div:hover,
+.logoutBoxheader div:hover {
   background-color: #ce3d3d;
 }
 
@@ -2433,17 +2457,20 @@ label.login-label {
   overflow: auto;
 }
 
+.formBox form,
 .loginBox form,
 .logoutBox form {
   padding-bottom: 20px;
 }
 
+.formBox .text,
 .loginBox .text,
 .logoutBox .text {
   font-size: 0.8em;
 }
 
-.loginBox .submit {
+.formBox .submit,
+ .loginBox .submit {
   width: 80px;
   height: 25px;
   color: var(--color-text-header);
@@ -2453,6 +2480,7 @@ label.login-label {
   margin-left: 1px;
 }
 
+.formBox .cancel,
 .loginBox .cancel {
   width: 80px;
   height: 25px;
@@ -2464,7 +2492,8 @@ label.login-label {
   margin-left: 1px;
 }
 
-.loginBox .forgotPw {
+.formBox .forgotPw,
+.loginBox .forgotPw  {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -2481,17 +2510,21 @@ label.login-label {
 }
 
 
+.formBox .form-control,
 .loginBox .form-control {
   margin: 3px 0px 3px 0px;
 }
 
+.formBox .hide,
 .loginBox .hide {
   display: none;
 }
+
 #undoButton {
   position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
+.formBox td,
 .loginBox td {
   margin-left: 4px;
   margin-right: 4px;
@@ -2500,6 +2533,7 @@ label.login-label {
 .logoutBox p {
   text-align: center;
 }
+
 .buttonLoginBox,
 .buttonLogoutBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -5751,11 +5785,6 @@ only screen and (max-device-width: 568px) {
     transform: scale(0.6, 0.6);
     left: 4px;
   }
-
-  .loginBox {
-    /*top: 8%;
-    left: 10%;*/
-  }
   
   #searchNavButt{
     display: none;
@@ -7369,7 +7398,7 @@ only screen and (max-device-width: 568px) {
   display: none;
 }
 
-.loginBoxheade, .fileViewHeader {
+.formBoxHeader, .loginBoxheader, .fileViewHeader {
   text-align:left;
 }
 

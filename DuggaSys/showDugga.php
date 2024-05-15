@@ -213,10 +213,10 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		?>
 	</div>
 	
-	<!-- LoginBox (receipt&Feedback-box ) Start! -->
+	<!-- FormBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
-	  <div class="receiptBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Dugga Submission Receipt</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
+	  <div class="receiptBox formBox" style="max-width:400px; overflow-y:visible;">
+			<div class='formBoxHeader'><h3>Dugga Submission Receipt</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 			<div id='feedbackbox'>
 				<span id='feedbackquestion'></span>
 					<div id="ratingbox">
@@ -303,8 +303,8 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	</div>
 
 	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox loginBox" style="max-width:400px; overflow-y:visible;">
-			<div class='loginBoxheader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
+	  <div class="loadDuggaBox formBox" style="max-width:400px; overflow-y:visible;">
+			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">
 				<div class='inputwrapper'><span>Enter hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value='' autocomplete="off"/></div>
