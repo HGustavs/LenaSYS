@@ -4,7 +4,7 @@ include_once "../../../../Shared/test.php";
 
 $testsData = array(
     'createDuggaVariant_ms' => array(
-        'expected-output' => '{"variants":["Answer3"]}',
+        'expected-output' => '{"entries":[{"variants":[{"param":"{question\"What is the correct answer?: A\"Answer1: B\"Answer2: C\"Answer3}","variantanswer":"Answer3"}]}]}',
         
         'query-before-test-1' => "INSERT INTO quiz (id, cid, qname, vers) VALUES (2147483645, 1885, 'createDuggaVariantTestQuiz', 1337)",
         'query-after-test-1' => "DELETE FROM variant WHERE quizID = 2147483645",
@@ -25,9 +25,15 @@ $testsData = array(
                 'password' => 'password'
             )
         ),
-        'filter-output' => serialize(array(
-                'variants'
-            )     
+        'filter-output' => serialize(
+            array(
+                'entries' => array(
+                    'variants' => array(
+                        'param',
+                        'variantanswer'
+                    )
+                )
+            )
         ),
     ),
 );
