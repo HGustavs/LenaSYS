@@ -62,42 +62,62 @@ class Rect {
         )
     }
 
+    /**
+     * @returns {number}
+     */
     get top() {
         return this.y;
     }
 
+    /**
+     * @returns {number}
+     */
     get bottom() {
         return this.y + this.height;
     }
 
+    /**
+     * @returns {number}
+     */
     get left() {
         return this.x;
     }
 
+    /**
+     * @returns {number}
+     */
     get right() {
         return this.x + this.width;
     }
 
-    get x2() {
-        return this.x + this.width;
-    }
-
-    get y2() {
-        return this.y + this.height;
-    }
-
+    /**
+     * @description Returns the top left point of the rectangle
+     * @returns {Point}
+     */
     get topLeft() {
         return new Point(this.x, this.y);
     }
 
+    /**
+     * @description Returns the top right point of the rectangle
+     * @returns {Point}
+     */
     get topRight() {
         return new Point(this.x + this.width, this.y);
     }
 
+    /**
+     * @description Returns the bottom left point of the rectangle
+     * @returns {Point}
+     */
     get botLeft() {
         return new Point(this.x, this.y + this.height);
     }
 
+    /**
+     * @description Returns the bottom right point of the rectangle
+     * @returns {Point}
+     */
     get botRight() {
         return new Point(this.x + this.width, this.y + this.height);
     }
