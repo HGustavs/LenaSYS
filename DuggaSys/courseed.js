@@ -37,6 +37,19 @@ function closeDeleteForm() {
 	document.getElementById("myForm").style.display = "none";
 }
 
+function deleteCourse() {
+
+    let cid = $("#cid").val();
+    let visib = "3";
+    
+    AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
+    $(".item").css("border", "none");
+    $(".item").css("box-shadow", "none");
+    $("#editCourse").css("display", "none");
+    $("#overlay").css("display", "none");
+}
+
+
 function updateCourse() {
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
@@ -61,7 +74,8 @@ function updateCourse() {
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch (data.status) {
 				case 403:
-					toast("error", data.status + " Error \nplease insert valid git key", 7);
+					toast("error", "Error " + data.status +  ": \nData limit reached, did not download files", 7);
+					closeWindows();
 					break;
 				case 422:
 					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
@@ -745,23 +759,26 @@ function elementIsValid(element) {
 	// Stop any ongoing animations
 	$(messageElement).stop(true, true);
 
-	// Reset initial validation styling and messages
-	element.classList.remove("bg-color-change-invalid");
-	$(messageElement).fadeOut();
+	//Remove neutral tag when element is assessed.
+	element.classList.remove("color-change-neutral");
 
 	// Handle empty input for optional fields
 	if (element.value.trim() === "") {
 		element.removeAttribute("style");
 		if (element.name === "githubToken" || element.name === "courseGitURL") {
+			$(messageElement).fadeOut();
+			element.classList.add("color-change-neutral");
+    		element.classList.remove("color-change-invalid");
+			element.classList.remove("color-change-valid");
 			return true; // Optional fields
 		}
 	}
 
 	// Check against regex and handle special cases
 	if (!element.value.match(regex[element.name])) {
-		element.classList.add("bg-color-change-invalid");
-		element.style.borderColor = "#E54";
 		$(messageElement).fadeIn();
+		element.classList.add("color-change-invalid");
+		element.classList.remove("color-change-valid");
 		if (element.name === "githubToken") {
 			messageElement.innerHTML = "A GitHub key should be 40 characters";
 		} else if (element.name === "coursecode") {
@@ -776,7 +793,9 @@ function elementIsValid(element) {
 	}
 
 	// If the input passes validation
-	element.style.borderColor = "#383";
+	$(messageElement).fadeOut();
+	element.classList.add("color-change-valid");
+    element.classList.remove("color-change-invalid");
 	return true;
 }
 
@@ -797,10 +816,22 @@ function quickValidateForm(formid, submitButton) {
 
 	//If all inputs were valid create course or update course depending on id of form
 	if (numberOfValidInputs === inputs.length) {
-		saveButton.disabled = false;
-		return true;
+		try {
+			saveButton.disabled = false;
+		}
+		catch(err) {
+			err.message;
+		}
+		finally { 
+			return true; 
+		}
 	} else {
-		saveButton.disabled = true;
+		try {
+			saveButton.disabled = true;
+		}
+		catch(err) {
+			err.message;
+		}
 	}
 	return false;
 }

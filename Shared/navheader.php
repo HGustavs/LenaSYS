@@ -65,9 +65,17 @@
 					$checkIfGithubURL = $row['courseGitURL'];
 				} else {
 					$checkIfGithubURL = null;
-					// $row is false, which means no data was fetched
+				}
+				if (isset($row['updated'])) {
+					$updateTime = $row['updated'];
+				}
+				else {
 					$updateTime = "No data found for the given course ID";
 				}
+			}
+			else {
+				$checkIfGithubURL = null;
+				$updateTime = "No data found for the given course ID";
 			}
 
 
@@ -99,7 +107,7 @@
 					echo"</div>";
 					echo "<div id='darkModeBurgerDiv'>";
 					echo "<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
-					echo "<img alt ='Dark' class='navBurgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+					echo "<img alt ='Dark' class='navBurgerButt' title='Toggle theme' src='../Shared/icons/ThemeToggle.svg'></>";
 					echo "</a>";
 					echo "</a>";
 					echo"</div>";
@@ -110,7 +118,7 @@
 			// Home button original code <a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a>
 			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><img alt='home button icon' src='../Shared/icons/Home.svg'></div></td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
+			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' title='Toggle theme' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
 			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
@@ -228,7 +236,7 @@
 							echo "<td class='access' style='display: inline-block;'>";
 							echo "    <div class='access menuButton'>";
             			    echo "      <a id='accessBTN' title='Give students access to the selected version' value='Access' href='accessed.php?courseid=".$_SESSION['courseid']."&coursevers=".$_SESSION['coursevers']."' >";
-             				echo "        <img alt='give access icon' id='editCourse' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
+             				echo "        <img alt='give access icon' id='accessImg' class='navButt' src='../Shared/icons/lock_symbol.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
@@ -238,7 +246,7 @@
 							echo "<td class='refresh' style='display: inline-block;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
-									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
+									echo "<img alt='refresh icon' id='refreshIMG' title='Refresh GitHub repo' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
 								echo "</span>";
 
 								//Check if user is super user
@@ -350,7 +358,7 @@
 							//Adding dark mode button to the teacher burger menu
 							echo "<div id='darkModeBurgerTeacher'>";
 							echo "<a id='darkModeBurgerT' onclick = 'burgerToggleDarkmode()'>";
-							echo "<img alt ='Dark' class='burgerButt' src='../Shared/icons/ThemeToggle.svg'></>";
+							echo "<img alt ='Dark' class='burgerButt' title='Toggle theme' src='../Shared/icons/ThemeToggle.svg'></>";
 							// not working yet
 							echo "<a class = 'burgerButtText'onclick = 'burgerToggleDarkmode()'> Change Theme </a>";
 							echo "</a>";
@@ -362,16 +370,17 @@
 			// Sort dialog - accessed / resulted /fileed					
 			//old search bar for resulted
       if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
-					echo "<td id='testSearchContainer' class='navButt'>";
+					echo "<td id='testSearchContainer' class='navSearchWrapper'>";
 
 					if ($requestedService == "fileed.php")
 						echo   "<form onsubmit='event.preventDefault()' autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();'/></form>";
 					else
-						echo   "<form onsubmit='event.preventDefault()' autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
+						echo   "<form onsubmit='event.preventDefault()' autocomplete='off' display:'none'><input class='navSearch' id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' '>"; //Dropdown menu for when hovering the search bar
 					if($requestedService=="accessed.php"){
-						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Webug13h, 2020-02-29 13:37</p>";
+						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> 
+						<b>Ex:</b> Johan Karlson 2020-02-29 13:37</p>";
 					}
 					if($requestedService=="duggaed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> template name, name, date <br> <b>Ex:</b> color-dugga</p>";
@@ -693,30 +702,31 @@ function hamburgerToggle() {
 }
 
 //count down the fetch cooldown
-const gitFetchCooldownMin = document.getElementById("gitFetchMin");
-const gitFetchCooldownSec = document.getElementById("gitFetchSec");
-const cooldownHolder = document.getElementById("cooldownHolder");
+let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
 
-setInterval(
-	function() 
-	{
-		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
+document.addEventListener("DOMContentLoaded", function() {
+    gitFetchCooldownMin = document.getElementById("gitFetchMin");
+    gitFetchCooldownSec = document.getElementById("gitFetchSec");
+    cooldownHolder = document.getElementById("cooldownHolder");
+
+    if (gitFetchCooldownMin && gitFetchCooldownSec) { // Check if elements exist
+        setInterval(function() 
 		{
-			gitFetchCooldownSec.innerHTML-=1;
-			if(gitFetchCooldownSec.innerHTML<0)
+            if (gitFetchCooldownSec.innerHTML > 0 || gitFetchCooldownMin.innerHTML > 0) {
+                gitFetchCooldownSec.innerHTML -= 1;
+                if (gitFetchCooldownSec.innerHTML < 0) 
+				{
+                    gitFetchCooldownMin.innerHTML -= 1;
+                    gitFetchCooldownSec.innerHTML = 59;
+                }
+            } 
+			else 
 			{
-				gitFetchCooldownMin.innerHTML-=1;
-				gitFetchCooldownSec.innerHTML=59;
-			}
-			
-		}
-		else
-		{
-			cooldownHolder.style.display="none";
-		}
-	}, 1000
-);
-
+                cooldownHolder.style.display = "none";
+            }
+        }, 1000);
+    }
+});
 function resetGitFetchTimer(superuser)
 {
 	if(cooldownHolder.style.display=="none"){
