@@ -28,12 +28,13 @@ function toggleDiagramDropdown() {
         btn.style.border = `3px solid ${color.PURPLE}`;
     }
 }
+
 /**
  * @description Toggles the visual background grid ON/OFF.
  */
 function toggleGrid() {
-    var grid = document.getElementById("svggrid");
-    var gridButton = document.getElementById("gridToggle");
+    const grid = document.getElementById("svggrid");
+    const gridButton = document.getElementById("gridToggle");
 
     // Toggle active class on button
     document.getElementById("gridToggle").classList.toggle("active");
@@ -71,7 +72,7 @@ function toggleKeybindList() {
  */
 function toggleErTable() {
     // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
+    const navButtons = document.getElementsByClassName("toolbarMode");
     for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
@@ -98,7 +99,7 @@ function toggleErTable() {
  */
 function toggleTestCase() {
     // Remove all "active" classes in nav bar
-    var navButtons = document.getElementsByClassName("toolbarMode");
+    const navButtons = document.getElementsByClassName("toolbarMode");
     for (let i = 0; i < navButtons.length; i++) {
         if (navButtons[i].classList.contains("active")) navButtons[i].classList.remove("active");
     }
@@ -118,17 +119,22 @@ function toggleTestCase() {
     }
     generateContextProperties();
 }
+
 /**
  * @description Toggles the A4 template ON/OFF.
  */
 function toggleA4Template() {
-    var template = document.getElementById("a4Template");
+    const template = document.getElementById("a4Template");    
+    const a4Rect = document.getElementById("a4Rect");
+    const vRect = document.getElementById("vRect");
 
     // Toggle active class on button
     document.getElementById("a4TemplateToggle").classList.toggle("active");
 
     if (template.style.display == "block") {
         template.style.display = "none";
+        vRect.style.display = "none";
+        a4Rect.style.display = "none";
         document.getElementById("a4VerticalButton").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
@@ -151,18 +157,20 @@ function setA4SizeFactor(e) {
     updateA4Size();
 }
 
-function toggleA4Horizontal() {
-    document.getElementById("vRect").style.display = "block";
-    if (document.getElementById("a4Rect").style.display == "block") {
-        document.getElementById("a4Rect").style.display = "none";
-    }
+function toggleA4Vertical() {
+    const vRect = document.getElementById("vRect");
+    const a4Rect = document.getElementById("a4Rect");
+    
+    vRect.style.display = "none";  // Hide horizontal
+    a4Rect.style.display = "block";  // Show vertical
 }
 
-function toggleA4Vertical() {
-    document.getElementById("a4Rect").style.display = "block";
-    if (document.getElementById("vRect").style.display == "block") {
-        document.getElementById("vRect").style.display = "none";
-    }
+function toggleA4Horizontal() {
+    const vRect = document.getElementById("vRect");
+    const a4Rect = document.getElementById("a4Rect");
+    
+    a4Rect.style.display = "none";  // Hide vertical
+    vRect.style.display = "block";  // Show horizontal
 }
 
 /**
@@ -193,8 +201,8 @@ function toggleSnapToGrid() {
  * @description Toggles weither the ruler is visible or not for the end user.
  */
 function toggleRuler() {
-    var ruler = document.getElementById("rulerOverlay");
-    var rulerToggleButton = document.getElementById("rulerToggle");
+    const ruler = document.getElementById("rulerOverlay");
+    const rulerToggleButton = document.getElementById("rulerToggle");
 
     // Toggle active class on button
     document.getElementById("rulerToggle").classList.toggle("active");
@@ -340,7 +348,7 @@ function togglePlacementType(num, type) {
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }
 
-function hidePlacementType(){
+function hidePlacementType() {
     let i = 0;
 
     while (true) {
@@ -392,9 +400,9 @@ function toggleDarkmode() {
  * @param {String} buttonID containing the ID of the button that was pressed
  */
 function toggleColorMenu(buttonID) {
-    var button = document.getElementById(buttonID);
+    const button = document.getElementById(buttonID);
     let menu;
-    var width = 0;
+    let width = 0;
 
     // If the color menu's inner html is empty
     if (button.children[0].innerHTML == "") {
@@ -419,11 +427,11 @@ function toggleColorMenu(buttonID) {
         }
         // Menu position relative to button
         menu.style.width = width + "px";
-        var buttonWidth = button.offsetWidth;
-        var offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
-        var offsetHeight = button.getBoundingClientRect().y;
+        const buttonWidth = button.offsetWidth;
+        const offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
+        const offsetHeight = button.getBoundingClientRect().y;
         menu.style.top = (offsetHeight - 50) + "px";
-        var menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
+        const menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
         menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
     } else {    // if the color menu's inner html is not empty, remove the content
         menu = button.children[0];
@@ -438,14 +446,16 @@ function toggleColorMenu(buttonID) {
  * @param {String} clickedCircleID containing the ID of the svg circle that was pressed
  */
 function setElementColors(clickedCircleID) {
-    var id = clickedCircleID;
-    var menu = document.getElementById(clickedCircleID).parentElement.parentElement;
-    var elementIDs = [];
+    let color;
+    let index;
+    const id = clickedCircleID;
+    const menu = document.getElementById(clickedCircleID).parentElement.parentElement;
+    const elementIDs = [];
 
     // If fill button was pressed
     if (menu.id == "BGColorMenu") {
-        var index = id.replace("BGColorCircle", "") * 1;
-        var color = MENU_COLORS[index];
+        index = id.replace("BGColorCircle", "") * 1;
+        color = MENU_COLORS[index];
         for (let i = 0; i < context.length; i++) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
@@ -455,8 +465,8 @@ function setElementColors(clickedCircleID) {
             StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
         );
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
-        var index = id.replace("strokeColorCircle", "") * 1;
-        var color = strokeColors[index];
+        index = id.replace("strokeColorCircle", "") * 1;
+        color = strokeColors[index];
         for (let i = 0; i < context.length; i++) {
             context[i].stroke = color;
             elementIDs[i] = context[i].id;

@@ -30,9 +30,9 @@ class StateChange {
      * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
      */
     constructor(id, values, timestamp) {
-        if (id != null) this.id = id;
+        if (id) this.id = id;
 
-        if (values != undefined) {
+        if (values) {
             var keys = Object.keys(values);
 
             // If "values" is an array of objects, store all objects in the "state.created" array.
@@ -45,7 +45,7 @@ class StateChange {
             }
         }
 
-        if (timestamp != undefined) this.time = timestamp;
+        if (timestamp) this.time = timestamp;
         else this.time = new Date().getTime();
     }
 }

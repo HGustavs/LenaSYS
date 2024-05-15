@@ -1,13 +1,21 @@
 /**
- * @description Constructs an string containing the svg line-elements of the inputted line object in parameter.
+ * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
- * @param {boolean} targetGhost Is the targeted line an ghost line
+ * @param {boolean} targetGhost Is the targeted line a ghost line
  */
 function drawLine(line, targetGhost = false) {
+
     let str = "";
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
-    let telem = targetGhost ? ghostElement : data[findIndex(data, line.toID)];
+    let telem;
+    if (targetGhost) {
+        telem = ghostElement;
+        isCurrentlyDrawing = true;
+    } else {
+        telem = data[findIndex(data, line.toID)];
+        isCurrentlyDrawing = false;
+    }
     if (!felem || !telem) return;
     line.type = (telem.type == entityType.note) ? telem.type : felem.type;
     let strokeDash = (line.kind == lineKind.DASHED || line.type == entityType.note) ? "10" : "0";
@@ -18,6 +26,12 @@ function drawLine(line, targetGhost = false) {
 
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+
+    // Follows the cursor while drawing the line
+    if (isCurrentlyDrawing){
+        tx = event.clientX;
+        ty = event.clientY;
+    }
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
 
@@ -33,8 +47,8 @@ function drawLine(line, targetGhost = false) {
             let dy = -(tx - fx);
             let dx = ty - fy;
             let len = Math.sqrt((dx * dx) + (dy * dy));
-            dy = dy / len;
-            dx = dx / len;
+            dy /= len;
+            dx /= len;
 
             const double = (a, b) => {
                 return `<line 
@@ -45,7 +59,7 @@ function drawLine(line, targetGhost = false) {
                             y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
                             stroke='${lineColor}' stroke-width='${strokewidth}'
                         />`;
-            }
+            };
             str += double(1, 1);
             str += double(-1, 2);
         }
@@ -77,7 +91,7 @@ function drawLine(line, targetGhost = false) {
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    if  ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
+    if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
@@ -111,16 +125,16 @@ function drawLine(line, targetGhost = false) {
                 />`;
     }
 
-    if (line.label  && line.type !== entityType.IE) {
+    if (line.label && line.type !== entityType.IE) {
         //Get width of label's text through canvas
-        var height = Math.round(zoomfact * textheight);
-        var canvas = document.getElementById('canvasOverlay');
-        var canvasContext = canvas.getContext('2d');
+        const height = Math.round(zoomfact * textheight);
+        const canvas = document.getElementById('canvasOverlay');
+        const canvasContext = canvas.getContext('2d');
         canvasContext.font = `${height}px ${canvasContext.font.split('px')[1]}`;
-        var labelValue = line.label.replaceAll('<', "&#60").replaceAll('>', "&#62");
-        var textWidth = canvasContext.measureText(line.label).width;
+        const labelValue = line.label.replaceAll('<', "&#60").replaceAll('>', "&#62");
+        const textWidth = canvasContext.measureText(line.label).width;
 
-        var label = {
+        const label = {
             id: line.id + "Label",
             labelLineID: line.id,
             centerX: (tx + fx) / 2,
@@ -144,9 +158,9 @@ function drawLine(line, targetGhost = false) {
             labelMoved: false
         };
 
-        if (!!targetLabel) var rememberTargetLabelID = targetLabel.id;
+        let rememberTargetLabelID = (targetLabel) ? targetLabel.id : undefined;
 
-        if (!!lineLabelList[findIndex(lineLabelList, label.id)]) {
+        if (lineLabelList[findIndex(lineLabelList, label.id)]) {
             label.labelMovedX = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedX;
             label.labelMovedY = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedY;
             label.labelGroup = lineLabelList[findIndex(lineLabelList, label.id)].labelGroup;
@@ -167,14 +181,14 @@ function drawLine(line, targetGhost = false) {
             lineLabelList.push(label);
         }
 
-        if (!!rememberTargetLabelID) {
+        if (rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
         // Label position for recursive edges
-        var labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
-        var labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + zoomfact
-        const labelPositionY = labelPosY - zoomfact
+        const labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
+        const labelPositionX = labelPosX + zoomfact;
+        const labelPositionY = labelPosY - zoomfact;
 
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
@@ -226,7 +240,7 @@ function getLineAttrubutes(f, t, ctype) {
         x2: 0,
         y1: 0,
         y2: 0,
-    }
+    };
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
@@ -282,7 +296,7 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
                 class='text cardinalityLabelText' 
                 dominant-baseline='middle' 
                 text-anchor='middle' 
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)};' 
                 x='${x}' 
                 y='${y}'
             > ${label} </text>`;
@@ -367,7 +381,7 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
                 class='text cardinalityLabelText' 
                 dominant-baseline='middle' 
                 text-anchor='middle' 
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;' 
+                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)};' 
                 x='${posX}' 
                 y='${posY}'
             > ${lineCardinalitys[line.cardinality]} </text>`;
@@ -500,35 +514,31 @@ function calculateArrowBase(from, to, size) {
  * @param {Point} to The coordinates/Point where the line between @param base and the element end
  * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
  */
-function rotateArrowPoint(base, to, clockwise) {
-    /*
-        To create the actual arrow we need the corners.
-        We need to rotate the point "to" around "base" by 90 or -90 degrees and divide the distance by 2 (as this decides how wide the triangle will be).
-        The rotation is done by applying the vector rotation math that states:
-        Point(x,y) rotated 90 degrees clockwise = Point(y, -1 * x) or,
-        Point(x,y) rotated 90 degrees counter-clockwise = Point(-1 * y, x).
-        The "rotated" value can then be added to the base to get a corner.
-    */
-    if (clockwise) {
-        let point = new Point((to.y - base.y) / 2, -1 * (to.x - base.x) / 2);
-        point.add(base);
-        return point;
-    } else {
-        let point = new Point(-1 * (to.y - base.y) / 2, (to.x - base.x) / 2);
-        point.add(base);
-        return point;
-    }
-}
+ function rotateArrowPoint(base, point, clockwise) {
+    const angle = Math.PI / 4; 
+    const direction = clockwise ? 1 : -1; 
+    const dx = point.x - base.x;
+    const dy = point.y - base.y;
+ 
+ 
+        return {
+            x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
+            y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
+        };
+     }
+     
 
-function drawArrowPoint(base, point, x, y, lineColor) {
+function drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
-    return `<polygon points=' 
-        ${right.x} ${right.y},
-        ${point.x} ${point.y}, 
-        ${left.x} ${left.y}' 
-        stroke='${lineColor}' stroke-width='${strokewidth}'/>`;
-}
+ 
+    return `
+    <svg width="100" height="100">
+        <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
+            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
+    </svg>
+    `;
+ }
 
 
 /**
@@ -573,6 +583,7 @@ function redrawArrows() {
 
     return str;
 }
+
 /**
  * @description Clears the line list on all sides of an element.
  * @param {Object} element Element to empty all sides of.
@@ -586,8 +597,8 @@ function clearLinesForElement(element) {
     element.neighbours = {};
 
     // Get data from dom elements
-    var domelement = document.getElementById(element.id);
-    var domelementpos = domelement.getBoundingClientRect();
+    const domelement = document.getElementById(element.id);
+    const domelementpos = domelement.getBoundingClientRect();
     element.x1 = domelementpos.left;
     element.y1 = domelementpos.top;
     element.x2 = domelementpos.left + domelementpos.width - 2;
@@ -602,7 +613,7 @@ function clearLinesForElement(element) {
  * @param {boolean} targetGhost Is the line an ghostLine
  */
 function determineLine(line, targetGhost = false) {
-    var felem, telem;
+    let felem, telem;
 
     felem = data[findIndex(data, line.fromID)];
     if (!felem) return;
@@ -613,11 +624,11 @@ function determineLine(line, targetGhost = false) {
     line.dy = felem.cy - telem.cy;
 
     // Figure out overlap - if Y overlap we use sides else use top/bottom
-    var overlapY = true;
+    let overlapY = true;
     if (felem.y1 > telem.y2 || felem.y2 < telem.y1) overlapY = false;
-    var overlapX = true;
+    let overlapX = true;
     if (felem.x1 > telem.x2 || felem.x2 < telem.x1) overlapX = false;
-    var majorX = true;
+    let majorX = true;
     if (Math.abs(line.dy) > Math.abs(line.dx)) majorX = false;
 
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
@@ -675,11 +686,12 @@ function sortElementAssociations(element) {
  * @description calculates how the label should be displacesed
  */
 function calculateLabelDisplacement(labelObject) {
-    var diffrenceX = labelObject.highX - labelObject.lowX;
-    var diffrenceY = labelObject.highY - labelObject.lowY;
-    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
-    var baseLine, angle, displacementConstant = labelObject.height, storeX, storeY;
-    var distanceToOuterlines = {storeX, storeY}
+    let baseLine, angle;
+    const diffrenceX = labelObject.highX - labelObject.lowX;
+    const diffrenceY = labelObject.highY - labelObject.lowY;
+    const entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
+    let displacementConstant = labelObject.height;
+    const distanceToOuterlines = {};
     // define the baseline used to calculate the angle
     if ((labelObject.fromX - labelObject.toX) > 0) {
         if ((labelObject.fromY - labelObject.toY) > 0) { // up left
@@ -711,8 +723,8 @@ function calculateLabelDisplacement(labelObject) {
 
 function calculateProcentualDistance(objectLabel) {
     // Math to calculate procentuall distance from/to centerpoint
-    var diffrenceX = objectLabel.highX - objectLabel.lowX;
-    var diffrenceY = objectLabel.highY - objectLabel.lowY;
+    const diffrenceX = objectLabel.highX - objectLabel.lowX;
+    const diffrenceY = objectLabel.highY - objectLabel.lowY;
     if (objectLabel.labelMovedX > objectLabel.highX - objectLabel.lowX) {
         objectLabel.labelMovedX = objectLabel.highX - objectLabel.lowX;
     } else if (objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX) {
@@ -723,15 +735,15 @@ function calculateProcentualDistance(objectLabel) {
     } else if (objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX) {
         objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
     }
-    var distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
-    var distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
-    var lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1 * distanceToX1 + distanceToY1 * distanceToY1));
-    var entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
+    const distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
+    const distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
+    const lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1 * distanceToX1 + distanceToY1 * distanceToY1));
+    const entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
     objectLabel.percentOfLine = lenghtToNewPos / entireLinelenght;
     // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct
     if (objectLabel.percentOfLine < 0.5) {
         objectLabel.percentOfLine = 1 - objectLabel.percentOfLine;
-        objectLabel.percentOfLine = objectLabel.percentOfLine - 0.5;
+        objectLabel.percentOfLine -= 0.5;
     } else if (objectLabel.percentOfLine > 0.5) {
         objectLabel.percentOfLine = -(objectLabel.percentOfLine - 0.5);
     }
@@ -790,9 +802,10 @@ function updateLabelPos(newPosX, newPosY) {
 function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
     let ax, ay, bx, by, toElementA, toElementB, sortval, parentx, parenty;
     // Get dx dy centered on association end e.g. invert vector if necessary
-    var currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
-    var compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
-    var parent = data[findIndex(data, elementid)];
+    const currentElementLine = (ghostLine && currentElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, currentElementID)];
+    const compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
+    const parent = data[findIndex(data, elementid)];
+    sortval = (navigator.userAgent.indexOf("Chrome") !== -1) ? 1 : -1;
 
     // Retrieve opposite element - assume element center (for now)
     if (currentElementLine.fromID == elementid) {
@@ -811,32 +824,24 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis) 
         return 0;
     }
 
-    if (navigator.userAgent.indexOf("Chrome") !== -1) {
-        sortval = 1;
-    } else {
-        sortval = -1;
-    }
-
     // If lines cross swap otherwise keep as is
     if (axis == 0 || axis == 1) {
         // Left side
         ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
         by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
-        if (axis == 0) parentx = parent.x1
-        else parentx = parent.x2;
-
-        if (linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by) === false) return sortval
+        parentx = (axis == 0) ? parent.x1 : parent.x2;
+        let test = linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by);
+        if (!test) return sortval;
 
     } else if (axis == 2 || axis == 3) {
         // Top / Bottom side
         ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
         bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
-        if (axis == 2) parenty = parent.y1
-        else parenty = parent.y2;
+        parenty = (axis == 2) ? parent.y1 : parent.y2;
 
-        if (linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty) === false) return sortval
+        let test = linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty);
+        if (!test) return sortval;
     }
-
     return -sortval;
 }
 
@@ -853,49 +858,48 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis) 
  * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
  */
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4) {
-    var determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    const determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
-    var x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
-    var y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
-    if (isNaN(x) || isNaN(y)) {//Check if lines don't intersect
-        return false;
-    } else {//Check if intersection point is within edges
-        if (x1 >= x2) {
-            if (!(x2 <= x && x <= x1)) return false;
-        } else {
-            if (!(x1 <= x && x <= x2)) return false;
-        }
+    const x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
+    const y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
+    //Check if lines don't intersect
+    if (isNaN(x) || isNaN(y)) return false;
+    //Check if intersection point is within edges
+    if (x1 >= x2) {
+        if (!(x2 <= x && x <= x1)) return false;
+    } else {
+        if (!(x1 <= x && x <= x2)) return false;
+    }
 
-        if (y1 >= y2) {
-            if (!(y2 <= y && y <= y1)) return false;
-        } else {
-            if (!(y1 <= y && y <= y2)) return false;
-        }
+    if (y1 >= y2) {
+        if (!(y2 <= y && y <= y1)) return false;
+    } else {
+        if (!(y1 <= y && y <= y2)) return false;
+    }
 
-        if (x3 >= x4) {
-            if (!(x4 <= x && x <= x3)) return false;
-        } else {
-            if (!(x3 <= x && x <= x4)) return false;
-        }
+    if (x3 >= x4) {
+        if (!(x4 <= x && x <= x3)) return false;
+    } else {
+        if (!(x3 <= x && x <= x4)) return false;
+    }
 
-        if (y3 >= y4) {
-            if (!(y4 <= y && y <= y3)) return false;
-        } else {
-            if (!(y3 <= y && y <= y4)) return false;
-        }
+    if (y3 >= y4) {
+        if (!(y4 <= y && y <= y3)) return false;
+    } else {
+        if (!(y3 <= y && y <= y4)) return false;
     }
     return true;
 }
 
 /**
  * @description checks if the label should be detached.
- * @param {Interger} newX The position the mouse is at in the X-axis.
- * @param {Interger} newY The position the mouse is at in the Y-axis.
+ * @param {Number} newX The position the mouse is at in the X-axis.
+ * @param {Number} newY The position the mouse is at in the Y-axis.
  */
 function displaceFromLine(newX, newY) {
     //calculates which side of the line the point is.
-    var y1 = targetLabel.fromY, y2 = targetLabel.toY, x1 = targetLabel.fromX, x2 = targetLabel.toX;
-    var distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
+    const y1 = targetLabel.fromY, y2 = targetLabel.toY, x1 = targetLabel.fromX, x2 = targetLabel.toX;
+    const distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
     //deciding which side of the line the label should be
     if (distance > 6000) {
         targetLabel.labelGroup = 1;

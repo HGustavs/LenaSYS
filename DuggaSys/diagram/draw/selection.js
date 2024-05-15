@@ -3,6 +3,7 @@
  * @return The populated string with the selection box rect.
  */
 function drawSelectionBox() {
+    let points;
     let str = '';
     deleteBtnX = 0;
     deleteBtnY = 0;
@@ -11,7 +12,7 @@ function drawSelectionBox() {
     if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) ||
         (mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0)
     ) {
-        var lowX, highX, lineLowX, lineHighX, x1, x2, lowY, highY, lineLowY, lineHighY, y1, y2;
+        let lowX, highX, lineLowX, lineHighX, x1, x2, lowY, highY, lineLowY, lineHighY, y1, y2;
         if (context.length != 0) {
             lowX = context[0].x1;
             highX = context[0].x2;
@@ -29,10 +30,10 @@ function drawSelectionBox() {
             }
         }
 
-        var tempLines = [];
+        const tempLines = [];
         if (contextLine.length > 0) {
             for (let i = 0; i < contextLine.length; i++) {
-                if (contextLine[i] && contextLine[i].kind !== undefined) {
+                if (contextLine[i] && contextLine[i].kind) {
                     if (contextLine[i].kind === lineKind.DOUBLE) {
                         tempLines.push(document.getElementById(contextLine[i].id + "-1"));
                         tempLines.push(document.getElementById(contextLine[i].id + "-2"));
@@ -41,10 +42,10 @@ function drawSelectionBox() {
                     }
                 }
             }
-            var tempX1, tempX2, tempY1, tempY2;
-            var hasPoints = tempLines[0].getAttribute('points'); // Polyline
-            if (hasPoints != null) {
-                var points = hasPoints.split(' ');
+            let tempX1, tempX2, tempY1, tempY2;
+            let hasPoints = tempLines[0].getAttribute('points'); // Polyline
+            if (hasPoints) {
+                points = hasPoints.split(' ');
                 // Find highest and lowest x and y coordinates of the first element in lines
                 tempX1 = points[0].split(',')[0];
                 tempX2 = points[3].split(',')[0];
@@ -64,9 +65,9 @@ function drawSelectionBox() {
 
             // Loop through all selected lines and find highest and lowest x and y coordinates
             for (let i = 0; i < tempLines.length; i++) {
-                var hasPoints = tempLines[i].getAttribute('points'); // Polyline
-                if (hasPoints != null) {
-                    var points = hasPoints.split(' ');
+                hasPoints = tempLines[i].getAttribute('points'); // Polyline
+                if (hasPoints) {
+                    points = hasPoints.split(' ');
                     // Find highest and lowest x and y coordinates of the first element in lines
                     tempX1 = points[0].split(',')[0];
                     tempX2 = points[3].split(',')[0];

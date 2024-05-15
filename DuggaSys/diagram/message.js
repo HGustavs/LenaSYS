@@ -9,8 +9,8 @@ function displayMessage(type, message, time = 5000) {
     // Message settings
     const maxMessagesAtDisplay = 5; // The number of messages that can be displayed on the screen
 
-    var messageElement = document.getElementById("diagram-message"); // Get div for error-messages
-    var id = makeRandomID();
+    const messageElement = document.getElementById("diagram-message"); // Get div for error-messages
+    const id = makeRandomID();
 
     // If the already is the maximum number of messages, remove the oldest one
     if (messageElement.childElementCount >= maxMessagesAtDisplay) {
