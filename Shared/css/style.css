@@ -5410,6 +5410,12 @@ only screen and (max-device-width: 568px) {
   }
 }
 
+#addElement{
+  margin-right:-20px; 
+  top:70px; 
+  display:none;
+}
+
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 568px) {
 
