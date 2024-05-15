@@ -103,41 +103,33 @@
 				<div class="cursorPointer" onclick="closeWindows();resetLoginStatus()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">
-					<tr>
-						<td>
-							<label id="loginBoxTitle">Please answer your security question</label>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td style='padding-top: 14px;'>
+				<div class="loginBoxTable">
+					<div>
+						<label id="loginBoxTitle">Please answer your security question</label>
+					</div>
+					<div class="loginboxTr" style='padding-top: 14px;'>
+						<div>
 							<label style='font-size: 14px;'> Question: </label>
 							<label id="displaysecurityquestion" class="text">Placeholder question</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
-						</td>
-					</tr>
-					<tr class="loginboxTr">
-						<td>
+						</div>
+					</div>
+					<div>
+						<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+					</div>
+					<div class="loginboxTr">
+						<div>
 							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
-						</td>
-					</tr>
-
-					<tr>
+						</div>
+					</div>
+					<div>
 						<!-- Message displayed when using wrong password or username -->
-						<td id="message3";></td>
-					</tr>
-				</table>
+						<div id="message3"></div>
+					</div>
+				</div>
 			</div>
-			<tr>
-				<td>
-					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
-				</td>
-			</tr>
-
+			<div>
+				<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+			</div>
 		</div>
 		<div id='resetcomplete' class='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
