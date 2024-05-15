@@ -137,19 +137,15 @@
 				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">
-					<tr>
-						<td>
-							<p style='font-size: 0.8em;'>Your teachers have been notified, a new password will be sent to your school email as soon as possible.</p>
-							<p style='font-size: 0.8em;'>You can change your password later in the profile page.</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type='button' class='buttonLoginBox' onclick="location.reload();" value='Ok!' style='margin-top: 10px;' title='Ok!'>
-						</td>
-					</tr>
-				</table>
+				<div class="loginBoxTable">
+					<div>
+						<p style='font-size: 0.8em;'>Your teachers have been notified, a new password will be sent to your school email as soon as possible.</p>
+						<p style='font-size: 0.8em;'>You can change your password later in the profile page.</p>
+					</div>
+					<div>
+						<input type='button' class='buttonLoginBox' onclick="location.reload();" value='Ok!' style='margin-top: 10px;' title='Ok!'>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
