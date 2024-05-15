@@ -3896,6 +3896,7 @@ function validateForm(formid) {
     var repoKey = $("#gitAPIKey").val();
     var cid = $("#cidTrue").val();
     if (repoLink) {
+      //Check if fetchGitHubRepo returns true
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
