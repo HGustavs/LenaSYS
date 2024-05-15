@@ -172,115 +172,109 @@ function bfs($url, $cid, $opt)
     $handles = array();
 
     while (!empty($fifoQueue)) {
-        while (!empty($fifoQueue)) {
-            $currentUrl = array_shift($fifoQueue);
-            $ch = curl_init($currentUrl);
-            $curlOptions = array(
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_USERAGENT => 'PHP',
-                CURLOPT_HTTPHEADER => isset($token) ? array('Authorization: Bearer ' . $token) : [],
-            );
-            curl_setopt_array($ch, $curlOptions);
-            curl_multi_add_handle($mh, $ch);
-            $handles[$currentUrl] = $ch;
-        }
+        $currentUrl = array_shift($fifoQueue);
+        $ch = curl_init($currentUrl);
+        $curlOptions = array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_USERAGENT => 'PHP',
+            CURLOPT_HTTPHEADER => isset($token) ? array('Authorization: Bearer ' . $token) : [],
+        );
+        curl_setopt_array($ch, $curlOptions);
+        curl_multi_add_handle($mh, $ch);
+        $handles[$currentUrl] = $ch;
+    }
 
-        // Execute the multi-handle requests
-        $active = null;
-        do {
-            $status = curl_multi_exec($mh, $active);
-            curl_multi_select($mh);
-        } while ($status === CURLM_CALL_MULTI_PERFORM || $active);
+    // Execute the multi-handle requests
+    $active = null;
+    do {
+        $status = curl_multi_exec($mh, $active);
+        curl_multi_select($mh);
+    } while ($status === CURLM_CALL_MULTI_PERFORM || $active);
 
-        // Process the responses
-        foreach ($handles as $currentUrl => $ch) {
-            $data = curl_multi_getcontent($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_multi_remove_handle($mh, $ch);
+    // Process the responses
+    foreach ($handles as $currentUrl => $ch) {
+        $data = curl_multi_getcontent($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_multi_remove_handle($mh, $ch);
 
-            if ($httpCode == 200) {
-                // Decodes the fetched data into JSON
-                $json = json_decode($data, true);
-                if($opt == "GETCOMMIT"){
-                    return $json['sha'];
-                }
-                // Loops through each item fetched in the JSON data
-                if ($json) {
-                    foreach ($json as $item) {
-                        // Checks if the fetched item is of type 'file'
-                        if ($item['type'] == 'file') {
-                            //If an index file has been found, check against the content of the index file
-                            if ($item['name'] != ".gitignore") {
-                                if ($filesToIgnore) {
-                                    // If the file is not part of files to ignore, resume (Index file)
-                                    if (!in_array($item['name'], $filesToIgnore) && !in_array($item['name'], $filesVisited)) {
-                                        if ($opt == "REFRESH") {
-                                            insertToMetaData($cid, $item);
-                                            array_push($filesVisited,$item['name']);
-                                        } else if ($opt == "DOWNLOAD") {
-                                            insertToFileLink($cid, $item);
-                                            insertToMetaData($cid, $item);
-                                            downloadToWebserver($cid, $item);
-                                            array_push($filesVisited,$item['name']);
-                                        }
+        if ($httpCode == 200) {
+            // Decodes the fetched data into JSON
+            $json = json_decode($data, true);
+            if($opt == "GETCOMMIT"){
+                return $json['sha'];
+            }
+            // Loops through each item fetched in the JSON data
+            if ($json) {
+                foreach ($json as $item) {
+                    // Checks if the fetched item is of type 'file'
+                    if ($item['type'] == 'file') {
+                        //If an index file has been found, check against the content of the index file
+                        if ($item['name'] != ".gitignore") {
+                            if ($filesToIgnore) {
+                                // If the file is not part of files to ignore, resume (Index file)
+                                if (!in_array($item['name'], $filesToIgnore) && !in_array($item['name'], $filesVisited)) {
+                                    if ($opt == "REFRESH") {
+                                        insertToMetaData($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    } else if ($opt == "DOWNLOAD") {
+                                        insertToFileLink($cid, $item);
+                                        insertToMetaData($cid, $item);
+                                        downloadToWebserver($cid, $item);
+                                        array_push($filesVisited,$item['name']);
                                     }
-                                    // Otherwise, fetch and download all files
-                                } else {
-                                    if (!in_array($item['name'], $filesVisited)) {
-                                        if ($opt == "REFRESH") {
-                                            insertToMetaData($cid, $item);
-                                            array_push($filesVisited,$item['name']);
-                                        } else if ($opt == "DOWNLOAD") {
-                                            insertToFileLink($cid, $item);
-                                            insertToMetaData($cid, $item);
-                                            downloadToWebserver($cid, $item);
-                                            array_push($filesVisited,$item['name']);
-                                        }
+                                }
+                                // Otherwise, fetch and download all files
+                            } else {
+                                if (!in_array($item['name'], $filesVisited)) {
+                                    if ($opt == "REFRESH") {
+                                        insertToMetaData($cid, $item);
+                                        array_push($filesVisited,$item['name']);
+                                    } else if ($opt == "DOWNLOAD") {
+                                        insertToFileLink($cid, $item);
+                                        insertToMetaData($cid, $item);
+                                        downloadToWebserver($cid, $item);
+                                        array_push($filesVisited,$item['name']);
                                     }
                                 }
                             }
-                            // Checks if the fetched item is of type 'dir'
-                        } else if ($item['type'] == 'dir') {
-                            if (!in_array($item['url'], $visited)) {
-                                array_push($visited, $item['url']);
-                                array_push($fifoQueue, $item['url']);
-                            }
                         }
-                }
-                } else {
-                    //422: Unprocessable entity
-                    http_response_code(422);
-                    header('Content-type: application/json');
-                    $response = array(
-                        'message' => "The JSON-file is invalid"
-                    );
-                    echo json_encode($response);
-                }
-            } 
-            else {
-                // If unable to get file contents then it is logged into the specified textfile with
-                // the specific http error code
-                curl_multi_close($mh);
-                $curl = curl_init($url);
-                curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
-                curl_setopt($curl, CURLOPT_HEADER, 0);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                $response = json_decode(curl_exec($curl));
-                $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
+                        // Checks if the fetched item is of type 'dir'
+                    } else if ($item['type'] == 'dir') {
+                        if (!in_array($item['url'], $visited)) {
+                            array_push($visited, $item['url']);
+                            array_push($fifoQueue, $item['url']);
+                        }
+                    }
+              }
+            } else {
+                //422: Unprocessable entity
+                http_response_code(422);
+                header('Content-type: application/json');
+                $response = array(
+                    'message' => "The JSON-file is invalid"
+                );
+                echo json_encode($response);
+            }
+        } else {
+            // If unable to get file contents then it is logged into the specified textfile with
+            // the specific http error code
+            if($data === false || !$data) {
                 if(strlen($token)<1) {
                     setcookie("missingToken", 1, time() + (5), "/");
-                    $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code." Consider setting a token\n";
-                }
-                else {
+                } else {
+                    $curl = curl_init($url);
+                    curl_setopt($curl, CURLOPT_USERAGENT, 'curl/7.48.0');
+                    curl_setopt($curl, CURLOPT_HEADER, 0);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                    $response = json_decode(curl_exec($curl));
+                    $http_response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                     $message = "\n" . date("Y-m-d H:i:s",time()) . " - Error: connection failed - Error code: ".$http_response_code."\n";
+                    $file = '../../LenaSYS/log/gitErrorLog.txt';
+                    
+                    http_response_code($http_response_code);
+                    error_log($message, 3, $file);
                 }
-                $file = '../../LenaSYS/log/gitErrorLog.txt';
-                
-                http_response_code($http_response_code);
-                error_log($message, 3, $file);
-                return;
             }
         }
     }
