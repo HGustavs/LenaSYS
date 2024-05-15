@@ -37,6 +37,18 @@ function closeDeleteForm() {
 	document.getElementById("myForm").style.display = "none";
 }
 
+function deleteCourse() {
+
+    let cid = $("#cid").val();
+    let visib = "3";
+
+    AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
+    $(".item").css("border", "none");
+    $(".item").css("box-shadow", "none");
+    $("#editCourse").css("display", "none");
+    $("#overlay").css("display", "none");
+}
+
 function updateCourse() {
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
