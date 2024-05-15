@@ -1,7 +1,5 @@
 /**
- * @description Increases the current zoom level if not already at maximum. 
- *              This will magnify all elements and move the camera appropriatly. 
- *              If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
+ * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event. - Optional
  */
 function zoomin(scrollEvent = undefined) {
@@ -101,9 +99,7 @@ function zoomin(scrollEvent = undefined) {
 }
 
 /**
- * @description Decreases the current zoom level if not already at minimum. 
- *              This will shrink all elements and move the camera appropriatly. 
- *              If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
+ * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
  * @param {MouseEvent} scrollEvent The current mouse event. - Optional
  */
 function zoomout(scrollEvent = undefined) {
