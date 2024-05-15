@@ -621,6 +621,29 @@ function showDiagramTypes() {
 
 // --------------------------------------- Window Events    --------------------------------
 
+// Event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
+// Get the elementPlacement button with the highest number and use that for a range in the for loop
+const elements = document.querySelectorAll('[id^="elementPlacement"]');
+let maxNum = 0;
+elements.forEach(element => {
+    const num = parseInt(element.id.replace('elementPlacement', ''), 10);
+    if (num > maxNum) {
+        maxNum = num;
+    }
+});
+
+for (let i = 0; i <= maxNum; i++) {
+    let element = document.getElementById("elementPlacement" + i);
+    if (element) {
+        // Add event listener for click
+        element.addEventListener("mousedown", function(event) {
+            if (event.button === 2) { 
+                rightClickOpenSubtoolbar(i);
+            }
+        });
+    }
+}
+
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
 });
@@ -1634,6 +1657,13 @@ function holdPlacementButtonDown(num) {
             togglePlacementTypeBox(num);
         }
     }, 500);
+}
+
+/**
+ * @description Function to open a subtoolbar when rightclicking a button
+ */
+function rightClickOpenSubtoolbar(num) {
+    togglePlacementTypeBox(num);
 }
 
 /**
