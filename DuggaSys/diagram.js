@@ -937,18 +937,6 @@ function mouseMode_onMouseUp(event) {
 }
 
 /**
- * @description stores the ResizeAndMoved in the historyLog array
- * @param {string[]} id id of the element
- * @param {number} xChange change in x-position
- * @param {number} yChange change in y-position
- * @param {number} widthChange change in width
- * @param {number} heightChange change in height
- */
-function storeElementResize(id, xChange, yChange, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-}
-
-/**
  * @description Event function triggered when the mouse has moved on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
@@ -1054,7 +1042,7 @@ function mmoving(event) {
             }
 
             // store the changes in the history
-            storeElementResize([elementData.id], xChange, yChange, widthChange, heightChange);
+            stateMachine.save(StateChangeFactory.ElementResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
