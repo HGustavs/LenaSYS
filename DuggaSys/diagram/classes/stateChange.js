@@ -18,7 +18,6 @@ class StateChange {
         LINE_DELETED: {flag: 64, isSoft: false, canAppendTo: false},
 
         // Combined flags
-        ELEMENT_MOVED_AND_RESIZED: {flag: 4 | 8, isSoft: true, canAppendTo: true},
         ELEMENT_AND_LINE_DELETED: {flag: 2 | 64, isSoft: false, canAppendTo: false},
         ELEMENT_AND_LINE_CREATED: {flag: 1 | 32, isSoft: false, canAppendTo: false},
     };
