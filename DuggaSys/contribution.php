@@ -3,7 +3,6 @@ session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
-include_once "../Shared/toast.php";
 pdoConnect();
 $cid=getOPG('cid');
 $vers=getOPG('coursevers');
