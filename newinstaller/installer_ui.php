@@ -12,13 +12,14 @@
 	<script defer src="tools/sse_receiver.js"></script>
 </head>
 <body>
-	
 	<div id="page1" class="page">
 		<div class="banner">
 			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
 		</div>
 		<div class="wrapper">
-			<?php breadcrumb(6, 1); ?>
+			<?php
+				breadcrumb(6, 1);
+			?>
 			<div class="content">
 				<?php 
 					header2("Select your OS installer");
@@ -31,11 +32,13 @@
 							'mac' => 'Mac OS'
 						];
 						
-						radioButtons('os-installer', $buttons, 'windows');
+						radioButtons("os-installer", $buttons, "windows");
 					?>
 				</div>
 			</div>
-			<?php navigationButtons(1, 2); ?>
+			<?php
+				singleNavigationButton("next", 2); 
+			?>
 		</div>
 	</div>
 
@@ -60,7 +63,7 @@
 						];
 						$active = ['create-db', 'create-user'];
 
-						checkBoxes('creation-settings', $buttons, $active);
+						checkBoxes("creation-settings", $buttons, $active);
 					?>
 				</div>
 			</div>
@@ -156,7 +159,7 @@
 							];
 							$active = ['test-course', 'demo-course', 'test-files', 'language-support'];
 
-							checkBoxes('creation-settings', $buttons, $active);
+							checkBoxes("creation-settings", $buttons, $active);
 
 							$buttons = [
 								'lang-html' => 'HTML',
@@ -168,7 +171,7 @@
 							];
 							$active = ['lang-html', 'lang-php', 'lang-js', 'lang-plain', 'lang-sql', 'lang-sr'];
 
-							checkBoxesWithColumns('creation-settings', $buttons, $active);
+							checkBoxesWithColumns("creation-settings", $buttons, $active);
 						?>
 					</div>
 				</div>
@@ -180,8 +183,29 @@
 	</div>
 
 	<div id="page6" class="page">
-		
+		<div class="banner">
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
+		<div class="wrapper">
+			<?php
+				breadcrumb(6, 6);
+			?>
+			<div class="content">
+				<?php
+					header2("Complete installation");
+					bodyText("LenaSYS is ready to be installed.");
+				?>
+				<div class="inner-wrapper">
+					<div class="input-flex">
+						<?php
+							defaultButton("Install LenaSYS", "", "start_installer()");
+						?>
+				</div>
+			</div>
+			<?php
+				singleNavigationButton("previous", 5);
+			?>
+		</div>
 	</div>
-
 </body>
 </html>
