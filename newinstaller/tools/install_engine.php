@@ -40,7 +40,7 @@ class InstallEngine {
 		}
 
 		try {
-			$installer = new DBSetup(pdo: $pdo, db_name: "LenaSYStest", db_user: "LenaTest", db_user_password: "test", hostname:"%", callback: "callback");
+			$installer = new DBSetup(pdo: $pdo, db_name: $settings->db_name, db_user: $settings->username, db_user_password: $settings->password, hostname: "%", callback: "callback");
 			$testDataSetup = new TestdataSetup("../install/courses", "../courses", callback: "callback");
 			$configuration_manager = new ConfigurationManager("../../coursesyspw.php", callback: "callback", verbose: $verbose);
 			$operations = InstallEngine::construct_installation_queue($installer, $configuration_manager, $testDataSetup, $settings);
