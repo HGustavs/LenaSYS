@@ -1022,7 +1022,7 @@ function mouseMode_onMouseUp(event) {
  * @param {number} heightChange change in height
  */
 function storeElementResize(id, xChange, yChange, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+    stateMachine.save(StateChangeFactory.ElementResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 }
 
 /**

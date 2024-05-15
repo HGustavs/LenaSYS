@@ -63,20 +63,6 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Array<String>} elementIDs List of IDs for all elements that were resized.
-     * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
-     * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
-     * @returns {StateChange} A new instance of the StateChange class.
-     */
-    static ElementResized(elementIDs, changeX, changeY) {
-        const values = {
-            width: changeX,
-            height: changeY
-        };
-        return new StateChange(elementIDs, values);
-    }
-
-    /**
      * @param {List<String>} elementIDs List of IDs for all elements that were moved and resized.
      * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
      * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
@@ -84,7 +70,7 @@ class StateChangeFactory {
      * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementMovedAndResized(elementIDs, moveX, moveY, changeX, changeY) {
+    static ElementResized(elementIDs, moveX, moveY, changeX, changeY) {
         const values = {
             x: moveX,
             y: moveY,
