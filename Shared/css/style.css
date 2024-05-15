@@ -3072,29 +3072,40 @@ div.submit-button:disabled {
   line-height: 48px !important;
 }
 
-/* Form Pointing Dialogs */
-
-.formDialog {
+/* ----------------------Form Pointing Dialogs START ---------------------- */
+.dialogwrapper {
   position: relative;
-  display: inline-block;
-  left: -100px;
+  display: block;
 }
 
-.formDialog .formDialogText {
-  width: 200px;
+.formDialog {
+  display: inline-block;
+}
+
+.formDialog {
+  display: block;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 5;
+  right: calc(100% + 6px); /*6px is the static space of the arrow located in ::after*/
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.formDialogText {
   display: none;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 5;
   font-size: 12px;
+  border-radius: 6px;
   line-height: 14px;
+  text-align: center;
+  padding: 5px;
+  right: 100%;
+  width: 200px;
 }
 
-.formDialog .formDialogText::after {
+.formDialogText::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -3105,23 +3116,32 @@ div.submit-button:disabled {
   border-color: transparent transparent transparent var(--color-text-list);
 }
 
-.formDialogWide .formDialogText {
-  width: 400px;
+/* Special cases */
+
+.formDialogWide {
+  display: block;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 5;
+  right: calc(100% + 6px); /*6px is the static space of the arrow located in ::after*/
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+/* .formDialogTextWide {
   display: none;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
-  text-align: center;
-  margin-top: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 6px;
-  padding: 5px 0;
-  z-index: 5;
   font-size: 12px;
+  border-radius: 6px;
   line-height: 14px;
+  text-align: center;
+  padding: 5px;
+  right: 100%;
+  width: 200px;
 }
 
-.formDialogWide .formDialogText::after {
+#formDialogWide {
   content: "";
   position: relative;
   top: -22px;
@@ -3129,13 +3149,12 @@ div.submit-button:disabled {
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent var(--color-text-list) transparent ;
+} */
+
+#deadlineDialog {
+
 }
 
-.versionDialog {
-  position:absolute;
-  display: inline;
-  margin-left: 55px;
-}
 .formDialogSplitUp {
   top: -5px; 
 }
@@ -3145,6 +3164,9 @@ div.submit-button:disabled {
 .formDialogTextHalfDownShift{
   top: 15px; 
 }
+
+/* ----------------------Form Pointing Dialogs END ---------------------- */
+
 /* Tooltip */
 .tooltipDugga {
   position: relative;

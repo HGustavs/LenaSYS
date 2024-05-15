@@ -118,30 +118,38 @@ if(isset($_SESSION['uid'])){
     		</div>
     		<div style='padding:5px;'>
     			<input type='hidden' id='cid' value='Toddler' />
-    			<div class='inputwrapper'>
+				<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<div class="formDialog" style="display: block; left:-127px; top:-4px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
-					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
+					<div class="dialogwrapper">
+						<div class="formDialog" id='editCourse_Name_formDialog'><span class="formDialogText errorMessage">Only letters. Dash allowed in between words</span></div>
+						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
+					</div>
 				</div>
-    			<div class='inputwrapper'>
+				<div class='inputwrapper'>
 					<span>Course code:</span>
-					<div class="formDialog" style="display: block; left:-123px; top:2px;"><span id="editcourseCodeError" style="display: none; left:0px;" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 					<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
-					<input oninput="quickValidateForm('editCourse','saveCourse')"  class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
+					<div class="dialogwrapper">
+						<div class="formDialog" id="editCourse_Code_formDialog"><span class="formDialogText errorMessage">2 Letters, 3 digits, 1 letter</span></div>
+						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
+					</div>
 				</div>
-    			<div class="inputwrapper">
+				<div class="inputwrapper">
 					<span>GitHub URL:</span>
-					<div class="formDialog" style="display: block; left:-118px; top:3px;"><span id="courseCodeError" style="display: none; left:0px;" class="formDialogText">Enter a valid github url</span></div>
 					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
-					<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..."/>
+					<div class="dialogwrapper">
+						<div class="formDialog" id="editGithub_formDialog"><span class="formDialogText errorMessage">Enter a valid github url</span></div>
+						<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..." />
+					</div>
 				</div>
-    			<div class='inputwrapper'>
+				<div class='inputwrapper'>
 					<span>(optional) Insert Github Key:</span>
-					<div class="formDialog" style="display: block; left:-175px; top:3px;"><span id="courseGithubKeyError" style="display: none; left:0px;" class="formDialogText">A Github key should be 40 characters</span></div>
 					<p id="dialog7" class="validationDialog">A Github key should be 40 characters</p>
-					<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='githubToken' name='githubToken' placeholder='Leave blank for no key' />
-				</div>				
+					<div class="dialogwrapper">
+						<div class="formDialog" id="GithubKey_formDialog"><span class="formDialogText errorMessage">A Github key should be 40 characters</span></div>
+						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='githubToken' name='githubToken' placeholder='Leave blank for no key' />
+					</div>
+				</div>			
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
 					<select class='selectinput' id='visib'></select>
