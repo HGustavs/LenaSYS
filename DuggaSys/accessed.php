@@ -63,10 +63,10 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='loginBox'>
 			<div>
 				<div class='loginBoxheader'>
-					<h3>Add user</h3>
+					<h3>Create user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
 				<div class="content-wrapper">
@@ -84,7 +84,7 @@
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm()" onkeyup="tooltipTerm()">
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class='flexwrapper'>
 						<span>Email:</span>
@@ -123,16 +123,120 @@
 		</div>
 	</div>
 
+	<div id='addUser' class='loginBoxContainer'>
+		<div class='loginBox'>
+			<div>
+				<div class='loginBoxheader'>
+					<h3>Add user</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>Choose user:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
+						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsernameAdd' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_add">
+						</datalist>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTermAdd' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Save' onclick='addUserToCourse();' />
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
+
+	<div id='removeUser' class='loginBoxContainer'>
+		<div class='loginBox'>
+			<div>
+				<div class='loginBoxheader'>
+					<h3>Remove user</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>Choose user:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" class="tooltipDuggatext">  </span></div>
+						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addUsernameRemove' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_remove"></datalist>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTermRemove' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Save' onclick='removeUserFromCourse();' />
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
+
+	<div id='editUser' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox'>
+			<div>
+				<div class='loginBoxheader'>
+					<h3>Edit user (placeholder)</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>First Name:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+					</div>
+					<div class='flexwrapper'>
+						<span>Last Name:</span>
+						<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
+					<div class='flexwrapper'>
+						<span>Email:</span>
+						<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Add'/>
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
+
 	<!-- Add User Dialog END -->
 
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+			<li onclick="showRemoveUserPopup('users_dropdown_remove');">
+				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Remove user'>
+					<img class="fab-icon" src="../Shared/icons/remove_user_icon.svg">
+				</a>
+			</li>
+			<li onclick="showAddUserPopup('users_dropdown_add');">
+				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
+					<img class="fab-icon" src="../Shared/icons/createUser.svg">
+				</a>
+			</li>
 	        <li onclick="showCreateUserPopup();">
-							<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
-									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
-							</a>
-					</li>
+				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
+					<img class="fab-icon" src="../Shared/icons/createUser.svg">
+				</a>
+			</li>
 		</ol>
 	</div>
 	<div id="editpopover" style="display:none;"></div>

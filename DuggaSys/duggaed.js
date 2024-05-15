@@ -983,7 +983,7 @@ function returnedDugga(data) {
 		}
 		else {
 				$("#quiz").html("");
-				alert("You don't have access to this page. You are now being redirected!")
+				toast("warning","You don't have access to this page. You are now being redirected!", 10);
 				changeURL(`sectioned.php?courseid=${querystring['courseid']}&coursename=${data.coursename}&coursevers=${querystring['coursevers']}`);
 		}
 
