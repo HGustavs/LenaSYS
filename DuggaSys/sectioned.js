@@ -945,22 +945,16 @@ function prepareItem() {
     param.feedbackquestion = null;
   }
 
-  // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren (Old solution)
-  //var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
-  //screenPos = Math.round((-1 * elementBtnTop.top) / 350);
-  //if (screenPos < 1) {
-  //  screenPos = 5;
-  //} else {
-  //  screenPos = 4 * screenPos;
-  //}
-
-  //Place element at bottom if the user has scrolled all the way down, otherwise at the top. (Stopgap solution)
-  let screenPos = 0
-  if(Math.floor(window.scrollY) === (document.documentElement.scrollHeight - document.documentElement.offsetHeight) 
-  && document.documentElement.scrollHeight > document.documentElement.clientHeight) {
-   screenPos = document.getElementById("Sectionlistc").childElementCount;
+  // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren
+  var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
+  screenPos = Math.round((-1 * elementBtnTop.top) / 350);
+  if (screenPos < 1) {
+    screenPos = 5;
+  } else {
+    screenPos = 4 * screenPos;
   }
   param.pos = screenPos;
+
   return param;
 }
 
