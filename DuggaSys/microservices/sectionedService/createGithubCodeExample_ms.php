@@ -17,6 +17,7 @@ $highscoremode=getOP('highscoremode');
 $pos=getOP('pos');
 $lid=getOP('lid');
 $log_uuid=getOP('log_uuid');
+$debug = "NONE!";
 
 pdoConnect();
 session_start();
@@ -179,22 +180,22 @@ if(strcmp($opt,"CREGITEX")===0) {
                 $highscoremode = 0;
                 $groupkind = null;
                 //add the codeexample to listentries
-                createNewListentrie($pdo,array(
-                    "cid" => $courseid,
-                    "coursevers" => $coursevers,
-                    "userid" => $userid,
-                    "entryname" => $examplename,
-                    "link" => $link,
-                    "kind" => $kind,
-                    "comment" => $comments,
-                    "visible" => $visibile,
-                    "highscoremode" => $highscoremode,
-                    "pos" => $pos,
-                    "gradesys" => $gradesys,
-                    "tabs" => $tabs,
-                    "grptype" => $groupkind,
-                    "tabs" => null,
-                ));
+                createNewListEntry(
+                    $pdo,
+                    $courseid,
+                    $coursevers,
+                    $userid,
+                    $examplename,
+                    $link,
+                    $kind,
+                    $comments,
+                    $visibile,
+                    $highscoremode,
+                    $pos,
+                    $gradesys,
+                    $tabs,
+                    $groupkind,
+                    null);
 
             } else {
                 //Check for update

@@ -4,7 +4,7 @@
   include_once "../../../Shared/sessions.php";
   include_once "../../../Shared/basic.php";
   include_once "../sharedMicroservices/getUid_ms.php";
-  include_once "retrieveSectionedService_ms.php";
+  include_once "./retrieveSectionedService_ms.php";
 
   pdoConnect();
   session_start();
@@ -19,6 +19,7 @@
   $opt = getOP('opt');
   $uid = getUid();
   $log_uuid=getOP('log_uuid');
+  $debug='NONE!';
 
   //Call the updateTableListentries service to update the pos & moment columns
 

@@ -690,7 +690,7 @@
                             <p>Represents the passage of time.</p>
                             <p>Shows events that occur to an object during the process.</p>
                             <br>
-                            <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton12" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -705,17 +705,17 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/eye_icon.svg" alt="sequnece diagram lifeline"/>
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -743,7 +743,7 @@
                          onclick='setElementPlacementType(16); setMouseMode(2);'
                          onmouseup='holdPlacementButtonUp()'
                          onmousedown="holdPlacementButtonDown(16)">
-                         <img src="../Shared/icons/eye_icon.svg" alt="Sequence activation"/>
+                         <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Creates an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
@@ -763,17 +763,17 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/eye_icon.svg" alt="sequnece diagram lifeline"/>
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -821,17 +821,17 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/eye_icon.svg" alt="sequnece diagram lifeline"/>
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -877,17 +877,17 @@
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/eye_icon.svg" alt="sequnece diagram lifeline"/>
+                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
                                 <p>Shows events that occur to an object during the process.</p>
                                 <br>
-                                <p id="tooltip-SQ-LIFELINE" class="key_tooltip">Keybinding:</p>
+                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
@@ -935,6 +935,7 @@
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state</p><br>
+                    <p id="tooltip-RESET_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepForwardToggle" class="diagramIcons" onclick="toggleStepForward()">
@@ -975,7 +976,7 @@
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options</p><br>
-                    <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding:</p>
+                    <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding: "CTRL + ALT + T"</p>
                 </span>
             </div>
         </fieldset> 
@@ -998,7 +999,7 @@
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram</p>
                     <br>
-                    <p id="tooltip-Save_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "s"-->
+                    <p id="tooltip-SAVE_DIAGRAM" class="key_tooltip">Keybinding: "CTRL + S"</p>
                 </span>
             </div>
         </fieldset>
@@ -1009,7 +1010,7 @@
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram</p>
                     <br>
-                    <p id="tooltip-Load_diagram" class="key_tooltip">Keybinding:</p> <!--its currently binded to ctrl "L"-->
+                    <p id="tooltip-LOAD_DIAGRAM" class="key_tooltip">Keybinding: "CTRL + L"</p>
                 </span>
             </div>
         </fieldset>

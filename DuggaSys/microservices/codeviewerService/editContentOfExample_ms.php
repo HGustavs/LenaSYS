@@ -2,6 +2,8 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
 session_start();
@@ -18,6 +20,7 @@ $fontsize = getOP('fontsize');
 $addedRows = getOP('addedRows');
 $removedRows = getOP('removedRows');
 $debug="NONE!";
+$userid=getUid();
 
 if(strcmp('EDITCONTENT',$opt)===0) {
     $query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");
@@ -36,9 +39,9 @@ if(strcmp('EDITCONTENT',$opt)===0) {
             $query = $pdo->prepare("INSERT INTO improw(boxid,exampleid,istart,iend,uid) VALUES (:boxid,:exampleid,:istart,:iend,:uid);");
             $query->bindValue(':boxid', $boxId);
             $query->bindValue(':exampleid', $exampleId);
-            $query->bindValue(':istart', $row[1]);
-            $query->bindValue(':iend', $row[2]);
-            $query->bindValue(':uid', $_SESSION['uid']);
+            $query->bindValue(':istart', $row[0]);
+            $query->bindValue(':iend', $row[1]);
+            $query->bindValue(':uid', $userid);
             $query->execute();
         }
     }
@@ -49,12 +52,13 @@ if(strcmp('EDITCONTENT',$opt)===0) {
             $row = explode(",", $match);
             $query = $pdo->prepare("DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exampleid=:exampleid;");
             $query->bindValue(':boxid', $boxId);
-        $query->bindValue(':exampleid', $exampleId);
-            $query->bindValue(':istart', $row[1]);
-            $query->bindValue(':iend', $row[2]);
+            $query->bindValue(':exampleid', $exampleId);
+            $query->bindValue(':istart', $row[0]);
+            $query->bindValue(':iend', $row[1]);
             $query->execute();
         }
     }
 }
-
-?>
+$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
+echo json_encode($array);
+return;

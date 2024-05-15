@@ -10,7 +10,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -18,11 +18,12 @@ session_start();
 
 // Global variables
 $opt=getOP('opt');
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
 $coursevers=getOP('coursevers');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
-$userid=getUid();
+$debug='NONE!';
+$uid=getUid();
 
 $results = array();
 

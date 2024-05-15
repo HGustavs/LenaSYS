@@ -583,7 +583,7 @@ window.addEventListener('beforeunload', function (event) {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
     var lid = deletedElements[i].id.match(/\d+/)[0];
-    AJAXService("DELETE", {
+    AJAXService("DEL", {
       lid: lid
     }, "SECTION");
   }
@@ -993,7 +993,8 @@ function deleteAll() {
 }
 
 // Cancel deletion
-function cancelDelete() {
+function cancel
+() {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {

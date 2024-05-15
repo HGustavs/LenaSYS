@@ -1,19 +1,28 @@
 <?php
-
-date_default_timezone_set("Europe/Stockholm");
-
-// Include basic application services!
-include_once "../../../Shared/basic.php";
-include_once "../../../Shared/sessions.php";
-
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers, $log_uuid){
+function retrieveDuggaedService($pdo, $debug = "NONE!", $userid, $cid, $coursevers, $log_uuid)
+{
+    include_once "../../../Shared/basic.php";
+    include_once "../../../Shared/sessions.php";
+
+    date_default_timezone_set("Europe/Stockholm");
+
+    $opt = getOP('opt');
+    $qid = getOP('qid');
+    $vid = getOP('vid');
+    $param = getOP('parameter');
+    $answer = getOP('variantanswer');
+    $disabled = getOP('disabled');
+    $name = getOP('nme');
+
+    $info = "opt: " . $opt . " cid: " . $cid . " qid: " . $qid . " vid: " . $vid . " param: " . $param . " answer: " . $answer . " disabled: " . $disabled . " uid: " . $userid . " name: " . $name;
+    logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "retrieveDuggaedService_ms.php", $userid, $info);
 
     // Initialize arrays
-    $entries = array(); 
+    $entries = array();
     $variants = array();
     $files = array();
     $duggaPages = array();
@@ -25,43 +34,43 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
     $coursename = "Course not Found!";
     $coursecode = "Coursecode not found!";
 
-    if($query->execute()) {
-        foreach($query->fetchAll() as $row) {
-            $coursename=$row['coursename'];
-            $coursecode=$row['coursecode'];
+    if ($query->execute()) {
+        foreach ($query->fetchAll() as $row) {
+            $coursename = $row['coursename'];
+            $coursecode = $row['coursecode'];
         }
     } else {
-        $error=$query->errorInfo();
-        $debug="Error reading entries".$error[2];
+        $error = $query->errorInfo();
+        $debug = "Error reading entries" . $error[2];
     }
 
     $writeaccess = false;
-    if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
+    if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))) {
         $writeaccess = true;
 
         // Retrieve quiz data
-        $query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers,jsondeadline FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
+        $query = $pdo->prepare("SELECT id, cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, relativedeadline, modified, creator, vers, qstart, jsondeadline, `group` FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
         $query->bindParam(':cid', $cid);
         $query->bindParam(':coursevers', $coursevers);
-        if(!$query->execute()){
-            $error=$query->errorInfo();
-            $debug="Error updating entries".$error[2];
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            $debug = "Error updating entries" . $error[2];
         }
 
-        foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+        foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 
             // Retrieve variants for each quiz
             $queryz = $pdo->prepare("SELECT vid,quizID,param,variantanswer,modified,disabled FROM variant WHERE quizID=:qid ORDER BY vid;");
-            $queryz->bindParam(':qid',  $row['id']);
-    
-            if(!$queryz->execute()){
-                $error=$queryz->errorInfo();
-                $debug="Error updating entries".$error[2];
+            $queryz->bindParam(':qid', $row['id']);
+
+            if (!$queryz->execute()) {
+                $error = $queryz->errorInfo();
+                $debug = "Error updating entries" . $error[2];
             }
-    
-            $mass=array(); 
-            foreach($queryz->fetchAll(PDO::FETCH_ASSOC) as $rowz){
-    
+
+            $mass = array();
+            foreach ($queryz->fetchAll(PDO::FETCH_ASSOC) as $rowz) {
+
                 $entryz = array(
                     "vid" => $rowz["vid"],
                     "param" => html_entity_decode($rowz["param"]),
@@ -72,8 +81,8 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
                     "arrowVariant" => $rowz["vid"],
                     "cogwheelVariant" => $rowz["vid"],
                     "trashcanVariant" => $rowz["vid"]
-                    );
-    
+                );
+
                 array_push($variants, html_entity_decode($rowz["variantanswer"]));
                 array_push($mass, $entryz);
             }
@@ -82,6 +91,8 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
             $entry = array(
                 'variants' => $mass,
                 'did' => $row['id'],
+                'vers' => $row['vers'],
+                'cid' => $row['cid'],
                 'qname' => html_entity_decode($row['qname']),
                 'autograde' => $row['autograde'],
                 'gradesystem' => $row['gradesystem'],
@@ -93,19 +104,22 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
                 'arrow' => $row['id'],
                 'cogwheel' => $row['id'],
                 'jsondeadline' => html_entity_decode($row['jsondeadline']),
-                'trashcan' => $row['id']
-                );
+                'trashcan' => $row['id'],
+                'group' => $row['group'],
+                'relativedeadline' => $row['relativedeadline'],
+                'creator' => $row['creator']
+            );
 
             array_push($entries, $entry);
         }
-        
+
         // Retrieve duggas templates
         $dir = '../../templates';
         $giles = scandir($dir);
-        foreach ($giles as $value){
-            if(endsWith($value,".html")){
-                array_push($files,substr ( $value , 0, strlen($value)-5 ));
-                $duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents($dir . "/" . $value);
+        foreach ($giles as $value) {
+            if (endsWith($value, ".html")) {
+                array_push($files, substr($value, 0, strlen($value) - 5));
+                $duggaPages[substr($value, 0, strlen($value) - 5)] = file_get_contents($dir . "/" . $value);
             }
         }
     }
@@ -122,9 +136,7 @@ function retrieveDuggaedService($pdo, $debug="NONE!", $userid, $cid, $coursevers
         'variants' => $variants
     );
 
-    //echo json_encode($array);
-
-    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveDuggaedService_ms.php",$userid,$info);
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveDuggaedService_ms.php", $userid, $info);
 
     return $array;
 }
