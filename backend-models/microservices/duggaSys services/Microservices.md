@@ -2684,6 +2684,21 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 <br>
 
 ### readHighscore_ms.php
+__readHighscore_ms.php__ is managing user sessions, handling errors, fetching highscores (through 'retrieveHighscoreService_ms.php'), and communicating these results back to the client.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservices:__ retrieveHighscoreService_ms.php 
+
+__Includes neither original service files nor microservices.__
+
+
+__Session management:__ Checks if a user is logged in by checking the user's ID in the session. If no user ID is found, it defaults to "1", indicating that the user is not logged in. This is used for determining which user's scores to retrieve or verify if the user has permission to see highscores. 
+
+__Debugging:__ Initially set to "NONE!". Sshow any errors or important notes about how the database operations went. 
+
+__Calling 'retrieveHighscoreService':__ This function handles the actual retrieval of scores. 'readHighscore_ms.php' passes necessary parameters ($pdo, $duggaid, $variant, $debug) to 'retrieveHighscoreService_ms.php', which then queries the database and fetches the scores.
+
+__Results:__ After fetching the scores, the result is formated into an array and then encoded into JSON. It´s then sen back to the client. The JSON data includes the highscores and relevant debugging information.
 
 <br>
 
