@@ -462,8 +462,8 @@ for (let i = 0; i <= 20; i++) { // Assuming the range is from 0 to 20
     let element = document.getElementById("elementPlacement" + i);
     if (element) {
         // Add event listener for contextmenu
-        element.addEventListener("contextmenu", function(event) {
-            rightClickOpenSubtoolbar(event, i);
+        element.addEventListener("contextmenu", function() {
+            rightClickOpenSubtoolbar(i);
         });
     }
 }
@@ -1781,7 +1781,7 @@ function holdPlacementButtonDown(num) {
 /**
  * @description Function to open a subtoolbar when rightclicking a button
  */
-function rightClickOpenSubtoolbar(event, num) {
+function rightClickOpenSubtoolbar(num) {
     togglePlacementTypeBox(num);
 }
 
