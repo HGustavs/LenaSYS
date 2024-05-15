@@ -1015,6 +1015,22 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
+            // Resize equally in both directions by modifying delta
+            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState) {
+                let delta;
+                if (startNodeUpLeft) {
+                    delta = Math.max(deltaX, deltaY);
+                } else if (startNodeDownRight) {
+                    delta = Math.min(deltaX, deltaY);
+                } else if (startNodeDownLeft) {
+                    delta = Math.max(deltaX, -deltaY);
+                } else if (startNodeUpRight) {
+                    delta = Math.max(-deltaX, deltaY);
+                }
+                deltaX = (startNodeUpRight) ? -delta : delta;
+                deltaY = (startNodeDownLeft) ? -delta : delta;
+            }
+        
             let xChange, yChange, widthChange, heightChange;
             // Functionality Left/Right resize
             if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
@@ -1182,114 +1198,24 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     redrawArrows();
 }
 
-/** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
- * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
+/**
+ * @description When properties are saved this updates the element to the selected state.
  * @see context For currently selected element.
  */
 function changeState() {
-    const element = context[0],
-        oldType = element.type,
-        newType = document.getElementById("typeSelect")?.value || undefined;
+    const element = context[0];
     const oldRelation = element.state;
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
-
-    // If we are changing types and the element has lines, we should not change
-    if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)) {
-        displayMessage("error", `
-            Can't change type from \"${oldType}\" to \"${newType}\" as
-            different diagrams should not be able to connect to each other.`
-        );
-        return;
-        // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType && oldRelation == newRelation) {
-        return;
-    } else if (element.type == entityType.ER) {
-        //If not attribute, also save the current type and check if kind also should be updated
-        if (element.kind != elementTypesNames.ERAttr) {
-            if (oldType != newType) {
-                let newKind = element.kind;
-                newKind = newKind.replace(oldType, newType);
-                element.kind = newKind;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    if (newRelation && oldRelation != newRelation) {
+        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+                let property = document.getElementById("propertySelect").value;
+                element.state = property;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
-            if (newType != undefined) {
-                element.type = newType;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
-        }
-        let property = document.getElementById("propertySelect").value;
-        element.state = property;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type == entityType.UML) {
-        //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.UMLEntity) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-
-    } else if (element.type == entityType.IE) {
-        //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.IEEntity) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == entityType.SD) {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == entityType.SE) {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == 'NOTE') {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
-    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 }
 
 /**
@@ -1300,77 +1226,38 @@ function saveProperties() {
     const element = context[0];
     const children = propSet.children;
     const propsChanged = {};
-    let cleanedLines;
 
-    for (let index = 0; index < children.length; index++) {
-        const child = children[index];
-        const propName = child.id.split(`_`)[1];
-        switch (propName) {
-            case "name":
-                const value = child.value.trim();
-                if (value && value.length > 0) {
-                    element[propName] = value;
-                    propsChanged.name = value;
-                }
-                break;
-            case 'primaryKey':
-                cleanedLines = [];
-                const textArea = child.value;
-                let lines = textArea.split('\n');
-                for (let i = 0; i < lines.length; i++) {
-                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
-                            lines[i] = "*" + lines[i];
-                        }
-                        cleanedLines.push(lines[i]);
-                    }
-                }
-                //Updates property
-                lines = cleanedLines;
-                element[propName] = lines;
-                propsChanged.primaryKey = lines;
-                break;
-            case 'attributes':
-                //Get string from textarea
-                const elementAttr = child.value;
-                //Create an array from string where newline seperates elements
-                let arrElementAttr = elementAttr.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementAttr.length; i++) {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
-                            `-${arrElementAttr[i]}`;
-                        }
-                        cleanedLines.push(arrElementAttr[i]);
-                    }
-                }
-                //Update the attribute array
-                arrElementAttr = cleanedLines;
-                element[propName] = arrElementAttr;
-                propsChanged.attributes = arrElementAttr;
-                break;
-            case 'functions':
-                //Get string from textarea
-                const elementFunc = child.value;
-                //Create an array from string where newline seperates elements
-                let arrElementFunc = elementFunc.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementFunc.length; i++) {
-                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
-                        if (Array.from(arrElementFunc[i])[0] != '+') {
-                            `+${arrElementFunc[i]}`;
-                        }
-                        cleanedLines.push(arrElementFunc[i]);
-                    }
-                }
-                //Update the attribute array
-                arrElementFunc = cleanedLines;
-                element[propName] = arrElementFunc;
-                propsChanged.functions = arrElementFunc;
-                break;
-            default:
-                break;
+    for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        const inputTag = child.id;
+        if (inputTag == "elementProperty_name") {
+            let value = child.value;
+            element.name = value;
+            propsChanged.name = value;
+            continue;
         }
+        const addToLine = (name, symbol) => {
+            if (inputTag == `elementProperty_${name}`) {
+                let lines = child.value.trim().split("\n");
+                for (let j = 0; j < lines.length; j++) {
+                    if (lines[j] && lines[j].trim()) {
+                        if (Array.from(lines[j])[0] != symbol) {
+                            lines[j] = symbol + lines[j];
+                        }
+                    }
+                }
+                element[name] = lines;
+                propsChanged[name] = lines;
+            }
+        };
+        // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
+        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+            addToLine("attributes", "");
+            continue;
+        }
+        addToLine("primaryKey", "*");
+        addToLine("attributes", "-");
+        addToLine("functions", "+");
     }
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
@@ -1404,18 +1291,11 @@ function pasteClipboard(elements, elementsLines) {
     const cy = (y2 - y1) / 2;
     const mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
 
+    const clone = (obj) => Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+
     const connectedLines = [];
     // For every line that shall be copied, create a temp object, for kind and connection tracking
-    elementsLines.forEach(line => {
-        const temp = {
-            id: line.id,
-            fromID: line.fromID,
-            toID: line.toID,
-            kind: line.kind,
-            cardinality: line.cardinality
-        };
-        connectedLines.push(temp);
-    });
+    elementsLines.forEach(line => connectedLines.push(clone(line)));
     // An mapping between oldElement ID and the new element ID
     const idMap = {};
     const newElements = [];
@@ -1428,30 +1308,20 @@ function pasteClipboard(elements, elementsLines) {
 
         connectedLines.forEach(line => {
             if (line.fromID == element.id) line.fromID = idMap[element.id];
-            else if (line.toID == element.id) line.toID = idMap[element.id];
+            if (line.toID == element.id) line.toID = idMap[element.id];
         });
+        // Copy element
+        const elementObj = clone(element);
+        elementObj.id = idMap[element.id];
+        elementObj.x = mousePosInPixels.x + (element.x - x1);
+        elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        // Create the new object
-        const elementObj = {
-            name: element.name,
-            x: mousePosInPixels.x + (element.x - x1),
-            y: mousePosInPixels.y + (element.y - y1),
-            width: element.width,
-            height: element.height,
-            kind: element.kind,
-            id: idMap[element.id],
-            state: element.state,
-            fill: element.fill,
-            stroke: element.stroke,
-            type: element.type,
-            attributes: element.attributes,
-            functions: element.functions
-        };
         newElements.push(elementObj);
         addObjectToData(elementObj, false);
     });
 
     // Create the new lines but do not saved in stateMachine
+    // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
     connectedLines.forEach(line => {
         newLines.push(
             addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false, line.cardinality)

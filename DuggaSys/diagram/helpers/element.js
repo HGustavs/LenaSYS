@@ -1,29 +1,4 @@
 /**
- * Creates a new element using the appropriate default values. These values are determined using the elementTypes enum.
- * @param {Number} type What type of element to construct.
- * @see elementTypes For all available values to pass as argument.
- * @returns {Object}
- */
-function constructElementOfType(type) {
-    let typeName = undefined;
-    let newElement = undefined;
-    for (const name in elementTypes) {
-        if (elementTypes[name] == type) {
-            typeName = name;
-            break;
-        }
-    }
-    if (typeName) {
-        let defaultElement = defaults[typeName];
-        newElement = {};
-        for (const property in defaultElement) {
-            newElement[property] = defaultElement[property];
-        }
-    }
-    return newElement;
-}
-
-/**
  * @description Returns all the lines (all sides) from given element.
  * @param {object} element
  * @returns {array} result
@@ -46,14 +21,21 @@ function elementHasLines(element) {
  * @see ghostElement
  */
 function makeGhost() {
-    ghostElement = constructElementOfType(elementTypeSelected);
-    const lastMouseCoords = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
-    ghostElement.x = lastMouseCoords.x - ghostElement.width * 0.5;
-    ghostElement.y = lastMouseCoords.y - ghostElement.height * 0.5;
-    ghostElement.id = makeRandomID();
+    ghostElement = Element.FromKind(elementTypeSelected);
+    setGhostPosition(lastMousePos.x, lastMousePos.y);
     showdata();
 }
 
+function setGhostPosition(x, y) {
+    const lastMousePosition = screenToDiagramCoordinates(x, y);
+    if (settings.grid.snapToGrid && mouseMode != mouseModes.EDGE_CREATION) {
+        ghostElement.x = Math.round(lastMousePosition.x / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.width / 2);
+        ghostElement.y = Math.round(lastMousePosition.y / settings.grid.gridSize) * settings.grid.gridSize - (ghostElement.height / 2);
+    } else {
+        ghostElement.x = lastMousePosition.x - (ghostElement.width / 2);
+        ghostElement.y = lastMousePosition.y - (ghostElement.height / 2);
+    }
+}
 /**
  * @description Sets ghostElement and ghostLine to null.
  */
