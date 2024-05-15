@@ -175,6 +175,7 @@ function createNewCourse() {
 		AJAXService("NEW", { coursename: coursename, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
 		toast("success", "New course, " + coursename + " added!", 5);
 	}
+	setTimeout("location.reload()", 200) // refreshes the page after 0.2 seconds
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
