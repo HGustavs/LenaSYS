@@ -614,6 +614,9 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
     const text = splitFull(element.attributes, maxCharactersPerLine);
+    const length = (text.length > 4) ? text.length : 4;
+    const maxWidth = (boxw - linew * 2);
+    const maxHeight = (boxh + (texth * length) - linew * 2);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
     let content = `
