@@ -14,7 +14,6 @@ var LastCourseCreated;
 var lastCC = false;
 var updateCourseName = false;
 
-toast("confirm", "Test", 0, "alert('yes')", "alert('no')");
 
 $(document).ready(function () {
 	$('#startdate').datepicker({

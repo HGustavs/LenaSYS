@@ -18,6 +18,14 @@
     function closeConfirmation(toastDiv, buttonType, arguments1, arguments2){
         closeToast(toastDiv);
         // Add logic for handling arguments here
+        if (buttonType == "yes") {
+            eval(arguments1);
+        } else if (buttonType == "no") {
+            eval(arguments2);
+        } else {
+            console.log("Warning: Missing buttonType.");
+            toast("error", "Buttontype not found.", 5);
+        }
     }
 
     // Create a toast notification
@@ -155,8 +163,6 @@
                 toastCenter.appendChild(toastButtonBox);
                 toastButtonBox.appendChild(toastYes);
                 toastButtonBox.appendChild(toastNo);
-                // toastYes.setAttribute( "onClick", "javascript: "+arguments);
-                // toastNo.setAttribute( "onClick", "javascript: "+arguments2);
                 toastDiv.classList.add(types.CONFIRM);
                 break;
             // We create a default situation in case no type is given.
