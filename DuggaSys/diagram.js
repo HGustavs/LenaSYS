@@ -2007,7 +2007,6 @@ function loadDiagramFromLocalStorage(key) {
 function saveDiagramBeforeUnload() {
     if(data.length) {
         window.addEventListener("beforeunload", (e) => {
-            e.returnValue = "";
             storeDiagramInLocalStorage("AutoSave");
         })
     }
