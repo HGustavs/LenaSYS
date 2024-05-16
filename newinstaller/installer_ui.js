@@ -57,16 +57,49 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Add eventlistener to the last checkbox, this is the test-data checkbox from page 5.
-    checkboxToggle.addEventListener('click', updateCheckboxState);
+    checkboxToggle.addEventListener('click', updateCheckboxState());
 
-    //start_installer(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}));
-    function start_installer(settings) {
+    const traceElements = document.querySelectorAll('.trace');
+
+    traceElements.forEach(traceElement => {
+        const toggleLink = traceElement.querySelector('.toggleTrace');
+        const stacktrace = traceElement.querySelector('.stacktrace');
+
+        toggleLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default link behavior
+
+            if (stacktrace.style.display === 'none' || stacktrace.style.display === '') {
+                stacktrace.style.display = 'block';
+                toggleLink.textContent = 'View less';
+            } else {
+                stacktrace.style.display = 'none';
+                toggleLink.textContent = 'View more';
+            }
+        });
+    });
+
+    // start_installer(JSON.stringify({ verbose: 'false', overwrite_db: 'true', overwrite_user: 'true'}));
+    function start_installer() {
         fetch('installer.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: 'installation_settings=' + encodeURIComponent(settings)
+            body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ 
+                verbose: 'false',
+                overwrite_db: 'true', 
+                overwrite_user: 'true',
+                add_test_data: 'true',
+                add_demo_course: 'true',
+                add_test_course_data: 'true',
+                add_test_files: "true",
+                language_support: ["html", "java", "php", "plain", "sql", "sr"],
+                starting_step: "",
+                username: "Lena",
+                password: "Syp9393",
+                hostname: "db",
+                db_name: "LenaDB",
+            }))
         });
         
         let sseReceiver = new SSEReceiver({

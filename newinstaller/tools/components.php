@@ -135,3 +135,14 @@
 		}
 		echo "</div>";
 	}
+
+function displayStackTrace($statusMessages) {
+    echo "<div class='trace'>";
+    echo "<a href='#' class='toggleTrace'>View more</a>";
+    echo "<div class='stacktrace'>";
+    foreach ($statusMessages as $message) {
+        echo "<p>" . htmlspecialchars($message) . "</p>";
+    }
+    echo "</div>";
+    echo "</div>";
+}

@@ -39,7 +39,7 @@ html, body {
     overflow-x: hidden;
 }
 
-#page2, #page3, #page4, #page5 { display: none; }
+#page2, #page3, #page4, #page5, #page6 { display: none; }
 
 .page {
     display: flex;
@@ -323,6 +323,31 @@ input[type=checkbox], input[type=radio] {
 
 .backButton:active {
     box-shadow: -2px 2px 2px var(--text-dark);
+}
+
+.trace .stacktrace {
+    display: none; /* Hide the stacktrace initially */
+    white-space: pre-wrap; /* Preserve whitespace and formatting */
+    margin-left: 1rem; /* Align the stacktrace text to the right */
+}
+
+.stacktrace p {
+    margin: 0.2rem 0;
+}
+
+.toggleTrace {
+    margin-bottom: 0.75rem; /* Adds a small margin to the bottom of the show more link */
+    color: var(--primary-color);
+}
+
+.toggleTrace:hover {
+    cursor: pointer;
+    color: var(--primary-color-hover);
+}
+
+.trace .toggleTrace {
+    text-decoration: none;
+    display: inline-block; /* Ensures margin-bottom is applied */
 }
 
 /*  This code is nested CSS. It's a relatively new CSS
