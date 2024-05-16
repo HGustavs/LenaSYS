@@ -11,7 +11,7 @@ include_once "getCourseVersions_ms.php";
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-function retrieveSectionedService($debug = "NONE!", $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid)
+function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid)
 {
     date_default_timezone_set("Europe/Stockholm");
     include_once "../../../Shared/sessions.php";
