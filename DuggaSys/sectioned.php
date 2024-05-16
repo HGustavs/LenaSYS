@@ -608,7 +608,7 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div class="formBody";>
+				<div class="formBody">
 					<div class='inputwrapper'>
 						<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
