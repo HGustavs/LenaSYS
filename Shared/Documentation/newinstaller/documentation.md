@@ -4,7 +4,7 @@
 1. Navigate to [localhost/LenaSYS/newinstaller/installer.php](http://localhost/LenaSYS/newinstaller/installer.php).
     - Note that you need a working development environment to be able to navigate to this link. Installation guide can be found [here]().
 2. Select your platform.
-    - If your platform uses file permissions, this option will ensure that you are given proper information about these.
+    - If your platform uses file permissions (Mac OS or Linux), this option will ensure that you are given proper information about these.
 3. Choose database credentials.
     - This data will be used to create a new MySQL user.
     - The hostname will be used to connect to the database. In most instances this should be set to `localhost`.
@@ -12,7 +12,7 @@
     - In order for the installer to create a database, user and set permissions, root user credentials are needed. 
     - If you are using [xampp]() you can retrieve them like [this]().
 5. Select the test data you wish to install.
-    - If you are intending this as a dev environment, leave it default. 
+    - If you are intending to use this as a dev environment, leave it default. 
 
 ## Goals
 
@@ -63,11 +63,11 @@ The following json settings format is used to supply the installer with the prop
 - add_test_files copies the course files from the installer to the courses directory.
 - starting_step allows the installer to skip previous installation steps. Can be used to restart the installer from step n.
 
-> **Note:** Since SSE does not support sending post request, the installation settings are sent beforehand to `installer.php` and stored in the session. The session data is then sent as function parameters to the installer backend. 
+> **Note:** Since SSE does not support sending post requests, the installation settings are sent beforehand to `installer.php` and stored in the session. The session data is then sent as function parameters to the installer backend. 
 
 ## Installation steps
 *The steps performed by the installer (Some of these are optional and will only be installed if they are enabled).*
-- open output buffer.
+- Open output buffer.
 - Declade pdo instance that connects to database.
 - Build an "Installation queue" `$operations`, that contains all the following steps. 
     - Open configuration file `coursesyspw.php`
@@ -88,7 +88,7 @@ The following json settings format is used to supply the installer with the prop
 ## Tools
 *The installer contains various help tools that helps organize the installation steps. Here are some of the classes*
 - `tools/db_setup.php`
-    <br>contains functions for creating users, databases, granting user permissions, and executing sql files. 
+    <br> Contains functions for creating users, databases, granting user permissions, and executing sql files. 
     
 - `tools/install_engine.php`
     <br> This file has been commonly reffered to as the installer backend in this document as it is used to run all of the installation steps. 
