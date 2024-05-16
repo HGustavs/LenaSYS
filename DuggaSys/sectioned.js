@@ -962,7 +962,6 @@ function deleteItem(selectedItemList) {
 
   for(id of selectedItemList) {
     let row = document.getElementById(`I${id}`).parentNode;
-    // console.log(row);
     row.style.display = "none";
     row.classList.add("deleted");
   }
