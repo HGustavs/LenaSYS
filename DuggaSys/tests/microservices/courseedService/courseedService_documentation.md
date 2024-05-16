@@ -27,9 +27,9 @@ Before the test: entries are inserted into 19 different tables including creatin
 After the test: the 19 entries are deleted again as a failsafe in case the test should fail.
 There is no real way of seeing if the course material has been deleted or not in the output. The failsafe makes it so that it is impossible to know if the test actually did anything. If we comment out the failsafe and run the test, we can see that the test is working and deleting everything successfully. We should look into somehow updating the output to show that the operation worked.
 
-getCourseVersion_ms_test.php
-
 retrieveCourseedVersion_ms_test.php
+Tests the "retrieve" microservice that gathers the output that is returned after the courseedServices has run. The service basically returns a list of all courses and some status messages. The test compares the output with the standard output that should be retrieved when using a fresh database install.
+Test works as intended.
 
 updateActiceCourseversion_courseed_ms_test.php
 
