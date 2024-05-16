@@ -90,7 +90,7 @@
 		$pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
 
 		//If url is null or empty
-		if($url == "") {
+		if($url == "" || $token == "") {
 			$query = $pdolite->prepare("INSERT OR REPLACE INTO gitRepos (cid,repoName, repoURL, lastCommit, gitToken) VALUES (:cid, :repoName, :repoURL, :lastCommit, :gitToken )"); 
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':repoName', $repoName);
