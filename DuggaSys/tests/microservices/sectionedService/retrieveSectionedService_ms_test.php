@@ -11,9 +11,11 @@ $testsData = array(
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'opt' => 'UPDATETABS',
+                'opt' => 'get',
                 'courseid' => 1885,
+                'coursename' => 4,
                 'coursevers' => 1337,
+                'comment' => 'undefined',
                 'lid' => 1,
                 'tabs' => 1,
                 'username' => 'brom',
