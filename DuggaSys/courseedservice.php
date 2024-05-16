@@ -459,7 +459,7 @@ if (checklogin()) {
 					}
 				}
 
-				if (allOperationsSucceeded) {
+				if ($allOperationsSucceeded) {
 					$pdo->commit();
 				} else {
 					$pdo->rollBack();
