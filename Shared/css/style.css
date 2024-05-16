@@ -9726,12 +9726,11 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper, #editUser .flexwrapper {
-  /* margin-top: .75rem; */
+#createUser .flexwrapper, #editUser .flexwrapper, #addUser .flexwrapper  {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #editUser .flex-end{
+#createUser .flex-end, #editUser .flexwrapper, #addUser .flex-end {
   display: flex;
   justify-content: flex-end;
 }
