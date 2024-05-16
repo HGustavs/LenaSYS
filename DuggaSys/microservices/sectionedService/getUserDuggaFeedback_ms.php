@@ -70,5 +70,7 @@ if(strcmp($opt,"GETUF")==0){
 }
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+$data['userfeedback'] = $userfeedback;
+$data['avgfeedbackscore'] = $avgfeedbackscore;
 echo json_encode($data);
 return;
