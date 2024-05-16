@@ -3146,16 +3146,6 @@ div.submit-button:disabled {
   border-color: transparent transparent var(--color-text-list) transparent ;
 }
 
-.formDialogSplitUp {
-  top: -5px; 
-}
-.formDialogSplitDown {
-  top: 12px; 
-}
-.formDialogTextHalfDownShift{
-  top: 15px; 
-}
-
 /* ----------------------Form Pointing Dialogs END ---------------------- */
 
 /* Tooltip */

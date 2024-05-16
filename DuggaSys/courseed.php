@@ -190,14 +190,17 @@ if (isset($_SESSION['uid'])) {
 			</div>
 			<div style='padding:5px;'>
 
-				<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
+				<div class='inputwrapper'>
+					<span>Message of the day:</span>
+					<div class="dialogwrapper">
+						<input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' />
+						<div class="formDialog"><span id="dialog51" class="formDialogText">Prohibited symbols</span></div>
+						<div class="formDialog"><span id="dialog52" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
+					</div>
+				</div>
 				<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
 
 			</div>
-			<!--<p id="dialog5" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Prohibited symbols</p>-->
-			<div class="formDialog" style="display: block; left:55; top:-72px;"><span id="dialog51" style="display: none; left:0px; " class="formDialogText">Prohibited symbols</span></div>
-			<!--<p id="dialog52" style="font-size:11px; border:0px; margin-left: 10px; display:none;">Message can only contain a maximum of 50 symbols</p>-->
-			<div class="formDialog" style="display: block; left:55px; top:-78px;"><span id="dialog52" style="display: none; left:0px;" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
 			<div style='padding:5px;'>
 				<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
 			</div>
