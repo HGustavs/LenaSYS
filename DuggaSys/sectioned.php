@@ -106,7 +106,7 @@
 		<!-- Scroll up END -->
 
 		<!-- MOTD dropdown -->
-		<div id='motdArea' style='display: none;'>
+		<div id='motdArea'>
 			<?php
 				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
@@ -162,7 +162,7 @@
 
 		<div id='Sectionlist'>
 
-		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
+		<div id='courseHeader' class='course' >
 			
 			<!-- Undo button -->
 			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
@@ -170,7 +170,7 @@
 
 			<!-- Hide button -->
 		
-			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
+			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
 				<!-- <input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
 				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>

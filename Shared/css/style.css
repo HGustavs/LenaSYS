@@ -2413,6 +2413,11 @@ resulted.php END
 /* --------------===============################================-------------- *
  *                                    sectioned.php                             *
  * --------------================################================--------------*/
+ #courseHeader{
+  display:flex; 
+  align-items:center; 
+  justify-content:flex-end; 
+ }
 
 .statsdiv {
   background-color: var(--color-text-primary);
@@ -2662,8 +2667,9 @@ label.login-label {
 .loginBox .hide {
   display: none;
 }
+
 #undoButton {
-  position: absolute; padding-right:5px; margin-right:164px; display: none;
+  position: absolute; padding-right:5px; margin-right:165px; display: none;
 }
 
 .loginBox td {
@@ -8764,6 +8770,7 @@ textarea#filecont {
   position: relative;
   margin-bottom: 7px;
   max-width: auto;
+  display: none;
 }
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
