@@ -1158,7 +1158,7 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "sectionedservice.php"; //change when MS is created
 				break;
 			case "SETVISIBILITY":
-				serviceURL= "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateVisibleListentries_ms.php";
 				break;
 			case "REFGIT":
 				serviceURL= "sectionedservice.php"; //change when MS is created
