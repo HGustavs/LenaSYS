@@ -154,6 +154,12 @@ function splitFull(e, max) {
     return e.map(line => splitLengthyLine(line, max)).flat()
 }
 
+/**
+ * @description Updating the height of the element.
+ * @param {Array} arr Array for the entities height.
+ * @param {Object} element The object that change the height.
+ * @param {Number} height The height of the entity.
+ */
 function updateElementHeight(arr, element, height) {
     // Removes the previouse value in IEHeight for the element
     for (let i = 0; i < arr.length; i++) {
@@ -166,10 +172,25 @@ function updateElementHeight(arr, element, height) {
     });
 }
 
+/**
+ * @description Draw a div for the element.
+ * @param {String} c String of the class name.
+ * @param {String} style String of what style the entity.
+ * @param {Object} s Obejct for what should be in the div.
+ * @return Returns an string containing a div for the element that is drawn.
+ */
 function drawDiv(c, style, s) {
     return `<div class='${c}' style='${style}'> ${s} </div>`;
 }
 
+/**
+ * @description Draw a svg for the element.
+ * @param {Number} w Width of the svg.
+ * @param {Number} h Height of the svg, 
+ * @param {Object} s Obejct for what should be in the svg tag.
+ * @param {String} extra Extra parameters to be added for the svg.
+ * @return Returns an string containing a svg for the element that is drawn.
+ */
 function drawSvg(w, h, s, extra = '') {
     return `<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
 }
