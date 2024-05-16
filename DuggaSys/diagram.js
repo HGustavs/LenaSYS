@@ -101,13 +101,16 @@ class StateMachine {
                     if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
                         this.historyLog.splice(this.historyLog.length - 1, 1);
                     }
-                    
+
+                    // only store if the resized object isn't overlapping
+                    if (!entityIsOverlapping(stateChange.id, stateChange.x, stateChange.y)) {
+                        this.pushToHistoryLog({
+                            ...stateChange,
+                            changeType: newChangeType.flag,
+                            counter: historyHandler.inputCounter
+                        });
+                    }
                     // spreaading the values so that it doesn't keep the reference                                    
-                    this.pushToHistoryLog({
-                        ...stateChange,
-                        changeType: newChangeType.flag,
-                        counter: historyHandler.inputCounter
-                    });
                     break;
                 case StateChange.ChangeTypes.ELEMENT_DELETED:
                 case StateChange.ChangeTypes.LINE_DELETED:
@@ -174,7 +177,7 @@ class StateMachine {
             this.scrubHistory(this.currentHistoryIndex);
 
             var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex - 1]) {
+            if (this.historyLog[this.currentHistoryIndex + 1] && this.historyLog[this.currentHistoryIndex]) {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time);
             }
 
@@ -191,10 +194,12 @@ class StateMachine {
         // Go one step forward, if the next state in the history has the same time, do that too
         do {
             this.currentHistoryIndex++;
-            this.restoreState(this.historyLog[this.currentHistoryIndex]);
+            if (this.historyLog[this.currentHistoryIndex]) {
+                this.restoreState(this.historyLog[this.currentHistoryIndex]);
+            }
 
             var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex + 1]) {
+            if (this.historyLog[this.currentHistoryIndex + 1] && this.historyLog[this.currentHistoryIndex]) {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
             }
         } while (doNextState);
