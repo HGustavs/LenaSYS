@@ -242,7 +242,6 @@ __Sectioned Service:__
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - setVisibleListentries_ms.php __==finished==__ New filename: "updateVisibleListentries_ms.php" according to new nameconvention based on CRUD
-- getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - changeActiveCourseVersion_sectioned_ms.php __==finished==__ New filename: "updateActiveCourseVersion_sectioned_ms.php" according to new nameconvention based on CRUD.
@@ -2696,7 +2695,7 @@ __Session management:__ Checks if a user is logged in by checking the user's ID 
 
 __Debugging:__ Initially set to "NONE!". Sshow any errors or important notes about how the database operations went. 
 
-__Calling 'retrieveHighscoreService':__ This function handles the actual retrieval of scores. 'readHighscore_ms.php' passes necessary parameters ($pdo, $duggaid, $variant, $debug) to 'retrieveHighscoreService_ms.php', which then queries the database and fetches the scores.
+__Calling 'retrieveHighscoreService_ms.php':__ This function handles the actual retrieval of scores. 'readHighscore_ms.php' passes necessary parameters ($pdo, $duggaid, $variant, $debug) to 'retrieveHighscoreService_ms.php', which then queries the database and fetches the scores.
 
 __Results:__ After fetching the scores, the result is formated into an array and then encoded into JSON. It´s then sen back to the client. The JSON data includes the highscores and relevant debugging information.
 
@@ -3267,28 +3266,6 @@ _UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 
 ```sql
 UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=:link;
-```
-
-<br>
-
----
-
-<br>
-
-### readRemovedListentries_ms.php
-Listentries are duggas, headers, tests etc. This microservice retrieves all removed (but not deleted) listentries from the database. __readRemovedListentries_ms.php__ is close related to the __removeListentries_ms.php__ that changes the visibility of a listentry to "deleted" (3) instead of deleting the item from the database entirely. This will enable restoring deleted items, and that is exactly what __readRemovedListentris_ms.php__ does.
-
-__Include original service files:__ sessions.php, basic.php
-__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
-
-__Querys used in this microservice:__
-
-_SELECT_ operation on the table __'listentries'__ to retrieve all columns where:
-
-- The 'visible' value in the __'listentries'__ table is set to '3'.
-
-```sql
-SELECT * FROM listentries WHERE visible = '3'
 ```
 
 <br>
