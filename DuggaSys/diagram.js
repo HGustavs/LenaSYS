@@ -2005,9 +2005,8 @@ function loadDiagramFromLocalStorage(key) {
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
-    if(data.length > 0) {
+    if(data.length) {
         window.addEventListener("beforeunload", (e) => {
-            e.preventDefault();
             e.returnValue = "";
             storeDiagramInLocalStorage("AutoSave");
         })
