@@ -1775,7 +1775,12 @@ function processLogout() {
 		success:function(data) {
 			localStorage.removeItem("ls-security-question");
 			localStorage.removeItem("securitynotification");
-			reloadPage();
+			if(window.location.pathname == "/LenaSYS/DuggaSys/profile.php"){
+				window.location.href = "courseed.php";
+			}
+			else{
+				reloadPage();
+			}
 		},
 		error:function() {
 			console.log("error");

@@ -122,13 +122,18 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id='editUser' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox'>
 			<div>
 				<div class='loginBoxheader'>
 					<h3>Edit user (placeholder)</h3>
 					<span>First Name:</span>
+          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 						<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 					</div>
@@ -154,6 +159,7 @@
       		</div>
      	</div>
 	</div>
+
 
 	<div id='addUser' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:494px;'>
@@ -181,10 +187,6 @@
       		</div>
      	</div>
 	</div>
-
-	
-
-
 	<!-- Add User Dialog END -->
 
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
