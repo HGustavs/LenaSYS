@@ -2,6 +2,7 @@
 ====================
 All of these tests build upon the structure of the test.php-file that the 2023 group made.
 The test checks if the data that is inputted is sent and recieved correctly and compares it to the expected output to check if the test passed or not.
+Tests can be opened in web-browser.
 
 Some tests run queries before and after tests to INSERT, SELECT and DELETE data from the database that is used to run the test.
 
