@@ -872,9 +872,9 @@ async function createFABItem(kind, itemtitle, comment) {
     console.log(numberOfItems + " " + itemtitle + "(s) created");
     numberOfItems = 1; // Reset number of items to create
   }
-  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
-  console.log(selectItem);
-  console.log("newItem function:", newItem.toString());
+  // console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
+  // console.log(selectItem);
+  // console.log("newItem function:", newItem.toString());
 
 }
 
