@@ -4,7 +4,7 @@
  */
 class StateChangeFactory {
     /**
-     * @param {Object} element The new element that has been created.
+     * @param {object} element The new element that has been created.
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementCreated(element) {
@@ -25,7 +25,7 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Array<Object>} elements The elements that has been/are going to be deleted.
+     * @param {object[]} elements The elements that has been/are going to be deleted.
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementsDeleted(elements) {
@@ -33,10 +33,10 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Array<String>} elementIDs List of IDs for all elements that were moved.
-     * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
-     * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
-     * @returns {Array<StateChange>} A new instance of the StateChange class.
+     * @param {string[]} elementIDs List of IDs for all elements that were moved.
+     * @param {number} moveX Amount of coordinates along the x-axis the elements have moved.
+     * @param {number} moveY Amount of coordinates along the y-axis the elements have moved.
+     * @returns {StateChange[]} A new instance of the StateChange class.
      */
     static ElementsMoved(elementIDs, moveX, moveY) {
         const changesArr = [];
@@ -58,26 +58,26 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Array<String>} elementIDs List of IDs for all elements that were moved and resized.
-     * @param {Number} moveX Amount of coordinates along the x-axis the elements have moved.
-     * @param {Number} moveY Amount of coordinates along the y-axis the elements have moved.
-     * @param {Number} changeX Amount of coordinates along the x-axis the elements have resized.
-     * @param {Number} changeY Amount of coordinates along the y-axis the elements have resized.
+     * @param {string[]} elementIDs List of IDs for all elements that were resized (and moved).
+     * @param {number} moveX Amount of coordinates along the x-axis the elements have moved.
+     * @param {number} moveY Amount of coordinates along the y-axis the elements have moved.
+     * @param {number} changeW How much the width has changed by.
+     * @param {number} changeH How much the height has changed by.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static ElementResized(elementIDs, moveX, moveY, changeX, changeY) {
+    static ElementResized(elementIDs, moveX, moveY, changeW, changeH) {
         const values = {
             x: moveX,
             y: moveY,
-            width: changeX,
-            height: changeY
+            width: changeW,
+            height: changeH
         };
         return new StateChange(elementIDs, values);
     }
 
     /**
-     * @param {Array<String>} elementID ID for element that has been changed.
-     * @param {Object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.
+     * @param {string[]} elementID ID for element that has been changed.
+     * @param {object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementAttributesChanged(elementID, changeList) {
@@ -85,7 +85,7 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Object} line New line that has been created.
+     * @param {object} line New line that has been created.
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static LineAdded(line) {
@@ -115,8 +115,8 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Array<object>} elements All elements that have been / are going to be removed.
-     * @param {Array<object>} lines All lines that have been / are going to be removed.
+     * @param {object[]} elements All elements that have been / are going to be removed.
+     * @param {object[]} lines All lines that have been / are going to be removed.
      * @returns {StateChange} A new instance of the StateChange class.
      */
     static ElementsAndLinesDeleted(elements, lines) {
@@ -133,9 +133,9 @@ class StateChangeFactory {
     }
 
     /**
-     * @param {Array<object>} elements All elements that have been created.
-     * @param {Array<object>} lines All lines that have been created.
-     * @returns {Array<StateChange>} A new instance of the StateChange class.
+     * @param {object[]} elements All elements that have been created.
+     * @param {object[]} lines All lines that have been created.
+     * @returns {StateChange[]} A new instance of the StateChange class.
      */
     static ElementsAndLinesCreated(elements, lines) {
         const changesArr = [];
