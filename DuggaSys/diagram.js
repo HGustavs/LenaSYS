@@ -1651,10 +1651,9 @@ function exportWithHistory() {
  * @description Stores the current diagram as JSON in localstorage
  * @param {string} key The name/key of the diagram
  */
-function storeDiagramInLocalStorage(key) {
-
+function storeDiagramInLocalStorage(key) {    
     if (stateMachine.currentHistoryIndex == -1) {
-        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+        return;
     } else {
         // Remove all future states to the history
         stateMachine.removeFutureStates();
@@ -1933,11 +1932,11 @@ function loadDiagramFromLocalStorage(key) {
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
-    window.addEventListener("beforeunload", (e) => {
-        e.preventDefault();
-        e.returnValue = "";
-        storeDiagramInLocalStorage("AutoSave");
-    })
+    if(data.length) {
+        window.addEventListener("beforeunload", (e) => {
+            storeDiagramInLocalStorage("AutoSave");
+        })
+    }
 }
 
 function disableIfDataEmpty() {
