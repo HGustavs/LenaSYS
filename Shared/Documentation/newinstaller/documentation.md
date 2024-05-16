@@ -10,7 +10,7 @@
     - The hostname will be used to connect to the database. In most instances this should be set to `localhost`.
 4. Enter root user credentials.
     - In order for the installer to create a database, user and set permissions, root user credentials are needed. 
-    - If you are using [xampp]() you can retrieve them like [this]().
+    - If you are using [xampp](https://www.apachefriends.org/) you can retrieve them like [this](https://community.apachefriends.org/f/viewtopic.php?t=72519).
 5. Select the test data you wish to install.
     - If you are intending to use this as a dev environment, leave it default. 
 
