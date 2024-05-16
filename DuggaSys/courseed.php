@@ -166,7 +166,7 @@ if(isset($_SESSION['uid'])){
 	<!-- Edit Server Settings START -->
 
 	<div id='editSettings' onmouseover="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd');" class='loginBoxContainer display_none'>
-    <div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+	<div class='loginBox DarkModeBackgrounds DarkModeText' id='editSettings_loginBox'>
 
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
