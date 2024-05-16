@@ -984,7 +984,7 @@ function deleteItem(item_lid = []) {
 // Permanently delete elements.
 function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
+    AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
   }
