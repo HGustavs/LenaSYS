@@ -313,8 +313,8 @@ function updateGithubDir($pdo, $githubDir, $lid)
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
 								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlinehours'></select>
 							</span>
-							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
-								<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
+							<div class="formDialogWide">
+								<span id="dialog8" class="formDialogText">Deadline has to be between start date and end date</span>
 							</div>
 						</div>
 						<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
