@@ -725,17 +725,21 @@ function updateGithubDir($pdo, $githubDir, $lid)
 						</tr>
 						<div class='inputwrapper'>
 							<span>Name:</span>
-							<div class="formDialog">
-								<span id="fileNameError" class="formDialogText">Please use letters and digits, only</span>
+							<div class="dialogwrapper">
+								<div class="formDialog">
+									<span id="fileNameError" class="formDialogText">Please use letters and digits, only</span>
+								</div>
+								<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value='' />
 							</div>
-							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value='' />
 						</div>
 						<div class='inputwrapper'>
 							<span>GithubUrl:</span>
-							<div class="formDialog">
-								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+							<div class="dialogwrapper">
+								<div class="formDialog">
+									<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+								</div>
+								<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value='' />
 							</div>
-							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value='' />
 						</div>
 						<div class='inputwrapper'>
 							<span>Filepath:</span>
