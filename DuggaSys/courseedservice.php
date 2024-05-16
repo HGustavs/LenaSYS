@@ -91,7 +91,6 @@ if (checklogin()) {
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':courseGitURL', $courseGitURL); // for github url
-			$query->execute();
 			try{
 				$query->execute();
 			}
@@ -100,11 +99,13 @@ if (checklogin()) {
 				$query->bindParam(':usrid', $userid);
 				$query->bindParam(':coursecode', $coursecode);
 				$query->bindParam(':coursename', $coursename);
-			}
-
-			if (!$query->execute()) {
-				$error = $query->errorInfo();
-				$debug = "Error updating entries\n" . $error[2];
+				try {
+					$query->execute();
+				}
+				catch(Exception $e) {
+					$error = $query->errorInfo();
+					$debug = "Error updating entries\n" . $error[2];	
+				}
 			}
 
 			// Logging for creating new course
