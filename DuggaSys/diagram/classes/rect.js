@@ -1,5 +1,16 @@
+/**
+ * @description Rectangle
+ * @class
+ * @public
+ */
 class Rect {
 
+    /**
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @param {number} [width=0]
+     * @param {number} [height=0]
+     */
     constructor(x = 0, y = 0, width = 0, height = 0) {
         this.x = x;
         this.y = y;
@@ -7,6 +18,12 @@ class Rect {
         this.height = height;
     }
 
+    /**
+     * @param {Point} topLeft
+     * @param {Point} botRight
+     * @returns {Rect}
+     * @constructor
+     */
     static FromPoints(topLeft, botRight) {
         return new Rect(
             topLeft.x, topLeft.y,
@@ -15,6 +32,12 @@ class Rect {
         );
     }
 
+    /**
+     * @description Creates a rect from the properties of an element. Gets width and height from html document.
+     * @param {Element} element
+     * @returns {Rect}
+     * @constructor
+     */
     static FromElement(element) {
         return new Rect(
             element.x, element.y,
@@ -23,52 +46,87 @@ class Rect {
         );
     }
 
+    /**
+     * @description Used to create a Rect copy of a read-only DOMRect HTML object.
+     * @param {DOMRect} rect
+     * @returns {Rect}
+     * @constructor
+     * @example
+     * let rect = Rect.FromDOMRect(
+     *     document.getElementById(id).getBoundingClientRect()
+     * );
+     */
     static FromDOMRect(rect) {
         return new Rect(
             rect.left, rect.top, rect.width, rect.height
         )
     }
 
+    /**
+     * @returns {number}
+     */
     get top() {
         return this.y;
     }
 
+    /**
+     * @returns {number}
+     */
     get bottom() {
         return this.y + this.height;
     }
 
+    /**
+     * @returns {number}
+     */
     get left() {
         return this.x;
     }
 
+    /**
+     * @returns {number}
+     */
     get right() {
         return this.x + this.width;
     }
 
-    get x2() {
-        return this.x + this.width;
-    }
-
-    get y2() {
-        return this.y + this.height;
-    }
-
+    /**
+     * @description Returns the top left point of the rectangle
+     * @returns {Point}
+     */
     get topLeft() {
         return new Point(this.x, this.y);
     }
 
+    /**
+     * @description Returns the top right point of the rectangle
+     * @returns {Point}
+     */
     get topRight() {
         return new Point(this.x + this.width, this.y);
     }
 
+    /**
+     * @description Returns the bottom left point of the rectangle
+     * @returns {Point}
+     */
     get botLeft() {
         return new Point(this.x, this.y + this.height);
     }
 
+    /**
+     * @description Returns the bottom right point of the rectangle
+     * @returns {Point}
+     */
     get botRight() {
         return new Point(this.x + this.width, this.y + this.height);
     }
 
+    /**
+     * @description Checks if the innermost 50% of provided rect is within this rect. Used as a less strict check during box selection.
+     * @param {Rect} other
+     * @returns {boolean}
+     */
     partialOverlap(other) {
         const lower = 0.25;
         const upper = 0.75;
@@ -79,10 +137,15 @@ class Rect {
         return x1 && x2 && y1 && y2;
     }
 
-    overlap(b) {
-        return !(this.top > b.bottom ||
-            this.right < b.left ||
-            this.bottom < b.top ||
-            this.left > b.right)
+    /**
+     * @description Checks if the provided rect overlaps with this rect at any point.
+     * @param {Rect} other
+     * @returns {boolean}
+     */
+    overlap(other) {
+        return !(this.top > other.bottom ||
+            this.right < other.left ||
+            this.bottom < other.top ||
+            this.left > other.right)
     }
 }
