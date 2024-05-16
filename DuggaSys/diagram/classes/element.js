@@ -130,8 +130,8 @@ class Element {
             type: entityType.ER,
             kind: elementTypesNames.ERAttr,
             state: relationState.NORMAL,
-            width: 90,
-            height: 45,
+            width: 120,
+            height: 70,
             minWidth: 90,
             minHeight: 45,
         });
@@ -155,8 +155,8 @@ class Element {
             name: "Class Relation",
             type: entityType.UML,
             kind: elementTypesNames.UMLRelation,
-            width: 60,
-            height: 60,
+            width: 80,
+            height: 80,
             minWidth: 60,
             minHeight: 60,
         });
@@ -180,8 +180,8 @@ class Element {
             name: "IE Relation",
             type: entityType.IE,
             kind: elementTypesNames.IERelation,
-            width: 50,
-            height: 50,
+            width: 85,
+            height: 85,
             minWidth: 50,
             minHeight: 50,
         });
