@@ -1178,11 +1178,11 @@ function AJAXService(opt,apara,kind)
 				break;
 				case "GETUF":	
 				// serviceURL= "sectionedservice.php"; // Change when working
-				serviceURL= "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php";
 				break;
 				case "GETUF":	
 				// serviceURL= "sectionedservice.php"; // Change when working
-				serviceURL= "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php";
 				break;
 			default:
 				serviceURL= "sectionedservice.php";
