@@ -147,12 +147,9 @@ function toggleA4Template() {
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
-        
         toggleA4Vertical();
     }
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
-
-    
 }
 
 function setA4SizeFactor(e) {
@@ -167,7 +164,6 @@ function toggleA4Vertical() {
     
     vRect.style.display = "none";  // Hide horizontal
     a4Rect.style.display = "block";  // Show vertical
-
     updateA4Size();
 }
 
@@ -177,7 +173,6 @@ function toggleA4Horizontal() {
     
     a4Rect.style.display = "none";  // Hide vertical
     vRect.style.display = "block";  // Show horizontal
-
     updateA4Size();
 }
 
