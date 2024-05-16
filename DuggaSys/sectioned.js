@@ -969,22 +969,29 @@ function deleteItem(item_lid = []) {
     item.style.display = "none";
     item.classList.add("deleted");
   
-    document.querySelector("#undoButton").style.display = "block";
+    //document.querySelector("#undoButton").style.display = "block";
   }
 
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  delArr.push(lid);
+  console.log("lid: " + lid);
+  for (var j = 0; j < lid.length; j++) {
+    delArr.push(lid[j]);
+  }
+  //console.log("delArray: " + delArr);
   clearTimeout(delTimer);
+  console.log("delArray: " + delArr.length);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);
+    console.log("Timeout");
+  }, 6000);
 }
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
+  for (var i = 0; i < delArr.length; i++) {
+    console.log(i);
+    AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
   }
