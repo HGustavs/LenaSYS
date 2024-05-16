@@ -76,8 +76,6 @@ function nameInput(element) {
                 id='elementProperty_name' 
                 type='text' 
                 value='${element.name}' 
-                onfocus='propFieldSelected(true)' 
-                onblur='propFieldSelected(false)'
             >`;
 }
 
@@ -1713,14 +1711,6 @@ function formatERWeakEntities(ERData) {
     return temp;
 }
 
-/**
- * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
- * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
- * @see propFieldState For seeing if any fieldset is currently selected.
- */
-function propFieldSelected(isSelected) {
-    propFieldState = isSelected;
-}
 
 /**
  * @description Tests if there are varying fill and/or stroke colors in the selected elements
