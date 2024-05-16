@@ -9357,10 +9357,14 @@ border: none !important;
 select{
   background-color: var(--color-background);
   color: var(--color-text-list);
-  margin-right: 10px;
   border-radius: 5px;
 }
 /* END */
+
+.selectDeadlineTime{
+  width:55px;
+  margin:0 0 0 10px;
+}
 
 /*/ Diagram.html style /*/
 .unselectable {
