@@ -119,7 +119,6 @@ class StateMachine {
                         counter: historyHandler.inputCounter,
                         deleted: true
                     });
-                    console.log({...this.historyLog});
                     break;
                 // these don't have anything special so just add the entries
                 case StateChange.ChangeTypes.ELEMENT_CREATED:
@@ -131,7 +130,6 @@ class StateMachine {
                         changeType: newChangeType.flag,
                         counter: historyHandler.inputCounter
                     });
-                    console.log({...this.historyLog});
                     break;
                 default:
                     console.error(`Missing implementation for soft state change: ${stateChange}!`);
