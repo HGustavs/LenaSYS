@@ -9302,7 +9302,7 @@ border: none !important;
 
 /* This is used to highlight updated and new items (ex coursees, duggas)*/
 .highlightChange{
-  animation: glowAnimation 8s ease-out;
+  animation: glowAnimation 10s ease-out;
 }
 
 @keyframes glowAnimation {
