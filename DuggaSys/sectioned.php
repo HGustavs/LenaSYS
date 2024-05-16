@@ -277,7 +277,7 @@
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<input type='hidden' id='lid' value='Toddler' />
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
@@ -300,18 +300,18 @@
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
 							<span style='float:right'>
-								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
-								<select style='width:55px; margin-right: 10px;' id='deadlineminutes'></select>
-								<select style='width:55px; margin-right: 10px;' id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
+								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput formLargeSelectBox' type='date' id='setDeadlineValue' value='' />
+								<select class="formSmallSelectBox" id='deadlineminutes'></select>
+								<select class="formSmallSelectBox" id='deadlinehours'></select>
+								<input type='checkbox' id='absolutedeadlinecheck' class='formMediumCheckbox' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
 							<span style='float:right;'>
-								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
-								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineamount'></select>
-								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
-								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlinehours'></select>
+								<select class="formMediumSelectBox" id='relativedeadlinetype'></select>
+								<select class="formSmallSelectBox" id='relativedeadlineamount'></select>
+								<select class="formSmallSelectBox" id='relativedeadlineminutes'></select>
+								<select class="formSmallSelectBox" id='relativedeadlinehours'></select>
 							</span>
 							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
   		      					<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
@@ -327,7 +327,7 @@
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div style='padding:20px;'>
+				<div class="formFooter">
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
@@ -461,7 +461,7 @@
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody" >
 				<div class='inputwrapper'>
 					<span>Version ID:</span>
 					<div class="formDialog versionDialog" >
@@ -498,7 +498,7 @@
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formFooter">
 				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onmouseover="quickValidateForm('newCourseVersion', 'submitCourseMotd');" onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
@@ -514,7 +514,7 @@
 				<h3>Edit Course Version</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
@@ -527,7 +527,7 @@
 				<div class="formDialog" style="display: block; left:54px; top:-22px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formFooter">
 				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
 			</div>
 		</div>
@@ -608,7 +608,7 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div style="padding:5px;";>
+				<div class="formBody";>
 					<div class='inputwrapper'>
 						<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
@@ -644,13 +644,13 @@
 			<div style="padding:5px; padding-top:20px;">
   				<span>There is currently no valid github repo. Add one?</span>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
 					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
 				</form>
 			</div>
-			<div style='padding-top:15px; width: 464px;'>
+			<div class="formFooter">
 				<div id="buttonContainerSaveRepo"></div>
 			</div>
 		</div>

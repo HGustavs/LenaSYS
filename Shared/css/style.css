@@ -2193,6 +2193,34 @@ Dialog Box END
   background-color: #ce3d3d;
 }
 
+.formBody {
+  padding:5px;
+}
+
+.formFooter {
+  padding:5px;
+}
+
+.formBody .formSmallSelectBox {
+  width:55px !important;
+  margin: 0 0 0 10px;
+}
+
+.formBody .formMediumSelectBox {
+  width:130px !important;
+  margin: 0 0 0 10px;
+}
+
+.formBody .formLargeSelectBox {
+  width:195px !important;
+  margin: 0 0 0 10px;
+}
+
+.formBody .formMediumCheckbox {
+  margin:3px 5px !important; 
+  height:20px !important;
+}
+
 #c td input {
   float: none;
 }
@@ -2251,7 +2279,7 @@ input.inactive-button {
   width: 100%;
 }
 
-.inputwrapper{
+.inputwrapper {
   display: flex;
   justify-content: space-between;
   width: 445px;

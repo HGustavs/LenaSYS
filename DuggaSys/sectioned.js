@@ -446,8 +446,8 @@ function changedType(kind) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-group").style.display = "block";
-    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    document.querySelector("#inputwrapper-group").style.removeProperty('display');
+    document.querySelector("#inputwrapper-gradesystem").style.removeProperty('display');
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
