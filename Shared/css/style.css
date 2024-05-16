@@ -9730,7 +9730,7 @@ margin:2px;
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #editUser .flexwrapper, #addUser .flex-end {
+#createUser .flex-end, #editUser .flex-end, #addUser .flex-end {
   display: flex;
   justify-content: flex-end;
 }

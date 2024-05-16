@@ -192,16 +192,21 @@
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+		<li onclick="showRemoveUserPopup();">
+				<a id="remFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Remove user'>
+					<img class="fab-icon" src="../Shared/icons/remove_user_icon.svg">
+				</a>
+		</li>
 		<li onclick="showAddUserPopup();">
-				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
+				<a id="addFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
 					<img class="fab-icon" src="../Shared/icons/createUser.svg">
 				</a>
 			</li>
-	        <li onclick="showCreateUserPopup();">
-				<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
+		<li onclick="showCreateUserPopup();">
+		<a id="createFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
 					<img class="fab-icon" src="../Shared/icons/createUser.svg">
 				</a>
-			</li>
+		</li>
 		</ol>
 	</div>
 	<div id="editpopover" style="display:none;"></div>
