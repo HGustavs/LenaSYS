@@ -9723,11 +9723,11 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper, #addUser .flexwrapper, #editUser .flexwrapper {
+#createUser .flexwrapper, #editUser .flexwrapper, #addUser .flexwrapper  {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #addUser .flex-end, #editUser .flexwrapper{
+#createUser .flex-end, #editUser .flexwrapper, #addUser .flex-end {
   display: flex;
   justify-content: flex-end;
 }
