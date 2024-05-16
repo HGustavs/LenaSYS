@@ -1053,7 +1053,7 @@ function mmoving(event) {
             }
 
             // store the changes in the history
-            stateMachine.save(StateChangeFactory.ElementResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+            stateMachine.save(StateChangeFactory.ElementResized(elementData.id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
