@@ -187,6 +187,33 @@
       		</div>
      	</div>
 	</div>
+	<div id='removeUser' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:494px;'>
+			<div>
+				<div class='loginBoxheader'>
+					<h3>Remove user</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>Choose user:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown">
+							<option value="User 1"></option>
+							<option value="User 2"></option>
+							<option value="User 3"></option>
+						</datalist>
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
+	
 	<!-- Add User Dialog END -->
 
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
