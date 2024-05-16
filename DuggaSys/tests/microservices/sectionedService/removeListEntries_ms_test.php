@@ -10,7 +10,7 @@ $testsData = array(
             array( 
                 // Data that service needs to execute function
                 'opt' => 'DELETE',
-                'lid' => 4294967295,
+                'lid' => '4294967295',
                 'cid' => 2,
                 'username' => 'brom',
                 'password' => 'password',
