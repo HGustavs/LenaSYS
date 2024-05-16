@@ -3,8 +3,9 @@
         WARNING: "warning", 
         ERROR: "error", 
         SUCCESS: "success",
-        UNDO: "undo"
-    }); 
+        UNDO: "undo",
+        CONFIRM: "confirm"
+        }); 
     // Close the toast by clicking the X icon
     function closeToast(toastDiv) {
         const toastContainer = document.getElementById('toastContainer');
@@ -14,7 +15,7 @@
         }
     }
     // Create a toast notification
-    function toast(type, text, duration, arguments = null) {
+    function toast(type, text, duration, arguments = null, arguments2 = null) {
         // We locate the container for all toasts
         const toastContainer = document.getElementById('toastContainer');
         // The toast div is created
@@ -51,6 +52,39 @@
         let toastText = document.createElement('p');
         toastText.classList.add('toastText');
 
+        // The toast confirm options are created
+        // toastYes / toastNo = the toast confirm buttons (used for CONFIRM type)
+        let toastYes = document.createElement('span');
+        let toastNo = document.createElement('span');
+
+        // Creates the icon-element for each option.
+        let yesIcon = document.createElement('span');
+        let noIcon = document.createElement('span');
+
+        // Creates the text-element for each option (yes / no)
+        let yesText = document.createElement('span');
+        let noText = document.createElement('span');
+
+        // Inserts the text into each option
+        yesText.innerHTML = "Yes";
+        noText.innerHTML = "No";
+
+        // Creates an icon for each option
+        yesIcon.innerHTML = "done";
+        noIcon.innerHTML = "close";
+
+        yesIcon.classList.add('material-symbols-outlined');
+        noIcon.classList.add('material-symbols-outlined');
+
+        // Adds the styling to each button
+        toastYes.classList.add('toastYes');
+        toastNo.classList.add('toastNo');
+
+        // The toast buttonbox is created
+        // toastButtonBox = the toast confirm button
+        let toastButtonBox = document.createElement('div');
+        toastButtonBox.classList.add('toastButtonBox');
+
         // Adds the smaller toast divs to the bigger toast div
         toastDiv.appendChild(toastLeft);
         toastDiv.appendChild(toastCenter);
@@ -62,6 +96,13 @@
         toastCenter.appendChild(toastText);
         toastRight.appendChild(closeIcon);
          
+        // Add the icon and text to the button elements
+        toastYes.appendChild(yesIcon);
+        toastYes.appendChild(yesText);
+
+        toastNo.appendChild(noIcon);
+        toastNo.appendChild(noText);
+
         // Add the toast div to the toast container (containing all toasts)
         toastContainer.appendChild(toastDiv);
        
@@ -91,6 +132,16 @@
                 toastLeft.setAttribute( "onClick", "javascript: "+arguments);
                 typeText.innerHTML = "Notice";
                 toastDiv.classList.add(types.UNDO);
+                break;
+            case types.CONFIRM:
+                typeIcon.innerHTML = "Help";
+                typeText.innerHTML = "Confirm";
+                toastCenter.appendChild(toastButtonBox);
+                toastButtonBox.appendChild(toastYes);
+                toastButtonBox.appendChild(toastNo);
+                toastYes.setAttribute( "onClick", "javascript: "+arguments);
+                toastNo.setAttribute( "onClick", "javascript: "+arguments2);
+                toastDiv.classList.add(types.CONFIRM);
                 break;
             // We create a default situation in case no type is given.
             // The default toast will not have an icon nor heading.
