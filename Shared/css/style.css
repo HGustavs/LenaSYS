@@ -2256,6 +2256,7 @@ input.inactive-button {
   justify-content: space-between;
   width: 445px;
   border-radius: 0px;
+  align-items: flex-start;
 }
 .inputwrapper select{
   border-radius: 0px;
