@@ -122,7 +122,42 @@
 			</div>
 		</div>
 	</div>
-
+	<div id='editUser' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox'>
+			<div>
+				<div class='loginBoxheader'>
+					<h3>Edit user (placeholder)</h3>
+					<div class='cursorPointer' onclick='closeWindows();'>x</div>
+				</div>
+				<div class="content-wrapper">
+					<input type='hidden' id='uid' value='Toddler' />
+					<div class='flexwrapper'>
+						<span>First Name:</span>
+						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+					</div>
+					<div class='flexwrapper'>
+						<span>Last Name:</span>
+						<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
+					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
+					<div class='flexwrapper'>
+						<span>Email:</span>
+						<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
+					</div>
+					<div class="flex-end">
+						<input class='submit-button' type='button' value='Add'/>
+					</div>
+				</div>
+      		</div>
+     	</div>
+	</div>
 	<!-- Add User Dialog END -->
 
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">

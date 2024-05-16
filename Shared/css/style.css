@@ -3859,6 +3859,10 @@ span.arrow {
   text-align: center;
 }
 
+#edit___accessTable___tbl {
+  width: 25px;
+}
+
 #accessTable td span{
   padding: 0px;
 }
@@ -3931,7 +3935,6 @@ div.reset-pw:hover{
   transition: 0.2s;
   filter: brightness(1.05);
 }
-
 
 .show{
   display:block;
@@ -9723,12 +9726,12 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper {
+#createUser .flexwrapper, #editUser .flexwrapper {
   /* margin-top: .75rem; */
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end{
+#createUser .flex-end, #editUser .flex-end{
   display: flex;
   justify-content: flex-end;
 }
