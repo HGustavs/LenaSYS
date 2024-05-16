@@ -14,8 +14,14 @@
             toastContainer.removeChild(toastDiv);
         }
     }
+
+    function closeConfirmation(toastDiv, buttonType, arguments1, arguments2){
+        closeToast(toastDiv);
+        // Add logic for handling arguments here
+    }
+
     // Create a toast notification
-    function toast(type, text, duration, arguments = null, arguments2 = null) {
+    function toast(type, text, duration, arguments1 = null, arguments2 = null) {
         // We locate the container for all toasts
         const toastContainer = document.getElementById('toastContainer');
         // The toast div is created
@@ -80,6 +86,16 @@
         toastYes.classList.add('toastYes');
         toastNo.classList.add('toastNo');
 
+        // When clicking on the toast icon, it should delete the toast
+        toastYes.onclick = function() {
+            closeConfirmation(toastDiv, "yes", arguments1, arguments2); 
+        };
+
+        // When clicking on the toast icon, it should delete the toast
+        toastNo.onclick = function() {
+            closeConfirmation(toastDiv, "no", arguments1, arguments2); 
+        };
+
         // The toast buttonbox is created
         // toastButtonBox = the toast confirm button
         let toastButtonBox = document.createElement('div');
@@ -129,7 +145,7 @@
             case types.UNDO:
                 typeIcon.innerHTML = types.UNDO;
                 toastLeft.classList.add("clickable")
-                toastLeft.setAttribute( "onClick", "javascript: "+arguments);
+                toastLeft.setAttribute( "onClick", "javascript: "+arguments1);
                 typeText.innerHTML = "Notice";
                 toastDiv.classList.add(types.UNDO);
                 break;
@@ -139,8 +155,8 @@
                 toastCenter.appendChild(toastButtonBox);
                 toastButtonBox.appendChild(toastYes);
                 toastButtonBox.appendChild(toastNo);
-                toastYes.setAttribute( "onClick", "javascript: "+arguments);
-                toastNo.setAttribute( "onClick", "javascript: "+arguments2);
+                // toastYes.setAttribute( "onClick", "javascript: "+arguments);
+                // toastNo.setAttribute( "onClick", "javascript: "+arguments2);
                 toastDiv.classList.add(types.CONFIRM);
                 break;
             // We create a default situation in case no type is given.
