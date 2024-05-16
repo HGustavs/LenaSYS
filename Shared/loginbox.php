@@ -37,11 +37,6 @@
 				<div class="loginBoxTable">
 					<div class="loginboxTr">
 						<div>
-							Sign in
-						</div>
-					</div>
-					<div class="loginboxTr">
-						<div>
 							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</div>
 					</div>
