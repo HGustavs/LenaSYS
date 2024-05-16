@@ -2196,5 +2196,4 @@ function resetDiagramAlert() {
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
-
 //#endregion =====================================================================================
