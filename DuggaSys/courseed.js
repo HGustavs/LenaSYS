@@ -37,6 +37,18 @@ function closeDeleteForm() {
 	document.getElementById("myForm").style.display = "none";
 }
 
+function deleteCourse() {
+
+    let cid = $("#cid").val();
+    let visib = "3";
+
+    AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
+    $(".item").css("border", "none");
+    $(".item").css("box-shadow", "none");
+    $("#editCourse").css("display", "none");
+    $("#overlay").css("display", "none");
+}
+
 function updateCourse() {
 	var coursename = $("#coursename").val();
 	var cid = $("#cid").val();
@@ -163,6 +175,7 @@ function createNewCourse() {
 		AJAXService("NEW", { coursename: coursename, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
 		toast("success", "New course, " + coursename + " added!", 5);
 	}
+	setTimeout("location.reload()", 200) // refreshes the page after 0.2 seconds
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
@@ -745,23 +758,26 @@ function elementIsValid(element) {
 	// Stop any ongoing animations
 	$(messageElement).stop(true, true);
 
-	// Reset initial validation styling and messages
-	element.classList.remove("bg-color-change-invalid");
-	$(messageElement).fadeOut();
+	//Remove neutral tag when element is assessed.
+	element.classList.remove("color-change-neutral");
 
 	// Handle empty input for optional fields
 	if (element.value.trim() === "") {
 		element.removeAttribute("style");
 		if (element.name === "githubToken" || element.name === "courseGitURL") {
+			$(messageElement).fadeOut();
+			element.classList.add("color-change-neutral");
+			element.classList.remove("color-change-invalid");
+			element.classList.remove("color-change-valid");
 			return true; // Optional fields
 		}
 	}
 
 	// Check against regex and handle special cases
 	if (!element.value.match(regex[element.name])) {
-		element.classList.add("bg-color-change-invalid");
-		element.style.borderColor = "#E54";
 		$(messageElement).fadeIn();
+		element.classList.add("color-change-invalid");
+		element.classList.remove("color-change-valid");
 		if (element.name === "githubToken") {
 			messageElement.innerHTML = "A GitHub key should be 40 characters";
 		} else if (element.name === "coursecode") {
@@ -776,7 +792,9 @@ function elementIsValid(element) {
 	}
 
 	// If the input passes validation
-	element.style.borderColor = "#383";
+	$(messageElement).fadeOut();
+	element.classList.add("color-change-valid");
+	element.classList.remove("color-change-invalid");
 	return true;
 }
 

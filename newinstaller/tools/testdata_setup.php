@@ -12,42 +12,58 @@ class TestdataSetup {
 
 	/**
 	 * Recursively copies all non-dot files from one directory to another.
-	 * Parameter: $verbose Verbosity flag for detailed output.
-	 * return array Returns an array with a success status and a message.
+	 * @param bool $verbose Verbosity flag for detailed output.
+	 * @return array Returns an array with a success status and a message.
 	 */
 	public function copy_test_files(bool $verbose = false): array {
 		try {
-			if (!is_readable($this->sourceDirectory)) {
-				return $this->handle_exception("Source directory is not readable or does not exist.");
+			$real_source = realpath($this->sourceDirectory) ?: $this->sourceDirectory;
+			$real_destination = realpath($this->destinationDirectory) ?: $this->destinationDirectory;
+
+			if (!is_dir($real_source)) {
+				return $this->handle_exception("Source directory ({$real_source}) is not a directory.");
 			}
 
-			if (!is_dir($this->destinationDirectory) && !mkdir($this->destinationDirectory, 0777, true)) {
-				return $this->handle_exception("Failed to create destination directory.");
+			if (!is_readable($real_source)) {
+				return $this->handle_exception("Source directory ({$real_source}) is not readable.");
 			}
 
-			$dirIterator = new RecursiveDirectoryIterator($this->sourceDirectory, RecursiveDirectoryIterator::SKIP_DOTS);
+			if (!Permissions::has_write_permission($real_destination)) {
+				return $this->handle_exception("Destination directory ({$real_destination}) is not writable.");
+			}
+
+			$dirIterator = new RecursiveDirectoryIterator($real_source, RecursiveDirectoryIterator::SKIP_DOTS);
 			$iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
 
 			foreach ($iterator as $item) {
-				$destPath = $this->destinationDirectory . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+				$destPath = $real_destination . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+
 				if ($item->isDir()) {
-					if (!is_dir($destPath) && !mkdir($destPath)) {
-						return $this->handle_exception("Failed to create directory {$destPath}.");
-					}
-				} else {
-					if (!copy($item->getRealPath(), $destPath)) {
-						return $this->handle_exception("Failed to copy {$item->getFilename()}.");
-					}
-					if ($verbose) {
-						$this->handle_success("Copied '{$item->getRealPath()}' to '{$destPath}'");
-					}
+					continue; // Skip directories in the copying process.
+				}
+
+				// Ensure the destination directory exists for the file
+				$destDir = dirname($destPath);
+				if (!is_dir($destDir) && !mkdir($destDir, 0777, true)) {
+					$error = error_get_last();
+					return $this->handle_exception("Failed to create directory {$destDir}. Error: {$error['message']}");
+				}
+
+				// Copy the file to the destination path
+				if (!copy($item->getRealPath(), $destPath)) {
+					$error = error_get_last();
+					return $this->handle_exception("Failed to copy {$item->getFilename()} from {$item->getRealPath()} to {$destPath}. Error: {$error['message']}");
+				}
+				if ($verbose) {
+					$this->handle_success("Copied '{$item->getRealPath()}' to '{$destPath}'");
 				}
 			}
-			return $this->handle_success("Successfully copied files from {$this->sourceDirectory} to {$this->destinationDirectory}.");
+			return $this->handle_success("Successfully copied files from {$real_source} to {$real_destination}.");
 		} catch (Exception $e) {
 			return $this->handle_exception($e->getMessage());
 		}
 	}
+
 
 	/**
 	 * Copies a specific course.
@@ -81,14 +97,7 @@ class TestdataSetup {
 	 * return array
 	 */
 	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
-		$message = $action . (is_string($e) ? $e : $e->getMessage());
-		if ($callback && is_callable($callback)) {
-			$callback($message, false);
-		}
-		return [
-			"success"=> false,
-			"message"=> $message
-		];
+		throw new Exception($e);
 	}
 
 	/**
@@ -100,7 +109,7 @@ class TestdataSetup {
 	private function handle_success(string $action = "Success", $callback = null): array {
 		$callback = $callback ?? $this->callback;
 		if (isset($callback) && is_callable($callback)) {
-			$callback($action, true);
+			$callback($action, false);
 		}
 		return [
 			"success"=> true,

@@ -91,7 +91,6 @@ if (checklogin()) {
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':courseGitURL', $courseGitURL); // for github url
-			$query->execute();
 			try{
 				$query->execute();
 			}
@@ -100,11 +99,13 @@ if (checklogin()) {
 				$query->bindParam(':usrid', $userid);
 				$query->bindParam(':coursecode', $coursecode);
 				$query->bindParam(':coursename', $coursename);
-			}
-
-			if (!$query->execute()) {
-				$error = $query->errorInfo();
-				$debug = "Error updating entries\n" . $error[2];
+				try {
+					$query->execute();
+				}
+				catch(Exception $e) {
+					$error = $query->errorInfo();
+					$debug = "Error updating entries\n" . $error[2];	
+				}
 			}
 
 			// Logging for creating new course
@@ -590,87 +591,64 @@ foreach ($queryz->fetchAll(PDO::FETCH_ASSOC) as $row) {
 	$userCourse[$row['cid']] = $row['access'];
 }
 
+//------------------------------------------------------------------------------------------------
+// Delete Information
+//------------------------------------------------------------------------------------------------
+
 //Delete course matterial from courses that have been marked as deleted.
-/*$deleted = 3;
-$query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
+$deleted = 3;
+
+//announcement
+$query = $pdo->prepare("DELETE announcement FROM course,announcement WHERE course.visibility=:deleted AND announcement.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
-
-if (!$query->execute()) {
-
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-
-}*/
-
-
-//user_participant
-$query = $pdo->prepare("DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;");
-$query->bindParam(':deleted', $deleted);
-try{
+try {
 	$query->execute();
 }
-catch(Exception $e){
-	//as the column doesnt exist on any of the tables with old data this is left blank, uncomment for debugging
-	//$error = $query->errorInfo();
-	//$debug = "Error reading courses\n" . $error[2];
+catch(exception $e) {
+	//has to be empty for old database, use code below for debugging
 }
+/*if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}*/
 
-//useranswer
-$query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
-$query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-}
-
-//listentries
-
-$query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
-$query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-}
-
-$query = $pdo->prepare("DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid;");
-$query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-}
-
-$query = $pdo->prepare("DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;");
-$query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-}
-
-
-//fileLink
-$query = $pdo->prepare("DELETE fileLink FROM course,fileLink WHERE course.visibility=:deleted AND fileLink.cid = course.cid;");
-$query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-}
-
-//programcourse
-$query = $pdo->prepare("DELETE programcourse FROM course,programcourse WHERE course.visibility=:deleted AND programcourse.cid = course.cid;");
-$query->bindParam(':deleted', $deleted);
-if (!$query->execute()) {
-	$error = $query->errorInfo();
-	$debug = "Error reading courses\n" . $error[2];
-}
-
-//user_course
-$query = $pdo->prepare("DELETE user_course FROM course,user_course WHERE course.visibility=:deleted AND user_course.cid = course.cid;");
+//announcementlog
+$query = $pdo->prepare("DELETE ANNOUNCEMENTLOG FROM course,ANNOUNCEMENTLOG WHERE course.visibility=:deleted AND ANNOUNCEMENTLOG.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
 }
 
+$query = $pdo->prepare("DELETE improw FROM course,improw,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND improw.exampleid=codeexample.exampleid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE box FROM box,codeexample,course WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND box.exampleid=codeexample.exampleid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE impwordlist FROM course,impwordlist,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid AND impwordlist.exampleid=codeexample.exampleid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//codeexample
+$query = $pdo->prepare("DELETE codeexample FROM course,codeexample WHERE course.visibility=:deleted AND codeexample.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
 
 //course_req
 $query = $pdo->prepare("DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.cid = course.cid;");
@@ -686,7 +664,6 @@ if (!$query->execute()) {
     $error = $query->errorInfo();
     $debug = "Error reading courses\n" . $error[2];
 }
-
 //coursekeys
 $query = $pdo->prepare("DELETE coursekeys FROM course,coursekeys WHERE course.visibility=:deleted AND coursekeys.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
@@ -695,24 +672,172 @@ if (!$query->execute()) {
     $debug = "Error reading courses\n" . $error[2];
 }
 
-//Delete Courses that have been marked as deleted.
-$query = $pdo->prepare("DELETE course FROM course WHERE visibility=:deleted;");
+//fileLink
+$query = $pdo->prepare("DELETE fileLink FROM course,fileLink WHERE course.visibility=:deleted AND fileLink.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+$query = $pdo->prepare("DELETE useranswer FROM course,listentries,useranswer WHERE course.visibility=:deleted AND listentries.cid = course.cid AND useranswer.moment = listentries.lid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//listentries
+$query = $pdo->prepare("DELETE listentries FROM course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error reading courses\n" . $error[2];
 }
 
+//programcourse
+$query = $pdo->prepare("DELETE programcourse FROM course,programcourse WHERE course.visibility=:deleted AND programcourse.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
 
-try{
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
-	//$query->bindParam(':cid', $cid);
+//partresult
+$query = $pdo->prepare("DELETE partresult FROM course,partresult WHERE course.visibility=:deleted AND partresult.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//quiz
+$query = $pdo->prepare("DELETE quiz FROM course,quiz WHERE course.visibility=:deleted AND quiz.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//sequence
+$query = $pdo->prepare("DELETE sequence FROM course,sequence WHERE course.visibility=:deleted AND sequence.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//shregister
+$query = $pdo->prepare("DELETE shregister FROM course,shregister WHERE course.visibility=:deleted AND shregister.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+try {
 	$query->execute();
 }
-catch(Exception $e){
-	$query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
-	$error = $query->errorInfo();
+catch(Exception $e) {
+	//has to be empty for old database, use code below for debugging
 }
+/*if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}*/
+
+//submission 
+$query = $pdo->prepare("DELETE submission FROM course,submission WHERE course.visibility=:deleted AND submission.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//subparts
+$query = $pdo->prepare("DELETE subparts FROM course,subparts WHERE course.visibility=:deleted AND subparts.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//timesheet
+$query = $pdo->prepare("DELETE timesheet FROM course,timesheet WHERE course.visibility=:deleted AND timesheet.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+try {
+	$query->execute();
+}
+catch(Exception $e) {
+	//has to be empty for old database, use code below for debugging
+}
+/*if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}*/
+
+//user_participant
+$query = $pdo->prepare("DELETE user_participant FROM user_participant,course,listentries WHERE course.visibility=:deleted AND listentries.cid = course.cid AND listentries.lid = user_participant.lid;");
+$query->bindParam(':deleted', $deleted);
+try{
+    $query->execute();
+}
+catch(Exception $e){
+    //as the column doesnt exist on any of the tables with old data this is left blank, uncomment for debugging
+    //$error = $query->errorInfo();
+    //$debug = "Error reading courses\n" . $error[2];
+}
+
+//useranswer
+$query = $pdo->prepare("DELETE userAnswer FROM course,userAnswer WHERE course.visibility=:deleted AND userAnswer.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//userduggafeedback
+$query = $pdo->prepare("DELETE userduggafeedback FROM course,userduggafeedback WHERE course.visibility=:deleted AND userduggafeedback.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+try {
+	$query->execute();
+}
+catch(Exception $e) {
+	//has to be empty for old database, use code below for debugging
+}
+/*if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}*/
+
+//user_course
+$query = $pdo->prepare("DELETE user_course FROM course,user_course WHERE course.visibility=:deleted AND user_course.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+//vers
+$query = $pdo->prepare("DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+//Delete Courses that have been marked as deleted.
+$query = $pdo->prepare("DELETE course FROM course WHERE visibility=:deleted;");
+$query->bindParam(':deleted', $deleted);
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error reading courses\n" . $error[2];
+}
+
+try{
+    $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion,courseGitURL FROM course ORDER BY coursename");
+    //$query->bindParam(':cid', $cid);
+    $query->execute();
+}
+catch(Exception $e){
+    $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
+    $error = $query->errorInfo();
+}
+
 
 /*
 

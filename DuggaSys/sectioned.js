@@ -949,7 +949,7 @@ function prepareItem() {
   //}
 
   //Place element at bottom if the user has scrolled all the way down, otherwise at the top. (Stopgap solution)
-  let screenPos = 0
+  let screenPos = 1
   if(Math.floor(window.scrollY) === (document.documentElement.scrollHeight - document.documentElement.offsetHeight) 
   && document.documentElement.scrollHeight > document.documentElement.clientHeight) {
    screenPos = document.getElementById("Sectionlistc").childElementCount;
@@ -1194,6 +1194,7 @@ async function newItem(itemtitle) {
     } else if (element.tagName == 'SPAN') { //this is for created messages
       setCreatedDuggaAnimation(element, 'SPAN');
     }
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
@@ -3564,7 +3565,6 @@ function showCourseDate(ddate, dialogid) {
 
 // ------ Validates if deadline is between start and end date ------
 function validateDate2(ddate, dialogid) {
-  initInputColorTheme();
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
 
@@ -3607,7 +3607,6 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name) {
-  initInputColorTheme();
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {

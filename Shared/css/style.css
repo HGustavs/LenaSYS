@@ -2752,6 +2752,11 @@ label.login-label {
   border-width: 2px;
 }
 
+.color-change-neutral{
+  border-color: var(--color-border-2);
+  border-width: 2px;
+}
+
 input.option {
   float: left;
 }
@@ -3854,6 +3859,10 @@ span.arrow {
   text-align: center;
 }
 
+#edit___accessTable___tbl {
+  width: 25px;
+}
+
 #accessTable td span{
   padding: 0px;
 }
@@ -3926,7 +3935,6 @@ div.reset-pw:hover{
   transition: 0.2s;
   filter: brightness(1.05);
 }
-
 
 .show{
   display:block;
@@ -5408,6 +5416,12 @@ only screen and (max-device-width: 568px) {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
+}
+
+#addElement{
+  margin-right:-20px; 
+  top:70px; 
+  display:none;
 }
 
 @media only screen and (max-width: 800px),
@@ -7069,13 +7083,27 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 18px 0px 0px;
-  margin: 0px 0px 0px -3px;
-  left: auto;
+  padding: 1.8rem 1.5rem 0rem 0rem;
+  margin: 0rem;
+  left: -3.5rem;
   width: 100%;
   list-style: none;
   text-align: center;
-  top: 25px;
+  display: none;
+}
+
+#olFabBtnList2{
+  height:fit-content;
+}
+
+#FABStatic2{
+  z-index:2;
+}
+
+@media only screen and (max-width: 430px) {
+  .fab-btn-list2 {
+    left: 3.4rem;
+  }
 }
 
 @media screen and (max-height: 600px) {
@@ -9274,7 +9302,7 @@ border: none !important;
 
 /* This is used to highlight updated and new items (ex coursees, duggas)*/
 .highlightChange{
-  animation: glowAnimation 8s ease-out;
+  animation: glowAnimation 10s ease-out;
 }
 
 @keyframes glowAnimation {
@@ -9698,12 +9726,11 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper {
-  /* margin-top: .75rem; */
+#createUser .flexwrapper, #editUser .flexwrapper, #addUser .flexwrapper  {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end{
+#createUser .flex-end, #editUser .flexwrapper, #addUser .flex-end {
   display: flex;
   justify-content: flex-end;
 }

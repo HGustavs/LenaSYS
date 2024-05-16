@@ -12,6 +12,7 @@
 	<script defer src="tools/sse_receiver.js"></script>
 </head>
 <body>
+  
 	<div id="page1" class="page">
 		<div class="banner">
 			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
@@ -219,5 +220,6 @@
 			?>
 		</div>
 	</div>
+  
 </body>
 </html>
