@@ -9729,11 +9729,17 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper, #editUser .flexwrapper, #addUser .flexwrapper  {
+#createUser .flexwrapper,
+#editUser .flexwrapper,
+#addUser .flexwrapper,
+#removeUser .flexwrapper {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end, #editUser .flex-end, #addUser .flex-end {
+#createUser .flex-end, 
+#editUser .flex-end, 
+#addUser .flex-end, 
+#removeUser .flex-end {
   display: flex;
   justify-content: flex-end;
 }
