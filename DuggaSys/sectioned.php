@@ -524,15 +524,35 @@ function updateGithubDir($pdo, $githubDir, $lid)
 					</div>
 					<div style='padding:5px;'>
 						<input type='hidden' id='cid' value='Toddler' />
-						<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
-						<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
-						<div class="formDialog" style="display: block; left:54px; top:-36px;"><span id="dialog5" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-						<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
-						<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
-						<div class="formDialog" style="display: block; left:54px; top:-50px;"><span id="dialog6" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-						<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD' /></div>
-						<div class="formDialog" style="display: block; left:54px; top:-40px;"><span id="dialog9" style="display: none; left:0px;" class="formDialogText">Prohibited symbols</span></div>
-						<div class="formDialog" style="display: block; left:54px; top:-22px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
+						<div class='inputwrapper'>
+							<span>Version ID:</span>
+							<input class="greyedout-textinput" type='text' disabled id='eversid' placeholder='Version ID' />
+						</div>
+						<div class='inputwrapper'>
+							<span>Version Name:</span>
+							<div class="dialogwrapper">
+								<div class="formDialog"><span id="dialog5" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
+								<input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name' />
+							</div>
+						</div>
+						<div class='inputwrapper'>
+							<span>Start Date:</span>
+							<div class="dialogwrapper">
+								<div class="formDialog"><span id="dialog6" class="formDialogText">Start date has to be before end date</span></div>
+								<input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' />
+							</div>
+						</div>
+						<div class='inputwrapper'>
+							<span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' />
+						</div>
+						<div class='inputwrapper'>
+							<span>MOTD:</span>
+							<div class="dialogwrapper">
+								<input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD' />
+								<div class="formDialog"><span id="dialog9" class="formDialogText">Prohibited symbols</span></div>
+								<div class="formDialog"><span id="dialog92" class="formDialogText">Max 50 characters</span></div>
+							</div>
+						</div>
 						<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 					</div>
 					<div style='padding:5px;'>
