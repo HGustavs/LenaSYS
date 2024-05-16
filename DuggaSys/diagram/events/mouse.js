@@ -280,7 +280,7 @@ function mup(event) {
             }
             break;
         case pointerStates.CLICKED_LINE:            
-            if (!deltaExceeded) {
+            if (!deltaExceeded && mouseMode != mouseModes.EDGE_CREATION) {
                 updateSelectedLine(determinedLines);
             }
             if (mouseMode == mouseModes.BOX_SELECTION) {
