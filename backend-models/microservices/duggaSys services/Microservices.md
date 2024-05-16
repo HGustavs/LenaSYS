@@ -141,7 +141,7 @@ __Courseed Service:__
 - createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
+- updateActiveCourseVersion_courseed_ms.php __==finished==__ 
 - copyCourseVersion_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 - updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
