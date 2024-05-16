@@ -14,6 +14,7 @@ var LastCourseCreated;
 var lastCC = false;
 var updateCourseName = false;
 
+
 $(document).ready(function () {
 	$('#startdate').datepicker({
 		dateFormat: "yy-mm-dd"
