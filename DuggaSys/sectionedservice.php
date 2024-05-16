@@ -752,7 +752,7 @@ if(checklogin()){
 					
 					//Check if remove box
 					}else if ($boxCount > $exampleCount){		
-						$query = $pdo->prepare(" SELECT boxid AS bid FROM box WHERE exampleid = :eid AND filename=:boxName;"); 
+						$query = $pdo->prepare("SELECT filename FROM box WHERE exampleid = :eid;"); 
 						$query->bindParam(':eid', $eid);				
 						$query->execute();
 						$boxRows = $query->fetchAll();
@@ -767,7 +767,7 @@ if(checklogin()){
 								}	
 							}
 							if($exist==false){										
-								$query = $pdo->prepare("SELECT boxid AS bid WHERE exampleid = :eid AND filename=:boxName;");
+								$query = $pdo->prepare("SELECT boxid AS bid FROM box WHERE exampleid = :eid AND filename=:boxName;");
 								$query->bindParam(':eid', $eid); 
 								$query->bindParam(':boxName', $boxName);
 								$query->execute();
