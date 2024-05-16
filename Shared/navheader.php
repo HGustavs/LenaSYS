@@ -65,14 +65,15 @@
 					$checkIfGithubURL = $row['courseGitURL'];
 				} else {
 					$checkIfGithubURL = null;
-					// $row is false, which means no data was fetched
 				}
 				if(isset($row['updated'])) {
 					$updateTimer = $row['updated'];
-				} else {
+				} 
+				else {
 					$updateTime = "No data found for the given course ID";
 				}
-			} else {
+			} 
+			else {
 				$checkIfGithubURL = null;
 				$updateTime = "No data found for the given course ID";
 			}
