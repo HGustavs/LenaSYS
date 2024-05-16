@@ -145,11 +145,24 @@ function drawElement(element, ghosted = false) {
             >${divContent}${lock}</div>`;
 }
 
+/**
+ * @description Splits the line of text if the text is to long.
+ * @param {String} s A string when typing in the different element.
+ * @param {Number} max A max number.
+ * @return Returns the string s if s is smaller or equals to max.
+ * @return Returns a strnig that adds one string to a another string.
+ */
 function splitLengthyLine(s, max) {
     if (s.length <= max) return s;
     return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
 }
 
+/**
+ * @description I Don't know.
+ * @param {Object} e An object that contains the text that is writen in the element.
+ * @param {Number} max A max number.
+ * @return Returns the object that contains all the text.
+ */
 function splitFull(e, max) {
     return e.map(line => splitLengthyLine(line, max)).flat()
 }
@@ -176,7 +189,7 @@ function updateElementHeight(arr, element, height) {
  * @description Draw a div for the element.
  * @param {String} c String of the class name.
  * @param {String} style String of what style the entity.
- * @param {Object} s Obejct for what should be in the div.
+ * @param {Object} s Obejct for what should be in the div tag.
  * @return Returns an string containing a div for the element that is drawn.
  */
 function drawDiv(c, style, s) {
@@ -188,13 +201,22 @@ function drawDiv(c, style, s) {
  * @param {Number} w Width of the svg.
  * @param {Number} h Height of the svg, 
  * @param {Object} s Obejct for what should be in the svg tag.
- * @param {String} extra Extra parameters to be added for the svg.
+ * @param {String} extra Extra attributes to be added for the svg tag.
  * @return Returns an string containing a svg for the element that is drawn.
  */
 function drawSvg(w, h, s, extra = '') {
     return `<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
 }
 
+/**
+ * @description Draw a rectangle for the element.
+ * @param {Number} w Width of the rectangle.
+ * @param {Number} h Height of the rectangle.
+ * @param {Number} l It's the line width/stroke width.
+ * @param {Object} e It's the element's stroke color.
+ * @param {String} extra Extra attributes to be added to the rectangle tag.
+ * @return Returns an string containing a svg rectangle for the element that is drawn.
+ */
 function drawRect(w, h, l, e, extra = `fill='${e.fill}'`) {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
@@ -204,6 +226,15 @@ function drawRect(w, h, l, e, extra = `fill='${e.fill}'`) {
             />`;
 }
 
+/**
+ * @description Draw the text for the element.
+ * @param {Number} x The X coordinate for the drawn text.
+ * @param {Number} y The Y coordinate for the drawn text.
+ * @param {String} a To align the string.
+ * @param {String} t The string content for the text.
+ * @param {String} extra Extra attributes to be added to the text tag.
+ * @return Returns an string containing a svg text for the element that is drawn.
+ */
 function drawText(x, y, a, t, extra = '') {
     return `<text
                 class='text' x='${x}' y='${y}' 
@@ -211,6 +242,15 @@ function drawText(x, y, a, t, extra = '') {
             > ${t} </text>`;
 }
 
+/**
+ * @description Draw a ER entity.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns an SVG that is going to be drawn.
+ */
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const l = linew * 3;
     
@@ -237,6 +277,15 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
     return drawSvg(boxw, boxh, rect + weak + text);
 }
 
+/**
+ * @description Draw a UML entity.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns the different segments of the UML entity
+ */
 function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let str = "";
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
@@ -275,6 +324,15 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     return str;
 }
 
+/**
+ * @description Draw a IE entity.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns the different segments of the IE entity
+ */
 function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let str = "";
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
@@ -321,6 +379,15 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     return str;
 }
 
+/**
+ * @description Draw a UML entity.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns the different segments of the SD entity
+ */
 function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     let str = "";
     let cornerRadius = Math.round(20 * zoomfact); //determines the corner radius for the SD states.
@@ -382,6 +449,14 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     return str;
 }
 
+/**
+ * @description Draw a ER relation.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the ER relation.
+ */
 function drawElementERRelation(element, boxw, boxh, linew) {
     let content, weak;
     let hboxw = boxw / 2;
@@ -409,6 +484,16 @@ function drawElementERRelation(element, boxw, boxh, linew) {
     return drawSvg(boxw, boxh, content);
 }
 
+/**
+ * @description Draw a ER attribute.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} textWidth The text width for the element.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns the SVG of the ER attribute.
+ */
 function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
     let content = '';
     let hboxw = boxw / 2;
@@ -455,6 +540,14 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
     return drawSvg(boxw, boxh, content);
 }
 
+/**
+ * @description Draw a UML relation.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the UML relation.
+ */
 function drawElementUMLRelation(element, boxw, boxh, linew) {
     let fill = (element.state == 'overlapping') ? 'black' : 'white';
     let poly = `
@@ -465,6 +558,14 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
     return drawSvg(boxw, boxh, poly);
 }
 
+/**
+ * @description Draw a IE relation.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the IE relation.
+ */
 function drawElementIERelation(element, boxw, boxh, linew) {
     let content = "";
     content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
@@ -477,6 +578,14 @@ function drawElementIERelation(element, boxw, boxh, linew) {
     return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
 }
 
+/**
+ * @description Draw a the different UML state.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the UML state.
+ */
 function drawElementState(element, vectorGraphic) {
     const theme = document.getElementById("themeBlack");
     if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
@@ -493,6 +602,15 @@ function drawElementState(element, vectorGraphic) {
             > ${vectorGraphic} </svg>`;
 }
 
+/**
+ * @description Draw a UML super state.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} textWidth The text width for the element.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the UML super state.
+ */
 function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
 
@@ -502,6 +620,16 @@ function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
     return drawSvg(boxw, boxh, rectOne + rectTwo + text);
 }
 
+/**
+ * @description Draw a Sequence actor.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} textWidth The text width for the element.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns the SVG of the Sequence actor.
+ */
 function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) {
     let content;
     content = `<path 
@@ -554,6 +682,14 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
     return drawSvg(boxw, boxh, content);
 }
 
+/**
+ * @description Draw a Sequence object.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the Sequence object.
+ */
 function drawElementSequenceObject(element, boxw, boxh, linew) {
     let str = "";
     let content;
@@ -592,6 +728,14 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
     return str;
 }
 
+/**
+ * @description Draw a Sequence activation.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the Sequence activation.
+ */
 function drawElementSequenceActivation(element, boxw, boxh, linew) {
     let content;
     const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
@@ -605,6 +749,14 @@ function drawElementSequenceActivation(element, boxw, boxh, linew) {
     return drawSvg(boxw, boxh, content);
 }
 
+/**
+ * @description Draw a Sequence Loop or alt.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @return Returns the SVG of the sequence loop or alt.
+ */
 function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
     let fontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
     element.altOrLoop = (element.alternatives.length > 1) ? "Alt" : "Loop";
@@ -658,6 +810,15 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
     return drawSvg(boxw, boxh, content + textOne + textTwo);
 }
 
+/**
+ * @description Draw a Note.
+ * @param {Obejct} element The object that should be drawn.
+ * @param {Number} boxw It's the width of the element.
+ * @param {Number} boxh It's the height of the element.
+ * @param {Number} linew The line width of the element.
+ * @param {Number} texth The text height for the element.
+ * @return Returns the SVG of the Note.
+ */
 function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
