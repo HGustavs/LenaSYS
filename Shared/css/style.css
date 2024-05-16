@@ -2094,7 +2094,13 @@ Dialog Box END
 /* --------------===============################================-------------- *
  *                                    Generic functions                            *
  * --------------================################================--------------*/
-.loginBox .inputwrapper {
+ .fab_btn_list{
+  margin: 0; 
+  padding: 0; 
+  display: none;
+ }
+
+ .loginBox .inputwrapper {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
@@ -2271,7 +2277,27 @@ input.inactive-button {
 #playlink {
   width: 100%;
 }
+/*---===#===---*
+  margin
+*---====#===---*/
+.margin_10px{
+  margin:10px;
+}
 
+.margin_20px{
+  margin: 20px;
+}
+
+.margin_30px{
+  margin:30px;
+}
+
+.margin_40px{
+  margin:40px;
+}
+
+
+/*---END---*/
 
 /*---===#===---*
   padding styles
@@ -2413,10 +2439,32 @@ resulted.php END
 /* --------------===============################================-------------- *
  *                                    sectioned.php                             *
  * --------------================################================--------------*/
- #courseHeader{
+ #courseHeader {
   display:flex; 
   align-items:center; 
   justify-content:flex-end; 
+ }
+
+ #coursecode {
+  margin-right:10px;
+ }
+
+ #course-newitem{
+  display: flex;
+ }
+
+ #course-coursevers{
+  display:none; 
+  margin-right:10px;
+ }
+
+ #course-courseid{
+  display:none; 
+  margin-right:10px;
+ }
+
+ #course-label{
+  flex-grow:1
  }
 
 .statsdiv {
@@ -3048,6 +3096,8 @@ input.submit-button-newitem {
   margin-top: 2px;
   margin-bottom: 2px;
   margin-left: 0px;
+  padding-right:5px; 
+  margin-right: 10px;
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
@@ -5599,9 +5649,7 @@ only screen and (max-device-width: 568px) {
   }
 }
 
-#addElement{
-  margin-right:-20px; 
-  top:70px; 
+#addElement{ 
   display:none;
 }
 

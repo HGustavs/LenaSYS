@@ -164,28 +164,28 @@
 
 		<div id='courseHeader' class='course' >
 			
-			<!-- Undo button -->
+			<!-- Undo button 
 			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
-			<!-- Undo button END -->
+			 Undo button END -->
 
 			<!-- Hide button -->
 		
 			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
 				<!-- <input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
-				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
-				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-				<input id='addElement'  type='button' value='+' style="top:-493px; margin-right:10px;" class='submit-button-newitem' title='New Item'>
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg'  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='addElement'  type='button' value='+' class='submit-button-newitem' title='New Item'>
 			</div>
 		
 			<!-- end hide button -->
 
 			<!-- Small FAB Button in top in the header of sectioned -->
 		
-			<div style="margin:10px;">
+			<div class="margin_10px">
 				<img src="../Shared/icons/right_complement.svg" alt='Show List Content' id="sectionList_arrowStatisticsOpen">
 				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
-			<div class='fixed-action-button2 sectioned2' id="FABStatic2" style="display:none">
+			<div class='fixed-action-button2 sectioned2 display_none' id="FABStatic2">
 				<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' id='olFabBtnList2' reversed id='fabBtnList2'>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
@@ -208,21 +208,21 @@
 		
 			<!-- end hide button -->
 			
-			<div id='course-label' style='flex-grow:1'>
+			<div id='course-label'>
 					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
-					<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
+					<span id='course-coursecode'>UNK</span>
 					<span id='course-versname' class='courseVersionField'>UNK</span>
 			</div>
 
 
-			<div id='course-newitem' style='display: flex;'>
+			<div id='course-newitem'>
 
 			</div>
 
 			<!-- test #1 -->
 
-			<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
-			<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
+			<div id='course-coursevers'>UNK</div>
+			<div id='course-courseid' >UNK</div>
 
 		</div>
 
@@ -230,9 +230,9 @@
 		
 		<!-- FAB Start -->
 		<!-- Big FAB Button in the bottom of the page -->
-		<div class='fixed-action-button extra-margin' id="FABStatic" style="display:none">
+		<div class='fixed-action-button extra-margin display_none' id="FABStatic">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn' tabindex='0' onclick='incrementItemsToCreate();'>+</a>
-				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
+				<ol class='fab-btn-list fab_btn_list' reversed id='fabBtnList'>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
@@ -270,7 +270,7 @@
 
 		<!-- Edit Section Dialog START -->
 
-		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
+		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none'>
 		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 
 			<div class='loginBoxheader'>
