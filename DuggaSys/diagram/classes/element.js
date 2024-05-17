@@ -180,10 +180,10 @@ class Element {
             name: "IE Relation",
             type: entityType.IE,
             kind: elementTypesNames.IERelation,
-            width: 85,
-            height: 85,
-            minWidth: 50,
-            minHeight: 50,
+            width: 80,
+            height: 40,
+            minWidth: 80,
+            minHeight: 40,
         });
     }
 
