@@ -41,6 +41,7 @@
         <title><?php echo $title; ?></title>
 
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
