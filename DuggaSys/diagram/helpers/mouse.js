@@ -178,13 +178,43 @@ function mouseEnterSeq(event) {
  */
 function snapSAToLifeline(targetId) {
     const lifeline = document.getElementById(targetId);
+    
     if (lifeline) {
         for (let i = 0; i < data.length; i++) {
-            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
-                const element = data[i];
+            const element = data[i];
+            if ((element.kind === "sequenceActor" || element.kind === "sequenceObject") && element.id === targetId) {
+                
+                let boxHeight = getTopHeight(element)
+                let minY = element.y + boxHeight;
+
+                // Fix the x position
                 ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
+
+                // Check and adjust the y position if necessary
+                if (ghostElement.y < minY) {
+                    ghostElement.y = minY;
+                }
+
                 updatepos();
+                break;  
             }
         }
     }
+    
+}
+
+/**
+ * @description Gets the height of the top object of sequence actor and sequence object
+ */
+function getTopHeight(element) {
+    let boxw = Math.round(element.width * zoomfact);
+    let boxHeight;
+    
+    if (element.kind === "sequenceActor"){ 
+        boxHeight = ((boxw*1.05) + (16 * zoomfact) ) / zoomfact;
+    }else {
+        boxHeight = (boxw * 0.55) / zoomfact;
+    }
+
+    return boxHeight;
 }
