@@ -14,29 +14,10 @@ $testsData = array(
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'entries' => $entries,
-                'debug' => $debug,
-                'writeaccess' => $ha,
-                'studentteacher' => $studentTeacher,
-                'readaccess' => $cvisibility,
-                'coursename' => $coursename,
-                'coursevers' => $coursevers,
-                'coursecode' => $coursecode,
-                'courseid' => $courseid,
-                'links' => $links,
-                'duggor' => $duggor,
-                'results' => $resulties,
-                'versions' => $versions,
-                'codeexamples' => $codeexamples,
-                'unmarked' => $unmarked,
-                'startdate' => $startdate,
-                'enddate' => $enddate,
-                'groups' => $groups,
-                'grpmembershp' => $grpmembershp,
-                'grplst' => $grplst,
-                'userfeedback' => $userfeedback,
-                'feedbackquestion' => $feedbackquestion,
-                'avgfeedbackscore' => $avgfeedbackscore
+                'username' => 'brom',
+                'password' => 'password',
+                'cid' => '1885',
+                'versid' => '123',
             )
         ),
         'filter-output' => serialize(
