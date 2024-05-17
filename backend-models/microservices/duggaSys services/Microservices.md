@@ -487,6 +487,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 ### updateUser_ms.php
 __Include original service files:__ sessions.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
