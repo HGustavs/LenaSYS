@@ -39,7 +39,7 @@ html, body {
     overflow-x: hidden;
 }
 
-#page2, #page3, #page4, #page5, #page6 { display: none; }
+#page2, #page3, #page4, #page5, #page6, #installationPage { display: none; }
 
 .page {
     display: flex;
@@ -358,7 +358,7 @@ input[type=checkbox], input[type=radio] {
     font-family: var(--body-font);
     font-style: italic;
     font-size: 14px;
-    max-width: 60%; 
+    max-width: 80%; 
 
     .progressBarLabels {
         display: flex;
@@ -376,7 +376,18 @@ input[type=checkbox], input[type=radio] {
     .progressBarIndicator {
         font-style: italic;
         background-color: var(--secondary-color);
-        width: 15%;
+        width: 0%;
+    }
+}
 
+@media (max-width: 800px) {
+    .progressBar {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .progressBar {
+        max-width: 60%;
     }
 }

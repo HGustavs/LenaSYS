@@ -1,8 +1,8 @@
 <?php
 	function navigationButtons($previousPage, $nextPage) {
 		echo "<div class='buttonContainer'>";
-		echo "<button class='backButton page-nav' data-target='{$previousPage}' onclick='breadCrumbDecr(); breadCrumbActive();'>Previous</button>";
-		echo "<button class='progressButton page-nav' data-target='{$nextPage}' onclick='breadCrumbInc(); breadCrumbActive();'>Next</button>";
+		echo "<button class='backButton page-nav' data-target='{$previousPage}' onclick=''>Previous</button>";
+		echo "<button class='progressButton page-nav' data-target='{$nextPage}' onclick=''>Next</button>";
 		echo "</div>";
 	}
 
@@ -10,16 +10,16 @@
 		echo "<div class='buttonContainer'>";
 
 		if (strtolower($nextSequence) !== "next") {
-			echo "<button class='backButton page-nav' data-target='{$targetPage}' onclick='breadCrumbDecr(); breadCrumbActive();'>Previous</button>";
+			echo "<button class='backButton page-nav' data-target='{$targetPage}'>Previous</button>";
 		} else {
-			echo "<button class='progressButton page-nav' data-target='{$targetPage}' onclick='breadCrumbInc(); breadCrumbActive();'>Next</button>";
+			echo "<button class='progressButton page-nav' data-target='{$targetPage}'>Next</button>";
 		}
 
 		echo "</div>";
 	}
 
 	function defaultButton($title, $class = "", $onclick = "") {
-		echo "<button class='defaultButton $class' onclick='{$onclick}'>{$title}</button>";
+		echo "<button class='defaultButton $class' onclick={$onclick}>{$title}</button>";
 	}
 	
 	function breadcrumb(int $n, int $active) {
@@ -51,8 +51,8 @@
 	function progressBar() {
 		echo "<div class='progressBar'>
 				<div class='progressBarLabels'>
-					<label>lenasys/dugga...</label>
-					<label>15%</label>
+					<label></label>
+					<label>0%</label>
 				</div>
 				<div class='progressBarBorder'>
 					<div class='progressBarIndicator'></div>

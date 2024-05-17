@@ -198,26 +198,33 @@
 				?>
 				<div class="inner-wrapper">
 					<div class="input-flex">
-						<?php
-							defaultButton("Install LenaSYS", "", "start_installer()");
-							
-							// Example usage
-							$statusMessages = [
-								"Error in file /var/www/html/index.php on line 23",
-								"Undefined variable: foo",
-								"Stack trace:",
-								"#0 /var/www/html/index.php(23): someFunction()",
-								"#1 {main}"
-							];
-
-							displayStackTrace($statusMessages);
-						?>
+						<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer();\""); ?>
 					</div>
 				</div>
 			</div>
 			<?php
 				singleNavigationButton("previous", 5);
 			?>
+		</div>
+	</div>
+
+	<div id="installationPage" class="page">
+		<div class="banner">
+			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+		</div>
+		<div class="wrapper">
+			<?php
+				breadcrumb(6, 6);
+			?>
+			<div class="content">
+				<?php
+					header2("Complete installation");
+					bodyText("LenaSYS is being installed...");
+				?>
+				<div class="inner-wrapper">
+					<?php progressBar(); ?>
+				</div>
+			</div>
 		</div>
 	</div>
   
