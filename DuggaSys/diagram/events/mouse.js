@@ -148,7 +148,7 @@ function mdown(event) {
             startHeight = data[findIndex(data, context[0].id)].height;
 
             startNode.left = event.target.classList.contains("ml");
-            startNode.right = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
+            startNode.right = event.target.classList.contains("mr");
             startNode.down = event.target.classList.contains("md");
             startNode.up = event.target.classList.contains("mu");
             startNode.upRight = event.target.classList.contains("tr");

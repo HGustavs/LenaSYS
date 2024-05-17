@@ -74,7 +74,6 @@ var containerStyle;
 
 //#endregion
 //#endregion
-
 //#region OBJECT
 
 /**
@@ -98,8 +97,6 @@ var ghostLine = null;
 var UMLHeight = [], IEHeight = [], SDHeight = [], NOTEHeight = [];
 
 //#endregion
-
-
 //#region MOUSE
 
 /**
@@ -196,7 +193,6 @@ var dblClickInterval = 350;
 var wasDblClicked = false;
 
 //#endregion
-
 //#region SELECTION
 
 /**
@@ -248,7 +244,6 @@ var elementTypeSelected = elementTypes.EREntity;
 var targetDelta;
 
 //#endregion
-
 //#region BOX_SELECT
 
 /**
@@ -272,9 +267,7 @@ var selectionBoxLowX, selectionBoxHighX, selectionBoxLowY, selectionBoxHighY;
 var boxSelectionInUse = false;
 
 //#endregion
-
 //#endregion
-
 //#region RESIZE
 
 /**
@@ -312,7 +305,6 @@ const startNode = {
 };
 
 //#endregion
-
 //#region ZOOM
 
 /**
@@ -371,7 +363,6 @@ var lastMousePosCoords = new Point(0, 0);
 // Zoom values for offsetting the mouse cursor positioning
 
 //#endregion
-
 //#region OPTIONS
 
 /**
@@ -398,7 +389,6 @@ var testCaseToggle = false;
 var errorActive = false;
 
 //#endregion
-
 //#region DELETE
 
 /**
@@ -427,7 +417,6 @@ var canPressDeleteBtn = false;
 var hasPressedDelete = false;
 
 //#endregion
-
 //#region KEY
 
 /**
@@ -465,8 +454,6 @@ var settings = {
         timestamps: {}
     }
 };
-
-
 
 /**
  * @description Used to see if still on the same resize, history will be overwritten so only the final size is saved. Mouse or keypress will reset counter.
