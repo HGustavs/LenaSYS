@@ -4169,6 +4169,11 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       templateid: templateNo,
       fileSizes: fileSize
     }
+    AJAXService("GITCODEEXAMPLE", {
+      courseid: cid,
+      githubURL: githubURL,
+      codeExampleData: AllJsonData
+    }, "SECTION");
     //Send data to sectioned.php as JSON through POST and GET
     fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
        method: 'POST',

@@ -66,6 +66,8 @@ $motd=getOP('motd');
 $tabs=getOP('tabs');
 $exampelid=getOP('exampleid');
 $url=getOP('url');
+$githubURL=getOP('githubURL');
+$codeExampleData=getOP('codeExampleData');
 
 $lid=getOP('lid');
 $visbile = 0;
@@ -923,6 +925,19 @@ if(checklogin()){
 				} 
 			}
 		
+		} else if (strcmp($opt, "GITCODEEXAMPLE") === 0) {
+			$codeExamplesContent = json_decode($codeExampleData);
+			
+			if(!is_dir($pathCoursesRoot)){
+				mkdir($pathCoursesRoot, 0775, true);
+			}
+			// Creates the directory for the corresponding course if it doesnt exist.
+			if (!file_exists($path)) {
+				mkdir($path, 0775, true);
+			}
+			if(is_dir($path)){
+				echo "Successfully created courses folder or it already exists!";
+			}
 		} else if (strcmp($coursevers, "null")!==0) {
 			// Get every coursevers of courses so we seed groups to every courseversion
 			$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
