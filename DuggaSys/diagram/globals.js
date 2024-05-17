@@ -214,9 +214,9 @@ var lastClickedElement = null;
  */
 var determinedLines = null;
 
-// TODO: What does deltaExeeded do?
 /**
- * @description If mouse has moved out of bounds?
+ * @description If mouse has moved from its position between mouse press and release.
+ * @see calculateDeltaExeeded
  * @see maxDeltaBeforeExeeded
  * @type {boolean}
  */
@@ -329,14 +329,16 @@ var desiredZoomfact = 1.0;
  */
 var zoomfact = 1.0;
 
-//TODO: scrollx, scrolly
 /**
+ * @description Position of the camera in the diagram
  * @type {number}
  */
 var scrollx = 100, scrolly = 100;
 
-//TODO: sscrollx, sscrolly
 /**
+ * @description Saved position of camera at start of move. Used to update camera when moving it with the mouse.
+ * @see scrollx
+ * @see scrolly
  * @type {number}
  */
 var sscrollx, sscrolly;
