@@ -96,7 +96,7 @@
 							inputField("db-password", "MySQL user password:");
 
 							checkbox("distEnvironment", "Use Distributed Environment");
-							checkbox("iniDatabaseTransfer", "Initialize database as transaction");
+							checkbox("Verbose", "Verbose");
 							checkboxWithWarning("overwriteDatabase", "Overwrite existing database and user names", "WARNING! Overwriting databases and users cannot be undone!");
 						?>
 					</div>
