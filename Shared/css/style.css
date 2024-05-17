@@ -1900,7 +1900,7 @@ div .navButt:hover {
   max-height: 80%;
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-  width:494px;
+  width: fit-content;
 }
 
 #receiptBox{
