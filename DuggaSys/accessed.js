@@ -98,12 +98,14 @@ function showCreateUserPopup() {
 	$("#createUser").css("display", "flex");
 }
 
-function showAddUserPopup() {
+function showAddUserPopup(id) {
 	$("#addUser").css("display", "flex");
+	loadUsersToDropdown(id);
 }
 
-function showRemoveUserPopup() {
+function showRemoveUserPopup(id) {
 	$("#removeUser").css("display", "flex");
+	loadUsersToDropdown(id);
 }
 
 function showCreateClassPopup() {
@@ -128,6 +130,14 @@ function hideCreateClassPopup() {
 
 function hideEditUserPopup(id) {
 	$("#editUser").css("display", "none");
+}
+
+function hideAddUserPopup() {
+	$("#addUser").css("display", "none");
+}
+
+function hideRemoveUserPopup() {
+	$("#removeUser").css("display", "none");
 }
 
 //----------------------------------------------------------------------------
