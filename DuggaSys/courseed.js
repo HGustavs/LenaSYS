@@ -836,6 +836,16 @@ function quickValidateForm(formid, submitButton) {
 	return false;
 }
 
+//adds keypress enter to the form when creating a new course. Calls the same function as clicking the submit-button
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('newCourse').addEventListener('keypress', function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            validateForm('newCourse');
+        }
+    });
+});
+
 //Validates whole form
 function validateForm(formid) {
 	const formContainer = document.getElementById(formid);
