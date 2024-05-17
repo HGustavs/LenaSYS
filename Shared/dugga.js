@@ -1071,6 +1071,16 @@ function AJAXService(opt,apara,kind)
 					success: returnedCourse
 				});
 				break;
+			case "SPECIALUPDATE":
+				$.ajax({
+					//url: "../DuggaSys/microservices/courseedService/specialUpdate_ms.php",
+					url: "courseedservice.php",
+					type: "POST",
+					data: "opt=" + opt + para,
+					dataType: "json",
+					success: returnedCourse
+				});
+				break;
 			default:
 				$.ajax({
 					url: "courseedservice.php",
