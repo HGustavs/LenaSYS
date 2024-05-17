@@ -1,9 +1,10 @@
 class LoadingButton {
-  constructor(label, onClick, style = 'float:right; margin-right:5px;', color = '') {
+  constructor(label, onClick, style = 'float:right; margin-right:5px;', color = '', buttonId = '') {
     this.label = label;
     this.onClick = onClick;
     this.style = style;
     this.color = color;
+    this.id = buttonId;
     this.isLoading = false;
     this.buttonElement = null;
   }
@@ -15,6 +16,7 @@ class LoadingButton {
     this.buttonElement.classList.add('submit-button');
     this.buttonElement.style = this.style;
     this.buttonElement.style.backgroundColor = this.color;
+    this.buttonElement.id = this.id;
     this.buttonElement.textContent = this.label;
     this.buttonElement.onclick = () => this.handleOnClick();
     container.appendChild(this.buttonElement);
@@ -61,12 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
       containerId: "buttonContainerSaveRepo", // Container ID
       // style: 'float:right; margin-right:5px;', // Optional: Custom styling
       // color: 'Blue' // Optional: Custom color
+      buttonId: "saveRepo" // Optional: Custom ID
     },
     saveCourse: {
       action: () => validateForm,
       argument: "editCourse",
       buttonLabel: "Save",
-      containerId: "buttonContainerSaveCourse"
+      containerId: "buttonContainerSaveCourse",
+      buttonId: "saveCourse" 
     },
     deleteCourse: {
       action: () => openDeleteForm,
@@ -81,12 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Loop through the actions and create a button for each, if the container exists
   Object.keys(actions).forEach((key) => {
-    const { action, argument, buttonLabel, containerId, style, color } = actions[key];
+    const { action, argument, buttonLabel, containerId, style, color, buttonId } = actions[key];
     const container = document.getElementById(containerId);
     if (container) {
       const button = new LoadingButton(buttonLabel, (stopLoadingCallback) => {
         asyncActionRunner(action(), argument, stopLoadingCallback);
-      }, style, color);
+      }, style, color, buttonId);
       button.render(containerId);
     }
   });
