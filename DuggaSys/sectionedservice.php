@@ -767,7 +767,7 @@ if(checklogin()){
 								}	
 							}
 							if($exist==false){										
-								$query = $pdo->prepare("SELECT boxid AS bid WHERE exampleid = :eid AND filename=:boxName;");
+								$query = $pdo->prepare("SELECT boxid AS bid FROM box WHERE exampleid = :eid AND filename=:boxName;");
 								$query->bindParam(':eid', $eid); 
 								$query->bindParam(':boxName', $boxName);
 								$query->execute();

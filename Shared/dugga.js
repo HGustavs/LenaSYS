@@ -1164,25 +1164,21 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "sectionedservice.php"; //change when MS is created
 				break;
 			case "CREGITEX":
-				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php";
 				break;
 			case "GRP":
 				serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
 				break;
 			case "CHGVERS":
-				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateActiveCourseVersion_sectioned_ms.php";
 				break;
 			case "get":	
 				serviceURL= "sectionedservice.php"; // Change when working
 				// serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";
 				break;
-				case "GETUF":	
+			case "GETUF":	
 				// serviceURL= "sectionedservice.php"; // Change when working
-				serviceURL= "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php";
-				break;
-				case "GETUF":	
-				// serviceURL= "sectionedservice.php"; // Change when working
-				serviceURL= "../DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php";
 				break;
 			default:
 				serviceURL= "sectionedservice.php";
