@@ -155,6 +155,7 @@ function updateCSSForAllElements() {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
+                            weakKeyUnderline.style.stroke = color.BLACK;
                             if (element.fill == color.BLACK) {
                                 weakKeyUnderline.style.stroke = color.WHITE;
                             }
