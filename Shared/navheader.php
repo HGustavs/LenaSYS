@@ -67,7 +67,7 @@
 					$checkIfGithubURL = null;
 				}
 				if(isset($row['updated'])) {
-					$updateTimer = $row['updated'];
+					$updateTime = $row['updated'];
 				} 
 				else {
 					$updateTime = "No data found for the given course ID";
