@@ -178,7 +178,6 @@ function mouseEnterSeq(event) {
  */
 function snapSAToLifeline(targetId) {
     const lifeline = document.getElementById(targetId);
-
     if (lifeline) {
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
