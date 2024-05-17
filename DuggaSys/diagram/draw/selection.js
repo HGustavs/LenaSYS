@@ -3,62 +3,56 @@
  * @return The populated string with the selection box rect.
  */
 function drawSelectionBox() {
-    let points;
     let str = '';
+    const margin = 5;
     deleteBtnX = 0;
     deleteBtnY = 0;
-    deleteBtnSize = 0;
+    deleteBtnSize = 20 * zoomfact;
 
-    if (((context.length != 0 || contextLine.length != 0) && mouseMode != mouseModes.EDGE_CREATION) ||
-        (mouseMode == mouseModes.EDGE_CREATION && context.length == 0 && contextLine.length != 0)
-    ) {
-        var lowX, highX, lowY, highY;
-        // Calculate the bounding coordinates
-        // Initially set to very large/small values
-        lowX = lowY = Number.POSITIVE_INFINITY;
-        highX = highY = Number.NEGATIVE_INFINITY;
+    const minProperty = (arr, property) => arr.reduce((prev, current) => (prev[property] < current[property]) ? prev : current)[property];
+    const maxProperty = (arr, property) => arr.reduce((prev, current) => (prev[property] > current[property]) ? prev : current)[property];
 
-        // Loop through all elements and lines to calculate the bounding box
-        context.forEach(item => {
-            lowX = Math.min(lowX, item.x1);
-            highX = Math.max(highX, item.x2);
-            lowY = Math.min(lowY, item.y1);
-            highY = Math.max(highY, item.y2);
-        });
-        contextLine.forEach(line => {
-            var points = document.getElementById(line.id).getAttribute('points').split(' ');
-            points.forEach(point => {
-                var [x, y] = point.split(',').map(Number);
-                lowX = Math.min(lowX, x);
-                highX = Math.max(highX, x);
-                lowY = Math.min(lowY, y);
-                highY = Math.max(highY, y);
-            });
-        });
+    if (((context.length || contextLine.length) && mouseMode != mouseModes.EDGE_CREATION)) {
+        let selectionBox;
+        const tempLines = [];
 
-        // Apply a margin around the selection box
-        var margin = 5;
-        lowX -= margin;
-        highX += margin;
-        lowY -= margin;
-        highY += margin;
+        if (context.length) {
+            selectionBox = Rect.FromPoints(
+                new Point(minProperty(context, 'x1') - margin, minProperty(context, 'y1') - margin),
+                new Point(maxProperty(context, 'x2') + margin, maxProperty(context, 'y2') + margin),
+            );
+        }
+        if (contextLine.length) {
+            for (let i = 0; i < contextLine.length; i++) {
+                if (contextLine[i] && contextLine[i].kind) {
+                    if (contextLine[i].kind === lineKind.DOUBLE) {
+                        tempLines.push(document.getElementById(contextLine[i].id + "-1").getBoundingClientRect());
+                        tempLines.push(document.getElementById(contextLine[i].id + "-2").getBoundingClientRect());
+                    } else {
+                        tempLines.push(document.getElementById(contextLine[i].id).getBoundingClientRect());
+                    }
+                }
+            }
+            let selectionBoxLines = Rect.FromPoints(
+                new Point(minProperty(tempLines, 'left') - margin, minProperty(tempLines, 'top') - margin),
+                new Point(maxProperty(tempLines, 'right') + margin, maxProperty(tempLines, 'bottom') + margin),
+            );
+            selectionBox.x = Math.min(selectionBox.x, selectionBoxLines.x);
+            selectionBox.y = Math.min(selectionBox.y, selectionBoxLines.y);
+            selectionBox.width = Math.max(selectionBox.width, selectionBoxLines.width);
+            selectionBox.height = Math.max(selectionBox.height, selectionBoxLines.height);
+        }
+        selectionBoxLowX = selectionBox.left;
+        selectionBoxHighX = selectionBox.right;
+        selectionBoxLowY = selectionBox.top;
+        selectionBoxHighY = selectionBox.bottom;
+        str += `<rect width='${selectionBox.width}' height='${selectionBox.height}' x= '${selectionBox.x}' y='${selectionBox.y}' style="fill:transparent; stroke-width:1.5; stroke:${color.SELECTED};" />`;
 
-        // Draw the selection box
-        str += `<rect width='${highX - lowX}' height='${highY - lowY}' x='${lowX}' y='${lowY}' style="fill:transparent; stroke-width:1.5; stroke:${color.SELECTED};" />`;
-
-        // Calculate the size of the delete button based on the smaller dimension of the selection box
-        let width = highX - lowX;
-        let height = highY - lowY;
-        deleteBtnSize = Math.min(width, height) / 5; 
-        deleteBtnSize = Math.max(15, Math.min(40, deleteBtnSize));  // Clamp the size between 15 and 40
-
-        // Place the delete button outside the top-right corner of the selection box
-        deleteBtnX = highX; 
-        deleteBtnY = lowY - deleteBtnSize;  
-
-        // Draw delete button lines
-        str += `<line x1='${deleteBtnX}' y1='${deleteBtnY}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY + deleteBtnSize}' style="stroke:black; stroke-width:3"/>`;
-        str += `<line x1='${deleteBtnX}' y1='${deleteBtnY + deleteBtnSize}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY}' style="stroke:black; stroke-width:3"/>`;
+        const topRight = selectionBox.topRight;
+        deleteBtnX = topRight.x;
+        deleteBtnY = topRight.y - deleteBtnSize;
+        str += `<line x1='${deleteBtnX}' y1='${deleteBtnY}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY + deleteBtnSize}' class= "BlackthemeColor"/>`;
+        str += `<line x1='${deleteBtnX}' y1='${deleteBtnY + deleteBtnSize}' x2='${deleteBtnX + deleteBtnSize}' y2='${deleteBtnY}' class= "BlackthemeColor"/>`;
     }
     return str;
 }
