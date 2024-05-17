@@ -1,6 +1,6 @@
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
- * @param {MouseEvent} event Triggered mouse event.
+ * @param {WheelEvent} event - The mouse wheel event object.
  */
 function mwheel(event) {
     event.preventDefault();
@@ -386,6 +386,8 @@ function checkDeleteBtn() {
 
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
+ *  @param {number} mouseX - The x-coordinate of the mouse position.
+ *  @param {number} mouseY - The y-coordinate of the mouse position.
  */
 function mouseOverSelection(mouseX, mouseY) {
     if (context.length > 0 || contextLine.length > 0) {
