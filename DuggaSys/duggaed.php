@@ -75,8 +75,8 @@ $vers=getOPG('coursevers');
 
     <!-- Edit Dugga Dialog START -->
   	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
-        <div class='loginBox' style='width:464px; overflow:hidden;'>
-        		<div class='loginBoxheader'>
+        <div class='formBox' style='width:464px; overflow:hidden;'>
+        		<div class='formBoxHeader'>
         			<h3 id="editDuggaTitle">Edit Dugga</h3>
         			<div class='cursorPointer' onclick='closeWindows();'>x</div>
         		</div>
@@ -118,8 +118,8 @@ $vers=getOPG('coursevers');
 
     <!-- Confirm Section Dialog START -->
   		<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
-  	    <div class='loginBox' style='width:460px;'>
-  				<div class='loginBoxheader'>
+  	    <div class='formBox' style='width:460px;'>
+  				<div class='formBoxHeader'>
   				    <h3>Confirm deletion</h3>
   				    <div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
   				</div>
@@ -136,8 +136,8 @@ $vers=getOPG('coursevers');
 
     <!-- Result Dialog START -->
     <div id='resultpopover' class='loginBoxContainer' style='display:none; overflow:hidden; z-index: 9999;'>
-      <div class='loginBox' id='resultpopoverBox' style='overflow:auto;';>
-        <div class='loginBoxheader'>
+      <div class='formBox' id='resultpopoverBox' style='overflow:auto;';>
+        <div class='formBoxHeader'>
           <h3 id="resultpopoverTitle">PREVIEW</h3>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
@@ -150,8 +150,8 @@ $vers=getOPG('coursevers');
 
   	<!-- Edit Variant Dialog START -->
   	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' id='variantBox'>
-        <div class='loginBoxheader'>
+      <div class='formBox' id='variantBox'>
+        <div class='formBoxHeader'>
           <h3 id="editVariantTitle">Edit Variant</h3>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
