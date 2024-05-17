@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	}
 
 	// Add eventlistener to the last checkbox, this is the test-data checkbox from page 5.
-	checkboxToggle.addEventListener('click', updateCheckboxState());
+	checkboxToggle.addEventListener('click', updateCheckboxState);
 
 	const traceElements = document.querySelectorAll('.trace');
 
