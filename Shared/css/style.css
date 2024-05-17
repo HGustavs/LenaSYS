@@ -1902,7 +1902,7 @@ div .navButt:hover {
 
 .loginBox,
 .logoutBox,
-.formBox{
+.formBox {
   padding: 4px;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
