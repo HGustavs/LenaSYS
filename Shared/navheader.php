@@ -193,6 +193,7 @@
 							pdoConnect();
 
 							//Get version name and coursecode from the correct version of the course
+							global $pdo;
 							$query = $pdo->prepare("SELECT versname, coursecode, startdate FROM vers WHERE cid=:cid AND vers=:vers");
 							$query->bindParam(":cid", $_SESSION["courseid"]);
 							$query->bindParam(':vers', $_SESSION['coursevers']);
