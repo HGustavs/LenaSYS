@@ -241,14 +241,16 @@ __Sectioned Service:__
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- setVisibleListentries_ms.php __==finished==__ Previously named: "updateVisibleListentries_ms.php". 
+- updateVisibleListentries_ms.php __==finished==__ Previously named: "setVisibleListentries_ms.php". 
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateActiveCourseVersion_sectioned_ms.php __==finished==__ Previously named: "changeActiveCourseVersion_sectioned_ms.php".
 - readCourseVersions_ms.php __==finished==__ Previously named: "getCourseVersions_ms.php". 
 - getGitReference_ms.php __==UNFINISHED==__  
 - readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
+- createGithubCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
+
 
 <br>
 
@@ -3382,6 +3384,219 @@ _SELECT_ operation on the table __'userduggafeedback'__ to calculate the average
 
 ```sql
 SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
+```
+
+<br>
+
+---
+
+<br>
+
+### createGithubCodeExample_ms.php
+__createGithubCodeExample_ms.php__ creates new code examples if they are not already stored in the database and updates existing code examples if they are.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, createNewCodeExample_ms.php, createNewListEntry_ms.php, retrieveSectionedService_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'listentries'__ to retrieve the values of the columns:
+- cid
+- githubDir
+- vers
+
+- Selects rows where the column 'lid' matches the provided value ':lid'.
+
+```sql
+SELECT cid, githubDir, vers FROM listentries WHERE lid=:lid;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve the value of the column:
+- count (the number of rows that match the conditions)
+
+- Selects rows where the column 'cid' matches the provided value ':cid'.
+- And the column 'examplename' matches the provided value ':examplename'.
+- And the column 'cversion' matches the provided value ':vers'.
+
+```sql
+SELECT COUNT(*) AS count FROM codeexample WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;
+```
+
+
+_SELECT_ operation on the table __'listentries'__ to retrieve the value of the column:
+- pos
+
+- Selects rows where the column 'cid' matches the provided value ':cid'.
+- Orders the results by the column 'pos' in descending order.
+
+```sql
+SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve the value of the column:
+- LatestExID (the maximum value of 'exampleid')
+
+```sql
+SELECT MAX(exampleid) as LatestExID FROM codeexample;
+```
+
+
+_INSERT_ operation on the table __'box'__ to insert values into the columns:
+- boxid
+- exampleid
+- boxtitle
+- boxcontent
+- filename
+- settings
+- wordlistid
+- fontsize
+
+```sql
+INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve the value of the column:
+- exampleid (renamed as 'eid')
+
+- Selects rows where the column 'cid' matches the provided value ':cid'.
+- And the column 'examplename' matches the provided value ':examplename'.
+- And the column 'cversion' matches the provided value ':vers'.
+
+```sql
+SELECT exampleid AS eid FROM codeexample WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve the value of the column:
+- boxCount (the number of rows that match the condition)
+
+- Selects rows where the column 'exampleid' matches the provided value 'eid'.
+
+```sql
+SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;
+```
+
+
+_SELECT_ operation on the table __'gitFiles'__ to retrieve the values of all columns:
+
+- Selects rows where the column 'cid' matches the provided value ':cid'.
+- And the column 'fileName' matches the provided pattern ':fileName'.
+
+```sql
+SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;
+```
+
+
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- visible
+
+- Updates rows where the column 'cid' matches the provided value ':cid'.
+- And the column 'vers' matches the provided value ':cvs'.
+- And the column 'entryname' matches the provided value ':entryname'.
+
+```sql
+UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve the value of the column:
+- filename
+
+- Selects rows where the column 'exampleid' matches the provided value ':eid'.
+
+```sql
+SELECT filename FROM box WHERE exampleid = :eid;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve the value of the column:
+- boxid (renamed as 'bid')
+
+- Selects rows where the column 'exampleid' matches the provided value ':eid'.
+- And the column 'filename' matches the provided value ':boxName'.
+
+```sql
+SELECT boxid AS bid FROM box WHERE exampleid = :eid AND filename = :boxName;
+```
+
+
+_DELETE_ operation on the table __'box'__ to delete rows where the conditions are met.
+
+- Deletes rows where the column 'exampleid' matches the provided value ':eid'.
+- And the column 'filename' matches the provided value ':boxName'.
+
+```sql
+DELETE FROM box WHERE exampleid = :eid AND filename = :boxName;
+```
+
+
+_UPDATE_ operation on the table __'box'__ to update the value of the column:
+- boxid
+
+- Updates rows where the column 'exampleid' matches the provided value ':eid'.
+- And the column 'boxid' matches the provided value ':oldBoxID'.
+
+```sql
+UPDATE box SET boxid=:newBoxID WHERE exampleid = :eid AND boxid=:oldBoxID;
+```
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
+- templateid
+
+- Updates rows where the column 'exampleid' matches the provided value ':eid'.
+
+```sql
+UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
+```
+
+
+
+_SELECT_ operation on the table __'box'__ to retrieve the value of the column:
+- filename
+
+- Selects rows where the column 'exampleid' matches the provided value ':eid'.
+
+```sql
+SELECT filename FROM box WHERE exampleid = :eid;
+```
+
+
+_SELECT_ operation on the table __'box'__ to retrieve the maximum value of the column:
+- boxid
+
+- Selects rows where the column 'exampleid' matches the provided value ':eid'.
+
+```sql
+SELECT MAX(boxid) FROM box WHERE exampleid = :eid;
+```
+
+
+_INSERT_ operation on the table __'box'__ to insert values into the columns:
+- boxid
+- exampleid
+- boxtitle
+- boxcontent
+- filename
+- settings
+- wordlistid
+- fontsize
+
+```sql
+INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);
+```
+
+
+_UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
+- templateid
+
+- Updates rows where the column 'exampleid' matches the provided value ':eid'.
+
+```sql
+UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
 ```
 
 <br>
