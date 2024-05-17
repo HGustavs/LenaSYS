@@ -43,8 +43,29 @@ $testsData = array(
             array(
                 // Filter what output to use in assert test, use none to use all ouput from service
                 'entries' => array(
-                    'lid',
-                    'tabs',
+                    'entries',
+                    'debug',
+                    'writeaccess',
+                    'studentteacher',
+                    'readaccess',
+                    'coursename',
+                    'coursevers',
+                    'coursecode',
+                    'courseid',
+                    'links',
+                    'duggor',
+                    'results',
+                    'versions',
+                    'codeexamples',
+                    'unmarked',
+                    'startdate',
+                    'enddate',
+                    'groups',
+                    'grpmembershp',
+                    'grplst',
+                    'userfeedback',
+                    'feedbackquestion', 
+                    'avgfeedbackscore' 
                 ),
                 'debug'
             )
