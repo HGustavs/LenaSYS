@@ -2283,13 +2283,13 @@ input.inactive-button {
   width: 100%;
 }
 
-.inputwrapper{
+.inputwrapper {
   display: flex;
   justify-content: space-between;
   width: 445px;
   border-radius: 0px;
 }
-.inputwrapper select{
+.inputwrapper select {
   border-radius: 0px;
 }
 
@@ -3287,6 +3287,16 @@ div.submit-button:disabled {
   width: 160px !important;
   height: 48px !important;
   line-height: 48px !important;
+}
+
+/* Reusable form body elements */
+
+.formBody {
+  padding:5px;
+}
+
+.formFooter {
+  padding:5px;
 }
 
 /* Form Pointing Dialogs */
