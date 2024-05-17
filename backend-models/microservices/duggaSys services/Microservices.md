@@ -538,6 +538,7 @@ UPDATE user SET class=:class WHERE uid=:uid;
 
 ### updateUserCourse_ms.php
 __Include original service files:__ sessions.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -581,6 +582,7 @@ UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;
 
 ### createClass_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -609,6 +611,7 @@ INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo,
 __createUser_ms.php__ handles adding or updating user records and their enrollments in specific courses. The microservice checks if a user exists based on their username, creates new users if they don't exist, and then links them to courses in the database. If users already exist, it updates their course enrollment details. So this microservice is not a pure "create" operation but it is the main function.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -662,7 +665,7 @@ _INSERT_ operation into the table __'user_course'__ to add a new row or update a
 - vers
 - vershistory
 
-- The operation adds a new row with specified values. If a row with the same primary key already exists (triggered by a duplicate key error), it updates the `vers` field to `:avers` and appends `:bvers` to the existing `vershistory`, separated by a comma.
+- The operation adds a new row with specified values. If a row with the same primary key already exists (triggered by a duplicate key error), it updates the 'vers' field to ':avers' and appends ':bvers' to the existing 'vershistory', separated by a comma.
 
 ```sql
 INSERT INTO user_course (uid, cid, access, term, creator, vers, vershistory) VALUES (:uid, :cid, 'R', :term, :creator, :vers, '')
@@ -677,6 +680,7 @@ ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bve
 
 ### retrieveAccessedService_ms.php
 __Include original service files:__ basic.php
+
 __Include microservice:__ retrieveUsername_ms.php
 
 __Querys used in this microservice:__
@@ -746,7 +750,7 @@ _SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
 - startdate
 - enddate
 
-- The results are filtered to include only those entries where the 'cid' value matches a specified value (`:cid`), which is passed as a parameter to the query.
+- The results are filtered to include only those entries where the 'cid' value matches a specified value (':cid'), which is passed as a parameter to the query.
 
 ```sql
 SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate FROM vers WHERE cid=:cid;
@@ -782,6 +786,7 @@ SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE 
 __updateCodeExampleTemplate_ms.php__ is used on DuggaSys when you create a new code example for a course and chose a template to display that code. The microservice selects the selected template and retrieves a CSS-file containing the template to display on the page. The code for displaying different CSS-files can be found in codeviewerService.php and dugga.js.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservices:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -852,7 +857,7 @@ _UPDATE_ operation on the table __'codeexample'__ to update the values of the co
 
 - The 'exampleid' value in the __'codeexample'__ table matches the value bound to :exampleid,
 - The 'cid' value in the __'codeexample'__ table matches the value bound to :cid, and
-- The 'cversion' value in the 'codeexample' table matches the value bound to :cvers.
+- The 'cversion' value in the __'codeexample'__ table matches the value bound to :cvers.
 
 ```sql
 UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
@@ -895,8 +900,8 @@ INSERT INTO impwordlist(exampleid,word,uid) VALUES (:exampleid,:word,:uid);
 
 _DELETE_ operation on the table __'impwordlist'__ to delete rows where:
 
-- The 'word' value in the 'impwordlist' table matches the value bound to :word,
-- The 'exampleid' value in the 'impwordlist' table matches the value bound to :exampleid.
+- The 'word' value in the __'impwordlist'__ table matches the value bound to :word,
+- The 'exampleid' value in the __'impwordlist'__ table matches the value bound to :exampleid.
 
 ```sql
 DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
@@ -955,6 +960,7 @@ DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exam
 
 ### updateBoxTitle_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php 
 
 __Querys used in this microservice:__
@@ -974,6 +980,7 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 
 ### deleteCodeExample_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -1202,6 +1209,7 @@ _WORK PAUSED given the current non-functional state of this service._
 
 ### createNewCourse_ms.php
 __Include original service files:__ sessions.php
+
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
@@ -1228,6 +1236,7 @@ INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) 
 __createCourseVersion_ms.php__ creates a new version of an existing course.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
@@ -1262,6 +1271,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 ### updateCourseVersion_ms.php
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
+
 __Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
@@ -1293,6 +1303,7 @@ _SELECT_ operation on the table __'user'__ to get the value of the column:
 __updateActiveCourseVersion_courseed_ms.php__ takes an existing course and changes content of the activeversion column.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
@@ -1312,6 +1323,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 
 ### copyCourseVersion_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php, createNewListEntry_ms.php, createNewCodeExample_ms.php
 
 __Querys used in this microservice:__
@@ -1640,6 +1652,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 
 ### updateCourse_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
@@ -1675,6 +1688,7 @@ __createMOTD_ms.php__ is called upon when the message of the day is changed in t
 The user must be a super user to be able to do this!
 
 __Include original service files:__ sessions.php
+
 __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
 
@@ -1698,6 +1712,7 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 __deleteCourseMaterial_ms.php__ deletes all courses and course material where visibility is 3.
 
 __Include original service files:__ sessions.php
+
 __Include microservice:__ retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
@@ -1880,6 +1895,7 @@ DELETE course FROM course WHERE visibility=:deleted;
 
 ### retrieveCourseedService_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -2024,6 +2040,7 @@ _WORK PAUSED for development of microservices. Will continue when the service is
 
 ### createDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
@@ -2054,6 +2071,7 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 
 ### updateDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
@@ -2081,13 +2099,13 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 
 ### deleteDugga_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
 
 _DELETE_ operation on the table __'useranswer'__ to remove rows where the column:
-- quiz
-matches a specific value (`:qid`).
+- quiz (matches a specific value (':qid')).
 
 ```sql
 DELETE FROM useranswer WHERE quiz=:qid;
@@ -2095,8 +2113,7 @@ DELETE FROM useranswer WHERE quiz=:qid;
 
 
 _DELETE_ operation on the table __'quiz'__ to remove rows where the column:
-- id
-matches a specific value (`:qid`).
+- id (matches a specific value (':qid')).
 
 ```sql
 DELETE FROM quiz WHERE id=:qid;
@@ -2110,6 +2127,7 @@ DELETE FROM quiz WHERE id=:qid;
 
 ### createDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
@@ -2133,6 +2151,7 @@ INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (:qi
 
 ### updateDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
@@ -2154,6 +2173,7 @@ UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer 
 
 ### deleteDuggaVariant_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
 __Querys used in this microservice:__
@@ -2250,6 +2270,7 @@ SELECT vid, quizID, param, variantanswer, modified, disabled FROM variant WHERE 
 
 ### deleteFileLink_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveFileedService_ms.php
 
 __Querys used in this microservice:__
@@ -2293,6 +2314,7 @@ DELETE FROM fileLink WHERE fileid=:fid;
 __updateFileLink_ms.php__ handles writing to files and updates filesize in fileLink.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveFileedService_ms.php
 
 __Querys used in this microservice:__
@@ -2359,6 +2381,7 @@ SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid 
 
 ### readCourseID_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ insertIntoSQLite_ms.php
 
 __Querys used in this microservice:__
@@ -2413,6 +2436,7 @@ UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :ci
 Updates the metadata from the github repo if there's been a new commit.
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
+
 __Include microservice:__ refreshCheck_ms.php, clearGitFiles_ms.php
 
 __Querys used in this microservice:__
@@ -2506,6 +2530,7 @@ UPDATE course SET updated=:parsedTime WHERE cid=:cid;
 __updateThrottle_ms-php__ checks if database updates for a course are allowed by comparing the last update time against predefined intervals and user privileges. It enforces cooldowns using session variables to prevent too frequent updates. Superusers are granted shorter update intervals.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservices:__ newUpdateTime_ms.php
 
 __Querys used in this microservice:__
@@ -2563,10 +2588,10 @@ __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 __Querys used in this microservice:__
 
 _SELECT_ operation on the table __'fileLink'__ to count the number of entries where:
-- `cid` matches `:cid`
-- `filename` matches `:filename`
-- `kind` matches `:kindid`
-- `path` matches `:filePath`
+- 'cid' matches ':cid'
+- 'filename' matches ':filename'
+- 'kind' matches ':kindid'
+- 'path' matches ':filePath'
 
 ```sql
 SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=:kindid AND path=:filePath;
@@ -2636,7 +2661,7 @@ __Purpose:__ This function automates the updating and storage of files from GitH
 <br>
 
 ### readIndexFile_ms.php
-__readIndexFile_ms.php__ retrieves the contents of an index file from a specific URL. It appends `/index.txt` to the URL, uses cURL to make a request, and processes the response.
+__readIndexFile_ms.php__ retrieves the contents of an index file from a specific URL. It appends '/index.txt' to the URL, uses cURL to make a request, and processes the response.
 
 __Includes neither original service files nor microservices.__
 
@@ -2691,6 +2716,7 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 __readHighscore_ms.php__ is managing user sessions, handling errors, fetching highscores (through 'retrieveHighscoreService_ms.php'), and communicating these results back to the client.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservices:__ retrieveHighscoreService_ms.php 
 
 __Includes neither original service files nor microservices.__
@@ -2768,6 +2794,7 @@ ProfileService handles password changes and challenge questions. To access these
 __updateSecurityQuestion_ms.php__ handles the updating of security questions for users. Changes to security questions are permitted only for non-superuser/non-teacher users and only if the correct password is entered.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
 
 __Querys used in this microservice:__
@@ -2806,6 +2833,7 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 __updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
 
 __Querys used in this microservice:__
@@ -2881,6 +2909,7 @@ The microservice provide direct feedback from the server about the result of the
 __readUserAnswer_ms.php__ manages and presents information about submitted duggor.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveResultedService_ms.php
 
 __Querys used in this microservice:__
@@ -2961,6 +2990,7 @@ The microservice provides feedback about submissions and associated metadata for
 __readGroupValues_ms.php__ is called upon when a group is clicked on.
 
 __Include original service files:__ sessions.php
+
 __Include microservices:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -2984,6 +3014,7 @@ SELECT groupKind,groupVal FROM groups;
 __readCourseGroupsAndMembers_ms.php__ returns a list of group member related to the provided course id and course version.
 
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
+
 __Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3011,6 +3042,7 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3042,6 +3074,7 @@ DELETE FROM listentries WHERE lid = :lid
 Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database).
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3059,6 +3092,7 @@ _UPDATE_ operation on the table __'listentries'__ to update rows where:
 
 ### createListentry_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, createNewListentry_ms.php, createNewCodeExample_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3112,6 +3146,7 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 Updates the order of the listentries of a course. Not to be confused with __updateListentrie_ms.php__.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3133,6 +3168,7 @@ UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
 
 ### updateListentries_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3195,6 +3231,7 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 
 ### updateListentriesTabs_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3216,6 +3253,7 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 
 ### updateListentriesGradesystem_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3235,6 +3273,7 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 
 ### updateVisibleListentries_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3256,6 +3295,7 @@ UPDATE listentries SET visibility = :listentryId;
 __updateQuizDeadline_ms.php__ updates the deadline for a quiz (also referred to as a dugga).
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3278,6 +3318,7 @@ UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=
 __updateCourseVersion_sectioned_ms.php__ is used for editing a course version. The user must either have write permissions, be a superuser, or be a teacher.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, setAsActiveCourse_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3304,6 +3345,7 @@ UPDATE vers SET versname=:versname, startdate=:startdate, enddate=:enddate, motd
 __updateActiveCourseVersion_sectioned_ms.php__ updates the active version of a course.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3325,6 +3367,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 __readCourseVersions_ms.php__ fetches all course versions.
 
 __Include original service files:__ sessions.php
+
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
@@ -3366,6 +3409,7 @@ Uses service __selectFromTableGitFiles__ to _get_ information it requires from _
 __readUserDuggaFeedback_ms.php__ retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3399,6 +3443,7 @@ SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 __createGithubCodeExample_ms.php__ creates new code examples if they are not already stored in the database and updates existing code examples if they are.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, createNewCodeExample_ms.php, createNewListEntry_ms.php, retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3610,6 +3655,7 @@ UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
 
 ### readListEntries_ms.php
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 __Includes neither original service files nor microservices.__
@@ -3641,6 +3687,7 @@ Parameters passed to 'retrieveSectionedService_ms.php':
 __readAllCourseVersions_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ retrieveSectionedService_ms.php
 
 __Querys used in this microservice:__
@@ -3680,6 +3727,7 @@ SELECT vers FROM vers WHERE cid=:cid
 ### retrieveSectionedService_ms.php
 
 __Include original service files:__ sessions.php, basic.php
+
 __Include microservice:__ readCourseVersions_ms.php
 
 __Querys used in this microservice:__
@@ -3966,7 +4014,7 @@ _SELECT_ operation on the table __'submission'__ to retrieve the following colum
 - segment
 - hash
 
-- The value in the 'hash' column must match the specified `:hash`. The results are ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
+- The value in the 'hash' column must match the specified ':hash'. The results are ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
 
 ```sql
 SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash 
@@ -3991,7 +4039,7 @@ _SELECT_ operation on the table __'submission'__ to retrieve the following colum
 - segment
 - hash
 
-- The value in the 'segment' column matches the specified `:moment`. The results should be ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
+- The value in the 'segment' column matches the specified ':moment'. The results should be ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
 
 ```sql
 SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash 
