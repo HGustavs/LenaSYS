@@ -16,7 +16,7 @@ class LoadingButton {
     this.buttonElement.classList.add('submit-button');
     this.buttonElement.style = this.style;
     this.buttonElement.style.backgroundColor = this.color;
-    this.buttonElement.id = this.id;
+    if (this.id !== '') this.buttonElement.id = this.id;
     this.buttonElement.textContent = this.label;
     this.buttonElement.onclick = () => this.handleOnClick();
     container.appendChild(this.buttonElement);
@@ -79,8 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
       containerId: "buttonContainerDeleteCourse",
       style: 'float:left; margin-right:5px;',
       color: 'DarkRed'
+    },
+    submitEditCourse: {
+      action: () => validateForm,
+      argument: "editCourseVersion",
+      buttonLabel: "Save",
+      containerId: "ButtonContainerSubmitEditCourse",
+      buttonId: "submitEditCourse"
     }
-    // Add more actions here as needed
+    // Add more actions here as neededsubmitEditCourse
   };
 
   // Loop through the actions and create a button for each, if the container exists
