@@ -409,7 +409,7 @@
 
 	<!-- Cofirm Section Tab Dialog START -->
 	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox' style='width:460px;'>
+		<div class='formBox' style='width:360px;'>
 			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
