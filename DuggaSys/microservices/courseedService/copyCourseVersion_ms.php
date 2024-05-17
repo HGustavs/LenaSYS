@@ -35,11 +35,6 @@ $debug="NONE!";
 $ha=false;
 $isSuperUserVar=false;
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 
 	$ha = $isSuperUserVar;
