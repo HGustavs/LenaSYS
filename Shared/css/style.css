@@ -2189,7 +2189,7 @@ Dialog Box END
 
 .loginBoxheader,
 .logoutBoxheader,
-.formBox  {
+.formBoxHeader  {
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
@@ -2210,7 +2210,7 @@ Dialog Box END
 
 .loginBoxheader div,
 .logoutBoxheader div,
-.formBox div {
+.formBoxHeader div {
   padding: 4px 20px;
   color: rgb(255, 255, 255);
   cursor: pointer;
@@ -7605,7 +7605,7 @@ only screen and (max-device-width: 568px) {
   display: none;
 }
 
-.formBoxHeader, .fileViewHeader {
+.formBoxHeade, .fileViewHeader {
   text-align:left;
 }
 
