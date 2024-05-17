@@ -1040,6 +1040,17 @@ function AJAXService(opt,apara,kind)
 					success: returnedCourse
 				});
 				break;
+			case "UPDATEVRS":
+				$.ajax({
+					url: "../DuggaSys/microservices/courseedService/updateCourseVersion_ms.php",
+					//url: "courseedservice.php",
+					type: "POST",
+					data: "opt=" + opt + para,
+					dataType: "json",
+					async: false, // Doesn't have time to finish with async before redirect
+					success: returnedCourse
+				});
+				break;
 			case "CPYVRS":
 				$.ajax({
 					//url: "../DuggaSys/microservices/courseedService/copyCourseVersion_ms.php",
@@ -1153,9 +1164,6 @@ function AJAXService(opt,apara,kind)
 			case "UPDATEDEADLINE":
 				serviceURL= "sectionedservice.php"; // Change when working
 				// serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
-				break;
-			case "UPDATEVRS":
-				serviceURL= "sectionedservice.php"; //change when MS is created
 				break;
 			case "SETVISIBILITY":
 				serviceURL= "../DuggaSys/microservices/sectionedService/updateVisibleListentries_ms.php";
