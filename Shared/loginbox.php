@@ -26,10 +26,10 @@
   <div id="overlay" style="display:none"></div>
 
 	<!-- Login Box Start! -->
-  <!--  <div id='loginBox' class="loginBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
-    <div id='loginBox' class="loginBoxContainer" style="display:none;">
-		<div id='login' class="loginBox DarkModeBackgrounds DarkModeText">
-			<div class='loginBoxheader'>
+  <!--  <div id='loginBox' class="formBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
+    <div id='formBox' class="loginBoxContainer" style="display:none;">
+		<div id='login' class="formBox DarkModeBackgrounds DarkModeText">
+			<div class='formBoxHeader'>
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
@@ -63,7 +63,7 @@
 			</form>
 		</div>
 		<div id='newpassword' class='newpassword DarkModeBackgrounds DarkModeText' style="display:none">
-			<div class='loginBoxheader'>
+			<div class='formBoxHeader'>
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>
 			</div>
@@ -93,7 +93,7 @@
         	</div>
 		</div>
 		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
-			<div class='loginBoxheader'>
+			<div class='formBoxHeader'>
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows();resetLoginStatus()" title="Close window">x</div>
 			</div>
@@ -127,7 +127,7 @@
 			</div>
 		</div>
 		<div id='resetcomplete' class='resetcomplete' style="display:none">
-			<div class='loginBoxheader' id="completeid">
+			<div class='formBoxHeader' id="completeid">
 				<h3>Request complete</h3>
 				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
 			</div>
@@ -147,8 +147,8 @@
 	<!-- Login Box End! -->
 
   <!-- Security question notifaction -->
-    <div class="loginBox" id="securitynotification" style="display:none;">
-         <div class='loginBoxheader'>
+    <div class="formBox" id="securitynotification" style="display:none;">
+         <div class='formBoxHeader'>
           <h3>Choose a challenge question</h3>
           <div class='cursorPointer' onclick="closeWindows(); setSecurityNotifaction('off');" title="Close window">x</div>
         </div>
@@ -158,7 +158,7 @@
 
   <!-- Session expire message -->
   <div class="expiremessagebox" style="display:none">
-    <div class='loginBoxheader'>
+    <div class='formBoxHeader'>
       <h3>Alert</h3>
       <div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
     </div>
@@ -167,7 +167,7 @@
   </div>
 
   <div class="endsessionmessagebox" style="display:none">
-    <div class='loginBoxheader'>
+    <div class='formBoxHeader'>
       <h3>Alert</h3>
       <div onclick="closeWindows(); reloadPage(); processLogout()">x</div>
     </div>

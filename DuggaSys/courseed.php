@@ -71,9 +71,9 @@ if(isset($_SESSION['uid'])){
 	<!-- Server Msg END -->
 
 <!-- New Course Section Dialog START -->
-<div id='newCourse' class='loginBoxContainer display_none' tabindex="-1">
-    <div id='loginBox_DarkMode'  class='loginBox DarkModeBackgrounds DarkModeText'>
-    		<div class='loginBoxheader'>
+<div id='newCourse' class='loginBoxContainer display_none'>
+    <div id='loginBox_DarkMode'  class='formBox DarkModeBackgrounds DarkModeText'>
+    		<div class='formBoxHeader'>
     			<h3>New Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
     		</div>
@@ -111,8 +111,8 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBoxContainer display_none'>
-	<div class='loginBox DarkModeBackgrounds DarkModeText' id=loginBox_DarkMode>
-    		<div class='loginBoxheader'>
+	<div class='formBox DarkModeBackgrounds DarkModeText' id=loginBox_DarkMode>
+    		<div class='formBoxHeader'>
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
@@ -166,9 +166,9 @@ if(isset($_SESSION['uid'])){
 	<!-- Edit Server Settings START -->
 
 	<div id='editSettings' onmouseover="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd');" class='loginBoxContainer display_none'>
-	<div class='loginBox DarkModeBackgrounds DarkModeText' id='editSettings_loginBox'>
+	<div class='formBox DarkModeBackgrounds DarkModeText' id='editSettings_loginBox'>
 
-    		<div class='loginBoxheader'>
+    		<div class='formBoxHeader'>
     			<h3>Edit Server Settings</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>

@@ -63,9 +63,9 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Create user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
@@ -100,8 +100,8 @@
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox' style='width:464px;'>
+			<div class='formBoxHeader'>
 				<h3>Add class</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
@@ -124,9 +124,9 @@
 	</div>
 
 	<div id='editUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox'>
+		<div class='formBox'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Edit user (placeholder)</h3>
 					<span>First Name:</span>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -162,9 +162,9 @@
 
 
 	<div id='addUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Add user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
@@ -188,9 +188,9 @@
      	</div>
 	</div>
 	<div id='removeUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Remove user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
