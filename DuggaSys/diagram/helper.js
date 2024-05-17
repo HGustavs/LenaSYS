@@ -133,21 +133,15 @@ function entityIsOverlapping(id, x, y) {
 }
 
 /**
- * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
- * @param {StateChange} target StateChange to edit
- * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
+ * @description function to get ID from any level of nested array
+ * @param {any[]} array with id
+ * @returns the id
  */
-function appendValuesFrom(target, changes) {
-    const properties = Object.getOwnPropertyNames(changes);
-    // For every value in change
-    properties.forEach(key => {
-
-        /**
-         * If the key is not blacklisted, set to the new value
-         */
-        if (key != "id") target[key] = changes[key]; // Ignore this keys.
-    });
-    return target;
+function getIdFromArray(array) {
+    while (Array.isArray(array)) {
+        array = array[0];
+    }
+    return array;
 }
 
 /**

@@ -18,23 +18,22 @@ class StateChange {
         LINE_DELETED: {flag: 64, isSoft: false, canAppendTo: false},
 
         // Combined flags
-        ELEMENT_MOVED_AND_RESIZED: {flag: 4 | 8, isSoft: true, canAppendTo: true},
         ELEMENT_AND_LINE_DELETED: {flag: 2 | 64, isSoft: false, canAppendTo: false},
         ELEMENT_AND_LINE_CREATED: {flag: 1 | 32, isSoft: false, canAppendTo: false},
     };
 
     /**
      * @description Creates a new StateChange instance.
-     * @param {ChangeTypes} changeType What kind of change this is, see {StateChange.ChangeTypes} for available values.
-     * @param {Array<String>} id_list Array of all elements affected by this state change. This is used for merging changes on the same elements.
-     * @param {Object} passed_values Map of all values that this change contains. Each property represents a change.
+     * @param {Array<String>} id Array of all elements affected by this state change. This is used for merging changes on the same elements.
+     * @param {Object} values Map of all values that this change contains. Each property represents a change.
+     * @param {number | null} timestamp Time when this change took place.
      */
     constructor(id, values, timestamp) {
-        if (id) this.id = id;
+        this.id = id;
+        this.time = timestamp ?? new Date().getTime();
 
         if (values) {
-            var keys = Object.keys(values);
-
+            let keys = Object.keys(values);
             // If "values" is an array of objects, store all objects in the "state.created" array.
             if (keys[0] == '0') {
                 this.created = values;
@@ -44,8 +43,5 @@ class StateChange {
                 });
             }
         }
-
-        if (timestamp) this.time = timestamp;
-        else this.time = new Date().getTime();
     }
 }
