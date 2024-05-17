@@ -151,6 +151,18 @@ html, body {
 
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */
+@media (max-width: 478px) {
+    .breadcrumbs {
+        font-size: var(--text-small);
+    }
+}
+
+@media (min-width: 478px) and (max-width: 768px) {
+    .breadcrumbs {
+        font-size: var(--text-medium);
+    }
+}
+
 @media (max-width: 768px) {
 
     .input-grid {
