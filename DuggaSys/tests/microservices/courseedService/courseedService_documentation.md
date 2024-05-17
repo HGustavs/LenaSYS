@@ -13,7 +13,7 @@ Evaluation: Test works as intended.
 
 createMOTD_ms_test.php
 The test updates the settings table with a new entry, used for showing a message of the day on the main course page. The entry can be seen in the output.
-After the test: the MOTD is deleted.
+After the test: The MOTD is deleted.
 Evaluation: Test works as intended.
 
 createNewCourse_ms_test.php
@@ -23,7 +23,7 @@ Evaluation: Test works as intended.
 
 deleteCourseMaterial_ms_test.php
 The test deletes all related course material of the course with the id "9999". This can not be seen in the output.
-Before the test: The entries are inserted into 19 different tables including creating the course itself.
+Before the test: Entries are inserted into 19 different tables including creating the course itself.
 After the test: The 19 entries are deleted again as a failsafe in case the test should fail.
 Evaluation: There is no real way of seeing if the course material has been deleted or not in the output. The failsafe makes it so that it is impossible to know if the test actually did anything. If we comment out the failsafe and run the test, we can see that the test is working and deleting everything successfully. It would be a good idea to look into somehow updating the output to show that the operation worked.
 
