@@ -1133,58 +1133,52 @@ function AJAXService(opt,apara,kind)
 		let serviceURL = "sectionedservice.php"
 		switch (opt) {
 			case "DELETE":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
 				serviceURL= "../DuggaSys/microservices/sectionedService/removeListEntries_ms.php";
 				break;
 			case "DEL":
-				// serviceURL= "sectionedservice.php"; // Change when working
 				serviceURL= "../DuggaSys/microservices/sectionedService/deleteListEntries_ms.php";
 				break;
 			case "NEW":
-				// serviceURL= "sectionedservice.php"; // Change when working
 				serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
 				break;
 			case "REORDER":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
 				serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
 				break;
 			case "UPDATE":
-				// serviceURL= "sectionedservice.php"; // Change when working
 				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";
 				break;
 			case "UPDATETABS":
-				// serviceURL= "sectionedservice.php"; // Change when working
 				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php";
 				break;
 			case "UPDATEDEADLINE":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
-				serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
+				serviceURL= "sectionedservice.php"; // Change when working
+				// serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
 				break;
 			case "UPDATEVRS":
-				serviceURL= "sectionedservice.php";//change when MS i; created
+				serviceURL= "sectionedservice.php"; //change when MS is created
 				break;
 			case "SETVISIBILITY":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
-				serviceURL= "../DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateVisibleListentries_ms.php";
 				break;
 			case "REFGIT":
-				serviceURL= "sectionedservice.php";//change when MS i; created
+				serviceURL= "sectionedservice.php"; //change when MS is created
 				break;
 			case "CREGITEX":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
-				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php";
 				break;
 			case "GRP":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
 				serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
 				break;
 			case "CHGVERS":
-				// serviceURL= "sectionedservice.php"; // Changed to monolith URL because of issues after integration
-				serviceURL= "../DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateActiveCourseVersion_sectioned_ms.php";
 				break;
 			case "get":	
+				serviceURL= "sectionedservice.php"; // Change when working
+				// serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";
+				break;
+			case "GETUF":	
 				// serviceURL= "sectionedservice.php"; // Change when working
-				serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php"; //Skapa en microservice till denna.
+				serviceURL= "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php";
 				break;
 			default:
 				serviceURL= "sectionedservice.php";

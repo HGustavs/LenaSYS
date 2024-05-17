@@ -3391,7 +3391,9 @@ SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 <br>
 
 ### retrieveSectionedService_ms.php
+
 __Include original service files:__ sessions.php, basic.php
+__Include microservice:__ readCourseVersions_ms.php
 
 __Querys used in this microservice:__
 

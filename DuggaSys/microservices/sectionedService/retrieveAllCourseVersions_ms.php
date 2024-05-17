@@ -18,6 +18,7 @@ session_start();
 $opt=getOP('opt');
 $courseid=getOP('courseid');
 $coursevers=getOP('coursevers');
+$debug = "NONE!";
 
 if (strcmp($coursevers, "null")!==0) {
 	// Fetches the course versions for a particular course id

@@ -23,7 +23,6 @@ function retrieveDuggaedService($pdo, $debug = "NONE!", $userid, $cid, $courseve
 
     // Initialize arrays
     $entries = array();
-    $variants = array();
     $files = array();
     $duggaPages = array();
 
@@ -82,8 +81,6 @@ function retrieveDuggaedService($pdo, $debug = "NONE!", $userid, $cid, $courseve
                     "cogwheelVariant" => $rowz["vid"],
                     "trashcanVariant" => $rowz["vid"]
                 );
-
-                array_push($variants, html_entity_decode($rowz["variantanswer"]));
                 array_push($mass, $entryz);
             }
 
@@ -133,7 +130,6 @@ function retrieveDuggaedService($pdo, $debug = "NONE!", $userid, $cid, $courseve
         'duggaPages' => $duggaPages,
         'coursecode' => $coursecode,
         'coursename' => $coursename,
-        'variants' => $variants
     );
 
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveDuggaedService_ms.php", $userid, $info);
