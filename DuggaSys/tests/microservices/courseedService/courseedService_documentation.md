@@ -32,7 +32,7 @@ Tests the "retrieve" microservice that gathers the output that is returned after
 Evaluation: Test works as intended.
 
 updateActiceCourseversion_courseed_ms_test.php
-The test updates the activeversion column of the course table to "1336", which can be seen in the output.
+The test updates the activeversion column of the course table for the Testing-Course to "1336", which can be seen in the output.
 After the test: The active version is restored to 1337.
 Evaluation: Test works as intended.
 
