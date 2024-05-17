@@ -1107,28 +1107,58 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
-            // Functionality Left/Right resize
-            if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
-            } else if ((startNodeRight || startNodeUpRight || startNodeDownRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementResized([elementData.id], widthChange, 0);
-            }
-            // Functionality Up/Down resize
-            if ((startNodeDown || startNodeDownLeft || startNodeDownRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementResized([elementData.id], 0, heightChange);
-            } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height// Deduct the new height, giving us the total change
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
+            if (context[0] && (context[0].kind == "sequenceActor" || context[0].kind == "sequenceObject")) {
+                const maxRatio = 0.4;
+                if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                    let tmpW = elementData.width;
+                    let tmpX = elementData.x;
+                    let movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let xChange = movementPosChange(elementData, startX, deltaX, true);
+                    let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                    let heightChange = movementHeightChange(elementData,startHeight,movementY,false);
+                    prepareElementMovedAndResized([elementData.id], xChange, heightChange, widthChange, 0);
+                } else if (startNodeRight && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                    let heightChange = movementHeightChange(elementData,startHeight,movementY,false);
+                    prepareElementResized([elementData.id], widthChange, heightChange);
+                } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight)
+                    && (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) {
+                    // Fetch original height// Deduct the new height, giving us the total change
+                    let tmpH = elementData.height;
+                    let tmpY = elementData.y;
+                    let yChange = movementPosChange(elementData, startY, deltaY, false);
+                    const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                    prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
+                } else if ((startNodeDown || startNodeDownLeft || startNodeDownRight)
+                    && (startHeight - (deltaY / zoomfact)) > startWidth / maxRatio) {
+                    const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
+                    prepareElementResized([elementData.id], 0, heightChange);
+                }
+            } else {
+                // Functionality Left/Right resize
+                if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                    let tmpW = elementData.width;
+                    let tmpX = elementData.x;
+                    let xChange = movementPosChange(elementData, startX, deltaX, true);
+                    let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                    prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
+                } else if ((startNodeRight || startNodeUpRight || startNodeDownRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                    let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                    prepareElementResized([elementData.id], widthChange, 0);
+                }
+                // Functionality Up/Down resize
+                if ((startNodeDown || startNodeDownLeft || startNodeDownRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                    const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
+                    prepareElementResized([elementData.id], 0, heightChange);
+                } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
+                    // Fetch original height// Deduct the new height, giving us the total change
+                    let tmpH = elementData.height;
+                    let tmpY = elementData.y;
+                    let yChange = movementPosChange(elementData, startY, deltaY, false);
+                    const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                    prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
+                }
             }
 
             document.getElementById(context[0].id).remove();
