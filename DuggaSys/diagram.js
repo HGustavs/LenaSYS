@@ -1201,7 +1201,7 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     }
 
     if (stateMachineShouldSave && anyRemoved) {
-        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
+        stateMachine.save(StateChangeFactory.LinesDeleted(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
     contextLine = [];
