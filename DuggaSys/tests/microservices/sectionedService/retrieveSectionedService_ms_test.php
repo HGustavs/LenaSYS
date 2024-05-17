@@ -17,7 +17,7 @@ $testsData = array(
                 'username' => 'brom',
                 'password' => 'password',
                 'cid' => '1885',
-                'versid' => '123',
+                'vers' => '9999',
             )
         ),
         'filter-output' => serialize(
