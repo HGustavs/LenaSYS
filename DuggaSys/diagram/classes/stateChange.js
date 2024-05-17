@@ -1,5 +1,5 @@
 /**
- * Represents a state change in the application.
+ * @description Represents a state change in the application.
  */
 class StateChange {
     /**
