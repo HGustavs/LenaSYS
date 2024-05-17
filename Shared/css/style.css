@@ -4106,6 +4106,14 @@ span.arrow {
   margin-left: 5px;
 }
 
+#accessTable___body tr.even {
+  background-color: var(--color-sectioned-table-hi); 
+}
+
+#accessTable___body tr.odd {
+  background-color: var(--color-sectioned-table-lo); 
+}
+
 .access-dropdown-content{
   display: none;
   position: absolute;

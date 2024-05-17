@@ -37,6 +37,7 @@ $js = array(
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="ace.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
