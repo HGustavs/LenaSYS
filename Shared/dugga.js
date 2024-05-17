@@ -1142,7 +1142,7 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "../DuggaSys/microservices/sectionedService/createListEntry_ms.php";
 				break;
 			case "REORDER":
-				serviceURL= "../DuggaSys/microservices/sectionedService/reorderListEntries_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateOrder_ms.php";
 				break;
 			case "UPDATE":
 				serviceURL= "../DuggaSys/microservices/sectionedService/updateListEntries_ms.php";

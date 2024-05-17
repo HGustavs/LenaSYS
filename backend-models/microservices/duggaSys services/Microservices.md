@@ -237,7 +237,7 @@ __Sectioned Service:__
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - removeListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - createListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- updateOrder_ms.php __==finished==__ Previously named: "reorderListEntries_ms.php".
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
