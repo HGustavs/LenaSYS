@@ -17,7 +17,7 @@ function elementHasLines(element) {
 }
 
 /**
- * @description Generatesa a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
+ * @description Generates a a new ghost element that is used for visual feedback to the end user when creating new elements and/or lines. Setting ghostElement to null will remove the ghost element.
  * @see ghostElement
  */
 function makeGhost() {
