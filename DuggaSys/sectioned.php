@@ -283,7 +283,7 @@
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog" style="display: block;">
+						<div class="formDialog">
 							<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
 						</div>
 						<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
@@ -467,7 +467,7 @@
 				<div class='inputwrapper'>
 					<span>Version ID:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog versionDialog">
+						<div class="formDialog">
 							<span id="dialog2" class="formDialogText">3 to 8 numbers required</span>
 						</div>
 						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8' />
@@ -476,7 +476,7 @@
 				<div class='inputwrapper'>
 					<span>Version Name:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog versionDialog">
+						<div class="formDialog">
 							<span id="dialog" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span>
 						</div>
 						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
@@ -485,8 +485,8 @@
 				<div class='inputwrapper'>
 					<span>Start Date:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog versionDialog">
-							<span id="dialog3" class="formDialogText formDialogTextHalfDownShift">Start date has to be before end date</span>
+						<div class="formDialog">
+							<span id="dialog3" class="formDialogText">Start date has to be before end date</span>
 						</div>
 						<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
 					</div>
@@ -498,9 +498,9 @@
 				<div class='inputwrapper'>
 					<span>MOTD:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog versionDialog">
-							<span id="dialog4" class="formDialogText formDialogSplitUp">Prohibited symbols</span>
-							<span id="dialog42" class="formDialogText formDialogSplitDown">Max 50 characters</span>
+						<div class="formDialog">
+							<span id="dialog4" class="formDialogText">Prohibited symbols</span>
+							<span id="dialog42" class="formDialogText">Max 50 characters</span>
 						</div>
 						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
 					</div>

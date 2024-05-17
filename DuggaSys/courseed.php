@@ -82,7 +82,7 @@ if(isset($_SESSION['uid'])){
 				<div class='inputwrapper'>
 					<span>Course Name:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog"><span id="courseNameError"" class=" formDialogText">Only letters. Dash allowed in between words</span></div>
+						<div class="formDialog"><span id="courseNameError" class=" formDialogText">Only letters. Dash allowed in between words</span></div>
 						<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 					</div>
@@ -91,7 +91,7 @@ if(isset($_SESSION['uid'])){
 					<span>Course code:</span>
 					<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
 					<div class="dialogwrapper">
-						<div class="formDialog"><span id="courseCodeError"" class=" formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+						<div class="formDialog"><span id="courseCodeError" class=" formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 					</div>
 				</div>
@@ -128,7 +128,7 @@ if(isset($_SESSION['uid'])){
 					<span>Course Name:</span>
 					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 					<div class="dialogwrapper">
-						<div class="formDialog" id='editCourse_Name_formDialog'><span class="formDialogText errorMessage">Only letters. Dash allowed in between words</span></div>
+						<div class="formDialog"><span class="formDialogText errorMessage">Only letters. Dash allowed in between words</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
 					</div>
 				</div>
@@ -136,7 +136,7 @@ if(isset($_SESSION['uid'])){
 					<span>Course code:</span>
 					<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
 					<div class="dialogwrapper">
-						<div class="formDialog" id="editCourse_Code_formDialog"><span class="formDialogText errorMessage">2 Letters, 3 digits, 1 letter</span></div>
+						<div class="formDialog"><span class="formDialogText errorMessage">2 Letters, 3 digits, 1 letter</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
 					</div>
 				</div>
@@ -144,7 +144,7 @@ if(isset($_SESSION['uid'])){
 					<span>GitHub URL:</span>
 					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<div class="dialogwrapper">
-						<div class="formDialog" id="editGithub_formDialog"><span class="formDialogText errorMessage">Enter a valid github url</span></div>
+						<div class="formDialog"><span class="formDialogText errorMessage">Enter a valid github url</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..." />
 					</div>
 				</div>
@@ -152,7 +152,7 @@ if(isset($_SESSION['uid'])){
 					<span>(optional) Insert Github Key:</span>
 					<p id="dialog7" class="validationDialog">A Github key should be 40 characters</p>
 					<div class="dialogwrapper">
-						<div class="formDialog" id="GithubKey_formDialog"><span class="formDialogText errorMessage">A Github key should be 40 characters</span></div>
+						<div class="formDialog"><span class="formDialogText errorMessage">A Github key should be 40 characters</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='githubToken' name='githubToken' placeholder='Leave blank for no key' />
 					</div>
 				</div>			
