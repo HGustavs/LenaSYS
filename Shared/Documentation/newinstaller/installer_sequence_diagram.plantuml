@@ -1,0 +1,39 @@
+@startuml
+actor Frontend as "Client"
+
+entity "installer.php" as Installer
+entity "installer_frontend.php" as InstallerFrontend
+entity "installer_backend.php" as Backend
+participant "filesystem" as filesystem
+database "Database" as DB
+
+Frontend -> Installer : Get \ninstaller.php
+Installer -> InstallerFrontend : Get \ninstaller_frontend.php
+InstallerFrontend -> Installer : Return content
+Installer -> Frontend : Return content
+
+Frontend -> Installer : Clicked Start
+Installer -> InstallerFrontend : Start
+
+InstallerFrontend --> Installer : POST installation settings
+
+InstallerFrontend -> Installer : Get \ninstaller.php?stream=true
+Installer -> Backend : Get install_backend.php (starts installer)
+
+loop files
+  Backend -> filesystem : copy course files
+  filesystem -> Backend : status information
+  Backend --> InstallerFrontend : status messages
+end
+
+loop db steps
+  Backend -> DB : Run queries
+  DB -> Backend : Query results
+  Backend --> InstallerFrontend : installation info
+end
+
+Backend -> filesystem : save db authentication information
+filesystem -> Backend : status information
+Backend --> InstallerFrontend : status messages
+
+@enduml

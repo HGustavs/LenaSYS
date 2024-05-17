@@ -33,9 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
       themeStylesheet.href = "../Shared/css/blackTheme.css";
       localStorage.setItem('themeBlack',themeStylesheet.href);
     }
-	// Redraw course schedule / planner SVG to get the appropriate color scheme
-	// Course schedule = the SVG that displays the weeks and how far into a course we are
-	drawSwimlanes();		
   })
 })
 
