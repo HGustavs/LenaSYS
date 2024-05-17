@@ -300,18 +300,18 @@
 							<legend><h3>Deadline</h3></legend>
 							<span>Absolute</span>
 							<span style='float:right'>
-								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' type='date' id='setDeadlineValue' value='' />
-								<select style='width:55px;' id='deadlineminutes'></select>
-								<select style='width:55px;' id='deadlinehours'></select>
+								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' style='margin:0 0 0 10px;' type='date' id='setDeadlineValue' value='' />
+								<select class='selectDeadlineTime' style='width:55px;' id='deadlineminutes'></select>
+								<select class='selectDeadlineTime' style='width:55px;' id='deadlinehours'></select>
 								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
-							<span style='float:right;margin-right:10px;'>
-								<select style='width:130px;margin:0 0 0 10px;' id='relativedeadlinetype'></select>
-								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineamount'></select>
-								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlineminutes'></select>
-								<select style='width:55px;margin:0 0 0 10px;' id='relativedeadlinehours'></select>
+							<span style='float:right;'>
+								<select class='selectDeadlineTime' style='width:130px;' id='relativedeadlinetype'></select>
+								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineamount'></select>
+								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineminutes'></select>
+								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlinehours'></select>
 							</span>
 							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
   		      					<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
