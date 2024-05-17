@@ -249,6 +249,7 @@ __Sectioned Service:__
 - getGitReference_ms.php __==UNFINISHED==__  
 - readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
 - createGithubCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
+- getListEntries_ms.php __==finished==__ New filename: "readListEntries_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 
@@ -3598,6 +3599,35 @@ _UPDATE_ operation on the table __'codeexample'__ to update the value of the col
 ```sql
 UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
 ```
+
+<br>
+
+---
+
+<br>
+
+### readListEntries_ms.php
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+__Includes neither original service files nor microservices.__
+
+
+- __List entries:__ An array containing __all__ list entries for the specified course version (__coursevers__) and course ID (__courseid__).
+
+- __JSON format:__ The retrieved data from 'retrieveSectionedService_ms.php' is returned in a JSON format.
+
+- __Debugging:__ Includes debugging information (__debug__) if there are any issues during the retrieval process.
+
+Parameters passed to 'retrieveSectionedService_ms.php':
+
+- __debug__ - Starts as "NONE!" to collect any debug info.
+- __opt__ - Operation option from the request.
+- __pdo__ - PDO database connection.
+- __uid__ - ID of the logged-in user.
+- __courseid__ - Course ID to get list entries for.
+- __coursevers__ - Course version to get list entries for.
+- __log_uuid__ - Unique ID to track the request.
 
 <br>
 
