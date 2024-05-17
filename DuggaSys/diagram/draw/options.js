@@ -51,6 +51,12 @@ function generateContextProperties() {
     multipleColorsTest();
 }
 
+/**
+ * @description Makes it show or hide the properties with class names..
+ * @param {boolean} show Shows the properties if it's true or hide if it's false.
+ * @param {Object} propSet Add or remove class name from the object.
+ * @param {Array} menuSet Change all class name to show or hide.
+ */
 function showProperties(show, propSet, menuSet) {
     let a = (show) ? 'options-fieldset-show' : 'options-fieldset-hidden';
     let b = (!show) ? 'options-fieldset-show' : 'options-fieldset-hidden';
@@ -62,6 +68,13 @@ function showProperties(show, propSet, menuSet) {
     }
 }
 
+/**
+ * @description Makes a textarea with a text header for the textarea.
+ * @param {String} name Name header for the textarea.
+ * @param {String} property What type of property the textarea is.
+ * @param {Object} element What element the textarea is for.
+ * @return Returns the div that is the header and the textarea for the specific element.
+ */
 function textarea(name, property, element) {
     return `<div style='color:${color.WHITE};'>${name}</div>
             <textarea 
@@ -70,6 +83,11 @@ function textarea(name, property, element) {
             >${textboxFormatString(element[property])}</textarea>`;
 }
 
+/**
+ * @description Makes a text input of what the name of the element is.
+ * @param {Object} element What element the input is for.
+ * @return Returns the div that is the header and the text input.
+ */
 function nameInput(element) {
     return `<div style='color:${color.WHITE};'>Name</div>
             <input 
@@ -81,6 +99,13 @@ function nameInput(element) {
             >`;
 }
 
+/**
+ * @description Makes a button input for save the changes.
+ * @param {*} functions What the function should be called.
+ * @param {String} id What ID the intpu should have.
+ * @param {String} value What value the input should have
+ * @return Returns the button input..
+ */
 function saveButton(functions, id = '', value = 'Save') {
     return `<br><br>
             <input id='${id}'
@@ -89,6 +114,14 @@ function saveButton(functions, id = '', value = 'Save') {
             >`;
 }
 
+/**
+ * @description Makes a dropdown for the element with the different selection.
+ * @param {String} name The header for the dropdown.
+ * @param {String} def 
+ * @param {Object} object 
+ * @param {Object} element 
+ * @return 
+ */
 function dropdown(name, def, object, element) {
     let options = '';
     let current = element.state ?? def;
