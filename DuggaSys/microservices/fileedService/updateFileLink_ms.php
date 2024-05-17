@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------------------------------------------
 // updateFileLink_ms
 //---------------------------------------------------------------------------------------------------------------
-// Microservice that handles writing to files and updates filesize in fileLink
+// Microservice that writes to files and updates their filesize in fileLink
 //---------------------------------------------------------------------------------------------------------------
 
 date_default_timezone_set("Europe/Stockholm");
@@ -30,9 +30,10 @@ $username = retrieveUsername($pdo);
 $debug = "NONE!";
 $log_uuid = getOP('log_uuid');
 
-// Get the path, should be done by using json in the future 
-$query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
-$query->bindParam(':fid', $fid);
+// Get the path (currently not set for any file)
+$query = $pdo->prepare("SELECT path from fileLink WHERE kind=:kindid AND filename=:filename;");
+$query->bindParam(':filename', $filename);
+$query->bindParam(':kindid', $kind);
 $result = $query->execute();
 if($row = $query->fetch(PDO::FETCH_ASSOC)){
     $path = $row['path'];
@@ -48,7 +49,7 @@ if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUs
 }
 
 if (strcmp($opt, "SAVEFILE") !== 0) {
-    $debug = "You can only update a file through the file editor";
+    $debug = "Wrong opt";
     $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
@@ -75,7 +76,7 @@ if ($kind == 2 && !(isSuperUser($userid))) {
     return;
 }
 
-// Change path to file depending on filename and filekind
+// Change path to file depending on filename and kind
 chdir("../../../");
 $currcwd = getcwd();
 
@@ -89,7 +90,7 @@ switch ($kind) {
             $currcwd .= "/courses/" . $cid . "/" . $filename;            
         }
         else {
-            $currcwd .= "/courses/" . $cid . "/Github/" . $path;            
+            $currcwd .= "/courses/" . $cid . "/Github/" . $path;        
         }
         $description="CourseLocal"." ".$filename;
         break;
@@ -99,7 +100,7 @@ switch ($kind) {
         break;
 }
 
-// Check if file exists at set path
+// Check if file exists at current working directory
 if (!file_exists($currcwd)) {
     $debug = "No such file exists";
     $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
