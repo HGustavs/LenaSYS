@@ -3639,7 +3639,6 @@ Parameters passed to 'retrieveSectionedService_ms.php':
 ### readAllCourseVersions_ms.php
 __readAllCourseVersions_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
 
-
 __Include original service files:__ sessions.php, basic.php
 __Include microservice:__ retrieveSectionedService_ms.php
 
@@ -3671,7 +3670,6 @@ SELECT vers FROM vers WHERE cid=:cid
     
     which returns the result as JSON.
 
----
 <br>
 
 ---
