@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------------------------------------------------------------------------
-// Microservice getCourseGroupsAndMembers, returns a list of group member related to the provided 
+// Microservice readCourseGroupsAndMembers, returns a list of group member related to the provided 
 // course id and course version
 //---------------------------------------------------------------------------------------------------------------
 
