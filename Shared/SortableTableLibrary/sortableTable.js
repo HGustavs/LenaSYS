@@ -208,6 +208,18 @@ function getparam(param,def)
 		return param;
 }
 
+function applyEvenOddClasses() {
+  let rows = document.querySelectorAll('#accessTable___body tr:not(.collapsed)');
+  rows.forEach((row, index) => {
+      row.classList.remove('even', 'odd'); // Remove existing classes
+      if (index % 2 === 0) {
+          row.classList.add('even'); // Add even class to even rows
+      } else {
+          row.classList.add('odd'); // Add odd class to odd rows
+      }
+  });
+}
+
 function SortableTable(param)
 {
 		//------------==========########### Fenced paramters ###########==========------------    
@@ -425,7 +437,7 @@ function SortableTable(param)
     	mhvstr += "<tbody id='"+this.tableid+DELIMITER+"mhvbody'>";
       var n = 0;
     	for (var i = 0; i < tbl.tblbody.length; i++) {
-          str += "<tr class='changeColorInDarkModeTable' id='"+this.tableid+DELIMITER+i+"'"
+          str += "<tr id='"+this.tableid+DELIMITER+i+"'"
           if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
 
           // Hide filtered rows
@@ -444,7 +456,7 @@ function SortableTable(param)
             // }
           }
           else {
-            str += " style='visibility:collapse";
+            str += " class='collapsed' style='visibility:collapse";
           }
           str += "'>";
 
