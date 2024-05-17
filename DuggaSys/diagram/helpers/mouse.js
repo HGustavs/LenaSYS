@@ -163,9 +163,23 @@ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
 }
 
 /**
+ * @description Returns the element with the given kind from the hoveredElements array is present.
+ * @param {string} kind kind of element to find.
+ * @returns {Element|null} found element.
+ */
+function getKindFromHoveredElements(kind) {
+    for (const element of hoveredElements) {
+        const entry = data[findIndex(data, element.id)];
+        if (entry.kind == kind) return entry;
+    }
+    return undefined;
+}
+
+/**
  * @description Triggers when the mouse hoovers over an sequence lifeline.
  */
-function mouseEnterSeq(event) {
+function mouseEnterSeq(event) {    
+    if (!elementTypeSelected) return;
     if (elementTypeSelected === elementTypes.sequenceActivation) {
         const target = event.target;
         const targetId = target.id;
@@ -174,17 +188,30 @@ function mouseEnterSeq(event) {
 }
 
 /**
- * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
+ * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts).
+ * @param {?string} targetId ID of the lifeline
  */
-function snapSAToLifeline(targetId) {
-    const lifeline = document.getElementById(targetId);
-    if (lifeline) {
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].kind === "sequenceActor" && data[i].id === targetId || data[i].kind === "sequenceObject" && data[i].id === targetId) {
-                const element = data[i];
-                ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
-                updatepos();
-            }
-        }
+function snapSAToLifeline(targetId) { 
+    // get the lifeline as a HTMLElement
+    const lifeline = document.getElementById(targetId) || getKindFromHoveredElements(elementTypesNames.sequenceActor);
+    if (!lifeline) return;
+
+    // get the lifeline from the data array
+    const target = data[findIndex(data, lifeline.id)];
+
+    let moving;
+    if (ghostElement) {
+        moving = ghostElement;
+        moving.x = target.x + (target.width / 2) - (moving.width / 2);   
+    } 
+    else if (movingObject && context[0].kind == elementTypesNames.sequenceActivation) {
+        moving = getKindFromHoveredElements(elementTypesNames.sequenceActivation)
+        if (!moving) return;
+        // calc position
+        // the calc works but it doesn't lock the element like it does with the ghost
+        moving.x = target.x + (target.width / 2) - (moving.width / 2);
     }
+    else return;    
+    
+    updatepos(0, 0);
 }

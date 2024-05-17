@@ -151,3 +151,10 @@ const historyHandler = {
     hasUpdated: false,
     inputCounter: 0
 }
+
+/**
+ * @description Array that holds all the drawn out elements that the mouse is currently hovering over.
+ * @type {HTMLElement[]}
+ * @see {@link mmoving} updates here
+ */
+let hoveredElements = []

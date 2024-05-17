@@ -1045,6 +1045,9 @@ function prepareElementResized(id, widthChange, heightChange) {
  * @param {MouseEvent} event Triggered mouse event.
  */
 function mmoving(event) {
+    const elements = document.elementsFromPoint(event.clientX, event.clientY);
+    hoveredElements = elements.filter(element => element.classList.contains('element'));
+    
     lastMousePos = new Point(event.clientX, event.clientY);
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
@@ -1092,6 +1095,8 @@ function mmoving(event) {
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
+                console.log(targetElement)
+                if (data[findIndex(data, targetElement.id)].kind == elementTypesNames.sequenceActivation) snapSAToLifeline();
                 // We update position of connected objects
                 updatepos();
                 calculateDeltaExceeded();
