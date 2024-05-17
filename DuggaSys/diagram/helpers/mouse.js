@@ -183,7 +183,6 @@ function snapSAToLifeline(targetId) {
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
             if ((element.kind === "sequenceActor" || element.kind === "sequenceObject") && element.id === targetId) {
-
                 let boxHeight = getTopHeight(element);
                 let minY = element.y + boxHeight;
 
@@ -194,7 +193,6 @@ function snapSAToLifeline(targetId) {
                 if (ghostElement.y < minY) {
                     ghostElement.y = minY;
                 }
-
                 updatepos();
                 break;
             }
