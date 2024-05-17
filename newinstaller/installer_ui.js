@@ -1,4 +1,5 @@
 let checkboxToggle = document.getElementById("language-support");
+let currentPageIndex = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
 	// Attach event listeners to all navigation buttons inside pages
@@ -55,6 +56,26 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	});
 
+	document.addEventListener('keydown', function(event) {
+		if (event.key === 'ArrowRight') {
+			navigateToNextPage();
+		} else if (event.key === 'ArrowLeft') {
+			navigateToPreviousPage();
+		}
+	});
+
+	document.addEventListener('keydown', function(event) {
+        const focusedElement = document.activeElement;
+
+        if (event.key === 'Enter') {
+            if (focusedElement && (focusedElement.tagName === 'INPUT' || focusedElement.tagName === 'BUTTON')) {
+                if (focusedElement.type === 'radio' || focusedElement.type === 'checkbox' || focusedElement.type === 'button') {
+                    focusedElement.click();
+                }
+            }
+        }
+    });
+
 	setProgressBarWidth(1);
 });
 
@@ -70,9 +91,27 @@ function navigateTo(pageId) {
 	if (targetPage) {
 		console.log("showing " + pageId);
 		targetPage.style.display = 'flex';
+		// Update currentPageIndex based on the pageId
+		currentPageIndex = parseInt(pageId.replace('page', ''), 10);
 	} else {    
 		console.error("Page not found:", pageId);
 	}
+}
+
+function navigateToNextPage() {
+	const nextPageId = 'page' + (currentPageIndex + 1);
+	const nextPage = document.getElementById(nextPageId);
+
+	if (nextPage) {
+        navigateTo(nextPageId);
+    }
+}
+
+function navigateToPreviousPage() {
+	if (currentPageIndex > 1) {
+        const prevPageId = 'page' + (currentPageIndex - 1);
+        navigateTo(prevPageId);
+    }
 }
 
 function start_installer() {

@@ -1,8 +1,8 @@
 <?php
 	function navigationButtons($previousPage, $nextPage) {
 		echo "<div class='buttonContainer'>";
-		echo "<button class='backButton page-nav' data-target='{$previousPage}' onclick=''>Previous</button>";
-		echo "<button class='progressButton page-nav' data-target='{$nextPage}' onclick=''>Next</button>";
+		echo "	<button class='backButton page-nav' data-target='{$previousPage}' onclick=''>Previous</button>";
+		echo "	<button class='progressButton page-nav' data-target='{$nextPage}' onclick=''>Next</button>";
 		echo "</div>";
 	}
 
