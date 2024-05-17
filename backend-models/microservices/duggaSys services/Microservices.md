@@ -251,6 +251,7 @@ __Sectioned Service:__
 - readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
 - createGithubCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - getListEntries_ms.php __==finished==__ New filename: "readListEntries_ms.php" according to new nameconvention based on CRUD.
+- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "readAllCourseVersions_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 
@@ -3629,6 +3630,46 @@ Parameters passed to 'retrieveSectionedService_ms.php':
 - __courseid__ - Course ID to get list entries for.
 - __coursevers__ - Course version to get list entries for.
 - __log_uuid__ - Unique ID to track the request.
+
+<br>
+
+---
+
+<br>
+
+### readAllCourseVersions_ms.php
+__readAllCourseVersions_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
+
+__Include original service files:__ sessions.php, basic.php
+__Include microservice:__ retrieveSectionedService_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
+- vers
+
+- Selects rows where the column __cid__ matches the provided value ':cid'.
+
+```sql
+SELECT vers FROM vers WHERE cid=:cid
+```
+
+
+- __Fetches parameters:__ Operation option ('opt'), Course ID ('courseid'), Course version ('coursevers').
+
+- __If not null:__ If 'coursevers' is not null the fucntion retrieves all course versions for the given course ID and calculates the total number of groups as 24 times the number of course versions.
+
+-__Debugging:__ Handles query errors and stores error details in the variable 'debug'.
+
+- __Calls 'retrieveSectionedService' with parameters:__ 
+
+    - __debug__ - Starts as "NONE!" to collect any debug info.
+    - __opt__ - Operation option from the request.
+    - __pdo__ - PDO database connection.
+    - __courseid__ - Course ID to get list entries for.
+    - __coursevers__ - Course version to get list entries for.
+    
+    which returns the result as JSON.
 
 <br>
 
