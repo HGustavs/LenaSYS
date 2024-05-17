@@ -3,6 +3,10 @@
  * @param {Object} element The target element to add nodes to.
  */
 function addNodes(element) {
+    /**
+    * @description declares the different nodes that are used 
+    * @param {Object} nodes The nodes that gain values further down
+    */
     let mrNode, mlNode, muNode, mdNode, tlNode, trNode, blNode, brNode;
     const elementDiv = document.getElementById(element.id);
     let nodes = "";
@@ -20,6 +24,10 @@ function addNodes(element) {
     const defaultNodeSize = 8;
     let nodeSize = defaultNodeSize * zoomfact;
 
+    /**
+    * @description if statement for generating the middle down (md)nodes for the different sequence elements
+    * @param {Object} mdNode The middle down node for resizing
+    */
     if ((element.kind == "sequenceActor") || (element.kind == "sequenceObject") || (element.kind == "sequenceLoopOrAlt") || (element.kind == "sequenceActivation")) {
         mdNode = document.getElementById("md");
         mdNode.style.width = nodeSize + "px";
@@ -28,6 +36,11 @@ function addNodes(element) {
         mdNode.style.bottom = "0%";
     }
 
+    /**
+    * @description if statement for generating the middle down (md)nodes and middle up (mu)nodes for the UMLSuperstate elements
+    * @param {Object} mdNode The middle down node for resizing
+    * @param {Object} muNode The middle up node for resizing
+    */
     if (element.kind == "UMLSuperState") {
         mdNode = document.getElementById("md");
         muNode = document.getElementById("mu");
@@ -39,6 +52,18 @@ function addNodes(element) {
         muNode.style.right = "calc(50% - " + (nodeSize / 2) + "px)";
     }
 
+    /**
+    * @description The default way to generate the resize nodes for elements other than the specified once shown above in the if statements
+    * @param {Object} nodeSize The middle down node for resizing
+    * @param {Object} mrNode The middle right node for resizing
+    * @param {Object} mlNode The middle left node for resizing
+    * @param {Object} muNode The middle up node for resizing
+    * @param {Object} mdNode The middle down node for resizing
+    * @param {Object} tlNode The top left node for resizing
+    * @param {Object} trNode The top right node for resizing
+    * @param {Object} blNode The bottom left node for resizing
+    * @param {Object} brNode The bottom right node for resizing
+    */
     nodeSize = defaultNodeSize * zoomfact;
     mrNode = document.getElementById("mr");
     mlNode = document.getElementById("ml");
