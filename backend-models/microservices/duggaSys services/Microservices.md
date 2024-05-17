@@ -141,7 +141,7 @@ __Courseed Service:__
 - createNewCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- changeActiveCourseVersion_courseed_ms.php __==finished==__ New filename: "updateActiveCourseVersion_courseed_ms.php" according to new nameconvention based on CRUD.
+- updateActiveCourseVersion_courseed_ms.php __==finished==__ Previously named: "changeActiveCourseVersion_courseed_ms.php" 
 - copyCourseVersion_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 - updateCourse_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -241,13 +241,13 @@ __Sectioned Service:__
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateVisibleListentries_ms.php __==finished==__ 
+- setVisibleListentries_ms.php __==finished==__ Previously named: "updateVisibleListentries_ms.php". 
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateActiveCourseVersion_sectioned_ms.php __==finished==__ 
-- readCourseVersions_ms.php __==finished==__  
+- updateActiveCourseVersion_sectioned_ms.php __==finished==__ Previously named: "changeActiveCourseVersion_sectioned_ms.php".
+- readCourseVersions_ms.php __==finished==__ Previously named: "getCourseVersions_ms.php". 
 - getGitReference_ms.php __==UNFINISHED==__  
-- readUserDuggaFeedback_ms.php __==finished==__ 
+- readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
@@ -2921,12 +2921,7 @@ SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:ve
 ### retrieveResultedService_ms.php
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__
-
-Includes no querys.
-
-
-The __retrieveResultedService_ms.php__ returns an array containing two key values (information about):
+__retrieveResultedService_ms.php__ returns an array containing two key values (information about):
 
 - tableInfo - An array containing information about each student submission related to a specific course version. For each submission found in the database, the following information is stored in this array:
    - __duggaName__ - The name of the assignment associated with the data.
