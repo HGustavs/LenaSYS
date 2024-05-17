@@ -1183,10 +1183,18 @@ function AJAXService(opt,apara,kind)
 			default:
 				serviceURL= "sectionedservice.php";
 		}
+		apara.coursename = querystring['coursename'];
+		apara.courseid = querystring['courseid'];
+		apara.coursevers = querystring['coursevers'];
+		apara.comment = querystring['comments'];
+		apara.opt = opt;
+		if (kind == "SECTION") {
+			apara.hash = hash;
+		}
 		$.ajax({
 			url: serviceURL,
 			type: "POST",
-			data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+			data:apara,
 			dataType: "json", 
 			success: kind=="SECTION" ? returnedSection : returnedGroups
 		})
