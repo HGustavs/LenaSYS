@@ -617,7 +617,9 @@ function closeOpenPopupForm(){
     "#loginBox",
     "#loadDuggaBox",
     "#sectionHideConfirmBox",
-    "#sectionShowConfirmBox"
+    "#sectionShowConfirmBox",
+    "#canvasLinkBox",
+    "#editSection"
   ];
   for (let popup of allPopups){
     if ($(popup).css("display") !== "none"){
