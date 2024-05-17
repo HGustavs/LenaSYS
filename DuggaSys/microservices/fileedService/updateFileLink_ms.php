@@ -30,6 +30,15 @@ $username = retrieveUsername($pdo);
 $debug = "NONE!";
 $log_uuid = getOP('log_uuid');
 
+// Get the path, should be done by using json in the future 
+$query = $pdo->prepare("SELECT path from fileLink WHERE fileid = :fid");
+$query->bindParam(':fid', $fid);
+$result = $query->execute();
+if($row = $query->fetch(PDO::FETCH_ASSOC)){
+    $path = $row['path'];
+} else {
+    $path = "Lokal";
+}
 
 // Check access
 if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUser($userid) || hasAccess($userid, $cid, 'sv')) {
@@ -76,8 +85,13 @@ switch ($kind) {
         $description="Global"." ".$filename;
         break;
     case 3:
-        $currcwd .= "/courses/" . $cid . "/" . $filename;
-        $description="CourseLocal"." ".$filename;     
+        if (is_null($path)) {
+            $currcwd .= "/courses/" . $cid . "/" . $filename;            
+        }
+        else {
+            $currcwd .= "/courses/" . $cid . "/Github/" . $path;            
+        }
+        $description="CourseLocal"." ".$filename;
         break;
     case 4:
         $currcwd .= "/courses/" . $cid . "/" . $coursevers . "/" . $filename;
