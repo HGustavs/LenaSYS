@@ -33,14 +33,18 @@ function drawSelectionBox() {
                     }
                 }
             }
-            let selectionBoxLines = Rect.FromPoints(
+            let lineSelectionBox = Rect.FromPoints(
                 new Point(minProperty(tempLines, 'left') - margin, minProperty(tempLines, 'top') - margin),
                 new Point(maxProperty(tempLines, 'right') + margin, maxProperty(tempLines, 'bottom') + margin),
             );
-            selectionBox.x = Math.min(selectionBox.x, selectionBoxLines.x);
-            selectionBox.y = Math.min(selectionBox.y, selectionBoxLines.y);
-            selectionBox.width = Math.max(selectionBox.width, selectionBoxLines.width);
-            selectionBox.height = Math.max(selectionBox.height, selectionBoxLines.height);
+            if (context.length) {
+                selectionBox.x = Math.min(selectionBox.x, lineSelectionBox.x);
+                selectionBox.y = Math.min(selectionBox.y, lineSelectionBox.y);
+                selectionBox.width = Math.max(selectionBox.width, lineSelectionBox.width);
+                selectionBox.height = Math.max(selectionBox.height, lineSelectionBox.height);
+            } else {
+                selectionBox = lineSelectionBox;
+            }
         }
         selectionBoxLowX = selectionBox.left;
         selectionBoxHighX = selectionBox.right;
