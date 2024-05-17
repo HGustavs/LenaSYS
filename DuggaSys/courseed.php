@@ -71,7 +71,7 @@ if(isset($_SESSION['uid'])){
 	<!-- Server Msg END -->
 
 <!-- New Course Section Dialog START -->
-<div id='newCourse' class='loginBoxContainer display_none'>
+<div id='newCourse' class='loginBoxContainer display_none' tabindex="-1">
     <div id='loginBox_DarkMode'  class='loginBox DarkModeBackgrounds DarkModeText'>
     		<div class='loginBoxheader'>
     			<h3>New Course</h3>
