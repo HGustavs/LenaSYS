@@ -1071,6 +1071,16 @@ function AJAXService(opt,apara,kind)
 					success: returnedCourse
 				});
 				break;
+			case "SPECIALUPDATE":
+				$.ajax({
+					//url: "../DuggaSys/microservices/courseedService/specialUpdate_ms.php",
+					url: "courseedservice.php",
+					type: "POST",
+					data: "opt=" + opt + para,
+					dataType: "json",
+					success: returnedCourse
+				});
+				break;
 			default:
 				$.ajax({
 					url: "courseedservice.php",
@@ -1167,7 +1177,7 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "../DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php";
 				break;
 			case "GRP":
-				serviceURL= "../DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/readCourseGroupsAndMembers_ms.php";
 				break;
 			case "CHGVERS":
 				serviceURL= "../DuggaSys/microservices/sectionedService/updateActiveCourseVersion_sectioned_ms.php";
@@ -1183,10 +1193,18 @@ function AJAXService(opt,apara,kind)
 			default:
 				serviceURL= "sectionedservice.php";
 		}
+		apara.coursename = querystring['coursename'];
+		apara.courseid = querystring['courseid'];
+		apara.coursevers = querystring['coursevers'];
+		apara.comment = querystring['comments'];
+		apara.opt = opt;
+		if (kind == "SECTION") {
+			apara.hash = hash;
+		}
 		$.ajax({
 			url: serviceURL,
 			type: "POST",
-			data: "courseid=" + querystring['courseid'] + "&coursename=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&comment=" + querystring['comments'] + "&opt=" + opt + para + (kind == "SECTION" ? "&hash=" + hash : ""),
+			data:apara,
 			dataType: "json", 
 			success: kind=="SECTION" ? returnedSection : returnedGroups
 		})

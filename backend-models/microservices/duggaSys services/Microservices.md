@@ -232,8 +232,9 @@ __Resulted Service:__
 
 __Sectioned Service:__
 
-- readGroupValues_ms.php __==finished==__ Previously named: "readGroupValues_ms.php".
-- getCourseGroupsAndMembers_ms.php __==finished==__ New filename: "readCourseGroupsAndMembers_ms.php" according to new nameconvention based on CRUD.
+
+- readGroupValues_ms.php __==finished==__ Previously named: "getGroupValues_ms.php".
+- readCourseGroupsAndMembers_ms.php __==finished==__ Previously named: "getCourseGroupsAndMembers_ms.php".
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - removeListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - createListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.

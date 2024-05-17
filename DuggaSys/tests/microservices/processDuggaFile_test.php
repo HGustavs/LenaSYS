@@ -112,7 +112,7 @@ $testsData = array(
     ),
 );
 
-// Run the test handler
+// Runs the test handler
 testHandler($testsData, false); // Change to true for pretty print (HTML)
 
 ?>
