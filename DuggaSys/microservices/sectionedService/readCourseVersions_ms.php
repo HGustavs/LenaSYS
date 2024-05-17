@@ -13,7 +13,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 pdoConnect();
 
 // Fetch all course versions
-function getCourseVersions($pdo) {
+function readCourseVersions($pdo) {
     $versions = array();
     try {
         $query = $pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
