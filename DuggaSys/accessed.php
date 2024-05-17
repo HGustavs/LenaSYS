@@ -174,7 +174,7 @@
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsernameAdd' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown">
+						<datalist id="users_dropdown_add">
 						</datalist>
 					</div>
 					<div class='flexwrapper'>
@@ -202,7 +202,7 @@
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addUsernameRemove' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown">
+						<datalist id="users_dropdown_remove">
 						</datalist>
 					</div>
 					<div class="flex-end">
@@ -218,12 +218,12 @@
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-		<li onclick="showRemoveUserPopup();">
+		<li onclick="showRemoveUserPopup('users_dropdown_remove');">
 				<a id="remFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Remove user'>
 					<img class="fab-icon" src="../Shared/icons/remove_user_icon.svg">
 				</a>
 		</li>
-		<li onclick="showAddUserPopup();">
+		<li onclick="showAddUserPopup('users_dropdown_add');">
 				<a id="addFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
 					<img class="fab-icon" src="../Shared/icons/createUser.svg">
 				</a>
