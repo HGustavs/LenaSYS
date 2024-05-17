@@ -1108,7 +1108,7 @@ function mmoving(event) {
             deltaY = startY - event.clientY;
 
             if (context[0] && (context[0].kind == "sequenceActor" || context[0].kind == "sequenceObject")) {
-                const maxRatio = 0.4;
+                const maxRatio = 0.8;
                 if (startNodeLeft && (startWidth + (deltaX / zoomfact)) > minWidth) {
                     let tmpW = elementData.width;
                     let tmpX = elementData.x;
