@@ -101,7 +101,7 @@ __Accessed Service:__
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveAccessedService_ms.php __==finished==__ (But not tested, and therefore not implemented at the end of each microservice in the accessedService folder) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
-- getAcessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php" according to new nameconvention based on CRUD. 
+- getAcessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.  
 
 __Note, all microservices related to accessservice.php have been created. As for working tests for these microservices, the work has been paused since accessedservice.php lacks an implemented frontend that allows the development of working tests. Tests cannot be created until the retrieveAccessedService_ms.php is tested, and for that, frontend functionality is needed. Group 3 is working on the frontend solution.__ 
 
@@ -148,6 +148,7 @@ __Courseed Service:__
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - retrieveCourseedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
+- getCourseed_ms.php __==finished==__ New filename: "retrieveAllCourseedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -832,7 +833,7 @@ SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE 
 <br>
 
 ### retrieveAllAcessedServiceData_ms.php
-__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database through __retrieveAccessedService_ms.php__. __retrieveAllAcessedServiceData_ms.php__ does not handle any querys.
+__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllAcessedServiceData_ms.php__ does not handle any querys.
 
 The microservice retrieves and outputs service data for a user in a specific course by calling the 'retrieveAccessedService_ms.php' and returning the result as a JSON-encoded string.
 
@@ -1371,7 +1372,9 @@ _WORK PAUSED given the current non-functional state of this service._
 <br>
 
 ### createNewCourse_ms.php
-__Include original service files:__ sessions.php
+__createNewCourse_ms.php__ checks the user's login and permissions, creates a new course in the database if the user is a superuser, retrieves the ID of the most recently created course, and then retrieving all updated data from the database (through retrieveCourseedService_ms.php).
+
+__Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
@@ -1389,6 +1392,14 @@ _INSERT_ operation on the table __'course'__ to create new rows in the colums:
 INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)
 ``` 
 
+
+_SELECT_ operation on the table __'course'__ to retrieve the value of the column:
+- cid
+
+```sql
+SELECT cid FROM course ORDER BY cid DESC LIMIT 1;
+```
+
 <br>
 
 ---
@@ -1396,7 +1407,7 @@ INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) 
 <br>
 
 ### createCourseVersion_ms.php
-__createCourseVersion_ms.php__ creates a new version of an existing course.
+__createCourseVersion_ms.php__ checks the user's login and permissions, creates a new course version (new version of an existing course) in the database if the user is a superuser, retrieves the latest course version's ID. The microservice also retrieves all updated data from the database (through retrieveCourseedService_ms.php).
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1433,27 +1444,31 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### updateCourseVersion_ms.php
-__Include original service files:__ sessions.php, basic.php, coursesyspw.php
+__updateCourseVersion_ms.php__ checks the user's login and permissions, updates a course version in the database if the user is a superuser, and makes the new version active if specified. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
 
-__Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
 
-_UPDATE_ operation on the table __'course'__ to update the value of these columns:
-- coursename
-- visibility
-- coursecode
-- courseGitURL
+
+_UPDATE_ operation on the table __'vers'__ to update the values of the columns:
+- motd
+- versname
+- startdate
+- enddate
 
 ```sql
-UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;
+UPDATE vers SET motd=:motd, versname=:versname, startdate=:startdate, enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;
 ```
 
-_SELECT_ operation on the table __'user'__ to get the value of the column:
-- username
+
+_UPDATE_ operation on the table __'course'__ to update the value of the column:
+- activeversion
 
 ```sql
-   SELECT username FROM user WHERE uid = :uid
+UPDATE course SET activeversion=:vers WHERE cid=:cid;
 ```
 
 <br>
@@ -2178,6 +2193,22 @@ This microservice gathers information and organizes it into an array that shows 
 
 - __Readonly__- Whether the system is currently in a readonly mode not or. This affects how users can interact with the system's features and data.
 
+
+<br>
+
+---
+
+<br>
+
+### retrieveAllCourseedServiceData_ms.php
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
+
+__retrieveAllCourseedServiceData_ms.php__ calls __retrieveCourseedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. retrieveCourseedService_ms.php does not handle any queries.
+
+The microservice retrieves and outputs course data for a user by calling the __retrieveCourseedService_ms.php__ and returning the result as a JSON-encoded string.Additionally, it checks if the user is logged in and determines if the user is a superuser.
 
 <br>
 <br>
