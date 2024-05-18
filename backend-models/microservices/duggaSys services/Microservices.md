@@ -908,11 +908,31 @@ INSERT INTO box(boxid, exampleid, boxtitle, boxcontent, settings, filename, word
 <br>
 
 ### updateCodeExample_ms.php
-__updateCodeExample_ms.php__ handles updates of code examples.
+__updateCodeExample_ms.php__ handles updates of code examples and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
 
 __Include original service files:__ sessions.php, basic.php
 
+__Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
+
 __Querys used in this microservice:__
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve the values of the columns:
+- exampleid
+- sectionname
+- examplename
+- runlink
+- cid
+- cversion
+- beforeid
+- afterid
+- public
+
+- Where exampleid matches the specifed value ':exampleid'.
+
+```sql
+SELECT exampleid, sectionname, examplename, runlink, cid, cversion, beforeid, afterid, public FROM codeexample WHERE exampleid = :exampleid;
+```
+
 
 _UPDATE_ operation on the table __'codeexample'__ to update the values of the columns:
 - runlink
@@ -978,7 +998,11 @@ DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
 <br>
 
 ### updateContentOfExample_ms.php
+__updateContentOfExample_ms.php__ updates the content of a box that includes a certain code example and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
+
+__Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1023,11 +1047,31 @@ DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exam
 <br>
 
 ### updateBoxTitle_ms.php
+__updateBoxTitle_ms.php__ updates the title of a specific box if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
 
-__Include microservice:__ getUid_ms.php 
+__Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
 __Querys used in this microservice:__
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve the values of the columns:
+- exampleid
+- sectionname
+- examplename
+- runlink
+- cid
+- cversion
+- beforeid
+- afterid
+- public
+
+- Where exampleid macthes the specified 'exampleid'.
+
+```sql
+SELECT exampleid, sectionname, examplename, runlink, cid, cversion, beforeid, afterid, public FROM codeexample WHERE exampleid = :exampleid;
+```
+
 
 _UPDATE_ operation on the table __'box'__ to update the value of the column:
 - boxtitle
@@ -1043,9 +1087,11 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 <br>
 
 ### deleteCodeExample_ms.php
+ __deleteCodeExample_ms.php__ deletes a code example and its related data from the database if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
 
-__Include microservice:__ getUid_ms.php
+__Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
 __Querys used in this microservice:__
 
@@ -1093,9 +1139,65 @@ _DELETE_ operation on the table __'listentries'__ to remove rows where:
 DELETE FROM listentries WHERE lid=:lid;
 ```
 
+<br>
+
+---
+
+<br>
 
 ### retrieveCodeViewerService_ms.php
+
 __Include original service files:__ sessions.php, basic.php
+
+__retrieveCodeviewerService_ms.php__ is responsible for retrieving updated data from the database in the format of an array. The array contains information about:
+
+- __opt:__ The operation option provided by the user.
+
+- __before:__ A list of code examples that precede the current example, including their example IDs, section names, example names, and the IDs of the examples before and after them.
+
+- __after:__ A list of code examples that follow the current example, including their example IDs, section names, example names, and the IDs of the examples before and after them.
+
+- __templateid:__ The ID of the template used for the code example.
+
+- __stylesheet:__ The stylesheet associated with the code example.
+
+- __numbox:__ The number of boxes associated with the code example.
+
+- __box:__ A list of boxes related to the code example, including box ID, content type, content, wordlist ID, title, filename, font size, file path, and file kind.
+
+- __improws:__ A list of important rows in the code example, each containing box ID, start index, and end index.
+
+- __impwords:__ A list of important words associated with the code example.
+
+- __directory:__ Directories of files categorized for different views (code view, document view, preview view), each containing file ID and filename.
+
+- __examplename:__ The name of the code example.
+
+- __sectionname__ The name of the section where the code example is located.
+
+- __playlink:__ The link to run the code example.
+
+- __exampleno:__ Unique identifier of the code example.
+
+- __words:__ A list of words associated with wordlists, each containing wordlist ID, word, and label.
+
+- __wordlists:__ A list of wordlists, each containing wordlist ID and name.
+
+- __writeaccess:__ Indicates the access level of the user, either write ('w') or read ('s').
+
+- __debug:__ Debugging information. If any errors are encountered during the database operations.
+
+- __beforeafter:__ A combined list of all before and after examples.
+
+- __public:__ Indicates whether the code example is public or not.
+
+- __courseid:__ The ID of the course associated with the code example.
+
+- __courseversion:__ The version of the course associated with the code example.
+
+
+__retrieveCodeviewerService_ms.php__ gives information about a specific code example in a course, including details, related examples, important lines, words, file directories, and user access levels. It makes sure only authorized users can view and change this information. It also logs the service event.
+
 
 __Querys used in this microservice:__
 
@@ -1125,30 +1227,12 @@ _SELECT_ operation on the table __'codeexample'__ to retrieve values from the co
 - stylesheet (from the joined __'template'__ table)
 - numbox (from the joined 'template' table)
 
-Here are the conditions for the SQL query:
-
 - The query joins the __'codeexample'__ table with the __'template'__ table based on matching 'templateid' values.
 - The results are filtered by:
     -'exampleid = :exampleid' to make sure the data matches a certain example, and 'cid = :courseID' to limit the data to a specific course ID.
 
 ```sql
 SELECT exampleid, examplename, sectionname, runlink, public, template.templateid AS templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template templateid = codeexample.templateid WHERE exampleid = :exampleid AND cid = :courseID;
-```
-
-
-_SELECT_ operation on the table __'codeexample'__ to retrieve data:
-- exampleid
-- sectionname
-- examplename
-- beforeid
-- afterid
-
-- 'cid' matches the specified course ID.
-- 'cversion' matches the specified course version.
-- Results are sorted by 'sectionname' and 'examplename'.
-
-```sql
-SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;
 ```
 
 
@@ -1164,29 +1248,6 @@ SELECT boxid, istart, iend FROM improw WHERE exampleid = :exampleid ORDER BY ist
 ```
 
 
-_SELECT_ operation on the table __'word'__ to retrieve data:
-- wordlistid
-- word
-- label
-
-- Sorts the results by the 'wordlistid' column.
-
-```sql
-SELECT wordlistid, word, label FROM word ORDER BY wordlistid;
-```
-
-
-_SELECT_ operation on the table __'wordlist'__ to retrieve data:
-- wordlistid
-- wordlistname
-
-- Sorts the results by the 'wordlistid' column.
-
-```sql
-SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;
-```
-
-
 _SELECT_ operation on the table __'impwordlist'__ to retrieve data:
 - word
 - label
@@ -1195,18 +1256,6 @@ _SELECT_ operation on the table __'impwordlist'__ to retrieve data:
 
 ```sql
 SELECT word, label FROM impwordlist WHERE exampleid = :exampleid ORDER BY word;
-```
-
-
-_SELECT_ operation on the table __'fileLink'__ to retrieve data:
-- fileid
-- filename
-- kind
-
-- The 'cid' matches the specified value provided by the parameter ':cid'. The results are then sorted first by 'kind' in ascending order and then by 'filename' in ascending order.
-
-```sql
-SELECT fileid, filename, kind FROM fileLink WHERE cid = :cid ORDER BY kind, filename;
 ```
 
 
@@ -1235,6 +1284,56 @@ _SELECT_ operation on the table __'fileLink'__ to retrieve data:
 
 ```sql
 SELECT filename, path, kind FROM fileLink WHERE (cid = :cid OR isGlobal = '1') AND UPPER(filename) = UPPER(:fname) ORDER BY kind DESC LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'codeexample'__ to retrieve data:
+- exampleid
+- sectionname
+- examplename
+- beforeid
+- afterid
+
+- 'cid' matches the specified course ID.
+- 'cversion' matches the specified course version.
+- Results are sorted by 'sectionname' and 'examplename'.
+
+```sql
+SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;
+```
+
+_SELECT_ operation on the table __'word'__ to retrieve data:
+- wordlistid
+- word
+- label
+
+- Sorts the results by the 'wordlistid' column.
+
+```sql
+SELECT wordlistid, word, label FROM word ORDER BY wordlistid;
+```
+
+
+_SELECT_ operation on the table __'wordlist'__ to retrieve data:
+- wordlistid
+- wordlistname
+
+- Sorts the results by the 'wordlistid' column.
+
+```sql
+SELECT wordlistid, wordlistname FROM wordlist ORDER BY wordlistid;
+```
+
+
+_SELECT_ operation on the table __'fileLink'__ to retrieve data:
+- fileid
+- filename
+- kind
+
+- The 'cid' matches the specified value provided by the parameter ':cid'. The results are then sorted first by 'kind' in ascending order and then by 'filename' in ascending order.
+
+```sql
+SELECT fileid, filename, kind FROM fileLink WHERE cid = :cid ORDER BY kind, filename;
 ```
 
 <br>
