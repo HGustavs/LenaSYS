@@ -1849,19 +1849,13 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 <br>
 
 ### updateCourse_ms.php
+__updateCourse_ms.php__ checks the user's login and permissions, updates the course information in the database if the user is a superuser, and logs the changes. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
 __Querys used in this microservice:__
-
-_SELECT_ operation on the table __'user'__ to retrieve the value of the column:
-- username
-
-```sql
-SELECT username FROM user WHERE uid = :uid;
-```
-
 
 _UPDATE_ operation on the table __'course'__ to update values of the columns:
 - coursename
@@ -1882,10 +1876,9 @@ UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:co
 <br>
 
 ### createMOTD_ms.php
-__createMOTD_ms.php__ is called upon when the message of the day is changed in the page associated with courseed.
-The user must be a super user to be able to do this!
+__createMOTD_ms.php__ checks the user's login and permissions, updates the message of the day (MOTD) in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
 
-__Include original service files:__ sessions.php
+__Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
