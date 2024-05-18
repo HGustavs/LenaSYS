@@ -1901,7 +1901,7 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 ### deleteCourseMaterial_ms.php
 __deleteCourseMaterial_ms.php__ deletes all courses and course material where visibility is 3.
 
-__Include original service files:__ sessions.php
+__Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveCourseedService_ms.php
 
@@ -2060,6 +2060,17 @@ DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND co
 ```
 
 
+_DELETE_ operation on the table __'course_req'__ to delete rows where:
+- req_cid
+- visibility
+
+-The req_cid in 'course_req' matches the cid in 'course' and course.visibility is equal to :deleted.
+
+```sql
+DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.req_cid = course.cid;
+```
+
+
 _DELETE_ operation on the table __'coursekeys'__ to delete rows where:
 
 - The 'cid' value in the __'coursekeys'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
@@ -2087,6 +2098,24 @@ DELETE course FROM course WHERE visibility=:deleted;
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php
+
+
+This microservice gathers information and organizes it into an array that shows details about courses, their versions, access rights, and other settings. It checks who can see and use different parts of the system, removes courses that are no longer needed, and reports any problems it finds. 
+
+- __LastCourseCreated__ - When the last course was created.
+
+- __Entries__- List of courses. Including: course ID ('cid'), course name ('coursename'), course code ('coursecode'), visibility status ('visibility'), and active versions. It also indicates whether a user is registered for each course. 
+
+- __Versions__- Information about the different versions of the courses available. Inncluding: course version identifier ('vers'), version name ('versname'), and associated course names ('coursename' and 'coursenamealt'). 
+
+- __Debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
+
+- __WriteAccess__ - Whether the user has write access ('ha) or not, important for determining if the user can modify course information.
+
+- __MOTD (Message of the Day)__ - Displays notices or updates like general information, specific details relevant to daily operations or critical alerts.
+
+- __Readonly__- Whether the system is currently in a readonly mode not or. This affects how users can interact with the system's features and data.
+
 
 __Querys used in this microservice:__
 
@@ -2187,24 +2216,6 @@ _SELECT_ operation on the table __'settings'__ to retrieve values from the colum
 ```sql
 SELECT motd,readonly FROM settings;
 ```
-
-
-This microservice gathers information and organizes it into an array that shows details about courses, their versions, access rights, and other settings. It checks who can see and use different parts of the system, removes courses that are no longer needed, and reports any problems it finds. 
-
-- __LastCourseCreated__ - When the last course was created.
-
-- __Entries__- List of courses. Including: course ID ('cid'), course name ('coursename'), course code ('coursecode'), visibility status ('visibility'), and active versions. It also indicates whether a user is registered for each course. 
-
-- __Versions__- Information about the different versions of the courses available. Inncluding: course version identifier ('vers'), version name ('versname'), and associated course names ('coursename' and 'coursenamealt'). 
-
-- __Debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
-
-- __WriteAccess__ - Whether the user has write access ('ha) or not, important for determining if the user can modify course information.
-
-- __MOTD (Message of the Day)__ - Displays notices or updates like general information, specific details relevant to daily operations or critical alerts.
-
-- __Readonly__- Whether the system is currently in a readonly mode not or. This affects how users can interact with the system's features and data.
-
 
 <br>
 
