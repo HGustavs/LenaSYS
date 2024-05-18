@@ -1478,7 +1478,8 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 <br>
 
 ### updateActiveCourseVersion_courseed_ms.php
-__updateActiveCourseVersion_courseed_ms.php__ takes an existing course and changes content of the activeversion column.
+__updateActiveCourseVersion_courseed_ms.php__ checks the user's login and permissions, updates the active course version in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+ 
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1500,11 +1501,29 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### copyCourseVersion_ms.php
+__copyCourseVersion_ms.php__ checks the user's login and permissions, copies a course version in the database by duplicating the course's quizzes, variants, code examples, and other related parts, updates links, and makes the new version active if needed. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php, createNewListEntry_ms.php, createNewCodeExample_ms.php
 
 __Querys used in this microservice:__
+
+_INSERT_ operation on the table __'vers'__ to add a new row with values for the following columns:
+- cid
+- coursecode
+- vers
+- versname
+- coursename
+- coursenamealt
+- startdate
+- enddate
+- motd
+
+```sql
+INSERT INTO vers(cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd) VALUES (:cid, :coursecode, :vers, :versname, :coursename, :coursenamealt, :startdate, :enddate, :motd);
+```
+
 
 _INSERT_ operation on the table __'vers'__ to add a new row with values for the following columns:
 - cid
