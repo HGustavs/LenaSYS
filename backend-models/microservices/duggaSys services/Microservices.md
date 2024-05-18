@@ -101,6 +101,7 @@ __Accessed Service:__
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveAccessedService_ms.php __==finished==__ (But not tested, and therefore not implemented at the end of each microservice in the accessedService folder) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
+- getAcessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php" according to new nameconvention based on CRUD. 
 
 __Note, all microservices related to accessservice.php have been created. As for working tests for these microservices, the work has been paused since accessedservice.php lacks an implemented frontend that allows the development of working tests. Tests cannot be created until the retrieveAccessedService_ms.php is tested, and for that, frontend functionality is needed. Group 3 is working on the frontend solution.__ 
 
@@ -486,49 +487,71 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### updateUser_ms.php
-__Include original service files:__ sessions.php
+__updateUser_ms.php__ handles adding new users to a course.
+
+__Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php
 
 __Querys used in this microservice:__
 
-_UPDATE_ operation on the table __'user'__ to update the value of the column:
-- firstname
+_SELECT_ operation on the table __'user'__ to retrieve the column:
+- uid 
+
+- Where the 'username' matches the given value
 
 ```sql
-UPDATE user SET firstname=:firstname WHERE uid=:uid;
+SELECT uid FROM user WHERE username=:username
+   ```
+
+
+_SELECT_ operation on the table __'class'__ to check if a class exists by retrieving the column: 
+- class
+
+- Where the 'class' matches the given value
+
+```sql
+SELECT class FROM class WHERE class=:clsnme;
 ```
 
 
-_UPDATE_ operation on the table __'user'__ to update the value of the column:
-- lastname
+_INSERT_ operation on the table __'class'__ to add a new class:
+- className
+- responsible (set to 1)
 
 ```sql
-UPDATE user SET lastname=:lastname WHERE uid=:uid;
+INSERT INTO class (class, responsible) VALUES(:className,1);
 ```
 
 
-_UPDATE_ operation on the table __'user'__ to update the value of the column:
-- ssn
-
-```sql
-UPDATE user SET ssn=:ssn WHERE uid=:uid;
-```
-
-
-_UPDATE_ operation on the table __'user'__ to update the value of the column:
+_INSERT_ operation on the table __'user'__ to add a new user:
 - username
-
-```sql
-UPDATE user SET username=:username WHERE uid=:uid;
-```
-
-
-_UPDATE_ operation on the table __'user'__ to update the value of the column:
+- email 
+- firstname
+- lastname 
+- ssn
+- password
+- addedtime
 - class
 
 ```sql
-UPDATE user SET class=:class WHERE uid=:uid;
+INSERT INTO user (username, email, firstname, lastname, ssn, password, addedtime, class) VALUES(:username, :email, :firstname, :lastname, :ssn, :password, now(), :className);
+```
+
+
+_INSERT_ operation on the table __'user_course'__ to add a new course registration for a user or update the existing registration:
+- uid
+- cid
+- access 
+- term
+- creator
+- vers
+- vershistory
+
+- If a record already exists, it updates 'vers' and appends the new 'vers' to 'vershistory'.
+
+```sql
+INSERT INTO user_course (uid, cid, access, term, creator, vers, vershistory) VALUES(:uid, :cid, 'R', :term, :creator, :vers, '') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers, ','))
 ```
 
 <br>
@@ -538,6 +561,8 @@ UPDATE user SET class=:class WHERE uid=:uid;
 <br>
 
 ### updateUserCourse_ms.php
+__updateUserCourse_ms.php__ checks if a user has the necessary permissions to update information in a course. If they have permissin the microervice performs updates in the __user_course__ table. 
+
 __Include original service files:__ sessions.php
 
 __Include microservice:__ getUid_ms.php
@@ -582,9 +607,11 @@ UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;
 <br>
 
 ### createClass_ms.php
+__createClass_ms.php__ This microservice is responsible for adding a new class to the database and then retrieving all updated data from the database (through retrieveAccessedService_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
 
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, retrieveAccessedService_ms.php
 
 __Querys used in this microservice:__
 
@@ -680,9 +707,36 @@ ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bve
 <br>
 
 ### retrieveAccessedService_ms.php
+
 __Include original service files:__ basic.php
 
 __Include microservice:__ retrieveUsername_ms.php
+
+
+__retrieveAccessedService_ms.php__ is responsible for retrieving updated data from the database in the format of an array. The array contains information about:
+
+- __Entries__ - A list of user entries in the course, including their username, SSN, first name, last name, class, modification time, examiner, version, access level, groups, and whether they have requested a password change recently.
+
+- __Teachers:__ A list of teachers for the course, including their names and user IDs.
+
+- __Classes:__ A list of all classes, including their class name, responsible person, registration code, class code, HP, tempo, and HP progress.
+
+- __Groups:__ A list of groups, including group values, group kinds, and group integers.
+
+- __Courses:__ A list of courses with their course ID, course code, version, version name, course name, alternative course name, start date, and end date.
+
+- __Submissions:__ A list of user submissions in old versions of the course, including course ID, user ID, version, and version name.
+
+- __Query result:__ Indicates the result of the database queries, initially set to 'NONE!'.
+
+- __Examiners:__ A list of examiners for the course.
+
+- __Access:__ A boolean value indicating whether the user has access to the service or not.
+
+- __Debug:__ Debugging information, including any errors encountered during the database operations.
+
+__retrieveAccessedService_ms.php__ provides information about the users, teachers, classes, groups, courses, and submissions related to a specific course. It also ensures that only authorized users can access this information. It also logs the service event.
+
 
 __Querys used in this microservice:__
 
@@ -701,7 +755,6 @@ _SELECT_ operation on the tables __user__ and __user_course__ to retrieve user d
 - groups
 - TIME_TO_SEC(TIMEDIFF(now(), addedtime)) / 60 AS newly (Calculates the time difference between the current time and the addedtime value, converts this difference from seconds to minutes, and aliases it as value newly)
 
-Condition:
 - Filters records where cid value in __user_course__ table matches a specified value (placeholder :cid).
 - Only selects values where the uid values in both tables match.
 
@@ -764,14 +817,25 @@ _SELECT_ operation on the tables __'course'__, __'userAnswer'__, and __'vers'__ 
 - vers (from 'vers')
 - versname (from 'vers')
 
-```sql
-SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE course.cid=:cid AND course.cid=userAnswer.cid AND vers.vers=userAnswer.vers AND userAnswer.vers!=activeversion;
-```
- 
 - The 'course.cid=:cid' ensures results are for a specific course ID.
 - The 'course.cid=userAnswer.cid' joins the __'course'__ and __'userAnswer'__ tables on the course ID.
 - The 'vers.vers=userAnswer.vers' joins the __vers__ and __userAnswer__ tables on the version number.
 - The 'userAnswer.vers!=activeversion' filters out entries where the user's answer version is the current active version.
+
+```sql
+SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE course.cid=:cid AND course.cid=userAnswer.cid AND vers.vers=userAnswer.vers AND userAnswer.vers!=activeversion;
+```
+
+<br>
+
+---
+
+<br>
+
+### retrieveAllAcessedServiceData_ms.php
+__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database through __retrieveAccessedService_ms.php__. __retrieveAllAcessedServiceData_ms.php__ does not handle any querys.
+
+The microservice retrieves and outputs service data for a user in a specific course by calling the 'retrieveAccessedService_ms.php' and returning the result as a JSON-encoded string.
 
 <br>
 <br>
