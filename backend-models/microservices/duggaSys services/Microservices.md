@@ -2260,7 +2260,7 @@ _WORK PAUSED for development of microservices. Will continue when the service is
 <br>
 
 ### createDugga_ms.php
-__createDugga_ms.php__ is responsible for creating a new quiz (dugga) in a course. This can only be done if the user is logged in and has the required permissions (write access or is a superuser). The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+__createDugga_ms.php__ is responsible for creating a new quiz (dugga) in a course. It also determines if the quiz is a group assignment based on the template. This can only be done if the user is logged in and has the required permissions (write access or is a superuser). The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -2293,6 +2293,8 @@ INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,crea
 <br>
 
 ### updateDugga_ms.php
+__updateDugga_ms.php__ updates an existing quiz (dugga) in the database. It also determines if the quiz is a group assignment based on the template. The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveDuggaedService_ms.php
@@ -2321,6 +2323,8 @@ UPDATE quiz SET qname=:qname, autograde=:autograde, gradesystem=:gradesys, quizF
 <br>
 
 ### deleteDugga_ms.php
+__deleteDugga_ms.php__ deletes a specific quiz and its associated user answers from the database if the user has the necessary permissions. The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
@@ -2349,6 +2353,8 @@ DELETE FROM quiz WHERE id=:qid;
 <br>
 
 ### createDuggaVariant_ms.php
+__createDuggaVariant_ms.php__ handles the creation of a new variant for a specific dugga (quiz), including checking the user's permissions and updating the database accordingly. The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
@@ -2373,6 +2379,8 @@ INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (:qi
 <br>
 
 ### updateDuggaVariant_ms.php
+handles updating a specific variant for a existing dugga, including executing the update in the database. The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
@@ -2395,6 +2403,8 @@ UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer 
 <br>
 
 ### deleteDuggaVariant_ms.php
+__deleteDuggaVariant_ms.php__ handles the deletion of a specific dugga variant, including checking the user's permissions, deleting related user answers, and updating the database accordingly. The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
@@ -2428,6 +2438,27 @@ DELETE FROM variant WHERE vid=:vid;
 
 ### retrieveDuggaedService_ms.php
 __Include original service files:__ sessions.php, basic.php
+
+
+__retrieveDuggaedService_ms.php__ is responsible for retrieving updated data from the database in the format of an array. The array contains information about:
+
+- __entries__: A list of quizzes in the course, including their variants, quiz ID, version, course ID, quiz name, autograde status, grade system, quiz file, start time, deadline, release time, last modified time, group information, relative deadline, JSON deadline, and creator.
+
+- __files__: A list of template files available for the duggas (quizzes), with the file extensions removed. These templates are HTML files located in a specific director (../../templates). The microservice checks this directory, identifies the HTML files, and then includes their names (without the .html extension) in the list.
+
+- __duggaPages__: An associative array (where each element is a pair consisting of a key and a value) where each key is the name of a template file (without the .html ending), and each value is the content of that template file.
+
+- __coursecode__: The course code retrieved from the database.
+
+- __coursename__: The course name retrieved from the database.
+
+- __writeaccess__: A boolean value indicating whether the user has write access to the service or not.
+
+- __debug__: Debugging information. Includes any errors encountered during the database operations.
+
+__retrieveDuggaedService_ms.php__ provides information about the quizzes, variants, and templates related to a specific course. It also ensures that only authorized users can access this information. It also logs the service event.
+
+
 
 __Querys used in this microservice:__
 
