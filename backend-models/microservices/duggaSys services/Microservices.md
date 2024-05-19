@@ -2991,8 +2991,6 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ retrieveHighscoreService_ms.php 
 
-__Includes neither original service files nor microservices.__
-
 
 __Session management:__ Checks if a user is logged in by checking the user's ID in the session. If no user ID is found, it defaults to "1", indicating that the user is not logged in. This is used for determining which user's scores to retrieve or verify if the user has permission to see highscores. 
 
@@ -3014,7 +3012,7 @@ __retrieveHighscoreService_ms.php__ retrieves highscore data for a specific dugg
 __Include original service files:__ sessions.php, basic.php
 
 
-__retrieveHighscoreService.php__ is responsible for retrieving highscore data from the database in the format of an array. The array contains information about:
+__retrieveHighscoreService_ms.php__ is responsible for retrieving highscore data from the database in the format of an array. The array contains information about:
 
 - __highscores__: A list of high scores for a specific dugga and variant, including usernames and scores of users who passed the dugga.
 - __user__: Information about the logged-in user, if they have a score for the specified dugga and variant.
@@ -3062,11 +3060,12 @@ SELECT username, score FROM userAnswer, user WHERE userAnswer.quiz = :did AND us
 ProfileService handles password changes and challenge questions. To access these functions, the user clicks on their profile when logged in.
 
 #### updateSecurityQuestion_ms.php
-__updateSecurityQuestion_ms.php__ handles the updating of security questions for users. Changes to security questions are permitted only for non-superuser/non-teacher users and only if the correct password is entered.
+__updateSecurityQuestion_ms.php__ handles the updating of a user's challenge question and answer. Changes of security questions are permitted only for non-superuser/non-teacher users and only if the correct password is entered. The operation is then logged. The microserive then retrieves all updated data from the database (through retrieveProfileService_ms.php) as the output for the microservice. See __retrieveProfileService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
+
 
 __Querys used in this microservice:__
 
@@ -3101,7 +3100,7 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 <br>
 
 #### updateUserPassword_ms.php
-__updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated.
+__updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated. The operation is then logged. The microserive then retrieves all updated data from the database (through retrieveProfileService_ms.php) as the output for the microservice. See __retrieveProfileService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3116,6 +3115,7 @@ _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 SELECT password FROM user WHERE uid = :userid LIMIT 1;
 ```
 
+
 _SELECT_ operation on the table __'user_course'__ to retrieve the value of the column:
 - access
 
@@ -3123,13 +3123,6 @@ _SELECT_ operation on the table __'user_course'__ to retrieve the value of the c
 SELECT access FROM user_course WHERE uid = :userid AND access = 'W' LIMIT 1;
 ```
 
-_UPDATE_ operation on the table __'user'__ to update the values of the columns:
-- securityquestion
-- securityquestionanswer
-
-```sql
-UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid;
-```
 
 _UPDATE_ operation on the table __'user'__ to update the value of the column:
 - password
@@ -3148,23 +3141,19 @@ UPDATE user SET password=:PW WHERE uid=:userid;
 
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__
 
-Includes no querys.
+__retrieveProfileService_ms.php__ is responsible for returning the result of a profile update operation in the format of an array. The array contains information about:
 
+- __success__: A boolean value indicating whether the operation was successful or not.
 
-The __retrieveProfileService_ms.php__ returns an array containing three key values (information about):
-
-- __success__ - ('true' or 'false') indicating whether the user's request to update the password or security question was successful or not. 'true' means the update was successful, and 'false' means it failed for some reason.
-
-- __status__ - Indicating the user's status or the outcome of the operation. Possible values include:
+- __status__: A string describing the current status of the operation, such as if the user is a teacher or if there was a password mismatch. Possible values include:
    - "teacher" - The user is a teacher or superuser and is not allowed to change their password or security question.
    - "wrongpassword" - The provided password does not match the one in the database.
    - An empty string ('""') if no specific statuses occur during the process.
 
-- __debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
+- __debug__: Debugging information. Includes any errors encountered during the operation.
 
-The microservice provide direct feedback from the server about the result of the requested operation (either changing the password or security question).
+__retrieveProfileService_ms.php__ provides feedback about the success of a profile update operation (either changing the password or security question), and logs any debug information. This function returns an array that summarizes the outcome of the operation.
 
 <br>
 <br>
@@ -3177,7 +3166,8 @@ The microservice provide direct feedback from the server about the result of the
 <br>
 
 ### readUserAnswer_ms.php
-__readUserAnswer_ms.php__ manages and presents information about submitted duggor.
+__readUserAnswer_ms.php__ manages and presents information about submitted duggor. The microservice checks if the user has the right permissions, then gets the submission and filter data from the database. After processing the data, it formats it for display in a table and returns it in an organized way. The microservice retrieves all updated data from the database (through retrieveResultedService_ms.php) as the output for the microservice. See __retrieveResultedService_ms.php__ for more information.
+
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3224,28 +3214,17 @@ SELECT entryname, kind, lid, moment FROM listentries WHERE cid=:cid AND vers=:ve
 <br>
 
 ### retrieveResultedService_ms.php
+
 __Includes neither original service files nor microservices.__
 
-__retrieveResultedService_ms.php__ returns an array containing two key values (information about):
 
-- tableInfo - An array containing information about each student submission related to a specific course version. For each submission found in the database, the following information is stored in this array:
-   - __duggaName__ - The name of the assignment associated with the data.
-   - __hash__ - A unique hash value for the collection.
-   - __password__ - The password associated with the collection.
-   - __teacher_visited__ - The last time a teacher visited the collection.
-   - __submitted__ - Whether the assignment has been submitted.
-   - __timesSubmitted__ - The number of times the assignment has been submitted.
-   - __timesAccessed__ - The number of times the assignment has been accessed.
-   - __subCourse__ - The name of the sub-course, if applicable.
-   - __link__ - 
+__retrieveResultedService_ms.php__ is responsible for returning organized data about submissions for a specific course version in the format of an array. The array contains information about:
 
-- duggaFilterOptions - An array of filter options used to organize and filter the submissions based on different criterias.
-   - __entryname__ - The name of the entry.
-   - __kind__ - The type of entry.
-   - __lid__ - Link ID.
-   - __moment__ - 
+- __tableInfo__: A list of submission details, including the dugga name, submission hash, password, submission status, number of times submitted and accessed, teacher visit times, and subcourse information, and additional link.
 
-The microservice provides feedback about submissions and associated metadata for a course.
+- __duggaFilterOptions__: A list of filter options for the duggas, including entry names, kinds, list IDs, and moments (moment or time of entry).
+
+__retrieveResultedService_ms.php__ provides organized submission data and filter options related to a specific course version, ensuring that the data is properly structured.
 
 <br>
 <br>
