@@ -640,7 +640,6 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
 function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
-
     const text = splitFull(element.attributes, maxCharactersPerLine);
     let length = (text.length > 4) ? text.length : 4;
     let totalHeight = boxh + texth * length;

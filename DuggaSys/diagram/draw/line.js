@@ -266,16 +266,16 @@ function getLineAttrubutes(f, t, ctype) {
 }
 
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
-    const offsetOnLine = 20 * zoomfact;
+    const offsetOnLine = 35 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
     if (line.ctype == lineDirection.UP) {
-        x -= offsetOnLine / 2;
+        x -= offsetOnLine / 2 + 10;
         y += (isStart) ? -offsetOnLine : offsetOnLine;
     } else if (line.ctype == lineDirection.DOWN) {
-        x -= offsetOnLine / 2;
+        x -= offsetOnLine / 2 + 10;
         y += (isStart) ? offsetOnLine : -offsetOnLine;
     } else if (line.ctype == lineDirection.LEFT) {
         x += (isStart) ? -offsetOnLine : offsetOnLine;

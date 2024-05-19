@@ -34,6 +34,7 @@
     <script src="./diagram/constants.js"></script>
     <script src="./diagram/defaults.js"></script>
     <script src="./diagram/globals.js"></script>
+    <script src="./diagram/classes/element.js"></script>
     <script src="./diagram/classes/stateChange.js"></script>
     <script src="./diagram/classes/stateChangeFactory.js"></script>
     <script src="./diagram/helper.js"></script>
@@ -58,7 +59,7 @@
     <script src="./diagram/helpers/mouse.js"></script>
     <script src="./diagram/helpers/mouseMode.js"></script>
     <script src="./diagram/events/mouse.js"></script>
-    <script src="diagram.js"></script>
+    <script defer src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
 <!-- instead of onload on body there is an event listener for loaded in diagram.js at the top of the INIT AND SETUP REGION -->

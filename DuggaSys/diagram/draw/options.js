@@ -76,8 +76,6 @@ function nameInput(element) {
                 id='elementProperty_name' 
                 type='text' 
                 value='${element.name}' 
-                onfocus='propFieldSelected(true)' 
-                onblur='propFieldSelected(false)'
             >`;
 }
 
@@ -114,13 +112,6 @@ function colorSelection(element) {
 
 function drawElementProperties(element) {
     let str = '';
-    // Type dropdown
-    if (element.canChangeTo && element.kind != elementTypesNames.ERAttr) {
-        let single = `<option selected="selected" value='${element.type}'>${element.type}</option>`;
-        let options = (elementHasLines(element)) ? single : option(element.canChangeTo, element.type);
-        str += `<div style='color:${color.WHITE};'>Type</div>`;
-        str += select('typeSelect', options, false, false);
-    }
     //TODO in the future, this can be implemented as part of saveProperties.
     switch (element.kind) {
         case elementTypesNames.EREntity:
@@ -243,8 +234,6 @@ function drawLineProperties(line) {
             break;
         case entityType.IE:
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
-            str += `<span id="lineLabel" ${line.label} /span>`; // Needed for cardinality, unsure why
-            str += cardinalityLabels(line);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
@@ -1720,14 +1709,6 @@ function formatERWeakEntities(ERData) {
     return temp;
 }
 
-/**
- * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
- * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
- * @see propFieldState For seeing if any fieldset is currently selected.
- */
-function propFieldSelected(isSelected) {
-    propFieldState = isSelected;
-}
 
 /**
  * @description Tests if there are varying fill and/or stroke colors in the selected elements
@@ -1776,7 +1757,7 @@ function changeLineProperties() {
     }
 
     // adds the rest of the attributes for the specific entity
-    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
+    if (line.type == entityType.UML) {
         changes.startLabel = document.getElementById("lineStartLabel").value;
         changes.endLabel = document.getElementById("lineEndLabel").value;
         changes.startIcon = document.getElementById("lineStartIcon").value;
@@ -1787,7 +1768,7 @@ function changeLineProperties() {
         changes.startIcon = document.getElementById("lineStartIcon").value;
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
-    if (line.type == entityType.SE) {
+    if ((line.type == entityType.SE) || (line.type == entityType.IE)) {
         changes.startIcon = document.getElementById("lineStartIcon").value;
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
