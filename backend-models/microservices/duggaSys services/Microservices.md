@@ -86,7 +86,6 @@ __Shared microservices:__
 
 - getUid_ms.php __==finished==__ New filename: "readUid_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
-- setActiveCourseversion_ms.php __==UNFINISHED==__
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
 - createNewVersionOfCourse_ms.php __==UNFINISHED==__
@@ -280,17 +279,16 @@ __Show Dugga Service:__
 <br>
 
 ### readUid_ms.php
-__readUid_ms.php__ is primarily used for handling user identification and logging service events.
+__readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a guest ID if the user is not logged in. The function also logs an event with details about the request. The microservice ensures correct identification and logging of users and their actions in the system. The uid
 
-__Include original service files:__ sessions.php, basic.php, coursesyspw.php
+__Include original service files:__ sessions.php, basic.php
 
-__Session control:__ Checks if there is a user ID (uid) present in the current session. If an ID exists, it is used; otherwise, the user ID is set to "guest", indicating that the user is not logged in.
 
-__Logging:__ Utilizes the information gathered to log a service event in the __serviceLogEntries__ table using the logServiceEvent function (defined in basic.php).
+- __Session control:__ Checks if there is a user ID (uid) in the current session. If there is an ID, it uses it. If not, it sets the user ID to "guest", meaning the user is not logged in.
 
-__Return of user ID:__ The function returns the user ID, which is either the actual user ID from the session or "guest".
+- __Logging:__ Collects information and logs a service event in the __'serviceLogEntries'__ table by using the __'logServiceEvent'__ function (defined in basic.php). It logs details like the operation type, course ID, course version, example name, section name, example ID, and timestamp.
 
-__Conclusion:__ The purpose of the code is to ensure accurate identification and logging of users and their actions within the system.
+- __Return user ID:__ The microservice returns the user ID, which will be either the actual user ID from the session or "guest".
 
 <br>
 
@@ -299,9 +297,19 @@ __Conclusion:__ The purpose of the code is to ensure accurate identification and
 <br>
 
 ### readUsername_ms.php
-__readUsername_ms.php__ is used to retrieve a username from a specific userid (uid). 
+__readUsername_ms.php__ retrieves and returns the username associated with the current user ID as output. This ensures accurate identification of the logged-in user.
 
 __Include microservice:__ getUid_ms.php
+
+
+__Session control:__ Checks if the user is logged in by calling the 'getUid' function (getUid_ms.php). This function retrieves the user ID (uid) from the current session or assigns "guest" if no user ID is found.
+
+__Query:__ Executes a SQL query to fetch the username associated with the retrieved user ID ('uid'). 
+
+__Username retrieval:__ If the user is logged in, fetches the username from the query result and stores it in the '$username' variable.
+
+__Return username:__ The function returns the fetched username.
+
 
 __Querys used in this microservice:__
 
@@ -318,75 +326,23 @@ SELECT username FROM user WHERE uid = :uid;
 
 <br>
 
-### setActiveCourseversion
-__USED BY__
-- updateCourseVersion__sectioned
-- changeActiveCourseVersion_courseed
-- updateCourseVersion_courseed
-- copyCourseVersion
-<br>
-
-Uses the services __updateTableCourse__ to change the content of these columns:
-- activeversion
-
-<br>
-
----
-
-<br>
-
 ### createNewCodeExample_ms.php
+__createNewCodeExample_ms.php__ creates a new code example in the database and logs the event. It retrieves the user ID (getUid_ms.php) and username (retrieveUsername_ms.php), inserts a new entry into the __'codeexample'__ table, generates a link for the new entry, and logs the event. The microservice then returns the link to the newly created code example as the output.
+
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
 
 __Querys used in this microservice:__
 
-_SELECT_ operation on the table __'user'__ to retrieve the value from the column:
-- username
-
-- The 'uid' value in the __'user'__ table matches the value bound to :uid.
-
-```sql
-SELECT username FROM user WHERE uid = :uid;
-```
-
-
-_SELECT_ operation on the table __'codeexample'__ to retrieve all columns:
-
-- Retrieves all data fields from the __'codeexample'__ table for the last (most recent) entry based on the exampleid in descending order.
-
-```sql
-SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;
-```
-
-
-_INSERT_ operation on the table __'codeexample'__ to create new rows with values for the columns:
+_INSERT_ operation on the table __'codeexample'__ to insert values into the columns:
 - cid
 - examplename
 - sectionname
-- uid = 1 (static value)
+- uid
 - cversion
+- templateid
 
 ```sql
-INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
-```
-
-
-_INSERT_ operation on the table __'listentries'__ to create new rows with values for the columns:
-- cid
-- vers
-- entryname
-- link
-- kind
-- pos
-- visible
-- creator
-- comments
-- gradesystem
-- highscoremode
-- groupKind
-
-```sql
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind);
+INSERT INTO codeexample(cid, examplename, sectionname, uid, cversion, templateid) VALUES (:cid, :ename, :sname, 1, :cversion, :templateid);
 ```
 
 <br>
@@ -396,19 +352,11 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 <br>
 
 ### createNewListentry_ms.php
+__createNewListentry_ms.php__ inserts a new entry into the __'listentries'__ table in the database, fetches the username of the current user (through retrieveUsername_ms.php) and logs the event. The username is necessary because actions and events logged in the system need to be associated with a user.
+
 __Include microservice:__ retrieveUsername_ms.php
 
 __Querys used in this microservice:__
-
-_SELECT_ operation on the table __'user'__ to retrieve the value from the column:
-- username
-
-- The 'uid' value in the 'user' table matches the value bound to :uid.
-
-```sql
-SELECT username FROM user WHERE uid = :uid;
-```
-
 
 _INSERT_ operation on the table __'listentries'__ to create new rows with values for the columns:
 - cid
@@ -458,7 +406,8 @@ Uses the services __insertIntoTableVers__ to _insert_ into the table __vers__.
 <br>
 
 ### updateActiveCourse_ms.php
-__updateActiveCourse_ms.php__ sets which version ID should be active for a specific course ID.
+__updateActiveCourse_ms.php__ set a specific version of a course as the active version by updating the 'activeversion' value int the __'course'__ table in the database
+If there is an error, the function returns the error message as a JSON-encoded string as output. 
 
 __Include original service files:__ basic.php
 
