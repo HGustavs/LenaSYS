@@ -183,8 +183,7 @@ __Gitcommit Service:__
 
 - getCourseID __==finished==__ New filename: "readCourseID_ms.php" according to new nameconvention based on CRUD.
 - clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.  
-- updateGithubRepo_ms.php __==UNFINISHED==__
-- refreshGithubRepo_ms.php __==finished==__ The existing name should be retained based on the actual function of the microservice, even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. The fact that "updateGithubRepo_ms.php" already exists is also a factor in this decision.  
+- refreshGithubRepo_ms.php __==finished==__ New filename: "updateGithubRepo_ms.php" according to new nameconvention based on CRUD and the actual function of the microservice.
 - fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
 - insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepo_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
@@ -2524,6 +2523,8 @@ SELECT vid, quizID, param, variantanswer, modified, disabled FROM variant WHERE 
 <br>
 
 ### deleteFileLink_ms.php
+ manages the deletion of files from a course, ensuring that the user has the necessary permissions, checking if the file is in use, and then removing both the database entry and the physical file from the server if the necessary conditions are met. The microserive then retrieves all updated data from the database (through retrieveFileedService_ms.php) as the output for the microservice. See __retrieveFileedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveFileedService_ms.php
@@ -2566,7 +2567,8 @@ DELETE FROM fileLink WHERE fileid=:fid;
 <br>
 
 ### updateFileLink_ms.php
-__updateFileLink_ms.php__ handles writing to files and updates filesize in fileLink.
+__updateFileLink_ms.php__ updates the content of a specific file in the course, ensures the user has the necessary permissions, and updates the file size information in the database. The microserive then retrieves all updated data from the database (through retrieveFileedService_ms.php) as the output for the microservice. See __retrieveFileedService_ms.php__  for more information.
+
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -2608,6 +2610,30 @@ UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND ci
 <br>
 
 ### retrieveFileedService_ms.php
+
+__retrieveFileedService_ms.php__ is responsible for retrieving updated data from the database in the format of an array. The array contains information about:
+
+- __entries__ - A list of files related to a course, including details such as the filename, file extension, file kind, file size, upload date, file path, and permissions for editing and deleting the file.
+
+- __gfiles__ - A list of global template files available in the system (LenaSys), not tied to any specific course.
+
+- __lfiles:__ - A list of local files specific to the current course.
+
+- __access:__ - A boolean value indicating whether the user has access to the service or not.
+
+- __studentteacher:__ - Information about whether the user is a student or a teacher.
+
+- __superuser:__ - A boolean value indicating whether the user is a superuser.
+
+- __waccess:__ - A boolean value indicating whether the user has write access to the course.
+
+- __supervisor:__ - A boolean value indicating whether the user is a supervisor.
+
+- __debug:__ - Debugging information. Includes any errors encountered during the database operations.
+
+
+__retrieveFileedService_ms.php__ provides detailed information about files in a course, making sure access is properly controlled and actions are logged. 
+
 __Include original service files:__ basic.php
 
 __Querys used in this microservice:__
@@ -2635,6 +2661,8 @@ SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid 
 <br>
 
 ### readCourseID_ms.php
+__readCourseID_ms.php__ is responsible for retrieving the course ID from a database based on a provided GitHub URL. The microservice looks up a course ID in a database based on a provided GitHub URL, formats the URL for the query, retrieves the course ID if available, and adds the information to the SQLite database if a match is found (through insertIntoSQLite_ms.php).
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ insertIntoSQLite_ms.php
@@ -2651,9 +2679,11 @@ SELECT cid FROM course WHERE courseGitURL = :githubURL;
 <br>
 
 ### deleteGitFiles_ms.php
-__deleteGitFiles_ms.php__ clear the gitFiles table in SQLite db when a course has been updated with a new github repo.
+__deleteGitFiles_ms.php__ connects to the SQLite database and clears all entries from the __gitFiles__ table for a specified course ID. It also handles any errors that occur during the process.
 
 __Include original service files:__ sessions.php, basic.php
+
+__Querys used in this microservice:__
 
 _DELETE_ operation on the table __'gitFiles'__ to remove records where:
 - 'cid' matches the specified course ID (':cid').
@@ -2669,26 +2699,7 @@ DELETE FROM gitFiles WHERE cid = :cid;
 <br>
 
 ### updateGithubRepo_ms.php
-Update github repo in course updates the repo url and commit in SQLlite DB.
-
-__Querys used in this microservice:__
-
-_UPDATE_ operation on the table __'gitRepos'__ to update the values of the columns:
-- repoURL
-- lastCommit
-
-```sql
-UPDATE gitRepos SET repoURL = :repoURL, lastCommit = :lastCommit WHERE cid = :cid;
-```
-
-<br>
-
----
-
-<br>
-
-### refreshGithubRepo_ms.php
-Updates the metadata from the github repo if there's been a new commit.
+__updateGithubRepo_ms.php__ refreshes the metadata from a GitHub repository for a course when there's a new commit, updating the local SQLite database and downloading the latest files if necessary.
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
@@ -2696,9 +2707,12 @@ __Include microservice:__ refreshCheck_ms.php, clearGitFiles_ms.php
 
 __Querys used in this microservice:__
 
+
 _SELECT_ operation on the table __'gitRepos'__ to retrieve the values of the columns:
 - lastCommit
 - repoURL
+
+- Filter results after where the 'cid' in the __'gitRepos'__ table matches the value bound to ':cid'.
 
 ```sql
 SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid;
@@ -2707,6 +2721,8 @@ SELECT lastCommit, repoURL FROM gitRepos WHERE cid = :cid;
 
 _UPDATE_ operation on the table __'gitRepos'__ to update the value of the column:
 - lastCommit
+
+- Filter results after where the 'cid' in the __'gitRepos'__ table matches the value bound to ':cid'.
 
 ```sql
 UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid;
@@ -2718,7 +2734,10 @@ UPDATE gitRepos SET lastCommit = :latestCommit WHERE cid = :cid;
 
 <br>
 
+
 ### readGitToken_ms.php
+__readGitToken_ms.php__ retrieves the GitHub token for a specific course ID from the database, and returns the token if it exists and is valid; otherwise, it returns null.
+
 __Includes neither original service files nor microservices.__
 
 __Querys used in this microservice:__ 
@@ -2738,6 +2757,8 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid;
 <br>
 
 ### syncGitRepo_ms.php
+__syncGitRepo_ms.php__ updates the SQLite database with the latest details about a GitHub repository for a specific course, including the most recent commit and token. It makes sure the database record is either updated or inserted and refreshes the repository information if needed.
+
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
 __Querys used in this microservice:__
@@ -2762,7 +2783,7 @@ INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) V
 
 
 ### updateTime_ms.php
-__updateTime_ms.php__ updates the MySQL database to save the latest update time.
+__updateTime_ms.php__ updates the 'updated' value of a course in the MySQL database with the current time.
 
 __Includes neither original service files nor microservices.__
 
@@ -2782,7 +2803,7 @@ UPDATE course SET updated=:parsedTime WHERE cid=:cid;
 
 
 ### updateThrottle_ms.php
-__updateThrottle_ms-php__ checks if database updates for a course are allowed by comparing the last update time against predefined intervals and user privileges. It enforces cooldowns using session variables to prevent too frequent updates. Superusers are granted shorter update intervals.
+__updateThrottle_ms-php__ ensures that the GitHub repository information for a course is only refreshed if enough time has passed since the last update. This is based on user permissions and set cooldown times. If the user has superuser priviliges short deadline is used. If the user is not a superuser, the long deadline is used.
 
 __Include original service files:__ sessions.php, basic.php
 
