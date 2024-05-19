@@ -607,7 +607,7 @@ UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;
 <br>
 
 ### createClass_ms.php
-__createClass_ms.php__ This microservice is responsible for adding a new class to the database, and then retrieving all updated data from the database (through retrieveAccessedService_ms.php). See __retrieveAccessedService_ms.php__ for more information.
+__createClass_ms.php__ This microservice is responsible for adding a new class to the database, and then retrieving all updated data from the database (through retrieveAccessedService_ms.php) as the output for the microservice. See __retrieveAccessedService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -909,7 +909,7 @@ INSERT INTO box(boxid, exampleid, boxtitle, boxcontent, settings, filename, word
 <br>
 
 ### updateCodeExample_ms.php
-__updateCodeExample_ms.php__ handles updates of code examples, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
+__updateCodeExample_ms.php__ handles updates of code examples, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice. See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -999,7 +999,7 @@ DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
 <br>
 
 ### updateContentOfExample_ms.php
-__updateContentOfExample_ms.php__ updates the content of a box that includes a certain code example and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
+__updateContentOfExample_ms.php__ updates the content of a box that includes a certain code example and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice. See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1048,7 +1048,7 @@ DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exam
 <br>
 
 ### updateBoxTitle_ms.php
-__updateBoxTitle_ms.php__ updates the title of a specific box if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
+__updateBoxTitle_ms.php__ updates the title of a specific box if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice. See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1088,7 +1088,7 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 <br>
 
 ### deleteCodeExample_ms.php
- __deleteCodeExample_ms.php__ deletes a code example and its related data from the database if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
+ __deleteCodeExample_ms.php__ deletes a code example and its related data from the database if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice. See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1372,7 +1372,7 @@ _WORK PAUSED given the current non-functional state of this service._
 <br>
 
 ### createNewCourse_ms.php
-__createNewCourse_ms.php__ checks the user's login and permissions, creates a new course in the database if the user is a superuser, retrieves the ID of the most recently created course, and then retrieving all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__createNewCourse_ms.php__ checks the user's login and permissions, creates a new course in the database if the user is a superuser, retrieves the ID of the most recently created course, and then retrieving all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1407,7 +1407,7 @@ SELECT cid FROM course ORDER BY cid DESC LIMIT 1;
 <br>
 
 ### createCourseVersion_ms.php
-__createCourseVersion_ms.php__ checks the user's login and permissions, creates a new course version (new version of an existing course) in the database if the user is a superuser, retrieves the latest course version's ID. The microservice also retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__createCourseVersion_ms.php__ checks the user's login and permissions, creates a new course version (new version of an existing course) in the database if the user is a superuser, retrieves the latest course version's ID. The microservice also retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1444,7 +1444,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### updateCourseVersion_ms.php
-__updateCourseVersion_ms.php__ checks the user's login and permissions, updates a course version in the database if the user is a superuser, and makes the new version active if specified. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__updateCourseVersion_ms.php__ checks the user's login and permissions, updates a course version in the database if the user is a superuser, and makes the new version active if specified. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1478,7 +1478,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 <br>
 
 ### updateActiveCourseVersion_courseed_ms.php
-__updateActiveCourseVersion_courseed_ms.php__ checks the user's login and permissions, updates the active course version in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__updateActiveCourseVersion_courseed_ms.php__ checks the user's login and permissions, updates the active course version in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
  
 
 __Include original service files:__ sessions.php, basic.php
@@ -1501,7 +1501,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### copyCourseVersion_ms.php
-__copyCourseVersion_ms.php__ checks the user's login and permissions, copies a course version in the database by duplicating the course's quizzes, variants, code examples, and other related parts, updates links, and makes the new version active if needed. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__copyCourseVersion_ms.php__ checks the user's login and permissions, copies a course version in the database by duplicating the course's quizzes, variants, code examples, and other related parts, updates links, and makes the new version active if needed. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1848,7 +1848,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 <br>
 
 ### updateCourse_ms.php
-__updateCourse_ms.php__ checks the user's login and permissions, updates the course information in the database if the user is a superuser, and logs the changes. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__updateCourse_ms.php__ checks the user's login and permissions, updates the course information in the database if the user is a superuser, and logs the changes. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1875,7 +1875,7 @@ UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:co
 <br>
 
 ### createMOTD_ms.php
-__createMOTD_ms.php__ checks the user's login and permissions, updates the message of the day (MOTD) in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__createMOTD_ms.php__ checks the user's login and permissions, updates the message of the day (MOTD) in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1899,7 +1899,7 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 <br>
 
 ### deleteCourseMaterial_ms.php
-__deleteCourseMaterial_ms.php__ code deletes all courses and associated materials that have been marked as deleted (visibility = 3) from the database. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
+__deleteCourseMaterial_ms.php__ code deletes all courses and associated materials that have been marked as deleted (visibility = 3) from the database. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -2100,7 +2100,7 @@ __Include original service files:__ sessions.php, basic.php
 __Include microservice:__ getUid_ms.php, deleteCourseMaterial_ms.php
 
 
-__retrieveCourseedService_ms.php__ retrieves data related to courses from the database and returns it in an array format. The array contains information about:
+__retrieveCourseedService_ms.php__ retrieves all updated data related to courses from the database and returns it in an array format. The array contains information about:
 
 - __entries__ - A list of courses the user has access to, including course ID, course name, course code, visibility, active version, active ed version, and whether the user is registered for the course. Visibility can be:
   - 0: Hidden
@@ -2260,6 +2260,8 @@ _WORK PAUSED for development of microservices. Will continue when the service is
 <br>
 
 ### createDugga_ms.php
+__createDugga_ms.php__ is responsible for creating a new quiz (dugga) in a course. This can only be done if the user is logged in and has the required permissions (write access or is a superuser). The microserive then retrieves all updated data from the database (through retrieveDuggaedService_ms.php) as the output for the microservice. See __retrieveDuggaedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
