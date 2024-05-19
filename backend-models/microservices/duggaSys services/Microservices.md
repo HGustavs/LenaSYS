@@ -2985,7 +2985,7 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid
 <br>
 
 ### readHighscore_ms.php
-__readHighscore_ms.php__ is managing user sessions, handling errors, fetching highscores (through 'retrieveHighscoreService_ms.php'), and communicating these results back to the client.
+__readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking, logs the service event, and then retrieving all updated data from the database (through retrieveHighscoreService_ms.php) as the output for the microservice. See __retrievehighscoreService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3009,17 +3009,16 @@ __Results:__ After fetching the scores, the result is formated into an array and
 <br>
 
 ### retrieveHighscoreService_ms.php
-__readHighscore_ms.php__ retrieves highscore lists based on user results and provides specific feedback to logged-in users about their ranking.
+__retrieveHighscoreService_ms.php__ retrieves highscore data for a specific dugga and variant from the database, checks the logged-in user's score, and returns the data as a structured array.
 
 __Include original service files:__ sessions.php, basic.php
 
 
-__Highscores:__ Collects the best scores from users who have successfully passed a section of a quiz. It pulls these scores from a database and lists each user's name along with their score for the specific quiz and section.
+__retrieveHighscoreService.php__ is responsible for retrieving highscore data from the database in the format of an array. The array contains information about:
 
-__User:__ Checks if the score of the person currently logged in is among the top scores. If it is, their position is noted in the list. If not, the function runs another query to find and report that user’s own score separately.
-
-__Debug:__ Provides details about any problems encountered during the services operation. This could include error messages from failed SQL queries. 
-
+- __highscores__: A list of high scores for a specific dugga and variant, including usernames and scores of users who passed the dugga.
+- __user__: Information about the logged-in user, if they have a score for the specified dugga and variant.
+- __debug__: Debugging information. Includes any errors encountered during the database operations.
 
 __Querys used in this microservice:__
 
