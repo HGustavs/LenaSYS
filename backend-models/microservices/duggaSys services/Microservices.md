@@ -2829,15 +2829,13 @@ SELECT updated FROM course WHERE cid = :cid;
 <br>
 
 ### getGitHubAPIUrl_ms.php
-__getGitHubAPIUrl_ms.php__ transforms a standard GitHub repository URL into an API URL format. This function extracts the username and repository name from the provided URL, and constructs an API URL that targets the repository's contents.
+__getGitHubAPIUrl_ms.php__ transforms the standard GitHub repository URL into an API URL format. This function extracts the username and repository name from the provided URL, and constructs an API URL for accessing the repository contents.
 
 __Include original service files:__ sessions.php, basic.php
 
-__API URL Construction:__ It builds a new URL using GitHub's API format to access repository contents.
+__Includes neither original service files nor microservices.__
 
-__Return of API URL:__ The function outputs a GitHub API URL, suitable for API requests to access repository files.
-
-__Conclusion:__ The function simplifies accessing GitHub repository data through API calls by generating correct API URLs.
+__getGitHubAPIUrl_ms.php__ takes a GitHub repository URL as input. It splits the URL into parts using the / character, gets the username (third part) and repository name (fourth part) from the split URL, builds a new URL in the format for GitHub's API to access repository contents, and returns the new API URL. The microservice simplifies accessing GitHub repository data through API calls by generating correct API URLs.
 
 <br>
 
@@ -2856,7 +2854,7 @@ _WORK PAUSED for development of this microservice. Will continue when the servic
 <br>
 
 ### createFileLinkEntry_ms.php
-__createFileLinkEntry_ms.php__ checks if a file with the same details already exists in the database and, if not, it inserts a new record with those details.
+__createFileLinkEntry_ms.php__  adds file information to the __'fileLink'__ table in the database if the file does not already exist for the given course. It checks for duplicates before inserting and handles any errors that occur during the process.
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
@@ -2891,7 +2889,7 @@ INSERT INTO fileLink(filename, path, kind, cid, filesize) VALUES(:filename, :fil
 <br>
 
 ### createGitFilesMetadata_ms.php
-__createGitFilesMetadata_ms.php__ inserts data into metadata2.db (SQLite, not MYSQL)
+__createGitFilesMetadata_ms.php__ adds file information to the __'gitFiles'__ table in an SQLite database (metadata2.db), making sure the file details are saved correctly for the given course.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -2917,17 +2915,15 @@ INSERT INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, fi
 <br>
 
 ### downloadToWebServer_ms.php
+__downloadToWebServer_ms.php__ downloads files from GitHub to the web server, creates directories as needed, and logs any errors that occur during the process.
+
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
-__Querys used in this microservice:__
+__Includes neither original service files nor microservices.__
 
-Includes no querys.
+__Operation:__ The microservice fetches the contents of a file from a remote URL and saves it to a specified path on the server. It creates the needed directories if they do not exist and writes the file data to the server.
 
-__Function operation:__ Fetches the contents of a file from a remote URL and then saves it to a specified path on the server. Creates necessary directories if they do not exist and writes the file data to the local system.
-
-__Result handling:__ Errors in retrieving or saving the file are logged in __gitErrorLog.txt__-log file, including details of the failure and relevant URLs or paths.
-
-__Purpose:__ This function automates the updating and storage of files from GitHub repositories to a web server.
+__Result handling:__ Errors in retrieving or saving the file are logged in the __gitErrorLog.txt__ log file. Includes details of the failure and relevant URLs or paths.
 
 <br>
 
@@ -2936,15 +2932,13 @@ __Purpose:__ This function automates the updating and storage of files from GitH
 <br>
 
 ### readIndexFile_ms.php
-__readIndexFile_ms.php__ retrieves the contents of an index file from a specific URL. It appends '/index.txt' to the URL, uses cURL to make a request, and processes the response.
+__readIndexFile_ms.php__ gets the contents of an index.txt file from a remote URL using cURL and returns its contents as an array of lines. __readIndexFile_ms.php__  is designed to fetch and read an index file from a remote location, simplifying data retrieval from external servers. 
 
 __Includes neither original service files nor microservices.__
 
-__Function operation:__ It constructs a URL for an index file, sends a request using cURL, and checks the response code.
+__Operation:__ Constructs a URL for an index.txt file, sends a request using cURL, and checks the response code.
 
-__Result handling:__ If the server responds with a 200 OK status, it reads and returns the contents of the file. If not, it returns false.
-
-__Purpose:__ The function is designed to fetch and read an index file from a remote location, simplifying data retrieval from external servers.
+__Result handling:__ If the server responds with a 200 OK status (if successful), reads and returns the contents of the file as an array of lines (splits them into lines). If not, returns false.
 
 <br>
 
@@ -2953,21 +2947,24 @@ __Purpose:__ The function is designed to fetch and read an index file from a rem
 <br>
 
 ### bfs_ms.php
-BFS (breadth-first search) 
+__bfs_ms.php__ fetches data from a GitHub repository using a given URL and performs different tasks (GETCOMMIT, REFRESH, or DOWNLOAD) on the data it gets. It uses Breadth-First Search (BFS) to explore the directory structure of the repository.
 
-__Function operation:__ The function navigates through a GitHub repository using a Breadth-First Search (BFS) approach.
+The microservice performs these tasks based on the operation:
 
-__GitHub API requests:__ It constructs API URLs and sends requests to GitHub's API, optionally including a token for authentication.
-
-__Data dandling:__ The function processes the API responses, extracting file and directory information.
-
-__File and directory processing:__ Files are stored in a database and may be downloaded, while directories are further explored.
-
-__Error handling:__ Errors, like connection failures or invalid responses, are logged for debugging.
-
-__Conclusion:__ bfs_ms.php manages repository traversal, file handling, and error logging for GitHub repositories.
+- __GETCOMMIT__: Gets the latest commit from the repository.
+- __REFRESH__: Updates the information about the files in the repository.
+- __DOWNLOAD__: Downloads the files to the server and updates the information and links for these files.
 
 __Includes neither original service files nor microservices.__
+
+__Operation:__ The function goes through a GitHub repository using a Breadth-First Search (BFS) method.
+
+__GitHub API requests__: It creates API URLs and sends requests to GitHub's API, optionally using a token for login.
+
+__Data handling:__ The function processes the API responses, getting file and directory information.
+
+__File and directory processing:__ Files are saved in a database and can be downloaded, while directories are checked further.
+
 
 __Querys used in this microservice:__
 
