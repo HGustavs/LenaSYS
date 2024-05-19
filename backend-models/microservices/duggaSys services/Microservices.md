@@ -608,7 +608,7 @@ UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;
 <br>
 
 ### createClass_ms.php
-__createClass_ms.php__ This microservice is responsible for adding a new class to the database and then retrieving all updated data from the database (through retrieveAccessedService_ms.php).
+__createClass_ms.php__ This microservice is responsible for adding a new class to the database, and then retrieving all updated data from the database (through retrieveAccessedService_ms.php). See __retrieveAccessedService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -716,25 +716,25 @@ __Include microservice:__ retrieveUsername_ms.php
 
 __retrieveAccessedService_ms.php__ is responsible for retrieving updated data from the database in the format of an array. The array contains information about:
 
-- __Entries__ - A list of user entries in the course, including their username, SSN, first name, last name, class, modification time, examiner, version, access level, groups, and whether they have requested a password change recently.
+- __entries__ - A list of user entries in the course, including their username, SSN, first name, last name, class, modification time, examiner, version, access level, groups, and whether they have requested a password change recently.
 
-- __Teachers:__ A list of teachers for the course, including their names and user IDs.
+- __teachers:__ A list of teachers for the course, including their names and user IDs.
 
-- __Classes:__ A list of all classes, including their class name, responsible person, registration code, class code, HP, tempo, and HP progress.
+- __classes:__ A list of all classes, including their class name, responsible person, registration code, class code, HP, tempo, and HP progress.
 
-- __Groups:__ A list of groups, including group values, group kinds, and group integers.
+- __groups:__ A list of groups, including group values, group kinds, and group integers.
 
-- __Courses:__ A list of courses with their course ID, course code, version, version name, course name, alternative course name, start date, and end date.
+- __courses:__ A list of courses with their course ID, course code, version, version name, course name, alternative course name, start date, and end date.
 
-- __Submissions:__ A list of user submissions in old versions of the course, including course ID, user ID, version, and version name.
+- __submissions:__ A list of user submissions in old versions of the course, including course ID, user ID, version, and version name.
 
-- __Query result:__ Indicates the result of the database queries, initially set to 'NONE!'.
+- __queryResult:__ Indicates the result of the database queries, initially set to 'NONE!'.
 
-- __Examiners:__ A list of examiners for the course.
+- __examiners:__ A list of examiners for the course.
 
-- __Access:__ A boolean value indicating whether the user has access to the service or not.
+- __access:__ A boolean value indicating whether the user has access to the service or not.
 
-- __Debug:__ Debugging information, including any errors encountered during the database operations.
+- __debug:__ Debugging information, including any errors encountered during the database operations.
 
 __retrieveAccessedService_ms.php__ provides information about the users, teachers, classes, groups, courses, and submissions related to a specific course. It also ensures that only authorized users can access this information. It also logs the service event.
 
@@ -910,7 +910,7 @@ INSERT INTO box(boxid, exampleid, boxtitle, boxcontent, settings, filename, word
 <br>
 
 ### updateCodeExample_ms.php
-__updateCodeExample_ms.php__ handles updates of code examples and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+__updateCodeExample_ms.php__ handles updates of code examples, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1000,7 +1000,7 @@ DELETE FROM impwordlist WHERE word=:word AND exampleid=:exampleid;
 <br>
 
 ### updateContentOfExample_ms.php
-__updateContentOfExample_ms.php__ updates the content of a box that includes a certain code example and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+__updateContentOfExample_ms.php__ updates the content of a box that includes a certain code example and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1049,7 +1049,7 @@ DELETE FROM improw WHERE boxid=:boxid AND istart=:istart AND iend=:iend AND exam
 <br>
 
 ### updateBoxTitle_ms.php
-__updateBoxTitle_ms.php__ updates the title of a specific box if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+__updateBoxTitle_ms.php__ updates the title of a specific box if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1089,7 +1089,7 @@ UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;
 <br>
 
 ### deleteCodeExample_ms.php
- __deleteCodeExample_ms.php__ deletes a code example and its related data from the database if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php).
+ __deleteCodeExample_ms.php__ deletes a code example and its related data from the database if the user has the appropriate permissions, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php). See __retrieveCodeviewerService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1373,7 +1373,7 @@ _WORK PAUSED given the current non-functional state of this service._
 <br>
 
 ### createNewCourse_ms.php
-__createNewCourse_ms.php__ checks the user's login and permissions, creates a new course in the database if the user is a superuser, retrieves the ID of the most recently created course, and then retrieving all updated data from the database (through retrieveCourseedService_ms.php).
+__createNewCourse_ms.php__ checks the user's login and permissions, creates a new course in the database if the user is a superuser, retrieves the ID of the most recently created course, and then retrieving all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1408,7 +1408,7 @@ SELECT cid FROM course ORDER BY cid DESC LIMIT 1;
 <br>
 
 ### createCourseVersion_ms.php
-__createCourseVersion_ms.php__ checks the user's login and permissions, creates a new course version (new version of an existing course) in the database if the user is a superuser, retrieves the latest course version's ID. The microservice also retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+__createCourseVersion_ms.php__ checks the user's login and permissions, creates a new course version (new version of an existing course) in the database if the user is a superuser, retrieves the latest course version's ID. The microservice also retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1445,7 +1445,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### updateCourseVersion_ms.php
-__updateCourseVersion_ms.php__ checks the user's login and permissions, updates a course version in the database if the user is a superuser, and makes the new version active if specified. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+__updateCourseVersion_ms.php__ checks the user's login and permissions, updates a course version in the database if the user is a superuser, and makes the new version active if specified. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1479,7 +1479,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 <br>
 
 ### updateActiveCourseVersion_courseed_ms.php
-__updateActiveCourseVersion_courseed_ms.php__ checks the user's login and permissions, updates the active course version in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+__updateActiveCourseVersion_courseed_ms.php__ checks the user's login and permissions, updates the active course version in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
  
 
 __Include original service files:__ sessions.php, basic.php
@@ -1502,7 +1502,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### copyCourseVersion_ms.php
-__copyCourseVersion_ms.php__ checks the user's login and permissions, copies a course version in the database by duplicating the course's quizzes, variants, code examples, and other related parts, updates links, and makes the new version active if needed. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+__copyCourseVersion_ms.php__ checks the user's login and permissions, copies a course version in the database by duplicating the course's quizzes, variants, code examples, and other related parts, updates links, and makes the new version active if needed. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1849,7 +1849,7 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid;
 <br>
 
 ### updateCourse_ms.php
-__updateCourse_ms.php__ checks the user's login and permissions, updates the course information in the database if the user is a superuser, and logs the changes. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+__updateCourse_ms.php__ checks the user's login and permissions, updates the course information in the database if the user is a superuser, and logs the changes. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1876,7 +1876,7 @@ UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:co
 <br>
 
 ### createMOTD_ms.php
-__createMOTD_ms.php__ checks the user's login and permissions, updates the message of the day (MOTD) in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php).
+__createMOTD_ms.php__ checks the user's login and permissions, updates the message of the day (MOTD) in the database if the user is a superuser. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -1900,9 +1900,9 @@ INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);
 <br>
 
 ### deleteCourseMaterial_ms.php
-__deleteCourseMaterial_ms.php__ deletes all courses and course material where visibility is 3.
+__deleteCourseMaterial_ms.php__ code deletes all courses and associated materials that have been marked as deleted (visibility = 3) from the database. The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php). See __retrieveCourseedService_ms.php__  for more information.
 
-__Include original service files:__ sessions.php
+__Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveCourseedService_ms.php
 
@@ -2061,6 +2061,17 @@ DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND co
 ```
 
 
+_DELETE_ operation on the table __'course_req'__ to delete rows where:
+- req_cid
+- visibility
+
+-The req_cid in 'course_req' matches the cid in 'course' and course.visibility is equal to :deleted.
+
+```sql
+DELETE course_req FROM course,course_req WHERE course.visibility=:deleted AND course_req.req_cid = course.cid;
+```
+
+
 _DELETE_ operation on the table __'coursekeys'__ to delete rows where:
 
 - The 'cid' value in the __'coursekeys'__ table matches the 'cid' value in the __'course'__ table, and the 'visibility' value in the __'course'__ table is equal to the value bound to :deleted.
@@ -2087,7 +2098,29 @@ DELETE course FROM course WHERE visibility=:deleted;
 ### retrieveCourseedService_ms.php
 __Include original service files:__ sessions.php, basic.php
 
-__Include microservice:__ getUid_ms.php
+__Include microservice:__ getUid_ms.php, deleteCourseMaterial_ms.php
+
+
+__retrieveCourseedService_ms.php__ retrieves data related to courses from the database and returns it in an array format. The array contains information about:
+
+- __entries__ - A list of courses the user has access to, including course ID, course name, course code, visibility, active version, active ed version, and whether the user is registered for the course. Visibility can be:
+  - 0: Hidden
+  - 1: Public
+  - 2: Login required
+  - 3: Deleted
+
+- __versions__ - A list of all course versions, including course ID, course code, version, version name, course name, and alternative course name.
+
+- __motd__ - The message of the day and its readonly status from the settings table.
+
+- __debug__ - Debugging information. Includes any errors that was encountered during the database operations.
+
+- __writeaccess__ - A boolean value indicating whether the user has write access to the service.
+
+- __LastCourseCreated__ - Information about the last course created, if applicable.
+
+__retrieveCourseedService_ms.php__ also checks the user's login status and permissions, and if the user is a superuser, it deletes course materials marked as deleted. Additionally, it logs the start and end of the service event.
+
 
 __Querys used in this microservice:__
 
@@ -2188,24 +2221,6 @@ _SELECT_ operation on the table __'settings'__ to retrieve values from the colum
 ```sql
 SELECT motd,readonly FROM settings;
 ```
-
-
-This microservice gathers information and organizes it into an array that shows details about courses, their versions, access rights, and other settings. It checks who can see and use different parts of the system, removes courses that are no longer needed, and reports any problems it finds. 
-
-- __LastCourseCreated__ - When the last course was created.
-
-- __Entries__- List of courses. Including: course ID ('cid'), course name ('coursename'), course code ('coursecode'), visibility status ('visibility'), and active versions. It also indicates whether a user is registered for each course. 
-
-- __Versions__- Information about the different versions of the courses available. Inncluding: course version identifier ('vers'), version name ('versname'), and associated course names ('coursename' and 'coursenamealt'). 
-
-- __Debug__ - Debugging information. If anything goes wrong during the database operations. For example, it may include details of database errors captured when an SQL query fails to execute correctly.
-
-- __WriteAccess__ - Whether the user has write access ('ha) or not, important for determining if the user can modify course information.
-
-- __MOTD (Message of the Day)__ - Displays notices or updates like general information, specific details relevant to daily operations or critical alerts.
-
-- __Readonly__- Whether the system is currently in a readonly mode not or. This affects how users can interact with the system's features and data.
-
 
 <br>
 
