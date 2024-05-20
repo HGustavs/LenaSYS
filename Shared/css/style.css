@@ -2447,6 +2447,9 @@ Fonts
   padding:5px;
 }
 
+#chooseTemplate {
+  width:464px;
+}
 
 /*---===#===---*
 Generic functions END 
@@ -2687,6 +2690,16 @@ resulted.php END
   display: none; 
   left:0px;
 }
+
+#formBoxGitHub {
+  width:460px;
+}
+
+#formBoxGithubPopup {
+  width:464px;
+  overflow:hidden;
+}
+
 
 
 /*---===#===---*

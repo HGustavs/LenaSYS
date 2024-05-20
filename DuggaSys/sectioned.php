@@ -588,7 +588,7 @@
 
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
-	<div id='loadDuggaBox' class="loginBoxContainer display_flex">
+	<div id='loadDuggaBox' class="loginBoxContainer display_none">
 	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" >
 			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
@@ -607,7 +607,7 @@
 	<!-- github moments box  -->
 	<form action="" method="POST" id="form">
 		<div id='gitHubBox' class='loginBoxContainer display_none'>
-			<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+			<div id="formBoxGitHub" class='formBox DarkModeBackgrounds DarkModeText'>
 				<div class='formBoxHeader'>
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -642,12 +642,12 @@
 	
 	<!--error window opened when github repo not found-->
 	<div id="githubPopupWindow" class="loginBoxContainer display_none" >
-		<div class="formBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
+		<div id="formBoxGitHub" class="formBox DarkModeBackgrounds">	
 			<div class= "formBoxHeader">
   					<h3>Github repo</h3>
 		  			<div class='cursorPointer'	onclick='closeWindows();'>x</div>
 			</div>
-			<div class="formBody" style="padding-top:20px;">
+			<div class="formBody">
 				<h3>There is currently no valid github repo. Add one?</h3>
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
@@ -661,8 +661,8 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer display_none">
-				<div id='chooseTemplate' class='formBox DarkModeBackgrounds' style='width:464px;'>
+		<div id='gitHubTemplate' class="loginBoxContainer display_flex">
+				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='confirmBox("closeConfirmBox");'>x</div>
