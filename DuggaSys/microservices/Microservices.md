@@ -3371,9 +3371,44 @@ UPDATE listentries SET visible = '3' WHERE lid = :lid;
 <br>
 
 ### createListentry_ms.php
+__createListentry_ms.php__ adds a new section entry to a course, handling the creation of a new code example if necessary, and then retrieves the updated sectioned data for the course. The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
+
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, createNewListentry_ms.php, createNewCodeExample_ms.php, retrieveSectionedService_ms.php
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches parameters from the request:
+    - 'opt': Operation type.
+    - 'courseid': Course ID.
+    - 'coursevers': Course version.
+    - 'sectname': Section name.
+    - 'kind': Kind/type of section.
+    - 'link': Link ID, which indicates whether to create a new code example.
+    - 'visibility': Visibility of the section.
+    - 'gradesys': Grading system.
+    - 'highscoremode': Highscore mode.
+    - 'comments': Comments for the section.
+    - 'grptype': Group type.
+    - 'pos': Position of the section.
+    - 'tabs': Tabs setting.
+    - 'log_uuid': Log UUID.
+
+- __Retrieve user ID:__ Calls 'getUid()' (getUid_ms.php) to retrieve the user ID.
+
+- __Insert new code example:__ If 'link' is '-1', it indicates that a new code example needs to be created:
+    
+    - Fetches the latest code example ID from the __codeexample__ table in the database
+    - Calls 'createNewCodeExample()' (createNewCodeExample_ms.php) to create a new code example, updating the 'link' variable accordingly.
+
+- __Create new list entry:__ Calls 'createNewListEntry()' (createNewListentry_ms.php) with the provided parameters and the updated 'link' to create a new list entry for the course.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to fetch the updated sectioned data for the course.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3383,37 +3418,6 @@ _SELECT_ operation on the table __'settings'__ to retrieve values from the colum
 
 ```sql
 SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;
-```
-
-
-_INSERT_ operation on the table __'codeexample'__ to create new rows in the columns:
-- cid
-- examplename
-- sectionname
-- uid (set to 1)
-- cversion
-
-```sql
-INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
-```
-
-
-_INSERT_ operation on the table __'listentries'__ to create new rows in the columns:
-- cid
-- vers
-- entryname
-- link
-- kind
-- pos
-- visible
-- creator
-- comments
-- gradesystem
-- highscoremode
-- groupKind
-
-```sql
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)
 ```
 
 <br>
