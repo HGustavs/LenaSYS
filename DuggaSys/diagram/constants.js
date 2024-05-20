@@ -1,5 +1,6 @@
 /**
- * @description Keybinds that are used in the system. This is used to generate tooltips and for determining keyboard input logic.
+ * @description Keybinds that are used in the system.
+ * This is used to generate tooltips and for determining keyboard input logic.
  */
 const keybinds = {
     LEFT_CONTROL: {key: "control", ctrl: true},
@@ -129,7 +130,8 @@ const messageTypes = {
 };
 
 /**
- * @description Available types of the attribute element. This will alter how the attribute is drawn onto the screen.
+ * @description Available types of variant of the attribute element.
+ * This will alter how the attribute is drawn onto the screen.
  */
 const attrState = {
     NORMAL: "normal",
@@ -141,7 +143,8 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML & SD This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML, SD, SE & Note.
+ * This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
@@ -161,7 +164,8 @@ const entityState = {
 };
 
 /**
- * @description Available types of relations, ie ER, IE & UML This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of relations, ie ER, IE & UML.
+ * This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const relationType = {
     UML: "UML",
@@ -212,6 +216,10 @@ const lineCardinalitys = {
     ONE: "1"
 };
 
+/**
+ * @description Describes the lines direction
+ * TB: top to bottom, Down: bottom to top, Right: right to left, LR: reft to right
+ */
 const lineDirection = {
     UP: 'TB',
     DOWN: 'BT',
@@ -352,6 +360,10 @@ const cursorOffset = new Map([
 
 const textheight = 18;
 const strokewidth = 2.0;
+
+/**
+ * @description Available options of colors with its responding color code for the diagram
+ */
 const color = {
     WHITE: "#ffffff",
     BLACK: "#000000",
