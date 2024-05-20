@@ -62,9 +62,11 @@ class StateMachine {
             // gets all the id's as actual values and not arrays
             // the id is sometimes stored as an array so this is needed to get the actual value
             let lastLog = {...this.historyLog[this.historyLog.length - 1]};
+            console.log(stateChange.id, lastLog.id)
             stateChange.id = getIdFromArray(stateChange.id);
             const id = stateChange.id;
             lastLog.id = getIdFromArray(lastLog.id);
+            console.log(stateChange.id, lastLog.id)
 
             let currentElement;
             switch (newChangeType) {
