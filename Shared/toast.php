@@ -124,6 +124,14 @@
                 }
             }
         });
+
+        // Close the toast by pressing the ESC button
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeToast(toastDiv);
+            }
+        });
+
         truncateOverflow(toastText); // Truncate overflow text initially
 
         // The duration of a toast decides how long it should be visible for
