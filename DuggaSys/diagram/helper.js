@@ -94,20 +94,20 @@ function entityIsOverlapping(id, x, y) {
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
             // Sequence life-lines can be placed on activations
-            if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") && element.kind === "sequenceActivation") continue;
+            if ((data[i].kind === "SEQUENCE_ACTOR" || data[i].kind === "SEQUENCE_OBJECTect") && element.kind === "SEQUENCE_ACTIVATION") continue;
 
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
-            else if (data[i].type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
-            else if (element.type === "SE" && (data[i].kind === "sequenceLoopOrAlt" || data[i].kind === "sequenceActivation")) continue;
+            else if (data[i].type === "SE" && (element.kind === "SEQUENCE_LOOP_OR_ALT" || element.kind === "SEQUENCE_ACTIVATION")) continue;
+            else if (element.type === "SE" && (data[i].kind === "SEQUENCE_LOOP_OR_ALT" || data[i].kind === "SEQUENCE_ACTIVATION")) continue;
 
             // Superstates can be placed on state-diagram elements and vice versa
             else if (!backgroundElement.includes(element.kind) &&
-                (data[i].kind === elementTypesNames.UMLSuperState ||
-                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+                (data[i].kind === ELEMENT_TYPES_NAMESNames.UML_SUPER_STATE ||
+                data[i].kind === ELEMENT_TYPES_NAMESNames.SEQUENCE_LOOP_OR_ALT)
             ) continue;
             else if (!backgroundElement.includes(data[i].kind) &&
-                (element.kind === elementTypesNames.UMLSuperState ||
-                element.kind === elementTypesNames.sequenceLoopOrAlt)
+                (element.kind === ELEMENT_TYPES_NAMESNames.UML_SUPER_STATE ||
+                element.kind === ELEMENT_TYPES_NAMESNames.SEQUENCE_LOOP_OR_ALT)
             ) continue;
         }
 

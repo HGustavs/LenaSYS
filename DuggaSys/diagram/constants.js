@@ -61,48 +61,48 @@ const mouseModes = {
  * @description All different types of elements that can be constructed.
  * @see constructElementOfType() For creating elements out dof this enum.
  */
-const elementTypes = {
-    EREntity: 0,
-    ERRelation: 1,
-    ERAttr: 2,
-    Ghost: 3,
-    UMLEntity: 4,
-    UMLRelation: 5,
-    IEEntity: 6,
-    IERelation: 7,
-    SDEntity: 8,
-    UMLInitialState: 9,
-    UMLFinalState: 10,
-    UMLSuperState: 11,
-    sequenceActor: 12,
-    sequenceActivation: 13,
-    sequenceLoopOrAlt: 14,
-    note: 15,
-    sequenceObject: 16,
+const ELEMENT_TYPES = {
+    ER_ENTITY: 0,
+    ER_RELATION: 1,
+    ER_ATTR: 2,
+    GHOST: 3,
+    UML_ENTITY: 4,
+    UML_RELATION: 5,
+    IE_ENTITY: 6,
+    IE_RELATION: 7,
+    SD_ENTITY: 8,
+    UML_INITIAL_STATE: 9,
+    UML_FINAL_STATE: 10,
+    UML_SUPER_STATE: 11,
+    SEQUENCE_ACTOR: 12,
+    SEQUENCE_ACTIVATION: 13,
+    SEQUENCE_LOOP_OR_ALT: 14,
+    NOTE: 15,
+    SEQUENCE_OBJECT: 16,
 };
 
 /**
  * @description Same as const elementTypes, but uses their names instead of numbers.
  * @see generateErTableString() For comparing elements with this enum.
  */
-const elementTypesNames = {
-    EREntity: "EREntity",
-    ERRelation: "ERRelation",
-    ERAttr: "ERAttr",
-    Ghost: "Ghost",
-    UMLEntity: "UMLEntity",
-    IEEntity: "IEEntity",
-    IERelation: "IERelation",
-    SDEntity: "SDEntity",
-    UMLInitialState: "UMLInitialState",
-    UMLFinalState: "UMLFinalState",
-    UMLSuperState: "UMLSuperState",
-    sequenceActor: "sequenceActor",
-    sequenceObject: "sequenceObject",
-    sequenceActivation: "sequenceActivation",
-    sequenceLoopOrAlt: "sequenceLoopOrAlt",
-    note: "Note",
-    UMLRelation: "UMLRelation",
+const ELEMENT_TYPES_NAMES = {
+    ER_ENTITY: "EREntity",
+    ER_RELATION: "ERRelation",
+    ER_ATTR: "ERAttr",
+    GHOST: "Ghost",
+    UML_ENTITY: "UMLEntity",
+    IE_ENTITY: "IEEntity",
+    IE_RELATION: "IERelation",
+    SD_ENTITY: "SDEntity",
+    UML_INITIAL_STATE: "UMLInitialState",
+    UML_FINAL_STATE: "UMLFinalState",
+    UML_SUPER_STATE: "UMLSuperState",
+    SEQUENCE_ACTOR: "sequenceActor",
+    SEQUENCE_OBJECT: "sequenceObject",
+    SEQUENCE_ACTIVATION: "sequenceActivation",
+    SEQUENCE_LOOP_OR_ALT: "sequenceLoopOrAlt",
+    NOTE: "Note",
+    UML_RELATION: "UMLRelation",
 };
 
 /**
@@ -350,9 +350,9 @@ const cursorOffset = new Map([
     [4, 0.9375],
 ]);
 
-const textheight = 18;
-const strokewidth = 2.0;
-const color = {
+const TEXT_HEIGHT = 18;
+const STROKE_WIDTH = 2.0;
+const COLOR = {
     WHITE: "#ffffff",
     BLACK: "#000000",
     GREY: "#383737",
@@ -370,70 +370,70 @@ const color = {
     LIGHT_PURPLE: "#927B9E",
 };
 const MENU_COLORS = [
-    color.WHITE,
-    color.LIGHT_BLUE,
-    color.LIGHT_RED,
-    color.LIGHT_YELLOW,
-    color.LIGHT_GREEN,
-    color.DENIM,
-    color.PINK,
-    color.YELLOW,
-    color.ORANGE,
-    color.BLUE,
-    color.BLACK,
+    COLOR.WHITE,
+    COLOR.LIGHT_BLUE,
+    COLOR.LIGHT_RED,
+    COLOR.LIGHT_YELLOW,
+    COLOR.LIGHT_GREEN,
+    COLOR.DENIM,
+    COLOR.PINK,
+    COLOR.YELLOW,
+    COLOR.ORANGE,
+    COLOR.BLUE,
+    COLOR.BLACK,
 ];
-const strokeColors = [color.GREY];
+const STROKE_COLORS = [COLOR.GREY];
 
 /**
  * Sub menu items used in item cycling
  */
 const subMenuEntity = [
-    elementTypes.EREntity,
-    elementTypes.UMLEntity,
-    elementTypes.IEEntity,
-    elementTypes.SDEntity,
+    ELEMENT_TYPES.ER_ENTITY,
+    ELEMENT_TYPES.UML_ENTITY,
+    ELEMENT_TYPES.IE_ENTITY,
+    ELEMENT_TYPES.SD_ENTITY,
 ];
 const subMenuRelation = [
-    elementTypes.ERRelation,
-    elementTypes.ERAttr,
-    elementTypes.UMLRelation,
-    elementTypes.IERelation,
+    ELEMENT_TYPES.ER_RELATION,
+    ELEMENT_TYPES.ER_ATTR,
+    ELEMENT_TYPES.UML_RELATION,
+    ELEMENT_TYPES.IE_RELATION,
 ];
 const subMenuUMLstate = [
-    elementTypes.UMLInitialState,
-    elementTypes.UMLFinalState,
-    elementTypes.UMLSuperState,
+    ELEMENT_TYPES.UML_INITIAL_STATE,
+    ELEMENT_TYPES.UML_FINAL_STATE,
+    ELEMENT_TYPES.UML_SUPER_STATE,
 ];
 const subMenuSequence = [
-    elementTypes.sequenceActor,
-    elementTypes.sequenceObject,
-    elementTypes.sequenceActivation,
-    elementTypes.sequenceLoopOrAlt,
+    ELEMENT_TYPES.SEQUENCE_ACTOR,
+    ELEMENT_TYPES.SEQUENCE_OBJECT,
+    ELEMENT_TYPES.SEQUENCE_ACTIVATION,
+    ELEMENT_TYPES.SEQUENCE_LOOP_OR_ALT,
 ];
 
 /**
  * Groups for error checking. Used in addLine().
  */
 const sameConnectionForbidden = [
-    elementTypesNames.EREntity,
-    elementTypesNames.ERRelation,
-    elementTypesNames.UMLRelation,
-    elementTypesNames.IERelation,
-    elementTypesNames.UMLInitialState,
-    elementTypesNames.UMLFinalState,
-    elementTypesNames.sequenceActor,
-    elementTypesNames.sequenceObject,
-    elementTypesNames.sequenceLoopOrAlt,
+    ELEMENT_TYPES_NAMES.ER_ENTITY,
+    ELEMENT_TYPES_NAMES.ER_RELATION,
+    ELEMENT_TYPES_NAMES.UML_RELATION,
+    ELEMENT_TYPES_NAMES.IE_RELATION,
+    ELEMENT_TYPES_NAMES.UML_INITIAL_STATE,
+    ELEMENT_TYPES_NAMES.UML_FINAL_STATE,
+    ELEMENT_TYPES_NAMES.SEQUENCE_ACTOR,
+    ELEMENT_TYPES_NAMES.SEQUENCE_OBJECT,
+    ELEMENT_TYPES_NAMES.SEQUENCE_LOOP_OR_ALT,
 ];
 const lineAlwaysFrom = [
-    elementTypesNames.EREntity,
-    elementTypesNames.UMLInitialState,
+    ELEMENT_TYPES_NAMES.ER_ENTITY,
+    ELEMENT_TYPES_NAMES.UML_INITIAL_STATE,
 ];
 const lineAlwaysTo = [
-    elementTypesNames.UMLFinalState,
+    ELEMENT_TYPES_NAMES.UML_FINAL_STATE,
 ];
 
 const backgroundElement = [
-    elementTypesNames.UMLSuperState,
-    elementTypesNames.sequenceLoopOrAlt,
+    ELEMENT_TYPES_NAMES.UML_SUPER_STATE,
+    ELEMENT_TYPES_NAMES.SEQUENCE_LOOP_OR_ALT,
 ];

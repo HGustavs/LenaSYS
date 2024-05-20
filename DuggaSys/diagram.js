@@ -480,7 +480,7 @@ function getData() {
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
-    // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
+    // debugDrawSD_ENTITY(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
     updateGridPos();
@@ -839,37 +839,37 @@ document.addEventListener('keyup', function (e) {
     // Entity / Class / State
     if (isKeybindValid(e, keybinds.PLACE_ENTITY)) {
         if (subMenuCycling(subMenuEntity, 0)) return;
-        togglePlacementType(elementTypes.EREntity, 0);
-        setElementPlacementType(elementTypes.EREntity);
+        togglePlacementType(ELEMENT_TYPES.ER_ENTITY, 0);
+        setElementPlacementType(ELEMENT_TYPES.ER_ENTITY);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Relation / Inheritance
     if (isKeybindValid(e, keybinds.PLACE_RELATION)) {
         if (subMenuCycling(subMenuRelation, 1)) return;
-        togglePlacementType(elementTypes.ERRelation, 1);
-        setElementPlacementType(elementTypes.ERRelation);
+        togglePlacementType(ELEMENT_TYPES.ER_RELATION, 1);
+        setElementPlacementType(ELEMENT_TYPES.ER_RELATION);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // UML states
     if (isKeybindValid(e, keybinds.STATE_INITIAL)) {
         if (subMenuCycling(subMenuUMLstate, 9)) return;
-        togglePlacementType(elementTypes.UMLInitialState, 9);
-        setElementPlacementType(elementTypes.UMLInitialState);
+        togglePlacementType(ELEMENT_TYPES.UML_INITIAL_STATE, 9);
+        setElementPlacementType(ELEMENT_TYPES.UML_INITIAL_STATE);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     // Sequence
     if (isKeybindValid(e, keybinds.SQ_LIFELINE)) {
         if (subMenuCycling(subMenuSequence, 12)) return;
-        togglePlacementType(elementTypes.sequenceActor, 12);
-        setElementPlacementType(elementTypes.sequenceActor);
+        togglePlacementType(ELEMENT_TYPES.SEQUENCE_ACTOR, 12);
+        setElementPlacementType(ELEMENT_TYPES.SEQUENCE_ACTOR);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
     if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
-        setElementPlacementType(elementTypes.note);
+        setElementPlacementType(ELEMENT_TYPES.NOTE);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
@@ -976,22 +976,22 @@ function mouseMode_onMouseUp(event) {
                     // TODO: Change the static variable to make it possible to create different lines.
                     addLine(context[0], context[1], "Normal");
                     clearContext();
-                    // Bust the ghosts
+                    // Bust the GHOSTs
                     ghostElement = null;
                     ghostLine = null;
                     showdata();
                     updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
-                        elementTypeSelected = elementTypes.Ghost;
+                        elementTypeSelected = ELEMENT_TYPES.GHOST;
                         makeGhost();
-                        // Create ghost line
+                        // Create GHOST line
                         ghostLine = {id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal"};
                     } else if (ghostElement !== null) {
                         // create a line from the element to itself
                         addLine(context[0], context[0], "Recursive");
                         clearContext();
-                        // Bust the ghosts
+                        // Bust the GHOSTs
                         ghostElement = null;
                         ghostLine = null;
                         showdata();
@@ -1296,7 +1296,7 @@ function changeState() {
         return;
     } else if (element.type == entityType.ER) {
         //If not attribute, also save the current type and check if kind also should be updated
-        if (element.kind != elementTypesNames.ERAttr) {
+        if (element.kind != ELEMENT_TYPES_NAMES.ER_ATTR) {
             if (oldType != newType) {
                 let newKind = element.kind;
                 newKind = newKind.replace(oldType, newType);
@@ -1313,7 +1313,7 @@ function changeState() {
         stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (element.type == entityType.UML) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.UMLEntity) {
+        if (element.kind != ELEMENT_TYPES_NAMES.UML_ENTITY) {
             let property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -1331,7 +1331,7 @@ function changeState() {
 
     } else if (element.type == entityType.IE) {
         //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.IEEntity) {
+        if (element.kind != ELEMENT_TYPES_NAMES.IE_ENTITY) {
             let property = document.getElementById("propertySelect").value;
             element.state = property;
             stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -1410,7 +1410,7 @@ function saveProperties() {
                 let lines = textArea.split('\n');
                 for (let i = 0; i < lines.length; i++) {
                     if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
+                        if (element.kind != 'SD_ENTITY' && element.kind != 'NOTE' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
                             lines[i] = "*" + lines[i];
                         }
                         cleanedLines.push(lines[i]);
@@ -1429,7 +1429,7 @@ function saveProperties() {
                 cleanedLines = [];
                 for (let i = 0; i < arrElementAttr.length; i++) {
                     if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
+                        if (element.kind != 'SD_ENTITY' && element.kind != 'NOTE' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
                             `-${arrElementAttr[i]}`;
                         }
                         cleanedLines.push(arrElementAttr[i]);
@@ -1745,7 +1745,7 @@ function toggleEntityLocked() {
  * @see constructElementOfType
  * USED IN PHP
  */
-function setElementPlacementType(type = elementTypes.EREntity) {
+function setElementPlacementType(type = ELEMENT_TYPES.ER_ENTITY) {
     elementTypeSelected = type;
 }
 

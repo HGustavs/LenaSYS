@@ -3,11 +3,11 @@
  * @see constructElementOfType() For creating new elements with default values.
  */
 const defaults = {
-    EREntity: {
+    ER_ENTITY: {
         name: "Entity",
-        kind: "EREntity",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "ER_ENTITY",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 200,
         height: 50,
         type: "ER",
@@ -18,11 +18,11 @@ const defaults = {
         minWidth: 150,
         minHeight: 50,
     },
-    ERRelation: {
+    ER_RELATION: {
         name: "Relation",
-        kind: "ERRelation",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "ER_RELATION",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 90,
         height: 90,
         type: "ER",
@@ -31,11 +31,11 @@ const defaults = {
         minWidth: 60,
         minHeight: 60,
     },
-    ERAttr: {
+    ER_ATTR: {
         name: "Attribute",
-        kind: "ERAttr",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "ER_ATTR",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 90,
         height: 45,
         type: "ER",
@@ -43,20 +43,20 @@ const defaults = {
         minWidth: 90,
         minHeight: 45,
     },
-    Ghost: {
-        name: "Ghost",
-        kind: "ERAttr",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+    GHOST: {
+        name: "GHOST",
+        kind: "ER_ATTR",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 5,
         height: 5,
         type: "ER"
     },
-    UMLEntity: {
+    UML_ENTITY: {
         name: "Class",
-        kind: "UMLEntity",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "UML_ENTITY",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 200,
         height: 0, // Extra height when resizing larger than text.
         type: "UML",
@@ -66,11 +66,11 @@ const defaults = {
         minWidth: 150,
         minHeight: 0,
     },
-    UMLRelation: {
+    UML_RELATION: {
         name: "Inheritance",
-        kind: "UMLRelation",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "UML_RELATION",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 60,
         height: 60,
         type: "UML",
@@ -78,11 +78,11 @@ const defaults = {
         minWidth: 60,
         minHeight: 60,
     },
-    IEEntity: {
-        name: "IEEntity",
-        kind: "IEEntity",
-        stroke: color.BLACK,
-        fill: color.WHITE,
+    IE_ENTITY: {
+        name: "IE_ENTITY",
+        kind: "IE_ENTITY",
+        stroke: COLOR.BLACK,
+        fill: COLOR.WHITE,
         width: 200,
         height: 0, // Extra height when resizing larger than text.
         type: "IE",
@@ -93,11 +93,11 @@ const defaults = {
         minWidth: 150,
         minHeight: 0,
     },
-    IERelation: {
+    IE_RELATION: {
         name: "Inheritance",
-        kind: "IERelation",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "IE_RELATION",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 50,
         height: 50,
         type: "IE",
@@ -105,11 +105,11 @@ const defaults = {
         minWidth: 50,
         minHeight: 50,
     },
-    SDEntity: {
+    SD_ENTITY: {
         name: "State",
-        kind: "SDEntity",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "SD_ENTITY",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 200,
         height: 0, // Extra height when resizing larger than text.
         type: "SD",
@@ -119,11 +119,11 @@ const defaults = {
         minWidth: 150,
         minHeight: 0,
     },
-    UMLInitialState: {
+    UML_INITIAL_STATE: {
         name: "UML Initial State",
-        kind: "UMLInitialState",
-        fill: color.BLACK,
-        stroke: color.BLACK,
+        kind: "UML_INITIAL_STATE",
+        fill: COLOR.BLACK,
+        stroke: COLOR.BLACK,
         width: 60,
         height: 60,
         type: "SD",
@@ -131,11 +131,11 @@ const defaults = {
         minWidth: 60,
         minHeight: 60,
     },
-    UMLFinalState: {
+    UML_FINAL_STATE: {
         name: "UML Final State",
-        kind: "UMLFinalState",
-        fill: color.BLACK,
-        stroke: color.BLACK,
+        kind: "UML_FINAL_STATE",
+        fill: COLOR.BLACK,
+        stroke: COLOR.BLACK,
         width: 60,
         height: 60,
         type: "SD",
@@ -143,11 +143,11 @@ const defaults = {
         minWidth: 60,
         minHeight: 60,
     },
-    UMLSuperState: {
+    UML_SUPER_STATE: {
         name: "UML Super State",
-        kind: "UMLSuperState",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "UML_SUPER_STATE",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 500,
         height: 500,
         type: "SD",
@@ -155,11 +155,11 @@ const defaults = {
         minWidth: 200,
         minHeight: 150,
     },
-    sequenceActor: {
+    SEQUENCE_ACTOR: {
         name: "name",
-        kind: "sequenceActor",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "SEQUENCE_ACTOR",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 100,
         height: 500,
         type: "SE",
@@ -167,9 +167,9 @@ const defaults = {
         minWidth: 100,
         minHeight: 100,
     },
-    sequenceObject: {
+    SEQUENCE_OBJECT: {
         name: "name",
-        kind: "sequenceObject",
+        kind: "SEQUENCE_OBJECT",
         fill: "#FFFFFF",
         stroke: "#000000",
         width: 100,
@@ -179,11 +179,11 @@ const defaults = {
         minWidth: 100,
         minHeight: 50,
     },
-    sequenceActivation: {
+    SEQUENCE_ACTIVATION: {
         name: "Activation",
-        kind: "sequenceActivation",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+        kind: "SEQUENCE_ACTIVATION",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 30,
         height: 100,
         type: "SE",
@@ -191,10 +191,10 @@ const defaults = {
         minWidth: 30,
         minHeight: 50,
     },
-    sequenceLoopOrAlt: {
-        kind: "sequenceLoopOrAlt",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+    SEQUENCE_LOOP_OR_ALT: {
+        kind: "SEQUENCE_LOOP_OR_ALT",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 750,
         height: 300,
         type: "SE",
@@ -204,15 +204,15 @@ const defaults = {
         minWidth: 150,
         minHeight: 50,
     },
-    note: {
-        name: "Note",
-        kind: "note",
-        fill: color.WHITE,
-        stroke: color.BLACK,
+    NOTE: {
+        name: "NOTE",
+        kind: "NOTE",
+        fill: COLOR.WHITE,
+        stroke: COLOR.BLACK,
         width: 200,
         height: 50,
         type: "NOTE",
-        attributes: ['Note'],
+        attributes: ['NOTE'],
         minWidth: 150,
         minHeight: 50,
     },

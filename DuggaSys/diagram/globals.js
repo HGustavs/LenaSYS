@@ -93,7 +93,7 @@ var mouseButtonDown = false;
 var previousMouseMode;
 
 // All different element types that can be placed by the user.
-var elementTypeSelected = elementTypes.EREntity;
+var elementTypeSelected = ELEMENT_TYPES.EREntity;
 var pointerState = pointerStates.DEFAULT;
 
 var movingObject = false;

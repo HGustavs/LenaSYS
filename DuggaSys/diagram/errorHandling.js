@@ -20,10 +20,10 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
             errorData.push(element);
         }
     }
@@ -34,30 +34,30 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
@@ -70,13 +70,13 @@ function checkEREntityErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -90,7 +90,7 @@ function checkEREntityErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -106,13 +106,13 @@ function checkEREntityErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -126,7 +126,7 @@ function checkEREntityErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -153,94 +153,94 @@ function checkEREntityErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong key type
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     errorData.push(tElement);
                 }
             }
 
             // Counting quantity of keys
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (tElement.state == "weakKey") {
                     keyQuantity += 1;
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (fElement.state == "weakKey") {
                     keyQuantity += 1;
                 }
             }
 
             // Checking for attributes with same name
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
             }
 
             // Checking if weak entity is related to a strong entity or a weak entity with a relation
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak" && line.kind == "Double") {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION && tElement.state == "weak" && line.kind == "Double") {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.EREntity && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
                         strongEntity += 1;
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.EREntity && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
                         strongEntity += 1;
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak" && line.kind == "Double") {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION && fElement.state == "weak" && line.kind == "Double") {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.EREntity && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && (tElement0.state != "weak" || line0.kind == "Normal") && tElement0.id != element.id) {
                         strongEntity += 1;
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.EREntity && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && (fElement0.state != "weak" || line0.kind == "Normal") && fElement0.id != element.id) {
                         strongEntity += 1;
                     }
                 }
             }
 
             // Counting weak relations
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && tElement.state == "weak") {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION && tElement.state == "weak") {
                 weakrelation += 1;
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && fElement.state == "weak") {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION && fElement.state == "weak") {
                 weakrelation += 1;
             }
         }
@@ -275,19 +275,19 @@ function checkEREntityErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong key type
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (tElement.state == "weakKey") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (fElement.state == "weakKey") {
                     errorData.push(tElement);
                 }
             }
 
             // Counting quantity of keys
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     keyQuantity += 1;
                 }
@@ -295,7 +295,7 @@ function checkEREntityErrors(element) {
                     primaryCount += 1;
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     keyQuantity += 1;
                 }
@@ -305,30 +305,30 @@ function checkEREntityErrors(element) {
             }
 
             // Checking for attributes with same name
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                    if (fElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                    if (tElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                    if (fElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                    if (tElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
@@ -368,10 +368,10 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION) {
             errorData.push(element);
         }
     }
@@ -382,30 +382,30 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
@@ -418,13 +418,13 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -438,7 +438,7 @@ function checkERRelationErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -454,13 +454,13 @@ function checkERRelationErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -474,7 +474,7 @@ function checkERRelationErrors(element) {
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
@@ -494,7 +494,7 @@ function checkERRelationErrors(element) {
 
     // Checking for reletions with same name but different properties
     for (let i = 0; i < data.length; i++) {
-        if (element.name == data[i].name && element.id != data[i].id && data[i].kind == elementTypesNames.ERRelation) {
+        if (element.name == data[i].name && element.id != data[i].id && data[i].kind == ELEMENT_TYPES_NAMES.ER_RELATION) {
 
             // Checking if relations have same line types
             var linesChecked = [];
@@ -507,7 +507,7 @@ function checkERRelationErrors(element) {
                 var fElement0;
                 var tElement0;
 
-                if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
+                if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
@@ -522,13 +522,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -550,13 +550,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -580,13 +580,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -608,13 +608,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -629,7 +629,7 @@ function checkERRelationErrors(element) {
                         errorData.push(element);
                     }
                 }
-                if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
+                if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
                     var noLineFound = true;
                     if (line.kind == "Normal") {
                         if (line.cardinality == "ONE") {
@@ -644,13 +644,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -672,13 +672,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Normal" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Normal" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -702,13 +702,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "ONE") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "ONE") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -730,13 +730,13 @@ function checkERRelationErrors(element) {
                                 }
 
                                 if (!lineChecked) {
-                                    if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
                                         noLineFound = true;
                                     }
-                                    if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.EREntity && line0.kind == "Double" && line0.cardinality == "MANY") {
+                                    if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && line0.kind == "Double" && line0.cardinality == "MANY") {
                                         linesChecked.push(line0);
                                         noLineFound = false;
                                     } else {
@@ -766,7 +766,7 @@ function checkERRelationErrors(element) {
                 var fElement2;
                 var tElement2;
 
-                if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+                if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
@@ -775,7 +775,7 @@ function checkERRelationErrors(element) {
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
 
-                        if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.ERAttr && tElement0.state == tElement.state && tElement0.name == tElement.name) {
+                        if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.state == tElement.state && tElement0.name == tElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -785,7 +785,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == tElement.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -793,15 +793,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == tElement.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -809,16 +809,16 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
 
-                                if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -826,15 +826,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -842,10 +842,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -854,7 +854,7 @@ function checkERRelationErrors(element) {
                         } else {
                             noLineFound = true;
                         }
-                        if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.ERAttr && fElement0.state == tElement.state && fElement0.name == tElement.name) {
+                        if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.state == tElement.state && fElement0.name == tElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -864,7 +864,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == tElement.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == tElement.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -872,15 +872,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == tElement.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -888,15 +888,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -904,15 +904,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -920,10 +920,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -941,7 +941,7 @@ function checkERRelationErrors(element) {
                         errorData.push(element);
                     }
                 }
-                if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+                if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     var noLineFound = true;
                     var attrFound = false;
                     var attrLineFound = false;
@@ -950,7 +950,7 @@ function checkERRelationErrors(element) {
                         fElement0 = data[findIndex(data, line0.fromID)];
                         tElement0 = data[findIndex(data, line0.toID)];
 
-                        if (fElement0.id == data[i].id && tElement0.kind == elementTypesNames.ERAttr && tElement0.state == fElement.state && tElement0.name == fElement.name) {
+                        if (fElement0.id == data[i].id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.state == fElement.state && tElement0.name == fElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -960,7 +960,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == fElement.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -968,15 +968,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == fElement.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -984,16 +984,16 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == tElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == tElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == tElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == tElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
 
-                                if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -1001,15 +1001,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -1017,10 +1017,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -1029,7 +1029,7 @@ function checkERRelationErrors(element) {
                         } else {
                             noLineFound = true;
                         }
-                        if (tElement0.id == data[i].id && fElement0.kind == elementTypesNames.ERAttr && fElement0.state == fElement.state && fElement0.name == fElement.name) {
+                        if (tElement0.id == data[i].id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.state == fElement.state && fElement0.name == fElement.name) {
                             noLineFound = false;
                             attrFound = true;
                             attrLineFound = true;
@@ -1039,7 +1039,7 @@ function checkERRelationErrors(element) {
                                 fElement1 = data[findIndex(data, line1.fromID)];
                                 tElement1 = data[findIndex(data, line1.toID)];
 
-                                if (fElement1.id == fElement.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == fElement.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -1047,15 +1047,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == fElement.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -1063,16 +1063,16 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement0.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement0.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement0.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement0.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
 
-                                if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr) {
+                                if (fElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -1080,15 +1080,15 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == tElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == tElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == tElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
                                 }
-                                if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr) {
+                                if (tElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                                     attrLineFound = false;
 
                                     for (let m = 0; m < lines.length; m++) {
@@ -1096,10 +1096,10 @@ function checkERRelationErrors(element) {
                                         fElement2 = data[findIndex(data, line2.fromID)];
                                         tElement2 = data[findIndex(data, line2.toID)];
 
-                                        if (fElement2.id == fElement.id && tElement2.kind == elementTypesNames.ERAttr && tElement2.name == fElement1.name) {
+                                        if (fElement2.id == fElement.id && tElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
-                                        if (tElement2.id == fElement.id && fElement2.kind == elementTypesNames.ERAttr && fElement2.name == fElement1.name) {
+                                        if (tElement2.id == fElement.id && fElement2.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement2.name == fElement1.name) {
                                             attrLineFound = true;
                                         }
                                     }
@@ -1127,17 +1127,17 @@ function checkERRelationErrors(element) {
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
 
-                if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+                if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     elementAttrCount += 1;
                 }
-                if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+                if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     elementAttrCount += 1;
                 }
 
-                if (fElement.id == data[i].id && tElement.kind == elementTypesNames.ERAttr) {
+                if (fElement.id == data[i].id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     dataAttrCount += 1;
                 }
-                if (tElement.id == data[i].id && fElement.kind == elementTypesNames.ERAttr) {
+                if (tElement.id == data[i].id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     dataAttrCount += 1;
                 }
             }
@@ -1153,30 +1153,30 @@ function checkERRelationErrors(element) {
         fElement = data[findIndex(data, line.fromID)];
         tElement = data[findIndex(data, line.toID)];
 
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
@@ -1191,30 +1191,30 @@ function checkERRelationErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Checking for wrong line type to a relation
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state == "weak" && line.kind == "Normal") {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement.state == "weak" && line.kind == "Normal") {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement0.state != "weak" && tElement0.id != tElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement0.state != "weak" && fElement0.id != tElement.id) {
                         errorData.push(element);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state == "weak" && line.kind == "Normal") {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement.state == "weak" && line.kind == "Normal") {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement0.state != "weak" && tElement0.id != fElement.id) {
                         errorData.push(element);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement0.state != "weak" && fElement0.id != fElement.id) {
                         errorData.push(element);
                     }
                 }
@@ -1225,30 +1225,30 @@ function checkERRelationErrors(element) {
             var tElement0;
 
             // Checking for more than one Normal line to a weak relation
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity && tElement.state != "weak") {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement.state != "weak") {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != tElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement0.state != "weak" && tElement0.id != tElement.id) {
                         errorData.push(fElement);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != tElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement0.state != "weak" && fElement0.id != tElement.id) {
                         errorData.push(fElement);
                     }
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity && fElement.state != "weak") {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement.state != "weak") {
                 for (let j = 0; j < lines.length; j++) {
                     line0 = lines[j];
                     fElement0 = data[findIndex(data, line0.fromID)];
                     tElement0 = data[findIndex(data, line0.toID)];
 
-                    if (fElement0.id == element.id && tElement0.kind == elementTypesNames.EREntity && tElement0.state != "weak" && tElement0.id != fElement.id) {
+                    if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement0.state != "weak" && tElement0.id != fElement.id) {
                         errorData.push(tElement);
                     }
-                    if (tElement0.id == element.id && fElement0.kind == elementTypesNames.EREntity && fElement0.state != "weak" && fElement0.id != fElement.id) {
+                    if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement0.state != "weak" && fElement0.id != fElement.id) {
                         errorData.push(tElement);
                     }
                 }
@@ -1285,7 +1285,7 @@ function checkERRelationErrors(element) {
             }
 
             // Counting connected lines
-            if ((tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) || (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity)) {
+            if ((tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) || (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY)) {
                 lineQuantity += 1;
             }
         }
@@ -1297,7 +1297,7 @@ function checkERRelationErrors(element) {
             tElement = data[findIndex(data, line.toID)];
 
             // Counting connected lines
-            if ((tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) || (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity)) {
+            if ((tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) || (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY)) {
                 lineQuantity += 1;
             }
         }
@@ -1322,36 +1322,36 @@ function checkERAttributeErrors(element) {
         tElement = data[findIndex(data, line.toID)];
 
         // Checking for non-normal attributes on a attribute
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
+                if (fElement0.id == tElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
+                if (tElement0.id == tElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     if (fElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
+                if (fElement0.id == fElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
+                if (tElement0.id == fElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     if (tElement.state != "normal") {
                         errorData.push(element);
                     }
@@ -1360,72 +1360,72 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for 2nd line attribute connected with a 3rd attribute
-        if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
@@ -1433,72 +1433,72 @@ function checkERAttributeErrors(element) {
             }
         }
         // Checking for 3rd line attribute connected with a 2nd attribute
-        if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != fElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && tElement.kind == elementTypesNames.ERAttr && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && tElement0.kind == elementTypesNames.ERAttr && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && fElement0.kind == elementTypesNames.ERAttr && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.id != tElement.id) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
@@ -1507,102 +1507,102 @@ function checkERAttributeErrors(element) {
         }
 
         // Attribute connected to more than one relation or entity
-        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
+        if (fElement.id == element.id && (tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
+        if (tElement.id == element.id && (fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation) && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation) && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION) && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
 
         // 2nd line attribute connected to another relation or entity
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERAttr) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
+                if (fElement0.id == tElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == element.id && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == element.id && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == tElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
+                if (tElement0.id == tElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == element.id && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == element.id && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && (tElement0.kind == elementTypesNames.EREntity || tElement0.kind == elementTypesNames.ERRelation)) {
+                if (fElement0.id == fElement.id && (tElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == element.id && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == element.id && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == fElement.id && (fElement0.kind == elementTypesNames.EREntity || fElement0.kind == elementTypesNames.ERRelation)) {
+                if (tElement0.id == fElement.id && (fElement0.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement0.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == element.id && (tElement1.kind == elementTypesNames.EREntity || tElement1.kind == elementTypesNames.ERRelation)) {
+                        if (fElement1.id == element.id && (tElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == element.id && (fElement1.kind == elementTypesNames.EREntity || fElement1.kind == elementTypesNames.ERRelation)) {
+                        if (tElement1.id == element.id && (fElement1.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement1.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
                             errorData.push(element);
                         }
                     }
@@ -1610,72 +1610,72 @@ function checkERAttributeErrors(element) {
             }
         }
         // Check for 1st line attribute connected in a 3 line attribute chain
-        if (fElement.id == element.id && (tElement.kind == elementTypesNames.EREntity || tElement.kind == elementTypesNames.ERRelation)) {
+        if (fElement.id == element.id && (tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
+                if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != fElement0.id) {
+                        if (fElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != fElement0.id) {
+                        if (tElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
+                if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != tElement0.id) {
+                        if (fElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != tElement0.id) {
+                        if (tElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
                     }
                 }
             }
         }
-        if (tElement.id == element.id && (fElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.ERRelation)) {
+        if (tElement.id == element.id && (fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == element.id && tElement0.kind == elementTypesNames.ERAttr) {
+                if (fElement0.id == element.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == tElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != fElement0.id) {
+                        if (fElement1.id == tElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == tElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != fElement0.id) {
+                        if (tElement1.id == tElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement1.id != fElement0.id) {
                             errorData.push(element);
                         }
                     }
                 }
-                if (tElement0.id == element.id && fElement0.kind == elementTypesNames.ERAttr) {
+                if (tElement0.id == element.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr) {
                     for (let k = 0; k < lines.length; k++) {
                         line1 = lines[k];
                         fElement1 = data[findIndex(data, line1.fromID)];
                         tElement1 = data[findIndex(data, line1.toID)];
 
-                        if (fElement1.id == fElement0.id && tElement1.kind == elementTypesNames.ERAttr && tElement1.id != tElement0.id) {
+                        if (fElement1.id == fElement0.id && tElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
-                        if (tElement1.id == fElement0.id && fElement1.kind == elementTypesNames.ERAttr && fElement1.id != tElement0.id) {
+                        if (tElement1.id == fElement0.id && fElement1.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement1.id != tElement0.id) {
                             errorData.push(element);
                         }
                     }
@@ -1684,24 +1684,24 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for wrong key type
-        if ((tElement.kind == elementTypesNames.EREntity || fElement.kind == elementTypesNames.EREntity) && (tElement.state == "weak" || fElement.state == "weak")) {
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
+        if ((tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY || fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) && (tElement.state == "weak" || fElement.state == "weak")) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
                 if (fElement.state == "candidate" || fElement.state == "primary") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
                 if (tElement.state == "candidate" || tElement.state == "primary") {
                     errorData.push(tElement);
                 }
             }
         } else {
-            if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
+            if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
                 if (fElement.state == "weakKey") {
                     errorData.push(fElement);
                 }
             }
-            if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
+            if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
                 if (tElement.state == "weakKey") {
                     errorData.push(tElement);
                 }
@@ -1709,53 +1709,53 @@ function checkERAttributeErrors(element) {
         }
 
         // Checking for attributes on the same relation with the same name
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == tElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
+                if (fElement0.id == tElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == fElement.name && tElement0.id != fElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == tElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
+                if (tElement0.id == tElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == fElement.name && fElement0.id != fElement.id) {
                     errorData.push(element);
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION) {
             for (let j = 0; j < lines.length; j++) {
                 line0 = lines[j];
                 fElement0 = data[findIndex(data, line0.fromID)];
                 tElement0 = data[findIndex(data, line0.toID)];
 
-                if (fElement0.id == fElement.id && tElement0.kind == elementTypesNames.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
+                if (fElement0.id == fElement.id && tElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement0.name == tElement.name && tElement0.id != tElement.id) {
                     errorData.push(element);
                 }
-                if (tElement0.id == fElement.id && fElement0.kind == elementTypesNames.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
+                if (tElement0.id == fElement.id && fElement0.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement0.name == tElement.name && fElement0.id != tElement.id) {
                     errorData.push(element);
                 }
             }
         }
 
         // Checking for key attributes on relation
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.ERRelation && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION && (fElement.state == "primary" || fElement.state == "candidate" || fElement.state == "weakKey")) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERRelation && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION && (tElement.state == "primary" || tElement.state == "candidate" || tElement.state == "weakKey")) {
             errorData.push(element);
         }
 
         // Checking for attributes connected with the same name
-        if (fElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr && fElement.name == tElement.name) {
+        if (fElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement.name == tElement.name) {
             errorData.push(element);
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.ERAttr && tElement.kind == elementTypesNames.ERAttr && fElement.name == tElement.name) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ERAttr && tElement.kind == ELEMENT_TYPES_NAMES.ERAttr && fElement.name == tElement.name) {
             errorData.push(element);
         }
 
         // Checking for attributes on the same entity
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
+        if (fElement.id == element.id && tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
             var currentAttr = fElement;
             var currentEntity = tElement;
             for (let j = 0; j < lines.length; j++) {
@@ -1784,7 +1784,7 @@ function checkERAttributeErrors(element) {
                 }
             }
         }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
+        if (tElement.id == element.id && fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) {
             var currentAttr = tElement;
             var currentEntity = fElement;
             for (let j = 0; j < lines.length; j++) {
@@ -1829,7 +1829,7 @@ function checkLineErrors(lines) {
         const tElement = data[findIndex(data, line.toID)];
 
         //Checking for cardinality
-        if ((fElement.kind == elementTypesNames.EREntity && tElement.kind == elementTypesNames.ERRelation) || (tElement.kind == elementTypesNames.EREntity && fElement.kind == elementTypesNames.ERRelation)) {
+        if ((fElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && tElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION) || (tElement.kind == ELEMENT_TYPES_NAMES.ER_ENTITY && fElement.kind == ELEMENT_TYPES_NAMES.ER_RELATION)) {
             if (line.cardinality != "ONE" && line.cardinality != "MANY") {
                 errorData.push(fElement);
                 errorData.push(tElement);
@@ -1843,9 +1843,9 @@ function checkLineErrors(lines) {
  * @param {Object} element Element to be checked for errors.
  */
 function checkElementError(element) {
-    if (element.kind == elementTypesNames.EREntity) checkEREntityErrors(element);
-    if (element.kind == elementTypesNames.ERRelation) checkERRelationErrors(element);
-    if (element.kind == elementTypesNames.ERAttr) checkERAttributeErrors(element);
+    if (element.kind == ELEMENT_TYPES_NAMES.ER_ENTITY) checkEREntityErrors(element);
+    if (element.kind == ELEMENT_TYPES_NAMES.ER_RELATION) checkERRelationErrors(element);
+    if (element.kind == ELEMENT_TYPES_NAMES.ERAttr) checkERAttributeErrors(element);
 
     // Check lines
     checkLineErrors(lines);
