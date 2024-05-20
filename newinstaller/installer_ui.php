@@ -7,9 +7,11 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php include 'tools/components.php'; ?>
+	<?php include 'tools/modal.php'; ?>
 	<script defer src="installer_ui.js"></script>
 	<script defer src="tools/components.js"></script>
 	<script defer src="tools/sse_receiver.js"></script>
+	<script defer src="tools/modal.js"></script>
 </head>
 <body>
   
