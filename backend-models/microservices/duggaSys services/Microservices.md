@@ -262,6 +262,8 @@ __Show Dugga Service:__
 - processDuggaFile_ms.php __==finished==__ New filename: "processSubmittedDugga_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice. 
 - saveDugga_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this particular case, a more general name is preferable as it better describes the microservice's function better.
 - loadDugga_ms.php __==finished==__ New filename: "readSubmittedDugga_ms.php" according to new nameconvention based on CRUD.
+- retrieveShowDuggaService_ms.php  __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
+- getShowDugga_ms.php __==finished==__ New filename: "retrieveAllShowDuggaServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -284,7 +286,7 @@ __readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a g
 __Include original service files:__ sessions.php, basic.php
 
 
-- __Session control:__ Checks if there is a user ID (uid) in the current session. If there is an ID, it uses it. If not, it sets the user ID to "guest", meaning the user is not logged in.
+- __Session check:__ Checks if there is a user ID (uid) in the current session. If there is an ID, it uses it. If not, it sets the user ID to "guest", meaning the user is not logged in.
 
 - __Logging:__ Collects information and logs a service event in the __'serviceLogEntries'__ table by using the __'logServiceEvent'__ function (defined in basic.php). It logs details like the operation type, course ID, course version, example name, section name, example ID, and timestamp.
 
@@ -302,7 +304,7 @@ __readUsername_ms.php__ retrieves and returns the username associated with the c
 __Include microservice:__ getUid_ms.php
 
 
-__Session control:__ Checks if the user is logged in by calling the 'getUid' function (getUid_ms.php). This function retrieves the user ID (uid) from the current session or assigns "guest" if no user ID is found.
+__Session check:__ Checks if the user is logged in by calling the 'getUid' function (getUid_ms.php). This function retrieves the user ID (uid) from the current session or assigns "guest" if no user ID is found.
 
 __Query:__ Executes a SQL query to fetch the username associated with the retrieved user ID ('uid'). 
 
@@ -3115,7 +3117,7 @@ __retrieveProfileService_ms.php__ provides feedback about the success of a profi
 <br>
 
 ### readUserAnswer_ms.php
-__readUserAnswer_ms.php__ manages and presents information about submitted duggor. The microservice checks if the user has the right permissions, then gets the submission and filter data from the database. After processing the data, it formats it for display in a table and returns it in an organized way. The microservice retrieves all updated data from the database (through retrieveResultedService_ms.php) as the output for the microservice. See __retrieveResultedService_ms.php__ for more information.
+__readUserAnswer_ms.php__ manages and presents information about submitted duggor. The microservice checks if the user has the right permissions, retreives the submission and filter data from the database. After processing the data, it formats it for display in a table and returns it in an organized way. The microservice retrieves all updated data from the database (through retrieveResultedService_ms.php) as the output for the microservice. See __retrieveResultedService_ms.php__ for more information.
 
 
 __Include original service files:__ sessions.php, basic.php
@@ -4146,40 +4148,47 @@ The microservice gathers and organizes information into an array that provides d
 <br>
 
 ### updateActiveUsers_ms.php
-__updateActiveUsers_ms.php__ checks if there are already active users recorded for a given hash and either inserts a new record or updates the existing count of active users.
+__updateActiveUsers_ms.php__ retrieves information about a specific dugga and manages the number of active users working on group tasks for the dugga, and then retrieving all updated data from the database (through retrieveShowDuggaService_ms.php) as the output for the microservice. See __retrieveShowDuggaService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
+__Include microservice:__ retrieveShowDuggaService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()' and then retrieves necessary parameters like 'opt', 'courseid', 'coursevers', 'duggaid', 'moment', 'hash', and so on.
+
+- __Handles active users:__ Checks the number of active users for a specific hash in the __'groupdugga'__ table. If no active users are found, it inserts a new record with the hash and active user token. If active users are found, it updates the record with the new total of active users.
+
+- __Retrieve dugga information:__ Initializes variables and arrays to store dugga information, like 'duggainfo', 'variants', and 'files'. The microservice then calls the 'retrieveShowDuggaService' function with the necessary parameters to get information about the dugga.
+
+- __Return dugga information:__ The microservice returns the retrieved information as JSON, which includes details about the dugga, active users, and other relevant data.
+
+
 __Querys used in this microservice:__
 
-_SELECT_ operation on the table __'groupdugga'__ to retrieve the value from the column:
+_SELECT_ operation on the table __'groupdugga'__ to retrieve the value of the column:
 - active_users
 
-- The 'hash' value in the __'groupdugga'__ table matches the value bound to :hash.
+- Where the 'hash' in the __'groupdugga'__ table matches the value bound to ':hash'.
 
 ```sql
 SELECT active_users FROM groupdugga WHERE hash=:hash;
 ```
 
 
-_INSERT_ operation on the table __'groupdugga'__ to create new rows with values for the columns:
+_INSERT_ operation on the table __'groupdugga'__ to insert values into the columns:
 - hash
 - active_users
 
-- The 'hash' value is bound to :hash.
-- The 'active_users' value is bound to :AUtoken.
-
 ```sql
-INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);
+INSERT INTO groupdugga(hash, active_users) VALUES(:hash, :AUtoken);
 ```
 
 
-_UPDATE_ operation on the table __'groupdugga'__ to modify rows where:
+_UPDATE_ operation on the table __'groupdugga'__ to update the value of the column:
+- active_users
 
-- The 'hash' value in the __'groupdugga'__ table matches the value bound to :hash.
-
-Set the value for the column:
-- active_users to :AUtoken
+- Where the 'hash' in the __'groupdugga'__ table matches the value bound to ':hash'.
 
 ```sql
 UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
@@ -4192,9 +4201,25 @@ UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;
 <br>
 
 ### processSubmittedDugga_ms.php
-__processSubmittedDugga_ms.php__ processes files within a dugga i.e. submitted PDF, ZIP files.
+__processSubmittedDugga_ms.php__ retrieves and processes all submission files (i.e. submitted PDF, ZIP files) related to a specific dugga for a given course and version. 
 
 __Includes neither original service files nor microservices.__
+
+
+- __Session check:__ Checks if submission details (hash, password, variant) are stored in the session for the specific course, version, dugga, and moment. If they are, they are used to retrieve submissions. 
+
+- __Retrieve submissions:__ Runs a query to find all submissions with the stored hash. If nothing is found and the user is a superuser, retrieves all submissions for the given moment.
+
+- __Process each submission:__ For each retrieved submission:
+    
+    - Sets up variables for content and feedback.
+    - Checks if the file exists and reads its contents.
+    - Prepares an array with collected details about the submission.
+
+- __Organize submissions:__ Puts all processed submissions into an array, grouped by their segment.
+
+- __Return results:__ If there are no submissions, returns an empty object. Otherwise, the function returns an array of organized submissions as output.
+
 
 __Querys used in this microservice:__
 
@@ -4216,10 +4241,7 @@ _SELECT_ operation on the table __'submission'__ to retrieve the following colum
 - The value in the 'hash' column must match the specified ':hash'. The results are ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
 
 ```sql
-SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash 
-FROM submission 
-WHERE hash = :hash 
-ORDER BY subid, fieldnme, updtime ASC;
+SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash FROM submission WHERE hash = :hash ORDER BY subid, fieldnme, updtime ASC;
 ```
 
 
@@ -4241,10 +4263,7 @@ _SELECT_ operation on the table __'submission'__ to retrieve the following colum
 - The value in the 'segment' column matches the specified ':moment'. The results should be ordered by 'subid', 'fieldnme', and 'updtime' in ascending order.
 
 ```sql
-SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash 
-FROM submission 
-WHERE segment = :moment 
-ORDER BY subid, fieldnme, updtime ASC;
+SELECT subid, vers, did, fieldnme, filename, extension, mime, updtime, kind, filepath, seq, segment, hash FROM submission WHERE segment = :moment ORDER BY subid, fieldnme, updtime ASC;
 ```
 
 <br>
@@ -4254,9 +4273,25 @@ ORDER BY subid, fieldnme, updtime ASC;
 <br>
 
 ### saveDugga_ms.php
-__saveDugga_ms.php__ allows the user to make multiple saves of dugga answers before final submission. The user can update their answer multiple times as needed, and the system manages these updates until an approved grade is received, which then blocks further submissions for that specific dugga.
+__saveDugga_ms.php__ handles the saving of user submissions for a specific dugga. Allows the user to make multiple saves of dugga answers before final submission (updating user answers, inserting new user answers, and selecting data from the __'userAnswer'__ table.). The user can update their answer multiple times as needed, and the system manages these updates until an approved grade is received, which then blocks further submissions for that specific dugga. The microserive retrieves all updated data from the database (through retrieveShowDuggaService_ms.php) as the output for the microservice. See __retrieveShowDuggaService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ retrieveShowDuggaService_ms.php
+
+- __Session check:__ Checks if the user is logged in and retrieves submission details (hash, password, variant) from the session or POST data for the specified course, version, dugga, and moment.
+
+- __Logging:__ Logs the start of the service event with details about the operation.
+
+- __Retrieve submissions (if existing):__ Queries the database for existing submissions matching the stored hash.
+  
+- __Update or insert submission:__ 
+    
+    - If a submission exists and the hash and password match, updates the user answer.
+    - If no submission exists or the hash/password do not match, inserts a new user answer.
+    - If the user is a superuser and no submissions are found, retrieves all submissions for the given moment.
+  
+- __Return results:__ Calls 'retrieveShowDuggaService' function (retrieveProfileService_ms.php) to fetch and return information about the dugga (inlcuding submissions) from the database, in a JSON format.
 
 __Querys used in this microservice:__
 
@@ -4312,40 +4347,155 @@ INSERT INTO userAnswer(cid,quiz,moment,vers,variant,hash,password,timesSubmitted
 <br>
 
 ### readSubmittedDugga_ms.php
-__readSubmittedDugga_ms.php__ retrieves submitted user responses (submitted duggas) from a database based on specific identifiers such as a hash value or a moment identifier.
+__readSubmittedDugga_ms.php__ retrieves submitted user responses (submitted duggas) from a database based on specific identifiers such as a hash value or a moment identifier. 
+
+__Session:__ Connects to the database and starts a session. Retrieves user ID (uid), login name, firstname and lastname, defaulting to "student" if not logged in.
+
+__Parameters:__ Gets the 'hash' and 'moment' parameters from the request.
+
+__Queries:__ Queries the database to get user answers using the provided hash. If no data is found with the hash, the function retrieves answers for the specified moment instead. Retrieves relevant data (variant, answer, variant answer, parameters, course ID, course version, and dugga ID) from the query results as output.
 
 __Include original service files:__ sessions.php, basic.php
 
+__Include microservice:__ retrieveShowDuggaService_ms.php
+
 __Querys used in this microservice:__
 
-_SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve values from the columns:
+_SELECT_ operation on the table __'userAnswer'__ with a _LEFT JOIN_ on the table __'variant'__ to retrieve the values of the columns:
 - vid
-- variantanswer
+- variantanswer (from variant table)
 - useranswer
 - param
 - cid
 - vers
 - quiz
 
-- The 'hash' value in the __'userAnswer'__ table matches the value bound to :hash.
+- Where the 'hash' in the __'userAnswer'__ table matches the value bound to ':hash'.
+
+```sql
+SELECT vid, variant.variantanswer AS variantanswer, useranswer, param, cid, vers, quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant = variant.vid WHERE hash = :hash;
+```
 
 <br>
 
 If the hash didn't work then retrive all answers for that moment:
 
-_SELECT_ operation on the tables __'userAnswer'__ and __'variant'__ to retrieve values from the columns:
+_SELECT_ operation on the table __'userAnswer'__ with a _LEFT JOIN_ on the table __'variant'__ to retrieve the values of the columns:
 - vid
-- variantanswer
+- variantanswer (from the __variant__ table)
+- variantanswer (from the __userAnswer__ table)
 - useranswer
 - param
 - cid
 - vers
 - quiz
 
-- The 'moment' value in the __'userAnswer'__ table matches the value bound to :moment.
+- Where the 'moment' in the __'userAnswer'__ table matches the value bound to ':moment'.
+
+```sql
+SELECT vid, variant.variantanswer AS variantanswer, useranswer, param, cid, vers, quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant = variant.vid WHERE moment = :moment;
+```
 
 <br>
 
 ---
 
 <br>
+
+### retrieveShowDuggaService_ms.php
+
+__Include original service files:__ basic.php
+
+__Include microservice:__ processDuggaFile_ms.php, loadDugga_ms.php
+
+
+__retrieveShowDuggaService_ms.php__ is responsible for retrieving and processing information about a specific dugga for a given course and version. The function returns the data in the format of an array, containing information about the dugga and its submissions.
+
+- __Session check:__ Checks if the user is logged in by retrieving session information. If a user ID is found, the function retrieves user details. If not, the user ID is set to "guest".
+
+- __Role check:__ The function checks the user's role and then sets a variable ('flag') to indicate whether the user has the permissions of a superuser or a teacher.
+
+- __Retrieve dugga information for superusers:__ If the user is a superuser, the function retrieves dugga information based on the hash. If successful, it processes the dugga files. Otherwise, it sets default values and a debug message.
+
+- __Retrieve dugga information for guests:__ If the user is not a superuser, it checks for a valid hash and password combination to retrieve the dugga information. If successful, it processes the dugga files. Otherwise, it sets default values and a debug message.
+
+- __Retreive dugga infromation for guests (session-based):__ If no hash and password are provided, it retrieves the dugga information from session variables. If successful, it processes the dugga files. Otherwise, it sets default values and a debug message.
+
+- __Data:__ Collects all relevant information, including debug messages, parameters, answers, scores, grades, submission details, user feedback, and whether the user is a teacher. It formats this data into an array.
+
+- __Return results:__ The function returns the collected data as JSON, including information about the dugga, its submissions, and additional metadata.
+
+__retrieveShowDuggaService_ms.php__ provides information about a specific dugga, including user submissions and other related data. It makes sure that only authorized users can access the information.
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'quiz'__ with _LEFT JOINs_ on the tables __'variant'__, __'userAnswer'__, and a subquery from __'listentries'__ to retrieve the columns:
+- quiz (all columns)
+- variantanswer (from the __variant__ table)
+- vid (from the __variant__ table)
+- useranswer (default value 'UNK' if NULL)
+- param
+- dugga_title (from the subquery of listentries)
+
+- Filters the results to where the 'quiz.id' matches the specified ':did'
+- And the 'vid' matches the specified ':variant'
+- And the 'l.cid' matches the specified ':cid'.
+
+Conditions for the JOIN statements:
+- The 'userAnswer' table is joined on 'userAnswer.variant = variant.vid' and 'hash = :hash' and 'password = :hashpwd'.
+- The subquery 'l' is filtered to ensure 'l.link = quiz.id' and 'l.cid = l.cid'.
+
+```sql
+SELECT quiz.*, variant.variantanswer, variant.vid AS vid, IF(useranswer IS NULL, 'UNK', useranswer) AS useranswer, variantanswer, param, l.entryname AS dugga_title FROM quiz  LEFT JOIN variant ON quiz.id = variant.quizID LEFT JOIN userAnswer ON userAnswer.variant = variant.vid AND hash = :hash AND password = :hashpwd LEFT JOIN (SELECT cid, link, entryname FROM listentries) AS l ON l.cid = l.cid AND l.link = quiz.id WHERE quiz.id = :did AND vid = :variant AND l.cid = :cid LIMIT 1;
+```
+
+
+
+_SELECT_ operation on the table __'quiz'__ with _LEFT JOINs_ on the tables __'variant'__, __'userAnswer'__, and a subquery from __'listentries'__ to retrieve the columns:
+- quiz (all columns)
+- vid (from the __variant__ table)
+- useranswer (default value 'UNK' if NULL)
+- variantanswer
+- param
+- dugga_title (from the subquery of listentries)
+
+- Filters the results to where the 'quiz.id' matches the the specified ':did'
+- And the 'vid' matches the specified ':variant'
+- And the 'l.cid' matches the specified ':cid'.
+
+Conditions for the JOIN statements:
+- The 'serAnswer' table is joined on 'userAnswer.variant = variant.vid' and 'hash = :hash' and 'password = :hashpwd'.
+- The subquery 'l' is joined on the condition 'l.cid = l.cid' and 'l.link = quiz.id'.
+
+```sql
+SELECT quiz.*, variant.vid AS vid, IF(useranswer IS NULL, 'UNK', useranswer) AS useranswer, variantanswer, param, l.entryname AS dugga_title FROM quiz LEFT JOIN variant ON quiz.id = variant.quizID LEFT JOIN userAnswer ON userAnswer.variant = variant.vid AND hash = :hash AND password = :hashpwd LEFT JOIN (SELECT cid, link, entryname FROM listentries) AS l ON l.cid = l.cid AND l.link = quiz.id WHERE quiz.id = :did AND vid = :variant AND l.cid = :cid LIMIT 1;
+```
+
+
+_SELECT_ operation on the table __'userAnswer'__ with a _LEFT JOIN_ on the table __'variant'__ to retrieve the values of the columns:
+- vid
+- variantanswer (from the __variant__ table)
+- useranswer
+- param
+- cid
+- vers
+- quiz
+
+- Filters the results to where the 'hash' in the __'userAnswer'__ table matches the specified ':hash'
+- And the 'password' in the __'userAnswer'__ table matches the specified ':hashpwd'.
+
+```sql
+SELECT vid, variant.variantanswer AS variantanswer, useranswer, param, cid, vers, quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant = variant.vid WHERE hash = :hash AND password = :hashpwd;
+```
+
+<br>
+
+---
+
+<br>
+
+### retrieveAllShowDuggaServiceData_ms.php
+
+__retrieveAllShowDuggaServiceData_ms.php__ calls __retrieveShowDuggaService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllShowDuggaServiceData_ms.php__ does not handle any queries.
+
+The microservice retrieves and sends back service data for a user in a specific course by calling __'retrieveShowDuggaService_ms.php'__ and returning the result as a JSON-encoded string.
