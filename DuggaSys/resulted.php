@@ -111,7 +111,7 @@ pdoConnect();
 	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display: none'>
-		<div class='loginBoxheader'>
+		<div class='formBoxHeader'>
 			<span id="hoverRes" ></span>
 			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
 			onmouseout="hideHover();" >Show Results</h3>
@@ -132,13 +132,13 @@ pdoConnect();
   <!-- -------------------=============####### Statistics Popover #######=============------------------- -->
 
 	<div id='statisticspopover' class='previewpopover' style='display:none;'>
-		<div class='loginBoxheader'>
+		<div class='formBoxHeader'>
 			<h3 style='width:100%;' id='Nameof'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 	</div>
 
 	<div id='resultlistpopover' class='previewpopover' style='display:none;flex-direction:column;'>
-		<div class='loginBoxheader'>
+		<div class='formBoxHeader'>
 			<h3 style='width:100%;' id='resultlistheader'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
     </div>
     <div style='display:flex;flex-direction:column;flex:1;'>
@@ -155,7 +155,7 @@ pdoConnect();
 
 	<!-- This popup is for alerts about LadExport -->
 	<div id="gradeExportPopUp" style="display: none;">
-		<div class="loginBoxheader">
+		<div class="formBoxHeader">
 			<h3>Alert</h3>
 			<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
 		</div>
