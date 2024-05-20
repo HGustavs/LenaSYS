@@ -1106,7 +1106,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
-				//url: "../DuggaSys/microservices/highscoreService/highscoreservice_ms.php",
+				//url: "../DuggaSys/microservices/highscoreService/highscoreService_ms.php",
 				url: "highscoreservice.php",
 				type: "POST",
 				data: "opt="+opt+para+"&hash="+hash,
