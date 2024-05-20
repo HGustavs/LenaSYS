@@ -3780,8 +3780,6 @@ __Include original service files:__ sessions.php
 
 __Include microservice:__ getUid_ms.php
 
-The microservice is designed to fetch all course versions from the `vers` table in the database. Here's a detailed explanation of what the code does:
-
 - __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
 
 - __Fetch corurse versions:__ 
@@ -3829,18 +3827,20 @@ Uses service __selectFromTableGitFiles__ to _get_ information it requires from _
 <br>
 
 ### readUserDuggaFeedback_ms.php
-__readUserDuggaFeedback_ms.php__ retrieves feedback from users for a specific dugga and calculates the average score for that particular dugga.
+__readUserDuggaFeedback_ms.php__ is responsible for fetching user feedback for a specific dugga (quiz) moment and calculating the average feedback score. The microservice retrieves feedback entries and the average score for the feedback related to a specific course and moment. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
+
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
 
+
 __Querys used in this microservice:__
 
 _SELECT_ operation on the table __'userduggafeedback'__ to select all columns where:
 
-- The 'lid' value matches the bound value for :lid.
-- The 'cid' value matches the bound value for :cid.
+-  Filters the result to rows where the 'lid' value matches the specified value for ':lid'.
+-  Filters the result to rows where the 'cid' value matches the specified value for :'cid'.
 
 ```sql
 SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
@@ -3849,8 +3849,8 @@ SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
 
 _SELECT_ operation on the table __'userduggafeedback'__ to calculate the average of the 'score' column, aliased as 'avgScore', where:
 
-- The 'lid' value matches the bound value for :lid.
-- The 'cid' value matches the bound value for :cid.
+- Filters the result to rows where the 'lid' value matches the specified value for ':lid'.
+- Filters the result to rows where the 'cid' value matches the specified value for :cid.
 
 ```sql
 SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
