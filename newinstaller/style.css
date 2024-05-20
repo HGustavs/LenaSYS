@@ -332,46 +332,55 @@ input[type=checkbox], input[type=radio] {
     height: 100%;
     overflow: auto;
     background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.5);
 }
 
 .modal-content {
     position: relative;
-    background-color: #fefefe;
+    background-color: var(--page-background);
     margin: 15% auto;
-    padding: 20px;
+    padding: 1.25rem;
     border: 1px solid #888;
     width: 80%;
-    max-width: 600px;
-    border-radius: 10px;
+    max-width: 37.5rem;
+    border-radius: 0.75rem;
 }
 
 .close-btn {
-    color: #aaa;
+    color: var(--primary-color);
     float: right;
-    font-size: 28px;
+    font-size: 1.75px;
     font-weight: bold;
 }
 
 .close-btn:hover,
 .close-btn:focus {
-    color: black;
+    color: var(--primary-color-hover);
     text-decoration: none;
     cursor: pointer;
 }
 
-.modal-header,
+.modal-header {
+    font-family: var(--header-font);
+    font-size: var(--h2-fontsize);
+    color: var(--primary-color);
+}
+
 .modal-body,
 .modal-footer {
-    padding: 10px;
+    font-family: var(--body-font);
+    font-size: var(--text-large);
+    padding: 0.75rem;
 }
 
 .modal-footer {
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .modal-footer button {
-    margin-left: 10px;
+    margin: 0.5rem;
 }
 
 /*  This code is nested CSS. It's a relatively new CSS

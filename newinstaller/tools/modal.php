@@ -72,9 +72,9 @@ class Modal {
             'Database Creation Failed',
             'Failed to create the database or database user. Please ensure you have the necessary permissions.',
             [
-                ['text' => 'Force Create', 'class' => 'progressButton', 'onclick' => 'forceCreateDb()'],
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()'],
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()']
+                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'forceCreateDb()']
             ]
         );
 
