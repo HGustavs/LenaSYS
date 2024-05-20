@@ -271,20 +271,20 @@
 		<!-- Edit Section Dialog START -->
 
 		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+		<div id='editSectionLoginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
 
 			<div class='loginBoxheader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="padding_5px">
 				<input type='hidden' id='lid' value='Toddler' />
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput padding-left_25px' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
-				<div class="formDialog" style="display: block;">
+				<div id="nameFormDialog" class="formDialog">
   		      		<span id="dialog10"  class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
   		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>

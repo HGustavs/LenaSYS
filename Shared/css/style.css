@@ -2374,6 +2374,7 @@ Fonts
 
 /*---END---*/
 
+
 .display_none{
   display:none
 }
@@ -2499,6 +2500,14 @@ resulted.php END
 
 #editCourse {
   margin-right: 0px;
+}
+
+#editSectionLoginBox {
+  width:460px;
+}
+
+#nameFormDialog {
+  display: block;
 }
 /*---===#===---*
 sectioned.php END 
