@@ -17,6 +17,7 @@ class SSEReceiver {
 			if (this.callbacks.error) {
 				this.callbacks.error(data.data);
 			}
+			return;
 		}
 
 		switch (data.event) {
