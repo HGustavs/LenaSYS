@@ -1,5 +1,8 @@
 /**
- * @description Translate all elements to the correct coordinate
+ * @description Updates CSS properties for all diagram elements based on their data attributes.
+ * Manages positioning, appearance, and highlighting for entities, relationships, and notes.
+ * Ensures visual consistency and responsiveness to user interaction, adjusting elements
+ * dynamically based on their coordinates, zoom level, and scroll position.
  */
 function updateCSSForAllElements() {
         function updateElementDivCSS(elementData, divObject, useDelta = false) {
