@@ -5,21 +5,22 @@
             "id": "1D1E13",
             "x": 754,
             "y": 437,
+            "height": 0,
             "time": 1681312276766,
             "name": "Teacher",
             "attributes": [
                 "-Teacher ID",
                 "-Salary"
             ],
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         },
         {
             "kind": "IEEntity",
             "id": "6CB70D",
             "x": 560,
             "y": 53,
+            "height": 0,
             "time": 1681312279689,
             "name": "Person",
             "attributes": [
@@ -29,77 +30,76 @@
                 "-Phone",
                 "-Email"
             ],
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         },
         {
             "kind": "IEEntity",
             "id": "0F1D1B",
             "x": 349,
             "y": 445,
+            "height": 0,
             "time": 1681312310807,
             "name": "Student",
             "attributes": [
                 "-Student ID"
             ],
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         },
         {
             "kind": "IEEntity",
             "id": "8BAF58",
             "x": 709,
             "y": 810,
+            "height": 0,
             "time": 1681312314043,
             "name": "Class",
             "attributes": [
                 "-Class ID",
                 "-Name"
             ],
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         },
         {
             "kind": "IERelation",
             "id": "8BB921",
             "x": 635,
             "y": 330,
+            "height": 0,
             "time": 1681312348137,
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         },
         {
             "kind": "IEEntity",
             "id": "39ED52",
             "x": 1082,
             "y": 451,
+            "height": 0,
             "time": 1681312372642,
             "name": "Subject",
             "attributes": [
                 "-Subject ID"
             ],
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         },
         {
             "kind": "IEEntity",
             "id": "80769C",
             "x": 18,
             "y": 432,
+            "height": 0,
             "time": 1681312411377,
             "name": "Grade",
             "attributes": [
                 "-Grade ID",
                 "-Name"
             ],
-            "stroke": [
-                "#383737"
-            ]
+            "stroke": "#000000",
+            "fill": "#ffffff"
         }
     ],
     "lines": [
