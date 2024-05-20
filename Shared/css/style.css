@@ -2428,6 +2428,22 @@ Float
 
 /*---END---*/
 
+/*---===#===---*
+Float
+*---====#===---*/
+.align_right {
+  align:right
+}
+
+.align_left {
+  align:left
+}
+
+.align_right {
+  align:center
+}
+
+/*---END---*/
 
 .display_none{
   display: none;
@@ -2517,6 +2533,7 @@ resulted.php END
 /* --------------===============################================-------------- *
  *                                    sectioned.php                             *
  * --------------================################================--------------*/
+ 
  #courseHeader {
   display:flex; 
   align-items:center; 
@@ -2718,6 +2735,9 @@ resulted.php END
   z-index: 1500;
 }
 
+#sectionname{
+  margin:0px 10px 0px 0px;
+}
 
 /*---===#===---*
 sectioned.php END 
@@ -2842,6 +2862,10 @@ sectioned.php END
 
 #formBoxHighscore {
   width:500px;
+}
+
+#visb {
+  margin:0px 0px 0px 0px;
 }
 
 /*---===#===---*
