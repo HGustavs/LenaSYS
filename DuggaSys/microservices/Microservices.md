@@ -251,9 +251,8 @@ __Sectioned Service:__
 - readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
 - createGithubCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - getListEntries_ms.php __==finished==__ New filename: "readListEntries_ms.php" according to new nameconvention based on CRUD.
-- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "readAllCourseVersions_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
-
+- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "retrieveAllSectionedServiceData_ms.php" according to new nameconvention based on CRUD.
 
 <br>
 
@@ -3227,8 +3226,6 @@ SELECT groupKind,groupVal FROM groups;
 ### readCourseGroupsAndMembers_ms.php
 __readCourseGroupsAndMembers_ms.php__ retrieves and returns a list of group members related to a specified course ID and course version.
 
-The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
-
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
@@ -3272,11 +3269,36 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 <br>
 
 ### deleteListentries_ms.php
-Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
+Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items). The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches the following parameters from the request:
+    
+    - 'courseid': Course ID.
+    - 'coursevers': Course version.
+    - 'log_uuid': Log UUID.
+    - 'opt': Operation type.
+    - 'sectid': Section ID to be deleted.
+
+- __Get User ID:__ Calls 'etUid()' to retrieve the user ID from the session.
+
+- __User and SuperUser check:__ Calls 'checklogin()' to verify if the user is logged in.
+  
+    If the user is a superuser:
+    - Deletes related entries from the __'useranswer'__ table using the section ID ('sectid').
+    - Deletes the section entry from the __'listentries'__ table using the section ID ('sectid').
+    - Handles errors related to foreign key constraints during deletion.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to fetch the updated data after the deletion operation.
+
+- __Return:__ Combines the deletion debug information and the updated data. Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3916,47 +3938,6 @@ Parameters passed to 'retrieveSectionedService_ms.php':
 
 <br>
 
-### readAllCourseVersions_ms.php
-__readAllCourseVersions_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
-
-__Include original service files:__ sessions.php, basic.php
-
-__Include microservice:__ retrieveSectionedService_ms.php
-
-__Querys used in this microservice:__
-
-_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
-- vers
-
-- Selects rows where the column __cid__ matches the provided value ':cid'.
-
-```sql
-SELECT vers FROM vers WHERE cid=:cid
-```
-
-
-- __Fetches parameters:__ Operation option ('opt'), Course ID ('courseid'), Course version ('coursevers').
-
-- __If not null:__ If 'coursevers' is not null the fucntion retrieves all course versions for the given course ID and calculates the total number of groups as 24 times the number of course versions.
-
--__Debugging:__ Handles query errors and stores error details in the variable 'debug'.
-
-- __Calls 'retrieveSectionedService' with parameters:__ 
-
-    - __debug__ - Starts as "NONE!" to collect any debug info.
-    - __opt__ - Operation option from the request.
-    - __pdo__ - PDO database connection.
-    - __courseid__ - Course ID to get list entries for.
-    - __coursevers__ - Course version to get list entries for.
-    
-    which returns the result as JSON.
-
-<br>
-
----
-
-<br>
-
 ### retrieveSectionedService_ms.php
 
 __Include original service files:__ sessions.php, basic.php
@@ -4168,6 +4149,46 @@ The microservice gathers and organizes information into an array that provides d
 
 - __Debugging__ - Logs of any issues encountered during the execution of the function.
 
+<br>
+
+---
+
+<br>
+
+### retrieveAllSectionedServiceData_ms.php
+__retrieveAllSectionedServiceData_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ retrieveSectionedService_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
+- vers
+
+- Selects rows where the column __cid__ matches the provided value ':cid'.
+
+```sql
+SELECT vers FROM vers WHERE cid=:cid
+```
+
+
+- __Fetches parameters:__ Operation option ('opt'), Course ID ('courseid'), Course version ('coursevers').
+
+- __If not null:__ If 'coursevers' is not null the fucntion retrieves all course versions for the given course ID and calculates the total number of groups as 24 times the number of course versions.
+
+-__Debugging:__ Handles query errors and stores error details in the variable 'debug'.
+
+- __Calls 'retrieveSectionedService' with parameters:__ 
+
+    - __debug__ - Starts as "NONE!" to collect any debug info.
+    - __opt__ - Operation option from the request.
+    - __pdo__ - PDO database connection.
+    - __courseid__ - Course ID to get list entries for.
+    - __coursevers__ - Course version to get list entries for.
+    
+    which returns the result as JSON.
 
 <br>
 <br>
