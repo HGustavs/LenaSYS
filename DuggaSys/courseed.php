@@ -77,7 +77,7 @@ if(isset($_SESSION['uid'])){
     			<h3>New Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
     		</div>
-    		<div class="padding_5px">
+    		<div class="formBody">
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
@@ -93,7 +93,7 @@ if(isset($_SESSION['uid'])){
 				</div>
     		</div>
 				<!-- Input field to Github repository START-->
-				<div class="padding_5px">
+				<div class="formBody">
 					<div class="inputwrapper">
 					<span class="padding-right_10px">GitHub URL:</span>
 						<div class="formDialog" id="newGithubformDialog"><span class="formDialogText errorMessage">Enter a valid github url</span></div>
@@ -102,7 +102,7 @@ if(isset($_SESSION['uid'])){
 					</div>
 				</div>
 				<!-- Input field to Github repository END-->
-				<div class="padding_5px">
+				<div class="formFooter">
     			<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
     		</div>
       </div>
@@ -116,7 +116,7 @@ if(isset($_SESSION['uid'])){
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
-    		<div class="padding_5px">
+    		<div class="formBody">
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
 					<span>Course Name:</span>
@@ -172,7 +172,7 @@ if(isset($_SESSION['uid'])){
     			<h3>Edit Server Settings</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
-			<div class="padding_5px">
+			<div class="formBody">
 
     			<div class='inputwrapper'><span>Message of the day:</span><input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
     			<div class='inputwrapper'><span class='italic'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
@@ -180,7 +180,7 @@ if(isset($_SESSION['uid'])){
     		</div>
 			<div class="formDialog" id="errorSymbol"><span id="dialog51" class="formDialogText errorMessage">Prohibited symbols</span></div>
 			<div class="formDialog" id="error50"><span id="dialog52" class="formDialogText errorMessage">Message can only contain a maximum of 50 symbols</span></div>
-    		<div class="padding_5px">
+    		<div class="formFooter">
     			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>
     </div>

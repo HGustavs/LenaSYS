@@ -2609,10 +2609,14 @@ resulted.php END
 }
 
 #close-item-button{
-  margin-right: 5%;
+  margin-left: 5%;
 }
 
 #hide-item-button{
+  margin-right: 5%;
+}
+
+#ok-item-button{
   margin-right: 5%;
 }
 
@@ -2633,16 +2637,25 @@ resulted.php END
   text-align: center;
 }
 
-#formFooterBtnHide {
+.formFooterBtnplace {
   display:flex; 
   align-items:center; 
   justify-content: center;
 }
 
-#formBoxTabConfirm {
+.formBoxTabConfirm {
   width:360px;
 }
 
+#tabDropDown {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#formBoxInfo {
+  width:460px;
+}
 /*---===#===---*
 sectioned.php END 
 *---====#===---*/

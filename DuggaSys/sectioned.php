@@ -380,10 +380,10 @@
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div id="formBodyConfirm" class="formBody">
+			<div class="formBody formBodyConfirm">
 					<h4>Are you sure you want to hide this item?</h4>
 			</div>
-			<div id="formFooterBtnHide" class="formFooter">
+			<div class="formFooter formFooterBtnplace">
 				<input class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
 				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
@@ -398,10 +398,10 @@
 					<h3>Confirm show items</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div id="formBodyConfirm" class="formBody">
+			<div class="formBody formBodyConfirm">
 					<h4>Are you sure you want to show this item?</h4>
 			</div>
-			<div id="formFooterBtnHide" class="formFooter">
+			<div class="formFooter formFooterBtnplace">
 				<input class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
 				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
@@ -410,17 +410,17 @@
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Cofirm Section Tab Dialog START -->
-	<div id='tabConfirmBox' class='loginBoxContainer display_flex'>
+	<div id='tabConfirmBox' class='loginBoxContainer display_none'>
 		<div id='formBoxTabConfirm' class='formBox' >
 			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div class="formBody">
-				<div id="formBodyConfirm">
+				<div class="formBodyConfirm">
 					<h4>How many tabs?</h4>
 				</div>
-				<div style='display:flex; align-items:center; justify-content: center;'>
+				<div id="tabDropDown">
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span>
 						<select id='tabs'>
 							<option value="0">0 tabs</option>
@@ -434,7 +434,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
+			<div class="formFooter formFooterBtnplace">
 				<input class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
 			</div>
 		</div>
@@ -443,23 +443,23 @@
 
 	<!-- Confirm Missing Material Dialog START -->
 	<div id='noMaterialConfirmBox' class='loginBoxContainer display_none'>
-		<div class='formBox' style='width:460px;'>
+		<div  id='formBoxInfo' class='formBox'>
 				<div class='formBoxHeader'>
 					<h3>Error: Missing material</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div class="formBody" style='text-align: center;'>
+				<div class="formBody formBodyConfirm">
 					<h4 id="noMaterialText"></h4>
 				</div>
-				<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-					<input style='margin-right: 5%;' class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
+				<div class="formFooter formFooterBtnplace">
+					<input id="ok-item-button" class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
 				</div>
 		</div>
 	</div>
 	<!-- Confirm Missing Material Dialog END -->
 
 		<!-- New Version Dialog START -->
-		<div id='newCourseVersion' class='loginBoxContainer display_none'>
+		<div id='newCourseVersion' class='loginBoxContainer display_flex'>
     	<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 			<div class='formBoxHeader'>
 				<h3>New Course Version</h3>
