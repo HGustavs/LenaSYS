@@ -5,6 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveAccessedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -15,8 +16,8 @@ $cid = getOP('courseid');
 $newusers = getOP('newusers');
 $coursevers = getOP('coursevers');
 $log_uuid = getOP('log_uuid');
-
 $userid = getUid();
+$debug = "NONE!";
 
 if (hasAccess($userid, $cid, 'w') || isSuperUser($userid)) {
 	$hasAccess = true;
@@ -71,7 +72,7 @@ if(checklogin() && $hasAccess) {
                   	$firstname = $user[1];
                   	$lastname = $user[2];
 	                $term = $user[5];
-					$className = "UNK"; // the class is not sent with newusers in the current implementation of lenasys
+					$className = $user[4]; // the class is not sent with newusers in the current implementation of lenasys
     	            
 					//If a className has been set. (this is not implemented in lenasys right now)
                   	if(strcmp($className,"UNK")!==0){
@@ -154,5 +155,7 @@ if(checklogin() && $hasAccess) {
         	}
 		} // End of foreach user
 	} // End ADD_USER
+
+	$array = retrieveAccessedService($pdo, $debug, $userid, null, $log_uuid, $opt, null);
+	echo json_encode($array);
 }
-?>
