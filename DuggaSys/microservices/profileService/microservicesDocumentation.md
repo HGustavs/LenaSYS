@@ -1,3 +1,10 @@
+retrieveProfileService_ms.php:
+
+Purpose:
+
+Creates and returns an array with variables $success, $status and $debug and passes it to the two microservices.
+
+
 updateSecurityQuestion_ms.php:
 
 Purpose:
