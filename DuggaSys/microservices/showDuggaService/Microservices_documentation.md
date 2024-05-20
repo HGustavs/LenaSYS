@@ -1,4 +1,8 @@
 As of now, microservices can not be tested by itself, but instead by replacing file path in the service file.
+ 
+showDuggaService: Used in courseed.php to immplement functionality of duggor. A dugga can be shown by opening a course.
+
+
 
 
 getShowDugga_ms.php: This PHP microservice is designed to retrieve and display information related to a specific "dugga" (quiz or assignment) in LenaSYS.
