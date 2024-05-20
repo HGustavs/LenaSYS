@@ -244,7 +244,6 @@ __Sectioned Service:__
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateVisibleListentries_ms.php __==finished==__ Previously named: "setVisibleListentries_ms.php". 
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateActiveCourseVersion_sectioned_ms.php __==finished==__ Previously named: "changeActiveCourseVersion_sectioned_ms.php".
 - readCourseVersions_ms.php __==finished==__ Previously named: "getCourseVersions_ms.php". 
 - getGitReference_ms.php __==UNFINISHED==__  
@@ -3692,11 +3691,28 @@ UPDATE listentries SET visibility = :listentryId;
 <br>
 
 ### updateQuizDeadline_ms.php
-__updateQuizDeadline_ms.php__ updates the deadline for a quiz (also referred to as a dugga).
+__updateQuizDeadline_ms.php__ update the deadline for a dugga (quiz) in a course if the user is authorized to do so. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Parameters:__ retrieves parameters from the request: 'opt' (operation), 'courseid', 'link', 'coursevers', 'log_uuid', 'deadline', and 'relativedeadline'.
+
+- __Session and permissions check:__ Calls 'checklogin()' to verify if the user is logged in. If logged in, the function retrieves the user ID ('uid') and checks the user's access levels (read, write, student/teacher). If not logged in, sets the user ID to "guest".
+
+- __Update deadline:__ If the operation ('opt') is "UPDATEDEADLINE":
+     
+     - Prepares an SQL query to update the 'deadline' and 'relativedeadline' for the specified quiz ('link') and binds the parameters to the query.
+     - Executes the query and sets a debug message if there's an error.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the updated section data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3714,39 +3730,33 @@ UPDATE quiz SET deadline=:deadline, relativedeadline=:relativedeadline WHERE id=
 
 <br>
 
-### updateCourseVersion_sectioned_ms.php
-__updateCourseVersion_sectioned_ms.php__ is used for editing a course version. The user must either have write permissions, be a superuser, or be a teacher.
-
-__Include original service files:__ sessions.php, basic.php
-
-__Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, setAsActiveCourse_ms.php, retrieveSectionedService_ms.php
-
-__Querys used in this microservice:__
-
-_UPDATE_ operation on the table __'vers'__ to update the values of the columns:
-- versname
-- startdate
-- enddate
-- motd
-
-- Where the course ID ('cid'), course code ('coursecode'), and version number ('vers') match the specified parameters. 
-
-```sql
-UPDATE vers SET versname=:versname, startdate=:startdate, enddate=:enddate, motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;
-```
-
-<br>
-
----
-
-<br>
-
 ### updateActiveCourseVersion_sectioned_ms.php
-__updateActiveCourseVersion_sectioned_ms.php__ updates the active version of a course.
+__updateActiveCourseVersion_sectioned_ms.php__ updates the active version of a course. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
+
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Parameters:__ retrieves parameters from the request: 'courseid', 'coursevers', 'versid', 'log_uuid' and 'opt'.
+
+- __Identifyes user:__ Checks if the user is logged in and sets the user ID ('uid'). If not logged in, sets the user ID to "guest".
+
+- __Permission check:__ Checks if the user is a superuser using 'isSuperUser()'. Checks if the user is logged in and has write access or is a superuser ('ha'). If the user has the required permissions ('ha' or 'studentTeacher'), the update can begin.
+
+- __Update active version:__
+   
+   - Prepares an SQL query to update the 'activeversion' field for the specified course ('courseid') to the new version ('versid').
+   - Binds the parameters 'courseid' and 'versid' to the query.
+   - Executes the query and sets a debug message if there's an error.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the updated section data. Adds the updated 'coursevers' to the returned data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3764,11 +3774,24 @@ UPDATE course SET activeversion=:vers WHERE cid=:cid
 <br>
 
 ### readCourseVersions_ms.php
-__readCourseVersions_ms.php__ fetches all course versions.
+__readCourseVersions_ms.php__ retrieves all course versions from the database (__'vers'__ table) and handles any errors that may occur during the process.
 
 __Include original service files:__ sessions.php
 
 __Include microservice:__ getUid_ms.php
+
+The microservice is designed to fetch all course versions from the `vers` table in the database. Here's a detailed explanation of what the code does:
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Fetch corurse versions:__ 
+
+     - Creates an empty array '$versions' to hold the results.
+     - Tries to execute a prepared SQL query to select all columns from the 'vers' table.
+     - If the query executes successfully, all retrieved results is stored in the '$versions' array.
+     - If an error occurs during the query execution, the function logs the error message and returns an empty array.
+   
+- __Return:__ Returns the array '$versions' containing all course versions retrieved from the database.
 
 __Querys used in this microservice:__
 
