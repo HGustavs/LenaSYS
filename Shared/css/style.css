@@ -9808,9 +9808,9 @@ margin:2px;
   100% { transform: rotate(360deg); }
 }
 
-.disabled-button {
-  opacity: 0.5;
-  pointer-events: none; /* Prevents any interaction with the button */
+button:disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 /* END */
