@@ -52,8 +52,8 @@ function generateContextProperties() {
 }
 
 /**
- * @description Makes it show or hide the properties with class names..
- * @param {boolean} show Shows the properties if it's true or hide if it's false.
+ * @description Makes it show or hide the properties with class names.
+ * @param {boolean} show Shows the properties if it's true, or hide if it's false.
  * @param {Object} propSet Add or remove class name from the object.
  * @param {Array} menuSet Change all class name to show or hide.
  */
@@ -69,8 +69,8 @@ function showProperties(show, propSet, menuSet) {
 }
 
 /**
- * @description Makes a textarea with a text header for the textarea.
- * @param {String} name Name header for the textarea.
+ * @description Makes a textarea to be able for example add new classes for UML.
+ * @param {String} name Name for the header for the textarea.
  * @param {String} property What type of property the textarea is.
  * @param {Object} element What element the textarea is for.
  * @return Returns the div that is the header and the textarea for the specific element.
@@ -84,7 +84,7 @@ function textarea(name, property, element) {
 }
 
 /**
- * @description Makes a text input of what the name of the element is.
+ * @description Makes a text input to be able to change the name of the element.
  * @param {Object} element What element the input is for.
  * @return Returns the div that is the header and the text input.
  */
@@ -102,7 +102,7 @@ function nameInput(element) {
 /**
  * @description Makes a button input for save the changes.
  * @param {*} functions What the function should be called.
- * @param {String} id What ID the intpu should have.
+ * @param {String} id What ID the input should have.
  * @param {String} value What value the input should have
  * @return Returns the button input.
  */
@@ -120,7 +120,7 @@ function saveButton(functions, id = '', value = 'Save') {
  * @param {String} def The default value for the dropdown.
  * @param {Object} object What types of value the element have.
  * @param {Object} element What type of element the dropdown is for.
- * @return Returns a header for the dropdown and a dropdown menu.
+ * @return Returns a div that is the header for the dropdown and a dropdown menu.
  */
 function dropdown(name, def, object, element) {
     let options = '';
@@ -134,8 +134,8 @@ function dropdown(name, def, object, element) {
 }
 
 /**
- * @description Is able to change color for the element.
- * @param {Object} element What type of element that is going to change color.
+ * @description be able to change color for the element.
+ * @param {Object} element Which element that is going to change color.
  * @return Returns the menu to change color.
  */
 function colorSelection(element) {
@@ -227,7 +227,7 @@ function drawElementProperties(element) {
  * @description Makes a dropdown for the element with different selection.
  * @param {Object} icon What type of icon the line is having, for example a ARROW at one end.
  * @param {Object} object What types of value the element have.
- * @return Returns a dropdown menu to be drawn.
+ * @return Returns a dropdown menu.
  */
 function option(object, icon) {
     let result = '';
@@ -259,7 +259,7 @@ function radio(line, arr) {
  * @description Makes a selection menu for the element with different values.
  * @param {String} id What id the menu should have.
  * @param {*} options The different option the selection menu should have.
- * @param {boolean} inclNone True if on one of the option should have value "None".
+ * @param {boolean} inclNone True if one of the option should have value "None".
  * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
  * @return Returns a select menu with de different option.
  */
@@ -353,7 +353,7 @@ function iconSelection(arr, line) {
 
 /**
  * @description Add a label for the line that is a "<<include>>".
- * @param {object} line The line that have the "include" button as properties.
+ * @param {object} line The line that have the "<<include>>" button as properties.
  * @return Returns a header, div-tag and a button that add a label on line.
  */
 function includeLabel(line) {
