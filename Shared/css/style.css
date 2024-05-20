@@ -2419,6 +2419,16 @@ Fonts
 
 /*---END---*/
 
+/*---===#===---*
+Float
+*---====#===---*/
+.float_right {
+  float:right;
+}
+
+/*---END---*/
+
+
 .display_none{
   display: none;
 }
@@ -2700,6 +2710,13 @@ resulted.php END
   overflow:hidden;
 }
 
+#createAlert{
+  z-index: 1500;
+}
+
+#updateAlert{
+  z-index: 1500;
+}
 
 
 /*---===#===---*

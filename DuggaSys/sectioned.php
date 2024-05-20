@@ -90,8 +90,8 @@
 
 	<!-- content START -->
 	<!-- Div that apper as an alert when a New Item has been created -->
-	<div style="z-index: 1500;" id="createAlert"></div>
-	<div style="z-index: 1500;" id="updateAlert"></div>
+	<div id="createAlert"></div>
+	<div id="updateAlert"></div>
 	<div id="content">
 
 		
@@ -171,7 +171,7 @@
 			<!-- Hide button -->
 		
 			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
-				<!-- <input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
+				<!-- <input id='tabElement'  type='button' value="&#8633;" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
 				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg'  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 				<input id='addElement'  type='button' value='+' class='submit-button-newitem' title='New Item'>
@@ -201,9 +201,9 @@
 			
 			<!-- Hide button -->
 		
-			<!-- <div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
-				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
-				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+			<!-- <div class='fixed-action-button3 sectioned3'  id="HIDEStatic" >
+				<input id='tabElement'  type='button' value="&#8633;"  class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 			</div> -->
 		
 			<!-- end hide button -->
@@ -258,8 +258,8 @@
 	</div>
 	
 	<!-- <div class="course">
-		<span style="text-align: center;">
-			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a>
+		<span>
+			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>">Subscribe for deadlines in your personal calendar</a>
 		</span>
 	</div> -->
 	<!-- content END -->
@@ -271,7 +271,7 @@
 		<!-- Edit Section Dialog START -->
 
 
-		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none'>
+		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_flex'>
 		<div id='editSectionLoginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
 
 
@@ -661,7 +661,7 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer display_flex">
+		<div id='gitHubTemplate' class="loginBoxContainer display_none">
 				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
