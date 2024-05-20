@@ -146,57 +146,70 @@ function hideRemoveUserPopup() {
 function addUserToCourse() {
 	let input = document.getElementById('addUsername2').value;
 	let term = $("#addTerm2").val();
-	$.ajax({
-		type: 'POST',
-		url: 'accessedservice.php',
-		data: {
-			opt: 'RETRIEVE',
-			action: 'USER',
-			username: input
-		},
-		success: function(response) {
-			userJson = response.substring(0, response.indexOf('{"entries":'));
-			let responseData = JSON.parse(userJson);
-			let uid = responseData.user[0].uid;
-			AJAXService("USERTOTABLE", {
-				courseid: querystring['courseid'],
-				uid: uid,
-				term: term,
-				coursevers: querystring['coursevers'],
-				action: 'COURSE'
-			}, "ACCESS");
-		},
-		error: function(xhr, status, error) {
-			console.error("Error", error);
-		}
-	});
-	hideAddUserPopup();
+	if(input && term){
+		$.ajax({
+			type: 'POST',
+			url: 'accessedservice.php',
+			data: {
+				opt: 'RETRIEVE',
+				action: 'USER',
+				username: input
+			},
+			success: function(response) {
+				userJson = response.substring(0, response.indexOf('{"entries":'));
+				let responseData = JSON.parse(userJson);
+				let uid = responseData.user[0].uid;
+				AJAXService("USERTOTABLE", {
+					courseid: querystring['courseid'],
+					uid: uid,
+					term: term,
+					coursevers: querystring['coursevers'],
+					action: 'COURSE'
+				}, "ACCESS");
+			},
+			error: function(xhr, status, error) {
+				console.error("Error", error);
+			}
+		});
+		updateCourseUsers(hideAddUserPopup); // Sending function as parameter
+	}
 }
 function removeUserFromCourse() {
 	let input = document.getElementById('addUsername3').value;
-	$.ajax({
-		type: 'POST',
-		url: 'accessedservice.php',
-		data: {
-			opt: 'RETRIEVE',
-			action: 'USER',
-			username: input
-		},
-		success: function(response) {
-			userJson = response.substring(0, response.indexOf('{"entries":'));
-			let responseData = JSON.parse(userJson);
-			let uid = responseData.user[0].uid;
-			AJAXService("DELETE", {
-				courseid: querystring['courseid'],
-				uid: uid,
-				action: 'COURSE'
-			}, "ACCESS");
-		},
-		error: function(xhr, status, error) {
-			console.error("Error", error);
-		}
-	});
-	hideRemoveUserPopup();
+	if(input){
+		$.ajax({
+			type: 'POST',
+			url: 'accessedservice.php',
+			data: {
+				opt: 'RETRIEVE',
+				action: 'USER',
+				username: input
+			},
+			success: function(response) {
+				userJson = response.substring(0, response.indexOf('{"entries":'));
+				let responseData = JSON.parse(userJson);
+				let uid = responseData.user[0].uid;
+				AJAXService("DELETE", {
+					courseid: querystring['courseid'],
+					uid: uid,
+					action: 'COURSE'
+				}, "ACCESS");
+			},
+			error: function(xhr, status, error) {
+				console.error("Error", error);
+			}
+		});
+		updateCourseUsers(hideRemoveUserPopup); // Sending function as parameter
+	}
+}
+
+// A small timer ensures a server response from the AJAX call that adds/removes a user
+// Without the timer the page may not update correctly
+const updateCourseUsers = function(removePopup){
+	setTimeout(() => {
+		removePopup(); // Reference to the function that was sent as parameter
+		location.reload(true);
+	}, 300);
 }
 
 function addSingleUser() {
