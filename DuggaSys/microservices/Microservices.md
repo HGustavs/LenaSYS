@@ -282,7 +282,7 @@ __Show Dugga Service:__
 <br>
 
 ### readUid_ms.php
-__readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a guest ID if the user is not logged in. The function also logs an event with details about the request. The microservice ensures correct identification and logging of users and their actions in the system. The uid
+__readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a guest ID if the user is not logged in. The function also logs an event with details about the request. The microservice ensures correct identification and logging of users and their actions in the system. 
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3189,11 +3189,23 @@ __retrieveResultedService_ms.php__ provides organized submission data and filter
 <br>
 
 ### readGroupValues_ms.php
-__readGroupValues_ms.php__ is called upon when a group is clicked on.
+__readGroupValues_ms.php__ retrieves group values and related data when a group is clicked on. The function organizes the data and returns it in a structured format. 
 
 __Include original service files:__ sessions.php
 
 __Include microservices:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database, and starts the session.
+
+- __Parameters:__ Gets parameters like 'uid', 'courseid', 'versid', 'log_uuid', 'opt', and 'coursevers' from the request.
+
+- __Check login and run query:__ Checks if the user is logged in. If they are, the query runs. The query retrieves group values from the __'groups'__ table and organizes them into an array.
+
+- __retrieveSectionedService:__ Calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to get additional data needed for the response.  
+
+- __Combine and return:__ Combines the group values with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
+
 
 __Querys used in this microservice:__
 
@@ -3213,11 +3225,30 @@ SELECT groupKind,groupVal FROM groups;
 <br>
 
 ### readCourseGroupsAndMembers_ms.php
-__readCourseGroupsAndMembers_ms.php__ returns a list of group member related to the provided course id and course version.
+__readCourseGroupsAndMembers_ms.php__ retrieves and returns a list of group members related to a specified course ID and course version.
+
+The microserive then retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches parameters such as 'opt', 'courseid', 'coursevers, 'log_uuid', and 'showgrp' from the request.
+
+- __Session and access check:__ Checks if the user is logged in with. If the user is logged in the function retrieves the user ID from the session (if available), otherwise sets it to "guest". Checks the user's access rights (read, student teacher, write) for the specified course.
+
+- __Retrieve group:__ If the 'opt' parameter equals "GRP":
+    
+    - Runs a query to fetch user details and their group memberships for the specified course ID and version.
+    - Filters users based on the specified group ('showgrp').
+    - Collects and sorts the group member information.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to get additional data needed for the response.  
+
+- __Combine and return:__ Combines the group member data with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
+
 
 __Querys used in this microservice:__
 
