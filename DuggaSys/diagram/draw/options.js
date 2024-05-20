@@ -104,7 +104,7 @@ function nameInput(element) {
  * @param {*} functions What the function should be called.
  * @param {String} id What ID the intpu should have.
  * @param {String} value What value the input should have
- * @return Returns the button input..
+ * @return Returns the button input.
  */
 function saveButton(functions, id = '', value = 'Save') {
     return `<br><br>
@@ -117,10 +117,10 @@ function saveButton(functions, id = '', value = 'Save') {
 /**
  * @description Makes a dropdown for the element with the different selection.
  * @param {String} name The header for the dropdown.
- * @param {String} def 
- * @param {Object} object 
- * @param {Object} element 
- * @return 
+ * @param {String} def The default value for the dropdown.
+ * @param {Object} object What types of value the element have.
+ * @param {Object} element What type of element the dropdown is for.
+ * @return Returns a header for the dropdown and a dropdown menu.
  */
 function dropdown(name, def, object, element) {
     let options = '';
@@ -133,6 +133,11 @@ function dropdown(name, def, object, element) {
             <select id="propertySelect">${options}</select>`;
 }
 
+/**
+ * @description Is able to change color for the element.
+ * @param {Object} element What type of element that is going to change color.
+ * @return Returns the menu to change color.
+ */
 function colorSelection(element) {
     return `<div style="color:${color.WHITE};">Color</div> 
             <button 
@@ -145,6 +150,11 @@ function colorSelection(element) {
             </button>`;
 }
 
+/**
+ * @description Drawing the elements properties that is on the option panel.
+ * @param {Object} element What element the properties is associated with.
+ * @return Returns the different properties for the element on option panel.
+ */
 function drawElementProperties(element) {
     let str = '';
     //TODO in the future, this can be implemented as part of saveProperties.
@@ -213,6 +223,12 @@ function drawElementProperties(element) {
     return str;
 }
 
+/**
+ * @description Makes a dropdown for the element with different selection.
+ * @param {Object} icon What type of icon the line is having, for example a ARROW at one end.
+ * @param {Object} object What types of value the element have.
+ * @return Returns a dropdown menu to be drawn.
+ */
 function option(object, icon) {
     let result = '';
     Object.values(object).forEach(i => {
@@ -222,6 +238,12 @@ function option(object, icon) {
     return result;
 }
 
+/**
+ * @description Makes a radio menu for the element with different selection.
+ * @param {Object} line The line between two elements.
+ * @param {Array} arr An array for the different selection for the menu.
+ * @return Returns a header for the radio menu and returns the radio menu with the different selection.
+ */
 function radio(line, arr) {
     let result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
     arr.forEach(lineKind => {
@@ -233,6 +255,14 @@ function radio(line, arr) {
     return result;
 }
 
+/**
+ * @description Makes a selection menu for the element with different values.
+ * @param {String} id What id the menu should have.
+ * @param {*} options The different option the selection menu should have.
+ * @param {boolean} inclNone True if on one of the option should have value "None".
+ * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
+ * @return Returns a select menu with de different option.
+ */
 function select(id, options, inclNone = true, inclChange = true) {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
     let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
@@ -242,10 +272,22 @@ function select(id, options, inclNone = true, inclChange = true) {
             </select>`;
 }
 
+/**
+ * @description What label the text should have with a text input.
+ * @param {String} id What id the input should have.
+ * @param {String} placeholder The placeholder if nothing is writen on the input.
+ * @param {Object} value What the value should be for the text input.
+ * @return Returns a text input for add/change a label for a line.
+ */
 function lineLabel(id, placeholder, value) {
     return `<input id="${id}" maxlength="50" type="text" placeholder="${placeholder}" value="${value ?? ''}"/>`;
 }
 
+/**
+ * @description Draw the different properties for the line option.
+ * @param {object} line The line that the properties is for.
+ * @return Returns the different properties option.
+ */
 function drawLineProperties(line) {
     let str = '';
     switch (line.type) {
@@ -289,6 +331,12 @@ function drawLineProperties(line) {
     return str;
 }
 
+/**
+ * @description Makes all the different option for the selection.
+ * @param {Array} arr Have all the different option for the selection menu.
+ * @param {object} line The line that have the select option as properties.
+ * @return Returns a label and the different selection for the line.
+ */
 function iconSelection(arr, line) {
     let sOptions = '';
     let eOptions = '';
@@ -303,6 +351,11 @@ function iconSelection(arr, line) {
         + select('lineEndIcon', eOptions);
 }
 
+/**
+ * @description Add a label for the line that is a "<<include>>".
+ * @param {object} line The line that have the "include" button as properties.
+ * @return Returns a header, div-tag and a button that add a label on line.
+ */
 function includeLabel(line) {
     return `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>
                     <div>
@@ -314,11 +367,21 @@ function includeLabel(line) {
         + lineLabel('lineLabel', 'Label', line.label);
 }
 
+/**
+ * @description Be able to add label on line that is between sequence element.
+ * @param {object} line The line between sequence element.
+ * @return Returns a header and with a text input from the function "lineLabel".
+ */
 function includeSELabel(line) {
     return '<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>'
         + lineLabel('lineLabel', 'Label', line.label);
 }
 
+/**
+ * @description Be able to draw start/end cardinality for a line.
+ * @param {object} line A line that have start/end cardinality as properties.
+ * @return Returns a header and the text input for add cardinality to the line.
+ */
 function cardinalityLabels(line) {
     return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
         + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
@@ -1650,7 +1713,7 @@ function generateStateDiagramInfo() {
 
 /**
  * @description Formats a list of strong/normal entities and their attributes.
- * @param ERDATA A list of all entities and it's attributes
+ * @param {Array} ERDATA A list of all entities and it's attributes
  * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
 function formatERStrongEntities(ERData) {
@@ -1698,7 +1761,7 @@ function formatERStrongEntities(ERData) {
 
 /**
  * @description Formats a list of weak entities and their attributes.
- * @param ERDATA A list of all entities and it's attributes
+ * @param {Array} ERDATA A list of all entities and it's attributes
  * @returns A formated list of all weak entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
 function formatERWeakEntities(ERData) {
@@ -1774,7 +1837,7 @@ function multipleColorsTest() {
 }
 
 /**
- * Applies new changes to line attributes in the data array of lines.
+ * @description Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {
     const line = contextLine[0];
