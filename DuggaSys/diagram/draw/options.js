@@ -45,7 +45,7 @@ function generateContextProperties() {
     if (context.length > 0) {
         showProperties(true, propSet, menuSet);
         let locked = context.some(e => e.isLocked);
-        str += saveButton('toggleEntityLocked();', `id='lockbtn'`, locked ? "Unlock" : "Lock");
+        str += saveButton('toggleEntityLocked();', 'lockbtn', locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
     multipleColorsTest();
