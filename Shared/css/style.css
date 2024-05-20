@@ -2404,7 +2404,11 @@ Fonts
 /*---END---*/
 
 .display_none{
-  display:none
+  display: none;
+}
+
+.display_flex{
+  display: flex;
 }
 
 .errorMessage{
@@ -2548,6 +2552,97 @@ resulted.php END
 #editCourse {
   margin-right: 0px;
 }
+
+#absolutedeadlinecheck {
+  margin:3px 5px; 
+  height:20px'
+}
+
+#dialog8 {
+  font-size:11px; 
+  border:0px; 
+  margin-left: 20px; 
+  display:none;
+}
+
+#relativeFormDialog {
+  display: block; 
+  left:40px; 
+  top:-35px;
+}
+
+.deleteDugga {
+  display:none; 
+  float:left;
+}
+
+.closeDugga {
+  display:block; 
+  float:left;
+}
+
+#submitBtn {
+  display:none; 
+  float:right;
+}
+
+#saveBtn{
+  float:right;
+}
+
+#deleteConfirmBox{
+  width:460px;
+}
+
+#deleteConfirmText{
+  text-align: center;
+}
+
+#deleteBtnPlacement{
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#delete-item-button{
+  margin-right: 5%;
+}
+
+#close-item-button{
+  margin-right: 5%;
+}
+
+#hide-item-button{
+  margin-right: 5%;
+}
+
+#formBoxCanvasLink {
+  min-width:300px;
+}
+
+#formBodyCanvasLinkText {
+  text-align: center; 
+  padding-top:25px;
+}
+
+#formBoxConfirm {
+  width:460px;
+}
+
+#formBodyConfirm {
+  text-align: center;
+}
+
+#formFooterBtnHide {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#formBoxTabConfirm {
+  width:360px;
+}
+
 /*---===#===---*
 sectioned.php END 
 *---====#===---*/

@@ -305,7 +305,7 @@
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' style='margin:0 0 0 10px;' type='date' id='setDeadlineValue' value='' />
 								<select class='selectDeadlineTime' style='width:55px;' id='deadlineminutes'></select>
 								<select class='selectDeadlineTime' style='width:55px;' id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
+								<input type='checkbox' id='absolutedeadlinecheck' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
@@ -315,8 +315,8 @@
 								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineminutes'></select>
 								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlinehours'></select>
 							</span>
-							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
-  		      					<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
+							<div id="relativeFormDialog" class="formDialogWide">
+  		      					<span id="dialog8" class="formDialogText">Deadline has to be between start date and end date</span>
   		      				</div>
 					</div>
 					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
@@ -325,47 +325,47 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
 				<div class="formFooter">
-					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
-					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
-					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
+					<input class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+					<input class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
+					<input id="submitBtn" class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
+					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
 				</div>
 			</div>
 		</div>
 	<!-- Edit Section Dialog END -->
 
 	<!-- Confirm Section Dialog START -->
-	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+	<div id='sectionConfirmBox' class='loginBoxContainer display_none'>
+		<div id="deleteConfirmBox" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center;'>
+			<div id="deleteConfirmText" class="formBody">
 					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
-			<div class="formFooter "style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			<div id="deleteBtnPlacement" class="formFooter" >
+				<input class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
 	</div>
 
 
 	<!-- Canvas Link Dialog -->
-	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
+	<div id='canvasLinkBox' class='loginBoxContainer display_none'>
+		<div id="formBoxCanvasLink" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
-					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
+					<h3>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center; padding-top:25px;'>
+			<div id="formBodyCanvasLinkText" class="formBody">
 					<input type="text" id="canvasLinkText" readonly value="">
 			</div>
 		</div>
@@ -374,50 +374,50 @@
 	<!-- Confirm Edit Section Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
-	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+	<div id='sectionHideConfirmBox' class='loginBoxContainer display_none'>
+		<div id="formBoxConfirm" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center;'>
+			<div id="formBodyConfirm" class="formBody">
 					<h4>Are you sure you want to hide this item?</h4>
 			</div>
-			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
-				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			<div id="formFooterBtnHide" class="formFooter">
+				<input class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
+				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
 	</div>
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
-	<div id='sectionShowConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+	<div id='sectionShowConfirmBox' class='loginBoxContainer display_none'>
+		<div id="formBoxConfirm" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm show items</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center;'>
+			<div id="formBodyConfirm" class="formBody">
 					<h4>Are you sure you want to show this item?</h4>
 			</div>
-			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
-				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			<div id="formFooterBtnHide" class="formFooter">
+				<input class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
+				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
 	</div>
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Cofirm Section Tab Dialog START -->
-	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox' style='width:360px;'>
+	<div id='tabConfirmBox' class='loginBoxContainer display_flex'>
+		<div id='formBoxTabConfirm' class='formBox' >
 			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div class="formBody">
-				<div style='text-align: center;'>
+				<div id="formBodyConfirm">
 					<h4>How many tabs?</h4>
 				</div>
 				<div style='display:flex; align-items:center; justify-content: center;'>
@@ -435,14 +435,14 @@
 				</div>
 			</div>
 			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
+				<input class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
 			</div>
 		</div>
 	</div>
 	<!-- Cofirm Edit Section Tab Dialog END -->
 
 	<!-- Confirm Missing Material Dialog START -->
-	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
+	<div id='noMaterialConfirmBox' class='loginBoxContainer display_none'>
 		<div class='formBox' style='width:460px;'>
 				<div class='formBoxHeader'>
 					<h3>Error: Missing material</h3>
@@ -459,7 +459,7 @@
 	<!-- Confirm Missing Material Dialog END -->
 
 		<!-- New Version Dialog START -->
-		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
+		<div id='newCourseVersion' class='loginBoxContainer display_none'>
     	<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 			<div class='formBoxHeader'>
 				<h3>New Course Version</h3>
@@ -511,7 +511,7 @@
 
 <!-- Edit Version Dialog START -->
 
-<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
+<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer display_none'>
 		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
 
 			<div class='formBoxHeader'>
@@ -539,7 +539,7 @@
 	<!-- Edit Version Dialog END -->
 
 <!-- Group Members Table START -->
-<div id='grptblContainer' class='loginBoxContainer' style='display:none;'>
+<div id='grptblContainer' class='loginBoxContainer display_none'>
 		<div class='formBox'>
 			<div class='formBoxHeader'>
 				<h3>Group Members</h3>
@@ -554,7 +554,7 @@
 
 
 	<!-- HighscoreBox START -->
-	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
+	<div id='HighscoreBox' class='loginBoxContainer display_none'>
 		<div class='formBox' style='width:500px;'>
 			<div class='formBoxHeader'>
 				<h3>Highscore</h3>
@@ -568,7 +568,7 @@
 	<!-- HighscoreBox END -->
 
 	<!-- User Feedback Dialog START -->
-    <div id='userFeedbackDialog' class='loginBoxContainer' style='display:none;'>
+    <div id='userFeedbackDialog' class='loginBoxContainer display_none'>
       <div class='formBox' id='variantBox'>
         <div class='formBoxHeader'>
           <h3 id="userFeedbackTitle">User Feedback</h3> 
@@ -606,7 +606,7 @@
 
 	<!-- github moments box  -->
 	<form action="" method="POST" id="form">
-		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
+		<div id='gitHubBox' class='loginBoxContainer display_none'>
 			<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
 				<div class='formBoxHeader'>
 					<h3>Github Moment</h3>
@@ -641,7 +641,7 @@
 	</form>
 	
 	<!--error window opened when github repo not found-->
-	<div id="githubPopupWindow" class="loginBoxContainer" style="display: none;">
+	<div id="githubPopupWindow" class="loginBoxContainer display_none" >
 		<div class="formBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
 			<div class= "formBoxHeader">
   					<h3>Github repo</h3>
@@ -661,7 +661,7 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer"  style="display:none;">
+		<div id='gitHubTemplate' class="loginBoxContainer display_none">
 				<div id='chooseTemplate' class='formBox DarkModeBackgrounds' style='width:464px;'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
