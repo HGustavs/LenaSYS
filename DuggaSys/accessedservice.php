@@ -285,10 +285,9 @@ if(checklogin() && $hasAccess) {
 						$debug.="Error connecting user to course: ".$e->getMessage();
 					}
 				}
-        	}
-		} // End of foreach user
-		//End of ADDUSR
-	} else if (strcmp($opt,"RETRIEVE")==0) {
+			}// End of foreach user
+		} //End of ADDUSR	
+	} else if (strcmp($opt,"RETRIEVE") == 0) {
 		if ($action === "USERS") {
 			$query = $pdo->prepare("SELECT uid, username FROM user");
 			if ($query->execute()) {
