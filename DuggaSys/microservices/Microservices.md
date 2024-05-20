@@ -249,9 +249,10 @@ __Sectioned Service:__
 - getGitReference_ms.php __==UNFINISHED==__  
 - readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
 - createGithubCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- getListEntries_ms.php __==finished==__ New filename: "readListEntries_ms.php" according to new nameconvention based on CRUD.
+- getListEntries_ms.php __==finished==__ New filename: "retrieveAllSectionedServiceData_ms.php" according to new nameconvention based on CRUD.
+- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "readAllCourseVersions_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
-- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "retrieveAllSectionedServiceData_ms.php" according to new nameconvention based on CRUD.
+- getListEntries_ms.php __==finished==__ New filename: "retrieveAllSectionedServiceData_ms.php" according to new nameconvention based on CRUD.
 
 <br>
 
@@ -782,7 +783,7 @@ SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE 
 <br>
 
 ### retrieveAllAcessedServiceData_ms.php
-__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllAcessedServiceData_ms.php__ does not handle any querys.
+__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllAcessedServiceData_ms.php__ does not handle any querys. The microservice is useful for situations when __retrieveAccessedService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
 
 The microservice retrieves and outputs service data for a user in a specific course by calling the 'retrieveAccessedService_ms.php' and returning the result as a JSON-encoded string.
 
@@ -2182,7 +2183,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
-__retrieveAllCourseedServiceData_ms.php__ calls __retrieveCourseedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. retrieveCourseedService_ms.php does not handle any queries.
+__retrieveAllCourseedServiceData_ms.php__ calls __retrieveCourseedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. retrieveCourseedService_ms.php does not handle any queries. The microservice is useful for situations when __retrieveCourseedService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
 
 The microservice retrieves and outputs course data for a user by calling the __retrieveCourseedService_ms.php__ and returning the result as a JSON-encoded string.Additionally, it checks if the user is logged in and determines if the user is a superuser.
 
@@ -3829,10 +3830,27 @@ Uses service __selectFromTableGitFiles__ to _get_ information it requires from _
 ### readUserDuggaFeedback_ms.php
 __readUserDuggaFeedback_ms.php__ is responsible for fetching user feedback for a specific dugga (quiz) moment and calculating the average feedback score. The microservice retrieves feedback entries and the average score for the feedback related to a specific course and moment. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
 
-
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Identifyes user:__ Checks if the user is logged in using 'checklogin()'.  If not logged in, sets the user ID ('$userid') to "guest". If logged in, retrieves the user ID from the session.
+ 
+- __Parameters:__ retrieves parameters from the request: 'opt', 'courseid', 'moment', 'versid', 'log_uuid' and 'coursevers'.
+
+- __Fetch user feedback and average score:__ If the operation ('opt') is "GETUF":
+
+     - Prepares and executes an SQL query to fetch all entries from the __'userduggafeedback'__ table where 'lid' and 'cid' match the provided course ID and moment.
+     - If the query executes successfully, it will iterate over the results and adds each feedback entry to the '$userfeedback' array.
+     - Prepares and executes another SQL query to calculate the average score from the __'userduggafeedback'__ table for the specified course ID and moment.
+     - If the query executes successfully, stores the average score in '$avgfeedbackscore'.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the additional data. Also adds the retrieved user feedback and average feedback score to the returned data.
+
+- __Return:__ Returns the combined data as a JSON-encoded string as the output of the microservice.
 
 
 __Querys used in this microservice:__
@@ -4076,29 +4094,44 @@ UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
 
 <br>
 
-### readListEntries_ms.php
+### readAllCourseVersions_ms.php
+__readAllCourseVersions_ms.php__ retrieves all versions for a specific course and calculates the total number of groups based on these versions. 
+
+
 __Include original service files:__ sessions.php, basic.php
 
-__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
-
-__Includes neither original service files nor microservices.__
+__Include microservice:__ retrieveSectionedService_ms.php
 
 
-- __List entries:__ An array containing __all__ list entries for the specified course version (__coursevers__) and course ID (__courseid__).
+- __Session:__ Establishes a database connection ('pdoConnect()'), and 'session_start()' initializes the session.
 
-- __JSON format:__ The retrieved data from 'retrieveSectionedService_ms.php' is returned in a JSON format.
+- __Parameters:__ Retrieves parameters from the request using the 'getOP' function: 'opt', 'courseid' and 'coursevers'.
 
-- __Debugging:__ Includes debugging information (__debug__) if there are any issues during the retrieval process.
+- __Fetch course versions:__ If the 'coursevers' parameter is not "null", the function fetches the course versions:
+   
+   - A query is prepared and executed on the __'vers'__ table to fetch all versions of the specified course ('cid').
+   - The retrieved results is stored in an array ($courseversions).
+   - The total number of groups is calculated by multiplying the number of course versions by 24.
 
-Parameters passed to 'retrieveSectionedService_ms.php':
+- __Error:__ If the query execution fails, it captures the error information and sets a debug message with the error details.
 
-- __debug__ - Starts as "NONE!" to collect any debug info.
-- __opt__ - Operation option from the request.
-- __pdo__ - PDO database connection.
-- __uid__ - ID of the logged-in user.
-- __courseid__ - Course ID to get list entries for.
-- __coursevers__ - Course version to get list entries for.
-- __log_uuid__ - Unique ID to track the request.
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to get additional data needed for the response. The calculated total number of groups is added to the data array.  
+
+- __Combine and return:__ Combines the group member data with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
+
+__Return:__ The combined data, including the total number of groups and any debug information, is encoded as a JSON string and returned as the response.
+
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
+- vers
+
+- Selects rows where the column __cid__ matches the provided value ':cid'.
+
+```sql
+SELECT vers FROM vers WHERE cid=:cid
+```
 
 <br>
 
@@ -4323,40 +4356,14 @@ The microservice gathers and organizes information into an array that provides d
 
 <br>
 
-### retrieveAllSectionedServiceData_ms.php
-__retrieveAllSectionedServiceData_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
+### __retrieveAllSectionedServiceData_ms.php__
+__retrieveAllSectionedServiceData_ms.php__ calls __retrieveSectionedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. The microservice is useful for situations when __retrieveSectionedService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
+
+The microservice retrieves all list entries for a specific course and version by calling the 'retrieveSectionedService_ms.php' and returning the result as a JSON-encoded string.
 
 __Include original service files:__ sessions.php, basic.php
 
-__Include microservice:__ retrieveSectionedService_ms.php
-
-__Querys used in this microservice:__
-
-_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
-- vers
-
-- Selects rows where the column __cid__ matches the provided value ':cid'.
-
-```sql
-SELECT vers FROM vers WHERE cid=:cid
-```
-
-
-- __Fetches parameters:__ Operation option ('opt'), Course ID ('courseid'), Course version ('coursevers').
-
-- __If not null:__ If 'coursevers' is not null the fucntion retrieves all course versions for the given course ID and calculates the total number of groups as 24 times the number of course versions.
-
--__Debugging:__ Handles query errors and stores error details in the variable 'debug'.
-
-- __Calls 'retrieveSectionedService' with parameters:__ 
-
-    - __debug__ - Starts as "NONE!" to collect any debug info.
-    - __opt__ - Operation option from the request.
-    - __pdo__ - PDO database connection.
-    - __courseid__ - Course ID to get list entries for.
-    - __coursevers__ - Course version to get list entries for.
-    
-    which returns the result as JSON.
+__Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
 <br>
 <br>
@@ -4717,6 +4724,6 @@ SELECT vid, variant.variantanswer AS variantanswer, useranswer, param, cid, vers
 
 ### retrieveAllShowDuggaServiceData_ms.php
 
-__retrieveAllShowDuggaServiceData_ms.php__ calls __retrieveShowDuggaService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllShowDuggaServiceData_ms.php__ does not handle any queries.
+__retrieveAllShowDuggaServiceData_ms.php__ calls __retrieveShowDuggaService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllShowDuggaServiceData_ms.php__ does not handle any queries. The microservice is useful for situations when __retrieveShowDuggaService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
 
 The microservice retrieves and sends back service data for a user in a specific course by calling __'retrieveShowDuggaService_ms.php'__ and returning the result as a JSON-encoded string.
