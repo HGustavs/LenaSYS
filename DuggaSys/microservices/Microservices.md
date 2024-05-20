@@ -3472,9 +3472,48 @@ UPDATE listentries SET pos = :pos, moment = :moment WHERE lid = :lid;
 <br>
 
 ### updateListentries_ms.php
+__updateListentries_ms.php__ updates or add new course sections in the listentries table. It handles both updates of existing sections and the creation of new code examples if needed. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__  for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Starts the session and establishes a connection to the database using 'pdoConnect()'.
+
+- __Parameters:__ Retrieves parameters from the request:
+
+    -  'courseid'
+    -  'coursevers'
+    -  'sectid'
+    -  'sectname'
+    -  'comments' 
+    -  'highscoremode'
+    -  'feedbackenabled'
+    -  'feedbackquestion'
+    -  'link'
+    -  'kind'
+    -  'moment'
+    -  'visibility'
+    -  'grptype'
+    -  'tabs'
+    -  'gradesys'
+    -  'userid'
+    -  'log_uuid'
+
+- __Insert new code example:__ If 'link' is '-1', it inserts a new code example into the __'codeexample'__ table. It retrieves the last section name before the current position, assigns it to the new code example, and updates the 'link' variable with the new example ID.
+
+- __Update list entries:__
+    
+    - Updates the __'listentries'__ table with the specified parameters: 'highscoremode', 'gradesys', 'moment', 'sectname', 'kind', 'link', 'visibility', 'comments', 'grptype', 'feedbackenabled', and 'feedbackquestion'.
+    - Handles specific parameter binding for 'gradesys' and 'tabs' based on the entrys 'kind'.
+
+- __Insert into list:__ If 'kind' is '4', it inserts a new entry into the __'list'__ table, linking the section with a course and a responsible person (the person assigned to the specific list entry within the course).
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the updated section data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3535,9 +3574,33 @@ INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Chr
 <br>
 
 ### updateListentriesTabs_ms.php
+__updateListentriesTabs_ms.php__ update the 'tabs' column in the __'listentries'__ table for a specified section if the user is a superuser. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Parameters:__ Retrieves various parameters from the request:
+
+    - 'opt'
+    - 'sectid'
+    - 'tabs' 
+    - 'courseid'
+    - 'coursevers'
+    - 'log_uuid' 
+    - 'userid'
+
+- __Check login:__ Checks if the user is logged in by using the 'checklogin()' function.
+
+- __Superuser check and update tabs:__ If the user is a superuser and the 'opt' parameter is "UPDATETABS", it prepares and executes a query to update the 'tabs' column for the specified section ('lid') in the __'listentries'__ table. If the update fails, it sets the debug message with error details.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the updated section data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3557,9 +3620,26 @@ UPDATE listentries SET gradesystem=:tabs WHERE lid=:lid;
 <br>
 
 ### updateListentriesGradesystem_ms.php
+__updateListentriesGradesystem_ms.php__ updates the grading system for a course section if the user is a superuser. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
+
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Parameters:__ Retrieves various parameters from the request: 'sectid', 'gradesys', 'courseid', 'coursevers', 'log_uuid', and 'opt.
+
+__Check login:__ Checks if the user is logged in and retrieves the user ID using 'getUid()'.
+
+__Superuser check and update grade gystem:__ If the user is a superuser, the function runs an SQL query to update the 'gradesystem' column for the specified section ('lid') in the 'listentries' table. If the update fails, sets a debug message with error details.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the updated section data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3577,9 +3657,24 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 <br>
 
 ### updateVisibleListentries_ms.php
+updates the visibility of a specific list entry in a course section. This operation can only be performed by a superuser. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+- __Session:__ Connects to the database and starts the session using 'pdoConnect()' and 'session_start()'.
+
+- __Parameters:__ retrieves parameters from the request: 'lid' (list entry ID), 'visible' (visibility status), 'courseid', 'coursevers', 'log_uuid' and 'opt'.
+
+- __Check login and permissions:__ Checks if the user is logged in and checks if the user is a superuser using 'getUid()'.
+
+- __Update visibility:__ If the user has the necessary permissions, the function runs an SQL query to update the 'visible' column for the specified list entry ('lid') in the __'listentries'__ table. If the update fails, sets a debug message with error details.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch the updated section data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
