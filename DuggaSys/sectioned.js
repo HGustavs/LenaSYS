@@ -211,8 +211,8 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-  console.log("myConsole lid: " + lid);
-  console.log("myConsole typeof: " + typeof lid);
+  // console.log("myConsole lid: " + lid);
+  // console.log("myConsole typeof: " + typeof lid);
   document.getElementById("sectionname").focus();
   toggleTab(true);
   enableTab(document.getElementById("editSection"));
@@ -869,7 +869,7 @@ async function createFABItem(kind, itemtitle, comment) {
       clearHideItemList();
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
-    console.log(numberOfItems + " " + itemtitle + "(s) created");
+    // console.log(numberOfItems + " " + itemtitle + "(s) created");  
     numberOfItems = 1; // Reset number of items to create
   }
 }
