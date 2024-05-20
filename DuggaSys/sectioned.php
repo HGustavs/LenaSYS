@@ -459,8 +459,8 @@
 	<!-- Confirm Missing Material Dialog END -->
 
 		<!-- New Version Dialog START -->
-		<div id='newCourseVersion' class='loginBoxContainer display_flex'>
-    	<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+		<div id='newCourseVersion' class='loginBoxContainer display_none'>
+    	<div class='formBox DarkModeBackgrounds DarkModeText formBoxCourseVersion'>
 			<div class='formBoxHeader'>
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
@@ -512,7 +512,7 @@
 <!-- Edit Version Dialog START -->
 
 <div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer display_none'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+		<div class='formBox DarkModeBackgrounds DarkModeText formBoxCourseVersion formBoxCourseVersion'>
 
 			<div class='formBoxHeader'>
 				<h3>Edit Course Version</h3>
@@ -522,13 +522,13 @@
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-36px;"><span id="dialog5" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
+				<div id="formDialog_popup1" class="formDialog"><span id="dialog5" class="formDialogText ECVDialog">Must be in of the form HTNN, VTNN or STNN</span></div>
 				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
 				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
-				<div class="formDialog" style="display: block; left:54px; top:-50px;"><span id="dialog6" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
+				<div id="formDialog_popup2" class="formDialog"><span id="dialog6" class="formDialogText ECVDialog">Start date has to be before end date</span></div>
 				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-40px;"><span id="dialog9" style="display: none; left:0px;" class="formDialogText">Prohibited symbols</span></div>
-				<div class="formDialog" style="display: block; left:54px; top:-22px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
+				<div id="formDialog_popup3" class="formDialog"><span id="dialog9" class="formDialogText ECVDialog">Prohibited symbols</span></div>
+				<div id="formDialog_popup4" class="formDialog"><span id="dialog92" class="formDialogText ECVDialog">Max 50 characters</span></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
 			<div class="formFooter">
@@ -555,7 +555,7 @@
 
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBoxContainer display_none'>
-		<div class='formBox' style='width:500px;'>
+		<div id="formBoxHighscore" class='formBox' >
 			<div class='formBoxHeader'>
 				<h3>Highscore</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -588,11 +588,11 @@
 
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
-	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
+	<div id='loadDuggaBox' class="loginBoxContainer display_flex">
+	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" >
 			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
-    		<div id='loadDuggaPopup' style="display:block">
+    		<div id='loadDuggaPopup' class="display_block">
 				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>

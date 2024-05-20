@@ -1,4 +1,15 @@
 /* --------------===============################================-------------- *
+ *                                    INFO                                     *
+ * --------------================################================-------------- */
+/*
+
+PLZ see "Handling and usage of Style.css" in the wiki before use
+//the 2024 clean up crue
+
+
+
+*/
+/* --------------===============################================-------------- *
  *                                    Colors                                    *
  * --------------================################================-------------- */
 
@@ -2308,6 +2319,11 @@ input.inactive-button {
   display: none;
  }
 
+ .loadDuggaBox {
+  max-width:400px; 
+  overflow-y:visible;
+ }
+
  /*---===#===---*
   margin
 *---====#===---*/
@@ -2410,6 +2426,11 @@ Fonts
 .display_flex{
   display: flex;
 }
+
+.display_block {
+  display: block;
+}
+
 
 .errorMessage{
   display: none; 
@@ -2656,6 +2677,18 @@ resulted.php END
 #formBoxInfo {
   width:460px;
 }
+
+.formBoxCourseVersion {
+  width:464px; 
+  overflow:hidden;
+}
+
+.ECVDialog {
+  display: none; 
+  left:0px;
+}
+
+
 /*---===#===---*
 sectioned.php END 
 *---====#===---*/
@@ -2753,6 +2786,33 @@ sectioned.php END
   width: 464px;
 }
 
+#formDialog_popup1 {
+  display: block; 
+  left:54px; 
+  top:-36px;
+}
+
+#formDialog_popup2 {
+  display: block; 
+  left:54px; 
+  top:-50px;
+}
+
+#formDialog_popup3 {
+  display: block; 
+  left:54px; 
+  top:-40px;
+}
+
+#formDialog_popup4 {
+  display: block; 
+  left:54px; 
+  top:-22px;
+}
+
+#formBoxHighscore {
+  width:500px;
+}
 
 /*---===#===---*
 courseed.php END 
