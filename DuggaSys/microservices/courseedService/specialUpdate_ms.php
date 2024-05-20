@@ -15,12 +15,10 @@
     $opt = getOP('opt');
     $cid = getOP('cid');
     $courseGitURL = getOP('courseGitURL');
-
-
+    $userid = getUid(); 
 
     // checks that the user is a superuser and logged in
-    if(checklogin() && isSuperUser(getUid()) == true) {
-        $userid = getUid();  
+    if(checklogin() && isSuperUser($userid) == true) {
 
         if (strcmp($opt, "SPECIALUPDATE") === 0) {
 
