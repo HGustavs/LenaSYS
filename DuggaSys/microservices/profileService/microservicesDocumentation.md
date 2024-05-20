@@ -6,9 +6,11 @@ Is the microservices that is used for updating or setting a security question fo
 
 The ms checks if the user is logged in and retrieves password. It then checks if the typed in password is correct before allowing you to set or update security question.
 
+
 updateUserPassword_ms.php
 
 Purpose: 
+
 This microservice comes from the file profileservice.php and the purpose is to take all the code that is related to changing the password for a user and making it into a microservice.
 
 It is not possible for a teacher to change password, only for regular users such as students.
