@@ -4145,15 +4145,55 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ readCourseVersions_ms.php
 
+
+__retrieveSectionedService_ms.php__ is responsible for retrieving all updated data from the database in the format of an array. It´s basically gathering and sharing information about courses with users, making sure it fits what they are allowed to see and do. The array contains information about:
+
+- __entries__ - A list of course entries, including their ID, moment, entry name, position, kind, link, visibility, code ID, grading system, highscore mode, deadline, relative deadline, release date, comments, start time, JSON deadline, group kind, timestamp, tabs, feedback enabled, and feedback question.
+
+- __results:__ A list of user results for duggas, including the moment, grade, submission time, marking time, and user answer.
+
+- __duggor:__ A list of duggas for the course, including their ID, name, release date, deadline, and relative deadline.
+
+- __versions:__ A list of course versions, including course ID, course code, version, version name, course name, alternative course name, start date, and end date.
+
+- __links:__ A list of file links associated with the course, including file ID and filename.
+
+- __codeexamples:__ A list of code examples for the course, including example ID, course ID, example name, section name, run link, and course version.
+
+- __unmarked:__ The number of unmarked submissions for the course.
+
+- __startdate:__ The start date of the course version.
+
+- __enddate:__ The end date of the course version.
+
+- __groups:__ A list of groups the user belongs to within the course.
+
+- __grpmembershp:__ The group membership details for the user.
+
+- __grplst:__ A list of group members.
+
+- __userfeedback:__ Feedback provided by users.
+
+- __feedbackquestion:__ The feedback question associated with the quizzes.
+
+- __avgfeedbackscore:__ The average feedback score.
+
+- __coursename:__ The name of the course.
+
+- __coursecode:__ The code of the course.
+
+- __readaccess:__ A boolean value indicating whether the user has read access to the course.
+
+- __writeaccess:__ A boolean value indicating whether the user has write access to the course.
+
+- __studentteacher:__ A boolean value indicating whether the user has student teacher access.
+
+- __debug:__ Debugging information. Includes any errors encountered during the database operations.
+
+__retrieveSectionedService_ms.php__ provides information about the course entries, user results, quizzes, versions, links, code examples, and feedback related to a specific course. Ensuring that only authorized users can access this information. The service event is then logged.
+
+
 __Querys used in this microservice:__
-
-_SELECT_ operation on the table __'user'__ to retrieve values from the column:
-- username
-
-```sql
-SELECT username FROM user WHERE uid = :uid;
-```
-
 
 _SELECT_ operation on the table __'course'__ to retrieve values from the column:
 - visibility
@@ -4196,7 +4236,7 @@ SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitte
 ```
 
 
-_SELECT_ operation on the table __'listentries'__ joined with the table __'quiz'__ to retrieve values from the columns:
+_SELECT_ operation on the table __'listentries'__ with a _LEFT OUTER JOIN_ on the table __'quiz'__ to retrieve the values of the columns:
 - lid
 - moment
 - entryname
@@ -4205,7 +4245,7 @@ _SELECT_ operation on the table __'listentries'__ joined with the table __'quiz'
 - link
 - visible
 - code_id
-- gradesystem (from both listentries and aliased as tabs)
+- listentries.gradesystem
 - highscoremode
 - deadline
 - relativedeadline
@@ -4215,12 +4255,18 @@ _SELECT_ operation on the table __'listentries'__ joined with the table __'quiz'
 - jsondeadline
 - groupKind
 - ts
+- tabs
 - feedbackenabled
 - feedbackquestion
 
+- Where the 'cid' in the __'listentries'__ table matches the value specified to ':cid'.
+- Where the 'vers' in the __'listentries'__ table matches the value specified to ':coursevers'.
+
+- Results ordered by the 'pos' column in ascending order.
+
 ```sql
-SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,relativedeadline,qrelease,comments, qstart, jsondeadline, groupKind, 
-ts, listentries.gradesystem as tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos;
+SELECT lid, moment, entryname, pos, kind, link, visible, code_id, listentries.gradesystem, highscoremode, deadline, relativedeadline, qrelease, comments, qstart,jsondeadline, 
+groupKind, ts, tabs, feedbackenabled, feedbackquestion FROM listentries LEFT OUTER JOIN quiz ON listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :coursevers ORDER BY pos;
 ```
 
 
@@ -4233,44 +4279,13 @@ SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1;
 ```
 
 
-_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
-- cid
-- coursecode
-- vers
-- versname
-- coursename
-- coursenamealt
-- startdate
-- enddate
-- motd
-
-```sql
-SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;
-```
-
-
-_SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
-- cid
-- coursecode
-- vers
-- versname
-- coursename
-- coursenamealt
-- startdate
-- enddate
-
-```sql
-SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;
-```
-
-
-_SELECT_ operation on the table __'fileLink'__ to retrieve values from the columns:
+_SELECT_ operation on the table __'fileLink'__ to retrieve the values of the columns:
 - fileid
 - filename
 - kind
 
 ```sql
-SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename;
+SELECT fileid, filename, kind FROM fileLink WHERE cid = :cid AND kind = 1 ORDER BY filename;
 ```
 
 
@@ -4284,17 +4299,15 @@ SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid AND kind>1) or isGloba
 ```
 
 
+_SELECT_ operation on the table __'userAnswer'__ to count the number of rows where the conditions are met:
 
-_SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
-- exampleid
-- cid
-- examplename
-- sectionname
-- runlink
-- cversion
+- Where the 'cid' in the __'userAnswer'__ table matches the value bound to ':cid'.
+- Either:
+  - The 'grade' is '1' and the 'submitted' date is later than the 'marked' date.
+  - Or, the 'submitted' date is not null, the 'useranswer' is not null, and the 'grade' is null.
 
 ```sql
-SELECT exampleid, cid, examplename, sectionname, runlink, cversion FROM codeexample WHERE cid=:cid ORDER BY examplename;
+SELECT COUNT(*) AS unmarked FROM userAnswer WHERE cid = :cid AND ((grade = 1 AND submitted > marked) OR (submitted IS NOT NULL AND useranswer IS NOT NULL AND grade IS NULL));
 ```
 
 
@@ -4307,48 +4320,23 @@ SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;
 ```
 
 
-_SELECT_ operation on the table __'userduggafeedback'__ to retrieve all columns where:
-
-- The 'lid' value in the __'userduggafeedback'__ table matches the value bound to :lid.
-- The 'cid' value in the __'userduggafeedback'__ table matches the value bound to :cid.
+_SELECT_ operation on the table __'fileLink'__ to retrieve values from the columns:
+- fileid
+- filename
+- kind
 
 ```sql
-SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid;
+SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename;
 ```
 
 
-_SELECT_ operation on the table __'userduggafeedback'__ to retrieve the average value from the column:
-- score
+_SELECT_ operation on the table __'vers'__ to retrieve the values of the columns:
+- startdate
+- enddate
 
 ```sql
-SELECT AVG(score) FROM userduggafeedback WHERE lid=:lid AND cid=:cid
+SELECT startdate, enddate FROM vers WHERE cid = :cid AND vers = :vers LIMIT 1;
 ```
-
-
-_SELECT_ operation on the table __'listentries'_ to retrieve all columns where:
-
-- The 'visible' value in the __'listentries'__ table is set to '3'
-
-```sql
-SELECT * FROM listentries WHERE visible = '3'
-```
-
-
-The microservice gathers and organizes information into an array that provides details about courses, their versions, quizzes, user interactions, and permissions settings. It supports the interface by delivering information needed to correctly display and manage course content and student interactions. It´s basically gathering and sharing information about courses with users, making sure it fits what they are allowed to see and do.
-
-- __Entries__ - Lists courses with details such as course ID ('cid'), course name ('coursename'), course code ('coursecode'), and visibility status. It also indicates whether a user is registered for each course and provides information on active versions.
-
-- __Versions__- Includes information on the different versions of the courses available, identification details for each version of a course such as ('vers'), version names ('versname'), and associated course names ('coursename' and 'coursenamealt').
-
--__Quizzes and assignments__ - Information about quizzes and assignments for each course version, including names, release dates, deadlines, and relative deadlines.
-
-- __User-specific data__ - Personalized data such as group memberships, submitted assignments, grades, and feedback on user performance.
-
-- __Permissions__ - Checks and confirms user permissions to ensure appropriate access to course information based on the user's role.
-
-- __Supporting resources__ - Manages links to extra resources and code examples that add to the course material.
-
-- __Debugging__ - Logs of any issues encountered during the execution of the function.
 
 <br>
 
