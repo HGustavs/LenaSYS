@@ -277,7 +277,7 @@
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
 				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<input type='hidden' id='lid' value='Toddler' />
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
@@ -327,7 +327,7 @@
 				</div>
 
 				<!-- Error message, no duggas present-->
-				<div style='padding:20px;'>
+				<div class="formFooter">
 					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
 					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
@@ -344,11 +344,11 @@
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div style='text-align: center;'>
+			<div class="formBody" style='text-align: center;'>
 					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
-			<div style='display:flex; align-items:center; justify-content: center;'>
+			<div class="formFooter "style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
 				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
@@ -363,7 +363,7 @@
 					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
 			</div>
-			<div style='text-align: center; padding-top:25px;'>
+			<div class="formBody" style='text-align: center; padding-top:25px;'>
 					<input type="text" id="canvasLinkText" readonly value="">
 			</div>
 		</div>
@@ -378,10 +378,10 @@
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div style='text-align: center;'>
+			<div class="formBody" style='text-align: center;'>
 					<h4>Are you sure you want to hide this item?</h4>
 			</div>
-			<div style='display:flex; align-items:center; justify-content: center;'>
+			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
 				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
@@ -396,10 +396,10 @@
 					<h3>Confirm show items</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div style='text-align: center;'>
+			<div class="formBody" style='text-align: center;'>
 					<h4>Are you sure you want to show this item?</h4>
 			</div>
-			<div style='display:flex; align-items:center; justify-content: center;'>
+			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
 				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
@@ -409,28 +409,30 @@
 
 	<!-- Cofirm Section Tab Dialog START -->
 	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox' style='width:460px;'>
+		<div class='formBox' style='width:360px;'>
 			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div style='text-align: center;'>
+			<div class="formBody">
+				<div style='text-align: center;'>
 					<h4>How many tabs?</h4>
-			</div>
-			<div style='display:flex; align-items:center; justify-content: center;'>
-				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span>
-					<select id='tabs'>
-						<option value="0">0 tabs</option>
-						<option value="1">1 tabs</option>
-						<option value="2">2 tabs</option>
-						<option value="3">3 tabs</option>
-						<option value="4">1 tabs + end</option>
-						<option value="5">2 tabs + end</option>
-						<option value="6">3 tabs + end</option>
-					</select>
+				</div>
+				<div style='display:flex; align-items:center; justify-content: center;'>
+					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span>
+						<select id='tabs'>
+							<option value="0">0 tabs</option>
+							<option value="1">1 tabs</option>
+							<option value="2">2 tabs</option>
+							<option value="3">3 tabs</option>
+							<option value="4">1 tabs + end</option>
+							<option value="5">2 tabs + end</option>
+							<option value="6">3 tabs + end</option>
+						</select>
+					</div>
 				</div>
 			</div>
-			<div style='display:flex; align-items:center; justify-content: center;'>
+			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
 				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
 			</div>
 		</div>
@@ -444,10 +446,10 @@
 					<h3>Error: Missing material</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div style='text-align: center;'>
+				<div class="formBody" style='text-align: center;'>
 					<h4 id="noMaterialText"></h4>
 				</div>
-				<div style='display:flex; align-items:center; justify-content: center;'>
+				<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
 					<input style='margin-right: 5%;' class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
 				</div>
 		</div>
@@ -461,7 +463,7 @@
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<div class='inputwrapper'>
 					<span>Version ID:</span>
 					<div class="formDialog versionDialog" >
@@ -498,7 +500,7 @@
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formFooter">
 				<input id='submitCourseMotd' class='submit-button' type='button' value='Create' disabled title='Create new version' onmouseover="quickValidateForm('newCourseVersion', 'submitCourseMotd');" onclick="validateForm('newCourseVersion')" />
 			</div>
 		</div>
@@ -514,7 +516,7 @@
 				<h3>Edit Course Version</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
@@ -527,7 +529,7 @@
 				<div class="formDialog" style="display: block; left:54px; top:-22px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formFooter">
 				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
 			</div>
 		</div>
@@ -608,8 +610,9 @@
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div class='inputwrapper'>
-					<span>Github Directory:</span>
+				<div class="formBody">
+					<div class='inputwrapper'>
+						<span>Github Directory:</span>
 						<select name="githubDir" placeholder='Github Folder' onchange='saveLocalStorage(this)'>
 							<!-- Below inputs are made that are fed into the "if-statement" in the top of the code, just before "updateGithubDir" -->
 							<?php
@@ -625,9 +628,12 @@
 							?>
 						</select>
 					</div>
-				<input type="hidden" name="lid" id="lidInput">
-				<!-- Hidden input using the "lid" from "getLidFromButton" -->
-				<input type="submit" name="githubInsert" value="Submit!">
+				</div>
+				<div class="formFooter">
+					<input type="hidden" name="lid" id="lidInput">
+					<!-- Hidden input using the "lid" from "getLidFromButton" -->
+					<input type="submit" class="submit-button" name="githubInsert" value="Submit">
+				</div>
 			</div>
 		</div>
 	</form>
@@ -639,16 +645,14 @@
   					<h3>Github repo</h3>
 		  			<div class='cursorPointer'	onclick='closeWindows();'>x</div>
 			</div>
-			<div style="padding:5px; padding-top:20px;">
-  				<span>There is currently no valid github repo. Add one?</span>
-			</div>
-			<div style='padding:5px;'>
+			<div class="formBody" style="padding-top:20px;">
+				<h3>There is currently no valid github repo. Add one?</h3>
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
 					<div class= 'inputwrapper'><span>Github repo link:</span><input type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
 				</form>
 			</div>
-			<div style='padding-top:15px; width: 464px;'>
+			<div class="formFooter">
 				<div id="buttonContainerSaveRepo"></div>
 			</div>
 		</div>
