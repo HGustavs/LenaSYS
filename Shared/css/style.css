@@ -2412,6 +2412,17 @@ Fonts
   left:0px;
 }
 
+/* Reusable form body elements */
+
+.formBody {
+  padding:5px;
+}
+
+.formFooter {
+  padding:5px;
+}
+
+
 /*---===#===---*
 Generic functions END 
 *---====#===---*/
@@ -3349,16 +3360,6 @@ div.submit-button:disabled {
   width: 160px !important;
   height: 48px !important;
   line-height: 48px !important;
-}
-
-/* Reusable form body elements */
-
-.formBody {
-  padding:5px;
-}
-
-.formFooter {
-  padding:5px;
 }
 
 /* Form Pointing Dialogs */
