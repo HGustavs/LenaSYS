@@ -3881,11 +3881,41 @@ SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid
 <br>
 
 ### createGithubCodeExample_ms.php
-__createGithubCodeExample_ms.php__ creates new code examples if they are not already stored in the database and updates existing code examples if they are.
+__createGithubCodeExample_ms.php__ creating or updating code examples based on GitHub files available in the GitHub directory for a specific course and course version. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
+
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, createNewCodeExample_ms.php, createNewListEntry_ms.php, retrieveSectionedService_ms.php
+
+
+
+- __Parameters:__ Retrieves parameters from the request (e.g., 'opt', 'courseid', 'coursevers', 'kind', 'link', 'gradesys', 'highscoremode', 'pos', 'lid', 'log_uuid').
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Processing the request:__ - If the operation ('opt') is "CREGITEX":
+     
+     - Retrieves course ID, GitHub directory, and course version from the __'listentries'__ table based on 'lid'.
+     - Seraching in the GitHub directory for files and groups them based on their names.
+     - Iterates over the grouped files and retrieves the correct example name.
+     - Checks if a code example already exists for the given course ID, example name, and course version.
+     
+     - If no code example exists, creates a new code example:
+       
+       - Retrieves the last position in 'listentries' to place the new code example at the bottom.
+       - Determines the appropriate template based on the number of files.
+       - Creates the new code example and adds the associated files as boxes.
+       - Adds the new code example to the __'listentries'__ table.
+     
+     - If a code example already exists, updates the existing code example by:
+       - Checking if the code example should be hidden, removing or adding boxes as necessary.
+       - Updating the template ID based on the number of files.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) fetch updated data from the database. 
+
+- __Return:__ Returns the combined data as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3893,8 +3923,6 @@ _SELECT_ operation on the table __'listentries'__ to retrieve the values of the 
 - cid
 - githubDir
 - vers
-
-- Selects rows where the column 'lid' matches the provided value ':lid'.
 
 ```sql
 SELECT cid, githubDir, vers FROM listentries WHERE lid=:lid;
@@ -3904,10 +3932,6 @@ SELECT cid, githubDir, vers FROM listentries WHERE lid=:lid;
 _SELECT_ operation on the table __'codeexample'__ to retrieve the value of the column:
 - count (the number of rows that match the conditions)
 
-- Selects rows where the column 'cid' matches the provided value ':cid'.
-- And the column 'examplename' matches the provided value ':examplename'.
-- And the column 'cversion' matches the provided value ':vers'.
-
 ```sql
 SELECT COUNT(*) AS count FROM codeexample WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;
 ```
@@ -3915,9 +3939,6 @@ SELECT COUNT(*) AS count FROM codeexample WHERE cid=:cid AND examplename=:exampl
 
 _SELECT_ operation on the table __'listentries'__ to retrieve the value of the column:
 - pos
-
-- Selects rows where the column 'cid' matches the provided value ':cid'.
-- Orders the results by the column 'pos' in descending order.
 
 ```sql
 SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;
@@ -3950,10 +3971,6 @@ INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wor
 _SELECT_ operation on the table __'codeexample'__ to retrieve the value of the column:
 - exampleid (renamed as 'eid')
 
-- Selects rows where the column 'cid' matches the provided value ':cid'.
-- And the column 'examplename' matches the provided value ':examplename'.
-- And the column 'cversion' matches the provided value ':vers'.
-
 ```sql
 SELECT exampleid AS eid FROM codeexample WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;
 ```
@@ -3962,8 +3979,6 @@ SELECT exampleid AS eid FROM codeexample WHERE cid=:cid AND examplename=:example
 _SELECT_ operation on the table __'box'__ to retrieve the value of the column:
 - boxCount (the number of rows that match the condition)
 
-- Selects rows where the column 'exampleid' matches the provided value 'eid'.
-
 ```sql
 SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;
 ```
@@ -3971,62 +3986,44 @@ SELECT COUNT(*) AS boxCount FROM box WHERE exampleid=:eid;
 
 _SELECT_ operation on the table __'gitFiles'__ to retrieve the values of all columns:
 
-- Selects rows where the column 'cid' matches the provided value ':cid'.
-- And the column 'fileName' matches the provided pattern ':fileName'.
-
 ```sql
 SELECT * FROM gitFiles WHERE cid = :cid AND fileName LIKE :fileName;
 ```
 
 
-_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:**
 - visible
-
-- Updates rows where the column 'cid' matches the provided value ':cid'.
-- And the column 'vers' matches the provided value ':cvs'.
-- And the column 'entryname' matches the provided value ':entryname'.
 
 ```sql
 UPDATE listentries SET visible=:visible WHERE cid=:cid AND vers=:cvs AND entryname=:entryname;
-```
+ ```
 
 
 _SELECT_ operation on the table __'box'__ to retrieve the value of the column:
 - filename
 
-- Selects rows where the column 'exampleid' matches the provided value ':eid'.
-
 ```sql
 SELECT filename FROM box WHERE exampleid = :eid;
-```
+ ```
 
 
 _SELECT_ operation on the table __'box'__ to retrieve the value of the column:
 - boxid (renamed as 'bid')
-
-- Selects rows where the column 'exampleid' matches the provided value ':eid'.
-- And the column 'filename' matches the provided value ':boxName'.
 
 ```sql
 SELECT boxid AS bid FROM box WHERE exampleid = :eid AND filename = :boxName;
 ```
 
 
-_DELETE_ operation on the table __'box'__ to delete rows where the conditions are met.
+_DELETE_ operation on the table __'box'__ to delete rows where the conditions are met:
 
-- Deletes rows where the column 'exampleid' matches the provided value ':eid'.
-- And the column 'filename' matches the provided value ':boxName'.
-
-```sql
+ ```sql
 DELETE FROM box WHERE exampleid = :eid AND filename = :boxName;
 ```
 
 
 _UPDATE_ operation on the table __'box'__ to update the value of the column:
 - boxid
-
-- Updates rows where the column 'exampleid' matches the provided value ':eid'.
-- And the column 'boxid' matches the provided value ':oldBoxID'.
 
 ```sql
 UPDATE box SET boxid=:newBoxID WHERE exampleid = :eid AND boxid=:oldBoxID;
@@ -4036,32 +4033,26 @@ UPDATE box SET boxid=:newBoxID WHERE exampleid = :eid AND boxid=:oldBoxID;
 _UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
 - templateid
 
-- Updates rows where the column 'exampleid' matches the provided value ':eid'.
-
 ```sql
 UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
 ```
 
-
+  
 
 _SELECT_ operation on the table __'box'__ to retrieve the value of the column:
 - filename
 
-- Selects rows where the column 'exampleid' matches the provided value ':eid'.
-
 ```sql
 SELECT filename FROM box WHERE exampleid = :eid;
-```
+ ```
 
 
 _SELECT_ operation on the table __'box'__ to retrieve the maximum value of the column:
 - boxid
 
-- Selects rows where the column 'exampleid' matches the provided value ':eid'.
-
 ```sql
-SELECT MAX(boxid) FROM box WHERE exampleid = :eid;
-```
+ SELECT MAX(boxid) FROM box WHERE exampleid = :eid;
+ ```
 
 
 _INSERT_ operation on the table __'box'__ to insert values into the columns:
@@ -4081,8 +4072,6 @@ INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wor
 
 _UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
 - templateid
-
-- Updates rows where the column 'exampleid' matches the provided value ':eid'.
 
 ```sql
 UPDATE codeexample SET templateid=:templateid WHERE exampleid=:eid;
