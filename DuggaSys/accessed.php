@@ -173,14 +173,14 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsernameAdd' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsername2' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 						<datalist id="users_dropdown_add">
 						</datalist>
 					</div>
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTermAdd' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+						<input placeholder="HT-11" class='textinput' id='addTerm2' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Save' onclick='addUserToCourse();' />
@@ -201,7 +201,7 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addUsernameRemove' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addUsername3' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 						<datalist id="users_dropdown_remove">
 						</datalist>
 					</div>

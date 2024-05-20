@@ -144,8 +144,8 @@ function hideRemoveUserPopup() {
 //-------------==========########## Commands ##########==========-------------
 //----------------------------------------------------------------------------
 function addUserToCourse() {
-	let input = document.getElementById('addUsernameAdd').value;
-	let term = $("#addTermAdd").val();
+	let input = document.getElementById('addUsername2').value;
+	let term = $("#addTerm2").val();
 	$.ajax({
 		type: 'POST',
 		url: 'accessedservice.php',
@@ -173,7 +173,7 @@ function addUserToCourse() {
 	hideAddUserPopup();
 }
 function removeUserFromCourse() {
-	let input = document.getElementById('addUsernameRemove').value;
+	let input = document.getElementById('addUsername3').value;
 	$.ajax({
 		type: 'POST',
 		url: 'accessedservice.php',
