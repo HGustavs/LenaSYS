@@ -4165,23 +4165,25 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       templateid: templateNo,
       fileSizes: fileSize
     }
-    //Send data to sectioned.php as JSON through POST and GET
-    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
-       method: 'POST',
-       body: JSON.stringify(AllJsonData),
-       headers: {
-        'Content-Type': 'application/json'
-       }
-      }) 
-      .then(response => response.text())
-      .then(data => {
-        //For testing/finding bugs/errors
-        //console.log(data);
-        confirmBox('closeConfirmBox');
-      })
-      .catch(error => {
-          console.error('Error calling PHP function:', error);
-      });
+
+    //Send data to sectioned.php through POST
+    $.ajax({
+       url: 'sectionedservice.php',
+       type: 'POST',
+       data: {
+        courseid: cid,
+        githubURL: githubURL,
+        opt: 'GITCODEEXAMPLE',
+        codeExampleData: AllJsonData
+       },
+       success: function(response) {
+          console.log(response);
+       },
+       error: function(xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+      }
+    });   
+    confirmBox('closeConfirmBox');
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();
