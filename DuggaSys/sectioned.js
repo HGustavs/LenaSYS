@@ -211,8 +211,8 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-  console.log("myConsole lid: " + lid);
-  console.log("myConsole typeof: " + typeof lid);
+  // console.log("myConsole lid: " + lid);
+  // console.log("myConsole typeof: " + typeof lid);
   document.getElementById("sectionname").focus();
   toggleTab(true);
   enableTab(document.getElementById("editSection"));
@@ -446,8 +446,8 @@ function changedType(kind) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-group").style.display = "block";
-    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    document.querySelector("#inputwrapper-group").style.removeProperty('display');
+    document.querySelector("#inputwrapper-gradesystem").style.removeProperty('display');
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
@@ -614,7 +614,7 @@ function closeOpenPopupForm(){
     "#tabConfirmBox",
     "#gitHubTemplate",
     "#gitHubBox",
-    "#loginBox",
+    "#formBox",
     "#loadDuggaBox",
     "#sectionHideConfirmBox",
     "#sectionShowConfirmBox"
@@ -869,13 +869,9 @@ async function createFABItem(kind, itemtitle, comment) {
       clearHideItemList();
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
-    console.log(numberOfItems + " " + itemtitle + "(s) created");
+    // console.log(numberOfItems + " " + itemtitle + "(s) created");  
     numberOfItems = 1; // Reset number of items to create
   }
-  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
-  console.log(selectItem);
-  console.log("newItem function:", newItem.toString());
-
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -2513,11 +2509,11 @@ function mouseDown(e) {
 
   var box = $(e.target);
 
-  // Is the clicked element a loginbox? or is it inside a loginbox?
-  if (box[0].classList.contains("loginBox")) {
+  // Is the clicked element a formBox? or is it inside a formBox?
+  if (box[0].classList.contains("formBox")) {
     isClickedElementBox = true;
-  } else if ((findAncestor(box[0], "loginBox") != null) &&
-    (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+  } else if ((findAncestor(box[0], "formBox") != null) &&
+    (findAncestor(box[0], "formBox").classList.contains("formBox"))) {
     isClickedElementBox = true;
   } else {
     isClickedElementBox = false;
@@ -2532,8 +2528,8 @@ function mouseDown(e) {
 function mouseUp(e) {
   /* If the target of the click isn't the container nor a descendant of the container,
      or if we have clicked inside box and dragged it outside and released it */
-  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
-    $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+  if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) &&
+    $('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
     event.preventDefault();
 
@@ -4169,23 +4165,25 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       templateid: templateNo,
       fileSizes: fileSize
     }
-    //Send data to sectioned.php as JSON through POST and GET
-    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
-       method: 'POST',
-       body: JSON.stringify(AllJsonData),
-       headers: {
-        'Content-Type': 'application/json'
-       }
-      }) 
-      .then(response => response.text())
-      .then(data => {
-        //For testing/finding bugs/errors
-        //console.log(data);
-        confirmBox('closeConfirmBox');
-      })
-      .catch(error => {
-          console.error('Error calling PHP function:', error);
-      });
+
+    //Send data to sectioned.php through POST
+    $.ajax({
+       url: 'sectionedservice.php',
+       type: 'POST',
+       data: {
+        courseid: cid,
+        githubURL: githubURL,
+        opt: 'GITCODEEXAMPLE',
+        codeExampleData: AllJsonData
+       },
+       success: function(response) {
+          console.log(response);
+       },
+       error: function(xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+      }
+    });   
+    confirmBox('closeConfirmBox');
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();

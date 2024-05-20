@@ -71,15 +71,17 @@ if(isset($_SESSION['uid'])){
 	<!-- Server Msg END -->
 
 <!-- New Course Section Dialog START -->
-<div id='newCourse' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' style='width:464px;  overflow:hidden;'>
-			<div class='loginBoxheader'>
-				<h3>New Course</h3>
-				<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
-			</div>
-			<div style='padding:5px;'>
-				<input type='hidden' id='cid' value='Toddler' />
-				<div class='inputwrapper'>
+
+<div id='newCourse' class='loginBoxContainer display_none'>
+    <div id='loginBox_DarkMode'  class='formBox DarkModeBackgrounds DarkModeText'>
+    		<div class='formBoxHeader'>
+    			<h3>New Course</h3>
+    			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
+    		</div>
+    		<div class="padding_5px">
+    			<input type='hidden' id='cid' value='Toddler' />
+    			<div class='inputwrapper'>
+
 					<span>Course Name:</span>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span id="courseNameError" class=" formDialogText">Only letters. Dash allowed in between words</span></div>
@@ -117,8 +119,8 @@ if(isset($_SESSION['uid'])){
 
 	<!-- Edit Section Dialog START -->
 	<div id='editCourse' class='loginBoxContainer display_none'>
-	<div class='loginBox DarkModeBackgrounds DarkModeText' id=loginBox_DarkMode>
-    		<div class='loginBoxheader'>
+	<div class='formBox DarkModeBackgrounds DarkModeText' id=loginBox_DarkMode>
+    		<div class='formBoxHeader'>
     			<h3>Edit Course</h3>
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
@@ -180,14 +182,15 @@ if(isset($_SESSION['uid'])){
 	<!-- Edit Server Settings START -->
 
 	<div id='editSettings' onmouseover="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd');" class='loginBoxContainer display_none'>
-		<div class='loginBox DarkModeBackgrounds DarkModeText' id='editSettings_loginBox'>
+	<div class='formBox DarkModeBackgrounds DarkModeText' id='editSettings_loginBox'>
 
-		<div class='loginBoxheader'>
-				<h3>Edit Server Settings</h3>
-				<div class="cursorPointer" onclick='closeWindows();'>x</div>
-			</div>
-			<div style='padding:5px;'>
-				<div class='inputwrapper'>
+    		<div class='formBoxHeader'>
+    			<h3>Edit Server Settings</h3>
+    			<div class="cursorPointer" onclick='closeWindows();'>x</div>
+    		</div>
+			<div class="padding_5px">
+
+    						<div class='inputwrapper'>
 					<span>Message of the day:</span>
 					<div class="dialogwrapper">
 						<input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' />
@@ -196,7 +199,8 @@ if(isset($_SESSION['uid'])){
 					</div>
 				</div>
 				<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
-			</div>
+				
+    		</div>
     		<div class="padding_5px">
     			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>
