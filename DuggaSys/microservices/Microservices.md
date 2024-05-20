@@ -3269,7 +3269,7 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 <br>
 
 ### deleteListentries_ms.php
-Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items). The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
+Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items). The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3326,7 +3326,7 @@ DELETE FROM listentries WHERE lid = :lid
 <br>
 
 ### removeListentries_ms.php (hides the listentrie, not deleting it)
-Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice __deleteListentries_ms.php__ (that actually deletes the listentrie from the database). The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
+Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice __deleteListentries_ms.php__ (that actually deletes the listentrie from the database). The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3371,7 +3371,7 @@ UPDATE listentries SET visible = '3' WHERE lid = :lid;
 <br>
 
 ### createListentry_ms.php
-__createListentry_ms.php__ adds a new section entry to a course, handling the creation of a new code example if necessary, and then retrieves the updated sectioned data for the course. The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
+__createListentry_ms.php__ adds a new section entry to a course, handling the creation of a new code example if necessary, and then retrieves the updated sectioned data for the course. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
 
 
 __Include original service files:__ sessions.php, basic.php
@@ -3427,21 +3427,42 @@ SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;
 <br>
 
 ### updateListEntryOrder_ms.php
-Updates the order of the listentries of a course. Not to be confused with __updateListentrie_ms.php__.
+__updateListEntryOrder_ms.php__ handles the reordering of list entries of a course based on user input. Not to be confused with __updateListentrie_ms.php__. This is done by updating the 'pos' and 'moment' columns of the __'listentries'__ table based on input parameters. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
+
+- __Session:__ Starts the session to manage user data and establishes a connection to the database using 'pdoConnect()'.
+
+- __Parameter:__ Retrieves parameters from the request such as 'courseid', 'coursevers', 'pos', 'moment', 'order', 'lid', 'opt', and 'log_uuid'.
+
+- __Retrieve user ID:__ Calls 'getUid()' (getUid_ms.php) to retrieve the user ID.
+
+- __Update list entries:__
+
+    - Check 'opt' parameter: If the 'opt' parameter is "REORDER", it processes the reordering of list entries.
+    - Query: Prepares an SQL query to update the 'pos' and 'moment' columns in the __'listentries'__ table based on the 'lid'.
+    - Parse 'order' parameter: Splits the 'order' parameter by commas to get individual order items. Each item is further split by "XX" to get position, list entry ID, and moment.
+
+- __Execute query:__ Binds the parameters ('lid', 'pos', 'moment') to the query and executes it for each entry. If an error occurs, it sets the 'debug' variable to an error message.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to get the updated data.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
+
 __Querys used in this microservice:__
 
-_UPDATE_ operation on the table __'listentries'__ to modify rows where:
+_UPDATE_ operation on the table __'listentries'__ to update the values of the columns:
+- pos
+- moment
 
-- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
-- Set: The 'pos' value in the __'listentries'__ table to the value bound to :pos, and the 'moment' value to the value bound to :moment.
+Filters the rows to where the 'lid' in the __'listentries'__ table matches the value bound to ':lid'.
 
 ```sql
-UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;
+UPDATE listentries SET pos = :pos, moment = :moment WHERE lid = :lid;
 ```
 
 <br>
