@@ -1045,6 +1045,7 @@ function prepareElementResized(id, widthChange, heightChange) {
  * @param {MouseEvent} event Triggered mouse event.
  */
 function mmoving(event) {
+    // stores the drawn elements that the mouse is hovering over
     const elements = document.elementsFromPoint(event.clientX, event.clientY);
     hoveredElements = elements.filter(element => element.classList.contains('element'));
     
@@ -1095,11 +1096,10 @@ function mmoving(event) {
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
-                console.log(targetElement)
-                if (data[findIndex(data, targetElement.id)].kind == elementTypesNames.sequenceActivation) snapSAToLifeline();
+                if (data[findIndex(data, targetElement.id)].kind == elementTypesNames.sequenceActivation) snapSAToLifeline();                
                 // We update position of connected objects
                 updatepos();
-                calculateDeltaExceeded();
+                calculateDeltaExceeded();                
             }
             break;
         case pointerStates.CLICKED_NODE:

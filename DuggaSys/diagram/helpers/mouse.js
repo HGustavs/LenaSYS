@@ -172,14 +172,13 @@ function getKindFromHoveredElements(kind) {
         const entry = data[findIndex(data, element.id)];
         if (entry.kind == kind) return entry;
     }
-    return undefined;
+    return null;
 }
 
 /**
  * @description Triggers when the mouse hoovers over an sequence lifeline.
  */
 function mouseEnterSeq(event) {    
-    if (!elementTypeSelected) return;
     if (elementTypeSelected === elementTypes.sequenceActivation) {
         const target = event.target;
         const targetId = target.id;
@@ -193,7 +192,7 @@ function mouseEnterSeq(event) {
  */
 function snapSAToLifeline(targetId) { 
     // get the lifeline as a HTMLElement
-    const lifeline = document.getElementById(targetId) || getKindFromHoveredElements(elementTypesNames.sequenceActor);
+    const lifeline = getKindFromHoveredElements(elementTypesNames.sequenceActor);
     if (!lifeline) return;
 
     // get the lifeline from the data array
@@ -209,6 +208,7 @@ function snapSAToLifeline(targetId) {
         if (!moving) return;
         // calc position
         // the calc works but it doesn't lock the element like it does with the ghost
+        console.log(0)
         moving.x = target.x + (target.width / 2) - (moving.width / 2);
     }
     else return;    
