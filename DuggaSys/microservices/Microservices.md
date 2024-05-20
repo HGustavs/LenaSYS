@@ -3326,18 +3326,43 @@ DELETE FROM listentries WHERE lid = :lid
 <br>
 
 ### removeListentries_ms.php (hides the listentrie, not deleting it)
-Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database).
+Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice __deleteListentries_ms.php__ (that actually deletes the listentrie from the database). The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches the following parameters from the request:
+
+    - 'courseid': Course ID.
+    - 'coursevers': Course version.
+    - 'log_uuid': Log UUID.
+    - 'opt': Operation type.
+    - 'sectid': Section ID to be updated.
+
+- __Check login:__ Calls 'checklogin()' to verify if the user is logged in. If the user is logged in, the function retrieves the user ID from the session (`$_SESSION['uid']`). If the user ID is not set in the session, assigns "UNK" as the user ID.
+
+- __Update visibility:__ Checks if the logged-in user is a superuser using 'isSuperUser(getUid())'. If the user is a superuser, a query to update the visibility of the section in the __'listentries'__ table is run (sets 'visible' to '3' for the given section ID 'sectid'). Handles potential errors, including foreign key constraint violations.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to fetch updated data after the visibility update operation.
+
+- __Return:__ Combines the debug information and the updated data. Returns the result as a JSON-encoded string as the output of the microservice.
+
+
 __Querys used in this microservice:__
 
-_UPDATE_ operation on the table __'listentries'__ to update rows where:
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- visible
 
-- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
-- Set: The 'visible' value in the 'listentries' table to '3'.
+- Filters the rows to where the 'lid' in the __'listentries'__ table matches the value bound to ':lid'.
+
+```sql
+UPDATE listentries SET visible = '3' WHERE lid = :lid;
+```
+
 
 <br>
 
