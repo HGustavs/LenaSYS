@@ -251,9 +251,8 @@ __Sectioned Service:__
 - readUserDuggaFeedback_ms.php __==finished==__ Previously named: "getUserDuggaFeedback_ms.php".
 - createGithubCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - getListEntries_ms.php __==finished==__ New filename: "readListEntries_ms.php" according to new nameconvention based on CRUD.
-- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "readAllCourseVersions_ms.php" according to new nameconvention based on CRUD.
 - retrieveSectionedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
-
+- retrieveAllCourseVersions_ms.php __==finished==__ New filename: "retrieveAllSectionedServiceData_ms.php" according to new nameconvention based on CRUD.
 
 <br>
 
@@ -282,7 +281,7 @@ __Show Dugga Service:__
 <br>
 
 ### readUid_ms.php
-__readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a guest ID if the user is not logged in. The function also logs an event with details about the request. The microservice ensures correct identification and logging of users and their actions in the system. The uid
+__readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a guest ID if the user is not logged in. The function also logs an event with details about the request. The microservice ensures correct identification and logging of users and their actions in the system. 
 
 __Include original service files:__ sessions.php, basic.php
 
@@ -3189,11 +3188,23 @@ __retrieveResultedService_ms.php__ provides organized submission data and filter
 <br>
 
 ### readGroupValues_ms.php
-__readGroupValues_ms.php__ is called upon when a group is clicked on.
+__readGroupValues_ms.php__ retrieves group values and related data when a group is clicked on. The function organizes the data and returns it in a structured format. 
 
 __Include original service files:__ sessions.php
 
 __Include microservices:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database, and starts the session.
+
+- __Parameters:__ Gets parameters like 'uid', 'courseid', 'versid', 'log_uuid', 'opt', and 'coursevers' from the request.
+
+- __Check login and run query:__ Checks if the user is logged in. If they are, the query runs. The query retrieves group values from the __'groups'__ table and organizes them into an array.
+
+- __retrieveSectionedService:__ Calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to get additional data needed for the response.  
+
+- __Combine and return:__ Combines the group values with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
+
 
 __Querys used in this microservice:__
 
@@ -3213,11 +3224,28 @@ SELECT groupKind,groupVal FROM groups;
 <br>
 
 ### readCourseGroupsAndMembers_ms.php
-__readCourseGroupsAndMembers_ms.php__ returns a list of group member related to the provided course id and course version.
+__readCourseGroupsAndMembers_ms.php__ retrieves and returns a list of group members related to a specified course ID and course version.
 
 __Include original service files:__ sessions.php, basic.php, coursesyspw.php
 
 __Include microservice:__ retrieveSectionedService_ms.php
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches parameters such as 'opt', 'courseid', 'coursevers, 'log_uuid', and 'showgrp' from the request.
+
+- __Session and access check:__ Checks if the user is logged in with. If the user is logged in the function retrieves the user ID from the session (if available), otherwise sets it to "guest". Checks the user's access rights (read, student teacher, write) for the specified course.
+
+- __Retrieve group:__ If the 'opt' parameter equals "GRP":
+    
+    - Runs a query to fetch user details and their group memberships for the specified course ID and version.
+    - Filters users based on the specified group ('showgrp').
+    - Collects and sorts the group member information.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to get additional data needed for the response.  
+
+- __Combine and return:__ Combines the group member data with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
+
 
 __Querys used in this microservice:__
 
@@ -3241,11 +3269,36 @@ SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_cours
 <br>
 
 ### deleteListentries_ms.php
-Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items).
+Listentries are duggas, headers, tests etc. __deleteListentries_ms.php__ DELETES listentries from the database. Should not be confused with the microservice removeListentries (that changes to visible value of the listentrie to "hide" it. This will enable restoring deleted items). The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
+
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches the following parameters from the request:
+    
+    - 'courseid': Course ID.
+    - 'coursevers': Course version.
+    - 'log_uuid': Log UUID.
+    - 'opt': Operation type.
+    - 'sectid': Section ID to be deleted.
+
+- __Get User ID:__ Calls 'etUid()' to retrieve the user ID from the session.
+
+- __User and SuperUser check:__ Calls 'checklogin()' to verify if the user is logged in.
+  
+    If the user is a superuser:
+    - Deletes related entries from the __'useranswer'__ table using the section ID ('sectid').
+    - Deletes the section entry from the __'listentries'__ table using the section ID ('sectid').
+    - Handles errors related to foreign key constraints during deletion.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to fetch the updated data after the deletion operation.
+
+- __Return:__ Combines the deletion debug information and the updated data. Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3273,18 +3326,43 @@ DELETE FROM listentries WHERE lid = :lid
 <br>
 
 ### removeListentries_ms.php (hides the listentrie, not deleting it)
-Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice deleteListentries (that actually deletes the listentrie from the database).
+Listentries are duggas, headers, tests etc. This microservice will change the visibility of a listentry to "deleted" instead of deleting the item from the database entirely. This will enable restoring deleted items. It "hides" the listentries. Should not be confused with the microservice __deleteListentries_ms.php__ (that actually deletes the listentrie from the database). The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
 
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches the following parameters from the request:
+
+    - 'courseid': Course ID.
+    - 'coursevers': Course version.
+    - 'log_uuid': Log UUID.
+    - 'opt': Operation type.
+    - 'sectid': Section ID to be updated.
+
+- __Check login:__ Calls 'checklogin()' to verify if the user is logged in. If the user is logged in, the function retrieves the user ID from the session (`$_SESSION['uid']`). If the user ID is not set in the session, assigns "UNK" as the user ID.
+
+- __Update visibility:__ Checks if the logged-in user is a superuser using 'isSuperUser(getUid())'. If the user is a superuser, a query to update the visibility of the section in the __'listentries'__ table is run (sets 'visible' to '3' for the given section ID 'sectid'). Handles potential errors, including foreign key constraint violations.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to fetch updated data after the visibility update operation.
+
+- __Return:__ Combines the debug information and the updated data. Returns the result as a JSON-encoded string as the output of the microservice.
+
+
 __Querys used in this microservice:__
 
-_UPDATE_ operation on the table __'listentries'__ to update rows where:
+_UPDATE_ operation on the table __'listentries'__ to update the value of the column:
+- visible
 
-- The 'lid' value in the __'listentries'__ table matches the value bound to :lid.
-- Set: The 'visible' value in the 'listentries' table to '3'.
+- Filters the rows to where the 'lid' in the __'listentries'__ table matches the value bound to ':lid'.
+
+```sql
+UPDATE listentries SET visible = '3' WHERE lid = :lid;
+```
+
 
 <br>
 
@@ -3293,9 +3371,44 @@ _UPDATE_ operation on the table __'listentries'__ to update rows where:
 <br>
 
 ### createListentry_ms.php
+__createListentry_ms.php__ adds a new section entry to a course, handling the creation of a new code example if necessary, and then retrieves the updated sectioned data for the course. The microserive retrieves all updated data from the database (through retrieveCourseedService_ms.php) as the output for the microservice. See __retrieveCourseedService_ms.php__  for more information.
+
+
 __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, createNewListentry_ms.php, createNewCodeExample_ms.php, retrieveSectionedService_ms.php
+
+- __Session:__ Connects to the database and starts the session.
+
+- __Parameters:__ Fetches parameters from the request:
+    - 'opt': Operation type.
+    - 'courseid': Course ID.
+    - 'coursevers': Course version.
+    - 'sectname': Section name.
+    - 'kind': Kind/type of section.
+    - 'link': Link ID, which indicates whether to create a new code example.
+    - 'visibility': Visibility of the section.
+    - 'gradesys': Grading system.
+    - 'highscoremode': Highscore mode.
+    - 'comments': Comments for the section.
+    - 'grptype': Group type.
+    - 'pos': Position of the section.
+    - 'tabs': Tabs setting.
+    - 'log_uuid': Log UUID.
+
+- __Retrieve user ID:__ Calls 'getUid()' (getUid_ms.php) to retrieve the user ID.
+
+- __Insert new code example:__ If 'link' is '-1', it indicates that a new code example needs to be created:
+    
+    - Fetches the latest code example ID from the __codeexample__ table in the database
+    - Calls 'createNewCodeExample()' (createNewCodeExample_ms.php) to create a new code example, updating the 'link' variable accordingly.
+
+- __Create new list entry:__ Calls 'createNewListEntry()' (createNewListentry_ms.php) with the provided parameters and the updated 'link' to create a new list entry for the course.
+
+- __retrieveSectionedService:__ calls 'retrieveSectionedService' function (retrieveSectionedService_ms.php) to fetch the updated sectioned data for the course.
+
+- __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
+
 
 __Querys used in this microservice:__
 
@@ -3305,37 +3418,6 @@ _SELECT_ operation on the table __'settings'__ to retrieve values from the colum
 
 ```sql
 SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;
-```
-
-
-_INSERT_ operation on the table __'codeexample'__ to create new rows in the columns:
-- cid
-- examplename
-- sectionname
-- uid (set to 1)
-- cversion
-
-```sql
-INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);
-```
-
-
-_INSERT_ operation on the table __'listentries'__ to create new rows in the columns:
-- cid
-- vers
-- entryname
-- link
-- kind
-- pos
-- visible
-- creator
-- comments
-- gradesystem
-- highscoremode
-- groupKind
-
-```sql
-INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,:pos,:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)
 ```
 
 <br>
@@ -3885,47 +3967,6 @@ Parameters passed to 'retrieveSectionedService_ms.php':
 
 <br>
 
-### readAllCourseVersions_ms.php
-__readAllCourseVersions_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
-
-__Include original service files:__ sessions.php, basic.php
-
-__Include microservice:__ retrieveSectionedService_ms.php
-
-__Querys used in this microservice:__
-
-_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
-- vers
-
-- Selects rows where the column __cid__ matches the provided value ':cid'.
-
-```sql
-SELECT vers FROM vers WHERE cid=:cid
-```
-
-
-- __Fetches parameters:__ Operation option ('opt'), Course ID ('courseid'), Course version ('coursevers').
-
-- __If not null:__ If 'coursevers' is not null the fucntion retrieves all course versions for the given course ID and calculates the total number of groups as 24 times the number of course versions.
-
--__Debugging:__ Handles query errors and stores error details in the variable 'debug'.
-
-- __Calls 'retrieveSectionedService' with parameters:__ 
-
-    - __debug__ - Starts as "NONE!" to collect any debug info.
-    - __opt__ - Operation option from the request.
-    - __pdo__ - PDO database connection.
-    - __courseid__ - Course ID to get list entries for.
-    - __coursevers__ - Course version to get list entries for.
-    
-    which returns the result as JSON.
-
-<br>
-
----
-
-<br>
-
 ### retrieveSectionedService_ms.php
 
 __Include original service files:__ sessions.php, basic.php
@@ -4137,6 +4178,46 @@ The microservice gathers and organizes information into an array that provides d
 
 - __Debugging__ - Logs of any issues encountered during the execution of the function.
 
+<br>
+
+---
+
+<br>
+
+### retrieveAllSectionedServiceData_ms.php
+__retrieveAllSectionedServiceData_ms.php__ retrieves all course versions for a specified course and calculates the number of groups.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ retrieveSectionedService_ms.php
+
+__Querys used in this microservice:__
+
+_SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
+- vers
+
+- Selects rows where the column __cid__ matches the provided value ':cid'.
+
+```sql
+SELECT vers FROM vers WHERE cid=:cid
+```
+
+
+- __Fetches parameters:__ Operation option ('opt'), Course ID ('courseid'), Course version ('coursevers').
+
+- __If not null:__ If 'coursevers' is not null the fucntion retrieves all course versions for the given course ID and calculates the total number of groups as 24 times the number of course versions.
+
+-__Debugging:__ Handles query errors and stores error details in the variable 'debug'.
+
+- __Calls 'retrieveSectionedService' with parameters:__ 
+
+    - __debug__ - Starts as "NONE!" to collect any debug info.
+    - __opt__ - Operation option from the request.
+    - __pdo__ - PDO database connection.
+    - __courseid__ - Course ID to get list entries for.
+    - __coursevers__ - Course version to get list entries for.
+    
+    which returns the result as JSON.
 
 <br>
 <br>
