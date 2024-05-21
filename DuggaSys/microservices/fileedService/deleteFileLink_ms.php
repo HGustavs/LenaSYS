@@ -22,7 +22,7 @@ $kind = getOP('kind');
 $filename = getOP('filename');
 $coursevers = getOP('coursevers');
 $userid = getUid();
-$debug = "The file was deleted";
+$debug = "NONE!";
 $log_uuid = getOP('log_uuid');
 
 // Permission checks

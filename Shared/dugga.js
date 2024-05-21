@@ -1135,13 +1135,31 @@ function AJAXService(opt,apara,kind)
 				success: returnedHighscore
 			});
 	}else if(kind=="FILE"){
-			$.ajax({
-				url: "fileedservice.php",
-				type: "POST",
-				data: "cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
-				dataType: "json",
-				success: returnedFile
-			})
+		let serviceURL = "fileedservice.php";
+		
+		switch (opt) {
+			case "GET":
+				serviceURL = "fileedservice.php"; // CHANGE WHEN WORKING
+				// serviceURL= "../DuggaSys/microservices/fileedService/getFileedService_ms.php";
+				break;
+			case "SAVEFILE":
+				serviceURL= "../DuggaSys/microservices/fileedService/updateFileLink_ms.php";
+				break;
+			case "DELFILE":
+				serviceURL= "../DuggaSys/microservices/fileedService/deleteFileLink_ms.php";
+				break;
+			default:
+				serviceURL= "fileedservice.php";
+				break;
+		}
+
+		$.ajax({
+			url: serviceURL,
+			type: "POST",
+			data: "cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+			dataType: "json",
+			success: returnedFile
+		});
 	}else if(kind=="ACCESS"){
 			$.ajax({
 				url: "accessedservice.php",
