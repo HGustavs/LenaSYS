@@ -3738,7 +3738,7 @@ function checkGithubLinkClue(link) {
     status = false;
   }
 
-  if (!status && inputWindow.style.display!="none") {
+  if (!status && inputWindow.style.display != "none") {
     toast('warning','Enter a valid GitHub repository link',3);
   }
 }
