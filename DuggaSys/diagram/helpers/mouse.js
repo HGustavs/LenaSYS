@@ -129,7 +129,7 @@ function determineLineSelect(mouseX, mouseY) {
 }
 
 /**
- * @description Retrieves lines from svgbacklayer. If none is found return empty array
+ * @description Retrieves lines from svgbacklayer. If no lines are found then an empty array is returned.
  * @returns {Array} Array of lines (objects) from the back layer of the SVG canvas
  */
 function getLinesFromBackLayer() {
