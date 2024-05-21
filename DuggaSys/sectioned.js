@@ -590,7 +590,7 @@ window.addEventListener('beforeunload', function (event) {
 });
 
 // Eventlistener for keydown ESC
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keyup', function (event) {
   if (event.key === 'Escape') {
     let link = document.getElementById("upIcon").href;
     let popupIsOpen = closeOpenPopupForm();
@@ -619,17 +619,16 @@ function closeOpenPopupForm(){
     "#sectionHideConfirmBox",
     "#sectionShowConfirmBox",
     "#canvasLinkBox",
-    "#editSection",
-    "#toastContainer"
+    "#editSection"
   ];
+  let div = document.getElementById("toastContainer");
+  if (div.children.length > 0) {
+    return true;
+  }
   for (let popup of allPopups){
     if ($(popup).css("display") !== "none"){
-      if (popup === "#toastContainer"){
-        return true;
-      } else {
         $(popup).css("display","none");
         return true;
-      }
     }
   }
   return false; 

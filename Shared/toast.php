@@ -199,7 +199,7 @@
         });
 
         // Close the toast by pressing the ESC button
-        document.addEventListener('keydown', function (event) {
+        document.addEventListener('keyup', function (event) {
             if (event.key === 'Escape') {
                 closeToast(toastDiv);
             }
