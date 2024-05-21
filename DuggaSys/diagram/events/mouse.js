@@ -1,6 +1,6 @@
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
- * @param {MouseEvent} event Triggered mouse event.
+ * @param {WheelEvent} event - The mouse wheel event object.
  */
 function mwheel(event) {
     event.preventDefault();
@@ -240,7 +240,7 @@ function ddown(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates 
  */
 function mup(event) {
     if (!mouseOverLine && !mouseOverElement) {
@@ -275,8 +275,8 @@ function mup(event) {
                 }
             }
             break;
-        case pointerStates.CLICKED_LINE:
-            if (!deltaExceeded) {
+        case pointerStates.CLICKED_LINE:            
+            if (!deltaExceeded && mouseMode != mouseModes.EDGE_CREATION) {
                 updateSelectedLine(determinedLines);
             }
             if (mouseMode == mouseModes.BOX_SELECTION) {
@@ -340,7 +340,7 @@ function mup(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the toolbar.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates
  */
 function tup() {
     mouseButtonDown = false;
@@ -368,6 +368,7 @@ function mouseLeave() {
 
 /**
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
+ * @returns {boolean} Returns true if the delete button is pressed and canPressDeleteBtn is true, otherwise returns false.
  */
 function checkDeleteBtn() {
     if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) &&
@@ -386,6 +387,8 @@ function checkDeleteBtn() {
 
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
+ *  @param {number} mouseX - The x-coordinate of the mouse position.
+ *  @param {number} mouseY - The y-coordinate of the mouse position.
  */
 function mouseOverSelection(mouseX, mouseY) {
     if (context.length > 0 || contextLine.length > 0) {

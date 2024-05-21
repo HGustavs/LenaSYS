@@ -1,3 +1,9 @@
+
+/**
+ * @description Element class for all elements in the diagram.
+ * @class
+ * @public
+ */
 class Element {
     constructor({
             name = '',
@@ -39,7 +45,6 @@ class Element {
         this.altOrLoop = altOrLoop;
         this.alternatives = alternatives;
     }
-
     static Default(type) {
         return new Element(defaults[Object.keys(elementTypes).find(key => elementTypes[key] === type)]);
     }

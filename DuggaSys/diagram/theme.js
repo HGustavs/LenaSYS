@@ -2,20 +2,11 @@
  * @description Translate all elements to the correct coordinate
  */
 function updateCSSForAllElements() {
-        function updateElementDivCSS(elementData, divObject, useDelta = false) {
-            let eRect = divObject.getBoundingClientRect();
-            let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx / zoomfact));
-            let top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact)) + (scrolly / zoomfact);
-            // Heigth calculation is inconsistent between elements. scrolly might be calculated wrong
-            if (elementData.kind == elementTypesNames.UMLEntity ||
-                elementData.kind == elementTypesNames.IEEntity ||
-                elementData.kind == elementTypesNames.SDEntity) {
-                top -= eRect.height / 2;
-            } else if (elementData.kind == "note") {
-                top -= eRect.height / 4
-            } else if (elementData.kind == elementTypesNames.IERelation) {
-                top += eRect.height / 2
-            }
+    function updateElementDivCSS(elementData, divObject, useDelta = false) {
+        let eRect = divObject.getBoundingClientRect();
+        let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx / zoomfact));
+        let top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact)) + (scrolly / zoomfact);
+
         if (useDelta) {
             left -= deltaX;
             top -= deltaY;
@@ -131,17 +122,11 @@ function updateCSSForAllElements() {
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
-                    disjointLine1Color = elementDiv.children[0].children[2];
-                    disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
                         fillColor.style.fill = color.LIGHT_PURPLE;
                         fontColor.style.fill = color.WHITE;
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.WHITE;
-                        } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if (element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = color.WHITE;
-                            disjointLine2Color.style.stroke = color.WHITE;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
@@ -201,17 +186,11 @@ function updateCSSForAllElements() {
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
-                    disjointLine1Color = elementDiv.children[0].children[2];
-                    disjointLine2Color = elementDiv.children[0].children[3];
                     if (markedOverOne()) {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.WHITE;
-                        } // Turns the "X" white in disjoint IE-inheritance when multiple IE-inheritances are selected.
-                        else if (element.kind == elementTypesNames.IERelation && element.state != "overlapping") {
-                            disjointLine1Color.style.stroke = color.WHITE;
-                            disjointLine2Color.style.stroke = color.WHITE;
                         }
                         // If UMLRelation is not marked.
                     } else if (element.kind == "UMLRelation") {
