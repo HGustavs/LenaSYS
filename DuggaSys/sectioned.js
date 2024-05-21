@@ -4185,6 +4185,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
       }
     });   
     confirmBox('closeConfirmBox');
+    location.replace(location.href);
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();
