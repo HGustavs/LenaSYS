@@ -1587,7 +1587,7 @@ function returnedSection(data) {
         if (retdata['writeaccess']) {
           if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
             str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;'  title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
 
           }
           str += "</td>";
