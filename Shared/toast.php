@@ -8,7 +8,7 @@
     // Close the toast by clicking the X icon
     function closeToast(toastDiv) {
         const toastContainer = document.getElementById('toastContainer');
-        if (toastDiv) {
+        if (toastDiv && toastContainer.contains(toastDiv)) {
             // Delete the toast from the toast container
             toastContainer.removeChild(toastDiv);
         }
