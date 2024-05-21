@@ -96,8 +96,8 @@ const defaults = {
         width: 62,
         height: 62,
         type: "IE",
-        minWidth: 50,
-        minHeight: 50,
+        minWidth: 80,
+        minHeight: 40,
     },
     SDEntity: {
         name: "State",
