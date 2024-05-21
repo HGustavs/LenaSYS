@@ -99,10 +99,10 @@ if(isset($_SESSION['uid'])){
 				</div>
 			</div>
 			<!-- Input field to Github repository START-->
-			<div style="padding:5px;">
+			<div class="formFooter">
 				<div class="inputwrapper">
 					<p id="dialog5" class="validationDialog">Enter a valid github url</p>
-					<span style="padding-right: 10px;">GitHub URL:</span>
+					<span class="padding-right_10px">GitHub URL:</span>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span id="courseCodeError" class="formDialogText">Enter a valid github url</span></div>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class="textinput validate" type="text" id="ncoursegit-url" name="courseGitURL" placeholder="https://github.com/..." />
@@ -110,7 +110,7 @@ if(isset($_SESSION['uid'])){
 				</div>
 			</div>
 			<!-- Input field to Github repository END-->
-			<div style='padding:5px;'>
+			<div class="formFooter">
 				<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
 			</div>
 		</div>
@@ -198,7 +198,7 @@ if(isset($_SESSION['uid'])){
 						<div class="formDialog"><span id="dialog52" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
 					</div>
 				</div>
-				<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>	
+				<div class='inputwrapper'><span class="italic">Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>	
     		</div>
 			  <div class="formDialog" id="errorSymbol"><span id="dialog51" class="formDialogText errorMessage">Prohibited symbols</span></div>
 			  <div class="formDialog" id="error50"><span id="dialog52" class="formDialogText errorMessage">Message can only contain a maximum of 50 symbols</span></div>
