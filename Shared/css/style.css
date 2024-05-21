@@ -2346,7 +2346,12 @@ input.inactive-button {
 
 .margin-right_0px {
   margin-right: 0px
+}#searchBarMobile {
+  display: none;
+  test-align:right;
+  margin-bottom:15px;
 }
+
 /*---===#===---*
   padding styles
 *---====#===---*/
@@ -2478,6 +2483,23 @@ Float
 
 #chooseTemplate {
   width:464px;
+}
+
+/* Title for the subpages of the section-editor */
+
+.titles {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  padding-top:10px;
+}
+
+.titles h1 {
+  color: var(--color-text-primary);
+}
+
+.lookingGlassH18 {
+  height: 18px;
 }
 
 /*---===#===---*
@@ -2826,13 +2848,103 @@ sectioned.php END
 #visb {
   margin:0px 0px 0px 0px;
 }
+#saveCourse{
+  margin: 0px;
+}
+
+#submitEditCourse{
+  margin-left: 343px;
+  margin-top: 20px;
+}
+#submitCourseMotd{
+  margin-left: 342px;
+  margin-top: 20px;
+}
+#editContentSaveBtn{
+  margin-bottom: 20px;
+  margin-right: 2px;
+}
+
+.form-popup {
+  text-align: center;
+  display: none;
+  padding: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  background-color: #fff; 
+  height:16.25rem;
+  width:28.75rem;
+  background-color:#775886;
+}
+
+/* styles to the form container */
+.form-popup_container {
+  height:211px;
+  padding: 30px;
+  background-color: white;
+}
+
+#deleteCourseButton{
+  background-color:#d42c35;
+  height:30px;
+  padding-left:35px;
+  padding-right:35px;
+  border: none;
+  border-radius: 5px;
+  font-size:14px;
+  margin:0px;
+  margin-right:238px;
+  color:#fff;
+}
+
+#deleteCourseButton:hover {
+  background-color:#c9555b;
+  cursor: pointer;
+}
+
+#deleteCourseButtonYes{
+  background-color:#ccc;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border: solid 1px #775886;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  margin-right:75px;
+}
+
+#deleteCourseButtonYes:hover {
+  background-color:#6e6e6e;
+  cursor: pointer;
+}
+
+#deleteCourseButtonNo{
+  background-color:#e35057;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  border: solid 1px #775886;
+}
+
+#deleteCourseButtonNo:hover {
+  background-color:#810f15;
+  cursor: pointer;
+}
 
 /*---===#===---*
 courseed.php END 
 *---====#===---*/
 
 /* --------------===============################================-------------- *
- *                                    codeviewer.php                             *
+ *                                    codeviewer.php                           *
  * --------------================################================--------------*/
 #impwords,
 #impword {
@@ -2844,9 +2956,33 @@ courseed.php END
 .templateSelect {
   width: 150px !important
 }
+
+#loader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('../icons/loadingJS.gif') 50% 50% no-repeat rgb(93, 93, 93);
+}
 /*---===#===---*
 codeviewer.php END 
 *---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    fileed.php                               *
+ * --------------================################================--------------*/
+ 
+ .h1Fileed {
+  flex:1;
+  text-align:left;
+ }
+
+
+ /*---===#===---*
+ fileed.php END 
+ *---====#===---*/
 
 input {
   border-radius: 2px;
@@ -5468,10 +5604,6 @@ rect[class*="activitymarker"]:hover {
   transform: scale(1.5);
 }
 
-#searchBarMobile {
-  display: none;
-}
-
 /* styling for fileed switching table button*/
 
 .switchContent {
@@ -6417,18 +6549,6 @@ only screen and (max-device-width: 568px) {
     opacity: 1;
 
   }
-}
-
-/* Title for the subpages of the section-editor */
-
-.titles {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: 10px;
-}
-
-.titles h1 {
-  color: var(--color-text-primary);
 }
 
 #noAccessMessage {
@@ -8278,101 +8398,6 @@ textarea#mrkdwntxt {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* --------------===============################================-------------- *
- *                                    courseed                                 *
- * --------------================################================-------------- */
-
-#saveCourse{
-  margin: 0px;
-}
-
-#submitEditCourse{
-  margin-left: 343px;
-  margin-top: 20px;
-}
-#submitCourseMotd{
-  margin-left: 342px;
-  margin-top: 20px;
-}
-#editContentSaveBtn{
-  margin-bottom: 20px;
-  margin-right: 2px;
-}
-
-.form-popup {
-  text-align: center;
-  display: none;
-  padding: 5px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-  background-color: #fff; 
-  height:16.25rem;
-  width:28.75rem;
-  background-color:#775886;
-}
-
-/* styles to the form container */
-.form-popup_container {
-  height:211px;
-  padding: 30px;
-  background-color: white;
-}
-
-#deleteCourseButton{
-  background-color:#d42c35;
-  height:30px;
-  padding-left:35px;
-  padding-right:35px;
-  border: none;
-  border-radius: 5px;
-  font-size:14px;
-  margin:0px;
-  margin-right:238px;
-  color:#fff;
-}
-
-#deleteCourseButton:hover {
-  background-color:#c9555b;
-  cursor: pointer;
-}
-
-#deleteCourseButtonYes{
-  background-color:#ccc;
-  height:40px;
-  padding-left:35px;
-  padding-right:35px;
-  border: solid 1px #775886;
-  border-radius: 5px;
-  font-size:16px;
-  margin:0px;
-  margin-right:75px;
-}
-
-#deleteCourseButtonYes:hover {
-  background-color:#6e6e6e;
-  cursor: pointer;
-}
-
-#deleteCourseButtonNo{
-  background-color:#e35057;
-  height:40px;
-  padding-left:35px;
-  padding-right:35px;
-  border-radius: 5px;
-  font-size:16px;
-  margin:0px;
-  border: solid 1px #775886;
-}
-
-#deleteCourseButtonNo:hover {
-  background-color:#810f15;
-  cursor: pointer;
-}
-
 @media only screen and (max-width: 1350px) {
   .previewWindow {
     height: 89%;
@@ -8739,19 +8764,6 @@ textarea#filecont {
   .optionButtons {
     top: 436px;
   }
-}
-
-/* --------------================################================-------------- *
- *                           codeviewer - Loader                                *
- * --------------================################================-------------- */
-#loader {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background: url('../icons/loadingJS.gif') 50% 50% no-repeat rgb(93, 93, 93);
 }
 
 /* --------------================################================-------------- *
