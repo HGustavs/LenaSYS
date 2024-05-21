@@ -48,14 +48,14 @@ if (!checklogin()){
 
 if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
     $debug = "Access not granted";
-    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+    $retrieveArray = retrieveCourseedService($pdo, $hasAccess,$debug, null, $isSuperUserVar);
     echo json_encode($retrieveArray);
     return;
 }
 
 if (strcmp($opt, "CPYVRS") !== 0) {
     $debug = "OPT does not match.";
-    $retrieveArray = retrieveCourseedService($pdo,$studentTeacher,$debug, null, $isSuperUserVar);
+    $retrieveArray = retrieveCourseedService($pdo, $hasAccess,$debug, null, $isSuperUserVar);
     echo json_encode($retrieveArray);
     return;
 }
