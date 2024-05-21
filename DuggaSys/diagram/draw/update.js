@@ -240,7 +240,7 @@ function updateGridPos() {
 
 /**
  * @description Updates the grid size and its positioning based on the current zoom level and scroll position.
- * Adjusts the grid dimensions and recalculates its position to ensure it is displayed correctly according to the zoom origin and scroll offsets.
+ * @see Adjusts the grid dimensions and recalculates its position to ensure it is displayed correctly according to the zoom origin and scroll offsets.
  * @see zoomin Function where the zoom level increases.
  * @see zoomout Function where the zoom level decreases.
  */
