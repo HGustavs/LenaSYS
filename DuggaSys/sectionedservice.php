@@ -69,6 +69,7 @@ $url=getOP('url');
 $githubURL=getOP('githubURL');
 $codeExampleData=getOP('codeExampleData');
 $lid=getOP('lid');
+$codeExampleName=getOP('codeExampleName');
 $visbile = 0;
 $avgfeedbackscore = 0;
 
@@ -1029,17 +1030,29 @@ if(checklogin()){
 			}
 
 			//Edit codeexample. Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
-			$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
+			$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno, examplename = :examplename WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
 			$query->bindParam(':playlink', $fileNames[0]);
 			$query->bindParam(':templateno', $templateid);
 			$query->bindParam(':exampleid', $codeExamplesLinkParam[0]);
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvers', $codeExamplesLinkParam[3]);
+			$query->bindParam('examplename', $codeExampleName);
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				echo "Error updating entries in codeexample" . $error[2];
 			} else{
 				echo "Row updated successfully in codeexample";
+			}
+			//Edit listentries to update list entry name.
+			$query = $pdo->prepare( "UPDATE listentries SET entryname = :exampleName WHERE lid = :lid AND cid = :cid;");
+			$query->bindParam(':exampleName', $codeExampleName);
+			$query->bindParam(':lid', $codeExamplesLinkParam[4]);
+			$query->bindParam(':cid', $courseid);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				echo "Error updating listentry in listentries" . $error[2];
+			} else{
+				echo "Row updated successfully in listentries";
 			}
 
 			$boxContent = "Code";
