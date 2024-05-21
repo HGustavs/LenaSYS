@@ -247,7 +247,7 @@ function renderCell(col, celldata, cellid) {
 	if (col == "hash"){
 		var url = createUrl(celldata);
 		str += "<div class='resultTableText'>";
-		str += "<a href='" + url + "'>" + celldata + "</a>";
+		str += "<a class='resultTableTextHash' href='" + url + "'>" + celldata + "</a>";
 	}
 	else if(col == "grade"){
 		str += "<div class='gradeContainer resultTableText'>";
