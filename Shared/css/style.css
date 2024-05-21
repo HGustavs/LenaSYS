@@ -2786,19 +2786,6 @@ sectioned.php END
   overflow:hidden;
 }
 
-/*placemets for error text in server settings*/
-#error50{
-  display: block; 
-  left:55px; 
-  top:-78px;
-}
-
-#errorSymbol{
-  display: block; 
-  left:55; 
-  top:-72px;
-}
-
 #editCourseButtonPlacement {
   padding-top:20px; 
 }
