@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 
