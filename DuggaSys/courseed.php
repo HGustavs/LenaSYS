@@ -160,7 +160,7 @@ if(isset($_SESSION['uid'])){
 				</div>			
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
-					<select class='selectinput padding-right_10px' id='visib'></select>
+					<select class='selectinput margin-right_0px' id='visib'></select>
 				</div>
     		</div>
 			<div id='editCourseButtonPlacement' >

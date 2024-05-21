@@ -2344,7 +2344,9 @@ input.inactive-button {
   margin:40px;
 }
 
-
+.margin-right_0px{
+  margin-right: 0px
+}
 /*---===#===---*
   padding styles
 *---====#===---*/
