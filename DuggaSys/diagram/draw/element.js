@@ -496,7 +496,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         cx="${(boxw / 2) }" 
                         cy="${(boxw / 8) + linew}" 
                         r="${boxw / 8}px" 
-                        fill='${element.fill}' stroke='Gray' stroke-width='${linew}'
+                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
                     />
                     <path 
                         class="text"
@@ -510,7 +510,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                             m${-boxw / 4},${-boxw / 4}
                             l${-boxw / 4},${boxw / 4}"
                         stroke-width='${linew}'
-                        stroke='Gray'
+                        stroke='${element.stroke}'
                         fill='transparent'
                     />
                     <rect 
