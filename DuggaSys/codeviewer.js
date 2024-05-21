@@ -5118,6 +5118,10 @@ function checkIfPopupIsOpen() {
 		"#burgerMenu",
 		".previewWindowContainer.loginBoxContainer"
 	];
+	let div = document.getElementById("toastContainer");
+	if (div.children.length > 0) {
+		return true;
+	}
 	for (let popup of allPopups) {
 		if ($(popup).css("display") !== "none"){
 			return true;
