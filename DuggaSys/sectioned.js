@@ -3686,16 +3686,16 @@ const regex = {
 };
 
 function checkGithubLink(link) {
-  var element = document.getElementById(link);
-  var savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
-  var substring = "https://github.com/"
-  var status=true;
+  let element = document.getElementById(link);
+  let savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
+  let substring = "https://github.com/"
+  let status = true;
   status=element.value.includes(substring);
   if(element.value.length<substring.length+2) {
-    status=false;
+    status = false;
   }
   if(element.value.match('"') || element.value.match("'")) {
-    status=false;
+    status = false;
   }
   
   if (status) {
@@ -3725,10 +3725,10 @@ function checkGithubLink(link) {
 
 // creates a warning to user
 function checkGithubLinkClue(link) {
-  var element = document.getElementById(link);
-  var inputWindow = document.getElementById('githubPopupWindow');
-  var substring = "https://github.com/"
-  var status = true;
+  let element = document.getElementById(link);
+  let inputWindow = document.getElementById('githubPopupWindow');
+  let substring = "https://github.com/"
+  let status = true;
   status = element.value.includes(substring);
   if(element.value.length<substring.length+2) {
     status = false;
