@@ -727,11 +727,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function resetGitFetchTimer(superuser)
-{
-	if(cooldownHolder.style.display=="none"){
-		cooldownHolder.style.display="block";
-		if(superuser==1)
+function resetGitFetchTimer(superuser) {
+	const inputWindow = document.getElementById('githubPopupWindow');
+	if(cooldownHolder.style.display == "none" && inputWindow.style.display == "none") {
+		cooldownHolder.style.display = "block";
+		if(superuser == 1)
 		{
 			gitFetchCooldownMin.innerHTML=4;
 			gitFetchCooldownSec.innerHTML=59;

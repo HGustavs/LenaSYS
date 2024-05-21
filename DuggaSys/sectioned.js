@@ -3694,6 +3694,64 @@ const regex = {
 	githubURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
 };
 
+function checkGithubLink(link) {
+  let element = document.getElementById(link);
+  let savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
+  let substring = "https://github.com/"
+  let status = true;
+  status=element.value.includes(substring);
+  if(element.value.length < substring.length+2) {
+    status = false;
+  }
+  if(element.value.match('"') || element.value.match("'")) {
+    status = false;
+  }
+  
+  if (status) {
+    savebtn.disabled = false;
+    savebtn.style.opacity = '1';
+    element.style.backgroundColor = inputColorTheme;
+    element.classList.add("color-change-valid");
+    element.classList.remove("color-change-invalid");
+    window.bool10 = true;
+    return true;
+  } else if (element.value.length > 0) { //Invalid
+    savebtn.disabled = true;
+    savebtn.style.opacity = '0.5';
+    element.classList.add("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  } else {
+    savebtn.disabled = true;
+    savebtn.style.opacity = '0.5';
+    element.classList.remove("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  }
+}
+
+// creates a warning to user
+function checkGithubLinkClue(link) {
+  let element = document.getElementById(link);
+  let inputWindow = document.getElementById('githubPopupWindow');
+  let substring = "https://github.com/"
+  let status = true;
+  status = element.value.includes(substring);
+  if(element.value.length < substring.length+2) {
+    status = false;
+  }
+
+  if(element.value.match('"') || element.value.match("'")) {
+    status = false;
+  }
+
+  if (!status && inputWindow.style.display != "none") {
+    toast('warning','Enter a valid GitHub repository link',3);
+  }
+}
+
 //Validate form but do not perform it.
 function quickValidateForm(formid, submitButton) {
   const saveButton = document.getElementById(submitButton);
