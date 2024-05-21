@@ -2,7 +2,6 @@
 // Start the session
 session_start();
 
-include_once "../../coursesyspw.php";
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 
