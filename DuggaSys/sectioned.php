@@ -325,7 +325,7 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="text" class='textinput' onkeyup="quickValidateForm('editSection', 'saveBtn')" onchange="validateSectName('courseFeedback')" id='courseFeedback' placeholder='Enter feedback...'/></div>
 				</div>
 
 				<!-- Error message, no duggas present-->

@@ -3602,7 +3602,7 @@ function validateDate2(ddate, dialogid) {
   return false;
 }
 
-function validateSectName(name) {
+function  validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
@@ -3688,15 +3688,15 @@ const regex = {
 //Validate form but do not perform it.
 function quickValidateForm(formid, submitButton) {
   const saveButton = document.getElementById(submitButton);
-  var valid = true;
+  let valid = true;
 
   if(formid === 'gitHubTemplate') {
-    var fileNameInput = document.getElementById("fileName");
-    var matchesFileName = regex.fileName.test(fileNameInput.value);
-    var githubURLInput = document.getElementById("githubURL");
-    var matchesGithubURL = regex.githubURL.test(githubURLInput.value);
-    var saveGitTemplate = document.getElementById("saveGitTemplate");
-    var templateTable = document.getElementById("templateTable");
+    let fileNameInput = document.getElementById("fileName");
+    let matchesFileName = regex.fileName.test(fileNameInput.value);
+    let githubURLInput = document.getElementById("githubURL");
+    let matchesGithubURL = regex.githubURL.test(githubURLInput.value);
+    let saveGitTemplate = document.getElementById("saveGitTemplate");
+    let templateTable = document.getElementById("templateTable");
 
     saveGitTemplate.disabled = true;
     
@@ -3732,12 +3732,14 @@ function quickValidateForm(formid, submitButton) {
   }
 
   if (formid === 'editSection') {
-    var sName = document.getElementById("sectionname").value;
-    var item = document.getElementById("editSectionDialogTitle").innerHTML;
-    var deadlinepart = document.getElementById('inputwrapper-deadline');
-    var deadlinedisplayattribute = deadlinepart.style.display;
+    let sName = document.getElementById("sectionname").value;
+    let item = document.getElementById("editSectionDialogTitle").innerHTML;
+    let feedback = document.getElementById("courseFeedback").value;
+    let deadlinepart = document.getElementById('inputwrapper-deadline');
+    let deadlinedisplayattribute = deadlinepart.style.display;
     valid = true;
     valid &= validateSectName('sectionname');
+    valid &= validateSectName('courseFeedback');
 
     // Validates Deadline
     if (deadlinedisplayattribute != 'none') {
@@ -3750,8 +3752,8 @@ function quickValidateForm(formid, submitButton) {
     window.bool11 |= sName == item
     saveButton.disabled = !valid;
   }else if (formid === 'newCourseVersion') {
-    var versName = document.getElementById("versname").value;
-    var versId = document.getElementById("cversid").value;
+    let versName = document.getElementById("versname").value;
+    let versId = document.getElementById("cversid").value;
     valid = true;
     valid &= validateCourseID('cversid', 'dialog2');
     valid &= validateVersionName('versname', 'dialog');
@@ -3762,7 +3764,7 @@ function quickValidateForm(formid, submitButton) {
     valid &= !(versName == null || versName == "", versId == null || versId == "");
     saveButton.disabled = !valid;
   } else if (formid === 'editCourseVersion') {
-    var eversName = document.getElementById("eversname").value;
+    let eversName = document.getElementById("eversname").value;
     valid = true;
     valid &= validateVersionName('eversname', 'dialog5');
     valid &= validateDate('estartdate', 'eenddate', 'dialog6');
