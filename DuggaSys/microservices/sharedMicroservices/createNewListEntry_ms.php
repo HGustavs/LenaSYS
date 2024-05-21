@@ -29,8 +29,10 @@ function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link,
 	logUserEvent($userid ,$username,EventTypes::SectionItems, $entryname);
     }
 
+    $debug = "NONE!";
     if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error updating entries" . $error[2];
     }
+    return $debug;
 }
