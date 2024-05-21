@@ -211,8 +211,8 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-  console.log("myConsole lid: " + lid);
-  console.log("myConsole typeof: " + typeof lid);
+  // console.log("myConsole lid: " + lid);
+  // console.log("myConsole typeof: " + typeof lid);
   document.getElementById("sectionname").focus();
   toggleTab(true);
   enableTab(document.getElementById("editSection"));
@@ -869,13 +869,9 @@ async function createFABItem(kind, itemtitle, comment) {
       clearHideItemList();
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
-    console.log(numberOfItems + " " + itemtitle + "(s) created");
+    // console.log(numberOfItems + " " + itemtitle + "(s) created");  
     numberOfItems = 1; // Reset number of items to create
   }
-  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
-  console.log(selectItem);
-  console.log("newItem function:", newItem.toString());
-
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -4169,23 +4165,25 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       templateid: templateNo,
       fileSizes: fileSize
     }
-    //Send data to sectioned.php as JSON through POST and GET
-    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
-       method: 'POST',
-       body: JSON.stringify(AllJsonData),
-       headers: {
-        'Content-Type': 'application/json'
-       }
-      }) 
-      .then(response => response.text())
-      .then(data => {
-        //For testing/finding bugs/errors
-        //console.log(data);
-        confirmBox('closeConfirmBox');
-      })
-      .catch(error => {
-          console.error('Error calling PHP function:', error);
-      });
+
+    //Send data to sectioned.php through POST
+    $.ajax({
+       url: 'sectionedservice.php',
+       type: 'POST',
+       data: {
+        courseid: cid,
+        githubURL: githubURL,
+        opt: 'GITCODEEXAMPLE',
+        codeExampleData: AllJsonData
+       },
+       success: function(response) {
+          console.log(response);
+       },
+       error: function(xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+      }
+    });   
+    confirmBox('closeConfirmBox');
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();

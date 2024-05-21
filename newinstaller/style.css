@@ -149,46 +149,6 @@ html, body {
     gap: 1rem;
 }
 
-/*  Media query for changing element disposition to support
-    smaller screens like tablets and smaller browser windows */
-@media (max-width: 478px) {
-    .breadcrumbs {
-        font-size: var(--text-small);
-    }
-}
-
-@media (min-width: 478px) and (max-width: 768px) {
-    .breadcrumbs {
-        font-size: var(--text-medium);
-    }
-}
-
-@media (max-width: 768px) {
-
-    .input-grid {
-        font-family: var(--body-font);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .header-1 {
-        font-family: var(--header-font);
-        color: var(--text-light);
-        font-size: var(--h1-fontsize-small);
-        margin: 0;
-        padding: 1rem;
-    }
-
-    .header-2 {
-        font-family: var(--header-font);
-        color: var(--primary-color);
-        font-size: var(--h2-fontsize-small);
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-    }
-}
-
 /*  Lets the last cell of the .input-grid span 2 columns */
 .grid-element-span {
     display: grid;
@@ -362,6 +322,67 @@ input[type=checkbox], input[type=radio] {
     display: inline-block; /* Ensures margin-bottom is applied */
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--page-background);
+    margin: 15% auto;
+    padding: 1.25rem;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 37.5rem;
+    border-radius: 0.75rem;
+}
+
+.close-btn {
+    color: var(--primary-color);
+    float: right;
+    font-size: 1.75px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--primary-color-hover);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    font-family: var(--header-font);
+    font-size: var(--h2-fontsize);
+    color: var(--primary-color);
+}
+
+.modal-body,
+.modal-footer {
+    font-family: var(--body-font);
+    font-size: var(--text-large);
+    padding: 0.75rem;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-footer button {
+    margin: 0.5rem;
+}
+
 /*  This code is nested CSS. It's a relatively new CSS
     functionality. If you are unfamiliar with it, more information
     and some examples can be found here --> https://drafts.csswg.org/css-nesting-1/ */
@@ -389,6 +410,45 @@ input[type=checkbox], input[type=radio] {
         font-style: italic;
         background-color: var(--secondary-color);
         width: 0%;
+    }
+}
+
+/*  Media query for changing element disposition to support
+    smaller screens like tablets and smaller browser windows */
+@media (max-width: 478px) {
+    .breadcrumbs {
+        font-size: var(--text-small);
+    }
+}
+
+@media (min-width: 478px) and (max-width: 768px) {
+    .breadcrumbs {
+        font-size: var(--text-medium);
+    }
+}
+    
+@media (max-width: 768px) {
+    .input-grid {
+        font-family: var(--body-font);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .header-1 {
+        font-family: var(--header-font);
+        color: var(--text-light);
+        font-size: var(--h1-fontsize-small);
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .header-2 {
+        font-family: var(--header-font);
+        color: var(--primary-color);
+        font-size: var(--h2-fontsize-small);
+        margin-top: 0;
+        margin-bottom: 1.5rem;
     }
 }
 

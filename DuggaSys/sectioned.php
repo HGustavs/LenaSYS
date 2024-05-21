@@ -284,11 +284,13 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+						</div>
+						<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
+					</div>
 				</div>
-				<div id="nameFormDialog" class="formDialog">
-  		      		<span id="dialog10"  class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
-  		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
@@ -468,24 +470,30 @@
 			<div class="formBody">
 				<div class='inputwrapper'>
 					<span>Version ID:</span>
-					<div class="formDialog versionDialog" >
-						<span id="dialog2" class="formDialogText">3 to 8 numbers required</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog2" class="formDialogText">3 to 8 numbers required</span>
+						</div>
+						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8' />
 					</div>
-					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
 				</div>
 				<div class='inputwrapper'>
 					<span>Version Name:</span>
-					<div class="formDialog versionDialog">
-						<span id="dialog" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span>
+						</div>
+						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
 					</div>
-					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
 				</div>
 				<div class='inputwrapper'>
 					<span>Start Date:</span>
-					<div class="formDialog versionDialog">
-						<span id="dialog3" class="formDialogText formDialogTextHalfDownShift">Start date has to be before end date</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog3" class="formDialogText">Start date has to be before end date</span>
+						</div>
+						<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
 					</div>
-					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
 				</div>
 				<div class='inputwrapper'>
 					<span>End Date:</span>
@@ -493,11 +501,13 @@
 				</div>
 				<div class='inputwrapper'>
 					<span>MOTD:</span>
-					<div class="formDialog versionDialog" >
-						<span id="dialog4" class="formDialogText formDialogSplitUp">Prohibited symbols</span>
-						<span id="dialog42" class="formDialogText formDialogSplitDown">Max 50 characters</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog4" class="formDialogText">Prohibited symbols</span>
+							<span id="dialog42" class="formDialogText">Max 50 characters</span>
+						</div>
+						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
 					</div>
-					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
 				</div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
@@ -520,16 +530,36 @@
 			</div>
 			<div class="formBody">
 				<input type='hidden' id='cid' value='Toddler' />
-				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div id="formDialog_popup1" class="formDialog"><span id="dialog5" class="formDialogText ECVDialog">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
-				<div id="formDialog_popup2" class="formDialog"><span id="dialog6" class="formDialogText ECVDialog">Start date has to be before end date</span></div>
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<div id="formDialog_popup3" class="formDialog"><span id="dialog9" class="formDialogText ECVDialog">Prohibited symbols</span></div>
-				<div id="formDialog_popup4" class="formDialog"><span id="dialog92" class="formDialogText ECVDialog">Max 50 characters</span></div>
-				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
+				<div class='inputwrapper'>
+							<span>Version ID:</span>
+							<input class="greyedout-textinput" type='text' disabled id='eversid' placeholder='Version ID' />
+						</div>
+						<div class='inputwrapper'>
+							<span>Version Name:</span>
+							<div class="dialogwrapper">
+								<div class="formDialog"><span id="dialog5" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
+								<input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name' />
+							</div>
+						</div>
+						<div class='inputwrapper'>
+							<span>Start Date:</span>
+							<div class="dialogwrapper">
+								<div class="formDialog"><span id="dialog6" class="formDialogText">Start date has to be before end date</span></div>
+								<input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' />
+							</div>
+						</div>
+						<div class='inputwrapper'>
+							<span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' />
+						</div>
+						<div class='inputwrapper'>
+							<span>MOTD:</span>
+							<div class="dialogwrapper">
+								<input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD' />
+								<div class="formDialog"><span id="dialog9" class="formDialogText">Prohibited symbols</span></div>
+								<div class="formDialog"><span id="dialog92" class="formDialogText">Max 50 characters</span></div>
+							</div>
+						</div>
+						<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
 			<div class="formFooter">
 				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
@@ -694,17 +724,21 @@
 						</tr>
 						<div class='inputwrapper'>
 							<span>Name:</span>
-							<div class="formDialog">
-								<span id="fileNameError"  class="formDialogText">Please use letters and digits, only</span>
+							<div class="dialogwrapper">
+								<div class="formDialog">
+									<span id="fileNameError" class="formDialogText">Please use letters and digits, only</span>
+								</div>
+								<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value='' />
 							</div>
-							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value=''/>
 						</div>
 						<div class='inputwrapper'>
 							<span>GithubUrl:</span>
-							<div class="formDialog">
-								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+							<div class="dialogwrapper">
+								<div class="formDialog">
+									<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+								</div>
+								<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value='' />
 							</div>
-							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/>
 						</div>
 						<div class='inputwrapper'>
 							<span>Filepath:</span>
@@ -715,184 +749,6 @@
 				</div>
 				
 		</div>
-<?php
-//Insert into gitRepo DB
-function insertIntoSqLiteGitRepo($cid, $githubURL){
-	//First query: Check if a row with same cid already exists. If not, insert into db.
-	$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-	$query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
-	$query->execute([$cid]);
-	$count = $query->fetchColumn();
-
-	if($count > 0){
-		//A repo with the same cid primary key already exists. Do nothing.
-	} else {
-		$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':repoURL', $githubURL);
-		if (!$query->execute()) {
-			$error = $query->errorInfo();
-			echo "Error updating entry in gitRepos" . $error[2];
-		}
-	}
-}
-
-//Insert files into gitFiles DB
-function insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA){
-    $pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
-    $successInsert = true;
-    $count = $fileNames == null ? 0 : count($fileNames);
-    for($i = 0; $i < $count; $i++){
-        $query = $pdoLite->prepare('REPLACE INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
-        $query->bindParam(':cid', $cid);
-        $query->bindParam(':fileName', $fileNames[$i]);
-        $query->bindParam(':fileType', $fileTypes[$i]);
-        $query->bindParam(':fileURL', $fileURLS[$i]);
-        $query->bindParam(':downloadURL', $downloadURLS[$i]);
-        $query->bindParam(':fileSHA', $SHA[$i]);
-        $query->bindParam(':filePath', $filePaths[$i]);
-        $success = $query->execute();
-        if(!$success){
-            $successInsert = false;
-            echo "Insertion into gitFiles failed. File: " . $fileNames[$i];
-        }
-    }
-    if($successInsert){
-        echo "All insertions into gitFiles were successful.";
-    }
-}
-
-//Creates courses directory in root if it doesnt exist and courses folder inside
-function writeCoursesDir($path, $pathCoursesRoot){
-    //Creats courses folder if it doesnt already exist.
-    if(!is_dir($pathCoursesRoot)){
-        mkdir($pathCoursesRoot, 0775, true);
-    }
-    // Creates the directory for the corresponding course if it doesnt exist.
-    if (!file_exists($path)) {
-        mkdir($path, 0775, true);
-    }
-    if(is_dir($path)){
-        echo "Successfully created courses folder or it already exists!";
-    }
-}
-
-//Writes code example files to course directory
-function writeFilesInDir($path, $fileNames, $content){
-    $WriteFilesSuccess = true;
-    $success = true;
-	$count = $content == null ? 0 : count($content);
-    for($i = 0; $i < $count; $i++){
-        $WriteFilesSuccess = file_put_contents($path . '/' . $fileNames[$i], $content[$i]);
-        if($WriteFilesSuccess === false){
-            echo "File failed to write: " . $fileNames[$i];
-            $success = false;
-        }else{
-            echo "File written successfully: " . $fileNames[$i];
-        }
-    }
-    if ($success) {
-        echo "All files written successfully!";
-    }
-}
-
-function insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes) {
-	global $pdo;
-	$count = $fileNames == null ? 0 : count($fileNames);
-	for($i = 0; $i < $count; $i ++) {
-		$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
-		$query->bindParam(':filename', $fileNames[$i]);
-		$query->bindParam(':cid', $cid);
-		$query->execute();
-		$norows = $query->fetchColumn();
-		if($norows == 0) {
-			//TODO: Kind value should be fixed to dynamic
-			//TODO: add filesize with insert. Can be fetched from codeExamplesContent in sectioned.js 
-			$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:fileName,'3',:cid,:filesize);");
-			$query->bindParam(':cid', $cid);
-			$query->bindParam(':fileName', $fileNames[$i]);
-			$query->bindParam(':filesize', $fileSizes[$i]);
-			if (!$query->execute()) {
-				$error = $query->errorInfo();
-				echo "Error updating entries" . $error[2];
-			} else {
-				echo "File stored successfully in fileLink";
-			}
-		}
-	}
-}
-function updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
-	global $pdo;
-	//Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
-	$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
-	$query->bindParam(':playlink', $fileNames[0]);
-	$query->bindParam(':templateno', $templateid);
-	$query->bindParam(':exampleid', $CeHiddenParam[0]);
-	$query->bindParam(':cid', $cid);
-	$query->bindParam(':cvers', $CeHiddenParam[3]);
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		echo "Error updating entries in codeexample" . $error[2];
-	} else{
-		echo "Row updated successfully in codeexample";
-	}
-}
-
-function insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid){
-	global $pdo;
-	$count = $fileNames == null ? 0 : count($fileNames);
-	$boxContent = "Code";
-	$wordlistID = "3";
-	$y = 1;
-	for($i = 0; $i < $count; $i++){
-		//TODO: Change boxcontent to be named dynamicly.
-		// Maybe change filenameNoExt to something better named. Also what is wordlistid?
-		$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
-		$query->bindParam(':boxid', $y);
-		$query->bindParam(':exampleid', $CeHiddenParam[0]);
-		$filenameNoExt = preg_replace('/\.[^.]*$/', "", $fileNames[$i]);
-		$query->bindParam(':boxtitle', $filenameNoExt);
-		$query->bindParam(':boxcontent', $boxContent);
-		$query->bindParam(':filename', $fileNames[$i]);
-		$query->bindParam(':wordlistid', $wordlistID);
-	    
-		if (!$query->execute()) {
-			$error = $query->errorInfo();
-			echo "Error updating entries" . $error[2];
-		} else {
-			echo "File stored successfully in box";
-		}
-		$y++;
-	}
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	//Retrieval of JSON data sent through POST and GET
-	$cid = $_GET['cid'];
-	$githubURL = $_GET['githubURL'];
-	$postDataContent = file_get_contents('php://input');
-	$requestDataContent = json_decode($postDataContent, true);
-	$codeExamplesContent = isset($requestDataContent['codeExamplesContent']) ? $requestDataContent['codeExamplesContent'] : null;
-	$SHA = isset($requestDataContent['SHA']) ? $requestDataContent['SHA'] : null;
-	$fileNames = isset($requestDataContent['fileNames']) ? $requestDataContent['fileNames'] : null;
-	$filePaths = isset($requestDataContent['filePaths']) ? $requestDataContent['filePaths'] : null;
-	$fileURLS = isset($requestDataContent['fileURLS']) ? $requestDataContent['fileURLS'] : null;
-	$downloadURLS = isset($requestDataContent['downloadURLS']) ? $requestDataContent['downloadURLS'] : null;
-	$fileTypes = isset($requestDataContent['fileTypes']) ? $requestDataContent['fileTypes'] : null;
-	$CeHiddenParam = isset($requestDataContent['codeExamplesLinkParam']) ? $requestDataContent['codeExamplesLinkParam'] : null;
-	$templateid = isset($requestDataContent['templateid']) ? $requestDataContent['templateid'] : null;
-	$fileSizes = isset($requestDataContent['fileSizes']) ? $requestDataContent['fileSizes'] : null;
-	$path = '../../LenaSYS/courses/' . $cid;
-	$pathCoursesRoot = '../../LenaSYS/courses';
-
-	writeCoursesDir($path, $pathCoursesRoot);
-	writeFilesInDir($path, $fileNames, $codeExamplesContent);
-	insertIntoSqLiteGitRepo($cid, $githubURL);
-	insertIntoSqLiteGitFiles($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $SHA); 
-	insertIntoFileLinkDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $fileSizes);
-	updateCodeExampleDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
-	insertIntoBoxDB($cid, $fileNames, $filePaths, $fileURLS, $downloadURLS, $fileTypes, $CeHiddenParam, $templateid);
-}
-?>
 </body>
 
 </html>

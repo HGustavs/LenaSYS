@@ -1012,7 +1012,7 @@ function AJAXService(opt,apara,kind)
 		}
 		if(apara[key] == "") {
 				// Informs the user that his input contained nothing.
-				console.log("Your input contained nothing in " + key);
+				// console.log("Your input contained nothing in " + key);
 		}
 	}
 
