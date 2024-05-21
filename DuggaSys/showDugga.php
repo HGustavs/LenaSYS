@@ -303,7 +303,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 	</div>
 
 	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox formBox" style="max-width:400px; overflow-y:visible;">
+	  <div class="loadDuggaBox formBox">
 			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
     		<div id='loadDuggaPopup' style="display:block">

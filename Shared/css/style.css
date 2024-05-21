@@ -1,4 +1,15 @@
 /* --------------===============################================-------------- *
+ *                                    INFO                                     *
+ * --------------================################================-------------- */
+/*
+
+PLZ see "Handling and usage of Style.css" in the wiki before use
+//the 2024 clean up crue
+
+
+
+*/
+/* --------------===============################================-------------- *
  *                                    Colors                                    *
  * --------------================################================-------------- */
 
@@ -2303,68 +2314,100 @@ input.inactive-button {
   width: 100%;
 }
 
+.fab_btn_list {
+  margin: 0; 
+  padding: 0; 
+  display: none;
+ }
 
+ .loadDuggaBox {
+  max-width:400px; 
+  overflow-y:visible;
+ }
+
+ /*---===#===---*
+  margin
+*---====#===---*/
+.margin_10px {
+  margin:10px;
+}
+
+.margin_20px {
+  margin: 20px;
+}
+
+.margin_30px {
+  margin:30px;
+}
+
+.margin_40px {
+  margin:40px;
+}
+
+.margin-right_0px {
+  margin-right: 0px
+}
 /*---===#===---*
   padding styles
 *---====#===---*/
 
-.padding_5px{
+.padding_5px {
   padding: 5px;
 }
 
-.padding_10px{
+.padding_10px {
   padding: 10px;
 } 
 
-.padding_15px{
+.padding_15px {
   padding: 15px;
 } 
 
-.padding_20px{
+.padding_20px {
   padding: 20px;
 } 
 
-.padding_25px{
+.padding_25px {
   padding: 25px;
 }
 
-.padding-right_5px{
+.padding-right_5px {
   padding-right: 5px;
 }
 
-.padding-right_10px{
+.padding-right_10px {
   padding-right: 10px;
 }
 
-.padding-right_15px{
+.padding-right_15px {
   padding-right: 15px;
 }
 
-.padding-right_20px{
+.padding-right_20px {
   padding-right: 20px;
 }
 
-.padding-right_25px{
+.padding-right_25px {
   padding-right: 25px;
 }
 
-.padding-left_5px{
+.padding-left_5px {
   padding-left: 5px;
 }
 
-.padding-left_10px{
+.padding-left_10px {
   padding-left: 10px;
 }
 
-.padding-left_15px{
+.padding-left_15px {
   padding-left: 15px;
 }
 
-.padding-left_20px{
+.padding-left_20px {
   padding-left: 20px;
 }
 
-.padding-left_25px{
+.padding-left_25px {
   padding-left: 25px;
 }
 
@@ -2373,19 +2416,68 @@ input.inactive-button {
 /*---===#===---*
 Fonts
 *---====#===---*/
-.italic{
+.italic {
   font-style:italic;
 }
 
 /*---END---*/
 
-.display_none{
-  display:none
+/*---===#===---*
+Float
+*---====#===---*/
+.float_right {
+  float:right;
 }
 
-.errorMessage{
+/*---END---*/
+
+/*---===#===---*
+Float
+*---====#===---*/
+.align_right {
+  align:right
+}
+
+.align_left {
+  align:left
+}
+
+.align_center {
+  align:center
+}
+
+/*---END---*/
+
+.display_none {
+  display: none;
+}
+
+.display_flex {
+  display: flex;
+}
+
+.display_block {
+  display: block;
+}
+
+
+.errorMessage {
   display: none; 
   left:0px;
+}
+
+/* Reusable form body elements */
+
+.formBody {
+  padding:5px;
+}
+
+.formFooter {
+  padding:5px;
+}
+
+#chooseTemplate {
+  width:464px;
 }
 
 /*---===#===---*
@@ -2444,6 +2536,42 @@ resulted.php END
 /* --------------===============################================-------------- *
  *                                    sectioned.php                             *
  * --------------================################================--------------*/
+ 
+ #courseHeader {
+  display:flex; 
+  align-items:center; 
+  justify-content:flex-end; 
+ }
+
+ #course-newitem {
+  display: flex;
+ }
+
+ #course-coursevers {
+  display:none; 
+  margin-right:10px;
+ }
+
+ #course-courseid {
+  display:none; 
+  margin-right:10px;
+ }
+
+ #course-label {
+  flex-grow:1
+ }
+
+#editSectionLoginBox {
+ width:460px;
+}
+
+#nameFormDialog {
+  display: block;
+}
+
+#addElement {
+  display:none;
+}
 
 .statsdiv {
   background-color: var(--color-text-primary);
@@ -2478,6 +2606,142 @@ resulted.php END
 #editCourse {
   margin-right: 0px;
 }
+
+#absolutedeadlinecheck {
+  margin:3px 5px; 
+  height:20px'
+}
+
+#dialog8 {
+  font-size:11px; 
+  border:0px; 
+  margin-left: 20px; 
+  display:none;
+}
+
+#relativeFormDialog {
+  display: block; 
+  left:40px; 
+  top:-35px;
+}
+
+.deleteDugga {
+  display:none; 
+  float:left;
+}
+
+.closeDugga {
+  display:block; 
+  float:left;
+}
+
+#submitBtn {
+  display:none; 
+  float:right;
+}
+
+#saveBtn {
+  float:right;
+}
+
+#deleteConfirmBox {
+  width:460px;
+}
+
+#deleteConfirmText {
+  text-align: center;
+}
+
+#deleteBtnPlacement {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#delete-item-button {
+  margin-right: 5%;
+}
+
+#close-item-button {
+  margin-left: 5%;
+}
+
+#hide-item-button {
+  margin-right: 5%;
+}
+
+#ok-item-button {
+  margin-right: 5%;
+}
+
+#formBoxCanvasLink {
+  min-width:300px;
+}
+
+#formBodyCanvasLinkText {
+  text-align: center; 
+  padding-top:25px;
+}
+
+#formBoxConfirm {
+  width:460px;
+}
+
+#formBodyConfirm {
+  text-align: center;
+}
+
+.formFooterBtnplace {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+.formBoxTabConfirm {
+  width:360px;
+}
+
+#tabDropDown {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#formBoxInfo {
+  width:460px;
+}
+
+.formBoxCourseVersion {
+  width:464px; 
+  overflow:hidden;
+}
+
+.ECVDialog {
+  display: none; 
+  left:0px;
+}
+
+#formBoxGitHub {
+  width:460px;
+}
+
+#formBoxGithubPopup {
+  width:464px;
+  overflow:hidden;
+}
+
+#createAlert {
+  z-index: 1500;
+}
+
+#updateAlert {
+  z-index: 1500;
+}
+
+#sectionname {
+  margin:0px 10px 0px 0px;
+}
+
 /*---===#===---*
 sectioned.php END 
 *---====#===---*/
@@ -2531,6 +2795,37 @@ sectioned.php END
   width: 464px;
 }
 
+#formDialog_popup1 {
+  display: block; 
+  left:54px; 
+  top:-36px;
+}
+
+#formDialog_popup2 {
+  display: block; 
+  left:54px; 
+  top:-50px;
+}
+
+#formDialog_popup3 {
+  display: block; 
+  left:54px; 
+  top:-40px;
+}
+
+#formDialog_popup4 {
+  display: block; 
+  left:54px; 
+  top:-22px;
+}
+
+#formBoxHighscore {
+  width:500px;
+}
+
+#visb {
+  margin:0px 0px 0px 0px;
+}
 
 /*---===#===---*
 courseed.php END 
@@ -3037,6 +3332,8 @@ input.submit-button-newitem {
   margin-top: 2px;
   margin-bottom: 2px;
   margin-left: 0px;
+  padding-right:5px; 
+  margin-right: 10px;
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
@@ -3244,16 +3541,6 @@ div.submit-button:disabled {
   width: 160px !important;
   height: 48px !important;
   line-height: 48px !important;
-}
-
-/* Reusable form body elements */
-
-.formBody {
-  padding:5px;
-}
-
-.formFooter {
-  padding:5px;
 }
 
 /* Form Pointing Dialogs */
@@ -5608,12 +5895,6 @@ only screen and (max-device-width: 568px) {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
-}
-
-#addElement{
-  margin-right:-20px; 
-  top:70px; 
-  display:none;
 }
 
 @media only screen and (max-width: 800px),
@@ -8776,6 +9057,7 @@ textarea#filecont {
   position: relative;
   margin-bottom: 7px;
   max-width: auto;
+  display: none;
 }
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
