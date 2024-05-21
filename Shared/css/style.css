@@ -9772,12 +9772,12 @@ border: none !important;
 
 /* This is used to highlight updated and new items (ex coursees, duggas)*/
 .highlightChange{
-  animation: glowAnimation 10s ease-out;
+  animation: glowAnimation 8s ease-out;
 }
 
 @keyframes glowAnimation {
   0%{
-    background-color: var(--color-primary);
+    background-color: var(--color-green);
   }
   100%{
     background-color: none;
