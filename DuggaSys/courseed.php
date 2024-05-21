@@ -151,7 +151,7 @@ if(isset($_SESSION['uid'])){
 				</div>			
 				<div class='inputwrapper'>
 					<span>Visibility:</span>
-					<select class='selectinput padding-right_10px' id='visib'></select>
+					<select class='selectinput margin-right_0px' id='visib'></select>
 				</div>
     		</div>
 			<div class="formFooter" id='editCourseButtonPlacement' >
@@ -184,12 +184,11 @@ if(isset($_SESSION['uid'])){
 					<span>Message of the day:</span>
 					<div class="dialogwrapper">
 						<input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' />
-						<div class="formDialog"><span id="dialog51" class="formDialogText">Prohibited symbols</span></div>
-						<div class="formDialog"><span id="dialog52" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
+						<div class="formDialog" id="errorSymbol"><span id="dialog51" class="formDialogText">Prohibited symbols</span></div>
+						<div class="formDialog" id="error50"><span id="dialog52" class="formDialogText">Message can only contain a maximum of 50 symbols</span></div>
 					</div>
 				</div>
-				<div class='inputwrapper'><span style='font-style:italic;'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>
-				
+				<div class='inputwrapper'><span class="italic">Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>	
     		</div>
     		<div class="formFooter">
     			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />

@@ -90,8 +90,8 @@
 
 	<!-- content START -->
 	<!-- Div that apper as an alert when a New Item has been created -->
-	<div style="z-index: 1500;" id="createAlert"></div>
-	<div style="z-index: 1500;" id="updateAlert"></div>
+	<div id="createAlert"></div>
+	<div id="updateAlert"></div>
 	<div id="content">
 
 		
@@ -106,7 +106,7 @@
 		<!-- Scroll up END -->
 
 		<!-- MOTD dropdown -->
-		<div id='motdArea' style='display: none;'>
+		<div id='motdArea'>
 			<?php
 				echo "<tr>";
 				echo "		<div class='motdBoxheader' >";
@@ -162,30 +162,30 @@
 
 		<div id='Sectionlist'>
 
-		<div class='course' style='display:flex; align-items:center; justify-content:flex-end; '>
+		<div id='courseHeader' class='course' >
 			
-			<!-- Undo button -->
+			<!-- Undo button 
 			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
-			<!-- Undo button END -->
+			 Undo button END -->
 
 			<!-- Hide button -->
 		
-			<div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
-				<!-- <input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
-				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
-				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-				<input id='addElement'  type='button' value='+' style="top:-493px; margin-right:10px;" class='submit-button-newitem' title='New Item'>
+			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
+				<!-- <input id='tabElement'  type='button' value="&#8633;" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
+				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg'  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+				<input id='addElement'  type='button' value='+' class='submit-button-newitem' title='New Item'>
 			</div>
 		
 			<!-- end hide button -->
 
 			<!-- Small FAB Button in top in the header of sectioned -->
 		
-			<div style="margin:10px;">
+			<div class="margin_10px">
 				<img src="../Shared/icons/right_complement.svg" alt='Show List Content' id="sectionList_arrowStatisticsOpen">
 				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
-			<div class='fixed-action-button2 sectioned2' id="FABStatic2" style="display:none">
+			<div class='fixed-action-button2 sectioned2 display_none' id="FABStatic2">
 				<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' id='olFabBtnList2' reversed id='fabBtnList2'>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
@@ -201,28 +201,28 @@
 			
 			<!-- Hide button -->
 		
-			<!-- <div class='fixed-action-button3 sectioned3'  id="HIDEStatic" style="display:none">
-				<input id='tabElement'  type='button' value="&#8633;" style="padding-right:5px" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
-				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="padding-right:5px; margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+			<!-- <div class='fixed-action-button3 sectioned3'  id="HIDEStatic" >
+				<input id='tabElement'  type='button' value="&#8633;"  class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'>
+				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' margin-right: 10px;" class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
 			</div> -->
 		
 			<!-- end hide button -->
 			
-			<div id='course-label' style='flex-grow:1'>
+			<div id='course-label'>
 					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
-					<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
+					<span id='course-coursecode'>UNK</span>
 					<span id='course-versname' class='courseVersionField'>UNK</span>
 			</div>
 
 
-			<div id='course-newitem' style='display: flex;'>
+			<div id='course-newitem'>
 
 			</div>
 
 			<!-- test #1 -->
 
-			<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
-			<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
+			<div id='course-coursevers'>UNK</div>
+			<div id='course-courseid' >UNK</div>
 
 		</div>
 
@@ -230,9 +230,9 @@
 		
 		<!-- FAB Start -->
 		<!-- Big FAB Button in the bottom of the page -->
-		<div class='fixed-action-button extra-margin' id="FABStatic" style="display:none">
+		<div class='fixed-action-button extra-margin display_none' id="FABStatic">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn' tabindex='0' onclick='incrementItemsToCreate();'>+</a>
-				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed id='fabBtnList'>
+				<ol class='fab-btn-list fab_btn_list' reversed id='fabBtnList'>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","undefined");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Moment' onclick='createFABItem("4","New Moment","undefined");'><img alt='moment format icon' class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
@@ -258,8 +258,8 @@
 	</div>
 	
 	<!-- <div class="course">
-		<span style="text-align: center;">
-			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>" style="color:#fff">Subscribe for deadlines in your personal calendar</a>
+		<span>
+			<a href="../Shared/calendar.php?courseid=<?php echo $_GET['courseid']; ?>&coursevers=<?php echo $_GET['coursevers']; ?>">Subscribe for deadlines in your personal calendar</a>
 		</span>
 	</div> -->
 	<!-- content END -->
@@ -270,8 +270,10 @@
 
 		<!-- Edit Section Dialog START -->
 
-		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+
+		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none'>
+		<div id='editSectionLoginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
+
 
 			<div class='formBoxHeader'>
 				<h3 id='editSectionDialogTitle'>Edit Item</h3>
@@ -305,7 +307,7 @@
 								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' style='margin:0 0 0 10px;' type='date' id='setDeadlineValue' value='' />
 								<select class='selectDeadlineTime' style='width:55px;' id='deadlineminutes'></select>
 								<select class='selectDeadlineTime' style='width:55px;' id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' style='margin:3px 5px; height:20px' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
+								<input type='checkbox' id='absolutedeadlinecheck' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
 							</span>
 							<br />
 							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
@@ -315,57 +317,57 @@
 								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineminutes'></select>
 								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlinehours'></select>
 							</span>
-							<div class="formDialogWide" style="display: block; left:40px; top:-35px;">
-  		      					<span id="dialog8" style="font-size:11px; border:0px; margin-left: 20px; display:none;" class="formDialogText">Deadline has to be between start date and end date</span>
+							<div id="relativeFormDialog" class="formDialogWide">
+  		      					<span id="dialog8" class="formDialogText">Deadline has to be between start date and end date</span>
   		      				</div>
 					</div>
 					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
-					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
-					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  style='align:center;' id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select class="align_right" id='visib'></select></div>
+					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select class="align_right" id='grptype'></select></div>
+					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  class="align_center" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
 				<div class="formFooter">
-					<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
-					<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
-					<input id="submitBtn" style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
+					<input class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+					<input class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
+					<input id="submitBtn" class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
+					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
 				</div>
 			</div>
 		</div>
 	<!-- Edit Section Dialog END -->
 
 	<!-- Confirm Section Dialog START -->
-	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+	<div id='sectionConfirmBox' class='loginBoxContainer display_none'>
+		<div id="deleteConfirmBox" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm deletion</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center;'>
+			<div id="deleteConfirmText" class="formBody">
 					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
-			<div class="formFooter "style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			<div id="deleteBtnPlacement" class="formFooter" >
+				<input class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
 	</div>
 
 
 	<!-- Canvas Link Dialog -->
-	<div id='canvasLinkBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='min-width:250px;'>
+	<div id='canvasLinkBox' class='loginBoxContainer display_none'>
+		<div id="formBoxCanvasLink" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
-					<h3 style='text-align: center;'>Link Copied To Clipboard</h3>
+					<h3>Link Copied To Clipboard</h3>
 					<div class="cursorPointer" onclick='showCanvasLinkBox("close",this);' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center; padding-top:25px;'>
+			<div id="formBodyCanvasLinkText" class="formBody">
 					<input type="text" id="canvasLinkText" readonly value="">
 			</div>
 		</div>
@@ -374,53 +376,53 @@
 	<!-- Confirm Edit Section Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
-	<div id='sectionHideConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+	<div id='sectionHideConfirmBox' class='loginBoxContainer display_none'>
+		<div id="formBoxConfirm" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm hiding</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center;'>
+			<div class="formBody formBodyConfirm">
 					<h4>Are you sure you want to hide this item?</h4>
 			</div>
-			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
-				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			<div class="formFooter formFooterBtnplace">
+				<input class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("hideItem");' />
+				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
 	</div>
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
-	<div id='sectionShowConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+	<div id='sectionShowConfirmBox' class='loginBoxContainer display_none'>
+		<div id="formBoxConfirm" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm show items</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
-			<div class="formBody" style='text-align: center;'>
+			<div class="formBody formBodyConfirm">
 					<h4>Are you sure you want to show this item?</h4>
 			</div>
-			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
-				<input style='margin-left: 5%;' class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			<div class="formFooter formFooterBtnplace">
+				<input class='submit-button' id="hide-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("showItems");' />
+				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
 	</div>
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Cofirm Section Tab Dialog START -->
-	<div id='tabConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox' style='width:360px;'>
+	<div id='tabConfirmBox' class='loginBoxContainer display_none'>
+		<div id='formBoxTabConfirm' class='formBox' >
 			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			</div>
 			<div class="formBody">
-				<div style='text-align: center;'>
+				<div class="formBodyConfirm">
 					<h4>How many tabs?</h4>
 				</div>
-				<div style='display:flex; align-items:center; justify-content: center;'>
+				<div id="tabDropDown">
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span>
 						<select id='tabs'>
 							<option value="0">0 tabs</option>
@@ -434,33 +436,33 @@
 					</div>
 				</div>
 			</div>
-			<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-				<input style='margin-right: 5%;' class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
+			<div class="formFooter formFooterBtnplace">
+				<input class='submit-button' id="hide-item-button" type='button' value='OK' title='OK' onclick='confirmBox("tabItem");' />
 			</div>
 		</div>
 	</div>
 	<!-- Cofirm Edit Section Tab Dialog END -->
 
 	<!-- Confirm Missing Material Dialog START -->
-	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox' style='width:460px;'>
+	<div id='noMaterialConfirmBox' class='loginBoxContainer display_none'>
+		<div  id='formBoxInfo' class='formBox'>
 				<div class='formBoxHeader'>
 					<h3>Error: Missing material</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
-				<div class="formBody" style='text-align: center;'>
+				<div class="formBody formBodyConfirm">
 					<h4 id="noMaterialText"></h4>
 				</div>
-				<div class="formFooter" style='display:flex; align-items:center; justify-content: center;'>
-					<input style='margin-right: 5%;' class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
+				<div class="formFooter formFooterBtnplace">
+					<input id="ok-item-button" class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
 				</div>
 		</div>
 	</div>
 	<!-- Confirm Missing Material Dialog END -->
 
 		<!-- New Version Dialog START -->
-		<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
-    	<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+		<div id='newCourseVersion' class='loginBoxContainer display_none'>
+    	<div class='formBox DarkModeBackgrounds DarkModeText formBoxCourseVersion'>
 			<div class='formBoxHeader'>
 				<h3>New Course Version</h3>
 				<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
@@ -519,8 +521,8 @@
 
 <!-- Edit Version Dialog START -->
 
-<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer' style='display:none;'>
-		<div class='formBox DarkModeBackgrounds DarkModeText' style='width:464px; overflow:hidden;'>
+<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer display_none'>
+		<div class='formBox DarkModeBackgrounds DarkModeText formBoxCourseVersion formBoxCourseVersion'>
 
 			<div class='formBoxHeader'>
 				<h3>Edit Course Version</h3>
@@ -559,15 +561,15 @@
 						</div>
 						<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
-			<div class="formFooter">
-				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
+			<div style='padding:5px;'>
+				<div id="ButtonContainerSubmitEditCourse"></div>
 			</div>
 		</div>
 	</div>
 	<!-- Edit Version Dialog END -->
 
 <!-- Group Members Table START -->
-<div id='grptblContainer' class='loginBoxContainer' style='display:none;'>
+<div id='grptblContainer' class='loginBoxContainer display_none'>
 		<div class='formBox'>
 			<div class='formBoxHeader'>
 				<h3>Group Members</h3>
@@ -582,8 +584,8 @@
 
 
 	<!-- HighscoreBox START -->
-	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
-		<div class='formBox' style='width:500px;'>
+	<div id='HighscoreBox' class='loginBoxContainer display_none'>
+		<div id="formBoxHighscore" class='formBox' >
 			<div class='formBoxHeader'>
 				<h3>Highscore</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -596,7 +598,7 @@
 	<!-- HighscoreBox END -->
 
 	<!-- User Feedback Dialog START -->
-    <div id='userFeedbackDialog' class='loginBoxContainer' style='display:none;'>
+    <div id='userFeedbackDialog' class='loginBoxContainer display_none'>
       <div class='formBox' id='variantBox'>
         <div class='formBoxHeader'>
           <h3 id="userFeedbackTitle">User Feedback</h3> 
@@ -616,11 +618,11 @@
 
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
-	<div id='loadDuggaBox' class="loginBoxContainer" style="display:none">
-	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" style="max-width:400px; overflow-y:visible;">
+	<div id='loadDuggaBox' class="loginBoxContainer display_none">
+	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" >
 			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
-    		<div id='loadDuggaPopup' style="display:block">
+    		<div id='loadDuggaPopup' class="display_block">
 				<div class='inputwrapper'><span>Enter your hash:</span><input class='textinput' type='text' id='hash' placeholder='Hash' value=''/></div>
 				<div class="button-row">
 					<input type='button' class='submit-button' onclick="loadDugga();" value='Load Dugga'>
@@ -634,8 +636,8 @@
 
 	<!-- github moments box  -->
 	<form action="" method="POST" id="form">
-		<div id='gitHubBox' class='loginBoxContainer' style='display:none;'>
-			<div class='formBox DarkModeBackgrounds DarkModeText' style='width:460px;'>
+		<div id='gitHubBox' class='loginBoxContainer display_none'>
+			<div id="formBoxGitHub" class='formBox DarkModeBackgrounds DarkModeText'>
 				<div class='formBoxHeader'>
 					<h3>Github Moment</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -669,13 +671,13 @@
 	</form>
 	
 	<!--error window opened when github repo not found-->
-	<div id="githubPopupWindow" class="loginBoxContainer" style="display: none;">
-		<div class="formBox DarkModeBackgrounds" style='width:464px;overflow:hidden;'>	
+	<div id="githubPopupWindow" class="loginBoxContainer display_none" >
+		<div id="formBoxGitHub" class="formBox DarkModeBackgrounds">	
 			<div class= "formBoxHeader">
   					<h3>Github repo</h3>
 		  			<div class='cursorPointer'	onclick='closeWindows();'>x</div>
 			</div>
-			<div class="formBody" style="padding-top:20px;">
+			<div class="formBody">
 				<h3>There is currently no valid github repo. Add one?</h3>
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
@@ -689,8 +691,8 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer"  style="display:none;">
-				<div id='chooseTemplate' class='formBox DarkModeBackgrounds' style='width:464px;'>
+		<div id='gitHubTemplate' class="loginBoxContainer display_none">
+				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='confirmBox("closeConfirmBox");'>x</div>

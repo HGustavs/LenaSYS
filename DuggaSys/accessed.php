@@ -128,12 +128,12 @@
 			<div>
 				<div class='formBoxHeader'>
 					<h3>Edit user (placeholder)</h3>
-					<span>First Name:</span>
-          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+          		<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
 				<div class="content-wrapper">
 					<input type='hidden' id='uid' value='Toddler' />
 					<div class='flexwrapper'>
+						<span>First Name:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
 						<input placeholder="Greger" class='textinput' type='text' id='placeholderID4' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 					</div>

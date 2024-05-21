@@ -323,7 +323,7 @@ Testing Link:
 		</div>
 		<!-- Code Example Cog Wheel Dialog END -->
 		<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
-				<div id='chooseTemplate' class='formBox DarkModeBackgrounds' style='width:464px;'>
+				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>

@@ -1569,12 +1569,12 @@ function returnedSection(data) {
             if (itemKind === 3) {
               if (isLoggedIn) {
                 str += "<td class='LightBox" + hideState + "'>";
-                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
               }
             } else if (itemKind === 4) {
               if (isLoggedIn) {
                 str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
               }
             }
             str += "</td>";
@@ -1584,7 +1584,7 @@ function returnedSection(data) {
         if (retdata['writeaccess']) {
           if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
             str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
 
           }
           str += "</td>";
@@ -1625,7 +1625,7 @@ function returnedSection(data) {
           if (isLoggedIn) {
             // Styling for Section row
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
           }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
@@ -1640,7 +1640,7 @@ function returnedSection(data) {
         } else if (itemKind === 3) {
           if (retdata['writeaccess']) {
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' title='Quiz' src='../Shared/icons/PenT.svg'></div>";
           }
 
           if (item['highscoremode'] != 0 && itemKind == 3) {
@@ -1652,7 +1652,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 4) {
           str += "<td class='LightBoxFilled" + hideState + "'>";
-          str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
+          str += "<div ><img alt='pen icon dugga' title='Moment' src='../Shared/icons/list_docfiles.svg'></div>";
 
           // New moment bool equals true
           momentexists = item['lid'];
@@ -1666,20 +1666,22 @@ function returnedSection(data) {
 
         } else if (itemKind === 6) { // Group
           // Alt 1
-          let grpmembershp = data['grpmembershp'].split(" ");
           var grptype = item['grptype'] + "_";
           var grp = grptype + "UNK";
-
-          if (document.getElementById("userName").innerHTML != "Guest") {
-            for (let i = 0; i < grpmembershp.length; i++) {
-              let g = grpmembershp[i].replace(grptype, "");
-              if (g.length < grpmembershp[i].length) {
-                if (grp !== grptype + "UNK") {
-                  grp += ",";
-                } else {
-                  grp = "";
+          // Check if the grpmbershp has data in the entry. 
+          if(data['grpmembershp'] != null) {
+            let grpmembershp = data['grpmembershp'].split(" ");
+            if (document.getElementById("userName").innerHTML != "Guest") {
+              for (let i = 0; i < grpmembershp.length; i++) {
+                let g = grpmembershp[i].replace(grptype, "");
+                if (g.length < grpmembershp[i].length) {
+                  if (grp !== grptype + "UNK") {
+                    grp += ",";
+                  } else {
+                    grp = "";
+                  }
+                  grp += grptype + g;
                 }
-                grp += grptype + g;
               }
             }
           }
@@ -4044,7 +4046,7 @@ function fetchGitCodeExamples(courseid){
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
       //Test here to view content in console. codeExamplesContent array elements contains alot of info.
-      storeCodeExamples(cid, codeExamplesContent, githubURL);
+      storeCodeExamples(cid, codeExamplesContent, githubURL, fileName);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4138,7 +4140,7 @@ function fetchGitCodeExamples(courseid){
     });
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
-function storeCodeExamples(cid, codeExamplesContent, githubURL){
+function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     var templateNo = updateTemplate();
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[], fileSize=[];
     //Push all file data into separate arrays and add them into one single array.
@@ -4173,6 +4175,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
        data: {
         courseid: cid,
         githubURL: githubURL,
+        codeExampleName: fileName,
         opt: 'GITCODEEXAMPLE',
         codeExampleData: AllJsonData
        },
@@ -4184,6 +4187,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       }
     });   
     confirmBox('closeConfirmBox');
+    location.replace(location.href);
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();
