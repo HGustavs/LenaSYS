@@ -88,7 +88,6 @@ __Shared microservices:__
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
-- createNewVersionOfCourse_ms.php __==UNFINISHED==__
 - setAsActiveCourse_ms.php __==finished==__ New filename: "updateActiveCourse_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
@@ -444,29 +443,6 @@ _INSERT_ operation on the table __'listentries'__ to create new rows with values
 ```sql
 INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind);
 ```
-
-<br>
-
----
-
-<br>
-
-### createNewVersionOfCourse
-__USED BY__
-- createCourseVersion
-- copyCourseVersion
-<br>
-
-Uses the services __insertIntoTableVers__ to _insert_ into the table __vers__.
-- cid
-- coursecode
-- vers
-- versname
-- coursename
-- coursenamealt
-- startdate
-- enddate
-- motd
 
 <br>
 
