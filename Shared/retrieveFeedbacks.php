@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set("Europe/Stockholm");
-include_once "./database.php";
+include_once(__DIR__ . "/database.php");
 pdoConnect();
 
 $studentid = $_POST['studentid'];
