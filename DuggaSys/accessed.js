@@ -146,7 +146,7 @@ function hideRemoveUserPopup() {
 function addUserToCourse() {
 	let input = document.getElementById('addUsername2').value;
 	let term = $("#addTerm2").val();
-	if(input && term){
+	if(input && term) {
 		$.ajax({
 			type: 'POST',
 			url: 'accessedservice.php',
@@ -176,7 +176,7 @@ function addUserToCourse() {
 }
 function removeUserFromCourse() {
 	let input = document.getElementById('addUsername3').value;
-	if(input){
+	if(input) {
 		$.ajax({
 			type: 'POST',
 			url: 'accessedservice.php',
@@ -205,7 +205,7 @@ function removeUserFromCourse() {
 
 // A small timer ensures a server response from the AJAX call that adds/removes a user
 // Without the timer the page may not update correctly
-const updateCourseUsers = function(removePopup){
+const updateCourseUsers = function(removePopup) {
 	setTimeout(() => {
 		removePopup(); // Reference to the function that was sent as parameter
 		location.reload(true);
