@@ -66,28 +66,28 @@ class Rect {
      * @returns {number}
      */
     get top() {
-        return this.y;
+        return (this.height > 0) ? this.y : this.y + this.height;
     }
 
     /**
      * @returns {number}
      */
     get bottom() {
-        return this.y + this.height;
+        return (this.height > 0) ? this.y + this.height : this.y;
     }
 
     /**
      * @returns {number}
      */
     get left() {
-        return this.x;
+        return (this.width > 0) ? this.x : this.x + this.width;
     }
 
     /**
      * @returns {number}
      */
     get right() {
-        return this.x + this.width;
+        return (this.width > 0) ? this.x + this.width : this.x;
     }
 
     /**
@@ -130,10 +130,10 @@ class Rect {
     partialOverlap(other) {
         const lower = 0.25;
         const upper = 0.75;
-        let x1 = this.x < other.x + lower * other.width;
-        let x2 = this.x + this.width > other.x + other.width * upper;
-        let y1 = this.y < other.y + lower * other.height;
-        let y2 = this.y + this.height > other.y + other.height * upper;
+        let x1 = this.left < other.left + other.width * lower;
+        let x2 = this.right > other.left + other.width * upper;
+        let y1 = this.top < other.top + other.height * lower;
+        let y2 = this.bottom > other.top + other.height * upper;
         return x1 && x2 && y1 && y2;
     }
 
