@@ -1,7 +1,6 @@
 <?php
-
-include_once "./sessions.php";
-include_once "./basic.php";
+include_once(__DIR__ . "/sessions.php");
+include_once(__DIR__ . "/basic.php");
 
 include_once "../../coursesyspw.php";
 
