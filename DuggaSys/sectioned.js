@@ -3691,7 +3691,7 @@ function checkGithubLink(link) {
   let substring = "https://github.com/"
   let status = true;
   status=element.value.includes(substring);
-  if(element.value.length<substring.length+2) {
+  if(element.value.length < substring.length+2) {
     status = false;
   }
   if(element.value.match('"') || element.value.match("'")) {
@@ -3730,7 +3730,7 @@ function checkGithubLinkClue(link) {
   let substring = "https://github.com/"
   let status = true;
   status = element.value.includes(substring);
-  if(element.value.length<substring.length+2) {
+  if(element.value.length < substring.length+2) {
     status = false;
   }
 
