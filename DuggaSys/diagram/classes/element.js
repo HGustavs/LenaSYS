@@ -1,4 +1,32 @@
+
+/**
+ * @description Element class for all elements in the diagram.
+ * @class
+ * @public
+ */
 class Element {
+    /**
+     * @description Element class for all elements in the diagram.
+     * @param {Object} options - The options for creating the element.
+     * @param {string} [options.name=''] - The name of the element. 
+     * @param {string} [options.id=makeRandomID()] - The unique identifier of the element. Default is a random ID.
+     * @param {string} [options.type=null] - The type of the element. Can be ER, UML, IE, SD, or SE.
+     * @param {string} [options.kind=null] - The kind of the element. Can be any of the elementTypesNames.
+     * @param {number} [options.x=0] - The x-coordinate of the element. Default is 0.
+     * @param {number} [options.y=0] - The y-coordinate of the element. Default is 0.
+     * @param {number} [options.width=0] - The width of the element. Default is 0.
+     * @param {number} [options.height=0] - The height of the element. Default is 0.
+     * @param {number} [options.minWidth=0] - The minimum width of the element. Default is 0.
+     * @param {number} [options.minHeight=0] - The minimum height of the element. Default is 0.
+     * @param {string} [options.fill=color.WHITE] - The fill color of the element. Default is WHITE.
+     * @param {string} [options.stroke=color.BLACK] - The stroke color of the element. Default is BLACK.
+     * @param {string} [options.state=null] - The state of the element.
+     * @param {string} [options.primaryKey=null] - The primary key of the element. 
+     * @param {Array} [options.attributes=null] - The attributes of the element.
+     * @param {Array} [options.functions=null] - The functions of the element.
+     * @param {string} [options.altOrLoop=null] - The alternative or loop type of the element.
+     * @param {Array} [options.alternatives=null] - The alternatives of the element.
+     */
     constructor({
             name = '',
             id = makeRandomID(),
@@ -40,6 +68,10 @@ class Element {
         this.alternatives = alternatives;
     }
 
+    /**
+     * @description Creates an element depending on the kind.
+     * @param {string} kind - The kind of element.
+     */
     static FromKind(kind) {
         let element;
         switch (kind) {
@@ -98,6 +130,10 @@ class Element {
         return element;
     }
 
+    /**
+     * @description Creates a default ER Entity element.
+     * @returns {Element} The default ER Entity element.
+     */
     static DefaultEREntity() {
         return new Element({
             name: "ER Entity",
@@ -111,32 +147,44 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a default ER Relation element.
+     * @returns {Element} The default ER Relation element.
+     */
     static DefaultERRelation() {
         return new Element({
             name: "Relation",
             type: entityType.ER,
             kind: elementTypesNames.ERRelation,
             state: attrState.NORMAL,
-            width: 90,
-            height: 90,
+            width: 80,
+            height: 80,
             minWidth: 60,
             minHeight: 60,
         });
     }
 
+    /**
+     * @description Creates a new Element with default attributes for ER attributes.
+     * @returns {Element} The newly created Element object.
+     */
     static DefaultERAttr() {
         return new Element({
             name: "Attribute",
             type: entityType.ER,
             kind: elementTypesNames.ERAttr,
             state: relationState.NORMAL,
-            width: 120,
-            height: 70,
+            width: 84,
+            height: 49,
             minWidth: 90,
             minHeight: 45,
         });
     }
 
+    /**
+     * @description Creates a default UML entity element.
+     * @returns {Element} The default UML entity element.
+     */
     static DefaultUMLEntity() {
         return new Element({
             name: "Class",
@@ -150,18 +198,27 @@ class Element {
         });
     }
 
+    
+    /**
+     * @description Creates a new instance of the Element class representing a default UML relation.
+     * @returns {Element} The newly created Element instance.
+     */
     static DefaultUMLRelation() {
         return new Element({
             name: "Class Relation",
             type: entityType.UML,
             kind: elementTypesNames.UMLRelation,
-            width: 80,
-            height: 80,
+            width: 56,
+            height: 56,
             minWidth: 60,
             minHeight: 60,
         });
     }
 
+    /**
+     * @description Creates a default IE Entity element.
+     * @returns {Element} The default IE Entity element.
+     */
     static DefaultIEEntity() {
         return new Element({
             name: "IE Entity",
@@ -175,18 +232,26 @@ class Element {
         })
     }
 
+    /**
+     * @description Creates a default IE Relation element.
+     * @returns {Element} The default IE Relation element.
+     */
     static DefaultIERelation() {
         return new Element({
             name: "IE Relation",
             type: entityType.IE,
             kind: elementTypesNames.IERelation,
-            width: 80,
-            height: 40,
-            minWidth: 80,
-            minHeight: 40,
+            width: 62,
+            height: 62,
+            minWidth: 50,
+            minHeight: 50,
         });
     }
 
+    /**
+     * @description Creates a default SD Entity element.
+     * @returns {Element} The default SD Entity element.
+     */
     static DefaultSDEntity() {
         return new Element({
             name: "SD Entity",
@@ -199,6 +264,10 @@ class Element {
         })
     }
 
+    /**
+     * @description Creates a new instance of the Element class representing an Initial State in a UML diagram.
+     * @returns {Element} The newly created Element object.
+     */
     static DefaultUMLInititalState() {
         return new Element({
             name: "Initial State",
@@ -212,6 +281,10 @@ class Element {
         })
     }
 
+    /**
+     * @description Creates a default UML final state element.
+     * @returns {Element} The default UML final state element.
+     */
     static DefaultUMLFinalState() {
         return new Element({
             name: "Final State",
@@ -225,6 +298,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a new instance of the Element class with default values for a UML Super State.
+     * @returns {Element} The newly created Element instance.
+     */
     static DefaultUMLSuperState() {
         return new Element({
             name: "Super State",
@@ -237,6 +314,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a default sequence actor element.
+     * @returns {Element} The default sequence actor element.
+     */
     static DefaultSequenceActor() {
         return new Element({
             name: "Actor",
@@ -249,6 +330,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a default sequence object element.
+     * @returns {Element} The default sequence object element.
+     */
     static DefaultSequenceObject() {
         return new Element({
             name: "Object",
@@ -261,6 +346,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a default sequence activation element.
+     * @returns {Element} The default sequence activation element.
+     */
     static DefaultSequenceActivation() {
         return new Element({
             name: "Activation",
@@ -273,6 +362,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a new Element instance representing a default sequence loop or alternative.
+     * @returns {Element} The newly created Element instance.
+     */
     static DefaultSequenceLoopOrAlt() {
         return new Element({
             name: "Loop or Alt",
@@ -287,6 +380,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a default note element.
+     * @returns {Element} The default note element.
+     */
     static DefaultNote() {
         return new Element({
             name: "Note",
@@ -300,6 +397,10 @@ class Element {
         });
     }
 
+    /**
+     * @description Creates a default ghost element.
+     * @returns {Element} The default ghost element.
+     */
     static DefaultGhost() {
         return new Element({
             name: "Ghost",

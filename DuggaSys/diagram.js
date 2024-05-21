@@ -981,7 +981,7 @@ function mmoving(event) {
             drawRulerBars(scrollx, scrolly);
             calculateDeltaExceeded();
             break;
-        case pointerState.CLICKED_LINE:
+        case pointerStates.CLICKED_LINE:
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
@@ -997,6 +997,7 @@ function mmoving(event) {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
                 };
+                let targetElementDiv = document.getElementById(targetElement.id);
                 let targetPos = {
                     x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
                     y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
@@ -1029,39 +1030,65 @@ function mmoving(event) {
             // Resize equally in both directions by modifying delta
             if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState) {
                 let delta;
-                if (startNodeUpLeft) {
+                if (startNode.upLeft) {
                     delta = Math.max(deltaX, deltaY);
-                } else if (startNodeDownRight) {
+                } else if (startNode.downRight) {
                     delta = Math.min(deltaX, deltaY);
-                } else if (startNodeDownLeft) {
+                } else if (startNode.downLeft) {
                     delta = Math.max(deltaX, -deltaY);
-                } else if (startNodeUpRight) {
+                } else if (startNode.upRight) {
                     delta = Math.max(-deltaX, deltaY);
                 }
-                deltaX = (startNodeUpRight) ? -delta : delta;
-                deltaY = (startNodeDownLeft) ? -delta : delta;
+                deltaX = (startNode.upRight) ? -delta : delta;
+                deltaY = (startNode.downLeft) ? -delta : delta;
             }
         
             let xChange, yChange, widthChange, heightChange;
-            // Functionality Left/Right resize
-            if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                xChange = movementPosChange(elementData, startX, deltaX, true);
-                widthChange = movementWidthChange(elementData, tmpW, tmpX, false);                
-            } else if ((startNodeRight || startNodeUpRight || startNodeDownRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-            }
+            if(elementData.kind == elementTypesNames.sequenceActor || elementData.kind == elementTypesNames.sequenceObject) { // Special resize for sequenceActor and sequenceObject
+                const maxRatio = 0.8;
+                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                    let tmpW = elementData.width;
+                    let tmpX = elementData.x;
+                    let movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let xChange = movementPosChange(elementData, startX, deltaX, true);
+                    let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                    let heightChange = movementHeightChange(elementData, startHeight, movementY,false);
+                } else if (startNode.right && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                    let heightChange = movementHeightChange(elementData,startHeight,movementY,false);
+                } else if ((startNode.up || startNode.upLeft || startNode.upRight)
+                    && (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) {
+                    // Fetch original height// Deduct the new height, giving us the total change
+                    let tmpH = elementData.height;
+                    let tmpY = elementData.y;
+                    let yChange = movementPosChange(elementData, startY, deltaY, false);
+                    const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                } else if ((startNode.down || startNode.downLeft || startNode.downRight)
+                    && (startHeight - (deltaY / zoomfact)) > startWidth / maxRatio) {
+                    const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
+                }
+            } else { // Normal resize for the other elements
+                // Functionality Left/Right resize
+                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                    let tmpW = elementData.width;
+                    let tmpX = elementData.x;
+                    xChange = movementPosChange(elementData, startX, deltaX, true);
+                    widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                } else if ((startNode.right || startNode.upRight || startNode.downRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                    widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                }
 
-            // Functionality Up/Down resize
-            if ((startNodeDown || startNodeDownLeft || startNodeDownRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                heightChange = movementHeightChange(elementData, startHeight, deltaY, false);            
-            } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height// Deduct the new height, giving us the total change
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                yChange = movementPosChange(elementData, startY, deltaY, false);
-                heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                // Functionality Up/Down resize
+                if ((startNode.down || startNode.downLeft || startNode.downRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                    heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
+                } else if ((startNode.up || startNode.upLeft || startNode.upRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
+                    // Fetch original height// Deduct the new height, giving us the total change
+                    let tmpH = elementData.height;
+                    let tmpY = elementData.y;
+                    yChange = movementPosChange(elementData, startY, deltaY, false);
+                    heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                }
             }
 
             // store the changes in the history
@@ -1201,7 +1228,7 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     }
 
     if (stateMachineShouldSave && anyRemoved) {
-        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
+        stateMachine.save(StateChangeFactory.LinesDeleted(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
     contextLine = [];
