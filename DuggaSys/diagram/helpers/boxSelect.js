@@ -31,22 +31,26 @@ function getElementsInsideCoordinateBox(selectionRect) {
 
 /**
  * @description Checks whether the lines in the diagram is within the coordinate box
- * @param {Rect} selectionRect returned from the getRectFromPoints() function
+ * @param {Rect} rect returned from the getRectFromPoints() function
  * @returns {Array<Object>} containing all of the lines that are currently within the coordinate box
  */
 function getLinesInsideCoordinateBox(rect) {
-    const allLines = document.getElementById("svgbacklayer").children;
-    const tempLines = [];
-    const bLayerLineIDs = [];
-    for (let i = 0; i < allLines.length; i++) {
-        if (lineIsInsideRect(rect, allLines[i])) {
-            bLayerLineIDs[i] = allLines[i].id;
-            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-1/gi, '');
-            bLayerLineIDs[i] = bLayerLineIDs[i].replace(/-2/gi, '');
-            tempLines.push(lines.find(line => line.id == bLayerLineIDs[i]));
+    const lineIDs = [];
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i] && lines[i].kind) {
+            if (lines[i].kind === lineKind.DOUBLE) {
+                lineIDs.push(line[i].id + "-1");
+                lineIDs.push(line[i].id + "-2");
+            } else {
+                lineIDs.push(lines[i].id);
+            }
         }
     }
-    return tempLines;
+    let overlapping = lineIDs.filter(l => {
+        let other = document.getElementById(l);
+        return lineIsInsideRect(rect, other);
+    });
+    return overlapping.map(id => lines.find(l => l.id == id))
 }
 
 /**
@@ -82,16 +86,8 @@ function boxSelect_Update(mouseX, mouseY) {
             screenToDiagramCoordinates(startX, startY),
             screenToDiagramCoordinates(startX + deltaX, startY + deltaY),
         );
-        let topLeft = new Point(0, 0);
-        let botRight = new Point(0, 0);
-        topLeft.x = (rect.left < rect.right) ? rect.left : rect.right;
-        botRight.x = (rect.left < rect.right) ? rect.right : rect.left;
-        topLeft.y = (rect.top < rect.bottom) ? rect.top : rect.bottom;
-        botRight.y = (rect.top < rect.bottom) ? rect.bottom : rect.top;
-
-        let box = Rect.FromPoints(topLeft, botRight);
-        let markedEntities = getElementsInsideCoordinateBox(box);
-        let markedLines = getLinesInsideCoordinateBox(box);
+        let markedEntities = getElementsInsideCoordinateBox(rect);
+        let markedLines = getLinesInsideCoordinateBox(rect);
 
         if (ctrlPressed) {
             // Remove entity from markedEntities if it was already marked.

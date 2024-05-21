@@ -178,13 +178,11 @@ function mouseEnterSeq(event) {
  */
 function snapSAToLifeline(targetId) {
     const lifeline = document.getElementById(targetId);
-    
     if (lifeline) {
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
             if ((element.kind === "sequenceActor" || element.kind === "sequenceObject") && element.id === targetId) {
-                
-                let boxHeight = getTopHeight(element)
+                let boxHeight = getTopHeight(element);
                 let minY = element.y + boxHeight;
 
                 // Fix the x position
@@ -194,13 +192,11 @@ function snapSAToLifeline(targetId) {
                 if (ghostElement.y < minY) {
                     ghostElement.y = minY;
                 }
-
                 updatepos();
-                break;  
+                break;
             }
         }
     }
-    
 }
 
 /**
@@ -208,13 +204,7 @@ function snapSAToLifeline(targetId) {
  */
 function getTopHeight(element) {
     let boxw = Math.round(element.width * zoomfact);
-    let boxHeight;
-    
-    if (element.kind === "sequenceActor"){ 
-        boxHeight = ((boxw*1.05) + (16 * zoomfact) ) / zoomfact;
-    }else {
-        boxHeight = (boxw * 0.55) / zoomfact;
-    }
-
-    return boxHeight;
+    let boxHeight = (element.kind === "sequenceObject") ? (boxw * 1.05 + 16 * zoomfact) : (boxw * 0.55);
+    return boxHeight / zoomfact;
 }
+

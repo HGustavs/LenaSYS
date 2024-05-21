@@ -207,7 +207,7 @@ function calculateDeltaExceeded() {
  * @param {string[]} ignore array of keys to ingore
  * @returns {boolean}
  */
-function sameObjects(obj1, obj2, ignore = []) {    
+function sameObjects(obj1, obj2, ignore = []) {
     // remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];
