@@ -240,14 +240,17 @@ function updateCSSForAllElements() {
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
-
+    /**
+     * @description check if the fill color is black or pink, if so the font color is set to white
+     */
     function fontContrast() {
-        //check if the fill color is black or pink, if so the font color is set to white
         fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
     }
 
+    /**
+     * @description Determines if the context meets specific length conditions.
+     */
     function markedOverOne() {
-        //If more than one element is marked.
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
 
