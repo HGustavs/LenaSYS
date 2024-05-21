@@ -2290,6 +2290,16 @@ input.inactive-button {
   border-radius: 0px;
   align-items: flex-start;
 }
+/* empty wrapper to match the size of a regular wrapper */
+.emptywrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 30px;
+  border-radius: 0px;
+  align-items: flex-start;
+}
+
 .inputwrapper select {
   border-radius: 0px;
 }
@@ -2525,10 +2535,8 @@ sectioned.php END
   top:-72px;
 }
 
-#editCourseButtonPlacement{
-  float:right; 
+#editCourseButtonPlacement {
   padding-top:20px; 
-  width: 464px;
 }
 
 
@@ -3281,6 +3289,7 @@ div.submit-button:disabled {
 
 .formDialogText {
   display: none;
+  float:left;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
   font-size: 12px;

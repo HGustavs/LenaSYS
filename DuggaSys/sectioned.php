@@ -573,7 +573,7 @@
 				<h3>Group Members</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
-			<div style='padding:5px;'>
+			<div class="formBody">
 				<div id='grptbl'></div>
 			</div>
 		</div>
