@@ -9,6 +9,7 @@ include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "./retrieveCourseedService_ms.php";
 
+
 // Connect to database and start session
 pdoConnect();
 session_start();
@@ -30,6 +31,7 @@ if(!(checklogin() && $isSuperUserVar)) {
     echo json_encode(retrieveCourseedService($pdo, $studentTeacher, $debug, null, $isSuperUserVar));
     return;
 }
+
 
 if (strcmp($opt, "SPECIALUPDATE") !== 0) {
     $debug = "Incorrect opt provided";

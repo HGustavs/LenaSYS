@@ -1282,7 +1282,7 @@ function updateVersion() {
   param.enddate = $("#eenddate").val();
   param.motd = document.getElementById("eMOTD").value;
 
-  AJAXService("UPDATEVRS", param, "SECTION");
+  AJAXService("UPDATEVRS", param, "COURSE");
 
   $("#editCourseVersion").css("display", "none");
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +

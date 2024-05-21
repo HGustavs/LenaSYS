@@ -6,6 +6,8 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "./retrieveCourseedService_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
+include_once "../sharedMicroservices/getUid_ms.php";
+
 
 // Connect to database and start session.
 pdoConnect();
@@ -17,14 +19,7 @@ $coursename = getOP('coursename');
 $visibility = getOP('visib');
 $coursecode = getOP('coursecode');
 $courseGitURL = getOP('courseGitURL');
-$userid="UNK";
-
-if (isset($_SESSION['uid'])) {
-	$userid = $_SESSION['uid'];
-} else {
-	$userid = "UNK";
-}
-
+$userid = getUid();
 
 $ha = null;
 $isSuperUserVar = false;
@@ -32,11 +27,6 @@ $debug = "NONE!";
 
 // Login is checked
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 	$ha = $isSuperUserVar;
 }
