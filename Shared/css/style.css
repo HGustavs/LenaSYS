@@ -2766,7 +2766,7 @@ sectioned.php END
 }
 
 #submitMotd {
-  margin-left: 340px;
+  float: right;
 }
 
 /*font style for "are you shure?*/
@@ -8280,11 +8280,11 @@ textarea#mrkdwntxt {
  * --------------================################================-------------- */
 
 #submitEditCourse{
-  margin-left: 343px;
+  float:right;
   margin-top: 20px;
 }
 #submitCourseMotd{
-  margin-left: 342px;
+  float:right;
   margin-top: 20px;
 }
 #editContentSaveBtn{
