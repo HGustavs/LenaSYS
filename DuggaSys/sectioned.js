@@ -3700,7 +3700,7 @@ function checkGithubLink(link) {
   
   if (status) {
     savebtn.disabled = false;
-    savebtn.style.opacity='1';
+    savebtn.style.opacity = '1';
     element.style.backgroundColor = inputColorTheme;
     element.classList.add("color-change-valid");
     element.classList.remove("color-change-invalid");
@@ -3708,14 +3708,14 @@ function checkGithubLink(link) {
     return true;
   } else if (element.value.length > 0) { //Invalid
     savebtn.disabled = true;
-    savebtn.style.opacity='0.5';
+    savebtn.style.opacity = '0.5';
     element.classList.add("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
   } else {
     savebtn.disabled = true;
-    savebtn.style.opacity='0.5';
+    savebtn.style.opacity = '0.5';
     element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
