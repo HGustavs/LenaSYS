@@ -2328,86 +2328,86 @@ input.inactive-button {
  /*---===#===---*
   margin
 *---====#===---*/
-.margin_10px{
+.margin_10px {
   margin:10px;
 }
 
-.margin_20px{
+.margin_20px {
   margin: 20px;
 }
 
-.margin_30px{
+.margin_30px {
   margin:30px;
 }
 
-.margin_40px{
+.margin_40px {
   margin:40px;
 }
 
-.margin-right_0px{
+.margin-right_0px {
   margin-right: 0px
 }
 /*---===#===---*
   padding styles
 *---====#===---*/
 
-.padding_5px{
+.padding_5px {
   padding: 5px;
 }
 
-.padding_10px{
+.padding_10px {
   padding: 10px;
 } 
 
-.padding_15px{
+.padding_15px {
   padding: 15px;
 } 
 
-.padding_20px{
+.padding_20px {
   padding: 20px;
 } 
 
-.padding_25px{
+.padding_25px {
   padding: 25px;
 }
 
-.padding-right_5px{
+.padding-right_5px {
   padding-right: 5px;
 }
 
-.padding-right_10px{
+.padding-right_10px {
   padding-right: 10px;
 }
 
-.padding-right_15px{
+.padding-right_15px {
   padding-right: 15px;
 }
 
-.padding-right_20px{
+.padding-right_20px {
   padding-right: 20px;
 }
 
-.padding-right_25px{
+.padding-right_25px {
   padding-right: 25px;
 }
 
-.padding-left_5px{
+.padding-left_5px {
   padding-left: 5px;
 }
 
-.padding-left_10px{
+.padding-left_10px {
   padding-left: 10px;
 }
 
-.padding-left_15px{
+.padding-left_15px {
   padding-left: 15px;
 }
 
-.padding-left_20px{
+.padding-left_20px {
   padding-left: 20px;
 }
 
-.padding-left_25px{
+.padding-left_25px {
   padding-left: 25px;
 }
 
@@ -2416,7 +2416,7 @@ input.inactive-button {
 /*---===#===---*
 Fonts
 *---====#===---*/
-.italic{
+.italic {
   font-style:italic;
 }
 
@@ -2442,17 +2442,17 @@ Float
   align:left
 }
 
-.align_right {
+.align_center {
   align:center
 }
 
 /*---END---*/
 
-.display_none{
+.display_none {
   display: none;
 }
 
-.display_flex{
+.display_flex {
   display: flex;
 }
 
@@ -2461,7 +2461,7 @@ Float
 }
 
 
-.errorMessage{
+.errorMessage {
   display: none; 
   left:0px;
 }
@@ -2543,21 +2543,21 @@ resulted.php END
   justify-content:flex-end; 
  }
 
- #course-newitem{
+ #course-newitem {
   display: flex;
  }
 
- #course-coursevers{
+ #course-coursevers {
   display:none; 
   margin-right:10px;
  }
 
- #course-courseid{
+ #course-courseid {
   display:none; 
   margin-right:10px;
  }
 
- #course-label{
+ #course-label {
   flex-grow:1
  }
 
@@ -2569,7 +2569,7 @@ resulted.php END
   display: block;
 }
 
-#addElement{
+#addElement {
   display:none;
 }
 
@@ -2640,37 +2640,37 @@ resulted.php END
   float:right;
 }
 
-#saveBtn{
+#saveBtn {
   float:right;
 }
 
-#deleteConfirmBox{
+#deleteConfirmBox {
   width:460px;
 }
 
-#deleteConfirmText{
+#deleteConfirmText {
   text-align: center;
 }
 
-#deleteBtnPlacement{
+#deleteBtnPlacement {
   display:flex; 
   align-items:center; 
   justify-content: center;
 }
 
-#delete-item-button{
+#delete-item-button {
   margin-right: 5%;
 }
 
-#close-item-button{
+#close-item-button {
   margin-left: 5%;
 }
 
-#hide-item-button{
+#hide-item-button {
   margin-right: 5%;
 }
 
-#ok-item-button{
+#ok-item-button {
   margin-right: 5%;
 }
 
@@ -2730,15 +2730,15 @@ resulted.php END
   overflow:hidden;
 }
 
-#createAlert{
+#createAlert {
   z-index: 1500;
 }
 
-#updateAlert{
+#updateAlert {
   z-index: 1500;
 }
 
-#sectionname{
+#sectionname {
   margin:0px 10px 0px 0px;
 }
 
