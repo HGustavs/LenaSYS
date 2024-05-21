@@ -1,6 +1,6 @@
 
 <?php
-include_once "./database.php";
+include_once(__DIR__ . "/database.php");
 pdoConnect();
 
 $cid = intval($_GET['cid']);
