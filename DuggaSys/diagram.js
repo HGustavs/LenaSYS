@@ -151,6 +151,9 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     stepBack() {
+        // Clearing context prevents selection box drawing on removed objects.
+        clearContext();
+        clearContextLine();
         // Remove ghost only if stepBack while creating edge
         if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
 
