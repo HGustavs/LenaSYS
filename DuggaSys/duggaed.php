@@ -48,7 +48,7 @@ $vers=getOPG('coursevers');
 
 	<div id="content">
       <div id="headerContent"></div> <!-- A div to place header content. -->
-      <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+      <div id='searchBarMobile'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> template name, name, date <br>

@@ -34,11 +34,11 @@
 	<div id="content">
 		<div id="headerContent"> <!-- A div to place header content. -->
 			<?php
-				echo "<div class='titles' style='padding-top:10px;'>";
+				echo "<div class='titles'>";
 				echo "<h1 style='flex:1;text-align:start;'>Edit course access</h1>";
 			?>
 			</div>
-			<div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+			<div id='searchBarMobile'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 							<b>Keywords:</b> username, date <br>
