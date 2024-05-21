@@ -3688,10 +3688,20 @@ const regex = {
 function checkGithubLink(link) {
   var element = document.getElementById(link);
   var savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
+  var substring="https://github.com/"
+  var status=true;
   console.log(element.value);
   console.log(savebtn);
+  status=element.value.includes(substring);
+  if(element.value.length<substring.length+2){
+    status=false;
+  }
+  if(element.value.match('"') || element.value.match("'"))
+    {
+      status=false;
+    }
   
-  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+  if (status) {
     savebtn.disabled = false;
     savebtn.style.opacity='1';
     element.style.backgroundColor = inputColorTheme;
