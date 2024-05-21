@@ -3,9 +3,8 @@
     {
       "kind": "EREntity",
       "name": "Person",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 215,
       "y": 186,
       "id": "1027A6"
@@ -13,9 +12,8 @@
     {
       "kind": "ERAttr",
       "name": "SSN",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "state": "primary",
       "x": 43,
       "y": 163,
@@ -24,9 +22,8 @@
     {
       "kind": "ERAttr",
       "name": "Address",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 85,
       "y": 92,
       "id": "A0FEBF"
@@ -34,9 +31,8 @@
     {
       "kind": "ERAttr",
       "name": "Telephone",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "width": 106,
       "x": 182,
       "y": 62,
@@ -45,9 +41,8 @@
     {
       "kind": "ERAttr",
       "name": "Fname",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 291,
       "y": 62,
       "id": "95CF71"
@@ -55,9 +50,8 @@
     {
       "kind": "ERAttr",
       "name": "Lname",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 393,
       "y": 73,
       "id": "167996"
@@ -65,9 +59,8 @@
     {
       "kind": "ERRelation",
       "name": "Owns",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 513,
       "y": 180,
       "id": "9EC2C9"
@@ -75,9 +68,8 @@
     {
       "kind": "EREntity",
       "name": "Car",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 690,
       "y": 185,
       "id": "E8235D"
@@ -85,9 +77,8 @@
     {
       "kind": "ERAttr",
       "name": "Amount",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "width": 82,
       "state": "computed",
       "x": 503,
@@ -97,9 +88,8 @@
     {
       "kind": "ERAttr",
       "name": "License plate",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "width": 123.5,
       "state": "primary",
       "x": 770,
@@ -109,9 +99,8 @@
     {
       "kind": "ERAttr",
       "name": "Type",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 677,
       "y": 111,
       "id": "59236C"
@@ -119,9 +108,8 @@
     {
       "kind": "ERAttr",
       "name": "Color",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 912,
       "y": 126,
       "id": "DD1248"
@@ -129,9 +117,8 @@
     {
       "kind": "ERAttr",
       "name": "Brand",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 924,
       "y": 208,
       "id": "CC53D3"
@@ -139,9 +126,8 @@
     {
       "kind": "EREntity",
       "name": "Wheel",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "state": "weak",
       "x": 698,
       "y": 420,
@@ -150,9 +136,8 @@
     {
       "kind": "ERRelation",
       "name": "Has",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 760,
       "y": 286,
       "id": "4EB33C",
@@ -161,9 +146,8 @@
     {
       "kind": "ERAttr",
       "name": "Rim",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 945,
       "y": 432,
       "id": "CE31D3"
@@ -171,9 +155,8 @@
     {
       "kind": "ERAttr",
       "name": "Product number",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "width": 161.16666666666666,
       "state": "weakKey",
       "x": 908,
@@ -183,9 +166,8 @@
     {
       "kind": "ERAttr",
       "name": "Color",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "x": 587,
       "y": 364,
       "id": "2CAEE4"
@@ -193,9 +175,8 @@
     {
       "kind": "ERAttr",
       "name": "Vaccine",
-      "stroke": [
-        "#383737"
-      ],
+      "stroke": "#000000",
+      "fill": "#ffffff",
       "state": "multiple",
       "x": 147,
       "y": 252,

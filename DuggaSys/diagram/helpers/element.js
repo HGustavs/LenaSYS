@@ -21,7 +21,7 @@ function elementHasLines(element) {
  * @see ghostElement
  */
 function makeGhost() {
-    ghostElement = Element.FromKind(elementTypeSelected);
+    ghostElement = Element.Default(elementTypeSelected);
     setGhostPosition(lastMousePos.x, lastMousePos.y);
     showdata();
 }
