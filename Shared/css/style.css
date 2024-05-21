@@ -8279,10 +8279,6 @@ textarea#mrkdwntxt {
  *                                    courseed                                 *
  * --------------================################================-------------- */
 
-#saveCourse{
-  margin: 0px;
-}
-
 #submitEditCourse{
   margin-left: 343px;
   margin-top: 20px;
