@@ -44,7 +44,7 @@ $testsData = array(
         'query-after-test-17' => 'DELETE FROM improw WHERE impid=10011 AND boxid=10010 AND exampleid=10008;',
         'query-after-test-18' => 'DELETE FROM subparts WHERE cid=9999 AND partname="testpart";',
         'query-after-test-19' => 'DELETE FROM partresult WHERE cid=9999 AND uid=101 AND partname="testpart";',
-        'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/getCourseed_ms.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/courseedService/retrieveAllCourseedServiceData_ms.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
