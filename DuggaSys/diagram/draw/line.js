@@ -237,7 +237,7 @@ function drawLine(line, targetGhost = false) {
  * @param {Object} f It's the felem coordinate.
  * @param {boolean} t It's the telem coordinate.
  * @param {boolean} ctype The type of line direction.
- * @return Returns the result depend on switch case.
+ * @returns Returns the result depend on switch case.
  */
 function getLineAttrubutes(f, t, ctype) {
     let result;
@@ -274,14 +274,14 @@ function getLineAttrubutes(f, t, ctype) {
 
 /**
  * @description Draw the label for the line.
- * @param {Object} line The line object that is drawn.
+ * @param {Object} line The line object for the label to be drawn.
  * @param {object} label How long the label's text is.
  * @param {Object} lineColor The color for the label.
  * @param {String} labelStr The id for the label.
  * @param {Number} x The X coodinates on the line for draw the label.
  * @param {Number} y The Y coodinates on the line for draw the label.
  * @param {boolean} isStart Where the start and end label should be.
- * @return Returns the label for the line
+ * @returns Returns the label for the line
  */
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     const offsetOnLine = 35 * zoomfact;
@@ -327,7 +327,7 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
  * @param {Number} offset It's a offset for the coodinate when draw a recursive line. 
  * @param {Object} line The line object that is drawn.
  * @param {Object} lineColor Where the start and end label should be.
- * @return Returns the different lines for the recursive line and the Array on the line.
+ * @returns Returns the different lines for the recursive line and the Array on the line.
  */
 function drawRecursive(fx, fy, offset, line, lineColor) {
     let str = '';
@@ -348,15 +348,15 @@ function drawRecursive(fx, fy, offset, line, lineColor) {
 
 /**
  * @description Draw the cardinalities label for the line.
- * @param {Object} line The line object that is drawn.
+ * @param {Object} line The line object for the cardinality to be drawn to.
  * @param {Object} lineColor Where the start and end label should be.
  * @param {Number} fx The felem x coordinate.
  * @param {Number} fy The felem y coordinate.
  * @param {Number} tx The telem x coordinate.
  * @param {Number} ty The telem y coordinate.
- * @param {Object} f The object felem.
- * @param {Object} t the object telem.
- * @return Returns the cardinality label for the line.
+ * @param {Object} f It's for the object felem and it's stands for "from element".
+ * @param {Object} t It's for the object telem and it's stands for "to element".
+ * @returns Returns the cardinality label for the line.
  */
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
@@ -436,7 +436,7 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
  * @param {Object} line The line object that is drawn.
  * @param {Object} lineColor Where the start and end label should be.
  * @param {Number} strokeDash A number for patterns of dashes and gaps.
- * @return Returns the line as segmented.
+ * @returns Returns the line as segmented.
  */
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
@@ -457,7 +457,7 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
  * @param {Number} y The y coordinate.
  * @param {Object} lineColor Where the start and end label should be.
  * @param {Object} line The line object that is drawn.
- * @return Returns the icons for the line.
+ * @returns Returns the icons for the line.
  */
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
     let str = "";
@@ -520,7 +520,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
  * @param {Number} x The x coordinate.
  * @param {Number} y The y coordinate.
  * @param {Object} lineColor Where the start and end label should be.
- * @return Returns the icons for the line.
+ * @returns Returns the icons for the line.
  */
 function iconLine([a, b, c, d], x, y, lineColor) {
     return `<line 
@@ -537,7 +537,7 @@ function iconLine([a, b, c, d], x, y, lineColor) {
  * @param {Number} x The x coordinate.
  * @param {Number} y The y coordinate.
  * @param {Object} lineColor Where the start and end label should be.
- * @return Returns the icons for the circle.
+ * @returns Returns the icons for the circle.
  */
 function iconCircle([a, b, c], x, y, lineColor,) {
     return `<circle 
@@ -555,7 +555,7 @@ function iconCircle([a, b, c], x, y, lineColor,) {
  * @param {Number} y The y coordinate.
  * @param {Object} lineColor Where the start and end label should be.
  * @param {Object} fill Its the color to fill the icons.
- * @return Returns the icons for the polyline.
+ * @returns Returns the icons for the polyline.
  */
 function iconPoly(arr, x, y, lineColor, fill) {
     let s = "";
@@ -618,7 +618,7 @@ function rotateArrowPoint(base, point, clockwise) {
  * @param {Point} point The different point for the arrow head.
  * @param {Object} lineColor Where the start and end label should be.
  * @param {Object} strokeWidth The line width for the arrow head.
- * @return Returns a polygon for the arrow head.
+ * @returns Returns a polygon for the arrow head.
  */
 function drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
@@ -635,7 +635,7 @@ function drawArrowPoint(base, point, lineColor, strokeWidth) {
 
 /**
  * @description Removes all existing lines and draw them again
- * @return String containing all the new lines-elements
+ * @returns String containing all the new lines-elements
  */
 function redrawArrows() {
     let str = '';
