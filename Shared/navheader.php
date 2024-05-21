@@ -244,7 +244,7 @@
 							echo "<input type='text' id='adminLoggedin' value='yes' style='display:none;'>";
 
 							// Refresh button for Github repo in nav
-							echo "<td class='refresh' style='display: inline-block;'>";
+							echo "<td class='refresh' style='display: inline-block; white-space: normal;'>";
 							echo "<div class='refresh menuButton tooltip'>";
 								echo "<span id='refreshBTN' value='Refresh' href='#'>";
 									echo "<img alt='refresh icon' id='refreshIMG' class='navButt' onclick='refreshGithubRepo(".$_SESSION['courseid'].",".isSuperUser($_SESSION['uid']).");resetGitFetchTimer(".isSuperUser($_SESSION['uid']).")' src='../Shared/icons/gitrefresh.svg'>";
