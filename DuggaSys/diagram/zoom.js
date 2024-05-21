@@ -1,6 +1,6 @@
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
- * @param {MouseEvent} scrollEvent The current mouse event.
+ * @param {MouseEvent} scrollEvent The current mouse event. - Optional
  */
 function zoomin(scrollEvent = undefined) {
     let delta;
@@ -100,7 +100,7 @@ function zoomin(scrollEvent = undefined) {
 
 /**
  * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
- * @param {MouseEvent} scrollEvent The current mouse event.
+ * @param {MouseEvent} scrollEvent The current mouse event. - Optional
  */
 function zoomout(scrollEvent = undefined) {
     let delta;
@@ -240,8 +240,10 @@ function zoomreset() {
     drawRulerBars(scrollx, scrolly);
 }
 
+
 /**
- * @description Zooms to desiredZoomfactor from center of diagram.
+ * @description Zooms the diagram to the specified center point.
+ * @param {Object} centerDiagram - The center point of the diagram to zoom to.
  */
 function zoomCenter(centerDiagram) {
     zoomOrigo.x = centerDiagram.x;
@@ -264,6 +266,13 @@ function zoomCenter(centerDiagram) {
     drawRulerBars(scrollx, scrolly);
 }
 
+/**
+ * @description Determines the desired zoom factor based on the maximum and minimum values of the x and y coordinates.
+ * @param {number} maxX - The maximum value of the x coordinate.
+ * @param {number} maxY - The maximum value of the y coordinate.
+ * @param {number} minX - The minimum value of the x coordinate.
+ * @param {number} minY - The minimum value of the y coordinate.
+ */
 function determineZoomfact(maxX, maxY, minX, minY) {
     // Resolution of the screen
     const screenResolution = {
