@@ -123,7 +123,9 @@ function start_installer() {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		},
 		body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ 
-			verbose: 'false',
+			verbose: 'true',
+			create_db: 'true',
+			create_db_user: 'true',
 			overwrite_db: 'true', 
 			overwrite_user: 'true',
 			add_test_data: 'true',
@@ -135,7 +137,10 @@ function start_installer() {
 			username: "Lena",
 			password: "Syp9393",
 			hostname: "db",
+			using_docker: "false",
 			db_name: "LenaDB",
+			root_username: "root",
+			root_password: "password",
 		}))
 	});
 
