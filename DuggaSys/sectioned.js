@@ -3688,16 +3688,15 @@ const regex = {
 function checkGithubLink(link) {
   var element = document.getElementById(link);
   var savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
-  var substring="https://github.com/"
+  var substring = "https://github.com/"
   var status=true;
   status=element.value.includes(substring);
-  if(element.value.length<substring.length+2){
+  if(element.value.length<substring.length+2) {
     status=false;
   }
-  if(element.value.match('"') || element.value.match("'"))
-    {
-      status=false;
-    }
+  if(element.value.match('"') || element.value.match("'")) {
+    status=false;
+  }
   
   if (status) {
     savebtn.disabled = false;
@@ -3714,7 +3713,7 @@ function checkGithubLink(link) {
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
-  }else{
+  } else {
     savebtn.disabled = true;
     savebtn.style.opacity='0.5';
     element.classList.remove("color-change-invalid");
@@ -3725,18 +3724,18 @@ function checkGithubLink(link) {
 }
 
 // creates a warning to user
-function checkGithubLinkClue(link){
+function checkGithubLinkClue(link) {
   var element = document.getElementById(link);
   var inputWindow = document.getElementById('githubPopupWindow');
-  var substring="https://github.com/"
-  var status=true;
-  status=element.value.includes(substring);
-  if(element.value.length<substring.length+2){
-    status=false;
+  var substring = "https://github.com/"
+  var status = true;
+  status = element.value.includes(substring);
+  if(element.value.length<substring.length+2) {
+    status = false;
   }
 
-  if(element.value.match('"') || element.value.match("'")){
-    status=false;
+  if(element.value.match('"') || element.value.match("'")) {
+    status = false;
   }
 
   if (!status && inputWindow.style.display!="none") {
