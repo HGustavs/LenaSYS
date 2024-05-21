@@ -147,8 +147,7 @@ __Courseed Service:__
 - createMOTD_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - retrieveCourseedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
-- getCourseed_ms.php __==finished==__ New filename: "retrieveAllCourseedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
-
+- retrieveAllCourseedServiceData_ms.php __==finished==__ Previously named: "getCourseed_ms.php".
 <br>
 
 __Diagram Service:__
