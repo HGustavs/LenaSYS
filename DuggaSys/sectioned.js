@@ -3685,6 +3685,37 @@ const regex = {
 	githubURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
 };
 
+function checkGithubLink(link) {
+  var element = document.getElementById(link);
+  var savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
+  console.log(element.value);
+  console.log(savebtn);
+  
+  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+    savebtn.disabled = false;
+    savebtn.style.opacity='1';
+    element.style.backgroundColor = inputColorTheme;
+    element.classList.add("color-change-valid");
+    element.classList.remove("color-change-invalid");
+    window.bool10 = true;
+    return true;
+  } else if (element.value.length > 0) { //Invalid
+    savebtn.disabled = true;
+    savebtn.style.opacity='0.5';
+    element.classList.add("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  }else{
+    savebtn.disabled = true;
+    savebtn.style.opacity='0.5';
+    element.classList.remove("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  }
+}
+
 //Validate form but do not perform it.
 function quickValidateForm(formid, submitButton) {
   const saveButton = document.getElementById(submitButton);
