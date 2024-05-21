@@ -361,7 +361,7 @@ function createFileUploadArea(fileuploadfileds){
 		form +="</form>";
 		
 		str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
-		str += "<div class='loginBoxheader'>";
+		str += "<div class='formBoxHeader'>";
 		if (type === "pdf"){
 			str += "<h3>Pdf Submission and Preview</h3>";
 		} else if (type === "link"){

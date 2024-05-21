@@ -37,6 +37,7 @@ $js = array(
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="ace.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -223,8 +224,8 @@ $js = array(
 
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
-        <div class='loginBox' style='width:464px; overflow-y: visible'>
-            <div class='loginBoxheader' style='cursor:default;'>
+        <div class='formBox' style='width:464px; overflow-y: visible'>
+            <div class='formBoxHeader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
 
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
@@ -304,7 +305,7 @@ $js = array(
 <!-- File View Window START -->
 <div class="fileViewContainer">
     <div class="fileViewWindow">
-        <div class="loginBoxheader fileViewHeader">
+        <div class="formBoxHeader fileViewHeader">
             <h3 class="fileName"></h3>
             <div style="cursor: pointer" onclick="filePreviewClose()">x</div>
         </div>
@@ -317,7 +318,7 @@ $js = array(
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">
     <div class="previewWindow">
-        <div class="loginBoxheader">
+        <div class="formBoxHeader">
             <h3 class ="fileName"></h3>
             <div style="cursor:pointer;" onclick="closePreview();">x</div>
         </div>
@@ -474,7 +475,7 @@ $js = array(
 </div>
 
 <div class="confirmationWindow">
-    <div class="loginBoxheader">
+    <div class="formBoxHeader">
         <h3 class="fileName"></h3>
         <div style="cursor:pointer;" onclick="closeConfirmation();">x</div>
     </div>

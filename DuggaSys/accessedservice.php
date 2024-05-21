@@ -28,6 +28,8 @@ $className = getOP('className');
 $username = getOP('username');
 $addedtime = getOP('addedtime');
 $val = getOP('val');
+$action = getOP('action');
+$term = getOP('term');
 $newusers = getOP('newusers');
 $newclass = getOP('newclass');
 $coursevers = getOP('coursevers');
@@ -283,10 +285,70 @@ if(checklogin() && $hasAccess) {
 						$debug.="Error connecting user to course: ".$e->getMessage();
 					}
 				}
-        	}
-		} // End of foreach user
-	} // End ADD_USER
+			}// End of foreach user
+		} //End of ADDUSR	
+	} else if (strcmp($opt,"RETRIEVE") == 0) {
+		if ($action === "USERS") {
+			$query = $pdo->prepare("SELECT uid, username FROM user");
+			if ($query->execute()) {
+				$users = $query->fetchAll(PDO::FETCH_ASSOC);
+				$response = array("success" => true, "users" => $users);
+				echo json_encode($response);
+			} else {
+				$response = array("success" => false, "message" => "Failed to fetch users.");
+				echo json_encode($response);
+			}
+		}
+		if ($action === "USER") {
+			$query = $pdo->prepare("SELECT * FROM user WHERE username=:username;");
+			$query->bindParam(':username', $username);
+			if ($query->execute()) {
+				$user = $query->fetchAll(PDO::FETCH_ASSOC);
+				$response = array("success" => true, "user" => $user);
+				echo json_encode($response);
+			} else {
+				$response = array("success" => false, "message" => "Failed to fetch user.");
+				echo json_encode($response);
+			}
+		}
+	} else if (strcmp($opt, "USERTOTABLE") == 0) {
+		if ($action === "COURSE") {
+			$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,term,creator,vers,vershistory) VALUES(:uid, :cid,'R',:term,:creator,:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
+			$stmt->bindParam(':uid', $uid);
+			$stmt->bindParam(':cid', $cid);
+			$stmt->bindParam(':term', $term);
+			$stmt->bindParam(':creator', $userid);
+			$stmt->bindParam(':vers', $coursevers);
+			$stmt->bindParam(':avers', $coursevers);
+			$stmt->bindParam(':bvers', $coursevers);
+			try {
+				if(!$stmt->execute()) {
+					$error=$stmt->errorInfo();
+					$debug.="Error connecting user to course: ".$error[2];
+				}
+			}catch(Exception $e) {
+				$debug.="Error connecting user to course: ".$e->getMessage();
+
+			}
+		}
+	} else if (strcmp($opt, "DELETE") == 0) {
+		if ($action === "COURSE") {
+			$query = $pdo->prepare("DELETE FROM user_course WHERE uid=:uid AND cid=:cid;");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':cid', $cid);
+			try {
+				if(!$query->execute()) {
+					$error=$stmt->errorInfo();
+					$debug.="Error deleting user from course: ".$error[2];
+				}
+			}catch(Exception $e) {
+				$debug.="Error deleting user from course: ".$e->getMessage();
+
+			}
+		}
+	}
 }
+
 
 
 //------------------------------------------------------------------------------------------------

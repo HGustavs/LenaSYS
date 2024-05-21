@@ -14,6 +14,7 @@ var LastCourseCreated;
 var lastCC = false;
 var updateCourseName = false;
 
+
 $(document).ready(function () {
 	$('#startdate').datepicker({
 		dateFormat: "yy-mm-dd"
@@ -815,13 +816,35 @@ function quickValidateForm(formid, submitButton) {
 
 	//If all inputs were valid create course or update course depending on id of form
 	if (numberOfValidInputs === inputs.length) {
-		saveButton.disabled = false;
-		return true;
+		try {
+			saveButton.disabled = false;
+		}
+		catch(err) {
+			err.message;
+		}
+		finally {
+			return true;
+		}
 	} else {
-		saveButton.disabled = true;
+		try {
+			saveButton.disabled = true;
+		}
+		catch(err) {
+			err.message;
+		}
 	}
 	return false;
 }
+
+//adds keypress enter to the form when creating a new course. Calls the same function as clicking the submit-button
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('newCourse').addEventListener('keypress', function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            validateForm('newCourse');
+        }
+    });
+});
 
 //Validates whole form
 function validateForm(formid) {

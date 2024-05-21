@@ -65,9 +65,17 @@
 					$checkIfGithubURL = $row['courseGitURL'];
 				} else {
 					$checkIfGithubURL = null;
-					// $row is false, which means no data was fetched
+				}
+				if(isset($row['updated'])) {
+					$updateTime = $row['updated'];
+				} 
+				else {
 					$updateTime = "No data found for the given course ID";
 				}
+			} 
+			else {
+				$checkIfGithubURL = null;
+				$updateTime = "No data found for the given course ID";
 			}
 
 
@@ -193,6 +201,7 @@
 							pdoConnect();
 
 							//Get version name and coursecode from the correct version of the course
+							global $pdo;
 							$query = $pdo->prepare("SELECT versname, coursecode, startdate FROM vers WHERE cid=:cid AND vers=:vers");
 							$query->bindParam(":cid", $_SESSION["courseid"]);
 							$query->bindParam(':vers', $_SESSION['coursevers']);
@@ -362,16 +371,16 @@
 			// Sort dialog - accessed / resulted /fileed					
 			//old search bar for resulted
       if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
-					echo "<td id='testSearchContainer' class='navButt'>";
+					echo "<td id='testSearchContainer' class='navSearchWrapper'>";
 
 					if ($requestedService == "fileed.php")
 						echo   "<form onsubmit='event.preventDefault()' autocomplete='off'><input id='searchinput' readonly type='text' onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search' placeholder='Search..' onkeyup='searchterm=this.value;sortAndFilterTogether();myTable.reRender();'/></form>";
 					else
-						echo   "<form onsubmit='event.preventDefault()' autocomplete='off' display:'none'><input id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
+					echo   "<form onsubmit='event.preventDefault()' autocomplete='off' display:'none'><input class='navSearch' id='searchinput' readonly onmouseover='hoverSearch();' onmouseleave='leaveSearch();' name='search'  placeholder='Search..' onkeyup='searchterm=this.value;myTable.reRender();'/></form>";
 
 					echo	"<div id='dropdownSearch' class='dropdown-list-container' '>"; //Dropdown menu for when hovering the search bar
 					if($requestedService=="accessed.php"){
-						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Webug13h, 2020-02-29 13:37</p>";
+						echo    "<p aria-live='polite'><b>Keywords:</b> Username, first/lastname, date <br> <b>Ex:</b> Johan Karlson 2020-02-29 13:37</p>";
 					}
 					if($requestedService=="duggaed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> template name, name, date <br> <b>Ex:</b> color-dugga</p>";
@@ -692,30 +701,31 @@ function hamburgerToggle() {
 	}
 }
 
-//count down the fetch cooldown
-const gitFetchCooldownMin = document.getElementById("gitFetchMin");
-const gitFetchCooldownSec = document.getElementById("gitFetchSec");
-const cooldownHolder = document.getElementById("cooldownHolder");
+let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
 
-setInterval(
-	function() 
-	{
-		if(gitFetchCooldownSec.innerHTML>0 || gitFetchCooldownMin.innerHTML>0)
+document.addEventListener("DOMContentLoaded", function() {
+    gitFetchCooldownMin = document.getElementById("gitFetchMin");
+    gitFetchCooldownSec = document.getElementById("gitFetchSec");
+    cooldownHolder = document.getElementById("cooldownHolder");
+
+    if (gitFetchCooldownMin && gitFetchCooldownSec) { // Check if elements exist
+        setInterval(function() 
 		{
-			gitFetchCooldownSec.innerHTML-=1;
-			if(gitFetchCooldownSec.innerHTML<0)
+            if (gitFetchCooldownSec.innerHTML > 0 || gitFetchCooldownMin.innerHTML > 0) {
+                gitFetchCooldownSec.innerHTML -= 1;
+                if (gitFetchCooldownSec.innerHTML < 0) 
+				{
+                    gitFetchCooldownMin.innerHTML -= 1;
+                    gitFetchCooldownSec.innerHTML = 59;
+                }
+            } 
+			else 
 			{
-				gitFetchCooldownMin.innerHTML-=1;
-				gitFetchCooldownSec.innerHTML=59;
-			}
-			
-		}
-		else
-		{
-			cooldownHolder.style.display="none";
-		}
-	}, 1000
-);
+                cooldownHolder.style.display = "none";
+            }
+        }, 1000);
+    }
+});
 
 function resetGitFetchTimer(superuser)
 {

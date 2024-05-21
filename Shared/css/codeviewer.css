@@ -874,7 +874,8 @@
     height: 30px;
 }
 
-.loginBox {
+.loginBox,
+.formBox {
     top: 25%;
 }
 

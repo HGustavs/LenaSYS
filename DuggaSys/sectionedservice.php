@@ -66,7 +66,8 @@ $motd=getOP('motd');
 $tabs=getOP('tabs');
 $exampelid=getOP('exampleid');
 $url=getOP('url');
-
+$githubURL=getOP('githubURL');
+$codeExampleData=getOP('codeExampleData');
 $lid=getOP('lid');
 $visbile = 0;
 $avgfeedbackscore = 0;
@@ -923,6 +924,147 @@ if(checklogin()){
 				} 
 			}
 		
+		} else if (strcmp($opt, "GITCODEEXAMPLE") === 0) {
+			//$codeExampleData = $_POST['codeExampleData'];
+			$content = $codeExampleData['codeExamplesContent'];
+			$SHA = $codeExampleData['SHA'];
+			$fileNames = $codeExampleData['fileNames'];
+			$filePaths = $codeExampleData['filePaths'];
+			$fileURLS = $codeExampleData['fileURLS'];
+			$downloadURLS = $codeExampleData['downloadURLS'];
+			$fileTypes = $codeExampleData['fileTypes'];
+			$codeExamplesLinkParam = $codeExampleData['codeExamplesLinkParam'];
+			$templateid = $codeExampleData['templateid'];
+			$fileSizes = $codeExampleData['fileSizes'];
+			$path = '../../LenaSYS/courses/' . $courseid;
+			$pathCoursesRoot = '../../LenaSYS/courses';
+			$pdoLite = new PDO('sqlite:../../githubMetadata/metadata2.db');
+
+			//Creates courses directory in root if it doesnt exist and courses folder inside
+			if(!is_dir($pathCoursesRoot)){
+				mkdir($pathCoursesRoot, 0775, true);
+			}
+			// Creates the directory for the corresponding course if it doesnt exist.
+			if (!file_exists($path)) {
+				mkdir($path, 0775, true);
+			}
+			if(is_dir($path)){
+				echo "Successfully created courses folder or it already exists!";
+			}
+
+			//Writes code example files to course directory
+			$WriteFilesSuccess = true;
+    		$success = true;
+			$count = $content == null ? 0 : count($content);
+    		for($i = 0; $i < $count; $i++){
+        		$WriteFilesSuccess = file_put_contents($path . '/' . $fileNames[$i], $content[$i]);
+        		if($WriteFilesSuccess === false){
+          			echo "File failed to write: " . $fileNames[$i];
+            		$success = false;
+        		}else{
+            		echo "File written successfully: " . $fileNames[$i];
+        		}
+    		}
+    		if ($success) {
+        		echo "All files written successfully!";
+    		}
+			//Insert into gitRepo DB
+			//First query: Check if a row with same cid already exists. If not, insert into db.
+			$query = $pdoLite->prepare("SELECT COUNT(*) FROM gitRepos WHERE cid = ?");
+			$query->execute([$courseid]);
+			$rowCount = $query->fetchColumn();
+
+			if($rowCount > 0){
+				//A repo with the same cid primary key already exists. Do nothing.
+			} else {
+				$query = $pdoLite->prepare("INSERT OR REPLACE INTO gitRepos (cid, repoURL) VALUES (:cid, :repoURL)"); 
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':repoURL', $githubURL);
+				if (!$query->execute()) {
+					$error = $query->errorInfo();
+					echo "Error updating entry in gitRepos" . $error[2];
+				}
+			}
+			//Insert files into gitFiles DB
+			$successInsert = true;
+    		$fileCount = $fileNames == null ? 0 : count($fileNames);
+    		for($i = 0; $i < $count; $i++){
+        		$query = $pdoLite->prepare('REPLACE INTO gitFiles (cid, fileName, fileType, fileURL, downloadURL, fileSHA, filePath) VALUES (:cid, :fileName, :fileType, :fileURL, :downloadURL, :fileSHA, :filePath)');
+        		$query->bindParam(':cid', $courseid);
+        		$query->bindParam(':fileName', $fileNames[$i]);
+        		$query->bindParam(':fileType', $fileTypes[$i]);
+        		$query->bindParam(':fileURL', $fileURLS[$i]);
+        		$query->bindParam(':downloadURL', $downloadURLS[$i]);
+        		$query->bindParam(':fileSHA', $SHA[$i]);
+        		$query->bindParam(':filePath', $filePaths[$i]);
+        		$success = $query->execute();
+        		if(!$success){
+            		$successInsert = false;
+            		echo "Insertion into gitFiles failed. File: " . $fileNames[$i];
+       			}
+    		}
+    		if($successInsert){
+        		echo "All insertions into gitFiles were successful.";
+    		}
+			//Insert into fileLink Database
+			for($i = 0; $i < $fileCount; $i ++) {
+				$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename);");
+				$query->bindParam(':filename', $fileNames[$i]);
+				$query->bindParam(':cid', $courseid);
+				$query->execute();
+				$norows = $query->fetchColumn();
+				if($norows == 0) {
+					//TODO: Kind value should be fixed to dynamic
+					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:fileName,'3',:cid,:filesize);");
+					$query->bindParam(':cid', $courseid);
+					$query->bindParam(':fileName', $fileNames[$i]);
+					$query->bindParam(':filesize', $fileSizes[$i]);
+					if (!$query->execute()) {
+						$error = $query->errorInfo();
+						echo "Error updating entries" . $error[2];
+					} else {
+						echo "File stored successfully in fileLink";
+					}
+				}
+			}
+
+			//Edit codeexample. Can update later to allow the Name input from user in gitpopup to update the codeExample here? also sectionname?
+			$query = $pdo->prepare( "UPDATE codeexample SET runlink = :playlink, templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;");
+			$query->bindParam(':playlink', $fileNames[0]);
+			$query->bindParam(':templateno', $templateid);
+			$query->bindParam(':exampleid', $codeExamplesLinkParam[0]);
+			$query->bindParam(':cid', $courseid);
+			$query->bindParam(':cvers', $codeExamplesLinkParam[3]);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				echo "Error updating entries in codeexample" . $error[2];
+			} else{
+				echo "Row updated successfully in codeexample";
+			}
+
+			$boxContent = "Code";
+			$wordlistID = "3";
+			$y = 1;
+			for($i = 0; $i < $count; $i++){
+				//TODO: Change boxcontent to be named dynamicly.
+				// Maybe change filenameNoExt to something better named. Also what is wordlistid?
+				$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
+				$query->bindParam(':boxid', $y);
+				$query->bindParam(':exampleid', $codeExamplesLinkParam[0]);
+				$filenameNoExt = preg_replace('/\.[^.]*$/', "", $fileNames[$i]);
+				$query->bindParam(':boxtitle', $filenameNoExt);
+				$query->bindParam(':boxcontent', $boxContent);
+				$query->bindParam(':filename', $fileNames[$i]);
+				$query->bindParam(':wordlistid', $wordlistID);
+	    
+				if (!$query->execute()) {
+					$error = $query->errorInfo();
+					echo "Error updating entries" . $error[2];
+				} else {
+					echo "File stored successfully in box";
+				}
+			$y++;
+			}
 		} else if (strcmp($coursevers, "null")!==0) {
 			// Get every coursevers of courses so we seed groups to every courseversion
 			$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
