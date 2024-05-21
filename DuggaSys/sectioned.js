@@ -617,12 +617,19 @@ function closeOpenPopupForm(){
     "#formBox",
     "#loadDuggaBox",
     "#sectionHideConfirmBox",
-    "#sectionShowConfirmBox"
+    "#sectionShowConfirmBox",
+    "#canvasLinkBox",
+    "#editSection",
+    "#toastContainer"
   ];
   for (let popup of allPopups){
     if ($(popup).css("display") !== "none"){
-      $(popup).css("display","none");
-      return true;
+      if (popup === "#toastContainer"){
+        return true;
+      } else {
+        $(popup).css("display","none");
+        return true;
+      }
     }
   }
   return false; 
