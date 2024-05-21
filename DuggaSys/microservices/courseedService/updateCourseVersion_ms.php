@@ -41,6 +41,13 @@ $isSuperUserVar = isSuperUser($userid);
 $studentTeacher = hasAccess($userid, $cid, 'st');
 $hasAccess = $haswrite || $isSuperUserVar;
 
+if (!checklogin()){
+    $debug = "User not logged in";
+    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+    echo json_encode($retrieveArray);
+    return;
+}
+
 if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
     $debug = "Access not granted";
     $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
@@ -50,7 +57,7 @@ if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
 
 if (strcmp($opt, "UPDATEVRS") !== 0) {
     $debug = "OPT does not match.";
-    $retrieveArray = retrieveCourseedService($pdo,$studentTeacher,$debug, null, $isSuperUserVar);
+    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
     echo json_encode($retrieveArray);
     return;
 }
@@ -80,5 +87,5 @@ if ($makeactive == 3) {
     setAsActiveCourse($pdo, $cid, $versid);
 }
 
-$retrieveArray = retrieveCourseedService($pdo,$studentTeacher,$debug, null, $isSuperUserVar);
+$retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
 echo json_encode($retrieveArray);
