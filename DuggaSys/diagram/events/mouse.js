@@ -240,7 +240,7 @@ function ddown(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates 
  */
 function mup(event) {
     if (!mouseOverLine && !mouseOverElement) {
@@ -340,7 +340,7 @@ function mup(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the toolbar.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates
  */
 function tup() {
     mouseButtonDown = false;
@@ -368,6 +368,7 @@ function mouseLeave() {
 
 /**
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
+ * @returns {boolean} Returns true if the delete button is pressed and canPressDeleteBtn is true, otherwise returns false.
  */
 function checkDeleteBtn() {
     if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) &&
