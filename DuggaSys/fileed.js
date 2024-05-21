@@ -445,7 +445,7 @@ function fileDownload(name, path, extension){
 
 // Close the file preview window by 'x' button or ESC key ----
 function filePreviewClose(){
-    var fileview = document.querySelector(".fileView");
+    let fileview = document.querySelector(".fileView");
     $(".fileViewContainer").hide();
     $(".fileViewWindow").hide();
     while(fileview.firstChild){
@@ -453,14 +453,30 @@ function filePreviewClose(){
     }
 }
 
-document.addEventListener('keydown', function (event) {
-    var fileview = document.querySelector(".fileView");
+document.addEventListener('keyup', function (event) {
     if (event.key === 'Escape') {
-        $(".fileViewContainer").hide();
-        $(".fileViewWindow").hide();
-        while (fileview.firstChild) {
-            fileview.removeChild(fileview.firstChild);
+        let link = document.getElementById("upIcon").href;
+        let isPopupOpen = checkIfPopupIsOpen();
+        if (!isPopupOpen) {
+            window.location.assign(link);
         }
+        filePreviewClose();
+    }
+    if (event.key === 'x') {
+        filePreviewClose();
+    }
+    // ---------------------------------------------------
+    // Toggle to hide fab-button to click through it with CTRL
+    //----------------------------------------------------
+    if (event.key === 'Control') {
+        let element = document.getElementById('fabButton');
+        if (window.getComputedStyle(element, null).getPropertyValue("opacity") != "1") {
+            element.style.opacity = "1";
+            element.style.pointerEvents = "auto";
+        } else {
+            element.style.opacity = "0.3";
+            element.style.pointerEvents = "none";
+        }	
     }
 });
 
@@ -1024,18 +1040,18 @@ document.addEventListener('DOMContentLoaded', function (){
 // ---------------------------------------------------
 // Toggle to hide fab-button to click through it with CTRL
 //----------------------------------------------------
-
-document.addEventListener('keydown', function(e) {
-	var element = document.getElementById('fabButton');
-	if(e.keyCode === 17){
-		if(window.getComputedStyle(element, null).getPropertyValue("opacity") != "1"){
-			element.style.opacity = "1";
-			element.style.pointerEvents = "auto";
-		}else{
-            element.style.opacity = "0.3";
-			element.style.pointerEvents = "none";
-		}	
-	}
-});
+function checkIfPopupIsOpen() {
+    let allPopups = [
+        "#addFile",
+        ".fileViewWindow",
+        ".previewWindow"
+    ];
+    for (let popup of allPopups) {
+        if ($(popup).css("display") !== "none") {
+            return true;
+        }
+    }
+    return false;
+}
 
 
