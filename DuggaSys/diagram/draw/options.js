@@ -288,6 +288,8 @@ function lineLabel(id, placeholder, value) {
  */
 function drawLineProperties(line) {
     let str = '';
+    const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
+
     switch (line.type) {
         case entityType.ER:
             str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
@@ -312,11 +314,18 @@ function drawLineProperties(line) {
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
-            let optSD = option(SDLineType, line.innerType);
-            str += includeLabel(line);
-            str += iconSelection([SDLineIcons], line);
-            str += `<label style="display: block;">Line Type:</label>`;
-            str += select('lineType', optSD, false);
+            if (!connectedToInitialOrFinal) {
+                let optSD = option(SDLineType, line.innerType);
+                str += includeLabel(line);
+                str += iconSelection([SDLineIcons], line);
+                str += `<label style="display: block;">Line Type:</label>`;
+                str += select('lineType', optSD, false);
+            } else {
+                let optSD = option(SDLineType, line.innerType);
+                str += includeLabel(line);
+                str += `<label style="display: block;">Line Type:</label>`;
+                str += select('lineType', optSD, false);
+            }
             break;
         case entityType.SE:
             str += includeSELabel(line);
@@ -420,6 +429,18 @@ function textboxFormatString(arr) {
         content += arr[i] + '\n';
     }
     return content;
+}
+
+/**
+ * @description Function used to check if a given line is connected to an initial state or a final state.
+ * @param {Object} line The line object that needs to be checked.
+ * @returns {Boolean} Returns true if the line is connected to an initial state or a final state, otherwise false.
+ */
+function isConnectedToInitialOrFinalState(line) {
+    const initialStateIds = data.filter(element => element.kind === elementTypesNames.UMLInitialState).map(element => element.id);
+    const finalStateIds = data.filter(element => element.kind === elementTypesNames.UMLFinalState).map(element => element.id);
+    return initialStateIds.includes(line.fromID) || initialStateIds.includes(line.toID) ||
+        finalStateIds.includes(line.fromID) || finalStateIds.includes(line.toID);
 }
 
 /**
@@ -1832,6 +1853,7 @@ function multipleColorsTest() {
 function changeLineProperties() {
     const line = contextLine[0];
     const changes = {};
+    const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
 
     // saves kind of line (normal, dashed, double, etc)
     for (let radio of document.querySelectorAll('#propertyFieldset input[type=radio]')) {
@@ -1860,9 +1882,13 @@ function changeLineProperties() {
         changes.endIcon = document.getElementById("lineEndIcon").value;
     }
     if (line.type == entityType.SD) {
-        changes.innerType = document.getElementById("lineType").value;
-        changes.startIcon = document.getElementById("lineStartIcon").value;
-        changes.endIcon = document.getElementById("lineEndIcon").value;
+        if (!connectedToInitialOrFinal) {
+            changes.innerType = document.getElementById("lineType").value;
+            changes.startIcon = document.getElementById("lineStartIcon").value;
+            changes.endIcon = document.getElementById("lineEndIcon").value;
+        } else {
+            changes.innerType = document.getElementById("lineType").value;
+        }
     }
     if ((line.type == entityType.SE) || (line.type == entityType.IE)) {
         changes.startIcon = document.getElementById("lineStartIcon").value;
