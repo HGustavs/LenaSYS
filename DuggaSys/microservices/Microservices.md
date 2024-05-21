@@ -175,6 +175,7 @@ __Fileed Service:__
 - deleteFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateFileLink_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveFileedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
+- getFileedService_ms.php __==finished==__ New filename: "retrieveAllFileedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 
 <br>
 
@@ -2636,7 +2637,6 @@ _UPDATE_ operation on the table __'fileLink'__ to update the values of the colum
 UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE vers=:vers AND cid=:cid AND kind=:kindid AND filename=:filename;
 ```
 
-
 <br>
 
 ---
@@ -2685,6 +2685,21 @@ SELECT * FROM fileLink WHERE kind=2 OR (cid=:cid AND vers is null) OR (cid=:cid 
 ```
 
 <br>
+
+---
+
+<br>
+
+### retrieveAllFileedServiceData_ms.php
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ getUid_ms.php, retrieveFileedService_ms.php
+
+__retrieveAllFileedServiceData_ms.phpp__ calls __retrieveFileedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. retrieveCourseedService_ms.php does not handle any queries. The microservice is useful for situations when __retrieveFileedService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
+
+The microservice retrieves and outputs course data for a user by calling the __retrieveFileedService_ms.php__ and returning the result as a JSON-encoded string. 
+
 <br>
 
 ---
