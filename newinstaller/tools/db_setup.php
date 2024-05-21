@@ -14,6 +14,10 @@ class DBSetup {
 		$this->callback = $callback;
 	}
 
+	public function set_hostname(string $hostname) {
+		$this->hostname = $hostname;
+	}
+
 	public function set_callback(string $callback) {
 		$this->callback = $callback;
 	}
@@ -139,8 +143,7 @@ class DBSetup {
 		try {
 			$db_name = $db_name ?? $this->db_name;
 			$user_name = $user_name ?? $this->db_user;
-			$hostname = $hostname ?? $this->hostname;
-			$hostname = $hostname ?? '%';
+			$hostname = $hostname ?? $this->hostname ?? '%';
 
 			$this->sanitize($db_name . $user_name);
 			$this->sanitize_hostname($hostname);
@@ -251,7 +254,7 @@ class DBSetup {
 	 * Will return array of information.
 	 */
 	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
-		throw new Exception($e);
+		throw new Exception($action . " Error: " . $e->getMessage(), $e->getCode(), $e);
 	}
 
 	/**
