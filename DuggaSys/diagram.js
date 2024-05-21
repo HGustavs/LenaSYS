@@ -62,11 +62,9 @@ class StateMachine {
             // gets all the id's as actual values and not arrays
             // the id is sometimes stored as an array so this is needed to get the actual value
             let lastLog = {...this.historyLog[this.historyLog.length - 1]};
-            console.log(stateChange.id, lastLog.id)
             stateChange.id = getIdFromArray(stateChange.id);
             const id = stateChange.id;
             lastLog.id = getIdFromArray(lastLog.id);
-            console.log(stateChange.id, lastLog.id)
 
             let currentElement;
             switch (newChangeType) {
@@ -74,20 +72,20 @@ class StateMachine {
                     // checks so that the exact same thing doesn't get logged twice
                     if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
                         this.pushToHistoryLog({
-                            ...stateChange, 
-                            changeType: newChangeType.flag, 
+                            ...stateChange,
+                            changeType: newChangeType.flag,
                             counter: historyHandler.inputCounter
                         });
                     }
-                    break;                
-                case StateChange.ChangeTypes.ELEMENT_RESIZED:                            
+                    break;
+                case StateChange.ChangeTypes.ELEMENT_RESIZED:
                     // add the real values so that not just the chanegs gets stored
                     currentElement = data[findIndex(data, id)];
                     stateChange.width = currentElement.width;
                     stateChange.height = currentElement.height;
                     stateChange.x = currentElement.x;
                     stateChange.y = currentElement.y;
-                    
+
                     // if the save() call comes from the same change-motion, remove the last entry
                     if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
                         this.historyLog.splice(this.historyLog.length - 1, 1);
