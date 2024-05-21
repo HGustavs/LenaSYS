@@ -1,9 +1,9 @@
 <?php
-include_once "../Shared/sessions.php";
+include_once(__DIR__ . "/sessions.php");
 session_start();
 
 // Includes
-include_once "../Shared/basic.php";
+include_once(__DIR__ . "/basic.php");
 
 $opt = getOP('opt');
 
