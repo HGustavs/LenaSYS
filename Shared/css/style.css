@@ -2301,6 +2301,16 @@ input.inactive-button {
   border-radius: 0px;
   align-items: flex-start;
 }
+/* empty wrapper to match the size of a regular wrapper */
+.emptywrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 30px;
+  border-radius: 0px;
+  align-items: flex-start;
+}
+
 .inputwrapper select {
   border-radius: 0px;
 }
@@ -2738,9 +2748,7 @@ resulted.php END
   z-index: 1500;
 }
 
-#sectionname {
-  margin:0px 10px 0px 0px;
-}
+/* #sectionname */
 
 /*---===#===---*
 sectioned.php END 
@@ -2756,7 +2764,7 @@ sectioned.php END
 }
 
 #submitMotd {
-  margin-left: 340px;
+  float: right;
 }
 
 /*font style for "are you shure?*/
@@ -2776,23 +2784,8 @@ sectioned.php END
   overflow:hidden;
 }
 
-/*placemets for error text in server settings*/
-#error50{
-  display: block; 
-  left:55px; 
-  top:-78px;
-}
-
-#errorSymbol{
-  display: block; 
-  left:55; 
-  top:-72px;
-}
-
-#editCourseButtonPlacement{
-  float:right; 
+#editCourseButtonPlacement {
   padding-top:20px; 
-  width: 464px;
 }
 
 #formDialog_popup1 {
@@ -3568,6 +3561,7 @@ div.submit-button:disabled {
 
 .formDialogText {
   display: none;
+  float:left;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
   font-size: 12px;
@@ -8283,16 +8277,12 @@ textarea#mrkdwntxt {
  *                                    courseed                                 *
  * --------------================################================-------------- */
 
-#saveCourse{
-  margin: 0px;
-}
-
 #submitEditCourse{
-  margin-left: 343px;
+  float:right;
   margin-top: 20px;
 }
 #submitCourseMotd{
-  margin-left: 342px;
+  float:right;
   margin-top: 20px;
 }
 #editContentSaveBtn{
