@@ -1,7 +1,7 @@
 /**
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
- * @param {number} X - The X coordinate.
- * @param {number} Y - The Y coordinate.
+ * @param {number} X - The X coordinate panned to.
+ * @param {number} Y - The Y coordinate panned to.
  */
 function drawRulerBars(X, Y) {
     //Get elements
