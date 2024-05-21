@@ -10010,7 +10010,7 @@ margin:2px;
 
 /* END */
 
-/* Styling for button loader */
+/* Styling for button loader / loadingButton.js */
 
 .loader {
   border: 4px solid #f3f3f3; /* Light grey */
@@ -10022,10 +10022,18 @@ margin:2px;
   animation: spin 2s linear infinite;
 }
 
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+button:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* END */
 
 /*Styling for Submission Instructions*/
 

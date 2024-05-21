@@ -559,8 +559,8 @@
 						</div>
 						<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
-			<div class="formFooter">
-				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
+			<div style='padding:5px;'>
+				<div id="ButtonContainerSubmitEditCourse"></div>
 			</div>
 		</div>
 	</div>
