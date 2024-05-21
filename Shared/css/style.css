@@ -2346,7 +2346,9 @@ input.inactive-button {
 
 .margin-right_0px {
   margin-right: 0px
-}#searchBarMobile {
+}
+
+#searchBarMobile {
   display: none;
   test-align:right;
   margin-bottom:15px;
