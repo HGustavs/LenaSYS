@@ -4,8 +4,8 @@
  */
 
 /**
- * Toggles the display of the diagram dropdown menu and updates the button style.
- * @description Shows or hides the dropdown and loading elements, and changes the button 
+ * @description Toggles the display of the diagram dropdown menu and updates the button style.
+ * Shows or hides the dropdown and loading elements, and changes the button 
  * appearance based on the dropdown's visibility.
  */
 function toggleDiagramDropdown() {
@@ -37,8 +37,8 @@ function toggleDiagramDropdown() {
 }
 
 /**
- * Toggles the display of the SVG grid and updates the button style. 
- * @description Shows or hides the grid element and changes the button appearance 
+ * @description Toggles the display of the SVG grid and updates the button style. 
+ * Shows or hides the grid element and changes the button appearance 
  * to indicate whether the grid is active or not.
  */
 function toggleGrid() {
@@ -65,8 +65,8 @@ function toggleGrid() {
 }
 
 /**
- * Toggles the visibility of the keybind list.
- * @description Shows or hides the element with the ID "markdownKeybinds" based on its current display style.
+ * @description Toggles the visibility of the keybind list.
+ * Shows or hides the element with the ID "markdownKeybinds" based on its current display style.
  */
 function toggleKeybindList() {
     const element = document.getElementById("markdownKeybinds");
@@ -168,7 +168,7 @@ function setA4SizeFactor(e) {
 }
 
 /**
- * Toggles the visibility of the A4 vertical rectangle and hides the horizontal rectangle.
+ * @description Toggles the visibility of the A4 vertical rectangle and hides the horizontal rectangle.
  */
 function toggleA4Vertical() {
     const vRect = document.getElementById("vRect");
@@ -179,7 +179,7 @@ function toggleA4Vertical() {
 }
 
 /**
- * Toggles the visibility of the A4 horizontal rectangle and hides the vertical rectangle.
+ * @description Toggles the visibility of the A4 horizontal rectangle and hides the vertical rectangle.
  */
 function toggleA4Horizontal() {
     const vRect = document.getElementById("vRect");
@@ -244,7 +244,7 @@ function toggleRuler() {
 }
 
 /**
- * Toggles the visibility and active state of a placement type box based on the provided number.
+ * @description Toggles the visibility and active state of a placement type box based on the provided number.
  * @param {number} num - The number identifying the placement type box.
  */
 function togglePlacementTypeBox(num) {
@@ -365,7 +365,7 @@ function togglePlacementType(num, type) {
 }
 
 /**
- * Hides all active placement type boxes.
+ * @description Hides all active placement type boxes.
  */
 function hidePlacementType() {
     let i = 0;
