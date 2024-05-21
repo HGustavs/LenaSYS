@@ -679,7 +679,7 @@
 				<h3>There is currently no valid github repo. Add one?</h3>
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
-					<div class= 'inputwrapper'><span>Github repo link:</span><input oninput="checkGithubLink('gitRepoURL')" type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
+					<div class= 'inputwrapper'><span>Github repo link:</span><input onchange="checkGithubLinkClue('gitRepoURL')" oninput="checkGithubLink('gitRepoURL')" type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
 				</form>
 			</div>
 			<div class="formFooter">

@@ -3690,8 +3690,6 @@ function checkGithubLink(link) {
   var savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
   var substring="https://github.com/"
   var status=true;
-  console.log(element.value);
-  console.log(savebtn);
   status=element.value.includes(substring);
   if(element.value.length<substring.length+2){
     status=false;
@@ -3723,6 +3721,26 @@ function checkGithubLink(link) {
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
+  }
+}
+
+// creates a warning to user
+function checkGithubLinkClue(link){
+  var element = document.getElementById(link);
+  var inputWindow = document.getElementById('githubPopupWindow');
+  var substring="https://github.com/"
+  var status=true;
+  status=element.value.includes(substring);
+  if(element.value.length<substring.length+2){
+    status=false;
+  }
+
+  if(element.value.match('"') || element.value.match("'")){
+    status=false;
+  }
+
+  if (!status && inputWindow.style.display!="none") {
+    toast('warning','Enter a valid GitHub repository link',3);
   }
 }
 

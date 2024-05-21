@@ -729,7 +729,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function resetGitFetchTimer(superuser)
 {
-	if(cooldownHolder.style.display=="none"){
+	const inputWindow=document.getElementById('githubPopupWindow');
+	if(cooldownHolder.style.display=="none" && inputWindow.style.display=="none"){
 		cooldownHolder.style.display="block";
 		if(superuser==1)
 		{
