@@ -4046,7 +4046,7 @@ function fetchGitCodeExamples(courseid){
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
       //Test here to view content in console. codeExamplesContent array elements contains alot of info.
-      storeCodeExamples(cid, codeExamplesContent, githubURL);
+      storeCodeExamples(cid, codeExamplesContent, githubURL, fileName);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4140,7 +4140,7 @@ function fetchGitCodeExamples(courseid){
     });
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
-function storeCodeExamples(cid, codeExamplesContent, githubURL){
+function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     var templateNo = updateTemplate();
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[], fileSize=[];
     //Push all file data into separate arrays and add them into one single array.
@@ -4175,6 +4175,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
        data: {
         courseid: cid,
         githubURL: githubURL,
+        codeExampleName: fileName,
         opt: 'GITCODEEXAMPLE',
         codeExampleData: AllJsonData
        },
@@ -4186,6 +4187,7 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       }
     });   
     confirmBox('closeConfirmBox');
+    location.replace(location.href);
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();
