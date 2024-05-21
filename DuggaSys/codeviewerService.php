@@ -43,11 +43,13 @@
 	$exampleName=getOP('examplename');
 	$playlink=getOP('playlink');
 	$debug="NONE!";
+
 	// Checks user id, if user has none a guest id is set
-	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
-	}else{
-		$userid="1";
+	checklogin();
+	if (isset($_SESSION['uid'])) {
+		$userid = $_SESSION['uid'];
+	} else {
+		$userid = "guest";
 	}
 
 	$log_uuid = getOP('log_uuid');
