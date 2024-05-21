@@ -129,7 +129,8 @@ function determineLineSelect(mouseX, mouseY) {
 }
 
 /**
- * @description Retrieves lines from svgbacklayer. If none is found return empty array
+ * @description Retrieves lines from svgbacklayer. If no lines are found then an empty array is returned.
+ * @returns {Array} Array of lines (objects) from the back layer of the SVG canvas
  */
 function getLinesFromBackLayer() {
     return Array.from(document.getElementById("svgbacklayer").children);
@@ -137,6 +138,18 @@ function getLinesFromBackLayer() {
 
 /**
  * @description Performs a circle detection algorithm on a certain point in pixels to decide if any line was clicked.
+ * @param {number} a - The coefficient of x in the line equation.
+ * @param {number} b - The coefficient of y in the line equation.
+ * @param {number} c - The constant term in the line equation.
+ * @param {number} circle_x - The x-coordinate of the circle center.
+ * @param {number} circle_y - The y-coordinate of the circle center.
+ * @param {number} circle_radius - The radius of the circle.
+ * @param {object} line_data - Additional data about the line.
+ *      @param {number} line_data.hX - The x-coordinate of the higher end of the line.
+ *      @param {number} line_data.lX - The x-coordinate of the lower end of the line.
+ *      @param {number} line_data.hY - The y-coordinate of the higher end of the line.
+ *      @param {number} line_data.lY - The y-coordinate of the lower end of the line.
+ * @returns {boolean} - True if the line intersects with the circle, false otherwise.
  */
 function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data) {
     // Distance between line and circle center.
@@ -152,6 +165,13 @@ function didClickLine(a, b, c, circle_x, circle_y, circle_radius, line_data) {
 
 /**
  * @description Performs a circle detection algorithm on a certain point in pixels to decide if a label was clicked.
+ * @param {Object} c - The coordinates of the label.
+ * @param {number} lw - The width of the label.
+ * @param {number} lh - The height of the label.
+ * @param {number} circle_x - The x-coordinate of the circle.
+ * @param {number} circle_y - The y-coordinate of the circle.
+ * @param {number} circle_radius - The radius of the circle.
+ * @returns {boolean} - True if the label was clicked within the margin of error, false otherwise.
  */
 function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
     // Adding and subtracting with the circle radius to allow for bigger margin of error when clicking.
@@ -163,7 +183,8 @@ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
 }
 
 /**
- * @description Triggers when the mouse hoovers over an sequence lifeline.
+ * @description Triggers when the mouse hovers over an sequence lifeline.
+ * @param {Event} event - The mouse enter event object.
  */
 function mouseEnterSeq(event) {
     if (elementTypeSelected === elementTypes.sequenceActivation) {
@@ -175,6 +196,7 @@ function mouseEnterSeq(event) {
 
 /**
  * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
+ * @param {string} targetId - The ID of the target lifeline.
  */
 function snapSAToLifeline(targetId) {
     const lifeline = document.getElementById(targetId);
@@ -201,6 +223,8 @@ function snapSAToLifeline(targetId) {
 
 /**
  * @description Gets the height of the top object of sequence actor and sequence object
+ * @param {Object} element - The element for which to calculate the top height.
+ * @returns {number} The calculated top height of the element.
  */
 function getTopHeight(element) {
     let boxw = Math.round(element.width * zoomfact);
