@@ -9,10 +9,11 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";
+checklogin();
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "guest";
 }
 
 $cid = getOP('cid');
@@ -154,7 +155,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 //------------------------------------------------------------------------------------------------
 $mass=array();
 $entries=array();
-$variants=array();
 $files=array();
 $duggaPages = array();
 
@@ -211,8 +211,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 				"cogwheelVariant" => $rowz["vid"],
 				"trashcanVariant" => $rowz["vid"]
 				);
-
-			array_push($variants, html_entity_decode($rowz["variantanswer"]));
 			array_push($mass, $entryz);
 		}
 
@@ -254,7 +252,6 @@ $array = array(
 	'duggaPages' => $duggaPages,
 	'coursecode' => $coursecode,
 	'coursename' => $coursename,
-	'variants' => $variants
 );
 
 echo json_encode($array);

@@ -6,10 +6,12 @@ include_once "../Shared/basic.php";
 
 pdoConnect();
 session_start();
+
+checklogin();
 if (isset($_SESSION['uid'])) {
     $userid = $_SESSION['uid'];
 } else {
-    $userid = "1";
+    $userid = "guest";
 }
 
 // Gets username based on uid, USED FOR LOGGING

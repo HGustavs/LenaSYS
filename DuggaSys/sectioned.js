@@ -815,10 +815,10 @@ function hideVisibilityIcons() {
 }
 
 //Changes visibility of hidden items
-function showMarkedItems() {
+function showMarkedItems(selectedItemList) {
   hideVisibilityIcons();
-  for (i = 0; i < hideItemList.length; i++) {
-    var lid = hideItemList[i];
+  for (i = 0; i < selectedItemList.length; i++) {
+    var lid = selectedItemList[i];
     AJAXService("SETVISIBILITY", {
       lid: lid,
       visible: 1
@@ -984,7 +984,7 @@ function deleteItem(item_lid = []) {
 // Permanently delete elements.
 function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
+    AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
   }
@@ -1069,13 +1069,13 @@ function getDeletedListEntries() {
 // hideMarkedItems: Hides Item from Section List
 //----------------------------------------------------------------------------------
 
-function hideMarkedItems() {
+function hideMarkedItems(selectedItemList) {
   // Since no boxes are checked ghost button is disabled
   hideVisibilityIcons();
   document.querySelector('#hideElement').disabled = true;     //can be removed
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
-  for (i = 0; i < hideItemList.length; i++) {
-    var lid = hideItemList[i];
+  for (i = 0; i < selectedItemList.length; i++) {
+    var lid = selectedItemList[i];
     AJAXService("SETVISIBILITY", {
       lid: lid,
       visible: 3
@@ -1282,7 +1282,7 @@ function updateVersion() {
   param.enddate = $("#eenddate").val();
   param.motd = document.getElementById("eMOTD").value;
 
-  AJAXService("UPDATEVRS", param, "SECTION");
+  AJAXService("UPDATEVRS", param, "COURSE");
 
   $("#editCourseVersion").css("display", "none");
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +

@@ -5,13 +5,13 @@
 include_once "../../../Shared/basic.php";
 
 // Include services for information retrieval
-include_once "getCourseVersions_ms.php";
+include_once "readCourseVersions_ms.php";
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-function retrieveSectionedService($debug = "NONE!", $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid)
+function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid)
 {
     date_default_timezone_set("Europe/Stockholm");
     include_once "../../../Shared/sessions.php";
@@ -195,8 +195,8 @@ function retrieveSectionedService($debug = "NONE!", $opt, $pdo, $userid, $course
 
     $links = array();
 
-    // Retrieve Course Versions from microservice 'getCourseVersions_ms.php'
-    $versions = getCourseVersions($pdo);
+    // Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
+    $versions = readCourseVersions($pdo);
 
     $codeexamples = array();
 

@@ -18,7 +18,6 @@ of which folder in the repository 'save' on the server to load.
     -'Upload Canvas' and 'Example canvas' options does not seem to do anything.
 -------------==============######## Documentation End ###########==============-------------*/
   session_start();
-  include_once "../../coursesyspw.php";
   include_once "../Shared/sessions.php";
   pdoConnect();
 ?>

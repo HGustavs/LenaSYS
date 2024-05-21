@@ -4,7 +4,6 @@ session_start();
 
 // Includes
 include_once(__DIR__ . "/basic.php");
-include_once "../../coursesyspw.php";
 
 $opt = getOP('opt');
 

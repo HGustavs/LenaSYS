@@ -1,6 +1,6 @@
 <?php
 //---------------------------------------------------------------------------------------------------------------
-// Microservice getCourseGroupsAndMembers, returns a list of group member related to the provided 
+// Microservice readCourseGroupsAndMembers, returns a list of group member related to the provided 
 // course id and course version
 //---------------------------------------------------------------------------------------------------------------
 
@@ -9,7 +9,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../../../Shared/coursesyspw.php";
 include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session
