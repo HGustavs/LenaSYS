@@ -130,7 +130,7 @@ function determineLineSelect(mouseX, mouseY) {
 
 /**
  * @description Retrieves lines from svgbacklayer. If none is found return empty array
- * @returns {Array} Array of lines.
+ * @returns {Array} Array of lines from svgbacklayer.
  */
 function getLinesFromBackLayer() {
     return Array.from(document.getElementById("svgbacklayer").children);
@@ -183,7 +183,7 @@ function didClickLabel(c, lw, lh, circle_x, circle_y, circle_radius) {
 }
 
 /**
- * @description Triggers when the mouse hoovers over an sequence lifeline.
+ * @description Triggers when the mouse hovers over an sequence lifeline.
  * @param {Event} event - The mouse enter event object.
  */
 function mouseEnterSeq(event) {
