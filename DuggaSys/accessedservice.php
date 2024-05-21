@@ -11,10 +11,11 @@ session_start();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";//to make tests work, same is also done duggaedservice.php
+checklogin();
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "guest";
 }
 
 $pw = getOP('pw');

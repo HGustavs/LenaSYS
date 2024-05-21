@@ -16,12 +16,12 @@ include_once "../Shared/sessions.php";
 pdoConnect();
 session_start();
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";		
-} 
-
+checklogin();
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "guest";
+}
 
 $password= getOP('password');
 $question = getOP('question');

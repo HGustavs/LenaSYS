@@ -15,13 +15,15 @@
     // Connect to database and start session
     pdoConnect();
     session_start();
+    
+    checklogin();
     if (isset($_SESSION['uid'])) {
         $userid = $_SESSION['uid'];
         $loginname = $_SESSION['loginname'];
         $lastname = $_SESSION['lastname'];
         $firstname = $_SESSION['firstname'];
     } else {
-        $userid = 1;
+        $userid = "guest";
         $loginname = "UNK";
         $lastname = "UNK";
         $firstname = "UNK";
