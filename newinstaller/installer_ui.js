@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         }
-		console.log(event);
     });
 
 	setProgressBarWidth(1);
