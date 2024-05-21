@@ -1,5 +1,5 @@
 # MICROSERVICES
-This document primarily focuses on the services provided by the monolithc service files and which microservies can obtained thorugh these files. 
+This document primarily focuses on the services provided by the monolithc service files and which microservies can obtained thorugh these files. Note that the document may contain potential inaccuracies as the microservices have been under continuous development. The documentation has been updated continuously as best as possible.
 
 # BACKGROUND
 A monolithic architecture means that the application is built as a single unified codebase, which can sometimes make it difficult to scale or maintain. Microservices, on the other hand, are smaller, modular services that can operate independently yet still interact with each other. That is what we are aiming for.
