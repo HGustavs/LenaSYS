@@ -2288,6 +2288,7 @@ input.inactive-button {
   justify-content: space-between;
   width: 445px;
   border-radius: 0px;
+  align-items: flex-start;
 }
 .inputwrapper select {
   border-radius: 0px;
@@ -2492,50 +2493,6 @@ sectioned.php END
 
 #submitMotd {
   margin-left: 340px;
-}
-
-#newCourse_Name_formDialog {
-  display: block; 
-  left:-125px; 
-  top:-8px;
-}
-
-
-#newCourse_Code_formDialog {
-  display: block; 
-  left:-125px; 
-  top:0px;
-}
-
-#newGithubformDialog {
-  display: block; 
-  left:-125px; 
-  top:0px;
-}
-
-#editCourse_Name_formDialog {
-  display: block; 
-  left:-127px; 
-  top:-4px;
-}
-
-
-#editCourse_Code_formDialog {
-  display: block; 
-  left:-123px; 
-  top:2px;
-}
-
-#editGithub_formDialog {
-  display: block; 
-  left:-118px; 
-  top:3px;
-}
-
-#GithubKey_formDialog{
-  display: block; 
-  left:-175px; 
-  top:3px;
 }
 
 /*font style for "are you shure?*/
@@ -3301,27 +3258,41 @@ div.submit-button:disabled {
 
 /* Form Pointing Dialogs */
 
-.formDialog {
+/* ----------------------Form Pointing Dialogs START ---------------------- */
+/* Apart from special cases further down, all of these are taken out of normal flow and are attached to the left of the input */
+.dialogwrapper {
   position: relative;
-  display: inline-block;
-  left: -100px;
+  display: block;
 }
 
-.formDialog .formDialogText {
-  width: 200px;
+.formDialog {
+  display: inline-block;
+}
+
+.formDialog {
+  display: block;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 5;
+  right: calc(100% + 6px); /*6px is the static (not changing) space of the arrow located in ::after*/
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.formDialogText {
   display: none;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 5;
   font-size: 12px;
+  border-radius: 6px;
   line-height: 14px;
+  text-align: center;
+  padding: 5px;
+  right: 100%;
+  width: 200px;
 }
 
-.formDialog .formDialogText::after {
+.formDialogText::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -3332,6 +3303,8 @@ div.submit-button:disabled {
   border-color: transparent transparent transparent var(--color-text-list);
 }
 
+/* Special cases */
+/*The formDialogWide is used when validation text is supposed to be shown under the element. It also needs static position in order to take up space*/
 .formDialogWide .formDialogText {
   width: 400px;
   display: none;
@@ -3358,20 +3331,8 @@ div.submit-button:disabled {
   border-color: transparent transparent var(--color-text-list) transparent ;
 }
 
-.versionDialog {
-  position:absolute;
-  display: inline;
-  margin-left: 55px;
-}
-.formDialogSplitUp {
-  top: -5px; 
-}
-.formDialogSplitDown {
-  top: 12px; 
-}
-.formDialogTextHalfDownShift{
-  top: 15px; 
-}
+/* ----------------------Form Pointing Dialogs END ---------------------- */
+
 /* Tooltip */
 .tooltipDugga {
   position: relative;

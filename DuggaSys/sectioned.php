@@ -282,11 +282,13 @@
 				<input type='hidden' id='comments'  />
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
-					<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+						</div>
+						<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
+					</div>
 				</div>
-				<div class="formDialog" style="display: block;">
-  		      		<span id="dialog10"  class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
-  		      	</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
@@ -466,24 +468,30 @@
 			<div class="formBody">
 				<div class='inputwrapper'>
 					<span>Version ID:</span>
-					<div class="formDialog versionDialog" >
-						<span id="dialog2" class="formDialogText">3 to 8 numbers required</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog2" class="formDialogText">3 to 8 numbers required</span>
+						</div>
+						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8' />
 					</div>
-					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd');" class='textinput' type='text' id='cversid' placeholder='Version ID' maxlength='8'/>
 				</div>
 				<div class='inputwrapper'>
 					<span>Version Name:</span>
-					<div class="formDialog versionDialog">
-						<span id="dialog" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span>
+						</div>
+						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
 					</div>
-					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='versname' placeholder='Version Name' />
 				</div>
 				<div class='inputwrapper'>
 					<span>Start Date:</span>
-					<div class="formDialog versionDialog">
-						<span id="dialog3" class="formDialogText formDialogTextHalfDownShift">Start date has to be before end date</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog3" class="formDialogText">Start date has to be before end date</span>
+						</div>
+						<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
 					</div>
-					<input onchange="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='date' id='startdate' value='' />
 				</div>
 				<div class='inputwrapper'>
 					<span>End Date:</span>
@@ -491,11 +499,13 @@
 				</div>
 				<div class='inputwrapper'>
 					<span>MOTD:</span>
-					<div class="formDialog versionDialog" >
-						<span id="dialog4" class="formDialogText formDialogSplitUp">Prohibited symbols</span>
-						<span id="dialog42" class="formDialogText formDialogSplitDown">Max 50 characters</span>
+					<div class="dialogwrapper">
+						<div class="formDialog">
+							<span id="dialog4" class="formDialogText">Prohibited symbols</span>
+							<span id="dialog42" class="formDialogText">Max 50 characters</span>
+						</div>
+						<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
 					</div>
-					<input onkeyup="quickValidateForm('newCourseVersion', 'submitCourseMotd'); " class='textinput' type='text' id='vmotd' placeholder='MOTD' value='' />
 				</div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" title='default version checkbox' value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
@@ -518,16 +528,36 @@
 			</div>
 			<div class="formBody">
 				<input type='hidden' id='cid' value='Toddler' />
-				<div class='inputwrapper'><span>Version ID:</span><input class="greyedout-textinput" disabled type='text' id='eversid' placeholder='Version ID' /></div>
-				<div class='inputwrapper'><span>Version Name:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-36px;"><span id="dialog5" style="display: none; left:0px;" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
-				<div class='inputwrapper'><span>Start Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' /></div>
-				<div class='inputwrapper'><span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' /></div>
-				<div class="formDialog" style="display: block; left:54px; top:-50px;"><span id="dialog6" style="display: none; left:0px;" class="formDialogText">Start date has to be before end date</span></div>
-				<div class='inputwrapper'><span>MOTD:</span><input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD'/></div>
-				<div class="formDialog" style="display: block; left:54px; top:-40px;"><span id="dialog9" style="display: none; left:0px;" class="formDialogText">Prohibited symbols</span></div>
-				<div class="formDialog" style="display: block; left:54px; top:-22px;"><span id="dialog92" style="display: none; left:0px;" class="formDialogText">Max 50 characters</span></div>
-				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
+				<div class='inputwrapper'>
+							<span>Version ID:</span>
+							<input class="greyedout-textinput" type='text' disabled id='eversid' placeholder='Version ID' />
+						</div>
+						<div class='inputwrapper'>
+							<span>Version Name:</span>
+							<div class="dialogwrapper">
+								<div class="formDialog"><span id="dialog5" class="formDialogText">Must be in of the form HTNN, VTNN or STNN</span></div>
+								<input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eversname' placeholder='Version Name' />
+							</div>
+						</div>
+						<div class='inputwrapper'>
+							<span>Start Date:</span>
+							<div class="dialogwrapper">
+								<div class="formDialog"><span id="dialog6" class="formDialogText">Start date has to be before end date</span></div>
+								<input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='estartdate' title='Start date input' value='' />
+							</div>
+						</div>
+						<div class='inputwrapper'>
+							<span>End Date:</span><input onchange="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='textinput' type='date' id='eenddate' title='End date input' value='' />
+						</div>
+						<div class='inputwrapper'>
+							<span>MOTD:</span>
+							<div class="dialogwrapper">
+								<input onkeyup="quickValidateForm('editCourseVersion', 'submitEditCourse'); " class='textinput' type='text' id='eMOTD' placeholder='MOTD' />
+								<div class="formDialog"><span id="dialog9" class="formDialogText">Prohibited symbols</span></div>
+								<div class="formDialog"><span id="dialog92" class="formDialogText">Max 50 characters</span></div>
+							</div>
+						</div>
+						<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" title='Default version checkbox' value="yes"></div>
 			</div>
 			<div class="formFooter">
 				<input id='submitEditCourse' class='submit-button' type='button' value='Save' title='Save changes' onclick="validateForm('editCourseVersion')" />
@@ -692,17 +722,21 @@
 						</tr>
 						<div class='inputwrapper'>
 							<span>Name:</span>
-							<div class="formDialog">
-								<span id="fileNameError"  class="formDialogText">Please use letters and digits, only</span>
+							<div class="dialogwrapper">
+								<div class="formDialog">
+									<span id="fileNameError" class="formDialogText">Please use letters and digits, only</span>
+								</div>
+								<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value='' />
 							</div>
-							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='fileName' placeholder='Name.type' value=''/>
 						</div>
 						<div class='inputwrapper'>
 							<span>GithubUrl:</span>
-							<div class="formDialog">
-								<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+							<div class="dialogwrapper">
+								<div class="formDialog">
+									<span id="gitHubError" class="formDialogText">Enter a valid github url</span>
+								</div>
+								<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value='' />
 							</div>
-							<input onkeyup="quickValidateForm('gitHubTemplate','saveCourse')" class='textinput validate' type='text' id='githubURL' placeholder='GitHubDownloadUrl' value=''/>
 						</div>
 						<div class='inputwrapper'>
 							<span>Filepath:</span>
