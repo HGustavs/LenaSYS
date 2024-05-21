@@ -898,7 +898,6 @@ option:checked{
 select{
     background-color: var(--color-background-light-surface);
     color: var(--color-text-list);
-    margin-right: 10px;
     border-radius: 5px;
 }
 
@@ -998,8 +997,7 @@ input{
 /* END */
 
 /* Style for fieldset elements in #Show Test" editor.  START */
-.loginBox select,
-.formBox select{
+.loginBox select {
     background-color: #212121;
     color:white;
 }
