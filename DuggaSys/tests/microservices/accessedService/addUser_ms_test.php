@@ -4,7 +4,7 @@ include "../../../../Shared/test.php";
 // TEST for microservice addUser_ms.php
 $testdata = array(
     'addUser_ms' => array(  
-        'expected-output' => '{"entries":[{"username":"{\"username\":\"Addtest123\"}","ssn":"{\"ssn\":\"471212-1234\"}","firstname":"{\"firstname\":\"Fname\"}","lastname":"{\"lastname\":\"Lname\"}","class":"{\"class\":\"TESTclass1\"}","access":"{\"access\":\"R\"}"}],"debug":"NONE!","classes":[{"class":"TESTclass1"},{"class":"DVSUG13h"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
+        'expected-output' => '{"entries":[{"username":"{\"username\":\"Addtest123\"}","ssn":"{\"ssn\":\"471212-1234\"}","firstname":"{\"firstname\":\"Fname\"}","lastname":"{\"lastname\":\"Lname\"}","class":"{\"class\":\"TESTclass1\"}","access":"{\"access\":\"R\"}"}],"debug":"NONE!","classes":[{"class":"DVSUG13h"},{"class":"TESTclass1"},{"class":"WEBUG13h"},{"class":"WEBUG14h"}]}',
         'query-after-test-1' => "DELETE FROM user_course WHERE cid = '1885';",
         'query-after-test-2' => "DELETE FROM user WHERE username = 'Addtest123' AND firstname = 'Fname' AND lastname = 'Lname';",
         'query-after-test-3' => "DELETE FROM class WHERE class = 'TESTclass1';",
@@ -30,7 +30,9 @@ $testdata = array(
                     'class',
                     'access'
                 ),
-                'classes',
+                'classes' => array(
+                    'class'
+                ),
                 'debug'
             )),
     ),
