@@ -1670,20 +1670,22 @@ function returnedSection(data) {
 
         } else if (itemKind === 6) { // Group
           // Alt 1
-          let grpmembershp = data['grpmembershp'].split(" ");
           var grptype = item['grptype'] + "_";
           var grp = grptype + "UNK";
-
-          if (document.getElementById("userName").innerHTML != "Guest") {
-            for (let i = 0; i < grpmembershp.length; i++) {
-              let g = grpmembershp[i].replace(grptype, "");
-              if (g.length < grpmembershp[i].length) {
-                if (grp !== grptype + "UNK") {
-                  grp += ",";
-                } else {
-                  grp = "";
+          // Check if the grpmbershp has data in the entry. 
+          if(data['grpmembershp'] != null) {
+            let grpmembershp = data['grpmembershp'].split(" ");
+            if (document.getElementById("userName").innerHTML != "Guest") {
+              for (let i = 0; i < grpmembershp.length; i++) {
+                let g = grpmembershp[i].replace(grptype, "");
+                if (g.length < grpmembershp[i].length) {
+                  if (grp !== grptype + "UNK") {
+                    grp += ",";
+                  } else {
+                    grp = "";
+                  }
+                  grp += grptype + g;
                 }
-                grp += grptype + g;
               }
             }
           }
