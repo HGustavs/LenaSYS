@@ -232,6 +232,13 @@ function drawLine(line, targetGhost = false) {
     return str;
 }
 
+/**
+ * @description 
+ * @param {Object} f It's the felem coordinate.
+ * @param {boolean} t It's the telem coordinate.
+ * @param {boolean} ctype The type of line direction.
+ * @return Returns the result depend on switch case.
+ */
 function getLineAttrubutes(f, t, ctype) {
     let result;
     let px = 3;
@@ -265,6 +272,17 @@ function getLineAttrubutes(f, t, ctype) {
     return result;
 }
 
+/**
+ * @description Draw the label for the line.
+ * @param {Object} line The line object that is drawn.
+ * @param {object} label How long the label's text is.
+ * @param {Object} lineColor The color for the label.
+ * @param {String} labelStr The id for the label.
+ * @param {Number} x The X coodinates on the line for draw the label.
+ * @param {Number} y The Y coodinates on the line for draw the label.
+ * @param {boolean} isStart Where the start and end label should be.
+ * @return Returns the label for the line
+ */
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     const offsetOnLine = 35 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
@@ -302,6 +320,15 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
             > ${label} </text>`;
 }
 
+/**
+ * @description Draw a recursive line for the elements.
+ * @param {Number} fx The X coordinate on start and end for the recursive line.
+ * @param {Number} fy The Y coordinate on start and end for the recursive line.
+ * @param {Number} offset It's a offset for the coodinate when draw a recursive line. 
+ * @param {Object} line The line object that is drawn.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @return Returns the different lines for the recursive line and the Array on the line.
+ */
 function drawRecursive(fx, fy, offset, line, lineColor) {
     let str = '';
     const length = 40 * zoomfact;
@@ -319,6 +346,18 @@ function drawRecursive(fx, fy, offset, line, lineColor) {
     return str;
 }
 
+/**
+ * @description Draw the cardinalities label for the line.
+ * @param {Object} line The line object that is drawn.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Number} fx The felem x coordinate.
+ * @param {Number} fy The felem y coordinate.
+ * @param {Number} tx The telem x coordinate.
+ * @param {Number} ty The telem y coordinate.
+ * @param {Object} f The object felem.
+ * @param {Object} t the object telem.
+ * @return Returns the cardinality label for the line.
+ */
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
 
@@ -387,6 +426,18 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
             > ${lineCardinalitys[line.cardinality]} </text>`;
 }
 
+/**
+ * @description Draw the line segmented.
+ * @param {Number} fx The felem x coordinate.
+ * @param {Number} fy The felem y coordinate.
+ * @param {Number} tx The telem x coordinate.
+ * @param {Number} ty The telem y coordinate.
+ * @param {Object} offset Offset for the X and Y coordinate.
+ * @param {Object} line The line object that is drawn.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Number} strokeDash A number for patterns of dashes and gaps.
+ * @return Returns the line as segmented.
+ */
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
@@ -398,6 +449,16 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
 
 }
 
+/**
+ * @description Draw the line icon.
+ * @param {Object} icon The different start or end icon for the line.
+ * @param {Object} ctype Is a object for change type on the line.
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Object} line The line object that is drawn.
+ * @return Returns the icons for the line.
+ */
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
     let str = "";
     switch (icon) {
@@ -454,6 +515,13 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
     return str;
 }
 
+/**
+ * @description Draw a icon that is a line.
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @return Returns the icons for the line.
+ */
 function iconLine([a, b, c, d], x, y, lineColor) {
     return `<line 
                 x1='${x + a * zoomfact}' 
@@ -464,6 +532,13 @@ function iconLine([a, b, c, d], x, y, lineColor) {
             />`;
 }
 
+/**
+ * @description Draw a icon that is a circle.
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @return Returns the icons for the circle.
+ */
 function iconCircle([a, b, c], x, y, lineColor,) {
     return `<circle 
                 cx='${x + a * zoomfact}' 
@@ -473,6 +548,15 @@ function iconCircle([a, b, c], x, y, lineColor,) {
             />`;
 }
 
+/**
+ * @description Draw a icon that is a polyline.
+ * @param {Array} arr Is a array for the icons lenght
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Object} fill Its the color to fill the icons.
+ * @return Returns the icons for the polyline.
+ */
 function iconPoly(arr, x, y, lineColor, fill) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
@@ -513,8 +597,9 @@ function calculateArrowBase(from, to, size) {
  * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
  * @param {Point} to The coordinates/Point where the line between @param base and the element end
  * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
+ * @returns Returns the calculated coordinate for rotate the arrow point.
  */
- function rotateArrowPoint(base, point, clockwise) {
+function rotateArrowPoint(base, point, clockwise) {
     const angle = Math.PI / 4; 
     const direction = clockwise ? 1 : -1; 
     const dx = point.x - base.x;
@@ -525,9 +610,16 @@ function calculateArrowBase(from, to, size) {
             x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
             y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
         };
-     }
+}
      
-
+/**
+ * @description Draw the arraow head for the line.
+ * @param {Point} base The start x and y coordinate.
+ * @param {Point} point The different point for the arrow head.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Object} strokeWidth The line width for the arrow head.
+ * @return Returns a polygon for the arrow head.
+ */
 function drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
@@ -683,7 +775,9 @@ function sortElementAssociations(element) {
 }
 
 /**
- * @description calculates how the label should be displacesed
+ * @description calculates how the label should be displacesed.
+ * @param {Object} labelObject It's the label for the line.
+ * @returns Returns the distance of the label and the line.
  */
 function calculateLabelDisplacement(labelObject) {
     let baseLine, angle;
@@ -721,6 +815,10 @@ function calculateLabelDisplacement(labelObject) {
     return distanceToOuterlines;
 }
 
+/**
+ * @description Calculate a procentual distance of how the label should be displacesed.
+ * @param {Object} objectLabel It's the label for the line.
+ */
 function calculateProcentualDistance(objectLabel) {
     // Math to calculate procentuall distance from/to centerpoint
     const diffrenceX = objectLabel.highX - objectLabel.lowX;
