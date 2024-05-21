@@ -1,5 +1,12 @@
 /**
- * @description hides or shows the diagram type dropdown
+ * @fileoverview
+ * Contains JavaScript functions for managing UI features in the diagram application.
+ */
+
+/**
+ * @description Toggles the display of the diagram dropdown menu and updates the button style.
+ * Shows or hides the dropdown and loading elements, and changes the button 
+ * appearance based on the dropdown's visibility.
  */
 function toggleDiagramDropdown() {
     const dropdown = document.getElementById("diagramTypeDropdown");
@@ -30,7 +37,9 @@ function toggleDiagramDropdown() {
 }
 
 /**
- * @description Toggles the visual background grid ON/OFF.
+ * @description Toggles the display of the SVG grid and updates the button style. 
+ * Shows or hides the grid element and changes the button appearance 
+ * to indicate whether the grid is active or not.
  */
 function toggleGrid() {
     const grid = document.getElementById("svggrid");
@@ -56,7 +65,8 @@ function toggleGrid() {
 }
 
 /**
- * @description Toggles the list of keybinds.
+ * @description Toggles the visibility of the keybind list.
+ * Shows or hides the element with the ID "markdownKeybinds" based on its current display style.
  */
 function toggleKeybindList() {
     const element = document.getElementById("markdownKeybinds");
@@ -147,7 +157,6 @@ function toggleA4Template() {
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
-        toggleA4Vertical();
     }
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
 }
@@ -158,22 +167,26 @@ function setA4SizeFactor(e) {
     updateA4Size();
 }
 
+/**
+ * @description Toggles the visibility of the A4 vertical rectangle and hides the horizontal rectangle.
+ */
 function toggleA4Vertical() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
     
     vRect.style.display = "none";  // Hide horizontal
     a4Rect.style.display = "block";  // Show vertical
-    updateA4Size();
 }
 
+/**
+ * @description Toggles the visibility of the A4 horizontal rectangle and hides the vertical rectangle.
+ */
 function toggleA4Horizontal() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
     
     a4Rect.style.display = "none";  // Hide vertical
     vRect.style.display = "block";  // Show horizontal
-    updateA4Size();
 }
 
 /**
@@ -231,8 +244,8 @@ function toggleRuler() {
 }
 
 /**
- * @description toggles the box containing different types of placement entitys.
- * @param {Number} num the number connected to the element selected.
+ * @description Toggles the visibility and active state of a placement type box based on the provided number.
+ * @param {number} num - The number identifying the placement type box.
  */
 function togglePlacementTypeBox(num) {
     if (!document.getElementById("togglePlacementTypeButton" + num).classList.contains("activeTogglePlacementTypeButton")) {
@@ -351,6 +364,9 @@ function togglePlacementType(num, type) {
     document.getElementById("elementPlacement" + num).classList.remove("hiddenPlacementType");
 }
 
+/**
+ * @description Hides all active placement type boxes.
+ */
 function hidePlacementType() {
     let i = 0;
 
