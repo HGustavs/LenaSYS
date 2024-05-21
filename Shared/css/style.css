@@ -2301,6 +2301,16 @@ input.inactive-button {
   border-radius: 0px;
   align-items: flex-start;
 }
+/* empty wrapper to match the size of a regular wrapper */
+.emptywrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 30px;
+  border-radius: 0px;
+  align-items: flex-start;
+}
+
 .inputwrapper select {
   border-radius: 0px;
 }
@@ -2762,9 +2772,7 @@ resulted.php END
   z-index: 1500;
 }
 
-#sectionname {
-  margin:0px 10px 0px 0px;
-}
+/* #sectionname */
 
 /*---===#===---*
 sectioned.php END 
@@ -2780,7 +2788,7 @@ sectioned.php END
 }
 
 #submitMotd {
-  margin-left: 340px;
+  float: right;
 }
 
 /*font style for "are you shure?*/
@@ -2800,23 +2808,8 @@ sectioned.php END
   overflow:hidden;
 }
 
-/*placemets for error text in server settings*/
-#error50{
-  display: block; 
-  left:55px; 
-  top:-78px;
-}
-
-#errorSymbol{
-  display: block; 
-  left:55; 
-  top:-72px;
-}
-
-#editCourseButtonPlacement{
-  float:right; 
+#editCourseButtonPlacement {
   padding-top:20px; 
-  width: 464px;
 }
 
 #formDialog_popup1 {
@@ -3706,6 +3699,7 @@ div.submit-button:disabled {
 
 .formDialogText {
   display: none;
+  float:left;
   color: var(--color-text-header);
   background-color: var(--color-text-list);
   font-size: 12px;
@@ -4402,6 +4396,7 @@ span.arrow {
     inset -3px 0px 0px 0px rgba(97, 72, 117, 1);
 
 }
+
 .resultTableText {
   margin-left: 3px;
   margin-right: 3px;
@@ -8398,6 +8393,98 @@ textarea#mrkdwntxt {
   z-index: 2000;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+/* --------------===============################================-------------- *
+ *                                    courseed                                 *
+ * --------------================################================-------------- */
+
+#submitEditCourse{
+  float:right;
+  margin-top: 20px;
+}
+#submitCourseMotd{
+  float:right;
+  margin-top: 20px;
+}
+#editContentSaveBtn{
+  margin-bottom: 20px;
+  margin-right: 2px;
+}
+
+.form-popup {
+  text-align: center;
+  display: none;
+  padding: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+  background-color: #fff; 
+  height:16.25rem;
+  width:28.75rem;
+  background-color:#775886;
+}
+
+/* styles to the form container */
+.form-popup_container {
+  height:211px;
+  padding: 30px;
+  background-color: white;
+}
+
+#deleteCourseButton{
+  background-color:#d42c35;
+  height:30px;
+  padding-left:35px;
+  padding-right:35px;
+  border: none;
+  border-radius: 5px;
+  font-size:14px;
+  margin:0px;
+  margin-right:238px;
+  color:#fff;
+}
+
+#deleteCourseButton:hover {
+  background-color:#c9555b;
+  cursor: pointer;
+}
+
+#deleteCourseButtonYes{
+  background-color:#ccc;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border: solid 1px #775886;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  margin-right:75px;
+}
+
+#deleteCourseButtonYes:hover {
+  background-color:#6e6e6e;
+  cursor: pointer;
+}
+
+#deleteCourseButtonNo{
+  background-color:#e35057;
+  height:40px;
+  padding-left:35px;
+  padding-right:35px;
+  border-radius: 5px;
+  font-size:16px;
+  margin:0px;
+  border: solid 1px #775886;
+}
+
+#deleteCourseButtonNo:hover {
+  background-color:#810f15;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 1350px) {

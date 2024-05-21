@@ -81,35 +81,30 @@ if(isset($_SESSION['uid'])){
     		<div class="formBody">
     			<input type='hidden' id='cid' value='Toddler' />
     			<div class='inputwrapper'>
-
 					<span>Course Name:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog"><span id="courseNameError" class=" formDialogText">Only letters. Dash allowed in between words</span></div>
-						<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
+						<div class="formDialog"><span id="courseNameError" class="formDialogText">Only letters. Dash allowed in between words</span></div>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursename' name='coursename' placeholder='Course Name' />
 					</div>
 				</div>
 				<div class='inputwrapper'>
 					<span>Course code:</span>
-					<p id="dialog3" class="validationDialog">2 Letters, 3 digits, 1 letter</p>
 					<div class="dialogwrapper">
-						<div class="formDialog"><span id="courseCodeError" class=" formDialogText">2 Letters, 3 digits, 1 letter</span></div>
+						<div class="formDialog"><span id="courseCodeError" class="formDialogText">2 Letters, 3 digits, 1 letter</span></div>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class='textinput validate' type='text' id='ncoursecode' name='coursecode' placeholder='Course Code' />
 					</div>
 				</div>
-			</div>
-			<!-- Input field to Github repository START-->
-			<div class="formFooter">
+				<div class="emptywrapper"></div>
+				<!-- Input field to Github repository START-->
 				<div class="inputwrapper">
-					<p id="dialog5" class="validationDialog">Enter a valid github url</p>
-					<span class="padding-right_10px">GitHub URL:</span>
+					<span>GitHub URL:</span>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span id="courseCodeError" class="formDialogText">Enter a valid github url</span></div>
 						<input oninput="quickValidateForm('newCourse','createCourse')" class="textinput validate" type="text" id="ncoursegit-url" name="courseGitURL" placeholder="https://github.com/..." />
 					</div>
 				</div>
+				<!-- Input field to Github repository END-->
 			</div>
-			<!-- Input field to Github repository END-->
 			<div class="formFooter">
 				<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
 			</div>
@@ -128,7 +123,6 @@ if(isset($_SESSION['uid'])){
     			<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'>
 					<span>Course Name:</span>
-					<p id="dialog4" class="validationDialog">Only letters. Dash allowed in between words</p>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span class="formDialogText errorMessage">Only letters. Dash allowed in between words</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursename' name='coursename' placeholder='Course Name' />
@@ -136,7 +130,6 @@ if(isset($_SESSION['uid'])){
 				</div>
 				<div class='inputwrapper'>
 					<span>Course code:</span>
-					<p id="dialog2" class="validationDialog">2 letters, 3 digits, 1 letter</p>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span class="formDialogText errorMessage">2 Letters, 3 digits, 1 letter</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='coursecode' name='coursecode' placeholder='Course Code' />
@@ -144,7 +137,6 @@ if(isset($_SESSION['uid'])){
 				</div>
 				<div class="inputwrapper">
 					<span>GitHub URL:</span>
-					<p id="dialog6" class="validationDialog">Enter a valid github url</p>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span class="formDialogText errorMessage">Enter a valid github url</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class="textinput validate" type="text" id="editcoursegit-url" name="courseGitURL" placeholder="https://github.com/..." />
@@ -152,7 +144,6 @@ if(isset($_SESSION['uid'])){
 				</div>
 				<div class='inputwrapper'>
 					<span>(optional) Insert Github Key:</span>
-					<p id="dialog7" class="validationDialog">A Github key should be 40 characters</p>
 					<div class="dialogwrapper">
 						<div class="formDialog"><span class="formDialogText errorMessage">A Github key should be 40 characters</span></div>
 						<input oninput="quickValidateForm('editCourse','saveCourse')" class='textinput validate' type='text' id='githubToken' name='githubToken' placeholder='Leave blank for no key' />
@@ -163,7 +154,7 @@ if(isset($_SESSION['uid'])){
 					<select class='selectinput margin-right_0px' id='visib'></select>
 				</div>
     		</div>
-			<div id='editCourseButtonPlacement' >
+			<div class="formFooter" id='editCourseButtonPlacement' >
 				<div id="buttonContainerDeleteCourse"></div>
 				<div id="buttonContainerSaveCourse"></div>
 				<div class="form-popup" id="myForm">
@@ -189,8 +180,7 @@ if(isset($_SESSION['uid'])){
     			<div class="cursorPointer" onclick='closeWindows();'>x</div>
     		</div>
 			<div class="formBody">
-
-    						<div class='inputwrapper'>
+    			<div class='inputwrapper'>
 					<span>Message of the day:</span>
 					<div class="dialogwrapper">
 						<input class='textinput' onkeyup="validateMOTD('motd','dialog51', 'dialog52', 'submitMotd')" type='text' id='motd' placeholder='Leave blank for no MOTD' />
@@ -200,10 +190,7 @@ if(isset($_SESSION['uid'])){
 				</div>
 				<div class='inputwrapper'><span class="italic">Read Only:</span><input type="checkbox" name='readonly' id='readonly' title='Disables uploads/submits. Useful for active backup servers.'></select></div>	
     		</div>
-			  <div class="formDialog" id="errorSymbol"><span id="dialog51" class="formDialogText errorMessage">Prohibited symbols</span></div>
-			  <div class="formDialog" id="error50"><span id="dialog52" class="formDialogText errorMessage">Message can only contain a maximum of 50 symbols</span></div>
     		<div class="formFooter">
-
     			<input id='submitMotd' class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
     		</div>
     	</div>

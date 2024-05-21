@@ -235,7 +235,7 @@ $js = array(
                 <h3 class="linkPopUp">Add Link</h3>
                 <div class='cursorPointer' onclick='closeAddFile();'>x</div>
             </div>
-           <div class="addNewFile">
+           <div class="addNewFile formBody">
                 <form id="uploadfile" enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
                 <div>
                     <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
@@ -265,7 +265,7 @@ $js = array(
             </form>
 
            </div>
-            <div id="createNewEmptyFile" style="display: none;">
+            <div id="createNewEmptyFile" class="formBody" style="display: none;">
                 <form enctype="multipart/form-data" action="filereceive.php" method="POST" onsubmit="return validateDummyFile();">
                     <input type='hidden' id='ecourseid' name='courseid' value='Toddler'/>
                     <input type='hidden' id='ecoursevers' name='coursevers' value='Toddler'/>
