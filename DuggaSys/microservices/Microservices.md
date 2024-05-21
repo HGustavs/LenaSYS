@@ -1,5 +1,5 @@
 # MICROSERVICES
-This document primarily focuses on the services provided by the monolithc service files and which microservies can obtained thorugh these files. However, a complementary document may be required for functions that gather information.
+This document primarily focuses on the services provided by the monolithc service files and which microservies can obtained thorugh these files. 
 
 # BACKGROUND
 A monolithic architecture means that the application is built as a single unified codebase, which can sometimes make it difficult to scale or maintain. Microservices, on the other hand, are smaller, modular services that can operate independently yet still interact with each other. That is what we are aiming for.
@@ -41,7 +41,7 @@ CRUD stands for the four basic operations for managing data in applications and 
 # LIST OF ORIGINAL SERVICE FILES
 ---
 
-- accessedservice.php __==finished==__
+- accessedservice.php __WORK PAUSED for development of microservices and/or tests. Will continue when the service is fixed (group 3 is working on this)__
 - codeviewerService.php __==finished==__
 - contribution_loginbox_service.php: __WORK PAUSED due to the current non-functional state of this service__
 - contributionservice.php: __WORK PAUSED due to the current non-functional state of this service__
@@ -183,7 +183,7 @@ __Gitcommit Service:__
 - clearGitFiles_ms.php __==finished==__ New filename: "deleteGitFiles_ms.php" according to new nameconvention based on CRUD.  
 - refreshGithubRepo_ms.php __==finished==__ New filename: "updateGithubRepo_ms.php" according to new nameconvention based on CRUD and the actual function of the microservice.
 - fetchOldToken_ms.php __==finished==__ New filename: "readGitToken_ms.php" according to new nameconvention based on CRUD.
-- insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepo_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
+- insertIntoSQLite_ms.php __==finished==__  New filename: "syncGitRepoMetadata_ms.php", even though it is not aligned with CRUD. In this case, a more general name better describes the function of the microservice.
 - newUpdateTime_ms.php __==finished==__ New filename: "updateTime_ms.php" according to new nameconvention based on CRUD.
 - refreshCheck_ms.php __==finished==__ New filename: "updateThrottle_ms.php", vague connection to CRUD, more based on what the actual function of the code is.
 
@@ -284,8 +284,18 @@ __readUid_ms.php__ retrieves the user ID (uid) from the session or assigning a g
 
 __Include original service files:__ sessions.php, basic.php
 
-
 - __Session check:__ Checks if there is a user ID (uid) in the current session. If there is an ID, it uses it. If not, it sets the user ID to "guest", meaning the user is not logged in.
+
+- __Parameters:__ Retrieves various parameters from the request using getOP:
+    
+    - opt
+    - courseId
+    - courseVersion
+    - exampleName
+    - sectionName
+    -  exampleId
+    - log_uuid
+    - log_timestamp
 
 - __Logging:__ Collects information and logs a service event in the __'serviceLogEntries'__ table by using the __'logServiceEvent'__ function (defined in basic.php). It logs details like the operation type, course ID, course version, example name, section name, example ID, and timestamp.
 
@@ -332,6 +342,34 @@ __createNewCodeExample_ms.php__ creates a new code example in the database and l
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
 
+- __Parameters:__ FRetrieves parameters from the request:
+    
+    - $pdo: Database connection object (PDO).
+    - $exampleid: Example ID (optional).
+    - $courseid: Course ID.
+    - $coursevers: Course version.
+    - $sectname: Section name.
+    - $link: Reference link, updated later with the new example ID.
+    - $log_uuid: Log UUID for the event.
+    - $templateNumber: Template number, defaults to 0.
+
+- __Create section name:__ If '$exampleid' is provided, create a new section name by adding 1 to the '$exampleid' and appending it to the section name. If no '$exampleid' is provided, use the given section name as is.
+
+- __Insert new code example:__ Prepares and executes an SQL statement to insert a new code example into the 'codeexample' table:
+    
+    - Binds parameters: course ID, course version, example name, section name, and template ID.
+    - Executes the query and captures any error messages in the 'debug' variable.
+    - Retrieves the last inserted ID from the database to use as the link reference.
+
+- __Retrieve user ID:__ Calls 'getUid()' (getUid_ms.php) to retrieve the user ID.
+
+- __Retrieve username:__ Calls 'retrieveUsername($pdo)' (retrieveUsername_ms.php) to get the username.
+
+- __Log user event:__ Logs the user event using 'logUserEvent()' with the retrieved user ID, username, event type ('SectionItems'), and section name.
+
+- __Return:__ Returns an array containing the debug message and the new link ID.
+
+
 __Querys used in this microservice:__
 
 _INSERT_ operation on the table __'codeexample'__ to insert values into the columns:
@@ -356,6 +394,34 @@ INSERT INTO codeexample(cid, examplename, sectionname, uid, cversion, templateid
 __createNewListentry_ms.php__ inserts a new entry into the __'listentries'__ table in the database, fetches the username of the current user (through retrieveUsername_ms.php) and logs the event. The username is necessary because actions and events logged in the system need to be associated with a user.
 
 __Include microservice:__ retrieveUsername_ms.php
+
+- __Parameters:__  
+    
+    - cid: Course ID.
+    - coursevers: Course version.
+    - userid: User ID.
+    - entryname: Entry name.
+    - link: Link ID.
+    - kind: Type of entry.
+    - comment: Comments.
+    - visible: Visibility status.
+    - highscoremode: Highscore mode.
+    - pos: Position.
+    - gradesys: Grading system.
+    - tabs: Tabs setting.
+    - grptype: Group type.
+
+- __Insert new list entry:__
+    
+    - Prepares and executes an SQL query to insert a new entry into the __'listentries'__ table.
+    - Binds parameters for course ID, course version, user ID, entry name, link, kind, comment, visibility, highscore mode, position, grading system, tabs setting, and group type.
+        
+        - Conditionally binds 'gradesys' based on the 'kind' value.
+        - Sets 'groupkind' to 'null' if 'grptype' is "UNK".
+        - Logs the user event using the 'logUserEvent' function (defined in basic.php).
+
+- __Return:__ Returns a debug message indicating the outcome of the operation.
+
 
 __Querys used in this microservice:__
 
@@ -411,6 +477,24 @@ __updateActiveCourse_ms.php__ set a specific version of a course as the active v
 If there is an error, the function returns the error message as a JSON-encoded string as output. 
 
 __Include original service files:__ basic.php
+
+- __Parameters:__
+
+  - $pdo: PDO object for database connection.
+  - $cid: Course ID.
+  - $versid: Version ID to be set as active.
+
+- __Update active course version:__ 
+
+    - Prepares an SQL query to update the __'course'__ table, setting the 'activeversion' value. 
+    - Binds the provided parameters to the SQL query:
+        
+        ':cid' is bound to '$cid'.
+        ':vers' is bound to '$versid'.
+    
+    - Executes the SQL query to update the active version of the course.
+    - If the query execution fails, captures and logs the error message and returns it as a JSON-encoded string.
+
 
 __Querys used in this microservice:__
 
@@ -2705,8 +2789,8 @@ SELECT gitToken FROM gitRepos WHERE cid=:cid;
 
 <br>
 
-### syncGitRepo_ms.php
-__syncGitRepo_ms.php__ updates the SQLite database with the latest details about a GitHub repository for a specific course, including the most recent commit and token. It makes sure the database record is either updated or inserted and refreshes the repository information if needed.
+### syncGitRepoMetadata_ms.php
+__syncGitRepoMetadata_ms.php__ updates the SQLite database with the latest details about a GitHub repository for a specific course, including the most recent commit and token. It makes sure the database record is either updated or inserted and refreshes the repository information if needed.
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
@@ -3380,6 +3464,7 @@ __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, createNewListe
 - __Session:__ Connects to the database and starts the session.
 
 - __Parameters:__ Fetches parameters from the request:
+
     - 'opt': Operation type.
     - 'courseid': Course ID.
     - 'coursevers': Course version.
