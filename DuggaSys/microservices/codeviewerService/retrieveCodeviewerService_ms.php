@@ -129,7 +129,7 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
             $ruery = $pdo->prepare("SELECT filename,path,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
             $ruery->bindParam(':cid', $courseId);
             $ruery->bindParam(':fname', $filename);
-            $sesult = $ruery->execute();
+            $ruery->execute();
             if ($sow = $ruery->fetch(PDO::FETCH_ASSOC)) {
                 $filekind = $sow['kind'];
                 $filename = $sow['filename'];
