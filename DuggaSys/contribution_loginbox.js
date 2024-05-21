@@ -79,7 +79,7 @@ function contribution_showLoginPopup()
 {
   contribution_addEventListeners();
   $("#login").css("display",""); // show inital login box
-  $("#loginBox").css("display","flex"); // show background
+  $("#formBox").css("display","flex"); // show background
   $("#username").focus();     
 }
 

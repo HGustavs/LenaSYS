@@ -2,6 +2,14 @@
 include_once "./retrieveUsername_ms.php";
 
 function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link, $kind, $comment, $visible, $highscoremode, $pos, $gradesys, $tabs, $grptype){
+    
+    //Change position of elements one increment up to make space for insertion.
+    $query = $pdo->prepare("UPDATE listentries SET pos = pos+1 WHERE cid = :cid and vers = :cvs and pos >= :pos");
+    $query->bindParam(":cid", $cid);
+    $query->bindParam(":cvs", $coursevers);
+    $query->bindParam(":pos", $pos);
+    $query->execute();
+    
     $query = $pdo->prepare("INSERT INTO listentries (cid, vers, entryname, link, kind, pos, visible, creator, comments, gradesystem, highscoremode, groupKind) 
 	VALUES(:cid, :cvs, :entryname, :link, :kind, :pos, :visible, :usrid, :comment, :gradesys, :highscoremode, :groupkind)");
     $query->bindParam(':cid', $cid);

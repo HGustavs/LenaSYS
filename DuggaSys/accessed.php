@@ -63,9 +63,9 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Create user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
@@ -84,7 +84,7 @@
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm()" onkeyup="tooltipTerm()">
+						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class='flexwrapper'>
 						<span>Email:</span>
@@ -100,8 +100,8 @@
 	</div>
 
 	<div id='createClass' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:464px;'>
-			<div class='loginBoxheader'>
+		<div class='formBox' style='width:464px;'>
+			<div class='formBoxHeader'>
 				<h3>Add class</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
@@ -124,9 +124,9 @@
 	</div>
 
 	<div id='editUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox'>
+		<div class='formBox'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Edit user (placeholder)</h3>
 					<span>First Name:</span>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -135,22 +135,22 @@
 					<input type='hidden' id='uid' value='Toddler' />
 					<div class='flexwrapper'>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="Greger" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<input placeholder="Greger" class='textinput' type='text' id='placeholderID4' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
 					</div>
 					<div class='flexwrapper'>
 						<span>Last Name:</span>
 						<div class="tooltipDugga"><span id="tooltipLast" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="Gregersson" class='textinput' type='text' id='addLastname' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
+						<input placeholder="Gregersson" class='textinput' type='text' id='placeholderID3' onchange="tooltipLast()" onkeyup="tooltipLast()"/>
 					</div>
 					<div class='flexwrapper'>
 						<span>Term:</span>
 						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="HT-11" class='textinput' id='addTerm' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+						<input placeholder="HT-11" class='textinput' id='placeholderID2' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
 					</div>
 					<div class='flexwrapper'>
 						<span>Email:</span>
 						<div class="tooltipDugga"><span id="tooltipEmail" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
+						<input placeholder="b17mahgo@student.his.se" class='textinput' id='placeholderID1' onchange="tooltipEmail()" onkeyup="tooltipEmail()"/>
 					</div>
 					<div class="flex-end">
 						<input class='submit-button' type='button' value='Add'/>
@@ -162,9 +162,9 @@
 
 
 	<div id='addUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Add user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
@@ -173,24 +173,26 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown">
-							<option value="User 1"></option>
-							<option value="User 2"></option>
-							<option value="User 3"></option>
+						<input type="text" name="product" list="users_dropdown_add" class='textinput' type='text' id='addUsername2' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_add">
 						</datalist>
 					</div>
+					<div class='flexwrapper'>
+						<span>Term:</span>
+						<div class="tooltipDugga"><span id="tooltipTerm" style="display: none;" class="tooltipDuggatext">  </span></div>
+						<input placeholder="HT-11" class='textinput' id='addTerm2' onchange="tooltipTerm(this)" onkeyup="tooltipTerm(this)">
+					</div>
 					<div class="flex-end">
-						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
+						<input class='submit-button' type='button' value='Save' onclick='addUserToCourse();' />
 					</div>
 				</div>
       		</div>
      	</div>
 	</div>
 	<div id='removeUser' class='loginBoxContainer' style='display:none;'>
-		<div class='loginBox' style='width:494px;'>
+		<div class='formBox' style='width:494px;'>
 			<div>
-				<div class='loginBoxheader'>
+				<div class='formBoxHeader'>
 					<h3>Remove user</h3>
 					<div class='cursorPointer' onclick='closeWindows();'>x</div>
 				</div>
@@ -199,15 +201,12 @@
 					<div class='flexwrapper'>
 						<span>Choose user:</span>
 						<div class="tooltipDugga"><span id="tooltipFirst" style="display: none;" class="tooltipDuggatext">  </span></div>
-						<input type="text" name="product" list="users_dropdown" class='textinput' type='text' id='addFirstname' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
-						<datalist id="users_dropdown">
-							<option value="User 1"></option>
-							<option value="User 2"></option>
-							<option value="User 3"></option>
+						<input type="text" name="product" list="users_dropdown_remove" class='textinput' type='text' id='addUsername3' onchange="tooltipFirst()" onkeyup="tooltipFirst()"/>
+						<datalist id="users_dropdown_remove">
 						</datalist>
 					</div>
 					<div class="flex-end">
-						<input class='submit-button' type='button' value='Save' onclick='addSingleUser();' />
+						<input class='submit-button' type='button' value='Save' onclick='removeUserFromCourse();' />
 					</div>
 				</div>
       		</div>
@@ -219,12 +218,12 @@
 	<div class="fixed-action-button extra-margin" id="fabButtonAcc">
 		<a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 		<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-		<li onclick="showRemoveUserPopup();">
+		<li onclick="showRemoveUserPopup('users_dropdown_remove');">
 				<a id="remFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Remove user'>
 					<img class="fab-icon" src="../Shared/icons/remove_user_icon.svg">
 				</a>
 		</li>
-		<li onclick="showAddUserPopup();">
+		<li onclick="showAddUserPopup('users_dropdown_add');">
 				<a id="addFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add user'>
 					<img class="fab-icon" src="../Shared/icons/createUser.svg">
 				</a>

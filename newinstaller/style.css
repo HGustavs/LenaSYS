@@ -1,4 +1,3 @@
-
 /* Import fonts Noto Sans and Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -23,23 +22,50 @@
     --text-large: 16px;
     --text-medium: 14px;
     --text-small: 12px;
+    --text-xs: 10px;
 }
 
-html body {
-    margin: 0;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+#page2, #page3, #page4, #page5, #page6, #installationPage { display: none; }
 
 .page {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 4rem);
+    width: calc(100% - 4rem);
     margin: 2rem;
     border: 1px solid var(--primary-color);
     background-color: var(--page-background);
+    position: relative;
 }
 
 /*  Create a padding for all content
     inside the installer window */
 .wrapper {
-    padding: 3rem;
-    padding-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    overflow-y: auto;
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /*  Creates the purple background behind .header-1  */
@@ -87,13 +113,14 @@ html body {
 /*  Container that sets padding for the main content of the
     installer window, including the .body-text and .input-grid  */
 .inner-wrapper {
-    padding: 2rem;
-    padding-top: 0;
+    display: grid;
+    padding: 1.5rem 2rem;
 }
 
 .body-text {
     font-family: var(--body-font);
-    margin-bottom: 2.5rem;
+    margin: 0;
+    margin-left: 2rem;
 }
 
 /* Group of all input fields + labels*/
@@ -105,37 +132,30 @@ html body {
     grid-row-gap: 1rem;
 }
 
-/*  Media query for changing element disposition to support
-    smaller screens like tablets and smaller browser windows */
-@media (max-width: 768px) {
+/* Same as .input-grid, but specific for the sub-grid used for language support checkboxes found at page 5 */
+.input-sub-grid {
+    display: grid;
+    margin-left: 2rem;
+    grid-template-columns: 8rem 8rem;
+    grid-template-rows: repeat(auto, 1fr);
+    grid-column-gap: 2rem;
+    grid-row-gap: 0.25rem;
+}
 
-    .input-grid {
-        font-family: var(--body-font);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .header-1 {
-        font-family: var(--header-font);
-        color: var(--text-light);
-        font-size: var(--h1-fontsize-small);
-        margin: 0;
-        padding: 1rem;
-    }
-
-    .header-2 {
-        font-family: var(--header-font);
-        color: var(--primary-color);
-        font-size: var(--h2-fontsize-small);
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-    }
+.input-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
 }
 
 /*  Lets the last cell of the .input-grid span 2 columns */
 .grid-element-span {
+    display: grid;
+    width: max-content;
     grid-area: 4 / 1 / 5 / 3;
+    grid-column-gap: 2rem; /* Keeps current horizontal gap */
+    grid-row-gap: 1rem; /* Increases vertical gap between grid items */
 }
 
 /*  Sets label above corresponding input field  */
@@ -147,11 +167,12 @@ html body {
 /*  Declaration of Font-family this way is
     not optimal, but increase readability   */
 .input-field label {
-    font-family: var(--body-font)
+    font-family: var(--body-font);
+    font-size: var(--text-medium);
 }
 
 .input-field input {
-    font-family: var(--body-font)
+    font-family: var(--body-font);
 }
 
 input[type=text] {
@@ -179,28 +200,38 @@ input[type=text]:focus {
 .buttonContainer {
     display: flex;
     justify-content: space-between;
+    margin-top: auto; /* Pushes the button container to the bottom */
 }
 
-.checkbox {
+.checkbox, .radiobutton {
     display: flex;
+    align-items: flex-start;
     font-size: var(--text-medium);
+    cursor: pointer;
 }
 
-.checkbox label {
-    font-family: var(--body-font)
+.checkbox label, .radiobutton label {
+    padding-left: 0.5rem;
+    font-family: var(--body-font);
+    user-select: none;
+    cursor: pointer;
 }
 
-input[type=checkbox] {
+input[type=checkbox], input[type=radio] {
+    margin: 0.25rem;
+    margin-right: 0;
     accent-color: var(--primary-color);
+    cursor: pointer;
 }
 
 .warning {
     font-family: var(--body-font);
-    font-size: var(--text-small);
+    font-size: var(--text-xs);
     color: var(--warning-text);
     font-style: italic;
-    padding-left: 0.25rem;
-    margin-top: 0.25rem;
+    padding-left: 2.2rem;
+    margin: 0;
+    margin-top: -0.85rem;
 }
 
 .success {
@@ -212,13 +243,24 @@ input[type=checkbox] {
     margin-top: 0.25rem;
 }
 
+.defaultButton {
+    font-family: var(--body-font);
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    width: 9.5rem;
+    height: 2.85rem;
+    padding: .75rem;
+    font-size: var(--text-large);
+}
+
 .backButton {
     font-family: var(--body-font);
     background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-    width: 100px;
-    height: 45px;
+    width: 6.25rem;
+    height: 2.85rem;
     padding: .75rem;
     font-size: var(--text-large);
 }
@@ -228,19 +270,20 @@ input[type=checkbox] {
     background-color: var(--primary-color);
     color: var(--text-light);
     border: 1px solid var(--primary-color);
-    width: 100px;
-    height: 45px;
+    width: 6.25rem;
+    height: 2.85rem;
     padding: .75rem;
+    margin-left: auto; /* Correctly positions the single button used at page 1 & 6, without impacting position for rest of pages. Keep this */
     font-size: var(--text-large);
 }
 
-.progressButton:hover {
+.defaultButton:hover, .progressButton:hover {
     cursor: pointer;
     background-color: var(--primary-color-hover);
     box-shadow: 1px 1px 1px var(--text-dark);
 }
 
-.progressButton:active {
+.defaultButton:active, .progressButton:active {
     background-color: var(--primary-color-active);
     box-shadow: 2px 2px 2px var(--text-dark);
 }
@@ -254,6 +297,92 @@ input[type=checkbox] {
     box-shadow: -2px 2px 2px var(--text-dark);
 }
 
+.trace .stacktrace {
+    display: none; /* Hide the stacktrace initially */
+    white-space: pre-wrap; /* Preserve whitespace and formatting */
+    margin-left: 1rem; /* Align the stacktrace text to the right */
+}
+
+.stacktrace p {
+    margin: 0.2rem 0;
+}
+
+.toggleTrace {
+    margin-bottom: 0.75rem; /* Adds a small margin to the bottom of the show more link */
+    color: var(--primary-color);
+}
+
+.toggleTrace:hover {
+    cursor: pointer;
+    color: var(--primary-color-hover);
+}
+
+.trace .toggleTrace {
+    text-decoration: none;
+    display: inline-block; /* Ensures margin-bottom is applied */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--page-background);
+    margin: 15% auto;
+    padding: 1.25rem;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 37.5rem;
+    border-radius: 0.75rem;
+}
+
+.close-btn {
+    color: var(--primary-color);
+    float: right;
+    font-size: 1.75px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--primary-color-hover);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    font-family: var(--header-font);
+    font-size: var(--h2-fontsize);
+    color: var(--primary-color);
+}
+
+.modal-body,
+.modal-footer {
+    font-family: var(--body-font);
+    font-size: var(--text-large);
+    padding: 0.75rem;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-footer button {
+    margin: 0.5rem;
+}
+
 /*  This code is nested CSS. It's a relatively new CSS
     functionality. If you are unfamiliar with it, more information
     and some examples can be found here --> https://drafts.csswg.org/css-nesting-1/ */
@@ -262,7 +391,7 @@ input[type=checkbox] {
     font-family: var(--body-font);
     font-style: italic;
     font-size: 14px;
-    max-width: 60%;
+    max-width: 80%; 
 
     .progressBarLabels {
         display: flex;
@@ -280,7 +409,57 @@ input[type=checkbox] {
     .progressBarIndicator {
         font-style: italic;
         background-color: var(--secondary-color);
-        width: 15%;
+        width: 0%;
+    }
+}
 
+/*  Media query for changing element disposition to support
+    smaller screens like tablets and smaller browser windows */
+@media (max-width: 478px) {
+    .breadcrumbs {
+        font-size: var(--text-small);
+    }
+}
+
+@media (min-width: 478px) and (max-width: 768px) {
+    .breadcrumbs {
+        font-size: var(--text-medium);
+    }
+}
+    
+@media (max-width: 768px) {
+    .input-grid {
+        font-family: var(--body-font);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .header-1 {
+        font-family: var(--header-font);
+        color: var(--text-light);
+        font-size: var(--h1-fontsize-small);
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .header-2 {
+        font-family: var(--header-font);
+        color: var(--primary-color);
+        font-size: var(--h2-fontsize-small);
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .progressBar {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .progressBar {
+        max-width: 60%;
     }
 }
