@@ -146,3 +146,9 @@
 		echo "</div>";
 		echo "</div>";
 	}
+
+	function helpTool($message = "") {
+		echo "  <a href='#' onclick=''>";
+		echo "      <span class='material-symbols-outlined help-icon'>help</span>";
+		echo "  </a>";
+	}
