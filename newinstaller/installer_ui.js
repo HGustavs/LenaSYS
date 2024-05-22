@@ -1,7 +1,14 @@
-let checkboxToggle = document.getElementById("language-support");
+let checkboxToggle = document.getElementById("language_support");
 let currentPageIndex = 1;
 
 document.addEventListener("DOMContentLoaded", function() {
+	const form = document.getElementById('installer_form');
+
+    // Prevents the default behaviour of the form
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+    });
+
 	// Attach event listeners to all navigation buttons inside pages
 	document.querySelectorAll('.page-nav').forEach(button => {
 		button.addEventListener('click', function() {
@@ -116,32 +123,80 @@ function navigateToPreviousPage() {
 
 function start_installer() {
 	let error_occured = false;
+	let languageSupportChecked = false;
+
+	const form = document.getElementById('installer_form');
+	const elements = Array.from(form.elements).filter(element => {
+        return ['INPUT'].includes(element.tagName) &&
+               ['text', 'password', 'radio', 'checkbox'].includes(element.type);
+    });
+
+	const data = {
+        verbose: false,
+        overwrite_db: false,
+        overwrite_user: false,
+        add_test_data: false,
+        add_demo_course: false,
+        add_test_course_data: false,
+        add_test_files: false,
+        language_support: [],
+        starting_step: "",
+        username: "",
+        password: "",
+        hostname: "",
+        db_name: "",
+    };
+
+    // First pass to determine if language_support is checked
+    elements.forEach(element => {
+        const id = element.id;
+        const type = element.type;
+
+        if (id === 'language_support' && type === 'checkbox') {
+            languageSupportChecked = element.checked;
+        }
+    });
+
+    elements.forEach(element => {
+        const name = element.name;
+		const id = element.id;
+        const type = element.type;
+        const value = element.value;
+
+        if (id) {
+            switch (type) {
+                case 'checkbox':
+                    if (name === 'language_settings[]' && element.checked) {
+						if (languageSupportChecked) {
+							data.language_support.push(id);
+						}
+                    } else if (id !== 'language_support') {
+                        data[id] = element.checked;
+                    }
+                    break;
+                case 'radio':
+                    if (element.checked) {
+                        data[name] = id;
+                    }
+                    break;
+                case 'text':
+                case 'password':
+                    data[id] = value;
+                    break;
+                default:
+                    data[id] = value;
+            }
+        }
+    });
+
+	console.log("Form Data:", data);
 
 	fetch('installer.php', {
 		method: 'POST',
 		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
+			'Content-type': 'application/json'
 		},
-		body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ 
-			verbose: 'false',
-			create_db: 'true',
-			create_db_user: 'true',
-			overwrite_db: 'true', 
-			overwrite_user: 'true',
-			add_test_data: 'true',
-			add_demo_course: 'true',
-			add_test_course_data: 'true',
-			add_test_files: "true",
-			language_support: ["html", "java", "php", "plain", "sql", "sr"],
-			starting_step: "",
-			username: "Lena2",
-			password: "Syp9393",
-			hostname: "db",
-			distributed_environment: "true",
-			db_name: "LenaDB2",
-			root_username: "root",
-			root_password: "password",
-		}))
+		body: JSON.stringify(data)
 	});
 
 	let sseReceiver = new SSEReceiver({
