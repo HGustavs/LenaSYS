@@ -23,6 +23,7 @@
     --text-medium: 14px;
     --text-small: 12px;
     --text-xs: 10px;
+    --default-transition: .3s ease;
 }
 
 *,
@@ -182,7 +183,7 @@ input[type=text] {
     padding: 0.25rem;
     width: 12rem;
     outline: none;
-    transition: .3s ease;
+    transition: var(--default-transition);
 }
 
 input[type=text]:focus {
@@ -383,35 +384,47 @@ input[type=checkbox], input[type=radio] {
     margin: 0.5rem;
 }
 
+.help-icon {
+    color: var(--primary-color);
+    transition: var(--default-transition);
+    text-decoration: none;
+    font-size: inherit;
+}
+
+.help-icon:hover {
+    color: var(--primary-color-hover);
+    text-decoration: underline;
+}
+
 /*  This code is nested CSS. It's a relatively new CSS
     functionality. If you are unfamiliar with it, more information
     and some examples can be found here --> https://drafts.csswg.org/css-nesting-1/ */
-.progressBar {
-    color: var(--text-dark);
-    font-family: var(--body-font);
-    font-style: italic;
-    font-size: 14px;
-    max-width: 80%; 
-
-    .progressBarLabels {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: .25rem;
-    }
-
-    .progressBarBorder {
-        display: flex;
-        justify-content: space-between;
-        background-color: var(--accent-color);
-        height: .75rem;
-    }
-
-    .progressBarIndicator {
+    .progressBar {
+        color: var(--text-dark);
+        font-family: var(--body-font);
         font-style: italic;
-        background-color: var(--secondary-color);
-        width: 0%;
+        font-size: 14px;
+        max-width: 80%; 
+    
+        .progressBarLabels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: .25rem;
+        }
+    
+        .progressBarBorder {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--accent-color);
+            height: .75rem;
+        }
+    
+        .progressBarIndicator {
+            font-style: italic;
+            background-color: var(--secondary-color);
+            width: 0%;
+        }
     }
-}
 
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */

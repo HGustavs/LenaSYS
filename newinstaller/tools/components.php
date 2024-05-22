@@ -44,8 +44,14 @@
 			</div>";
 	}
 
-	function bodyText($bodyText) {
-		echo "<p class='body-text'>".$bodyText."</p>";
+	function bodyText($bodyText, $helpLink = null) {
+		echo "<p class='body-text'>{$bodyText}";
+
+		if (isset($helpLink)) {
+			helpTool($helpLink);
+		}
+
+		echo "</p>";
 	}
 
 	function progressBar() {
@@ -95,31 +101,52 @@
 		echo "</div>";
 	}
 
-	function checkbox($checkboxId, $checkboxText) {
+	function checkbox($checkboxId, $checkboxText, $helpLink = null) {
 		echo "<div class='checkbox'>";
-		echo "	<input id='$checkboxId' type='checkbox'>";
-		echo "	<label for='$checkboxId'>$checkboxText</label>";
+		echo "    <input id='$checkboxId' type='checkbox'>";
+		echo "    <label for='$checkboxId'>$checkboxText";
+	
+		if (isset($helpLink)) {
+			helpTool($helpLink);
+		}
+	
+		echo "</label>";
 		echo "</div>";
 	}
 
-	function checkboxWithWarning($checkboxId, $checkboxText, $warningText) {
-		echo "<div class='grid-element-span'>";
-		echo "	<div class='checkbox'>";
-		echo "		<input id='$checkboxId' type='checkbox'>";
-		echo "		<label for='$checkboxId'>$checkboxText</label>";
-		echo "	</div>";
-		echo "	<p class='warning'>$warningText</p>";
+	function checkboxWithWarning($checkboxId, $checkboxText, $warningText, $helpLink = null) {
+	    echo "<div class='grid-element-span'>";
+		echo "    <div class='checkbox'>";
+		echo "        <input id='$checkboxId' type='checkbox'>";
+		echo "        <label for='$checkboxId'>$checkboxText";
+
+		if (isset($helpLink)) {
+			helpTool($helpLink);
+		}
+
+		echo "</label>";
+		echo "    </div>";
+		echo "    <p class='warning'>$warningText</p>";
 		echo "</div>";
 	}
 
-	function checkBoxes($checkboxGroupName, $checkboxes, $checkedIds = []) {
+	function checkBoxes($checkboxGroupName, $checkboxes, $checkedIds = [], $helpLinks = []) {
 		echo "<div class='grid-element-span'>";
+	
 		foreach ($checkboxes as $id => $label) {
 			$checked = in_array($id, $checkedIds) ? "checked" : "";
-			echo "<div class='checkbox'>
-					<input id='$id' type='checkbox' name='{$checkboxGroupName}[]' $checked>
-					<label for='$id'>$label</label>
-				  </div>";
+			echo "<div class='checkbox'>";
+			echo "   <input id='$id' type='checkbox' name='{$checkboxGroupName}[]' $checked>";
+			echo "   <label for='$id'>$label";
+
+			if (isset($helpLinks[$id])) {
+				echo "  <a href='{$helpLinks[$id]}' target='_blank'>";
+				echo "      <span class='material-symbols-outlined help-icon'>help</span>";
+				echo "  </a>";
+			}
+
+			echo "   </label>";
+			echo "</div>";
 		}
 		echo "</div>";
 	}
@@ -145,4 +172,10 @@
 		}
 		echo "</div>";
 		echo "</div>";
+	}
+
+	function helpTool($link) {
+		echo "  <a href='{$link}' target='_blank'>";
+		echo "      <span class='material-symbols-outlined help-icon'>help</span>";
+		echo "  </a>";
 	}
