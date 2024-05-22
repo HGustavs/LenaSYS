@@ -180,3 +180,72 @@ function pdoConnect()
 
 __Conclusion:__
 Considering that the development of microservices is intended to focus on the service files and functions that make requests against the database (MYSQL), this function actually meets that requirement. Additionally, the 'isSuperUser' function appears to be used everywhere where the creation of new material, deletion of material, or updates to material occur. It is currently called 87 times in 59 different files. It is, therefore, a very frequently used function. The function is necessary. Therefore, the function meets the desires/requirements for which functions should be converted into a microservice, but whether it is in this iteration of the course is another question. Converting 'sessions.php' should not be a priority at this time but maybe later on. This function should definitely become a microservice at a later stage when all planned microservices are developed and functioning.
+
+<br>
+
+### hasAcess
+
+The function __hasAcces__ is found in 'sessions.php'. It checks if a user has the appropriate permissions to access and interact with course materials for a specific course. 
+
+```php
+function hasAccess($userId, $courseId, $access_type)
+{
+     $access = getAccessType($userId, $courseId);
+
+    if($access_type === 'w') {
+	    return strtolower($access) == 'w';
+    } else if ($access_type === 'r') {
+            return strtolower($access) == 'r' || strtolower($access) == 'w' || strtolower($access) == 'st';
+    } else if ($access_type === 'st') {
+            return strtolower($access) == 'st';
+    }else if ($access_type === 'sv') {
+            return strtolower($access) == 'sv';
+    } else {
+	    return false;
+   }
+}
+```
+
+__How the function works:__
+The function takes three parameters: the user's ID ('userId'), the course ID ('courseId'), and the string that represents the desired access type ('access_type'), with 'r' for read access, 'w' for write access, 'st' for student access, and 'sv' for supervisory access (supervisor).
+
+The function then calls 'getAccessType' (also found in sessions.php) with 'userId' and 'courseId' as arguments to retrieve the current access type that the user has for that course. 'getAccessType' then performs a query against the database (MYSQL) to fetch the permissions associated with the user for the specific course.
+
+__getAcessType:__
+
+```php
+function getAccessType($userId, $courseId)
+{
+        global $pdo;
+
+        if($pdo == null) {
+            pdoConnect();
+        }
+
+        $query = $pdo->prepare('SELECT access FROM user_course WHERE uid=:uid AND cid=:cid LIMIT 1');
+        $query->bindParam(':uid', $userId);
+        $query->bindParam(':cid', $courseId);
+        $query->execute();
+
+        // Fetch data from the database
+        if($query->rowCount() > 0) {
+            $access = $query->fetch(PDO::FETCH_ASSOC);
+            return strtolower($access['access']);
+        }else{
+            return false;
+        }
+}
+
+?>
+```
+
+When 'getAccessType' returns the user's access type, the result of the query is stored in the variable '$access'. 'hasAccess' then compares this result with the requested access type ('access_type'). If the value for 'access_type' is 'w' (write permission), it checks if the user's access type is 'w' ('$access'). If the value for 'access_type' is 'r' (read permission), it checks if the user's access type is 'r' ('$access') or 'w' (since write permission also includes read permission), or 'st' (student access). If the value for 'access_type' is 'st' (student access), it checks if the user's access type is 'st' ('$access'). If the value for 'access_type' is 'sv' (supervisory access), it checks if the user's access type is 'sv' ('$access').
+
+If the user's access type matches the requested access type, the function returns _true_, indicating that the user has the necessary permission. If there is no match, the function returns _false_, indicating that the user does not have the necessary permission.
+
+__Conlusion:__
+__hasAccess__ is a function that handles security checks in the system. It determines whether users have the correct permissions to access and interact with course materials. The function (along with 'getAccessType') is frequently used in the system. It is currently called 74 times in 30 different files. It´s used every time a check is made to determine if a user has the right to access specific course materials. Thus, it is a highly used function.
+
+One must keep in mind that since the function makes a call to another function ('getAccessType'), implementing 'hasAccess' as a microservice would still not be completely isolated from 'sessions.php'. What needs to be considered when grouping functions into microservices is not only which functions are related to the same functionality, but also which functions are frequently used together. Looking at how these functions are currently used helps to understand how they might be used in the future. This is important to avoid unnecessary complexity by making microservices too small or missing benefits such as scalability if they are too large. In other words, the functions 'hasAccess' and 'getAccessType' should together make one microservice. 
+
+Considering that the development of microservices is intended to focus on the service files and functions that make requests against the database (MYSQL), this function actually meets that requirement (through the call of 'getAccessType' which makes a query against a MYSQL database). Therefore, the function meets the desired requirements for which functions should be converted into a microservice, but whether it is in this iteration of the course is another question. Converting 'sessions.php' should not be a priority at this time but perhaps later on. This function should definitely become a microservice at a later stage, when all planned microservices are developed and functioning.
