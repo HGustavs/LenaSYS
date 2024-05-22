@@ -56,7 +56,7 @@
 			<div class="content">
 				<?php
 					header2("Select installation options");
-					bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.");
+					bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.", "");
 				?>
 				<div class="inner-wrapper">
 					<?php
@@ -87,7 +87,7 @@
 			<div class="content">
 				<?php
 					header2("Create new database & user");
-					bodyText("Provide the following data for the database and user");
+					bodyText("Provide the following data for the database and user", "");
 				?>
 				<div class="inner-wrapper">
 					<div class="input-grid">
@@ -96,10 +96,9 @@
 							inputField("db-user", "MySQL user:");
 							inputFieldWithTip('db-host', 'Hostname:', 'Tip: Usually set to "localhost"');
 							inputField("db-password", "MySQL user password:");
-
-							checkbox("distEnvironment", "Use Distributed Environment");
-							checkbox("Verbose", "Verbose");
-							checkboxWithWarning("overwriteDatabase", "Overwrite existing database and user names", "WARNING! Overwriting databases and users cannot be undone!");
+							checkbox("distEnvironment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/a10c7a24371877e989395c0c0839849270070994/Shared/Documentation/newinstaller/documentation.md");
+							checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/a10c7a24371877e989395c0c0839849270070994/Shared/Documentation/newinstaller/documentation.md");
+							checkboxWithWarning("overwriteDatabase", "Overwrite existing database and user names", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/a10c7a24371877e989395c0c0839849270070994/Shared/Documentation/newinstaller/documentation.md");
 						?>
 					</div>
 				</div>
@@ -121,7 +120,7 @@
 			<div class="content">
 				<?php
 					header2("Enter root user credentials");
-					bodyText("Provide the credentials for the database root user");
+					bodyText("Provide the credentials for the database root user", "https://github.com/HGustavs/LenaSYS/blob/a10c7a24371877e989395c0c0839849270070994/Shared/Documentation/newinstaller/documentation.md");
 				?>
 				<div class="inner-wrapper">
 					<div class="input-flex">
@@ -149,7 +148,7 @@
 			<div class="content">
 				<?php
 					header2("Prepopulate with sample data");
-					bodyText("Select the sample data you want to prepopulate LenaSYS with.");
+					bodyText("Select the sample data you want to prepopulate LenaSYS with.", "");
 				?>
 				<div class="inner-wrapper">
 					<div class="input-flex">
@@ -161,8 +160,14 @@
 								'language-support' => 'Include language-support'
 							];
 							$active = ['test-course', 'demo-course', 'test-files', 'language-support'];
+							$helpLinks = [
+								'test-course' => "",
+								'demo-course' => "",
+								'test-files' => "",
+								'language-support' => ""
+							];
 
-							checkBoxes("creation-settings", $buttons, $active);
+							checkBoxes("creation-settings", $buttons, $active, $helpLinks);
 
 							$buttons = [
 								'lang-html' => 'HTML',
