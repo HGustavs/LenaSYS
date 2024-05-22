@@ -42,10 +42,12 @@ if($link==-1) {
     foreach($queryz2->fetchAll() as $row) {
         $exampleid=$row['exampleid'];
     }
-    $link = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
+    $data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
+    $link=$data['link'];
+    $debug=$data['debug'];
 }
 
-createNewListEntry($pdo,
+$debug = createNewListEntry($pdo,
     $courseid,
     $coursevers,
     $userid,

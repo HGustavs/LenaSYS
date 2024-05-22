@@ -14,12 +14,12 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";		
-} 
-
+checklogin();
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "guest";
+}
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');

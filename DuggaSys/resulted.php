@@ -7,7 +7,6 @@ in this page.
 Execution: resulted.js has an ajax call that runs at start up and displays the returned data on this page.
 -------------==============######## Documentation End ###########==============-------------*/
 session_start();
-include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
 ?>

@@ -23,17 +23,13 @@ $opt=getOP('opt');
 $courseid=getOP('cid');
 $versid=getOP('vers');
 $debug="NONE!";
+$userid = getUid();
 
 $ha = null;
 $isSuperUserVar = false;
 
 // Login is checked
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 	$ha = $isSuperUserVar;
 }

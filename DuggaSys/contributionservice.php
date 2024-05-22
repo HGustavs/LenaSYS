@@ -97,7 +97,7 @@ if(strcmp($opt,"get")==0) {
 		$userid=$_SESSION['uid'];
 		$loginname=$_SESSION['loginname'];
 	}else{
-		$userid=1;
+		$userid="guest";
 		$loginname="UNK";
 		$lastname="UNK";
 		$firstname="UNK";

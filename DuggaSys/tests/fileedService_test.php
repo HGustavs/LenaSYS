@@ -1,6 +1,5 @@
 <?php
 include "../../Shared/test.php";
-include_once "../../../coursesyspw.php";
 
 $testsData = array(
 	'Edit file test' => array(

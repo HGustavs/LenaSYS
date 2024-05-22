@@ -20,7 +20,6 @@
 	date_default_timezone_set("Europe/Stockholm");
 
 	// Include basic application services
-	include_once ("../../coursesyspw.php");
 	include_once ("../Shared/sessions.php");
 	include_once ("../Shared/basic.php");
 	include_once ("../Shared/courses.php");
@@ -43,11 +42,13 @@
 	$exampleName=getOP('examplename');
 	$playlink=getOP('playlink');
 	$debug="NONE!";
+
 	// Checks user id, if user has none a guest id is set
-	if(isset($_SESSION['uid'])){
-		$userid=$_SESSION['uid'];
-	}else{
-		$userid="1";
+	checklogin();
+	if (isset($_SESSION['uid'])) {
+		$userid = $_SESSION['uid'];
+	} else {
+		$userid = "guest";
 	}
 
 	$log_uuid = getOP('log_uuid');

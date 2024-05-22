@@ -1,7 +1,7 @@
 <?php
 /********************************************************************************
 
-   getGroupValues_ms.php
+   readGroupValues_ms.php
 
 *********************************************************************************
 
@@ -27,7 +27,7 @@ $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
 $coursevers=getOP('coursevers');
 $debug='NONE!';
-
+$groups=array();
 if(checklogin()){
 	$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
 
@@ -45,6 +45,7 @@ if(checklogin()){
 }
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data['groups']=$groups;
 echo json_encode($data);
 return;
 

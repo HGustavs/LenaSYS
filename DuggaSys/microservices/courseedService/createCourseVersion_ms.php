@@ -30,14 +30,10 @@ $makeactive = getOP('makeactive');
 $debug = "NONE!";
 $ha = null;
 $isSuperUserVar = false;
+$userid = getUid();
 
 // Login is checked
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 	$ha = $isSuperUserVar;
 }
