@@ -14,7 +14,7 @@
 5. Select the test data you wish to install.
     - If you are intending to use this as a dev environment, leave it default. 
 
-![Installation guide](installationGif.gif)
+![Installation demo](https://github.com/HGustavs/LenaSYS/blob/14dbf586edb88c5c1a78c29a0b066e75203b8baf/Shared/Documentation/newinstaller/InstallationGif.gif)
 
 ## Goals
 
