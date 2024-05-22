@@ -388,6 +388,7 @@ input[type=checkbox], input[type=radio] {
     color: var(--primary-color);
     transition: var(--default-transition);
     text-decoration: none;
+    font-size: inherit;
 }
 
 .help-icon:hover {
