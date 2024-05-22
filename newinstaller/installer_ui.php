@@ -14,228 +14,233 @@
 	<script defer src="tools/modal.js"></script>
 </head>
 <body>
-  
-	<div id="page1" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 1);
-			?>
-			<div class="content">
-				<?php 
-					header2("Select your OS installer");
-				?>
-				<div class="inner-wrapper">
-					<?php
-						$buttons = [
-							'windows' => 'Windows',
-							'linux' => 'Linux',
-							'mac' => 'Mac OS'
-						];
-						
-						radioButtons("os-installer", $buttons, "windows");
-					?>
-				</div>
-			</div>
-			<?php
-				singleNavigationButton("next", 2); 
-			?>
-		</div>
-	</div>
 
-	<div id="page2" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 2);
-			?>
-			<div class="content">
+	<form id="installer_form">
+		<div id="page1" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
 				<?php
-					header2("Select installation options");
-					bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.", 
+					breadcrumb(6, 1);
+				?>
+				<div class="content">
+					<?php 
+						header2("Select your OS installer");
+					?>
+					<div class="inner-wrapper">
+						<?php
+							$buttons = [
+								'os_windows' => 'Windows',
+								'os_linux' => 'Linux',
+								'os_mac' => 'Mac OS'
+							];
+							
+							radioButtons("operating_system", $buttons, "os_windows");
+						?>
+					</div>
+				</div>
+				<?php
+					singleNavigationButton("next", 2); 
+				?>
+			</div>
+		</div>
+
+		<div id="page2" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
+				<?php
+					breadcrumb(6, 2);
+				?>
+				<div class="content">
+					<?php
+						header2("Select installation options");
+					  bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.", 
 						"https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-2");
-				?>
-				<div class="inner-wrapper">
-					<?php
-						$buttons = [
-							'create-db' => 'Create new MySQL DB',
-							'create-user' => 'Create new MySQL user'
-						];
-						$active = ['create-db', 'create-user'];
-
-						checkBoxes("creation-settings", $buttons, $active);
 					?>
-				</div>
-			</div>
-			<?php
-				navigationButtons(1, 3);
-			?>
-		</div>
-	</div>
-
-	<div id="page3" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 3);
-			?>
-			<div class="content">
-				<?php
-					header2("Create new database & user");
-					bodyText("Provide the following data for the database and user", 
-						"https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-3");
-				?>
-				<div class="inner-wrapper">
-					<div class="input-grid">
-						<?php
-							inputField("db-name", "Database name:");
-							inputField("db-user", "MySQL user:");
-							inputFieldWithTip('db-host', 'Hostname:', 'Tip: Usually set to "localhost"');
-							inputField("db-password", "MySQL user password:");
-							checkbox("distEnvironment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
-							checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
-							checkboxWithWarning("overwriteDatabase", "Overwrite existing database and user names", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
-						?>
-					</div>
-				</div>
-			</div>
-			<?php
-				navigationButtons(2, 4);
-			?>
-		</div>
-	</div>
-
-	<div id="page4" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 4);
-			?>
-			<div class="content">
-				<?php
-					header2("Enter root user credentials");
-					bodyText("Provide the credentials for the database root user", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-4");
-				?>
-				<div class="inner-wrapper">
-					<div class="input-flex">
-						<?php
-							inputField("root-user", "Root username:");
-							inputField("root-password", "Root password:");
-						?>
-					</div>
-				</div>
-			</div>
-			<?php
-				navigationButtons(3, 5);
-			?>
-		</div>
-	</div>
-
-	<div id="page5" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 5);
-			?>
-			<div class="content">
-				<?php
-					header2("Prepopulate with sample data");
-					bodyText("Select the sample data you want to prepopulate LenaSYS with.", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-5");
-				?>
-				<div class="inner-wrapper">
-					<div class="input-flex">
+					<div class="inner-wrapper">
 						<?php
 							$buttons = [
-								'test-course' => 'Include test-course',
-								'demo-course' => 'Include demo-course',
-								'test-files' => 'Include test-files',
-								'language-support' => 'Include language-support'
+								'create_db' => 'Create new MySQL DB',
+								'create_db_user' => 'Create new MySQL user'
 							];
-							$active = ['test-course', 'demo-course', 'test-files', 'language-support'];
-							$helpLinks = [
-								'test-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-course",
-								'demo-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-demo-course",
-								'test-files' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files",
-								'language-support' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files"
-							];
+							$active = ['create_db', 'create_db_user'];
 
-							checkBoxes("creation-settings", $buttons, $active, $helpLinks);
-
-							$buttons = [
-								'lang-html' => 'HTML',
-								'lang-php' => 'PHP',
-								'lang-js' => 'JAVASCRIPT',
-								'lang-plain' => 'PLAIN TEXT',
-								'lang-sql' => 'SQL',
-								'lang-sr' => 'SR'
-							];
-							$active = ['lang-html', 'lang-php', 'lang-js', 'lang-plain', 'lang-sql', 'lang-sr'];
-
-							checkBoxesWithColumns("creation-settings", $buttons, $active);
+							checkBoxes("database_creation", $buttons, $active);
 						?>
 					</div>
 				</div>
-			</div>
-			<?php
-				navigationButtons(4, 6);
-			?>
-		</div>
-	</div>
-
-	<div id="page6" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 6);
-			?>
-			<div class="content">
 				<?php
-					header2("Complete installation");
-					bodyText("LenaSYS is ready to be installed.");
+					navigationButtons(1, 3);
 				?>
-				<div class="inner-wrapper">
-					<div class="input-flex">
-						<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer();\""); ?>
+			</div>
+		</div>
+
+		<div id="page3" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
+        <?php
+          breadcrumb(6, 3)
+        ?>
+        <div class"content"></div>
+          <?php
+              header2("Create new database & user");
+              bodyText("Provide the following data for the database and user", 
+              "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-3");
+          ?>
+				  <div class="inner-wrapper">
+					  <div class="input-grid">
+              <?php
+                inputField("db_name", "Database name:", "text");
+                inputField("username", "MySQL user:", "text");
+                inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"');
+                inputField("password", "MySQL user password:", "password");
+
+                checkbox("distEnvironment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
+                checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
+                checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
+                checkbox("overwrite_user", "Overwrite existing user");
+              ?>
+					  </div>
+				  </div>
+        </div>
+				<?php
+					navigationButtons(2, 4);
+				?>
+			</div>
+		</div>
+
+		<div id="page4" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
+				<?php
+					breadcrumb(6, 4);
+				?>
+				<div class="content">
+					<?php
+						header2("Enter root user credentials");
+					  bodyText("Provide the credentials for the database root user", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-4");
+					?>
+					<div class="inner-wrapper">
+						<div class="input-flex">
+							<?php
+								inputField("root_username", "Root username:", "text");
+								inputField("root_password", "Root password:", "password");
+							?>
+						</div>
+					</div>
+				</div>
+				<?php
+					navigationButtons(3, 5);
+				?>
+			</div>
+		</div>
+
+		<div id="page5" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
+				<?php
+					breadcrumb(6, 5);
+				?>
+				<div class="content">
+					<?php
+						header2("Prepopulate with sample data");
+					  bodyText("Select the sample data you want to prepopulate LenaSYS with.", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-5");
+					?>
+					<div class="inner-wrapper">
+						<div class="input-flex">
+							<?php
+								$buttons = [
+									'add_test_data' => 'Include test-data',
+									'add_demo_course' => 'Include demo-course',
+									'add_test_course_data' => 'Include test-course-data',
+									'add_test_files' => 'Include test-files',
+									'language_support' => 'Include language-support'
+								];
+								$active = ['add_test_data', 'add_demo_course', 'add_test_course_data', 'add_test_files', 'language_support'];
+                $helpLinks = [
+								  'test-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-course",
+								  'demo-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-demo-course",
+								  'test-files' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files",
+								  'language-support' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files"
+                ];
+
+								checkBoxes("creation_settings", $buttons, $active, $helpLinks);
+
+								$buttons = [
+									'html' => 'HTML',
+									'php' => 'PHP',
+									'javascript' => 'JAVASCRIPT',
+									'plain' => 'PLAIN TEXT',
+									'sql' => 'SQL',
+									'sr' => 'SR'
+								];
+								$active = ['html', 'php', 'javascript', 'plain', 'sql', 'sr'];
+
+								checkBoxesWithColumns("language_settings", $buttons, $active);
+							?>
+						</div>
+					</div>
+				</div>
+				<?php
+					navigationButtons(4, 6);
+				?>
+			</div>
+		</div>
+
+		<div id="page6" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
+				<?php
+					breadcrumb(6, 6);
+				?>
+				<div class="content">
+					<?php
+						header2("Complete installation");
+						bodyText("LenaSYS is ready to be installed.");
+					?>
+					<div class="inner-wrapper">
+						<div class="input-flex">
+							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer();\""); ?>
+						</div>
+					</div>
+				</div>
+				<?php
+					singleNavigationButton("previous", 5);
+				?>
+			</div>
+		</div>
+
+		<div id="installationPage" class="page">
+			<div class="banner">
+				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
+			</div>
+			<div class="wrapper">
+				<?php
+					breadcrumb(6, 6);
+				?>
+				<div class="content">
+					<?php
+						header2("Complete installation");
+						bodyText("LenaSYS is being installed...");
+					?>
+					<div class="inner-wrapper">
+						<?php progressBar(); ?>
 					</div>
 				</div>
 			</div>
-			<?php
-				singleNavigationButton("previous", 5);
-			?>
 		</div>
-	</div>
+	</form>
 
-	<div id="installationPage" class="page">
-		<div class="banner">
-			<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
-		</div>
-		<div class="wrapper">
-			<?php
-				breadcrumb(6, 6);
-			?>
-			<div class="content">
-				<?php
-					header2("Complete installation");
-					bodyText("LenaSYS is being installed...");
-				?>
-				<div class="inner-wrapper">
-					<?php progressBar(); ?>
-				</div>
-			</div>
-		</div>
-	</div>
-  
 </body>
 </html>
