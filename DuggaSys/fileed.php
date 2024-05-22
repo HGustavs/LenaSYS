@@ -36,6 +36,7 @@ $js = array(
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="ace.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -104,10 +105,10 @@ $js = array(
     ?>
 	<!-- content START -->
     <div id="content">
-    <div class='titles' style='padding-top:10px;'>
-			<h1 style='flex:1;text-align:left;'>Edit files</h1>
+    <div class='titles'>
+			<h1 class="h1Fileed">Edit files</h1>
         </div>
-        <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+        <div id='searchBarMobile'>
         <div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
                             <b>Keywords:</b> File name, File type <br> 
@@ -118,7 +119,7 @@ $js = array(
             <input id='searchinputMobile' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();document.getElementById("searchinput").value=document.getElementById("searchinputMobile").value;'/>
 
             <button id='searchbuttonMobile' class='switchContent' onclick='searchterm=document.getElementById("searchinputMobile").value;searchKeyUp(event);myTable.reRender();' type='button'>
-                <img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+                <img id='lookingGlassSVG' class="lookingGlassH18" src='../Shared/icons/LookingGlass.svg'/>
             </button>
         </div>
         
@@ -222,8 +223,8 @@ $js = array(
 
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
-        <div class='loginBox' style='width:464px; overflow-y: visible'>
-            <div class='loginBoxheader' style='cursor:default;'>
+        <div class='formBox' style='width:464px; overflow-y: visible'>
+            <div class='formBoxHeader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
 
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
@@ -233,7 +234,7 @@ $js = array(
                 <h3 class="linkPopUp">Add Link</h3>
                 <div class='cursorPointer' onclick='closeAddFile();'>x</div>
             </div>
-           <div class="addNewFile">
+           <div class="addNewFile formBody">
                 <form id="uploadfile" enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
                 <div>
                     <input type='hidden' id='courseid' name='courseid' value='Toddler'/>
@@ -263,7 +264,7 @@ $js = array(
             </form>
 
            </div>
-            <div id="createNewEmptyFile" style="display: none;">
+            <div id="createNewEmptyFile" class="formBody" style="display: none;">
                 <form enctype="multipart/form-data" action="filereceive.php" method="POST" onsubmit="return validateDummyFile();">
                     <input type='hidden' id='ecourseid' name='courseid' value='Toddler'/>
                     <input type='hidden' id='ecoursevers' name='coursevers' value='Toddler'/>
@@ -303,7 +304,7 @@ $js = array(
 <!-- File View Window START -->
 <div class="fileViewContainer">
     <div class="fileViewWindow">
-        <div class="loginBoxheader fileViewHeader">
+        <div class="formBoxHeader fileViewHeader">
             <h3 class="fileName"></h3>
             <div style="cursor: pointer" onclick="filePreviewClose()">x</div>
         </div>
@@ -316,7 +317,7 @@ $js = array(
 <!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer">
     <div class="previewWindow">
-        <div class="loginBoxheader">
+        <div class="formBoxHeader">
             <h3 class ="fileName"></h3>
             <div style="cursor:pointer;" onclick="closePreview();">x</div>
         </div>
@@ -473,7 +474,7 @@ $js = array(
 </div>
 
 <div class="confirmationWindow">
-    <div class="loginBoxheader">
+    <div class="formBoxHeader">
         <h3 class="fileName"></h3>
         <div style="cursor:pointer;" onclick="closeConfirmation();">x</div>
     </div>

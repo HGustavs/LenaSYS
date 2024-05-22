@@ -155,7 +155,7 @@ function toggleloginnewpass(){
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
-		$("#loginBox").css("display", "flex");
+		$("#formBox").css("display", "flex");
     $("#login").hide();
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
@@ -172,7 +172,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#formBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -181,7 +181,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#formBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -200,8 +200,8 @@ function resetFields(){
 	$("#showsecurityquestion #answer").val("");
 
   //Changes the background color back to white
-	//$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
-	//$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
+	//$("#formBox #username").css("background-color", "rgb(255, 255, 255)");
+	//$("#formBox #password").css("background-color", "rgb(255, 255, 255)");
 	//$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
 	//$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
 
@@ -563,7 +563,7 @@ function closeWindows(){
 	});
 
 	if (index_highest > 0 && e.id !== "FABStatic"){
-		/* Overlay is only present for loginbox which has z-index of 9000,
+		/* Overlay is only present for formBox which has z-index of 9000,
 		so if we closed such a window, hide the overlay and clear any values as well. */
 		var tempString2 = e.outerHTML;
 		if(!tempString2.includes('<div id="TopMenuStatic"')) {
@@ -1012,7 +1012,7 @@ function AJAXService(opt,apara,kind)
 		}
 		if(apara[key] == "") {
 				// Informs the user that his input contained nothing.
-				console.log("Your input contained nothing in " + key);
+				// console.log("Your input contained nothing in " + key);
 		}
 	}
 
@@ -1607,7 +1607,7 @@ function clearLocalStorageItem(key) {
 	localStorage.removeItem(key);
 }
 
-//Will handle enter key pressed when loginbox is showing
+//Will handle enter key pressed when formBox is showing
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
 		if(showing == 1){
@@ -1813,7 +1813,12 @@ function processLogout() {
 		success:function(data) {
 			localStorage.removeItem("ls-security-question");
 			localStorage.removeItem("securitynotification");
-			reloadPage();
+			if(window.location.pathname == "/LenaSYS/DuggaSys/profile.php"){
+				window.location.href = "courseed.php";
+			}
+			else{
+				reloadPage();
+			}
 		},
 		error:function() {
 			console.log("error");
@@ -1827,7 +1832,7 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	$("#loginBox").css("display","flex");
+	$("#formBox").css("display","flex");
 	/*$("#overlay").css("display","block");*/
 	$("#username").focus();
 
@@ -1843,7 +1848,7 @@ function showLoginPopup()
 
 function hideLoginPopup()
 {
-		$("#loginBox").css("display","none");
+		$("#formBox").css("display","none");
 		/*$("#overlay").css("display","none");*/
 
 		window.removeEventListener("keypress", loginEventHandler, false);
@@ -2197,8 +2202,8 @@ document.addEventListener('keydown', function (event) {
 
 // Never make dialogs draggable - ruins everything!
 $(window).load(function() {
-	$('.loginBox').draggable({ handle:'.loginBoxheader'});
-	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
+	$('.formBox').draggable({ handle:'.formBoxHeader'});
+	$('.formBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
 });
 
 */
