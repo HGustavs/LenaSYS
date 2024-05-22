@@ -119,3 +119,64 @@ This information is then logged as a new row in the 'userLogEntries' table in th
 
 __Conclusion:__
 Based on this information, and considering that the development of microservices is intended to focus on the service files and functions that make requests against the database (MYSQL), this function does not appear to be a priority for conversion into a microservice at this stage. The function performs logging operations against a local database (SQLite). On the other hand, since the function is used regularly (it is currently called 47 times in 15 different files), i.e as soon as something happens in the system, it is __necessary__ but not with the purpose of creating microservices at this stage. Basic.php should not be a priority at this time but probably later on when all planned microservices are developed and functioning.
+
+<br>
+
+### isSuperUser
+
+Regarding __isSuperUser__, this function is found in sessions.php. This function appears to be designed to check if a specific user is a superuser in the system. SuperUser seems to be synonymous with administrators, who have more rights than regular users. I cannot specify exactly what those rights are, but they appear to include performing various types of settings/operations in the system and accessing all user data.
+
+```php
+function isSuperUser($userId)
+{
+        global $pdo;
+
+        if($pdo == null) {
+                pdoConnect();
+        }
+
+        $query = $pdo->prepare('SELECT count(uid) AS count FROM user WHERE uid=:1 AND superuser=1');
+        $query->bindParam(':1', $userId);
+        $query->execute();
+        $result = $query->fetch();
+
+        if ($result["count"]==1) {
+                return true;
+        }else{
+                return false;
+        }
+}
+```
+
+The function begins by checking if the global database object ($pdo) is instantiated. If not, it calls the 'pdoConnect()' function to establish a database connection. This ensures that the function has a working connection to the database before any database operations are performed.
+
+The function then uses the $pdo object to prepare an SQL query that counts the rows from the __user__ table where 'uid' matches the specified (i.e. 1) and the 'superuser' column is set to 1. The query is intended to count the number of rows that meet both of these criteria, which indicates whether the user is indeed a superuser or not.
+
+The user ID received as a parameter ($userId) is bound to the SQL query using the 'bindParam' method, and the SQL query is then executed.
+
+After the query has been executed, the function uses 'fetch' to retrieve the result of the SQL query. The result is returned as an array with the key 'count' (AS count), which contains the number of rows that match the criteria. If the value of 'count' is equal to 1, it means that exactly one row has been found, confirming that the user is a superuser. The function then returns true. If the value of 'count' is not 1, which means no rows were found, the function returns false.
+
+__Database Connection:__
+'isSuperUser' connects to a MYSQL database, not a local SQLite database (unlike 'logUserEvent' and 'logServiceEvent' which perform logging through a local SQLite database (loglena6)). The difference is that MYSQL is a server-based database system. It runs as a separate server process and can handle database access for multiple clients simultaneously over a network. SQLite, on the other hand, is embedded within the application that uses it. It stores the entire database as a single file and requires no separate server process. Since loglena6 is used solely to perform logging operations (INSERT), no queries are made that require a response from the database. This is an important point for the summary.
+
+The 'pdoConnect()' function, which is called in the 'isSuperUser' function, is found in 'database.php':
+
+```php
+function pdoConnect()
+{
+	global $pdo;
+	try {
+		$pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',DB_USER,DB_PASSWORD);
+		if(!defined("MYSQL_VERSION")) {
+			define("MYSQL_VERSION",$pdo->query('select version()')->fetchColumn());
+		}
+	} catch (PDOException $e) {
+		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+		exit;
+	}
+}
+?>
+```
+
+__Conclusion:__
+Considering that the development of microservices is intended to focus on the service files and functions that make requests against the database (MYSQL), this function actually meets that requirement. Additionally, the 'isSuperUser' function appears to be used everywhere where the creation of new material, deletion of material, or updates to material occur. It is currently called 87 times in 59 different files. It is, therefore, a very frequently used function. The function is necessary. Therefore, the function meets the desires/requirements for which functions should be converted into a microservice, but whether it is in this iteration of the course is another question. Converting 'sessions.php' should not be a priority at this time but maybe later on. This function should definitely become a microservice at a later stage when all planned microservices are developed and functioning.
