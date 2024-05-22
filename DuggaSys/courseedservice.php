@@ -680,7 +680,7 @@ if (!$query->execute()) {
     $debug = "Error reading courses\n" . $error[2];
 }
 
-$query = $pdo->prepare("DELETE useranswer FROM course,listentries,useranswer WHERE course.visibility=:deleted AND listentries.cid = course.cid AND useranswer.moment = listentries.lid;");
+$query = $pdo->prepare("DELETE userAnswer FROM course,listentries,userAnswer WHERE course.visibility=:deleted AND listentries.cid = course.cid AND userAnswer.moment = listentries.lid;");
 $query->bindParam(':deleted', $deleted);
 if (!$query->execute()) {
     $error = $query->errorInfo();
