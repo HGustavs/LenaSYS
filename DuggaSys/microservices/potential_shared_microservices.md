@@ -1,0 +1,7 @@
+### Background 
+All service files that retrieve data from the database should be turned into microservices. It is only the service files in DuggaSys that should be divided into microservices. All service files in DuggaSys fetch data from the database (MYSQL) and are then called by dugga.js for the LenaSys interface, which displays all the information retrieved through these service files. The idea is that all the service files will be replaced with microservices that will perform exactly the same job as those service files, except that microservices are a better solution than large files with many functions.
+
+_sessions.php_ and _basic.php_ should not become microservices because they are neither located in the DuggaSys folder nor function as services in the same way. If, by any chance any of these files make requests to the database (MYSQL), that function could be turned into a microservice, but that is not the intention. _sessions.php_ and _basic.php_ primarily perform logging operations to _log.db_ (SQLite). Therefore, the focus should be on the service files located in DuggaSys. With that said, it does not mean that functions frequently used in `sessions.php` and `basics.php` cannot be converted into microservices.
+
+Based on this information, research has been conducted on functions that are often called from `sessions.php` and `basic.php` and that could potentially be converted into microservices.
+
