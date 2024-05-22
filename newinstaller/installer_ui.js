@@ -171,7 +171,7 @@ function start_installer() {
 							data.language_support.push(id);
 						}
                     } else if (id !== 'language_support') {
-                        data[id] = element.checked;
+                        data[id] = String(element.checked);
                     }
                     break;
                 case 'radio':
