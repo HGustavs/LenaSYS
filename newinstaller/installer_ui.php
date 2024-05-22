@@ -83,31 +83,31 @@
 				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
 			</div>
 			<div class="wrapper">
-        <?php
-          breadcrumb(6, 3)
-        ?>
-        <div class"content"></div>
-          <?php
-              header2("Create new database & user");
-              bodyText("Provide the following data for the database and user", 
-              "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-3");
-          ?>
-				  <div class="inner-wrapper">
-					  <div class="input-grid">
-              <?php
-                inputField("db_name", "Database name:", "text");
-                inputField("username", "MySQL user:", "text");
-                inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"');
-                inputField("password", "MySQL user password:", "password");
+				<?php
+				breadcrumb(6, 3)
+				?>
+        		<div class"content">
+					<?php
+						header2("Create new database & user");
+						bodyText("Provide the following data for the database and user", 
+						"https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-3");
+					?>
+					<div class="inner-wrapper">
+						<div class="input-grid">
+							<?php
+								inputField("db_name", "Database name:", "text");
+								inputField("username", "MySQL user:", "text");
+								inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"');
+								inputField("password", "MySQL user password:", "password");
 
-                checkbox("distEnvironment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
-                checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
-                checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
-                checkbox("overwrite_user", "Overwrite existing user");
-              ?>
-					  </div>
-				  </div>
-        </div>
+								checkbox("distEnvironment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
+								checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
+								checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
+								checkbox("overwrite_user", "Overwrite existing user");
+							?>
+						</div>
+					</div>
+				</div>
 				<?php
 					navigationButtons(2, 4);
 				?>
