@@ -124,6 +124,8 @@ function start_installer() {
 		},
 		body: 'installation_settings=' + encodeURIComponent(JSON.stringify({ 
 			verbose: 'false',
+			create_db: 'true',
+			create_db_user: 'true',
 			overwrite_db: 'true', 
 			overwrite_user: 'true',
 			add_test_data: 'true',
@@ -132,10 +134,13 @@ function start_installer() {
 			add_test_files: "true",
 			language_support: ["html", "java", "php", "plain", "sql", "sr"],
 			starting_step: "",
-			username: "Lena",
+			username: "Lena2",
 			password: "Syp9393",
 			hostname: "db",
-			db_name: "LenaDB",
+			distributed_environment: "true",
+			db_name: "LenaDB2",
+			root_username: "root",
+			root_password: "password",
 		}))
 	});
 

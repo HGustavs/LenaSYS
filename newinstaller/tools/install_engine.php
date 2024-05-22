@@ -20,27 +20,21 @@ class InstallEngine {
 			SSESender::transmit("Received settings: " . $installation_data);
 		}
 
-		// Initialize pdo
-		try {
-			$hostname = 'db';
-			$username = 'root';
-			$password = 'password';
-			
-			$dsn = "mysql:host=$hostname;charset=utf8mb4";
-			$pdo = new PDO($dsn, $username, $password);
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			
-			SSESender::transmit("Connected to database successfully.");
-		} catch (PDOException $e) {
-			SSESender::transmit("Connection to database could not be established. ". $e->getMessage(), true);
+		if (!isset($settings->root_password) || !isset($settings->root_username) || !isset($settings->hostname)) {
+			$message = "Root username, password or hostname not set. Will not be able to establish connection to database.";
+			SSESender::transmit($message, true);
+			throw new Exception($message);
 		}
+
+		// Initialize pdo
+		$pdo = self::init_pdo($settings->root_username, $settings->root_password, $settings->hostname);
 
 		function callback($message) {
 			SSESender::transmit($message);
 		}
 
 		try {
-			$installer = new DBSetup(pdo: $pdo, db_name: $settings->db_name, db_user: $settings->username, db_user_password: $settings->password, hostname: "%", callback: "callback");
+			$installer = new DBSetup(pdo: $pdo, db_name: $settings->db_name, db_user: $settings->username, db_user_password: $settings->password, hostname: $settings->hostname, callback: "callback");
 			$testDataSetup = new TestdataSetup("../install/courses", "../courses", callback: "callback");
 			$configuration_manager = new ConfigurationManager("../../coursesyspw.php", callback: "callback", verbose: $verbose);
 			$operations = InstallEngine::construct_installation_queue($installer, $configuration_manager, $testDataSetup, $settings);
@@ -95,6 +89,24 @@ class InstallEngine {
 		SSESender::stop();
 	}
 
+	private static function init_pdo($root_user, $root_password, $hostname): PDO {
+		try {
+			$db_hostname = $hostname;
+			$username = $root_user;
+			$password = $root_password;
+			
+			$dsn = "mysql:host=$db_hostname;charset=utf8mb4";
+			$pdo = new PDO($dsn, $username, $password);
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			
+			SSESender::transmit("Connected to database successfully.");
+		} catch (PDOException $e) {
+			SSESender::transmit("Connection to database could not be established. ". $e->getMessage(), true);
+		}
+
+		return $pdo;
+	}
+
 	/**
 	 * function construct_installation_queue
 	 * Create associative array of installation steps.
@@ -103,6 +115,8 @@ class InstallEngine {
 	 */
 	private static function construct_installation_queue(DBSetup $installer, ConfigurationManager $cm, TestdataSetup $testdataSetup, $settings): array { 
 		// Read settings
+		$create_db = $settings->create_db === 'true' ? true : false;
+		$create_db_user = $settings->create_db_user === 'true' ? true : false;
 		$verbose = $settings->verbose === 'true' ? true : false;
 		$overwrite_db = $settings->overwrite_db === 'true' ? true : false;
 		$overwrite_user = $settings->overwrite_user === 'true' ? true : false;
@@ -110,38 +124,46 @@ class InstallEngine {
 		$add_demo_course = $settings->add_demo_course === 'true' ? true : false;
 		$add_test_course_data = $settings->add_test_course_data === 'true' ? true : false;
 		$add_test_files = $settings->add_test_files === 'true' ? true : false;
-		$using_docker = $settings->using_docker === 'true' ? true : false;
+		$distributed_environment = $settings->distributed_environment === 'true' ? true : false;
 		
 		if (!isset($settings->username) && !isset($settings->password) && !isset($settings->hostname) && !isset($settings->db_name)) {
 			throw new Exception("Not all required settings were sent to the installer.");
 		}
-	
-		// Add mandatory installer operations
-		$operations = [
-			"create_db" => function() use ($installer, $overwrite_db) {
-				$installer->create_db(force: $overwrite_db);
-			},
-			"create_user" => function() use ($installer, $overwrite_user) {
-				$installer->create_user(force: $overwrite_user);
-			},
-			"set_permissions" => function() use ($installer) {
-				$installer->set_permissions();
-			},
-			"init_db" => function() use ($installer, $verbose) {
-				$installer->execute_sql_file("../Shared/SQL/init_db.sql", verbose: $verbose);
-			},
-			"save_credentials" => function() use ($cm, $settings, $using_docker) {
-				$parameters = [
-					"DB_USER" => $settings->username,
-					"DB_PASSWORD" => $settings->password,
-					"DB_HOST" => $settings->hostname,
-					"DB_NAME" => $settings->db_name,
-					"DB_USING_DOCKER" => $using_docker,
-				];
 
-				$cm->set_parameters($parameters);
-			}
-		];
+		$operations = [];
+
+		if ($create_db) {
+			$operations["create_db"] = function() use ($installer, $overwrite_db) {
+				$installer->create_db(force: $overwrite_db);
+			};
+		}
+		if ($create_db_user) {
+			$operations["create_user"] = function() use ($installer, $overwrite_user, $distributed_environment) {
+				if ($distributed_environment) {
+					$installer->set_hostname('%');
+				}
+				$installer->create_user(force: $overwrite_user);
+			};
+		}
+		
+		// Add mandatory installer operations
+		$operations["set_permissions"] = function() use ($installer) {
+			$installer->set_permissions();
+		};
+		$operations["init_db"] = function() use ($installer, $verbose) {
+			$installer->execute_sql_file("../Shared/SQL/init_db.sql", verbose: $verbose);
+		};
+		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
+			$parameters = [
+				"DB_USER" => $settings->username,
+				"DB_PASSWORD" => $settings->password,
+				"DB_HOST" => $settings->hostname,
+				"DB_NAME" => $settings->db_name,
+				"DB_USING_DOCKER" => $distributed_environment,
+			];
+
+			$cm->set_parameters($parameters);
+		};
 
 		// Add selected language support
 		foreach ($settings->language_support as $language) {
