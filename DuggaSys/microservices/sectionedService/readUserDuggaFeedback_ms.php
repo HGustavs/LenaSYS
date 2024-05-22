@@ -40,7 +40,7 @@ if(strcmp($opt,"GETUF")==0){
     $query->bindParam(':lid', $moment);
     if(!$query->execute()) {
         $error=$query->errorInfo();
-        $debug="Error reading courses".$error[2];
+        $debug="Error reading userduggafeedback:".$error[2];
     }else{
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
             array_push(
@@ -62,15 +62,26 @@ if(strcmp($opt,"GETUF")==0){
 
     if(!$query->execute()) {
         $error=$query->errorInfo();
-        $debug="Error reading courses".$error[2];
+        $debug="Error reading userduggafeedback".$error[2];
     } else {
         $result = $query->fetch(PDO::FETCH_ASSOC);
         $avgfeedbackscore = $result['avgScore'];
+    }
+
+    $query = $pdo->prepare("SELECT feedbackquestion FROM listentries WHERE lid=:lid");
+	$query->bindParam(':lid', $moment);
+	if(!$query->execute()) {
+        $error=$query->errorInfo();
+        $debug="Error reading listentries".$error[2];
+    } else {
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        $feedbackquestion = $result['feedbackquestion'];
     }
 }
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 $data['userfeedback'] = $userfeedback;
+$data['feedbackquestion'] = $feedbackquestion;
 $data['avgfeedbackscore'] = $avgfeedbackscore;
 echo json_encode($data);
 return;
