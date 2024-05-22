@@ -284,10 +284,10 @@
 				<div id='inputwrapper-name' class='inputwrapper'>
 					<span>Name:</span>
 					<div class="dialogwrapper">
-						<div class="formDialog">
-							<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+					<div class="formDialog" style="display: block;">
+  		      		<span id="dialog10"  class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
 						</div>
-						<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
+						<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectionName('sectionname','dialog10')" placeholder='Enter section name'  type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 					</div>
 				</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
@@ -326,7 +326,11 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select class="align_right" id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select class="align_right" id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  class="align_center" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper' style='display:none;'><span>Student Feedback Question:</span>
+					<input type="input" onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectionName('feedBackQuestion','dialog11')" class='textinput' id='feedBackQuestion' value='How would you grade the dugga' ></input>
+					</div>
+					<div class="formDialog">
+  		      			<span id="dialog11" style="display: none;" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
 				</div>
 
 				<!-- Error message, no duggas present-->
