@@ -91,11 +91,11 @@ class InstallEngine {
 
 	private static function init_pdo($root_user, $root_password, $hostname): PDO {
 		try {
-			$hostname = 'db';
-			$username = 'root';
-			$password = 'password';
+			$db_hostname = $hostname;
+			$username = $root_user;
+			$password = $root_password;
 			
-			$dsn = "mysql:host=$hostname;charset=utf8mb4";
+			$dsn = "mysql:host=$db_hostname;charset=utf8mb4";
 			$pdo = new PDO($dsn, $username, $password);
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			
@@ -124,7 +124,7 @@ class InstallEngine {
 		$add_demo_course = $settings->add_demo_course === 'true' ? true : false;
 		$add_test_course_data = $settings->add_test_course_data === 'true' ? true : false;
 		$add_test_files = $settings->add_test_files === 'true' ? true : false;
-		$using_docker = $settings->using_docker === 'true' ? true : false;
+		$distributed_environment = $settings->distributed_environment === 'true' ? true : false;
 		
 		if (!isset($settings->username) && !isset($settings->password) && !isset($settings->hostname) && !isset($settings->db_name)) {
 			throw new Exception("Not all required settings were sent to the installer.");
@@ -138,8 +138,8 @@ class InstallEngine {
 			};
 		}
 		if ($create_db_user) {
-			$operations["create_user"] = function() use ($installer, $overwrite_user, $using_docker) {
-				if ($using_docker) {
+			$operations["create_user"] = function() use ($installer, $overwrite_user, $distributed_environment) {
+				if ($distributed_environment) {
 					$installer->set_hostname('%');
 				}
 				$installer->create_user(force: $overwrite_user);
@@ -153,13 +153,13 @@ class InstallEngine {
 		$operations["init_db"] = function() use ($installer, $verbose) {
 			$installer->execute_sql_file("../Shared/SQL/init_db.sql", verbose: $verbose);
 		};
-		$operations["save_credentials"] = function() use ($cm, $settings, $using_docker) {
+		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
 			$parameters = [
 				"DB_USER" => $settings->username,
 				"DB_PASSWORD" => $settings->password,
 				"DB_HOST" => $settings->hostname,
 				"DB_NAME" => $settings->db_name,
-				"DB_USING_DOCKER" => $using_docker,
+				"DB_USING_DOCKER" => $distributed_environment,
 			];
 
 			$cm->set_parameters($parameters);

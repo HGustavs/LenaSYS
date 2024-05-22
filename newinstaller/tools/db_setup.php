@@ -254,7 +254,7 @@ class DBSetup {
 	 * Will return array of information.
 	 */
 	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
-		throw new Exception($action . " Error: " . $e->getMessage(), $e->getCode(), $e);
+		throw new Exception($action . " Error: " . $e->getMessage());
 	}
 
 	/**
