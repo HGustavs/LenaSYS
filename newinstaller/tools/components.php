@@ -66,10 +66,10 @@
 			</div>";
 	}
 
-	function inputField($inputId, $inputLabel, $inputType) {
+	function inputField($inputId, $inputLabel) {
 		echo "<div class='input-field'>
 					<label for='$inputId'>$inputLabel</label>
-					<input id='$inputId' type='$inputType'>
+					<input id='$inputId' type='text'>
 			</div>";
 	}
 
@@ -94,7 +94,7 @@
 		foreach ($buttons as $id => $label) {
 			$checked = ($id === $checkedId) ? "checked" : "";
 			echo "<div class='radiobutton'>
-					<input id='$id' type='radio' name='$radioGroupName' value='$id' $checked>
+					<input id='$id' type='radio' name='$radioGroupName' $checked>
 					<label for='$id'>$label</label>
 				  </div>";
 		}
@@ -103,19 +103,19 @@
 
 	function checkbox($checkboxId, $checkboxText, $helpLink = null) {
 		echo "<div class='checkbox'>";
-		echo "    <input id='$checkboxId' type='checkbox' value='$checkboxId'>";
+		echo "    <input id='$checkboxId' type='checkbox'>";
 		echo "    <label for='$checkboxId'>$checkboxText";
 	
 		if (isset($helpLink)) {
 			helpTool($helpLink);
 		}
 	
-		echo "    </label>";
+		echo "</label>";
 		echo "</div>";
 	}
 
 	function checkboxWithWarning($checkboxId, $checkboxText, $warningText, $helpLink = null) {
-	  echo "<div class='checkboxWithWarning'>";
+	    echo "<div class='grid-element-span'>";
 		echo "    <div class='checkbox'>";
 		echo "        <input id='$checkboxId' type='checkbox'>";
 		echo "        <label for='$checkboxId'>$checkboxText";
@@ -124,7 +124,7 @@
 			helpTool($helpLink);
 		}
 
-		echo "        </label>";
+		echo "</label>";
 		echo "    </div>";
 		echo "    <p class='warning'>$warningText</p>";
 		echo "</div>";
