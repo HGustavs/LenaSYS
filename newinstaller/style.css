@@ -107,7 +107,7 @@ html, body {
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 /*  Container that sets padding for the main content of the
@@ -162,6 +162,8 @@ html, body {
 .input-field {
     display: flex;
     flex-direction: column;
+    width: max-content;
+    height: max-content;
 }
 
 /*  Declaration of Font-family this way is
@@ -175,7 +177,7 @@ html, body {
     font-family: var(--body-font);
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
     inset: none;
     border-radius: 0;
     border: 1px solid var(--text-dark);
@@ -185,8 +187,25 @@ input[type=text] {
     transition: .3s ease;
 }
 
-input[type=text]:focus {
+input[type=text]:focus, input[type=password]:focus {
     border-color: var(--primary-color);
+}
+
+.checkboxWithWarning {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: max-content;
+}
+
+.checkboxWithWarning .checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.checkboxWithWarning .warning {
+    padding-left: 0.25rem;
 }
 
 .tip {
@@ -205,6 +224,8 @@ input[type=text]:focus {
 
 .checkbox, .radiobutton {
     display: flex;
+    width: max-content;
+    height: max-content;
     align-items: flex-start;
     font-size: var(--text-medium);
     cursor: pointer;
@@ -448,7 +469,7 @@ input[type=checkbox], input[type=radio] {
         color: var(--primary-color);
         font-size: var(--h2-fontsize-small);
         margin-top: 0;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
 }
 

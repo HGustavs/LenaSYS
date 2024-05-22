@@ -60,10 +60,10 @@
 			</div>";
 	}
 
-	function inputField($inputId, $inputLabel) {
+	function inputField($inputId, $inputLabel, $inputType) {
 		echo "<div class='input-field'>
 					<label for='$inputId'>$inputLabel</label>
-					<input id='$inputId' type='text'>
+					<input id='$inputId' type='$inputType'>
 			</div>";
 	}
 

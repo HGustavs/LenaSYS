@@ -93,10 +93,10 @@
 					<div class="inner-wrapper">
 						<div class="input-grid">
 							<?php
-								inputField("db_name", "Database name:");
-								inputField("username", "MySQL user:");
+								inputField("db_name", "Database name:", "text");
+								inputField("username", "MySQL user:", "text");
 								inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"');
-								inputField("password", "MySQL user password:");
+								inputField("password", "MySQL user password:", "password");
 
 								checkbox("distributed_environment", "Use Distributed Environment");
 								checkbox("verbose", "Verbose");
@@ -128,8 +128,8 @@
 					<div class="inner-wrapper">
 						<div class="input-flex">
 							<?php
-								inputField("root_username", "Root username:");
-								inputField("root_password", "Root password:");
+								inputField("root_username", "Root username:", "text");
+								inputField("root_password", "Root password:", "password");
 							?>
 						</div>
 					</div>
