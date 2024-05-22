@@ -58,9 +58,7 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IERelation:
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
-            style = element.name == "Inheritance" ?
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;` :
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+            style = `left:0; top:0; width:auto; height:auto; z-index:${(element.name == "Inheritance") ? 2 : 1};`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -446,14 +444,20 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
 
 function drawElementIERelation(element, boxw, boxh, linew) {
     let content = "";
-    content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`;
-
+    content += ` <path d="M 0 ${boxw / 2}
+                       A ${boxw / 2} ${boxw / 2} 0 0 1 ${boxw} ${boxw / 2}
+                       L 0 ${boxw / 2}
+                       Z" 
+                    fill="white"
+                    stroke="black"
+                    stroke-width="${linew}"
+                    style="position: absolute; left: ${1000}px; top: ${1000}px;"
+                 />`;
     if (element.state != inheritanceStateIE.OVERLAPPING) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`;
     }
-    return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    return drawSvg(boxw, boxh, content, `style='margin: ${linew}px; stroke-width:${linew}; overflow: visible;'`);
 }
 
 function drawElementState(element, vectorGraphic) {
@@ -487,7 +491,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                     class="text" 
                     d="M${boxw / 2},${boxw / 4 + linew} V${boxh}"
                     stroke-width='${linew}'
-                    stroke='${element.stroke}'
+                    stroke='gray'
                     stroke-dasharray='${linew * 3},${linew * 3}'
                     fill='transparent'
                 />
@@ -496,7 +500,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         cx="${(boxw / 2) }" 
                         cy="${(boxw / 8) + linew}" 
                         r="${boxw / 8}px" 
-                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
+                        fill='${element.fill}' stroke='gray' stroke-width='${linew}'
                     />
                     <path 
                         class="text"
@@ -510,7 +514,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                             m${-boxw / 4},${-boxw / 4}
                             l${-boxw / 4},${boxw / 4}"
                         stroke-width='${linew}'
-                        stroke='${element.stroke}'
+                        stroke='gray'
                         fill='transparent'
                     />
                     <rect 
@@ -543,7 +547,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                     d="M ${boxw / 2},${boxw / 4 + linew}
                         V ${boxh}"
                     stroke-width='${linew}'
-                    stroke='${element.stroke}'
+                    stroke='gray'
                     stroke-dasharray='${linew * 3},${linew * 3}'
                     fill='transparent'
                 /> 
@@ -556,7 +560,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                         height='${(boxw / 2) - linew}'
                         rx='${sequenceCornerRadius}'
                         stroke-width='${linew}'
-                        stroke='${element.stroke}'
+                        stroke='gray'
                         fill='${element.fill}' 
                     />
                     <text 
@@ -596,7 +600,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
             width='${boxw - linew * 2}'
             height='${boxh - linew * 2}'
             stroke-width='${linew}'
-            stroke='${element.stroke}'
+            stroke='gray'
             fill='none'
             rx='${7 * zoomfact}'
             fill-opacity="0"
@@ -640,7 +644,6 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
 function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
-
     const text = splitFull(element.attributes, maxCharactersPerLine);
     let length = (text.length > 4) ? text.length : 4;
     let totalHeight = boxh + texth * length;

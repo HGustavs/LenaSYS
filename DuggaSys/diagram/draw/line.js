@@ -91,14 +91,27 @@ function drawLine(line, targetGhost = false) {
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
+    // straight SD-line
+    if (line.type == entityType.SD && line.innerType == SDLineType.STRAIGHT) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, lineColor, strokewidth, SDLineType.STRAIGHT);
         }
         if (line.endIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, lineColor, strokewidth, SDLineType.STRAIGHT);
+        }
+    }
+
+    // Segmented SD-line
+    if (line.type == entityType.SD && line.innerType == SDLineType.SEGMENT) {
+        let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
+        let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
+        if (line.startIcon == SDLineIcons.ARROW) {
+            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, lineColor, strokewidth, SDLineType.SEGMENT);
+        }
+        if (line.endIcon == SDLineIcons.ARROW) {
+            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, lineColor, strokewidth, SDLineType.SEGMENT);
         }
     }
 
@@ -266,16 +279,16 @@ function getLineAttrubutes(f, t, ctype) {
 }
 
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
-    const offsetOnLine = 20 * zoomfact;
+    const offsetOnLine = 35 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
     if (line.ctype == lineDirection.UP) {
-        x -= offsetOnLine / 2;
+        x -= offsetOnLine / 2 + 10;
         y += (isStart) ? -offsetOnLine : offsetOnLine;
     } else if (line.ctype == lineDirection.DOWN) {
-        x -= offsetOnLine / 2;
+        x -= offsetOnLine / 2 + 10;
         y += (isStart) ? offsetOnLine : -offsetOnLine;
     } else if (line.ctype == lineDirection.LEFT) {
         x += (isStart) ? -offsetOnLine : offsetOnLine;
@@ -444,7 +457,6 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             break;
         case SDLineIcons.ARROW:
             if (line.innerType == SDLineType.SEGMENT) {
-                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             } else if (line.type == entityType.SE) {
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
@@ -528,17 +540,43 @@ function calculateArrowBase(from, to, size) {
      }
      
 
-function drawArrowPoint(base, point, lineColor, strokeWidth) {
-    let right = rotateArrowPoint(base, point, true);
-    let left = rotateArrowPoint(base, point, false);
- 
-    return `
-    <svg width="100" height="100">
-        <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
-            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
-    </svg>
-    `;
- }
+     function drawArrowPoint(base, point, lineColor, strokeWidth, lineType) {
+        const angle = Math.atan2(point.y - base.y, point.x - base.x);  // Beräkna vinkeln
+        const direction = Math.PI / 6; // 30 grader för pilvingar
+    
+        // If the line.Type = STRAIGHT we need to calculate the correct angel for the arrow
+        if (lineType === SDLineType.STRAIGHT) {
+            const distance = 20 * zoomfact;
+            const adjustedBase = {
+                x: point.x - (Math.cos(angle) * distance),
+                y: point.y - (Math.sin(angle) * distance)
+            };
+            const right = {
+                x: adjustedBase.x + (Math.cos(angle - direction) * (distance / 2)),
+                y: adjustedBase.y + (Math.sin(angle - direction) * (distance / 2))
+            };
+            const left = {
+                x: adjustedBase.x + (Math.cos(angle + direction) * (distance / 2)),
+                y: adjustedBase.y + (Math.sin(angle + direction) * (distance / 2))
+            };
+    
+            return `
+            <polygon points='${point.x},${point.y} ${right.x},${right.y} ${left.x},${left.y}'
+                stroke='${lineColor}' fill='${lineColor}' stroke-width='${strokeWidth}' />
+            `;
+    
+        } else {
+            let right = rotateArrowPoint(base, point, true);
+            let left = rotateArrowPoint(base, point, false);
+    
+            return `
+            <svg width="100" height="100">
+                <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
+                    stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
+            </svg>
+            `;
+        }
+    }
 
 
 /**

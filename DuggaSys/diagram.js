@@ -6,8 +6,8 @@
 class StateMachine {
     /**
      * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
-     * @param {Array<Object>} initialElements All elements that should be stored in the initial state.
-     * @param {*} initialLines All lines that should be stored in the initial state.
+     * @param {Array<Element>} initialElements All elements that should be stored in the initial state.
+     * @param {Array<Object>} initialLines All lines that should be stored in the initial state.
      */
     constructor(initialElements, initialLines) {
         /**
@@ -15,23 +15,12 @@ class StateMachine {
          */
         this.historyLog = [];
 
-        /**
-         * Our initial data values
-         */
         this.initialState = {
             elements: [],
             lines: []
         };
-        initialElements.forEach(element => {
-            const obj = {};
-            Object.assign(obj, element);
-            this.initialState.elements.push(obj)
-        });
-        initialLines.forEach(line => {
-            const obj = {};
-            Object.assign(obj, line);
-            this.initialState.lines.push(obj)
-        });
+        this.initialElements = initialElements.map(e => Object.assign({}, e));
+        this.initialLines = initialLines.map(l => Object.assign({}, l));
 
         /**
          * @type StateChange.ChangeTypes
@@ -46,177 +35,108 @@ class StateMachine {
 
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
-     * @param {StateChange} stateChange All changes to be logged.
+     * @param {StateChange} stateChangeArray All changes to be logged.
+     * @param {StateChange.ChangeTypes} newChangeType Type of change made
      * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
     save(stateChangeArray, newChangeType) {
-        let currentChangedType;
-        let changeTypes;
-        if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];
+        if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];        
 
-        for (let i = 0; i < stateChangeArray.length; i++) {
-            const stateChange = stateChangeArray[i];
+        for (const stateChange of stateChangeArray) {
+            this.removeFutureStates();
 
-            if (stateChange instanceof StateChange) {
-                // Remove the history entries that are after current index
-                this.removeFutureStates();
+            // if it's the first entry, just push it and exit
+            if (this.historyLog.length <= 0) {
+                const currentElement = data[findIndex(data, stateChange.id)];
+                this.pushToHistoryLog({
+                    ...stateChange, 
+                    width: currentElement.width, 
+                    height: currentElement.height, 
+                    changeType: newChangeType.flag, 
+                    counter: historyHandler.inputCounter
+                });
+                return;
+            }
 
-                // If history is present, perform soft/hard-check
-                if (this.historyLog.length > 0) {
-                    // Get the last state in historyLog (only values, not reference)
-                    let lastLog = {...this.historyLog[this.historyLog.length - 1]};
+            // gets all the id's as actual values and not arrays
+            // the id is sometimes stored as an array so this is needed to get the actual value
+            let lastLog = {...this.historyLog[this.historyLog.length - 1]};
+            stateChange.id = getIdFromArray(stateChange.id);
+            const id = stateChange.id;
+            lastLog.id = getIdFromArray(lastLog.id);
 
-                    // Check if the element is the same
-                    var sameElements = true;
-                    var isSoft = true;
-
-                    // Change is creation of elements, no need for history comparisions
-                    if (stateChange.created) {
-                        sameElements = false;
-                    } else { // Perform history comparisions
-                        if (Array.isArray(lastLog.id)) {
-                            if (stateChange.id.length != lastLog.id.length) sameElements = false;
-                            for (let index = 0; index < lastLog.id.length && sameElements; index++) {
-                                var id_found = lastLog.id[index];
-
-                                if (!stateChange.id.includes(id_found)) sameElements = false;
-                            }
-                        } else {
-                            if (lastLog.id != stateChange.id) sameElements = false;
-                        }
-                        if (Array.isArray(newChangeType)) {
-                            for (let index = 0; index < newChangeType.length && isSoft; index++) {
-                                isSoft = newChangeType[index].isSoft;
-                            }
-                            changeTypes = newChangeType;
-                        } else {
-                            isSoft = newChangeType.isSoft;
-                            changeTypes = [newChangeType];
-                        }
-                        // Find last change with the same ids
-                        var timeLimit = 10; // Timelimit on history append in seconds
-                        for (let index = this.historyLog.length - 1; index >= 0; index--) {
-                            // Check so if the changeState is not an created-object
-                            if (this.historyLog[index].created != undefined) continue;
-
-                            var sameIds = true;
-                            if (stateChange.id.length != this.historyLog[index].id.length) sameIds = false;
-
-                            for (let idIndex = 0; idIndex < stateChange.id.length && sameIds; idIndex++) {
-                                if (!this.historyLog[index].id.includes(stateChange.id[idIndex])) sameIds = false;
-                            }
-                        }
-                    }
-                    // If NOT soft change, push new change onto history log
-                    if (!isSoft || !sameElements) {
-                        while (Array.isArray(stateChange.id)) {
-                            stateChange.id = stateChange.id[0];
-                        }
-
-                        // edits the last element if it's during the same resize
-                        if (lastLog.changeType == newChangeType.flag && 
-                            lastLog.counter == historyHandler.inputCounter &&
-                            (newChangeType.flag == StateChange.ChangeTypes.ELEMENT_RESIZED || 
-                            newChangeType.flag == StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED)
-                        ) {
-                            this.historyLog.splice(this.historyLog.length-1, 1);
-                        }
-
-                        this.historyLog.push({
+            let currentElement;
+            switch (newChangeType) {
+                case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                    // checks so that the exact same thing doesn't get logged twice
+                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
+                        this.pushToHistoryLog({
                             ...stateChange,
                             changeType: newChangeType.flag,
                             counter: historyHandler.inputCounter
                         });
-                        this.lastFlag = newChangeType;
-                        this.currentHistoryIndex = this.historyLog.length - 1;
-                    } else { // Otherwise, simply modify the last entry.
-                        for (let j = 0; j < changeTypes.length; j++) {
-                            let currentElement;
-                            switch (changeTypes[j]) {
-                                case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                                    // checks so that the exact same thing doesn't get logged twice
-                                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
-                                        this.historyLog.push({...stateChange, changeType: newChangeType.flag, counter: historyHandler.inputCounter});
-                                        this.currentHistoryIndex = this.historyLog.length - 1;
-                                    }
-                                    break;
-                                case StateChange.ChangeTypes.ELEMENT_MOVED:
-                                    lastLog = appendValuesFrom(lastLog, stateChange);
-                                    currentElement = data[findIndex(data, lastLog.id)];
-                                    lastLog.width = currentElement.width;
-                                    lastLog.height = currentElement.height;
-
-                                    while (Array.isArray(lastLog.id)) {
-                                        lastLog.id = lastLog.id[0];
-                                    }
-
-                                    this.historyLog.push({
-                                        ...lastLog,
-                                        changeType: newChangeType.flag,
-                                        counter: historyHandler.inputCounter
-                                    });
-                                    this.currentHistoryIndex = this.historyLog.length - 1;
-                                    break;
-                                case StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED:
-                                case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                                    lastLog = appendValuesFrom(lastLog, stateChange);
-                                    
-                                    // the id is sometimes stored as an array so this is needed to get the actual value
-                                    let id = stateChange.id;
-                                    while (Array.isArray(id)) {
-                                        id = id[0];
-                                    }
-
-                                    // add the real values so that not just the chanegs gets stored
-                                    currentElement = data[findIndex(data, id)];
-                                    lastLog.width = currentElement.width;
-                                    lastLog.height = currentElement.height;
-                                    lastLog.x = currentElement.x;
-                                    lastLog.y = currentElement.y;                                    
-                                    
-                                    // if the save() call comes from the same change-motion, remove the last entry
-                                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
-                                        this.historyLog.splice(this.historyLog.length - 1, 1);
-                                    }
-
-                                    // spreaading the values so that it doesn't keep the reference                                    
-                                    this.historyLog.push({
-                                        ...lastLog,
-                                        changeType: newChangeType.flag,
-                                        counter: historyHandler.inputCounter
-                                    });
-                                    this.currentHistoryIndex = this.historyLog.length - 1;
-                                    break;
-                                default:
-                                    console.error(`Missing implementation for soft state change: ${stateChange}!`);
-                                    break;
-                            }
-                        }
                     }
-                } else {
-                    const currentElement = data[findIndex(data, stateChange.id)];
-                    this.historyLog.push({
-                        ...stateChange, 
-                        width: currentElement.width, 
-                        height: currentElement.height, 
-                        changeType: newChangeType.flag, 
+                    break;
+                case StateChange.ChangeTypes.ELEMENT_RESIZED:
+                    // add the real values so that not just the chanegs gets stored
+                    currentElement = data[findIndex(data, id)];
+                    stateChange.width = currentElement.width;
+                    stateChange.height = currentElement.height;
+                    stateChange.x = currentElement.x;
+                    stateChange.y = currentElement.y;
+
+                    // if the save() call comes from the same change-motion, remove the last entry
+                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
+                        this.historyLog.splice(this.historyLog.length - 1, 1);
+                    }
+
+                    // only store if the resized object isn't overlapping
+                    if (!entityIsOverlapping(stateChange.id, stateChange.x, stateChange.y)) {
+                        this.pushToHistoryLog({
+                            ...stateChange,
+                            changeType: newChangeType.flag,
+                            counter: historyHandler.inputCounter
+                        });
+                    }
+                    // spreaading the values so that it doesn't keep the reference                                    
+                    break;
+                case StateChange.ChangeTypes.ELEMENT_DELETED:
+                case StateChange.ChangeTypes.LINE_DELETED:
+                case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
+                    // deleted elements need the extra attribute in order to be stored properly
+                    this.pushToHistoryLog({
+                        ...stateChange,
+                        changeType: newChangeType.flag,
+                        counter: historyHandler.inputCounter,
+                        deleted: true
+                    });
+                    break;
+                // these don't have anything special so just add the entries
+                case StateChange.ChangeTypes.ELEMENT_CREATED:
+                case StateChange.ChangeTypes.LINE_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
+                case StateChange.ChangeTypes.ELEMENT_MOVED:
+                    this.pushToHistoryLog({
+                        ...stateChange,
+                        changeType: newChangeType.flag,
                         counter: historyHandler.inputCounter
                     });
-                    this.lastFlag = currentChangedType;
-                    this.currentHistoryIndex = this.historyLog.length - 1;
-                }
-            } else {
-                console.error("Passed invalid argument to StateMachine.save() method. Must be a StateChange object!");
+                    break;
+                default:
+                    console.error(`Missing implementation for soft state change: ${stateChange}!`);
+                    break;
             }
         }
+    }
 
-        // removes arrys from the id attribute
-        for (let entry of this.historyLog) {
-            while (Array.isArray(entry.id)) {
-                entry.id = entry.id[0];
-            }
-        }
+    /**
+     * @description Pushes a new entry to the historyLog array and sets to index to the last position
+     * @param {object} entry data to store in the history
+     */
+    pushToHistoryLog(entry) {
+        this.historyLog.push(entry);
+        this.currentHistoryIndex = this.historyLog.length-1;
     }
 
     removeFutureStates() {
@@ -231,6 +151,9 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     stepBack() {
+        // Clearing context prevents selection box drawing on removed objects.
+        clearContext();
+        clearContextLine();
         // Remove ghost only if stepBack while creating edge
         if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
 
@@ -246,7 +169,7 @@ class StateMachine {
             this.scrubHistory(this.currentHistoryIndex);
 
             var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex - 1]) {
+            if (this.historyLog[this.currentHistoryIndex + 1] && this.historyLog[this.currentHistoryIndex]) {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time);
             }
 
@@ -263,10 +186,12 @@ class StateMachine {
         // Go one step forward, if the next state in the history has the same time, do that too
         do {
             this.currentHistoryIndex++;
-            this.restoreState(this.historyLog[this.currentHistoryIndex]);
+            if (this.historyLog[this.currentHistoryIndex]) {
+                this.restoreState(this.historyLog[this.currentHistoryIndex]);
+            }
 
             var doNextState = false;
-            if (this.historyLog[this.currentHistoryIndex + 1]) {
+            if (this.historyLog[this.currentHistoryIndex + 1] && this.historyLog[this.currentHistoryIndex]) {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time)
             }
         } while (doNextState);
@@ -292,15 +217,14 @@ class StateMachine {
     }
 
     /**
-     * @description Restore an given state
+     * @description Restore a given state
      * @param {StateChange} state The state that should be restored
      */
     restoreState(state) {
         // Get all keys from the state.
         var keys = Object.keys(state);
-
         // If there is only an key that is ID in the state, delete those objects
-        if (keys.length == 2 && keys[0] == "id") {
+        if (keys.length == 2 && keys[0] == "id" || keys.includes('deleted')) {
             var elementsToRemove = [];
             var linesToRemove = [];
 
@@ -316,8 +240,8 @@ class StateMachine {
                 }
             });
             // If the array is not empty remove the objects
-            if (linesToRemove.length != 0) removeLines(linesToRemove, false);
-            if (elementsToRemove.length != 0) removeElements(elementsToRemove, false);
+            if (linesToRemove.length) removeLines(linesToRemove, false);
+            if (elementsToRemove.length) removeElements(elementsToRemove, false);
             return;
         }
 
@@ -325,10 +249,7 @@ class StateMachine {
 
         for (let i = 0; i < state.id.length; i++) {
             // Find object
-            let object;
-            if (data[findIndex(data, state.id[i])]) object = data[findIndex(data, state.id[i])];
-            else if (lines[findIndex(lines, state.id[i])]) object = lines[findIndex(lines, state.id[i])];
-            // If an object was found
+            let object = data.find(e => e.id == state.id[i]) ?? lines.find(e => e.id == state.id[i]);
             if (object) {
                 // For every key, apply the changes
                 keys.forEach(key => {
@@ -621,6 +542,29 @@ function showDiagramTypes() {
 
 // --------------------------------------- Window Events    --------------------------------
 
+// Event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
+// Get the elementPlacement button with the highest number and use that for a range in the for loop
+const elements = document.querySelectorAll('[id^="elementPlacement"]');
+let maxNum = 0;
+elements.forEach(element => {
+    const num = parseInt(element.id.replace('elementPlacement', ''), 10);
+    if (num > maxNum) {
+        maxNum = num;
+    }
+});
+
+for (let i = 0; i <= maxNum; i++) {
+    let element = document.getElementById("elementPlacement" + i);
+    if (element) {
+        // Add event listener for click
+        element.addEventListener("mousedown", function(event) {
+            if (event.button === 2) { 
+                rightClickOpenSubtoolbar(i);
+            }
+        });
+    }
+}
+
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
 });
@@ -787,7 +731,7 @@ document.addEventListener('keydown', function (e) {
     if (altPressed) {
         mouseMode_onMouseUp();
     }
-    historyHandler.inputCounter++;
+    historyHandler.inputCounter = (historyHandler.inputCounter+1)%1024;
 });
 
 document.addEventListener('keyup', function (e) {
@@ -1019,28 +963,6 @@ function mouseMode_onMouseUp(event) {
 }
 
 /**
- * @description stores the ResizeAndMoved in the historyLog array
- * @param {string[]} id id of the element
- * @param {number} xChange change in x-position
- * @param {number} yChange change in y-position
- * @param {number} widthChange change in width
- * @param {number} heightChange change in height
- */
-function prepareElementMovedAndResized(id, xChange, yChange, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementMovedAndResized(id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_MOVED_AND_RESIZED);
-}
-
-/**
- * @description stores the Resize in the historyLog array
- * @param {string[]} id id of the element
- * @param {number} widthChange change in width
- * @param {number} heightChange change in height
- */
-function prepareElementResized(id, widthChange, heightChange) {
-    stateMachine.save(StateChangeFactory.ElementResized(id, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
-}
-
-/**
  * @description Event function triggered when the mouse has moved on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
@@ -1062,7 +984,7 @@ function mmoving(event) {
             drawRulerBars(scrollx, scrolly);
             calculateDeltaExceeded();
             break;
-        case pointerState.CLICKED_LINE:
+        case pointerStates.CLICKED_LINE:
             if (mouseMode == mouseModes.BOX_SELECTION) {
                 calculateDeltaExceeded();
                 mouseMode_onMouseMove(mouseMode);
@@ -1078,6 +1000,7 @@ function mmoving(event) {
                     x: data[findIndex(data, targetElement.id)].x,
                     y: data[findIndex(data, targetElement.id)].y
                 };
+                let targetElementDiv = document.getElementById(targetElement.id);
                 let targetPos = {
                     x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
                     y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
@@ -1107,29 +1030,72 @@ function mmoving(event) {
             deltaX = startX - event.clientX;
             deltaY = startY - event.clientY;
 
-            // Functionality Left/Right resize
-            if ((startNodeLeft || startNodeUpLeft || startNodeDownLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
-                let tmpW = elementData.width;
-                let tmpX = elementData.x;
-                let xChange = movementPosChange(elementData, startX, deltaX, true);
-                let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                prepareElementMovedAndResized([elementData.id], xChange, 0, widthChange, 0);
-            } else if ((startNodeRight || startNodeUpRight || startNodeDownRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                prepareElementResized([elementData.id], widthChange, 0);
+            // Resize equally in both directions by modifying delta
+            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState) {
+                let delta;
+                if (startNode.upLeft) {
+                    delta = Math.max(deltaX, deltaY);
+                } else if (startNode.downRight) {
+                    delta = Math.min(deltaX, deltaY);
+                } else if (startNode.downLeft) {
+                    delta = Math.max(deltaX, -deltaY);
+                } else if (startNode.upRight) {
+                    delta = Math.max(-deltaX, deltaY);
+                }
+                deltaX = (startNode.upRight) ? -delta : delta;
+                deltaY = (startNode.downLeft) ? -delta : delta;
             }
-            // Functionality Up/Down resize
-            if ((startNodeDown || startNodeDownLeft || startNodeDownRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
-                const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                prepareElementResized([elementData.id], 0, heightChange);
-            } else if ((startNodeUp || startNodeUpLeft || startNodeUpRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                // Fetch original height// Deduct the new height, giving us the total change
-                let tmpH = elementData.height;
-                let tmpY = elementData.y;
-                let yChange = movementPosChange(elementData, startY, deltaY, false);
-                const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                prepareElementMovedAndResized([elementData.id], 0, yChange, 0, heightChange);
+        
+            let xChange, yChange, widthChange, heightChange;
+            if(elementData.kind == elementTypesNames.sequenceActor || elementData.kind == elementTypesNames.sequenceObject) { // Special resize for sequenceActor and sequenceObject
+                const maxRatio = 0.8;
+                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                    let tmpW = elementData.width;
+                    let tmpX = elementData.x;
+                    let movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let xChange = movementPosChange(elementData, startX, deltaX, true);
+                    let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                    let heightChange = movementHeightChange(elementData, startHeight, movementY,false);
+                } else if (startNode.right && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                    let heightChange = movementHeightChange(elementData,startHeight,movementY,false);
+                } else if ((startNode.up || startNode.upLeft || startNode.upRight)
+                    && (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) {
+                    // Fetch original height// Deduct the new height, giving us the total change
+                    let tmpH = elementData.height;
+                    let tmpY = elementData.y;
+                    let yChange = movementPosChange(elementData, startY, deltaY, false);
+                    const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                } else if ((startNode.down || startNode.downLeft || startNode.downRight)
+                    && (startHeight - (deltaY / zoomfact)) > startWidth / maxRatio) {
+                    const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
+                }
+            } else { // Normal resize for the other elements
+                // Functionality Left/Right resize
+                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                    let tmpW = elementData.width;
+                    let tmpX = elementData.x;
+                    xChange = movementPosChange(elementData, startX, deltaX, true);
+                    widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
+                } else if ((startNode.right || startNode.upRight || startNode.downRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                    widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
+                }
+
+                // Functionality Up/Down resize
+                if ((startNode.down || startNode.downLeft || startNode.downRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                    heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
+                } else if ((startNode.up || startNode.upLeft || startNode.upRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
+                    // Fetch original height// Deduct the new height, giving us the total change
+                    let tmpH = elementData.height;
+                    let tmpY = elementData.y;
+                    yChange = movementPosChange(elementData, startY, deltaY, false);
+                    heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
+                }
             }
+
+            // store the changes in the history
+            stateMachine.save(StateChangeFactory.ElementResized(elementData.id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
@@ -1265,7 +1231,7 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     }
 
     if (stateMachineShouldSave && anyRemoved) {
-        stateMachine.save(StateChangeFactory.LinesRemoved(linesArray), StateChange.ChangeTypes.LINE_DELETED);
+        stateMachine.save(StateChangeFactory.LinesDeleted(linesArray), StateChange.ChangeTypes.LINE_DELETED);
     }
 
     contextLine = [];
@@ -1273,114 +1239,24 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     redrawArrows();
 }
 
-/** TODO: elementHasLines() seems to not work for UML, SD, IE elements, this needs to be fixed/investigated!!
- * @description Triggered on ENTER-key pressed when a property is being edited via the options panel. This will apply the new property onto the element selected in context.
+/**
+ * @description When properties are saved this updates the element to the selected state.
  * @see context For currently selected element.
  */
 function changeState() {
-    const element = context[0],
-        oldType = element.type,
-        newType = document.getElementById("typeSelect")?.value || undefined;
+    const element = context[0];
     const oldRelation = element.state;
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
-
-    // If we are changing types and the element has lines, we should not change
-    if (oldType !== newType && newType !== undefined && oldType !== undefined && elementHasLines(element)) {
-        displayMessage("error", `
-            Can't change type from \"${oldType}\" to \"${newType}\" as
-            different diagrams should not be able to connect to each other.`
-        );
-        return;
-        // If we are changing to the same type, (simply pressed save without changes), do nothing.
-    } else if (oldType == newType && oldRelation == newRelation) {
-        return;
-    } else if (element.type == entityType.ER) {
-        //If not attribute, also save the current type and check if kind also should be updated
-        if (element.kind != elementTypesNames.ERAttr) {
-            if (oldType != newType) {
-                let newKind = element.kind;
-                newKind = newKind.replace(oldType, newType);
-                element.kind = newKind;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    if (newRelation && oldRelation != newRelation) {
+        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+                let property = document.getElementById("propertySelect").value;
+                element.state = property;
+                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
-            if (newType != undefined) {
-                element.type = newType;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            }
-        }
-        let property = document.getElementById("propertySelect").value;
-        element.state = property;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    } else if (element.type == entityType.UML) {
-        //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.UMLEntity) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-
-    } else if (element.type == entityType.IE) {
-        //Save the current property if not an UML or IE entity since niether entities does have variants.
-        if (element.kind != elementTypesNames.IEEntity) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == entityType.SD) {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == entityType.SE) {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-    } else if (element.type == 'NOTE') {
-        if (oldType != newType) {
-            let newKind = element.kind;
-            newKind = newKind.replace(oldType, newType);
-            element.kind = newKind;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {kind: newKind}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        }
-        if (newType != undefined) {
-            element.type = newType;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {type: newType}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         }
     }
-    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 }
 
 /**
@@ -1391,77 +1267,38 @@ function saveProperties() {
     const element = context[0];
     const children = propSet.children;
     const propsChanged = {};
-    let cleanedLines;
 
-    for (let index = 0; index < children.length; index++) {
-        const child = children[index];
-        const propName = child.id.split(`_`)[1];
-        switch (propName) {
-            case "name":
-                const value = child.value.trim();
-                if (value && value.length > 0) {
-                    element[propName] = value;
-                    propsChanged.name = value;
-                }
-                break;
-            case 'primaryKey':
-                cleanedLines = [];
-                const textArea = child.value;
-                let lines = textArea.split('\n');
-                for (let i = 0; i < lines.length; i++) {
-                    if (!(lines[i] == '\n' || lines[i] == '' || lines[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(lines[i])[0] != '*') { // Checks if line starts with a star ('*')
-                            lines[i] = "*" + lines[i];
-                        }
-                        cleanedLines.push(lines[i]);
-                    }
-                }
-                //Updates property
-                lines = cleanedLines;
-                element[propName] = lines;
-                propsChanged.primaryKey = lines;
-                break;
-            case 'attributes':
-                //Get string from textarea
-                const elementAttr = child.value;
-                //Create an array from string where newline seperates elements
-                let arrElementAttr = elementAttr.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementAttr.length; i++) {
-                    if (!(arrElementAttr[i] == '\n' || arrElementAttr[i] == '' || arrElementAttr[i] == ' ')) {
-                        if (element.kind != 'SDEntity' && element.kind != 'note' && Array.from(arrElementAttr[i])[0] != '-') { // Checks if line starts with a hyphen ('-')
-                            `-${arrElementAttr[i]}`;
-                        }
-                        cleanedLines.push(arrElementAttr[i]);
-                    }
-                }
-                //Update the attribute array
-                arrElementAttr = cleanedLines;
-                element[propName] = arrElementAttr;
-                propsChanged.attributes = arrElementAttr;
-                break;
-            case 'functions':
-                //Get string from textarea
-                const elementFunc = child.value;
-                //Create an array from string where newline seperates elements
-                let arrElementFunc = elementFunc.split('\n');
-                cleanedLines = [];
-                for (let i = 0; i < arrElementFunc.length; i++) {
-                    if (!(arrElementFunc[i] == '\n' || arrElementFunc[i] == '' || arrElementFunc[i] == ' ')) { // Checks if line starts with a plus sign ('+')
-                        if (Array.from(arrElementFunc[i])[0] != '+') {
-                            `+${arrElementFunc[i]}`;
-                        }
-                        cleanedLines.push(arrElementFunc[i]);
-                    }
-                }
-                //Update the attribute array
-                arrElementFunc = cleanedLines;
-                element[propName] = arrElementFunc;
-                propsChanged.functions = arrElementFunc;
-                break;
-            default:
-                break;
+    for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        const inputTag = child.id;
+        if (inputTag == "elementProperty_name") {
+            let value = child.value;
+            element.name = value;
+            propsChanged.name = value;
+            continue;
         }
+        const addToLine = (name, symbol) => {
+            if (inputTag == `elementProperty_${name}`) {
+                let lines = child.value.trim().split("\n");
+                for (let j = 0; j < lines.length; j++) {
+                    if (lines[j] && lines[j].trim()) {
+                        if (Array.from(lines[j])[0] != symbol) {
+                            lines[j] = symbol + lines[j];
+                        }
+                    }
+                }
+                element[name] = lines;
+                propsChanged[name] = lines;
+            }
+        };
+        // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
+        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+            addToLine("attributes", "");
+            continue;
+        }
+        addToLine("primaryKey", "*");
+        addToLine("attributes", "-");
+        addToLine("functions", "+");
     }
     stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
@@ -1495,18 +1332,11 @@ function pasteClipboard(elements, elementsLines) {
     const cy = (y2 - y1) / 2;
     const mousePosInPixels = screenToDiagramCoordinates(lastMousePos.x - (cx * zoomfact), lastMousePos.y - (cy * zoomfact));
 
+    const clone = (obj) => Object.assign(Object.create(Object.getPrototypeOf(obj)), obj);
+
     const connectedLines = [];
     // For every line that shall be copied, create a temp object, for kind and connection tracking
-    elementsLines.forEach(line => {
-        const temp = {
-            id: line.id,
-            fromID: line.fromID,
-            toID: line.toID,
-            kind: line.kind,
-            cardinality: line.cardinality
-        };
-        connectedLines.push(temp);
-    });
+    elementsLines.forEach(line => connectedLines.push(clone(line)));
     // An mapping between oldElement ID and the new element ID
     const idMap = {};
     const newElements = [];
@@ -1519,30 +1349,20 @@ function pasteClipboard(elements, elementsLines) {
 
         connectedLines.forEach(line => {
             if (line.fromID == element.id) line.fromID = idMap[element.id];
-            else if (line.toID == element.id) line.toID = idMap[element.id];
+            if (line.toID == element.id) line.toID = idMap[element.id];
         });
+        // Copy element
+        const elementObj = clone(element);
+        elementObj.id = idMap[element.id];
+        elementObj.x = mousePosInPixels.x + (element.x - x1);
+        elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        // Create the new object
-        const elementObj = {
-            name: element.name,
-            x: mousePosInPixels.x + (element.x - x1),
-            y: mousePosInPixels.y + (element.y - y1),
-            width: element.width,
-            height: element.height,
-            kind: element.kind,
-            id: idMap[element.id],
-            state: element.state,
-            fill: element.fill,
-            stroke: element.stroke,
-            type: element.type,
-            attributes: element.attributes,
-            functions: element.functions
-        };
         newElements.push(elementObj);
         addObjectToData(elementObj, false);
     });
 
     // Create the new lines but do not saved in stateMachine
+    // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
     connectedLines.forEach(line => {
         newLines.push(
             addLine(data[findIndex(data, line.fromID)], data[findIndex(data, line.toID)], line.kind, false, false, line.cardinality)
@@ -1767,6 +1587,13 @@ function holdPlacementButtonDown(num) {
 }
 
 /**
+ * @description Function to open a subtoolbar when rightclicking a button
+ */
+function rightClickOpenSubtoolbar(num) {
+    togglePlacementTypeBox(num);
+}
+
+/**
  * @description resets the mousepress.
  * USED IN PHP
  */
@@ -1854,10 +1681,9 @@ function exportWithHistory() {
  * @description Stores the current diagram as JSON in localstorage
  * @param {string} key The name/key of the diagram
  */
-function storeDiagramInLocalStorage(key) {
-
+function storeDiagramInLocalStorage(key) {    
     if (stateMachine.currentHistoryIndex == -1) {
-        displayMessage(messageTypes.ERROR, "You don't have anything to save!");
+        return;
     } else {
         // Remove all future states to the history
         stateMachine.removeFutureStates();
@@ -2136,11 +1962,11 @@ function loadDiagramFromLocalStorage(key) {
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
-    window.addEventListener("beforeunload", (e) => {
-        e.preventDefault();
-        e.returnValue = "";
-        storeDiagramInLocalStorage("AutoSave");
-    })
+    if(data.length) {
+        window.addEventListener("beforeunload", (e) => {
+            storeDiagramInLocalStorage("AutoSave");
+        })
+    }
 }
 
 function disableIfDataEmpty() {
@@ -2296,5 +2122,4 @@ function resetDiagramAlert() {
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
-
 //#endregion =====================================================================================
