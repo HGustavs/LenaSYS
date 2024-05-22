@@ -1194,10 +1194,6 @@ function AJAXService(opt,apara,kind)
 				serviceURL= "sectionedservice.php"; // Change when working
 				// serviceURL= "../DuggaSys/microservices/sectionedService/getListEntries_ms.php";
 				break;
-			case "GETUF":	
-				// serviceURL= "sectionedservice.php"; // Change when working
-				serviceURL= "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php";
-				break;
 			default:
 				serviceURL= "sectionedservice.php";
 		}
@@ -1378,7 +1374,7 @@ function AJAXService(opt,apara,kind)
 		});
 	} else if(kind=="USERFB") {
 		$.ajax({
-			url: "sectionedservice.php",
+			url: "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php",
 			type:"POST",
 			data:"courseid="+querystring['cid']+"&opt="+opt+para,
 			dataType: "json",
