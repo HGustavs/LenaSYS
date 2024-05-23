@@ -119,32 +119,40 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || has
 			$error=$stmt->errorInfo();
 			$debug="Error updating entries".$error[2];
 		}
-	}else if(strcmp($opt,"SAVVARI")===0){
-		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid");
-		$query->bindParam(':vid', $vid);
-		$query->bindParam(':disabled', $disabled);
-		$query->bindParam(':param', $param);
-		$query->bindParam(':variantanswer', $answer);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
+	}else if (strcmp($opt, "SAVVARI") === 0) {
+		try {
+			$query = $pdo->prepare("UPDATE variant SET disabled = :disabled, param = :param, variantanswer = :variantanswer WHERE vid = :vid");
+			$query->bindParam(':vid', $vid, PDO::PARAM_INT);
+			$query->bindParam(':disabled', $disabled, PDO::PARAM_INT);
+			$query->bindParam(':param', $param, PDO::PARAM_STR);
+			$query->bindParam(':variantanswer', $answer, PDO::PARAM_STR);
+	
+			if (!$query->execute()) {
+				throw new Exception("Error updating variant: " . implode(" ", $query->errorInfo()));
+			}
+		} catch (Exception $e) {
+			$debug = "Update variant failed: " . $e->getMessage();
 		}
-	}else if(strcmp($opt,"DELVARI")===0){
-		$query = $pdo->prepare("DELETE FROM userAnswer WHERE variant=:vid;");
-		$query->bindParam(':vid', $vid);
+	}else if (strcmp($opt, "DELVARI") === 0) {
+		try {
+			$pdo->beginTransaction();
 
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-
-		$query = $pdo->prepare("DELETE FROM variant WHERE vid=:vid;");
-		$query->bindParam(':vid', $vid);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
+			$query = $pdo->prepare("DELETE FROM userAnswer WHERE variant = :vid");
+			$query->bindParam(':vid', $vid, PDO::PARAM_INT);
+			if (!$query->execute()) {
+				throw new Exception("Error deleting from userAnswer: " . implode(" ", $query->errorInfo()));
+			}
+	
+			$query = $pdo->prepare("DELETE FROM variant WHERE vid = :vid");
+			$query->bindParam(':vid', $vid, PDO::PARAM_INT);
+			if (!$query->execute()) {
+				throw new Exception("Error deleting from variant: " . implode(" ", $query->errorInfo()));
+			}
+	
+			$pdo->commit();
+		} catch (Exception $e) {
+			$pdo->rollBack();
+			$debug = "Transaction failed: " . $e->getMessage();
 		}
 	}
 }
