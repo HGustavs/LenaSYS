@@ -59,28 +59,21 @@ class StateMachine {
                 })
                 break;
             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                // needs to be handled differently if multtiple IDs are sent
-                if (Array.isArray(id)) {
-                    for (const element of StateChange.ElementsAreLocked()) {
-                        this.pushToHistoryLog({
-                            id: element.id,
-                            isLocked: element.isLocked,
-                            ...Element.GetFillColor(id),
-                            ...Element.GetStrokeColor(id),
-                            ...StateChange.GetSequenceAlternatives()
-                        });
-                    }
-                    break;
-                }
-
-                // checks so that the exact same thing doesn't get logged twice
-                if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
+                // needs to be handled differently if multiple IDs are sent
+                if (!Array.isArray(id)) id = [id];
+                for (const element of StateChange.ElementsAreLocked()) {
+                    console.log(element);
                     this.pushToHistoryLog({
-                        id: id,
-                        state: StateChange.ChangeElementState(),
+                        id: element.id,
+                        isLocked: element.isLocked,
+                        ...Element.GetFillColor(id),
+                        ...Element.GetStrokeColor(id),
+                        ...StateChange.GetSequenceAlternatives(),
+                        ...Element.GetProperties(id),
+                        state: StateChange.ChangeElementState()
                     });
                 }
-                break;
+                break;                
             case StateChange.ChangeTypes.ELEMENT_RESIZED:                    
                 // if the save() call comes from the same change-motion, remove the last entry
                 if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
@@ -168,6 +161,18 @@ class StateMachine {
             time: this.currentTime
         });
         this.currentHistoryIndex = this.historyLog.length-1;
+
+        this.removeDuplicateEntries();
+    }
+    
+    removeDuplicateEntries() {
+        if (this.historyLog.length < 2) return;
+        
+        for (let i = 1; i < this.historyLog.length; i++) {
+            if (sameObjects({...this.historyLog[i-1]}, {...this.historyLog[i]}, ['counter', 'time'])) {
+                this.historyLog.splice(i, 1);
+            }
+        }
     }
 
     removeFutureStates() {
@@ -1278,14 +1283,62 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
  * @see context For currently selected element.
  */
 function changeState() {
-    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
+    const element = context[0];
+    const oldRelation = element.state;
+    const newRelation = document.getElementById("propertySelect")?.value || undefined;
+    if (newRelation && oldRelation != newRelation) {
+        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+                let property = document.getElementById("propertySelect").value;
+                element.state = property;
+                stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);                
+                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
+            }
+        }
+    }
 }
 
 /**
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
 function saveProperties() {    
+    const propSet = document.getElementById("propertyFieldset");
+    const element = context[0];
+    const children = propSet.children;
+    const propsChanged = {};
+
+    for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+        const inputTag = child.id;
+        if (inputTag == "elementProperty_name") {
+            let value = child.value;
+            element.name = value;
+            propsChanged.name = value;
+            continue;
+        }
+        const addToLine = (name, symbol) => {
+            if (inputTag == `elementProperty_${name}`) {
+                let lines = child.value.trim().split("\n");
+                for (let j = 0; j < lines.length; j++) {
+                    if (lines[j] && lines[j].trim()) {
+                        if (Array.from(lines[j])[0] != symbol) {
+                            lines[j] = symbol + lines[j];
+                        }
+                    }
+                }
+                element[name] = lines;
+                propsChanged[name] = lines;
+            }
+        };
+        // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
+        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+            addToLine("attributes", "");
+            continue;
+        }
+        addToLine("primaryKey", "*");
+        addToLine("attributes", "-");
+        addToLine("functions", "+");
+    }
     stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();

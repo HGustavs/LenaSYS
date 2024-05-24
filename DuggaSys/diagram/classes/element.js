@@ -76,11 +76,20 @@ class Element {
 
     static GetFillColor(id) {
         const element = this.FindElementById(id);
-        return {fill: element.fill};
+        return {fill: element.fill || undefined};
     }
 
     static GetStrokeColor(id) {
         const element = this.FindElementById(id);
-        return {stroke: element.stroke};
+        return {stroke: element.stroke || undefined};
+    }
+
+    static GetProperties(id) {
+        const element = this.FindElementById(id);
+        return {
+            attributes: element.attributes,
+            functions: element.functions,
+            name: element.name
+        }
     }
 }

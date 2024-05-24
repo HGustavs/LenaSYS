@@ -161,51 +161,12 @@ class StateChange {
             changesArr.push({id: line.id, ...values});
         });
         return changesArr;
-    }
+    }    
 
-    static saveProperties() {
-        const propSet = document.getElementById("propertyFieldset");
-        const element = context[0];
-        const children = propSet.children;
-        const propsChanged = {};
-
-        for (let i = 0; i < children.length; i++) {
-            const child = children[i];
-            const inputTag = child.id;
-            if (inputTag == "elementProperty_name") {
-                let value = child.value;
-                element.name = value;
-                propsChanged.name = value;
-                continue;
-            }
-            const addToLine = (name, symbol) => {
-                if (inputTag == `elementProperty_${name}`) {
-                    let lines = child.value.trim().split("\n");
-                    for (let j = 0; j < lines.length; j++) {
-                        if (lines[j] && lines[j].trim()) {
-                            if (Array.from(lines[j])[0] != symbol) {
-                                lines[j] = symbol + lines[j];
-                            }
-                        }
-                    }
-                    element[name] = lines;
-                    propsChanged[name] = lines;
-                }
-            };
-            // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
-            if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
-                addToLine("attributes", "");
-                continue;
-            }
-            addToLine("primaryKey", "*");
-            addToLine("attributes", "-");
-            addToLine("functions", "+");
-        }
-    }
-
-    static ElemensAreLocked() {
+    static ElementsAreLocked() {
         const lockedElements = [];
-        for (const element in context) {
+        for (const element of context) {
+            console.log(element)
             lockedElements.push({
                 id: element.id,
                 isLocked: element.isLocked
@@ -266,12 +227,11 @@ class StateChange {
         const element = context[0];
         const oldRelation = element.state;
         const newRelation = document.getElementById("propertySelect")?.value;
+        let property;
         if (!newRelation || oldRelation == newRelation) return;
         if (element.type != entityType.ER || element.type != entityType.UML || element.type != entityType.IE) return;
-        if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
-            let property = document.getElementById("propertySelect").value;
-            element.state = property;                                        
-        }
+        
+        if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) property = document.getElementById("propertySelect").value;        
         return property;
     }
 
