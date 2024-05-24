@@ -62,7 +62,6 @@ class StateMachine {
                 // needs to be handled differently if multiple IDs are sent
                 if (!Array.isArray(id)) id = [id];
                 for (const element of StateChange.ElementsAreLocked()) {
-                    console.log(element);
                     this.pushToHistoryLog({
                         id: element.id,
                         isLocked: element.isLocked,

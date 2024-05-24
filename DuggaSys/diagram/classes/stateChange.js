@@ -166,7 +166,6 @@ class StateChange {
     static ElementsAreLocked() {
         const lockedElements = [];
         for (const element of context) {
-            console.log(element)
             lockedElements.push({
                 id: element.id,
                 isLocked: element.isLocked

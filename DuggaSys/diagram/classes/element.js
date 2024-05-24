@@ -69,7 +69,6 @@ class Element {
      * @returns {object} Object containing the X and Y coordinates
      */
     static GetELementPosition(id) {
-        console.log(id)
         const element = this.FindElementById(id);
         return {x: element.x, y: element.y};
     }
