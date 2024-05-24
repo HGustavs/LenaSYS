@@ -22,32 +22,9 @@ class StateChange {
     };
 
     /**
-     * @description Creates a new StateChange instance.
-     * @param {Array<String>} id Array of all elements affected by this state change. This is used for merging changes on the same elements.
-     * @param {Object} values Map of all values that this change contains. Each property represents a change.
-     * @param {number | null} timestamp Time when this change took place.
-     */
-    constructor(id, values, timestamp) {
-        this.id = id;
-        this.time = timestamp ?? new Date().getTime();
-
-        if (values) {
-            let keys = Object.keys(values);
-            // If "values" is an array of objects, store all objects in the "state.created" array.
-            if (keys[0] == '0') {
-                this.created = values;
-            } else {
-                keys.forEach(key => {
-                    this[key] = values[key];
-                });
-            }
-        }
-    }
-
-    /**
      * @description Keeps the appropriate values for when elements are created.
      * @param {Element} element The new element that has been created.
-     * @returns {StateChange} A new instance of the StateChange class.
+     * @returns {object} A new object with the needed values.
      */
     static ElementCreated(id) {
         const element = data.find((e) => e.id == id);
@@ -70,7 +47,7 @@ class StateChange {
     /**
      * @description Keeps the appropriate values for when a line is added.
      * @param {Object} line New line that has been created.
-     * @returns {StateChange} A new instance of the StateChange class.
+     * @returns {object} A new object with the needed values.
      */
     static LineAdded(id) {
         const line = lines.find(line => line.id == id);
@@ -105,7 +82,7 @@ class StateChange {
      * @description Keeps the appropriate values for when elements and lines are deleted
      * @param {Element[]} elements All elements that have been / are going to be removed.
      * @param {Object[]} lines All lines that have been / are going to be removed.
-     * @returns {StateChange} A new instance of the StateChange class.
+     * @returns {object} A new object with the needed values.
      */
     static ElementsAndLinesDeleted(elements, lines) {
         const allIDs = [];
@@ -124,7 +101,7 @@ class StateChange {
      * @description Keeps the appropriate values for when elements and lines are created
      * @param {string[]} elements All elements that have been created.
      * @param {string[]} lines All lines that have been created.
-     * @returns {object[]} A new instance of the StateChange class.
+     * @returns {object} A new object with the needed values.
      */
     static ElementsAndLinesCreated(elementIDs, lineIDs) {
         const changesArr = [];
@@ -164,6 +141,10 @@ class StateChange {
         return changesArr;
     }    
 
+    /**
+     * @description Checks if any of the selected elements are locked
+     * @returns {object} A new object with the needed values.
+     */
     static ElementsAreLocked() {
         const lockedElements = [];
         for (const element of context) {
@@ -175,6 +156,10 @@ class StateChange {
         return lockedElements;
     }
 
+    /**
+     * @description Get's all the properties for the selected line
+     * @returns {object} A new object with the needed values.
+     */
     static GetLineProperties() {
         const line = contextLine[0];
         const changes = {};
@@ -223,18 +208,31 @@ class StateChange {
         return changes;
     }
 
+    /**
+     * @description Checks wether an ER entity is normal or weak.
+     * @returns The state of element, either old or new.
+     */
     static ChangeElementState() {
         const element = context[0];
         const oldRelation = element.state;
-        const newRelation = document.getElementById("propertySelect")?.value;
-        let property;
-        if (!newRelation || oldRelation == newRelation) return;
-        if (element.type != entityType.ER || element.type != entityType.UML || element.type != entityType.IE) return;
-        
-        if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) property = document.getElementById("propertySelect").value;        
-        return property;
+        const newRelation = document.getElementById("propertySelect")?.value || undefined;
+        if (newRelation && oldRelation != newRelation) {
+            if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+                if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+                    let property = document.getElementById("propertySelect").value;
+                    element.state = property;
+                    return element.state;
+                }
+            }
+        }
+        return element.state;
     }
 
+
+    /**
+     * @description Get properties for a sequence condition.
+     * @returns {object} A new object with the needed values.
+     */
     static GetSequenceAlternatives() {
         return {
             alternatives: context[0].alternatives,

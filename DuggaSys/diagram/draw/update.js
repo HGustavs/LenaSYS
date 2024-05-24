@@ -65,7 +65,6 @@ function setSequenceAlternatives() {
         //Update the alternatives array
         alternatives = formatArr;
         context[0].alternatives = alternatives;
-
         stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     showdata();

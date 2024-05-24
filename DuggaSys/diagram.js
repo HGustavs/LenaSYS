@@ -50,7 +50,6 @@ class StateMachine {
         let lastLog = {...this.historyLog[this.historyLog.length - 1]};
         // the id is sometimes stored as an array so this is needed to get the actual value;            
         if(Array.isArray(lastLog.id)) lastLog.id = getItemsFromNestedArrays(lastLog.id);
-
         switch (newChangeType) {
             case StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED:
                 this.pushToHistoryLog({
@@ -59,8 +58,8 @@ class StateMachine {
                 });
                 break;
             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                if (!Array.isArray(id)) id = [id];
                 for (const element of StateChange.ElementsAreLocked()) {
+                    if (Array.isArray(id)) id = getItemsFromNestedArrays(id)[0];
                     this.pushToHistoryLog({
                         ...element,
                         ...Element.GetFillColor(id),
@@ -87,7 +86,6 @@ class StateMachine {
                     });
                 }
                 break;
-            // deleted elements need the extra attribute in order to be stored properly
             case StateChange.ChangeTypes.ELEMENT_DELETED:
                 this.pushToHistoryLog({
                     id: id,
@@ -153,6 +151,7 @@ class StateMachine {
         });
         this.currentHistoryIndex = this.historyLog.length-1;
 
+        // it's possible to store multple of the same entries, by using the properties save button for example, this is used to remove those
         this.removeDuplicateEntries();
     }
     
@@ -160,7 +159,7 @@ class StateMachine {
         if (this.historyLog.length < 2) return;
         
         for (let i = 1; i < this.historyLog.length; i++) {
-            if (sameObjects({...this.historyLog[i-1]}, {...this.historyLog[i]}, ['counter', 'time'])) {
+            if (sameObjects(this.historyLog[i-1], this.historyLog[i], ['counter', 'time'])) {
                 this.historyLog.splice(i, 1);
             }
         }
@@ -1273,15 +1272,13 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
  * @description When properties are saved this updates the element to the selected state.
  * @see context For currently selected element.
  */
-function changeState() {
+function changeState() {    
     const element = context[0];
     const oldRelation = element.state;
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
     if (newRelation && oldRelation != newRelation) {
         if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
             if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
-                let property = document.getElementById("propertySelect").value;
-                element.state = property;
                 stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);                
                 displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
