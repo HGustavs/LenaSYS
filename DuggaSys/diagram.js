@@ -42,80 +42,93 @@ class StateMachine {
      * @param {StateChange.ChangeTypes} newChangeType Type of change made
      * @see StateChange For available flags.
      */
-    save(stateChangeArray, newChangeType) {
+    save(id, newChangeType) {
         this.changeType = newChangeType;
-        if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];        
         this.currentTime = new Date().getTime();
-        for (const stateChange of stateChangeArray) {
-            this.removeFutureStates();
-
-            // gets all the id's as actual values and not arrays
-            // the id is sometimes stored as an array so this is needed to get the actual value;
-            const id = stateChange.id || stateChangeArray;
-            let lastLog = {...this.historyLog[this.historyLog.length - 1]};
-            lastLog.id = getIdFromArray(lastLog.id);
-
-            switch (newChangeType) {
-                case StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED:
-                    break;
-                case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                    // checks so that the exact same thing doesn't get logged twice
-                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
-                        this.pushToHistoryLog({
-                            ...stateChange,
-                        });
-                    }
-                    break;
-                case StateChange.ChangeTypes.ELEMENT_RESIZED:                    
-                    // if the save() call comes from the same change-motion, remove the last entry
-                    if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
-                        this.historyLog.splice(this.historyLog.length - 1, 1);
-                    }
-
-                    // only store if the resized object isn't overlapping
-                    if (!entityIsOverlapping(stateChange.id, stateChange.x, stateChange.y)) {
-                        this.pushToHistoryLog({
-                            id: id,
-                            ...Element.GetElementSize(id),
-                            ...Element.GetELementPosition(id)                            
-                        });
-                    }
-                    break;
-                    case StateChange.ChangeTypes.LINE_DELETED:
-                        break;
-                    case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
-                        break;
-                    case StateChange.ChangeTypes.ELEMENT_DELETED:
-                    // deleted elements need the extra attribute in order to be stored properly
+        if (Array.isArray(id)) console.log(`array`);
+        this.removeFutureStates();
+        // gets all the id's as actual values and not arrays
+        // the id is sometimes stored as an array so this is needed to get the actual value;            
+        let lastLog = {...this.historyLog[this.historyLog.length - 1]};
+        lastLog.id = getItemsFromNestedArrays(lastLog.id);
+        switch (newChangeType) {
+            case StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED:
+                this.pushToHistoryLog({
+                    id: id,
+                    ...StateChange.GetLineProperties()
+                })
+                break;
+            //AAAAAAAAAAAAAAAAAAAAAA
+            case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
+                // checks so that the exact same thing doesn't get logged twice
+                if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
                     this.pushToHistoryLog({
                         id: id,
-                        ...Element.GetELementPosition(id),
+                        state: StateChange.ChangeElementState(),
+                    });
+                }
+                break;
+            case StateChange.ChangeTypes.ELEMENT_RESIZED:                    
+                // if the save() call comes from the same change-motion, remove the last entry
+                if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
+                    this.historyLog.splice(this.historyLog.length - 1, 1);
+                }
+                // only store if the resized object isn't overlapping
+                if (!entityIsOverlapping(stateChange.id, stateChange.x, stateChange.y)) {
+                    this.pushToHistoryLog({
+                        id: id,
                         ...Element.GetElementSize(id),
-                        deleted: true
+                        ...Element.GetELementPosition(id)                            
                     });
-                    break;
-                // these don't have anything special so just add the entries
-                case StateChange.ChangeTypes.ELEMENT_CREATED:
+                }
+                break;
+            case StateChange.ChangeTypes.LINE_DELETED:
+                for (const line of StateChange.LinesDeleted(id)) {
                     this.pushToHistoryLog({
-                        id: id,
-                        ...StateChange.ElementCreated(id)
+                        id: line.id,
+                        deleted: true                                
                     });
-                    break;
-                case StateChange.ChangeTypes.LINE_CREATED:
-                    break;
-                case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
-                    break;
-                case StateChange.ChangeTypes.ELEMENT_MOVED:
-                    this.pushToHistoryLog({
-                        id: id,
-                        ...Element.GetELementPosition(id),
-                    });
-                    break;
-                default:
-                    console.error(`Missing implementation for soft state change: ${stateChange}!`);
-                    break;
-            }
+                }
+                break;
+            //AAAAAAAAAAAAAAAAAAAAAA
+            case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
+                break;
+            case StateChange.ChangeTypes.ELEMENT_DELETED:
+                // deleted elements need the extra attribute in order to be stored properly
+                this.pushToHistoryLog({
+                    id: id,
+                    ...Element.GetELementPosition(id),
+                    ...Element.GetElementSize(id),
+                    deleted: true
+                });
+                break;
+            // these don't have anything special so just add the entries
+            case StateChange.ChangeTypes.ELEMENT_CREATED:
+                this.pushToHistoryLog({
+                    id: id,
+                    ...StateChange.ElementCreated(id)
+                });
+                break;
+            case StateChange.ChangeTypes.LINE_CREATED:
+                this.pushToHistoryLog({
+                    id: id,
+                    ...StateChange.LineAdded(id)
+                })
+                break;
+            //AAAAAAAAAAAAAAAAAAAAAA
+            case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
+                break;
+            case StateChange.ChangeTypes.ELEMENT_MOVED:
+                this.pushToHistoryLog({
+                    id: id,
+                    ...Element.GetELementPosition(id),
+                });
+                break;
+            default:
+                console.error(`Missing implementation for soft state change: ${stateChange}!`);
+                break;
         }
+    
     }
 
     /**
@@ -574,7 +587,7 @@ document.addEventListener('keydown', function (e) {
     }
 
     if (isKeybindValid(e, keybinds.ENTER) && /INPUT|SELECT/.test(document.activeElement.nodeName.toUpperCase())) {
-        if (!!document.getElementById("lineLabel")) {
+        if (document.getElementById("lineLabel")) {
             changeLineProperties();
         } else if (document.activeElement.id == "saveDiagramAs") {
             saveDiagramAs();
@@ -1088,7 +1101,7 @@ function mmoving(event) {
             }
 
             // store the changes in the history
-            stateMachine.save(StateChangeFactory.ElementResized(elementData.id, xChange, yChange, widthChange, heightChange), StateChange.ChangeTypes.ELEMENT_RESIZED);
+            stateMachine.save(elementData.id, StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
@@ -1163,7 +1176,7 @@ function addObjectToData(object, stateMachineShouldSave = true) {
  */
 function addObjectToLines(object, stateMachineShouldSave = true) {
     lines.push(object);
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.LineAdded(object), StateChange.ChangeTypes.LINE_CREATED);
+    if (stateMachineShouldSave) stateMachine.save(object.id, StateChange.ChangeTypes.LINE_CREATED);
 }
 
 /**
@@ -1224,7 +1237,7 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
     }
 
     if (stateMachineShouldSave && anyRemoved) {
-        stateMachine.save(StateChangeFactory.LinesDeleted(linesArray), StateChange.ChangeTypes.LINE_DELETED);
+        stateMachine.save(linesArray.map(() => linesArray.id), StateChange.ChangeTypes.LINE_DELETED);
     }
 
     contextLine = [];
@@ -1237,63 +1250,15 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
  * @see context For currently selected element.
  */
 function changeState() {
-    const element = context[0];
-    const oldRelation = element.state;
-    const newRelation = document.getElementById("propertySelect")?.value || undefined;
-    if (newRelation && oldRelation != newRelation) {
-        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
-            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
-                let property = document.getElementById("propertySelect").value;
-                element.state = property;
-                stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, {state: property}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
-            }
-        }
-    }
+    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
 }
 
 /**
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
-function saveProperties() {
-    const propSet = document.getElementById("propertyFieldset");
-    const element = context[0];
-    const children = propSet.children;
-    const propsChanged = {};
-
-    for (let i = 0; i < children.length; i++) {
-        const child = children[i];
-        const inputTag = child.id;
-        if (inputTag == "elementProperty_name") {
-            let value = child.value;
-            element.name = value;
-            propsChanged.name = value;
-            continue;
-        }
-        const addToLine = (name, symbol) => {
-            if (inputTag == `elementProperty_${name}`) {
-                let lines = child.value.trim().split("\n");
-                for (let j = 0; j < lines.length; j++) {
-                    if (lines[j] && lines[j].trim()) {
-                        if (Array.from(lines[j])[0] != symbol) {
-                            lines[j] = symbol + lines[j];
-                        }
-                    }
-                }
-                element[name] = lines;
-                propsChanged[name] = lines;
-            }
-        };
-        // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
-        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
-            addToLine("attributes", "");
-            continue;
-        }
-        addToLine("primaryKey", "*");
-        addToLine("attributes", "-");
-        addToLine("functions", "+");
-    }
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(element.id, propsChanged), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+function saveProperties() {    
+    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();
 }
@@ -1547,7 +1512,7 @@ function toggleEntityLocked() {
         }
         ids.push(context[i].id);
     }
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids, {isLocked: !locked}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    stateMachine.save(StateChangeFactory.ElementAttributesChanged(ids), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();
 }

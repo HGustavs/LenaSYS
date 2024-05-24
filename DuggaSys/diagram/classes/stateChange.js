@@ -72,7 +72,8 @@ class StateChange {
      * @param {Object} line New line that has been created.
      * @returns {StateChange} A new instance of the StateChange class.
      */
-    static LineAdded(line) {
+    static LineAdded(id) {
+        const line = lines.find(line => line.id == id);
         const values = {};
         // Get the keys of the values that is unique from default
         const uniqueKeysArr = Object.keys(line).filter(key => {
@@ -82,21 +83,22 @@ class StateChange {
         uniqueKeysArr.forEach(key => {
             values[key] = line[key];
         });
-        return new StateChange(line.id, values, null);
+        return values;
     }
 
     /**
      * @description Keeps the appropriate values for when a line is deleted.
-     * @param {Object[]} lines List of all lines that have been / are going to be removed.
-     * @returns {StateChange} A new instance of the StateChange class.
+     * @param {string[]} lines List of all lines that have been / are going to be removed.
+     * @returns {string[]} ID's of deleted lines.
      */
-    static LinesDeleted(lines) {
+    static LinesDeleted(ids) {
+
         const lineIDs = [];
         // For every object in the lines array, add them to lineIDs
         for (let index = 0; index < lines.length; index++) {
             lineIDs.push(lines[index].id);
         }
-        return new StateChange(lineIDs, null, null);
+        return lineIDs;
     }
 
     /**
@@ -115,7 +117,7 @@ class StateChange {
         lines.forEach(line => {
             allIDs.push(line.id)
         });
-        return new StateChange(allIDs, null, null);
+        return allIDs;
     }
 
     /**
@@ -160,5 +162,118 @@ class StateChange {
             changesArr.push(new StateChange(line.id, values, timeStamp));
         });
         return changesArr;
+    }
+
+    static saveProperties(id) {
+        const propSet = document.getElementById("propertyFieldset");
+        const element = context[0];
+        const children = propSet.children;
+        const propsChanged = {};
+
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            const inputTag = child.id;
+            if (inputTag == "elementProperty_name") {
+                let value = child.value;
+                element.name = value;
+                propsChanged.name = value;
+                continue;
+            }
+            const addToLine = (name, symbol) => {
+                if (inputTag == `elementProperty_${name}`) {
+                    let lines = child.value.trim().split("\n");
+                    for (let j = 0; j < lines.length; j++) {
+                        if (lines[j] && lines[j].trim()) {
+                            if (Array.from(lines[j])[0] != symbol) {
+                                lines[j] = symbol + lines[j];
+                            }
+                        }
+                    }
+                    element[name] = lines;
+                    propsChanged[name] = lines;
+                }
+            };
+            // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
+            if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+                addToLine("attributes", "");
+                continue;
+            }
+            addToLine("primaryKey", "*");
+            addToLine("attributes", "-");
+            addToLine("functions", "+");
+        }
+    }
+
+    static ElementIsLocked() {
+        const lockedElements = [];
+        for (const element in context) {
+            lockedElements.push({
+                id: element.id,
+                isLocked: element.isLocked
+            });
+        }
+        return lockedElements;
+    }
+
+    static GetLineProperties() {
+        const line = contextLine[0];
+        const changes = {};
+        const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
+
+        // saves kind of line (normal, dashed, double, etc)
+        for (let radio of document.querySelectorAll('#propertyFieldset input[type=radio]')) {
+            if (radio && radio.checked) {
+                changes.kind = radio.value;
+            }
+        }
+
+        // saves cardinalities for ER attributes
+        const cardinalityER = document.getElementById('propertyCardinality');
+        if (cardinalityER) {
+            changes.cardinality = cardinalityER.value;
+        }
+
+        // saves the label
+        const label = document.getElementById('lineLabel');    
+        if (label) {
+            changes.label = label.value;
+        }
+
+        // adds the rest of the attributes for the specific entity
+        if (line.type == entityType.UML) {
+            changes.startLabel = document.getElementById("lineStartLabel").value;
+            changes.endLabel = document.getElementById("lineEndLabel").value;
+            changes.startIcon = document.getElementById("lineStartIcon").value;
+            changes.endIcon = document.getElementById("lineEndIcon").value;
+        }
+        if (line.type == entityType.SD) {
+            if (!connectedToInitialOrFinal) {
+                changes.innerType = document.getElementById("lineType").value;
+                changes.startIcon = document.getElementById("lineStartIcon").value;
+                changes.endIcon = document.getElementById("lineEndIcon").value;
+            } else {
+                changes.innerType = document.getElementById("lineType").value;
+            }
+        }
+        if ((line.type == entityType.SE) || (line.type == entityType.IE)) {
+            changes.startIcon = document.getElementById("lineStartIcon").value;
+            changes.endIcon = document.getElementById("lineEndIcon").value;
+        }        
+
+        console.log(changes)
+        return changes;
+    }
+
+    static ChangeElementState() {
+        const element = context[0];
+        const oldRelation = element.state;
+        const newRelation = document.getElementById("propertySelect")?.value;
+        if (!newRelation || oldRelation == newRelation) return;
+        if (element.type != entityType.ER || element.type != entityType.UML || element.type != entityType.IE) return;
+        if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+            let property = document.getElementById("propertySelect").value;
+            element.state = property;                                        
+        }
+        return property;
     }
 }

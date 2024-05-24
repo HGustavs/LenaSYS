@@ -156,11 +156,8 @@ function entityIsOverlapping(id, x, y) {
  * @param {string | *[]} array id or nested array of ids
  * @returns {string}
  */
-function getIdFromArray(array) {
-    while (Array.isArray(array)) {
-        array = array[0];
-    }
-    return array;
+function getItemsFromNestedArrays(array) {
+    return array.flat(Infinity);
 }
 
 /**
