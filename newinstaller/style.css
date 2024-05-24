@@ -23,6 +23,7 @@
     --text-medium: 14px;
     --text-small: 12px;
     --text-xs: 10px;
+    --default-transition: .3s ease;
 }
 
 *,
@@ -107,7 +108,7 @@ html, body {
     color: var(--primary-color);
     font-size: var(--h2-fontsize);
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 /*  Container that sets padding for the main content of the
@@ -146,7 +147,7 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 /*  Lets the last cell of the .input-grid span 2 columns */
@@ -155,13 +156,15 @@ html, body {
     width: max-content;
     grid-area: 4 / 1 / 5 / 3;
     grid-column-gap: 2rem; /* Keeps current horizontal gap */
-    grid-row-gap: 1rem; /* Increases vertical gap between grid items */
+    grid-row-gap: 0.75rem; /* Increases vertical gap between grid items */
 }
 
 /*  Sets label above corresponding input field  */
 .input-field {
     display: flex;
     flex-direction: column;
+    width: max-content;
+    height: max-content;
 }
 
 /*  Declaration of Font-family this way is
@@ -175,18 +178,35 @@ html, body {
     font-family: var(--body-font);
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
     inset: none;
     border-radius: 0;
     border: 1px solid var(--text-dark);
     padding: 0.25rem;
     width: 12rem;
     outline: none;
-    transition: .3s ease;
+    transition: var(--default-transition);
 }
 
-input[type=text]:focus {
+input[type=text]:focus, input[type=password]:focus {
     border-color: var(--primary-color);
+}
+
+.checkboxWithWarning {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    height: max-content;
+}
+
+.checkboxWithWarning .checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.checkboxWithWarning .warning {
+    padding-left: 0.25rem;
 }
 
 .tip {
@@ -205,6 +225,8 @@ input[type=text]:focus {
 
 .checkbox, .radiobutton {
     display: flex;
+    width: max-content;
+    height: max-content;
     align-items: flex-start;
     font-size: var(--text-medium);
     cursor: pointer;
@@ -383,35 +405,47 @@ input[type=checkbox], input[type=radio] {
     margin: 0.5rem;
 }
 
+.help-icon {
+    color: var(--primary-color);
+    transition: var(--default-transition);
+    text-decoration: none;
+    font-size: inherit;
+}
+
+.help-icon:hover {
+    color: var(--primary-color-hover);
+    text-decoration: underline;
+}
+
 /*  This code is nested CSS. It's a relatively new CSS
     functionality. If you are unfamiliar with it, more information
     and some examples can be found here --> https://drafts.csswg.org/css-nesting-1/ */
-.progressBar {
-    color: var(--text-dark);
-    font-family: var(--body-font);
-    font-style: italic;
-    font-size: 14px;
-    max-width: 80%; 
-
-    .progressBarLabels {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: .25rem;
-    }
-
-    .progressBarBorder {
-        display: flex;
-        justify-content: space-between;
-        background-color: var(--accent-color);
-        height: .75rem;
-    }
-
-    .progressBarIndicator {
+    .progressBar {
+        color: var(--text-dark);
+        font-family: var(--body-font);
         font-style: italic;
-        background-color: var(--secondary-color);
-        width: 0%;
+        font-size: 14px;
+        max-width: 80%; 
+    
+        .progressBarLabels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: .25rem;
+        }
+    
+        .progressBarBorder {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--accent-color);
+            height: .75rem;
+        }
+    
+        .progressBarIndicator {
+            font-style: italic;
+            background-color: var(--secondary-color);
+            width: 0%;
+        }
     }
-}
 
 /*  Media query for changing element disposition to support
     smaller screens like tablets and smaller browser windows */
@@ -448,7 +482,7 @@ input[type=checkbox], input[type=radio] {
         color: var(--primary-color);
         font-size: var(--h2-fontsize-small);
         margin-top: 0;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
 }
 
