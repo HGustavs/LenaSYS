@@ -38,9 +38,8 @@ class StateMachine {
 
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
-     * @param {StateChange} stateChangeArray All changes to be logged.
+     * @param {string | string[]} id (List of) ID to be stored
      * @param {StateChange.ChangeTypes} newChangeType Type of change made
-     * @see StateChangeFactory For constructing new state changes more easily.
      * @see StateChange For available flags.
      */
     save(stateChangeArray, newChangeType) {
@@ -51,14 +50,14 @@ class StateMachine {
             this.removeFutureStates();
 
             // gets all the id's as actual values and not arrays
-            // the id is sometimes stored as an array so this is needed to get the actual value
-            /*stateChange.id = getIdFromArray(stateChange.id);
-            const id = stateChange.id;*/
-            const id = stateChange;
+            // the id is sometimes stored as an array so this is needed to get the actual value;
+            const id = stateChange.id || stateChangeArray;
             let lastLog = {...this.historyLog[this.historyLog.length - 1]};
             lastLog.id = getIdFromArray(lastLog.id);
 
             switch (newChangeType) {
+                case StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED:
+                    break;
                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                     // checks so that the exact same thing doesn't get logged twice
                     if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
@@ -82,12 +81,16 @@ class StateMachine {
                         });
                     }
                     break;
-                case StateChange.ChangeTypes.ELEMENT_DELETED:
-                case StateChange.ChangeTypes.LINE_DELETED:
-                case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
+                    case StateChange.ChangeTypes.LINE_DELETED:
+                        break;
+                    case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
+                        break;
+                    case StateChange.ChangeTypes.ELEMENT_DELETED:
                     // deleted elements need the extra attribute in order to be stored properly
                     this.pushToHistoryLog({
-                        ...stateChange,
+                        id: id,
+                        ...Element.GetELementPosition(id),
+                        ...Element.GetElementSize(id),
                         deleted: true
                     });
                     break;
@@ -99,7 +102,9 @@ class StateMachine {
                     });
                     break;
                 case StateChange.ChangeTypes.LINE_CREATED:
+                    break;
                 case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
+                    break;
                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                     this.pushToHistoryLog({
                         id: id,
@@ -1185,7 +1190,7 @@ function removeElements(elementArray, stateMachineShouldSave = true) {
             removeLines(linesToRemove, false);
             if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsAndLinesDeleted(elementsToRemove, linesToRemove), StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED);
         } else { // Only removed elements without any lines
-            if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementsDeleted(elementsToRemove), StateChange.ChangeTypes.ELEMENT_DELETED);
+            if (stateMachineShouldSave) stateMachine.save(elementsToRemove.id, StateChange.ChangeTypes.ELEMENT_DELETED);
         }
 
         data = data.filter(function (element) { // Delete elements

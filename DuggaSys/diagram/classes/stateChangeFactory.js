@@ -24,16 +24,7 @@ class StateChangeFactory {
             values[key] = element[key];
         });
         return new StateChange(element.id, values, null);
-    }
-
-    /**
-     * @description Keeps the appropriate values for when elements are deleted.
-     * @param {Element[]} elements The elements that has been/are going to be deleted.
-     * @returns {StateChange} A new instance of the StateChange class.
-     */
-    static ElementsDeleted(elements) {
-        return new StateChange(elements.map(e => e.id), null, null);
-    }
+    }    
 
     /**
      * @description Keeps the appropriate values for when elements are moved.
