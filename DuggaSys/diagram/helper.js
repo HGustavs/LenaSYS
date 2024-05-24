@@ -153,14 +153,11 @@ function entityIsOverlapping(id, x, y) {
 
 /**
  * @description Gets first non array item from nested array.
- * @param {string | *[]} array id or nested array of ids
- * @returns {string}
+ * @param {string | any[]} array id or nested array of IDs.
+ * @returns {any[]} All the IDs.
  */
-function getIdFromArray(array) {
-    while (Array.isArray(array)) {
-        array = array[0];
-    }
-    return array;
+function getItemsFromNestedArrays(array) {
+    return array.flat(Infinity);
 }
 
 /**
@@ -231,6 +228,9 @@ function calculateDeltaExceeded() {
  * @returns {boolean}
  */
 function sameObjects(obj1, obj2, ignore = []) {
+    // removes the reference to the sent in objects just in case the sending function didn't do it
+    obj1 = {...obj1};
+    obj2 = {...obj2};
     // remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];

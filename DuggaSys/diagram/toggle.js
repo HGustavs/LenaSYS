@@ -479,10 +479,7 @@ function setElementColors(clickedCircleID) {
             context[i].fill = color;
             elementIDs.push(context[i].id)
         }
-        stateMachine.save(
-            StateChangeFactory.ElementAttributesChanged(elementIDs, {fill: color}),
-            StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
-        );
+        stateMachine.save(elementIDs, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else if (menu.id == "StrokeColorMenu") {  // If stroke button was pressed
         index = id.replace("strokeColorCircle", "") * 1;
         color = strokeColors[index];
@@ -490,10 +487,7 @@ function setElementColors(clickedCircleID) {
             context[i].stroke = color;
             elementIDs[i] = context[i].id;
         }
-        stateMachine.save(
-            StateChangeFactory.ElementAttributesChanged(elementIDs, {stroke: color}),
-            StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
-        );
+        stateMachine.save(elementIDs,StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else {
         console.error(`${menu.id} is not a valid ID`);
     }
