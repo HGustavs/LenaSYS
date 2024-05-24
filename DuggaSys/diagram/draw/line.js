@@ -38,7 +38,6 @@
     if (line.type == entityType.ER) {
         [fx, fy, tx, ty] = recursiveERRelation(felem, telem, line);
         if (line.kind == lineKind.NORMAL) {
-            //console.log(recursiveERRelation(felem, telem, line));
             str += `<line 
                         id='${line.id}' 
                         x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
@@ -237,14 +236,14 @@
 
 /**
  * @description Calculate so that an ER relation can be recursive
- * @param {number} ax 
- * @param {number} ay 
- * @param {number} bx 
- * @param {number} by 
- * @param {Element} elem 
- * @param {bool} isFirst 
- * @param {object} line 
- * @returns 
+ * @param {number} ax X-coordinate from one element
+ * @param {number} ay Y-coordinate from one element
+ * @param {number} bx X-coordinate from the other element
+ * @param {number} by Y-coordinate from the other element
+ * @param {Element} elem Element to change
+ * @param {bool} isFirst Meaning, if it's the first line
+ * @param {object} line The line being drawn
+ * @returns {number[]} Returns the new coordinates
  */
 function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
     if (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) {
@@ -254,7 +253,6 @@ function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
         ax = elem.cx;
         ay = isFirst? elem.y1 : elem.y2;
     }
-
     if (isFirst) {
         elem.recursivePos = 0;
         elem.recursivePos.x = bx;
@@ -263,7 +261,6 @@ function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
         bx = elem.recursivePos.x;
         by = elem.recursivePos.y;
     }
-
     return [ax, ay, bx, by, elem];
 }
 
@@ -272,16 +269,14 @@ function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
  * @param {Element} felem Element the line is being dragged from.
  * @param {Element} telem Element the line is being dragged to.
  * @param {object} line The line being dragged.
- * @returns 
+ * @returns {number[]} Returns the new coordinates
  */
 function recursiveERRelation(felem, telem, line) {
     const connections = felem.neighbours[telem.id].length;
     let fx = felem.cx, fy = felem.cy, tx = telem.cx, ty = telem.cy;
     if (connections != 2) return [fx, fy, tx, ty];
-
     const isFirst = felem.neighbours[telem.id][0].id === line.id;
     const fromRelation = felem.kind === elementTypesNames.ERRelation;
-
     if (fromRelation) {
         [fx, fy, tx, ty, felem] = recursiveERCalc(fx, fy, tx, ty, felem, isFirst, line);
     } else {
@@ -590,12 +585,11 @@ function drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
  
-    return `
+    return ` 
     <svg width="100" height="100">
         <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
             stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
-    </svg>
-    `;
+    </svg>`;
  }
 
 
