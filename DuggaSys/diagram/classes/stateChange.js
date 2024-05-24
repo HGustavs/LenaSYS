@@ -128,7 +128,6 @@ class StateChange {
      */
     static ElementsAndLinesCreated(elements, lines) {
         const changesArr = [];
-        const timeStamp = new Date().getTime();
 
         // Filter out defaults from each element and add them to allObj
         elements.forEach(elem => {
@@ -144,7 +143,7 @@ class StateChange {
             uniqueKeysArr.forEach(key => {
                 values[key] = elem[key];
             });
-            changesArr.push(new StateChange(elem.id, values, timeStamp));
+            changesArr.push({id: elem.id, ...values});
         });
 
         // Filter out defaults from each line and add them to allObj
@@ -159,12 +158,12 @@ class StateChange {
             uniqueKeysArr.forEach(key => {
                 values[key] = line[key];
             });
-            changesArr.push(new StateChange(line.id, values, timeStamp));
+            changesArr.push({id: line.id, ...values});
         });
         return changesArr;
     }
 
-    static saveProperties(id) {
+    static saveProperties() {
         const propSet = document.getElementById("propertyFieldset");
         const element = context[0];
         const children = propSet.children;
@@ -204,7 +203,7 @@ class StateChange {
         }
     }
 
-    static ElementIsLocked() {
+    static ElemensAreLocked() {
         const lockedElements = [];
         for (const element in context) {
             lockedElements.push({
@@ -260,7 +259,6 @@ class StateChange {
             changes.endIcon = document.getElementById("lineEndIcon").value;
         }        
 
-        console.log(changes)
         return changes;
     }
 
@@ -275,5 +273,12 @@ class StateChange {
             element.state = property;                                        
         }
         return property;
+    }
+
+    static GetSequenceAlternatives() {
+        return {
+            alternatives: context[0].alternatives,
+            altOrLoop: context.altOrLoop
+        };
     }
 }

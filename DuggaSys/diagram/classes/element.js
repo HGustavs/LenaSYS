@@ -49,13 +49,17 @@ class Element {
         return new Element(defaults[Object.keys(elementTypes).find(key => elementTypes[key] === type)]);
     }
 
+    static FindElementById(id) {
+        return data.find(e => e.id == id);
+    }
+
     /**
      * @description Get the demensions of a specific element.
      * @param {string} id ID of the element
      * @returns {object} Object containg the width and height
      */
     static GetElementSize(id) {
-        const element = data.find(item => item.id == id);
+        const element = this.FindElementById(id);
         return {width: element.width, height: element.height};
     }
 
@@ -65,7 +69,18 @@ class Element {
      * @returns {object} Object containing the X and Y coordinates
      */
     static GetELementPosition(id) {
-        const element = data.find(item => item.id == id);
+        console.log(id)
+        const element = this.FindElementById(id);
         return {x: element.x, y: element.y};
+    }
+
+    static GetFillColor(id) {
+        const element = this.FindElementById(id);
+        return {fill: element.fill};
+    }
+
+    static GetStrokeColor(id) {
+        const element = this.FindElementById(id);
+        return {stroke: element.stroke};
     }
 }
