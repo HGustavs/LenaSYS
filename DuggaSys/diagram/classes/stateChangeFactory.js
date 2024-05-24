@@ -63,25 +63,6 @@ class StateChangeFactory {
     }
 
     /**
-     * @description Keeps the appropriate values for when elements are resized.
-     * @param {string[]} elementIDs List of IDs for all elements that were resized (and moved).
-     * @param {number} moveX Amount of coordinates along the x-axis the elements have moved.
-     * @param {number} moveY Amount of coordinates along the y-axis the elements have moved.
-     * @param {number} changeW How much the width has changed by.
-     * @param {number} changeH How much the height has changed by.
-     * @returns {StateChange} A new instance of the StateChange class.
-     */
-    static ElementResized(elementIDs, moveX, moveY, changeW, changeH) {
-        const values = {
-            x: moveX,
-            y: moveY,
-            width: changeW,
-            height: changeH
-        };
-        return new StateChange(elementIDs, values);
-    }
-
-    /**
      * @description Keeps the appropriate values for when an elements attributes have changed.
      * @param {string[]} elementID ID for element that has been changed.
      * @param {Object} changeList Object containing changed attributes for the element. Each property represents each attribute changed.

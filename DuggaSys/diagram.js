@@ -11,7 +11,7 @@ class StateMachine {
      */
     constructor(initialElements, initialLines) {
         /**
-         * @type Array<StateChange>
+         * @type Array<object>
          */
         this.historyLog = [];
 
@@ -27,10 +27,13 @@ class StateMachine {
          */
         this.lastFlag = {};
 
-        /**
-         * Interger of the currentIndex position of historyLog
-         */
+        /** Interger of the currentIndex position of historyLog */
         this.currentHistoryIndex = -1;
+
+        /** Date variable that holds the time */
+        this.currentTime = new Date().getTime();
+        /** Keeps track of the type of change being made */
+        this.changeType = undefined;
     }
 
     /**
@@ -41,40 +44,26 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     save(stateChangeArray, newChangeType) {
+        this.changeType = newChangeType;
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];        
-        const time = new Date().getTime();
+        this.currentTime = new Date().getTime();
         for (const stateChange of stateChangeArray) {
             this.removeFutureStates();
 
-            // if it's the first entry, just push it and exit
-            if (this.historyLog.length <= 0) {
-                const currentElement = data[findIndex(data, stateChange.id)];
-                this.pushToHistoryLog({
-                    ...stateChange, 
-                    width: currentElement.width, 
-                    height: currentElement.height, 
-                    changeType: newChangeType, 
-                    counter: historyHandler.inputCounter
-                });
-                return;
-            }
-
             // gets all the id's as actual values and not arrays
             // the id is sometimes stored as an array so this is needed to get the actual value
+            /*stateChange.id = getIdFromArray(stateChange.id);
+            const id = stateChange.id;*/
+            const id = stateChange;
             let lastLog = {...this.historyLog[this.historyLog.length - 1]};
-            stateChange.id = getIdFromArray(stateChange.id);
-            const id = stateChange.id;
             lastLog.id = getIdFromArray(lastLog.id);
 
-            let currentElement;
             switch (newChangeType) {
                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                     // checks so that the exact same thing doesn't get logged twice
                     if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
                         this.pushToHistoryLog({
                             ...stateChange,
-                            changeType: newChangeType,
-                            counter: historyHandler.inputCounter
                         });
                     }
                     break;
@@ -89,13 +78,9 @@ class StateMachine {
                         this.pushToHistoryLog({
                             id: id,
                             ...Element.GetElementSize(id),
-                            ...Element.GetELementPosition(id),
-                            changeType: newChangeType,
-                            counter: historyHandler.inputCounter,
-                            time
+                            ...Element.GetELementPosition(id)                            
                         });
                     }
-                    // spreaading the values so that it doesn't keep the reference                                    
                     break;
                 case StateChange.ChangeTypes.ELEMENT_DELETED:
                 case StateChange.ChangeTypes.LINE_DELETED:
@@ -103,20 +88,22 @@ class StateMachine {
                     // deleted elements need the extra attribute in order to be stored properly
                     this.pushToHistoryLog({
                         ...stateChange,
-                        changeType: newChangeType,
-                        counter: historyHandler.inputCounter,
                         deleted: true
                     });
                     break;
                 // these don't have anything special so just add the entries
                 case StateChange.ChangeTypes.ELEMENT_CREATED:
+                    this.pushToHistoryLog({
+                        id: id,
+                        ...StateChange.ElementCreated(id)
+                    });
+                    break;
                 case StateChange.ChangeTypes.LINE_CREATED:
                 case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                     this.pushToHistoryLog({
-                        ...stateChange,
-                        changeType: newChangeType,
-                        counter: historyHandler.inputCounter
+                        id: id,
+                        ...Element.GetELementPosition(id),
                     });
                     break;
                 default:
@@ -131,7 +118,12 @@ class StateMachine {
      * @param {object} entry data to store in the history
      */
     pushToHistoryLog(entry) {
-        this.historyLog.push(entry);
+        this.historyLog.push({
+            ...entry,
+            changeType: this.changeType,
+            counter: historyHandler.inputCounter,
+            time: this.currentTime
+        });
         this.currentHistoryIndex = this.historyLog.length-1;
     }
 
@@ -906,7 +898,7 @@ function mouseMode_onMouseUp(event) {
                         return;
                     }
                     //If not overlapping
-                    stateMachine.save(StateChangeFactory.ElementCreated(ghostElement), StateChange.ChangeTypes.ELEMENT_CREATED);
+                    stateMachine.save(ghostElement.id, StateChange.ChangeTypes.ELEMENT_CREATED);
                     makeGhost();
                     showdata();
                 }
@@ -1156,7 +1148,7 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 function addObjectToData(object, stateMachineShouldSave = true) {
     data.push(object);
-    if (stateMachineShouldSave) stateMachine.save(StateChangeFactory.ElementCreated(object), StateChange.ChangeTypes.ELEMENT_CREATED);
+    if (stateMachineShouldSave) stateMachine.save(object.id, StateChange.ChangeTypes.ELEMENT_CREATED);
 }
 
 /**

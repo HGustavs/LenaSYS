@@ -44,5 +44,21 @@ class StateChange {
         }
     }
 
-    
+    static ElementCreated(id) {
+        const element = data.find((e) => e.id == id);
+        const values = {kind: element.kind};
+
+        // Get the keys of the values that is unique from default
+        var uniqueKeysArr = Object.keys(element).filter(key => {
+            if (key === 'x' || key === 'y') return true;
+            return (Object.keys(defaults[element.kind])
+                .filter(value => defaults[element.kind][value] === element[key]).length === 0);
+        });
+
+        // For every unique value set it into the change
+        uniqueKeysArr.forEach(key => {
+            values[key] = element[key];
+        });
+        return values;
+    }
 }
