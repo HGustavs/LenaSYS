@@ -64,40 +64,6 @@ class StateChange {
     }
 
     /**
-     * @description Keeps the appropriate values for when a line is deleted.
-     * @param {string[]} lines List of all lines that have been / are going to be removed.
-     * @returns {string[]} ID's of deleted lines.
-     */
-    static LinesDeleted(ids) {
-
-        const lineIDs = [];
-        // For every object in the lines array, add them to lineIDs
-        for (let index = 0; index < lines.length; index++) {
-            lineIDs.push(lines[index].id);
-        }
-        return lineIDs;
-    }
-
-    /**
-     * @description Keeps the appropriate values for when elements and lines are deleted
-     * @param {Element[]} elements All elements that have been / are going to be removed.
-     * @param {Object[]} lines All lines that have been / are going to be removed.
-     * @returns {object} A new object with the needed values.
-     */
-    static ElementsAndLinesDeleted(elements, lines) {
-        const allIDs = [];
-        // Add all element IDs to the id-list
-        elements.forEach(element => {
-            allIDs.push(element.id)
-        });
-        // Add all line IDs to the id-list
-        lines.forEach(line => {
-            allIDs.push(line.id)
-        });
-        return allIDs;
-    }
-
-    /**
      * @description Keeps the appropriate values for when elements and lines are created
      * @param {string[]} elements All elements that have been created.
      * @param {string[]} lines All lines that have been created.
