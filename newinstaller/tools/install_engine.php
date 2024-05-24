@@ -35,7 +35,7 @@ class InstallEngine {
 
 		try {
 			$installer = new DBSetup(pdo: $pdo, db_name: $settings->db_name, db_user: $settings->username, db_user_password: $settings->password, hostname: $settings->hostname, callback: "callback");
-			$testDataSetup = new TestdataSetup("../install/courses", "../courses", callback: "callback");
+			$testDataSetup = new TestdataSetup("courses", "../courses", callback: "callback");
 			$configuration_manager = new ConfigurationManager("../../coursesyspw.php", callback: "callback", verbose: $verbose);
 			$operations = InstallEngine::construct_installation_queue($installer, $configuration_manager, $testDataSetup, $settings);
 
@@ -151,7 +151,7 @@ class InstallEngine {
 			$installer->set_permissions();
 		};
 		$operations["init_db"] = function() use ($installer, $verbose) {
-			$installer->execute_sql_file("../Shared/SQL/init_db.sql", verbose: $verbose);
+			$installer->execute_sql_file("SQL/init_db.sql", verbose: $verbose);
 		};
 		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
 			$parameters = [
@@ -189,17 +189,17 @@ class InstallEngine {
 		// Add optional modules to install queue
 		if ($add_test_data) {
 			$operations['add_test_data'] = function() use ($installer, $verbose) {
-				$installer->execute_sql_file("../install/SQL/testdata.sql", verbose: $verbose);
+				$installer->execute_sql_file("SQL/testdata.sql", verbose: $verbose);
 			};
 		}
 		if ($add_demo_course) {
 			$operations['add_demo_course'] = function() use ($installer, $verbose) {
-				$installer->execute_sql_file("../install/SQL/demoCourseData.sql", verbose: $verbose);
+				$installer->execute_sql_file("SQL/demoCourseData.sql", verbose: $verbose);
 			};
 		}
 		if ($add_test_course_data) {
 			$operations['add_test_course_data'] = function() use ($installer, $verbose) {
-				$installer->execute_sql_file("../install/SQL/testingCourseData.sql", verbose: $verbose);
+				$installer->execute_sql_file("SQL/testingCourseData.sql", verbose: $verbose);
 			};
 		}
 
@@ -208,7 +208,7 @@ class InstallEngine {
 
 	private static function createLanguageOperation($installer, $language) {
 		return function() use ($installer, $language) {
-			$installer->execute_sql_file("../install/SQL/keywords_{$language}.sql", verbose: false);
+			$installer->execute_sql_file("SQL/keywords_{$language}.sql", verbose: false);
 		};
 	}
 }
