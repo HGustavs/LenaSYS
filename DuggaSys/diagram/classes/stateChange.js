@@ -5,21 +5,20 @@ class StateChange {
     /**
      * @description ChangeType containing all information about a certain change. Several instances of ChangeType can exist inside a StateChange.
      * @member flag A number represented in 2nd base. This allows several flags to be merged through bit operators.
-     * @member isSoft Boolean deciding if this change is considered a hard/soft change. Hard changes will not try to merge with previous change.
-     * @member canAppendTo Boolean deciding if a soft change is allowd to merge into this change.
      */
     static ChangeTypes = {
-        ELEMENT_CREATED: {flag: 1, isSoft: false, canAppendTo: true},
-        ELEMENT_DELETED: {flag: 2, isSoft: false, canAppendTo: false},
-        ELEMENT_MOVED: {flag: 4, isSoft: true, canAppendTo: true},
-        ELEMENT_RESIZED: {flag: 8, isSoft: true, canAppendTo: true},
-        ELEMENT_ATTRIBUTE_CHANGED: {flag: 16, isSoft: true, canAppendTo: true},
-        LINE_CREATED: {flag: 32, isSoft: false, canAppendTo: true},
-        LINE_DELETED: {flag: 64, isSoft: false, canAppendTo: false},
+        ELEMENT_CREATED: 1,
+        ELEMENT_DELETED: 2,
+        ELEMENT_MOVED: 4,
+        ELEMENT_RESIZED: 8,
+        ELEMENT_ATTRIBUTE_CHANGED: 16,
+        LINE_ATTRIBUTE_CHANGED: 32,
+        LINE_CREATED: 64,
+        LINE_DELETED: 128,
 
         // Combined flags
-        ELEMENT_AND_LINE_DELETED: {flag: 2 | 64, isSoft: false, canAppendTo: false},
-        ELEMENT_AND_LINE_CREATED: {flag: 1 | 32, isSoft: false, canAppendTo: false},
+        ELEMENT_AND_LINE_DELETED: 2 | 128,
+        ELEMENT_AND_LINE_CREATED: 1 | 64,
     };
 
     /**
@@ -44,4 +43,6 @@ class StateChange {
             }
         }
     }
+
+    
 }

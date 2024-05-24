@@ -48,4 +48,14 @@ class Element {
     static Default(type) {
         return new Element(defaults[Object.keys(elementTypes).find(key => elementTypes[key] === type)]);
     }
+
+    static GetElementSize(id) {
+        const element = data.find(item => item.id == id);
+        return {width: element.width, height: element.height};
+    }
+
+    static GetELementPosition(id) {
+        const element = data.find(item => item.id == id);
+        return {x: element.x, y: element.y};
+    }
 }

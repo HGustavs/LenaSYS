@@ -42,7 +42,7 @@ class StateMachine {
      */
     save(stateChangeArray, newChangeType) {
         if (!Array.isArray(stateChangeArray)) stateChangeArray = [stateChangeArray];        
-
+        const time = new Date().getTime();
         for (const stateChange of stateChangeArray) {
             this.removeFutureStates();
 
@@ -53,7 +53,7 @@ class StateMachine {
                     ...stateChange, 
                     width: currentElement.width, 
                     height: currentElement.height, 
-                    changeType: newChangeType.flag, 
+                    changeType: newChangeType, 
                     counter: historyHandler.inputCounter
                 });
                 return;
@@ -70,33 +70,29 @@ class StateMachine {
             switch (newChangeType) {
                 case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
                     // checks so that the exact same thing doesn't get logged twice
-                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED.flag || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
+                    if (lastLog.changeType !== StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED || !sameObjects({...stateChange}, {...lastLog}, ['counter', 'time', 'changeType'])) {
                         this.pushToHistoryLog({
                             ...stateChange,
-                            changeType: newChangeType.flag,
+                            changeType: newChangeType,
                             counter: historyHandler.inputCounter
                         });
                     }
                     break;
-                case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                    // add the real values so that not just the chanegs gets stored
-                    currentElement = data[findIndex(data, id)];
-                    stateChange.width = currentElement.width;
-                    stateChange.height = currentElement.height;
-                    stateChange.x = currentElement.x;
-                    stateChange.y = currentElement.y;
-
+                case StateChange.ChangeTypes.ELEMENT_RESIZED:                    
                     // if the save() call comes from the same change-motion, remove the last entry
-                    if (lastLog.changeType == newChangeType.flag && lastLog.counter == historyHandler.inputCounter) {
+                    if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
                         this.historyLog.splice(this.historyLog.length - 1, 1);
                     }
 
                     // only store if the resized object isn't overlapping
                     if (!entityIsOverlapping(stateChange.id, stateChange.x, stateChange.y)) {
                         this.pushToHistoryLog({
-                            ...stateChange,
-                            changeType: newChangeType.flag,
-                            counter: historyHandler.inputCounter
+                            id: id,
+                            ...Element.GetElementSize(id),
+                            ...Element.GetELementPosition(id),
+                            changeType: newChangeType,
+                            counter: historyHandler.inputCounter,
+                            time
                         });
                     }
                     // spreaading the values so that it doesn't keep the reference                                    
@@ -107,7 +103,7 @@ class StateMachine {
                     // deleted elements need the extra attribute in order to be stored properly
                     this.pushToHistoryLog({
                         ...stateChange,
-                        changeType: newChangeType.flag,
+                        changeType: newChangeType,
                         counter: historyHandler.inputCounter,
                         deleted: true
                     });
@@ -119,7 +115,7 @@ class StateMachine {
                 case StateChange.ChangeTypes.ELEMENT_MOVED:
                     this.pushToHistoryLog({
                         ...stateChange,
-                        changeType: newChangeType.flag,
+                        changeType: newChangeType,
                         counter: historyHandler.inputCounter
                     });
                     break;
