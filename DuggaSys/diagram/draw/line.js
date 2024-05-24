@@ -3,7 +3,7 @@
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
-function drawLine(line, targetGhost = false) {
+ function drawLine(line, targetGhost = false) {
 
     let str = "";
     // Element line is drawn from/to
@@ -34,9 +34,11 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
-
+    
     if (line.type == entityType.ER) {
+        [fx, fy, tx, ty] = recursiveERRelation(felem, telem, line);
         if (line.kind == lineKind.NORMAL) {
+            //console.log(recursiveERRelation(felem, telem, line));
             str += `<line 
                         id='${line.id}' 
                         x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
@@ -49,20 +51,21 @@ function drawLine(line, targetGhost = false) {
             let len = Math.sqrt((dx * dx) + (dy * dy));
             dy /= len;
             dx /= len;
-
+            
             const double = (a, b) => {
                 return `<line 
-                            id='${line.id}-${b}' 
-                            x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
-                            y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
-                            x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
-                            y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
-                            stroke='${lineColor}' stroke-width='${strokewidth}'
-                        />`;
+                id='${line.id}-${b}' 
+                x1='${fx + a * dx * strokewidth * 1.5 + offset.x1}' 
+                y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
+                x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
+                y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
+                stroke='${lineColor}' stroke-width='${strokewidth}'
+                />`;
             };
             str += double(1, 1);
             str += double(-1, 2);
         }
+
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
@@ -91,27 +94,14 @@ function drawLine(line, targetGhost = false) {
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
 
-    // straight SD-line
-    if (line.type == entityType.SD && line.innerType == SDLineType.STRAIGHT) {
+    if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, lineColor, strokewidth, SDLineType.STRAIGHT);
+            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
         }
         if (line.endIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, lineColor, strokewidth, SDLineType.STRAIGHT);
-        }
-    }
-
-    // Segmented SD-line
-    if (line.type == entityType.SD && line.innerType == SDLineType.SEGMENT) {
-        let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
-        let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
-        if (line.startIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, lineColor, strokewidth, SDLineType.SEGMENT);
-        }
-        if (line.endIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, lineColor, strokewidth, SDLineType.SEGMENT);
+            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
         }
     }
 
@@ -245,6 +235,61 @@ function drawLine(line, targetGhost = false) {
     return str;
 }
 
+/**
+ * @description Calculate so that an ER relation can be recursive
+ * @param {number} ax 
+ * @param {number} ay 
+ * @param {number} bx 
+ * @param {number} by 
+ * @param {Element} elem 
+ * @param {bool} isFirst 
+ * @param {object} line 
+ * @returns 
+ */
+function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
+    if (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) {
+        ay = elem.cy;
+        ax = isFirst? elem.x1 : elem.x2;
+    } else if (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) {
+        ax = elem.cx;
+        ay = isFirst? elem.y1 : elem.y2;
+    }
+
+    if (isFirst) {
+        elem.recursivePos = 0;
+        elem.recursivePos.x = bx;
+        elem.recursivePos.y = by;
+    } else {
+        bx = elem.recursivePos.x;
+        by = elem.recursivePos.y;
+    }
+
+    return [ax, ay, bx, by, elem];
+}
+
+/**
+ * @description Check and calculate the offset for recursive ER relations.
+ * @param {Element} felem Element the line is being dragged from.
+ * @param {Element} telem Element the line is being dragged to.
+ * @param {object} line The line being dragged.
+ * @returns 
+ */
+function recursiveERRelation(felem, telem, line) {
+    const connections = felem.neighbours[telem.id].length;
+    let fx = felem.cx, fy = felem.cy, tx = telem.cx, ty = telem.cy;
+    if (connections != 2) return [fx, fy, tx, ty];
+
+    const isFirst = felem.neighbours[telem.id][0].id === line.id;
+    const fromRelation = felem.kind === elementTypesNames.ERRelation;
+
+    if (fromRelation) {
+        [fx, fy, tx, ty, felem] = recursiveERCalc(fx, fy, tx, ty, felem, isFirst, line);
+    } else {
+        [tx, ty, fx, fy, telem] = recursiveERCalc(tx, ty, fx, fy, telem, isFiest, line);
+    }
+    return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
+}
+
 function getLineAttrubutes(f, t, ctype) {
     let result;
     let px = 3;
@@ -279,16 +324,16 @@ function getLineAttrubutes(f, t, ctype) {
 }
 
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
-    const offsetOnLine = 35 * zoomfact;
+    const offsetOnLine = 20 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
     if (line.ctype == lineDirection.UP) {
-        x -= offsetOnLine / 2 + 10;
+        x -= offsetOnLine / 2;
         y += (isStart) ? -offsetOnLine : offsetOnLine;
     } else if (line.ctype == lineDirection.DOWN) {
-        x -= offsetOnLine / 2 + 10;
+        x -= offsetOnLine / 2;
         y += (isStart) ? offsetOnLine : -offsetOnLine;
     } else if (line.ctype == lineDirection.LEFT) {
         x += (isStart) ? -offsetOnLine : offsetOnLine;
@@ -457,6 +502,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             break;
         case SDLineIcons.ARROW:
             if (line.innerType == SDLineType.SEGMENT) {
+                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             } else if (line.type == entityType.SE) {
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
@@ -540,43 +586,17 @@ function calculateArrowBase(from, to, size) {
      }
      
 
-     function drawArrowPoint(base, point, lineColor, strokeWidth, lineType) {
-        const angle = Math.atan2(point.y - base.y, point.x - base.x);  // Beräkna vinkeln
-        const direction = Math.PI / 6; // 30 grader för pilvingar
-    
-        // If the line.Type = STRAIGHT we need to calculate the correct angel for the arrow
-        if (lineType === SDLineType.STRAIGHT) {
-            const distance = 20 * zoomfact;
-            const adjustedBase = {
-                x: point.x - (Math.cos(angle) * distance),
-                y: point.y - (Math.sin(angle) * distance)
-            };
-            const right = {
-                x: adjustedBase.x + (Math.cos(angle - direction) * (distance / 2)),
-                y: adjustedBase.y + (Math.sin(angle - direction) * (distance / 2))
-            };
-            const left = {
-                x: adjustedBase.x + (Math.cos(angle + direction) * (distance / 2)),
-                y: adjustedBase.y + (Math.sin(angle + direction) * (distance / 2))
-            };
-    
-            return `
-            <polygon points='${point.x},${point.y} ${right.x},${right.y} ${left.x},${left.y}'
-                stroke='${lineColor}' fill='${lineColor}' stroke-width='${strokeWidth}' />
-            `;
-    
-        } else {
-            let right = rotateArrowPoint(base, point, true);
-            let left = rotateArrowPoint(base, point, false);
-    
-            return `
-            <svg width="100" height="100">
-                <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
-                    stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
-            </svg>
-            `;
-        }
-    }
+function drawArrowPoint(base, point, lineColor, strokeWidth) {
+    let right = rotateArrowPoint(base, point, true);
+    let left = rotateArrowPoint(base, point, false);
+ 
+    return `
+    <svg width="100" height="100">
+        <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
+            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
+    </svg>
+    `;
+ }
 
 
 /**
