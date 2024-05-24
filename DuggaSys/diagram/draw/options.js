@@ -1850,58 +1850,15 @@ function multipleColorsTest() {
 /**
  * @description Applies new changes to line attributes in the data array of lines.
  */
-function changeLineProperties() {
-    const line = contextLine[0];
-    const changes = {};
-    const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
-
-    // saves kind of line (normal, dashed, double, etc)
-    for (let radio of document.querySelectorAll('#propertyFieldset input[type=radio]')) {
-        if (radio && radio.checked) {
-            changes.kind = radio.value;
-        }
-    }
-
-    // saves cardinalities for ER attributes
-    const cardinalityER = document.getElementById('propertyCardinality');
-    if (cardinalityER) {
-        changes.cardinality = cardinalityER.value;
-    }
-
-    // saves the label
-    const label = document.getElementById('lineLabel');    
-    if (label) {
-        changes.label = label.value;
-    }
-
-    // adds the rest of the attributes for the specific entity
-    if (line.type == entityType.UML) {
-        changes.startLabel = document.getElementById("lineStartLabel").value;
-        changes.endLabel = document.getElementById("lineEndLabel").value;
-        changes.startIcon = document.getElementById("lineStartIcon").value;
-        changes.endIcon = document.getElementById("lineEndIcon").value;
-    }
-    if (line.type == entityType.SD) {
-        if (!connectedToInitialOrFinal) {
-            changes.innerType = document.getElementById("lineType").value;
-            changes.startIcon = document.getElementById("lineStartIcon").value;
-            changes.endIcon = document.getElementById("lineEndIcon").value;
-        } else {
-            changes.innerType = document.getElementById("lineType").value;
-        }
-    }
-    if ((line.type == entityType.SE) || (line.type == entityType.IE)) {
-        changes.startIcon = document.getElementById("lineStartIcon").value;
-        changes.endIcon = document.getElementById("lineEndIcon").value;
-    }
-
-    // updates the line
-    for (const [key, value] of Object.entries(changes)) {
-        line[key] = value;
-    }
+function changeLineProperties() {        
     
+    // updates the line
+    for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
+        contextLine[0][key] = value;
+    }
+
     // save all the changes
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, line), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
 
     showdata();
 }

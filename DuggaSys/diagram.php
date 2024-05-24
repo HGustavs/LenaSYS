@@ -35,7 +35,6 @@
     <script src="./diagram/globals.js"></script>
     <script src="./diagram/classes/element.js"></script>
     <script src="./diagram/classes/stateChange.js"></script>
-    <script src="./diagram/classes/stateChangeFactory.js"></script>
     <script src="./diagram/helper.js"></script>
     <script src="./diagram/errorHandling.js"></script>
     <script src="./diagram/theme.js"></script>
