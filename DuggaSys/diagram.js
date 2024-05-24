@@ -56,15 +56,13 @@ class StateMachine {
                 this.pushToHistoryLog({
                     id: id,
                     ...StateChange.GetLineProperties()
-                })
+                });
                 break;
             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                // needs to be handled differently if multiple IDs are sent
                 if (!Array.isArray(id)) id = [id];
                 for (const element of StateChange.ElementsAreLocked()) {
                     this.pushToHistoryLog({
-                        id: element.id,
-                        isLocked: element.isLocked,
+                        ...element,
                         ...Element.GetFillColor(id),
                         ...Element.GetStrokeColor(id),
                         ...StateChange.GetSequenceAlternatives(),
@@ -78,6 +76,7 @@ class StateMachine {
                 if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
                     this.historyLog.splice(this.historyLog.length - 1, 1);
                 }
+
                 // only store if the resized object isn't overlapping
                 const coords = Element.GetELementPosition(id)
                 if (!entityIsOverlapping(id, coords.x, coords.y)) {
@@ -96,13 +95,6 @@ class StateMachine {
                 });
                 break;
             case StateChange.ChangeTypes.LINE_DELETED:
-                for (const line of StateChange.LinesDeleted(id)) {
-                    this.pushToHistoryLog({
-                        id: line.id,
-                        deleted: true                                
-                    });
-                }
-                break;
             case StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED:
                 for (const entry of id) {
                     this.pushToHistoryLog({
@@ -124,13 +116,13 @@ class StateMachine {
                 this.pushToHistoryLog({
                     id: id,
                     ...StateChange.LineAdded(id)
-                })
+                });
                 break;
             case StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED:
-                for (const entry of StateChange.ElementsAndLinesCreated()) {
+                for (const entry of StateChange.ElementsAndLinesCreated(id[0], id[1])) {
                     this.pushToHistoryLog({
                         ...entry,
-                    })
+                    });
                 }
                 break;
             case StateChange.ChangeTypes.ELEMENT_MOVED:

@@ -122,15 +122,16 @@ class StateChange {
 
     /**
      * @description Keeps the appropriate values for when elements and lines are created
-     * @param {Element[]} elements All elements that have been created.
-     * @param {Object[]} lines All lines that have been created.
-     * @returns {StateChange[]} A new instance of the StateChange class.
+     * @param {string[]} elements All elements that have been created.
+     * @param {string[]} lines All lines that have been created.
+     * @returns {object[]} A new instance of the StateChange class.
      */
-    static ElementsAndLinesCreated(elements, lines) {
+    static ElementsAndLinesCreated(elementIDs, lineIDs) {
         const changesArr = [];
 
         // Filter out defaults from each element and add them to allObj
-        elements.forEach(elem => {
+        elementIDs.forEach(id => {
+            const elem = Element.FindElementById(id);
             const values = {kind: elem.kind};
 
             const uniqueKeysArr = Object.keys(elem).filter(key => {
@@ -147,9 +148,9 @@ class StateChange {
         });
 
         // Filter out defaults from each line and add them to allObj
-        lines.forEach(line => {
+        lineIDs.forEach(id => {
             const values = {};
-
+            const line = lines.find(l => l.id == id);
             const uniqueKeysArr = Object.keys(line).filter(key => {
                 return (Object.keys(defaultLine).filter(value => {
                     return defaultLine[value] == line[key];
