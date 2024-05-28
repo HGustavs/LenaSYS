@@ -22,7 +22,7 @@ $testsData = array(
             'coursename' => 'SoftwareEngineering',
             'visibility' => '1',
             'activevers' => '202401',
-            'activeedvers' => 'V1',
+            'activeedvers' => 'V1',    
             'courseGitURL' => 'http://example.com/repo.git'
         )),
         'filter-output' => serialize(array('success', 'message')),
