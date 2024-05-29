@@ -1,5 +1,8 @@
 /**
- * @description Translate all elements to the correct coordinate
+ * @description Updates CSS properties for all diagram elements based on their data attributes.
+ * Manages positioning, appearance, and highlighting for entities, relationships, and notes.
+ * Ensures visual consistency and responsiveness to user interaction, adjusting elements
+ * dynamically based on their coordinates, zoom level, and scroll position.
  */
 function updateCSSForAllElements() {
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
@@ -216,14 +219,17 @@ function updateCSSForAllElements() {
             updateElementDivCSS(ghostElement, ghostDiv)
         }
     }
-
+    /**
+     * @description check if the fill color is black or pink, if so the font color is set to white
+     */
     function fontContrast() {
-        //check if the fill color is black or pink, if so the font color is set to white
         fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
     }
 
+    /**
+     * @description Determines if the context meets specific length conditions.
+     */
     function markedOverOne() {
-        //If more than one element is marked.
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
 
