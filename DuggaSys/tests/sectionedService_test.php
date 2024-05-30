@@ -299,7 +299,144 @@ $testsData = array(
         ),
     ),
 
-    //*******************************************************************************************/
+
+    //  //-----------------------------------------------------------------------------------------------------------  
+//  // This tests the microservice updateCourseVersion_sectioned and the part of the monolith called "UPDATEVRS" 
+//  //-----------------------------------------------------------------------------------------------------------
+'updateCourseVersion_sectioned' => array(
+    'expected-output' => '{
+        "versions": [
+            {
+                "cid": "1",
+                "coursecode": "DV12G",
+                "vers": "45656",
+                "versname": "HT15",
+                "coursename": "Webbprogrammering",
+                "coursenamealt": "UNK",
+                "startdate": "2014-12-29 00:00:00",
+                "enddate": "2015-03-08 00:00:00",
+                "motd": "Webbprogrammering - HT15"
+            },
+            {
+                "cid": "1",
+                "coursecode": "DV12G",
+                "vers": "45657",
+                "versname": "HT16",
+                "coursename": "Webbprogrammering",
+                "coursenamealt": "UNK",
+                "startdate": "2015-12-29 00:00:00",
+                "enddate": "2016-03-08 00:00:00",
+                "motd": "Webbprogrammering - HT16"
+            },
+            {
+                "cid": "2",
+                "coursecode": "IT118G",
+                "vers": "97731",
+                "versname": "HT14",
+                "coursename": "Webbutveckling - datorgrafik",
+                "coursenamealt": "UNK",
+                "startdate": "2014-12-29 00:00:00",
+                "enddate": "2015-03-08 00:00:00",
+                "motd": "Webbutveckling - datorgrafik - HT14"
+            },
+            {
+                "cid": "2",
+                "coursecode": "IT118G",
+                "vers": "97732",
+                "versname": "HT15",
+                "coursename": "Webbutveckling - datorgrafik",
+                "coursenamealt": "UNK",
+                "startdate": "2014-12-29 00:00:00",
+                "enddate": "2015-03-08 00:00:00",
+                "motd": "Webbutveckling - datorgrafik - HT15"
+            },
+            {
+                "cid": "3",
+                "coursecode": "IT500G",
+                "vers": "1337",
+                "versname": "HT15",
+                "coursename": "Datorns grunder",
+                "coursenamealt": "UNK",
+                "startdate": "2014-12-29 00:00:00",
+                "enddate": "2015-03-08 00:00:00",
+                "motd": "Datorns grunder - HT15"
+            },
+            {
+                "cid": "4",
+                "coursecode": "IT301G",
+                "vers": "1338",
+                "versname": "HT15",
+                "coursename": "Software Engineering",
+                "coursenamealt": "UNK",
+                "startdate": "2014-12-29 00:00:00",
+                "enddate": "2015-03-08 00:00:00",
+                "motd": "Software Engineering - HT15"
+            },
+            {
+                "cid": "305",
+                "coursecode": "IT308G",
+                "vers": "12305",
+                "versname": "HT15",
+                "coursename": "Objektorienterad programmering",
+                "coursenamealt": "UNK",
+                "startdate": null,
+                "enddate": null,
+                "motd": null
+            },
+            {
+                "cid": "307",
+                "coursecode": "IT115G",
+                "vers": "12307",
+                "versname": "HT15",
+                "coursename": "Datorns grunder",
+                "coursenamealt": "UNK",
+                "startdate": null,
+                "enddate": null,
+                "motd": null
+            },
+            {
+                "cid": "308",
+                "coursecode": "MA161G",
+                "vers": "12308",
+                "versname": "HT15",
+                "coursename": "Diskret matematik",
+                "coursenamealt": "UNK",
+                "startdate": null,
+                "enddate": null,
+                "motd": null
+            },
+            {
+                "cid": "309",
+                "coursecode": "DA322G",
+                "vers": "12309",
+                "versname": "HT15",
+                "coursename": "Operativsystem",
+                "coursenamealt": "UNK",
+                "startdate": null,
+                "enddate": null,
+                "motd": null
+            }
+        ]
+    }',
+    'service' => 'http://localhost/LenaSYS/DuggaSys/sectionedService.php',
+    'service-data' => serialize(array(
+        'opt' => 'UPDATEVRS',
+        'username' => 'mestr',
+        'password' => 'password',
+        'courseid' => '2',
+        'coursename' => '2',
+        'coursevers' => '97731',
+        'motd' => 'TEST TEXT',
+        'comment' => 'undefined',
+        'lid' => '2008',
+        'tabs' => '1',
+        'hash' => 'UNK'
+    )),
+    'filter-output' => serialize(array(
+        'versions'
+    )),
+),
+//*******************************************************************************************/
     //       THIS SERVICE DOES NOT FUNCTION AS INTENDED, the test therefore is incompleat.      //
     //*******************************************************************************************/
 
@@ -409,6 +546,7 @@ $testsData = array(
             ),
             'debug',
         )),
+        
     ),
 
     //--------------------------------------------------------------------------------------------------
