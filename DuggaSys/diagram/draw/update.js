@@ -1,5 +1,6 @@
 /**
- * @description Remove all elements with the class "node"
+ * @description This function Remove all elements with the class name node.
+ * This function selects elements by class name and removes each one in a loop until none are left.
  */
 function removeNodes() {
     const nodes = document.getElementsByClassName("node");
@@ -9,9 +10,9 @@ function removeNodes() {
 }
 
 /**
- * @description Updates the elements translations and redraw lines.
- * @param {number || null} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
- * @param {number || null} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
+ * @description 
+ * This function Updates the diagram's visuals and interactions based on the mouse state and selected elements.
+ * Handles the redrawing of arrows and selection boxes, removes redundant nodes, and conditionally adds nodes based on the context.
  */
 function updatepos() {
     updateCSSForAllElements();
@@ -36,7 +37,8 @@ function updateRulers() {
 }
 
 /**
- * @description Updates the variables for the size of the container-element.
+ * @description This function Updates the variables for the size of the container element.
+ * Gets the size and position of the container and updates the width and height variables.
  */
 function updateContainerBounds() {
     let containerbox = container.getBoundingClientRect();
@@ -45,7 +47,8 @@ function updateContainerBounds() {
 }
 
 /**
- * @description sets the alternatives attribute for sequenceLoopOrAlt to whatever is in the input box inputAlternatives. one index in the array per line.
+ * @description This function Sets the alternatives attribute for elements in the context array to the values in the input box inputAlternatives.
+ * Each line in the input box becomes an element in the alternatives array.
  * USED IN PHP
  */
 //TODO This should be implemeted into saveProperties but as of this moment I could not becuase of a bug that was outside the scope of my issue.
@@ -71,7 +74,8 @@ function setSequenceAlternatives() {
 }
 
 /**
- * @description Sets every elements stroke to black.
+ @description Resets the stroke color of each element in the provided list 
+ to the default value specified in 'strokeColors'
  * @param {Object} elements List of all elements.
  */
 function errorReset(elements) {
@@ -81,7 +85,8 @@ function errorReset(elements) {
 }
 
 /**
- * @description Redraw all elements and lines
+ * @description This function Redraws all elements and lines on the container.
+ * Updates container size, resets element styles, and draws elements.
  */
 function showdata() {
     let str = "";
@@ -104,7 +109,8 @@ function showdata() {
 }
 
 /**
- * @description Updates what line(s) are selected.
+ * @description This function Updates the `contextLine` list based on user selections and key presses.
+ * Handles various scenarios based on whether the Ctrl or Alt key is pressed, as well as when a specific line is selected.
  * @param {Object} line Line that has been selected.
  */
 function updateSelectedLine(line) {
@@ -166,7 +172,7 @@ function updateSelection(element) {
 }
 
 /**
- * @description Modified the current ruler position to respective x and y coordinate. This DOM-element has an absolute position and does not change depending on other elements.
+ * @description Sets the position of the ruler indicators based on absolute coordinates.
  * @param {Number} x Absolute x-position in pixels from the left of the inner window.
  * @param {Number} y Absolute y-position in pixels from the top of the inner window.
  */
@@ -177,7 +183,9 @@ function setRulerPosition(x, y) {
 }
 
 /**
- * @description Performs an update to the current grid size depending on the current zoom level.
+ * Updates the grid size based on the current zoom level. This function recalculates the grid dimensions
+ * and adjusts the grid lines accordingly, ensuring that the grid size is appropriate for the current zoom.
+ * It also updates the stroke widths for the grid's origin lines.
  * @see zoomin Function where the zoom level increases.
  * @see zoomout Function where the zoom level decreases.
  */
@@ -204,7 +212,8 @@ function updateGridSize() {
 }
 
 /**
- * @description Calculates new positioning for the background grid.
+ * @description This function calculates and updates the new positioning of the background grid and origin lines based on the current
+ * zoom level and scroll position. This function adjusts the x and y coordinates of the grid
  */
 function updateGridPos() {
     const gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
@@ -225,7 +234,8 @@ function updateGridPos() {
 }
 
 /**
- * @description Performs an update to the current A4 template size depending on the current zoom level.
+ * @description Updates the grid size and its positioning based on the current zoom level and scroll position.
+ * @see Adjusts the grid dimensions and recalculates its position to ensure it is displayed correctly according to the zoom origin and scroll offsets.
  * @see zoomin Function where the zoom level increases.
  * @see zoomout Function where the zoom level decreases.
  */
@@ -248,7 +258,8 @@ function updateA4Size() {
 }
 
 /**
- * @description Calculates new positioning for the A4 template.
+ * @description Updates the dimensions and positioning of the A4 template representation based on the current zoom level.
+ * Adjusts the A4 template size and position, ensuring it matches the zoom and scroll settings.
  */
 function updateA4Pos() {
     const OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
