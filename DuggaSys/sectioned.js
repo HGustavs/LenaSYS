@@ -30,6 +30,15 @@ var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
 
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'm') {
+      console.log("eventLOG: ", selectedItemList);
+      // Add any action you want to perform here
+  }
+});
+
+
+
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
     inputColorTheme = "#212121";
@@ -964,34 +973,44 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-function deleteItem(item_lid = []) {
-  for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val();
-    item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
-    item.classList.add("deleted");
+function deleteItem(item_lid) {
+  // for (var i = 0; i < item_lid.length; i++) {
+  lid = item_lid ? item_lid : $("#lid").val();
+  //   item = document.getElementById("lid" + lid[i]);
+  //   item.style.display = "none";
+  //   item.classList.add("deleted");
   
-    document.querySelector("#undoButton").style.display = "block";
-  }
+    // document.querySelector("#undoButton").style.display = "block";
+  // }
+
+  // lid = item_lid;
+
+  console.log("delArr: ", delArr);
 
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  delArr.push(lid);
+  for(let i = 0; i < lid.length; i++) {
+    delArr.push(lid[i]);
+  }
+  
+  console.log("delArr: ", delArr);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
-    deleteAll();
+    
   }, 60);
+  deleteAll();
 }
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length - 1; i >= 0; --i) {
+  for (let i = 0; i < delArr.length; i++) {
     AJAXService("DEL", {
-      lid: delArr.pop()
+      lid: delArr[i]
     }, "SECTION");
   }
+  delArr = [];
   $("#editSection").css("display", "none");
-  document.querySelector("#undoButton").style.display = "none";
+  // document.querySelector("#undoButton").style.display = "none";
 }
 
 // Cancel deletion
