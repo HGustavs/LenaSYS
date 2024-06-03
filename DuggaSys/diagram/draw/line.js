@@ -82,20 +82,19 @@ function drawLine(line, targetGhost = false) {
         }
         // if SE line, find lines connected to the same element.
         if (line.type == "SE") {
-            toID = line.toID;
-            fromID = line.fromID;
             let connectedFrom = [];
             let connectedTo = [];
             for (let i = 0; i < lines.length; i++) {
-                if (lines[i].fromID == fromID) {
+                if (lines[i].fromID == felem.id) {
                     connectedFrom.push(lines[i]);
                 }
-                if (lines[i].toID == fromID) {
+                if (lines[i].toID == telem.id) {
                     connectedTo.push(lines[i]);
                 }
             }       
             console.log(connectedFrom, connectedTo);
         }
+        
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
