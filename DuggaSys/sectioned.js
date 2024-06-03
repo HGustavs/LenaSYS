@@ -975,7 +975,7 @@ function prepareItem() {
 
 function deleteItem(item_lid) {
   // for (var i = 0; i < item_lid.length; i++) {
-  lid = item_lid ? item_lid : $("#lid").val();
+  // lid = item_lid ? item_lid : $("#lid").val();
   //   item = document.getElementById("lid" + lid[i]);
   //   item.style.display = "none";
   //   item.classList.add("deleted");
@@ -983,9 +983,7 @@ function deleteItem(item_lid) {
     // document.querySelector("#undoButton").style.display = "block";
   // }
 
-  // lid = item_lid;
-
-  console.log("delArr: ", delArr);
+  lid = item_lid;
 
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
@@ -993,7 +991,6 @@ function deleteItem(item_lid) {
     delArr.push(lid[i]);
   }
   
-  console.log("delArr: ", delArr);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     
