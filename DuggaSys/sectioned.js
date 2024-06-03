@@ -30,15 +30,6 @@ var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
 
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'm') {
-      console.log("eventLOG: ", selectedItemList);
-      // Add any action you want to perform here
-  }
-});
-
-
-
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
     inputColorTheme = "#212121";
