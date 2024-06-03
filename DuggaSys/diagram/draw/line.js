@@ -91,10 +91,28 @@ function drawLine(line, targetGhost = false) {
                 if (lines[i].toID == telem.id) {
                     connectedTo.push(lines[i]);
                 }
-            }       
-            console.log(connectedFrom, connectedTo);
+            }
+            
+            // If there are more than one line connected to the same element, adjust the line (use ctype to figure out direction to adjust)
+            if (connectedFrom.length > 1) {
+                let index = connectedFrom.indexOf(line);
+                let offset = 10 * zoomfact;
+                switch (line.ctype) {
+                    case lineDirection.UP:
+                        fx -= offset * index;
+                        break;
+                    case lineDirection.DOWN:
+                        fx += offset * index;
+                        break;
+                    case lineDirection.LEFT:
+                        fy -= offset * index;
+                        break;
+                    case lineDirection.RIGHT:
+                        fy += offset * index;
+                        break;
+                }
+            }
         }
-        
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
