@@ -99,8 +99,8 @@ function drawLine(line, targetGhost = false) {
             }
             
             // If there are more than one line connected to the same element, adjust the line (use ctype to figure out direction to adjust)
-            if (connectedFrom.length > 1) {
-                let index = connectedFrom.indexOf(line);
+            if (connected.length > 1) {
+                let index = connected.indexOf(line);
                 let offset = 10 * zoomfact;
                 switch (line.ctype) {
                     case lineDirection.UP:
