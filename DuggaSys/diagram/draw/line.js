@@ -82,14 +82,19 @@ function drawLine(line, targetGhost = false) {
         }
         // if SE line, find lines connected to the same element.
         if (line.type == "SE") {
-            let connectedFrom = [];
-            let connectedTo = [];
+            let connected = [];
             for (let i = 0; i < lines.length; i++) {
                 if (lines[i].fromID == felem.id) {
-                    connectedFrom.push(lines[i]);
+                    connected.push(lines[i]);
                 }
                 if (lines[i].toID == telem.id) {
-                    connectedTo.push(lines[i]);
+                    connected.push(lines[i]);
+                }
+                if (lines[i].fromID == telem.id) {
+                    connected.push(lines[i]);
+                }
+                if (lines[i].toID == felem.id) {
+                    connected.push(lines[i]);
                 }
             }
             
