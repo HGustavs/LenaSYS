@@ -80,44 +80,11 @@ function drawLine(line, targetGhost = false) {
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
         }
-        // if SE line, find lines connected to the same element.
-        if (line.type == "SE") {
-            let connected = [];
-            for (let i = 0; i < lines.length; i++) {
-                if (lines[i].fromID == felem.id) {
-                    connected.push(lines[i]);
-                }
-                if (lines[i].toID == telem.id) {
-                    connected.push(lines[i]);
-                }
-                if (lines[i].fromID == telem.id) {
-                    connected.push(lines[i]);
-                }
-                if (lines[i].toID == felem.id) {
-                    connected.push(lines[i]);
-                }
-            }
-            
-            // If there are more than one line connected to the same element, adjust the line (use ctype to figure out direction to adjust)
-            if (connected.length > 1) {
-                let index = connected.indexOf(line);
-                let offset = 10 * zoomfact;
-                switch (line.ctype) {
-                    case lineDirection.UP:
-                        fx -= offset * index;
-                        break;
-                    case lineDirection.DOWN:
-                        fx += offset * index;
-                        break;
-                    case lineDirection.LEFT:
-                        fy -= offset * index;
-                        break;
-                    case lineDirection.RIGHT:
-                        fy += offset * index;
-                        break;
-                }
-            }
+
+        if (line.type == entityType.SE) {
+            offset = findOffset(line, offset);
         }
+
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
@@ -953,4 +920,55 @@ function displaceFromLine(newX, newY) {
     } else {
         targetLabel.labelGroup = 0;
     }
+}
+
+/**
+ * @description Returns offset for the line depending on other lines sharing the same elements, used for SE lines.
+ * @param {Object} line Line to update offset for.
+ * @param {Object} offset Offset to update.
+ * @returns {Object} Updated offset.
+ */
+function findOffset(line, offset) {
+    telem = data[findIndex(data, line.toID)];
+    felem = data[findIndex(data, line.fromID)];
+    let standardOffset = 10*zoomfact;
+    
+    // get all lines connected to the elements
+    fneighbours = [];
+    for (line in lines) {
+        if(line.fromID == felem.id) {
+            fneighbours.push(line);
+        }
+    }
+
+    // if telem is set, get all lines connected to the elements
+    if (telem) {
+        tneighbours = [];
+        for (line in lines) {
+            if(line.toID == telem.id) {
+                tneighbours.push(line);
+            }
+        }
+    }
+
+    // if no neighbours, return 0 offset
+    if (!fneighbours && !tneighbours) return offset;
+    
+    // if sharing from element, change offset x1/y1 based on lineDirection
+    if (fneighbours[felem.id]) {
+        let fneighbour = fneighbours[felem.id][0];
+        if (fneighbour.ctype == lineDirection.UP || fneighbour.ctype == lineDirection.DOWN) offset.y1 = standardOffset;
+        else if (fneighbour.ctype == lineDirection.RIGHT || fneighbour.ctype == lineDirection.LEFT) offset.x1 = standardOffset;
+    }
+
+    if (telem) {
+        // if sharing to element, change offset x2/y2 based on lineDirection
+        if (tneighbours[felem.id]) {
+            let tneighbour = tneighbours[felem.id][0];
+            if (tneighbour.ctype == lineDirection.UP || tneighbour.ctype == lineDirection.DOWN) offset.y2 = standardOffset;
+            else if (tneighbour.ctype == lineDirection.RIGHT || tneighbour.ctype == lineDirection.LEFT) offset.x2 = standardOffset;
+        }
+    }
+
+    return offset;
 }
