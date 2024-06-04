@@ -789,6 +789,7 @@ function deleteFile(fileid, filename, filekind) {
     if (confirm("Do you really want to delete the file/link: " + filename)) {
         AJAXService("DELFILE", tempData, "FILE");
     }
+    toast("success", "Item deleted", 6);
 }
 
 
