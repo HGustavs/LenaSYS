@@ -47,8 +47,16 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: kind
+            kind: kind,
+            offset: 0
         };
+
+        // If the newline is sharing from or to with an existing line, add 1 to the offset
+        for (let line of lines) {
+            if (line.fromID === newLine.fromID || line.toID === newLine.toID) {
+                newLine.offset++;
+            }
+        }
 
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
         if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {

@@ -923,52 +923,42 @@ function displaceFromLine(newX, newY) {
 }
 
 /**
- * @description Returns offset for the line depending on other lines sharing the same elements, used for SE lines.
+ * @description Returns offset for the line depending on the offset set in the line, used for SE lines.
  * @param {Object} line Line to update offset for.
- * @param {Object} offset Offset to update.
  * @returns {Object} Updated offset.
  */
-function findOffset(line, offset) {
-    telem = data[findIndex(data, line.toID)];
-    felem = data[findIndex(data, line.fromID)];
-    let standardOffset = 10*zoomfact;
+function findOffset(line) {
+    console.log(line);
+    let offset = {
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0
+    };
+
+    let standardOffset = line.offset * 10 * zoomfact;
     
-    // get all lines connected to the elements
-    fneighbours = [];
-    for (line in lines) {
-        if(line.fromID == felem.id) {
-            fneighbours.push(line);
-        }
+    //check if standard offset is NaN
+    if (isNaN(standardOffset)) {
+        standardOffset = 0;
     }
 
-    // if telem is set, get all lines connected to the elements
-    if (telem) {
-        tneighbours = [];
-        for (line in lines) {
-            if(line.toID == telem.id) {
-                tneighbours.push(line);
-            }
-        }
+    // change offset depending on the direction of the line
+    if (line.ctype == lineDirection.LEFT) {
+        offset.y1 = standardOffset;
+        offset.y2 = standardOffset;
+    } else if (line.ctype == lineDirection.RIGHT) {
+        offset.y1 = standardOffset;
+        offset.y2 = standardOffset;
+    } else if (line.ctype == lineDirection.UP) {
+        offset.x1 = standardOffset;
+        offset.x2 = standardOffset;
+    } else if (line.ctype == lineDirection.DOWN) {
+        offset.x1 = standardOffset;
+        offset.x2 = standardOffset;
     }
 
-    // if no neighbours, return 0 offset
-    if (!fneighbours && !tneighbours) return offset;
-    
-    // if sharing from element, change offset x1/y1 based on lineDirection
-    if (fneighbours[felem.id]) {
-        let fneighbour = fneighbours[felem.id][0];
-        if (fneighbour.ctype == lineDirection.UP || fneighbour.ctype == lineDirection.DOWN) offset.y1 = standardOffset;
-        else if (fneighbour.ctype == lineDirection.RIGHT || fneighbour.ctype == lineDirection.LEFT) offset.x1 = standardOffset;
-    }
-
-    if (telem) {
-        // if sharing to element, change offset x2/y2 based on lineDirection
-        if (tneighbours[felem.id]) {
-            let tneighbour = tneighbours[felem.id][0];
-            if (tneighbour.ctype == lineDirection.UP || tneighbour.ctype == lineDirection.DOWN) offset.y2 = standardOffset;
-            else if (tneighbour.ctype == lineDirection.RIGHT || tneighbour.ctype == lineDirection.LEFT) offset.x2 = standardOffset;
-        }
-    }
+    console.log(offset);
 
     return offset;
 }
