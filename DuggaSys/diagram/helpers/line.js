@@ -51,10 +51,14 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             offset: 0
         };
 
-        // If the newline is sharing from or to with an existing line, add 1 to the offset
+        // If the newline is sharing from or to with an existing line and going in same direction add offset to the new line
         for (let line of lines) {
-            if (line.fromID === newLine.fromID || line.toID === newLine.toID) {
-                newLine.offset++;
+            if (line.fromID === newLine.fromID || line.toID === newLine.toID || line.fromID === newLine.toID || line.toID === newLine.fromID) {
+                // check that both are going in the same direction
+            
+                if (line.ctype == newLine.ctype) {
+                    newLine.offset++;
+                }
             }
         }
 

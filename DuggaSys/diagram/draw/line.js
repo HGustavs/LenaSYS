@@ -928,7 +928,6 @@ function displaceFromLine(newX, newY) {
  * @returns {Object} Updated offset.
  */
 function findOffset(line) {
-    console.log(line);
     let offset = {
         x1: 0,
         y1: 0,
@@ -936,7 +935,7 @@ function findOffset(line) {
         y2: 0
     };
 
-    let standardOffset = line.offset * 10 * zoomfact;
+    let standardOffset = line.offset * 5 * zoomfact;
     
     //check if standard offset is NaN
     if (isNaN(standardOffset)) {
@@ -951,14 +950,13 @@ function findOffset(line) {
         offset.y1 = standardOffset;
         offset.y2 = standardOffset;
     } else if (line.ctype == lineDirection.UP) {
-        offset.x1 = standardOffset;
-        offset.x2 = standardOffset;
+        offset.x1 = -standardOffset;
+        offset.x2 = -standardOffset;
     } else if (line.ctype == lineDirection.DOWN) {
-        offset.x1 = standardOffset;
-        offset.x2 = standardOffset;
+        offset.x1 = -standardOffset;
+        offset.x2 = -standardOffset;
     }
 
-    console.log(offset);
 
     return offset;
 }
