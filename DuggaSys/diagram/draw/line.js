@@ -597,7 +597,9 @@ function redrawArrows() {
     // Sort all association ends that number above 0 according to direction of line
     for (let i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
-    }
+    }    
+    // Recalculate offset for all lines
+    recalculateOffsets();
     // Draw each line using sorted line ends when applicable
     for (let i = 0; i < lines.length; i++) {
         str += drawLine(lines[i]);
@@ -956,7 +958,29 @@ function findOffset(line) {
         offset.x1 = -standardOffset;
         offset.x2 = -standardOffset;
     }
-
-
+    
     return offset;
+}
+
+/**
+ * @description recalculates the offset for all lines. used for SE lines.
+ */
+function recalculateOffsets() {
+    let linesChecked = [];
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].type == entityType.SE) {
+            // check how many lines in linesChecked have the same from/to id as the current line
+            let counter = 0;
+            for (let j = 0; j < linesChecked.length; j++) {
+                if (lines[i].fromID === linesChecked[j].fromID || lines[i].toID === linesChecked[j].toID || 
+                    lines[i].fromID === linesChecked[j].toID || lines[i].toID === linesChecked[j].fromID) {
+                    counter++;
+                }
+            }
+            lines[i].offset = counter;
+            linesChecked.push(lines[i]);
+        }else{
+            lines[i].offset = 0;
+        }
+    }
 }
