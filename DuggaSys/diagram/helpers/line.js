@@ -47,9 +47,30 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: kind
+            kind: kind,
+            offset: 0
         };
 
+        // If the newline is sharing from or to with an existing line and going in same direction add offset to the new line
+        for (let line of lines) {
+            if (line.fromID === newLine.fromID || line.toID === newLine.toID || 
+                line.fromID === newLine.toID || line.toID === newLine.fromID) {
+                let lineDirection;
+                let diffrenceX = fromElement.x - toElement.x;
+                let diffrenceY = fromElement.y - toElement.y;
+                if (Math.abs(diffrenceX) > Math.abs(diffrenceY)) {
+                    lineDirection = diffrenceX > 0 ? 'LR' : 'RL';
+                } else {
+                    lineDirection = diffrenceY > 0 ? 'TB' : 'BT';
+                }
+                
+                // check that both are going in the same direction
+                if(line.ctype == lineDirection){
+                    newLine.offset++;
+                }
+            }
+        }
+        
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
         if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {
             if (cardinal) newLine.cardinality = cardinal;

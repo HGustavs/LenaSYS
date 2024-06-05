@@ -3,7 +3,7 @@
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
- function drawLine(line, targetGhost = false) {
+function drawLine(line, targetGhost = false) {
     let str = "";
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
@@ -80,6 +80,11 @@
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
         }
+
+        if (line.type == entityType.SE) {
+            offset = findOffset(line, offset);
+        }
+
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
@@ -592,7 +597,9 @@ function redrawArrows() {
     // Sort all association ends that number above 0 according to direction of line
     for (let i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
-    }
+    }    
+    // Recalculate offset for all lines
+    recalculateOffsets();
     // Draw each line using sorted line ends when applicable
     for (let i = 0; i < lines.length; i++) {
         str += drawLine(lines[i]);
@@ -914,5 +921,66 @@ function displaceFromLine(newX, newY) {
         targetLabel.labelGroup = 2;
     } else {
         targetLabel.labelGroup = 0;
+    }
+}
+
+/**
+ * @description Returns offset for the line depending on the offset set in the line, used for SE lines.
+ * @param {Object} line Line to update offset for.
+ * @returns {Object} Updated offset.
+ */
+function findOffset(line) {
+    let offset = {
+        x1: 0,
+        y1: 0,
+        x2: 0,
+        y2: 0
+    };
+
+    let standardOffset = line.offset * 5 * zoomfact;
+    
+    //check if standard offset is NaN
+    if (isNaN(standardOffset)) {
+        standardOffset = 0;
+    }
+
+    // change offset depending on the direction of the line
+    if (line.ctype == lineDirection.LEFT) {
+        offset.y1 = standardOffset;
+        offset.y2 = standardOffset;
+    } else if (line.ctype == lineDirection.RIGHT) {
+        offset.y1 = standardOffset;
+        offset.y2 = standardOffset;
+    } else if (line.ctype == lineDirection.UP) {
+        offset.x1 = -standardOffset;
+        offset.x2 = -standardOffset;
+    } else if (line.ctype == lineDirection.DOWN) {
+        offset.x1 = -standardOffset;
+        offset.x2 = -standardOffset;
+    }
+    
+    return offset;
+}
+
+/**
+ * @description recalculates the offset for all lines. used for SE lines.
+ */
+function recalculateOffsets() {
+    let linesChecked = [];
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].type == entityType.SE) {
+            // check how many lines in linesChecked have the same from/to id as the current line
+            let counter = 0;
+            for (let j = 0; j < linesChecked.length; j++) {
+                if (lines[i].fromID === linesChecked[j].fromID || lines[i].toID === linesChecked[j].toID || 
+                    lines[i].fromID === linesChecked[j].toID || lines[i].toID === linesChecked[j].fromID) {
+                    counter++;
+                }
+            }
+            lines[i].offset = counter;
+            linesChecked.push(lines[i]);
+        }else{
+            lines[i].offset = 0;
+        }
     }
 }
