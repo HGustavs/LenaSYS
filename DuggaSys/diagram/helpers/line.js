@@ -53,20 +53,23 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
         // If the newline is sharing from or to with an existing line and going in same direction add offset to the new line
         for (let line of lines) {
-            if (line.fromID === newLine.fromID || line.toID === newLine.toID || line.fromID === newLine.toID || line.toID === newLine.fromID) {
-                // determine the lineDirection of the new line (UP,DOWN,LEFT,RIGHT) using the positions of the from and to elements
-                let lineDirection;
-                let diffrenceX = fromElement.x - toElement.x;
-                let diffrenceY = fromElement.y - toElement.y;
-                if (Math.abs(diffrenceX) > Math.abs(diffrenceY)) {
-                    lineDirection = diffrenceX > 0 ? 'LR' : 'RL';
-                } else {
-                    lineDirection = diffrenceY > 0 ? 'TB' : 'BT';
-                }
-                
-                // check that both are going in the same direction
-                if(line.ctype == lineDirection){
-                    newLine.offset++;
+            // SE only
+            if(line.kind == lineKind.SE && newLine.kind == lineKind.SE) {
+                if (line.fromID === newLine.fromID || line.toID === newLine.toID || 
+                    line.fromID === newLine.toID || line.toID === newLine.fromID) {
+                    let lineDirection;
+                    let diffrenceX = fromElement.x - toElement.x;
+                    let diffrenceY = fromElement.y - toElement.y;
+                    if (Math.abs(diffrenceX) > Math.abs(diffrenceY)) {
+                        lineDirection = diffrenceX > 0 ? 'LR' : 'RL';
+                    } else {
+                        lineDirection = diffrenceY > 0 ? 'TB' : 'BT';
+                    }
+                    
+                    // check that both are going in the same direction
+                    if(line.ctype == lineDirection){
+                        newLine.offset++;
+                    }
                 }
             }
         }
