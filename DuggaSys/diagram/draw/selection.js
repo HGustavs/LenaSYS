@@ -1,6 +1,6 @@
 /**
- * @description Draw the box around the selected elements.
- * @return The populated string with the selection box rect.
+ * @description Draws the selection box and delete button based on the current context and mouse mode.
+ * @returns {string} The SVG string representing the selection box and delete button.
  */
 function drawSelectionBox() {
     let str = '';
