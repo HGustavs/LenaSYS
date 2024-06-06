@@ -12,8 +12,14 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 const trailArray = [];
-const size = 10;
-const dotLife = 20; //the number means the amount of frames
+const size = 4;
+const dotLife = 50; //the number means the amount of frames
+red = 97;
+blue = 117;
+green = 72
+redIncrease = true;
+blueIncrease = true;
+greenIncrease = true;
 
 class trailDot {
     constructor(x, y, size) {
@@ -21,12 +27,61 @@ class trailDot {
         this.y = y;
         this.size = size;
         this.frames = 0;
+        this.direction = Math.random() * 2 * Math.PI;
+        this.speed = 1;
+    }
+
+    update() {
+        this.x += Math.cos(this.direction) * this.speed;
+        this.y += Math.sin(this.direction) * this.speed;
+        this.size = this.size + 0.4;
+
+
+        if (redIncrease == true) {
+            red = red + 0.003;
+            if (red >= 130) {
+                redIncrease = false;
+            }
+        }
+        if (redIncrease == false) {
+            red = red - 0.003;
+            if (red <= 50) {
+                redIncrease = true;
+            }
+        }
+
+        if (blueIncrease == true) {
+            red = red + 0.003;
+            if (red >= 130) {
+                blueIncrease = false;
+            }
+        }
+        if (blueIncrease == false) {
+            red = red - 0.003;
+            if (red <= 50) {
+                blueIncrease = true;
+            }
+        }
+
+        if (greenIncrease == true) {
+            red = red + 0.003;
+            if (red >= 130) {
+                greenIncrease = false;
+            }
+        }
+        if (greenIncrease == false) {
+            red = red - 0.003;
+            if (red <= 50) {
+                greenIncrease = true;
+            }
+        }
     }
 
     draw(context) {
         context.beginPath();
         context.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        context.fillStyle = 'rgb(97, 72, 117)';
+        const opacity = 0.8 - this.frames / dotLife;
+        context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
         context.fill();
         context.closePath();
     }
@@ -36,7 +91,6 @@ class trailDot {
 window.addEventListener('mousemove', (e) => {
     const x = e.clientX;
     const y = e.clientY;
-    console.log(x, y);
     const dot = new trailDot(x, y, size);
     trailArray.push(dot);
 });
@@ -47,6 +101,7 @@ function render() {
 
     for (let i = 0; i < trailArray.length; i++) {
         const dot = trailArray[i];
+        dot.update();
         dot.draw(ctx);
         dot.frames++;
         if (dot.frames > dotLife) {
