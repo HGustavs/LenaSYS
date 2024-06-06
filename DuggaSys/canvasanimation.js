@@ -5,10 +5,11 @@ const ctx = courseedCanvas.getContext('2d');
 function resizeCanvas() {
     courseedCanvas.width = window.innerWidth;
     courseedCanvas.height = window.innerHeight;
+    courseedCanvas.style.overflowX = 'hidden'; //offset occurs if scrollbar is present (fixed by canvas using vw/vh). But this causes horizontal overflow. Hences this line.
+    courseedCanvas.style.position = 'fixed'; //necessary for scrolling
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
-
 
 const trailArray = [];
 const size = 10;
@@ -25,7 +26,7 @@ class trailDot {
     draw(context) {
         context.beginPath();
         context.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        context.fillStyle = 'rgb(0, 0, 0)';
+        context.fillStyle = 'rgb(97, 72, 117)';
         context.fill();
         context.closePath();
     }

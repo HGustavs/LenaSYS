@@ -38,6 +38,7 @@ if(isset($_SESSION['uid'])){
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
+	<script defer src="canvasanimation.js"></script>
 </head>
 <body>
 	<canvas id="canvasAnimation"></canvas>
@@ -197,7 +198,5 @@ if(isset($_SESSION['uid'])){
 	</div>
 	<!-- Edit Server Settings END -->
 
-
-	<script src="canvasanimation.js"></script>
 </body>
 </html>
