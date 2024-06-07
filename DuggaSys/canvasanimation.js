@@ -51,27 +51,27 @@ class trailDot {
         }
 
         if (blueIncrease == true) {
-            red = red + 0.003;
-            if (red >= 130) {
+            blue = blue + 0.003;
+            if (blue >= 130) {
                 blueIncrease = false;
             }
         }
         if (blueIncrease == false) {
-            red = red - 0.003;
-            if (red <= 50) {
+            blue = blue - 0.003;
+            if (blue <= 50) {
                 blueIncrease = true;
             }
         }
 
         if (greenIncrease == true) {
-            red = red + 0.003;
-            if (red >= 130) {
+            green = green + 0.003;
+            if (green >= 130) {
                 greenIncrease = false;
             }
         }
         if (greenIncrease == false) {
-            red = red - 0.003;
-            if (red <= 50) {
+            green = green - 0.003;
+            if (green <= 50) {
                 greenIncrease = true;
             }
         }
