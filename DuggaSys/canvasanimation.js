@@ -14,12 +14,12 @@ window.addEventListener('resize', resizeCanvas);
 const trailArray = [];
 const size = 4;
 const dotLife = 50; //the number means the amount of frames
-red = 97;
-blue = 117;
-green = 72
-redIncrease = true;
-blueIncrease = true;
-greenIncrease = true;
+let red = 97;
+let blue = 117;
+let green = 72;
+let redIncrease = true;
+let blueIncrease = true;
+let greenIncrease = true;
 
 class trailDot {
     constructor(x, y, size) {
