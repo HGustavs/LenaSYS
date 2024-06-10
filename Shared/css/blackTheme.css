@@ -449,8 +449,8 @@
 }
 
 .list td {
-    border-left: 2px solid var(--color-primary);
-    border-right: 2px solid var(--color-primary);
+    border-top: 1px solid var(--color-primary);
+    border-bottom: 1px solid var(--color-primary);
 }
 
 .changeColorInDarkModeTable:nth-of-type(even) { 

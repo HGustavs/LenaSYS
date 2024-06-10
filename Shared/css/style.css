@@ -3814,9 +3814,17 @@ div.submit-button:disabled {
 }
 
 .list td {
-  border-left: 2px solid var(--color-border-list);
-  border-right: 2px solid var(--color-border-list);
+  border-top: 1px solid var(--color-border-list);
+  border-bottom: 1px solid var(--color-border-list);
   padding: 0 8px 0 8px;
+}
+
+.list tr:nth-child(even) {
+  background-color: #61487520;
+}
+
+.list tr:hover{
+  background-color: #61487560;
 }
 
 .list th {
