@@ -2006,6 +2006,27 @@ function returnedSection(data) {
     var slist = document.getElementById('Sectionlisti');
     slist.innerHTML = str;
 
+
+    //Code testing
+    const sectionListDivs = document.querySelectorAll('#sectionlistc > div');
+    const divFullIdArr = [];
+    const divShortIdArr = [];
+    const regexId = /\d.*$/; //matches the first digit and everything following
+
+    for (let i = 0; i < sectionListDivs.length; i++) {
+      divFullIdArr.push(sectionListDivs[i].id);
+      let currentId = sectionListDivs[i].id;
+      let newId = currentId.replace(regexId, '');
+      divShortIdArr.push(newId);
+    }
+
+    console.log('divFullIdArr: ', divFullIdArr);
+    console.log('divShortIdArr: ', divShortIdArr);
+
+    //Code testing
+
+
+
     if (resave == true) {
       str = "";
       $("#Sectionlist").find(".item").each(function (i) {
