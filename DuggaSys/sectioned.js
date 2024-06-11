@@ -2007,8 +2007,6 @@ function returnedSection(data) {
     slist.innerHTML = str;
 
 
-    //Code testing
-
     //Creates ordered array of "rows"
     const sectionListDivs = document.querySelectorAll('#sectionlistc > div');
     const divFullIdArr = [];
@@ -2022,14 +2020,41 @@ function returnedSection(data) {
     for (let i = 0; i < divFullIdArr.length; i++) {
       if (divFullIdArr[i].includes('header')) {
         if (firstHeader == true) {
-          document.getElementById(divFullIdArr[i]).classList.add('headerMargin');
+          document.getElementById(divFullIdArr[i]).classList.add('sectionlistCMargin');
         }
         firstHeader = true;
       }
     }
 
-    //Code testing
+    //adds border to the side of each row
+    for (let i = 0; i < sectionListDivs.length; i++) {
+      document.getElementById(divFullIdArr[i]).classList.add('sectionlistCsideBorder');
+    }
 
+    //adds a small bottom margin to every moment that isn't preceded by a header. Also adds a bottom border to the preceding row
+    for (let i = 1; i < divFullIdArr.length; i++) {
+      if (!divFullIdArr[i - 1].includes('header') && divFullIdArr[i].includes('moment')) {
+        document.getElementById(divFullIdArr[i]).classList.add('sectionlistCSmallMargin');
+        document.getElementById(divFullIdArr[i - 1]).classList.add('sectionlistCbottomBorder');
+      }
+    }
+
+    //adds bottom border to any row that precedes a header row
+    for (let i = 0; i < divFullIdArr.length - 1; i++) {
+      if (divFullIdArr[i + 1].includes('header')) {
+        document.getElementById(divFullIdArr[i]).classList.add('sectionlistCbottomBorder');
+      }
+    }
+
+    //adds bottom border and bottom margin to the last item in the array
+    document.getElementById(divFullIdArr[divFullIdArr.length - 1]).classList.add('sectionlistCbottomBorder', 'sectionlistCbottomMargin');
+
+    //adds width class to every row except the header
+    for (let i = 0; i < divFullIdArr.length; i++) {
+      if (!divFullIdArr[i].includes('header')) {
+        document.getElementById(divFullIdArr[i]).classList.add('sectionlistCWidth');
+      }
+    }
 
 
     if (resave == true) {
