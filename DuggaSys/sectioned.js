@@ -2008,20 +2008,25 @@ function returnedSection(data) {
 
 
     //Code testing
+
+    //Creates ordered array of "rows"
     const sectionListDivs = document.querySelectorAll('#sectionlistc > div');
     const divFullIdArr = [];
-    const divShortIdArr = [];
-    const regexId = /\d.*$/; //matches the first digit and everything following
 
     for (let i = 0; i < sectionListDivs.length; i++) {
       divFullIdArr.push(sectionListDivs[i].id);
-      let currentId = sectionListDivs[i].id;
-      let newId = currentId.replace(regexId, '');
-      divShortIdArr.push(newId);
     }
 
-    console.log('divFullIdArr: ', divFullIdArr);
-    console.log('divShortIdArr: ', divShortIdArr);
+    //gives every header except for the first one a margin
+    let firstHeader = false;
+    for (let i = 0; i < divFullIdArr.length; i++) {
+      if (divFullIdArr[i].includes('header')) {
+        if (firstHeader == true) {
+          document.getElementById(divFullIdArr[i]).classList.add('headerMargin');
+        }
+        firstHeader = true;
+      }
+    }
 
     //Code testing
 

@@ -1331,6 +1331,10 @@ p {
   display: block;
 }
 
+/* Sectionlistc */
+.headerMargin {
+  margin-top: 20px;
+ }
 
 
 
