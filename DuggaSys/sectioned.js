@@ -29,6 +29,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
+let showHidden = true;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -2006,25 +2007,6 @@ function returnedSection(data) {
     var slist = document.getElementById('Sectionlisti');
     slist.innerHTML = str;
 
-//CODE TESTING
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'k') {
-      const testElement = document.getElementById('section4DG666V');
-
-      if (testElement) {
-
-          if (testElement.classList.contains('displayNone')) {
-            testElement.classList.remove('displayNone');
-            testElement.classList.add('displayBlock');
-          } else {
-            testElement.classList.add('displayNone');
-            testElement.classList.remove('displayBlock');
-          }
-      }
-  }
-});
-
     if (resave == true) {
       str = "";
       $("#Sectionlist").find(".item").each(function (i) {
@@ -2130,6 +2112,48 @@ document.addEventListener('keydown', function(e) {
     showMOTD();
   }
 
+  // Functions for toggling hidden elements
+  document.getElementById('toggleElements').addEventListener('click', function () {
+      if (showHidden === true) {
+        showHidden = false;
+      }
+      else {
+        showHidden = true;
+      }
+    toggleHidden();
+  });
+
+  function toggleHidden() { //Look for all td's that have the class "hidden"
+    const hiddenTds = document.querySelectorAll('#Sectionlistc td.hidden');
+    const hiddenDivs = [];
+    const uniqueAncestorIds = [];
+
+    hiddenTds.forEach(td => { // Find the closest ancestor div and push its ID into hiddenDivs
+      const ancestorDiv = td.closest('div');
+      hiddenDivs.push(ancestorDiv.id);
+    });
+
+    hiddenDivs.forEach(id => { //add unique IDs from hiddenDivs to uniqueAncestorIds
+      if (!uniqueAncestorIds.includes(id)) {
+        uniqueAncestorIds.push(id);
+      }
+    });
+
+    if (showHidden === true) {
+      uniqueAncestorIds.forEach(element => {
+        document.getElementById(element).classList.remove('displayNone');
+        document.getElementById(element).classList.add('displayBlock');
+      });
+
+    }
+    else {
+      uniqueAncestorIds.forEach(element => {
+        document.getElementById(element).classList.remove('displayBlock');
+        document.getElementById(element).classList.add('displayNone');
+      });
+    }
+  }
+  toggleHidden();
 }
  
 function openCanvasLink(btnobj) {
