@@ -10369,4 +10369,12 @@ button:disabled {
   font-style:italic;
 }
 
+.displayNone {
+  display: none;
+}
+
+.displayBlock {
+  display: block;
+}
+
 /* END */

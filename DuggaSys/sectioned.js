@@ -1496,10 +1496,10 @@ function returnedSection(data) {
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
         if ((Date.parse(item['ts']) - dateToday) > compareWeek) {
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " glow" + "' style='display:block'>";
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " glow displayBlock'>";
         }
         else {
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " displayBlock'>";
         }
 
         menuState.idCounter++;
@@ -2005,6 +2005,25 @@ function returnedSection(data) {
 
     var slist = document.getElementById('Sectionlisti');
     slist.innerHTML = str;
+
+//CODE TESTING
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'k') {
+      const testElement = document.getElementById('section4DG666V');
+
+      if (testElement) {
+
+          if (testElement.classList.contains('displayNone')) {
+            testElement.classList.remove('displayNone');
+            testElement.classList.add('displayBlock');
+          } else {
+            testElement.classList.add('displayNone');
+            testElement.classList.remove('displayBlock');
+          }
+      }
+  }
+});
 
     if (resave == true) {
       str = "";
