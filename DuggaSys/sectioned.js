@@ -1371,6 +1371,17 @@ function duggaRowClick(rowElement) {
     }
   }
 }
+
+//
+function toggleButtonClickHandler() {
+  if (showHidden === true) {
+    showHidden = false;
+  } else {
+    showHidden = true;
+  }
+  toggleHidden();
+}
+
 var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
@@ -2111,51 +2122,40 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
-
-  // Functions for toggling hidden elements
-  document.getElementById('toggleElements').addEventListener('click', function () {
-      if (showHidden === true) {
-        showHidden = false;
-      }
-      else {
-        showHidden = true;
-      }
-    toggleHidden();
-  });
-
-  function toggleHidden() { //Look for all td's that have the class "hidden"
-    const hiddenTds = document.querySelectorAll('#Sectionlistc td.hidden');
-    const hiddenDivs = [];
-    const uniqueAncestorIds = [];
-
-    hiddenTds.forEach(td => { // Find the closest ancestor div and push its ID into hiddenDivs
-      const ancestorDiv = td.closest('div');
-      hiddenDivs.push(ancestorDiv.id);
-    });
-
-    hiddenDivs.forEach(id => { //add unique IDs from hiddenDivs to uniqueAncestorIds
-      if (!uniqueAncestorIds.includes(id)) {
-        uniqueAncestorIds.push(id);
-      }
-    });
-
-    if (showHidden === true) {
-      uniqueAncestorIds.forEach(element => {
-        document.getElementById(element).classList.remove('displayNone');
-        document.getElementById(element).classList.add('displayBlock');
-      });
-
-    }
-    else {
-      uniqueAncestorIds.forEach(element => {
-        document.getElementById(element).classList.remove('displayBlock');
-        document.getElementById(element).classList.add('displayNone');
-      });
-    }
-  }
+  document.getElementById('toggleElements').addEventListener('click', toggleButtonClickHandler);
   toggleHidden();
 }
  
+function toggleHidden() { //Look for all td's that have the class "hidden"
+  const hiddenTds = document.querySelectorAll('#Sectionlistc td.hidden');
+  const hiddenDivs = [];
+  const uniqueAncestorIds = [];
+
+  hiddenTds.forEach(td => { // Find the closest ancestor div and push its ID into hiddenDivs
+    const ancestorDiv = td.closest('div');
+    hiddenDivs.push(ancestorDiv.id);
+  });
+
+  hiddenDivs.forEach(id => { //add unique IDs from hiddenDivs to uniqueAncestorIds
+    if (!uniqueAncestorIds.includes(id)) {
+      uniqueAncestorIds.push(id);
+    }
+  });
+  if (showHidden === true) {
+    uniqueAncestorIds.forEach(element => {
+      document.getElementById(element).classList.remove('displayNone');
+      document.getElementById(element).classList.add('displayBlock');
+    });
+
+  }
+  else {
+    uniqueAncestorIds.forEach(element => {
+      document.getElementById(element).classList.remove('displayBlock');
+      document.getElementById(element).classList.add('displayNone');
+    });
+  }
+}
+
 function openCanvasLink(btnobj) {
   //Searches closest tr element and then searches for classes that contain the link.
   parentTr = btnobj.closest('tr');
