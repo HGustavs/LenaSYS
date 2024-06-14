@@ -1377,48 +1377,46 @@ function SwimlaneToggleFunction() {
   const swimlaneDiv = document.getElementById('statisticsSwimlanes');
   const swimlaneSvgElement = document.getElementById('swimlaneSVG');
   const currentChoiceIndex = swimLaneViewOptions.indexOf(swimlaneViewChoice);
+  const toggleButton = document.getElementById('swimlaneToggleButton');
 
   let nextChoiceIndex = (currentChoiceIndex + 1);
   if (nextChoiceIndex > 2) {
     nextChoiceIndex = 0;
   }
-    swimlaneViewChoice = swimLaneViewOptions[nextChoiceIndex];
-  console.log(nextChoiceIndex);
-  let toggleButton = document.getElementById('swimlaneToggleButton');
+  swimlaneViewChoice = swimLaneViewOptions[nextChoiceIndex];
 
+  switch (swimlaneViewChoice) {
+    case 'normal':
+      toggleButton.title = 'Toggle to scroll view';
+      swimlaneDiv.style.maxHeight = 'None';
+      swimlaneDiv.style.height = 'Auto';
+      swimlaneDiv.style.width = 'Auto';
+      swimlaneDiv.style.overflowY = 'None';
+      swimlaneSvgElement.style.height = '';
+      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
+      break;
+    case 'scroll':
+      swimlaneDiv.style.maxHeight = '70vh';
+      swimlaneDiv.style.overflowY = 'Scroll';
+      swimlaneDiv.style.width = 'Auto';
+      toggleButton.title = 'Toggle to screenfit view';
+      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
+      break;
+    case 'screenfit':
+      swimlaneDiv.style.maxHeight = '65vh';
+      swimlaneDiv.style.height = '65vh';
+      swimlaneDiv.style.width = 'Auto';
+      swimlaneDiv.style.overflow = 'hidden';
+      swimlaneSvgElement.style.height = '100%';
+      swimlaneSvgElement.style.margin = '0';
 
-    switch (swimlaneViewChoice) {
-      case 'normal':
-        toggleButton.title = 'Toggle to scroll view';
-        swimlaneDiv.style.maxHeight = 'None';
-        swimlaneDiv.style.height = 'Auto';
-        swimlaneDiv.style.width = 'Auto';
-        swimlaneDiv.style.overflowY = 'None';
-        swimlaneSvgElement.style.height = '';
-        console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
-        break;
-      case 'scroll':
-        swimlaneDiv.style.maxHeight = '70vh';
-        swimlaneDiv.style.overflowY = 'Scroll';
-        swimlaneDiv.style.width = 'Auto';
-        toggleButton.title = 'Toggle to screenfit view';
-        console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
-        break;
-      case 'screenfit':      
-          swimlaneDiv.style.maxHeight = '65vh';
-          swimlaneDiv.style.height = '65vh';
-          swimlaneDiv.style.width = 'Auto';
-          swimlaneDiv.style.overflow = 'hidden';
-          swimlaneSvgElement.style.height = '100%';
-          swimlaneSvgElement.style.margin = '0';
-  
-        toggleButton.title = 'Toggle to normal view';
-        console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
-        break;
-      default:
-        console.log('Something went wrong');
-        break;
-    }
+      toggleButton.title = 'Toggle to normal view';
+      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
+      break;
+    default:
+      console.log('Something went wrong');
+      break;
+  }
 }
 
 var itemKinds = [];
@@ -2161,7 +2159,59 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
-  document.getElementById('swimlaneToggleButton').addEventListener('click', SwimlaneToggleFunction);
+
+  //Check if the swimlane has more height than 65vh
+  const swimlaneDivElement = document.getElementById('statisticsSwimlanes');
+  const swimlaneDivHeight = swimlaneDivElement.clientHeight;
+  const viewportHeight = window.innerHeight / 100;
+  const heightInPixels = 70 * viewportHeight;
+  const swimlaneToggleButtonElement = document.getElementById('swimlaneToggleButton');
+
+  //if more than 65vh, activate eventlistener and button
+  if (swimlaneDivHeight > heightInPixels) {
+    document.getElementById('swimlaneToggleButton').addEventListener('click', SwimlaneToggleFunction);
+    swimlaneToggleButtonElement.disabled = false;
+    swimlaneToggleButtonElement.style.display = 'Block';
+    swimlaneToggleButtonElement.title = 'Toggle to scroll view';
+  }
+  else {
+    swimlaneToggleButtonElement.disabled = true;
+    swimlaneToggleButtonElement.style.display = 'None';
+  }
+
+  const swimlaneSvgElement = document.getElementById('swimlaneSVG');
+  const toggleButtonElement = document.getElementById('swimlaneToggleButton');
+  
+  //initialize toggler correctly if returnedSection is run
+  switch (swimlaneViewChoice) {
+    case 'normal':
+      toggleButtonElement.title = 'Toggle to scroll view';
+      swimlaneDivElement.style.maxHeight = 'None';
+      swimlaneDivElement.style.height = 'Auto';
+      swimlaneDivElement.style.width = 'Auto';
+      swimlaneDivElement.style.overflowY = 'None';
+      swimlaneSvgElement.style.height = '';
+      break;
+    case 'scroll':
+      swimlaneDivElement.style.maxHeight = '70vh';
+      swimlaneDivElement.style.overflowY = 'Scroll';
+      swimlaneDivElement.style.width = 'Auto';
+      toggleButtonElement.title = 'Toggle to screenfit view';
+      break;
+    case 'screenfit':
+      swimlaneDivElement.style.maxHeight = '65vh';
+      swimlaneDivElement.style.height = '65vh';
+      swimlaneDivElement.style.width = 'Auto';
+      swimlaneDivElement.style.overflow = 'hidden';
+      swimlaneSvgElement.style.height = '100%';
+      swimlaneSvgElement.style.margin = '0';
+
+      toggleButtonElement.title = 'Toggle to normal view';
+      break;
+    default:
+      console.log('Something went wrong');
+      break;
+  }
 }
  
 function openCanvasLink(btnobj) {
