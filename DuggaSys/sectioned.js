@@ -1407,7 +1407,6 @@ function SwimlaneToggleFunction() {
       swimlaneDiv.style.overflow = 'hidden';
       swimlaneSvgElement.style.height = '100%';
       swimlaneSvgElement.style.margin = '0';
-
       toggleButton.title = 'Toggle to normal view';
       break;
     default:
@@ -2202,7 +2201,6 @@ function returnedSection(data) {
       swimlaneDivElement.style.overflow = 'hidden';
       swimlaneSvgElement.style.height = '100%';
       swimlaneSvgElement.style.margin = '0';
-
       toggleButtonElement.title = 'Toggle to normal view';
       break;
     default:
