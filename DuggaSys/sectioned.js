@@ -1374,8 +1374,10 @@ function duggaRowClick(rowElement) {
 }
 
 function SwimlaneToggleFunction() {
-
+  const swimlaneDiv = document.getElementById('statisticsSwimlanes');
+  const swimlaneSvgElement = document.getElementById('swimlaneSVG');
   const currentChoiceIndex = swimLaneViewOptions.indexOf(swimlaneViewChoice);
+
   let nextChoiceIndex = (currentChoiceIndex + 1);
   if (nextChoiceIndex > 2) {
     nextChoiceIndex = 0;
@@ -1384,23 +1386,39 @@ function SwimlaneToggleFunction() {
   console.log(nextChoiceIndex);
   let toggleButton = document.getElementById('swimlaneToggleButton');
 
-  switch (swimlaneViewChoice) {
-    case 'normal':
-      toggleButton.title = 'Toggle to scroll view';
-      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
-      break;
-    case 'scroll':
-      toggleButton.title = 'Toggle to screenfit view';
-      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
-      break;
-    case 'screenfit':
-      toggleButton.title = 'Toggle to normal view';
-      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
-      break;
-    default:
-      console.log('Something went wrong');
-      break;
-  }
+
+    switch (swimlaneViewChoice) {
+      case 'normal':
+        toggleButton.title = 'Toggle to scroll view';
+        swimlaneDiv.style.maxHeight = 'None';
+        swimlaneDiv.style.height = 'Auto';
+        swimlaneDiv.style.width = 'Auto';
+        swimlaneDiv.style.overflowY = 'None';
+        swimlaneSvgElement.style.height = '';
+        console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
+        break;
+      case 'scroll':
+        swimlaneDiv.style.maxHeight = '70vh';
+        swimlaneDiv.style.overflowY = 'Scroll';
+        swimlaneDiv.style.width = 'Auto';
+        toggleButton.title = 'Toggle to screenfit view';
+        console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
+        break;
+      case 'screenfit':      
+          swimlaneDiv.style.maxHeight = '65vh';
+          swimlaneDiv.style.height = '65vh';
+          swimlaneDiv.style.width = 'Auto';
+          swimlaneDiv.style.overflow = 'hidden';
+          swimlaneSvgElement.style.height = '100%';
+          swimlaneSvgElement.style.margin = '0';
+  
+        toggleButton.title = 'Toggle to normal view';
+        console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
+        break;
+      default:
+        console.log('Something went wrong');
+        break;
+    }
 }
 
 var itemKinds = [];
