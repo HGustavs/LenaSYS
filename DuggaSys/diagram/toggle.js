@@ -157,6 +157,12 @@ function toggleA4Template() {
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
+        
+        const vRect = document.getElementById("vRect");
+        const a4Rect = document.getElementById("a4Rect");
+        
+        vRect.style.display = "none";  // Hide horizontal
+        a4Rect.style.display = "block";  // Show vertical
     }
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
 }
