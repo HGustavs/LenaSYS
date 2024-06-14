@@ -1393,14 +1393,12 @@ function SwimlaneToggleFunction() {
       swimlaneDiv.style.width = 'Auto';
       swimlaneDiv.style.overflowY = 'None';
       swimlaneSvgElement.style.height = '';
-      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
       break;
     case 'scroll':
       swimlaneDiv.style.maxHeight = '70vh';
       swimlaneDiv.style.overflowY = 'Scroll';
       swimlaneDiv.style.width = 'Auto';
       toggleButton.title = 'Toggle to screenfit view';
-      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
       break;
     case 'screenfit':
       swimlaneDiv.style.maxHeight = '65vh';
@@ -1411,10 +1409,9 @@ function SwimlaneToggleFunction() {
       swimlaneSvgElement.style.margin = '0';
 
       toggleButton.title = 'Toggle to normal view';
-      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
       break;
     default:
-      console.log('Something went wrong');
+      console.log('Something went wrong with the toggler');
       break;
   }
 }
@@ -2181,7 +2178,7 @@ function returnedSection(data) {
 
   const swimlaneSvgElement = document.getElementById('swimlaneSVG');
   const toggleButtonElement = document.getElementById('swimlaneToggleButton');
-  
+
   //initialize toggler correctly if returnedSection is run
   switch (swimlaneViewChoice) {
     case 'normal':
@@ -2209,7 +2206,7 @@ function returnedSection(data) {
       toggleButtonElement.title = 'Toggle to normal view';
       break;
     default:
-      console.log('Something went wrong');
+      console.log('Something went wrong with the toggler');
       break;
   }
 }
