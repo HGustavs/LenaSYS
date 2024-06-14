@@ -29,6 +29,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
+let swimlaneViewChoice = 0;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -1370,6 +1371,33 @@ function duggaRowClick(rowElement) {
     }
   }
 }
+
+function SwimlaneToggleFunction() {
+  console.log(swimlaneViewChoice);
+  let testElement = document.getElementById('swimlaneToggleButton');
+  console.log('swimlaneToggleButton');
+
+  switch (swimlaneViewChoice) {
+    case 0:
+      testElement.title = 'Toggle mode 1';
+      break;
+    case 1:
+      testElement.title = 'Toggle mode 2';
+      break;
+    case 2:
+      testElement.title = 'Toggle mode 3';
+      break;
+    default:
+      console.log('Something went wrong');
+      break;
+  }
+
+  swimlaneViewChoice++;
+  if (swimlaneViewChoice > 2) {
+    swimlaneViewChoice = 0;
+  }
+}
+
 var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
@@ -2110,7 +2138,7 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
-
+  document.getElementById('swimlaneToggleButton').addEventListener('click', SwimlaneToggleFunction);
 }
  
 function openCanvasLink(btnobj) {

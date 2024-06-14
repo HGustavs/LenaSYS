@@ -170,6 +170,8 @@
 			<!-- Hide button -->
 		
 			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
+			<input id="swimlaneToggleButton" type='image' src='../Shared/icons/rotateButton.svg' class='submit-button-newitem' title='Toggle swimlane view'>
+
 				<!-- <input id='tabElement'  type='button' value="&#8633;" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
 				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg'  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
