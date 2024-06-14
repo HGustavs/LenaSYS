@@ -29,7 +29,8 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
-let swimlaneViewChoice = 0;
+const swimLaneViewOptions = ['normal', 'scroll', 'screenfit'];
+let swimlaneViewChoice = swimLaneViewOptions[0];
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -1373,28 +1374,32 @@ function duggaRowClick(rowElement) {
 }
 
 function SwimlaneToggleFunction() {
-  console.log(swimlaneViewChoice);
-  let testElement = document.getElementById('swimlaneToggleButton');
-  console.log('swimlaneToggleButton');
+
+  const currentChoiceIndex = swimLaneViewOptions.indexOf(swimlaneViewChoice);
+  let nextChoiceIndex = (currentChoiceIndex + 1);
+  if (nextChoiceIndex > 2) {
+    nextChoiceIndex = 0;
+  }
+    swimlaneViewChoice = swimLaneViewOptions[nextChoiceIndex];
+  console.log(nextChoiceIndex);
+  let toggleButton = document.getElementById('swimlaneToggleButton');
 
   switch (swimlaneViewChoice) {
-    case 0:
-      testElement.title = 'Toggle mode 1';
+    case 'normal':
+      toggleButton.title = 'Toggle to scroll view';
+      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
       break;
-    case 1:
-      testElement.title = 'Toggle mode 2';
+    case 'scroll':
+      toggleButton.title = 'Toggle to screenfit view';
+      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
       break;
-    case 2:
-      testElement.title = 'Toggle mode 3';
+    case 'screenfit':
+      toggleButton.title = 'Toggle to normal view';
+      console.log('mode: ', swimLaneViewOptions[nextChoiceIndex]);
       break;
     default:
       console.log('Something went wrong');
       break;
-  }
-
-  swimlaneViewChoice++;
-  if (swimlaneViewChoice > 2) {
-    swimlaneViewChoice = 0;
   }
 }
 
