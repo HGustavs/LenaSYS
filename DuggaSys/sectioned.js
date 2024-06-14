@@ -1391,7 +1391,7 @@ function SwimlaneToggleFunction() {
       swimlaneDiv.style.maxHeight = 'None';
       swimlaneDiv.style.height = 'Auto';
       swimlaneDiv.style.width = 'Auto';
-      swimlaneDiv.style.overflowY = 'None';
+      swimlaneDiv.style.overflow = 'None';
       swimlaneSvgElement.style.height = '';
       break;
     case 'scroll':
@@ -2185,7 +2185,7 @@ function returnedSection(data) {
       swimlaneDivElement.style.maxHeight = 'None';
       swimlaneDivElement.style.height = 'Auto';
       swimlaneDivElement.style.width = 'Auto';
-      swimlaneDivElement.style.overflowY = 'None';
+      swimlaneDivElement.style.overflow = 'None';
       swimlaneSvgElement.style.height = '';
       break;
     case 'scroll':
