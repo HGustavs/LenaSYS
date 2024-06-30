@@ -58,7 +58,7 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IERelation:
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
-            style = `left:0; top:0; width:auto; height:auto; z-index:${(element.name == "Inheritance") ? 2 : 1};`;
+            style = `left:0; top:0; width:auto; height:auto; z-index:${(element.name == "Inheritance") ? 2 : 1}; padding-top:3px; margin-left: 0px; margin-right:0px;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -674,4 +674,3 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     }
     return drawSvg(boxw, boxh + texth * length, content);
 }
-
