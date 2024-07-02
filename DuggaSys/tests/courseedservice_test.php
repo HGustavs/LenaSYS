@@ -48,4 +48,5 @@ $testsData = array(                                             //testfile
         'filter-output' => serialize(array('success', 'message'))
     )
 );
+testHandler($testsData, true);
 ?>
