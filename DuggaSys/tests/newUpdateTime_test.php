@@ -11,7 +11,7 @@ $testsData = array(   // Test-data is saved on this array that is then tested in
         //Pre-values
         'query-before-test-1' => "UPDATE course SET updated = '2000-01-01 00:00:00' WHERE cid = 1885;",
         'query-after-test-1' => "UPDATE course SET updated = '2000-01-01 00:00:00' WHERE cid = 1885;",
-        'service' => 'http://localhost/LenaSYS/DuggaSys/courseedservice.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys\microservices\gitCommitService\newUpdateTime_ms.php',
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
