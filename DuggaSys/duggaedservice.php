@@ -49,7 +49,7 @@ $info="opt: ".$opt." cid: ".$cid." qid: ".$qid." vid: ".$vid." param: ".$param."
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
-// Services
+// services
 //------------------------------------------------------------------------------------------------
 $writeaccess = false;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st'))){
