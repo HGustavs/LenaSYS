@@ -110,7 +110,7 @@
 				echo "<tr>";
 				echo "	<div class='motdBoxheader' >";
 				echo "		<h3>Message of the day</h3>";
-				echo "		<input type='button' value='Close' class='submit-button' onclick='closeMOTD()'/>";
+				echo "<input type='button' id='MOTDbutton' value='Close' class='submit-button' onclick='closeMOTD()'/>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";
