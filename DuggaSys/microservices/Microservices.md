@@ -88,7 +88,6 @@ __Shared microservices:__
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
-- createNewVersionOfCourse_ms.php __==UNFINISHED==__
 - setAsActiveCourse_ms.php __==finished==__ New filename: "updateActiveCourse_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
