@@ -56,17 +56,17 @@ try {
     $pdo = new PDO('mysql:host=localhost;dbname=yourdbname', 'brom', 'password');
     
     // Run the service call
-    $ch = curl_init('http://localhost/LenaSYS/DuggaSys/microservices/gitCommitService/newUpdateTime_ms.php');
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
+    $curlhandle = curl_init('http://localhost/LenaSYS/DuggaSys/microservices/gitCommitService/newUpdateTime_ms.php');
+    curl_setopt($curlhandle, CURLOPT_POST, 1);
+    curl_setopt($curlhandle, CURLOPT_POSTFIELDS, json_encode(array(
         'username' => 'brom',
         'password' => 'password',
         'courseid' => '1885',
         'currentTime' => $currentTimestamp
     )));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    curl_setopt($curlhandle, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curlhandle);
+    curl_close($curlhandle);
     
     // Verify the database update
     verifyDatabaseUpdate($pdo, 1885, $currentTime);

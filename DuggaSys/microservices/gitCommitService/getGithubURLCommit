@@ -47,3 +47,31 @@ foreach ($commits as $commit) {
 header("Content-Type: application/json");
 echo json_encode($processed_commits); 
 
+// Check if JSON decoding was successful
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode(["error" => "JSON decoding error: " . json_last_error_msg()]);
+    exit;
+}
+
+// Check if we received an array of commits
+if (!is_array($commits)) {
+    echo json_encode(["error" => "Unexpected response format", "response" => $commits]);
+    exit;
+}
+
+// Process and return the commits data
+$processed_commits = [];
+foreach ($commits as $commit) {
+    if (isset($commit["sha"], $commit["commit"]["message"], $commit["commit"]["author"]["name"], $commit["commit"]["author"]["date"])) {
+        $processed_commits[] = [
+            "sha" => $commit["sha"],
+            "message" => $commit["commit"]["message"],
+            "author" => $commit["commit"]["author"]["name"],
+            "date" => $commit["commit"]["author"]["date"]
+        ];
+    }
+}
+
+// Output the processed commits as JSON
+header("Content-Type: application/json");
+echo json_encode($processed_commits);
