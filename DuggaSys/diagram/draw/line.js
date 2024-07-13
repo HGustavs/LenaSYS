@@ -3,7 +3,7 @@
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
- function drawLine(line, targetGhost = false) {
+function drawLine(line, targetGhost = false) {
     let str = "";
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
@@ -290,12 +290,12 @@ function getLineAttrubutes(f, t, ctype) {
             break;
         case lineDirection.LEFT:
             offset.x1 = px;
-            offset.x2 = 0;
-            result = [f.x1, f.cy, t.x2, t.cy, offset];
+            offset.x2 = px * 4;
+            result = [f.x1, f.cy, t.x1, t.cy, offset];
             break;
         case lineDirection.RIGHT:
             offset.x1 = 0;
-            offset.x2 = px;
+            offset.x2 = px * 6;
             result = [f.x2, f.cy, t.x1, t.cy, offset];
     }
     return result;
