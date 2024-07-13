@@ -9,7 +9,8 @@ function drawElement(element, ghosted = false) {
     let texth = Math.round(zoomfact * textheight);
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let boxh = element.height ? 
+        Math.round(element.height * zoomfact) : 0; // Only used for extra whitespace from resize
     let zLevel = 2;
     let mouseEnter = '';
 
@@ -172,7 +173,8 @@ function drawSvg(w, h, s, extra = '') {
     return `<svg width='${w}' height='${h}' ${extra}> ${s} </svg>`;
 }
 
-function drawRect(w, h, l, e, extra = `fill='${e.fill}'`) {
+function drawRect(w, h, l, e,
+    extra = e.fill ? `fill='${e.fill}'` : `fill=#ffffff`) {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
                 width='${w - l * 2}' height='${h - l * 2}' 
@@ -323,7 +325,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
                 z"
             stroke-width='${linew}'
             stroke='${element.stroke}'
-            fill='${element.fill}'
+            fill='${element.fill ? element.fill : "#ffffff"}'
         />`;
     let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
     let headSvg = drawSvg(boxw, height, headPath + headText);
@@ -348,7 +350,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
                     z"
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
-                fill='${element.fill}'
+                fill='${element.fill ? element.fill : "#ffffff"}'
             />`;
         let contentSvg = drawSvg(boxw, height, path + text);
         let style = `height:${height}px`;
