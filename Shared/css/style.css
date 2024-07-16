@@ -3374,10 +3374,11 @@ input.submit-button-newitem {
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
-  -webkit-appearance: none;
+  -webkit-appearance: none; 
   float: right;
 }
 
+/*PLUS ICON RELEVANT*/
 input.submit-button-newitem:hover {
   transition: 0.4s;
   background-color: rgb(283, 233, 126);
@@ -3405,6 +3406,7 @@ input.diagram-sidebar-buttons:hover {
   border-radius: 2px;
 }
 
+/*Relevant icon*/
 button.diagram-menu-buttons {
   background-color: #ff8000;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -3422,6 +3424,7 @@ button.diagram-menu-buttons {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
+/*Hover on relevant icon*/
 button.diagram-menu-buttons:hover {
   background-color: var(--color-accent-hover);
   border-radius: 2px;
@@ -7574,9 +7577,9 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 1.8rem 1.5rem 0rem 0rem;
-  margin: 0rem;
-  left: -3.5rem;
+  padding: 5rem 3.5rem 0rem 0rem;
+  margin: -2rem;
+  /*left: -3.5rem;*/
   width: 100%;
   list-style: none;
   text-align: center;

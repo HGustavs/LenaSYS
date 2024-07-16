@@ -2486,6 +2486,7 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
 }
 
+/*FAB-BTN-LIST IF OR ELSE*/
 function FABMouseOver(e) {
 	if (e.target.id === "fabBtn") {
 		if ($('.fab-btn-sm').hasClass('scale-out')) {
@@ -2498,7 +2499,7 @@ function FABMouseOver(e) {
 			$('.fab-btn-list2').fadeIn(0);
 			$('.fab-btn-sm2').toggleClass('scale-out');
 		}
-	}
+	} 
 }
 
 //----------------------------------------------------------------------------------
@@ -2513,8 +2514,8 @@ function FABMouseOut(e) {
 		$('.fab-btn-sm2').toggleClass('scale-out');
 		$('.fab-btn-list2').delay(100).fadeOut(0);
 	}
+	
 }
-
 //----------------------------------------------------------------------------------
 // FABDown : FAB Mouse Down
 //----------------------------------------------------------------------------------
