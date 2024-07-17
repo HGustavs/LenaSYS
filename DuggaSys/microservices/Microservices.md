@@ -2280,7 +2280,7 @@ The microservice retrieves and outputs course data for a user by calling the __r
 
 ### specialUpdate_ms.php
 
-__specialUpdate_ms.php__ checks... (create description)
+__specialUpdate_ms.php__ checks user login and permissions, then updates details of a course from the database that corresponds to the provided course id. courseGitURL is left out if an exception occurs when trying to update a course. Finally __retrieveCourseedService_ms.php__ is used to fetch the updated course data from the database which is returned as JSON-encoding.
 
 __Include original service files:__ sessions.php, basic.php
 
