@@ -315,6 +315,7 @@
 .node.mu {
     right: calc(50% - 4px);
     cursor: ns-resize;
+    top: 0;
 }
 .node.tr{
     cursor: nesw-resize;
