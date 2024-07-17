@@ -148,6 +148,7 @@ __Courseed Service:__
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - retrieveCourseedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 - retrieveAllCourseedServiceData_ms.php __==finished==__ Previously named: "getCourseed_ms.php".
+- specialUpdate_ms.php __==finished==__
 <br>
 
 __Diagram Service:__
@@ -2271,6 +2272,35 @@ __retrieveAllCourseedServiceData_ms.php__ calls __retrieveCourseedService_ms.php
 
 The microservice retrieves and outputs course data for a user by calling the __retrieveCourseedService_ms.php__ and returning the result as a JSON-encoded string.Additionally, it checks if the user is logged in and determines if the user is a superuser.
 
+<br>
+
+---
+
+<br>
+
+### specialUpdate_ms.php
+
+__specialUpdate_ms.php__ checks user login and permissions, then updates details of a course from the database that corresponds to the provided course id. courseGitURL is left out if an exception occurs when trying to update a course. Finally __retrieveCourseedService_ms.php__ is used to fetch the updated course data from the database which is returned as JSON-encoding.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
+
+__Queries used in this microservice:__ 
+
+```sql
+SELECT * from course WHERE cid=:cid;
+```
+
+```sql
+UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;
+```
+
+If an exception occurs the update of column courseGitURL is omitted from the query.
+
+```sql
+UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;
+```
 <br>
 <br>
 
