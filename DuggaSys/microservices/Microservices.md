@@ -2273,6 +2273,24 @@ __retrieveAllCourseedServiceData_ms.php__ calls __retrieveCourseedService_ms.php
 The microservice retrieves and outputs course data for a user by calling the __retrieveCourseedService_ms.php__ and returning the result as a JSON-encoded string.Additionally, it checks if the user is logged in and determines if the user is a superuser.
 
 <br>
+
+---
+
+<br>
+
+### specialUpdate_ms.php
+
+__specialUpdate_ms.php__ checks... (create description)
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
+
+__Querys used in this microservice:__ (add queries)
+
+
+
+<br>
 <br>
 
 ---
