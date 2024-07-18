@@ -1,5 +1,6 @@
 <?php
 
+
 function retrieveGitCommitService_ms() {
   // Error handling: Check if Git is installed and accessible
   if (!function_exists('shell_exec')) {
