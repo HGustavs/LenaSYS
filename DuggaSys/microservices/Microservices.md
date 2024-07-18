@@ -2898,6 +2898,11 @@ _WORK PAUSED for development of this microservice. Will continue when the servic
 
 <br>
 
+
+### retrieveGitCommitservice_ms.php
+
+The retrieveGitCommitService_ms microservice fetches and displays the list of Git commits from a repository on the server. It first checks if the shell_exec function is available to execute system commands. If available, it runs a Git command to retrieve the commit hash and message, sanitizes the output, and then displays the commit information. This service is useful for developers needing quick access to commit history directly from the server without using the Git client. To use it, include and call the function in your PHP script, ensuring Git is installed and shell_exec is enabled.
+
 ---
 
 <br>
