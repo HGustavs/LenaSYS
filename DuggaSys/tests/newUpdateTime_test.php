@@ -1,6 +1,7 @@
 <?php
 include "../../Shared/test.php";   // Include the test file where this is sent to
 
+
 function getCurrentTime() {
     return date('Y-m-d H:i:s');
 }
