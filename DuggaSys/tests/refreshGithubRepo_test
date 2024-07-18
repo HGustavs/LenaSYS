@@ -1,0 +1,18 @@
+<?php
+
+include "../../Shared/test.php";
+
+$testsData = array(
+    'refresh a github repo' => array(
+        'expected-output' => 'The course has been updated, files have been downloaded!',
+        'service' => 'http://localhost/LenaSYS/courseresource/refresher.php',
+        'service-data' => serialize(
+            array(
+                'action' => 'refreshGithubRepo',
+                'cid' => '123',
+                'user' => 'testuser'
+            )
+        ),
+        'filter-output' => 'none'
+    ),
+    

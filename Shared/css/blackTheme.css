@@ -576,7 +576,7 @@ body {
     border: 2px solid var(--color-text-secondary);
 }
 
-/* Course schedule styling */
+/* Course schedule styling*/
 #swimlaneSVG rect:nth-child(n of .progressBar){
     opacity: 0.9;
 }

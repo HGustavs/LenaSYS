@@ -6,8 +6,8 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
-include_once "../../../Shared/sessions.php";
-include_once "../../../Shared/basic.php";
+include_once "../../Shared/sessions.php";
+include_once "../../Shared/basic.php";
 include_once "retrieveShowDuggaService_ms.php";
 
 pdoConnect(); // Connect to database and start session
@@ -103,7 +103,7 @@ if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment !=
 
 $log_uuid = getOP('log_uuid');
 $info="opt: ".$opt." courseid: ".$courseid." coursevers: ".$coursevers." duggaid: ".$duggaid." moment: ".$moment." segment: ".$segment." answer: ".$answer;
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info,"test");
 
 
 if(strcmp($opt,"SAVDU")==0){
