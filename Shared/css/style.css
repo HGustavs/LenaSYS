@@ -1413,6 +1413,12 @@ header td {
   height: 32px;
 }
 
+.accesFilterButt{
+  width: 29px;
+  vertical-align: middle;
+  margin-top: 0px;
+}
+
 #downloadButt {
   margin-top: 2px;
   height: 40px;
