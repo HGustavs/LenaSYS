@@ -11,19 +11,17 @@ function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, 
 	isset($_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"])){
 
 	$tmphash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
-	$tmphashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-	$tmpvariant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
 	
 	$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE hash=:hash ORDER BY subid,fieldnme,updtime asc;");  
 	$query->bindParam(':hash', $tmphash);
-	$result = $query->execute();
+	$query->execute();
 	$rows = $query->fetchAll();
 	
 	//if the hash didn't work and the user is a superuser then retrive all submissions
 	if(isSuperUser($_SESSION['uid']) && $rows == NULL){
 		$query = $pdo->prepare("SELECT subid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment,hash from submission WHERE segment=:moment ORDER BY subid,fieldnme,updtime asc;");  
 		$query->bindParam(':moment', $moment);
-		$result = $query->execute();
+		$query->execute();
 		$rows = $query->fetchAll();
 	}
 	// Store current day in string
@@ -35,7 +33,6 @@ function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, 
 			$feedback = "UNK";
 			$zipdir = "";
 			$zip = new ZipArchive;
-			$currcvd=getcwd();
 			
 
 			$ziptemp = $row['filepath'].$row['filename'].$row['seq'].".".$row['extension'];
