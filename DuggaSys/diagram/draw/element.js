@@ -491,7 +491,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                     class="text" 
                     d="M${boxw / 2},${boxw / 4 + linew} V${boxh}"
                     stroke-width='${linew}'
-                    stroke='gray'
+                    stroke='${element.stroke}'
                     stroke-dasharray='${linew * 3},${linew * 3}'
                     fill='transparent'
                 />
@@ -500,7 +500,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         cx="${(boxw / 2) }" 
                         cy="${(boxw / 8) + linew}" 
                         r="${boxw / 8}px" 
-                        fill='${element.fill}' stroke='gray' stroke-width='${linew}'
+                        fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
                     />
                     <path 
                         class="text"
@@ -514,7 +514,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                             m${-boxw / 4},${-boxw / 4}
                             l${-boxw / 4},${boxw / 4}"
                         stroke-width='${linew}'
-                        stroke='gray'
+                        stroke='${element.stroke}'
                         fill='transparent'
                     />
                     <rect 
@@ -547,7 +547,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                     d="M ${boxw / 2},${boxw / 4 + linew}
                         V ${boxh}"
                     stroke-width='${linew}'
-                    stroke='gray'
+                    stroke='${element.stroke}'
                     stroke-dasharray='${linew * 3},${linew * 3}'
                     fill='transparent'
                 /> 
@@ -560,7 +560,7 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                         height='${(boxw / 2) - linew}'
                         rx='${sequenceCornerRadius}'
                         stroke-width='${linew}'
-                        stroke='gray'
+                        stroke='${element.stroke}'
                         fill='${element.fill}' 
                     />
                     <text 
@@ -600,7 +600,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
             width='${boxw - linew * 2}'
             height='${boxh - linew * 2}'
             stroke-width='${linew}'
-            stroke='gray'
+            stroke='${element.stroke}'
             fill='none'
             rx='${7 * zoomfact}'
             fill-opacity="0"
