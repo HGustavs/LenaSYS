@@ -13,15 +13,16 @@ function removeNodes() {
  * @param {number || null} deltaX The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the X-axis.
  * @param {number || null} deltaY The amount of pixels on the screen the mouse has been moved since the mouse was pressed down in the Y-axis.
  */
+
 function updatepos() {
     updateCSSForAllElements();
     document.getElementById("svgbacklayer").innerHTML = redrawArrows();
     document.getElementById("svgoverlay").innerHTML = (mouseButtonDown) ? boxSelect_Draw() : drawSelectionBox();
     removeNodes();
     if (context.length === 1 &&
-        mouseMode == mouseModes.POINTER &&
-        context[0].kind != elementTypesNames.UMLRelation &&
-        context[0].kind != elementTypesNames.IERelation
+        mouseMode == mouseModes.POINTER
+
+
     ) {
         addNodes(context[0]);
     }
