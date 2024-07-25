@@ -434,10 +434,11 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
 
 function drawElementUMLRelation(element, boxw, boxh, linew) {
     let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let strokeColor = (fill === 'black') ? 'white' : 'black'; 
     let poly = `
         <polygon 
             points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+            style='fill:${fill}; stroke:${strokeColor}; stroke-width:${linew};'
         />`;
     return drawSvg(boxw, boxh, poly);
 }
