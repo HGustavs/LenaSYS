@@ -330,6 +330,15 @@
     cursor: nesw-resize;
 }
 
+.node.br1{
+    cursor: nwse-resize;
+    top: 60%;
+}
+.node.bl1{
+    cursor: nesw-resize;
+    top: 60%;
+}
+
 .underline{
     text-underline-offset: 0.15em;
     text-decoration: underline;

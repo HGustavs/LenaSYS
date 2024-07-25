@@ -16374,8 +16374,8 @@
             return (row - layerConfig.firstRowScreen) * layerConfig.lineHeight;
         };
     
-        function getBorderClass(tl, tr, br, bl) {
-            return (tl ? 1 : 0) | (tr ? 2 : 0) | (br ? 4 : 0) | (bl ? 8 : 0);
+        function getBorderClass(tl, tr, br, bl, br1, bl1) {
+            return (tl ? 1 : 0) | (tr ? 2 : 0) | (br ? 4 : 0) | (bl ? 8 : 0)| (br1 ? 4 : 0) | (bl1 ? 8 : 0);
         }
         this.drawTextMarker = function(stringBuilder, range, clazz, layerConfig, extraStyle) {
             var session = this.session;

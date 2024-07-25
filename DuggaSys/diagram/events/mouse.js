@@ -155,6 +155,9 @@ function mdown(event) {
             startNode.upLeft = event.target.classList.contains("tl");
             startNode.downRight = event.target.classList.contains("br");
             startNode.downLeft = event.target.classList.contains("bl");
+            startNode.downRight = event.target.classList.contains("br1");
+            startNode.downLeft = event.target.classList.contains("bl1");
+
 
             startX = event.clientX;
             startY = event.clientY;
