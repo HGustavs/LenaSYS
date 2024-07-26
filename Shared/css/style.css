@@ -7572,14 +7572,13 @@ only screen and (max-device-width: 568px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 50px;
+  bottom: 0px;
 }
 
 .fab-btn-list2 {
   position: absolute;
   padding: 5rem 3.5rem 0rem 0rem;
   margin: -2rem;
-  /*left: -3.5rem;*/
   width: 100%;
   list-style: none;
   text-align: center;
