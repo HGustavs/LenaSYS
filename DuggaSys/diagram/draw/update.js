@@ -52,25 +52,20 @@ function updateContainerBounds() {
 function setSequenceAlternatives() {
     //for each element in context, check if it has the property alternatives
     for (let i = 0; i < context.length; i++) {
-        if (context[i].alternatives != null) {
-            //Create an array from string where newline seperates elements
-            let alternatives = document.getElementById("inputAlternatives").value.split('\n');
-            let formatArr = [];
-            for (let i = 0; i < alternatives.length; i++) {
-                if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
-                    formatArr.push(alternatives[i]);
-                }
-            }
-            //Update the alternatives array
-            alternatives = formatArr;
-            context[0].alternatives = alternatives;
+        if (!context[i].alternatives) continue;
 
-            stateMachine.save(
-                StateChangeFactory.ElementAttributesChanged(context[0].id, {'alternatives': alternatives}),
-                StateChangeFactory.ElementAttributesChanged(context[0].id, {'altOrLoop': context[0].altOrLoop}),
-                StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
-            );
+        //Create an array from string where newline seperates elements
+        let alternatives = document.getElementById("inputAlternatives").value.split('\n');
+        let formatArr = [];
+        for (let i = 0; i < alternatives.length; i++) {
+            if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
+                formatArr.push(alternatives[i]);
+            }
         }
+        //Update the alternatives array
+        alternatives = formatArr;
+        context[0].alternatives = alternatives;
+        stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     showdata();
 }

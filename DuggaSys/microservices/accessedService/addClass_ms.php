@@ -2,6 +2,7 @@
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "retrieveAccessedService_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -13,6 +14,7 @@ session_start();
 $opt = getOP('opt');
 $newclass = getOP('newclass');
 $userid = getUid();
+$log_uuid=getOP('log_uuid');
 $debug = "NONE!";
 
 // Permission checks
@@ -56,4 +58,5 @@ if (!$stmt->execute()) {
     $debug = "Not able to create the specified class.";
 }
 
-echo json_encode($debug);
+$array = retrieveAccessedService($pdo, $debug, $userid, null, $log_uuid, $opt, null);
+echo json_encode($array);

@@ -1,12 +1,29 @@
+/**
+ * @description Rectangle
+ * @class
+ * @public
+ */
 class Rect {
 
+    /**
+     * @param {number} [x=0]
+     * @param {number} [y=0]
+     * @param {number} [width=0]
+     * @param {number} [height=0]
+     */
     constructor(x = 0, y = 0, width = 0, height = 0) {
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
+    /**
+     * @param {Point} topLeft
+     * @param {Point} botRight
+     * @returns {Rect}
+     * @constructor
+     */
     static FromPoints(topLeft, botRight) {
         return new Rect(
             topLeft.x, topLeft.y,
@@ -15,6 +32,12 @@ class Rect {
         );
     }
 
+    /**
+     * @description Creates a rect from the properties of an element. Gets width and height from html document.
+     * @param {Element} element
+     * @returns {Rect}
+     * @constructor
+     */
     static FromElement(element) {
         return new Rect(
             element.x, element.y,
@@ -23,70 +46,106 @@ class Rect {
         );
     }
 
-    get x() {
-        return this._x;
+    /**
+     * @description Used to create a Rect copy of a read-only DOMRect HTML object.
+     * @param {DOMRect} rect
+     * @returns {Rect}
+     * @constructor
+     * @example
+     * let rect = Rect.FromDOMRect(
+     *     document.getElementById(id).getBoundingClientRect()
+     * );
+     */
+    static FromDOMRect(rect) {
+        return new Rect(
+            rect.left, rect.top, rect.width, rect.height
+        )
     }
 
-    get y() {
-        return this._y;
+    /**
+     * @returns {number}
+     */
+    get top() {
+        return (this.height > 0) ? this.y : this.y + this.height;
     }
 
-    get width() {
-        return this._width;
+    /**
+     * @returns {number}
+     */
+    get bottom() {
+        return (this.height > 0) ? this.y + this.height : this.y;
     }
 
-    get height() {
-        return this._height;
+    /**
+     * @returns {number}
+     */
+    get left() {
+        return (this.width > 0) ? this.x : this.x + this.width;
     }
 
-    get x2() {
-        return this.x + this.width;
+    /**
+     * @returns {number}
+     */
+    get right() {
+        return (this.width > 0) ? this.x + this.width : this.x;
     }
 
-    get y2() {
-        return this.y + this.height;
-    }
-
-    set x(x) {
-        this._x = x;
-    }
-
-    set y(y) {
-        this._y = y;
-    }
-
-    set width(width) {
-        this._width = width;
-    }
-
-    set height(height) {
-        this._height = height;
-    }
-
+    /**
+     * @description Returns the top left point of the rectangle
+     * @returns {Point}
+     */
     get topLeft() {
         return new Point(this.x, this.y);
     }
 
+    /**
+     * @description Returns the top right point of the rectangle
+     * @returns {Point}
+     */
     get topRight() {
         return new Point(this.x + this.width, this.y);
     }
 
+    /**
+     * @description Returns the bottom left point of the rectangle
+     * @returns {Point}
+     */
     get botLeft() {
         return new Point(this.x, this.y + this.height);
     }
 
+    /**
+     * @description Returns the bottom right point of the rectangle
+     * @returns {Point}
+     */
     get botRight() {
         return new Point(this.x + this.width, this.y + this.height);
     }
 
-    overlap(other) {
+    /**
+     * @description Checks if the innermost 50% of provided rect is within this rect. Used as a less strict check during box selection.
+     * @param {Rect} other
+     * @returns {boolean}
+     */
+    partialOverlap(other) {
         const lower = 0.25;
         const upper = 0.75;
-        let x1 = this.x < other.x + lower * other.width;
-        let x2 = this.x + this.width > other.x + other.width * upper;
-        let y1 = this.y < other.y + lower * other.height;
-        let y2 = this.y + this.height > other.y + other.height * upper;
+        let x1 = this.left < other.left + other.width * lower;
+        let x2 = this.right > other.left + other.width * upper;
+        let y1 = this.top < other.top + other.height * lower;
+        let y2 = this.bottom > other.top + other.height * upper;
         return x1 && x2 && y1 && y2;
     }
 
+    /**
+     * @description Checks if the provided rect overlaps with this rect at any point.
+     * @param {Rect} other
+     * @returns {boolean}
+     */
+    overlap(other) {
+        return !(this.top > other.bottom ||
+            this.right < other.left ||
+            this.bottom < other.top ||
+            this.left > other.right)
+    }
 }

@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	include_once("../../coursesyspw.php");
 	include_once("../Shared/basic.php");
 	include_once("../Shared/sessions.php");
 	include_once("../Shared/database.php");
@@ -41,6 +40,7 @@
         <title><?php echo $title; ?></title>
 
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
@@ -239,8 +239,8 @@ Testing Link:
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
 		<div id='editContentContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editContent' class='loginBox DarkModeBackgrounds' style='width:510px;'>
-					<div class='loginBoxheader'>
+				<div id='editContent' class='formBox DarkModeBackgrounds' style='width:510px;'>
+					<div class='formBoxHeader'>
 						<h3>Edit Content</h3>
 						<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 					</div>
@@ -292,8 +292,8 @@ Testing Link:
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
 		<div id='editExampleContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editExample' class='loginBox DarkModeBackgrounds' style='width:650px;'>
-					<div class='loginBoxheader'>
+				<div id='editExample' class='formBox DarkModeBackgrounds' style='width:650px;'>
+					<div class='formBoxHeader'>
 						<h3>Edit Example</h3>
 						<div class='cursorPointer' onclick='closeEditExample();'>x</div>
 					</div>
@@ -322,8 +322,8 @@ Testing Link:
 		</div>
 		<!-- Code Example Cog Wheel Dialog END -->
 		<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
-				<div id='chooseTemplate' class='loginBox DarkModeBackgrounds' style='width:464px;'>
-					<div class='loginBoxheader'>
+				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
+					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
 					</div>
@@ -365,8 +365,8 @@ Testing Link:
 			include '../Shared/loginbox.php';
 		?>
 	<div class="previewWindowContainer loginBoxContainer">
-    <div class="previewWindow loginBox">
-	<div class="loginBoxheader">
+    <div class="previewWindow formBox">
+	<div class="formBoxHeader">
             <h3 class ="fileName"></h3>
             <div style="cursor:pointer;" onclick="hideIframe();">x</div>
         </div>

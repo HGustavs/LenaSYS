@@ -437,3 +437,10 @@ const backgroundElement = [
     elementTypesNames.UMLSuperState,
     elementTypesNames.sequenceLoopOrAlt,
 ];
+
+/**
+ * @see deltaExeeded
+ * @see calculateDeltaExeeded
+ * @type {number}
+ */
+const maxDeltaBeforeExceeded = 2;

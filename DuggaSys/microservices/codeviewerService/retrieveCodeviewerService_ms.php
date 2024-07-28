@@ -17,14 +17,12 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
 
     // Global variables
     $exampleId = getOP('exampleid');
-    $boxId = getOP('boxid');
     $courseId = getOP('courseid');
     $courseVersion = getOP('cvers');
     $sectionName = getOP('sectionname');
     $exampleName = getOP('examplename');
     $playlink = getOP('playlink');
     $log_uuid = getOP('log_uuid');
-    $log_timestamp = getOP('log_timestamp');
 
     $importantRows = array();
     $importantWordList = array();
@@ -62,10 +60,6 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
             $exampleCount++;
             $exampleId = $row['exampleid'];
             $exampleName = $row['examplename'];
-            $courseID = $row['cid'];
-            $cversion = $row['cversion'];
-            $beforeId = $row['beforeid'];
-            $afterId = $row['afterid'];
             $public = $row['public'];
             $sectionName = $row['sectionname'];
             $playlink = $row['runlink'];
@@ -83,7 +77,6 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
         $exampleNumber = 0;
         $playlink = "";
         $public = "";
-        $entryname = "";
 
         $query = $pdo->prepare("SELECT exampleid, examplename, sectionname, runlink, public, template.templateid AS templateid, stylesheet, numbox FROM codeexample LEFT OUTER JOIN template ON template.templateid = codeexample.templateid WHERE exampleid = :exampleid AND cid = :courseID;");
         $query->bindParam(':exampleid', $exampleId);
@@ -136,7 +129,7 @@ function retrieveCodeviewerService($opt, $pdo, $userid, $debug){
             $ruery = $pdo->prepare("SELECT filename,path,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
             $ruery->bindParam(':cid', $courseId);
             $ruery->bindParam(':fname', $filename);
-            $sesult = $ruery->execute();
+            $ruery->execute();
             if ($sow = $ruery->fetch(PDO::FETCH_ASSOC)) {
                 $filekind = $sow['kind'];
                 $filename = $sow['filename'];

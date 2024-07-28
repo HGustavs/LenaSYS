@@ -11,17 +11,19 @@ $testsData = array(
         'service-data' => serialize(
             array(
                 // Data that service needs to execute function
-                'username' => 'brom',
-                'password' => 'password',
                 'opt' => 'UPDATEVRS',
+                'courseid' => 1885,
                 'cid' => 1885,
-                'coursecode' =>'G1337',
                 'versid' => 1337,
                 'versname' =>'HT00',
+                'coursecode' =>'G1337',
+                'coursename' => 'Testing-Course',
                 'startdate' =>'2020-05-01 00:00:00',
                 'enddate' =>'2020-06-30 00:00:00',
                 'makeactive' => 3,
                 'motd' =>'Code examples shows both templateid and boxid!',
+                'username' => 'brom',
+                'password' => 'password',
             )
         ),
         'filter-output' => serialize(

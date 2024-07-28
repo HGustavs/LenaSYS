@@ -8,6 +8,7 @@ function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectnam
 	}else{
 		$sname= $sectname;
 	}
+	$debug="NONE!";
 	$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion,templateid) values (:cid,:ename,:sname,1,:cversion, :templateid);");
 	$query2->bindParam(':cid', $courseid);
 	$query2->bindParam(':cversion', $coursevers);
@@ -24,5 +25,5 @@ function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectnam
 	$username = retrieveUsername($pdo);
 	logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
-	return $link;
+	return array('debug'=>$debug,'link'=>$link);
 }

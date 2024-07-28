@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 include_once "../Shared/toast.php";
@@ -47,7 +48,7 @@ $vers=getOPG('coursevers');
 
 	<div id="content">
       <div id="headerContent"></div> <!-- A div to place header content. -->
-      <div id='searchBarMobile' style='test-align:right;margin-bottom:15px;'>
+      <div id='searchBarMobile'>
 				<div id='tooltip-mobile' class="tooltip-searchbar">
 					<div class="tooltip-searchbar-box">
 								<b>Keywords:</b> template name, name, date <br>
@@ -75,42 +76,87 @@ $vers=getOPG('coursevers');
 
     <!-- Edit Dugga Dialog START -->
   	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
-        <div class='loginBox' style='width:464px; overflow:hidden;'>
-        		<div class='loginBoxheader'>
+        <div class='formBox' style='width:520px; overflow:hidden;'>
+        		<div class='formBoxHeader'>
         			<h3 id="editDuggaTitle">Edit Dugga</h3>
         			<div class='cursorPointer' onclick='closeWindows();'>x</div>
         		</div>
-        		<div style='padding:5px;'>
+        		<div class="formBody">
         			<input type='hidden' id='did' value='UNK'/></td>
         			<div class='flexwrapper'>
   	      			<span>Name:</span>
-  	      			<div class="tooltipDugga">
-  		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
-  		      		</div>
-  		      		<input class='textinput' type='text' id='name' placeholder='New Dugga' onkeyup='quickValidateDugga("editDugga", "saveDugga");' onchange='validateDuggaName();' />
+                <div class="dialogwrapper">
+  	      			  <div class="formDialog"><span id="tooltipTxt" class="formDialogText" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span></div>
+  		      		  <input class='textinput' type='text' id='name' placeholder='New Dugga' onkeyup='quickValidateDugga("editDugga", "saveDugga");' onchange='validateDuggaName();'/>
+                </div>
   		      	</div>
-        			<div class='flexwrapper'><span>Auto-grade:</span><select id='autograde'></select></div>
-        			<div class='flexwrapper'><span>Grade System:</span><select id='gradesys'></select></div>
-        			<div class='flexwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
-              <div class='flexwrapper'><span>Start Date:</span><span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='qstart' title='Start date input' value=''  /><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='qstartt'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='qstartm'></select></span></div>
-              <div class="formDialog" style="display: block; left:-10px; top:-30px;"><span id="StartDateDialog" style="display: none; left:0px;" class="formDialogText">Incorrect input.</span></div>
-              <div class='flexwrapper'><span>Deadline 1:</span><span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='deadline' title='Deadline 1 input' value=''  /><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinet'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinem'></select></span></div>
-  						<div class="formDialog" style="display: block; left:-10px; top:-30px;"><span id="Deadline1Dialog" style="display: none; left:0px;" class="formDialogText">Incorrect input.</span></div>
-              <div class='flexwrapper'><span>Comment:</span><input class='textinput' onkeyup="quickValidateDugga('editDugga', 'saveDugga');" type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-              <div class="formDialog" style="display: block; left:50px; top:-35px;"><span id="deadlinecomments1Dialog" style="display: none; left:0px; " class="formDialogText">Prohibited symbols or above 50 character limit</span></div>
-              <div class='flexwrapper'><span>Deadline 2:</span><span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='deadline2' title='Deadline 2 input' value=''  /><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinet2'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinem2'></select></span></div>
-  						<div class="formDialog" style="display: block; left:-10px; top:-30px;"><span id="Deadline2Dialog" style="display: none; left:0px;" class="formDialogText">Incorrect input.</span></div>
-              <div class='flexwrapper'><span>Comment:</span><input class='textinput' onkeyup="quickValidateDugga('editDugga', 'saveDugga');" type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-              <div class="formDialog" style="display: block; left:50px; top:-35px;"><span id="deadlinecomments2Dialog" style="display: none; left:0px; " class="formDialogText">Prohibited symbol or above 50 character limit</span></div>
-              <div class='flexwrapper'><span>Deadline 3:</span><span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='deadline3' title='Deadline 3 input' value=''  /><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinet3'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinem3'></select></span></div>
-  						<div class="formDialog" style="display: block; left:-10px; top:-30px;"><span id="Deadline3Dialog" style="display: none; left:0px;" class="formDialogText">Incorrect input.</span></div>
-              <div class='flexwrapper'><span>Comment:</span><input class='textinput' onkeyup="quickValidateDugga('editDugga', 'saveDugga');" type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-              <div class="formDialog" style="display: block; left:50px; top:-35px;"><span id="deadlinecomments3Dialog" style="display: none; left:0px; " class="formDialogText">Prohibited symbols or above 50 character limit</span></div>
-              <div class='flexwrapper'><span>Result release:</span><span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='release' title='Result release input' value=''  /><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='releaset'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='releasem'></select></span></div>
-              <div class="formDialog" style="display: block; left:-10px; top:-30px;"><span id="ResultReleaseDialog" style="display: none; left:0px;" class="formDialogText">Incorrect input.</span></div>
+        			<div class='inputwrapper'>
+                <span>Auto-grade:</span><select id='autograde'></select></div>
+        			<div class='inputwrapper'>
+                <span>Grade System:</span><select id='gradesys'></select></div>
+        			<div class='inputwrapper'>
+                <span>Template:</span>
+                <select id='template'><option selected='selected' value=""><option value=""></option></select></div>
+              <div class='inputwrapper'>
+                <span>Start Date:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="StartDateDialog" class="formDialogText">Incorrect input.</span></div>
+                  <span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='qstart' title='Start date input' value=''/><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='qstartt'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='qstartm'></select></span>
+                </div>
+              </div>
+              <div class='inputwrapper'>
+                <span>Deadline 1:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="Deadline1Dialog"class="formDialogText">Incorrect input.</span></div>
+                  <span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='deadline' title='Deadline 1 input' value=''/><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinet'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinem'></select></span>
+                </div>
+              </div>
+              <div class='inputwrapper'>
+                <span>Comment:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="deadlinecomments1Dialog" class="formDialogText">Prohibited symbols or above 50 character limit</span>
+                </div>
+                  <input class='textinput' onkeyup="quickValidateDugga('editDugga', 'saveDugga');" type='text' id='deadlinecomments1' placeholder='Deadline Comments'/>
+                </div>
+              </div>
+              <div class='inputwrapper'>
+                <span>Deadline 2:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="Deadline2Dialog" class="formDialogText">Incorrect input.</span></div>
+                  <span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='deadline2' title='Deadline 2 input' value=''/><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinet2'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinem2'></select></span>
+                </div>
+              </div>
+              <div class='inputwrapper'>
+                <span>Comment:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="deadlinecomments2Dialog" class="formDialogText">Prohibited symbol or above 50 character limit</span></div>
+                  <input class='textinput' onkeyup="quickValidateDugga('editDugga', 'saveDugga');" type='text' id='deadlinecomments2' placeholder='Deadline Comments'/>
+                </div>
+              </div>
+              <div class='inputwrapper'>
+                <span>Deadline 3:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="Deadline3Dialog" class="formDialogText">Incorrect input.</span></div>
+                  <span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='deadline3' title='Deadline 3 input' value=''/><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinet3'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='deadlinem3'></select></span>
+                </div>
+              </div>
+              <div class='inputwrapper'>
+                <span>Comment:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="deadlinecomments3Dialog" class="formDialogText">Prohibited symbols or above 50 character limit</span></div>
+                  <input class='textinput' onkeyup="quickValidateDugga('editDugga', 'saveDugga');" type='text' id='deadlinecomments3' placeholder='Deadline Comments'/>
+                </div>
+              </div> 
+              <div class='inputwrapper'>
+                <span>Result release:</span>
+                <div class="dialogwrapper">
+                  <div class="formDialog"><span id="ResultReleaseDialog" class="formDialogText">Incorrect input.</span></div>
+                  <span><input class='textinput' onchange="quickValidateDugga('editDugga', 'saveDugga');" type='date' id='release' title='Result release input' value=''/><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='releaset'></select><select onchange="quickValidateDugga('editDugga', 'saveDugga');" style='width:55px;' id='releasem'></select></span>
+                </div>
+              </div>
         		</div>
-        		<div style='padding:5px;display:flex;justify-content: flex-end'>
-        			<input id='saveDugga' class='submit-button' type='button' value='Save' onclick='updateDugga();' />
+        		<div class="formFooter">
+        			<input id='saveDugga' style="float: right" class='submit-button' type='button' value='Save' onclick='updateDugga();' />
         		</div>
         </div>
   	</div>
@@ -118,8 +164,8 @@ $vers=getOPG('coursevers');
 
     <!-- Confirm Section Dialog START -->
   		<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
-  	    <div class='loginBox' style='width:460px;'>
-  				<div class='loginBoxheader'>
+  	    <div class='formBox' style='width:460px;'>
+  				<div class='formBoxHeader'>
   				    <h3>Confirm deletion</h3>
   				    <div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
   				</div>
@@ -136,8 +182,8 @@ $vers=getOPG('coursevers');
 
     <!-- Result Dialog START -->
     <div id='resultpopover' class='loginBoxContainer' style='display:none; overflow:hidden; z-index: 9999;'>
-      <div class='loginBox' id='resultpopoverBox' style='overflow:auto;';>
-        <div class='loginBoxheader'>
+      <div class='formBox' id='resultpopoverBox' style='overflow:auto;';>
+        <div class='formBoxHeader'>
           <h3 id="resultpopoverTitle">PREVIEW</h3>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
@@ -150,8 +196,8 @@ $vers=getOPG('coursevers');
 
   	<!-- Edit Variant Dialog START -->
   	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' id='variantBox'>
-        <div class='loginBoxheader'>
+      <div class='formBox' id='variantBox'>
+        <div class='formBoxHeader'>
           <h3 id="editVariantTitle">Edit Variant</h3>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>

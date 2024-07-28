@@ -1,6 +1,6 @@
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
- * @param {MouseEvent} event Triggered mouse event.
+ * @param {WheelEvent} event - The mouse wheel event object.
  */
 function mwheel(event) {
     event.preventDefault();
@@ -95,7 +95,6 @@ function mdown(event) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
-                            targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
                             containerStyle.cursor = "grabbing";
@@ -123,7 +122,6 @@ function mdown(event) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
-                            targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             boxSelect_Start(event.clientX, event.clientY);
                         }
@@ -149,15 +147,14 @@ function mdown(event) {
             startWidth = data[findIndex(data, context[0].id)].width;
             startHeight = data[findIndex(data, context[0].id)].height;
 
-            //startNodeRight = !event.target.classList.contains("mr");
-            startNodeLeft = event.target.classList.contains("ml");
-            startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
-            startNodeDown = event.target.classList.contains("md");
-            startNodeUp = event.target.classList.contains("mu");
-            startNodeUpRight = event.target.classList.contains("tr");
-            startNodeUpLeft = event.target.classList.contains("tl");
-            startNodeDownRight = event.target.classList.contains("br");
-            startNodeDownLeft = event.target.classList.contains("bl");
+            startNode.left = event.target.classList.contains("ml");
+            startNode.right = event.target.classList.contains("mr");
+            startNode.down = event.target.classList.contains("md");
+            startNode.up = event.target.classList.contains("mu");
+            startNode.upRight = event.target.classList.contains("tr");
+            startNode.upLeft = event.target.classList.contains("tl");
+            startNode.downRight = event.target.classList.contains("br");
+            startNode.downLeft = event.target.classList.contains("bl");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -170,7 +167,7 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
-    historyHandler.inputCounter++;
+    historyHandler.inputCounter = (historyHandler.inputCounter+1)%1024;
 }
 
 /**
@@ -215,7 +212,6 @@ function ddown(event) {
                 if (!altPressed) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
-                    targetElementDiv = document.getElementById(targetElement.id);
                     canPressDeleteBtn = true;
                 }
             // TODO: Should this be missing a break?
@@ -244,7 +240,7 @@ function ddown(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates 
  */
 function mup(event) {
     if (!mouseOverLine && !mouseOverElement) {
@@ -280,7 +276,7 @@ function mup(event) {
             }
             break;
         case pointerStates.CLICKED_LINE:            
-            if (!deltaExceeded) {
+            if (!deltaExceeded && mouseMode != mouseModes.EDGE_CREATION) {
                 updateSelectedLine(determinedLines);
             }
             if (mouseMode == mouseModes.BOX_SELECTION) {
@@ -344,7 +340,7 @@ function mup(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the toolbar.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates
  */
 function tup() {
     mouseButtonDown = false;
@@ -372,6 +368,7 @@ function mouseLeave() {
 
 /**
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
+ * @returns {boolean} Returns true if the delete button is pressed and canPressDeleteBtn is true, otherwise returns false.
  */
 function checkDeleteBtn() {
     if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) &&
@@ -390,6 +387,8 @@ function checkDeleteBtn() {
 
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
+ *  @param {number} mouseX - The x-coordinate of the mouse position.
+ *  @param {number} mouseY - The y-coordinate of the mouse position.
  */
 function mouseOverSelection(mouseX, mouseY) {
     if (context.length > 0 || contextLine.length > 0) {

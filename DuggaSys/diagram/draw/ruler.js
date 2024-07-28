@@ -1,5 +1,7 @@
 /**
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
+ * @param {number} X - The X coordinate panned to.
+ * @param {number} Y - The Y coordinate panned to.
  */
 function drawRulerBars(X, Y) {
     //Get elements
@@ -7,8 +9,8 @@ function drawRulerBars(X, Y) {
 
     let svgX = document.getElementById("ruler-x-svg");
     let svgY = document.getElementById("ruler-y-svg");
-    //Settings - Ruler
 
+    //Settings - Ruler
     let pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     const lineRatio1 = 1;
     const lineRatio2 = 10;
@@ -35,10 +37,13 @@ function drawRulerBars(X, Y) {
     let viewportHeight = window.innerHeight;
     let viewportWidth = window.innerWidth;
 
+    //Vertical range
     let visibleRangeY = [
         pannedY * -1,
         pannedY * -1 + viewportHeight
     ];
+
+    //Horizontal range
     let visibleRangeX = [
         pannedX * -1,
         pannedX * -1 + viewportWidth
@@ -195,5 +200,5 @@ function drawRulerBars(X, Y) {
         }
     }
     svgX.style.boxShadow = "3px 3px 6px #5c5a5a";
-    svgX.innerHTML = barX;//Print the generated ruler, for X-axis
+    svgX.innerHTML = barX; //Print the generated ruler, for X-axis
 }
