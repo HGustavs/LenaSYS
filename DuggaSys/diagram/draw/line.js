@@ -4,9 +4,7 @@
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
 function drawLine(line, targetGhost = false) {
-
     let str = "";
-    // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     let telem;
     if (targetGhost) {
@@ -27,8 +25,7 @@ function drawLine(line, targetGhost = false) {
     let fx, fy, tx, ty, offset;
     [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
 
-    // Follows the cursor while drawing the line
-    if (isCurrentlyDrawing){
+    if (isCurrentlyDrawing) {
         tx = event.clientX;
         ty = event.clientY;
     }
@@ -81,7 +78,7 @@ function drawLine(line, targetGhost = false) {
                     y2='${ty + offset.y2 * zoomfact}' 
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
                 />`;
-    } else { // UML, IE or SD
+    } else {
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
         }
@@ -90,6 +87,13 @@ function drawLine(line, targetGhost = false) {
 
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
+
+    // Draw the arrowhead using drawArrowhead function
+    const canvas = document.getElementById('canvasOverlay');
+    const ctx = canvas.getContext('2d');
+    const angle = Math.atan2(ty - fy, tx - fx);
+    const arrowSize = 10 * zoomfact;
+    drawArrowhead(ctx, tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact, angle, arrowSize);
 
     if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
@@ -126,7 +130,6 @@ function drawLine(line, targetGhost = false) {
     }
 
     if (line.label && line.type !== entityType.IE) {
-        //Get width of label's text through canvas
         const height = Math.round(zoomfact * textheight);
         const canvas = document.getElementById('canvasOverlay');
         const canvasContext = canvas.getContext('2d');
@@ -184,13 +187,12 @@ function drawLine(line, targetGhost = false) {
         if (rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
-        // Label position for recursive edges
+
         const labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
         const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
         const labelPositionX = labelPosX + zoomfact;
         const labelPositionY = labelPosY - zoomfact;
 
-        //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
             str += `<rect
                         class='text cardinalityLabel'
@@ -232,6 +234,22 @@ function drawLine(line, targetGhost = false) {
     return str;
 }
 
+function drawArrowhead(ctx, x, y, angle, size) {
+    const arrowLength = size;
+    const arrowWidth = size / 2;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-arrowLength, arrowWidth);
+    ctx.lineTo(-arrowLength, -arrowWidth);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
 function getLineAttrubutes(f, t, ctype) {
     let result;
     let px = 3;
@@ -241,6 +259,7 @@ function getLineAttrubutes(f, t, ctype) {
         y1: 0,
         y2: 0,
     };
+
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
@@ -254,18 +273,35 @@ function getLineAttrubutes(f, t, ctype) {
             break;
         case lineDirection.LEFT:
             offset.x1 = px;
+            if (f.kind === elementTypesNames.sequenceActor ||
+                f.kind === elementTypesNames.sequenceObject) {
+                offset.x1 += f.width / 2 * zoomfact;
+            }
             offset.x2 = 0;
-            result = [f.x1, f.cy, t.x2, t.cy, offset];
+            if (t.kind === elementTypesNames.sequenceActor ||
+                t.kind === elementTypesNames.sequenceObject) {
+                offset.x2 -= t.width / 2 * zoomfact;
+            }
+            result = [f.x1, f.cy, t.x2, f.cy, offset];
             break;
         case lineDirection.RIGHT:
             offset.x1 = 0;
+            if (f.kind === elementTypesNames.sequenceActor ||
+                f.kind === elementTypesNames.sequenceObject) {
+                offset.x1 -= f.width / 2 * zoomfact;
+            }
             offset.x2 = px;
-            result = [f.x2, f.cy, t.x1, t.cy, offset];
+            if (t.kind === elementTypesNames.sequenceActor ||
+                t.kind === elementTypesNames.sequenceObject) {
+                offset.x2 += t.width / 2 * zoomfact;
+            }
+            result = [f.x2, f.cy, t.x1, f.cy, offset];
     }
+
     return result;
 }
 
-function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
+    function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     const offsetOnLine = 20 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
@@ -623,13 +659,10 @@ function determineLine(line, targetGhost = false) {
     line.dx = felem.cx - telem.cx;
     line.dy = felem.cy - telem.cy;
 
-    // Figure out overlap - if Y overlap we use sides else use top/bottom
-    let overlapY = true;
-    if (felem.y1 > telem.y2 || felem.y2 < telem.y1) overlapY = false;
-    let overlapX = true;
-    if (felem.x1 > telem.x2 || felem.x2 < telem.x1) overlapX = false;
-    let majorX = true;
-    if (Math.abs(line.dy) > Math.abs(line.dx)) majorX = false;
+
+    let overlapY = felem.y1 <= telem.y2 && felem.y2 >= telem.y1;
+    let overlapX = felem.x1 <= telem.x2 && felem.x2 >= telem.x1;
+    let majorX = Math.abs(line.dy) <= Math.abs(line.dx);
 
     // Determine connection type (top to bottom / left to right or reverse - (no top to side possible)
     if (overlapY || ((majorX) && (!overlapX))) {
@@ -638,6 +671,22 @@ function determineLine(line, targetGhost = false) {
     } else {
         if (line.dy > 0) line.ctype = lineDirection.UP;
         else line.ctype = lineDirection.DOWN;
+    }
+
+    if (felem.kind === 'sequenceActor' || felem.kind === 'sequenceObject' ||
+        telem.kind === 'sequenceActor' || telem.kind === 'sequenceObject') {
+
+        if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+            line.startX = felem.cx;
+            line.endX = telem.cx;
+            line.startY = felem.cy;
+            line.endY = felem.cy;
+        } else {
+            line.startX = felem.cx;
+            line.endX = telem.cx;
+            line.startY = felem.cy;
+            line.endY = telem.cy;
+        }
     }
 
     // Add accordingly to association end
