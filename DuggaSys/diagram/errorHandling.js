@@ -13,21 +13,19 @@ function checkEREntityErrors(element) {
             errorData.push(element);
         }
     }
-
-    // Checks for entity connected to another entity
-    for (let i = 0; i < lines.length; i++) {
-        line = lines[i];
-        fElement = data[findIndex(data, line.fromID)];
-        tElement = data[findIndex(data, line.toID)];
-
-        if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
-            errorData.push(element);
-        }
-        if (tElement.id == element.id && fElement.kind == elementTypesNames.EREntity) {
-            errorData.push(element);
-        }
-    }
-
+    for (let i = 0; i < line.length; i++) {
+                line = line[i];
+                fElement = data[findIndex(data, line.fromID)];
+                tElement = data[findIndex(data, line.toID)];
+        
+                if (fElement.id == element.id && tElement.kind == elementTypesNames.EREntity) {
+                    errorData.push(element);
+                }
+                if (tElement.id == element.id && fElement.kind ==           elementTypesNames.EREntity) {
+                    errorData.push(element);
+                }
+            }
+        
     // Checks if connected attribute is connected with another relation or entity
     for (let i = 0; i < lines.length; i++) {
         line = lines[i];
