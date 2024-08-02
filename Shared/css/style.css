@@ -3378,7 +3378,6 @@ input.submit-button-newitem {
   float: right;
 }
 
-/*PLUS ICON RELEVANT*/
 input.submit-button-newitem:hover {
   transition: 0.4s;
   background-color: rgb(283, 233, 126);
@@ -3406,7 +3405,7 @@ input.diagram-sidebar-buttons:hover {
   border-radius: 2px;
 }
 
-/*Relevant icon*/
+
 button.diagram-menu-buttons {
   background-color: #ff8000;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -3424,7 +3423,6 @@ button.diagram-menu-buttons {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
-/*Hover on relevant icon*/
 button.diagram-menu-buttons:hover {
   background-color: var(--color-accent-hover);
   border-radius: 2px;
@@ -5941,6 +5939,7 @@ only screen and (max-device-width: 568px) {
   #addElement {
     display: none;
   }
+  
   .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
     height: 35px;
   }
@@ -10317,6 +10316,10 @@ margin:2px;
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }
 
 button:disabled {

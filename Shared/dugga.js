@@ -2486,20 +2486,26 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
 }
 
-/*FAB-BTN-LIST IF OR ELSE*/
+
 function FABMouseOver(e) {
 	if (e.target.id === "fabBtn") {
 		if ($('.fab-btn-sm').hasClass('scale-out')) {
 			$('.fab-btn-list').fadeIn(0);
 			$('.fab-btn-sm').toggleClass('scale-out');
 		}
-	}
-	else if (e.target.id === "addElement") {
+	} else if (e.target.id === "addElement") {
 		if ($('.fab-btn-sm2').hasClass('scale-out')) {
 			$('.fab-btn-list2').fadeIn(0);
 			$('.fab-btn-sm2').toggleClass('scale-out');
 		}
-	} 
+		
+		$('#addElement').addClass('spin');
+
+		
+		setTimeout(function() {
+			$('#addElement').removeClass('spin');
+		}, 1000); 
+	}
 }
 
 //----------------------------------------------------------------------------------
