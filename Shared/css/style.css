@@ -3374,7 +3374,7 @@ input.submit-button-newitem {
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   float: right;
 }
 
@@ -3404,7 +3404,6 @@ input.diagram-sidebar-buttons:hover {
   background-color: #33AAFF;
   border-radius: 2px;
 }
-
 
 button.diagram-menu-buttons {
   background-color: #ff8000;
@@ -5939,7 +5938,6 @@ only screen and (max-device-width: 568px) {
   #addElement {
     display: none;
   }
-  
   .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
     height: 35px;
   }
@@ -7571,13 +7569,14 @@ only screen and (max-device-width: 568px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 0px;
+  bottom: 50px;
 }
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 5rem 3.5rem 0rem 0rem;
-  margin: -2rem;
+  padding: 1.8rem 1.5rem 0rem 0rem;
+  margin: 0rem;
+  left: -3.5rem;
   width: 100%;
   list-style: none;
   text-align: center;
@@ -10316,10 +10315,6 @@ margin:2px;
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-.spin {
-  animation: spin 1s linear infinite;
 }
 
 button:disabled {
