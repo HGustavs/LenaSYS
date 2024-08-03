@@ -2,10 +2,18 @@
     session_start();
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
-	#general vars regarding current dugga.
-	$cid = htmlspecialchars(getOPG('courseid'), ENT_QUOTES, 'UTF-8');
-    $vers = htmlspecialchars(getOPG('coursevers'), ENT_QUOTES, 'UTF-8');
-    $quizid = htmlspecialchars(getOPG('did'), ENT_QUOTES, 'UTF-8');
+	try {
+        $cid = getOPG('courseid');
+        $vers = getOPG('coursevers');
+        $quizid = getOPG('did');
+    
+        if (!$cid || !$vers || !$quizid) {
+            throw new Exception("Missing required parameters.");
+        }
+    
+    } catch (Exception $e) {
+        handleError($e->getMessage());
+    }
 
 ?>
 
