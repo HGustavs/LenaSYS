@@ -33,10 +33,7 @@ function drawSelectionBox() {
                     }
                 }
             }
-            let lineSelectionBox = Rect.FromPoints(
-                new Point(minProperty(tempLines, 'left') - margin, minProperty(tempLines, 'top') - margin),
-                new Point(maxProperty(tempLines, 'right') + margin, maxProperty(tempLines, 'bottom') + margin),
-            );
+        
             if (context.length) {
                 selectionBox.x = Math.min(selectionBox.x, lineSelectionBox.x);
                 selectionBox.y = Math.min(selectionBox.y, lineSelectionBox.y);
