@@ -11,10 +11,9 @@ function updateCSSForAllElements() {
             left -= deltaX;
             top -= deltaY;
         }
-        const includedElementTypes = [elementTypesNames.EREntity, elementTypesNames.IEEntity, elementTypesNames.UMLEntity, elementTypesNames.SDEntity, elementTypesNames.UMLRelation, 
-            elementTypesNames.IERelation, elementTypesNames.ERRelation, elementTypesNames.ERAttr, elementTypesNames.UMLInitialState, elementTypesNames.UMLFinalState, elementTypesNames.UMLSuperState, 
-            elementTypesNames.sequenceActor, elementTypesNames.sequenceObject, elementTypesNames.sequenceActivation, elementTypesNames.sequenceLoopOrAlt];
-       
+        
+        const includedElementTypes = Object.values(elementTypesNames);
+
             if (settings.grid.snapToGrid && useDelta) {
             if (includedElementTypes.includes(element.kind)) {
                 // The element coordinates with snap point
