@@ -132,7 +132,7 @@ function updateCourse() {
 		else {
 			toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
 		}
-		if(token.length==0){
+		if(token.length==0 && courseGitURL.length>0){
 			toast("warning", "Git token is missing/expired. Limited access provided until new git token is given", 7);
 		}
 	}
