@@ -74,7 +74,9 @@ function updateCourse() {
 			//Check FetchGithubRepo for the meaning of the error code.
 			switch (data.status) {
 				case 403:
-					toast("error", data.status + " Error \nplease insert valid git key", 7);
+					if(token.length>0){
+						toast("error", data.status + " Error \nplease insert valid git key", 7);
+					}
 					break;
 				case 422:
 					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
@@ -85,10 +87,16 @@ function updateCourse() {
 				default:
 					toast("error", "Something went wrong with updating git token and git URL...", 7);
 			}
-			dataCheck = false;
+			if(token.length==0){
+				dataCheck = true;
+			}
+			else
+			{
+				dataCheck=false;
+			}
 		}
 	});
-
+	
 	if (dataCheck) {
 		// Show dialog
 		$("#editCourse").css("display", "none");
@@ -123,6 +131,9 @@ function updateCourse() {
 		}
 		else {
 			toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
+		}
+		if(token.length==0){
+			toast("warning", "Git token is missing/expired. Limited access provided until new git token is given", 7);
 		}
 	}
 }
