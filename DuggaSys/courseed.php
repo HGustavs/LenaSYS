@@ -71,7 +71,7 @@ if(isset($_SESSION['uid'])){
 
 <!-- New Course Section Dialog START -->
 
-<div id='newCourse' class='loginBoxContainer display_none'>
+<div id='newCourse' class='loginBoxContainer display_none' style="display:none;">
     <div id='loginBox_DarkMode'  class='formBox DarkModeBackgrounds DarkModeText'>
     		<div class='formBoxHeader'>
     			<h3>New Course</h3>
@@ -112,7 +112,7 @@ if(isset($_SESSION['uid'])){
 	<!-- New Course Section Dialog END -->
 
 	<!-- Edit Section Dialog START -->
-	<div id='editCourse' class='loginBoxContainer display_none'>
+	<div id='editCourse' class='loginBoxContainer display_none' style="display:none;">
 	<div class='formBox DarkModeBackgrounds DarkModeText' id=loginBox_DarkMode>
     		<div class='formBoxHeader'>
     			<h3>Edit Course</h3>

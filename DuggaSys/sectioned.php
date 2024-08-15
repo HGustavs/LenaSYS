@@ -169,7 +169,7 @@
 
 			<!-- Hide button -->
 		
-			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
+			<div class='fixed-action-button3 sectioned3 display_none' style="display:none;"   id="HIDEStatic">
 				<!-- <input id='tabElement'  type='button' value="&#8633;" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
 				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg'  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
 				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
@@ -184,7 +184,7 @@
 				<img src="../Shared/icons/right_complement.svg" alt='Show List Content' id="sectionList_arrowStatisticsOpen">
 				<img src="../Shared/icons/desc_complement.svg" alt='Hide List Content' id="sectionList_arrowStatisticsClosed">
 			</div>
-			<div class='fixed-action-button2 sectioned2 display_none' id="FABStatic2">
+			<div class='fixed-action-button2 sectioned2 display_none' style="display:none;"  id="FABStatic2">
 				<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item' >
 				<ol class='fab-btn-list2' id='olFabBtnList2' reversed id='fabBtnList2'>
 							<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
@@ -229,7 +229,7 @@
 		
 		<!-- FAB Start -->
 		<!-- Big FAB Button in the bottom of the page -->
-		<div class='fixed-action-button extra-margin display_none' id="FABStatic">
+		<div class='fixed-action-button extra-margin display_none' style="display:none;"  id="FABStatic">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn' tabindex='0' onclick='incrementItemsToCreate();'>+</a>
 				<ol class='fab-btn-list fab_btn_list' reversed id='fabBtnList'>
 					<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","undefined");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
@@ -270,7 +270,7 @@
 		<!-- Edit Section Dialog START -->
 
 
-		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none'>
+		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none' style="display:none;" >
 		<div id='editSectionLoginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
 
 
@@ -326,7 +326,7 @@
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select class="align_right" id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select class="align_right" id='grptype'></select></div>
 					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  class="align_center" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
+					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none' style="display:none;" ><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 				</div>
 
 				<!-- Error message, no duggas present-->
@@ -341,7 +341,7 @@
 	<!-- Edit Section Dialog END -->
 
 	<!-- Confirm Section Dialog START -->
-	<div id='sectionConfirmBox' class='loginBoxContainer display_none'>
+	<div id='sectionConfirmBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div id="deleteConfirmBox" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm deletion</h3>
@@ -360,7 +360,7 @@
 
 
 	<!-- Canvas Link Dialog -->
-	<div id='canvasLinkBox' class='loginBoxContainer display_none'>
+	<div id='canvasLinkBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div id="formBoxCanvasLink" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Link Copied To Clipboard</h3>
@@ -375,7 +375,7 @@
 	<!-- Confirm Edit Section Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
-	<div id='sectionHideConfirmBox' class='loginBoxContainer display_none'>
+	<div id='sectionHideConfirmBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div id="formBoxConfirm" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm hiding</h3>
@@ -393,7 +393,7 @@
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Confirm Section Hide Dialog START -->
-	<div id='sectionShowConfirmBox' class='loginBoxContainer display_none'>
+	<div id='sectionShowConfirmBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div id="formBoxConfirm" class='formBox DarkModeBackgrounds DarkModeText'>
 			<div class='formBoxHeader'>
 					<h3>Confirm show items</h3>
@@ -411,7 +411,7 @@
 	<!-- Confirm Edit Section Hide Dialog END -->
 
 	<!-- Cofirm Section Tab Dialog START -->
-	<div id='tabConfirmBox' class='loginBoxContainer display_none'>
+	<div id='tabConfirmBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div id='formBoxTabConfirm' class='formBox' >
 			<div class='formBoxHeader'>
 					<h3>Confirm tab</h3>
@@ -443,7 +443,7 @@
 	<!-- Cofirm Edit Section Tab Dialog END -->
 
 	<!-- Confirm Missing Material Dialog START -->
-	<div id='noMaterialConfirmBox' class='loginBoxContainer display_none'>
+	<div id='noMaterialConfirmBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div  id='formBoxInfo' class='formBox'>
 				<div class='formBoxHeader'>
 					<h3>Error: Missing material</h3>
@@ -460,7 +460,7 @@
 	<!-- Confirm Missing Material Dialog END -->
 
 		<!-- New Version Dialog START -->
-		<div id='newCourseVersion' class='loginBoxContainer display_none'>
+		<div id='newCourseVersion' class='loginBoxContainer display_none' style="display:none;" >
     	<div class='formBox DarkModeBackgrounds DarkModeText formBoxCourseVersion'>
 			<div class='formBoxHeader'>
 				<h3>New Course Version</h3>
@@ -520,7 +520,7 @@
 
 <!-- Edit Version Dialog START -->
 
-<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer display_none'>
+<div id='editCourseVersion' onmouseover="quickValidateForm('editCourseVersion', 'submitEditCourse');" class='loginBoxContainer display_none' style="display:none;" >
 		<div class='formBox DarkModeBackgrounds DarkModeText formBoxCourseVersion formBoxCourseVersion'>
 
 			<div class='formBoxHeader'>
@@ -568,7 +568,7 @@
 	<!-- Edit Version Dialog END -->
 
 <!-- Group Members Table START -->
-<div id='grptblContainer' class='loginBoxContainer display_none'>
+<div id='grptblContainer' class='loginBoxContainer display_none' style="display:none;" >
 		<div class='formBox'>
 			<div class='formBoxHeader'>
 				<h3>Group Members</h3>
@@ -583,7 +583,7 @@
 
 
 	<!-- HighscoreBox START -->
-	<div id='HighscoreBox' class='loginBoxContainer display_none'>
+	<div id='HighscoreBox' class='loginBoxContainer display_none' style="display:none;" >
 		<div id="formBoxHighscore" class='formBox' >
 			<div class='formBoxHeader'>
 				<h3>Highscore</h3>
@@ -597,7 +597,7 @@
 	<!-- HighscoreBox END -->
 
 	<!-- User Feedback Dialog START -->
-    <div id='userFeedbackDialog' class='loginBoxContainer display_none'>
+    <div id='userFeedbackDialog' class='loginBoxContainer display_none' style="display:none;" >
       <div class='formBox' id='variantBox'>
         <div class='formBoxHeader'>
           <h3 id="userFeedbackTitle">User Feedback</h3> 
@@ -617,7 +617,7 @@
 
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
-	<div id='loadDuggaBox' class="loginBoxContainer display_none">
+	<div id='loadDuggaBox' class="loginBoxContainer display_none" style="display:none;" >
 	  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" >
 			<div class='formBoxHeader'><h3>Load dugga with hash</h3><div class='cursorPointer' onclick="hideLoadDuggaPopup()">x</div></div>
 			<div id='loadDuggaInfo'></div>
@@ -635,7 +635,7 @@
 
 	<!-- github moments box  -->
 	<form action="" method="POST" id="form">
-		<div id='gitHubBox' class='loginBoxContainer display_none'>
+		<div id='gitHubBox' class='loginBoxContainer display_none' style="display:none;" >
 			<div id="formBoxGitHub" class='formBox DarkModeBackgrounds DarkModeText'>
 				<div class='formBoxHeader'>
 					<h3>Github Moment</h3>
@@ -670,7 +670,7 @@
 	</form>
 	
 	<!--error window opened when github repo not found-->
-	<div id="githubPopupWindow" class="loginBoxContainer display_none" >
+	<div id="githubPopupWindow" class="loginBoxContainer display_none" style="display:none;"  >
 		<div id="formBoxGitHub" class="formBox DarkModeBackgrounds">	
 			<div class= "formBoxHeader">
   					<h3>Github repo</h3>
@@ -690,7 +690,7 @@
 	</div>
 
 	<!-- github template  -->
-		<div id='gitHubTemplate' class="loginBoxContainer display_none">
+		<div id='gitHubTemplate' class="loginBoxContainer display_none" style="display:none;" >
 				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
