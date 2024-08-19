@@ -30,6 +30,8 @@ var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
 
+
+
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
     inputColorTheme = "#212121";
@@ -871,14 +873,23 @@ function incrementItemsToCreate() {
 async function createFABItem(kind, itemtitle, comment) {
   if (kind >= 0 && kind <= 7) {
     for (var i = 0; i < numberOfItems; i++) {
+      if (kind === "7") { // 
+        let quoteElement = document.getElementById('random-quote');
+        if (quoteElement) {
+          quoteElement.style.display = 'block'; // Show quote
+        }
+      }
       selectItem("undefined", itemtitle, kind, "undefined", "undefined", "0", "", "undefined", comment, "undefined", "undefined", "undefined", 0, null);
       clearHideItemList();
-      await newItem(itemtitle); // Wait until the current item is created before creating the next item
+      await newItem(itemtitle);
     }
-    // console.log(numberOfItems + " " + itemtitle + "(s) created");  
-    numberOfItems = 1; // Reset number of items to create
+    numberOfItems = 1;
   }
 }
+
+
+
+
 
 function addColorsToTabSections(kind, visible, spkind) {
   var retStr;
@@ -1692,6 +1703,31 @@ function returnedSection(data) {
             }
           }
 
+// Array med slumpmässiga citat
+const quotes = [
+  "The only way to do great work is to love what you do. - Steve Jobs",
+  "Success is not the key to happiness. Happiness is the key to success. - Albert Schweitzer",
+  "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+  "The future depends on what you do today. - Mahatma Gandhi",
+  "Believe you can and you're halfway there. - Theodore Roosevelt"
+];
+
+// Funktion som hämtar ett slumpmässigt citat
+function getRandomQuote() {
+  return quotes[Math.floor(Math.random() * quotes.length)];
+}
+
+// Funktion som lägger till ett slumpmässigt citat
+function addRandomQuote() {
+  let randomQuote = getRandomQuote();
+  let quoteElement = document.getElementById('random-quote');
+  if (quoteElement) {
+    quoteElement.innerText = randomQuote;
+    quoteElement.style.display = 'block'; // Visa citatet när det läggs til
+  }
+  return randomQuote;
+}
+          
           str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'><img src='../Shared/icons/group-iconDrk.svg'
           style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
           str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
