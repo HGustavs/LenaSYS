@@ -279,14 +279,14 @@ function getLineAttrubutes(f, t, ctype) {
     };
     switch (ctype) {
         case lineDirection.UP:
-            offset.y1 = px;
-            offset.y2 = -px * 2;
-            result = [f.cx, f.y1, t.cx, t.y2, offset];
-            break;
-        case lineDirection.DOWN:
-            offset.y1 = -px * 2;
+            offset.y1 = 1;
             offset.y2 = px;
-            result = [f.cx, f.y2, t.cx, t.y1, offset];
+            result = [f.cx, f.y1, t.cx, t.y1, offset];
+            break;
+            case lineDirection.DOWN:
+            offset.y1 = 1;
+            offset.y2 = px;
+            result = [f.cx, f.y1, t.cx, t.y1, offset];
             break;
         case lineDirection.LEFT:
             offset.x1 = px;
