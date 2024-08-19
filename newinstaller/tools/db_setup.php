@@ -148,7 +148,8 @@ class DBSetup {
 			$this->sanitize($db_name . $user_name);
 			$this->sanitize_hostname($hostname);
 
-			$this->pdo->exec("GRANT ALL PRIVILEGES ON `$db_name`.* TO `$user_name`@`$hostname`");
+			//GRANT ALL PRIVILEGES ON '$db_name'.* TO '$user_name'@'$hostname'
+			$this->pdo->exec("GRANT ALL PRIVILEGES ON *.* TO '$user_name'@'$hostname'");
 
 			return $this->handle_success("Successfully set permissions for {$user_name}@{$hostname} on {$db_name}.");
 		} catch (PDOException $e) {
