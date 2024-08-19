@@ -477,13 +477,21 @@ function drawElementState(element, vectorGraphic) {
 }
 
 function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
+    const MAX_TEXT_LENGTH = 30;
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
 
-    let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='20'`);
-    let rectTwo = drawRect(textWidth + 40 * zoomfact, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
-    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', element.name, `font-size='${20 * zoomfact}px'`);
+    let displayText = element.name.length > MAX_TEXT_LENGTH ? element.name.substring(0, MAX_TEXT_LENGTH) + '...' : element.name;
+
+    // Beräkna rektangeln för texten och se till att den inte överstiger elementets bredd
+    let rectTwoWidth = Math.min(textWidth + 80 * zoomfact, boxw - 10);
+
+    let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='5'`);
+    let rectTwo = drawRect(rectTwoWidth, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', displayText, `font-size='${20 * zoomfact}px'`);
+
     return drawSvg(boxw, boxh, rectOne + rectTwo + text);
 }
+
 
 function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) {
     let content;
@@ -642,7 +650,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
 }
 
 function drawElementNote(element, boxw, boxh, linew, texth) {
-    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.05);
     const lineHeight = 1.5;
     const text = splitFull(element.attributes, maxCharactersPerLine);
     let length = (text.length > 4) ? text.length : 4;
