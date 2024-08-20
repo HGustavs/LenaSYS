@@ -196,12 +196,8 @@
         <li><a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect centered-icon' tabindex='0' data-tooltip='Link' onclick='createFABItem("5","New Link","TOP");'><i alt='link chain icon' class='material-icons'>link</i></a></li>
         <li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Code' onclick='createFABItem("2","New Code","TOP");'><img alt='code tag icon' class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
         <li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Group activity' onclick='createFABItem("6","New Group","TOP");'><img alt='multiple users icon' class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
-        <li>
-            <a class='btn-floating fab-btn-sm2 scale-transition scale-out noselect' tabindex='0' data-tooltip='Message' onclick='createFABItem("7", addRandomQuote(),"TOP");'>
-                <i alt='quotation mark icon' class='material-icons'>format_quote</i>
-            </a>
-            <div id="random-quote" style="display: none;"></div>
-        </li>
+        <li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Message' onclick='createFABItem("7","New Message","TOP");'><i alt='quotation mark icon' class='material-icons'>format_quote</i></a></li>
+
     </ol>
 </div>
 			
@@ -638,6 +634,26 @@
       </div>
 	</div>
 	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
+
+	<!-- Show Quote Popup -->
+	<!-- Random Quote Popup -->
+<div id='randomQuoteBox' class="loginBoxContainer display_none">
+  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" >
+    <div class='formBoxHeader'>
+      <h3>Random Quote</h3>
+      <div class='cursorPointer' onclick="hideRandomQuotePopup()">x</div>
+    </div>
+    <div id='randomQuoteContent' class="display_block">
+      <!-- Här visas det slumpmässiga citatet -->
+      <p id="quoteText"></p>
+    </div>
+    <div class="button-row">
+      <input type='button' class='submit-button' onclick="hideRandomQuotePopup();" value='Close'>
+    </div>
+  </div>
+</div>
+
+
 
 
 	<!-- github moments box  -->

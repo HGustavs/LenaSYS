@@ -82,7 +82,7 @@ function burgerToggleDarkmode(operation = 'click') {
     // if it's dark -> go light
     themeStylesheet.href = "../Shared/css/blackTheme.css";
     localStorage.setItem('themeBlack', themeStylesheet.href)
-    backgroundColorTheme = "#fff";
+    backgroundColorTheme = "#fff"; 
   }
 
   //const themeToggle = document.getElementById('theme-toggle');
@@ -1479,7 +1479,7 @@ function returnedSection(data) {
     }
 
 
-    //Swimlane and 'Load Dugga' button.
+    //Swimlane and 'Load Dugga' button and 'Show Quote' button
 
 
 
@@ -1487,7 +1487,38 @@ function returnedSection(data) {
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
     str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+    str += "<input id='showQuoteButton' class='submit-button' type='button' value='Show Quote' onclick='showRandomQuotePopup();' />";
 
+    function showRandomQuotePopup() {
+      var quotes = [
+          "The only way to do great work is to love what you do. - Steve Jobs",
+          "Success is not the key to happiness. Happiness is the key to success. - Albert Schweitzer",
+          "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+          "The future depends on what you do today. - Mahatma Gandhi",
+          "Believe you can and you're halfway there. - Theodore Roosevelt"
+      ];
+  
+      var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      
+      var quoteTextElement = document.getElementById('quoteText');
+      if (quoteTextElement) {
+          quoteTextElement.innerText = randomQuote;
+      }
+  
+      var popup = document.getElementById('randomQuoteBox');
+      if (popup) {
+          popup.classList.remove('display_none');
+      }
+  }
+  
+  function hideRandomQuotePopup() {
+      var popup = document.getElementById('randomQuoteBox');
+      if (popup) {
+          popup.classList.add('display_none');
+      }
+  }
+  
+  
     str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
