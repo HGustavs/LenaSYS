@@ -32,11 +32,11 @@ function addNodes(element) {
         createNode("ml", "top");
         createNode("mu", "left");
         createNode("md", "left");
-    }
-    createCorner("tl", "top", "left");
-    createCorner("tr", "top", "right");
-    createCorner("bl", "bottom", "left");
-    createCorner("br", "bottom", "right");
 
+        createCorner("tl", "top", "left");
+        createCorner("tr", "top", "right");
+        createCorner("bl", "bottom", "left");
+        createCorner("br", "bottom", "right");
+    }
     elementDiv.innerHTML += nodes;
 }
