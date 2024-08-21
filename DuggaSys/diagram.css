@@ -313,6 +313,7 @@
 }
 
 .node.mu {
+    top: 0;
     right: calc(50% - 4px);
     cursor: ns-resize;
 }
