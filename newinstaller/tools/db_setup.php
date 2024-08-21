@@ -255,6 +255,12 @@ class DBSetup {
 	 * Will return array of information.
 	 */
 	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
+		$myfile = fopen("instalationLogLenaSYS.txt", "a") or die("Unable to open file!");
+
+		fwrite($myfile, $action);
+
+		fclose($myfile);
+
 		throw new Exception($action . " Error: " . $e->getMessage());
 	}
 
@@ -265,6 +271,13 @@ class DBSetup {
 	 */
 	private function handle_success(string $action = "Success", $callback = null) {
 		$callback = $callback ?? $this->callback;
+
+		$myfile = fopen("instalationLogLenaSYS.txt", "a") or die("Unable to open file!");
+
+				fwrite($myfile, $action."\n");
+				
+				fclose($myfile);
+
 		if (isset($callback)) {
 			$this->execute_callback($callback, $action, true);
 		}
