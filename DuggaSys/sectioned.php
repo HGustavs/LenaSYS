@@ -67,6 +67,21 @@
 
 	
 </head>
+<script> 
+ //Show Quote button function
+ function showRandomQuotePopup() {
+	var quotes = [
+		"The only way to do great work is to love what you do. - Steve Jobs",
+		"Success is not the key to happiness. Happiness is the key to success. - Albert Schweitzer",
+		"Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+		"The future depends on what you do today. - Mahatma Gandhi",
+		"Believe you can and you're halfway there. - Theodore Roosevelt"
+	];
+
+	var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+	alert(randomQuote);
+}
+</script>
 <body onload="setup();">
 
 	<?php
@@ -633,28 +648,8 @@
     		</div>
       </div>
 	</div>
-	<!-- Load Dugga Popup (Enter hash to get redirected to another dugga) End! -->
 
-	<!-- Show Quote Popup -->
-	<!-- Random Quote Popup -->
-<div id='randomQuoteBox' class="loginBoxContainer display_none">
-  <div class="loadDuggaBox formBox DarkModeBackgrounds DarkModeText" >
-    <div class='formBoxHeader'>
-      <h3>Random Quote</h3>
-      <div class='cursorPointer' onclick="hideRandomQuotePopup()">x</div>
-    </div>
-    <div id='randomQuoteContent' class="display_block">
-      <!-- Här visas det slumpmässiga citatet -->
-      <p id="quoteText"></p>
-    </div>
-    <div class="button-row">
-      <input type='button' class='submit-button' onclick="hideRandomQuotePopup();" value='Close'>
-    </div>
-  </div>
-</div>
-
-
-
+	
 
 	<!-- github moments box  -->
 	<form action="" method="POST" id="form">
