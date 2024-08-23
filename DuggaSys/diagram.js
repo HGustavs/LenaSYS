@@ -664,85 +664,89 @@ document.addEventListener('keydown', function (e) {
     }
 
     // Moving object with arrows
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
-        e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, 0, settings.grid.gridSize / 2);
-            } else {
-                setPos(context, 0, 1);
-            }
-        } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        }
-    }
+  // Define a speed factor (adjust this value to increase/decrease movement speed)
+  const speedFactor = 10; // Change this to any value greater than 1 to increase speed
 
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN)) {
-        e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, 0, -settings.grid.gridSize / 2);
-            } else {
-                setPos(context, 0, -1);
-            }
-        } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        }
-    }
-
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)) {
-        e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, settings.grid.gridSize / 2, 0);
-            } else {
-                setPos(context, 1, 0);
-            }
-        } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        }
-    }
-
-    if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)) {
-        e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, -settings.grid.gridSize / 2, 0);
-            } else {
-                setPos(context, -1, 0);
-            }
-        } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        }
-    }
+  // Moving object with arrows
+  if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
+      e.preventDefault();
+      let overlapDetected = false;
+      context.forEach(obj => {
+          if (entityIsOverlapping(obj.id, obj.x, obj.y - speedFactor)) {
+              overlapDetected = true;
+              return;
+          }
+      });
+      if (!overlapDetected) {
+          if (settings.grid.snapToGrid) {
+              setPos(context, 0, settings.grid.gridSize / 2 * speedFactor);
+          } else {
+              setPos(context, 0, speedFactor);
+              }
+      } else {
+          displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+          }
+  }
+      //speed for the down arrow
+  if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN)) {
+      e.preventDefault();
+      let overlapDetected = false;
+      context.forEach(obj => {
+          if (entityIsOverlapping(obj.id, obj.x, obj.y + speedFactor)) {
+              overlapDetected = true;
+              return;
+          }
+      });
+      if (!overlapDetected) {
+          if (settings.grid.snapToGrid) {
+              setPos(context, 0, -settings.grid.gridSize / 2 * speedFactor);
+          } else {
+              setPos(context, 0, -speedFactor);
+              }
+      } else {
+          displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+      }
+  }
+      //spped for left arrow
+  if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)) {
+      e.preventDefault();
+      let overlapDetected = false;
+      context.forEach(obj => {
+          if (entityIsOverlapping(obj.id, obj.x - speedFactor, obj.y)) {
+              overlapDetected = true;
+              return;
+          }
+      });
+          if (!overlapDetected) {
+          if (settings.grid.snapToGrid) {
+              setPos(context, settings.grid.gridSize / 2 * speedFactor, 0);
+          } else {
+              setPos(context, speedFactor, 0);
+          }
+          } else {
+              displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+          }
+  }
+      //speed for the right arrow
+  if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)) {
+      e.preventDefault();
+      let overlapDetected = false;
+      context.forEach(obj => {
+          if (entityIsOverlapping(obj.id, obj.x + speedFactor, obj.y)) {
+              overlapDetected = true;
+              return;
+          }
+      });
+      if (!overlapDetected) {
+          if (settings.grid.snapToGrid) {
+              setPos(context, -settings.grid.gridSize / 2 * speedFactor, 0);
+          } else {
+              setPos(context, -speedFactor, 0);
+          }
+          } else {
+              displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+          }
+  }
 
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) {
         e.preventDefault();
