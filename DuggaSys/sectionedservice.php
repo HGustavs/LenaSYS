@@ -1016,10 +1016,24 @@ if(checklogin()){
 				$norows = $query->fetchColumn();
 				if($norows == 0) {
 					//TODO: Kind value should be fixed to dynamic
-					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:fileName,'3',:cid,:filesize);");
+					$index = strpos($fileNames[$i],".");
+					$ext = substr($fileNames[$i], $index + 1);
+				    switch ($ext) {
+                        case "txt":
+                            $kind = "2";
+                            break;
+                        case "md":
+                            $kind = "2";
+                            break;
+                        default:
+                            $kind = "3";
+                            break;
+				    }
+					$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:fileName,:kind,:cid,:filesize);");
 					$query->bindParam(':cid', $courseid);
 					$query->bindParam(':fileName', $fileNames[$i]);
 					$query->bindParam(':filesize', $fileSizes[$i]);
+					$query->bindParam(':kind', $kind);
 					if (!$query->execute()) {
 						$error = $query->errorInfo();
 						echo "Error updating entries" . $error[2];
@@ -1054,13 +1068,26 @@ if(checklogin()){
 			} else{
 				echo "Row updated successfully in listentries";
 			}
-
-			$boxContent = "Code";
-			$wordlistID = "3";
 			$y = 1;
 			for($i = 0; $i < $count; $i++){
 				//TODO: Change boxcontent to be named dynamicly.
 				// Maybe change filenameNoExt to something better named. Also what is wordlistid?
+				$index = strpos($fileNames[$i],".");
+                $ext = substr($fileNames[$i], $index + 1);
+				switch ($ext) {
+                    case "txt":
+                        $boxContent = "Document";
+            			$wordlistID = "4";
+            			break;
+                    case "md":
+                        $boxContent = "Document";
+            			$wordlistID = "4";
+            			break;
+                    default:
+                        $boxContent = "Code";
+            			$wordlistID = "3";
+            			break;
+                }
 				$query = $pdo->prepare('INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, "[viktig=1]", :wordlistid, "9") ON DUPLICATE KEY UPDATE boxtitle = VALUES(boxtitle), boxcontent = VALUES(boxcontent), filename = VALUES(filename), settings = VALUES(settings), wordlistid = VALUES(wordlistid), fontsize = VALUES(fontsize)');
 				$query->bindParam(':boxid', $y);
 				$query->bindParam(':exampleid', $codeExamplesLinkParam[0]);
