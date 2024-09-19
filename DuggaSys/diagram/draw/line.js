@@ -83,7 +83,9 @@
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
         }
-        str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+        else {
+            str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+        }
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
