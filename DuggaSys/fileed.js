@@ -351,7 +351,7 @@ function renderCell(col, celldata, cellid) {
             if(obj.filePath.includes("Github")) {
                 str = "<span class='iconBox'><img alt='github icon' tabindex='0' id='dorf' title='Github file' style='width:16px' src='../Shared/icons/githubLink-icon.png' ";
             } else {
-                str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' ";
+                str = "<span class='iconBox'><img alt='delete file icon' tabindex='0' id='dorf' title='Delete file' class='trashcanIcon trashcanTab' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this)";
                 str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\",\"" + obj.filekind + "\");' ></span>";
             }
         }
@@ -1055,3 +1055,70 @@ function checkIfPopupIsOpen() {
 }
 
 
+function confirmBox(operation, item = null) {
+    if (operation == "openConfirmBox") {
+        active_lid = item ? $(item).parents('table').attr('value') : null;
+        $("#sectionConfirmBox").css("display", "flex");
+    } else if (operation == "openHideConfirmBox") {
+        active_lid = item ? $(item).parents('table').attr('value') : null;
+        $("#sectionHideConfirmBox").css("display", "flex");
+        $('#close-item-button').focus();
+    } else if (operation == "openTabConfirmBox") {
+        active_lid = item ? $(item).parents('table').attr('value') : null;
+        $("#tabConfirmBox").css("display", "flex");
+        $("#tabs").val(0).change();
+    } else if (operation == "openItemsConfirmBox") {
+        $("#sectionShowConfirmBox").css("display", "flex");
+        $('#close-item-button').focus();
+    } else if (operation == "deleteItem") {
+        deleteItem(selectedItemList);
+        $("#sectionConfirmBox").css("display", "none");
+    } else if (operation == "hideItem" && !selectedItemList.length == 0) {
+        hideMarkedItems(selectedItemList)
+        $("#sectionHideConfirmBox").css("display", "none");
+    } else if (operation == "tabItem") {
+        tabMarkedItems(active_lid);
+        $("#tabConfirmBox").css("display", "none");
+    }
+    // Responsible for opening github moment
+    else if (operation == "openGitHubBox") {
+        $("#gitHubBox").css("display", "flex");
+    }
+    else if (operation == "saveGitHubBox") {
+    }
+
+    //ändra
+    else if (operation == "openGitHubTemplate") {
+        console.log("testworkornah?");
+        $("#gitHubTemplate").css("display", "flex");
+        gitTemplatePopupOutsideClickHandler();
+        fetchCodeExampleHiddenLinkParam(item);
+    } else if (operation == "closeConfirmBox") {
+        $("#gitHubBox").css("display", "none");
+        $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
+        $("#sectionConfirmBox").css("display", "none");
+        $("#tabConfirmBox").css("display", "none");
+        $("#sectionHideConfirmBox").css("display", "none");
+        $("#noMaterialConfirmBox").css("display", "none");
+        $("#sectionShowConfirmBox").css("display", "none");
+        $("#gitHubTemplate").css("display", "none");
+        purgeInputFieldsGitTemplate();
+    }
+    else if (operation == "showItems" && !selectedItemList.length == 0) {
+        showMarkedItems(selectedItemList);
+        $("#sectionShowConfirmBox").css("display", "none");
+    }
+    document.addEventListener("keypress", event => {
+        if (event.key === 'Enter') {
+            if (event.target.classList.contains("traschcanDelItemTab")) {
+                setTimeout(function () {
+                    $("#delete-item-button").focus();
+                }, 400);
+            }
+            if (event.target.id == "delete-item-button") {
+                deleteItem(active_lid);
+                $("#sectionConfirmBox").css("display", "none");
+            }
+        }
+    });
+}

@@ -88,10 +88,11 @@
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+            str += drawArrowPoint(calculateArrowBase(to, from, 25 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+
         }
         if (line.endIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+            str += drawArrowPoint(calculateArrowBase(from, to, 25 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
         }
     }
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
@@ -550,7 +551,7 @@ function calculateArrowBase(from, to, size) {
  */
  function rotateArrowPoint(base, point, clockwise) {
     const angle = Math.PI / 4; 
-    const direction = clockwise ? 1 : -1; 
+    const direction = clockwise ? -1 : 1;
     const dx = point.x - base.x;
     const dy = point.y - base.y;
         return {
@@ -560,15 +561,17 @@ function calculateArrowBase(from, to, size) {
      }
      
 
-function drawArrowPoint(base, point, lineColor, strokeWidth) {
+function    drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
-    return ` 
-    <svg width="100" height="100">
+    //<svg width="100" height="100">
+        return `
+
         <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
-            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
-    </svg>`;
- }
+                 stroke='${lineColor}' fill='BLACK' stroke-width='${strokeWidth}'/>
+        `;
+        //</svg>
+}
 
 
 /**
