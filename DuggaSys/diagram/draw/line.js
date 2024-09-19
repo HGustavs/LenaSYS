@@ -61,6 +61,7 @@
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
+
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
             offset.y2 = -7 + 3 / zoomfact;
@@ -68,14 +69,16 @@
             offset.y1 = -7 + 3 / zoomfact;
             offset.y2 = 1;
         }
-        str += `<line 
-                    id='${line.id}' 
-                    x1='${fx + offset.x1 * zoomfact}' 
-                    y1='${fy + offset.y1 * zoomfact}' 
-                    x2='${tx + offset.x2 * zoomfact}' 
-                    y2='${ty + offset.y2 * zoomfact}' 
-                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
-                />`;
+        if (line.kind != lineKind.RECURSIVE) {
+            str += `<line
+                        id='${line.id}'
+                        x1='${fx + offset.x1 * zoomfact}' 
+                        y1='${fy + offset.y1 * zoomfact}' 
+                        x2='${tx + offset.x2 * zoomfact}' 
+                        y2='${ty + offset.y2 * zoomfact}' 
+                        fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
+                    />`;
+        }
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
