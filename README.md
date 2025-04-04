@@ -131,3 +131,7 @@ define("PUSH_NOTIFICATIONS_VAPID_EMAIL", "Insert your email address here");
 ```
 
 4. Copy that code from that file into /[groupname]/[**YOUR**username]/LenaSYS/coursesyspw.php
+
+
+
+hej
