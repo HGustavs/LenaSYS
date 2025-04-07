@@ -416,36 +416,38 @@ stateMachine = new StateMachine(data, lines);
  * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
 function getData() {
-    container = document.getElementById("container");
-    DiagramResponse = fetchDiagram();
+    try {
+        container = document.getElementById("container");
+        DiagramResponse = fetchDiagram();
 
-    //add event listeners 
-    document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
-    document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
-    document.getElementById("container").addEventListener("mousedown", mdown);
-    document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", mmoving);
-    document.getElementById("container").addEventListener("wheel", mwheel);
-    document.getElementById("options-pane").addEventListener("mousedown", mdown);
-    // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
-    generateToolTips();
-    toggleGrid();
-    updateGridPos();
-    updateA4Pos();
-    updateGridSize();
-    showdata();
-    drawRulerBars(scrollx, scrolly);
-    setContainerStyles(mouseMode);
-    generateKeybindList();
-    //setPreviewValues();
-    saveDiagramBeforeUnload();
+        //add event listeners 
+        document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
+        document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
+        document.getElementById("container").addEventListener("mousedown", mdown);
+        document.getElementById("container").addEventListener("mouseup", mup);
+        document.getElementById("container").addEventListener("mousemove", mmoving);
+        document.getElementById("container").addEventListener("wheel", mwheel);
+        document.getElementById("options-pane").addEventListener("mousedown", mdown);
+        generateToolTips();
+        toggleGrid();
+        updateGridPos();
+        updateA4Pos();
+        updateGridSize();
+        showdata();
+        drawRulerBars(scrollx, scrolly);
+        setContainerStyles(mouseMode);
+        generateKeybindList();
+        saveDiagramBeforeUnload();
 
-    // Setup and show only the first element of each PlacementType, hide the others in dropdown
-    // SHOULD BE CHANGED LATER
-    togglePlacementType(0, 0);
-    togglePlacementType(1, 1);
-    togglePlacementType(9, 9);
-    togglePlacementType(12, 12);
+        // Setup and show only the first element of each PlacementType, hide the others in dropdown
+        togglePlacementType(0, 0);
+        togglePlacementType(1, 1);
+        togglePlacementType(9, 9);
+        togglePlacementType(12, 12);
+    } catch (error) {
+        console.error("Error during getData execution:", error);
+        displayMessage(messageTypes.ERROR, "An error occurred during data initialization.");
+    }
 }
 
 /**
@@ -1289,47 +1291,51 @@ function changeState() {
 /**
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
-function saveProperties() {    
-    const propSet = document.getElementById("propertyFieldset");
-    const element = context[0];
-    const children = propSet.children;
-    const propsChanged = {};
+function saveProperties() {
+    try {
+        const propSet = document.getElementById("propertyFieldset");
+        const element = context[0];
+        const children = propSet.children;
+        const propsChanged = {};
 
-    for (let i = 0; i < children.length; i++) {
-        const child = children[i];
-        const inputTag = child.id;
-        if (inputTag == "elementProperty_name") {
-            let value = child.value;
-            element.name = value;
-            propsChanged.name = value;
-            continue;
-        }
-        const addToLine = (name, symbol) => {
-            if (inputTag == `elementProperty_${name}`) {
-                let lines = child.value.trim().split("\n");
-                for (let j = 0; j < lines.length; j++) {
-                    if (lines[j] && lines[j].trim()) {
-                        if (Array.from(lines[j])[0] != symbol) {
-                            lines[j] = symbol + lines[j];
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            const inputTag = child.id;
+            if (inputTag == "elementProperty_name") {
+                let value = child.value;
+                element.name = value;
+                propsChanged.name = value;
+                continue;
+            }
+            const addToLine = (name, symbol) => {
+                if (inputTag == `elementProperty_${name}`) {
+                    let lines = child.value.trim().split("\n");
+                    for (let j = 0; j < lines.length; j++) {
+                        if (lines[j] && lines[j].trim()) {
+                            if (Array.from(lines[j])[0] != symbol) {
+                                lines[j] = symbol + lines[j];
+                            }
                         }
                     }
+                    element[name] = lines;
+                    propsChanged[name] = lines;
                 }
-                element[name] = lines;
-                propsChanged[name] = lines;
+            };
+            if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+                addToLine("attributes", "");
+                continue;
             }
-        };
-        // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
-        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
-            addToLine("attributes", "");
-            continue;
+            addToLine("primaryKey", "*");
+            addToLine("attributes", "-");
+            addToLine("functions", "+");
         }
-        addToLine("primaryKey", "*");
-        addToLine("attributes", "-");
-        addToLine("functions", "+");
+        stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        showdata();
+        updatepos();
+    } catch (error) {
+        console.error("Error during saveProperties execution:", error);
+        displayMessage(messageTypes.ERROR, "An error occurred while saving properties.");
     }
-    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    showdata();
-    updatepos();
 }
 
 /**
