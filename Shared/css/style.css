@@ -9097,6 +9097,7 @@ textarea#filecont {
   line-height: 0.5em;
   text-align: center;
   width: 100%;
+  flex: 1;
 }
 
 #motd {
