@@ -4,7 +4,7 @@ include "../../../../Shared/test.php";
 
 $testsData = array(
     'delete variant' => array(
-        'expected-output' => '{"variants":["othervariant"]}',
+        'expected-output' => '{"entries":[{"variants":[{"param":"param","variantanswer":"othervariant"}]}]}',
         'query-before-test-1' => "INSERT INTO quiz(id, cid,vers, qname) VALUES (333,1885,1337,'testQuiz')",
         'query-before-test-2' => "INSERT INTO variant(quizID, param, variantanswer) VALUES (333,'param','deletevariant');",
         'query-before-test-3' => "INSERT INTO variant(quizID, param, variantanswer) VALUES (333,'param','othervariant');",
@@ -26,7 +26,12 @@ $testsData = array(
         'filter-output' => serialize(
             array(
                 // Filter what output to use in assert test, use none to use all ouput from service
-                'variants',
+                'entries' => array(
+                    'variants' => array(
+                        'param',
+                        'variantanswer'
+                    )
+                )
             )
         ),
     ),

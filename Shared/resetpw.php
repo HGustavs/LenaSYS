@@ -1,9 +1,7 @@
 <?php
+include_once(__DIR__ . "/sessions.php");
+include_once(__DIR__ . "/basic.php");
 
-include_once "../Shared/sessions.php";
-include_once "../Shared/basic.php";
-
-include_once "../../coursesyspw.php";
 
 $opt=getOP('opt');
 

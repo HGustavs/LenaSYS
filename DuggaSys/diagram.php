@@ -1,6 +1,5 @@
 <?php
     session_start();
-    include_once "../../coursesyspw.php";
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
 	#general vars regarding current dugga.
@@ -36,7 +35,6 @@
     <script src="./diagram/globals.js"></script>
     <script src="./diagram/classes/element.js"></script>
     <script src="./diagram/classes/stateChange.js"></script>
-    <script src="./diagram/classes/stateChangeFactory.js"></script>
     <script src="./diagram/helper.js"></script>
     <script src="./diagram/errorHandling.js"></script>
     <script src="./diagram/theme.js"></script>
@@ -1028,8 +1026,8 @@
     <div class="loadModalOverlay hiddenLoad"></div>
 
     <div id="overrideContainer" class="loginBoxContainer" style="display:none">
-        <div class="loginBox">
-            <div class="loginBoxheader">
+        <div class="formBox">
+            <div class="formBoxHeader">
                 <h3>
                     Filename already exists
                 </h3>
@@ -1208,8 +1206,8 @@
         <p>Press "ESCAPE" to exit the replay-mode.</p>
     </div>
     <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
-        <div class="loginBox">
-            <div class="loginBoxheader">
+        <div class="formBox">
+            <div class="formBoxHeader">
                 <h3>
                     Save current diagram as
                 </h3>

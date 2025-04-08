@@ -1,7 +1,6 @@
 <?php
 
 include "../../Shared/test.php";
-include_once "../../../coursesyspw.php";
 
 $testsData = array(
 
@@ -114,7 +113,7 @@ $testsData = array(
     ),
 
     'add variant' => array(
-    'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","variants":["{\"danswer\":\"00000010 0 2\"}","{\"danswer\":\"00000101 0 5\"}","{\"danswer\":\"00002 0 A\"}","{\"danswer\":\"00011001 1 9\"}","{\"danswer\":\"02111 5 7\"}","{\"danswer\":\"11000000 C 0\"}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","B","A","C","A","","","","Test text"]}',
+    'expected-output' => '{"entries":[{"variants":[{"variantanswer":"{\"danswer\":\"00000010 0 2\"}"},{"variantanswer":"{\"danswer\":\"00000101 0 5\"}"},{"variantanswer":"{\"danswer\":\"00002 0 A\"}"}]},{"variants":[{"variantanswer":"{\"danswer\":\"00011001 1 9\"}"},{"variantanswer":"{\"danswer\":\"02111 5 7\"}"},{"variantanswer":"{\"danswer\":\"11000000 C 0\"}"}]},{"variants":[{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"B"},{"variantanswer":"A"},{"variantanswer":"C"},{"variantanswer":"A"}]},{"variants":[{"variantanswer":""}]},{"variants":[{"variantanswer":""}]},{"variants":[{"variantanswer":""},{"variantanswer":"Test text"}]}],"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
         'service' => 'http://localhost/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
             array(
@@ -137,14 +136,17 @@ $testsData = array(
                 'writeaccess',
                 'coursename',
                 'coursecode',
-                'variants',
-                
+                'entries' => array(
+                    'variants' => array(
+                        'variantanswer',
+                    )
+                )
             )
         ),
     ),
 
     'update a variant' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","variants":["{\"danswer\":\"00000010 0 2\"}","{\"danswer\":\"00000101 0 5\"}","{\"danswer\":\"00002 0 A\"}","{\"danswer\":\"00011001 1 9\"}","{\"danswer\":\"02111 5 7\"}","{\"danswer\":\"11000000 C 0\"}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","B","A","C","A","","","","Test text updated"]}',
+        'expected-output' => '{"entries":[{"variants":[{"variantanswer":"{\"danswer\":\"00000010 0 2\"}"},{"variantanswer":"{\"danswer\":\"00000101 0 5\"}"},{"variantanswer":"{\"danswer\":\"00002 0 A\"}"}]},{"variants":[{"variantanswer":"{\"danswer\":\"00011001 1 9\"}"},{"variantanswer":"{\"danswer\":\"02111 5 7\"}"},{"variantanswer":"{\"danswer\":\"11000000 C 0\"}"}]},{"variants":[{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"B"},{"variantanswer":"A"},{"variantanswer":"C"},{"variantanswer":"A"}]},{"variants":[{"variantanswer":""}]},{"variants":[{"variantanswer":""}]},{"variants":[{"variantanswer":""},{"variantanswer":"Test text updated"}]}],"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
         'query-before-test-1' => "SELECT vid FROM variant WHERE variantanswer = 'Test text'",
         'service' => 'http://localhost/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
@@ -168,13 +170,17 @@ $testsData = array(
                 'writeaccess',
                 'coursename',
                 'coursecode',
-                'variants',
+                'entries' => array(
+                    'variants' => array(
+                        'variantanswer',
+                    )
+                )
             )
         ),
     ),
 
     'delete variant' => array(
-        'expected-output' => '{"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik","variants":["{\"danswer\":\"00000010 0 2\"}","{\"danswer\":\"00000101 0 5\"}","{\"danswer\":\"00002 0 A\"}","{\"danswer\":\"00011001 1 9\"}","{\"danswer\":\"02111 5 7\"}","{\"danswer\":\"11000000 C 0\"}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","{Variant}","B","A","C","A","","",""]}',
+        'expected-output' => '{"entries":[{"variants":[{"variantanswer":"{\"danswer\":\"00000010 0 2\"}"},{"variantanswer":"{\"danswer\":\"00000101 0 5\"}"},{"variantanswer":"{\"danswer\":\"00002 0 A\"}"}]},{"variants":[{"variantanswer":"{\"danswer\":\"00011001 1 9\"}"},{"variantanswer":"{\"danswer\":\"02111 5 7\"}"},{"variantanswer":"{\"danswer\":\"11000000 C 0\"}"}]},{"variants":[{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"},{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"{Variant}"}]},{"variants":[{"variantanswer":"B"},{"variantanswer":"A"},{"variantanswer":"C"},{"variantanswer":"A"}]},{"variants":[{"variantanswer":""}]},{"variants":[{"variantanswer":""}]},{"variants":[{"variantanswer":""}]}],"debug":"NONE!","writeaccess":true,"coursecode":"IT118G","coursename":"Webbutveckling - datorgrafik"}',
         'query-before-test-1' => "SELECT vid FROM variant WHERE variantanswer = 'Test text updated'",
         'service' => 'http://localhost/LenaSYS/DuggaSys/duggaedservice.php',
         'service-data' => serialize(
@@ -195,7 +201,11 @@ $testsData = array(
                 'writeaccess',
                 'coursename',
                 'coursecode',
-                'variants',
+                'entries' => array(
+                    'variants' => array(
+                        'variantanswer',
+                    )
+                ),
             )
         ),
     ),

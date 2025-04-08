@@ -1,0 +1,36 @@
+@startuml
+title Installation Process Flowchart
+
+start
+:User starts Installation Process;
+:Page is Loaded;
+:Attach Event Listeners;
+
+if (User Navigates Pages) then (yes)
+    :Navigate to Next/Previous Page;
+else (no)
+    stop
+endif
+
+if (User clicks Install) then (yes)
+    :Collect Final Form Data;
+    :Aggregate All Data;
+
+    rectangle "Data Processing" {
+        :Format Data;
+    }
+
+    rectangle "installer.php" {
+        :Send POST to Backend;
+        :Receive SSE for Installation Progress;
+        :Update Progress Bar;
+    }
+
+else (no)
+    :Do Nothing;
+    stop
+endif
+
+stop
+
+@enduml

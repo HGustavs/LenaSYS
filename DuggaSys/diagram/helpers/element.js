@@ -21,7 +21,7 @@ function elementHasLines(element) {
  * @see ghostElement
  */
 function makeGhost() {
-    ghostElement = Element.FromKind(elementTypeSelected);
+    ghostElement = Element.Default(elementTypeSelected);
     setGhostPosition(lastMousePos.x, lastMousePos.y);
     showdata();
 }
@@ -112,7 +112,7 @@ function setPos(elements, x, y) {
             obj.x = Math.round(obj.x);
             obj.y = Math.round(obj.y);
         });
-        if (idList.length) stateMachine.save(StateChangeFactory.ElementsMoved(idList, -x, -y), StateChange.ChangeTypes.ELEMENT_MOVED);
+        if (idList.length) stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
     }
     // Update positions
     updatepos();

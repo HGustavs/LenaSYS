@@ -1,12 +1,17 @@
+/**
+ * @description If the current keyboard event matches a keybind. Ctrl sensistive.
+ * @param {KeyboardEvent} e
+ * @param {{key:string, ctrl:boolean}} keybind
+ * @returns {boolean}
+ */
 function isKeybindValid(e, keybind) {
     return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 /**
- * @description Converst a position in screen pixels into coordinates of the array.
- * @param {Number} mouseX Pixel position in the x-axis.
- * @param {Number} mouseY Pixel position in the y-axis.
- * @returns {Point} Point containing the calculated coordinates.
+ * @description Converts position in pixels on the screen into coordinates in the diagram.
+ * @param {Number} mouseX Screen position in the x-axis.
+ * @param {Number} mouseY Screen position in the y-axis.
  */
 function screenToDiagramCoordinates(mouseX, mouseY) {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
@@ -36,10 +41,10 @@ function enumContainsPropertyValue(value, enumObject) {
 }
 
 /**
- * Searches an array for the specified item and returns its stored index in the array if found.
- * @param {Array} arr Array to search.
- * @param {*} id Item to determine index for.
- * @returns {Number} Index for the searched item OR -1 for a miss.
+ * @description Searches an array for the specified item and returns its stored index in the array if found.
+ * @param {*[]} arr Array to search.
+ * @param {string} id Item to determine index for.
+ * @returns {number} Index for the searched item OR -1 for a miss.
  */
 function findIndex(arr, id) {
     for (let i = 0; i < arr.length; i++) {
@@ -48,6 +53,12 @@ function findIndex(arr, id) {
     return -1;
 }
 
+/**
+ * @description If line is connected to an element of the provided kind.
+ * @param {Object} line
+ * @param {string} kind
+ * @returns {null}
+ */
 function isLineConnectedTo(line, kind) {
     let result = null;
     switch (kind) {
@@ -62,15 +73,23 @@ function isLineConnectedTo(line, kind) {
 }
 
 /**
- * @description Gets the extension of an filename
- * @param {String} filename The name of the file
- * @return The extension
+ * @description Gets the extension of an filename.
+ * @param {string} filename The name of the file
+ * @return {string}
  */
 function getExtension(filename) {
     const parts = filename.split('.');
     return parts[parts.length - 1];
 }
 
+/**
+ * @description If the element with the provided id (if moved to X,Y position) is overlapping any other object in the data array.
+ * @see data
+ * @param {string} id
+ * @param {number} x
+ * @param {number} y
+ * @returns {boolean}
+ */
 function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
@@ -133,20 +152,17 @@ function entityIsOverlapping(id, x, y) {
 }
 
 /**
- * @description function to get ID from any level of nested array
- * @param {any[]} array with id
- * @returns the id
+ * @description Gets first non array item from nested array.
+ * @param {string | any[]} array id or nested array of IDs.
+ * @returns {any[]} All the IDs.
  */
-function getIdFromArray(array) {
-    while (Array.isArray(array)) {
-        array = array[0];
-    }
-    return array;
+function getItemsFromNestedArrays(array) {
+    return array.flat(Infinity);
 }
 
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
- * @return a boolean value depending on if it is darktheme or not.
+ * @return {boolean}
  */
 function isDarkTheme() {
     if (localStorage.getItem('diagramTheme')) {
@@ -160,9 +176,9 @@ function isDarkTheme() {
 }
 
 /**
- * Generates a new hexadecimal ID that is not already stored to identify things.
- * @returns {String} Hexadecimal number represented as a string.
- * @see randomidArray For an array of all generated IDs by this function.
+ * @description Generates a new hexadecimal ID that is not already stored to identify things.
+ * @returns {string} Hexadecimal number represented as a string.
+ * @see randomidArray
  */
 function makeRandomID() {
     let str = "";
@@ -189,6 +205,10 @@ function makeRandomID() {
     }
 }
 
+/**
+ * @description If mouse has moved more than maxDeltaBeforeExeeded in any direction.
+ * @see maxDeltaBeforeExceeded
+ */
 function calculateDeltaExceeded() {
     // Remember that mouse has moved out of starting bounds
     if ((deltaX >= maxDeltaBeforeExceeded ||
@@ -208,11 +228,14 @@ function calculateDeltaExceeded() {
  * @returns {boolean}
  */
 function sameObjects(obj1, obj2, ignore = []) {
+    // removes the reference to the sent in objects just in case the sending function didn't do it
+    obj1 = {...obj1};
+    obj2 = {...obj2};
     // remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];
         if (obj2[item]) delete obj2[item];
-    }    
+    }
 
     // JSON.stringify() is needed to compare the values
     return JSON.stringify(obj1) == JSON.stringify(obj2);

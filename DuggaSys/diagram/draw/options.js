@@ -288,6 +288,8 @@ function lineLabel(id, placeholder, value) {
  */
 function drawLineProperties(line) {
     let str = '';
+    const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
+
     switch (line.type) {
         case entityType.ER:
             str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
@@ -312,11 +314,18 @@ function drawLineProperties(line) {
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
-            let optSD = option(SDLineType, line.innerType);
-            str += includeLabel(line);
-            str += iconSelection([SDLineIcons], line);
-            str += `<label style="display: block;">Line Type:</label>`;
-            str += select('lineType', optSD, false);
+            if (!connectedToInitialOrFinal) {
+                let optSD = option(SDLineType, line.innerType);
+                str += includeLabel(line);
+                str += iconSelection([SDLineIcons], line);
+                str += `<label style="display: block;">Line Type:</label>`;
+                str += select('lineType', optSD, false);
+            } else {
+                let optSD = option(SDLineType, line.innerType);
+                str += includeLabel(line);
+                str += `<label style="display: block;">Line Type:</label>`;
+                str += select('lineType', optSD, false);
+            }
             break;
         case entityType.SE:
             str += includeSELabel(line);
@@ -420,6 +429,18 @@ function textboxFormatString(arr) {
         content += arr[i] + '\n';
     }
     return content;
+}
+
+/**
+ * @description Function used to check if a given line is connected to an initial state or a final state.
+ * @param {Object} line The line object that needs to be checked.
+ * @returns {Boolean} Returns true if the line is connected to an initial state or a final state, otherwise false.
+ */
+function isConnectedToInitialOrFinalState(line) {
+    const initialStateIds = data.filter(element => element.kind === elementTypesNames.UMLInitialState).map(element => element.id);
+    const finalStateIds = data.filter(element => element.kind === elementTypesNames.UMLFinalState).map(element => element.id);
+    return initialStateIds.includes(line.fromID) || initialStateIds.includes(line.toID) ||
+        finalStateIds.includes(line.fromID) || finalStateIds.includes(line.toID);
 }
 
 /**
@@ -1829,53 +1850,15 @@ function multipleColorsTest() {
 /**
  * @description Applies new changes to line attributes in the data array of lines.
  */
-function changeLineProperties() {
-    const line = contextLine[0];
-    const changes = {};
-
-    // saves kind of line (normal, dashed, double, etc)
-    for (let radio of document.querySelectorAll('#propertyFieldset input[type=radio]')) {
-        if (radio && radio.checked) {
-            changes.kind = radio.value;
-        }
-    }
-
-    // saves cardinalities for ER attributes
-    const cardinalityER = document.getElementById('propertyCardinality');
-    if (cardinalityER) {
-        changes.cardinality = cardinalityER.value;
-    }
-
-    // saves the label
-    const label = document.getElementById('lineLabel');    
-    if (label) {
-        changes.label = label.value;
-    }
-
-    // adds the rest of the attributes for the specific entity
-    if (line.type == entityType.UML) {
-        changes.startLabel = document.getElementById("lineStartLabel").value;
-        changes.endLabel = document.getElementById("lineEndLabel").value;
-        changes.startIcon = document.getElementById("lineStartIcon").value;
-        changes.endIcon = document.getElementById("lineEndIcon").value;
-    }
-    if (line.type == entityType.SD) {
-        changes.innerType = document.getElementById("lineType").value;
-        changes.startIcon = document.getElementById("lineStartIcon").value;
-        changes.endIcon = document.getElementById("lineEndIcon").value;
-    }
-    if ((line.type == entityType.SE) || (line.type == entityType.IE)) {
-        changes.startIcon = document.getElementById("lineStartIcon").value;
-        changes.endIcon = document.getElementById("lineEndIcon").value;
-    }
-
-    // updates the line
-    for (const [key, value] of Object.entries(changes)) {
-        line[key] = value;
-    }
+function changeLineProperties() {        
     
+    // updates the line
+    for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
+        contextLine[0][key] = value;
+    }
+
     // save all the changes
-    stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, line), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+    stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
 
     showdata();
 }

@@ -1,5 +1,5 @@
 <?php
-include_once ("../Shared/database.php");
+include_once(__DIR__ . "/database.php");
 pdoConnect();
 
 $updateannouncementid = $_GET['updateannouncementid'];
