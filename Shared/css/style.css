@@ -1331,7 +1331,33 @@ p {
   display: block;
 }
 
+/* Sectionlistc */
+.sectionlistCMargin {
+  margin-top: 30px;
+ }
 
+ .sectionlistCSmallMargin {
+  margin-top: 10px;
+ }
+
+ .sectionlistCsideBorder {
+  border-left: 1px solid var(--color-primary);
+  border-right: 1px solid var(--color-primary);
+ }
+
+ .sectionlistCbottomBorder {
+  border-bottom: 1px solid var(--color-primary);
+ }
+
+ .sectionlistCbottomMargin {
+  margin-bottom: 20px;
+ }
+
+ .sectionlistCWidth {
+  width: calc(100% - 30px);
+  margin-left: auto;
+  margin-right: auto;
+ }
 
 
 #errorBox{
