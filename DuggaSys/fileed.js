@@ -112,7 +112,7 @@ function returnedFile(data) {
         renderSortOptionsCallback: renderSortOptions,
         rowFilterCallback: rowFilter,
         columnOrder: colOrder,
-        hasRowHighlight: true,
+        hasRowHighlight: false,
         hasMagicHeadings: false,
         hasCounterColumn: true
     });
