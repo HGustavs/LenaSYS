@@ -313,6 +313,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     let height = texth * 2;
     let headPath = `
         <path 
+        class="text"
             d="M ${linew + cornerRadius},${linew}
                 h ${boxw - linew * 2 - cornerRadius * 2}
                 a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
