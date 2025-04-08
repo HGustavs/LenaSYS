@@ -6,8 +6,8 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include ('../sharedMicroservices/getUid_ms.php');
-include_once "retrieveSectionedService_ms.php";
+include "../sharedMicroservices/getUid_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 
 // Connect to database and start session
@@ -18,12 +18,13 @@ session_start();
 // Retrieve parameters from the request 
 $lid = getOP('lid');
 $visible = getOP('visible');
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
+$coursevers = getOP('coursevers');
 $versid = getOP('vers');
 $uid = getUid();
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
-
+$debug='NONE!';
 
 // Permissions Check
 
@@ -42,16 +43,13 @@ if (checklogin() && isSuperUser($uid)){
         // Optionally log to event
         // logUserEvent($userid, $username, EventTypes::UpdateListentryVisibility, $listentryId);
 
-        echo "Visibility update successfully.";
+        $debug = "Visibility update successfully.";
     } else {
-        echo "Error updating visibility.";
+        $debug = "Error updating visibility.";
     }
 } else {
-    echo "insufficient permissions.";
+    $debug = "insufficient permissions.";
 }
-
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $coursevers, $log_uuid);
+$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $versid, $log_uuid);
 echo json_encode($data);
 return;
-
-?>

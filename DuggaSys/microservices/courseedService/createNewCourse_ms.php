@@ -5,6 +5,7 @@
 
 date_default_timezone_set("Europe/Stockholm");
 
+include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
@@ -21,23 +22,17 @@ $courseGitURL = getOP('courseGitURL');
 $debug = "NONE!";
 $ha = null;
 $isSuperUserVar = false;
+$userid = getUid();
 
 $LastCourseCreated = array();
 
 // Login is checked
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 	$ha = $isSuperUserVar;
 }
 
 if($ha) {
-    $userid = getUid();   
-
     // insert into database 
     $query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)");
 

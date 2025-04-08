@@ -64,7 +64,7 @@ function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt=""
             array_push($teachers, $teacher);
         }
 
-        $query = $pdo->prepare("SELECT class FROM class;");
+        $query = $pdo->prepare("SELECT * FROM class;");
         if(!$query->execute()){
             $error=$query->errorInfo();
             $debug="Error reading user entries\n".$error[2];
@@ -72,6 +72,13 @@ function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt=""
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
             $classe = array(
                 'class' => $row['class'],
+                'responsible' => $row['responsible'],
+                'classname' => $row['classname'],
+                'regcode' => $row['regcode'],
+                'classcode' => $row['classcode'],
+                'hp' => $row['hp'],
+                'tempo' => $row['tempo'],
+                'hpProgress' => $row['hpProgress'],
             );
             array_push($classes, $classe);
         }

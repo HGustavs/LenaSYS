@@ -1,86 +1,91 @@
 <?php
-// Set the default timezone
+
+// updateCourseVersion_ms - Edit a specific course version
+
 date_default_timezone_set("Europe/Stockholm");
 
-// Include necessary files
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../../../../coursesyspw.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "./retrieveCourseedService_ms.php";
+include_once "../sharedMicroservices/setAsActiveCourse_ms.php";
 
-// Connect to the database and start the session
+// Connect to database and start session.
 pdoConnect();
 session_start();
 
-// Initialize variables
-$opt = getOP('opt');
-$cid = getOP('cid');
-$coursename = getOP('coursename');
-$visibility = getOP('visib');
-$coursecode = getOP('coursecode');
-$courseGitURL = getOP('courseGitURL');
+$opt=getOP('opt');
+$cid=getOP('courseid');
+$courseid=getOP('courseid');
+$versid=getOP('versid');
+$versname=getOP('versname');
+$copycourse=getOP('copycourse');
+$coursecode=getOP('coursecode');
+$coursename=getOP('coursename');
+$coursenamealt=getOP('coursenamealt');
+$makeactive=getOP('makeactive');
+$startdate=getOP('startdate');
+$enddate=getOP('enddate');
+$motd=getOP('motd');
+$log_uuid=getOP('log_uuid');
 
-// Get user identification
-$userid = isset($_SESSION['uid']) ? $_SESSION['uid'] : "UNK";
+$userid = getUid();
 $username = retrieveUsername($pdo);
 
 $debug="NONE!";
 
-$ha = null;
-$isSuperUserVar = false;
+// Permission checks
+$haswrite = hasAccess($userid, $cid, 'w');
+$isSuperUserVar = isSuperUser($userid);
+$studentTeacher = hasAccess($userid, $cid, 'st');
+$hasAccess = $haswrite || $isSuperUserVar;
 
-// Login is checked
-if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
-	$isSuperUserVar = isSuperUser($userid);
-	$ha = $isSuperUserVar;
+if (!checklogin()){
+    $debug = "User not logged in";
+    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+    echo json_encode($retrieveArray);
+    return;
 }
 
-if ($ha){
-    // Update course information
-    $updateSuccessful = updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL);
-    // Handle errors if update fails
-    if (!$updateSuccessful) {
-        $debug = "Error updating course information.";
-    }     
-    $visibilityName = getVisibilityName($visibility);
-    $description = "$coursename $coursecode $visibilityName";
-    logUserEvent($userid, $username, "EditCourse", $description);
+if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
+    $debug = "Access not granted";
+    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+    echo json_encode($retrieveArray);
+    return;
 }
 
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
-
-
-// Function to update course information in the database
-function updateCourse($cid, $coursename, $visibility, $coursecode, $courseGitURL) {
-    global $pdo;
-    $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid");
-    $query->bindParam(':cid', $cid);
-    $query->bindParam(':coursename', $coursename);
-    $query->bindParam(':visibility', $visibility);
-    $query->bindParam(':coursecode', $coursecode);
-    $query->bindParam(':courseGitURL', $courseGitURL);
-    return $query->execute();
+if (strcmp($opt, "UPDATEVRS") !== 0) {
+    $debug = "OPT does not match.";
+    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+    echo json_encode($retrieveArray);
+    return;
 }
 
-// Function to get the visibility name
-function getVisibilityName($visibility) {
-    switch ($visibility) {
-        case 0:
-            return "Hidden";
-        case 1:
-            return "Public";
-        case 2:
-            return "Login";
-        case 3:
-            return "Deleted";
-        default:
-            return "Unknown";
-    }
+$query = $pdo->prepare("UPDATE vers SET motd=:motd,versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':coursecode', $coursecode);
+$query->bindParam(':vers', $versid);
+$query->bindParam(':versname', $versname);
+$query->bindParam(':motd', $motd);
+
+if($startdate=="UNK"){
+	$query->bindValue(':startdate', null,PDO::PARAM_INT);
+}else {
+	$query->bindParam(':startdate', $startdate);
+}
+if($enddate=="UNK"){ 
+	$query->bindValue(':enddate', null,PDO::PARAM_INT);
+}else {
+	$query->bindParam(':enddate', $enddate);
+}
+if (!$query->execute()) {
+	$error = $query->errorInfo();
+	$debug = "Error updating entries\n" . $error[2];
+}
+if ($makeactive == 3) {
+    setAsActiveCourse($pdo, $cid, $versid);
 }
 
+$retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+echo json_encode($retrieveArray);

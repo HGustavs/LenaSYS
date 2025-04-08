@@ -10,6 +10,7 @@ include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
+include_once "./retrieveCourseedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -29,14 +30,10 @@ $makeactive = getOP('makeactive');
 $debug = "NONE!";
 $ha = null;
 $isSuperUserVar = false;
+$userid = getUid();
 
 // Login is checked
 if (checklogin()) {
-	if (isset($_SESSION['uid'])) {
-		$userid = $_SESSION['uid'];
-	} else {
-		$userid = "UNK";
-	}
 	$isSuperUserVar = isSuperUser($userid);
 	$ha = $isSuperUserVar;
 }

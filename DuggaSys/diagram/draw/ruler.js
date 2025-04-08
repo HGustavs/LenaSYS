@@ -1,5 +1,7 @@
 /**
  * @description Draw and updates the rulers, depending on the window size and current position in the diagram.
+ * @param {number} X - The X coordinate panned to.
+ * @param {number} Y - The Y coordinate panned to.
  */
 function drawRulerBars(X, Y) {
     //Get elements
@@ -7,8 +9,8 @@ function drawRulerBars(X, Y) {
 
     let svgX = document.getElementById("ruler-x-svg");
     let svgY = document.getElementById("ruler-y-svg");
-    //Settings - Ruler
 
+    //Settings - Ruler
     let pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     const lineRatio1 = 1;
     const lineRatio2 = 10;
@@ -24,7 +26,7 @@ function drawRulerBars(X, Y) {
     settings.ruler.zoomX = Math.round(((0 - zoomOrigo.x) * zoomfact));
     settings.ruler.zoomY = Math.round(((0 - zoomOrigo.y) * zoomfact));
 
-    let verticalText
+    let verticalText;
     if (zoomfact < 0.5) {
         verticalText = "writing-mode='vertical-lr'";
     } else {
@@ -35,12 +37,15 @@ function drawRulerBars(X, Y) {
     let viewportHeight = window.innerHeight;
     let viewportWidth = window.innerWidth;
 
+    //Vertical range
     let visibleRangeY = [
         pannedY * -1,
         pannedY * -1 + viewportHeight
     ];
+
+    //Horizontal range
     let visibleRangeX = [
-        pannedX * -1 ,
+        pannedX * -1,
         pannedX * -1 + viewportWidth
     ];
 
@@ -55,12 +60,12 @@ function drawRulerBars(X, Y) {
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 barY += `<line class='ruler-line' x1='0px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
-                barY += `<text class='ruler-text' x='10' y='${pannedY + i + 10}' style='font-size: 10px'>${cordY}</text>`;
-                cordY = cordY + 10;
+                barY += `<text class='ruler-text' x='10' y='${pannedY + i + 10}' style='font-size: 10px;'>${cordY}</text>`;
+                cordY += 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
-                    barY += `<text class='ruler-text' x='20' y='${pannedY + i + 10}' style='font-size: 8px'>${cordY - 10 + lineNumber / 10}</text>`;
+                    barY += `<text class='ruler-text' x='20' y='${pannedY + i + 10}' style='font-size: 8px;'>${cordY - 10 + lineNumber / 10}</text>`;
                     barY += `<line class='ruler-line' x1='20px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
                 } else {
                     barY += `<line class='ruler-line' x1='25px' y1='${pannedY + i}' x2='40px' y2='${pannedY + i}'/>`;
@@ -77,7 +82,7 @@ function drawRulerBars(X, Y) {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                cordY = cordY + 10
+                cordY += 10
             }
         }
     }
@@ -92,12 +97,12 @@ function drawRulerBars(X, Y) {
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 barY += `<line class='ruler-line' x1='0px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}' />`;
-                barY += `<text class='ruler-text' x='10' y='${pannedY - i + 10}' style='font-size: 10px'>${cordY}</text>`;
-                cordY = cordY - 10;
+                barY += `<text class='ruler-text' x='10' y='${pannedY - i + 10}' style='font-size: 10px;'>${cordY}</text>`;
+                cordY -= 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordY + 10 - lineNumber / 10) != 0) {
-                    barY += `<text class='ruler-text' x='20' y='${pannedY - i + 10}' style='font-size: 8px'>${cordY + 10 - lineNumber / 10}</text>`;
+                    barY += `<text class='ruler-text' x='20' y='${pannedY - i + 10}' style='font-size: 8px;'>${cordY + 10 - lineNumber / 10}</text>`;
                     barY += `<line class='ruler-line' x1='20px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}' />`;
                 } else {
                     barY += `<line class='ruler-line' x1='25px' y1='${pannedY - i}' x2='40px' y2='${pannedY - i}' />`;
@@ -114,7 +119,7 @@ function drawRulerBars(X, Y) {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                cordY = cordY - 10;
+                cordY -= 10;
             }
         }
     }
@@ -132,7 +137,7 @@ function drawRulerBars(X, Y) {
                 lineNumber = 0;
                 barX += `<line class='ruler-line' x1='${i + pannedX}' y1='0' x2='${i + pannedX}' y2='40px'/>`;
                 barX += `<text class='ruler-text' x='${i + 5 + pannedX}'${verticalText}' y='15' style='font-size: 10px'>${cordX}</text>`;
-                cordX = cordX + 10;
+                cordX += 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if (zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) {
@@ -153,7 +158,7 @@ function drawRulerBars(X, Y) {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                cordX = cordX+10
+                cordX += 10
             }
         }
     }
@@ -168,12 +173,12 @@ function drawRulerBars(X, Y) {
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
                 barX += `<line class='ruler-line' x1='${pannedX - i}' y1='0' x2='${pannedX - i}' y2='40px'/>`;
-                barX += `<text class='ruler-text' x='${pannedX - i + 5}' ${verticalText} y='15' style='font-size: 10px'>${cordX}</text>`;
-                cordX = cordX - 10;
+                barX += `<text class='ruler-text' x='${pannedX - i + 5}' ${verticalText} y='15' style='font-size: 10px;'>${cordX}</text>`;
+                cordX -= 10;
             } else if (zoomfact >= 0.25 && lineNumber % lineRatio2 == 0) {
                 //centi
                 if ((zoomfact > 0.5 || (lineNumber / 10) % 5 == 0) && (cordX + 10 - lineNumber / 10) != 0) {
-                    barX += `<text class='ruler-text' x='${pannedX - i + 5}' ${verticalText} y='25' style='font-size: 8px'>${cordX + 10 - lineNumber / 10}</text>`;
+                    barX += `<text class='ruler-text' x='${pannedX - i + 5}' ${verticalText} y='25' style='font-size: 8px;'>${cordX + 10 - lineNumber / 10}</text>`;
                     barX += `<line class='ruler-line' x1='${pannedX - i}' y1='20' x2='${pannedX - i}' y2='40px'/>`;
                 } else {
                     barX += `<line class='ruler-line' x1='${pannedX - i}' y1='25' x2='${pannedX - i}' y2='40px'/>`;
@@ -190,10 +195,10 @@ function drawRulerBars(X, Y) {
             // keep track of the line number so that correct length of the deci, centi and milli lines are drawn
             if (lineNumber === lineRatio3) {
                 lineNumber = 0;
-                cordX = cordX - 10;
+                cordX -= 10;
             }
         }
     }
     svgX.style.boxShadow = "3px 3px 6px #5c5a5a";
-    svgX.innerHTML = barX;//Print the generated ruler, for X-axis
+    svgX.innerHTML = barX; //Print the generated ruler, for X-axis
 }

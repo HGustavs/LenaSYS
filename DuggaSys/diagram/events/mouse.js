@@ -1,6 +1,6 @@
 /**
  * @description Event function triggered when the mousewheel reader has a value of grater or less than 0.
- * @param {MouseEvent} event Triggered mouse event.
+ * @param {WheelEvent} event - The mouse wheel event object.
  */
 function mwheel(event) {
     event.preventDefault();
@@ -55,10 +55,10 @@ function mdown(event) {
     if (event.button == 2) return;
 
     // Check if no element has been clicked or delete button has been pressed.
-    if (pointerState != pointerStates.CLICKED_ELEMENT && !hasPressedDelete && !settings.replay.active) {
+    if (!hasPressedDelete && !settings.replay.active) {
         // Used when clicking on a line between two elements.
         determinedLines = determineLineSelect(event.clientX, event.clientY);
-      
+
         // If a line was clicked, determine if the label or line was clicked.
         if (determinedLines) {
             if (determinedLines.id.length == 6) { // LINE
@@ -95,7 +95,6 @@ function mdown(event) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
-                            targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
                             containerStyle.cursor = "grabbing";
@@ -115,7 +114,6 @@ function mdown(event) {
                         }
                         break;
                     }
-
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if (context.length > 0) {
@@ -124,7 +122,6 @@ function mdown(event) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
-                            targetElementDiv = document.getElementById(targetElement.id);
                         } else {
                             boxSelect_Start(event.clientX, event.clientY);
                         }
@@ -138,8 +135,8 @@ function mdown(event) {
             }
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
-        pointerState = pointerStates.CLICKED_NODE;
-            var element = data[findIndex(data, context[0].id)];
+            pointerState = pointerStates.CLICKED_NODE;
+            const element = data[findIndex(data, context[0].id)];
 
             // Save the original properties
             originalWidth = element.width;
@@ -150,15 +147,14 @@ function mdown(event) {
             startWidth = data[findIndex(data, context[0].id)].width;
             startHeight = data[findIndex(data, context[0].id)].height;
 
-            //startNodeRight = !event.target.classList.contains("mr");
-            startNodeLeft = event.target.classList.contains("ml")
-            startNodeRight = event.target.classList.contains("mr"); //since it used to be "anything but mr", i changed it to "be ml" since theres not only two nodes anymore. This variable still does not make sense to me but I left it functionally intact.
-            startNodeDown = event.target.classList.contains("md");
-            startNodeUp = event.target.classList.contains("mu");
-            startNodeUpRight = event.target.classList.contains("tr");
-            startNodeUpLeft = event.target.classList.contains("tl");
-            startNodeDownRight = event.target.classList.contains("br");
-            startNodeDownLeft = event.target.classList.contains("bl");
+            startNode.left = event.target.classList.contains("ml");
+            startNode.right = event.target.classList.contains("mr");
+            startNode.down = event.target.classList.contains("md");
+            startNode.up = event.target.classList.contains("mu");
+            startNode.upRight = event.target.classList.contains("tr");
+            startNode.upLeft = event.target.classList.contains("tl");
+            startNode.downRight = event.target.classList.contains("br");
+            startNode.downLeft = event.target.classList.contains("bl");
 
             startX = event.clientX;
             startY = event.clientY;
@@ -171,7 +167,7 @@ function mdown(event) {
 
     dblPreviousTime = new Date().getTime();
     wasDblClicked = false;
-    historyHandler.inputCounter++;
+    historyHandler.inputCounter = (historyHandler.inputCounter+1)%1024;
 }
 
 /**
@@ -191,7 +187,7 @@ function ddown(event) {
         const element = data[findIndex(data, event.currentTarget.id)];
         if (element != null && context.length == 1 && context.includes(element) && contextLine.length == 0) {
             event.preventDefault(); // Needed in order for focus() to work properly
-            var input = document.getElementById("elementProperty_name");
+            const input = document.getElementById("elementProperty_name");
             if (input !== null) {
                 input.focus();
                 input.setSelectionRange(0, input.value.length); // Select the whole text.
@@ -216,9 +212,9 @@ function ddown(event) {
                 if (!altPressed) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
-                    targetElementDiv = document.getElementById(targetElement.id);
                     canPressDeleteBtn = true;
                 }
+            // TODO: Should this be missing a break?
             case mouseModes.EDGE_CREATION:
                 if (event.button == 2) return;
                 const element = data[findIndex(data, event.currentTarget.id)];
@@ -244,7 +240,7 @@ function ddown(event) {
 /**
  * @description Event function triggered when any mouse button is released on top of the container. Logic is handled depending on the current pointer state.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates 
  */
 function mup(event) {
     if (!mouseOverLine && !mouseOverElement) {
@@ -252,9 +248,15 @@ function mup(event) {
     }
     mouseButtonDown = false;
     targetElement = null;
+    //let id = event.target.id;
     deltaX = startX - event.clientX;
     deltaY = startY - event.clientY;
-
+    
+    // makes sure that the id isn't in an array if a line is selected
+    while (determinedLines && Array.isArray(determinedLines.id)) {
+        determinedLines.id = determinedLines.id[0];
+    }
+    
     switch (pointerState) {
         case pointerStates.DEFAULT:
             mouseMode_onMouseUp(event);
@@ -273,8 +275,8 @@ function mup(event) {
                 }
             }
             break;
-        case pointerStates.CLICKED_LINE:
-            if (!deltaExceeded) {
+        case pointerStates.CLICKED_LINE:            
+            if (!deltaExceeded && mouseMode != mouseModes.EDGE_CREATION) {
                 updateSelectedLine(determinedLines);
             }
             if (mouseMode == mouseModes.BOX_SELECTION) {
@@ -302,7 +304,7 @@ function mup(event) {
         case pointerStates.CLICKED_NODE:
             if (resizeOverlapping) {
                 // Reset to original state if overlapping is detected
-                var element = data[findIndex(data, context[0].id)];
+                const element = data[findIndex(data, context[0].id)];
                 element.width = originalWidth;
                 element.height = originalHeight;
                 element.x = originalX;
@@ -313,7 +315,7 @@ function mup(event) {
                 elementDOM.style.height = originalHeight + 'px';
                 elementDOM.style.left = originalX + 'px';
                 elementDOM.style.top = originalY + 'px';
-                showdata()
+                showdata();
                 displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
                 resizeOverlapping = false;
             }
@@ -325,20 +327,20 @@ function mup(event) {
     // Update all element positions on the screen
     deltaX = 0;
     deltaY = 0;
-    updatepos(0, 0);
+    updatepos();
     drawRulerBars(scrollx, scrolly);
 
     // Restore pointer state to normal
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
-                        
+
     disableIfDataEmpty();
 }
 
 /**
  * @description Event function triggered when any mouse button is released on top of the toolbar.
  * @param {MouseEvent} event Triggered mouse event.
- * @see pointerStates For all available states.
+ * @see pointerStates
  */
 function tup() {
     mouseButtonDown = false;
@@ -366,11 +368,13 @@ function mouseLeave() {
 
 /**
  * @description Checks if the mouse is hovering over the delete button on selected element/s and deletes it/them.
+ * @returns {boolean} Returns true if the delete button is pressed and canPressDeleteBtn is true, otherwise returns false.
  */
 function checkDeleteBtn() {
-    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) && 
-        lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)) {
-        if (canPressDeleteBtn == true) {
+    if (lastMousePos.x > deleteBtnX && lastMousePos.x < (deleteBtnX + deleteBtnSize) &&
+        lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)
+    ) {
+        if (canPressDeleteBtn) {
             if (context.length > 0) removeElements(context);
             if (contextLine.length > 0) removeLines(contextLine);
             updateSelection(null);
@@ -383,6 +387,8 @@ function checkDeleteBtn() {
 
 /**
  *  @description change cursor style if mouse position is over a selection box or the deletebutton.
+ *  @param {number} mouseX - The x-coordinate of the mouse position.
+ *  @param {number} mouseY - The y-coordinate of the mouse position.
  */
 function mouseOverSelection(mouseX, mouseY) {
     if (context.length > 0 || contextLine.length > 0) {

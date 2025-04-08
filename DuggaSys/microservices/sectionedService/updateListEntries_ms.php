@@ -4,7 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -32,6 +32,7 @@ $tabs=getOP('tabs');
 $gradesys=getOP('gradesys');
 $userid = getUid();
 $log_uuid=getOP('log_uuid');
+$debug='NONE!';
 
 if($feedbackenabled != 1){
 	$feedbackenabled = 0;

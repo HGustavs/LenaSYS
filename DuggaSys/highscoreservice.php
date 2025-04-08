@@ -14,12 +14,12 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";		
-} 
-
+checklogin();
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "guest";
+}
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
@@ -82,7 +82,6 @@ if(checklogin()){
 		$query = $pdo->prepare("SELECT username, score FROM userAnswer, user where userAnswer.quiz = :did AND userAnswer.moment = :lid LIMIT 1;");
 		$query->bindParam(':did', $duggaid);
 		$query->bindParam(':lid', $variant);
-		$query->bindParam(':user', $_SESSION["loginname"]);
 	
 		if(!$query->execute()){
 			$error=$query->errorInfo();

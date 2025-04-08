@@ -2,7 +2,7 @@
  * @description Remove all elements with the class "node"
  */
 function removeNodes() {
-    var nodes = document.getElementsByClassName("node");
+    const nodes = document.getElementsByClassName("node");
     while (nodes.length > 0) {
         nodes[0].remove();
     }
@@ -52,25 +52,20 @@ function updateContainerBounds() {
 function setSequenceAlternatives() {
     //for each element in context, check if it has the property alternatives
     for (let i = 0; i < context.length; i++) {
-        if (context[i].alternatives != null) {
-            //Create an array from string where newline seperates elements
-            let alternatives = document.getElementById("inputAlternatives").value.split('\n');
-            let formatArr = [];
-            for (let i = 0; i < alternatives.length; i++) {
-                if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
-                    formatArr.push(alternatives[i]);
-                }
-            }
-            //Update the alternatives array
-            alternatives = formatArr;
-            context[0].alternatives = alternatives;
+        if (!context[i].alternatives) continue;
 
-            stateMachine.save(
-                StateChangeFactory.ElementAttributesChanged(context[0].id, {'alternatives': alternatives}),
-                StateChangeFactory.ElementAttributesChanged(context[0].id, {'altOrLoop': context[0].altOrLoop}),
-                StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED
-            );
+        //Create an array from string where newline seperates elements
+        let alternatives = document.getElementById("inputAlternatives").value.split('\n');
+        let formatArr = [];
+        for (let i = 0; i < alternatives.length; i++) {
+            if (!(alternatives[i] == '\n' || alternatives[i] == '' || alternatives[i] == ' ')) {
+                formatArr.push(alternatives[i]);
+            }
         }
+        //Update the alternatives array
+        alternatives = formatArr;
+        context[0].alternatives = alternatives;
+        stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     }
     showdata();
 }
@@ -89,7 +84,7 @@ function errorReset(elements) {
  * @description Redraw all elements and lines
  */
 function showdata() {
-    var str = "";
+    let str = "";
     updateContainerBounds();
     errorData = [];
     errorReset(data);
@@ -105,7 +100,7 @@ function showdata() {
         str += drawElement(ghostElement, true);
     }
     container.innerHTML = str;
-    updatepos(null, null);
+    updatepos();
 }
 
 /**
@@ -154,8 +149,7 @@ function updateSelection(element) {
         if (context.includes(element)) {
             context = context.filter((e) => e !== element);
         }
-    }
-    else if (element) {
+    } else if (element) {
         contextLine = [];
         if (!context.includes(element) && context.length < 1) {
             context.push(element);
@@ -189,10 +183,10 @@ function setRulerPosition(x, y) {
  */
 function updateGridSize() {
     //Do not remore, for later us to make gridsize in 1cm.
-    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    const pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     settings.grid.gridSize = 10 * pxlength;
 
-    var bLayer = document.getElementById("grid");
+    let bLayer = document.getElementById("grid");
     bLayer.setAttribute("width", settings.grid.gridSize * zoomfact + "px");
     bLayer.setAttribute("height", settings.grid.gridSize * zoomfact + "px");
 
@@ -213,9 +207,9 @@ function updateGridSize() {
  * @description Calculates new positioning for the background grid.
  */
 function updateGridPos() {
-    var gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
-    var gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
-    var bLayer = document.getElementById("grid");
+    const gridOffsetX = Math.round(((0 - zoomOrigo.x) * zoomfact) + (scrollx * (1.0 / zoomfact)));
+    const gridOffsetY = Math.round(((0 - zoomOrigo.y) * zoomfact) + (scrolly * (1.0 / zoomfact)));
+    let bLayer = document.getElementById("grid");
     bLayer.setAttribute('x', gridOffsetX.toString());
     bLayer.setAttribute('y', gridOffsetY.toString());
 
@@ -236,17 +230,20 @@ function updateGridPos() {
  * @see zoomout Function where the zoom level decreases.
  */
 function updateA4Size() {
-    var rect = document.getElementById("a4Rect");
-    var vRect = document.getElementById("vRect");
-    var pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
-    //const a4Width = 794, a4Height = 1122;
-    const a4Width = 210 * pxlength
-    const a4Height = 297 * pxlength;
+    const rect = document.getElementById("a4Rect");
+    const vRect = document.getElementById("vRect");
+    const pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
+    const a4Width = 210 * pxlength;   // Width for A4 paper in portrait mode
+    const a4Height = 297 * pxlength;  // Height for A4 paper in portrait mode
 
-    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
-    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+    // Set dimensions for vertical orientation (a4Rect)
     rect.setAttribute("width", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
     rect.setAttribute("height", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+
+    // Set dimensions for horizontal orientation (vRect)
+    vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
+    vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
+
     updateA4Pos();
 }
 
@@ -254,11 +251,11 @@ function updateA4Size() {
  * @description Calculates new positioning for the A4 template.
  */
 function updateA4Pos() {
-    var OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
-    var OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
-    var rect = document.getElementById("a4Rect");
-    var vRect = document.getElementById("vRect");
-    var text = document.getElementById("a4Text");
+    const OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
+    const OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
+    const rect = document.getElementById("a4Rect");
+    const vRect = document.getElementById("vRect");
+    const text = document.getElementById("a4Text");
 
     vRect.setAttribute('x', OffsetX.toString());
     vRect.setAttribute('y', OffsetY.toString());

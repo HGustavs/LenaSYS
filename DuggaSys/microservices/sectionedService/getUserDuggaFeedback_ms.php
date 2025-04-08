@@ -8,7 +8,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -25,6 +25,8 @@ $courseid=getOP('courseid');
 $moment=getOP('moment');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
+$coursevers=getOP('coursevers');
+$debug='NONE!';
 
 
 $userfeedback=array();

@@ -177,9 +177,15 @@
 }
 
 #pad_lock{
-    top: -45%;
+    bottom: -5px;
+    left: 3px;
     display: block;
-    position: relative;
+    position: absolute;
+    background: inherit;
+}
+
+.element:has(#pad_lock) {
+    overflow: visible;
 }
 
 #canvasOverlay{
@@ -823,6 +829,11 @@
     z-index: -11;
 }
 
+
+#a4Rect, #vRect {
+    display: none; 
+}
+
 #a4Rect {
     stroke:rgb(50, 50, 50);
     stroke-width:2;
@@ -832,9 +843,6 @@
 }
 
 #vRect {
-    width: 1133px;
-    height: 794px;
-    display:none; 
     stroke:rgb(50, 50, 50);
     stroke-width:2; 
     stroke-dasharray: 5 3; 

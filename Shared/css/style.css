@@ -1,4 +1,15 @@
 /* --------------===============################================-------------- *
+ *                                    INFO                                     *
+ * --------------================################================-------------- */
+/*
+
+PLZ see "Handling and usage of Style.css" in the wiki before use
+//the 2024 clean up crue
+
+
+
+*/
+/* --------------===============################================-------------- *
  *                                    Colors                                    *
  * --------------================################================-------------- */
 
@@ -1413,6 +1424,17 @@ header td {
   height: 32px;
 }
 
+/*Needed because navButt aplies a clicking effect on the element*/
+.navSearchWrapper {
+  width: 29px;
+  vertical-align: middle;
+  margin-top: 9px;
+}
+
+.navSearch {
+  margin-top:5%;
+}
+
 #downloadButt {
   margin-top: 2px;
   height: 40px;
@@ -1846,6 +1868,7 @@ div .navButt:hover {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 8000;
   margin:0 auto;
+  display:none;
 }
 
 .loginHashContainer {
@@ -1889,7 +1912,8 @@ div .navButt:hover {
 }
 
 .loginBox,
-.logoutBox{
+.logoutBox,
+.formBox {
   padding: 4px;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
@@ -1899,6 +1923,7 @@ div .navButt:hover {
   max-height: 80%;
   overflow-y: auto;
   box-shadow: 0 2px 5px 0 var(--box-shadow-2), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  width: fit-content;
 }
 
 #receiptBox{
@@ -2044,6 +2069,7 @@ div .navButt:hover {
 }
 
 .loginBox textarea,
+.formBox textarea,
 #import {
   width: 100%;
   height: 200px;
@@ -2056,6 +2082,7 @@ div .navButt:hover {
 }
 
 .loginBox textarea,
+.formBox textarea,
 #receipt {
   width: 100%;
   height: 72px;
@@ -2092,7 +2119,8 @@ Dialog Box END
 /* --------------===============################================-------------- *
  *                                    Generic functions                            *
  * --------------================################================--------------*/
-.loginBox .inputwrapper {
+.loginBox .inputwrapper,
+.formBox .inputwrapper  {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
@@ -2104,12 +2132,14 @@ Dialog Box END
   color:#7f7f7f;
 }
 
-.loginBox .inputwrapper span {
+.loginBox .inputwrapper span,
+.formBox .inputwrapper span  {
   float: left;
 }
 
 
-.loginBox .inputwrapperSmall {
+.loginBox .inputwrapperSmall,
+.formBox .inputwrapperSmall {
   clear: both;
   width: 100%;
   padding: 3px 0 3px 0;
@@ -2117,35 +2147,43 @@ Dialog Box END
   line-height: 30px;
 }
 
-.loginBox .inputwrapperSmall span {
+.loginBox .inputwrapperSmall span,
+.formBox .inputwrapperSmall span {
   float: right;
 }
 
 .loginBox .inputwrapperSmall input,
-.loginBox .inputwrapperSmall select {
+.loginBox .inputwrapperSmall select,
+.formBox .inputwrapperSmall input,
+.formBox .inputwrapperSmall select {
   float: right;
   width: 50px;
 }
 
-.loginBox .inputwrapperSmall input[type="checkbox"] {
+.loginBox .inputwrapperSmall input[type="checkbox"],
+.formBox .inputwrapperSmall input[type="checkbox"] {
   height: 24px;
 }
 
 
 .loginBox .inputwrapper input,
-.loginBox .inputwrapper select {
+.loginBox .inputwrapper select,
+.formBox .inputwrapper input,
+.formBox .inputwrapper select {
   float: right;
   width: 195px;
 }
 
-.loginBox .inputwrapper input[type="checkbox"] {
+.loginBox .inputwrapper input[type="checkbox"],
+.formBox .inputwrapper input[type="checkbox"] {
   margin-right: 171px;
   float: right;
   height: 24px;
   width: 24px;
 }
 
-.loginBox select {
+.loginBox select,
+.formBox select {
   width: 195px;
   height: 30px;
   line-height: 18px;
@@ -2161,7 +2199,8 @@ Dialog Box END
 }
 
 .loginBoxheader,
-.logoutBoxheader {
+.logoutBoxheader,
+.formBoxHeader  {
   background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
@@ -2171,7 +2210,8 @@ Dialog Box END
 }
 
 .loginBoxheader h3,
-.logoutBoxheader h3 {
+.logoutBoxheader h3,
+.formBoxHeader h3 {
   font-size: 14px;
   margin-top: 10px;
   line-height: 0.5em;
@@ -2180,7 +2220,8 @@ Dialog Box END
 }
 
 .loginBoxheader div,
-.logoutBoxheader div {
+.logoutBoxheader div,
+.formBoxHeader div {
   padding: 4px 20px;
   color: rgb(255, 255, 255);
   cursor: pointer;
@@ -2189,7 +2230,9 @@ Dialog Box END
   font-weight: bold;
 }
 
-.loginBoxheader div:hover, .logoutBoxheader div:hover {
+.loginBoxheader div:hover,
+.logoutBoxheader div:hover,
+.formBoxHeader div:hover {
   background-color: #ce3d3d;
 }
 
@@ -2251,13 +2294,24 @@ input.inactive-button {
   width: 100%;
 }
 
-.inputwrapper{
+.inputwrapper {
   display: flex;
   justify-content: space-between;
   width: 445px;
   border-radius: 0px;
+  align-items: flex-start;
 }
-.inputwrapper select{
+/* empty wrapper to match the size of a regular wrapper */
+.emptywrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 30px;
+  border-radius: 0px;
+  align-items: flex-start;
+}
+
+.inputwrapper select {
   border-radius: 0px;
 }
 
@@ -2269,6 +2323,197 @@ input.inactive-button {
 #playlink {
   width: 100%;
 }
+
+.fab_btn_list {
+  margin: 0; 
+  padding: 0; 
+  display: none;
+ }
+
+ .loadDuggaBox {
+  max-width:400px; 
+  overflow-y:visible;
+ }
+
+ /*---===#===---*
+  margin
+*---====#===---*/
+.margin_10px {
+  margin:10px;
+}
+
+.margin_20px {
+  margin: 20px;
+}
+
+.margin_30px {
+  margin:30px;
+}
+
+.margin_40px {
+  margin:40px;
+}
+
+.margin-right_0px {
+  margin-right: 0px
+}
+
+#searchBarMobile {
+  display: none;
+  test-align:right;
+  margin-bottom:15px;
+}
+
+/*---===#===---*
+  padding styles
+*---====#===---*/
+
+.padding_5px {
+  padding: 5px;
+}
+
+.padding_10px {
+  padding: 10px;
+} 
+
+.padding_15px {
+  padding: 15px;
+} 
+
+.padding_20px {
+  padding: 20px;
+} 
+
+.padding_25px {
+  padding: 25px;
+}
+
+.padding-right_5px {
+  padding-right: 5px;
+}
+
+.padding-right_10px {
+  padding-right: 10px;
+}
+
+.padding-right_15px {
+  padding-right: 15px;
+}
+
+.padding-right_20px {
+  padding-right: 20px;
+}
+
+.padding-right_25px {
+  padding-right: 25px;
+}
+
+.padding-left_5px {
+  padding-left: 5px;
+}
+
+.padding-left_10px {
+  padding-left: 10px;
+}
+
+.padding-left_15px {
+  padding-left: 15px;
+}
+
+.padding-left_20px {
+  padding-left: 20px;
+}
+
+.padding-left_25px {
+  padding-left: 25px;
+}
+
+/*---END---*/
+
+/*---===#===---*
+Fonts
+*---====#===---*/
+.italic {
+  font-style:italic;
+}
+
+/*---END---*/
+
+/*---===#===---*
+Float
+*---====#===---*/
+.float_right {
+  float:right;
+}
+
+/*---END---*/
+
+/*---===#===---*
+Float
+*---====#===---*/
+.align_right {
+  align:right
+}
+
+.align_left {
+  align:left
+}
+
+.align_center {
+  align:center
+}
+
+/*---END---*/
+
+.display_none {
+  display: none;
+}
+
+.display_flex {
+  display: flex;
+}
+
+.display_block {
+  display: block;
+}
+
+
+.errorMessage {
+  display: none; 
+  left:0px;
+}
+
+/* Reusable form body elements */
+
+.formBody {
+  padding:5px;
+}
+
+.formFooter {
+  padding:5px;
+}
+
+#chooseTemplate {
+  width:464px;
+}
+
+/* Title for the subpages of the section-editor */
+
+.titles {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  padding-top:10px;
+}
+
+.titles h1 {
+  color: var(--color-text-primary);
+}
+
+.lookingGlassH18 {
+  height: 18px;
+}
+
 /*---===#===---*
 Generic functions END 
 *---====#===---*/
@@ -2325,6 +2570,42 @@ resulted.php END
 /* --------------===============################================-------------- *
  *                                    sectioned.php                             *
  * --------------================################================--------------*/
+ 
+ #courseHeader {
+  display:flex; 
+  align-items:center; 
+  justify-content:flex-end; 
+ }
+
+ #course-newitem {
+  display: flex;
+ }
+
+ #course-coursevers {
+  display:none; 
+  margin-right:10px;
+ }
+
+ #course-courseid {
+  display:none; 
+  margin-right:10px;
+ }
+
+ #course-label {
+  flex-grow:1
+ }
+
+#editSectionLoginBox {
+ width:460px;
+}
+
+#nameFormDialog {
+  display: block;
+}
+
+#addElement {
+  display:none;
+}
 
 .statsdiv {
   background-color: var(--color-text-primary);
@@ -2359,16 +2640,204 @@ resulted.php END
 #editCourse {
   margin-right: 0px;
 }
+
+#absolutedeadlinecheck {
+  margin:3px 5px; 
+  height:20px'
+}
+
+#dialog8 {
+  font-size:11px; 
+  border:0px; 
+  margin-left: 20px; 
+  display:none;
+}
+
+#relativeFormDialog {
+  display: block; 
+  left:40px; 
+  top:-35px;
+}
+
+.deleteDugga {
+  display:none; 
+  float:left;
+}
+
+.closeDugga {
+  display:block; 
+  float:left;
+}
+
+#submitBtn {
+  display:none; 
+  float:right;
+}
+
+#saveBtn {
+  float:right;
+}
+
+#deleteConfirmBox {
+  width:460px;
+}
+
+#deleteConfirmText {
+  text-align: center;
+}
+
+#deleteBtnPlacement {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#delete-item-button {
+  margin-right: 5%;
+}
+
+#close-item-button {
+  margin-left: 5%;
+}
+
+#hide-item-button {
+  margin-right: 5%;
+}
+
+#ok-item-button {
+  margin-right: 5%;
+}
+
+#formBoxCanvasLink {
+  min-width:300px;
+}
+
+#formBodyCanvasLinkText {
+  text-align: center; 
+  padding-top:25px;
+}
+
+#formBoxConfirm {
+  width:460px;
+}
+
+#formBodyConfirm {
+  text-align: center;
+}
+
+.formFooterBtnplace {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+.formBoxTabConfirm {
+  width:360px;
+}
+
+#tabDropDown {
+  display:flex; 
+  align-items:center; 
+  justify-content: center;
+}
+
+#formBoxInfo {
+  width:460px;
+}
+
+.formBoxCourseVersion {
+  width:464px; 
+  overflow:hidden;
+}
+
+.ECVDialog {
+  display: none; 
+  left:0px;
+}
+
+#formBoxGitHub {
+  width:460px;
+}
+
+#formBoxGithubPopup {
+  width:464px;
+  overflow:hidden;
+}
+
+#createAlert {
+  z-index: 1500;
+}
+
+#updateAlert {
+  z-index: 1500;
+}
+
+/* #sectionname */
+
 /*---===#===---*
 sectioned.php END 
 *---====#===---*/
 
-/* --------------===============################================-------------- *
- *                                    courseed.php                             *
- * --------------================################================--------------*/
+/* --------------===============################================------------- *
+*                                    courseed.php                             *
+* --------------================################================--------------*/
  
- #submitMotd {
-  margin-left: 340px;
+#loginBox_DarkMode {
+  width:464px;  
+  overflow:hidden;
+}
+
+#submitMotd {
+  float: right;
+}
+
+/*font style for "are you shure?*/
+#deleteQustion {
+  font-size:24px; 
+  padding-bottom:50px; 
+  padding-top:60px; 
+  border-bottom: 2px solid #ccc;
+}
+
+#editSettings{
+  display:none;
+}
+
+#editSettings_loginBox{
+  width:464px; 
+  overflow:hidden;
+}
+
+#editCourseButtonPlacement {
+  padding-top:20px; 
+}
+
+#formDialog_popup1 {
+  display: block; 
+  left:54px; 
+  top:-36px;
+}
+
+#formDialog_popup2 {
+  display: block; 
+  left:54px; 
+  top:-50px;
+}
+
+#formDialog_popup3 {
+  display: block; 
+  left:54px; 
+  top:-40px;
+}
+
+#formDialog_popup4 {
+  display: block; 
+  left:54px; 
+  top:-22px;
+}
+
+#formBoxHighscore {
+  width:500px;
 }
 
 /*---===#===---*
@@ -2376,7 +2845,7 @@ courseed.php END
 *---====#===---*/
 
 /* --------------===============################================-------------- *
- *                                    codeviewer.php                             *
+ *                                    codeviewer.php                           *
  * --------------================################================--------------*/
 #impwords,
 #impword {
@@ -2388,9 +2857,33 @@ courseed.php END
 .templateSelect {
   width: 150px !important
 }
+
+#loader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('../icons/loadingJS.gif') 50% 50% no-repeat rgb(93, 93, 93);
+}
 /*---===#===---*
 codeviewer.php END 
 *---====#===---*/
+
+/* --------------===============################================-------------- *
+ *                                    fileed.php                               *
+ * --------------================################================--------------*/
+ 
+ .h1Fileed {
+  flex:1;
+  text-align:left;
+ }
+
+
+ /*---===#===---*
+ fileed.php END 
+ *---====#===---*/
 
 input {
   border-radius: 2px;
@@ -2434,16 +2927,19 @@ label.login-label {
 }
 
 .loginBox form,
-.logoutBox form {
+.logoutBox form,
+.formBox form {
   padding-bottom: 20px;
 }
 
 .loginBox .text,
-.logoutBox .text {
+.logoutBox .text,
+.formBox .text {
   font-size: 0.8em;
 }
 
-.loginBox .submit {
+.loginBox .submit,
+.formBox .submit {
   width: 80px;
   height: 25px;
   color: var(--color-text-header);
@@ -2458,7 +2954,8 @@ label.login-label {
   fill: #000; 
 }
 
-.loginBox .cancel {
+.loginBox .cancel,
+.formBox .cancel {
   width: 80px;
   height: 25px;
   color: #333;
@@ -2469,7 +2966,8 @@ label.login-label {
   margin-left: 1px;
 }
 
-.loginBox .forgotPw {
+.loginBox .forgotPw,
+.formBox .forgotPw {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -2486,18 +2984,21 @@ label.login-label {
 }
 
 
-.loginBox .form-control {
+.loginBox .form-control,
+.formBox .form-control {
   margin: 3px 0px 3px 0px;
 }
 
-.loginBox .hide {
+.loginBox .hide,
+.formBox .hide  {
   display: none;
 }
 #undoButton {
   position: absolute; padding-right:5px; margin-right:164px; display: none;
 }
 
-.loginBox td {
+.loginBox td,
+.formBox td {
   margin-left: 4px;
   margin-right: 4px;
 }
@@ -2757,6 +3258,11 @@ label.login-label {
   border-width: 2px;
 }
 
+.color-change-neutral{
+  border-color: var(--color-border-2);
+  border-width: 2px;
+}
+
 input.option {
   float: left;
 }
@@ -2868,10 +3374,12 @@ input.submit-button-newitem {
   margin-top: 2px;
   margin-bottom: 2px;
   margin-left: 0px;
+  padding-right:5px; 
+  margin-right: 10px;
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
-  -webkit-appearance: none;
+  -webkit-appearance: none; 
   float: right;
 }
 
@@ -2901,6 +3409,7 @@ input.diagram-sidebar-buttons:hover {
   background-color: #33AAFF;
   border-radius: 2px;
 }
+
 
 button.diagram-menu-buttons {
   background-color: #ff8000;
@@ -3079,27 +3588,42 @@ div.submit-button:disabled {
 
 /* Form Pointing Dialogs */
 
-.formDialog {
+/* ----------------------Form Pointing Dialogs START ---------------------- */
+/* Apart from special cases further down, all of these are taken out of normal flow and are attached to the left of the input */
+.dialogwrapper {
   position: relative;
-  display: inline-block;
-  left: -100px;
+  display: block;
 }
 
-.formDialog .formDialogText {
-  width: 200px;
-  display: none;
-  color: var(--color-text-header);
-  background-color: var(--color-text-list);
-  text-align: center;
+.formDialog {
+  display: inline-block;
+}
+
+.formDialog {
+  display: block;
   border-radius: 6px;
-  padding: 5px 0;
   position: absolute;
   z-index: 5;
-  font-size: 12px;
-  line-height: 14px;
+  right: calc(100% + 6px); /*6px is the static (not changing) space of the arrow located in ::after*/
+  transform: translateY(-50%);
+  top: 50%;
 }
 
-.formDialog .formDialogText::after {
+.formDialogText {
+  display: none;
+  float:left;
+  color: var(--color-text-header);
+  background-color: var(--color-text-list);
+  font-size: 12px;
+  border-radius: 6px;
+  line-height: 14px;
+  text-align: center;
+  padding: 5px;
+  right: 100%;
+  width: 200px;
+}
+
+.formDialogText::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -3110,6 +3634,8 @@ div.submit-button:disabled {
   border-color: transparent transparent transparent var(--color-text-list);
 }
 
+/* Special cases */
+/*The formDialogWide is used when validation text is supposed to be shown under the element. It also needs static position in order to take up space*/
 .formDialogWide .formDialogText {
   width: 400px;
   display: none;
@@ -3136,20 +3662,8 @@ div.submit-button:disabled {
   border-color: transparent transparent var(--color-text-list) transparent ;
 }
 
-.versionDialog {
-  position:absolute;
-  display: inline;
-  margin-left: 55px;
-}
-.formDialogSplitUp {
-  top: -5px; 
-}
-.formDialogSplitDown {
-  top: 12px; 
-}
-.formDialogTextHalfDownShift{
-  top: 15px; 
-}
+/* ----------------------Form Pointing Dialogs END ---------------------- */
+
 /* Tooltip */
 .tooltipDugga {
   position: relative;
@@ -3169,6 +3683,7 @@ div.submit-button:disabled {
   left: -100px;
   font-size: 12px;
   line-height: 14px;
+  display:none;
 }
 
 .tooltipDugga .tooltipDuggatext::after {
@@ -3793,6 +4308,7 @@ span.arrow {
     inset -3px 0px 0px 0px rgba(97, 72, 117, 1);
 
 }
+
 .resultTableText {
   margin-left: 3px;
   margin-right: 3px;
@@ -3859,6 +4375,10 @@ span.arrow {
   text-align: center;
 }
 
+#edit___accessTable___tbl {
+  width: 25px;
+}
+
 #accessTable td span{
   padding: 0px;
 }
@@ -3887,6 +4407,14 @@ span.arrow {
 
 .accessTable_counter span {
   margin-left: 5px;
+}
+
+#accessTable___body tr.even {
+  background-color: var(--color-sectioned-table-hi); 
+}
+
+#accessTable___body tr.odd {
+  background-color: var(--color-sectioned-table-lo); 
 }
 
 .access-dropdown-content{
@@ -3931,7 +4459,6 @@ div.reset-pw:hover{
   transition: 0.2s;
   filter: brightness(1.05);
 }
-
 
 .show{
   display:block;
@@ -4533,15 +5060,15 @@ div.reset-pw:hover{
 
 .dropdown-list-container {
   padding: 8px;
-  width: 200px;
   color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;
   display: none;
   position: absolute;
-  background: var(--color-background);
+  background: var(--color-sectioned-table-lo);
+  border-radius: 0px 0px 25px 25px;
   box-shadow: 2px 2px 8px #888;
-  margin-top: 5px;
+  margin-top: -2px;
 }
 
 #sortOptions {
@@ -4986,10 +5513,6 @@ rect[class*="activitymarker"]:hover {
   transform: scale(1.5);
 }
 
-#searchBarMobile {
-  display: none;
-}
-
 /* styling for fileed switching table button*/
 
 .switchContent {
@@ -5421,6 +5944,7 @@ only screen and (max-device-width: 568px) {
   #addElement {
     display: none;
   }
+  
   .maximizebtn, .minimizebtn, .resetbtn, .copybutton, .editbtn {
     height: 35px;
   }
@@ -5756,11 +6280,6 @@ only screen and (max-device-width: 568px) {
     transform: scale(0.6, 0.6);
     left: 4px;
   }
-
-  .loginBox {
-    /*top: 8%;
-    left: 10%;*/
-  }
   
   #searchNavButt{
     display: none;
@@ -5940,18 +6459,6 @@ only screen and (max-device-width: 568px) {
     opacity: 1;
 
   }
-}
-
-/* Title for the subpages of the section-editor */
-
-.titles {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: 10px;
-}
-
-.titles h1 {
-  color: var(--color-text-primary);
 }
 
 #noAccessMessage {
@@ -7069,18 +7576,31 @@ only screen and (max-device-width: 568px) {
   width: 100%;
   list-style: none;
   text-align: center;
-  bottom: 50px;
+  bottom: 0px;
 }
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 18px 0px 0px;
-  margin: 0px 0px 0px -3px;
-  left: auto;
+  padding: 5rem 3.5rem 0rem 0rem;
+  margin: -2rem;
   width: 100%;
   list-style: none;
   text-align: center;
-  top: 25px;
+  display: none;
+}
+
+#olFabBtnList2{
+  height:fit-content;
+}
+
+#FABStatic2{
+  z-index:2;
+}
+
+@media only screen and (max-width: 430px) {
+  .fab-btn-list2 {
+    left: 3.4rem;
+  }
 }
 
 @media screen and (max-height: 600px) {
@@ -7374,7 +7894,7 @@ only screen and (max-device-width: 568px) {
   display: none;
 }
 
-.loginBoxheade, .fileViewHeader {
+.formBoxHeade, .fileViewHeader {
   text-align:left;
 }
 
@@ -7787,20 +8307,17 @@ textarea#mrkdwntxt {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 
+
 /* --------------===============################================-------------- *
  *                                    courseed                                 *
  * --------------================################================-------------- */
 
-#saveCourse{
-  margin: 0px;
-}
-
 #submitEditCourse{
-  margin-left: 343px;
+  float:right;
   margin-top: 20px;
 }
 #submitCourseMotd{
-  margin-left: 342px;
+  float:right;
   margin-top: 20px;
 }
 #editContentSaveBtn{
@@ -8251,19 +8768,6 @@ textarea#filecont {
 }
 
 /* --------------================################================-------------- *
- *                           codeviewer - Loader                                *
- * --------------================################================-------------- */
-#loader {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background: url('../icons/loadingJS.gif') 50% 50% no-repeat rgb(93, 93, 93);
-}
-
-/* --------------================################================-------------- *
  *                           DuggaEd - Variants editor                          *
  * --------------================################================-------------- */
 
@@ -8566,6 +9070,7 @@ textarea#filecont {
   position: relative;
   margin-bottom: 7px;
   max-width: auto;
+  display: none;
 }
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
@@ -9284,7 +9789,7 @@ border: none !important;
 
 @keyframes glowAnimation {
   0%{
-    background-color: var(--color-primary);
+    background-color: var(--color-green);
   }
   100%{
     background-color: none;
@@ -9337,10 +9842,14 @@ border: none !important;
 select{
   background-color: var(--color-background);
   color: var(--color-text-list);
-  margin-right: 10px;
   border-radius: 5px;
 }
 /* END */
+
+.selectDeadlineTime{
+  width:55px;
+  margin:0 0 0 10px;
+}
 
 /*/ Diagram.html style /*/
 .unselectable {
@@ -9622,8 +10131,29 @@ margin:2px;
   grid-area: "closeDiv";
 }
 
-.toast div:first-child, .toast div:nth-child(3) {
-  width: fit-content;
+.toastNo, .toastYes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 5px 10px;
+  color: white;
+}
+
+.toastNo {
+ background-color: var(--color-red);
+}
+
+.toastNo:hover {
+  background-color: var(--color-red-hover);
+}
+.toastYes {
+  background-color: var(--color-green);
+}
+
+.toastYes:hover {
+  background-color: #008000;
 }
 
 .warning {
@@ -9636,6 +10166,17 @@ margin:2px;
 
 .error {
   background-color: rgb(243, 129, 129);
+}
+
+.confirm {
+  background-color: #fecc56;
+}
+
+.toastButtonBox {
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .toast.show {
@@ -9703,12 +10244,17 @@ margin:2px;
   padding: .5rem;
 }
 
-#createUser .flexwrapper {
-  /* margin-top: .75rem; */
+#createUser .flexwrapper,
+#editUser .flexwrapper,
+#addUser .flexwrapper,
+#removeUser .flexwrapper {
   margin-bottom: .75rem;
 }
 
-#createUser .flex-end{
+#createUser .flex-end, 
+#editUser .flex-end, 
+#addUser .flex-end, 
+#removeUser .flex-end {
   display: flex;
   justify-content: flex-end;
 }
@@ -9759,7 +10305,7 @@ margin:2px;
 
 /* END */
 
-/* Styling for button loader */
+/* Styling for button loader / loadingButton.js */
 
 .loader {
   border: 4px solid #f3f3f3; /* Light grey */
@@ -9771,10 +10317,22 @@ margin:2px;
   animation: spin 2s linear infinite;
 }
 
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+button:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* END */
 
 /*Styling for Submission Instructions*/
 

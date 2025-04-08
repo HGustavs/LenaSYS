@@ -211,8 +211,8 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-  console.log("myConsole lid: " + lid);
-  console.log("myConsole typeof: " + typeof lid);
+  // console.log("myConsole lid: " + lid);
+  // console.log("myConsole typeof: " + typeof lid);
   document.getElementById("sectionname").focus();
   toggleTab(true);
   enableTab(document.getElementById("editSection"));
@@ -446,8 +446,8 @@ function changedType(kind) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 4) {
-    document.querySelector("#inputwrapper-group").style.display = "block";
-    document.querySelector("#inputwrapper-gradesystem").style.display = "block";
+    document.querySelector("#inputwrapper-group").style.removeProperty('display');
+    document.querySelector("#inputwrapper-gradesystem").style.removeProperty('display');
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
@@ -583,14 +583,14 @@ window.addEventListener('beforeunload', function (event) {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
     var lid = deletedElements[i].id.match(/\d+/)[0];
-    AJAXService("DELETE", {
+    AJAXService("DEL", {
       lid: lid
     }, "SECTION");
   }
 });
 
 // Eventlistener for keydown ESC
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keyup', function (event) {
   if (event.key === 'Escape') {
     let link = document.getElementById("upIcon").href;
     let popupIsOpen = closeOpenPopupForm();
@@ -614,15 +614,21 @@ function closeOpenPopupForm(){
     "#tabConfirmBox",
     "#gitHubTemplate",
     "#gitHubBox",
-    "#loginBox",
+    "#formBox",
     "#loadDuggaBox",
     "#sectionHideConfirmBox",
-    "#sectionShowConfirmBox"
+    "#sectionShowConfirmBox",
+    "#canvasLinkBox",
+    "#editSection"
   ];
+  let div = document.getElementById("toastContainer");
+  if (div.children.length > 0) {
+    return true;
+  }
   for (let popup of allPopups){
     if ($(popup).css("display") !== "none"){
-      $(popup).css("display","none");
-      return true;
+        $(popup).css("display","none");
+        return true;
     }
   }
   return false; 
@@ -815,10 +821,10 @@ function hideVisibilityIcons() {
 }
 
 //Changes visibility of hidden items
-function showMarkedItems() {
+function showMarkedItems(selectedItemList) {
   hideVisibilityIcons();
-  for (i = 0; i < hideItemList.length; i++) {
-    var lid = hideItemList[i];
+  for (i = 0; i < selectedItemList.length; i++) {
+    var lid = selectedItemList[i];
     AJAXService("SETVISIBILITY", {
       lid: lid,
       visible: 1
@@ -869,13 +875,9 @@ async function createFABItem(kind, itemtitle, comment) {
       clearHideItemList();
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
-    console.log(numberOfItems + " " + itemtitle + "(s) created");
+    // console.log(numberOfItems + " " + itemtitle + "(s) created");  
     numberOfItems = 1; // Reset number of items to create
   }
-  console.log("createFABItem: " + kind + " " + itemtitle + " " + comment);
-  console.log(selectItem);
-  console.log("newItem function:", newItem.toString());
-
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -939,16 +941,22 @@ function prepareItem() {
     param.feedbackquestion = null;
   }
 
-  // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren
-  var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
-  screenPos = Math.round((-1 * elementBtnTop.top) / 350);
-  if (screenPos < 1) {
-    screenPos = 5;
-  } else {
-    screenPos = 4 * screenPos;
+  // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren (Old solution)
+  //var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
+  //screenPos = Math.round((-1 * elementBtnTop.top) / 350);
+  //if (screenPos < 1) {
+  //  screenPos = 5;
+  //} else {
+  //  screenPos = 4 * screenPos;
+  //}
+
+  //Place element at bottom if the user has scrolled all the way down, otherwise at the top. (Stopgap solution)
+  let screenPos = 1
+  if(Math.floor(window.scrollY) === (document.documentElement.scrollHeight - document.documentElement.offsetHeight) 
+  && document.documentElement.scrollHeight > document.documentElement.clientHeight) {
+   screenPos = document.getElementById("Sectionlistc").childElementCount;
   }
   param.pos = screenPos;
-
   return param;
 }
 
@@ -978,7 +986,7 @@ function deleteItem(item_lid = []) {
 // Permanently delete elements.
 function deleteAll() {
   for (var i = delArr.length - 1; i >= 0; --i) {
-    AJAXService("DELETE", {
+    AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
   }
@@ -987,7 +995,8 @@ function deleteAll() {
 }
 
 // Cancel deletion
-function cancelDelete() {
+function cancel
+() {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
@@ -1062,13 +1071,13 @@ function getDeletedListEntries() {
 // hideMarkedItems: Hides Item from Section List
 //----------------------------------------------------------------------------------
 
-function hideMarkedItems() {
+function hideMarkedItems(selectedItemList) {
   // Since no boxes are checked ghost button is disabled
   hideVisibilityIcons();
   document.querySelector('#hideElement').disabled = true;     //can be removed
   document.querySelector('#hideElement').style.opacity = 0.7; //can be removed
-  for (i = 0; i < hideItemList.length; i++) {
-    var lid = hideItemList[i];
+  for (i = 0; i < selectedItemList.length; i++) {
+    var lid = selectedItemList[i];
     AJAXService("SETVISIBILITY", {
       lid: lid,
       visible: 3
@@ -1187,6 +1196,7 @@ async function newItem(itemtitle) {
     } else if (element.tagName == 'SPAN') { //this is for created messages
       setCreatedDuggaAnimation(element, 'SPAN');
     }
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
@@ -1275,7 +1285,7 @@ function updateVersion() {
   param.enddate = $("#eenddate").val();
   param.motd = document.getElementById("eMOTD").value;
 
-  AJAXService("UPDATEVRS", param, "SECTION");
+  AJAXService("UPDATEVRS", param, "COURSE");
 
   $("#editCourseVersion").css("display", "none");
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
@@ -1565,12 +1575,12 @@ function returnedSection(data) {
             if (itemKind === 3) {
               if (isLoggedIn) {
                 str += "<td class='LightBox" + hideState + "'>";
-                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
               }
             } else if (itemKind === 4) {
               if (isLoggedIn) {
                 str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
               }
             }
             str += "</td>";
@@ -1580,7 +1590,7 @@ function returnedSection(data) {
         if (retdata['writeaccess']) {
           if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
             str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
+            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
 
           }
           str += "</td>";
@@ -1621,7 +1631,7 @@ function returnedSection(data) {
           if (isLoggedIn) {
             // Styling for Section row
             str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' src='../Shared/icons/select.png'></div>";
+            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
           }
           str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
           kk = 0;
@@ -1636,7 +1646,7 @@ function returnedSection(data) {
         } else if (itemKind === 3) {
           if (retdata['writeaccess']) {
             str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' src='../Shared/icons/PenT.svg'></div>";
+            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' title='Quiz' src='../Shared/icons/PenT.svg'></div>";
           }
 
           if (item['highscoremode'] != 0 && itemKind == 3) {
@@ -1648,7 +1658,7 @@ function returnedSection(data) {
 
         } else if (itemKind === 4) {
           str += "<td class='LightBoxFilled" + hideState + "'>";
-          str += "<div ><img alt='pen icon dugga' src='../Shared/icons/list_docfiles.svg'></div>";
+          str += "<div ><img alt='pen icon dugga' title='Moment' src='../Shared/icons/list_docfiles.svg'></div>";
 
           // New moment bool equals true
           momentexists = item['lid'];
@@ -1662,20 +1672,22 @@ function returnedSection(data) {
 
         } else if (itemKind === 6) { // Group
           // Alt 1
-          let grpmembershp = data['grpmembershp'].split(" ");
           var grptype = item['grptype'] + "_";
           var grp = grptype + "UNK";
-
-          if (document.getElementById("userName").innerHTML != "Guest") {
-            for (let i = 0; i < grpmembershp.length; i++) {
-              let g = grpmembershp[i].replace(grptype, "");
-              if (g.length < grpmembershp[i].length) {
-                if (grp !== grptype + "UNK") {
-                  grp += ",";
-                } else {
-                  grp = "";
+          // Check if the grpmbershp has data in the entry. 
+          if(data['grpmembershp'] != null) {
+            let grpmembershp = data['grpmembershp'].split(" ");
+            if (document.getElementById("userName").innerHTML != "Guest") {
+              for (let i = 0; i < grpmembershp.length; i++) {
+                let g = grpmembershp[i].replace(grptype, "");
+                if (g.length < grpmembershp[i].length) {
+                  if (grp !== grptype + "UNK") {
+                    grp += ",";
+                  } else {
+                    grp = "";
+                  }
+                  grp += grptype + g;
                 }
-                grp += grptype + g;
               }
             }
           }
@@ -2505,11 +2517,11 @@ function mouseDown(e) {
 
   var box = $(e.target);
 
-  // Is the clicked element a loginbox? or is it inside a loginbox?
-  if (box[0].classList.contains("loginBox")) {
+  // Is the clicked element a formBox? or is it inside a formBox?
+  if (box[0].classList.contains("formBox")) {
     isClickedElementBox = true;
-  } else if ((findAncestor(box[0], "loginBox") != null) &&
-    (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+  } else if ((findAncestor(box[0], "formBox") != null) &&
+    (findAncestor(box[0], "formBox").classList.contains("formBox"))) {
     isClickedElementBox = true;
   } else {
     isClickedElementBox = false;
@@ -2524,8 +2536,8 @@ function mouseDown(e) {
 function mouseUp(e) {
   /* If the target of the click isn't the container nor a descendant of the container,
      or if we have clicked inside box and dragged it outside and released it */
-  if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) &&
-    $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+  if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) &&
+    $('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
     event.preventDefault();
 
@@ -3557,7 +3569,6 @@ function showCourseDate(ddate, dialogid) {
 
 // ------ Validates if deadline is between start and end date ------
 function validateDate2(ddate, dialogid) {
-  initInputColorTheme();
   var inputDeadline = document.getElementById("inputwrapper-deadline");
   if (window.getComputedStyle(inputDeadline).display !== "none") {
 
@@ -3600,7 +3611,6 @@ function validateDate2(ddate, dialogid) {
 }
 
 function validateSectName(name) {
-  initInputColorTheme();
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
@@ -3682,6 +3692,64 @@ const regex = {
 	fileName: /^[A-ZÅÄÖa-zåäö\d]+( ?(- ?)?[A-ZÅÄÖa-zåäö\d]+)*$/,
 	githubURL: /^(https?:\/\/)?(github)(\.com\/)([\w-]*\/)([\w-]+)$/
 };
+
+function checkGithubLink(link) {
+  let element = document.getElementById(link);
+  let savebtn = document.getElementById('buttonContainerSaveRepo').children[0];
+  let substring = "https://github.com/"
+  let status = true;
+  status=element.value.includes(substring);
+  if(element.value.length < substring.length+2) {
+    status = false;
+  }
+  if(element.value.match('"') || element.value.match("'")) {
+    status = false;
+  }
+  
+  if (status) {
+    savebtn.disabled = false;
+    savebtn.style.opacity = '1';
+    element.style.backgroundColor = inputColorTheme;
+    element.classList.add("color-change-valid");
+    element.classList.remove("color-change-invalid");
+    window.bool10 = true;
+    return true;
+  } else if (element.value.length > 0) { //Invalid
+    savebtn.disabled = true;
+    savebtn.style.opacity = '0.5';
+    element.classList.add("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  } else {
+    savebtn.disabled = true;
+    savebtn.style.opacity = '0.5';
+    element.classList.remove("color-change-invalid");
+    element.classList.remove("color-change-valid");
+    window.bool10 = false;
+    return false;
+  }
+}
+
+// creates a warning to user
+function checkGithubLinkClue(link) {
+  let element = document.getElementById(link);
+  let inputWindow = document.getElementById('githubPopupWindow');
+  let substring = "https://github.com/"
+  let status = true;
+  status = element.value.includes(substring);
+  if(element.value.length < substring.length+2) {
+    status = false;
+  }
+
+  if(element.value.match('"') || element.value.match("'")) {
+    status = false;
+  }
+
+  if (!status && inputWindow.style.display != "none") {
+    toast('warning','Enter a valid GitHub repository link',3);
+  }
+}
 
 //Validate form but do not perform it.
 function quickValidateForm(formid, submitButton) {
@@ -3815,12 +3883,11 @@ function validateForm(formid) {
       setTimeout(function () {
         var element = document.getElementById('I' + updatedLidsection).firstChild;
         if (element.tagName == 'DIV') {
-          element = element.firstChild;
-          element.classList.add("highlightChange");
+          setCreatedDuggaAnimation(element.firstChild, 'DIV');
         } else if (element.tagName == 'A') {
-          document.getElementById('I' + updatedLidsection).classList.add("highlightChange");
+          setCreatedDuggaAnimation(element, 'A');
         } else if (element.tagName == 'SPAN') {
-          document.getElementById('I' + updatedLidsection).firstChild.classList.add("highlightChange");
+          setCreatedDuggaAnimation(element, 'SPAN');
         }
       }, 200);
       //Duration time for the alert before remove
@@ -4043,7 +4110,7 @@ function fetchGitCodeExamples(courseid){
     }
     fetchFileContent(githubURL,filteredFiles, folderPath).then(function(codeExamplesContent){
       //Test here to view content in console. codeExamplesContent array elements contains alot of info.
-      storeCodeExamples(cid, codeExamplesContent, githubURL);
+      storeCodeExamples(cid, codeExamplesContent, githubURL, fileName);
     }).catch(function(error){
       console.error('Failed to fetch file contents:', error)
     });
@@ -4137,7 +4204,7 @@ function fetchGitCodeExamples(courseid){
     });
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
-function storeCodeExamples(cid, codeExamplesContent, githubURL){
+function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     var templateNo = updateTemplate();
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[], fileSize=[];
     //Push all file data into separate arrays and add them into one single array.
@@ -4164,23 +4231,27 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL){
       templateid: templateNo,
       fileSizes: fileSize
     }
-    //Send data to sectioned.php as JSON through POST and GET
-    fetch('sectioned.php?cid=' + cid + '&githubURL=' + githubURL, {
-       method: 'POST',
-       body: JSON.stringify(AllJsonData),
-       headers: {
-        'Content-Type': 'application/json'
-       }
-      }) 
-      .then(response => response.text())
-      .then(data => {
-        //For testing/finding bugs/errors
-        //console.log(data);
-        confirmBox('closeConfirmBox');
-      })
-      .catch(error => {
-          console.error('Error calling PHP function:', error);
-      });
+
+    //Send data to sectioned.php through POST
+    $.ajax({
+       url: 'sectionedservice.php',
+       type: 'POST',
+       data: {
+        courseid: cid,
+        githubURL: githubURL,
+        codeExampleName: fileName,
+        opt: 'GITCODEEXAMPLE',
+        codeExampleData: AllJsonData
+       },
+       success: function(response) {
+          console.log(response);
+       },
+       error: function(xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+      }
+    });   
+    confirmBox('closeConfirmBox');
+    location.replace(location.href);
 }
 function updateTemplate() {
   templateNo = $("#templateno").val();

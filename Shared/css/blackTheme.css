@@ -559,7 +559,8 @@ body {
 }
 
 .loginBox,
-.logoutBox{
+.logoutBox,
+.formBox{
   background-color: var(--color-background);
   color: var(--color-text-light);
   border: 2px solid var(--color-border);
@@ -897,7 +898,6 @@ option:checked{
 select{
     background-color: var(--color-background-light-surface);
     color: var(--color-text-list);
-    margin-right: 10px;
     border-radius: 5px;
 }
 
@@ -997,12 +997,13 @@ input{
 /* END */
 
 /* Style for fieldset elements in #Show Test" editor.  START */
-.loginBox select{
+.loginBox select {
     background-color: #212121;
     color:white;
 }
 
-.loginBox textarea, #receipt{
+.loginBox textarea, #receipt
+.formBox textarea{
     background-color: #212121;
     color:white;
 }
@@ -1273,6 +1274,15 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 #diagram-message > div.error {
     background-color: rgb(252, 58, 44);
 }
+
+#pad_lock {
+    bottom: -5px;
+    left: 3px;
+    display: block;
+    position: absolute;
+    background: inherit;
+    filter: invert(65%);
+}
   
  .textinput {
     color:white;
@@ -1347,6 +1357,10 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 }
 
+.resultTableTextHash{
+    color:#5badff;
+}
+
 /* Toast notifications */
 .toast {
     background-color: #e9e9e9;
@@ -1362,5 +1376,9 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 
 .error {
   background-color: rgb(243, 129, 129);
+}
+
+.confirm { 
+    background-color: #e9e9e9;
 }
 /*/ END /*/

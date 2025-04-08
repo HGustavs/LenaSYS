@@ -7,7 +7,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
@@ -42,24 +42,25 @@ if($link==-1) {
     foreach($queryz2->fetchAll() as $row) {
         $exampleid=$row['exampleid'];
     }
-    $link = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
+    $data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
+    $link=$data['link'];
+    $debug=$data['debug'];
 }
 
-createNewListentrie($pdo,array(
-    "cid" => $courseid,
-    "coursevers" => $coursevers,
-    "userid" => $userid,
-    "entryname" => $sectname,
-    "link" => $link,
-    "kind" => $kind,
-    "comment" => $comments,
-    "visible" => $visibility,
-    "highscoremode" => $highscoremode,
-    "pos" => $pos,
-    "gradesys" => $gradesys,
-    "tabs" => $tabs,
-    "grptype" => $grptype,
-));
+$debug = createNewListEntry($pdo,
+    $courseid,
+    $coursevers,
+    $userid,
+    $sectname,
+    $link,
+    $kind,
+    $comments,
+    $visibility,
+    $highscoremode,
+    $pos,
+    $gradesys,
+    $tabs,
+    $grptype);
 
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);

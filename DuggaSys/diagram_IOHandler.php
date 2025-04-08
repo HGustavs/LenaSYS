@@ -18,7 +18,6 @@ of which folder in the repository 'save' on the server to load.
     -'Upload Canvas' and 'Example canvas' options does not seem to do anything.
 -------------==============######## Documentation End ###########==============-------------*/
   session_start();
-  include_once "../../coursesyspw.php";
   include_once "../Shared/sessions.php";
   pdoConnect();
 ?>
@@ -147,7 +146,7 @@ of which folder in the repository 'save' on the server to load.
 
       <!-- The Appearance menu. Default state is display: none; -->
       <div id="appearance" class='loginBox' style='display: none;'>
-          <div class='loginBoxheader'>
+          <div class='formBoxHeader'>
               <h3>Apperance</h3>
               <div class='cursorPointer' onclick='toggleApperanceElement()'>x</div>
           </div>

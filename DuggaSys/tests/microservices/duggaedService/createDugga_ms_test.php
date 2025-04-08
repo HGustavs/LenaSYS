@@ -4,7 +4,7 @@ include_once "../../../../Shared/test.php";
 
 $testsData = array(
     'createDugga_ms' => array(
-        'expected-output' => '{"entries":[{"qname":"createDuggaTest","autograde":0,"gradesystem":1,"qstart":"2024-03-03","deadline":"2024-01-01 01:01:01","qrelease":"2024-02-02 02:02:02","jsondeadline":"{\"TestJSON\":\"2024-04-04 04:04:04\"}"}]}',
+        'expected-output' => '{"entries":[{"qname":"createDuggaTest","autograde":0,"gradesystem":1,"quizFile":"group-assignment","qstart":"2024-03-03","deadline":"2024-01-01 01:01:01","qrelease":"2024-02-02 02:02:02","jsondeadline":"{\"TestJSON\":\"2024-04-04 04:04:04\"}","group":1}]}',
         
         'query-after-test-1' => "DELETE FROM quiz WHERE qname = 'createDuggaTest' AND cid = 1885",
         'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/duggaedService/createDugga_ms.php',
@@ -31,7 +31,7 @@ $testsData = array(
                     'qname',
                     'autograde',
                     'gradesystem',
-                    'quizfile',
+                    'quizFile',
                     'qstart',
                     'deadline',
                     'qrelease',

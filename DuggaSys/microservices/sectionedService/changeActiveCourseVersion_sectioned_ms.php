@@ -9,7 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "retrieveSectionedService_ms.php";
+include_once "./retrieveSectionedService_ms.php";
 
 pdoConnect();
 session_start();
@@ -20,10 +20,12 @@ if(isset($_SESSION['uid'])){
 	$userid="guest";
 }
 
-$courseid = getOP('cid');
+$courseid = getOP('courseid');
+$coursevers = getOP('coursevers');
 $versid = getOP('vers');
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
+$debug = "NONE!";
 
 // Authorization
 $isSuperUserVar = isSuperUser($userid);

@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include_once ("../Shared/database.php");
+include_once(__DIR__ . "/database.php");
 pdoConnect();
 $password = $_POST['password'];
 $hash = $_POST['hash'];

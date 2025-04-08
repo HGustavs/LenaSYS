@@ -18,6 +18,21 @@ class Permissions {
     }
 
     /**
+     * function has_write_permission
+     * Recursively check parent directories until write access is determined.
+     * Returns true or false.
+     */
+    public static function has_write_permission(string $path): bool {
+        // Find the nearest existing parent directory
+        $directory = $path;
+        while (!file_exists($directory)) {
+            $directory = dirname($directory);
+        }
+
+        return is_writable($directory);
+    }
+
+    /**
      * function get_permissions
      * Get the permissions set on a file or directory.
      */

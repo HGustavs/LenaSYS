@@ -45,12 +45,19 @@ function generateContextProperties() {
     if (context.length > 0) {
         showProperties(true, propSet, menuSet);
         let locked = context.some(e => e.isLocked);
-        str += saveButton('toggleEntityLocked();', `id='lockbtn'`, locked ? "Unlock" : "Lock");
+        str += saveButton('toggleEntityLocked();', 'lockbtn', locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
     multipleColorsTest();
 }
-const showProperties = (show, propSet, menuSet) => {
+
+/**
+ * @description Makes it show or hide the properties with class names.
+ * @param {boolean} show Shows the properties if it's true, or hide if it's false.
+ * @param {Object} propSet Add or remove class name from the object.
+ * @param {Array} menuSet Change all class name to show or hide.
+ */
+function showProperties(show, propSet, menuSet) {
     let a = (show) ? 'options-fieldset-show' : 'options-fieldset-hidden';
     let b = (!show) ? 'options-fieldset-show' : 'options-fieldset-hidden';
     propSet.classList.add(a);
@@ -61,63 +68,93 @@ const showProperties = (show, propSet, menuSet) => {
     }
 }
 
-const textarea = (name, property, element) => {
-    return `<div style='color:white'>${name}</div>
+/**
+ * @description Makes a textarea to be able for example add new classes for UML.
+ * @param {String} name Name for the header for the textarea.
+ * @param {String} property What type of property the textarea is.
+ * @param {Object} element What element the textarea is for.
+ * @return Returns the div that is the header and the textarea for the specific element.
+ */
+function textarea(name, property, element) {
+    return `<div style='color:${color.WHITE};'>${name}</div>
             <textarea 
                 id='elementProperty_${property}' 
                 rows='4' style='width:98%;resize:none;'
             >${textboxFormatString(element[property])}</textarea>`;
 }
 
-const nameInput = (element) => {
-    return `<div style='color:white'>Name</div>
+/**
+ * @description Makes a text input to be able to change the name of the element.
+ * @param {Object} element What element the input is for.
+ * @return Returns the div that is the header and the text input.
+ */
+function nameInput(element) {
+    return `<div style='color:${color.WHITE};'>Name</div>
             <input 
                 id='elementProperty_name' 
                 type='text' 
                 value='${element.name}' 
-                onfocus='propFieldSelected(true)' 
-                onblur='propFieldSelected(false)'
             >`;
 }
 
-const saveButton = (functions, id='', value='Save') => {
+/**
+ * @description Makes a button input for save the changes.
+ * @param {*} functions What the function should be called.
+ * @param {String} id What ID the input should have.
+ * @param {String} value What value the input should have
+ * @return Returns the button input.
+ */
+function saveButton(functions, id = '', value = 'Save') {
     return `<br><br>
-            <input ${id}
+            <input id='${id}'
                 type='submit' value='${value}' class='saveButton' 
                 onclick="${functions}"
             >`;
 }
-const dropdown = (name, def, object, element) => {
+
+/**
+ * @description Makes a dropdown for the element with the different selection.
+ * @param {String} name The header for the dropdown.
+ * @param {String} def The default value for the dropdown.
+ * @param {Object} object What types of value the element have.
+ * @param {Object} element What type of element the dropdown is for.
+ * @return Returns a div that is the header for the dropdown and a dropdown menu.
+ */
+function dropdown(name, def, object, element) {
     let options = '';
     let current = element.state ?? def;
     Object.values(object).forEach(value => {
         let s = (current == value) ? `selected ="selected"` : '';
         options += `<option ${s} value='${value}'>${value}</option>`;
     });
-    return `<div style='color:white'>${name}</div>
+    return `<div style='color:${color.WHITE};'>${name}</div>
             <select id="propertySelect">${options}</select>`;
 }
-const colorSelection = (element) => {
-    return `<div style="white">Color</div> 
+
+/**
+ * @description be able to change color for the element.
+ * @param {Object} element Which element that is going to change color.
+ * @return Returns the menu to change color.
+ */
+function colorSelection(element) {
+    return `<div style="color:${color.WHITE};">Color</div> 
             <button 
                 id="colorMenuButton1" 
                 class="colorMenuButton" 
                 onclick="toggleColorMenu('colorMenuButton1')" 
-                style="background-color:${element.fill}"
+                style="background-color:${element.fill};"
             >
                 <span id="BGColorMenu" class="colorMenu"></span>
             </button>`;
 }
 
+/**
+ * @description Drawing the elements properties that is on the option panel.
+ * @param {Object} element What element the properties is associated with.
+ * @return Returns the different properties for the element on option panel.
+ */
 function drawElementProperties(element) {
     let str = '';
-    // Type dropdown
-    if (element.canChangeTo && element.kind != elementTypesNames.ERAttr) {
-        let single = `<option selected="selected" value='${element.type}'>${element.type}</option>`;
-        let options = (elementHasLines(element)) ? single : option(element.canChangeTo, element.type);
-        str += `<div style='color:white'>Type</div>`
-        str += select('typeSelect', options, false, false);
-    }
     //TODO in the future, this can be implemented as part of saveProperties.
     switch (element.kind) {
         case elementTypesNames.EREntity:
@@ -184,7 +221,13 @@ function drawElementProperties(element) {
     return str;
 }
 
-const option = (object, icon) => {
+/**
+ * @description Makes a dropdown for the element with different selection.
+ * @param {Object} icon What type of icon the line is having, for example a ARROW at one end.
+ * @param {Object} object What types of value the element have.
+ * @return Returns a dropdown menu.
+ */
+function option(object, icon) {
     let result = '';
     Object.values(object).forEach(i => {
         let selected = (i == icon) ? 'selected' : '';
@@ -193,44 +236,72 @@ const option = (object, icon) => {
     return result;
 }
 
-const radio = (line, arr) => {
-    let result = `<h3 style="margin-bottom: 0; margin-top: 5px">Kinds</h3>`;
+/**
+ * @description Makes a radio menu for the element with different selection.
+ * @param {Object} line The line between two elements.
+ * @param {Array} arr An array for the different selection for the menu.
+ * @return Returns a header for the radio menu and returns the radio menu with the different selection.
+ */
+function radio(line, arr) {
+    let result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
     arr.forEach(lineKind => {
         let checked = (line.kind == lineKind) ? 'checked' : '';
-        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked}>
+        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked} onchange='changeLineProperties();'>
                    <label for='lineRadio${lineKind}'>${lineKind}</label>
                    <br>`
-    });
+    });    
     return result;
 }
 
-const select = (id, options, inclNone=true, inclChange=true) => {
+/**
+ * @description Makes a selection menu for the element with different values.
+ * @param {String} id What id the menu should have.
+ * @param {*} options The different option the selection menu should have.
+ * @param {boolean} inclNone True if one of the option should have value "None".
+ * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
+ * @return Returns a select menu with de different option.
+ */
+function select(id, options, inclNone = true, inclChange = true) {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
-    let change = (inclChange) ? 'onChange="changeLineProperties()"' : '';
+    let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
     return `<select id='${id}' ${change}>
                 ${none}
                 ${options}
             </select>`;
 }
 
-const lineLabel = (id, placeholder, value) => {
+/**
+ * @description What label the text should have with a text input.
+ * @param {String} id What id the input should have.
+ * @param {String} placeholder The placeholder if nothing is writen on the input.
+ * @param {Object} value What the value should be for the text input.
+ * @return Returns a text input for add/change a label for a line.
+ */
+function lineLabel(id, placeholder, value) {
     return `<input id="${id}" maxlength="50" type="text" placeholder="${placeholder}" value="${value ?? ''}"/>`;
 }
 
+/**
+ * @description Draw the different properties for the line option.
+ * @param {object} line The line that the properties is for.
+ * @return Returns the different properties option.
+ */
 function drawLineProperties(line) {
     let str = '';
+    const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
+
     switch (line.type) {
         case entityType.ER:
             str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
-            str += `<label style="display: block">Cardinality:`;
+            str += `<label style="display: block;">Cardinality:`;
             let optER;
             Object.keys(lineCardinalitys).forEach(cardinality => {
-                let selected =  (line.cardinality == cardinality) ? 'selected' : '';
+                let selected = (line.cardinality == cardinality) ? 'selected' : '';
                 optER += `<option value='${cardinality}' ${selected}>${lineCardinalitys[cardinality]}</option>`;
             });
             str += select('propertyCardinality', optER, true, false);
             str += `</label>`;
-            str += includeLabel(line)
+            str += includeLabel(line);
             break;
         case entityType.UML:
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
@@ -240,29 +311,40 @@ function drawLineProperties(line) {
             break;
         case entityType.IE:
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
-            str += `<span id="lineLabel" ${line.label} /span>`; // Needed for cardinality, unsure why
-            str += cardinalityLabels(line);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
-            let optSD = option(SDLineType, line.innerType);
-            str += includeLabel(line)
-            str += iconSelection([SDLineIcons], line);
-            str += `<label style="display: block">Line Type:</label>`;
-            str += select('lineType', optSD, false);
+            if (!connectedToInitialOrFinal) {
+                let optSD = option(SDLineType, line.innerType);
+                str += includeLabel(line);
+                str += iconSelection([SDLineIcons], line);
+                str += `<label style="display: block;">Line Type:</label>`;
+                str += select('lineType', optSD, false);
+            } else {
+                let optSD = option(SDLineType, line.innerType);
+                str += includeLabel(line);
+                str += `<label style="display: block;">Line Type:</label>`;
+                str += select('lineType', optSD, false);
+            }
             break;
-        case entityType.SE:  
-            str += includeSELabel(line)
+        case entityType.SE:
+            str += includeSELabel(line);
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);
-            str += `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>`;
+            str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>`;
             break;
     }
     str += saveButton('changeLineProperties();');
     return str;
 }
 
-const iconSelection = (arr, line) => {
+/**
+ * @description Makes all the different option for the selection.
+ * @param {Array} arr Have all the different option for the selection menu.
+ * @param {object} line The line that have the select option as properties.
+ * @return Returns a label and the different selection for the line.
+ */
+function iconSelection(arr, line) {
     let sOptions = '';
     let eOptions = '';
     arr.forEach(object => {
@@ -271,13 +353,18 @@ const iconSelection = (arr, line) => {
     arr.forEach(object => {
         eOptions += option(object, line.endIcon)
     });
-    return `<label style="display: block">Icons:</label>`
+    return `<label style="display: block;">Icons:</label>`
         + select('lineStartIcon', sOptions)
         + select('lineEndIcon', eOptions);
 }
 
-const includeLabel = (line) => {
-    return `<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>
+/**
+ * @description Add a label for the line that is a "<<include>>".
+ * @param {object} line The line that have the "<<include>>" button as properties.
+ * @return Returns a header, div-tag and a button that add a label on line.
+ */
+function includeLabel(line) {
+    return `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>
                     <div>
                         <button 
                             id="includeButton" type="button" 
@@ -287,13 +374,23 @@ const includeLabel = (line) => {
         + lineLabel('lineLabel', 'Label', line.label);
 }
 
-const includeSELabel = (line) => {
-    return '<h3 style="margin-bottom: 0; margin-top: 5px">Label</h3>'
+/**
+ * @description Be able to add label on line that is between sequence element.
+ * @param {object} line The line between sequence element.
+ * @return Returns a header and with a text input from the function "lineLabel".
+ */
+function includeSELabel(line) {
+    return '<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>'
         + lineLabel('lineLabel', 'Label', line.label);
 }
 
-const cardinalityLabels = (line) => {
-    return `<h3 style="margin-bottom: 0; margin-top: 5px">Cardinalities</h3>`
+/**
+ * @description Be able to draw start/end cardinality for a line.
+ * @param {object} line A line that have start/end cardinality as properties.
+ * @return Returns a header and the text input for add cardinality to the line.
+ */
+function cardinalityLabels(line) {
+    return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
         + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
         + lineLabel('lineEndLabel', 'End cardinality', line.endLabel);
 }
@@ -320,46 +417,67 @@ function toggleOptionsPane() {
         document.getElementById("options-pane").className = "show-options-pane";
     }
 }
+
 /**
  * @description Function used to format the attribute and function textareas in UML- and IE-entities. Every entry is written on new row.
  * @param {*} arr Input array with all elements that should be seperated by newlines
  * @returns Formated string containing all the elements in arr
  */
 function textboxFormatString(arr) {
-    var content = '';
+    let content = '';
     for (let i = 0; i < arr.length; i++) {
         content += arr[i] + '\n';
     }
     return content;
 }
+
+/**
+ * @description Function used to check if a given line is connected to an initial state or a final state.
+ * @param {Object} line The line object that needs to be checked.
+ * @returns {Boolean} Returns true if the line is connected to an initial state or a final state, otherwise false.
+ */
+function isConnectedToInitialOrFinalState(line) {
+    const initialStateIds = data.filter(element => element.kind === elementTypesNames.UMLInitialState).map(element => element.id);
+    const finalStateIds = data.filter(element => element.kind === elementTypesNames.UMLFinalState).map(element => element.id);
+    return initialStateIds.includes(line.fromID) || initialStateIds.includes(line.toID) ||
+        finalStateIds.includes(line.fromID) || finalStateIds.includes(line.toID);
+}
+
 /**
  * @description Generates the string which holds the ER table for the current ER-model/ER-diagram.
  * @returns Current ER table in the form of a string.
  */
 function generateErTableString() {
-    //TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
-    //only useful information from entities, attributes and relations.
+    let lastList;
+    let currentString;
+    let row;
+    let tempList;
+//TODO: When functionality is complete, try to minimize the overall space complexity, aka try to extract
+    let current;
+// A list which contains entities that has been vistited in this codeblock
+    let queue;
+//only useful information from entities, attributes and relations.
 
-    var entityList = [];    //All EREntities currently in the diagram
-    var attrList = [];      //All ERAttributes currently in the diagram
-    var relationList = [];  //All ERRelations currently in the diagram
-    var stringList = [];    //List of strings where each string holds the relevant data for each entity
+    const entityList = [];    //All EREntities currently in the diagram
+    const attrList = [];      //All ERAttributes currently in the diagram
+    const relationList = [];  //All ERRelations currently in the diagram
+    const stringList = [];    //List of strings where each string holds the relevant data for each entity
 
     /**
      * @description Multidimensional array containing data of each entity and their attribute. Index[0] is always the element
      * @structure ERAttributeData[i] = [entityObject, attributeObject1, ..., attributeObjectN]
      */
-    var ERAttributeData = [];
+    const ERAttributeData = [];
     /**
      * @description Multidimensional array containing foreign keys for every entity. The owning entity is the entity where the foreign keys are added
      * @structure   ERForeignData[i] = [owningEntityObject, [otherEntityObject, foreignAttributeObject1, ..., foreignAttributeObjectN]]
      */
-    var ERForeignData = [];
+    const ERForeignData = [];
     /**
      * @description Multidimensional array containing relation and the connected entities. Also stores the cardinality and kind for connected entity
      * @structure   ERRelationData[i] = [relationObject, [entityObject, lineCardinality, lineKind], [otherEREntityObject, otherLineCardinality, otherLineKind]]
      */
-    var ERRelationData = [];
+    const ERRelationData = [];
 
     // Sort the data[] elements into entity-, attr- and relationList
     for (let i = 0; i < data.length; i++) {
@@ -375,7 +493,7 @@ function generateErTableString() {
     //For each relation in relationList
     for (let i = 0; i < relationList.length; i++) {
         //List containing relation-element and connected entities
-        var currentRelationList = [];
+        const currentRelationList = [];
         currentRelationList.push(relationList[i]);
         //Sort all lines that are connected to the current relation into lineList[]
         let lineList = [];
@@ -402,7 +520,7 @@ function generateErTableString() {
     }
     //For each entity in entityList
     for (let i = 0; i < entityList.length; i++) {
-        var currentRow = [entityList[i]];
+        const currentRow = [entityList[i]];
         //Sort all lines that are connected to the current entity into lineList[]
         let lineList = [];
         for (let j = 0; j < lines.length; j++) {
@@ -413,8 +531,8 @@ function generateErTableString() {
             }
         }
         // Identify all attributes that are connected to the current entity by using lineList[] and store them in currentEntityAttrList. Save their ID's in idList.
-        var currentEntityAttrList = [];
-        var idList = [];
+        const currentEntityAttrList = [];
+        const idList = [];
         for (let j = 0; j < lineList.length; j++) {
             for (let h = 0; h < attrList.length; h++) {
                 if (attrList[h].id == lineList[j].fromID || attrList[h].id == lineList[j].toID) {
@@ -424,11 +542,11 @@ function generateErTableString() {
                 }
             }
         }
-        var parentAttribeList = []; //list of parent attributes
+        const parentAttribeList = []; //list of parent attributes
 
         for (let j = 0; j < currentEntityAttrList.length; j++) {
             //For each attribute connected to the current entity, identify if other attributes are connected to themselves.
-            var attrLineList = [];
+            const attrLineList = [];
             for (let h = 0; h < lines.length; h++) {
                 //If there is a line to/from the attribute that ISN'T connected to the current entity, save it in attrLineList[].
                 if ((currentEntityAttrList[j].id == lines[h].toID ||
@@ -445,7 +563,7 @@ function generateErTableString() {
                     //If ID matches the current attribute AND another attribute, try pushing the other attribute to currentEntityAttrList[]
                     if (((attrLineList[h].fromID == attrList[k].id) && (attrLineList[h].toID == currentEntityAttrList[j].id)) || ((attrLineList[h].toID == attrList[k].id) && (attrLineList[h].fromID == currentEntityAttrList[j].id))) {
                         //Iterate over saved IDs
-                        var hits = 0;
+                        let hits = 0;
                         for (let p = 0; p < idList.length; p++) {
                             //If the ID of the attribute already exists, then increase hits and break the loop.
                             if (idList[p] == attrList[k].id) {
@@ -480,23 +598,23 @@ function generateErTableString() {
         //Push list with entity at index 0 followed by its attributes
         ERAttributeData.push(currentRow);
     }
-    var strongEntityList = formatERStrongEntities(ERAttributeData);
-    var weakEntityList = formatERWeakEntities(ERAttributeData);
+    const strongEntityList = formatERStrongEntities(ERAttributeData);
+    let weakEntityList = formatERWeakEntities(ERAttributeData);
 
     // Iterate over every strong entity
     for (let i = 0; i < strongEntityList.length; i++) {
-        var visitedList = []; // A list which contains entities that has been vistited in this codeblock
-        var queue = []; // Queue for each entity's relation
+        const visitedList = [];
+        queue = []; // Queue for each entity's relation
         queue.push(strongEntityList[i][0]); // Push in the current entity
         // Loop while queue isn't empty
         while (queue.length > 0) {
-            var current = queue.shift(); // Get current entity by removing first entity in queue
+            current = queue.shift(); // Get current entity by removing first entity in queue
             // For current entity, iterate through every relation
             for (let j = 0; j < ERRelationData.length; j++) {
                 // Check if relation is valid, (relation, entity1, entity2)
                 if (ERRelationData[j].length >= 3) {
                     if (ERRelationData[j][0].state == 'weak') {
-                        var visited = false;    // Boolean representing if the current entity has already been visited
+                        let visited = false;    // Boolean representing if the current entity has already been visited
                         for (let v = 0; v < visitedList.length; v++) {
                             if (current.id == visitedList[v].id) {
                                 visited = true;
@@ -517,7 +635,7 @@ function generateErTableString() {
                                             for (let l = 0; l < strongEntityList.length; l++) {
                                                 // ID match
                                                 if (strongEntityList[l][0].id == current.id) {
-                                                    var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
+                                                    tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
                                                     // Iterate through key list
                                                     for (let m = 0; m < strongEntityList[l][1].length; m++) {
                                                         tempList.push(strongEntityList[l][1][m]) // Push in key
@@ -539,7 +657,7 @@ function generateErTableString() {
                                             for (let l = 0; l < strongEntityList.length; l++) {
                                                 // ID match
                                                 if (strongEntityList[l][0].id == current.id) {
-                                                    var tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
+                                                    tempList = [strongEntityList[l][0]]; // Temporary list with entity and its keys
                                                     for (let m = 0; m < strongEntityList[l][1].length; m++) {
                                                         tempList.push(strongEntityList[l][1][m]) // Push in key
                                                     }
@@ -572,7 +690,7 @@ function generateErTableString() {
                                                 for (let l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
-                                                        var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
+                                                        tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
                                                         for (let m = 0; m < weakEntityList[l][1].length; m++) {
                                                             tempList.push(weakEntityList[l][1][m]) // Push in key
                                                         }
@@ -603,7 +721,7 @@ function generateErTableString() {
                                                 for (let l = 0; l < weakEntityList.length; l++) {
                                                     // ID match
                                                     if (weakEntityList[l][0].id == current.id) {
-                                                        var tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
+                                                        tempList = [weakEntityList[l][0]]; // Temporary list with entity and its keys
                                                         for (let m = 0; m < weakEntityList[i][1].length; m++) {
                                                             tempList.push(weakEntityList[l][1][m]); // Push in key
                                                         }
@@ -623,22 +741,22 @@ function generateErTableString() {
             visitedList.push(current);
         }
     }
-    var tempWeakList = [];
+    const tempWeakList = [];
     // Update the weak entity list to accomodate the new list of weak keys
     for (let i = 0; i < weakEntityList.length; i++) {
-        var row = []; // New formatted weak entity row
+        row = []; // New formatted weak entity row
         row.push(weakEntityList[i][0]); // Push in weak entity, as usual, [0] is entity
         row.push([]); // Push in empty list to contain the keys
         // In the weak entity's key list, iterate and check if current is an array
         for (let j = 0; j < weakEntityList[i][1].length; j++) {
             if (Array.isArray(weakEntityList[i][1][j])) {
-                var strongWeakKEy = []; // List that will have the the entities and strong/weak keys required
-                var current = weakEntityList[i][1][j]; // Select the first list for the current entity
-                var queue = []; // Queue for search
+                const strongWeakKEy = []; // List that will have the the entities and strong/weak keys required
+                current = weakEntityList[i][1][j]; // Select the first list for the current entity
+                queue = []; // Queue for search
                 queue.push(current); // Insert current to queue
                 // Loop until the queue is empty and at the same time, keep going deeper until the last list has been checked
                 while (queue.length > 0) {
-                    var temp = queue.shift(); // Remove from queue and store in temp
+                    const temp = queue.shift(); // Remove from queue and store in temp
                     // Check if algorithm should go deeper, if the last element is an array, go deeper
                     if ((temp[temp.length - 1].length > 0)) {
                         //Iterate through the list, push every attribute
@@ -675,12 +793,12 @@ function generateErTableString() {
     }
     weakEntityList = tempWeakList; // Update the values in the weakEntity list
 
-    var allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
+    const allEntityList = strongEntityList.concat(weakEntityList); // Add the two list together
 
     //Iterate through all relations
     for (let i = 0; i < ERRelationData.length; i++) {
         if (ERRelationData[i].length >= 3) {
-            var foreign = []; // Array with entities foreign keys
+            const foreign = []; // Array with entities foreign keys
             // Case 1, two strong entities in relation
             if (ERRelationData[i][1][0].state == 'normal' && ERRelationData[i][2][0].state == 'normal') {
                 // ONE to ONE relation, key from second ONE-side is stored in the other side
@@ -1274,7 +1392,7 @@ function generateErTableString() {
         for (let j = 0; j < allEntityList.length; j++) {
             // Check if correct entity were found
             if (ERForeignData[i][0].id == allEntityList[j][0].id) {
-                var row = [];
+                row = [];
                 // Push in every foreign attribute
                 for (let k = 1; k < ERForeignData[i].length; k++) {
                     row.push(ERForeignData[i][k]); // Push in entity
@@ -1285,10 +1403,10 @@ function generateErTableString() {
     }
     // Actual creating the string. Step one, strong / normal entities
     for (let i = 0; i < allEntityList.length; i++) {
-        var currentString = ''; // Current table row
+        currentString = ''; // Current table row
         if (allEntityList[i][0].state == 'normal') {
             currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
-            var existPrimary = false; // Determine if a primary key exist
+            let existPrimary = false; // Determine if a primary key exist
             // ITerate and determine if primary keys are present
             for (let j = 0; j < allEntityList[i][1].length; j++) {
                 if (allEntityList[i][1][j].state == 'primary') {
@@ -1332,7 +1450,7 @@ function generateErTableString() {
                         }
                     }
                 }
-                var lastList = allEntityList[i].length - 1;
+                lastList = allEntityList[i].length - 1;
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
                     for (let k = 0; k < allEntityList[i][lastList].length; k++) {
@@ -1370,7 +1488,7 @@ function generateErTableString() {
         }
     }
     for (let i = 0; i < allEntityList.length; i++) {
-        var currentString = ''; // Current table row
+        currentString = ''; // Current table row
         if (allEntityList[i][0].state == 'weak') {
             currentString += `<p>${allEntityList[i][0].name} (`; // Push in entity's name
             // Once again iterate through through the entity's key attributes and add them to string
@@ -1403,7 +1521,7 @@ function generateErTableString() {
                         }
                     }
                 }
-                var lastList = allEntityList[i].length - 1;
+                lastList = allEntityList[i].length - 1;
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
                     for (let k = 0; k < allEntityList[i][lastList].length; k++) {
@@ -1444,7 +1562,7 @@ function generateErTableString() {
     for (let i = 0; i < ERForeignData.length; i++) {
         // If relation is exist in ERForeignData
         if (ERForeignData[i][0].kind == elementTypesNames.ERRelation) {
-            var currentString = '';
+            currentString = '';
             currentString += `<p>${ERForeignData[i][0].name} (`; // Push in relation's name
             currentString += `<span style='text-decoration: underline overline black solid 2px;'>`;
             // Add left side of relation
@@ -1482,7 +1600,7 @@ function generateErTableString() {
             // Write out multi attributes
             if (allEntityList[i][j].state == 'multiple') {
                 // add the multiple attribute as relation
-                var multipleString = `<p>${allEntityList[i][j].name}( <span style='text-decoration:underline black solid 2px'>`;
+                let multipleString = `<p>${allEntityList[i][j].name}( <span style='text-decoration:underline black solid 2px;'>`;
                 // add keys from the entity the multiple attribute belongs to
                 for (let k = 0; k < allEntityList[i][1].length; k++) {
                     // add the entity the key comes from in the begining of the string
@@ -1505,9 +1623,9 @@ function generateErTableString() {
         }
     }
     //Add each string element in stringList[] into a single string.
-    var stri = "";
+    let stri = "";
     for (let i = 0; i < stringList.length; i++) {
-        stri += new String(stringList[i] + "\n\n");
+        stri += String(stringList[i] + "\n\n");
     }
     //if its empty, show a message instead.
     if (stri == "") {
@@ -1529,7 +1647,7 @@ function generateStateDiagramInfo() {
     const stateLines = [];
     const queue = [];
     let output = "";
-    let re = new RegExp("\\[.+\\]");
+    let re = new RegExp("\\[.+]");
     // Picks out the lines of type "State Diagram" and place it in its local array.
     for (let i = 0; i < lines.length; i++) {
         if (lines[i].type == entityType.SD) {
@@ -1611,19 +1729,20 @@ function generateStateDiagramInfo() {
     }
     return output;
 }
+
 /**
  * @description Formats a list of strong/normal entities and their attributes.
- * @param ERDATA A list of all entities and it's attributes
+ * @param {Array} ERDATA A list of all entities and it's attributes
  * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
 function formatERStrongEntities(ERData) {
-    var temp = []; // The formated list of strong/normal entities
+    const temp = []; // The formated list of strong/normal entities
     // Iterating through all entities
     for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'normal') {
-            var row = []; // The formated row
+            const row = []; // The formated row
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
-            var keys = []; // The key attributes (primary, candidate and weakKey)
+            const keys = []; // The key attributes (primary, candidate and weakKey)
             // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
             for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'primary') {
@@ -1661,17 +1780,17 @@ function formatERStrongEntities(ERData) {
 
 /**
  * @description Formats a list of weak entities and their attributes.
- * @param ERDATA A list of all entities and it's attributes
+ * @param {Array} ERDATA A list of all entities and it's attributes
  * @returns A formated list of all weak entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
 function formatERWeakEntities(ERData) {
-    var temp = []; // The formated list of weak entities
+    const temp = []; // The formated list of weak entities
     // Iterating through all entities
     for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'weak') {
-            var row = []; // The formated row
+            const row = []; // The formated row
             row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
-            var keys = []; // The key attributes (weakKey, primary and candidate)
+            const keys = []; // The key attributes (weakKey, primary and candidate)
             // Pushing in weak keys first to ensure that the first key in a weak entity is weak
             for (let j = 1; j < ERData[i].length; j++) {
                 if (ERData[i][j].state == 'weakKey') {
@@ -1707,28 +1826,20 @@ function formatERWeakEntities(ERData) {
     return temp;
 }
 
-/**
- * @description Event function triggered whenever a property field is pressed in the options panel. This will appropriatly update the current propFieldState variable.
- * @param {Boolean} isSelected Boolean value representing if the selection was ACTIVATED or DEACTIVATED.
- * @see propFieldState For seeing if any fieldset is currently selected.
- */
-function propFieldSelected(isSelected) {
-    propFieldState = isSelected;
-}
 
 /**
  * @description Tests if there are varying fill and/or stroke colors in the selected elements
  */
 function multipleColorsTest() {
     if (context.length > 1) {
-        var fill = context[0].fill;
-        var varyingFills = false;
+        const fill = context[0].fill;
+        let varyingFills = false;
         for (let i = 0; i < context.length; i++) {
             // Checks if there are varying fill colors, but not if varying colors have already been detected
             if (fill != context[i].fill && !varyingFills) {
-                var button = document.getElementById("colorMenuButton1");
+                const button = document.getElementById("colorMenuButton1");
                 button.style.backgroundColor = "rgba(128, 128, 128, 0.8)";
-                var textNode = document.createTextNode("Multiple Color Values");
+                const textNode = document.createTextNode("Multiple Color Values");
                 button.insertBefore(textNode, button.firstChild);
                 varyingFills = true;
             }
@@ -1737,65 +1848,17 @@ function multipleColorsTest() {
 }
 
 /**
- * Applies new changes to line attributes in the data array of lines.
+ * @description Applies new changes to line attributes in the data array of lines.
  */
-function changeLineProperties() {
-    let label = document.getElementById("lineLabel");
-    let startLabel = document.getElementById("lineStartLabel");
-    let endLabel = document.getElementById("lineEndLabel");
-    let startIcon = document.getElementById("lineStartIcon");
-    let endIcon = document.getElementById("lineEndIcon");
-    let lineType = document.getElementById("lineType");
-    let cardinality = document.getElementById('propertyCardinality');
-    let line = contextLine[0];
-
-    let radio = [
-        document.getElementById("lineRadioNormal"),
-        document.getElementById("lineRadioDouble"),
-        document.getElementById("lineRadioDashed"),
-        document.getElementById("lineRadioRecursive"),
-    ];
-    radio.forEach(r => {
-        if (r && r.checked && line.kind != r.value) {
-            line.kind = r.value;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, {kind: r.value}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-            displayMessage(messageTypes.SUCCESS, 'Successfully saved');
-        }
-    });
-
-    if (cardinality) {
-        if (cardinality.value == "") {
-            delete line.cardinality;
-            stateMachine.save(StateChangeFactory.ElementAttributesChanged(contextLine[0].id, {cardinality: undefined}), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-        } else {
-            changeAttribute(line, 'cardinality', cardinality, {cardinality: cardinality.value});
-        }
-    }
-    if (label) {
-        changeAttribute(line, 'label', label, {label: label.value});
+function changeLineProperties() {        
+    
+    // updates the line
+    for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
+        contextLine[0][key] = value;
     }
 
-    if ((line.type == entityType.UML) || (line.type == entityType.IE)) {
-        changeAttribute(line, 'startLabel', startLabel, {startLabel: startLabel.value});
-        changeAttribute(line, 'endLabel', endLabel, {endLabel: endLabel.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    if (line.type == entityType.SD) {
-        changeAttribute(line, 'innerType', lineType, {innerType: lineType.value});
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
-    if (line.type == entityType.SE) {
-        changeAttribute(line, 'startIcon', startIcon, {startIcon: startIcon.value});
-        changeAttribute(line, 'endIcon', endIcon, {endIcon: endIcon.value});
-    }
+    // save all the changes
+    stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
+
     showdata();
-}
-
-const changeAttribute = (line, attribute, updated, list) => {
-    if (line[attribute] != updated.value) {
-        line[attribute] = updated.value;
-        stateMachine.save(StateChangeFactory.ElementAttributesChanged(line.id, list), StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-    }
 }

@@ -4,16 +4,13 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../sharedMicroservices/getUid_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
 session_start();
 
-if(isset($_SESSION['uid'])){
-	$userid=$_SESSION['uid'];
-}else{
-	$userid="1";
-}
+$userid=getUid();
 
 $qid = getOP('qid');
 $opt = getOP('opt');

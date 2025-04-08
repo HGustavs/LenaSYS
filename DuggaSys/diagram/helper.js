@@ -1,12 +1,17 @@
+/**
+ * @description If the current keyboard event matches a keybind. Ctrl sensistive.
+ * @param {KeyboardEvent} e
+ * @param {{key:string, ctrl:boolean}} keybind
+ * @returns {boolean}
+ */
 function isKeybindValid(e, keybind) {
     return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
 }
 
 /**
- * @description Converst a position in screen pixels into coordinates of the array.
- * @param {Number} mouseX Pixel position in the x-axis.
- * @param {Number} mouseY Pixel position in the y-axis.
- * @returns {Point} Point containing the calculated coordinates.
+ * @description Converts position in pixels on the screen into coordinates in the diagram.
+ * @param {Number} mouseX Screen position in the x-axis.
+ * @param {Number} mouseY Screen position in the y-axis.
  */
 function screenToDiagramCoordinates(mouseX, mouseY) {
     // I guess this should be something that could be calculated with an expression but after 2 days we still cannot figure it out.
@@ -36,10 +41,10 @@ function enumContainsPropertyValue(value, enumObject) {
 }
 
 /**
- * Searches an array for the specified item and returns its stored index in the array if found.
- * @param {Array} arr Array to search.
- * @param {*} id Item to determine index for.
- * @returns {Number} Index for the searched item OR -1 for a miss.
+ * @description Searches an array for the specified item and returns its stored index in the array if found.
+ * @param {*[]} arr Array to search.
+ * @param {string} id Item to determine index for.
+ * @returns {number} Index for the searched item OR -1 for a miss.
  */
 function findIndex(arr, id) {
     for (let i = 0; i < arr.length; i++) {
@@ -48,6 +53,12 @@ function findIndex(arr, id) {
     return -1;
 }
 
+/**
+ * @description If line is connected to an element of the provided kind.
+ * @param {Object} line
+ * @param {string} kind
+ * @returns {null}
+ */
 function isLineConnectedTo(line, kind) {
     let result = null;
     switch (kind) {
@@ -62,15 +73,23 @@ function isLineConnectedTo(line, kind) {
 }
 
 /**
- * @description Gets the extension of an filename
- * @param {String} filename The name of the file
- * @return The extension
+ * @description Gets the extension of an filename.
+ * @param {string} filename The name of the file
+ * @return {string}
  */
 function getExtension(filename) {
-    var parts = filename.split('.');
+    const parts = filename.split('.');
     return parts[parts.length - 1];
 }
 
+/**
+ * @description If the element with the provided id (if moved to X,Y position) is overlapping any other object in the data array.
+ * @see data
+ * @param {string} id
+ * @param {number} x
+ * @param {number} y
+ * @returns {boolean}
+ */
 function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
@@ -85,7 +104,7 @@ function entityIsOverlapping(id, x, y) {
         entityHeights.forEach(entity => {
             if (element.id == entity.id) eHeight = entity.height
         });
-    })
+    });
 
     for (let i = 0; i < data.length; i++) {
         if (data[i].id === id) continue;
@@ -93,28 +112,33 @@ function entityIsOverlapping(id, x, y) {
 
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
-            
             // Sequence life-lines can be placed on activations
             if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") && element.kind === "sequenceActivation") continue;
-             
+
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
             else if (data[i].type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
             else if (element.type === "SE" && (data[i].kind === "sequenceLoopOrAlt" || data[i].kind === "sequenceActivation")) continue;
 
             // Superstates can be placed on state-diagram elements and vice versa
-            else if (data[i].kind === elementTypesNames.UMLSuperState && element.type === "SD") continue;
-            else if (data[i].type === "SD" && element.kind === elementTypesNames.UMLSuperState) continue;          
+            else if (!backgroundElement.includes(element.kind) &&
+                (data[i].kind === elementTypesNames.UMLSuperState ||
+                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+            ) continue;
+            else if (!backgroundElement.includes(data[i].kind) &&
+                (element.kind === elementTypesNames.UMLSuperState ||
+                element.kind === elementTypesNames.sequenceLoopOrAlt)
+            ) continue;
         }
 
         const x2 = data[i].x + data[i].width;
         let y2 = data[i].y + data[i].height;
-    
+
         arr.forEach(entityHeights => {
             entityHeights.forEach(entity => {
                 if (data[i].id == entity.id) y2 = data[i].y + entity.height;
             });
         });
-    
+
         if (x < x2 &&
             x + element.width > data[i].x &&
             y < y2 &&
@@ -128,29 +152,20 @@ function entityIsOverlapping(id, x, y) {
 }
 
 /**
- * @description Appends all property values onto the valuesPassed object. Logic for each specific property is different, some overwrite and some replaces.
- * @param {StateChange} target StateChange to edit
- * @param {StateChange} changes Another state change that will have its values copied over to this state change. Flags will also be merged.
+ * @description Gets first non array item from nested array.
+ * @param {string | any[]} array id or nested array of IDs.
+ * @returns {any[]} All the IDs.
  */
-function appendValuesFrom(target, changes) {
-    var propertys = Object.getOwnPropertyNames(changes);
-    // For every value in change
-    propertys.forEach(key => {
-
-        /**
-         * If the key is not blacklisted, set to the new value
-         */
-        if (key != "id") target[key] = changes[key]; // Ignore this keys.
-    });
-    return target;
+function getItemsFromNestedArrays(array) {
+    return array.flat(Infinity);
 }
 
 /**
  * @description checks the current CSS file the item diagramTheme currently holds in localStorage to determine if the current theme is darkmode or not.
- * @return a boolean value depending on if it is darktheme or not.
+ * @return {boolean}
  */
 function isDarkTheme() {
-    if (localStorage.getItem('diagramTheme') != null) {
+    if (localStorage.getItem('diagramTheme')) {
         //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
         let cssUrl = localStorage.getItem('diagramTheme');
         //this turns, for example, '.../Shared/css/style.css' into just 'style.css'
@@ -161,18 +176,18 @@ function isDarkTheme() {
 }
 
 /**
- * Generates a new hexadecimal ID that is not already stored to identify things.
- * @returns {String} Hexadecimal number represented as a string.
- * @see randomidArray For an array of all generated IDs by this function.
+ * @description Generates a new hexadecimal ID that is not already stored to identify things.
+ * @returns {string} Hexadecimal number represented as a string.
+ * @see randomidArray
  */
 function makeRandomID() {
-    var str = "";
-    var characters = 'ABCDEF0123456789';
-    var charactersLength = characters.length;
+    let str = "";
+    const characters = 'ABCDEF0123456789';
+    const charactersLength = characters.length;
     while (true) {
         for (let i = 0; i < 6; i++) {
             //document.querySelector can't find ID's if they begin with a number
-            if (i == 0) str += characters.charAt(Math.floor(Math.random() * (charactersLength-10)));
+            if (i == 0) str += characters.charAt(Math.floor(Math.random() * (charactersLength - 10)));
             else str += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         if (!settings.misc.randomidArray) { //always add first id
@@ -190,6 +205,10 @@ function makeRandomID() {
     }
 }
 
+/**
+ * @description If mouse has moved more than maxDeltaBeforeExeeded in any direction.
+ * @see maxDeltaBeforeExceeded
+ */
 function calculateDeltaExceeded() {
     // Remember that mouse has moved out of starting bounds
     if ((deltaX >= maxDeltaBeforeExceeded ||
@@ -199,4 +218,25 @@ function calculateDeltaExceeded() {
     ) {
         deltaExceeded = true;
     }
+}
+
+/**
+ * @description compare if 2 objects contain the same values. Allows for certain keys to be ignored
+ * @param {object} obj1 first object
+ * @param {object} obj2 second object
+ * @param {string[]} ignore array of keys to ingore
+ * @returns {boolean}
+ */
+function sameObjects(obj1, obj2, ignore = []) {
+    // removes the reference to the sent in objects just in case the sending function didn't do it
+    obj1 = {...obj1};
+    obj2 = {...obj2};
+    // remove the values in the "ignore" array
+    for (let item of ignore) {
+        if (obj1[item]) delete obj1[item];
+        if (obj2[item]) delete obj2[item];
+    }
+
+    // JSON.stringify() is needed to compare the values
+    return JSON.stringify(obj1) == JSON.stringify(obj2);
 }

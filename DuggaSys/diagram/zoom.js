@@ -1,45 +1,45 @@
 /**
  * @description Increases the current zoom level if not already at maximum. This will magnify all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom towards the cursor position.
- * @param {MouseEvent} scrollEvent The current mouse event.
+ * @param {MouseEvent} scrollEvent The current mouse event. - Optional
  */
 function zoomin(scrollEvent = undefined) {
     let delta;
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact < 4) {
-            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+            const midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
             delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
-            }
+            };
 
             //Update scroll x/y to center screen on new zoomOrigo
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
+            scrollx /= zoomfact;
+            scrolly /= zoomfact;
             scrollx += delta.x * zoomfact;
             scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
+            scrollx *= zoomfact;
+            scrolly *= zoomfact;
 
             zoomOrigo.x = midScreen.x;
             zoomOrigo.y = midScreen.y;
         }
     } else if (zoomfact < 4.0) { // ELSE zoom towards mouseCoordinates
-        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        const mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
             delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
-            }
+            };
             //Update scroll variables with delta in order to move the screen to the new zoom position
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
+            scrollx /= zoomfact;
+            scrolly /= zoomfact;
             scrollx += delta.x * zoomfact;
             scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
+            scrollx *= zoomfact;
+            scrolly *= zoomfact;
 
             //Set new zoomOrigo to the current mouse coordinates
             zoomOrigo.x = mouseCoordinates.x;
@@ -55,8 +55,8 @@ function zoomin(scrollEvent = undefined) {
         }
     }
     //Update scroll variables to match the new zoomfact
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
+    scrollx /= zoomfact;
+    scrolly /= zoomfact;
 
     switch (zoomfact) {
         case 0.25:
@@ -82,8 +82,13 @@ function zoomin(scrollEvent = undefined) {
     }
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
+    scrollx *= zoomfact;
+    scrolly *= zoomfact;
+
+    document.querySelectorAll('#pad_lock').forEach(padLock => {
+        padLock.style.bottom = `${-5 * zoomfact}px`;
+        padLock.style.left = `${3 * zoomfact}px`;
+    });
 
     updateGridSize();
     updateA4Size();
@@ -95,47 +100,47 @@ function zoomin(scrollEvent = undefined) {
 
 /**
  * @description Decreases the current zoom level if not already at minimum. This will shrink all elements and move the camera appropriatly. If a scrollLevent argument is present, this will be used top zoom away from the cursor position.
- * @param {MouseEvent} scrollEvent The current mouse event.
+ * @param {MouseEvent} scrollEvent The current mouse event. - Optional
  */
 function zoomout(scrollEvent = undefined) {
     let delta;
     // If mousewheel is not used, we zoom towards origo (0, 0)
     if (!scrollEvent) {
         if (zoomfact > 0.25) {
-            var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+            const midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
             delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
                 x: midScreen.x - zoomOrigo.x,
                 y: midScreen.y - zoomOrigo.y
-            }
+            };
 
             //Update scroll x/y to center screen on new zoomOrigo
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
+            scrollx /= zoomfact;
+            scrolly /= zoomfact;
             scrollx += delta.x * zoomfact;
             scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
+            scrollx *= zoomfact;
+            scrolly *= zoomfact;
 
             zoomOrigo.x = midScreen.x;
             zoomOrigo.y = midScreen.y;
         }
     } else if (zoomfact > 0.25) { // ELSE zoom towards mouseCoordinates
-        var mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
+        const mouseCoordinates = screenToDiagramCoordinates(scrollEvent.clientX, scrollEvent.clientY);
 
         if (scrollEvent.clientX != lastZoomPos.x || scrollEvent.clientY != lastZoomPos.y) { //IF mouse has moved since last zoom, then zoom towards new position
             delta = { // Calculate the difference between the current mouse coordinates and the previous zoom coordinates (Origo)
                 x: mouseCoordinates.x - zoomOrigo.x,
                 y: mouseCoordinates.y - zoomOrigo.y
-            }
+            };
 
             //Update scroll variables with delta in order to move the screen to the new zoom position
-            scrollx = scrollx / zoomfact;
-            scrolly = scrolly / zoomfact;
+            scrollx /= zoomfact;
+            scrolly /= zoomfact;
             scrollx += delta.x * zoomfact;
             scrolly += delta.y * zoomfact;
-            scrollx = scrollx * zoomfact;
-            scrolly = scrolly * zoomfact;
+            scrollx *= zoomfact;
+            scrolly *= zoomfact;
 
             //Set new zoomOrigo to the current mouse coordinatest
             zoomOrigo.x = mouseCoordinates.x;
@@ -151,8 +156,8 @@ function zoomout(scrollEvent = undefined) {
         }
     }
     //Update scroll variables to match the new zoomfact
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
+    scrollx /= zoomfact;
+    scrolly /= zoomfact;
 
     switch (zoomfact) {
         case 0.5:
@@ -178,8 +183,13 @@ function zoomout(scrollEvent = undefined) {
     }
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
+    scrollx *= zoomfact;
+    scrolly *= zoomfact;
+
+    document.querySelectorAll('#pad_lock').forEach(padLock => {
+        padLock.style.bottom = `${-5 * zoomfact}px`;
+        padLock.style.left = `${3 * zoomfact}px`;
+    });
 
     updateGridSize();
     updateA4Size();
@@ -193,58 +203,60 @@ function zoomout(scrollEvent = undefined) {
  * @description Decreases or increases the zoomfactor to its original value zoomfactor = 1.0.
  */
 function zoomreset() {
-    var midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
+    const midScreen = screenToDiagramCoordinates((window.innerWidth / 2), (window.innerHeight / 2));
 
     let delta = { // Calculate the difference between last zoomOrigo and current midScreen coordinates.
         x: midScreen.x - zoomOrigo.x,
         y: midScreen.y - zoomOrigo.y
-    }
+    };
 
     //Update scroll x/y to center screen on new zoomOrigo
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
+    scrollx /= zoomfact;
+    scrolly /= zoomfact;
     scrollx += delta.x * zoomfact;
     scrolly += delta.y * zoomfact;
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
+    scrollx *= zoomfact;
+    scrolly *= zoomfact;
 
     zoomOrigo.x = midScreen.x;
     zoomOrigo.y = midScreen.y;
 
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
+    scrollx /= zoomfact;
+    scrolly /= zoomfact;
 
     zoomfact = 1.0;
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
+    scrollx *= zoomfact;
+    scrolly *= zoomfact;
 
     //update the grid when reseting zoom
     updateGridSize();
 
     // Update scroll position
-    showdata()
+    showdata();
 
     //update the rulerbars when reseting zoomfact
     drawRulerBars(scrollx, scrolly);
 }
 
+
 /**
- * @description Zooms to desiredZoomfactor from center of diagram.
+ * @description Zooms the diagram to the specified center point.
+ * @param {Object} centerDiagram - The center point of the diagram to zoom to.
  */
 function zoomCenter(centerDiagram) {
     zoomOrigo.x = centerDiagram.x;
     zoomOrigo.y = centerDiagram.y;
 
-    scrollx = scrollx / zoomfact;
-    scrolly = scrolly / zoomfact;
+    scrollx /= zoomfact;
+    scrolly /= zoomfact;
 
     zoomfact = desiredZoomfact;
     document.getElementById("zoom-message").innerHTML = zoomfact + "x";
 
-    scrollx = scrollx * zoomfact;
-    scrolly = scrolly * zoomfact;
+    scrollx *= zoomfact;
+    scrolly *= zoomfact;
 
     updateGridSize();
     updateA4Size();
@@ -254,9 +266,16 @@ function zoomCenter(centerDiagram) {
     drawRulerBars(scrollx, scrolly);
 }
 
+/**
+ * @description Determines the desired zoom factor based on the maximum and minimum values of the x and y coordinates.
+ * @param {number} maxX - The maximum value of the x coordinate.
+ * @param {number} maxY - The maximum value of the y coordinate.
+ * @param {number} minX - The minimum value of the x coordinate.
+ * @param {number} minY - The minimum value of the y coordinate.
+ */
 function determineZoomfact(maxX, maxY, minX, minY) {
     // Resolution of the screen
-    var screenResolution = {
+    const screenResolution = {
         x: window.innerWidth,
         y: window.innerHeight
     };
