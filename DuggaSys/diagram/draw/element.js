@@ -527,15 +527,16 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         fill='${element.fill}'
                     />
                     <text 
-                        class='text' 
+                        class='nameLabel' 
                         x='${boxw / 2}' 
                         y='${boxw + texth / 2 + linew * 2}' 
                         dominant-baseline='middle' 
                         text-anchor='middle'
-                    > ${element.name} </text>
+                    >${element.name}</text>
                 </g>`;
     return drawSvg(boxw, boxh, content);
 }
+
 
 function drawElementSequenceObject(element, boxw, boxh, linew) {
     let str = "";

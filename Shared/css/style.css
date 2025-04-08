@@ -2949,6 +2949,11 @@ label.login-label {
   margin-left: 1px;
 }
 
+.nameLabel {
+  pointer-events: none;
+  fill: #000; 
+}
+
 .loginBox .cancel,
 .formBox .cancel {
   width: 80px;
