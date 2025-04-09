@@ -3,9 +3,9 @@
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
 	#general vars regarding current dugga.
-	$cid=getOPG('courseid');
-	$vers=getOPG('coursevers');
-	$quizid=getOPG('did');
+	$cid=htmlspecialchars(getOPG('courseid'), ENT_QUOTES, 'UTF-8');
+	$vers=htmlspecialchars(getOPG('coursevers'), ENT_QUOTES, 'UTF-8');
+	$quizid=htmlspecialchars(getOPG('did'), ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
