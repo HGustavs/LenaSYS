@@ -537,6 +537,13 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             } else if (line.type == entityType.SE) {
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             }
+
+            if (line.innerType == SDLineType.STRAIGHT) {
+                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
+            } else if (line.type == entityType.SE) {
+                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
+            }
             break;
     }
     return str;
