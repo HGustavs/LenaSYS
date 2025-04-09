@@ -46,10 +46,10 @@ class StateMachine {
         this.changeType = newChangeType;
         this.currentTime = new Date().getTime();
         this.removeFutureStates();
-        
-        let lastLog = {...this.historyLog[this.historyLog.length - 1]};
+
+        let lastLog = { ...this.historyLog[this.historyLog.length - 1] };
         // the id is sometimes stored as an array so this is needed to get the actual value;            
-        if(Array.isArray(lastLog.id)) lastLog.id = getItemsFromNestedArrays(lastLog.id);
+        if (Array.isArray(lastLog.id)) lastLog.id = getItemsFromNestedArrays(lastLog.id);
         switch (newChangeType) {
             case StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED:
                 this.pushToHistoryLog({
@@ -69,8 +69,8 @@ class StateMachine {
                         state: StateChange.ChangeElementState()
                     });
                 }
-                break;                
-            case StateChange.ChangeTypes.ELEMENT_RESIZED:                    
+                break;
+            case StateChange.ChangeTypes.ELEMENT_RESIZED:
                 // if the save() call comes from the same change-motion, remove the last entry
                 if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
                     this.historyLog.splice(this.historyLog.length - 1, 1);
@@ -82,7 +82,7 @@ class StateMachine {
                     this.pushToHistoryLog({
                         id: id,
                         ...Element.GetElementSize(id),
-                        ...Element.GetELementPosition(id)                            
+                        ...Element.GetELementPosition(id)
                     });
                 }
                 break;
@@ -135,7 +135,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
-    
+
     }
 
     /**
@@ -149,17 +149,17 @@ class StateMachine {
             counter: historyHandler.inputCounter,
             time: this.currentTime
         });
-        this.currentHistoryIndex = this.historyLog.length-1;
+        this.currentHistoryIndex = this.historyLog.length - 1;
 
         // it's possible to store multple of the same entries, by using the properties save button for example, this is used to remove those
         this.removeDuplicateEntries();
     }
-    
+
     removeDuplicateEntries() {
         if (this.historyLog.length < 2) return;
-        
+
         for (let i = 1; i < this.historyLog.length; i++) {
-            if (sameObjects(this.historyLog[i-1], this.historyLog[i], ['counter', 'time'])) {
+            if (sameObjects(this.historyLog[i - 1], this.historyLog[i], ['counter', 'time'])) {
                 this.historyLog.splice(i, 1);
             }
         }
@@ -424,7 +424,7 @@ function getData() {
     document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
     document.getElementById("container").addEventListener("mousedown", mdown);
     document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", mmoving);
+    document.getElementById("container").addEventListener("mousemove", debounce(mmoving, 100));
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
@@ -583,8 +583,8 @@ for (let i = 0; i <= maxNum; i++) {
     let element = document.getElementById("elementPlacement" + i);
     if (element) {
         // Add event listener for click
-        element.addEventListener("mousedown", function(event) {
-            if (event.button === 2) { 
+        element.addEventListener("mousedown", function (event) {
+            if (event.button === 2) {
                 rightClickOpenSubtoolbar(i);
             }
         });
@@ -757,7 +757,7 @@ document.addEventListener('keydown', function (e) {
     if (altPressed) {
         mouseMode_onMouseUp();
     }
-    historyHandler.inputCounter = (historyHandler.inputCounter+1)%1024;
+    historyHandler.inputCounter = (historyHandler.inputCounter + 1) % 1024;
 });
 
 document.addEventListener('keyup', function (e) {
@@ -956,7 +956,7 @@ function mouseMode_onMouseUp(event) {
                         elementTypeSelected = elementTypes.Ghost;
                         makeGhost();
                         // Create ghost line
-                        ghostLine = {id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal"};
+                        ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
                     } else if (ghostElement !== null) {
                         // create a line from the element to itself
                         addLine(context[0], context[0], "Recursive");
@@ -1071,21 +1071,21 @@ function mmoving(event) {
                 deltaX = (startNode.upRight) ? -delta : delta;
                 deltaY = (startNode.downLeft) ? -delta : delta;
             }
-        
+
             let xChange, yChange, widthChange, heightChange;
-            if(elementData.kind == elementTypesNames.sequenceActor || elementData.kind == elementTypesNames.sequenceObject) { // Special resize for sequenceActor and sequenceObject
+            if (elementData.kind == elementTypesNames.sequenceActor || elementData.kind == elementTypesNames.sequenceObject) { // Special resize for sequenceActor and sequenceObject
                 const maxRatio = 0.8;
                 if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
                     let tmpW = elementData.width;
                     let tmpX = elementData.x;
-                    let movementY = elementData.width <= maxRatio*startHeight ? 0 : -(deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    let movementY = elementData.width <= maxRatio * startHeight ? 0 : -(deltaX / zoomfact + startWidth - maxRatio * startHeight) / maxRatio;
                     let xChange = movementPosChange(elementData, startX, deltaX, true);
                     let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                    let heightChange = movementHeightChange(elementData, startHeight, movementY,false);
+                    let heightChange = movementHeightChange(elementData, startHeight, movementY, false);
                 } else if (startNode.right && (startWidth - (deltaX / zoomfact)) > minWidth) {
-                    var movementY = elementData.width <= maxRatio*startHeight ? 0 : -(-deltaX/zoomfact+startWidth-maxRatio*startHeight)/maxRatio;
+                    var movementY = elementData.width <= maxRatio * startHeight ? 0 : -(-deltaX / zoomfact + startWidth - maxRatio * startHeight) / maxRatio;
                     let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
-                    let heightChange = movementHeightChange(elementData,startHeight,movementY,false);
+                    let heightChange = movementHeightChange(elementData, startHeight, movementY, false);
                 } else if ((startNode.up || startNode.upLeft || startNode.upRight)
                     && (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) {
                     // Fetch original height// Deduct the new height, giving us the total change
@@ -1272,14 +1272,14 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
  * @description When properties are saved this updates the element to the selected state.
  * @see context For currently selected element.
  */
-function changeState() {    
+function changeState() {
     const element = context[0];
     const oldRelation = element.state;
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
     if (newRelation && oldRelation != newRelation) {
         if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
             if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
-                stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);                
+                stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
                 displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
             }
         }
@@ -1289,7 +1289,7 @@ function changeState() {
 /**
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
-function saveProperties() {    
+function saveProperties() {
     const propSet = document.getElementById("propertyFieldset");
     const element = context[0];
     const children = propSet.children;
@@ -1472,7 +1472,7 @@ function toggleReplay() {
         zoomContainer.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
-        settings.replay.timestamps = {0: 0}; // Clear the array with all timestamp.
+        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
 
         stateMachine.historyLog.forEach(historyEntry => {
             const lastKeyIndex = Object.keys(settings.replay.timestamps).length - 1;
@@ -1708,7 +1708,7 @@ function exportWithHistory() {
  * @description Stores the current diagram as JSON in localstorage
  * @param {string} key The name/key of the diagram
  */
-function storeDiagramInLocalStorage(key) {    
+function storeDiagramInLocalStorage(key) {
     if (stateMachine.currentHistoryIndex == -1) {
         return;
     } else {
@@ -1989,7 +1989,7 @@ function loadDiagramFromLocalStorage(key) {
 
 // Save current diagram when user leaves the page
 function saveDiagramBeforeUnload() {
-    if(data.length) {
+    if (data.length) {
         window.addEventListener("beforeunload", (e) => {
             storeDiagramInLocalStorage("AutoSave");
         })
@@ -2148,5 +2148,13 @@ function resetDiagramAlert() {
  */
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
 }
 //#endregion =====================================================================================
