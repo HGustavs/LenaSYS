@@ -668,8 +668,8 @@ function confirmBox(operation, item = null) {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
-    deleteItem(selectedItemList);
     $("#sectionConfirmBox").css("display", "none");
+    deleteItem(selectedItemList);
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
     $("#sectionHideConfirmBox").css("display", "none");
