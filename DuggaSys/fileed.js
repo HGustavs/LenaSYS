@@ -196,10 +196,12 @@ function uploadFile(kind) {
     } else if (kind == "LFILE" || kind == "LINK") {
         $("#selecty").css("display", "none");
     }
+    
 
     $("#kind").val(kind);
     $("#courseid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
+    
 }
 
 function closeAddFile() {
@@ -788,7 +790,7 @@ function deleteFile(fileid, filename, filekind) {
 
     if (confirm("Do you really want to delete the file/link: " + filename)) {
         AJAXService("DELFILE", tempData, "FILE");
-       // toast("success", "File was deleted", 6)
+        toast("success", "File was successfully deleted", 6)
     }
 
 }
