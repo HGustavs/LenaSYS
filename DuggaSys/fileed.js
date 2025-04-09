@@ -197,7 +197,7 @@ function uploadFile(kind) {
         $("#selecty").css("display", "none");
     }
     
-
+  
     $("#kind").val(kind);
     $("#courseid").val(querystring['courseid']);
     $("#coursevers").val(querystring['coursevers']);
