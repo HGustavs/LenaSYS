@@ -30,6 +30,7 @@ var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
 let showHidden = true;
+let count = 0;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -972,16 +973,23 @@ function deleteItem(item_lid = []) {
     item.style.display = "none";
     item.classList.add("deleted");
   
-    document.querySelector("#undoButton").style.display = "block";
+   
+    console.log('before pressing undo: ' + count)
+    count ++;
+
+    // This breaks functionality since it cannot find undoButton, since its out-commented in sectioned.php.
+    //document.querySelector("#undoButton").style.display = "block";
+
+    console.log('this code has been run: ' + count)
   }
 
-  toast("undo", "Undo deletion?", 15, "cancelDelete();");
+  /*toast("undo", "Undo deletion?", 15, "cancelDelete();");
   // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
   delArr.push(lid);
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);
+  }, 60);*/
 }
 
 // Permanently delete elements.
