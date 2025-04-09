@@ -163,11 +163,7 @@
 
 		<div id='courseHeader' class='course' >
 			
-			<!-- Undo button 
 			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
-			 Undo button END -->
-
-			<!-- Hide button -->
 		
 			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
 				<!-- <input id='tabElement'  type='button' value="&#8633;" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->

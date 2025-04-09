@@ -972,29 +972,28 @@ function deleteItem(item_lid = []) {
     item = document.getElementById("lid" + lid[i]);
     item.style.display = "none";
     item.classList.add("deleted");
-  
-   
-    console.log('before pressing undo: ' + count)
+
+    document.querySelector("#undoButton").style.display = "block";
+
+    // counts the amount of times it registers deletes.
     count ++;
-
-    // This breaks functionality since it cannot find undoButton, since its out-commented in sectioned.php.
-    //document.querySelector("#undoButton").style.display = "block";
-
-    console.log('this code has been run: ' + count)
+    console.log('after deletion? ' + count)
   }
 
-  /*toast("undo", "Undo deletion?", 15, "cancelDelete();");
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  delArr.push(lid);
-  clearTimeout(delTimer);
+  toast("undo", "Undo deletion?", 15, "cancelDelete();");
+    console.log('toast is done')
+ 
+  // Makes deletefunction sleep for 15 sec so it is possible to undo an accidental deletion. 
+  //clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);*/
+  }, 15000);
 }
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length - 1; i >= 0; --i) {
+  for (var i = delArr.length; i >= 0; --i) {
+    console.log(' deleted from database ')
     AJAXService("DEL", {
       lid: delArr.pop()
     }, "SECTION");
@@ -1003,9 +1002,24 @@ function deleteAll() {
   document.querySelector("#undoButton").style.display = "none";
 }
 
+// undo deletion
+function cancelDelete () {
+  clearTimeout(delTimer);
+  
+  console.log('undeleted, count: ' + count)
+
+  delArr.push(lid);
+  var deletedElements = document.querySelectorAll(".deleted")
+  for (i = 0; i < delArr.length; i++) {
+    deletedElements[i].classList.remove("deleted");
+  }
+  console.log('undeleted, count: ' + count)
+  //location.reload();
+}
+
+
 // Cancel deletion
-function cancel
-() {
+function cancel () {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
@@ -2139,7 +2153,7 @@ function returnedSection(data) {
 
   }
   
-  //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
+  //Force elements that are deleted to not show up unless pressing undo delete or reloading the page
   for(var i = 0; i < delArr.length; i++){
     document.getElementById("lid"+delArr[i]).style.display="none";
   }
