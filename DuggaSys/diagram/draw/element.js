@@ -259,7 +259,8 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     const text = splitFull(element.attributes, maxCharactersPerLine);
     const primaryKeys = element.primaryKey;
     // Adds each string from the primaryKey property first in the text array.
-    if (primaryKeys) text.unshift(...primaryKeys);
+    const newPrimaryKeys = splitFull(primaryKeys, maxCharactersPerLine - 3);
+    if (primaryKeys) text.unshift(...newPrimaryKeys);
 
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight = tHeight - linew * 2 + texth * 2;
@@ -277,11 +278,11 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
         for (let i = 0; i < s.length; i++) {
-            if (i < primaryKeys.length) {
+            if (i < newPrimaryKeys.length) {
                 // Writes the text.
                 text += drawText('0.5em',
                     texth * (i + 1) * lineHeight, 'start', s[i],
-                    'style="text-decoration-line:underline;"');
+                    'style="text-decoration-line:underline; padding-right:30px:!important"');
             } else {
                 text += drawText('0.5em',
                     texth * (i + 1) * lineHeight,
