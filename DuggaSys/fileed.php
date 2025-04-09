@@ -218,7 +218,7 @@ $js = array(
                 </div>
             </div>
         </div>
-		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
+		<div id='fileLink' class='table'></div>
 		<!-- content END -->
 
     <!-- Add File Dialog START -->

@@ -3882,6 +3882,11 @@ div.submit-button:disabled {
   margin-bottom:20px;
 }
 
+#fileLink.table {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
 .last {
   width: 110px;
 }
