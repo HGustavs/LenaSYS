@@ -29,6 +29,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
+let showHidden = true;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -1370,6 +1371,17 @@ function duggaRowClick(rowElement) {
     }
   }
 }
+
+//Swaps value on hidden
+function toggleButtonClickHandler() {
+  if (showHidden === true) {
+    showHidden = false;
+  } else {
+    showHidden = true;
+  }
+  toggleHidden();
+}
+
 var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
@@ -1496,10 +1508,10 @@ function returnedSection(data) {
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
         if ((Date.parse(item['ts']) - dateToday) > compareWeek) {
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " glow" + "' style='display:block'>";
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " glow displayBlock'>";
         }
         else {
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + "' style='display:block'>";
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " displayBlock'>";
         }
 
         menuState.idCounter++;
@@ -2006,6 +2018,57 @@ function returnedSection(data) {
     var slist = document.getElementById('Sectionlisti');
     slist.innerHTML = str;
 
+
+    //Creates ordered array of "rows"
+    const sectionListDivs = document.querySelectorAll('#sectionlistc > div');
+    const divFullIdArr = [];
+
+    for (let i = 0; i < sectionListDivs.length; i++) {
+      divFullIdArr.push(sectionListDivs[i].id);
+    }
+
+    //gives every header except for the first one a margin
+    let firstHeader = false;
+    for (let i = 0; i < divFullIdArr.length; i++) {
+      if (divFullIdArr[i].includes('header')) {
+        if (firstHeader == true) {
+          document.getElementById(divFullIdArr[i]).classList.add('sectionlistCMargin');
+        }
+        firstHeader = true;
+      }
+    }
+
+    //adds border to the side of each row
+    for (let i = 0; i < sectionListDivs.length; i++) {
+      document.getElementById(divFullIdArr[i]).classList.add('sectionlistCsideBorder');
+    }
+
+    //adds a small bottom margin to every moment that isn't preceded by a header. Also adds a bottom border to the preceding row
+    for (let i = 1; i < divFullIdArr.length; i++) {
+      if (!divFullIdArr[i - 1].includes('header') && divFullIdArr[i].includes('moment')) {
+        document.getElementById(divFullIdArr[i]).classList.add('sectionlistCSmallMargin');
+        document.getElementById(divFullIdArr[i - 1]).classList.add('sectionlistCbottomBorder');
+      }
+    }
+
+    //adds bottom border to any row that precedes a header row
+    for (let i = 0; i < divFullIdArr.length - 1; i++) {
+      if (divFullIdArr[i + 1].includes('header')) {
+        document.getElementById(divFullIdArr[i]).classList.add('sectionlistCbottomBorder');
+      }
+    }
+
+    //adds bottom border and bottom margin to the last item in the array
+    document.getElementById(divFullIdArr[divFullIdArr.length - 1]).classList.add('sectionlistCbottomBorder', 'sectionlistCbottomMargin');
+
+    //adds width class to every row except the header
+    for (let i = 0; i < divFullIdArr.length; i++) {
+      if (!divFullIdArr[i].includes('header')) {
+        document.getElementById(divFullIdArr[i]).classList.add('sectionlistCWidth');
+      }
+    }
+
+
     if (resave == true) {
       str = "";
       $("#Sectionlist").find(".item").each(function (i) {
@@ -2110,9 +2173,40 @@ function returnedSection(data) {
     addClasses();
     showMOTD();
   }
-
+  document.getElementById('toggleElements').addEventListener('click', toggleButtonClickHandler);
+  toggleHidden();
 }
  
+function toggleHidden() { //Look for all td's that have the class "hidden"
+  const hiddenTds = document.querySelectorAll('#Sectionlistc td.hidden');
+  const hiddenDivs = [];
+  const uniqueAncestorIds = [];
+
+  hiddenTds.forEach(td => { // Find the closest ancestor div and push its ID into hiddenDivs
+    const ancestorDiv = td.closest('div');
+    hiddenDivs.push(ancestorDiv.id);
+  });
+
+  hiddenDivs.forEach(id => { //add unique IDs from hiddenDivs to uniqueAncestorIds
+    if (!uniqueAncestorIds.includes(id)) {
+      uniqueAncestorIds.push(id);
+    }
+  });
+  if (showHidden === true) {
+    uniqueAncestorIds.forEach(element => {
+      document.getElementById(element).classList.remove('displayNone');
+      document.getElementById(element).classList.add('displayBlock');
+    });
+
+  }
+  else {
+    uniqueAncestorIds.forEach(element => {
+      document.getElementById(element).classList.remove('displayBlock');
+      document.getElementById(element).classList.add('displayNone');
+    });
+  }
+}
+
 function openCanvasLink(btnobj) {
   //Searches closest tr element and then searches for classes that contain the link.
   parentTr = btnobj.closest('tr');
