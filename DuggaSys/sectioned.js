@@ -4443,3 +4443,18 @@ function getLocalStorage() {
     dropdown.value = selectedValue;
   }
 }
+
+// Toggle betwwen different view modes for the section list
+function setViewMode(mode){
+  const section = document.getElementById("Sectionlisti")
+
+  // Remove previously applie mode
+  section.classList.remove("scroll-mode", "overview-mode");
+
+  // Apply selecte view mode
+  if (mode == 'scroll'){
+    section.classList.add("scroll-mode");
+  }else if (mode == 'overview') {
+    section.classList.add("overview-mode");
+  }
+}
