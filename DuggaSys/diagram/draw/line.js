@@ -3,7 +3,7 @@
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
- function drawLine(line, targetGhost = false) {
+function drawLine(line, targetGhost = false) {
     let str = "";
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
@@ -290,17 +290,28 @@ function getLineAttrubutes(f, t, ctype) {
             break;
         case lineDirection.LEFT:
             offset.x1 = px;
-            offset.x2 = 0;
-            result = [f.x1, f.cy, t.x2, t.cy, offset];
+            offset.x2 = px * 4;
+            result = [f.x1, f.cy, t.x1, t.cy, offset];
             break;
         case lineDirection.RIGHT:
             offset.x1 = 0;
-            offset.x2 = px;
+            offset.x2 = px * 6;
             result = [f.x2, f.cy, t.x1, t.cy, offset];
     }
     return result;
 }
 
+/**
+ * @description Draw the label for the line.
+ * @param {Object} line The line object for the label to be drawn.
+ * @param {object} label How long the label's text is.
+ * @param {Object} lineColor The color for the label.
+ * @param {String} labelStr The id for the label.
+ * @param {Number} x The X coodinates on the line for draw the label.
+ * @param {Number} y The Y coodinates on the line for draw the label.
+ * @param {boolean} isStart Where the start and end label should be.
+ * @returns Returns the label for the line
+ */
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
     const offsetOnLine = 20 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
@@ -338,6 +349,15 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
             > ${label} </text>`;
 }
 
+/**
+ * @description Draw a recursive line for the elements.
+ * @param {Number} fx The X coordinate on start and end for the recursive line.
+ * @param {Number} fy The Y coordinate on start and end for the recursive line.
+ * @param {Number} offset It's a offset for the coodinate when draw a recursive line. 
+ * @param {Object} line The line object that is drawn.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @returns Returns the different lines for the recursive line and the Array on the line.
+ */
 function drawRecursive(fx, fy, offset, line, lineColor) {
     let str = '';
     const length = 40 * zoomfact;
@@ -355,6 +375,18 @@ function drawRecursive(fx, fy, offset, line, lineColor) {
     return str;
 }
 
+/**
+ * @description Draw the cardinalities label for the line.
+ * @param {Object} line The line object for the cardinality to be drawn to.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Number} fx The felem x coordinate.
+ * @param {Number} fy The felem y coordinate.
+ * @param {Number} tx The telem x coordinate.
+ * @param {Number} ty The telem y coordinate.
+ * @param {Object} f It's for the object felem and it's stands for "from element".
+ * @param {Object} t It's for the object telem and it's stands for "to element".
+ * @returns Returns the cardinality label for the line.
+ */
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
     // Used to tweak the cardinality position when the line gets very short.
@@ -421,6 +453,18 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
             > ${lineCardinalitys[line.cardinality]} </text>`;
 }
 
+/**
+ * @description Draw the line segmented.
+ * @param {Number} fx The felem x coordinate.
+ * @param {Number} fy The felem y coordinate.
+ * @param {Number} tx The telem x coordinate.
+ * @param {Number} ty The telem y coordinate.
+ * @param {Object} offset Offset for the X and Y coordinate.
+ * @param {Object} line The line object that is drawn.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Number} strokeDash A number for patterns of dashes and gaps.
+ * @returns Returns the line as segmented.
+ */
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
@@ -432,6 +476,16 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
 
 }
 
+/**
+ * @description Draw the line icon.
+ * @param {Object} icon The different start or end icon for the line.
+ * @param {Object} ctype Is a object for change type on the line.
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Object} line The line object that is drawn.
+ * @returns Returns the icons for the line.
+ */
 function drawLineIcon(icon, ctype, x, y, lineColor, line) {
     let str = "";
     switch (icon) {
@@ -488,6 +542,13 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
     return str;
 }
 
+/**
+ * @description Draw a icon that is a line.
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @returns Returns the icons for the line.
+ */
 function iconLine([a, b, c, d], x, y, lineColor) {
     return `<line 
                 x1='${x + a * zoomfact}' 
@@ -498,6 +559,13 @@ function iconLine([a, b, c, d], x, y, lineColor) {
             />`;
 }
 
+/**
+ * @description Draw a icon that is a circle.
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @returns Returns the icons for the circle.
+ */
 function iconCircle([a, b, c], x, y, lineColor,) {
     return `<circle 
                 cx='${x + a * zoomfact}' 
@@ -507,6 +575,15 @@ function iconCircle([a, b, c], x, y, lineColor,) {
             />`;
 }
 
+/**
+ * @description Draw a icon that is a polyline.
+ * @param {Array} arr Is a array for the icons lenght
+ * @param {Number} x The x coordinate.
+ * @param {Number} y The y coordinate.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Object} fill Its the color to fill the icons.
+ * @returns Returns the icons for the polyline.
+ */
 function iconPoly(arr, x, y, lineColor, fill) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
@@ -547,8 +624,9 @@ function calculateArrowBase(from, to, size) {
  * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
  * @param {Point} to The coordinates/Point where the line between @param base and the element end
  * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
+ * @returns Returns the calculated coordinate for rotate the arrow point.
  */
- function rotateArrowPoint(base, point, clockwise) {
+function rotateArrowPoint(base, point, clockwise) {
     const angle = Math.PI / 4; 
     const direction = clockwise ? 1 : -1; 
     const dx = point.x - base.x;
@@ -557,9 +635,16 @@ function calculateArrowBase(from, to, size) {
             x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
             y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
         };
-     }
+}
      
-
+/**
+ * @description Draw the arraow head for the line.
+ * @param {Point} base The start x and y coordinate.
+ * @param {Point} point The different point for the arrow head.
+ * @param {Object} lineColor Where the start and end label should be.
+ * @param {Object} strokeWidth The line width for the arrow head.
+ * @returns Returns a polygon for the arrow head.
+ */
 function drawArrowPoint(base, point, lineColor, strokeWidth) {
     let right = rotateArrowPoint(base, point, true);
     let left = rotateArrowPoint(base, point, false);
@@ -573,7 +658,7 @@ function drawArrowPoint(base, point, lineColor, strokeWidth) {
 
 /**
  * @description Removes all existing lines and draw them again
- * @return String containing all the new lines-elements
+ * @returns String containing all the new lines-elements
  */
 function redrawArrows() {
     let str = '';
@@ -698,7 +783,9 @@ function sortElementAssociations(element) {
 }
 
 /**
- * @description calculates how the label should be displacesed
+ * @description calculates how the label should be displacesed.
+ * @param {Object} labelObject It's the label for the line.
+ * @returns Returns the distance of the label and the line.
  */
 function calculateLabelDisplacement(labelObject) {
     let baseLine, angle;
@@ -736,6 +823,10 @@ function calculateLabelDisplacement(labelObject) {
     return distanceToOuterlines;
 }
 
+/**
+ * @description Calculate a procentual distance of how the label should be displacesed.
+ * @param {Object} objectLabel It's the label for the line.
+ */
 function calculateProcentualDistance(objectLabel) {
     // Math to calculate procentuall distance from/to centerpoint
     const diffrenceX = objectLabel.highX - objectLabel.lowX;

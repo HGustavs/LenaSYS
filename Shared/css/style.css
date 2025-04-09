@@ -1331,7 +1331,33 @@ p {
   display: block;
 }
 
+/* Sectionlistc */
+.sectionlistCMargin {
+  margin-top: 30px;
+ }
 
+ .sectionlistCSmallMargin {
+  margin-top: 10px;
+ }
+
+ .sectionlistCsideBorder {
+  border-left: 1px solid var(--color-primary);
+  border-right: 1px solid var(--color-primary);
+ }
+
+ .sectionlistCbottomBorder {
+  border-bottom: 1px solid var(--color-primary);
+ }
+
+ .sectionlistCbottomMargin {
+  margin-bottom: 20px;
+ }
+
+ .sectionlistCWidth {
+  width: calc(100% - 30px);
+  margin-left: auto;
+  margin-right: auto;
+ }
 
 
 #errorBox{
@@ -2949,6 +2975,11 @@ label.login-label {
   margin-left: 1px;
 }
 
+.nameLabel {
+  pointer-events: none;
+  fill: #000; 
+}
+
 .loginBox .cancel,
 .formBox .cancel {
   width: 80px;
@@ -3959,11 +3990,14 @@ div.submit-button:disabled {
   padding: 0px;
 }
 
-/*
+.list tr:hover{
+  background-color: rgba(149, 105, 189, 0.9)!important;
+}
+
 .list tbody tr:nth-child(odd) {
   background-color: var(--color-background-2);
 }
-*/
+
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
@@ -6007,8 +6041,9 @@ only screen and (max-device-width: 568px) {
   }
 
   /* Force table to not be like tables anymore */
+
   #fileLink_body {
-    display: block;
+   display: block;
   }
 
   #fileLink_tblhead {
@@ -6052,8 +6087,8 @@ only screen and (max-device-width: 568px) {
 
   #fileLink_body>tr>td {
     /* Behave  like a "row" */
-    display: block;
-    border: none;
+   /* display: block; 
+    border: none; */
     border-bottom: 1px solid #eee;
     text-align: left;
     text-overflow: ellipsis;
@@ -6061,6 +6096,10 @@ only screen and (max-device-width: 568px) {
     overflow: hidden;
 
   }
+
+  #fileLink_body>tr:hover {
+    background-color: #b33e3e;
+}
 
   #fileLink_body>tr>td:before {
     /* Top/left values mimic padding */
@@ -9084,6 +9123,7 @@ textarea#filecont {
   line-height: 0.5em;
   text-align: center;
   width: 100%;
+  flex: 1;
 }
 
 #motd {

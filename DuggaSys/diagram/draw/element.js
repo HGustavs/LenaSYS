@@ -404,6 +404,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     let height = texth * 2;
     let headPath = `
         <path 
+        class="text"
             d="M ${linew + cornerRadius},${linew}
                 h ${boxw - linew * 2 - cornerRadius * 2}
                 a ${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},${cornerRadius}
@@ -680,12 +681,12 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         fill='${element.fill}'
                     />
                     <text 
-                        class='text' 
+                        class='nameLabel' 
                         x='${boxw / 2}' 
                         y='${boxw + texth / 2 + linew * 2}' 
                         dominant-baseline='middle' 
                         text-anchor='middle'
-                    > ${element.name} </text>
+                    >${element.name}</text>
                 </g>`;
     return drawSvg(boxw, boxh, content);
 }
@@ -698,6 +699,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
  * @param {Number} linew The line width of the element.
  * @returns Returns a SVG for the sequence object that is going to be drawn.
  */
+
 function drawElementSequenceObject(element, boxw, boxh, linew) {
     let str = "";
     let content;
