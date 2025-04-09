@@ -88,7 +88,6 @@ __Shared microservices:__
 - retrieveUsername_ms.php __==finished==__ New filename: "readUsername_ms.php" according to new nameconvention based on CRUD.
 - createNewCodeExample_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - createNewListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD
-- createNewVersionOfCourse_ms.php __==UNFINISHED==__
 - setAsActiveCourse_ms.php __==finished==__ New filename: "updateActiveCourse_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 
 <br>
@@ -148,6 +147,7 @@ __Courseed Service:__
 - deleteCourseMaterial_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - retrieveCourseedService_ms.php __==finished==__ Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.
 - retrieveAllCourseedServiceData_ms.php __==finished==__ Previously named: "getCourseed_ms.php".
+- specialUpdate_ms.php __==finished==__
 <br>
 
 __Diagram Service:__
@@ -323,7 +323,7 @@ __Username retrieval:__ If the user is logged in, fetches the username from the 
 __Return username:__ The function returns the fetched username.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - username
@@ -371,7 +371,7 @@ __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php
 - __Return:__ Returns an array containing the debug message and the new link ID.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'codeexample'__ to insert values into the columns:
 - cid
@@ -424,7 +424,7 @@ __Include microservice:__ retrieveUsername_ms.php
 - __Return:__ Returns a debug message indicating the outcome of the operation.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'listentries'__ to create new rows with values for the columns:
 - cid
@@ -497,7 +497,7 @@ __Include original service files:__ basic.php
     - If the query execution fails, captures and logs the error message and returns it as a JSON-encoded string.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'course'__ to modify rows where:
 
@@ -527,7 +527,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the column:
 - uid 
@@ -601,7 +601,7 @@ __Include original service files:__ sessions.php
 
 __Include microservice:__ getUid_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'user_course'__ to update the value of the column:
 - examiner
@@ -647,7 +647,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveAccessedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'class'__ to insert values into the following columns:
 - class
@@ -676,7 +676,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - uid
@@ -772,7 +772,7 @@ __retrieveAccessedService_ms.php__ is responsible for retrieving updated data fr
 __retrieveAccessedService_ms.php__ provides information about the users, teachers, classes, groups, courses, and submissions related to a specific course. It also ensures that only authorized users can access this information. It also logs the service event.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the tables __user__ and __user_course__ to retrieve user details and calculate how many minutes ago each user was added:
 - uid (as uid)
@@ -867,7 +867,7 @@ SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE 
 <br>
 
 ### retrieveAllAcessedServiceData_ms.php
-__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllAcessedServiceData_ms.php__ does not handle any querys. The microservice is useful for situations when __retrieveAccessedService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
+__retrieveAllAcessedServiceData_ms.php__ calls __retrieveAccessedService_ms.php__ to fetch and return data from the database, serving as a direct link between client requests and the database. __retrieveAllAcessedServiceData_ms.php__ does not handle any queries. The microservice is useful for situations when __retrieveAccessedService_ms.php__ needs to be called independently, rather than as a follow-up operation in another microservice.
 
 The microservice retrieves and outputs service data for a user in a specific course by calling the 'retrieveAccessedService_ms.php' and returning the result as a JSON-encoded string.
 
@@ -888,7 +888,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 
 _UPDATE_ operation on the table __'codeexample'__ to update the value of the column:
@@ -949,7 +949,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'codeexample'__ to retrieve the values of the columns:
 - exampleid
@@ -1039,7 +1039,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'box'__ to update the values of the columns:
 - boxtitle
@@ -1088,7 +1088,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'codeexample'__ to retrieve the values of the columns:
 - exampleid
@@ -1128,7 +1128,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php, retrieveCodeviewerService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _DELETE_ operation on the table __'improw'__ to remove rows where:
 
@@ -1234,7 +1234,7 @@ __retrieveCodeviewerService_ms.php__ is responsible for retrieving updated data 
 __retrieveCodeviewerService_ms.php__ gives information about a specific code example in a course, including details, related examples, important lines, words, file directories, and user access levels. It makes sure only authorized users can view and change this information. It also logs the service event.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'codeexample'__ to retrieve values from the columns:
 - exampleid
@@ -1412,7 +1412,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'course'__ to create new rows in the colums:
 - coursecode
@@ -1447,7 +1447,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'vers'__ to create new rows in the colums:
 - cid
@@ -1484,7 +1484,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 
 _UPDATE_ operation on the table __'vers'__ to update the values of the columns:
@@ -1519,7 +1519,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
@@ -1541,7 +1541,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ getUid_ms.php, retrieveUsername_ms.php, retrieveCourseedService_ms.php, createNewListEntry_ms.php, createNewCodeExample_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'vers'__ to add a new row with values for the following columns:
 - cid
@@ -1888,7 +1888,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveUsername_ms.php, retrieveCourseedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'course'__ to update values of the columns:
 - coursename
@@ -1916,7 +1916,7 @@ __Include original service files:__ sessions.php, basic.php
 __Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'settings'__ to create new rows in the colums:
 - mot 
@@ -1939,7 +1939,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveCourseedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _DELETE_ operation on the table __'partresult'__ to delete rows where:
 
@@ -2155,7 +2155,7 @@ __retrieveCourseedService_ms.php__ retrieves all updated data related to courses
 __retrieveCourseedService_ms.php__ also checks the user's login status and permissions, and if the user is a superuser, it deletes course materials marked as deleted. Additionally, it logs the start and end of the service event.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'user_course'__ to retrieve values from the column:
 - cid
@@ -2272,6 +2272,35 @@ __retrieveAllCourseedServiceData_ms.php__ calls __retrieveCourseedService_ms.php
 The microservice retrieves and outputs course data for a user by calling the __retrieveCourseedService_ms.php__ and returning the result as a JSON-encoded string.Additionally, it checks if the user is logged in and determines if the user is a superuser.
 
 <br>
+
+---
+
+<br>
+
+### specialUpdate_ms.php
+
+__specialUpdate_ms.php__ checks user login and permissions, then updates details of a course from the database that corresponds to the provided course id. courseGitURL is left out if an exception occurs when trying to update a course. Finally __retrieveCourseedService_ms.php__ is used to fetch the updated course data from the database which is returned as JSON-encoding.
+
+__Include original service files:__ sessions.php, basic.php
+
+__Include microservice:__ getUid_ms.php, retrieveCourseedService_ms.php
+
+__Queries used in this microservice:__ 
+
+```sql
+SELECT * from course WHERE cid=:cid;
+```
+
+```sql
+UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;
+```
+
+If an exception occurs the update of column courseGitURL is omitted from the query.
+
+```sql
+UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;
+```
+<br>
 <br>
 
 ---
@@ -2300,7 +2329,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'quiz'__ to create new rows with values for the columns:
 - cid
@@ -2333,7 +2362,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveDuggaedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 - qname
@@ -2363,7 +2392,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _DELETE_ operation on the table __'useranswer'__ to remove rows where the column:
 - quiz (matches a specific value (':qid')).
@@ -2393,7 +2422,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation into the table __'variant'__ to add a new row with values for the following columns:
 - quizID
@@ -2419,7 +2448,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'variant'__ to update the value of the columns:
 - disabled
@@ -2443,7 +2472,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveDuggaedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _DELETE_ operation on the table __'userAnswer'__ to remove rows where the column:
 - variant
@@ -2494,7 +2523,7 @@ __retrieveDuggaedService_ms.php__ provides information about the quizzes, varian
 
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'course'__ to retrieve values from the columns:
 - coursename
@@ -2563,7 +2592,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveFileedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'fileLink'__ that retrieves the value of the column:
 - path
@@ -2608,7 +2637,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, retrieveFileedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'fileLink'__ to update the value of the columns:
 - filesize
@@ -2669,7 +2698,7 @@ __retrieveFileedService_ms.php__ provides detailed information about files in a 
 
 __Include original service files:__ basic.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'fileLink'__ to retrieve all columns:
 
@@ -2715,7 +2744,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ insertIntoSQLite_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'course'__ to retrieve the value of the column:
 - cid
@@ -2731,7 +2760,7 @@ __deleteGitFiles_ms.php__ connects to the SQLite database and clears all entries
 
 __Include original service files:__ sessions.php, basic.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _DELETE_ operation on the table __'gitFiles'__ to remove records where:
 - 'cid' matches the specified course ID (':cid').
@@ -2753,7 +2782,7 @@ __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
 __Include microservice:__ refreshCheck_ms.php, clearGitFiles_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 
 _SELECT_ operation on the table __'gitRepos'__ to retrieve the values of the columns:
@@ -2788,7 +2817,7 @@ __readGitToken_ms.php__ retrieves the GitHub token for a specific course ID from
 
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__ 
+__Queries used in this microservice:__ 
 
 
 _SELECT_ operation on the table __'gitRepos'__ to retrieve the value of the column:
@@ -2809,7 +2838,7 @@ __syncGitRepoMetadata_ms.php__ updates the SQLite database with the latest detai
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT OR REPLACE_ operation on the table __'gitRepos'__. It inserts a new record or replaces an existing record into the following columns:
 - cid
@@ -2835,7 +2864,7 @@ __updateTime_ms.php__ updates the 'updated' value of a course in the MySQL datab
 
 __Includes neither original service files nor microservices.__
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'course'__ to update the value of the column:
 - updated
@@ -2857,7 +2886,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservices:__ newUpdateTime_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'course'__ to retrieve the value of the column:
 - updated
@@ -2898,6 +2927,11 @@ _WORK PAUSED for development of this microservice. Will continue when the servic
 
 <br>
 
+
+### retrieveGitCommitservice_ms.php
+
+The retrieveGitCommitService_ms microservice fetches and displays the list of Git commits from a repository on the server. It first checks if the shell_exec function is available to execute system commands. If available, it runs a Git command to retrieve the commit hash and message, sanitizes the output, and then displays the commit information. This service is useful for developers needing quick access to commit history directly from the server without using the Git client. To use it, include and call the function in your PHP script, ensuring Git is installed and shell_exec is enabled.
+
 ---
 
 <br>
@@ -2907,7 +2941,7 @@ __createFileLinkEntry_ms.php__  adds file information to the __'fileLink'__ tabl
 
 __Include original service files:__ sessions.php, basic.php, gitfetchService.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'fileLink'__ to count the number of entries where:
 - 'cid' matches ':cid'
@@ -2942,7 +2976,7 @@ __createGitFilesMetadata_ms.php__ adds file information to the __'gitFiles'__ ta
 
 __Include original service files:__ sessions.php, basic.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _INSERT_ operation on the table __'gitFiles'__ to add new entries with values for the columns:
 - cid
@@ -3015,7 +3049,7 @@ __Data handling:__ The function processes the API responses, getting file and di
 __File and directory processing:__ Files are saved in a database and can be downloaded, while directories are checked further.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'gitRepos'__ to retrieve the value of the column:
 - gitToken
@@ -3067,7 +3101,7 @@ __retrieveHighscoreService_ms.php__ is responsible for retrieving highscore data
 - __user__: Information about the logged-in user, if they have a score for the specified dugga and variant.
 - __debug__: Debugging information. Includes any errors encountered during the database operations.
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
  _SELECT_ operation on the tables __'userAnswer'__ and __'user'__ to retrieve the columns:
 - username
@@ -3116,7 +3150,7 @@ __Include original service files:__ sessions.php, basic.php
 __Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - password
@@ -3155,7 +3189,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveProfileService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'user'__ to retrieve the value of the column:
 - password
@@ -3222,7 +3256,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ getUid_ms.php, retrieveResultedService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'userAnswer'__ to retrieve the columns:
 - hash
@@ -3304,7 +3338,7 @@ __Include microservices:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Combine and return:__ Combines the group values with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'groups'__ to retrieve values from the columns:
 - groupKind
@@ -3345,7 +3379,7 @@ __Include microservice:__ retrieveSectionedService_ms.php
 - __Combine and return:__ Combines the group member data with the additional data (fetched through retrieveSectionedService function) and returns the result as a JSON-encoded string as the output of the miroservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the tables __'user'__ and __'user_course'__ to retrieve values from the columns:
 - uid
@@ -3398,7 +3432,7 @@ __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Return:__ Combines the deletion debug information and the updated data. Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _DELETE_ operation on the table __'useranswer'__ to remove rows where:
 
@@ -3450,7 +3484,7 @@ __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Return:__ Combines the debug information and the updated data. Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - visible
@@ -3509,7 +3543,7 @@ __Include microservice:__ getUid_ms.php, retrieveUsername_ms.php, createNewListe
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'settings'__ to retrieve values from the columns:
 - motd
@@ -3552,7 +3586,7 @@ __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'listentries'__ to update the values of the columns:
 - pos
@@ -3614,7 +3648,7 @@ __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'listentries'__ to retrieve the value from the column:
 - entryname
@@ -3701,7 +3735,7 @@ __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'listentries'__ to modify rows with updated values for the column:
 - gradesystem
@@ -3740,7 +3774,7 @@ __Superuser check and update grade gystem:__ If the user is a superuser, the fun
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - gradesystem
@@ -3775,7 +3809,7 @@ __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'listentries'__ to update the value of the column:
 - visibility (0 = Hidden, 1 = Public)
@@ -3814,7 +3848,7 @@ __Include microservice:__ retrieveSectionedService_ms.php
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'quiz'__ to update the values of the columns:
 - deadline
@@ -3858,7 +3892,7 @@ __Include microservice:__ retrieveSectionedService_ms.php
 - __Return:__ Returns the result as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _UPDATE_ operation on the table __'course'__ to update the value of the column:
 - activeversion
@@ -3891,7 +3925,7 @@ __Include microservice:__ getUid_ms.php
    
 - __Return:__ Returns the array '$versions' containing all course versions retrieved from the database.
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'vers'__ to retrieve values from the columns:
 - cid
@@ -3952,7 +3986,7 @@ __Include microservice:__ retrieveSectionedService_ms.php
 - __Return:__ Returns the combined data as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'userduggafeedback'__ to select all columns where:
 
@@ -4016,7 +4050,7 @@ __Include microservice:__ getUid_ms.php, createNewCodeExample_ms.php, createNewL
 - __Return:__ Returns the combined data as a JSON-encoded string as the output of the microservice.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'listentries'__ to retrieve the values of the columns:
 - cid
@@ -4210,7 +4244,7 @@ __Include microservice:__ retrieveSectionedService_ms.php
 __Return:__ The combined data, including the total number of groups and any debug information, is encoded as a JSON string and returned as the response.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'vers'__ to retrieve the values of the column:
 - vers
@@ -4281,7 +4315,7 @@ __retrieveSectionedService_ms.php__ is responsible for retrieving all updated da
 __retrieveSectionedService_ms.php__ provides information about the course entries, user results, quizzes, versions, links, code examples, and feedback related to a specific course. Ensuring that only authorized users can access this information. The service event is then logged.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'course'__ to retrieve values from the column:
 - visibility
@@ -4468,7 +4502,7 @@ __Include microservice:__ retrieveShowDuggaService_ms.php
 - __Return dugga information:__ The microservice returns the retrieved information as JSON, which includes details about the dugga, active users, and other relevant data.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'groupdugga'__ to retrieve the value of the column:
 - active_users
@@ -4525,7 +4559,7 @@ __Includes neither original service files nor microservices.__
 - __Return results:__ If there are no submissions, returns an empty object. Otherwise, the function returns an array of organized submissions as output.
 
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'submission'__ to retrieve the following columns for records that match a specific condition:
 - subid
@@ -4597,7 +4631,7 @@ __Include microservice:__ retrieveShowDuggaService_ms.php
   
 - __Return results:__ Calls 'retrieveShowDuggaService' function (retrieveProfileService_ms.php) to fetch and return information about the dugga (inlcuding submissions) from the database, in a JSON format.
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'userAnswer'__ to retrieve values from the columns:
 - password
@@ -4663,7 +4697,7 @@ __Include original service files:__ sessions.php, basic.php
 
 __Include microservice:__ retrieveShowDuggaService_ms.php
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'userAnswer'__ with a _LEFT JOIN_ on the table __'variant'__ to retrieve the values of the columns:
 - vid
@@ -4731,7 +4765,7 @@ __retrieveShowDuggaService_ms.php__ is responsible for retrieving and processing
 
 __retrieveShowDuggaService_ms.php__ provides information about a specific dugga, including user submissions and other related data. It makes sure that only authorized users can access the information.
 
-__Querys used in this microservice:__
+__Queries used in this microservice:__
 
 _SELECT_ operation on the table __'quiz'__ with _LEFT JOINs_ on the tables __'variant'__, __'userAnswer'__, and a subquery from __'listentries'__ to retrieve the columns:
 - quiz (all columns)
