@@ -353,7 +353,7 @@
 					<p>(You can always undo!)</p>
 			</div>
 			<div id="deleteBtnPlacement" class="formFooter" >
-				<input class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+				<input class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("closeConfirmBox"); confirmBox("deleteItem");' />
 				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 			</div>
 		</div>
