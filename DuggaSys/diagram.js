@@ -1072,6 +1072,7 @@ function mmoving(event) {
                 deltaY = (startNode.downLeft) ? -delta : delta;
             }
 
+            //ToDo: Most likely change in here to make the IERelation resize properly
             let xChange, yChange, widthChange, heightChange;
             if (elementData.kind == elementTypesNames.sequenceActor || elementData.kind == elementTypesNames.sequenceObject) { // Special resize for sequenceActor and sequenceObject
                 const maxRatio = 0.8;

@@ -20,8 +20,7 @@ function updatepos() {
     removeNodes();
     if (context.length === 1 &&
         mouseMode == mouseModes.POINTER &&
-        context[0].kind != elementTypesNames.UMLRelation &&
-        context[0].kind != elementTypesNames.IERelation
+        context[0].kind != elementTypesNames.UMLRelation
     ) {
         addNodes(context[0]);
     }
