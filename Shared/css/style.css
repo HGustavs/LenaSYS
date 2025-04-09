@@ -274,7 +274,7 @@ p {
 }
 
 #content {
-  background: var(--color-background);
+  background: transparent;
   margin: 5px 10px 15px 10px;
 }
 
@@ -332,7 +332,7 @@ p {
 
 #Courselist {
   margin: 0px auto;
-  background-color: var(--color-background);
+  background-color: transparent;
   color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
@@ -341,6 +341,10 @@ p {
 #Courselist a {
   color: var(--color-primary-2);
   text-decoration: none;
+}
+
+#Courselistc {
+  background-color: transparent;
 }
 
 #Courselist a:hover {
@@ -366,7 +370,7 @@ p {
   color: var(--color-text-primary);
   font-size: 14pt;
   display: block;
-  background-color: var(--color-background);
+  background-color: transparent;
   padding-top: 7px;
   min-height: 30px;
 }
@@ -10419,6 +10423,15 @@ button:disabled {
 
 .displayBlock {
   display: block;
+}
+
+#canvasanimation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 
 /* END */
