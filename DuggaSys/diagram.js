@@ -953,7 +953,7 @@ function mouseMode_onMouseUp(event) {
                     updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
-                        // cheks if a ghostline already exists and if so sets the relation recursively.
+                        // checks if a ghostline already exists and if so sets the relation recursively.
                         if (ghostLine != null) {
                             // create a line from the element to itself
                             addLine(context[0], context[0], "Recursive");
