@@ -1,10 +1,14 @@
 # Inverse dependencies
+
 This is a list of inverse dependencies of all microservices.
 
 ## accessedService
+
 This is a list of all inverse dependencies of files in the accessedService folder.
 
 ### addClass
+
+No dependecies
 
 ### addUser
 No inverse dependencies.
@@ -25,6 +29,7 @@ accessedService:
 ### updateUserCourse
 
 ## codeviewerService
+
 This is a list of all inverse dependencies of files in the codeviewerService folder.
 
 ### deleteCodeExample
@@ -40,6 +45,7 @@ This is a list of all inverse dependencies of files in the codeviewerService fol
 ### updateCodeExampleTemplate
 
 ## courseedService
+
 This is a list of all inverse dependencies of files in the courseedService folder.
 
 ### changeActiveCourseVersion_courseed
@@ -69,6 +75,7 @@ This is a list of all inverse dependencies of files in the courseedService folde
 ### updateCourseVersion
 
 ## duggaedService
+
 This is a list of all inverse dependencies of files in the duggaedService folder.
 
 ### createDugga
@@ -86,6 +93,7 @@ This is a list of all inverse dependencies of files in the duggaedService folder
 ### updateDuggaVariant
 
 ## fileedService
+
 This is a list of all inverse dependencies of files in the fileedService folder.
 
 ### deleteFileLink
@@ -95,6 +103,7 @@ This is a list of all inverse dependencies of files in the fileedService folder.
 ### updateFileLink
 
 ## gitCommitService
+
 This is a list of all inverse dependencies of files in the gitCommitService folder.
 
 ### clearGitFiles
@@ -114,6 +123,7 @@ This is a list of all inverse dependencies of files in the gitCommitService fold
 ### retrieveGitCommitService
 
 ## gitFetchService
+
 This is a list of all inverse dependencies of files in the gitFetchService folder.
 
 ### bfs
@@ -129,6 +139,7 @@ This is a list of all inverse dependencies of files in the gitFetchService folde
 ### insertToMetadata
 
 ## highscoreService
+
 This is a list of all inverse dependencies of files in the highscoreService folder.
 
 ### highscoreservice
@@ -136,6 +147,7 @@ This is a list of all inverse dependencies of files in the highscoreService fold
 ### retrieveHighscoreService
 
 ## profileService
+
 This is a list of all inverse dependencies of files in the profileService folder.
 
 ### retrieveProfileService
@@ -145,6 +157,7 @@ This is a list of all inverse dependencies of files in the profileService folder
 ### updateUserPassword
 
 ## resultedService
+
 This is a list of all inverse dependencies of files in the resultedService folder.
 
 ### getUserAnswer
@@ -152,6 +165,7 @@ This is a list of all inverse dependencies of files in the resultedService folde
 ### retrieveResultedService
 
 ## sectionedService
+
 This is a list of all inverse dependencies of files in the sectionedService folder.
 
 ### changeActiveCourseVersion_sectioned
@@ -215,6 +229,7 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 ### updateVisibleListentries
 
 ## sharedMicroservices
+
 This is a list of all inverse dependencies of files in the sharedMicroservices folder.
 
 ### createNewCodeExample
@@ -332,6 +347,7 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 - sharedMicroservices/createNewListEntry_ms.php
 
 ## showDuggaServices
+
 This is a list of all inverse dependencies of files in the showDuggaServices folder.
 
 ### getShowDugga
