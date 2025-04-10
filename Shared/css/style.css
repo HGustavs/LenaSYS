@@ -2910,6 +2910,11 @@ codeviewer.php END
      margin-right: 100px;
  }
 
+ #mdtarget.descbox{
+     height: 100%;
+     box-sizing: border-box;
+ }
+
  /*---===#===---*
  fileed.php END 
  *---====#===---*/

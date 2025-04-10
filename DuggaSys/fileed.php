@@ -393,7 +393,7 @@ $js = array(
                         <legend id="markPrev">Markdown preview</legend>
                         <div class="markTextPrev">
                             <div class="prevSpan">
-                                <div id="mdtarget" class="descbox" style="height: 100%;box-sizing: border-box;">
+                                <div id="mdtarget" class="descbox">
                                 </div>
                             </div>
                         </div>
