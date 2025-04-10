@@ -3,6 +3,9 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="../Shared/js/jquery-1.11.0.min.js"></script>
   <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="new_components.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
