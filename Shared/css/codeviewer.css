@@ -811,6 +811,14 @@
     cursor: pointer;
 }
 
+#editExample{
+    width:650px;
+}
+
+#editExampleSettingsTable{
+    width: 100%;
+}
+
 #editExample td {
     width: 50%;
     padding: 5px 5px 0px 5px;
@@ -830,6 +838,20 @@
 #editExample legend {
     margin-left: 5px;
     font-weight: bold;
+}
+
+#addImpWordBtn{
+    width: 32px; 
+    float: none; 
+    margin-left: 5px; 
+    margin-top: 0px;
+}
+
+#removeImpWordBtn{
+    width: 32px; 
+    float: none; 
+    margin-left: 5px; 
+    margin-top: 0px;
 }
 
 /* Shapes and color for the buttons in Editexample box*/
@@ -1066,5 +1088,4 @@
 #saveBtnTable{
     width: 100%;
 }
-
 /* EDIT CONTENT DIALOG - END */

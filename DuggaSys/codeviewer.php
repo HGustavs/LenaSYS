@@ -244,7 +244,7 @@ Testing Link:
 						<h3>Edit Content</h3>
 						<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 					</div>
-					<table id="editContentSettings">
+					<table id="editContentSettingsTable">
 						<tr>
 							<td>Title:</td>
 							<td>Kind:</td>
@@ -292,14 +292,14 @@ Testing Link:
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
 		<div id='editExampleContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editExample' class='formBox DarkModeBackgrounds' style='width:650px;'>
+				<div id='editExample' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Edit Example</h3>
 						<div class='cursorPointer' onclick='closeEditExample();'>x</div>
 					</div>
 					<fieldset>
 						<legend>Example Info</legend>
-						<table width="100%">
+						<table id="editExampleSettingsTable">
 							<tr>
 								<td>Section Title:<input class='form-control textinput' type='text' id='secttitle' placeholder='Section Title' value='&lt;Secrion Title&gt;' /></td>
 								<td>Title:<input class='form-control textinput' type='text' placeholder='Title' id='title' value='&lt;Title&gt;' /></td>
@@ -310,7 +310,7 @@ Testing Link:
 								<td>After:<select id='after'></select></td>
 							<tr> -->
 								<td>Play Link:<select id='playlink'></select></td>
-								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>
+								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input class='submit-button' id='addImpWordBtn' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input class='submit-button' id='removeImpWordBtn' type='button' value='-' onclick='editImpWords("-");' /></select></td>
 							</tr>
 							<tr>
 								<td><input class='submit-button' type='button' value='Remove' onclick='removeExample();' /></td>
