@@ -99,7 +99,7 @@ __Accessed Service:__
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveAccessedService_ms.php __==finished==__ (But not tested, and therefore not implemented at the end of each microservice in the accessedService folder) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
-- getAcessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.  
+- getAccessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.  
 
 __Note, all microservices related to accessservice.php have been created. As for working tests for these microservices, the work has been paused since accessedservice.php lacks an implemented frontend that allows the development of working tests. Tests cannot be created until the retrieveAccessedService_ms.php is tested, and for that, frontend functionality is needed. Group 3 is working on the frontend solution.__ 
 
