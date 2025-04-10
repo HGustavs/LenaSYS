@@ -12,6 +12,12 @@ This is a list of all inverse dependencies of files in the accessedService folde
 
 ### retrieveAccessedService
 
+accessedService:
+    addClass_ms.php
+    addUser_ms.php
+    getAccessedService_ms.php
+    updateUser_ms.php
+
 ### updateUser
 
 ### updateUserCourse
