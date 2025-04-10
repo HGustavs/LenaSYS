@@ -2,10 +2,15 @@
     session_start();
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
-	#general vars regarding current dugga.
-	$cid=getOPG('courseid');
-	$vers=getOPG('coursevers');
-	$quizid=getOPG('did');
+	#General vars regarding current dugga.
+    #Strips and escapes output, should counteract XSS vulnerabilites.
+    $strippedCid=strip_tags(getOPG('courseid'));
+    $strippedVers=strip_tags(getOPG('coursevers'));
+    $strippedQuizid=strip_tags(getOPG('did'));
+
+	$cid=htmlspecialchars($strippedCid, ENT_QUOTES, 'UTF-8');
+	$vers=htmlspecialchars($strippedVers, ENT_QUOTES, 'UTF-8');
+	$quizid=htmlspecialchars($strippedQuizid, ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
