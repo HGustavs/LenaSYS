@@ -155,6 +155,7 @@ This is a list of all inverse dependencies of files in the profileService folder
 ### updateSecurityQuestion
 
 ### updateUserPassword
+There is no list of all inverse dependencies
 
 ## resultedService
 
@@ -331,6 +332,7 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 ### updateSecurityQuestion
 
 ### updateUserPassword
+There is no list of all inverse dependencies
 
 ### retrieveUsername
 
