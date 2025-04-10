@@ -322,6 +322,7 @@ createListEntry_ms.php
 [updateUserCourse_ms.php](accessedService/updateUserCourse_ms.php)
 
 ### isSuperUser
+No inverse dependencies
 
 ### logUserEvent (No dependencies)
 
