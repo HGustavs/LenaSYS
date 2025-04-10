@@ -238,7 +238,7 @@ Testing Link:
 		<span id='forwdrop' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='forwdropc'>bii</span></span>
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
-		<div id='editContentContainer' class="loginBoxContainer" style="display:none;">
+		<div id='editContentContainer' class="loginBoxContainer">
 				<div id='editContent' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Edit Content</h3>
@@ -278,7 +278,7 @@ Testing Link:
 							<td colspan="1"><input class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
 						</tr>
 						<tr>
-							<td colspan="1"><input  class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
+							<td colspan="1"><input  class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
 							<td colspan="1"><input class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='btnPress();editImpRows("+");' /></td>
 						</tr>
 					</table>
@@ -291,7 +291,7 @@ Testing Link:
 		</div>
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
-		<div id='editExampleContainer' class="loginBoxContainer" style="display:none;">
+		<div id='editExampleContainer' class="loginBoxContainer">
 				<div id='editExample' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Edit Example</h3>
@@ -310,7 +310,7 @@ Testing Link:
 								<td>After:<select id='after'></select></td>
 							<tr> -->
 								<td>Play Link:<select id='playlink'></select></td>
-								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input class='submit-button' id='addImpWordBtn' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input class='submit-button' id='removeImpWordBtn' type='button' value='-' onclick='editImpWords("-");' /></select></td>
+								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input class='submit-button' id='addImpWordBtn' type='button' value='+' onclick='editImpWords("+");' /><select id='impwords'><input class='submit-button' id='removeImpWordBtn' type='button' value='-' onclick='editImpWords("-");' /></select></td>
 							</tr>
 							<tr>
 								<td><input class='submit-button' type='button' value='Remove' onclick='removeExample();' /></td>
@@ -321,7 +321,7 @@ Testing Link:
 				</div>
 		</div>
 		<!-- Code Example Cog Wheel Dialog END -->
-		<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
+		<div id='chooseTemplateContainer' class="loginBoxContainer"> 
 				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
@@ -343,7 +343,7 @@ Testing Link:
 							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template10_butt.svg' /></td>
 						</tr>
 					</table>
-					<table id="templateOptions" width="100%">
+					<table id="templateOptions">
 					</table>
 					<table class="saveBtnTable">
 						<tr>

@@ -162,7 +162,14 @@
     height: 140px;
 }
 
+#chooseTemplateContainer{
+    display: none;
+}
+
 .tableWithTemplates{
+    width: 100%;
+}
+#templateOptions{
     width: 100%;
 }
 
@@ -1105,6 +1112,22 @@
     width: 100%;
 }
 /* EDIT CONTENT DIALOG - END */
+
+/* EDIT ExAMPLE DIALOG - START*/
+
+#editExampleContainer{
+    display: none;
+}
+
+#impwords{
+    float: none;
+}
+
+#improwto{
+    width:91px;
+}
+
+/* EDIT ExAMPLE DIALOG - END*/
 
 #underlay{
     display:none;
