@@ -212,9 +212,9 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 ### createNewCodeExample
 
 ### createNewListEntry
-- Included in copyCourseVersion_ms.php
-- Included in createGithubCodeExample_ms.php
-- Included in createListEntry_ms.php
+- coursedService/copyCourseVersion_ms.php
+- sectionedService/createGithubCodeExample_ms.php
+- sectionedService/createListEntry_ms.php
 
 ### getUid
 
