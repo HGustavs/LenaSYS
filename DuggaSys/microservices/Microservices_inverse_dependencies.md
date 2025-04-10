@@ -32,7 +32,7 @@ accessedService:
 
 This is a list of all inverse dependencies of files in the codeviewerService folder.
 
-### deleteCodeExample
+### deleteCodeExample (No inverse dependencies)
 
 ### editBoxTitle
 
