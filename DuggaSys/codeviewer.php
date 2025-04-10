@@ -234,8 +234,8 @@ Testing Link:
 
         </div>
 		<!-- Dropdowns START -->
-		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='backwdropc'>oii</span></span>
-		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='forwdropc'>bii</span></span>
+		<span id='backwdrop' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='backwdropc'>oii</span></span>
+		<span id='forwdrop' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='forwdropc'>bii</span></span>
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
 		<div id='editContentContainer' class="loginBoxContainer" style="display:none;">

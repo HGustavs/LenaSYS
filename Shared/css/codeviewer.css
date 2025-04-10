@@ -304,20 +304,24 @@
 
 .forwdrop {
     right: 20px;
+    left:100px;
     height: auto;
     width: 200px;
     cursor: default;
     border-color: rgb(0, 0, 0) transparent;
     background-color: #614875;
+    display:none;
 }
 
 .backwdrop {
     right: 20px;
+    left:40px;
     height: auto;
     width: 200px;
     cursor: default;
     border-color: rgb(0, 0, 0) transparent;
     background-color: #614875;
+    display:none;
 }
 
 .dropdownitem {
