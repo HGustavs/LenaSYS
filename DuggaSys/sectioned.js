@@ -2442,7 +2442,7 @@ function drawSwimlanes() {
   var currentWeek = weeksBetween(current, startdate);
   var daywidth = 12.7;
   var weekwidth = daywidth * 7;
-  var colwidth = 20;
+  var colwidth = 60;
   var weekheight = 25;
 
   var str = "";
