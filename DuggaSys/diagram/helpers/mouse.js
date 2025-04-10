@@ -203,30 +203,39 @@ function snapSAToLifeline(targetId) {
     if (lifeline) {
         for (let i = 0; i < data.length; i++) {
             const element = data[i];
+            console.log("Checking element:", element);  // Logs the current element
+
             if ((element.kind === "sequenceActor") && element.id === targetId) {
+                console.log("Matched sequenceActor:", element);  // Logs when a sequenceActor element is found
                 let boxHeight = getTopHeight(element);
                 let minY = element.y + boxHeight + 70;
 
                 // Fix the x position
                 ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
+                console.log("Adjusted x position for ghostElement:", ghostElement.x);
 
                 // Check and adjust the y position if necessary
                 if (ghostElement.y < minY) {
                     ghostElement.y = minY;
+                    console.log("Adjusted y position for ghostElement:", ghostElement.y);
                 }
                 updatepos();
                 break;
             }
+
             if ((element.kind === "sequenceObject") && element.id === targetId) {
+                console.log("Matched sequenceObject:", element);  // Logs when a sequenceObject element is found
                 let boxHeight = getTopHeight(element);
                 let minY = element.y + boxHeight - 70;
 
                 // Fix the x position
                 ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
+                console.log("Adjusted x position for ghostElement:", ghostElement.x);
 
                 // Check and adjust the y position if necessary
                 if (ghostElement.y < minY) {
                     ghostElement.y = minY;
+                    console.log("Adjusted y position for ghostElement:", ghostElement.y);
                 }
                 updatepos();
                 break;
@@ -234,6 +243,8 @@ function snapSAToLifeline(targetId) {
         }
     }
 }
+
+
 
 /**
  * @description Gets the height of the top object of sequence actor and sequence object
