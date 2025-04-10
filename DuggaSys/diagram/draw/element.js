@@ -264,6 +264,15 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
         boxh = 50;
     }
 
+    // Split string into an array of lines based on max characters per line
+    function splitFull(str, maxCharsPerLine) {
+        const result = [];
+        for (let i = 0; i < str.length; i += maxCharsPerLine) {
+            result.push(str.substring(i, i + maxCharsPerLine));
+        }
+        return result;
+    }
+
     const nameLines = splitFull(element.name, maxCharactersPerLine);
     const textHeight = texth * nameLines.length * lineHeight;
     const contentHeight = Math.max(boxh, textHeight + linew * 4);
@@ -284,7 +293,7 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
         const y = (contentHeight / 2) - (nameLines.length / 2 - i - 0.5) * texth * lineHeight;
         text += drawText(boxw / 2, y, 'middle', nameLines[i]);
     }
-    return drawSvg(boxw, boxh, rect + weak + text);
+    return drawSvg(boxw, contentHeight, rect + weak + text);
 }
 
 /**
