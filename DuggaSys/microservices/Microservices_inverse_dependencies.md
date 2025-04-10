@@ -135,8 +135,7 @@ This is a list of all inverse dependencies of files in the profileService folder
 ### updateSecurityQuestion
 
 ### updateUserPassword
-../sharedMicroservices/getUid_ms.php
-./retrieveProfileService_ms.php
+There is no list of all inverse dependencies
 
 ## resultedService
 This is a list of all inverse dependencies of files in the resultedService folder.
@@ -228,6 +227,7 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 ### updateSecurityQuestion
 
 ### updateUserPassword
+There is no list of all inverse dependencies
 
 ## showDuggaServices
 This is a list of all inverse dependencies of files in the showDuggaServices folder.
