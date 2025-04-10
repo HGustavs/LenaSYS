@@ -166,7 +166,19 @@
     width: 100%;
 }
 
+#previewCloseBtn{
+    cursor:pointer;
+}
+
 /* PICK TEMPLATE STOP */
+
+/* IFRAME START */
+#iframeFileed{
+    width:100%;
+    height:85vh;
+}
+
+/* IFRAME STOP */
 
 /* MENU BUTTONS START*/
 .mbutto {
@@ -578,7 +590,7 @@
 
 .box iframe {
     width:100%;
-    height: 99%;
+    height:85vh;
 }
 
 .codebox {

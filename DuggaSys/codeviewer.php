@@ -364,17 +364,15 @@ Testing Link:
 
 			include '../Shared/loginbox.php';
 		?>
-	<div class="previewWindowContainer loginBoxContainer">
-    <div class="previewWindow formBox">
-	<div class="formBoxHeader">
-            <h3 class ="fileName"></h3>
-            <div style="cursor:pointer;" onclick="hideIframe();">x</div>
-        </div>
-	<iframe id="iframeFileed"style="width:100%;height:85vh;"src=""></iframe>
-
-    </div>
-
-</div>
+		<div class="previewWindowContainer loginBoxContainer">
+			<div class="previewWindow formBox">
+				<div class="formBoxHeader">
+					<h3 class ="fileName"></h3>
+					<div id="previewCloseBtn"onclick="hideIframe();">x</div>
+				</div>
+				<iframe id="iframeFileed"src=""></iframe>
+			</div>
+		</div>
 
 	</body>
 </html>
