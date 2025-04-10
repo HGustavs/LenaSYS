@@ -102,12 +102,12 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 1;
+            zLevel = 2;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 1;
+            zLevel = 2;
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
