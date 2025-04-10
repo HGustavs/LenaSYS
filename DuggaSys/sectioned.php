@@ -50,6 +50,40 @@
 	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+	<style>
+		/* Adds scroll mode to sectionedTble if the content is to tall */
+		#Sectionlisti.scroll-mode {
+			max-height: 75vh;
+			overflow-y:  auto;
+			border: 1px solid #ccc;
+		}
+		
+		/* View mode: Zooms out the list */
+		#Sectionlisti.overview-mode {
+  			max-height: none;
+  			overflow-y: visible;
+  			transform: scale(0.6);           
+  			transform-origin: top left;      
+		}
+
+		/* Style adjustments for items when using overview mode*/
+		#Sectionlisti.overview-mode .listentry {
+  			font-size: 0.7em;
+ 			padding: 2px;
+  			margin-bottom: 1px;
+		}
+
+		/* Style for the "View" labe" */
+		.view-label {
+  			background-color: #5e4776;  
+  			color: white;               
+  			padding: 8px 16px;          
+  			border-radius: 1px;
+  			font-weight: normal;
+  			display: inline-block;      
+		}
+	</style>
+
 	<!-- <link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet"> -->
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -62,9 +96,9 @@
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
-	<script src="backToTop.js"></script>
-	
+	<script src="backToTop.js"></script>	
 </head>
+
 <body onload="setup();">
 
 	<?php
@@ -249,8 +283,15 @@
 
 		<div id='courseList'>
 
-		<!-- Section List -->
+		<!-- View mode toggle buttons -->
+		<div style="margin: 10px 0;">
+			<span class="view-label">View</span><br>
+  			<button class="submit-button" onclick="setViewMode('normal')">Normal</button>
+  			<button class="submit-button" onclick="setViewMode('scroll')">Scroll</button>
+ 			<button class="submit-button" onclick="setViewMode('overview')">Overview</button>
+		</div>
 
+		<!-- Section List -->
 		<div id='Sectionlisti'>
 		
 		</div>
