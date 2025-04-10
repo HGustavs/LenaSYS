@@ -422,7 +422,7 @@
       if($requestedService=="accessed.php"){
 					echo "<td id='select' class='navButt'>";
 					echo   "<span id='filterButton'>";
-					echo     "<img alt='filter icon' class='navButt' src='../Shared/icons/filter_icon.svg'>";
+					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";

@@ -1442,6 +1442,9 @@ header td {
 .navButt {
   width: 29px;
   vertical-align: middle;
+  margin-top: 9px;
+}
+.filterButt{
   margin-top: 3px;
 }
 
