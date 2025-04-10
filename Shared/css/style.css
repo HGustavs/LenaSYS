@@ -3358,7 +3358,7 @@ div.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  width: 30px;
+  width: 90px;
   height: 30px;
   color: var(--color-text-header);
   cursor: pointer;
