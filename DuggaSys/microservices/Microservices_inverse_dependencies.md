@@ -233,6 +233,20 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 
 ### updateUserPassword
 
+### retrieveUsername
+
+- accessedService/retrieveAccessedService_ms.php
+- fileedService/updateFileLink_ms.php
+- courseedService/updateCourseVersion_ms.php
+- courseedService/createCourseVersion_ms.php
+- courseedService/updateCourse_ms.php
+- courseedService/createNewCourse_ms.php
+- courseedService/copyCourseVersion_ms.php
+- sectionedService/updateCourseVersion_sectioned_ms.php
+- sectionedService/createListEntry_ms.php
+- sharedMicroservices/createNewCodeExample_ms.php
+- sharedMicroservices/createNewListEntry_ms.php
+
 ## showDuggaServices
 This is a list of all inverse dependencies of files in the showDuggaServices folder.
 
