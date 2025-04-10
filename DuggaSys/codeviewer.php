@@ -207,7 +207,7 @@ Testing Link:
 						if($public == 0){
 							$codeviewerkind=false;
 							include '../Shared/navheader.php';
-							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have to be logged in to view this code example.</div>";
+							echo "<div class='err'><span id='bummerMsg'>Bummer!</span> You have to be logged in to view this code example.</div>";
 						}else{
 							$codeviewerkind=false;
 							include '../Shared/navheader.php';
@@ -218,14 +218,14 @@ Testing Link:
 					$codeviewer = false;
 					include '../Shared/navheader.php';
 					// Print Warning If course does not exist!
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course does not seem to exist!</div>";
+					echo "<div class='err'><span id='bummerMsg'>Bummer!</span> Course does not seem to exist!</div>";
 				}
 			}else{
 				// If $courseID is "UNK" and $exampleid is also "UNK"
 				// This will show an error message if the courseid or the Code Example doesnt exist.
 				$codeviewer = false;
 				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
+				echo "<div class='err'><span id='bummerMsg'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";

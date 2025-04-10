@@ -265,6 +265,10 @@ p {
   text-shadow: 1px 1px var(--color-text-list);
 }
 
+#bummerMsg{
+  font-weight:bold;
+}
+
 .err-extension {
   margin-top: 10px;
 }
