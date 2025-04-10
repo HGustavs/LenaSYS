@@ -105,7 +105,7 @@ if(isset($_SESSION['uid'])){
 				<!-- Input field to Github repository END-->
 			</div>
 			<div class="formFooter">
-				<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
+				<div id="buttonContainerCreateCourse"></div>
 			</div>
 		</div>
 	</div>
