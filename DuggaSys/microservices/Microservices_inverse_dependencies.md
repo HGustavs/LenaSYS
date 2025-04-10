@@ -14,6 +14,12 @@ No inverse dependencies
 
 ### retrieveAccessedService
 
+accessedService:
+    addClass_ms.php
+    addUser_ms.php
+    getAccessedService_ms.php
+    updateUser_ms.php
+
 ### updateUser
 
 ### updateUserCourse
