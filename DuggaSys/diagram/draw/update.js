@@ -1,4 +1,11 @@
-/**
+﻿document.addEventListener("DOMContentLoaded", () => {
+    const svg = document.getElementById("svgbacklayer");
+    if (svg) {
+        svg.style.position = "absolute";
+        svg.style.zIndex = "10";
+        svg.style.pointerEvents = "none";
+    }
+});/**
  * @description Remove all elements with the class "node"
  */
 function removeNodes() {
@@ -17,7 +24,10 @@ function updatepos() {
     updateCSSForAllElements();
     document.getElementById("svgbacklayer").innerHTML = redrawArrows();
     document.getElementById("svgoverlay").innerHTML = (mouseButtonDown) ? boxSelect_Draw() : drawSelectionBox();
+
     removeNodes();
+
+
     if (context.length === 1 &&
         mouseMode == mouseModes.POINTER &&
         context[0].kind != elementTypesNames.UMLRelation &&

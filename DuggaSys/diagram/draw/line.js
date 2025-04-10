@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
@@ -88,10 +88,17 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+            let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
+            let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
+            let base = calculateArrowBase(to, from, 10 * zoomfact);
+            str += drawArrowPoint(base, from, lineColor, strokewidth);
         }
+
         if (line.endIcon == SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+            let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
+            let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
+            let base = calculateArrowBase(from, to, 10 * zoomfact);
+            str += drawArrowPoint(base, to, lineColor, strokewidth);
         }
     }
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
@@ -537,13 +544,8 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             } else if (line.type == entityType.SE) {
                 str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
             }
-
-            if (line.innerType == SDLineType.STRAIGHT) {
-                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
-            } else if (line.type == entityType.SE) {
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
-            }
+            
+           
             break;
     }
     return str;
@@ -652,15 +654,35 @@ function rotateArrowPoint(base, point, clockwise) {
  * @param {Object} strokeWidth The line width for the arrow head.
  * @returns Returns a polygon for the arrow head.
  */
-function drawArrowPoint(base, point, lineColor, strokeWidth) {
-    let right = rotateArrowPoint(base, point, true);
-    let left = rotateArrowPoint(base, point, false);
-    return ` 
-    <svg width="100" height="100">
-        <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
-            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
-    </svg>`;
- }
+function drawArrowPoint(base, tip, lineColor, strokeWidth) {
+    const length = 10 * zoomfact;
+    const width = 6 * zoomfact;
+
+    const dx = tip.x - base.x;
+    const dy = tip.y - base.y;
+    const mag = Math.sqrt(dx * dx + dy * dy);
+    const ux = dx / mag;
+    const uy = dy / mag;
+
+    
+    const perpX = -uy;
+    const perpY = ux;
+
+    const leftX = tip.x - ux * length + perpX * width;
+    const leftY = tip.y - uy * length + perpY * width;
+
+    const rightX = tip.x - ux * length - perpX * width;
+    const rightY = tip.y - uy * length - perpY * width;
+
+    return `<polygon 
+        points='${tip.x},${tip.y} ${leftX},${leftY} ${rightX},${rightY}' 
+        fill='${lineColor}' 
+        stroke='${lineColor}' 
+        stroke-width='${strokeWidth}'
+    />`;
+}
+
+
 
 
 /**
