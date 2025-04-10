@@ -953,19 +953,28 @@ function mouseMode_onMouseUp(event) {
                     updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
-                        elementTypeSelected = elementTypes.Ghost;
-                        makeGhost();
-                        // Create ghost line
-                        ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                        // cheks if a ghostline already exists and if so sets the relation recursively.
+                        if (ghostLine != null) {
+                            // create a line from the element to itself
+                            addLine(context[0], context[0], "Recursive");
+                            clearContext();
+                            // Bust the ghosts
+                            ghostElement = null;
+                            ghostLine = null;
+                            showdata();
+                            updatepos();
+                        }
+                        else {
+                            elementTypeSelected = elementTypes.Ghost;
+                            makeGhost();
+                            // Create ghost line
+                            ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                        }
                     } else if (ghostElement !== null) {
-                        // create a line from the element to itself
-                        addLine(context[0], context[0], "Recursive");
                         clearContext();
-                        // Bust the ghosts
                         ghostElement = null;
                         ghostLine = null;
                         showdata();
-                        updatepos();
                     } else {
                         clearContext();
                         ghostElement = null;
