@@ -1001,6 +1001,11 @@ function mouseMode_onMouseUp(event) {
  * @description Event function triggered when the mouse has moved on top of the container.
  * @param {MouseEvent} event Triggered mouse event.
  */
+
+function snapToLifeline(container, lifeline) {
+    const snapThreshold = 10; // Max distance for snaping
+}
+
 function mmoving(event) {
     lastMousePos = new Point(event.clientX, event.clientY);
     switch (pointerState) {
