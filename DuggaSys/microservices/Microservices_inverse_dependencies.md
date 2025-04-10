@@ -211,7 +211,9 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 This is a list of all inverse dependencies of files in the sharedMicroservices folder.
 
 ### createNewCodeExample
-
+copyCourseVersion_ms.php
+createGithubCodeExample_ms.php
+createListEntry_ms.php
 ### createNewListEntry
 
 ### getUid
