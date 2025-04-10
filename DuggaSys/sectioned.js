@@ -968,55 +968,57 @@ function prepareItem() {
 
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val();
+    lid = item_lid ? item_lid : $("#lid").val(); 
     item = document.getElementById("lid" + lid[i]);
     item.style.display = "none";
     item.classList.add("deleted");
-
     document.querySelector("#undoButton").style.display = "block";
-
-    // counts the amount of times it registers deletes.
-    count ++;
-    console.log('after deletion? ' + count)
+    delArr.push(lid);
+    console.log('delarr lenght: ' + delArr);
   }
+  toast("undo", "Undo deletion?", 5, "cancelDelete();");
 
-  toast("undo", "Undo deletion?", 15, "cancelDelete();");
-    console.log('toast is done')
- 
   // Makes deletefunction sleep for 15 sec so it is possible to undo an accidental deletion. 
-  //clearTimeout(delTimer);
+  clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 15000);
+    console.log(' delete all has been run ');
+  }, 5000);
 }
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length; i >= 0; --i) {
-    console.log(' deleted from database ')
-    AJAXService("DEL", {
-      lid: delArr.pop()
-    }, "SECTION");
+
+  console.log('tried to delete');
+  console.log('delArr lenght before del: ' + delArr.length);
+
+  var deletedElements = document.querySelectorAll(".deleted")
+  for (i = 0; i < delArr.length; i++) {
+    console.log('deleted');
+    AJAXService("DEL", {lid: delArr.pop()}, "SECTION");
+    deletedElements[i].classList.remove("deleted");
   }
+
+  console.log('delArr lenght after del: ' + delArr.length);
+
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
+  console.log('has tried to delete');
+
 }
 
 // undo deletion
 function cancelDelete () {
-  clearTimeout(delTimer);
-  
+  clearTimeout(delTimer); // removes timer
   console.log('undeleted, count: ' + count)
-
   delArr.push(lid);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < delArr.length; i++) {
     deletedElements[i].classList.remove("deleted");
   }
-  console.log('undeleted, count: ' + count)
+  //console.log('undeleted, count: ' + count)
   //location.reload();
 }
-
 
 // Cancel deletion
 function cancel () {
