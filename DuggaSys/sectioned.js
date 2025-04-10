@@ -2440,9 +2440,9 @@ function drawSwimlanes() {
   // var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
-  var daywidth = 10;
+  var daywidth = 12.7;
   var weekwidth = daywidth * 7;
-  var colwidth = 60;
+  var colwidth = 20;
   var weekheight = 25;
 
   var str = "";
