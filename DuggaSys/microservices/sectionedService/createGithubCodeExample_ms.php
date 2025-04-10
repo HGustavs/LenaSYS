@@ -22,13 +22,14 @@ $debug = "NONE!";
 pdoConnect();
 session_start();
 
+//Start of old IF
 if (strcmp($opt, "CREGITEX") === 0) {
     AqcuireCourse();
 }
 
 function AqcuireCourse()
 {
-    global $pdo, $lid;
+    global $pdo, $lid, $courseid, $coursevers;
     $query = $pdo->prepare("SELECT cid,githubDir,vers FROM listentries WHERE lid=:lid;");
     $query->bindParam(":lid", $lid);
     $query->execute();
@@ -61,7 +62,7 @@ function AqcuireCourse()
 
 function GetCourseVers()
 {
-    global $allFiles, $pdo, $fileCount;
+    global $allFiles, $pdo, $fileCount, $courseid, $coursevers;
     foreach ($allFiles as $groupedFiles) {
         //get the correct examplename
         $explodeFiles = explode('.', $groupedFiles[0]);
@@ -87,7 +88,8 @@ function GetCourseVers()
 
 function NoCodeExampleFilesExist()
 {
-    global $pdo, $groupedFiles, $exampleName, $coursevers, $link, $log_uuid;
+    global $pdo, $groupedFiles, $exampleName, $courseid, $coursevers, $link, $log_uuid,
+    $userid, $comments, $tabs, $kind, $gradesys, $highscoremode, $pos;
     //Get the last position in the listenries to add new course at the bottom
     $query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
     $query->bindParam(":cid", $courseid);
@@ -189,12 +191,38 @@ function NoCodeExampleFilesExist()
             $query->bindParam(":fontsize", $fontsize);
             $query->execute();
         }
+        $link = "UNK";
+        $kind = 2;
+        $visible = 1;
+        $uid = 1; //Not used
+        $comment = null;  //Not used?
+        $gradesys = null;
+        $highscoremode = 0;
+        $groupkind = null;
+        //add the codeexample to listentries
+        createNewListEntry(
+            $pdo,
+            $courseid,
+            $coursevers,
+            $userid,
+            $examplename,
+            $link,
+            $kind,
+            $comments,
+            $visible,
+            $highscoremode,
+            $pos,
+            $gradesys,
+            $tabs,
+            $groupkind,
+            null
+        );
     }
 }
 
 function NoCodeExampleNoFiles()
 {
-    global $pdo;
+    global $pdo, $courseid, $coursevers;
     //Check for update
     //TODO: Implement update for already existing code-examples.
 
@@ -402,6 +430,9 @@ function NoCodeExampleNoFiles()
         $query->execute();
     }
 }
+
+//////////////////////////////////////////START OF OLD IF - CONVERTED TO FUNCTIONS ABOVE//////////////////////////////////////////
+
 /*
 if (strcmp($opt, "CREGITEX") === 0) {
     $query = $pdo->prepare("SELECT cid,githubDir,vers FROM listentries WHERE lid=:lid;");
