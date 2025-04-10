@@ -1194,7 +1194,7 @@ function AJAXService(opt,apara,kind)
 				// serviceURL= "../DuggaSys/microservices/sectionedService/updateQuizDeadline_ms.php";
 				break;
 			case "SETVISIBILITY":
-				serviceURL= "../DuggaSys/microservices/sectionedService/updateVisibleListentries_ms.php";
+				serviceURL= "../DuggaSys/microservices/sectionedService/updateVisibleListEntries_ms.php";
 				break;
 			case "REFGIT":
 				serviceURL= "sectionedservice.php"; //change when MS is created

@@ -242,7 +242,7 @@ __Sectioned Service:__
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateVisibleListentries_ms.php __==finished==__ Previously named: "setVisibleListentries_ms.php". 
+- updateVisibleListEntries_ms.php __==finished==__ Previously named: "setVisibleListentries_ms.php". 
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateActiveCourseVersion_sectioned_ms.php __==finished==__ Previously named: "changeActiveCourseVersion_sectioned_ms.php".
 - readCourseVersions_ms.php __==finished==__ Previously named: "getCourseVersions_ms.php". 
@@ -3794,7 +3794,7 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 
 <br>
 
-### updateVisibleListentries_ms.php
+### updateVisibleListEntries_ms.php
 updates the visibility of a specific list entry in a course section. This operation can only be performed by a superuser. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php
