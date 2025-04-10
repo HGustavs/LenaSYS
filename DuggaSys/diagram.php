@@ -2,7 +2,8 @@
     session_start();
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
-	#general vars regarding current dugga.
+	#General vars regarding current dugga.
+    #Strips and escapes output, should counteract XSS vulnerabilites.
     $strippedCid=strip_tags(getOPG('courseid'));
     $strippedVers=strip_tags(getOPG('coursevers'));
     $strippedQuizid=strip_tags(getOPG('did'));
