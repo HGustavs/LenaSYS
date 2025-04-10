@@ -1035,3 +1035,36 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }
+
+/* EDIT CONTENT DIALOG - START */
+
+#editContentContainer{
+    display: none;
+}
+
+#editContent{
+    width: 510px;
+}
+
+/* EDIT CONTENT SETTINGS TABLE - START */
+
+#editContentSettings{
+    width: 100%;
+    table-layout: fixed;
+}
+
+.submit-button{
+    width: 32px;
+    float: none;
+}
+
+#improwfrom{
+    width:91px;
+}
+/*EDIT CONTENT SETTINGS TABLE - END */
+
+#saveBtnTable{
+    width: 100%;
+}
+
+/* EDIT CONTENT DIALOG - END */

@@ -239,12 +239,12 @@ Testing Link:
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
 		<div id='editContentContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editContent' class='formBox DarkModeBackgrounds' style='width:510px;'>
+				<div id='editContent' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Edit Content</h3>
 						<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 					</div>
-					<table width="100%" style="table-layout:fixed;">
+					<table id="editContentSettings">
 						<tr>
 							<td>Title:</td>
 							<td>Kind:</td>
@@ -275,14 +275,14 @@ Testing Link:
 						</tr>
 						<tr>
 							<td colspan="1"><select id='improws'></select></td>
-							<td colspan="1"><input style="width:32px; float: none;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
+							<td colspan="1"><input class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
 						</tr>
 						<tr>
-							<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
-							<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='btnPress();editImpRows("+");' /></td>
+							<td colspan="1"><input  class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
+							<td colspan="1"><input class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='btnPress();editImpRows("+");' /></td>
 						</tr>
 					</table>
-					<table width="100%">
+					<table class="saveBtnTable">
 						<tr>
 							<td align='right'><input id='editContentSaveBtn' class='submit-button' type='button' value='Save' onclick='updateContent();' /></td>
 						</tr>
