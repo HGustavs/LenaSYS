@@ -347,13 +347,13 @@ Testing Link:
 					</table>
 					<table class="saveBtnTable">
 						<tr>
-							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
+							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();'/></td>
 						</tr>
 					</table>
 				</div>
 		</div>
 		<div id="burgerMenu"></div>
-		<div id="underlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;opacity:0.6;background-color:#000; z-index:8000;"></div>
+		<div id="underlay"></div>
 
 
 
