@@ -166,55 +166,39 @@ $js = array(
      
         ?>
         </div>
-        <div style='display:flex;justify-content:space-between;align-items:flex-end;margin-top:50px'>
-            <div style='display:flex;flex-wrap:wrap;'>
-                <div style='white-space:nowrap'>
-                    <div class="allFilesSortTab" tabIndex="0">
-                        <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="filterFilesByKind('AllFiles');count=0;"/>
-                        <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
-                    </div>
+        <div class='sortButtonsContainer'>
+            <div class='sortButtonsSubContainer'>
+                <div class="sortTab allFilesSortTab" tabIndex="0">
+                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="filterFilesByKind('AllFiles');count=0;"/>
+                    <label for="all-files-sort" name="sortAll">All files</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="globalSortTab" tabIndex="0">
-                        <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="filterFilesByKind('Global');count=0;"/>
-                        <label for="global-files-sort" name="sortGlobal" style='white-space:nowrap'>Global</label>
-                    </div>
+                <div class="sortTab globalSortTab" tabIndex="0">
+                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="filterFilesByKind('Global');count=0;"/>
+                    <label for="global-files-sort" name="sortGlobal">Global</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="courselocalSortTab" tabIndex="0">
-                        <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="filterFilesByKind('CourseLocal');count=0;"/>
-                        <label for="course-local-sort" name="sortCLocal" style='white-space:nowrap'>Course local</label>
-                    </div>
+                <div class="sortTab courselocalSortTab" tabIndex="0">
+                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="filterFilesByKind('CourseLocal');count=0;"/>
+                    <label for="course-local-sort" name="sortCLocal">Course local</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="versionLocalSortTab" tabIndex="0">
-                        <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="filterFilesByKind('Local');count=0;"/>
-                        <label for="version-local-sort" name="sortVLocal" style='white-space:nowrap'>Version local</label>
-                    </div>
+                <div class="sortTab versionLocalSortTab" tabIndex="0">
+                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="filterFilesByKind('Local');count=0;"/>
+                    <label for="version-local-sort" name="sortVLocal">Version local</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="linkSortTab" tabIndex="0">
-                        <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="filterFilesByKind('Link');count=0;"/>
-                        <label for="links-sort" name="sortLinks" style='white-space:nowrap'>Links</label>
-                    </div>
+                <div class="sortTab linkSortTab" tabIndex="0">
+                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="filterFilesByKind('Link');count=0;"/>
+                    <label for="links-sort" name="sortLinks">Links</label>
                 </div>
-                 <div style='white-space:nowrap'>
-                    <div class="dummyFileSortTab" tabIndex="0">
-                        <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="filterFilesByKind('DummyFiles');count=0;"/>
-                        <label for="dummyEmptyFile-sort" name="sortDummyFile" style='white-space:nowrap'>Dummy files</label>
-                    </div>
+                <div class="sortTab dummyFileSortTab" tabIndex="0">
+                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="filterFilesByKind('DummyFiles');count=0;"/>
+                    <label for="dummyEmptyFile-sort" name="sortDummyFile">Dummy files</label>
                 </div>
-                 <div style='white-space:nowrap'>
-                    <div class="manualSortTab" tabIndex="0">
-                        <input type="radio" id="manual-sort" name="sortKind" value="Manual" onclick="filterFilesByKind('Manual');count=0;"/>
-                        <label for="manual-sort" name="sortManual" style='white-space:nowrap'>Manual</label>
-                    </div>
+                <div class="sortTab manualSortTab" tabIndex="0">
+                    <input type="radio" id="manual-sort" name="sortKind" value="Manual" onclick="filterFilesByKind('Manual');count=0;"/>
+                    <label for="manual-sort" name="sortManual">Manual</label>
                 </div>
-                 <div style='white-space:nowrap'>
-                    <div class="githubSortTab" tabIndex="0">
-                        <input type="radio" id="github-sort" name="sortKind" value="Github" onclick="filterFilesByKind('Github');count=0;"/>
-                        <label for="github-sort" name="sortGithub" style='white-space:nowrap'>Github</label>
-                    </div>
+                <div class="sortTab githubSortTab" tabIndex="0">
+                    <input type="radio" id="github-sort" name="sortKind" value="Github" onclick="filterFilesByKind('Github');count=0;"/>
+                    <label for="github-sort" name="sortGithub">Github</label>
                 </div>
             </div>
         </div>

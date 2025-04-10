@@ -2906,7 +2906,7 @@ codeviewer.php END
   text-align:left;
  }
 
- #fabButton.fixed-actionButton{
+ #fabButton.fixed-actionButton {
      margin-right: 100px;
  }
 
@@ -2914,6 +2914,26 @@ codeviewer.php END
      height: 100%;
      box-sizing: border-box;
  }
+
+.sortTab {
+    white-space: nowrap;
+}
+
+.sortButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 50px
+}
+
+.sortButtonsSubContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sortButtonsSubContainer label {
+    white-space: nowrap;
+}
 
  /*---===#===---*
  fileed.php END 
