@@ -15,7 +15,7 @@ No inverse dependencies.
 
 ### updateUser
 
-### updateUserCourse
+### updateUserCourse (No includes)
 
 ## codeviewerService
 This is a list of all inverse dependencies of files in the codeviewerService folder.
