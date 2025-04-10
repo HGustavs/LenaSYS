@@ -253,6 +253,8 @@ function drawText(x, y, a, t, extra = '') {
  */
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const l = linew * 3;
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.5);
+    const lineHeight = 1.5;
     
     //check if element height and minHeight is 0, if so set both to 50
     if (element.height == 0 && element.minHeight == 0) {
@@ -262,19 +264,36 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
         boxh = 50;
     }
 
+    // Split string into an array of lines based on max characters per line
+    function splitFull(str, maxCharsPerLine) {
+        const result = [];
+        for (let i = 0; i < str.length; i += maxCharsPerLine) {
+            result.push(str.substring(i, i + maxCharsPerLine));
+        }
+        return result;
+    }
+
+    const nameLines = splitFull(element.name, maxCharactersPerLine);
+    const textHeight = texth * nameLines.length * lineHeight;
+    const contentHeight = Math.max(boxh, textHeight + linew * 4);
+
     let weak = '';
     if (element.state == "weak") {
         weak = `<rect
                     x='${l}' 
                     y='${l}' 
                     width='${boxw - l * 2}' 
-                    height='${boxh - l * 2}'
+                    height='${contentHeight - l * 2}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
                 />`;
     }
-    let rect = drawRect(boxw, boxh, linew, element);
-    let text = drawText(boxw / 2, boxh / 2 + texth / 3, 'middle', element.name);
-    return drawSvg(boxw, boxh, rect + weak + text);
+    let rect = drawRect(boxw, contentHeight, linew, element);
+    let text = "";
+    for (let i = 0; i < nameLines.length; i++) {
+        const y = (contentHeight / 2) - (nameLines.length / 2 - i - 0.5) * texth * lineHeight;
+        text += drawText(boxw / 2, y, 'middle', nameLines[i]);
+    }
+    return drawSvg(boxw, contentHeight, rect + weak + text);
 }
 
 /**
