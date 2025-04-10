@@ -1381,9 +1381,20 @@ function pasteClipboard(elements, elementsLines) {
         elementObj.x = mousePosInPixels.x + (element.x - x1);
         elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        newElements.push(elementObj);
         addObjectToData(elementObj, false);
+        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
+            displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
+            console.error("Failed to create an element as it overlaps other element(s)");
+            overlapDetected = true;  // Set flag to stop further pasting
+            showdata();
+        }else{
+            newElements.push(elementObj);
+        }
     });
+
+    if (overlapDetected) {
+        return;  // Prevent further pasting of lines and finishing the operation
+    }
 
     // Create the new lines but do not saved in stateMachine
     // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
