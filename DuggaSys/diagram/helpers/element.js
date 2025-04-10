@@ -117,3 +117,17 @@ function setPos(elements, x, y) {
     // Update positions
     updatepos();
 }
+
+/**
+ * @description Splits a string into an array of lines based on max characters per line 
+ * @param {string} str - The input string
+ * @param {number} maxCharsPerLine - Maximum number of characters per line
+ * @returns {Array<string>} Array of wrapped lines
+ */
+function splitFull(str, maxCharsPerLine) {
+    const result = [];
+    for (let i = 0; i< str.length; i += maxCharsPerLine) {
+        result.push(str.substring(i, i + maxCharsPerLine));
+    }
+    return result;
+}
