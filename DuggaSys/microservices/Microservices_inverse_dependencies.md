@@ -223,7 +223,9 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 ### retrieveUsername
 
 ### setAsActiveCourse
-
+    updateCourseVersion_ms.php
+    updateCourseVersion_sectioned_ms.php
+    
 ### updateSecurityQuestion
 
 ### updateUserPassword
