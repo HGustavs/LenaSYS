@@ -220,6 +220,7 @@ This is a list of all inverse dependencies of files in the sharedMicroservices f
 ### getUid
 
 ### isSuperUser
+No inverse dependencies
 
 ### logUserEvent (No dependencies)
 
