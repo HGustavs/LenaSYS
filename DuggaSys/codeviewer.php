@@ -327,7 +327,7 @@ Testing Link:
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
 					</div>
-					<table width="100%">
+					<table class="tableWithTemplates">
 						<tr>
 							<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
 								<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' />
@@ -345,7 +345,7 @@ Testing Link:
 					</table>
 					<table id="templateOptions" width="100%">
 					</table>
-					<table width="100%">
+					<table class="saveBtnTable">
 						<tr>
 							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
 						</tr>

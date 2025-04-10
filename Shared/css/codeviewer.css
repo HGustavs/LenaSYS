@@ -162,6 +162,10 @@
     height: 140px;
 }
 
+.tableWithTemplates{
+    width: 100%;
+}
+
 /* PICK TEMPLATE STOP */
 
 /* MENU BUTTONS START*/
@@ -1085,7 +1089,7 @@
 }
 /*EDIT CONTENT SETTINGS TABLE - END */
 
-#saveBtnTable{
+.saveBtnTable{
     width: 100%;
 }
 /* EDIT CONTENT DIALOG - END */
