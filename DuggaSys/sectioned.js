@@ -973,8 +973,11 @@ function deleteItem(item_lid = []) {
     item.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
-    delArr.push(lid);
-    console.log('delarr lenght: ' + delArr);
+    /* delArr.push(lid);
+    console.log('delarr lenght: ' + delArr); */
+
+    var deletedElements2 = document.querySelectorAll(".deleted")
+    console.log('deletedelements2 lenght: ' + deletedElements2.length);
   }
   toast("undo", "Undo deletion?", 5, "cancelDelete();");
 
@@ -983,29 +986,36 @@ function deleteItem(item_lid = []) {
   delTimer = setTimeout(() => {
     deleteAll();
     console.log(' delete all has been run ');
-  }, 5000);
+  }, 15000);
 }
 
 // Permanently delete elements.
 function deleteAll() {
 
-  console.log('tried to delete');
-  console.log('delArr lenght before del: ' + delArr.length);
-
   var deletedElements = document.querySelectorAll(".deleted")
-  for (i = 0; i < delArr.length; i++) {
-    console.log('deleted');
-    AJAXService("DEL", {lid: delArr.pop()}, "SECTION");
-    deletedElements[i].classList.remove("deleted");
+  console.log('deleteAll() run, deleted elements lenght: ' + deletedElements.length);
+
+  if (deletedElements.length > 0){
+    console.log('deletedElements > 0')
+    
+    for (i = deletedElements.length ; (i > 0) ; i--) {
+      var lid = deletedElements[i-1].id.match(/\d+/)[0];
+      console.log('taken lid: ' + lid);
+  
+      AJAXService("DEL", {
+        lid: lid
+      }, "SECTION");
+    }
+  
+      console.log('lid:  ' + lid + ' now deleted.');
+    $("#editSection").css("display", "none");
+    document.querySelector("#undoButton").style.display = "none";
   }
-
-  console.log('delArr lenght after del: ' + delArr.length);
-
-  $("#editSection").css("display", "none");
-  document.querySelector("#undoButton").style.display = "none";
-  console.log('has tried to delete');
-
-}
+  else{
+    console.log('Error.')
+  }
+  }
+  
 
 // undo deletion
 function cancelDelete () {
