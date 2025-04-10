@@ -2906,6 +2906,9 @@ codeviewer.php END
   text-align:left;
  }
 
+ #fabButton.fixed-actionButton{
+     margin-right: 100px;
+ }
 
  /*---===#===---*
  fileed.php END 

@@ -425,7 +425,7 @@ $js = array(
 <!-- Markdown-preview and edit file functionality END -->
 
 <!--Fab-button-->
-<div class="fixed-action-button" id="fabButton" style = "margin-right: 100px;">
+<div class="fixed-action-button" id="fabButton">
     <div class="fabBtnEditfile" tabIndex="0">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn" onclick=" createQuickItem()">+</a>
     </div>
