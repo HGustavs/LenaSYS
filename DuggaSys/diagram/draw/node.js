@@ -27,7 +27,7 @@ function addNodes(element) {
         nodes += `<span id='${name}' class='node ${name}' style="height: ${nodeSize}px; width: ${nodeSize}px; ${sideA}: 0%; ${sideB}: 0%;"></span>`;
     };
 
-    if (element.kind != elementTypesNames.UMLInitialState && element.kind != elementTypesNames.UMLFinalState) {
+    if (element.kind != elementTypesNames.UMLInitialState && element.kind != elementTypesNames.UMLFinalState && element.kind != elementTypesNames.IERelation) {
         createNode("mr", "top");
         createNode("ml", "top");
         createNode("mu", "left");

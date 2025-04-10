@@ -69,9 +69,9 @@ const defaults = {
         type: entityType.IE,
         kind: elementTypesNames.IERelation,
         width: 62,
-        height: 62,
+        height: 31,
         minWidth: 50,
-        minHeight: 50,
+        minHeight: 25,
     },
     SDEntity: {
         name: "SD Entity",
