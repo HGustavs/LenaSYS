@@ -60,7 +60,7 @@ function drawElement(element, ghosted = false) {
             cssClass = 'ie-element';
             style = element.name == "Inheritance" ?
              `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;` :
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -69,7 +69,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, initVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
             break;
         case elementTypesNames.UMLFinalState:
             let finalVec = `
@@ -92,7 +92,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, finalVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
             break;
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
@@ -102,12 +102,12 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 1;
+            zLevel = 2;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 1;
+            zLevel = 2;
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
@@ -552,10 +552,11 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
  */
 function drawElementUMLRelation(element, boxw, boxh, linew) {
     let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let strokeColor = (fill === 'black') ? 'white' : 'black';
     let poly = `
         <polygon 
             points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+            style='fill:${fill}; stroke:${strokeColor}; stroke-width:${linew};'
         />`;
     return drawSvg(boxw, boxh, poly);
 }

@@ -298,7 +298,24 @@ function mup(event) {
 
                 // Normal mode
             } else if (deltaExceeded) {
-                if (context.length > 0) setPos(context, deltaX, deltaY);
+                // If there are elements selected in the context
+            if (context.length > 0) {
+                // Loop through each selected element
+                context.forEach(el => {
+                // Find the nearest lifeline to the element's center position
+                const nearestLifelineId = findNearestLifeline(
+                el.x + el.width / 2, // X-center of the element
+                el.y + el.height / 2 // Y-center of the element
+            );
+
+        // If a nearby lifeline is found, snap the element to it
+        if (nearestLifelineId) {
+            snapElementToLifeline(el, nearestLifelineId);
+        }
+    });
+}
+
+                
             }
             break;
         case pointerStates.CLICKED_NODE:
