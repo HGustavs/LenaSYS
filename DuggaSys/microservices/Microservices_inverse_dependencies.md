@@ -68,6 +68,7 @@ There is no list of all inverse dependencies
 No inverse dependencies
 
 ### createNewCourse
+No inverse dependencies
 
 ### deleteCourseMaterial
 
