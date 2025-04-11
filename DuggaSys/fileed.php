@@ -254,7 +254,7 @@ $js = array(
                     <input type='hidden' id='ekind' name='kind' value='Toddler'/>
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
                     <!-- .svg| -->
-                    <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
+                    <ul style="display: none;" id="dummyFileErrorList"></ul>
                     <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
                     <span id="spankind">Kind:</span>
                     <select name ="efilekind[]" id="selectdir">
@@ -274,7 +274,7 @@ $js = array(
                     ?>
                     <select>
                     <div id='uploadbuttonname'>
-                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
+                        <input type="submit" onclick="uploadFile('EFILE');"/>
                     </div>
                 </form>
             </div>
@@ -314,7 +314,7 @@ $js = array(
                 <div class="markdown">
                     <fieldset id="markset">
                         <legend>Markdown</legend>
-                        <div style="display:flex;flex-direction:column;justify-content: flex-start; height:100%; box-sizing:border-box;">
+                        <div id='markdownEditor'>
                             <div class="markdown-icon-div">
                                 <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
                                 <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>

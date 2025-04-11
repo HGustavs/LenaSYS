@@ -1992,6 +1992,11 @@ div .navButt:hover {
   cursor: pointer;
 }
 
+#createNewEmptyFile ul {
+    padding-left: 0px;
+    list-style-type: none;
+}
+
 /* <<<<<<<<<<< End of create new empty file >>>>>>>>>>>>>>> */
 
 #variantBox {
@@ -4778,6 +4783,11 @@ div.reset-pw:hover{
 
 #uploadbuttonname .ubmit-fileed-sbutton {
   margin: 15px 0 18px 0 !important;
+}
+
+#uploadbuttonname input {
+    position: relative;
+    top: 25px;
 }
 
 #feedbackTable table {
@@ -7964,6 +7974,14 @@ only screen and (max-device-width: 568px) {
   bottom: 0;
   z-index: 8000;
   display: none;
+}
+
+#markdownEditor {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .formBoxHeade, .fileViewHeader {
