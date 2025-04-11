@@ -973,19 +973,14 @@ function deleteItem(item_lid = []) {
     item.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
-    /* delArr.push(lid);
-    console.log('delarr lenght: ' + delArr); */
-
-    var deletedElements2 = document.querySelectorAll(".deleted")
-    console.log('deletedelements2 lenght: ' + deletedElements2.length);
   }
-  toast("undo", "Undo deletion?", 5, "cancelDelete();");
+  // Displays popup
+  toast("undo", "Undo deletion?", 15, "cancelDelete();");
 
   // Makes deletefunction sleep for 15 sec so it is possible to undo an accidental deletion. 
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-    console.log(' delete all has been run ');
   }, 15000);
 }
 
@@ -1007,14 +1002,13 @@ function deleteAll() {
 // undo deletion
 function cancelDelete () {
   clearTimeout(delTimer); // removes timer
-  console.log('undeleted, count: ' + count)
   delArr.push(lid);
+
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < delArr.length; i++) {
     deletedElements[i].classList.remove("deleted");
   }
-  //console.log('undeleted, count: ' + count)
-  //location.reload();
+  location.reload();
 }
 
 // Cancel deletion
