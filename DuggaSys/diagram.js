@@ -424,7 +424,7 @@ function getData() {
     document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
     document.getElementById("container").addEventListener("mousedown", mdown);
     document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", debounce(mmoving, 100));
+    document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
@@ -953,19 +953,28 @@ function mouseMode_onMouseUp(event) {
                     updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
-                        elementTypeSelected = elementTypes.Ghost;
-                        makeGhost();
-                        // Create ghost line
-                        ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                        // checks if a ghostline already exists and if so sets the relation recursively.
+                        if (ghostLine != null) {
+                            // create a line from the element to itself
+                            addLine(context[0], context[0], "Recursive");
+                            clearContext();
+                            // Bust the ghosts
+                            ghostElement = null;
+                            ghostLine = null;
+                            showdata();
+                            updatepos();
+                        }
+                        else {
+                            elementTypeSelected = elementTypes.Ghost;
+                            makeGhost();
+                            // Create ghost line
+                            ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                        }
                     } else if (ghostElement !== null) {
-                        // create a line from the element to itself
-                        addLine(context[0], context[0], "Recursive");
                         clearContext();
-                        // Bust the ghosts
                         ghostElement = null;
                         ghostLine = null;
                         showdata();
-                        updatepos();
                     } else {
                         clearContext();
                         ghostElement = null;
@@ -2151,13 +2160,5 @@ function resetDiagramAlert() {
  */
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
 }
 //#endregion =====================================================================================
