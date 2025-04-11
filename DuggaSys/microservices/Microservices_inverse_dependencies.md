@@ -65,6 +65,8 @@ There is no list of all inverse dependencies
 ### deleteCourseMaterial
 
 ### getCourseed
+    DuggaSys/tests/microservices/courseedService/deleteCourseMaterial_ms.php
+    (replaced with retrieveAllCourseedServiceData)
 
 ### retrieveAllCourseedServiceData
 
