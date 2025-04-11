@@ -30,6 +30,7 @@ var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
 let showHidden = true;
+let count = 0;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -967,37 +968,51 @@ function prepareItem() {
 
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val();
+    lid = item_lid ? item_lid : $("#lid").val(); 
     item = document.getElementById("lid" + lid[i]);
     item.style.display = "none";
     item.classList.add("deleted");
-  
     document.querySelector("#undoButton").style.display = "block";
   }
-
+  // Displays popup
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
-  // Makes deletefunction sleep for 60 sec so it is possible to undo an accidental deletion
-  delArr.push(lid);
+
+  // Makes deletefunction sleep for 15 sec so it is possible to undo an accidental deletion. 
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 60);
+  }, 15000);
 }
 
 // Permanently delete elements.
 function deleteAll() {
-  for (var i = delArr.length - 1; i >= 0; --i) {
+  var deletedElements = document.querySelectorAll(".deleted")
+  for (i = deletedElements.length ; (i > 0) ; i--) {
+    var lid = deletedElements[i-1].id.match(/\d+/)[0];
+    
     AJAXService("DEL", {
-      lid: delArr.pop()
+      lid: lid
     }, "SECTION");
   }
+
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
+  }
+
+// undo deletion
+function cancelDelete () {
+  clearTimeout(delTimer); // removes timer
+  delArr.push(lid);
+
+  var deletedElements = document.querySelectorAll(".deleted")
+  for (i = 0; i < delArr.length; i++) {
+    deletedElements[i].classList.remove("deleted");
+  }
+  location.reload();
 }
 
 // Cancel deletion
-function cancel
-() {
+function cancel () {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
@@ -2131,7 +2146,7 @@ function returnedSection(data) {
 
   }
   
-  //Force elements that are deletet to not show up unless pressing undo delete or reloading the page
+  //Force elements that are deleted to not show up unless pressing undo delete or reloading the page
   for(var i = 0; i < delArr.length; i++){
     document.getElementById("lid"+delArr[i]).style.display="none";
   }
