@@ -36,8 +36,11 @@ if(isset($_SESSION['uid'])){
 	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/@babel/standalone"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="courseed.js"></script>
+	<script type="text/babel" src="courseed.js"></script>
 </head>
 <body>
 
@@ -49,9 +52,11 @@ if(isset($_SESSION['uid'])){
 	<div id="content">
 		<!-- Section List -->
 		<div id='Courselist'>
+			</div>
 		</div>
-	</div>
-
+		<div id="fab-container">
+		</div>
+		
 	<!-- version identification -->
 	<div id="version" class='version display_none'>Master hash <br /><?php echo $version ?></div>
 

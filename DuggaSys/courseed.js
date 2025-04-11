@@ -679,16 +679,41 @@ function returnedCourse(data) {
 		str += "</div>";
 	}
 
-	str += "</div>";
-	if (data['writeaccess']) {
-		str += "<div style='float:right;'>";
-		str += "<div class='fixed-action-button extra-margin'>";
-		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>";
-		str += "</div>";
-		str += "</div>";
-	}
-	var slist = document.getElementById('Courselist');
-	slist.innerHTML = str;
+	// str += "</div>";
+	// if (data['writeaccess']) {
+	// 	str += "<div style='float:right;'>";
+	// 	str += "<div class='fixed-action-button extra-margin'>";
+	// 	str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>";
+	// 	str += "</div>";
+	// 	str += "</div>";
+	// }
+
+	const flotingActionButton = ({hasWriteAccess, onNewCourse}) => {
+		if (!hasWriteAccess) return null;
+
+		return(
+			<div style={{float: 'right'}}>
+				<div className="fixed-action-button extra-margin">
+					<button 
+						className="btn-floating fab-btn-lg noselect"
+						id="fabBtn"
+						onClick={onNewCourse}
+						tabIndex={0}
+					>
+						+
+					</button>
+				</div>
+			</div>
+		);
+	};
+
+	ReactDOM.render(
+		<flotingActionButton hasWriteAccess={data.writeaccess} onNewCourse={newCourse}/>,
+		document.getElementById('fab-container')
+	);
+
+	// var slist = document.getElementById('Courselist');
+	// slist.innerHTML = str;
 
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
