@@ -1066,7 +1066,7 @@ function mmoving(event) {
             deltaY = startY - event.clientY;
 
             // Resize equally in both directions by modifying delta
-            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState) {
+            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState || elementData.kind == elementTypesNames.IERelation) {
                 let delta;
                 if (startNode.upLeft) {
                     delta = Math.max(deltaX, deltaY);
@@ -1077,8 +1077,15 @@ function mmoving(event) {
                 } else if (startNode.upRight) {
                     delta = Math.max(-deltaX, deltaY);
                 }
+
                 deltaX = (startNode.upRight) ? -delta : delta;
-                deltaY = (startNode.downLeft) ? -delta : delta;
+
+                //Special resizing for IERelation elements, width needs to be double the height. Modifying height felt better during usage than modifying width.
+                if(elementData.kind == elementTypesNames.IERelation) {
+                    deltaY = (startNode.downLeft) ? -(delta * 0.5) : delta * 0.5;
+                } else {
+                    deltaY = (startNode.downLeft) ? -delta : delta;
+                }
             }
 
             let xChange, yChange, widthChange, heightChange;
@@ -1171,7 +1178,6 @@ function movementWidthChange(element, start, delta, isR) {
 function movementHeightChange(element, start, delta, isUp) {
     element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
     return element.height;
-
 }
 
 /**

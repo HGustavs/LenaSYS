@@ -59,8 +59,8 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;` :
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;`;
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:2;` :
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -591,13 +591,14 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
 function drawElementIERelation(element, boxw, boxh, linew) {
     let content = "";
     content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`;
+                <line x1="${boxw / 2}" y1="${linew / 2}" x2="${(boxw / 2) + (boxw / 2.08)}" y2="${linew / 2}" stroke='black' />
+                <line x1="${(boxw / 2) + 1}" y1="${linew / 2}" x2="${(boxw / 2) - (boxw / 2.08) + 1}" y2="${linew / 2}" stroke='black' />`;
 
     if (element.state != inheritanceStateIE.OVERLAPPING) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`;
     }
-    return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
 }
 
 /**
