@@ -974,14 +974,20 @@ function deleteItem(item_lid = []) {
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
+
+
+
+
+
   // Displays popup
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
+  console.log(' does this work? ')
 
-  // Makes deletefunction sleep for 15 sec so it is possible to undo an accidental deletion. 
+  // Makes deletefunction sleep for 16 sec so it is possible to undo an accidental deletion. 
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 15000);
+  }, 16000);
 }
 
 // Permanently delete elements.
@@ -999,13 +1005,11 @@ function deleteAll() {
   document.querySelector("#undoButton").style.display = "none";
   }
 
-// undo deletion
+// "Undo" deletion
 function cancelDelete () {
-  clearTimeout(delTimer); // removes timer
-  delArr.push(lid);
-
+  clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
-  for (i = 0; i < delArr.length; i++) {
+  for (i = 0; i < deletedElements.length; i++) {
     deletedElements[i].classList.remove("deleted");
   }
   location.reload();
