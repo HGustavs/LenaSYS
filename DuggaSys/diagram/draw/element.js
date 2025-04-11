@@ -319,9 +319,14 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     updateElementHeight(UMLHeight, element, totalHeight + boxh);
 
     // Header
-    let height = texth * 2;
+    const headerLines = splitFull([element.name], maxCharactersPerLine);
+    let height = texth * (headerLines.length + 1) * lineHeight;
     let headRect = drawRect(boxw, height, linew, element);
-    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headText = "";
+    for (let i = 0; i < headerLines.length; i++) {
+        const y = texth * (i + 1) * lineHeight;
+        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+    }
     let headSvg = drawSvg(boxw, height, headRect + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
