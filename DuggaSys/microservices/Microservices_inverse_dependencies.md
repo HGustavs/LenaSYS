@@ -99,6 +99,7 @@ No inverse dependencies found.
 No inverse dependencies.
 
 ### updateCourse
+No inverse dependencies
 
 ### updateCourseVersion
 No inverse dependencies
