@@ -73,6 +73,7 @@ No inverse dependencies
 No inverse dependencies
 
 ### deleteCourseMaterial
+There is no inverse dependencies for this file/service
 
 ### getCourseed
 
