@@ -682,25 +682,6 @@ function mouseOverSearchInput() {
    }
 }
 
-
-/*Toggle the hamburger list containing the icons to appear*/
-$('#hamburger').click(function(){
-	var isAnimating = $("#hamburgerList").is(':animated');
-	if(isAnimating == false){
-		$('#hamburgerList').slideToggle(500, function(){
-		});
-	}
-})
-
-/*Toggle the hamburger menu "button" into an X and then back to normal*/
-function hamburgerToggle() {
-	var isAnimating = $("#hamburgerList").is(':animated');
-	if(isAnimating == false){
-		var x= document.getElementById("ham")
-		x.classList.toggle("change");
-	}
-}
-
 let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
 
 document.addEventListener("DOMContentLoaded", function() {
