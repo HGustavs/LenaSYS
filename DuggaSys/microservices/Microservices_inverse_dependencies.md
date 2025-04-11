@@ -25,6 +25,7 @@ accessedService:
     updateUser_ms.php
 
 ### updateUser
+No inverse dependencies.
 
 ### updateUserCourse
 
