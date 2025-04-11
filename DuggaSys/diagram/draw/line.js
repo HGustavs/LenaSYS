@@ -22,7 +22,16 @@ function drawLine(line, targetGhost = false) {
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
-    [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+    
+    if (line.kind === lineKind.RECURSIVE){
+
+        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
+        [fx, fy, tx, ty, offset] = [fx, fy, fx, fy, offset];
+    }
+    else{
+        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+    }
+    
     // Follows the cursor while drawing the line
     if (isCurrentlyDrawing){
         tx = event.clientX;
@@ -61,7 +70,6 @@ function drawLine(line, targetGhost = false) {
         }
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
-            console.debug("lineKind.RECURSIVE");
             str += drawRecursive(fx, fy, offset, line, lineColor);
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
@@ -80,7 +88,6 @@ function drawLine(line, targetGhost = false) {
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
-            console.debug("line.kind");
             str += drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash);
             str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
             
@@ -92,14 +99,23 @@ function drawLine(line, targetGhost = false) {
     }
     
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
-    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
+    if (line.kind === lineKind.RECURSIVE){
+        str += drawLineIcon(line.endIcon, line.ctype, tx, ty + 40, lineColor, line);
+    }
+    else{
+        str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
+    }
+    
+    
     if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
+            
             str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
         }
         if (line.endIcon == SDLineIcons.ARROW) {
+            
             str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
         }
     }
@@ -186,7 +202,6 @@ function drawLine(line, targetGhost = false) {
         const labelPositionY = labelPosY - zoomfact;
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
-            console.debug("line.lineKind.RECURSIVElineKind.RECURSIVElineKind.RECURSIVE");
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
@@ -376,7 +391,6 @@ function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash)
     const endX = fx;
     const cornerX = fx + length;
     const cornerY = fy;
-
     str += `<polyline id="${line.id}"
     points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact} 
             ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact} 
