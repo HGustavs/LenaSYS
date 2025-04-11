@@ -56,6 +56,7 @@ This is a list of all inverse dependencies of files in the courseedService folde
 ### createCourseVersion
 
 ### createMOTD
+No inverse dependencies
 
 ### createNewCourse
 
