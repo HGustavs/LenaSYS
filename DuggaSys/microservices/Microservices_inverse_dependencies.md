@@ -69,6 +69,7 @@ No inverse dependencies
 ### getCourseed
 
 ### retrieveAllCourseedServiceData
+No inverse dependencies found.
 
 ### retrieveCourseedService
 
