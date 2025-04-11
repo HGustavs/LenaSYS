@@ -1898,7 +1898,6 @@ div .navButt:hover {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 8000;
   margin:0 auto;
-  display:none;
 }
 
 .loginHashContainer {
