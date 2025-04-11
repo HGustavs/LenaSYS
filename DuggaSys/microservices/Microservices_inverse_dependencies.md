@@ -113,6 +113,7 @@ No inverse dependencies.
 ### retrieveDuggaedService
 
 ### updateDugga
+No inverse dependencies.
 
 ### updateDuggaVariant
 
