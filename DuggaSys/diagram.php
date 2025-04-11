@@ -337,7 +337,7 @@
                     </div> 
                     <div id="diagramPopOut">
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,1); setElementPlacementType(1); setMouseMode(2);'>
+                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
                                 <span class="placementTypeToolTipText"><b>ER relation</b><br>
                                     <p>Represents how entities are associated with each other.</p>
