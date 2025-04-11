@@ -60,6 +60,7 @@ There is no list of all inverse dependencies
 ### createCourseVersion
 
 ### createMOTD
+No inverse dependencies
 
 ### createNewCourse
 
