@@ -72,6 +72,18 @@ No inverse dependencies
 No inverse dependencies found.
 
 ### retrieveCourseedService
+- courseedService/changeActiveCourseVersion_courseed_ms.php
+- courseedService/copyCourseVersion_ms.php
+- courseedService/createCourseVersion_ms.php
+- courseedService/createMOTD_ms.php
+- courseedService/createNewCourse_ms.php
+- courseedService/deleteCourseMaterial_ms.php
+- courseedService/getCourseed_ms.php
+- courseedService/retrieveAllCourseedServiceData_ms.php
+- courseedService/specialUpdate_ms.php
+- courseedService/updateActiveCourseVersion_courseed_ms.php
+- courseedService/updateCourse_ms.php
+- courseedService/updateCourseVersion_ms.php
 
 ### specialUpdate
 
