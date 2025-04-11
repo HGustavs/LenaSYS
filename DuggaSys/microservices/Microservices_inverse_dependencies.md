@@ -64,6 +64,7 @@ This is a list of all inverse dependencies of files in the courseedService folde
 ### getCourseed
 
 ### retrieveAllCourseedServiceData
+No inverse dependencies found.
 
 ### retrieveCourseedService
 
