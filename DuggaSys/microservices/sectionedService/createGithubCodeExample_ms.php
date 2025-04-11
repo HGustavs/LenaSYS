@@ -62,7 +62,8 @@ function AqcuireCourse()
 
 function GetCourseVers()
 {
-    global $allFiles, $pdo, $fileCount, $courseid, $coursevers;
+    global $allFiles, $pdo, $fileCount, $courseid, $coursevers, $groupedFiles,
+    $exampleName, $courseid, $coursevers, $pos;
     foreach ($allFiles as $groupedFiles) {
         //get the correct examplename
         $explodeFiles = explode('.', $groupedFiles[0]);
@@ -77,8 +78,18 @@ function GetCourseVers()
         $counted = $result->count;
 
         if ($counted == 0) {
+            //Get the last position in the listenries to add new course at the bottom
+            $query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
+            $query->bindParam(":cid", $courseid);
+            $query->execute();
+            $e = $query->fetchAll();
+            $pos = $e[0]['pos'] + 1; //Gets the last filled position+1 to put the new codexample at
+
+            //select the files that has should be in the codeexample
+            $fileCount = count($groupedFiles);
+
             if ($fileCount > 0 && $fileCount < 6) {
-                NoCodeExampleFilesExist();
+                NoCodeExampleFilesExist($exampleName);
             } else {
                 NoCodeExampleNoFiles();
             }
@@ -86,16 +97,10 @@ function GetCourseVers()
     }
 }
 
-function NoCodeExampleFilesExist()
+function NoCodeExampleFilesExist($exampleName)
 {
-    global $pdo, $groupedFiles, $exampleName, $courseid, $coursevers, $link, $log_uuid,
+    global $pdo, $groupedFiles, $courseid, $coursevers, $link, $log_uuid,
     $userid, $comments, $tabs, $kind, $gradesys, $highscoremode, $pos;
-    //Get the last position in the listenries to add new course at the bottom
-    $query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
-    $query->bindParam(":cid", $courseid);
-    $query->execute();
-    $e = $query->fetchAll();
-    $pos = $e[0]['pos'] + 1; //Gets the last filled position+1 to put the new codexample at
 
     //select the files that has should be in the codeexample
     $fileCount = count($groupedFiles);
@@ -433,7 +438,7 @@ function NoCodeExampleNoFiles()
 
 //////////////////////////////////////////START OF OLD IF - CONVERTED TO FUNCTIONS ABOVE//////////////////////////////////////////
 
-/*
+
 if (strcmp($opt, "CREGITEX") === 0) {
     $query = $pdo->prepare("SELECT cid,githubDir,vers FROM listentries WHERE lid=:lid;");
     $query->bindParam(":lid", $lid);
@@ -821,6 +826,6 @@ if (strcmp($opt, "CREGITEX") === 0) {
         }
     }
 }
-*/
+
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
