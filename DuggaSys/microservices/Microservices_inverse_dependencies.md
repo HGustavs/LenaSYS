@@ -85,6 +85,7 @@ This is a list of all inverse dependencies of files in the duggaedService folder
 ### createDugga
 
 ### createDuggaVariant
+No inverse dependencies.
 
 ### deleteDugga
 
