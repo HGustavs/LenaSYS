@@ -860,7 +860,6 @@ p {
   cursor: pointer;
 }
 
-
 .item {
   /*padding-top: 4px;*/
   min-height: 30px;
@@ -875,7 +874,7 @@ p {
   #SectionList {
     margin: 10px 0px 10px 0px;
   }
-
+  
   .item {
     font-size: 10pt;
   }
@@ -1350,8 +1349,34 @@ p {
 #Sectionlistc {
   /* Move up later*/
   display: block;
+
+  & .courseRow {
+    background-color: var(--color-sectioned-table-hi);
+    height: fit-content;
+    display: block;
+    
+    & tr {
+      height: 100%;
+      font-size: 1.5rem;
+      padding: 0.25rem;
+    }
+
+    &:first-child {
+      height: fit-content;
+    }
+    
+    &:nth-child(odd) {
+      background-color: var(--color-sectioned-table-lo);
+    }
+  }
+
+  & .courseRow:hover {
+    background-color: var(--color-background-2);
+    cursor: pointer;
+  }
 }
 
+/*TODO: Clean up section classes? */
 /* Sectionlistc */
 .sectionlistCMargin {
   margin-top: 30px;
