@@ -94,6 +94,7 @@ No inverse dependencies found.
 ### updateActiveCourseVersion_courseed
 
 ### updateCourse
+No inverse dependencies
 
 ### updateCourseVersion
 
