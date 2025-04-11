@@ -771,15 +771,14 @@ function LogoutBoxWrapper() {
   if (!visible) return null;
 
   return (
-    <div id="logoutBox" className="logoutBoxContainer" style={{position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <div className="logoutBox DarkModeBackgrounds DarkModeText" style={{background: 'white', padding: '20px', borderRadius: '8px'}}>
+    <div id="logoutBox" className="logoutBoxContainer">
+      <div className="logoutBox DarkModeBackgrounds DarkModeText">
         <div className="logoutBoxheader">
           <h3>Sign out</h3>
           <div
             className="cursorPointer"
             title="Close window"
             onClick={handleCancel}
-            style={{cursor: 'pointer', position: 'absolute', top: 10, right: 20}}
           >
             x
           </div>
