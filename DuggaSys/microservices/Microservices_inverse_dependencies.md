@@ -157,9 +157,7 @@ This is a list of all inverse dependencies of files in the profileService folder
 ### retrieveProfileService
 
 ### updateSecurityQuestion
-sharedMicroservices/getUid_ms.php
-
-retrieveProfileService_ms.php
+The service is never used as an inverse dependency
 
 ### updateUserPassword
 There is no list of all inverse dependencies
