@@ -29,7 +29,7 @@ if (strcmp($opt, "CREGITEX") === 0) {
 
 function AqcuireCourse()
 {
-    global $pdo, $lid, $courseid, $coursevers;
+    global $pdo, $courseid, $coursevers, $lid;
     $query = $pdo->prepare("SELECT cid,githubDir,vers FROM listentries WHERE lid=:lid;");
     $query->bindParam(":lid", $lid);
     $query->execute();
@@ -56,14 +56,13 @@ function AqcuireCourse()
             }
             array_push($allFiles, $temp);
         }
-        GetCourseVers();
+        GetCourseVers($allFiles);
     }
 }
 
-function GetCourseVers()
+function GetCourseVers($allFiles)
 {
-    global $allFiles, $pdo, $fileCount, $courseid, $coursevers, $groupedFiles,
-    $exampleName, $courseid, $coursevers, $pos;
+    global $pdo, $courseid, $coursevers, $pos;
     foreach ($allFiles as $groupedFiles) {
         //get the correct examplename
         $explodeFiles = explode('.', $groupedFiles[0]);
@@ -89,18 +88,18 @@ function GetCourseVers()
             $fileCount = count($groupedFiles);
 
             if ($fileCount > 0 && $fileCount < 6) {
-                NoCodeExampleFilesExist($exampleName);
+                NoCodeExampleFilesExist($exampleName, $groupedFiles);
             } else {
-                NoCodeExampleNoFiles();
+                NoCodeExampleNoFiles($exampleName);
             }
         }
     }
 }
 
-function NoCodeExampleFilesExist($exampleName)
+function NoCodeExampleFilesExist($exampleName, $groupedFiles)
 {
-    global $pdo, $groupedFiles, $courseid, $coursevers, $link, $log_uuid,
-    $userid, $comments, $tabs, $kind, $gradesys, $highscoremode, $pos;
+    global $pdo, $courseid, $coursevers, $kind, $link,
+    $gradesys, $highscoremode, $pos, $log_uuid;
 
     //select the files that has should be in the codeexample
     $fileCount = count($groupedFiles);
@@ -199,10 +198,11 @@ function NoCodeExampleFilesExist($exampleName)
         $link = "UNK";
         $kind = 2;
         $visible = 1;
-        $uid = 1; //Not used
+        $userid = 1; //Not used
         $comment = null;  //Not used?
         $gradesys = null;
         $highscoremode = 0;
+        $tabs = 0;
         $groupkind = null;
         //add the codeexample to listentries
         createNewListEntry(
@@ -213,7 +213,7 @@ function NoCodeExampleFilesExist($exampleName)
             $examplename,
             $link,
             $kind,
-            $comments,
+            $comment,
             $visible,
             $highscoremode,
             $pos,
@@ -225,7 +225,7 @@ function NoCodeExampleFilesExist($exampleName)
     }
 }
 
-function NoCodeExampleNoFiles()
+function NoCodeExampleNoFiles($exampleName)
 {
     global $pdo, $courseid, $coursevers;
     //Check for update
