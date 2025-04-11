@@ -57,6 +57,7 @@ No inverse dependencies
 This is a list of all inverse dependencies of files in the courseedService folder.
 
 ### changeActiveCourseVersion_courseed
+There is no inverse dependencies
 
 ### copyCourseVersion
 There is no list of all inverse dependencies
