@@ -968,7 +968,7 @@ function mouseMode_onMouseUp(event) {
                             elementTypeSelected = elementTypes.Ghost;
                             makeGhost();
                             // Create ghost line
-                            ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                            ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal", ghostLine: true };
                         }
                     } else if (ghostElement !== null) {
                         clearContext();

@@ -105,8 +105,6 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
     str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
-
-
     if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
@@ -843,7 +841,6 @@ function sortElementAssociations(element) {
           });
         }
       });
-
 
 }
 
