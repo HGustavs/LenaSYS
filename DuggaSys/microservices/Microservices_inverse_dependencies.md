@@ -92,6 +92,7 @@ No inverse dependencies found.
 ### specialUpdate
 
 ### updateActiveCourseVersion_courseed
+No inverse dependencies.
 
 ### updateCourse
 
