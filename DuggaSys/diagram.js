@@ -2045,29 +2045,42 @@ function getCurrentFileName() {
 
 function saveDiagramAs() {
     let elem = document.getElementById("saveDiagramAs");
+    if (!elem) {
+        return;
+    }
     let fileName = elem.value;
+
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1; // Note: January is month 0
+    const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1;
     const day = currentDate.getDate() < 10 ? `0${currentDate.getDate()}` : currentDate.getDate();
     const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : currentDate.getHours();
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
-    const formattedDate = year + "-" + month + "-" + day + ' ';
+    const formattedDate = year + "-" + month + "-" + day + " ";
     const formattedTime = hours + ":" + minutes + ":" + seconds;
-    if (fileName.trim() == "") {
+
+    // Assigns date/time as name if file name is left empty
+    if (fileName.trim() === "") {
         fileName = "diagram " + formattedDate + formattedTime;
     }
-    let names;
+
+    let names = [];
     let localDiagrams;
 
+    // Get saved diagrams from localStorage
     let local = localStorage.getItem("diagrams");
     if (local != null) {
         local = (local[0] == "{") ? local : `{${local}}`;
-        localDiagrams = JSON.parse(local);
-        names = Object.keys(localDiagrams);
+        try {
+            localDiagrams = JSON.parse(local);
+            names = Object.keys(localDiagrams);
+        } catch (error) {
+            names = [];
+        }
     }
 
+    // Check if diagram name is unique
     for (let i = 0; i < names.length; i++) {
         if (names[i] == fileName) {
             hideSavePopout();
@@ -2075,6 +2088,7 @@ function saveDiagramAs() {
             return;
         }
     }
+    
     storeDiagramInLocalStorage(fileName);
 }
 
