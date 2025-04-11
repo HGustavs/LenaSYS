@@ -262,6 +262,6 @@ function updateA4Pos() {
     rect.setAttribute('x', OffsetX.toString());
     rect.setAttribute('y', OffsetY.toString());
 
-    text.setAttribute('x', (OffsetX + (780 * zoomfact)).toString());
-    text.setAttribute('y', (OffsetY - 5).toString());
+    text.setAttribute('x', (OffsetX + 8).toString());
+    text.setAttribute('y', (OffsetY - 8).toString());
 }
