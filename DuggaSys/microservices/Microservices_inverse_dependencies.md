@@ -11,20 +11,23 @@ This is a list of all inverse dependencies of files in the accessedService folde
 No dependecies
 
 ### addUser
+
 No inverse dependencies.
 
 ### getAccessedService
+
 No inverse dependencies
 
 ### retrieveAccessedService
 
 accessedService:
-    addClass_ms.php
-    addUser_ms.php
-    getAccessedService_ms.php
-    updateUser_ms.php
+addClass_ms.php
+addUser_ms.php
+getAccessedService_ms.php
+updateUser_ms.php
 
 ### updateUser
+
 No inverse dependencies.
 
 ### updateUserCourse (No includes)
@@ -40,6 +43,8 @@ This is a list of all inverse dependencies of files in the codeviewerService fol
 ### editCodeExample
 
 ### editContentOfExample
+
+No inverse dependencies.
 
 ### retrieveCodeviewerService
 
@@ -154,11 +159,13 @@ This is a list of all inverse dependencies of files in the profileService folder
 ### retrieveProfileService
 
 ### updateSecurityQuestion
+
 sharedMicroservices/getUid_ms.php
 
 retrieveProfileService_ms.php
 
 ### updateUserPassword
+
 There is no list of all inverse dependencies
 
 ## resultedService
@@ -238,10 +245,13 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 This is a list of all inverse dependencies of files in the sharedMicroservices folder.
 
 ### createNewCodeExample
+
 copyCourseVersion_ms.php
 createGithubCodeExample_ms.php
 createListEntry_ms.php
+
 ### createNewListEntry
+
 - coursedService/copyCourseVersion_ms.php
 - sectionedService/createGithubCodeExample_ms.php
 - sectionedService/createListEntry_ms.php
@@ -249,6 +259,7 @@ createListEntry_ms.php
 ### getUid
 
 ##### sharedMicroservices
+
 [createNewCodeExample_ms.php](sharedMicroservices/createNewCodeExample_ms.php)
 [retrieveUsername_ms.php](sharedMicroservices/retrieveUsername_ms.php)
 [micupdateSecurityQuestion_ms.php](sharedMicroservices/micupdateSecurityQuestion_ms.php)
@@ -256,6 +267,7 @@ createListEntry_ms.php
 [updateUserPassword_ms.php](sharedMicroservices/updateUserPassword_ms.php)
 
 ##### sectionedService
+
 [createGithubCodeExample_ms.php](sectionedService/createGithubCodeExample_ms.php)
 [createListEntry_ms.php](sectionedService/createListEntry_ms.php)
 [deleteListEntries_ms.php](sectionedService/deleteListEntries_ms.php)
@@ -276,21 +288,26 @@ createListEntry_ms.php
 [updateVisibleListentries_ms.php](sectionedService/updateVisibleListentries_ms.php)
 
 ##### resultedService
+
 [getUserAnswer_ms.php](resultedService/getUserAnswer_ms.php)
 
 ##### profileService
+
 [updateSecurityQuestion_ms.php](profileService/updateSecurityQuestion_ms.php)
 [updateUserPassword_ms.php](profileService/updateUserPassword_ms.php)
 
 ##### highscoreService
+
 [highscoreservice_ms.php](highscoreService/highscoreservice_ms.php)
 
 ##### fileedService
+
 [deleteFileLink_ms.php](fileedService/deleteFileLink_ms.php)
 [getFileedService_ms.php](fileedService/getFileedService_ms.php)
 [updateFileLink_ms.php](fileedService/updateFileLink_ms.php)
 
 ##### duggaedService
+
 [createDugga_ms.php](duggaedService/createDugga_ms.php)
 [createDuggaVariant_ms.php](duggaedService/createDuggaVariant_ms.php)
 [deleteDugga_ms.php](duggaedService/deleteDugga_ms.php)
@@ -298,6 +315,7 @@ createListEntry_ms.php
 [updateDugga_ms.php](duggaedService/updateDugga_ms.php)
 
 ###### courseedService
+
 [changeActiveCourseVersion_courseed_ms.php](courseedService/changeActiveCourseVersion_courseed_ms.php)
 [copyCourseVersion_ms.php](courseedService/copyCourseVersion_ms.php)
 [createCourseVersion_ms.php](courseedService/createCourseVersion_ms.php)
@@ -312,6 +330,7 @@ createListEntry_ms.php
 [updateCourseVersion_ms.php](courseedService/updateCourseVersion_ms.php)
 
 ##### codeviewerService
+
 [deleteCodeExample_ms.php](codeviewerService/deleteCodeExample_ms.php)
 [editBoxTitle_ms.php](codeviewerService/editBoxTitle_ms.php)
 [editCodeExample_ms.php](codeviewerService/editCodeExample_ms.php)
@@ -319,6 +338,7 @@ createListEntry_ms.php
 [updateCodeExampleTemplate_ms.php](codeviewerService/updateCodeExampleTemplate_ms.php)
 
 ##### accessedService
+
 [addClass_ms.php](accessedService/addClass_ms.php)
 [addUser_ms.php](accessedService/addUser_ms.php)
 [getAccessedService_ms.php](accessedService/getAccessedService_ms.php)
@@ -326,6 +346,7 @@ createListEntry_ms.php
 [updateUserCourse_ms.php](accessedService/updateUserCourse_ms.php)
 
 ### isSuperUser
+
 No inverse dependencies
 
 ### logUserEvent (No dependencies)
@@ -333,12 +354,14 @@ No inverse dependencies
 ### retrieveUsername
 
 ### setAsActiveCourse
+
     updateCourseVersion_ms.php
     updateCourseVersion_sectioned_ms.php
-    
+
 ### updateSecurityQuestion
 
 ### updateUserPassword
+
 There is no list of all inverse dependencies
 
 ### retrieveUsername
