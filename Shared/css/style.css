@@ -2915,6 +2915,11 @@ codeviewer.php END
      margin-right: 100px;
  }
 
+#fabButton.fixed-action-button ol {
+    margin: 0;
+    padding: 0;
+}
+
  #mdtarget.descbox{
      height: 100%;
      box-sizing: border-box;
@@ -2943,6 +2948,10 @@ codeviewer.php END
 
 .sortButtonsSubContainer label {
     white-space: nowrap;
+}
+
+#uploadedlink.textinput {
+    width: 380px;
 }
 
  /*---===#===---*

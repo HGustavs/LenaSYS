@@ -236,7 +236,7 @@ $js = array(
                     
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
-                        <input style="width:380px" id="uploadedlink" class="textinput" name="link"
+                        <input id="uploadedlink" class="textinput" name="link"
                                placeholder="https://facebook.com" type="text"/>
                     </div>
                 </div>
@@ -412,7 +412,7 @@ $js = array(
     <div class="fabBtnEditfile" tabIndex="0">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn" onclick=" createQuickItem()">+</a>
     </div>
-    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
+    <ol class="fab-btn-list" style="display: none;" reversed id='fab-btn-list'>
     <?php
         if (isSuperUser($_SESSION['uid'] || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {
             echo '
