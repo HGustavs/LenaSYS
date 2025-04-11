@@ -1366,6 +1366,8 @@ function pasteClipboard(elements, elementsLines) {
     const newElements = [];
     const newLines = [];
 
+    let overlapDetected = false;
+
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
@@ -1381,19 +1383,22 @@ function pasteClipboard(elements, elementsLines) {
         elementObj.x = mousePosInPixels.x + (element.x - x1);
         elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        addObjectToData(elementObj, false);
-        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
-            displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
-            console.error("Failed to create an element as it overlaps other element(s)");
-            overlapDetected = true;  // Set flag to stop further pasting
-            showdata();
-        }else{
-            newElements.push(elementObj);
-        }
+        // Check for overlap before adding
+        addObjectToData(elementObj, false); // Add to data
+
+    if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
+        data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
+        overlapDetected = true;
+    }
     });
 
+    // If overlap is detected, abort pasting the elements, otherwise add 
     if (overlapDetected) {
-        return;  // Prevent further pasting of lines and finishing the operation
+        displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
+        console.error("Failed to paste the element as it overlaps other element(s)");
+        return;
+    } else {
+        newElements.forEach(element => addObjectToData(element, false));
     }
 
     // Create the new lines but do not saved in stateMachine
