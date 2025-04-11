@@ -991,31 +991,18 @@ function deleteItem(item_lid = []) {
 
 // Permanently delete elements.
 function deleteAll() {
-
   var deletedElements = document.querySelectorAll(".deleted")
-  console.log('deleteAll() run, deleted elements lenght: ' + deletedElements.length);
-
-  if (deletedElements.length > 0){
-    console.log('deletedElements > 0')
+  for (i = deletedElements.length ; (i > 0) ; i--) {
+    var lid = deletedElements[i-1].id.match(/\d+/)[0];
     
-    for (i = deletedElements.length ; (i > 0) ; i--) {
-      var lid = deletedElements[i-1].id.match(/\d+/)[0];
-      console.log('taken lid: ' + lid);
-  
-      AJAXService("DEL", {
-        lid: lid
-      }, "SECTION");
-    }
-  
-      console.log('lid:  ' + lid + ' now deleted.');
-    $("#editSection").css("display", "none");
-    document.querySelector("#undoButton").style.display = "none";
+    AJAXService("DEL", {
+      lid: lid
+    }, "SECTION");
   }
-  else{
-    console.log('Error.')
+
+  $("#editSection").css("display", "none");
+  document.querySelector("#undoButton").style.display = "none";
   }
-  }
-  
 
 // undo deletion
 function cancelDelete () {
