@@ -22,6 +22,8 @@ $debug = "NONE!";
 pdoConnect();
 session_start();
 
+//TODO MAKE SURE THAT ALL VARIABLES ARE CONNECTED PROPERLY
+
 //Start of old IF
 if (strcmp($opt, "CREGITEX") === 0) {
     AqcuireCourse();
