@@ -1349,7 +1349,7 @@ function saveProperties() {
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
 function pasteClipboard(elements, elementsLines) {
-    // If elements does is empty, display error and return null
+    // If elements is empty, display error and return null
     if (elements.length == 0) {
         displayMessage("error", "You do not have any copied elements");
         return;
@@ -1381,6 +1381,8 @@ function pasteClipboard(elements, elementsLines) {
     const newElements = [];
     const newLines = [];
 
+    let overlapDetected = false;
+
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
@@ -1396,9 +1398,21 @@ function pasteClipboard(elements, elementsLines) {
         elementObj.x = mousePosInPixels.x + (element.x - x1);
         elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        newElements.push(elementObj);
-        addObjectToData(elementObj, false);
+        // Check for overlap before adding
+        addObjectToData(elementObj, false); // Add to data
+
+    if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
+        data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
+        overlapDetected = true;
+    }
     });
+
+    // If overlap is detected, abort pasting the elements, otherwise add 
+    if (overlapDetected) {
+        displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
+        console.error("Failed to paste the element as it overlaps other element(s)");
+        return;
+    }
 
     // Create the new lines but do not saved in stateMachine
     // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
