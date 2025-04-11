@@ -1334,7 +1334,7 @@ function saveProperties() {
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
 function pasteClipboard(elements, elementsLines) {
-    // If elements does is empty, display error and return null
+    // If elements is empty, display error and return null
     if (elements.length == 0) {
         displayMessage("error", "You do not have any copied elements");
         return;
@@ -1397,8 +1397,6 @@ function pasteClipboard(elements, elementsLines) {
         displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
         console.error("Failed to paste the element as it overlaps other element(s)");
         return;
-    } else {
-        newElements.forEach(element => addObjectToData(element, false));
     }
 
     // Create the new lines but do not saved in stateMachine
