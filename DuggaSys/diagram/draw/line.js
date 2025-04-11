@@ -23,6 +23,8 @@ function drawLine(line, targetGhost = false) {
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
     
+    // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
+    // if the line is recursive
     if (line.kind === lineKind.RECURSIVE){
 
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
@@ -387,10 +389,6 @@ function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash)
     let str = '';
     const length = 40 * zoomfact;
     const startX = fx;
-    const startY = fy + 20 * zoomfact;
-    const endX = fx;
-    const cornerX = fx + length;
-    const cornerY = fy;
     str += `<polyline id="${line.id}"
     points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact} 
             ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact} 
