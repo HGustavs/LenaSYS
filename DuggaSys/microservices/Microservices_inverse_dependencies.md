@@ -99,6 +99,7 @@ No inverse dependencies.
 ### updateCourse
 
 ### updateCourseVersion
+No inverse dependencies
 
 ## duggaedService
 
