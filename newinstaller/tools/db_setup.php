@@ -148,7 +148,8 @@ class DBSetup {
 			$this->sanitize($db_name . $user_name);
 			$this->sanitize_hostname($hostname);
 
-			$this->pdo->exec("GRANT ALL PRIVILEGES ON `$db_name`.* TO `$user_name`@`$hostname`");
+			//GRANT ALL PRIVILEGES ON '$db_name'.* TO '$user_name'@'$hostname'
+			$this->pdo->exec("GRANT ALL PRIVILEGES ON *.* TO '$user_name'@'$hostname'");
 
 			return $this->handle_success("Successfully set permissions for {$user_name}@{$hostname} on {$db_name}.");
 		} catch (PDOException $e) {
@@ -254,6 +255,12 @@ class DBSetup {
 	 * Will return array of information.
 	 */
 	private function handle_exception($e, string $action = "Error: ", $callback = null): array {
+		$myfile = fopen("instalationLogLenaSYS.txt", "a") or die("Unable to open file!");
+
+		fwrite($myfile, $action);
+
+		fclose($myfile);
+
 		throw new Exception($action . " Error: " . $e->getMessage());
 	}
 
@@ -264,6 +271,13 @@ class DBSetup {
 	 */
 	private function handle_success(string $action = "Success", $callback = null) {
 		$callback = $callback ?? $this->callback;
+
+		$myfile = fopen("instalationLogLenaSYS.txt", "a") or die("Unable to open file!");
+
+				fwrite($myfile, $action."\n");
+				
+				fclose($myfile);
+
 		if (isset($callback)) {
 			$this->execute_callback($callback, $action, true);
 		}
