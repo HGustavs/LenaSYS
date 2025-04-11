@@ -44,6 +44,7 @@ This is a list of all inverse dependencies of files in the codeviewerService fol
 ### retrieveCodeviewerService
 
 ### updateCodeExampleTemplate
+No inverse dependencies 
 
 ## courseedService
 
