@@ -104,125 +104,123 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     //select the files that has should be in the codeexample
     $fileCount = count($groupedFiles);
     //Start create the codeexample
-    if ($fileCount > 0 && $fileCount < 6) {
-        //Select the correct template, only template for 1 up to 5 files exist
-        switch ($fileCount) {
-            case 1:
-                $templateNumber = 10;
-                break;
-            case 2:
-                $templateNumber = 1;
-                break;
-            case 3:
-                $templateNumber = 3;
-                break;
-            case 4:
-                $templateNumber = 5;
-                break;
-            case 5:
-                $templateNumber = 9;
-                break;
-        }
-        $examplename = $exampleName;
-        $sectionname = $exampleName;
-
-        //create codeexample
-        $link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
-
-        //select the latest codeexample created to link boxes to this codeexample
-        $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
-        $query->execute();
-        $result = $query->fetch(PDO::FETCH_OBJ);
-        $exampleid = $result->LatestExID;
-
-        //Add each file to a box and add that box to the codeexample and set the box to its correct content.
-        for ($i = 0; $i < count($groupedFiles); $i++) {
-            $filename = $groupedFiles[$i];
-            $parts = explode('.', $filename);
-            $filetype = "CODE";
-            $wlid = 0;
-            switch ($parts[1]) {
-                case "js":
-                    $filetype = "CODE";
-                    $wlid = 1;
-                    break;
-                case "php":
-                    $filetype = "CODE";
-                    $wlid = 2;
-                    break;
-                case "html":
-                    $filetype = "CODE";
-                    $wlid = 3;
-                    break;
-                case "txt":
-                    $filetype = "DOCUMENT";
-                    $wlid = 4;
-                    break;
-                case "md":
-                    $filetype = "DOCUMENT";
-                    $wlid = 4;
-                    break;
-                case "java":
-                    $filetype = "CODE";
-                    $wlid = 5;
-                    break;
-                case "sr":
-                    $filetype = "CODE";
-                    $wlid = 6;
-                    break;
-                case "sql":
-                    $filetype = "CODE";
-                    $wlid = 7;
-                    break;
-                default:
-                    $filetype = "DOCUMENT";
-                    $wlid = 4;
-                    break;
-            }
-
-            $boxid = $i + 1;
-            $fontsize = 9;
-            $setting = "[viktig=1]";
-            $boxtitle = substr($filename, 0, 20);
-            $query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
-            $query->bindParam(":boxid", $boxid);
-            $query->bindParam(":exampleid", $exampleid);
-            $query->bindParam(":boxtitle", $boxtitle);
-            $query->bindParam(":boxcontent", $filetype);
-            $query->bindParam(":filename", $filename);
-            $query->bindParam(":settings", $setting);
-            $query->bindParam(":wordlistid", $wlid);
-            $query->bindParam(":fontsize", $fontsize);
-            $query->execute();
-        }
-        $link = "UNK";
-        $kind = 2;
-        $visible = 1;
-        $userid = 1; //Not used
-        $comment = null;  //Not used?
-        $gradesys = null;
-        $highscoremode = 0;
-        $tabs = 0;
-        $groupkind = null;
-        //add the codeexample to listentries
-        createNewListEntry(
-            $pdo,
-            $courseid,
-            $coursevers,
-            $userid,
-            $examplename,
-            $link,
-            $kind,
-            $comment,
-            $visible,
-            $highscoremode,
-            $pos,
-            $gradesys,
-            $tabs,
-            $groupkind,
-            null
-        );
+    //Select the correct template, only template for 1 up to 5 files exist
+    switch ($fileCount) {
+        case 1:
+            $templateNumber = 10;
+            break;
+        case 2:
+            $templateNumber = 1;
+            break;
+        case 3:
+            $templateNumber = 3;
+            break;
+        case 4:
+            $templateNumber = 5;
+            break;
+        case 5:
+            $templateNumber = 9;
+            break;
     }
+    $examplename = $exampleName;
+    $sectionname = $exampleName;
+
+    //create codeexample
+    $link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
+
+    //select the latest codeexample created to link boxes to this codeexample
+    $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
+    $query->execute();
+    $result = $query->fetch(PDO::FETCH_OBJ);
+    $exampleid = $result->LatestExID;
+
+    //Add each file to a box and add that box to the codeexample and set the box to its correct content.
+    for ($i = 0; $i < count($groupedFiles); $i++) {
+        $filename = $groupedFiles[$i];
+        $parts = explode('.', $filename);
+        $filetype = "CODE";
+        $wlid = 0;
+        switch ($parts[1]) {
+            case "js":
+                $filetype = "CODE";
+                $wlid = 1;
+                break;
+            case "php":
+                $filetype = "CODE";
+                $wlid = 2;
+                break;
+            case "html":
+                $filetype = "CODE";
+                $wlid = 3;
+                break;
+            case "txt":
+                $filetype = "DOCUMENT";
+                $wlid = 4;
+                break;
+            case "md":
+                $filetype = "DOCUMENT";
+                $wlid = 4;
+                break;
+            case "java":
+                $filetype = "CODE";
+                $wlid = 5;
+                break;
+            case "sr":
+                $filetype = "CODE";
+                $wlid = 6;
+                break;
+            case "sql":
+                $filetype = "CODE";
+                $wlid = 7;
+                break;
+            default:
+                $filetype = "DOCUMENT";
+                $wlid = 4;
+                break;
+        }
+
+        $boxid = $i + 1;
+        $fontsize = 9;
+        $setting = "[viktig=1]";
+        $boxtitle = substr($filename, 0, 20);
+        $query = $pdo->prepare("INSERT INTO box (boxid, exampleid, boxtitle, boxcontent, filename, settings, wordlistid, fontsize) VALUES (:boxid, :exampleid, :boxtitle, :boxcontent, :filename, :settings, :wordlistid, :fontsize);");
+        $query->bindParam(":boxid", $boxid);
+        $query->bindParam(":exampleid", $exampleid);
+        $query->bindParam(":boxtitle", $boxtitle);
+        $query->bindParam(":boxcontent", $filetype);
+        $query->bindParam(":filename", $filename);
+        $query->bindParam(":settings", $setting);
+        $query->bindParam(":wordlistid", $wlid);
+        $query->bindParam(":fontsize", $fontsize);
+        $query->execute();
+    }
+    $link = "UNK";
+    $kind = 2;
+    $visible = 1;
+    $userid = 1; //Not used
+    $comment = null;  //Not used?
+    $gradesys = null;
+    $highscoremode = 0;
+    $tabs = 0;
+    $groupkind = null;
+    //add the codeexample to listentries
+    createNewListEntry(
+        $pdo,
+        $courseid,
+        $coursevers,
+        $userid,
+        $exampleName,
+        $link,
+        $kind,
+        $comment,
+        $visible,
+        $highscoremode,
+        $pos,
+        $gradesys,
+        $tabs,
+        $groupkind,
+        null
+    );
 }
 
 function NoCodeExampleNoFiles($exampleName)
