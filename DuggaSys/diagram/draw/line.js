@@ -28,6 +28,27 @@ function drawLine(line, targetGhost = false) {
         tx = event.clientX;
         ty = event.clientY;
     }
+
+//Looks if the lines have gotta an index value from the function getLineAttrubutes
+//If so then there are multiple lines on the same row 
+
+// For example, in drawLine, after computing the base coordinates:
+//Looks if the line object have gotten the extra variable multiLineOffset from getLineAttrubutes
+//If so then there exists multiplelines on the same row and the offset should be changed
+
+if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
+    const lineSpaceing = 30; //Can be changed to change the spacing between lines
+    const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpaceing;
+    // Add offsets based on the line connection direction
+    if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
+        offset.x1 += offsetIncrease;
+        offset.x2 += offsetIncrease;
+    } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+        offset.y1 += offsetIncrease;
+        offset.y2 += offsetIncrease;
+    }
+}
+
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
         [fx, fy, tx, ty] = recursiveERRelation(felem, telem, line);
@@ -82,8 +103,10 @@ function drawLine(line, targetGhost = false) {
         }
         str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
     }
-    str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
-    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
+    str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
+    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
+
+
     if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
@@ -263,7 +286,7 @@ function recursiveERRelation(felem, telem, line) {
     if (fromRelation) {
         [fx, fy, tx, ty, felem] = recursiveERCalc(fx, fy, tx, ty, felem, isFirst, line);
     } else {
-        [tx, ty, fx, fy, telem] = recursiveERCalc(tx, ty, fx, fy, telem, isFiest, line);
+        [tx, ty, fx, fy, telem] = recursiveERCalc(tx, ty, fx, fy, telem, isFirst, line);
     }
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
@@ -295,12 +318,12 @@ function getLineAttrubutes(f, t, ctype) {
             break;
         case lineDirection.RIGHT:
             offset.x1 = 0;
-            offset.x2 = px * 6;
+            offset.x2 = px;
             result = [f.x2, f.cy, t.x1, t.cy, offset];
     }
     return result;
 }
-
+ 
 /**
  * @description Draw the label for the line.
  * @param {Object} line The line object for the label to be drawn.
@@ -780,6 +803,48 @@ function sortElementAssociations(element) {
     if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) {
         return sortvectors(currentElementID, compareElementID, element.right, element.id, 1)
     });
+
+    //Goes through all directions, if the function "determineLine" have added multiple lines to the same side
+    //it will then sort them and give them an index and number of lines.
+    //This is used to draw the lines in the right order and to give them a offset if they are on the same side.
+    //the offset is done is done in the function drawLine.
+    ['top', 'bottom', 'right', 'left'].forEach(side => {
+
+        //First we got to sort out recusive lines, dont want them to move about
+        const linesOfTargetSide = element[side];
+        const filteredLines = linesOfTargetSide.filter(lineID => {
+        const lineIdIndex = findIndex(lines, lineID);
+        // Check if the line exists in the lines array.
+        if (lineIdIndex === -1) {
+            return false; }
+        const lineObject = lines[lineIdIndex]; 
+        if (lineObject.ghostLine || lineObject.targetGhost) {
+            return lineObject.kind === lineKind.NORMAL;
+        }
+        return lineObject.kind !== lineKind.RECURSIVE;
+        });
+      
+        //If there are more then one line at one side
+        //sort them and give them an index and numberOfLines values
+        if (filteredLines.length > 1) {
+            filteredLines.sort((line_1, line_2) =>
+            sortvectors(line_1, line_2, filteredLines, element.id, 2)
+            );
+            filteredLines.forEach((lineID, index) => {
+            const lineIdIndex = findIndex(lines, lineID); 
+            if (lineIdIndex === -1){
+                return;   //Checks if enmpty
+            } 
+            //Give lineObject the variables of multiLineOffset and numberOfLines
+            //To be used in the function drawLine
+            const lineObject = lines[lineIdIndex]; 
+            lineObject.multiLineOffset = index;
+            lineObject.numberOfLines = filteredLines.length;
+          });
+        }
+      });
+
+
 }
 
 /**
