@@ -22,8 +22,6 @@ $debug = "NONE!";
 pdoConnect();
 session_start();
 
-//TODO MAKE SURE THAT ALL VARIABLES ARE CONNECTED PROPERLY
-
 //Start of old IF
 if (strcmp($opt, "CREGITEX") === 0) {
     AqcuireCourse();
@@ -78,6 +76,7 @@ function GetCourseVers($allFiles)
         $result = $query1->fetch(PDO::FETCH_OBJ);
         $counted = $result->count;
 
+        //if no codeexample exist create a new one
         if ($counted == 0) {
             //Get the last position in the listenries to add new course at the bottom
             $query = $pdo->prepare("SELECT pos FROM listentries WHERE cid=:cid ORDER BY pos DESC;");
@@ -103,7 +102,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     global $pdo, $courseid, $coursevers, $kind, $link,
     $gradesys, $highscoremode, $pos, $log_uuid;
 
-    //select the files that has should be in the codeexample
+    //Count the number of files in the codeexample
     $fileCount = count($groupedFiles);
     //Start create the codeexample
     //Select the correct template, only template for 1 up to 5 files exist
@@ -199,8 +198,8 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $link = "UNK";
     $kind = 2;
     $visible = 1;
-    $userid = 1; //Not used
-    $comment = null;  //Not used?
+    $userid = 1;
+    $comment = null;
     $gradesys = null;
     $highscoremode = 0;
     $tabs = 0;
@@ -211,7 +210,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
         $courseid,
         $coursevers,
         $userid,
-        $exampleName,
+        $examplename,
         $link,
         $kind,
         $comment,
@@ -438,7 +437,7 @@ function NoCodeExampleNoFiles($exampleName)
 
 //////////////////////////////////////////START OF OLD IF - CONVERTED TO FUNCTIONS ABOVE//////////////////////////////////////////
 
-
+/*
 if (strcmp($opt, "CREGITEX") === 0) {
     $query = $pdo->prepare("SELECT cid,githubDir,vers FROM listentries WHERE lid=:lid;");
     $query->bindParam(":lid", $lid);
@@ -826,6 +825,7 @@ if (strcmp($opt, "CREGITEX") === 0) {
         }
     }
 }
+*/
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
