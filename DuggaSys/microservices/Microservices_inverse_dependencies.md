@@ -44,6 +44,10 @@ No inverse dependencies
 ### editContentOfExample
 
 ### retrieveCodeviewerService
+[deleteCodeExample_ms.php](codeviewerService/deleteCodeExample_ms.php)
+[editBoxTitle_ms.php](codeviewerService/editBoxTitle_ms.php)
+[editCodeExample_ms.php](codeviewerService/editCodeExample_ms.php)
+[editContentOfExample_ms.php](codeviewerService/editContentOfExample_ms.php)
 
 ### updateCodeExampleTemplate
 
