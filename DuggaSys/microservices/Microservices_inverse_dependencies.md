@@ -61,6 +61,7 @@ There is no list of all inverse dependencies
 ### createMOTD
 
 ### createNewCourse
+No inverse dependencies, except for commented out in code: ~[Shared/dugga.js](/Shared/dugga.js)~
 
 ### deleteCourseMaterial
 
