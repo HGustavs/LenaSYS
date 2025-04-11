@@ -966,6 +966,7 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
+
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     lid = item_lid ? item_lid : $("#lid").val(); 
@@ -975,13 +976,7 @@ function deleteItem(item_lid = []) {
     document.querySelector("#undoButton").style.display = "block";
   }
 
-
-
-
-
-  // Displays popup
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
-  console.log(' does this work? ')
 
   // Makes deletefunction sleep for 16 sec so it is possible to undo an accidental deletion. 
   clearTimeout(delTimer);
@@ -995,28 +990,18 @@ function deleteAll() {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = deletedElements.length ; (i > 0) ; i--) {
     var lid = deletedElements[i-1].id.match(/\d+/)[0];
-    
+    deletedElements[i-1].classList.remove("deleted");
+
     AJAXService("DEL", {
       lid: lid
     }, "SECTION");
   }
-
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
-  }
-
-// "Undo" deletion
-function cancelDelete () {
-  clearTimeout(delTimer);
-  var deletedElements = document.querySelectorAll(".deleted")
-  for (i = 0; i < deletedElements.length; i++) {
-    deletedElements[i].classList.remove("deleted");
-  }
-  location.reload();
 }
 
-// Cancel deletion
-function cancel () {
+// Undo the deletion
+function cancelDelete () {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
