@@ -81,6 +81,7 @@ There is no list of all inverse dependencies
 ### updateCourse
 
 ### updateCourseVersion
+No inverse dependencies
 
 ## duggaedService
 
