@@ -2915,6 +2915,11 @@ codeviewer.php END
      box-sizing: border-box;
  }
 
+#fileUploadBox.formBox {
+    width: 464px;
+    overflow-y: visible
+}
+
 .sortTab {
     white-space: nowrap;
 }

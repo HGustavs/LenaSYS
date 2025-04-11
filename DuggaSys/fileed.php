@@ -207,10 +207,9 @@ $js = array(
 
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
-        <div class='formBox' style='width:464px; overflow-y: visible'>
+        <div class='formBox' id='fileUploadBox'>
             <div class='formBoxHeader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
-
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
                 <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
