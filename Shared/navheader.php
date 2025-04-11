@@ -546,17 +546,21 @@
 		}
 	}, {once: true});
 
-		if(localStorage.getItem("ls-cookie-message")=="off"){
-			$("#cookiemsg").css("display", "none");
-		}else{
-			$("#cookiemsg").css("display", "flex");
+	const cookieMsg = document.getElementById("cookiemsg");
+	if (cookieMsg) {
+		if (localStorage.getItem("ls-cookie-message") === "off") {
+			cookieMsg.style.display = "none";
+		} else {
+			cookieMsg.style.display = "flex";
 		}
+	}
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("ls-cookie-message", "off");
 	}
-	function hoverBack(){
-		$(".dropdown-list-container").css("display", "none");
+	function hoverBack() {
+		const dropdowns = document.querySelectorAll(".dropdown-list-container");
+		dropdowns.forEach(el => el.style.display = "none");
 	}
 
 function mouseOverHome() {
