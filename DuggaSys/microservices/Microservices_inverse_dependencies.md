@@ -46,6 +46,7 @@ No inverse dependencies
 ### retrieveCodeviewerService
 
 ### updateCodeExampleTemplate
+No inverse dependencies 
 
 ## courseedService
 
