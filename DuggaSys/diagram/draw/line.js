@@ -102,7 +102,7 @@ function drawLine(line, targetGhost = false) {
     
     str += drawLineIcon(line.startIcon, line.ctype, fx, fy, lineColor, line);
     if (line.kind === lineKind.RECURSIVE){
-        str += drawLineIcon(line.endIcon, line.ctype, tx, ty + 40, lineColor, line);
+        str += drawLineIcon(line.endIcon, line.ctype, tx, ty + 40 * zoomfact, lineColor, line);
     }
     else{
         str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx, ty, lineColor, line);
