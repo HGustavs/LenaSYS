@@ -74,6 +74,7 @@ There is no list of all inverse dependencies
 ### specialUpdate
 
 ### updateActiveCourseVersion_courseed
+No inverse dependencies.
 
 ### updateCourse
 
