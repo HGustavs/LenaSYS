@@ -1448,6 +1448,9 @@ header td {
   vertical-align: middle;
   margin-top: 9px;
 }
+.filterButt{
+  margin-top: 3px;
+}
 
 .navButt img {
   vertical-align: middle;
@@ -1461,6 +1464,9 @@ header td {
   margin-top: 9px;
 }
 
+td.navSearchWrapper form {
+margin-block-end: 10px;
+}
 .navSearch {
   margin-top:5%;
 }
