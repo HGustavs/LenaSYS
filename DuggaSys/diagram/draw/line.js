@@ -22,7 +22,18 @@ function drawLine(line, targetGhost = false) {
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
-    [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+    
+    // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
+    // if the line is recursive
+    if (line.kind === lineKind.RECURSIVE){
+
+        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
+        [fx, fy, tx, ty, offset] = [fx, fy, fx, fy, offset];
+    }
+    else{
+        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+    }
+    
     // Follows the cursor while drawing the line
     if (isCurrentlyDrawing){
         tx = event.clientX;
@@ -69,6 +80,7 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                 x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
                 y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
                 stroke='${lineColor}' stroke-width='${strokewidth}'
+                
                 />`;
             };
             str += double(1, 1);
@@ -94,19 +106,32 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
-            str += drawRecursive(fx, fy, offset, line, lineColor);
+            str += drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash);
+            str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+            
         }
-        str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+        else{
+            str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+        }
+        
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
-    str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
+    if (line.kind === lineKind.RECURSIVE){
+        str += drawLineIcon(line.endIcon, line.ctype, tx, ty + 40 * zoomfact, lineColor, line);
+    }
+    else{
+        str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
+    }
+  
     if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
         if (line.startIcon == SDLineIcons.ARROW) {
+            
             str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
         }
         if (line.endIcon == SDLineIcons.ARROW) {
+            
             str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
         }
     }
@@ -374,20 +399,20 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
  * @param {Object} lineColor Where the start and end label should be.
  * @returns Returns the different lines for the recursive line and the Array on the line.
  */
-function drawRecursive(fx, fy, offset, line, lineColor) {
+function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash) {
     let str = '';
     const length = 40 * zoomfact;
     const startX = fx;
-    const startY = fy + 20 * zoomfact;
-    const endX = fx;
-    const cornerX = fx + length;
-    const cornerY = fy;
-
-    str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}'/>`;
-    str += `<line id='${line.id}' x1='${startX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${startY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-    str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${startY + offset.y1}' x2='${cornerX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-    str += `<line id='${line.id}' x1='${cornerX + offset.x1}' y1='${cornerY + offset.y1}' x2='${endX + offset.x1}' y2='${cornerY + offset.y1}' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'/>`;
-    str += iconPoly(SD_ARROW[lineDirection.RIGHT], fx, startY, lineColor, color.BLACK);
+    str += `<polyline id="${line.id}"
+    points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact} 
+            ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact} 
+            ${startX + offset.x1 + length},${fy + offset.y1 + length} 
+            ${startX + offset.x1 * zoomfact},${fy + offset.y1 + length}"
+    fill="none" 
+    stroke="${lineColor}" 
+    stroke-width="${strokewidth}" 
+    stroke-dasharray="${strokeDash}" 
+/>`;
     return str;
 }
 
@@ -488,6 +513,21 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
                 id='${line.id}' 
                 points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
                 fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+            />`;
+
+}
+
+function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
+    let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
+    let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+    return `<polyline id="${line.id}"
+    points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
+                points="${fx + offset.x1 },${fy + offset.y1 } 
+                        ${fx + offset.x1 + 40 },${fy + offset.y1} 
+                        ${fx + offset.x1 + 40 },${fy + offset.y1 + 40 } 
+                        ${fx + offset.x1 },${fy + offset.y1 + 40 }"
+                fill="none" 
+                stroke="${lineColor}" stroke-width="${strokewidth}" stroke-dasharray="${strokeDash}" 
             />`;
 
 }
