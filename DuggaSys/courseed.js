@@ -288,7 +288,7 @@ function resetinputs() {
 	$('#versname').val("");
 }
 
-function createVersion() {
+function createVersionFromForm() {
 	$(".item").css("background", "#fff");
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
@@ -605,7 +605,7 @@ function returnedCourse(data) {
 	var uname = document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
-	str = "";
+	var str = "";
 
 
 
@@ -620,7 +620,7 @@ function returnedCourse(data) {
 	str += "</div>";
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
-		for (i = 0; i < data['entries'].length; i++) {
+		for (var i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 			// Do not show courses the user does not have access to.
 			if (!data['writeaccess'] && !item['registered'] && uname != "Guest" && uname)
@@ -679,16 +679,9 @@ function returnedCourse(data) {
 		str += "</div>";
 	}
 
-	// str += "</div>";
-	// if (data['writeaccess']) {
-	// 	str += "<div style='float:right;'>";
-	// 	str += "<div class='fixed-action-button extra-margin'>";
-	// 	str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>";
-	// 	str += "</div>";
-	// 	str += "</div>";
-	// }
 
-	const flotingActionButton = ({hasWriteAccess, onNewCourse}) => {
+
+	const FloatingActionButton = ({hasWriteAccess, onNewCourse}) => {
 		if (!hasWriteAccess) return null;
 
 		return(
@@ -708,12 +701,12 @@ function returnedCourse(data) {
 	};
 
 	ReactDOM.render(
-		<flotingActionButton hasWriteAccess={data.writeaccess} onNewCourse={newCourse}/>,
+		<FloatingActionButton hasWriteAccess={data.writeaccess} onNewCourse={newCourse}/>,
 		document.getElementById('fab-container')
 	);
 
-	// var slist = document.getElementById('Courselist');
-	// slist.innerHTML = str;
+	var slist = document.getElementById('Courselist');
+	slist.innerHTML = str;
 
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);

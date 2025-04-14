@@ -2556,6 +2556,59 @@ function drawSwimlanes() {
 
 }
 
+// -------------==============######## Fab button and sub-buttons ###########==============-------------
+const FabMenu = ({onCreateItem}) => {
+  const fabItems = [
+    {type: "0", title: "New Heading" ,icon: "heading-icon.svg", tooltip: "Heading" },
+    { type: "1", title: "New Section", icon: "section-icon.svg", tooltip: "Section" },
+		{ type: "4", title: "New Moment", icon: "moment-icon.svg", tooltip: "Moment" },
+		{ type: "3", title: "New Test", icon: "test-icon.svg", tooltip: "Test" },
+		{ type: "5", title: "New Link", icon: "link", tooltip: "Link", isMaterialIcon: true },
+		{ type: "2", title: "New Code", icon: "code-icon.svg", tooltip: "Code" },
+		{ type: "6", title: "New Group", icon: "group-icon.svg", tooltip: "Group activity" },
+		{ type: "7", title: "New Quote", icon: "format_quote", tooltip: "Message", isMaterialIcon: true },
+  ];
+
+  return(
+    <div className="fixed-action-button2 sectioned2 display_none" id="FABStatic2">
+      <input
+      id="addElement"
+      type="button"
+      value="+"
+      className="submit-button-newitem"
+      title="New Item"
+    />
+    <ol className="fab-btn-list2" id="olFabBtnList2" reversed>
+				{fabItems.map((item, idx) => (
+					<li key={idx}>
+						<a
+							className="btn-floating fab-btn-sm2 scale-transition scale-out"
+							tabIndex="0"
+							data-tooltip={item.tooltip}
+							onClick={() => onCreateItem(item.type, item.title, "TOP")}
+						>
+							{item.isMaterialIcon ? (
+								<i className="material-icons">{item.icon}</i>
+							) : (
+								<img
+									alt={`${item.tooltip.toLowerCase()} icon`}
+									className="fab-icon"
+									src={`../Shared/icons/${item.icon}`}
+								/>
+							)}
+						</a>
+					</li>
+				))}
+			</ol>
+    </div>
+  );
+};
+
+ReactDOM.render(
+	<FabMenu onCreateItem={createFABItem} />,
+	document.getElementById('fabmenu-container')
+);
+
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mouseover(function (e) {
