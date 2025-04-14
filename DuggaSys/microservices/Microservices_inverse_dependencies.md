@@ -75,6 +75,8 @@ No inverse dependencies
 ### deleteCourseMaterial
 
 ### getCourseed
+    No inverse dependencies
+    (completely replaced by retrieveAllCourseedServiceData)
 
 ### retrieveAllCourseedServiceData
 No inverse dependencies found.
