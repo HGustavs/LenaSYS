@@ -830,7 +830,6 @@
     z-index: -11;
 }
 
-
 #a4Rect, #vRect {
     display: none; 
 }
@@ -852,7 +851,7 @@
 }
 
 #a4Text {
- /* no styling yet */
+    font-size: 32px;
 }
 
 /****************

@@ -252,6 +252,7 @@ function updateA4Size() {
 function updateA4Pos() {
     const OffsetX = Math.round(-zoomOrigo.x * zoomfact + (scrollx * (1.0 / zoomfact)));
     const OffsetY = Math.round(-zoomOrigo.y * zoomfact + (scrolly * (1.0 / zoomfact)));
+
     const rect = document.getElementById("a4Rect");
     const vRect = document.getElementById("vRect");
     const text = document.getElementById("a4Text");
@@ -261,7 +262,7 @@ function updateA4Pos() {
 
     rect.setAttribute('x', OffsetX.toString());
     rect.setAttribute('y', OffsetY.toString());
-
+    
     text.setAttribute('x', (OffsetX + 8).toString());
     text.setAttribute('y', (OffsetY - 8).toString());
 }
