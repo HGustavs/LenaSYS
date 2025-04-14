@@ -209,18 +209,8 @@ function snapElementToLifeline(element, targetId) {
     for (let i = 0; i < data.length; i++) {
         const ll = data[i];
         if ((ll.kind === "sequenceActor" || ll.kind === "sequenceObject") && ll.id === targetId) {
-            // Calculate the minimum Y position based on the top box height
-            let boxHeight = getTopHeight(ll);
-            let minY = ll.y + boxHeight + (ll.kind === "sequenceActor" ? 70 : -70);
-
             // Snap the element horizontally to the center of the lifeline
             element.x = ll.x + (ll.width / 2) - (element.width / 2);
-
-            // Adjust vertical position if the element is too high
-            if (element.y < minY) {
-                element.y = minY;
-            }
-
             updatepos(); // Refresh position on screen
             break;
         }

@@ -300,6 +300,7 @@ function mup(event) {
             } else if (deltaExceeded) {
                 // If there are elements selected in the context
             if (context.length > 0) {
+                setPos(context, deltaX, deltaY);
                 // Loop through each selected element
                 context.forEach(el => {
                 // Find the nearest lifeline to the element's center position
