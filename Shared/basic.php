@@ -169,6 +169,8 @@ $dbVersion = 6;
 $metadataDbVersion = 2;
 //---------------------------------------------------------------------------------------------------------------
 
+
+// This section might be doing more than scaffolding.
 try {
 	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
 } catch (PDOException $e) {
