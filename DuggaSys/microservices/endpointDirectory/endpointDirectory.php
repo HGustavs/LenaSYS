@@ -12,18 +12,18 @@ if(isset($_GET['name'])){
     //get list of courses with matching name
     $results = getServicesByName($name);
     echo "<pre>";
-    print_r($results);
+        print_r($results);
     echo "</pre>";
 }
 elseif(isset($_GET['parameter'])){
     $parameter = $_GET['parameter'];
     //get list of courses with matching parameters
-    $results = getCoursesByParameter($parameter);
+    $results = getServicesByParameter($parameter);
 }
 elseif(isset($_GET['description'])){
     $description = $_GET['description'];
     //get list of courses with matching description
-    $results = getCoursesByDescription($description);
+    $results = getServicesByDescription($description);
 }
 else{
     echo "no valid queries found";

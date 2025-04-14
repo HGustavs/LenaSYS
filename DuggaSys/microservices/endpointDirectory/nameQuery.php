@@ -2,16 +2,12 @@
 
 function getServicesByName($name){
     //get names from database
-    include_once "../../../Shared/basic.php";
-
-    pdoConnect();
-    session_start();
-
+/*
     $name = '%' . $name . '%'; 
     $query = $pdo->prepare("SELECT * FROM microservices WHERE serviceName LIKE :name");
 	$query->bindParam(':name', $name);
     $query->execute();
-
+*/
     //return $query->fetchAll(PDO::FETCH_ASSOC);
 
     return [
