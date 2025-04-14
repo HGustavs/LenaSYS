@@ -1,5 +1,5 @@
-### TEST MARKDOWN FILE ###
-
+### MICROSERVICE DOCUMENTATION ###
+<!-- this is an example, the above line will be what identifies this as documentation for a microservice (important) -->
 # MICROSERVICE NAME #
 example_ms
 
