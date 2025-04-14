@@ -93,7 +93,6 @@ function leaveFilter() {
 		$('#dropdownc').css('display', 'none');}
 }
 
-/*
 function hoverc() {
 	$('#dropdowns').css('display', 'none');
 	$('#dropdownc').css('display', 'block');
@@ -102,7 +101,6 @@ function hoverc() {
 function leavec() {
 	$('#dropdownc').css('display', 'none');
 }
-*/
 
 function hovers() {
 	$('#dropdowns').css('display', 'block');
