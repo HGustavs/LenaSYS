@@ -63,7 +63,7 @@ There is no list of all inverse dependencies
 ### createNewCourse
 
 ### deleteCourseMaterial
-There is no inverse dependencies for this file/service
+[retrieveCourseedService_ms.php](courseedService/retrieveCourseedService_ms.php)
 
 ### getCourseed
 
