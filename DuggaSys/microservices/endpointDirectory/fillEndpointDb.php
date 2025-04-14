@@ -23,6 +23,42 @@ foreach ($mdFiles as $mdFile) {
         continue;
     }
 
+    // extract blocks with regex
+    $fields = [
+        'ms_name' => '/# MICROSERVICE NAME #\s*(.+)/i',
+        'ms_path' => '/# SEARCHPATH #\s*(.+)/i',
+        'file_name' => '/# FILENAME #\s*(.+)/i',
+        'description' => '/# DESCRIPTION #\s*(.+)/i',
+        'parameters' => '/# PARAMETERS #\s*(.+)/i',
+        'render' => '/# RENDER #\s*(.+)/i',
+    ];
+
+    $values = [];
+
+    foreach ($fields as $key => $regex) {
+        if (preg_match($regex, $content, $match)) {
+            $values[$key] = trim($match[1]);
+        } else {
+            // if something is missing
+            $values[$key] = null;
+        }
+    }
+
+    // insert into database
+    $stmt = $db->prepare("
+        INSERT INTO microservices (ms_name, file_name, ms_path, parameters, documentation, render)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+
+    $stmt->execute([
+        $values['ms_name'],
+        $values['file_name'],
+        $values['ms_path'],
+        $values['parameters'],
+        $values['description'],
+        $values['render']
+    ]);
+
 }
 
 
