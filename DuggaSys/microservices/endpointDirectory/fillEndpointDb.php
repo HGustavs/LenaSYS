@@ -30,7 +30,7 @@ foreach ($services as $serviceName) {
     // search for .php and .js files 
     $files = scandir($servicePath);
     foreach ($files as $file) {
-
+        // echo $file . "<br>";
     }
 
 
