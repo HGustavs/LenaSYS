@@ -12,7 +12,7 @@ $db->exec("DELETE FROM microservices");
 $basePath = realpath(__DIR__ . '/../');
 // points to project root
 // $rootPath = realpath($basePath . '/../');
-$mdFiles = glob($basePath . '/*.md');
+$mdFiles = glob($basePath . '/*/*.md');
 
 // loop through every .md-file
 foreach ($mdFiles as $mdFile) {
