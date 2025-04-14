@@ -166,67 +166,50 @@ $js = array(
      
         ?>
         </div>
-        <div style='display:flex;justify-content:space-between;align-items:flex-end;margin-top:50px'>
-            <div style='display:flex;flex-wrap:wrap;'>
-                <div style='white-space:nowrap'>
-                    <div class="allFilesSortTab" tabIndex="0">
-                        <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="filterFilesByKind('AllFiles');count=0;"/>
-                        <label for="all-files-sort" name="sortAll" style='white-space:nowrap'>All files</label>
-                    </div>
+        <div class='sortButtonsContainer'>
+            <div class='sortButtonsSubContainer'>
+                <div class="sortTab allFilesSortTab" tabIndex="0">
+                    <input type="radio" id="all-files-sort" name="sortKind" value="All" checked onclick="filterFilesByKind('AllFiles');count=0;"/>
+                    <label for="all-files-sort" name="sortAll">All files</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="globalSortTab" tabIndex="0">
-                        <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="filterFilesByKind('Global');count=0;"/>
-                        <label for="global-files-sort" name="sortGlobal" style='white-space:nowrap'>Global</label>
-                    </div>
+                <div class="sortTab globalSortTab" tabIndex="0">
+                    <input type="radio" id="global-files-sort" name="sortKind" value="Global" onclick="filterFilesByKind('Global');count=0;"/>
+                    <label for="global-files-sort" name="sortGlobal">Global</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="courselocalSortTab" tabIndex="0">
-                        <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="filterFilesByKind('CourseLocal');count=0;"/>
-                        <label for="course-local-sort" name="sortCLocal" style='white-space:nowrap'>Course local</label>
-                    </div>
+                <div class="sortTab courselocalSortTab" tabIndex="0">
+                    <input type="radio" id="course-local-sort" name="sortKind" value="CourseLocal" onclick="filterFilesByKind('CourseLocal');count=0;"/>
+                    <label for="course-local-sort" name="sortCLocal">Course local</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="versionLocalSortTab" tabIndex="0">
-                        <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="filterFilesByKind('Local');count=0;"/>
-                        <label for="version-local-sort" name="sortVLocal" style='white-space:nowrap'>Version local</label>
-                    </div>
+                <div class="sortTab versionLocalSortTab" tabIndex="0">
+                    <input type="radio" id="version-local-sort" name="sortKind" value="VersionLocal" onclick="filterFilesByKind('Local');count=0;"/>
+                    <label for="version-local-sort" name="sortVLocal">Version local</label>
                 </div>
-                <div style='white-space:nowrap'>
-                    <div class="linkSortTab" tabIndex="0">
-                        <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="filterFilesByKind('Link');count=0;"/>
-                        <label for="links-sort" name="sortLinks" style='white-space:nowrap'>Links</label>
-                    </div>
+                <div class="sortTab linkSortTab" tabIndex="0">
+                    <input type="radio" id="links-sort" name="sortKind" value="Links" onclick="filterFilesByKind('Link');count=0;"/>
+                    <label for="links-sort" name="sortLinks">Links</label>
                 </div>
-                 <div style='white-space:nowrap'>
-                    <div class="dummyFileSortTab" tabIndex="0">
-                        <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="filterFilesByKind('DummyFiles');count=0;"/>
-                        <label for="dummyEmptyFile-sort" name="sortDummyFile" style='white-space:nowrap'>Dummy files</label>
-                    </div>
+                <div class="sortTab dummyFileSortTab" tabIndex="0">
+                    <input type="radio" id="dummyEmptyFile-sort" name="sortKind" value="Dummy File" onclick="filterFilesByKind('DummyFiles');count=0;"/>
+                    <label for="dummyEmptyFile-sort" name="sortDummyFile">Dummy files</label>
                 </div>
-                 <div style='white-space:nowrap'>
-                    <div class="manualSortTab" tabIndex="0">
-                        <input type="radio" id="manual-sort" name="sortKind" value="Manual" onclick="filterFilesByKind('Manual');count=0;"/>
-                        <label for="manual-sort" name="sortManual" style='white-space:nowrap'>Manual</label>
-                    </div>
+                <div class="sortTab manualSortTab" tabIndex="0">
+                    <input type="radio" id="manual-sort" name="sortKind" value="Manual" onclick="filterFilesByKind('Manual');count=0;"/>
+                    <label for="manual-sort" name="sortManual">Manual</label>
                 </div>
-                 <div style='white-space:nowrap'>
-                    <div class="githubSortTab" tabIndex="0">
-                        <input type="radio" id="github-sort" name="sortKind" value="Github" onclick="filterFilesByKind('Github');count=0;"/>
-                        <label for="github-sort" name="sortGithub" style='white-space:nowrap'>Github</label>
-                    </div>
+                <div class="sortTab githubSortTab" tabIndex="0">
+                    <input type="radio" id="github-sort" name="sortKind" value="Github" onclick="filterFilesByKind('Github');count=0;"/>
+                    <label for="github-sort" name="sortGithub">Github</label>
                 </div>
             </div>
         </div>
-		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
+		<div id='fileLink' class='table'></div>
 		<!-- content END -->
 
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
-        <div class='formBox' style='width:464px; overflow-y: visible'>
+        <div class='formBox' id='fileUploadBox'>
             <div class='formBoxHeader' style='cursor:default;'>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
-
                 <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
                 <h3 class="fileHeadline" id="eFileHeadline">Add Dummy Empty File</h3>
                 <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
@@ -253,7 +236,7 @@ $js = array(
                     
                     <div class='inputwrapper linkPopUp'>
                         <span>URL:</span>
-                        <input style="width:380px" id="uploadedlink" class="textinput" name="link"
+                        <input id="uploadedlink" class="textinput" name="link"
                                placeholder="https://facebook.com" type="text"/>
                     </div>
                 </div>
@@ -271,7 +254,7 @@ $js = array(
                     <input type='hidden' id='ekind' name='kind' value='Toddler'/>
                     <label for="newEmptyFile">File name and type e.g greger.txt</label>
                     <!-- .svg| -->
-                    <ul style="padding-left: 0px; list-style-type: none; display: none;" id="dummyFileErrorList"></ul>
+                    <ul style="display: none;" id="dummyFileErrorList"></ul>
                     <input type="text" id="newEmptyFile" name="newEmptyFile[]" placeholder="Greger.txt">
                     <span id="spankind">Kind:</span>
                     <select name ="efilekind[]" id="selectdir">
@@ -291,7 +274,7 @@ $js = array(
                     ?>
                     <select>
                     <div id='uploadbuttonname'>
-                        <input type="submit" style="position: relative; top:25px;" onclick="uploadFile('EFILE');"/>
+                        <input type="submit" onclick="uploadFile('EFILE');"/>
                     </div>
                 </form>
             </div>
@@ -331,7 +314,7 @@ $js = array(
                 <div class="markdown">
                     <fieldset id="markset">
                         <legend>Markdown</legend>
-                        <div style="display:flex;flex-direction:column;justify-content: flex-start; height:100%; box-sizing:border-box;">
+                        <div id='markdownEditor'>
                             <div class="markdown-icon-div">
                                 <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
                                 <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
@@ -393,7 +376,7 @@ $js = array(
                         <legend id="markPrev">Markdown preview</legend>
                         <div class="markTextPrev">
                             <div class="prevSpan">
-                                <div id="mdtarget" class="descbox" style="height: 100%;box-sizing: border-box;">
+                                <div id="mdtarget" class="descbox">
                                 </div>
                             </div>
                         </div>
@@ -425,11 +408,11 @@ $js = array(
 <!-- Markdown-preview and edit file functionality END -->
 
 <!--Fab-button-->
-<div class="fixed-action-button" id="fabButton" style = "margin-right: 100px;">
+<div class="fixed-action-button" id="fabButton">
     <div class="fabBtnEditfile" tabIndex="0">
         <a class="btn-floating fab-btn-lg noselect" id="fabBtn" onclick=" createQuickItem()">+</a>
     </div>
-    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed id='fab-btn-list'>
+    <ol class="fab-btn-list" style="display: none;" reversed id='fab-btn-list'>
     <?php
         if (isSuperUser($_SESSION['uid'] || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w'))) {
             echo '

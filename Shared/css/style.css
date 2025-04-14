@@ -2001,6 +2001,11 @@ div .navButt:hover {
   cursor: pointer;
 }
 
+#createNewEmptyFile ul {
+    padding-left: 0px;
+    list-style-type: none;
+}
+
 /* <<<<<<<<<<< End of create new empty file >>>>>>>>>>>>>>> */
 
 #variantBox {
@@ -2915,6 +2920,48 @@ codeviewer.php END
   text-align:left;
  }
 
+ #fabButton.fixed-actionButton {
+     margin-right: 100px;
+ }
+
+#fabButton.fixed-action-button ol {
+    margin: 0;
+    padding: 0;
+}
+
+ #mdtarget.descbox{
+     height: 100%;
+     box-sizing: border-box;
+ }
+
+#fileUploadBox.formBox {
+    width: 464px;
+    overflow-y: visible
+}
+
+.sortTab {
+    white-space: nowrap;
+}
+
+.sortButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 50px
+}
+
+.sortButtonsSubContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sortButtonsSubContainer label {
+    white-space: nowrap;
+}
+
+#uploadedlink.textinput {
+    width: 380px;
+}
 
  /*---===#===---*
  fileed.php END 
@@ -4756,6 +4803,11 @@ div.reset-pw:hover{
   margin: 15px 0 18px 0 !important;
 }
 
+#uploadbuttonname input {
+    position: relative;
+    top: 25px;
+}
+
 #feedbackTable table {
   width: 100%;
 }
@@ -5846,6 +5898,11 @@ ul.hamburgerList button.menuButton {
     min-width: 1050px;
 }
 */
+
+#fileLink.table {
+    width: 100%;
+    margin-bottom: 30px;
+}
 
 #sortingDiv {
   height: 30px;
@@ -7935,6 +7992,14 @@ only screen and (max-device-width: 568px) {
   bottom: 0;
   z-index: 8000;
   display: none;
+}
+
+#markdownEditor {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .formBoxHeade, .fileViewHeader {
