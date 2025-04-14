@@ -425,7 +425,9 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     let totalHeight = tHeight - linew * 2 + texth * 2;
     updateElementHeight(SDHeight, element, totalHeight + boxh);
 
-    let height = texth * 2;
+    // Header 
+    let headerLines = splitFull([element.name], maxCharactersPerLine);
+    let height = texth * (headerLines.length + 0.5) * lineHeight;
     let headPath = `
         <path 
         class="text"
@@ -441,10 +443,15 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
             stroke='${element.stroke}'
             fill='${element.fill}'
         />`;
-    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headText = "";
+    for (let i = 0; i < headerLines.length; i++) {
+        const y = texth * (i + 1) * lineHeight;
+        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+    }
     let headSvg = drawSvg(boxw, height, headPath + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px;`, headSvg);
 
+    // Content / Attributes
     const drawBox = (s, css) => {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
