@@ -268,7 +268,7 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 
 ### updateQuizDeadline
 
-### updateVisibleListentries
+### updateVisibleListEntries
 
 ## sharedMicroservices
 
@@ -310,7 +310,7 @@ createListEntry_ms.php
 [updateListEntriesGradesystem_ms.php](sectionedService/updateListEntriesGradesystem_ms.php)
 [updateListEntriesTabs_ms.php](sectionedService/updateListEntriesTabs_ms.php)
 [updateListEntryOrder_ms.php](sectionedService/updateListEntryOrder_ms.php)
-[updateVisibleListentries_ms.php](sectionedService/updateVisibleListentries_ms.php)
+[updateVisibleListEntries_ms.php](sectionedService/updateVisibleListEntries_ms.php)
 
 ##### resultedService
 [getUserAnswer_ms.php](resultedService/getUserAnswer_ms.php)
