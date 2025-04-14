@@ -73,6 +73,7 @@ No inverse dependencies
 No inverse dependencies
 
 ### deleteCourseMaterial
+[retrieveCourseedService_ms.php](courseedService/retrieveCourseedService_ms.php)
 
 ### getCourseed
     No inverse dependencies
