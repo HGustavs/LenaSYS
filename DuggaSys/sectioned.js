@@ -1519,7 +1519,7 @@ function returnedSection(data) {
 
         // Content table
         str += `<table id='lid${item['lid']}' value='${item['lid']}'
-        style='width:100%;table-layout:fixed;'><tr value='${makeTextArray(item['kind'], valarr)}'`;
+        ><tr value='${makeTextArray(item['kind'], valarr)}'`;
 
         //if (kk % 2 == 0) {
         //  str += " class='hi' ";
