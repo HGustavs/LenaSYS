@@ -29,17 +29,12 @@ function drawLine(line, targetGhost = false) {
         ty = event.clientY;
     }
 
+
 //Looks if the lines have gotta an index value from the function getLineAttrubutes
-//If so then there are multiple lines on the same row 
-
-// For example, in drawLine, after computing the base coordinates:
-//Looks if the line object have gotten the extra variable multiLineOffset from getLineAttrubutes
-//If so then there exists multiplelines on the same row and the offset should be changed
-
+//If so then there are multiple lines on the same row and the offset is changed
 if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
-    const lineSpaceing = 30; //Can be changed to change the spacing between lines
-    const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpaceing;
-    // Add offsets based on the line connection direction
+    const lineSpacing = 30; //Can be changed to change the spacing between lines
+    const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpacing;
     if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
         offset.x1 += offsetIncrease;
         offset.x2 += offsetIncrease;
@@ -806,42 +801,45 @@ function sortElementAssociations(element) {
     //it will then sort them and give them an index and number of lines.
     //This is used to draw the lines in the right order and to give them a offset if they are on the same side.
     //the offset is done is done in the function drawLine.
-    ['top', 'bottom', 'right', 'left'].forEach(side => {
+    try{
+        ['top', 'bottom', 'right', 'left'].forEach(side => {
 
-        //First we got to sort out recusive lines, dont want them to move about
-        const linesOfTargetSide = element[side];
-        const filteredLines = linesOfTargetSide.filter(lineID => {
-        const lineIdIndex = findIndex(lines, lineID);
-        // Check if the line exists in the lines array.
-        if (lineIdIndex === -1) {
-            return false; }
-        const lineObject = lines[lineIdIndex]; 
-        if (lineObject.ghostLine || lineObject.targetGhost) {
-            return lineObject.kind === lineKind.NORMAL;
-        }
-        return lineObject.kind !== lineKind.RECURSIVE;
-        });
-      
-        //If there are more then one line at one side
-        //sort them and give them an index and numberOfLines values
-        if (filteredLines.length > 1) {
-            filteredLines.sort((line_1, line_2) =>
-            sortvectors(line_1, line_2, filteredLines, element.id, 2)
-            );
-            filteredLines.forEach((lineID, index) => {
-            const lineIdIndex = findIndex(lines, lineID); 
-            if (lineIdIndex === -1){
-                return;   //Checks if enmpty
-            } 
-            //Give lineObject the variables of multiLineOffset and numberOfLines
-            //To be used in the function drawLine
+            //First we got to sort out recusive lines, dont want them to move about
+            const linesOfTargetSide = element[side];
+            const filteredLines = linesOfTargetSide.filter(lineID => {
+            const lineIdIndex = findIndex(lines, lineID);
+            // Check if the line exists in the lines array.
+            if (lineIdIndex === -1) {
+                return false; }
             const lineObject = lines[lineIdIndex]; 
-            lineObject.multiLineOffset = index;
-            lineObject.numberOfLines = filteredLines.length;
-          });
-        }
-      });
-
+            if (lineObject.ghostLine || lineObject.targetGhost) {
+                return lineObject.kind === lineKind.NORMAL;
+            }
+            return lineObject.kind !== lineKind.RECURSIVE;
+            });
+        
+            //If there are more then one line at one side
+            //sort them and give them an index and numberOfLines values
+            if (filteredLines.length > 1) {
+                filteredLines.sort((line_1, line_2) =>
+                sortvectors(line_1, line_2, filteredLines, element.id, 2)
+                );
+                filteredLines.forEach((lineID, index) => {
+                const lineIdIndex = findIndex(lines, lineID); 
+                if (lineIdIndex === -1){
+                    return;   //Checks if enmpty
+                } 
+                //Give lineObject the variables of multiLineOffset and numberOfLines
+                //To be used in the function drawLine
+                const lineObject = lines[lineIdIndex]; 
+                lineObject.multiLineOffset = index;
+                lineObject.numberOfLines = filteredLines.length;
+            });
+            }
+        });
+    }catch (error) {
+        console.error("Error in sortElementAssociations, Multi-line sorting:", error);
+    }
 }
 
 /**
