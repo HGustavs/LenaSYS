@@ -170,7 +170,7 @@ $metadataDbVersion = 2;
 //---------------------------------------------------------------------------------------------------------------
 
 
-// This section might be doing more than scaffolding.
+// This section might be doing more than scaffolding. It's doing a specific job rather than general-purpose. 
 try {
 	$log_db = new PDO('sqlite:../../log/loglena'.$dbVersion.'.db');
 } catch (PDOException $e) {
