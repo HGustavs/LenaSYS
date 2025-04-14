@@ -131,3 +131,39 @@ function myTest() { <-- Capitals on second word in function name e.g. Test
 }
 ```
 
+//---------------------------------------------------------------------------------------------------
+// Code standard for CSS Grid Layout  <-- Preferred layout technique for new components
+//---------------------------------------------------------------------------------------------------
+
+- Use CSS Grid for layout to ensure readable and responsive structure. 
+- Avoid using <table> for layout purposes.
+- All layout should be grid-based using display: grid.
+
+### Grid rules
+- Use `display: grid` as layout method.
+- Use `grid-template-columns", `grid-template-rows`, `gap`, `place-items`, etc.
+- Avoid `<table>` elements for layout. Tables should only be used for tabular data.
+- Use `grid-template-areas` for better readability when needed.
+
+/* Example layout using class-based CSS Grid */
+<div class="layout-grid">  <-- layout defined via class
+	<div>Left panel</div>
+	<div>Main content</div>
+</div>
+
+<style>
+.layout-grid {
+	display: grid;                      <-- layout method
+	grid-template-columns: 1fr 2fr;     <-- define column widths
+	gap: 1rem;                          <-- spacing between elements
+}
+</style>
+
+/* Responsive layout example using auto-fit and minmax */
+<style>
+.layout-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  <-- responsive columns
+	gap: 1rem;
+}
+</style>
