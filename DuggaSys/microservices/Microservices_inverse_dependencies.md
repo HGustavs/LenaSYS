@@ -94,6 +94,7 @@ No inverse dependencies found.
 - courseedService/updateCourseVersion_ms.php
 
 ### specialUpdate
+No inverse dependencies
 
 ### updateActiveCourseVersion_courseed
 No inverse dependencies.
