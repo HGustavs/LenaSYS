@@ -367,7 +367,7 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     updateElementHeight(IEHeight, element, totalHeight + boxh);
 
     const headerLines = splitFull([element.name], maxCharactersPerLine);
-    let height = texth * (headerLines.length + 1) * lineHeight;
+    let height = texth * (headerLines.length + 0.5) * lineHeight;
     let headRect = drawRect(boxw, height, linew, element);
     let headText = "";
     for (let i = 0; i < headerLines.length; i++) {
