@@ -301,7 +301,6 @@ function drawLineProperties(line) {
             });
             str += select('propertyCardinality', optER, true, false);
             str += `</label>`;
-            str += includeLabel(line);
             break;
         case entityType.UML:
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
