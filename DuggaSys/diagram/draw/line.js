@@ -91,10 +91,24 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
             str += drawRecursive(fx, fy, offset, line, lineColor);
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             offset.y1 = 1;
-            offset.y2 = -7 + 3 / zoomfact;
+            offset.y2 = -4 + 3 / zoomfact;
+            offset.x1 = 0;
+            offset.x2 = 0;
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
-            offset.y1 = -7 + 3 / zoomfact;
-            offset.y2 = 1;
+            offset.y1 = -4 + 3 / zoomfact;
+            offset.y2 = 3;
+            offset.x1 = 0;
+            offset.x2 = 0;
+        } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
+            offset.x1 =+ 1;
+            offset.x2 = 1  / zoomfact;
+            offset.y1 = 0;
+            offset.y2 = 0;
+        } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
+            offset.x1 = -1;
+            offset.x2 =  1 / zoomfact;
+            offset.y1 = 0;
+            offset.y2 = 0;
         }
         str += `<line 
                     id='${line.id}' 
@@ -332,7 +346,7 @@ function getLineAttrubutes(f, t, ctype) {
         case lineDirection.LEFT:
             offset.x1 = px;
             offset.x2 = px * 4;
-            result = [f.x1, f.cy, t.x1, t.cy, offset];
+            result = [f.x1, f.cy, t.x2, t.cy, offset];
             break;
         case lineDirection.RIGHT:
             offset.x1 = 0;
