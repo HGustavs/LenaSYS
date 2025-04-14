@@ -18,9 +18,21 @@ $services = scandir($basePath);
 foreach ($services as $serviceName) {
     $servicePath = $basePath . '/' . $serverName;
 
+    echo $servicePath . " = " . $serviceName . "<br>";
+
     if ($serviceName === '.' || $serviceName === '..') {
         continue;
     }
+    if (!is_dir($servicePath)) {
+        continue;
+    }
+
+    // search for .php and .js files 
+    $files = scandir($servicePath);
+    foreach ($files as $file) {
+
+    }
+
 
 }
 
