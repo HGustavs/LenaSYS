@@ -44,7 +44,7 @@ function drawLine(line, targetGhost = false) {
 //Looks if the lines have gotta an index value from the function getLineAttrubutes
 //If so then there are multiple lines on the same row and the offset is changed
 if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
-    const lineSpacing = 30; //Can be changed to change the spacing between lines
+    const lineSpacing = 15; //Can be changed to change the spacing between lines
     const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpacing;
     if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
         offset.x1 += offsetIncrease;
@@ -89,27 +89,47 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
+
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
-            offset.y1 = 1;
-            offset.y2 = -4 + 3 / zoomfact;
-            offset.x1 = 0;
-            offset.x2 = 0;
+            if(telem.kind === elementTypesNames.UMLFinalState) { 
+                offset.y2 = -4 + 3 / zoomfact;
+                offset.x2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.y2 = -15;
+            } else { offset.y2 = 0; }
+            offset.y1 = 15;
+
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
-            offset.y1 = -4 + 3 / zoomfact;
-            offset.y2 = 3;
-            offset.x1 = 0;
-            offset.x2 = 0;
+            if(telem.kind === elementTypesNames.UMLFinalState) {
+                offset.y2 = 3;
+                offset.x2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.y2 = 15;
+            } else { offset.y2 = 0; }
+            offset.y1 = -15;
+
+
         } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
-            offset.x1 =+ 1;
-            offset.x2 = 1  / zoomfact;
-            offset.y1 = 0;
-            offset.y2 = 0;
+            if(telem.kind === elementTypesNames.UMLFinalState) {
+                offset.x2 = 1 / zoomfact;
+                offset.y2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.x2 = -15;
+            } else { offset.x2 = 0; }
+            offset.x1 = 15;
+
+            
         } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
-            offset.x1 = -1;
-            offset.x2 =  1 / zoomfact;
-            offset.y1 = 0;
-            offset.y2 = 0;
+            if(telem.kind === elementTypesNames.UMLFinalState) {
+                offset.x2 = 1 / zoomfact;
+                offset.y2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.x2 = 15;
+            } else { offset.x2 = 0; }
+            offset.x1 = -15;
+
         }
+
         str += `<line 
                     id='${line.id}' 
                     x1='${fx + offset.x1 * zoomfact}' 
@@ -122,7 +142,6 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash);
             str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
-            
         }
         else{
             str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
