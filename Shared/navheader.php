@@ -425,10 +425,9 @@
 			// Presents the filterButton, it does display but not show dropdown at the moment.
       		if($requestedService=="accessed.php"){
 					echo "<td id='select' class='navButt'>";
-					echo   "<span id='filterButton'>";
+					echo   "<span id='filterButton'; onclick='pressFilter();' onmouseleave='leaveFilter(); ' name='filter'/>";
 					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-								// displays the different options within the dropdown
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
 					echo       "<div id='customfilter'></div>";

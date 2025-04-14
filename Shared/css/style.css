@@ -5102,7 +5102,7 @@ div.reset-pw:hover{
   color: var(--color-text-list);
   font-size: 12px;
   overflow-y: auto;
-  /* display: none; */
+  display: none; 
   position: absolute;
   background: var(--color-sectioned-table-lo);
   border-radius: 0px 0px 25px 25px;
