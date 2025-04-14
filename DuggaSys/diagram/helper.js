@@ -122,11 +122,11 @@ function entityIsOverlapping(id, x, y) {
             // Superstates can be placed on state-diagram elements and vice versa
             else if (!backgroundElement.includes(element.kind) &&
                 (data[i].kind === elementTypesNames.UMLSuperState ||
-                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+                    data[i].kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
             else if (!backgroundElement.includes(data[i].kind) &&
                 (element.kind === elementTypesNames.UMLSuperState ||
-                element.kind === elementTypesNames.sequenceLoopOrAlt)
+                    element.kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
         }
 
@@ -138,6 +138,26 @@ function entityIsOverlapping(id, x, y) {
                 if (data[i].id == entity.id) y2 = data[i].y + entity.height;
             });
         });
+
+        if (element.kind === "ERRelation") {
+            const centerAX = x + element.width / 2;
+            const centerAY = y + element.height / 2;
+            const centerBX = data[i].x + data[i].width / 2;
+            const centerBY = data[i].y + data[i].height / 2;
+
+            const dx = Math.abs(centerAX - centerBX);
+            const dy = Math.abs(centerAY - centerBY);
+
+            const sumHalfWidth = (element.width / 2) + (data[i].width / 2);
+            const sumHalfHeight = (element.height / 2) + (data[i].height / 2);
+
+            if ((dx / sumHalfWidth + dy / sumHalfHeight) <= 1) {
+                return true;
+            }
+            else {
+                continue;
+            }
+        }
 
         if (x < x2 &&
             x + element.width > data[i].x &&
