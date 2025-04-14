@@ -137,9 +137,13 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
     }
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
+                fx += offset.x1;
+                fy += offset.y1;
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
         if (line.endLabel && line.endLabel != '') {
+            tx += offset.x1;
+            ty += offset.y2;
             str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
         }
     } else {
@@ -428,6 +432,7 @@ function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash)
  * @param {Object} t It's for the object telem and it's stands for "to element".
  * @returns Returns the cardinality label for the line.
  */
+
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
     // Used to tweak the cardinality position when the line gets very short.
