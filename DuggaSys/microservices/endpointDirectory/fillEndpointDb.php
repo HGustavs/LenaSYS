@@ -44,9 +44,18 @@ foreach ($mdFiles as $mdFile) {
         }
     }
 
+    // print what is inserted (for debugging)
+    echo "✔ Adding:\n";
+    echo "  Microservice:  " . $values['ms_name'] . "\n";
+    echo "  Filename:       " . $values['file_name'] . "\n";
+    echo "  Path:        " . $values['ms_path'] . "\n";
+    echo "  Description:   " . $values['description'] . "\n";
+    echo "  Parameters:    " . $values['parameters'] . "\n";
+    echo "  Render:        " . $values['render'] . "\n\n";
+
     // insert into database
     $stmt = $db->prepare("
-        INSERT INTO microservices (ms_name, file_name, ms_path, parameters, documentation, render)
+        INSERT INTO microservices (ms_name, file_name, ms_path, parameters, description, render)
         VALUES (?, ?, ?, ?, ?, ?)
     ");
 
@@ -60,29 +69,5 @@ foreach ($mdFiles as $mdFile) {
     ]);
 
 }
-
-
-// $services = scandir($basePath);
-
-// foreach ($services as $serviceName) {
-//     $servicePath = $basePath . '/' . $serverName;
-
-//     echo $servicePath . " = " . $serviceName . "<br>";
-
-//     if ($serviceName === '.' || $serviceName === '..') {
-//         continue;
-//     }
-//     if (!is_dir($servicePath)) {
-//         continue;
-//     }
-
-//     // search for .php and .js files 
-//     $files = scandir($servicePath);
-//     foreach ($files as $file) {
-//         // echo $file . "<br>";
-//     }
-
-
-// }
 
 ?>

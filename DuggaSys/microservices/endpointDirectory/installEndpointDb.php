@@ -13,7 +13,7 @@ $db->exec("
     file_name TEXT NOT NULL,
     ms_path TEXT NOT NULL,
     parameters TEXT NOT NULL,
-    documentation TEXT NOT NULL,
+    description TEXT NOT NULL,
     render TEXT NOT NULL
     )
 ");
