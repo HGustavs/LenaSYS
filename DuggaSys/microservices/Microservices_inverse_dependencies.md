@@ -118,6 +118,12 @@ No inverse dependencies.
 ### deleteDuggaVariant
 
 ### retrieveDuggaedService
+\duggaedService\createDugga.ms.php
+\duggaedService\createDuggaVariant_ms.php
+\duggaedService\deleteDugga_ms.php
+\duggaedService\deleteDuggaVariant_ms.php
+\duggaedService\updateDugga_ms.php
+\duggaedService\updateDuggaVariant_ms.php
 
 ### updateDugga
 No inverse dependencies.
