@@ -15,6 +15,13 @@ $rootPath = realpath($basePath . '/../');
 
 $services = scandir($basePath);
 
+foreach ($services as $serviceName) {
+    $servicePath = $basePath . '/' . $serverName;
 
+    if ($serviceName === '.' || $serviceName === '..') {
+        continue;
+    }
+
+}
 
 ?>
