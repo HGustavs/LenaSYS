@@ -43,15 +43,19 @@ function setup() {
 	str += "<button class='dropdown-button' onclick='parseSortOptions(this)'>Sort</button>";
 	document.getElementById("dropdowns").innerHTML = str;
 
+	// creates the toggleAllButton
 	var str = "<div class='checkbox-dugga'>";
 	str += "<button id='toggleAllButton' class='dropdown-button' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
 	str += "</div>"
 	document.getElementById("dropdownc").innerHTML += str;
 
+	/*
+	// gets selections from database (for filtering options)
 	AJAXService("GET", {
 		courseid: querystring['courseid'],
 		coursevers: querystring['coursevers']
 	}, "ACCESS");
+	*/
 
 	// Add check boxes to the filter dropdown for filtering teachers/students/student teachers
 	createCheckboxes();
