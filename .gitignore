@@ -18,3 +18,4 @@ gitErrorLog.txt
 *diff*.txt
 *branch*.txt
 log/gitErrorLog.txt
+DuggaSys/microservices/endpointDirectory/endpointDirectory_db.sqlite

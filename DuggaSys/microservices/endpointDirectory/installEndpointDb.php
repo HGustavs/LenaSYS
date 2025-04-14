@@ -1,23 +1,23 @@
-<?
+<?php
 // select where to create the database
-$dbFile = __DIR__ . 'endpointDirectory_db.sqlite';
+$dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 
 // create or open the database
 $db = new PDO('sqlite:' . $dbFile);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $db->exec("
-    CREATE TABLE IF NOT EXIST microservices (
-    id INT PRIMARY KEY AUTOINCREMENT,
+    CREATE TABLE IF NOT EXISTS microservices (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     ms_name TEXT NOT NULL,
     file_name TEXT NOT NULL,
     ms_path TEXT NOT NULL,
     parameters TEXT NOT NULL,
     documentation TEXT NOT NULL,
-    render TEXT NOT NULL,
+    render TEXT NOT NULL
     )
 ");
 
-echo "console.log('Microservice database has been created')";
+echo "Database has been created";
 
 ?>
