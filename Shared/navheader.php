@@ -422,10 +422,10 @@
 					}
 			}
 
-			// Presents the filterButton, it does display but not show dropdown at the moment.
+			// Presents the filterButton and its connected dropdown menu.
       		if($requestedService=="accessed.php"){
 					echo "<td id='select' class='navButt'>";
-					echo   "<span id='filterButton'; onclick='pressFilter();' onmouseleave='leaveFilter(); ' name='filter'/>";
+					echo   "<span id='filterButton'; onclick='pressFilter();' onmouseleave='leaveFilter();' name='filter'/>";
 					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";

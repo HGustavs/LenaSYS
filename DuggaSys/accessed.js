@@ -15,6 +15,7 @@ var activeArrow;
 var shouldReRender = false;
 var str = "W";
 var x = window.matchMedia('(max-width: 380px)');
+var buttonPressed = false;
 
 x.onchange = (e) => {
     if (e.matches) {
@@ -65,7 +66,6 @@ function setup() {
 
 //displays dropdown when hovering search bar
 function hoverSearch() {
-	console.log('hoverSearch activated')
 	$('#dropdownSearch').css({display:'block'});
 	$('#dropdowns').css('display', 'none');
 	$('#dropdownc').css('display', 'none');
@@ -78,15 +78,19 @@ function leaveSearch() {
 
 // displays dropdown for the filter-button
 function pressFilter() {
-	console.log('pressFilter() activated')
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
+	if (buttonPressed == false){
+		buttonPressed = true;
+		$('#dropdowns').css('display', 'none');
+		$('#dropdownc').css('display', 'block');
+	}
+	
 }
 
 // stops displaying dropdown for the filter-button
 function leaveFilter() {
-	console.log('pressFilter() activated')
-	$('#dropdownc').css('display', 'none');
+	if (buttonPressed == true){
+		buttonPressed = false;
+		$('#dropdownc').css('display', 'none');}
 }
 
 /*
