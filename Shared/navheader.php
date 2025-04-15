@@ -424,10 +424,10 @@
 
 			// Presents the filterButton and its connected dropdown menu.
       		if($requestedService=="accessed.php"){
-					echo "<td id='select' class='navButt' onclick='pressFilter();' onmouseleave='leaveFilter(); />";
-					echo   "<span id='filterButton'; ' name='filter' ;/>";
+					echo "<td id='select' class='navButt' onclick='pressFilter();' onmouseleave='leaveFilter()'; />";
+					echo   "<span id='filterButton'; ' name='filter'; >";
 					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg' style='pointer-events: none' />";
-					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1' />";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
 					echo       "<div id='customfilter'></div>";
@@ -454,7 +454,7 @@
 					echo "</td>";
 				}
 				
-
+				
 				else{
 					echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
@@ -473,7 +473,8 @@
 					echo "</td>";
 					echo "</td>";
 					echo "<td id='menuHook' class='navSpacer' >";
-			}
+					
+				}
 
 			if($noup=='CONTRIBUTION' && (checkLogin() || git_checkLogin()))
 			{
