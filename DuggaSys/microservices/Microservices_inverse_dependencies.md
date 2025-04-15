@@ -239,7 +239,13 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 
 ### getListEntries
 
+    No inverse dependencies. 
+    Supposed to be replaced with retrieveAllSectionedServiceData_ms.php   
+
 ### getUserDuggaFeedback
+
+    No inverse dependencies.
+    Replaced with readUserDuggaFeedback_ms.php
 
 ### readCourseGroupsAndMembers
 
