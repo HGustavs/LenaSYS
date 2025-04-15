@@ -2444,8 +2444,16 @@ function drawSwimlanes() {
   // var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
-  var daywidth = 10;
-  var weekwidth = daywidth * 7;
+
+  // Dynamically calculate the available widht of the container
+  var containerWidth = document.getElementById("swimlaneSVG").parentElement.offsetWidth;
+
+  // Calculate daywidth dynamically, based on number of weeks and availalbe width
+  var daywidth = containerWidth / (weekLength * 7);
+  
+  // Full week width
+  var weekwidth = daywidth * 7; 
+  
   var colwidth = 60;
   var weekheight = 25;
 
@@ -2540,7 +2548,11 @@ function drawSwimlanes() {
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
 
   document.getElementById("swimlaneSVG").innerHTML = str;
-  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
+
+  // Set the viewbow width dynamically based on total width of all the weeks
+  let svgWidth = weekLength * weekwidth;
+  document.getElementById("swimlaneSVG").setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+
 
 
   var minDistance;
