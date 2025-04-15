@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
@@ -127,13 +127,37 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
     if (line.type == entityType.SD || line.type == entityType.SE) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
+
+        // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+            if (line.innerType === SDLineType.SEGMENT) {
+                str += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
+            } else {
+                str += drawArrowPoint(
+                    calculateArrowBase(to, from, 10 * zoomfact),
+                    from,
+                    lineColor,
+                    strokewidth
+                );
+            }
         }
+
+        // Handle end arrow
         if (line.endIcon === SDLineIcons.ARROW) {
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+            const reverseCtype = line.ctype.split('').reverse().join('');
+            if (line.innerType === SDLineType.SEGMENT) {
+                str += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
+            } else {
+                str += drawArrowPoint(
+                    calculateArrowBase(from, to, 10 * zoomfact),
+                    to,
+                    lineColor,
+                    strokewidth
+                );
+            }
         }
     }
+
 
 
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
@@ -587,12 +611,7 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
         case UMLLineIcons.BLACKDIAMOND:
             str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.BLACK);
             break
-        /*case SDLineIcons.ARROW:
-            if (line.type === entityType.SD || line.type === entityType.SE) {
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
-            }
-        */
-            break;
+      
             
     }
     return str;
@@ -676,18 +695,24 @@ function calculateArrowBase(from, to, size) {
 }
 
 /**
- * @description Calculates the coordiates of the point representing one of the arrows corners
- * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
- * @param {Point} to The coordinates/Point where the line between @param base and the element end
- * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
- * @returns Returns the calculated coordinate for rotate the arrow point.
+ * @description* Rotates a point around another point (the base) by 45 degrees.
+ * This is mainly used to create the angled corners of an arrowhead.
+ * 
+ * @param {Point} base - The pivot point which is usually the base of the arrow.
+ * @param {Point} point - The point to rotate around the base which is usually the tip of arrow
+ * @param {boolean} clockwise - If true, it rotates the point 45° clockwise; otherwise, counter-clockwise.
+ * @returns {Point} A new point that has been rotated around the base.
  */
 function rotateArrowPoint(base, point, clockwise) {
-    const angle = Math.PI / 4; 
-    const direction = clockwise ? 1 : -1; 
+    const angle = Math.PI / 4; // 45 degrees in radians
+    const direction = clockwise ? 1 : -1; // Decides rotation direction
+
+    // Calculate how far the point is from the base
     const dx = point.x - base.x;
     const dy = point.y - base.y;
-        return {
+
+    // Rotate the point around the base
+    return {
             x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
             y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
         };
