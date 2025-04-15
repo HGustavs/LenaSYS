@@ -4462,4 +4462,3 @@ function setViewMode(mode){
     section.classList.add("overview-mode");
   }
 }
-window.deleteItem = deleteItem;
