@@ -228,8 +228,6 @@ No inverse dependencies.
 ### deleteListEntries
 No inverse dependencies.
 
-### getDeletedListEntries
-
 ### getCourseGroupsAndMembers
     No inverse dependencies.
     (Replaced with readCourseGroupsAndMembers_ms.php)
@@ -240,8 +238,10 @@ No inverse dependencies.
 
 
 ### getDeletedListEntries
+(no inverse found)
 
 ### getGroupValues
+(no inverse found)
 
 ### getListEntries
 
