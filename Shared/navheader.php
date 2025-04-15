@@ -526,17 +526,21 @@
 		}
 	}, {once: true});
 
-		if(localStorage.getItem("ls-cookie-message")=="off"){
-			$("#cookiemsg").css("display", "none");
-		}else{
-			$("#cookiemsg").css("display", "flex");
+	const cookieMsg = document.getElementById("cookiemsg");
+	if (cookieMsg) {
+		if (localStorage.getItem("ls-cookie-message") === "off") {
+			cookieMsg.style.display = "none";
+		} else {
+			cookieMsg.style.display = "flex";
 		}
+	}
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("ls-cookie-message", "off");
 	}
-	function hoverBack(){
-		$(".dropdown-list-container").css("display", "none");
+	function hoverBack() {
+		const dropdowns = document.querySelectorAll(".dropdown-list-container");
+		dropdowns.forEach(el => el.style.display = "none");
 	}
 
 function mouseOverHome() {
@@ -660,25 +664,6 @@ function mouseOverSearchInput() {
    {
 	obj.removeAttribute('readonly');
    }
-}
-
-
-/*Toggle the hamburger list containing the icons to appear*/
-$('#hamburger').click(function(){
-	var isAnimating = $("#hamburgerList").is(':animated');
-	if(isAnimating == false){
-		$('#hamburgerList').slideToggle(500, function(){
-		});
-	}
-})
-
-/*Toggle the hamburger menu "button" into an X and then back to normal*/
-function hamburgerToggle() {
-	var isAnimating = $("#hamburgerList").is(':animated');
-	if(isAnimating == false){
-		var x= document.getElementById("ham")
-		x.classList.toggle("change");
-	}
 }
 
 let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
