@@ -1,5 +1,6 @@
 courses/
 !install/courses/
+!newinstaller/courses/
 sftp-config.json
 .DS_Store
 .idea
