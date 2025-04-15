@@ -233,7 +233,7 @@ function start_installer() {
 
 	function addButton(error) {
 		if (!error) {
-			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton' onclick=location.href='../DuggaSys/courseed.php'>Go to course</button>";
+			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=location.href='../DuggaSys/courseed.php'>Finish</button>";
 		}
 	}
 }
