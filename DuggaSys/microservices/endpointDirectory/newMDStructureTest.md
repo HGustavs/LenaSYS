@@ -1,23 +1,15 @@
 # Name of file/service
+example_ms
 
 ## Description
-*Description of what the service do and its function in the system.*
-
-## Input Parameters
-*Parameters will be described in tables for easier readability*
+This is an example to debug the datase
 
 | Parameter | Type | Description |
 | :--- | :--- | :--- |
 | $exampleid | string | Example ID Description |
 
 ## Calling Methods
-
-- GET
-- POST
-- etc.
-
-## Output Data and Format
-*Output Data will be described in tables for easier readability*
+POST
 
 | Output | Type | Description |
 | :--- | :--- | :--- |
@@ -27,4 +19,4 @@
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+another_ms

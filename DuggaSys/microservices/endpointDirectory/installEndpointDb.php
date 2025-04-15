@@ -10,11 +10,15 @@ $db->exec("
     CREATE TABLE IF NOT EXISTS microservices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ms_name TEXT NOT NULL,
-    file_name TEXT NOT NULL,
-    ms_path TEXT NOT NULL,
-    parameters TEXT NOT NULL,
     description TEXT NOT NULL,
-    render TEXT NOT NULL
+    parameter TEXT,
+    parameter_type TEXT.
+    parameter_description TEXT,
+    calling_methods TEXT,
+    output TEXT,
+    output_type TEXT,
+    output_description TEXT,
+    microservices_used TEXT
     )
 ");
 

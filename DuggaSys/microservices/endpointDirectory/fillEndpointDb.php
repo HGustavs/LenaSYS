@@ -45,13 +45,13 @@ foreach ($mdFiles as $mdFile) {
     }
 
     // print what is inserted (for debugging)
-    echo "✔ Adding:\n";
-    echo "  Microservice:  " . $values['ms_name'] . "\n";
-    echo "  Filename:       " . $values['file_name'] . "\n";
-    echo "  Path:        " . $values['ms_path'] . "\n";
-    echo "  Description:   " . $values['description'] . "\n";
-    echo "  Parameters:    " . $values['parameters'] . "\n";
-    echo "  Render:        " . $values['render'] . "\n\n";
+    echo "  Adding:<br>";
+    echo "  Microservice:  " . $values['ms_name'] . "<br>";
+    echo "  Filename:       " . $values['file_name'] . "<br>";
+    echo "  Path:        " . $values['ms_path'] . "<br>";
+    echo "  Description:   " . $values['description'] . "<br>";
+    echo "  Parameters:    " . $values['parameters'] . "<br>";
+    echo "  Render:        " . $values['render'] . "<br>";
 
     // insert into database
     $stmt = $db->prepare("
