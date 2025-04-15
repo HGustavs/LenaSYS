@@ -1081,7 +1081,7 @@ function mmoving(event) {
                 deltaX = (startNode.upRight) ? -delta : delta;
 
                 //Special resizing for IERelation elements, width needs to be double the height. Modifying height felt better during usage than modifying width.
-                if(elementData.kind == elementTypesNames.IERelation) {
+                if (elementData.kind == elementTypesNames.IERelation) {
                     deltaY = (startNode.downLeft) ? -(delta * 0.5) : delta * 0.5;
                 } else {
                     deltaY = (startNode.downLeft) ? -delta : delta;
@@ -1401,10 +1401,10 @@ function pasteClipboard(elements, elementsLines) {
         // Check for overlap before adding
         addObjectToData(elementObj, false); // Add to data
 
-    if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
-        data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
-        overlapDetected = true;
-    }
+        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
+            data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
+            overlapDetected = true;
+        }
     });
 
     // If overlap is detected, abort pasting the elements, otherwise add 
@@ -2102,7 +2102,7 @@ function saveDiagramAs() {
             return;
         }
     }
-    
+
     storeDiagramInLocalStorage(fileName);
 }
 
