@@ -1449,7 +1449,15 @@ header td {
   margin-top: 9px;
 }
 .filterButt{
-  margin-top: 3px;
+  margin-top: 11px;
+  margin-block-end: 7px;
+}
+
+/*Needed because navButt applies a clicking effect on the element*/
+.navFilterWrapper {
+  width: 3px;
+  vertical-align: middle;
+  margin-top: 9px;
 }
 
 .navButt img {
@@ -1457,7 +1465,7 @@ header td {
   height: 32px;
 }
 
-/*Needed because navButt aplies a clicking effect on the element*/
+/*Needed because navButt applies a clicking effect on the element*/
 .navSearchWrapper {
   width: 29px;
   vertical-align: middle;
@@ -6501,7 +6509,6 @@ only screen and (max-device-width: 568px) {
   #searchbuttonicon:hover .tooltipbackground{
     visibility: visible;
     opacity: 1;
-
   }
 }
 
