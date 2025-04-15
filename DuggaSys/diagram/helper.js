@@ -1,11 +1,18 @@
 /**
- * @description If the current keyboard event matches a keybind. Ctrl sensistive.
+ * @description If the current keyboard event matches a keybind. Ctrl, Alt, Shift and Meta sensistive.
  * @param {KeyboardEvent} e
  * @param {{key:string, ctrl:boolean}} keybind
  * @returns {boolean}
  */
 function isKeybindValid(e, keybind) {
-    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
+    const keyMatches = e.key.toLowerCase() === keybind.key.toLowerCase();
+
+    //Checks and compares if the pressed key is correct based on the keybind (true or false)
+    const ctrlMatches = e.ctrlKey === !!keybind.ctrl;
+    const metaMatches = e.metaKey === !!keybind.meta;
+    const shiftMatches = e.shiftKey === !!keybind.shift;
+
+    return keyMatches && ctrlMatches && metaMatches && shiftMatches;
 }
 
 /**
@@ -122,11 +129,11 @@ function entityIsOverlapping(id, x, y) {
             // Superstates can be placed on state-diagram elements and vice versa
             else if (!backgroundElement.includes(element.kind) &&
                 (data[i].kind === elementTypesNames.UMLSuperState ||
-                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+                    data[i].kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
             else if (!backgroundElement.includes(data[i].kind) &&
                 (element.kind === elementTypesNames.UMLSuperState ||
-                element.kind === elementTypesNames.sequenceLoopOrAlt)
+                    element.kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
         }
 
@@ -212,7 +219,7 @@ function makeRandomID() {
 function calculateDeltaExceeded() {
     // Remember that mouse has moved out of starting bounds
     if ((deltaX >= maxDeltaBeforeExceeded ||
-            deltaX <= -maxDeltaBeforeExceeded) ||
+        deltaX <= -maxDeltaBeforeExceeded) ||
         (deltaY >= maxDeltaBeforeExceeded ||
             deltaY <= -maxDeltaBeforeExceeded)
     ) {
@@ -229,8 +236,8 @@ function calculateDeltaExceeded() {
  */
 function sameObjects(obj1, obj2, ignore = []) {
     // removes the reference to the sent in objects just in case the sending function didn't do it
-    obj1 = {...obj1};
-    obj2 = {...obj2};
+    obj1 = { ...obj1 };
+    obj2 = { ...obj2 };
     // remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];
