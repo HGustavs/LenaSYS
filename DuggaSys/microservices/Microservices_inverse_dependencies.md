@@ -245,7 +245,13 @@ No inverse dependencies.
 
 ### getListEntries
 
+    No inverse dependencies. 
+    Supposed to be replaced with retrieveAllSectionedServiceData_ms.php   
+
 ### getUserDuggaFeedback
+
+    No inverse dependencies.
+    Replaced with readUserDuggaFeedback_ms.php
 
 ### readCourseGroupsAndMembers
 
