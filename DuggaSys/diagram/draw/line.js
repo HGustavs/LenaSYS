@@ -22,38 +22,38 @@ function drawLine(line, targetGhost = false) {
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
-    
+
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
-    if (line.kind === lineKind.RECURSIVE){
+    if (line.kind === lineKind.RECURSIVE) {
 
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
         [fx, fy, tx, ty, offset] = [fx, fy, fx, fy, offset];
     }
-    else{
+    else {
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
     }
-    
+
     // Follows the cursor while drawing the line
-    if (isCurrentlyDrawing){
+    if (isCurrentlyDrawing) {
         tx = event.clientX;
         ty = event.clientY;
     }
 
 
-//Looks if the lines have gotta an index value from the function getLineAttrubutes
-//If so then there are multiple lines on the same row and the offset is changed
-if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
-    const lineSpacing = 30; //Can be changed to change the spacing between lines
-    const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpacing;
-    if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
-        offset.x1 += offsetIncrease;
-        offset.x2 += offsetIncrease;
-    } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
-        offset.y1 += offsetIncrease;
-        offset.y2 += offsetIncrease;
+    //Looks if the lines have gotta an index value from the function getLineAttrubutes
+    //If so then there are multiple lines on the same row and the offset is changed
+    if (typeof line.multiLineOffset === 'number' && typeof line.numberOfLines === 'number') {
+        const lineSpacing = 30; //Can be changed to change the spacing between lines
+        const offsetIncrease = (line.multiLineOffset - (line.numberOfLines - 1) / 2) * lineSpacing;
+        if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
+            offset.x1 += offsetIncrease;
+            offset.x2 += offsetIncrease;
+        } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+            offset.y1 += offsetIncrease;
+            offset.y2 += offsetIncrease;
+        }
     }
-}
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
@@ -71,7 +71,7 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
             let len = Math.sqrt((dx * dx) + (dy * dy));
             dy /= len;
             dx /= len;
-            
+
             const double = (a, b) => {
                 return `<line 
                 id='${line.id}-${b}' 
@@ -108,22 +108,25 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash);
             str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
-            
+
         }
-        else{
+        else {
             str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
-        
+
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
-    if (line.kind === lineKind.RECURSIVE){
+    if (line.kind === lineKind.RECURSIVE) {
         str += drawLineIcon(line.endIcon, line.ctype, tx, ty + 40 * zoomfact, lineColor, line);
     }
-    else{
+    else {
         str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
     }
+
   
     // Always allow arrowheads to render if icon is ARROW
+    // If the line is SEGMENTED (has 90-degree bends), draw a fixed arrowhead with iconPoly.
+    // Otherwise, draw a rotated arrowhead using drawArrowPoint based on the line direction.
     if (line.type == entityType.SD || line.type == entityType.SE) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
@@ -155,6 +158,7 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                     strokewidth
                 );
             }
+
         }
     }
 
@@ -162,9 +166,13 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
 
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
+                fx += offset.x1;
+                fy += offset.y1;
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
         if (line.endLabel && line.endLabel != '') {
+            tx += offset.x1;
+            ty += offset.y2;
             str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
         }
     } else {
@@ -297,10 +305,10 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
 function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
     if (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) {
         ay = elem.cy;
-        ax = isFirst? elem.x1 : elem.x2;
+        ax = isFirst ? elem.x1 : elem.x2;
     } else if (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) {
         ax = elem.cx;
-        ay = isFirst? elem.y1 : elem.y2;
+        ay = isFirst ? elem.y1 : elem.y2;
     }
     if (isFirst) {
         elem.recursivePos = 0;
@@ -366,7 +374,7 @@ function getLineAttrubutes(f, t, ctype) {
     }
     return result;
 }
- 
+
 /**
  * @description Draw the label for the line.
  * @param {Object} line The line object for the label to be drawn.
@@ -453,6 +461,7 @@ function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash)
  * @param {Object} t It's for the object telem and it's stands for "to element".
  * @returns Returns the cardinality label for the line.
  */
+
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
     // Used to tweak the cardinality position when the line gets very short.
@@ -547,10 +556,10 @@ function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, str
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
     return `<polyline id="${line.id}"
     points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
-                points="${fx + offset.x1 },${fy + offset.y1 } 
-                        ${fx + offset.x1 + 40 },${fy + offset.y1} 
-                        ${fx + offset.x1 + 40 },${fy + offset.y1 + 40 } 
-                        ${fx + offset.x1 },${fy + offset.y1 + 40 }"
+                points="${fx + offset.x1},${fy + offset.y1} 
+                        ${fx + offset.x1 + 40},${fy + offset.y1} 
+                        ${fx + offset.x1 + 40},${fy + offset.y1 + 40} 
+                        ${fx + offset.x1},${fy + offset.y1 + 40}"
                 fill="none" 
                 stroke="${lineColor}" stroke-width="${strokewidth}" stroke-dasharray="${strokeDash}" 
             />`;
@@ -663,7 +672,7 @@ function iconPoly(arr, x, y, lineColor, fill) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
         const [a, b] = arr[i];
-        s += `${x + a * zoomfact} ${y + b * zoomfact}, `;
+        s += `${x + a * zoomfact} ${y + b * zoomfact} `;
     }
     return `<polyline 
                 points='${s}' 
@@ -704,6 +713,7 @@ function calculateArrowBase(from, to, size) {
  * @returns {Point} A new point that has been rotated around the base.
  */
 function rotateArrowPoint(base, point, clockwise) {
+
     const angle = Math.PI / 4; // 45 degrees in radians
     const direction = clockwise ? 1 : -1; // Decides rotation direction
 
@@ -716,8 +726,9 @@ function rotateArrowPoint(base, point, clockwise) {
             x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
             y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
         };
+
 }
-     
+
 /**
  * @description Draw the arraow head for the line.
  * @param {Point} base The start x and y coordinate.
@@ -727,6 +738,7 @@ function rotateArrowPoint(base, point, clockwise) {
  * @returns Returns a polygon for the arrow head.
  */
 function drawArrowPoint(base, point, lineColor, strokeWidth) {
+
     const size = 10 * zoomfact; // arrow size
     const angle = Math.atan2(point.y - base.y, point.x - base.x);
 
@@ -745,6 +757,7 @@ function drawArrowPoint(base, point, lineColor, strokeWidth) {
             stroke='${lineColor}' fill='${lineColor}' stroke-width='${strokeWidth}' />
     `;
 }
+
 
 
 
@@ -877,43 +890,44 @@ function sortElementAssociations(element) {
     //it will then sort them and give them an index and number of lines.
     //This is used to draw the lines in the right order and to give them a offset if they are on the same side.
     //the offset is done is done in the function drawLine.
-    try{
+    try {
         ['top', 'bottom', 'right', 'left'].forEach(side => {
 
             //First we got to sort out recusive lines, dont want them to move about
             const linesOfTargetSide = element[side];
             const filteredLines = linesOfTargetSide.filter(lineID => {
-            const lineIdIndex = findIndex(lines, lineID);
-            // Check if the line exists in the lines array.
-            if (lineIdIndex === -1) {
-                return false; }
-            const lineObject = lines[lineIdIndex]; 
-            if (lineObject.ghostLine || lineObject.targetGhost) {
-                return lineObject.kind === lineKind.NORMAL;
-            }
-            return lineObject.kind !== lineKind.RECURSIVE;
+                const lineIdIndex = findIndex(lines, lineID);
+                // Check if the line exists in the lines array.
+                if (lineIdIndex === -1) {
+                    return false;
+                }
+                const lineObject = lines[lineIdIndex];
+                if (lineObject.ghostLine || lineObject.targetGhost) {
+                    return lineObject.kind === lineKind.NORMAL;
+                }
+                return lineObject.kind !== lineKind.RECURSIVE;
             });
-        
+
             //If there are more then one line at one side
             //sort them and give them an index and numberOfLines values
             if (filteredLines.length > 1) {
                 filteredLines.sort((line_1, line_2) =>
-                sortvectors(line_1, line_2, filteredLines, element.id, 2)
+                    sortvectors(line_1, line_2, filteredLines, element.id, 2)
                 );
                 filteredLines.forEach((lineID, index) => {
-                const lineIdIndex = findIndex(lines, lineID); 
-                if (lineIdIndex === -1){
-                    return;   //Checks if enmpty
-                } 
-                //Give lineObject the variables of multiLineOffset and numberOfLines
-                //To be used in the function drawLine
-                const lineObject = lines[lineIdIndex]; 
-                lineObject.multiLineOffset = index;
-                lineObject.numberOfLines = filteredLines.length;
-            });
+                    const lineIdIndex = findIndex(lines, lineID);
+                    if (lineIdIndex === -1) {
+                        return;   //Checks if enmpty
+                    }
+                    //Give lineObject the variables of multiLineOffset and numberOfLines
+                    //To be used in the function drawLine
+                    const lineObject = lines[lineIdIndex];
+                    lineObject.multiLineOffset = index;
+                    lineObject.numberOfLines = filteredLines.length;
+                });
             }
         });
-    }catch (error) {
+    } catch (error) {
         console.error("Error in sortElementAssociations, Multi-line sorting:", error);
     }
 }
