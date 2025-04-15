@@ -75,8 +75,9 @@ function addUserToCourse() {
 Accessedservice.php
 opt- RETRIVE, action- USER
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
 # Name of file/service
+
 accessed.js
 
 ## Description
@@ -135,11 +136,12 @@ Retrives UID with ajax POST, then deletes user with opt DELETE.
 
 ### Microservices Used
 *Includes and microservices used*
+
 accessedservice.php
 opt- RETRIEVE, action- USER
 opt- DELETE, action- COURSE
 
-------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
 
 # Name of file/service
 
@@ -206,40 +208,121 @@ accessedservice.php
 
 opt- RETRIEVE, action- USERS
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------------
 # Name of file/service
+
+courseed.js
 
 ## Description
 *Description of what the service do and its function in the system.*
+
+Updating course settings such as course name, course code and GitHub repository.
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
-
+| :coursename | :string | :New course name |
+| :cid | :string | :Course ID |
+| :coursecode | :string | :Course code |
+| :courseGitURL | :string | :Git URL linked to the course |
 ## Calling Methods
 
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+| :success | :bool | :DataCheck |
 
 ## Examples of Use
-`CODE`
+`function updateCourse() {
+	var coursename = $("#coursename").val();
+	var cid = $("#cid").val();
+	var coursecode = $("#coursecode").val();
+	var courseGitURL = $("#editcoursegit-url").val();
+	var visib = $("#visib").val();
+	var courseid = "C" + cid;
+
+	var token = document.getElementById("githubToken").value;
+
+	//Send information about the git url and possible git token for a course
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/gitcommitService.php",
+		type: "POST",
+		data: { 'githubURL': courseGitURL, 'cid': cid, 'token': token || undefined, 'action': 'directInsert' },
+		success: function () {
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function (data) {
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch (data.status) {
+				case 403:
+					toast("error", data.status + " Error \nplease insert valid git key", 7);
+					break;
+				case 422:
+					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
+					break;
+				case 503:
+					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
+					break;
+				default:
+					toast("error", "Something went wrong with updating git token and git URL...", 7);
+			}
+			dataCheck = false;
+		}
+	});
+
+	if (dataCheck) {
+		// Show dialog
+		$("#editCourse").css("display", "none");
+
+		// Updates the course (except the course GitHub repo. 
+		// Course GitHub repo is updated in the next block of code)
+		$("#overlay").css("display", "none");
+		AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
+		localStorage.setItem('courseid', courseid);
+		localStorage.setItem('updateCourseName', true);
+
+		const cookieValue = `; ${document.cookie}`;
+		const parts = cookieValue.split(`; ${"missingToken"}=`);
+
+		if (dataCheck && parts[1] != 1) {
+			//Check if courseGitURL has a value
+			if (courseGitURL) {
+				//Check if fetchGitHubRepo returns true
+				if (fetchGitHubRepo(courseGitURL)) {
+					localStorage.setItem('courseGitHubRepo', courseGitURL);
+					//If courseGitURL has a value, display a message stating the update (with github-link) worked
+					toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
+					updateGithubRepo(courseGitURL, cid);
+				}
+				//Else: get error message from the fetchGitHubRepo function.
+
+			} else {
+				localStorage.setItem('courseGitHubRepo', " ");
+				//If courseGitURL has no value, display an update message
+				toast("success", "Course " + coursename + " updated!", 5);
+			}
+		}
+		else {
+			toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
+		}
+	}
+}`
 
 ### Microservices Used
 *Includes and microservices used*
 
-Example of template for the documentation:
+gitcommitService.php
+
+Updates GitHub token and repository information
+action- directInsert
+
+----------------------------------------------------------------------------------------
 
 # Name of file/service
 
