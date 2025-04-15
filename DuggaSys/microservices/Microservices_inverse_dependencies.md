@@ -223,8 +223,10 @@ No inverse dependencies.
 No inverse dependencies.
 
 ### createListEntry
+No inverse dependencies.
 
 ### deleteListEntries
+No inverse dependencies.
 
 ### getDeletedListEntries
 
