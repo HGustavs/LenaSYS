@@ -3,7 +3,7 @@
 function getServicesByDescription($description){
     //get results based of descriptions in database
 
-    $dbFile = __DIR__ . '/endpointDirectory_db-sqlite';
+    $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
     $pdo = new PDO('sqlite:' . $dbFile);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

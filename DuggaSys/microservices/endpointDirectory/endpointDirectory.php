@@ -24,6 +24,9 @@ elseif(isset($_GET['description'])){
     $description = $_GET['description'];
     //get list of courses with matching description
     $results = getServicesByDescription($description);
+    echo "<pre>";
+    print_r($results);
+    echo "</pre>";
 }
 else{
     echo "no valid queries found";
