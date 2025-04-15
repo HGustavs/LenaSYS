@@ -72,55 +72,61 @@ foreach ($mdFiles as $mdFile) {
 
         // output table
         preg_match('/\| Output \| Type \| Description \|.*?\| (.+?) \| (.+?) \| (.+?) \|/si', $section, $outputMatch);
+        if (isset($outputMatch[1])) {
+            $output = trim($outputMatch[1]);
+        } else {
+            $output = null;
+        }
+        // output type
+        if (isset($outputMatch[2])) {
+            $output_type = trim($outputMatch[2]);
+        } else {
+            $output_type = null;
+        }
+        // output description
+        if (isset($outputMatch[3])) {
+            $output_description = trim($outputMatch[3]);
+        } else {
+            $output_description = null;
+        }
 
+        // microservices used
+        preg_match('/### Microservices Used\s*(.+)/i', $section, $usedMatch);
+        if (isset($usedMatch[1])) {
+            $microservices_used = trim($usedMatch[1]);
+        } else {
+            $microservices_used = null;
+        }
 
+        $stmt = $db->prepare("
+            INSERT INTO microservices (
+            ms_name, description, parameter, parameter_type, parameter_description, calling_methods, output, output_type, output_description, microservices_used
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+
+        $stmt->execute([
+            $ms_name,
+            $description,
+            $parameter,
+            $parameter_type,
+            $parameter_description,
+            $calling_methods,
+            $output,
+            $output_type,
+            $output_description,
+            $microservices_used
+        ]);
 
     }
 
-    // // extract blocks with regex
-    // $fields = [
-    //     'ms_name' => '/# MICROSERVICE NAME #\s*(.+)/i',
-    //     'ms_path' => '/# SEARCHPATH #\s*(.+)/i',
-    //     'file_name' => '/# FILENAME #\s*(.+)/i',
-    //     'description' => '/# DESCRIPTION #\s*(.+)/i',
-    //     'parameters' => '/# PARAMETERS #\s*(.+)/i',
-    //     'render' => '/# RENDER #\s*(.+)/i',
-    // ];
-
-    // $values = [];
-
-    // foreach ($fields as $key => $regex) {
-    //     if (preg_match($regex, $content, $match)) {
-    //         $values[$key] = trim($match[1]);
-    //     } else {
-    //         // if something is missing
-    //         $values[$key] = null;
-    //     }
-    // }
-
-    // // print what is inserted (for debugging)
-    // echo "  Adding:<br>";
-    // echo "  Microservice:  " . $values['ms_name'] . "<br>";
-    // echo "  Filename:       " . $values['file_name'] . "<br>";
-    // echo "  Path:        " . $values['ms_path'] . "<br>";
-    // echo "  Description:   " . $values['description'] . "<br>";
-    // echo "  Parameters:    " . $values['parameters'] . "<br>";
-    // echo "  Render:        " . $values['render'] . "<br>";
-
-    // // insert into database
-    // $stmt = $db->prepare("
-    //     INSERT INTO microservices (ms_name, file_name, ms_path, parameters, description, render)
-    //     VALUES (?, ?, ?, ?, ?, ?)
-    // ");
-
-    // $stmt->execute([
-    //     $values['ms_name'],
-    //     $values['file_name'],
-    //     $values['ms_path'],
-    //     $values['parameters'],
-    //     $values['description'],
-    //     $values['render']
-    // ]);
+    // print what is inserted (for debugging)
+    echo "  Adding:<br>";
+    echo "  Microservice:  " . $values['ms_name'] . "<br>";
+    echo "  Filename:       " . $values['file_name'] . "<br>";
+    echo "  Path:        " . $values['ms_path'] . "<br>";
+    echo "  Description:   " . $values['description'] . "<br>";
+    echo "  Parameters:    " . $values['parameters'] . "<br>";
+    echo "  Render:        " . $values['render'] . "<br>";
 
 }
 
