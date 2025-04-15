@@ -215,13 +215,21 @@ function drawLine(line, targetGhost = false) {
         if (rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
-        // Label position for recursive edges
-        const labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        // Label positioning for recursive lines
         const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + zoomfact;
         const labelPositionY = labelPosY - zoomfact;
+
+        // Label positioning for regual (non-recursive) lines
+        const labelCenterX = label.centerX - (2 * zoomfact);
+        const labelCenterY = label.centerY;
+
+        // Centers the background rectangle around the text
+        const rectPosX = labelCenterX - textWidth / 2 - zoomfact * 2;
+        const rectPosY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
+
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
+            // For recursive lines
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
@@ -240,16 +248,12 @@ function drawLine(line, targetGhost = false) {
                         ${labelValue}
                     </text>`;
         } else {
-            const labelCenterX = label.centerX - (2 * zoomfact);
-            const labelCenterY = label.centerY;
-            const rectX = labelCenterX - textWidth / 2 - zoomfact * 2;
-            const rectY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
-
+            // For non-recursive lines
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
-                        x='${rectX}'
-                        y='${rectY}'
+                        x='${rectPosX}'
+                        y='${rectPosY}'
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact + zoomfact * 3}'
                     />`;
