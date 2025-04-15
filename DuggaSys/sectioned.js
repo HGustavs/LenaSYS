@@ -2606,7 +2606,7 @@ const FabMenu = ({onCreateItem}) => {
 
 ReactDOM.render(
 	<FabMenu onCreateItem={createFABItem} />,
-	document.getElementById('fabmenu-container')
+	document.getElementById('react-fab-root')
 );
 
 // -------------==============######## Setup and Event listeners ###########==============-------------

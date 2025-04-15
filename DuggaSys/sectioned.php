@@ -56,12 +56,15 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	
-	<script src="darkmodeToggle.js"></script>
-	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="../Shared/loadingButton.js"></script>
+	<script src="darkmodeToggle.js"></script>
+	<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+	<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/@babel/standalone"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="sectioned.js"></script>
+	<script type="text/babel" src="sectioned.js"></script>
 	<script src="backToTop.js"></script>
 	
 </head>
