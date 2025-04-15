@@ -110,6 +110,9 @@
 	<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+	<script type="text/babel" src="../Shared/components/Button.js"></script>
+
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
 	<script src="backToTop.js"></script>	
@@ -405,13 +408,22 @@
 					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
-			<div id="deleteBtnPlacement" class="formFooter" >
-				<input class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
-			</div>
+			<div id="deleteBtnPlacement" class="formFooter" ></div>
 		</div>
 	</div>
-
+	
+	<script type="text/babel">
+		function ConfirmButtons() {
+			return (
+				<>
+					<Button id="delete-item-button" className="submit-button" title="Yes" onClick={() => confirmBox("deleteItem")}> Yes </Button>
+					<Button id="close-item-button" className="submit-button" title="No" onClick={() => confirmBox("closeConfirmBox")}> No </Button>
+				</>
+			);
+		}
+		ReactDOM.createRoot(document.getElementById('deleteBtnPlacement')).render(<ConfirmButtons />)
+	</script>
+	<!-- Confirm Section Dialog END -->
 
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer display_none'>

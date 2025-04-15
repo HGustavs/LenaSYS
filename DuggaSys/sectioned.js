@@ -670,7 +670,7 @@ function confirmBox(operation, item = null) {
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     deleteItem(selectedItemList);
-    $("#sectionConfirmBox").css("display", "none");
+    document.getElementById("sectionConfirmBox").style.display = "none";
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
     $("#sectionHideConfirmBox").css("display", "none");
@@ -710,12 +710,12 @@ function confirmBox(operation, item = null) {
     if (event.key === 'Enter') {
       if (event.target.classList.contains("traschcanDelItemTab")) {
         setTimeout(function () {
-          $("#delete-item-button").focus();
+           document.getElementById('delete-item-button').focus();
         }, 400);
       }
       if (event.target.id == "delete-item-button") {
         deleteItem(active_lid);
-        $("#sectionConfirmBox").css("display", "none");
+        document.getElementById("sectionConfirmBox").style.display = "none";
       }
     }
   });
@@ -969,7 +969,7 @@ function prepareItem() {
 
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val(); 
+    const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
     item.style.display = "none";
     item.classList.add("deleted");
@@ -2652,7 +2652,7 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
-  var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+    var deleteButtonDisplay = window.getComputedStyle(document.getElementById('sectionConfirmBox')).display;
   if (event.keyCode == 27) {
     // If key is escape
     showSaveButton();
@@ -2705,7 +2705,7 @@ $(window).keyup(function (event) {
   }
   else if (event.keyCode == 37) {
     if (deleteButtonDisplay == 'flex') {
-      $('#delete-item-button').focus();
+        document.getElementById('delete-item-button').focus();
     }
   }
   else if (event.keyCode == 39) {
@@ -4462,3 +4462,4 @@ function setViewMode(mode){
     section.classList.add("overview-mode");
   }
 }
+window.deleteItem = deleteItem;
