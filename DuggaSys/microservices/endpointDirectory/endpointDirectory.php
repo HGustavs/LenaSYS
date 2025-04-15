@@ -2,7 +2,7 @@
 
 include_once "./nameQuery.php";
 //include_once "./parameterQuery.php";
-//include_once "./descriptionsearch.php";
+include_once "./descriptionSearch.php";
 //include_once "./directoryRendering";
 
 $results = null;
