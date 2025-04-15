@@ -229,15 +229,15 @@ No inverse dependencies.
 
 ### getCourseVersions
 
-### getDeletedListEntries
-
 ### getCourseGroupsAndMembers
 
 ### getCourseVersions
 
 ### getDeletedListEntries
+(no inverse found)
 
 ### getGroupValues
+(no inverse found)
 
 ### getListEntries
 
@@ -304,8 +304,8 @@ createListEntry_ms.php
 [createListEntry_ms.php](sectionedService/createListEntry_ms.php)
 [deleteListEntries_ms.php](sectionedService/deleteListEntries_ms.php)
 [getCourseVersions_ms.php](sectionedService/getCourseVersions_ms.php)
-[getDeletedListEntries_ms.php](sectionedService/getDeletedListEntries_ms.php) (no inverse found)
-[getGroupValues_ms.php](sectionedService/getGroupValues_ms.php) (no inverse found)
+[getDeletedListEntries_ms.php](sectionedService/getDeletedListEntries_ms.php)
+[getGroupValues_ms.php](sectionedService/getGroupValues_ms.php)
 [getListEntries_ms.php](sectionedService/getListEntries_ms.php)
 [readCourseVersions_ms.php](sectionedService/readCourseVersions_ms.php)
 [readGroupValues_ms.php](sectionedService/readGroupValues_ms.php)
