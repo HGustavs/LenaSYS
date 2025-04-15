@@ -870,6 +870,10 @@ p {
 
 @media screen and (max-width : 570px) {
 
+  & .view-label {
+    display: none;
+  }
+
   .item {
     font-size: 10pt;
   }
