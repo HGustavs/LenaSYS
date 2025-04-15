@@ -220,8 +220,10 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 ### createGithubCodeExample
 
 ### createListEntry
+No inverse dependencies.
 
 ### deleteListEntries
+No inverse dependencies.
 
 ### getCourseGroupsAndMembers
 
