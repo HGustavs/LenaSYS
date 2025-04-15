@@ -12,7 +12,7 @@ $db->exec("
     ms_name TEXT NOT NULL,
     description TEXT NOT NULL,
     parameter TEXT,
-    parameter_type TEXT.
+    parameter_type TEXT,
     parameter_description TEXT,
     calling_methods TEXT,
     output TEXT,

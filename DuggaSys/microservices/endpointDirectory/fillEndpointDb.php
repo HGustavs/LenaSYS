@@ -21,12 +21,12 @@ foreach ($mdFiles as $mdFile) {
 
     foreach ($services as $service) {
         // skip empty sections
-        if (trim($section) === '') {
+        if (trim($service) === '') {
             continue;
         }
 
         // microservice name
-        preg_match('/^\s*(.+)/', $section, $nameMatch);
+        preg_match('/^\s*(.+)/', $service, $nameMatch);
         if (isset($nameMatch[1])) {
             $ms_name = trim($nameMatch[1]);
         } else {
@@ -34,15 +34,15 @@ foreach ($mdFiles as $mdFile) {
         }
 
         // description
-        preg_match('/## Description\s*(.*?)\n(?:\n|#)/si', $section, $descMatch);
+        preg_match('/## Description\s*(.*?)\n(?:\n|#)/si', $service, $descMatch);
         if (isset($descMatch[1])) {
             $description = trim($descMatch[1]);
         } else {
-            $description = null;
+            $description = "No description";
         }
 
         // parameter table
-        preg_match('/\| Parameter \| Type \| Description \|.*?\| (.+?) \| (.+?) \| (.+?) \|/si', $section, $paramMatch);
+        preg_match('/\| Parameter \| Type \| Description \|.*?\| (.+?) \| (.+?) \| (.+?) \|/si', $service, $paramMatch);
         // parameter
         if (isset($paramMatch[1])) {
             $parameter = trim($paramMatch[1]);
@@ -63,7 +63,7 @@ foreach ($mdFiles as $mdFile) {
         }
 
         // calling methods 
-        preg_match('/## Calling Methods\s*(GET|POST|PUT|DELETE)/i', $section, $callMatch);
+        preg_match('/## Calling Methods\s*(GET|POST|PUT|DELETE)/i', $service, $callMatch);
         if (isset($callMatch[1])) {
             $calling_methods = $callMatch[1];
         } else {
@@ -71,7 +71,7 @@ foreach ($mdFiles as $mdFile) {
         }
 
         // output table
-        preg_match('/\| Output \| Type \| Description \|.*?\| (.+?) \| (.+?) \| (.+?) \|/si', $section, $outputMatch);
+        preg_match('/\| Output \| Type \| Description \|.*?\| (.+?) \| (.+?) \| (.+?) \|/si', $service, $outputMatch);
         if (isset($outputMatch[1])) {
             $output = trim($outputMatch[1]);
         } else {
@@ -91,7 +91,7 @@ foreach ($mdFiles as $mdFile) {
         }
 
         // microservices used
-        preg_match('/### Microservices Used\s*(.+)/i', $section, $usedMatch);
+        preg_match('/### Microservices Used\s*(.+)/i', $service, $usedMatch);
         if (isset($usedMatch[1])) {
             $microservices_used = trim($usedMatch[1]);
         } else {
@@ -117,20 +117,21 @@ foreach ($mdFiles as $mdFile) {
             $microservices_used
         ]);
 
+        // print what is inserted (for debugging)
+        echo "Adding:<br>";
+        echo "ms_name: " . $ms_name . "<br>";
+        echo "description: " . $description . "<br>";
+        echo "parameter: " . $parameter . "<br>";
+        echo "parameter_type: " . $parameter_type . "<br>";
+        echo "parameter_description: " . $parameter_description . "<br>";
+        echo "calling_metods: " . $calling_methods . "<br>";
+        echo "output: " . $output . "<br>";
+        echo "output_type: " . $output_type . "<br>";
+        echo "output_description: " . $output_description . "<br>";
+        echo "microservices_used: " . $microservices_used . "<br>";
+
     }
 
-    // print what is inserted (for debugging)
-    echo "Adding:<br>";
-    echo "ms_name: " . $ms_name . "<br>";
-    echo "description: " . $description . "<br>";
-    echo "parameter: " . $parameter . "<br>";
-    echo "parameter_type: " . $parameter_type . "<br>";
-    echo "parameter_description: " . $parameter_description . "<br>";
-    echo "calling_metods: " . $calling_methods . "<br>";
-    echo "output: " . $output . "<br>";
-    echo "output_type: " . $output_type . "<br>";
-    echo "output_description: " . $output_description . "<br>";
-    echo "microservices_used: " . $microservices_used . "<br>";
 
 }
 
