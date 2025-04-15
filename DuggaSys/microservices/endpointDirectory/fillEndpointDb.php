@@ -120,13 +120,17 @@ foreach ($mdFiles as $mdFile) {
     }
 
     // print what is inserted (for debugging)
-    echo "  Adding:<br>";
-    echo "  Microservice:  " . $values['ms_name'] . "<br>";
-    echo "  Filename:       " . $values['file_name'] . "<br>";
-    echo "  Path:        " . $values['ms_path'] . "<br>";
-    echo "  Description:   " . $values['description'] . "<br>";
-    echo "  Parameters:    " . $values['parameters'] . "<br>";
-    echo "  Render:        " . $values['render'] . "<br>";
+    echo "Adding:<br>";
+    echo "ms_name: " . $ms_name . "<br>";
+    echo "description: " . $description . "<br>";
+    echo "parameter: " . $parameter . "<br>";
+    echo "parameter_type: " . $parameter_type . "<br>";
+    echo "parameter_description: " . $parameter_description . "<br>";
+    echo "calling_metods: " . $calling_methods . "<br>";
+    echo "output: " . $output . "<br>";
+    echo "output_type: " . $output_type . "<br>";
+    echo "output_description: " . $output_description . "<br>";
+    echo "microservices_used: " . $microservices_used . "<br>";
 
 }
 
