@@ -44,7 +44,7 @@ function drawLine(line, targetGhost = false) {
 //Looks if the lines have gotta an index value from the function getLineAttrubutes
 //If so then there are multiple lines on the same row and the offset is changed
 if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
-    const lineSpacing = 15; //Can be changed to change the spacing between lines
+    const lineSpacing = 30; //Can be changed to change the spacing between lines
     const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpacing;
     if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
         offset.x1 += offsetIncrease;
@@ -91,12 +91,14 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
             str += drawRecursive(fx, fy, offset, line, lineColor);
 
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
+            //UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
             if(telem.kind === elementTypesNames.UMLFinalState) { 
                 offset.y2 = -4 + 3 / zoomfact;
                 offset.x2 = 0;
+            //Special offset for SD entity telem, since it can be both felem and telem. UMLInitialState can only be felem and doesn't utilize x2 or y2
             } else if (telem.kind === elementTypesNames.SDEntity) {
                 offset.y2 = -15;
-            } else { offset.y2 = 0; }
+            } else { offset.y2 = 0; } //Aligning line with mouse coordinate before telem has been set
             offset.y1 = 15;
 
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
