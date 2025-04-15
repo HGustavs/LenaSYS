@@ -225,15 +225,16 @@ No inverse dependencies.
 
 ### deleteListEntries
 
-### getCourseGroupsAndMembers
-
-### getCourseVersions
-
 ### getDeletedListEntries
 
 ### getCourseGroupsAndMembers
+    No inverse dependencies.
+    (Replaced with readCourseGroupsAndMembers_ms.php)
 
 ### getCourseVersions
+    No inverse dependencies.
+    (Replaces with readCourseVersions_ms.php)
+
 
 ### getDeletedListEntries
 
