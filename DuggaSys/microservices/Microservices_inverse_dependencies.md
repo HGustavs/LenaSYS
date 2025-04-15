@@ -223,15 +223,16 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 
 ### deleteListEntries
 
-### getCourseGroupsAndMembers
-
-### getCourseVersions
-
 ### getDeletedListEntries
 
 ### getCourseGroupsAndMembers
+    No inverse dependencies.
+    (Replaced with readCourseGroupsAndMembers_ms.php)
 
 ### getCourseVersions
+    No inverse dependencies.
+    (Replaces with readCourseVersions_ms.php)
+
 
 ### getDeletedListEntries
 
