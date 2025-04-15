@@ -216,8 +216,10 @@ This is a list of all inverse dependencies of files in the resultedService folde
 This is a list of all inverse dependencies of files in the sectionedService folder.
 
 ### changeActiveCourseVersion_sectioned
+No inverse dependencies. 
 
 ### createGithubCodeExample
+No inverse dependencies.
 
 ### createListEntry
 
