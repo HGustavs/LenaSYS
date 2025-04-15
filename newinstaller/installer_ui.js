@@ -232,7 +232,7 @@ function start_installer() {
 	});
 
 	function addButton(error) {
-		if (error) {
+		if (!error) {
 			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton' onclick=location.href='../DuggaSys/courseed.php'>Go to course</button>";
 		}
 	}
