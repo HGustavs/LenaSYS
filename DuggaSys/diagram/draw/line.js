@@ -240,11 +240,16 @@ function drawLine(line, targetGhost = false) {
                         ${labelValue}
                     </text>`;
         } else {
+            const labelCenterX = label.centerX - (2 * zoomfact);
+            const labelCenterY = label.centerY;
+            const rectX = labelCenterX - textWidth / 2 - zoomfact * 2;
+            const rectY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
+
             str += `<rect
                         class='text cardinalityLabel'
-                        id=${line.id + 'Label'}
-                        x='${labelPositionX}'
-                        y='${labelPositionY}'
+                        id='${line.id + 'Label'}'
+                        x='${rectX}'
+                        y='${rectY}'
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact + zoomfact * 3}'
                     />`;
@@ -253,8 +258,8 @@ function drawLine(line, targetGhost = false) {
                         dominant-baseline='middle'
                         text-anchor='middle'
                         style='font-size:${Math.round(zoomfact * textheight)}px;'
-                        x='${label.centerX - (2 * zoomfact)}'
-                        y='${label.centerY - (2 * zoomfact)}'>
+                        x='${labelCenterX}'
+                        y='${labelCenterY}'>
                         ${labelValue}
                     </text>`;
         }
