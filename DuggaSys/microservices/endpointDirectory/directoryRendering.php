@@ -22,5 +22,17 @@ if (!$service) {
 
 // Load file
 $markdown = file_get_contents('testMarkDownFile.md');
-echo $markdown;  // Returns raw md
+echo $markdown;  // Remove if you uncomment the HTML conversion below
+
+// Uncomment IF HTML rendering support (with parsedown) is needed
+/*
+if ($renderMode == 'html') {
+    header('Content-Type: text/html');
+    require_once 'Parsedown.php';
+    $converter = new Parsedown();
+    echo $converter->text($markdown);  // Converts md to HTML
+} else {
+    echo $markdown;  // Returns raw md
+}
+*/
 ?>
