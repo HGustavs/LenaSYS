@@ -255,8 +255,10 @@ No inverse dependencies.
     Replaced with readUserDuggaFeedback_ms.php
 
 ### readCourseGroupsAndMembers
+No inverse dependencies.
 
 ### readCourseVersions
+- ..\sectionedService\retrieveSectionedService_ms.php
 
 ### readGroupValues
 
