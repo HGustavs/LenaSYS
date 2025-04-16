@@ -86,6 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
       buttonLabel: "Save",
       containerId: "ButtonContainerSubmitEditCourse",
       buttonId: "submitEditCourse"
+    },
+    createCourse: {
+      action: () => validateForm,
+      argument: "newCourse",
+      buttonLabel: "Create",
+      containerId: "buttonContainerCreateCourse",
+      buttonId: "createCourse"
     }
     // Add more actions here as neededsubmitEditCourse
   };

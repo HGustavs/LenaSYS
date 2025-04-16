@@ -207,7 +207,7 @@ Testing Link:
 						if($public == 0){
 							$codeviewerkind=false;
 							include '../Shared/navheader.php';
-							echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have to be logged in to view this code example.</div>";
+							echo "<div class='err'><span id='bummerMsg'>Bummer!</span> You have to be logged in to view this code example.</div>";
 						}else{
 							$codeviewerkind=false;
 							include '../Shared/navheader.php';
@@ -218,14 +218,14 @@ Testing Link:
 					$codeviewer = false;
 					include '../Shared/navheader.php';
 					// Print Warning If course does not exist!
-					echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course does not seem to exist!</div>";
+					echo "<div class='err'><span id='bummerMsg'>Bummer!</span> Course does not seem to exist!</div>";
 				}
 			}else{
 				// If $courseID is "UNK" and $exampleid is also "UNK"
 				// This will show an error message if the courseid or the Code Example doesnt exist.
 				$codeviewer = false;
 				include '../Shared/navheader.php';
-				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
+				echo "<div class='err'><span id='bummerMsg'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
@@ -234,17 +234,17 @@ Testing Link:
 
         </div>
 		<!-- Dropdowns START -->
-		<span id='backwdrop' style='left:40px;display:none;' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='backwdropc'>oii</span></span>
-		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='forwdropc'>bii</span></span>
+		<span id='backwdrop' class='dropdown dropdownStyle backwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='backwdropc'>oii</span></span>
+		<span id='forwdrop' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'><!-- Name of table --></div><span id='forwdropc'>bii</span></span>
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
-		<div id='editContentContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editContent' class='formBox DarkModeBackgrounds' style='width:510px;'>
+		<div id='editContentContainer' class="loginBoxContainer">
+				<div id='editContent' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Edit Content</h3>
 						<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 					</div>
-					<table width="100%" style="table-layout:fixed;">
+					<table id="editContentSettingsTable">
 						<tr>
 							<td>Title:</td>
 							<td>Kind:</td>
@@ -275,14 +275,14 @@ Testing Link:
 						</tr>
 						<tr>
 							<td colspan="1"><select id='improws'></select></td>
-							<td colspan="1"><input style="width:32px; float: none;" class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
+							<td colspan="1"><input class='submit-button' type='button' value='-' onclick='editImpRows("-");' /></td>
 						</tr>
 						<tr>
-							<td colspan="1"><input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input style="width:91px;" class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
-							<td colspan="1"><input style="width: 32px; float: none;" class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='btnPress();editImpRows("+");' /></td>
+							<td colspan="1"><input  class='form-control textinput' min='0' type='number' id='improwfrom' placeholder='From #' />&nbsp;-&nbsp;<input class='form-control textinput' min='0' type='number' id='improwto' placeholder='To #' /></td>
+							<td colspan="1"><input class='submit-button' id='improw-submit-btn' type='button' value='+' onclick='btnPress();editImpRows("+");' /></td>
 						</tr>
 					</table>
-					<table width="100%">
+					<table class="saveBtnTable">
 						<tr>
 							<td align='right'><input id='editContentSaveBtn' class='submit-button' type='button' value='Save' onclick='updateContent();' /></td>
 						</tr>
@@ -291,15 +291,15 @@ Testing Link:
 		</div>
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
-		<div id='editExampleContainer' class="loginBoxContainer" style="display:none;">
-				<div id='editExample' class='formBox DarkModeBackgrounds' style='width:650px;'>
+		<div id='editExampleContainer' class="loginBoxContainer">
+				<div id='editExample' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Edit Example</h3>
 						<div class='cursorPointer' onclick='closeEditExample();'>x</div>
 					</div>
 					<fieldset>
 						<legend>Example Info</legend>
-						<table width="100%">
+						<table id="editExampleSettingsTable">
 							<tr>
 								<td>Section Title:<input class='form-control textinput' type='text' id='secttitle' placeholder='Section Title' value='&lt;Secrion Title&gt;' /></td>
 								<td>Title:<input class='form-control textinput' type='text' placeholder='Title' id='title' value='&lt;Title&gt;' /></td>
@@ -310,7 +310,7 @@ Testing Link:
 								<td>After:<select id='after'></select></td>
 							<tr> -->
 								<td>Play Link:<select id='playlink'></select></td>
-								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>
+								<td>Important Words:(No spaces)<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input class='submit-button' id='addImpWordBtn' type='button' value='+' onclick='editImpWords("+");' /><select id='impwords'><input class='submit-button' id='removeImpWordBtn' type='button' value='-' onclick='editImpWords("-");' /></select></td>
 							</tr>
 							<tr>
 								<td><input class='submit-button' type='button' value='Remove' onclick='removeExample();' /></td>
@@ -321,13 +321,13 @@ Testing Link:
 				</div>
 		</div>
 		<!-- Code Example Cog Wheel Dialog END -->
-		<div id='chooseTemplateContainer' class="loginBoxContainer" style="display:none;">
+		<div id='chooseTemplateContainer' class="loginBoxContainer"> 
 				<div id='chooseTemplate' class='formBox DarkModeBackgrounds'>
 					<div class='formBoxHeader'>
 						<h3>Choose Template</h3>
 						<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
 					</div>
-					<table width="100%">
+					<table class="tableWithTemplates">
 						<tr>
 							<td id="templat1" class="tmpl"><input id="templateno" type="hidden" value="0" />
 								<img class='templatethumbicon wiggle' onclick='changetemplate("1");' src='../Shared/icons/template1_butt.svg' />
@@ -343,17 +343,17 @@ Testing Link:
 							<td id="templat10" class="tmpl"><img class='templatethumbicon wiggle' onclick='changetemplate("10");' src='../Shared/icons/template10_butt.svg' /></td>
 						</tr>
 					</table>
-					<table id="templateOptions" width="100%">
+					<table id="templateOptions">
 					</table>
-					<table width="100%">
+					<table class="saveBtnTable">
 						<tr>
-							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();' /></td>
+							<td align='right'><input class='submit-button' type='button' value='Save' onclick='updateTemplate();'/></td>
 						</tr>
 					</table>
 				</div>
 		</div>
 		<div id="burgerMenu"></div>
-		<div id="underlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;opacity:0.6;background-color:#000; z-index:8000;"></div>
+		<div id="underlay"></div>
 
 
 
@@ -364,17 +364,15 @@ Testing Link:
 
 			include '../Shared/loginbox.php';
 		?>
-	<div class="previewWindowContainer loginBoxContainer">
-    <div class="previewWindow formBox">
-	<div class="formBoxHeader">
-            <h3 class ="fileName"></h3>
-            <div style="cursor:pointer;" onclick="hideIframe();">x</div>
-        </div>
-	<iframe id="iframeFileed"style="width:100%;height:85vh;"src=""></iframe>
-
-    </div>
-
-</div>
+		<div class="previewWindowContainer loginBoxContainer">
+			<div class="previewWindow formBox">
+				<div class="formBoxHeader">
+					<h3 class ="fileName"></h3>
+					<div id="previewCloseBtn"onclick="hideIframe();">x</div>
+				</div>
+				<iframe id="iframeFileed"src=""></iframe>
+			</div>
+		</div>
 
 	</body>
 </html>

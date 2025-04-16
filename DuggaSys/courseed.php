@@ -36,6 +36,9 @@ if(isset($_SESSION['uid'])){
 	<script src="../Shared/loadingButton.js"></script>
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+	<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
 </head>
@@ -105,7 +108,7 @@ if(isset($_SESSION['uid'])){
 				<!-- Input field to Github repository END-->
 			</div>
 			<div class="formFooter">
-				<input class='submit-button' id="createCourse" type='button' value='Create' disabled title='Create course' onclick="validateForm('newCourse')" />
+				<div id="buttonContainerCreateCourse"></div>
 			</div>
 		</div>
 	</div>

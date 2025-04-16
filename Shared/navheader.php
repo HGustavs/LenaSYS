@@ -422,7 +422,7 @@
       if($requestedService=="accessed.php"){
 					echo "<td id='select' class='navButt'>";
 					echo   "<span id='filterButton'>";
-					echo     "<img alt='filter icon' class='navButt' src='../Shared/icons/filter_icon.svg'>";
+					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg'>";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
@@ -514,29 +514,9 @@
 			}		
 ?>
 <div id="overlay" style="display: none;"></div>
-<div id='logoutBox' class="logoutBoxContainer" style="display: none">
-	<div id='logout' class="logoutBox DarkModeBackgrounds DarkModeText">
-		<div class='logoutBoxheader'>
-			<h3>Sign out</h3>
-			<div class="cursorPointer" onclick="$('#logoutBox').hide();" title="Close window">x</div>
-		</div>
-		<form action="" id="logoutForm" method="post">
-			<div>
-				<p>Are you sure you want to log out?</p>
-			</div>
-			<table class="logoutBoxTable">
-				<tr class="logoutboxTr">
-					<td>
-						<input type='button' class='buttonLogoutBox' onclick='processLogout();' value='Log out' title='Log out'>
-					</td>
-					<td>
-						<input type='button' class='buttonLogoutBox buttonLogoutCancelBox' onclick="$('#logoutBox').hide();" value='Cancel' title='CancelLogout'>
-					</td>						
-				</tr>
-			</table>
-		</form>
-	</div>
-</div>
+
+<div id="logoutReactRoot"></div>
+
 <script type="text/javascript">
 	// Checks if a logout request has been made on ANY other instance
 	window.addEventListener('storage', function(event){
@@ -546,17 +526,21 @@
 		}
 	}, {once: true});
 
-		if(localStorage.getItem("ls-cookie-message")=="off"){
-			$("#cookiemsg").css("display", "none");
-		}else{
-			$("#cookiemsg").css("display", "flex");
+	const cookieMsg = document.getElementById("cookiemsg");
+	if (cookieMsg) {
+		if (localStorage.getItem("ls-cookie-message") === "off") {
+			cookieMsg.style.display = "none";
+		} else {
+			cookieMsg.style.display = "flex";
 		}
+	}
 	function cookieMessage(){
 		hideCookieMessage();
 		localStorage.setItem("ls-cookie-message", "off");
 	}
-	function hoverBack(){
-		$(".dropdown-list-container").css("display", "none");
+	function hoverBack() {
+		const dropdowns = document.querySelectorAll(".dropdown-list-container");
+		dropdowns.forEach(el => el.style.display = "none");
 	}
 
 function mouseOverHome() {
@@ -682,25 +666,6 @@ function mouseOverSearchInput() {
    }
 }
 
-
-/*Toggle the hamburger list containing the icons to appear*/
-$('#hamburger').click(function(){
-	var isAnimating = $("#hamburgerList").is(':animated');
-	if(isAnimating == false){
-		$('#hamburgerList').slideToggle(500, function(){
-		});
-	}
-})
-
-/*Toggle the hamburger menu "button" into an X and then back to normal*/
-function hamburgerToggle() {
-	var isAnimating = $("#hamburgerList").is(':animated');
-	if(isAnimating == false){
-		var x= document.getElementById("ham")
-		x.classList.toggle("change");
-	}
-}
-
 let gitFetchCooldownMin, gitFetchCooldownSec, cooldownHolder;
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -767,4 +732,78 @@ var canvasEmbedded = "canvas.his.se";// HOSTNAME for the Embedded Canvas
 
 
 
+</script>
+
+<script type="text/babel">
+function LogoutBoxWrapper() {
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    window.showLogoutPopup = () => setVisible(true);
+  }, []);
+
+  const handleLogout = () => {
+    if (typeof processLogout === 'function') {
+      processLogout();
+    } else {
+      alert("Logging out (simulate)");
+    }
+    setVisible(false);
+  };
+
+  const handleCancel = () => setVisible(false);
+
+  if (!visible) return null;
+
+  return (
+    <div id="logoutBox" className="logoutBoxContainer">
+      <div className="logoutBox DarkModeBackgrounds DarkModeText">
+        <div className="logoutBoxheader">
+          <h3>Sign out</h3>
+          <div
+            className="cursorPointer"
+            title="Close window"
+            onClick={handleCancel}
+          >
+            x
+          </div>
+        </div>
+        <form id="logoutForm" method="post">
+          <div>
+            <p>Are you sure you want to log out?</p>
+          </div>
+          <table className="logoutBoxTable">
+            <tbody>
+              <tr className="logoutboxTr">
+                <td>
+                  <input
+                    type="button"
+                    className="buttonLogoutBox"
+                    onClick={handleLogout}
+                    value="Log out"
+                    title="Log out"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="button"
+                    className="buttonLogoutBox buttonLogoutCancelBox"
+                    onClick={handleCancel}
+                    value="Cancel"
+                    title="CancelLogout"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+const logoutRoot = document.getElementById("logoutReactRoot");
+if (logoutRoot) {
+  ReactDOM.createRoot(logoutRoot).render(<LogoutBoxWrapper />);
+}
 </script>

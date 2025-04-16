@@ -265,6 +265,10 @@ p {
   text-shadow: 1px 1px var(--color-text-list);
 }
 
+#bummerMsg{
+  font-weight:bold;
+}
+
 .err-extension {
   margin-top: 10px;
 }
@@ -832,6 +836,17 @@ p {
   display: block;
   padding-top: 1px;
   border-radius: 5px;
+
+  & h2 {
+    text-align: center;
+    font-weight: normal;
+    background-color: #5e4776;  
+    color: white;               
+  }
+
+  & .view-label {
+    padding: 0.5rem;
+  }
 }
 
 #sectionList_arrowStatisticsClosed{
@@ -854,6 +869,10 @@ p {
 }
 
 @media screen and (max-width : 570px) {
+
+  & .view-label {
+    display: none;
+  }
 
   .item {
     font-size: 10pt;
@@ -1444,6 +1463,9 @@ header td {
   vertical-align: middle;
   margin-top: 9px;
 }
+.filterButt{
+  margin-top: 3px;
+}
 
 .navButt img {
   vertical-align: middle;
@@ -1457,6 +1479,9 @@ header td {
   margin-top: 9px;
 }
 
+td.navSearchWrapper form {
+margin-block-end: 10px;
+}
 .navSearch {
   margin-top:5%;
 }
@@ -1894,7 +1919,6 @@ div .navButt:hover {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 8000;
   margin:0 auto;
-  display:none;
 }
 
 .loginHashContainer {
@@ -1990,6 +2014,11 @@ div .navButt:hover {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+#createNewEmptyFile ul {
+    padding-left: 0px;
+    list-style-type: none;
 }
 
 /* <<<<<<<<<<< End of create new empty file >>>>>>>>>>>>>>> */
@@ -2906,6 +2935,48 @@ codeviewer.php END
   text-align:left;
  }
 
+ #fabButton.fixed-actionButton {
+     margin-right: 100px;
+ }
+
+#fabButton.fixed-action-button ol {
+    margin: 0;
+    padding: 0;
+}
+
+ #mdtarget.descbox{
+     height: 100%;
+     box-sizing: border-box;
+ }
+
+#fileUploadBox.formBox {
+    width: 464px;
+    overflow-y: visible
+}
+
+.sortTab {
+    white-space: nowrap;
+}
+
+.sortButtonsContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 50px
+}
+
+.sortButtonsSubContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.sortButtonsSubContainer label {
+    white-space: nowrap;
+}
+
+#uploadedlink.textinput {
+    width: 380px;
+}
 
  /*---===#===---*
  fileed.php END 
@@ -3358,7 +3429,7 @@ div.submit-button {
   background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  width: 30px;
+  width: 90px;
   height: 30px;
   color: var(--color-text-header);
   cursor: pointer;
@@ -4747,6 +4818,11 @@ div.reset-pw:hover{
   margin: 15px 0 18px 0 !important;
 }
 
+#uploadbuttonname input {
+    position: relative;
+    top: 25px;
+}
+
 #feedbackTable table {
   width: 100%;
 }
@@ -5837,6 +5913,11 @@ ul.hamburgerList button.menuButton {
     min-width: 1050px;
 }
 */
+
+#fileLink.table {
+    width: 100%;
+    margin-bottom: 30px;
+}
 
 #sortingDiv {
   height: 30px;
@@ -7926,6 +8007,14 @@ only screen and (max-device-width: 568px) {
   bottom: 0;
   z-index: 8000;
   display: none;
+}
+
+#markdownEditor {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .formBoxHeade, .fileViewHeader {

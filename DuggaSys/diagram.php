@@ -2,10 +2,15 @@
     session_start();
     include_once "../Shared/sessions.php";
 	include_once "../Shared/basic.php";
-	#general vars regarding current dugga.
-	$cid=getOPG('courseid');
-	$vers=getOPG('coursevers');
-	$quizid=getOPG('did');
+	#General vars regarding current dugga.
+    #Strips and escapes output, should counteract XSS vulnerabilites.
+    $strippedCid=strip_tags(getOPG('courseid'));
+    $strippedVers=strip_tags(getOPG('coursevers'));
+    $strippedQuizid=strip_tags(getOPG('did'));
+
+	$cid=htmlspecialchars($strippedCid, ENT_QUOTES, 'UTF-8');
+	$vers=htmlspecialchars($strippedVers, ENT_QUOTES, 'UTF-8');
+	$quizid=htmlspecialchars($strippedQuizid, ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +31,9 @@
     <script src="darkmodeToggle.js"></script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="../Shared/markdown.js"></script>
     <script src="./diagram/classes/point.js"></script>

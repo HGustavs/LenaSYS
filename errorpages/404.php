@@ -45,6 +45,9 @@ $startURL = str_replace("errorpages/404.php","", $actual_link) . "DuggaSys/cours
 
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
         <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
         <script src="../Shared/dugga.js"></script>
 </head>
 <body>
