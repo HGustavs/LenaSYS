@@ -196,44 +196,98 @@ function mouseEnterSeq(event) {
 
 /**
  * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
- * @param {string} targetId - The ID of the target lifeline.
+/**
+ * Snaps a given element to the center of a lifeline and adjusts its Y-position if necessary.
+ * @param {Object} element - The element to snap (a placed object).
+ * @param {string} targetId - The ID of the lifeline to snap to.
  */
-function snapSAToLifeline(targetId) {
+function snapElementToLifeline(element, targetId) {
     const lifeline = document.getElementById(targetId);
-    if (lifeline) {
-        for (let i = 0; i < data.length; i++) {
-            const element = data[i];
-            if ((element.kind === "sequenceActor") && element.id === targetId) {
-                let boxHeight = getTopHeight(element);
-                let minY = element.y + boxHeight + 70;
+    if (!lifeline) return; // Exit if the DOM element doesn't exist
 
-                // Fix the x position
-                ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
-
-                // Check and adjust the y position if necessary
-                if (ghostElement.y < minY) {
-                    ghostElement.y = minY;
-                }
-                updatepos();
-                break;
-            }
-            if ((element.kind === "sequenceObject") && element.id === targetId) {
-                let boxHeight = getTopHeight(element);
-                let minY = element.y + boxHeight - 70;
-
-                // Fix the x position
-                ghostElement.x = element.x + (element.width / 2) - (ghostElement.width / 2);
-
-                // Check and adjust the y position if necessary
-                if (ghostElement.y < minY) {
-                    ghostElement.y = minY;
-                }
-                updatepos();
-                break;
-            }
+    // Search for the lifeline data in the main data array
+    for (let i = 0; i < data.length; i++) {
+        const ll = data[i];
+        if ((ll.kind === "sequenceActor" || ll.kind === "sequenceObject") && ll.id === targetId) {
+            // Snap the element horizontally to the center of the lifeline
+            element.x = ll.x + (ll.width / 2) - (element.width / 2);
+            updatepos(); // Refresh position on screen
+            break;
         }
     }
 }
+
+/**
+ * Snaps the ghostElement (hover preview) to the center of a lifeline and adjusts its Y-position.
+ * @param {string} targetId - The ID of the lifeline to snap to.
+ */
+function snapSAToLifeline(targetId) {
+    const lifeline = document.getElementById(targetId);
+    if (!lifeline) return; // Exit if no such DOM element
+
+    const lifelineData = data.find(el => el.id === targetId);
+    if (!lifelineData) return; // Exit if no such object in data array
+
+    // Snap ghost X to the center of the lifeline
+    const centerX = lifelineData.x + lifelineData.width / 2;
+    ghostElement.x = centerX - ghostElement.width / 2;
+
+    // Adjust ghost Y if it's above the allowed minimum
+    const minY = lifelineData.y + getTopHeight(lifelineData) + 70;
+    if (ghostElement.y < minY) {
+        ghostElement.y = minY;
+    }
+
+    updatepos(); // Update preview position
+}
+
+/**
+ * Creates a new element and places it at the specified position.
+ * If it's close to a lifeline, it will snap to it.
+ * @param {number} x - X coordinate to place the element.
+ * @param {number} y - Y coordinate to place the element.
+ */
+function placeElementAt(x, y) {
+    const newElement = Element.Default(elementTypeSelected);
+    newElement.x = x;
+    newElement.y = y;
+
+    // Check if it's near a lifeline and snap to it
+    const lifelineId = findNearestLifeline(x, y);
+    if (lifelineId) {
+        snapElementToLifeline(newElement, lifelineId);
+    }
+
+    data.push(newElement); // Add the new element to the diagram
+    draw(); // Redraw the canvas or SVG
+}
+
+/**
+ * Finds the nearest lifeline (within a horizontal threshold) to a given position.
+ * @param {number} x - X position to compare with lifelines.
+ * @param {number} y - Y position (unused but could be used later).
+ * @returns {string|null} - The ID of the closest lifeline, or null if none are within threshold.
+ */
+function findNearestLifeline(x, y) {
+    let minDistance = Infinity;
+    let closestId = null;
+
+    data.forEach(el => {
+        if (el.kind === "sequenceActor" || el.kind === "sequenceObject") {
+            const centerX = el.x + el.width / 2;
+            const dx = Math.abs(centerX - x);
+            if (dx < 50 && dx < minDistance) { // Use 50px as snapping threshold
+                minDistance = dx;
+                closestId = el.id;
+            }
+        }
+    });
+
+    return closestId;
+}
+
+
+
 
 /**
  * @description Gets the height of the top object of sequence actor and sequence object
