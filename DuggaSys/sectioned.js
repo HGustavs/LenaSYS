@@ -654,27 +654,41 @@ function showSaveButton() {
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
+
+  // it registrers both when clicking trashcan and selection trashcan
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
+    selectedItemList.push(active_lid);
+    console.log('active lid: ' + active_lid)
     $("#sectionConfirmBox").css("display", "flex");
-  } else if (operation == "openHideConfirmBox") {
+  } 
+  else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
+  } 
+  else if (operation == "openTabConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#tabConfirmBox").css("display", "flex");
     $("#tabs").val(0).change();
-  } else if (operation == "openItemsConfirmBox") {
+  } 
+  else if (operation == "openItemsConfirmBox") {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
+
+    // something within this function is not working properly. When pressing the trash without selection,
+    // it doesn't have a selected item. So something that's calling this, doesn't include the items when calling
+    // from the trash.
   } else if (operation == "deleteItem") {
+    console.log('selectedItemList: ' + selectedItemList)
     deleteItem(selectedItemList);
     document.getElementById("sectionConfirmBox").style.display = "none";
-  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
+  } 
+  else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
     $("#sectionHideConfirmBox").css("display", "none");
-  } else if (operation == "tabItem") {
+  } 
+  else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
     $("#tabConfirmBox").css("display", "none");
   }
@@ -1988,8 +2002,8 @@ function returnedSection(data) {
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
-
-        // Trashcan
+        
+        // Trashcan -> opens poppup.
         if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
