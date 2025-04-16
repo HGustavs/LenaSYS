@@ -152,6 +152,9 @@ function newCourse() {
 	//$("#overlay").css("display", "block");
 }
 
+// Make the newCourse function available globally for the React component
+window.newCourse = newCourse;
+
 function createNewCourse() {
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
@@ -545,50 +548,6 @@ function createVersion() {
 
 }
 
-// //----------------------------------------
-// // Dark mode toggle button listener.  
-// //----------------------------------------
-
-// /*/ The code below is waitng for the page to load, and check when the user changes his/her 
-// operative system to either black or white mode . /*/
-
-// const themeStylesheet = document.getElementById('themeBlack');
-
-// document.addEventListener('DOMContentLoaded', () => {
-// 	const storedTheme = localStorage.getItem('themeBlack');
-// 	if(storedTheme){
-// 			themeStylesheet.href = storedTheme;
-// 	}
-// 	const themeToggle = document.getElementById('theme-toggle');
-// 	themeToggle.addEventListener('click', () => {
-// 			// if it's light -> go dark
-// 			if(themeStylesheet.href.includes('blackTheme')){
-// 					themeStylesheet.href = "../Shared/css/whiteTheme.css";
-// 					localStorage.setItem('themeBlack',themeStylesheet.href)
-// 					// themeToggle.innerText = 'Switch to light mode';
-// 			} else if(themeStylesheet.href.includes('whiteTheme')) {
-// 					// if it's dark -> go light
-// 					themeStylesheet.href = "../Shared/css/blackTheme.css";
-// 					localStorage.setItem('themeBlack',themeStylesheet.href)
-// 					// themeToggle.innerText = 'Switch to dark mode';
-// 			}		
-// 	})
-// })
-
-// //It actively checks if the "theme" changes on the operating system and changes colors based on it. It override your preferences.
-// window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-// 	const newColorScheme = e.matches ? "dark" : "light";
-// 	if(newColorScheme == "dark") {
-// 		themeStylesheet.href = "../Shared/css/blackTheme.css";
-// 		localStorage.setItem('themeBlack',themeStylesheet.href)
-// 	}
-// 	else {
-// 		themeStylesheet.href = "../Shared/css/whiteTheme.css";
-// 		localStorage.setItem('themeBlack',themeStylesheet.href)
-// 	}
-// });
-
-
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -680,12 +639,9 @@ function returnedCourse(data) {
 	}
 
 	str += "</div>";
+	// Add React component container for FAB button
 	if (data['writeaccess']) {
-		str += "<div style='float:right;'>";
-		str += "<div class='fixed-action-button extra-margin'>";
-		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>";
-		str += "</div>";
-		str += "</div>";
+		str += "<div style='float:right;' id='fab-button-container'></div>";
 	}
 	var slist = document.getElementById('Courselist');
 	slist.innerHTML = str;
@@ -714,6 +670,49 @@ function returnedCourse(data) {
 
 	//After all courses have been created and added to the list the course code can be accessed from each course element and pushed to array
 	setActiveCodes();
+	
+	// Render the React FAB component if the user has write access
+	if (data['writeaccess'] && document.getElementById('fab-button-container')) {
+		// Import React and ReactDOM
+		import('https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js')
+			.then(() => import('https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'))
+			.then(() => {
+				// Create a container for the FAB button component
+				const fabContainer = document.getElementById('fab-button-container');
+				
+				// Define the FabButton component
+				const FabButton = () => {
+					return React.createElement('div', { className: 'fixed-action-button extra-margin' },
+						React.createElement('a', {
+							className: 'btn-floating fab-btn-lg noselect',
+							onClick: () => window.newCourse(),
+							onKeyDown: (e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									window.newCourse();
+								}
+							},
+							tabIndex: '0',
+							role: 'button',
+							'aria-label': 'Add new course'
+						}, '+')
+					);
+				};
+				
+				// Render the React component into the container
+				ReactDOM.render(React.createElement(FabButton), fabContainer);
+			})
+			.catch(error => {
+				console.error('Error loading React:', error);
+				// Fallback to traditional HTML if React loading fails
+				const fabContainer = document.getElementById('fab-button-container');
+				fabContainer.innerHTML = `
+					<div class='fixed-action-button extra-margin'>
+						<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>
+					</div>
+				`;
+			});
+	}
 }
 
 /* Used to enable using list entries with ' */
