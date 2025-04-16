@@ -670,7 +670,7 @@ function confirmBox(operation, item = null) {
     $('#close-item-button').focus();
   } else if (operation == "deleteItem") {
     deleteItem(selectedItemList);
-    $("#sectionConfirmBox").css("display", "none");
+    document.getElementById("sectionConfirmBox").style.display = "none";
   } else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
     $("#sectionHideConfirmBox").css("display", "none");
@@ -710,12 +710,12 @@ function confirmBox(operation, item = null) {
     if (event.key === 'Enter') {
       if (event.target.classList.contains("traschcanDelItemTab")) {
         setTimeout(function () {
-          $("#delete-item-button").focus();
+           document.getElementById('delete-item-button').focus();
         }, 400);
       }
       if (event.target.id == "delete-item-button") {
         deleteItem(active_lid);
-        $("#sectionConfirmBox").css("display", "none");
+        document.getElementById("sectionConfirmBox").style.display = "none";
       }
     }
   });
@@ -966,22 +966,23 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
+
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
-    lid = item_lid ? item_lid : $("#lid").val(); 
+    const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
     item.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
-  // Displays popup
+
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
 
-  // Makes deletefunction sleep for 15 sec so it is possible to undo an accidental deletion. 
+  // Makes deletefunction sleep for 16 sec so it is possible to undo an accidental deletion. 
   clearTimeout(delTimer);
   delTimer = setTimeout(() => {
     deleteAll();
-  }, 15000);
+  }, 16000);
 }
 
 // Permanently delete elements.
@@ -989,30 +990,18 @@ function deleteAll() {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = deletedElements.length ; (i > 0) ; i--) {
     var lid = deletedElements[i-1].id.match(/\d+/)[0];
-    
+    deletedElements[i-1].classList.remove("deleted");
+
     AJAXService("DEL", {
       lid: lid
     }, "SECTION");
   }
-
   $("#editSection").css("display", "none");
   document.querySelector("#undoButton").style.display = "none";
-  }
-
-// undo deletion
-function cancelDelete () {
-  clearTimeout(delTimer); // removes timer
-  delArr.push(lid);
-
-  var deletedElements = document.querySelectorAll(".deleted")
-  for (i = 0; i < delArr.length; i++) {
-    deletedElements[i].classList.remove("deleted");
-  }
-  location.reload();
 }
 
-// Cancel deletion
-function cancel () {
+// Undo the deletion
+function cancelDelete () {
   clearTimeout(delTimer);
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = 0; i < deletedElements.length; i++) {
@@ -2106,7 +2095,7 @@ function returnedSection(data) {
     }
 
     if (data['writeaccess']) {
-      // Enable sorting always if we are superuser as we refresh list on update
+      /*// Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
@@ -2132,7 +2121,7 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
-      }
+      } */
     }
   } else {
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>" +
@@ -2455,8 +2444,16 @@ function drawSwimlanes() {
   // var weekLength = weeksBetween(startdate, enddate);
   var weekLength = Math.ceil((enddate - startdate) / (7 * 24 * 60 * 60 * 1000));
   var currentWeek = weeksBetween(current, startdate);
-  var daywidth = 10;
-  var weekwidth = daywidth * 7;
+
+  // Dynamically calculate the available widht of the container
+  var containerWidth = document.getElementById("swimlaneSVG").parentElement.offsetWidth;
+
+  // Calculate daywidth dynamically, based on number of weeks and availalbe width
+  var daywidth = containerWidth / (weekLength * 7);
+  
+  // Full week width
+  var weekwidth = daywidth * 7; 
+  
   var colwidth = 60;
   var weekheight = 25;
 
@@ -2551,7 +2548,11 @@ function drawSwimlanes() {
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
 
   document.getElementById("swimlaneSVG").innerHTML = str;
-  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 800 " + svgHeight);
+
+  // Set the viewbow width dynamically based on total width of all the weeks
+  let svgWidth = weekLength * weekwidth;
+  document.getElementById("swimlaneSVG").setAttribute("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+
 
 
   var minDistance;
@@ -2663,7 +2664,7 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
-  var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+    var deleteButtonDisplay = window.getComputedStyle(document.getElementById('sectionConfirmBox')).display;
   if (event.keyCode == 27) {
     // If key is escape
     showSaveButton();
@@ -2716,7 +2717,7 @@ $(window).keyup(function (event) {
   }
   else if (event.keyCode == 37) {
     if (deleteButtonDisplay == 'flex') {
-      $('#delete-item-button').focus();
+        document.getElementById('delete-item-button').focus();
     }
   }
   else if (event.keyCode == 39) {

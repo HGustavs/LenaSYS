@@ -251,8 +251,10 @@
           Yes I want to write over an existing database.<br>
           <input title="Write over existing user." id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
           Yes I want to write over an existing user.<br>
+          <!-- Commented out due to a transaction option not being necessary and broken. 
           <input title="Init as transaction." id="transaction" type="checkbox" name="InitTransaction" value="Yes" />
           Yes I want to perform the database-initializing as an transaction.<br>
+          -->
         </div>
             <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
       </div>
@@ -519,8 +521,10 @@
           $initQueryArray = explode(";", $initQuery);
           $initSuccess = false;
           $completeQuery = null;
+          
           try {
-            if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
+            // The checkbox for this option is removed, due to function being broken.
+             if (isset($_POST["InitTransaction"]) && $_POST["InitTransaction"] == 'Yes'){
               $connection->beginTransaction();
             }
             $connection->query("SET NAMES utf8");

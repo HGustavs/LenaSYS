@@ -184,7 +184,7 @@ class StateChange {
         const newRelation = document.getElementById("propertySelect")?.value || undefined;
         if (newRelation && oldRelation != newRelation) {
             if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
-                if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+                if (element.kind != elementTypesNames.UMLEntity) {
                     let property = document.getElementById("propertySelect").value;
                     element.state = property;
                     return element.state;

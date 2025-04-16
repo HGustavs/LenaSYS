@@ -236,6 +236,7 @@
 					?>
 					<div class="inner-wrapper">
 						<?php progressBar(); ?>
+						<div id="pageButtonContainer"></div>
 					</div>
 				</div>
 			</div>

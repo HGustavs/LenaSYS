@@ -9,7 +9,8 @@ function drawElement(element, ghosted = false) {
     let texth = Math.round(zoomfact * textheight);
     let linew = Math.round(strokewidth * zoomfact);
     let boxw = Math.round(element.width * zoomfact);
-    let boxh = Math.round(element.height * zoomfact); // Only used for extra whitespace from resize
+    let boxh = element.height ? 
+    Math.round(element.height * zoomfact) : 0; // Only used for extra whitespace from resize
     let zLevel = 2;
     let mouseEnter = '';
 
@@ -59,8 +60,8 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:2;` :
-             `left:0; top:0; width:auto; height:${boxh / 2}px; z-index:1;`;
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:2;` :
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
             let initVec = `
@@ -69,7 +70,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, initVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
             break;
         case elementTypesNames.UMLFinalState:
             let finalVec = `
@@ -92,7 +93,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, finalVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:1;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
             break;
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
@@ -102,12 +103,12 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 1;
+            zLevel = 2;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 1;
+            zLevel = 2;
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
@@ -217,7 +218,7 @@ function drawSvg(w, h, s, extra = '') {
  * @param {String} extra Extra attributes to be added to the rectangle tag.
  * @returns Returns a string containing a svg rectangle for the element that is drawn.
  */
-function drawRect(w, h, l, e, extra = `fill='${e.fill}'`) {
+function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#ffffff`) {
     return `<rect 
                 class='text' x='${l}' y='${l}' 
                 width='${w - l * 2}' height='${h - l * 2}' 
@@ -253,6 +254,8 @@ function drawText(x, y, a, t, extra = '') {
  */
 function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const l = linew * 3;
+    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.5);
+    const lineHeight = 1.5;
     
     //check if element height and minHeight is 0, if so set both to 50
     if (element.height == 0 && element.minHeight == 0) {
@@ -262,19 +265,36 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
         boxh = 50;
     }
 
+    // Split string into an array of lines based on max characters per line
+    function splitFull(str, maxCharsPerLine) {
+        const result = [];
+        for (let i = 0; i < str.length; i += maxCharsPerLine) {
+            result.push(str.substring(i, i + maxCharsPerLine));
+        }
+        return result;
+    }
+
+    const nameLines = splitFull(element.name, maxCharactersPerLine);
+    const textHeight = texth * nameLines.length * lineHeight;
+    const contentHeight = Math.max(boxh, textHeight + linew * 4);
+
     let weak = '';
     if (element.state == "weak") {
         weak = `<rect
                     x='${l}' 
                     y='${l}' 
                     width='${boxw - l * 2}' 
-                    height='${boxh - l * 2}'
+                    height='${contentHeight - l * 2}'
                     stroke-width='${linew}' stroke='${element.stroke}' fill='${element.fill}' 
                 />`;
     }
-    let rect = drawRect(boxw, boxh, linew, element);
-    let text = drawText(boxw / 2, boxh / 2 + texth / 3, 'middle', element.name);
-    return drawSvg(boxw, boxh, rect + weak + text);
+    let rect = drawRect(boxw, contentHeight, linew, element);
+    let text = "";
+    for (let i = 0; i < nameLines.length; i++) {
+        const y = (contentHeight / 2) - (nameLines.length / 2 - i - 0.5) * texth * lineHeight;
+        text += drawText(boxw / 2, y, 'middle', nameLines[i]);
+    }
+    return drawSvg(boxw, contentHeight, rect + weak + text);
 }
 
 /**
@@ -300,9 +320,14 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     updateElementHeight(UMLHeight, element, totalHeight + boxh);
 
     // Header
-    let height = texth * 2;
+    const headerLines = splitFull([element.name], maxCharactersPerLine);
+    let height = texth * (headerLines.length + 1) * lineHeight;
     let headRect = drawRect(boxw, height, linew, element);
-    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headText = "";
+    for (let i = 0; i < headerLines.length; i++) {
+        const y = texth * (i + 1) * lineHeight;
+        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+    }
     let headSvg = drawSvg(boxw, height, headRect + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
@@ -347,12 +372,16 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     let totalHeight = tHeight - linew * 2 + texth * 2;
     updateElementHeight(IEHeight, element, totalHeight + boxh);
 
-    let height = texth * 2;
+    const headerLines = splitFull([element.name], maxCharactersPerLine);
+    let height = texth * (headerLines.length + 0.5) * lineHeight;
     let headRect = drawRect(boxw, height, linew, element);
-    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headText = "";
+    for (let i = 0; i < headerLines.length; i++) {
+        const y = texth * (i + 1) * lineHeight;
+        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+    }
     let headSvg = drawSvg(boxw, height, headRect + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
-
 
     // Content, Attributes
     const textBox = (s, css) => {
@@ -401,7 +430,9 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     let totalHeight = tHeight - linew * 2 + texth * 2;
     updateElementHeight(SDHeight, element, totalHeight + boxh);
 
-    let height = texth * 2;
+    // Header 
+    let headerLines = splitFull([element.name], maxCharactersPerLine);
+    let height = texth * (headerLines.length + 0.5) * lineHeight;
     let headPath = `
         <path 
         class="text"
@@ -415,12 +446,17 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
                 z"
             stroke-width='${linew}'
             stroke='${element.stroke}'
-            fill='${element.fill}'
+            fill='${element.fill ? element.fill : "#ffffff"}'
         />`;
-    let headText = drawText(boxw / 2, texth * lineHeight, 'middle', element.name);
+    let headText = "";
+    for (let i = 0; i < headerLines.length; i++) {
+        const y = texth * (i + 1) * lineHeight;
+        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+    }
     let headSvg = drawSvg(boxw, height, headPath + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px;`, headSvg);
 
+    // Content / Attributes
     const drawBox = (s, css) => {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
@@ -440,7 +476,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
                     z"
                 stroke-width='${linew}'
                 stroke='${element.stroke}'
-                fill='${element.fill}'
+                fill='${element.fill ? element.fill : "#ffffff"}'
             />`;
         let contentSvg = drawSvg(boxw, height, path + text);
         let style = `height:${height}px`;
@@ -552,10 +588,11 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
  */
 function drawElementUMLRelation(element, boxw, boxh, linew) {
     let fill = (element.state == 'overlapping') ? 'black' : 'white';
+    let strokeColor = (fill === 'black') ? 'white' : 'black';
     let poly = `
         <polygon 
             points='${linew},${boxh - linew} ${boxw / 2},${linew} ${boxw - linew},${boxh - linew}' 
-            style='fill:${fill}; stroke:black; stroke-width:${linew};'
+            style='fill:${fill}; stroke:${strokeColor}; stroke-width:${linew};'
         />`;
     return drawSvg(boxw, boxh, poly);
 }
@@ -571,13 +608,14 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
 function drawElementIERelation(element, boxw, boxh, linew) {
     let content = "";
     content += `<circle cx="${boxw / 2}" cy="0" r="${boxw / 2.08}" fill='white' stroke='black' /> 
-                <line x1="0" y1="${boxw / 50}" x2="${boxw}" y2="${boxw / 50}" stroke='black' />`;
+                <line x1="${boxw / 2}" y1="${linew / 2}" x2="${(boxw / 2) + (boxw / 2.08)}" y2="${linew / 2}" stroke='black' />
+                <line x1="${(boxw / 2) + 1}" y1="${linew / 2}" x2="${(boxw / 2) - (boxw / 2.08) + 1}" y2="${linew / 2}" stroke='black' />`;
 
     if (element.state != inheritanceStateIE.OVERLAPPING) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`;
     }
-    return drawSvg(boxw, boxh / 2, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
 }
 
 /**

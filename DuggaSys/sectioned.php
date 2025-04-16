@@ -73,15 +73,19 @@
   			margin-bottom: 1px;
 		}
 
-		/* Style for the "View" labe" */
-		.view-label {
-  			background-color: #5e4776;  
-  			color: white;               
-  			padding: 8px 16px;          
-  			border-radius: 1px;
-  			font-weight: normal;
-  			display: inline-block;      
-		}
+		/* Style for the item currently being dragged */
+		.dragging {
+   			opacity: 0.9;
+    		transform: scale(1.05) translateY(-2px);
+    		background-color: #f0f0f0;
+    		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    		transition: all 0.2s ease;
+   	 		z-index: 999;
+    		position: relative;
+  		}
+
+</style>
+
 	</style>
 
 	<!-- <link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet"> -->
@@ -96,7 +100,10 @@
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+	<script type="text/babel" src="../Shared/components/Button.js"></script>
+
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
 	<script src="backToTop.js"></script>	
@@ -283,8 +290,8 @@
 		<div id='courseList'>
 
 		<!-- View mode toggle buttons -->
-		<div style="margin: 10px 0;">
-			<span class="view-label">View</span><br>
+		<div class="view-label">
+			<h2>View</h2>
   			<button class="submit-button" onclick="setViewMode('normal')">Normal</button>
   			<button class="submit-button" onclick="setViewMode('scroll')">Scroll</button>
  			<button class="submit-button" onclick="setViewMode('overview')">Overview</button>
@@ -392,13 +399,22 @@
 					<h4>Are you sure you want to delete selected items?</h4>
 					<p>(You can always undo!)</p>
 			</div>
-			<div id="deleteBtnPlacement" class="formFooter" >
-				<input class='submit-button' id="delete-item-button" type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-				<input class='submit-button' id="close-item-button" type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
-			</div>
+			<div id="deleteBtnPlacement" class="formFooter" ></div>
 		</div>
 	</div>
-
+	
+	<script type="text/babel">
+		function ConfirmButtons() {
+			return (
+				<>
+					<Button id="delete-item-button" className="submit-button" title="Yes" onClick={() => confirmBox("deleteItem")}> Yes </Button>
+					<Button id="close-item-button" className="submit-button" title="No" onClick={() => confirmBox("closeConfirmBox")}> No </Button>
+				</>
+			);
+		}
+		ReactDOM.createRoot(document.getElementById('deleteBtnPlacement')).render(<ConfirmButtons />)
+	</script>
+	<!-- Confirm Section Dialog END -->
 
 	<!-- Canvas Link Dialog -->
 	<div id='canvasLinkBox' class='loginBoxContainer display_none'>
@@ -789,6 +805,95 @@
 				</div>
 				
 		</div>
-</body>
+		<!-- Set JS variable based on if logged in or not -->
+		<?php
+		if (checklogin()) {
+			echo '<script>var isLoggedIn = true;</script>';
+		} else {
+			echo '<script>var isLoggedIn = false;</script>';
+		}
+		?>
+		
+		<script type="text/babel">
+			window.addEventListener("load", () => {
+				// Give the page time to fully load 
+				setTimeout(() => {
+					// Disable drag-and-drop if user is not logged in
+					if (!isLoggedIn) return;
 
-</html>
+					const listElement = document.querySelector("#Sectionlisti");
+					if (!listElement) return;
+
+					// The item currently being dragged
+					let dragging = null;
+
+					// Make each list item draggable
+					listElement.querySelectorAll("div.test, div.code").forEach(item => {
+						item.setAttribute("draggable", "true");
+
+						// When dragging starts
+						item.addEventListener("dragstart", (e) => {
+							dragging = item;
+							// Visual effect for the drag
+							item.classList.add("dragging");
+							e.dataTransfer.effectAllowed = "move";
+							e.dataTransfer.setData("text/plain", "");
+						});
+
+						// While dragging over another item in the list
+						item.addEventListener("dragover", (e) => {
+							e.preventDefault();
+							const target = item;
+
+							// Only allow sorting between valid items types
+							if (!target.classList.contains("test") && !target.classList.contains("code")) return;
+
+							// Decide whether to insert above or below the target
+							const rect = target.getBoundingClientRect();
+							const after = (e.clientY - rect.top) > rect.height / 2;
+
+							if (dragging && target !== dragging) {
+								if (after) {
+									target.after(dragging);
+								} else {
+									target.before(dragging);
+								}
+							}
+						});
+
+						// When dropping the item in the list
+						item.addEventListener("drop", updateOrder);
+
+						// When the drag ends
+						item.addEventListener("dragend", () => {
+							if (dragging) dragging.classList.remove("dragging");
+						});
+					});
+
+					// Send the updated order to the server via AJAX
+					function updateOrder() {
+						const items = listElement.querySelectorAll("div.test, div.code");
+						let str = "";
+						items.forEach((item, i) => {
+							const ido = item.getAttribute("id");
+							const phld = item.getAttribute("placeholder");
+							if (i > 0) str += ",";
+							str += i + "XX" + ido.substring(1) + "XX" + phld;
+						});
+
+						fetch("sectionedservice.php", {
+							method: "POST",
+							headers: { "Content-Type": "application/x-www-form-urlencoded" },
+							body: new URLSearchParams({
+								request: "REORDER",
+								order: str
+							})
+						});
+					}
+				}, 100); // Give the page time to load. 
+			});
+		</script>
+		
+		</body>
+		
+		</html>

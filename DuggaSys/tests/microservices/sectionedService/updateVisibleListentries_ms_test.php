@@ -7,7 +7,7 @@ $testsData = array(
         'query-before-test-1' => "INSERT INTO listentries(cid, entryname, visible, creator, vers) VALUES (1885, 'to be deleted', 1, 101, 1337);",
         'query-before-test-2' => "SELECT MAX(lid) AS lid FROM listentries",
         'query-after-test-1' => "DELETE FROM listentries WHERE cid = 1885 AND entryname = 'to be deleted';",
-        'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/sectionedService/updateVisibleListentries_ms.php',
+        'service' => 'http://localhost/LenaSYS/DuggaSys/microservices/sectionedService/updateVisibleListEntries_ms.php',
         'service-data' => serialize(
             array( 
                 'courseid' => 1885,

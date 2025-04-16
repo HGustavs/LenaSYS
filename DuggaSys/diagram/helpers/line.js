@@ -58,8 +58,26 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
         addObjectToLines(newLine, stateMachineShouldSave);
         if (successMessage) displayMessage(messageTypes.SUCCESS, `Created new line between: ${fromElement.name} and ${toElement.name}`);
         result = newLine;
+
+    //separe statement when more than 2 lines are created
+    //Moastly the same from above but with a check for 3 lines
+    } else if(numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4)){
+        let newLine = {
+            id: makeRandomID(),
+            fromID: fromElement.id,
+            toID: toElement.id,
+            kind: kind
+        };
+        // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
+        if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {
+            if (cardinal) newLine.cardinality = cardinal;
+        }
+        preProcessLine(newLine);
+        addObjectToLines(newLine, stateMachineShouldSave);
+        if (successMessage) displayMessage(messageTypes.SUCCESS, `Created aditional lines between ${fromElement.name} and ${toElement.name}`);
+        result = newLine;
     } else {
-        displayMessage(messageTypes.ERROR, `Maximum amount of lines between: ${fromElement.name} and ${toElement.name}`);
+        displayMessage(messageTypes.ERROR, `Maximum amount of lines between! ${fromElement.name} and ${toElement.name}`);
     }
     return result;
 }

@@ -424,7 +424,7 @@ function getData() {
     document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
     document.getElementById("container").addEventListener("mousedown", mdown);
     document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", debounce(mmoving, 100));
+    document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
@@ -953,19 +953,28 @@ function mouseMode_onMouseUp(event) {
                     updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
-                        elementTypeSelected = elementTypes.Ghost;
-                        makeGhost();
-                        // Create ghost line
-                        ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal" };
+                        // checks if a ghostline already exists and if so sets the relation recursively.
+                        if (ghostLine != null) {
+                            // create a line from the element to itself
+                            addLine(context[0], context[0], "Recursive");
+                            clearContext();
+                            // Bust the ghosts
+                            ghostElement = null;
+                            ghostLine = null;
+                            showdata();
+                            updatepos();
+                        }
+                        else {
+                            elementTypeSelected = elementTypes.Ghost;
+                            makeGhost();
+                            // Create ghost line
+                            ghostLine = { id: makeRandomID(), fromID: context[0].id, toID: ghostElement.id, kind: "Normal", ghostLine: true };
+                        }
                     } else if (ghostElement !== null) {
-                        // create a line from the element to itself
-                        addLine(context[0], context[0], "Recursive");
                         clearContext();
-                        // Bust the ghosts
                         ghostElement = null;
                         ghostLine = null;
                         showdata();
-                        updatepos();
                     } else {
                         clearContext();
                         ghostElement = null;
@@ -1057,7 +1066,7 @@ function mmoving(event) {
             deltaY = startY - event.clientY;
 
             // Resize equally in both directions by modifying delta
-            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState) {
+            if (elementData.kind == elementTypesNames.UMLInitialState || elementData.kind == elementTypesNames.UMLFinalState || elementData.kind == elementTypesNames.IERelation) {
                 let delta;
                 if (startNode.upLeft) {
                     delta = Math.max(deltaX, deltaY);
@@ -1068,8 +1077,15 @@ function mmoving(event) {
                 } else if (startNode.upRight) {
                     delta = Math.max(-deltaX, deltaY);
                 }
+
                 deltaX = (startNode.upRight) ? -delta : delta;
-                deltaY = (startNode.downLeft) ? -delta : delta;
+
+                //Special resizing for IERelation elements, width needs to be double the height. Modifying height felt better during usage than modifying width.
+                if (elementData.kind == elementTypesNames.IERelation) {
+                    deltaY = (startNode.downLeft) ? -(delta * 0.5) : delta * 0.5;
+                } else {
+                    deltaY = (startNode.downLeft) ? -delta : delta;
+                }
             }
 
             let xChange, yChange, widthChange, heightChange;
@@ -1162,7 +1178,6 @@ function movementWidthChange(element, start, delta, isR) {
 function movementHeightChange(element, start, delta, isUp) {
     element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
     return element.height;
-
 }
 
 /**
@@ -1334,7 +1349,7 @@ function saveProperties() {
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
 function pasteClipboard(elements, elementsLines) {
-    // If elements does is empty, display error and return null
+    // If elements is empty, display error and return null
     if (elements.length == 0) {
         displayMessage("error", "You do not have any copied elements");
         return;
@@ -1366,6 +1381,8 @@ function pasteClipboard(elements, elementsLines) {
     const newElements = [];
     const newLines = [];
 
+    let overlapDetected = false;
+
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
@@ -1381,9 +1398,21 @@ function pasteClipboard(elements, elementsLines) {
         elementObj.x = mousePosInPixels.x + (element.x - x1);
         elementObj.y = mousePosInPixels.y + (element.y - y1);
 
-        newElements.push(elementObj);
-        addObjectToData(elementObj, false);
+        // Check for overlap before adding
+        addObjectToData(elementObj, false); // Add to data
+
+        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
+            data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
+            overlapDetected = true;
+        }
     });
+
+    // If overlap is detected, abort pasting the elements, otherwise add 
+    if (overlapDetected) {
+        displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
+        console.error("Failed to paste the element as it overlaps other element(s)");
+        return;
+    }
 
     // Create the new lines but do not saved in stateMachine
     // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
@@ -2030,7 +2059,11 @@ function getCurrentFileName() {
 
 function saveDiagramAs() {
     let elem = document.getElementById("saveDiagramAs");
+    if (!elem) {
+        return;
+    }
     let fileName = elem.value;
+
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1; // Note: January is month 0
@@ -2038,21 +2071,30 @@ function saveDiagramAs() {
     const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : currentDate.getHours();
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
-    const formattedDate = year + "-" + month + "-" + day + ' ';
+    const formattedDate = year + "-" + month + "-" + day + " ";
     const formattedTime = hours + ":" + minutes + ":" + seconds;
-    if (fileName.trim() == "") {
+
+    // Assigns date/time as name if file name is left empty
+    if (fileName.trim() === "") {
         fileName = "diagram " + formattedDate + formattedTime;
     }
-    let names;
+
+    let names = [];
     let localDiagrams;
 
+    // Get saved diagrams from localStorage
     let local = localStorage.getItem("diagrams");
     if (local != null) {
         local = (local[0] == "{") ? local : `{${local}}`;
-        localDiagrams = JSON.parse(local);
-        names = Object.keys(localDiagrams);
+        try {
+            localDiagrams = JSON.parse(local);
+            names = Object.keys(localDiagrams);
+        } catch (error) {
+            names = [];
+        }
     }
 
+    // Check if diagram name is unique
     for (let i = 0; i < names.length; i++) {
         if (names[i] == fileName) {
             hideSavePopout();
@@ -2060,6 +2102,7 @@ function saveDiagramAs() {
             return;
         }
     }
+
     storeDiagramInLocalStorage(fileName);
 }
 
@@ -2145,13 +2188,5 @@ function resetDiagramAlert() {
  */
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
 }
 //#endregion =====================================================================================
