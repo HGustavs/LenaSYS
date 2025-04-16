@@ -4791,18 +4791,31 @@ function copyCodeToClipboard(boxid) {
 	if (navigator.clipboard){
 		navigator.clipboard.writeText(lines);
 	} else {
-		var dummy = $('<textarea>').val(lines).appendTo('body').select();
-		document.execCommand("Copy")
-		dummy.remove();
+		var dummy = document.createElement("textarea");
+		dummy.value = lines;
+		document.body.appendChild(dummy);
+		dummy.select();
+		document.execCommand("copy");
+		document.body.removeChild(dummy);
 	}
 
 	// Notification animation
-	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
-		setTimeout(function () {
-			$("#notificationbox" + boxid).fadeOut("fast");
+	const notification = document.getElementById("notificationbox" + boxid);
+	notification.style.display = "flex";
+	notification.style.overflow = "hidden";
+	notification.style.opacity = 0;
+	notification.style.transition = "opacity 0.2s ease-in";
+	requestAnimationFrame(() => {
+	notification.style.opacity = 1;
+	setTimeout(() => {
+		notification.style.transition = "opacity 0.2s ease-out";
+		notification.style.opacity = 0;
+			setTimeout(() => {
+				notification.style.display = "none";
+			}, 200);
 		}, 500);
 	});
-}
+}	
 
 // Selectionchange EventListener
 document.addEventListener('selectionchange', function () {
@@ -4985,7 +4998,7 @@ function showHiddenIframe() {
     var filePath = 'fileed.php?courseid=' + courseid + '&coursevers=' + cvers;
     document.querySelector(".previewWindow").style.display = "block";
     document.querySelector(".previewWindowContainer").style.display = "block";
-    $("#iframeFileed").attr('src', filePath);
+	document.getElementById("iframeFileed").src = filepath;
 }
 
 function hideIframe()
@@ -5105,7 +5118,10 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 //Toggles the description text one the boxes.
 function toggleTitleDescription(toCheck){
 	var box = document.querySelector('#box' + toCheck + 'wrapper #boxtitlewrapper');
-	var boxW = $('#box' + toCheck + 'wrapper').width()/$('#div2').width() * 100;
+	const boxWrapper = document.getElementById('box' + toCheck + 'wrapper');
+	const div2 = document.getElementById('div2');
+	const boxW = (boxWrapper.offsetWidth / div2.offsetWidth) * 100;
+
 	//Check if the widht(%) of the box is < 16
 	if(boxW <= 16){
 		box.classList.add('visuallyhidden');
@@ -5146,7 +5162,8 @@ function checkIfPopupIsOpen() {
 		return true;
 	}
 	for (let popup of allPopups) {
-		if ($(popup).css("display") !== "none"){
+		const el = document.querySelector(popup);
+		if (el && window.getComputedStyle(el).display !== "none") {
 			return true;
 		}
 	}
