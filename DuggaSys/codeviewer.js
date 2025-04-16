@@ -112,7 +112,7 @@ function returned(data)
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
 			toast("warning","A template has not been chosen for this example. Please choose one.",10);
-			$("#chooseTemplateContainer").css("display", "flex");
+			document.getElementById("chooseTemplateContainer").style.display = "flex";
 			return;
 		} else {
 			toast("error","The administrator of this code example has not yet chosen a template.", 10);
@@ -208,7 +208,7 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	if ($('#fileedButton').length) {
+	if (document.getElementById("fileedButton")) {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
@@ -258,7 +258,7 @@ function returned(data)
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
 	// Clear div2
-	$("#div2").html("");
+	document.getElementById("div2").innerHTML = "";
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -311,7 +311,7 @@ function returned(data)
 			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
 
 			// set font size
-			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+			document.getElementById("#box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
@@ -347,8 +347,8 @@ function returned(data)
 			desc = desc.replace(/\&\#42\;/g, "*");
 
 			/* Assign Content */
-			$("#" + contentid).html(desc);
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			document.getElementById(contentid).innerHTML = desc;
+			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
@@ -644,10 +644,12 @@ function editImpWords(editType)
 	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
 		var exists = false;
 		// Checks if the word already exists as an option in the selectbox
-		$('#impwords option').each(function () {
-			if (this.value == word) {
-				exists = true;
-			}
+		const options = document.querySelectorAll("#impwords option");
+	let exist = false;
+	options.forEach(option => {
+		if(option.value === word){
+			exist = true;
+		}
 		});
 		if (exists == false) {
 			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
@@ -655,10 +657,11 @@ function editImpWords(editType)
 			addedWords.push(word);
 		}
 	} else if (editType == "-") {
-		word = $('option:selected', "#impwords").text();
-		$('option:selected', "#impwords").remove();
+		const word = document.querySelector("#impwords").value;
 		removedWords.push(word);
 	}
+	
+	
 }
 
 //----------------------------------------------------------------------------------
