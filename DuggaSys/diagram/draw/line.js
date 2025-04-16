@@ -41,19 +41,31 @@ function drawLine(line, targetGhost = false) {
     }
 
 
-//Looks if the lines have gotta an index value from the function getLineAttrubutes
-//If so then there are multiple lines on the same row and the offset is changed
-if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
-    const lineSpacing = 30; //Can be changed to change the spacing between lines
-    const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpacing;
-    if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
-        offset.x1 += offsetIncrease;
-        offset.x2 += offsetIncrease;
-    } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
-        offset.y1 += offsetIncrease;
-        offset.y2 += offsetIncrease;
+    const lineSpacing = 30; //Controlls spacing between lines
+
+    //Checks if a line have gotten any properties from the checkAdjacentLines function 
+    //fromOffsetIncrease, fromNumberOfLInes, toOffsetIncrease and toNumberOfLines
+    //Different offset for the side they go to and come from
+    if ("fromOffsetIndex" in line && "fromNumberOfLines" in line) {
+        const fromOffsetIncrease = (line.fromOffsetIndex - (line.fromNumberOfLines - 1) / 2) * lineSpacing;
+        if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
+            offset.x1 += fromOffsetIncrease;
+        }else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+            offset.y1 += fromOffsetIncrease;
+        }
     }
-}
+
+    if ("toOffsetIndex" in line  && "toNumberOfLines" in line) {
+        const toOffsetIncrease = (line.toOffsetIndex - (line.toNumberOfLines - 1) / 2) * lineSpacing;
+        if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
+            offset.x2 += toOffsetIncrease;
+        }else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+            offset.y2 += toOffsetIncrease;
+        }
+    }
+
+
+
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
@@ -824,6 +836,10 @@ function redrawArrows() {
     for (let i = 0; i < data.length; i++) {
         sortElementAssociations(data[i]);
     }
+    //Going through all elements and checking for adjacent lines
+    for (let i = 0; i < data.length; i++){
+        checkAdjacentLines(data[i]);
+    }
     // Draw each line using sorted line ends when applicable
     for (let i = 0; i < lines.length; i++) {
         str += drawLine(lines[i]);
@@ -926,51 +942,73 @@ function sortElementAssociations(element) {
     if (element.right.length > 1) element.right.sort(function (currentElementID, compareElementID) {
         return sortvectors(currentElementID, compareElementID, element.right, element.id, 1)
     });
+}
 
-    //Goes through all directions, if the function "determineLine" have added multiple lines to the same side
-    //it will then sort them and give them an index and number of lines.
-    //This is used to draw the lines in the right order and to give them a offset if they are on the same side.
-    //the offset is done is done in the function drawLine.
-    try{
+/**
+ * @description Gets a element as parameter and analyses each of its side for multiple lines adjacent
+ *  The line will then get properties dependant on their direction
+ *  These properties are used in drawLine do give them a offset. 
+ * @param {Object} element diagram entity 
+ */
+function checkAdjacentLines(element) {
+ 
+    try {
         ['top', 'bottom', 'right', 'left'].forEach(side => {
-
-            //First we got to sort out recusive lines, dont want them to move about
             const linesOfTargetSide = element[side];
+
+            //Dont want to effect recusive lines, so they are sorted out of the offset calculation.
             const filteredLines = linesOfTargetSide.filter(lineID => {
-            const lineIdIndex = findIndex(lines, lineID);
-            // Check if the line exists in the lines array.
-            if (lineIdIndex === -1) {
-                return false; }
-            const lineObject = lines[lineIdIndex]; 
-            if (lineObject.ghostLine || lineObject.targetGhost) {
-                return lineObject.kind === lineKind.NORMAL;
-            }
-            return lineObject.kind !== lineKind.RECURSIVE;
-            });
-        
-            //If there are more then one line at one side
-            //sort them and give them an index and numberOfLines values
-            if (filteredLines.length > 1) {
-                filteredLines.sort((line_1, line_2) =>
-                sortvectors(line_1, line_2, filteredLines, element.id, 2)
-                );
-                filteredLines.forEach((lineID, index) => {
-                const lineIdIndex = findIndex(lines, lineID); 
-                if (lineIdIndex === -1){
-                    return;   //Checks if enmpty
-                } 
-                //Give lineObject the variables of multiLineOffset and numberOfLines
-                //To be used in the function drawLine
+                const lineIdIndex = findIndex(lines, lineID);
+                if (lineIdIndex === -1) { // Check if the line exists in the lines array.
+                    return false;
+                }
                 const lineObject = lines[lineIdIndex]; 
-                lineObject.multiLineOffset = index;
-                lineObject.numberOfLines = filteredLines.length;
+                if (lineObject.ghostLine || lineObject.targetGhost) { //To keep ghostlines active
+                    return lineObject.kind === lineKind.NORMAL;
+                }
+                return lineObject.kind !== lineKind.RECURSIVE;
             });
+    
+
+            
+            if (filteredLines.length > 1) {           
+                filteredLines.forEach((lineID, index) => {
+                    const lineIndex = findIndex(lines, lineID);
+                    if (lineIndex === -1){
+                        return; } 
+                    const lineObject = lines[lineIndex];
+                    
+                    //Different offset dependant on if the line is going to or coming from a element.
+                    //This file is triggered multiple times, as such both if and else if will get done fast.
+                    if (lineObject.fromID === element.id) {
+                        lineObject.fromOffsetIndex = index;
+                        lineObject.fromNumberOfLines = filteredLines.length;
+                        
+                    } else if (lineObject.toID === element.id) {
+                        lineObject.toOffsetIndex = index;
+                        lineObject.toNumberOfLines = filteredLines.length;     
+                    }
+                });
+            //Reverts the offset if lines are removed
+            }else if (filteredLines.length == 1) {
+                const lineIdIndex = findIndex(lines, filteredLines[0]);
+                const lineObject = lines[lineIdIndex]; 
+
+                if (lineObject.fromID === element.id) {
+                      lineObject.fromOffsetIndex = 0
+                      lineObject.fromNumberOfLines = 1              
+                }else if (lineObject.toID === element.id) {
+                    lineObject.toOffsetIndex = 0
+                    lineObject.toNumberOfLines = 1;
+                }
+                
             }
         });
-    }catch (error) {
+    } catch (error) {
         console.error("Error in sortElementAssociations, Multi-line sorting:", error);
     }
 }
+
 
 /**
  * @description calculates how the label should be displacesed.
