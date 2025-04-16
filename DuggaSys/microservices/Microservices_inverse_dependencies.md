@@ -233,8 +233,10 @@ This is a list of all inverse dependencies of files in the sectionedService fold
 ### readCourseVersions
 
 ### readGroupValues
+No inverse dependencies.
 
 ### readUserDuggaFeedback
+No inverse dependencies.
 
 ### removeListEntries
 
