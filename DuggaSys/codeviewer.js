@@ -4802,49 +4802,57 @@ document.addEventListener('selectionchange', function () {
 	}, 500);
   });
 
-// Detects clicks
-$(document).mousedown(function (e) {
-	var box = $(e.target);
-	if ($('#burgerMenu').is(e.target) || $('#burgerMenu').has(e.target).length !== 0) { //is the burger menu or its descendants clicked?
+  // Sets a flag to prevent closing when clicking inside valid elements
+  document.addEventListener("mousedown", function (e) {
+	const burgerMenu = document.getElementById("burgerMenu");
+	const target = e.target;
+
+	if (target === burgerMenu || burgerMenu.contains(target)) {
 		isClickedElementBox = true;
-	} else if (box[0].classList.contains("formBox")) { // is the clicked element a formBox?
+	} else if (target.classList.contains("formBox")) {
 		isClickedElementBox = true;
-	} else if ((findAncestor(box[0], "formBox") != null) // or is it inside a formBox?
-		&&
-		(findAncestor(box[0], "formBox").classList.contains("formBox"))) {
+	} else if (findAncestor(target, "formBox")) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
 	}
 });
 
-// Close the formBox when clicking outside it.
-$(document).mouseup(function (e) {
-	// Click outside the burger menu
-	var notTarget = !$('#burgerMenu').is(e.target) && !$('#codeBurger').is(e.target) // if the burger menu is visible and the target of the click isn't the container or button...
-	var notDecendant = $('#burgerMenu').has(e.target).length === 0 && $('#codeBurger').has(e.target).length === 0 // ... nor a descendant of the container or button
-	if ($('#burgerMenu').is(':visible') && notTarget && notDecendant && !isClickedElementBox) {
+// Sets a flag to prevent closing when clicking inside valid elements
+document.addEventListener("mouseup", function (e) {
+	const target = e.target;
+	const burgerMenu = document.getElementById("burgerMenu");
+	const codeBurger = document.getElementById("codeBurger");
+
+	const notTarget = target !== burgerMenu && target !== codeBurger;
+	const notDescendant = !burgerMenu.contains(target) && !codeBurger.contains(target);
+
+	if (burgerMenu.offsetParent !== null && notTarget && notDescendant && !isClickedElementBox) {
 		closeBurgerMenu();
 	}
 
-	// Click outside the formBox
-	if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) // if the target of the click isn't the container...
-		&&
-		$('.formBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&&
-		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
-	{
-		closeWindows();
-		hideIframe();
-	}
+	const formBoxes = document.querySelectorAll(".formBox");
+	formBoxes.forEach(formBox => {
+		if (
+			formBox.offsetParent !== null &&
+			target !== formBox &&
+			!formBox.contains(target) &&
+			!isClickedElementBox
+		) {
+			closeWindows();
+			hideIframe();
+		}
+	});
 });
 
+// Toggles the burger menu by cheching if its currently hidden
 function showBurgerMenu() {
-    if($('#burgerMenu').is(':hidden')){
-        showBurgerDropdown();
-    }else {
-        closeBurgerMenu();
-    }
+    const burgerMenu = document.getElementById("burgerMenu");
+		if(burgerMenu.offsetParent === null) {
+			showBurgerDropdown();
+		} else {
+			closeBurgerMenu();
+		}
 }
 
 function showBurgerDropdown(){
@@ -4867,22 +4875,26 @@ function showAllViews(){
     	showAllBox(box[0]);
  	});
 	for(i = 1; i <= retData['numbox']; i++){
-		$("#box" + i +"wrapper").css('grid-column','');
-		$("#box" + i +"wrapper").css('grid-row','');
+		const wrapper = document.getElementById("box" + i + "wrapper");
+		if (wrapper) {
+			wrapper.style.gridColumn = "";
+			wrapper.style.gridRow = "";
+		}
 	}
 }
 
 function setShowPane(id) {
 	closeBurgerMenu();
 	for(i = 1; i <= retData['numbox']; i++){
+		const wrapper = document.getElementById("box" + i + "wrapper");
+		if(!wrapper) continue;
 		if(i == id){
-			$("#box" + i +"wrapper").css("display", "inline");
-			//Setting the box to cover the entire grid of #div2
-			$("#box" + i +"wrapper").css('grid-column',"a/b");
-			$("#box" + i +"wrapper").css('grid-row',"a/l");
+			wrapper.style.display = "inline";
+			wrapper.style.gridColumn = "a/b";
+			wrapper.style.gtidRow = "a/1";
 		}
 		else{
-			$("#box" + i +"wrapper").css("display", "none");
+			wrapper.style.display = "none";
 		}
 		
 	}
