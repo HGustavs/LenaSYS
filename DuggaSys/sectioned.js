@@ -269,163 +269,121 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-  // console.log("myConsole lid: " + lid);
-  // console.log("myConsole typeof: " + typeof lid);
-  document.getElementById("sectionname").focus();
-  toggleTab(true);
-  enableTab(document.getElementById("editSection"));
-  // Variables for the different options and values for the deadlne time dropdown meny.
-  var hourArrOptions = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
-  var hourArrValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-  var minuteArrOptions = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
-  var minuteArrValue = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-  var amountArrOptions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"];
-  var amountArrValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
-  var typeArrOptions = ["Days", "Weeks", "Months"];
-  var typeArrValue = [1, 2, 3];
+	document.getElementById("sectionname").focus();
+	toggleTab(true);
+	enableTab(document.getElementById("editSection"));
 
+	var hourArrOptions = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
+	var hourArrValue = Array.from({length: 24}, (_, i) => i);
+	var minuteArrOptions = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+	var minuteArrValue = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+	var amountArrOptions = Array.from({length: 30}, (_, i) => String(i + 1));
+	var amountArrValue = Array.from({length: 30}, (_, i) => i + 1);
+	var typeArrOptions = ["Days", "Weeks", "Months"];
+	var typeArrValue = [1, 2, 3];
 
-  nameSet = false;
-  if (entryname == "undefined") entryname = "New Header";
-  if (kind == "undefined") kind = 0;
-  xelink = elink;
-  // Display Select Marker
-  $(".item").css("border", "none");
-  $(".item").css("box-shadow", "none");
-  $("#I" + lid).css("border", "2px dashed #FC5");
-  $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
+	nameSet = false;
+	if (entryname === "undefined") entryname = "New Header";
+	if (kind === "undefined") kind = 0;
+	xelink = elink;
 
-  // Default showing of gradesystem. Will show if has type "Test" or "Moment"
-  document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+	document.querySelectorAll(".item").forEach(el => {
+		el.style.border = "none";
+		el.style.boxShadow = "none";
+	});
+	let selected = document.getElementById("I" + lid);
+	if (selected) {
+		selected.style.border = "2px dashed #FC5";
+		selected.style.boxShadow = "1px 1px 3px #000 inset";
+	}
+	document.getElementById("inputwrapper-gradesystem").style.display = "none";
 
+	if (kind != 3) {
+		document.getElementById("inputwrapper-deadline").style.display = "none";
+		document.getElementById("dialog8").style.display = "none";
+	} else {
+		document.getElementById("inputwrapper-deadline").style.display = "block";
+	}
+	document.getElementById("gradesys").innerHTML = makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]);
+	document.getElementById("type").innerHTML = makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]);
+	document.getElementById("visib").innerHTML = makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]);
+	document.getElementById("tabs").innerHTML = makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]);
+	document.getElementById("highscoremode").innerHTML = makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]);
 
-  // Default showing of set deadline. Will show if has type "Test" only
-  if (kind != 3) {
-    document.querySelector("#inputwrapper-deadline").style.display = "none";
-    document.querySelector("#dialog8").style.display = "none";
-  } else {
-    document.querySelector("#inputwrapper-deadline").style.display = "block";
-  }
+	if (deadline !== undefined) {
+		document.getElementById("deadlinehours").innerHTML = makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue);
+		document.getElementById("deadlineminutes").innerHTML = makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue);
+		document.getElementById("setDeadlineValue").value = !retdata['startdate'] ? "" : deadline.substr(0, 10);
+	}
 
-  // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
-  $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
-  $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]));
-  $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
-  if (deadline !== undefined) {
-    $("#deadlinehours").html(makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue));
-    $("#deadlineminutes").html(makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue));
-    $("#setDeadlineValue").val(!retdata['startdate'] ? "" : deadline.substr(0, 10));
-  }
-  // Handles relative deadlines
-  if (relativeDeadline !== undefined) {
-    var splitdeadline = relativeDeadline.split(":");
-    // relativeDeadline = amount:type:hour:minute
-    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2], hourArrOptions, hourArrValue));
-    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue));
+	if (relativeDeadline !== undefined) {
+		var splitdeadline = relativeDeadline.split(":");
+		document.getElementById("relativedeadlinehours").innerHTML = makeoptions(splitdeadline[2], hourArrOptions, hourArrValue);
+		document.getElementById("relativedeadlineminutes").innerHTML = makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue);
+		document.getElementById("relativedeadlineamount").innerHTML = makeoptions(splitdeadline[0], amountArrOptions, amountArrValue);
+		document.getElementById("relativedeadlinetype").innerHTML = makeoptions(splitdeadline[1], typeArrOptions, typeArrValue);
 
-    $("#relativedeadlineamount").html(makeoptions(splitdeadline[0], amountArrOptions, amountArrValue));
-    $("#relativedeadlinetype").html(makeoptions(splitdeadline[1], typeArrOptions, typeArrValue));
+		if (relativeDeadline !== "null") {
+			let check = calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime();
+			checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), check);
+		} else {
+			checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
+		}
+	}
 
-    if (relativeDeadline !== "null") {
-      if (calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime()) {
-        checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
-      } else {
-        checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
-      }
-    } else {
-      checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
-    }
-  }
-  if (relativeDeadline == "null" && deadline == "null") {
-    checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
-  }
-  var groups = [];
-  for (var key in retdata['groups']) {
-    // Skip loop if the property is from prototype
-    if (!retdata['groups'].hasOwnProperty(key)) continue;
-    groups.push(key);
-  }
-  $("#grptype").html("<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups));
+	if (relativeDeadline === "null" && deadline === "null") {
+		checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
+	}
 
-  // Set Link
-  $("#link").val(elink);
-  changedType(kind);
+	var groups = [];
+	for (var key in retdata['groups']) {
+		if (!retdata['groups'].hasOwnProperty(key)) continue;
+		groups.push(key);
+	}
+	document.getElementById("grptype").innerHTML = "<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups);
+	document.getElementById("link").value = elink;
+	changedType(kind);
 
-  // Set Moments - requires iteration since we only process kind 4
-  str = "";
-  if (retdata['entries'].length > 0) {
-
-    // Account for null
-    if (moment == "") str += "<option selected='selected' value='null'>&lt;None&gt;</option>"
-    else str += "<option value='null'>&lt;None&gt;</option>";
-
-    // Account for rest of moments!
-    for (var i = 0; i < retdata['entries'].length; i++) {
-      var item = retdata['entries'][i];
-      if (item['kind'] == 4) {
-        if (parseInt(moment) == parseInt(item['lid'])) str += "<option selected='selected' " +
-          "value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
-        else str += "<option value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
-      }
-    }
-  }
-
-  $("#moment").html(str);
-  $("#editSectionDialogTitle").text(entryname);
-
-  // Set Name
-  $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
-  id='sectionname' value='${entryname}' style='width:448px;'/>`);
-
-
-  // Set Comment
-  $("#comments").val(comments);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
-  id='comments' value='${comments}' style='width:448px;'/>`);
-
-  // Set Lid
-  $("#lid").val(lid);
-
-  // Display Dialog
-  $("#editSection").css("display", "flex");
-
-  //------------------------------------------------------------------------------
-  // Checks if feedback is enabled and enables input box for feedbackquestion choice.
-  //------------------------------------------------------------------------------
-  if (kind == 3) {
-    $('#inputwrapper-Feedback').css("display", "block");
-    if (feedbackenabled == 1) {
-      $("#fdbck").prop("checked", true);
-      $("#inputwrapper-FeedbackQuestion").css("display", "block");
-      $("#fdbckque").val(feedbackquestion);
-    } else {
-      $("#fdbck").prop("checked", false);
-      $("#inputwrapper-FeedbackQuestion").css("display", "none");
-    }
-  } else {
-    $("#inputwrapper-FeedbackQuestion").css("display", "none");
-    $('#inputwrapper-Feedback').css("display", "none");
-    $("#fdbck").prop("checked", false);
-  }
+	var str = "";
+	if (retdata['entries'].length > 0) {
+		str += moment === "" ? "<option selected='selected' value='null'>&lt;None&gt;</option>" : "<option value='null'>&lt;None&gt;</option>";
+		for (var i = 0; i < retdata['entries'].length; i++) {
+			var item = retdata['entries'][i];
+			if (item['kind'] == 4) {
+				str += parseInt(moment) == parseInt(item['lid'])
+					? `<option selected='selected' value='${item['lid']}'>${item['entryname']}</option>`
+					: `<option value='${item['lid']}'>${item['entryname']}</option>`;
+			}
+		}
+	}
+	document.getElementById("moment").innerHTML = str;
+	document.getElementById("editSectionDialogTitle").textContent = entryname;
+	document.getElementById("sectionname").value = entryname;
+	document.getElementById("comments").value = comments;
+	document.getElementById("lid").value = lid;
+	document.getElementById("editSection").style.display = "flex";
 }
+
 // Handles the logic behind the checkbox for absolute deadline
 function checkDeadlineCheckbox(e, check) {
 
   if (check !== undefined) e.checked = check;
 
+  var checkbox = document.getElementById("absolutedeadlinecheck");
+  var deadlineValue = document.getElementById("setDeadlineValue");
+  var deadlineMinutes = document.getElementById("deadlineminutes");
+  var deadlineHours = document.getElementById("deadlinehours");
+
   if (e.checked) {
-    $("#absolutedeadlinecheck").prop("checked", true);
-    $("#setDeadlineValue").prop("disabled", false);
-    $("#deadlineminutes").prop("disabled", false);
-    $("#deadlinehours").prop("disabled", false);
+    checkbox.checked = true;
+    deadlineValue.disabled = false;
+    deadlineMinutes.disabled = false;
+    deadlineHours.disabled = false;
   } else {
-    $("#absolutedeadlinecheck").prop("checked", false);
-    $("#setDeadlineValue").prop("disabled", true);
-    $("#deadlineminutes").prop("disabled", true);
-    $("#deadlinehours").prop("disabled", true);
+    checkbox.checked = false;
+    deadlineValue.disabled = true;
+    deadlineMinutes.disabled = true;
+    deadlineHours.disabled = true;
   }
 }
 // Takes a relative deadline format and returns a readable string ex: "Course Week 5, 15:00"
