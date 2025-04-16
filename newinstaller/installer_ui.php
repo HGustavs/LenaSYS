@@ -130,7 +130,7 @@
 					<div class="inner-wrapper">
 						<div class="input-flex">
 							<?php
-								inputField("root_username", "Root username:", "text");
+								inputField("root_username", "Root username:", "text", "root");
 								inputField("root_password", "Root password:", "password");
 							?>
 						</div>

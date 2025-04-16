@@ -66,10 +66,10 @@
 			</div>";
 	}
 
-	function inputField($inputId, $inputLabel, $inputType) {
+	function inputField($inputId, $inputLabel, $inputType, $inputValue='') {
 		echo "<div class='input-field'>
 					<label for='$inputId'>$inputLabel</label>
-					<input id='$inputId' type='$inputType'>
+					<input id='$inputId' name='$inputId' type='$inputType' value='". htmlspecialchars($inputValue) ."'>
 			</div>";
 	}
 
