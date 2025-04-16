@@ -57,7 +57,7 @@
 				<div class="content">
 					<?php
 						header2("Select installation options");
-					  bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.", 
+						bodyText("If this is your first time installing LenaSYS, you <u><b>must</b></u> select both options.", 
 						"https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-2");
 					?>
 					<div class="inner-wrapper">
@@ -125,7 +125,7 @@
 				<div class="content">
 					<?php
 						header2("Enter root user credentials");
-					  bodyText("Provide the credentials for the database root user", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-4");
+						bodyText("Provide the credentials for the database root user", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-4");
 					?>
 					<div class="inner-wrapper">
 						<div class="input-flex">
@@ -153,7 +153,7 @@
 				<div class="content">
 					<?php
 						header2("Prepopulate with sample data");
-					  bodyText("Select the sample data you want to prepopulate LenaSYS with.", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-5");
+						bodyText("Select the sample data you want to prepopulate LenaSYS with.", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#step-5");
 					?>
 					<div class="inner-wrapper">
 						<div class="input-flex">
@@ -166,12 +166,12 @@
 									'language_support' => 'Include language-support'
 								];
 								$active = ['add_test_data', 'add_demo_course', 'add_test_course_data', 'add_test_files', 'language_support'];
-                $helpLinks = [
-								  'test-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-course",
-								  'demo-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-demo-course",
-								  'test-files' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files",
-								  'language-support' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files"
-                ];
+								$helpLinks = [
+									'test-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-course",
+									'demo-course' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-demo-course",
+									'test-files' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files",
+									'language-support' => "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#include-test-files"
+								];
 
 								checkBoxes("creation_settings", $buttons, $active, $helpLinks);
 
