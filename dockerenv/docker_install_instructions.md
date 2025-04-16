@@ -1,6 +1,31 @@
 # Docker installation instructions
 
-1. Install [docker desktop](https://www.docker.com/products/docker-desktop/).
+1. Press this link: [docker desktop](https://www.docker.com/products/docker-desktop/).
+
+2. In the Docker website press "chosse plan"-button.
+![Docker homepage](homepage.png "Docker homepage")
+
+3. Chosse Docker Personal.
+![Choose plan](choosePlan.png "Choose plan")
+
+4. Press "Continue with GitHub"-button.
+![Sign in github](github.png "Sign in github")
+
+5. Sign in with your school-email and password.
+![Docker desktop](dockerDesktop.png "Docker desktop")
+
+6. Now you are in Docker Home and press the "Go to download"-button. 
+![Docker Home](docker_home.png "Docker Home")
+
+7. Select which operating software (OS) that you need.
+![Operating software](os.png "Operating software")
+
+8. When you have selected OS and installed your OS, then open a Docker desktop program/app.
+
+9. Congratulations, now you have installed the Docker desktop! 
+![Docker desktop](dockerDesktop.png "Docker desktop")
+
+
 2. Open the `LenaSYS/dockerenv` directory/folder in the terminal.
 3. Run the command: `docker compose up -d` to setup and start the containers.
 4. Navigate to [localhost/LenaSYS/install/install.php](http://localhost/LenaSYS/install/install.php).
