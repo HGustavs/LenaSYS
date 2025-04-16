@@ -31,8 +31,8 @@ const keybinds = {
     CENTER_CAMERA: { key: "home", ctrl: false },
     OPTIONS: { key: "o", ctrl: false },
     ENTER: { key: "enter", ctrl: false },
-    COPY: { key: "c", ctrl: true, meta: true },
-    PASTE: { key: "v", ctrl: true, meta: true },
+    COPY: { key: "c", ctrl: true, meta: false },
+    PASTE: { key: "v", ctrl: true, meta: false },
     SELECT_ALL: { key: "a", ctrl: true },
     DELETE_B: { key: "backspace", ctrl: false },
     MOVING_OBJECT_UP: { key: "ArrowUp", ctrl: false },
@@ -44,7 +44,7 @@ const keybinds = {
     TOGGLE_ER_TABLE: { key: "e", ctrl: false },
     TOGGLE_TEST_CASE: { key: "u", ctrl: false },
     TOGGLE_ERROR_CHECK: { key: "h", ctrl: false },
-    SAVE_DIAGRAM: { key: "s", ctrl: true },
+    SAVE_DIAGRAM: { key: "s", ctrl: true, meta: false, shift: false, alt: false },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
     RESET_DIAGRAM: { key: "i", ctrl: false }
 };
