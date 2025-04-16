@@ -241,7 +241,7 @@ __Sectioned Service:__
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- setVisibleListentries_ms.php __==finished==__ New filename: "updateVisibleListentries_ms.php" according to new nameconvention based on CRUD
+- setVisibleListentries_ms.php __==finished==__ New filename: "updateVisibleListEntries_ms.php" according to new nameconvention based on CRUD
 - getDeletedListentries_ms.php __==finished==__ New filename: "readRemovedListentries_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateCourseVersion_sectioned_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -3210,7 +3210,7 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 
 <br>
 
-### updateVisibleListentries_ms.php
+### updateVisibleListEntries_ms.php
 __Include original service files:__ sessions.php, basic.php
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php
 

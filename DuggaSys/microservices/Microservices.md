@@ -99,7 +99,7 @@ __Accessed Service:__
 - addClass_ms.php __==finished==__ New filename: "createClass_ms.php" according to new nameconvention based on CRUD.
 - addUser_ms.php __==finished==__ New filename: "createUser_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - retrieveAccessedService_ms.php __==finished==__ (But not tested, and therefore not implemented at the end of each microservice in the accessedService folder) Should keep existing name even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function. 
-- getAcessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.  
+- getAccessedService_ms.php __==finished==__ New filename: "retrieveAllAcessedServiceData_ms.php", even though it is not aligned with CRUD. In this case, a more general name is preferable as it better describes the microservice's function.  
 
 __Note, all microservices related to accessservice.php have been created. As for working tests for these microservices, the work has been paused since accessedservice.php lacks an implemented frontend that allows the development of working tests. Tests cannot be created until the retrieveAccessedService_ms.php is tested, and for that, frontend functionality is needed. Group 3 is working on the frontend solution.__ 
 
@@ -242,7 +242,7 @@ __Sectioned Service:__
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- updateVisibleListentries_ms.php __==finished==__ Previously named: "setVisibleListentries_ms.php". 
+- updateVisibleListEntries_ms.php __==finished==__ Previously named: "setVisibleListentries_ms.php". 
 - updateQuizDeadline_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - updateActiveCourseVersion_sectioned_ms.php __==finished==__ Previously named: "changeActiveCourseVersion_sectioned_ms.php".
 - readCourseVersions_ms.php __==finished==__ Previously named: "getCourseVersions_ms.php". 
@@ -2927,10 +2927,15 @@ _WORK PAUSED for development of this microservice. Will continue when the servic
 
 <br>
 
+---
+
+<br>
 
 ### retrieveGitCommitservice_ms.php
 
 The retrieveGitCommitService_ms microservice fetches and displays the list of Git commits from a repository on the server. It first checks if the shell_exec function is available to execute system commands. If available, it runs a Git command to retrieve the commit hash and message, sanitizes the output, and then displays the commit information. This service is useful for developers needing quick access to commit history directly from the server without using the Git client. To use it, include and call the function in your PHP script, ensuring Git is installed and shell_exec is enabled.
+
+<br>
 
 ---
 
@@ -3789,7 +3794,7 @@ UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid;
 
 <br>
 
-### updateVisibleListentries_ms.php
+### updateVisibleListEntries_ms.php
 updates the visibility of a specific list entry in a course section. This operation can only be performed by a superuser. The microserive retrieves all updated data from the database (through retrieveSectionedService_ms.php) as the output for the microservice. See __retrieveSectionedService_ms.php__ for more information.
 
 __Include original service files:__ sessions.php, basic.php

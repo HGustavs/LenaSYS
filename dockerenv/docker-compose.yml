@@ -12,7 +12,7 @@ services:
       - "./githubMetadata:/var/www/html/githubMetadata:delegated"
     restart: no
   db:
-    image: mysql:latest
+    image: mysql:8.0.36-debian
     container_name: mysql-server
     environment:
       MYSQL_ROOT_PASSWORD: password

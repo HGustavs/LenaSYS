@@ -212,6 +212,7 @@ function start_installer() {
 			if (targetValue === 100) {
 				setProgressBarWidth(100);
 				//progressPercentage.innerHTML = "100%";
+				addButton(error_occured);
 			}
 	
 			function update() {
@@ -225,7 +226,16 @@ function start_installer() {
 		},
 		error: function(data) {
 			error_occured = true;
+			addButton(error_occured);
 			alert(data);
 		}
 	});
+
+	function addButton(error) {
+		if (!error) {
+			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=location.href='../DuggaSys/courseed.php'>Finish</button>";
+		}else {
+			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=navigateTo('page1')>Retry</button>";
+		}
+	}
 }

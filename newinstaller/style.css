@@ -276,6 +276,10 @@ input[type=checkbox], input[type=radio] {
     font-size: var(--text-large);
 }
 
+.pageButton {
+    margin: 10px 0px;
+}
+
 .backButton {
     font-family: var(--body-font);
     background-color: transparent;
