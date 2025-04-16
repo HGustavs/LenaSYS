@@ -73,15 +73,6 @@
   			margin-bottom: 1px;
 		}
 
-		/* Style for the "View" labe" */
-		.view-label {
-  			background-color: #5e4776;  
-  			color: white;               
-  			padding: 8px 16px;          
-  			border-radius: 1px;
-  			font-weight: normal;
-  			display: inline-block;      
-		}
 		/* Style for the item currently being dragged */
 		.dragging {
    			opacity: 0.9;
@@ -296,8 +287,8 @@
 		<div id='courseList'>
 
 		<!-- View mode toggle buttons -->
-		<div style="margin: 10px 0;">
-			<span class="view-label">View</span><br>
+		<div class="view-label">
+			<h2>View</h2>
   			<button class="submit-button" onclick="setViewMode('normal')">Normal</button>
   			<button class="submit-button" onclick="setViewMode('scroll')">Scroll</button>
  			<button class="submit-button" onclick="setViewMode('overview')">Overview</button>

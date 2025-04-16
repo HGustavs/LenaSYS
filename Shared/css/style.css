@@ -836,6 +836,17 @@ p {
   display: block;
   padding-top: 1px;
   border-radius: 5px;
+
+  & h2 {
+    text-align: center;
+    font-weight: normal;
+    background-color: #5e4776;  
+    color: white;               
+  }
+
+  & .view-label {
+    padding: 0.5rem;
+  }
 }
 
 #sectionList_arrowStatisticsClosed{
@@ -858,6 +869,10 @@ p {
 }
 
 @media screen and (max-width : 570px) {
+
+  & .view-label {
+    display: none;
+  }
 
   .item {
     font-size: 10pt;
