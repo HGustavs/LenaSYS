@@ -79,18 +79,18 @@ function leaveSearch() {
 // displays dropdown for the filter-button
 function pressFilter() {
 	if (buttonPressed == false){
-		buttonPressed = true;
-		$('#dropdowns').css('display', 'none');
-		$('#dropdownc').css('display', 'block');
+		buttonPressed = true;	
+		
+		document.getElementById("dropdownc").style.display="block";
+		document.getElementById("dropdowns").style.display="none";
 	}
-	
 }
 
 // stops displaying dropdown for the filter-button
 function leaveFilter() {
 	if (buttonPressed == true){
 		buttonPressed = false;
-		$('#dropdownc').css('display', 'none');}
+		document.getElementById("dropdownc").style.display="none";}
 }
 
 function hoverc() {
