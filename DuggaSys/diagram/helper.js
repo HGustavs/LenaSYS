@@ -4,15 +4,15 @@
  * @param {{key:string, ctrl:boolean}} keybind
  * @returns {boolean}
  */
+
 function isKeybindValid(e, keybind) {
     const keyMatches = e.key.toLowerCase() === keybind.key.toLowerCase();
-
-    //Checks and compares if the pressed key is correct based on the keybind (true or false)
     const ctrlMatches = e.ctrlKey === !!keybind.ctrl;
+    const altMatches = e.altKey === !!keybind.alt;
     const metaMatches = e.metaKey === !!keybind.meta;
     const shiftMatches = e.shiftKey === !!keybind.shift;
 
-    return keyMatches && ctrlMatches && metaMatches && shiftMatches;
+    return keyMatches && ctrlMatches && altMatches && metaMatches && shiftMatches;
 }
 
 /**
