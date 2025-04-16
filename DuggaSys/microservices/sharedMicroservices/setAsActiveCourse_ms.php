@@ -23,7 +23,10 @@ function setAsActiveCourse()
 {
 	pdoConnect();
 	session_start();
-	file_put_contents("C:\Users\arthu\Desktop\log.txt", "Something happened\n", FILE_APPEND);
+	file_put_contents("../../../log/log.json", "GLORY\n", FILE_APPEND);
+
+	setcookie("lastmsg", "Something happened", time() + 3600);
+	echo "setactivecourse hej";
     header("Content-Type: application/json");
     //need to fix _SERVER
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

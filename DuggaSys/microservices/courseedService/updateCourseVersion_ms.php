@@ -83,6 +83,7 @@ if (!$query->execute()) {
 	$error = $query->errorInfo();
 	$debug = "Error updating entries\n" . $error[2];
 }
+
 if ($makeactive == 3) {
     $ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/courseedService/setAsActiveCourse_ms.php");
 
@@ -94,6 +95,9 @@ if ($makeactive == 3) {
    
     curl_exec($ch);
     curl_close($ch);
+
+    file_put_contents("../../../log/log.json", "Update course run to end\n", FILE_APPEND);
+    setcookie("lastmsg", $cid, time() + 3600);
 
     //setAsActiveCourse($pdo, $cid, $versid);
 }
