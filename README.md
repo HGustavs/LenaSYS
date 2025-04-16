@@ -13,7 +13,8 @@ To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 - Go to the [Apache Friends website](https://www.apachefriends.org/) and download XAMPP to your workspace.
 - Once downloaded, go to your **Downloads** folder and run the installer.
 
-On **Mac**, you may receive a warning saying Apple cannot verify that XAMPP is free from malware. To fix this:
+**macOS Specifics**
+You may receive a warning saying Apple cannot verify that XAMPP is free from malware. To fix this:
   1. Go to **Settings** -> **Privacy & Security**.
   2. Select **Open Anyway**.
 
@@ -53,7 +54,7 @@ On **Mac**, you may receive a warning saying Apple cannot verify that XAMPP is f
     extension=php_pdo_sqlite.dll
    ```
 
-**Mac Specifics**
+**macOS Specifics**
 - On Mac, you need to set extra permissions on the folder `xamppfiles`. 
 - To do this:
   1. Right-click on the `xamppfiles` folder and select **Get Info** (or press `Cmd + I`).
