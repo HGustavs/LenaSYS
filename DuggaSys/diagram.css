@@ -484,7 +484,7 @@
 }
 
 #options-pane-button .toolTipText{
-    transform: translate(-150px,100px) rotate(-90deg);
+    transform: translate(-100px,170px) rotate(-90deg);
 }
 #options-pane-button:hover .toolTipText{
     visibility: visible;
