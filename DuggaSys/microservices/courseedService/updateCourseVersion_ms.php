@@ -84,8 +84,20 @@ if (!$query->execute()) {
 	$debug = "Error updating entries\n" . $error[2];
 }
 if ($makeactive == 3) {
-    setAsActiveCourse($pdo, $cid, $versid);
+    $ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/courseedService/setAsActiveCourse_ms.php");
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $cid, 'versid' => $versid
+    ]));
+   
+    curl_exec($ch);
+    curl_close($ch);
+
+    //setAsActiveCourse($pdo, $cid, $versid);
 }
+
 
 $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
 echo json_encode($retrieveArray);

@@ -70,8 +70,21 @@ if (!$query->execute()) {
     $debug = "Error updating entries " . $error[2];
 }
 
-if ($makeactive == 3)
-    setAsActiveCourse($pdo, $courseid, $versid);
+if ($makeactive == 3) {
+    $ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/courseedService/setAsActiveCourse_ms.php");
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $cid, 'versid' => $versid
+    ]));
+   
+    curl_exec($ch);
+    curl_close($ch);
+
+
+    //setAsActiveCourse($pdo, $cid, $versid);
+}
 
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);
