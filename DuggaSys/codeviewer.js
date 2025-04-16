@@ -208,9 +208,13 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	if ($('#fileedButton').length) {
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
-		document.getElementById('fileedButton').style = "display:table-cell;";
+	// Show fileedButton and set navigation to fileed.php on click. 
+	const fileedbutton = document.getElementById('fileedButton');
+	if(fileedbutton) {
+		fileedbutton.onclick = function (){
+			navigateTo('/fileed.php', '?courseid=' + courseid + '&coursevers=' + cvers);
+		};
+		fileedbutton.style.display = "table-cell";
 	}
 
 	if (retData['debug'] != "NONE!") alert(retData['debug']);
@@ -257,8 +261,8 @@ function returned(data)
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
-	// Clear div2
-	$("#div2").html("");
+	//clear div2
+	document.getElementById("div2").innerHTML = "";
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -282,8 +286,9 @@ function returned(data)
 		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
+		
 		// don't create templatebox if it already exists
-		if ($("#" + contentid).length == 0) {
+		if(!document.getElementById(contentid)){
 			addTemplatebox(contentid);
 		}
 
@@ -795,7 +800,7 @@ function displayEditContent(boxid)
 	document.getElementById("boxtitle").value = box[4];
 	document.getElementById("boxcontent").value = box[1];
 
-	changeDirectory($("#boxcontent"));
+	changeDirectory(document.getElementById("boxcontent"));
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
@@ -811,8 +816,9 @@ function displayEditContent(boxid)
 	for (var i = 0; i < wordl.length; i++) {
 		str += "<option value='" + wordl[i][0] + "'>" + wordl[i][1] + "</option>";
 	}
-	$("#wordlist").html(str);
-	$("#wordlist").val(box[3]);
+
+	document.getElementById("wordlist").innerHTML = str;
+	document.getElementById("wordlist").value = box[3];
 
 	var str = "";
 	for (var i = 0; i < retData['improws'].length; i++) {
@@ -823,7 +829,8 @@ function displayEditContent(boxid)
 	document.getElementById("improws").innerHTML = str;
 
 	document.getElementById("editContentContainer").style.display = "flex";
-}
+} 
+
 // -----------------------------------------------------------------------------------------------
 // Listen to enterpress on "important rows" inputfield and runs the same function as the + button
 // -----------------------------------------------------------------------------------------------
@@ -1207,13 +1214,17 @@ function toggleClass(id) {
 //----------------------------------------------------------------------------------
 
 function displayDrop(dropid) {
-	drop = $("#" + dropid);
-	if ($(drop).is(":hidden")) {
-		$(".dropdown").css({
-			display: "none"
-		});
+	const drop = document.getElementById(dropid);
+	
+	//hide all other dropdowns
+	document.querySelectorAll(".dropdown").forEach(el =>{
+		el.style.display = "none"
+	});
+
+	// Toggle current one
+	if (drop && drop.offsetParent === null) {
 		drop.style.display = "block";
-	} else {
+	}else if (drop) {
 		drop.style.display = "none";
 	}
 }
