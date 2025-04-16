@@ -3,6 +3,7 @@ In this file the connection between javascript and PHP is docummented.
 # Name of file/service 
 
  accessed.js
+ Function addUserToCourse().
 
 ## Description 
 
@@ -15,13 +16,12 @@ In this file the connection between javascript and PHP is docummented.
 
 *Parameters will be described in tables for easier readability* 
 
-| Parameter | Type | Description | 
+| Parameter | Type | Description |
 
 | :Username | :POST | :Retrieve User | 
  
 
 ## Calling Methods 
-
 - POST 
 
 ## Output Data and Format 
@@ -31,7 +31,6 @@ In this file the connection between javascript and PHP is docummented.
 | Output | Type | Description | 
 
 | :User | :Array | :Array of userdata from databas | 
-
 | :UID | :String | :Identifier username | 
  
 
@@ -79,6 +78,7 @@ opt- RETRIVE, action- USER
 # Name of file/service
 
 accessed.js
+Function removeUserFromCourse.
 
 ## Description
 *Description of what the service do and its function in the system.*
@@ -93,7 +93,6 @@ Retrives UID with ajax POST, then deletes user with opt DELETE.
 | :Username | :POST | :Username of the user that should be removed |
 
 ## Calling Methods
-
 - POST
 
 ## Output Data and Format
@@ -141,11 +140,12 @@ accessedservice.php
 opt- RETRIEVE, action- USER
 opt- DELETE, action- COURSE
 
------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------
 
 # Name of file/service
 
 accessed.js
+Function loadUsersToDropdown()
 
 ## Description
 *Description of what the service do and its function in the system.*
@@ -162,13 +162,13 @@ It sends a POST request to accessedservice.php with the action USERS, receives u
 | :action | :string | :Return all users |
 
 ## Calling Methods
-
 - POST
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
+
 | :Users | :Array | :Array with usernames |
 
 ## Examples of Use
@@ -212,6 +212,7 @@ opt- RETRIEVE, action- USERS
 # Name of file/service
 
 courseed.js
+Function updateCourse()
 
 ## Description
 *Description of what the service do and its function in the system.*
@@ -226,8 +227,8 @@ Updating course settings such as course name, course code and GitHub repository.
 | :cid | :string | :Course ID |
 | :coursecode | :string | :Course code |
 | :courseGitURL | :string | :Git URL linked to the course |
-## Calling Methods
 
+## Calling Methods
 - POST
 
 ## Output Data and Format
@@ -326,6 +327,9 @@ action- directInsert
 
 # Name of file/service
 
+courseed.js
+Function FetchGitHubRepo
+
 ## Description
 *Description of what the service do and its function in the system.*
 
@@ -350,7 +354,39 @@ action- directInsert
 | exampleid | string | Example ID Description |
 
 ## Examples of Use
-`CODE`
+
+`//Send valid GitHub-URL to PHP-script which fetches the contents of the repo
+function fetchGitHubRepo(gitHubURL) {
+	//Remove .git, if it exists
+	regexURL = gitHubURL.replace(/.git$/, "");
+	//Used to return success(true) or error(false) to the calling function
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "gitfetchService.php",
+		type: "POST",
+		data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' },
+		success: function () {
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function (data) {
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch (data.status) {
+				case 422:
+					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
+					break;
+				case 503:
+					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
+					break;
+				default:
+					toast("error", "Something went wrong...", 7);
+			}
+			dataCheck = false;
+		}
+	});
+	return dataCheck;
+}`
 
 ### Microservices Used
 *Includes and microservices used*
