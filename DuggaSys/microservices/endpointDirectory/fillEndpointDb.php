@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // connect to the database
 $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 $db = new PDO('sqlite:' . $dbFile);
@@ -27,5 +30,12 @@ function findMdFiles($dir): array
 
     return $mdFiles;
 }
+
+$basePath = realpath(__DIR__ . '/../');
+$mdFiles = findMdFiles($basePath);
+
+echo "<pre>";
+print_r($mdFiles);
+echo "</pre>";
 
 ?>
