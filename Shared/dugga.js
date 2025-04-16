@@ -46,11 +46,9 @@ if(localStorage.getItem(localStorageItemKey)){
 	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 }
 
-
-$(function () {  // Used to set the position of the FAB above the cookie message
-	if(localStorage.getItem("cookieMessage")!="off"){
-		$(".fixed-action-button").css("bottom", "64px");
-	}
+document.querySelector(function (){ // Used to set the position of the FAB above the cookie message
+	if(localStorage.getItem("cookieMessage")!="off")
+		document.querySelector(".fixed-action-button").style.bottom="64px";
 })
 
 // Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
@@ -152,38 +150,38 @@ function resetLoginStatus(){
 function toggleloginnewpass(){
 	resetFields();
 
-  //Shows the New password-box (username input)
+  	//Shows the New password-box (username input)
 	if(status == 0){
-		$("#newpassword").css("display", "block");
-		$("#formBox").css("display", "flex");
-    $("#login").hide();
-		$("#showsecurityquestion").css("display", "none");
-		$("#resetcomplete").css("display", "none");
+		document.getElementById("#newpassword").style.display="block";
+		document.getElementById("#formBox").stlye.display="flex";
+    	document.getElementById("#login").style.display = "none";
+		document.getElementById("#showsecurityquestion").style.display="none";
+		document.getElementById("#resetcomplete").style.display="none";
 		status= 1;
 		showing= 0;
     //Shows the Login-box
 	}else if(status == 1){
-		$("#newpassword").css("display", "none");
-		$("#login").css("display", "block");
-		$("#showsecurityquestion").css("display", "none");
-		$("#resetcomplete").css("display", "none");
+		document.getElementById("#newpassword").style.display="none";
+		document.getElementById("#login").style.display="block";
+		document.getElementById("#showsecurityquestion").style.display="none";
+		document.getElementById("#resetcomplete").style.display="none";
 		status= 0;
 		showing= 1;
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
-		$("#newpassword").css("display", "none");
-		$("#formBox").css("display", "flex");
-		$("#showsecurityquestion").css("display", "block");
-		$("#resetcomplete").css("display", "none");
+		document.getElementById("#newpassword").style.display="none";
+		document.getElementById("#formBox").style.display="flex";
+		document.getElementById("#showsecurityquestion").style.display="block";
+		document.getElementById("#resetcomplete").style.display="none";
 		status= 1;
 		showing= 2;
 	}
   //Shows the Reset complete-box
 	else if(status == 3){
-		$("#newpassword").css("display", "none");
-		$("#formBox").css("display", "flex");
-		$("#showsecurityquestion").css("display", "none");
-		$("#resetcomplete").css("display", "block");
+		document.getElementById("#newpassword").style.display="none";
+		document.getElementById("#formBox").style.display="flex";
+		document.getElementById("#showsecurityquestion").style.display="none";
+		document.getElementById("#resetcomplete").style.display="block";
 		status= 1;
 		showing= 3;
 	}
