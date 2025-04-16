@@ -89,13 +89,49 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor);
+
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
-            offset.y1 = 1;
-            offset.y2 = -7 + 3 / zoomfact;
+            //UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
+            if(telem.kind === elementTypesNames.UMLFinalState) { 
+                offset.y2 = -4 + 3 / zoomfact;
+                offset.x2 = 0;
+            //Special offset for SD entity telem, since it can be both felem and telem. UMLInitialState can only be felem and doesn't utilize x2 or y2
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.y2 = -15;
+            } else { offset.y2 = 0; } //Aligning line with mouse coordinate before telem has been set
+            offset.y1 = 15;
+
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
-            offset.y1 = -7 + 3 / zoomfact;
-            offset.y2 = 1;
+            if(telem.kind === elementTypesNames.UMLFinalState) {
+                offset.y2 = 3;
+                offset.x2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.y2 = 15;
+            } else { offset.y2 = 0; }
+            offset.y1 = -15;
+
+
+        } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
+            if(telem.kind === elementTypesNames.UMLFinalState) {
+                offset.x2 = 1 / zoomfact;
+                offset.y2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.x2 = -15;
+            } else { offset.x2 = 0; }
+            offset.x1 = 15;
+
+            
+        } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
+            if(telem.kind === elementTypesNames.UMLFinalState) {
+                offset.x2 = 1 / zoomfact;
+                offset.y2 = 0;
+            } else if (telem.kind === elementTypesNames.SDEntity) {
+                offset.x2 = 15;
+            } else { offset.x2 = 0; }
+            offset.x1 = -15;
+
         }
+
         str += `<line 
                     id='${line.id}' 
                     x1='${fx + offset.x1 * zoomfact}' 
@@ -108,7 +144,6 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash);
             str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
-            
         }
         else{
             str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
@@ -364,9 +399,16 @@ function getLineAttrubutes(f, t, ctype) {
             return [f.cx, f.y2, t.cx, t.y1, offset];
 
         case lineDirection.LEFT:
+
+            offset.x1 = px;
+            offset.x2 = px * 4;
+            result = [f.x1, f.cy, t.x2, t.cy, offset];
+            break;
+
             offset.x1 = -px;          
             offset.x2 = px * 2;       
             return [f.x1, f.cy, t.x2, t.cy, offset];
+
 
         case lineDirection.RIGHT:
             offset.x1 = px;           
