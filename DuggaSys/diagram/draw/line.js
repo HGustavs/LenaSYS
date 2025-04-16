@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
@@ -157,24 +157,54 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
     else{
         str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
     }
-  
-    if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT) || (line.type == entityType.SE && line.innerType != SELineType.SEGMENT)) {
+    // Always allow arrowheads to render if icon is ARROW
+    // If the line is SEGMENTED (has 90-degree bends), draw a fixed arrowhead with iconPoly.
+    // Otherwise, draw a rotated arrowhead using drawArrowPoint based on the line direction.
+    if (line.type == entityType.SD || line.type == entityType.SE) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
-        if (line.startIcon == SDLineIcons.ARROW) {
-            
-            str += drawArrowPoint(calculateArrowBase(to, from, 10 * zoomfact), from, fx, fy, lineColor, line, line.ctype);
+
+        // Handle start arrow
+        if (line.startIcon === SDLineIcons.ARROW) {
+            if (line.innerType === SDLineType.SEGMENT) {
+                str += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
+            } else {
+                str += drawArrowPoint(
+                    calculateArrowBase(to, from, 10 * zoomfact),
+                    from,
+                    lineColor,
+                    strokewidth
+                );
+            }
         }
-        if (line.endIcon == SDLineIcons.ARROW) {
-            
-            str += drawArrowPoint(calculateArrowBase(from, to, 10 * zoomfact), to, tx, ty, lineColor, line, line.ctype.split('').reverse().join(''));
+
+        // Handle end arrow
+        if (line.endIcon === SDLineIcons.ARROW) {
+            const reverseCtype = line.ctype.split('').reverse().join('');
+            if (line.innerType === SDLineType.SEGMENT) {
+                str += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
+            } else {
+                str += drawArrowPoint(
+                    calculateArrowBase(from, to, 10 * zoomfact),
+                    to,
+                    lineColor,
+                    strokewidth
+                );
+            }
         }
     }
+
+
+
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
+                fx += offset.x1;
+                fy += offset.y1;
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
         if (line.endLabel && line.endLabel != '') {
+            tx += offset.x1;
+            ty += offset.y2;
             str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false);
         }
     } else {
@@ -202,23 +232,23 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         const label = {
             id: line.id + "Label",
             labelLineID: line.id,
-            centerX: (tx + fx) / 2,
-            centerY: (ty + fy) / 2,
+            centerX: (tx + offset.x2 + fx + offset.x1) / 2,
+            centerY: (ty + offset.y2 + fy + offset.y1) / 2,
             width: textWidth + zoomfact * 4,
             height: textheight * zoomfact + zoomfact * 3,
             labelMovedX: 0,
             labelMovedY: 0,
-            lowY: Math.min(ty, fy),
-            highY: Math.max(ty, fy),
-            lowX: Math.min(tx, fx),
-            highX: Math.max(ty, fy),
+            lowY: Math.min(ty + offset.y2, fy + offset.y1),
+            highY: Math.max(ty + offset.y2, fy + offset.y1),
+            lowX: Math.min(tx + offset.x2, fx + offset.x1),
+            highX: Math.max(tx + offset.x2, fx + offset.x1),
             percentOfLine: 0,
             displacementX: 0,
             displacementY: 0,
-            fromX: fx,
-            toX: tx,
-            fromY: fy,
-            toY: ty,
+            fromX: fx + offset.x1,
+            toX: tx + offset.x2,
+            fromY: fy + offset.y1,
+            toY: ty + offset.y2,
             lineGroup: 0,
             labelMoved: false
         };
@@ -246,13 +276,21 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         if (rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
-        // Label position for recursive edges
-        const labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        // Label positioning for recursive lines
         const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + zoomfact;
         const labelPositionY = labelPosY - zoomfact;
+
+        // Label positioning for regual (non-recursive) lines
+        const labelCenterX = label.centerX - (2 * zoomfact);
+        const labelCenterY = label.centerY;
+
+        // Centers the background rectangle around the text
+        const rectPosX = labelCenterX - textWidth / 2 - zoomfact * 2;
+        const rectPosY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
+
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
+            // For recursive lines
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
@@ -271,11 +309,12 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                         ${labelValue}
                     </text>`;
         } else {
+            // For non-recursive lines
             str += `<rect
                         class='text cardinalityLabel'
-                        id=${line.id + 'Label'}
-                        x='${labelPositionX}'
-                        y='${labelPositionY}'
+                        id='${line.id + 'Label'}'
+                        x='${rectPosX}'
+                        y='${rectPosY}'
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact + zoomfact * 3}'
                     />`;
@@ -284,8 +323,8 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                         dominant-baseline='middle'
                         text-anchor='middle'
                         style='font-size:${Math.round(zoomfact * textheight)}px;'
-                        x='${label.centerX - (2 * zoomfact)}'
-                        y='${label.centerY - (2 * zoomfact)}'>
+                        x='${labelCenterX}'
+                        y='${labelCenterY}'>
                         ${labelValue}
                     </text>`;
         }
@@ -345,37 +384,39 @@ function recursiveERRelation(felem, telem, line) {
 }
 
 function getLineAttrubutes(f, t, ctype) {
-    let result;
-    let px = 3;
-    let offset = {
-        x1: 0,
-        x2: 0,
-        y1: 0,
-        y2: 0,
-    };
-    switch (ctype) {
+    const px = -1; // Don't touch
+    const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
+
+    switch (ctype) { 
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
-            result = [f.cx, f.y1, t.cx, t.y2, offset];
-            break;
+            return [f.cx, f.y1, t.cx, t.y2, offset];
+
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
-            result = [f.cx, f.y2, t.cx, t.y1, offset];
-            break;
+            return [f.cx, f.y2, t.cx, t.y1, offset];
+
         case lineDirection.LEFT:
+
             offset.x1 = px;
             offset.x2 = px * 4;
             result = [f.x1, f.cy, t.x2, t.cy, offset];
             break;
+
+            offset.x1 = -px;          
+            offset.x2 = px * 2;       
+            return [f.x1, f.cy, t.x2, t.cy, offset];
+
+
         case lineDirection.RIGHT:
-            offset.x1 = 0;
-            offset.x2 = px;
-            result = [f.x2, f.cy, t.x1, t.cy, offset];
+            offset.x1 = px;           
+            offset.x2 = -px * 2;      
+            return [f.x2, f.cy, t.x1, t.cy, offset];
     }
-    return result;
 }
+
  
 /**
  * @description Draw the label for the line.
@@ -463,6 +504,7 @@ function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash)
  * @param {Object} t It's for the object telem and it's stands for "to element".
  * @returns Returns the cardinality label for the line.
  */
+
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
     // Used to tweak the cardinality position when the line gets very short.
@@ -620,15 +662,9 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
             break;
         case UMLLineIcons.BLACKDIAMOND:
             str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.BLACK);
-            break;
-        case SDLineIcons.ARROW:
-            if (line.innerType == SDLineType.SEGMENT) {
-                // class should be diagram-umlicon-darkmode-sd and not diagram-umlicon-darkmode?
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
-            } else if (line.type == entityType.SE) {
-                str += iconPoly(SD_ARROW[ctype], x, y, lineColor, color.BLACK);
-            }
-            break;
+            break
+      
+            
     }
     return str;
 }
@@ -711,18 +747,24 @@ function calculateArrowBase(from, to, size) {
 }
 
 /**
- * @description Calculates the coordiates of the point representing one of the arrows corners
- * @param {Point} base The coordinates/Point where the arrow base is placed on the line, this Point is the pivot that the corners are "rotated" around.
- * @param {Point} to The coordinates/Point where the line between @param base and the element end
- * @param {boolean} clockwise Should the rotation be clockwise (true) or counter-clockwise (false).
- * @returns Returns the calculated coordinate for rotate the arrow point.
+ * @description* Rotates a point around another point (the base) by 45 degrees.
+ * This is mainly used to create the angled corners of an arrowhead.
+ * 
+ * @param {Point} base - The pivot point which is usually the base of the arrow.
+ * @param {Point} point - The point to rotate around the base which is usually the tip of arrow
+ * @param {boolean} clockwise - If true, it rotates the point 45° clockwise; otherwise, counter-clockwise.
+ * @returns {Point} A new point that has been rotated around the base.
  */
 function rotateArrowPoint(base, point, clockwise) {
-    const angle = Math.PI / 4; 
-    const direction = clockwise ? 1 : -1; 
+    const angle = Math.PI / 4; // 45 degrees in radians
+    const direction = clockwise ? 1 : -1; // Decides rotation direction
+
+    // Calculate how far the point is from the base
     const dx = point.x - base.x;
     const dy = point.y - base.y;
-        return {
+
+    // Rotate the point around the base
+    return {
             x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
             y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
         };
@@ -737,14 +779,27 @@ function rotateArrowPoint(base, point, clockwise) {
  * @returns Returns a polygon for the arrow head.
  */
 function drawArrowPoint(base, point, lineColor, strokeWidth) {
-    let right = rotateArrowPoint(base, point, true);
-    let left = rotateArrowPoint(base, point, false);
-    return ` 
-    <svg width="100" height="100">
-        <polygon points='${base.x},${base.y} ${right.x},${right.y} ${left.x},${left.y}'
-            stroke='${lineColor}' fill='none' stroke-width='${strokeWidth}' />
-    </svg>`;
- }
+  
+    const size = 10 * zoomfact; // arrow size
+    const angle = Math.atan2(point.y - base.y, point.x - base.x);
+
+    const p1 = point;
+    const p2 = {
+        x: point.x - size * Math.cos(angle - Math.PI / 6),
+        y: point.y - size * Math.sin(angle - Math.PI / 6)
+    };
+    const p3 = {
+        x: point.x - size * Math.cos(angle + Math.PI / 6),
+        y: point.y - size * Math.sin(angle + Math.PI / 6)
+    };
+
+    return `
+        <polygon points='${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}'
+            stroke='${lineColor}' fill='${lineColor}' stroke-width='${strokeWidth}' />
+    `;
+}
+
+
 
 
 /**

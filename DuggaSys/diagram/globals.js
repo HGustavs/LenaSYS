@@ -476,5 +476,5 @@ var cvers = "";
  * @see showDiagramTypes
  * @type {{SD: boolean, SE: boolean, UML: boolean, NOTE: boolean, IE: boolean, ER: boolean}}
  */
-var diagramType = {ER: false, UML: false, IE: false, SD: false, SE: false, NOTE: false};
+var diagramType = { ER: false, UML: false, IE: false, SD: false, SE: false, NOTE: false };
 //#endregion

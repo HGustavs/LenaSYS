@@ -1,51 +1,52 @@
 /**
- * @description Keybinds that are used in the system. This is used to generate tooltips and for determining keyboard input logic.
+ * @description Keybinds that are used in the system.
+ * This is used to generate tooltips and for determining keyboard input logic.
  */
 const keybinds = {
-    LEFT_CONTROL: {key: "control", ctrl: true},
-    ALT: {key: "alt", ctrl: false},
-    META: {key: "meta", ctrl: false},
-    HISTORY_STEPBACK: {key: "z", ctrl: true},
-    HISTORY_STEPFORWARD: {key: "y", ctrl: true},
-    DELETE: {key: "delete", ctrl: false},
-    ESCAPE: {key: "escape", ctrl: false},
-    POINTER: {key: "1", ctrl: false},
-    BOX_SELECTION: {key: "2", ctrl: false},
-    PLACE_ENTITY: {key: "3", ctrl: false},
-    PLACE_RELATION: {key: "4", ctrl: false},
-    EDGE_CREATION: {key: "5", ctrl: false},
-    STATE_INITIAL: {key: "6", ctrl: false},
-    SQ_LIFELINE: {key: "7", ctrl: false},
-    STATE_SEQUENCE: {key: "7", ctrl: false},
-    SEQUENCE_OBJECT: {key: "7", ctrl: false},
-    NOTE_ENTITY: {key: "8", ctrl: false},
-    ZOOM_IN: {key: "+", ctrl: true, meta: true},
-    ZOOM_OUT: {key: "-", ctrl: true, meta: true},
-    ZOOM_RESET: {key: "0", ctrl: true, meta: true},
-    TOGGLE_A4: {key: "p", ctrl: false, meta: false},
-    TOGGLE_GRID: {key: "g", ctrl: false},
-    TOGGLE_RULER: {key: "t", ctrl: false},
-    TOGGLE_SNAPGRID: {key: "s", ctrl: false},
-    TOGGLE_DARKMODE: {key: "d", ctrl: false},
-    CENTER_CAMERA: {key: "home", ctrl: false},
-    OPTIONS: {key: "o", ctrl: false},
-    ENTER: {key: "enter", ctrl: false},
-    COPY: {key: "c", ctrl: true, meta: true},
-    PASTE: {key: "v", ctrl: true, meta: true},
-    SELECT_ALL: {key: "a", ctrl: true},
-    DELETE_B: {key: "backspace", ctrl: false},
-    MOVING_OBJECT_UP: {key: "ArrowUp", ctrl: false},
-    MOVING_OBJECT_DOWN: {key: "ArrowDown", ctrl: false},
-    MOVING_OBJECT_LEFT: {key: "ArrowLeft", ctrl: false},
-    MOVING_OBJECT_RIGHT: {key: "ArrowRight", ctrl: false},
-    TOGGLE_KEYBINDLIST: {key: "F1", ctrl: false},
-    TOGGLE_REPLAY_MODE: {key: "r", ctrl: false},
-    TOGGLE_ER_TABLE: {key: "e", ctrl: false},
-    TOGGLE_TEST_CASE: { key: "u", ctrl: false},
-    TOGGLE_ERROR_CHECK:  {key: "h", ctrl: false},
+    LEFT_CONTROL: { key: "control", ctrl: true },
+    ALT: { key: "alt", ctrl: false },
+    META: { key: "meta", ctrl: false },
+    HISTORY_STEPBACK: { key: "z", ctrl: true },
+    HISTORY_STEPFORWARD: { key: "y", ctrl: true },
+    DELETE: { key: "delete", ctrl: false },
+    ESCAPE: { key: "escape", ctrl: false },
+    POINTER: { key: "1", ctrl: false },
+    BOX_SELECTION: { key: "2", ctrl: false },
+    PLACE_ENTITY: { key: "3", ctrl: false },
+    PLACE_RELATION: { key: "4", ctrl: false },
+    EDGE_CREATION: { key: "5", ctrl: false },
+    STATE_INITIAL: { key: "6", ctrl: false },
+    SQ_LIFELINE: { key: "7", ctrl: false },
+    STATE_SEQUENCE: { key: "7", ctrl: false },
+    SEQUENCE_OBJECT: { key: "7", ctrl: false },
+    NOTE_ENTITY: { key: "8", ctrl: false },
+    ZOOM_IN: { key: "+", ctrl: true, meta: true },
+    ZOOM_OUT: { key: "-", ctrl: true, meta: true },
+    ZOOM_RESET: { key: "0", ctrl: true, meta: true },
+    TOGGLE_A4: { key: "p", ctrl: false, meta: false },
+    TOGGLE_GRID: { key: "g", ctrl: false },
+    TOGGLE_RULER: { key: "t", ctrl: false },
+    TOGGLE_SNAPGRID: { key: "s", ctrl: false },
+    TOGGLE_DARKMODE: { key: "d", ctrl: false },
+    CENTER_CAMERA: { key: "home", ctrl: false },
+    OPTIONS: { key: "o", ctrl: false },
+    ENTER: { key: "enter", ctrl: false },
+    COPY: { key: "c", ctrl: true, meta: true },
+    PASTE: { key: "v", ctrl: true, meta: true },
+    SELECT_ALL: { key: "a", ctrl: true },
+    DELETE_B: { key: "backspace", ctrl: false },
+    MOVING_OBJECT_UP: { key: "ArrowUp", ctrl: false },
+    MOVING_OBJECT_DOWN: { key: "ArrowDown", ctrl: false },
+    MOVING_OBJECT_LEFT: { key: "ArrowLeft", ctrl: false },
+    MOVING_OBJECT_RIGHT: { key: "ArrowRight", ctrl: false },
+    TOGGLE_KEYBINDLIST: { key: "F1", ctrl: false },
+    TOGGLE_REPLAY_MODE: { key: "r", ctrl: false },
+    TOGGLE_ER_TABLE: { key: "e", ctrl: false },
+    TOGGLE_TEST_CASE: { key: "u", ctrl: false },
+    TOGGLE_ERROR_CHECK: { key: "h", ctrl: false },
     SAVE_DIAGRAM: { key: "s", ctrl: true },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
-    RESET_DIAGRAM: { key: "i", ctrl: false}
+    RESET_DIAGRAM: { key: "i", ctrl: false }
 };
 
 /**
@@ -129,7 +130,8 @@ const messageTypes = {
 };
 
 /**
- * @description Available types of the attribute element. This will alter how the attribute is drawn onto the screen.
+ * @description Available types of variant of the attribute element.
+ * This will alter how the attribute is drawn onto the screen.
  */
 const attrState = {
     NORMAL: "normal",
@@ -141,7 +143,8 @@ const attrState = {
 };
 
 /**
- * @description Available types of entity, ie ER, IE, UML & SD This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of entity, ie ER, IE, UML, SD, SE & Note.
+ * This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const entityType = {
     UML: "UML",
@@ -161,7 +164,8 @@ const entityState = {
 };
 
 /**
- * @description Available types of relations, ie ER, IE & UML This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
+ * @description Available types of relations, ie ER, IE & UML.
+ * This affect how the entity is drawn and which menu is displayed   //<-- UML functionality
  */
 const relationType = {
     UML: "UML",
@@ -212,6 +216,10 @@ const lineCardinalitys = {
     ONE: "1"
 };
 
+/**
+ * @description Describes the lines direction
+ * TB: top to bottom, Down: bottom to top, Right: right to left, LR: reft to right
+ */
 const lineDirection = {
     UP: 'TB',
     DOWN: 'BT',
@@ -352,6 +360,10 @@ const cursorOffset = new Map([
 
 const textheight = 18;
 const strokewidth = 2.0;
+
+/**
+ * @description Available options of colors with its responding color code for the diagram
+ */
 const color = {
     WHITE: "#ffffff",
     BLACK: "#000000",

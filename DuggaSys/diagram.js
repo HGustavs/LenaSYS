@@ -1081,7 +1081,7 @@ function mmoving(event) {
                 deltaX = (startNode.upRight) ? -delta : delta;
 
                 //Special resizing for IERelation elements, width needs to be double the height. Modifying height felt better during usage than modifying width.
-                if(elementData.kind == elementTypesNames.IERelation) {
+                if (elementData.kind == elementTypesNames.IERelation) {
                     deltaY = (startNode.downLeft) ? -(delta * 0.5) : delta * 0.5;
                 } else {
                     deltaY = (startNode.downLeft) ? -delta : delta;
@@ -1401,10 +1401,10 @@ function pasteClipboard(elements, elementsLines) {
         // Check for overlap before adding
         addObjectToData(elementObj, false); // Add to data
 
-    if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
-        data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
-        overlapDetected = true;
-    }
+        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
+            data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
+            overlapDetected = true;
+        }
     });
 
     // If overlap is detected, abort pasting the elements, otherwise add 
@@ -2059,7 +2059,11 @@ function getCurrentFileName() {
 
 function saveDiagramAs() {
     let elem = document.getElementById("saveDiagramAs");
+    if (!elem) {
+        return;
+    }
     let fileName = elem.value;
+
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1; // Note: January is month 0
@@ -2067,21 +2071,30 @@ function saveDiagramAs() {
     const hours = currentDate.getHours() < 10 ? `0${currentDate.getHours()}` : currentDate.getHours();
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
-    const formattedDate = year + "-" + month + "-" + day + ' ';
+    const formattedDate = year + "-" + month + "-" + day + " ";
     const formattedTime = hours + ":" + minutes + ":" + seconds;
-    if (fileName.trim() == "") {
+
+    // Assigns date/time as name if file name is left empty
+    if (fileName.trim() === "") {
         fileName = "diagram " + formattedDate + formattedTime;
     }
-    let names;
+
+    let names = [];
     let localDiagrams;
 
+    // Get saved diagrams from localStorage
     let local = localStorage.getItem("diagrams");
     if (local != null) {
         local = (local[0] == "{") ? local : `{${local}}`;
-        localDiagrams = JSON.parse(local);
-        names = Object.keys(localDiagrams);
+        try {
+            localDiagrams = JSON.parse(local);
+            names = Object.keys(localDiagrams);
+        } catch (error) {
+            names = [];
+        }
     }
 
+    // Check if diagram name is unique
     for (let i = 0; i < names.length; i++) {
         if (names[i] == fileName) {
             hideSavePopout();
@@ -2089,6 +2102,7 @@ function saveDiagramAs() {
             return;
         }
     }
+
     storeDiagramInLocalStorage(fileName);
 }
 

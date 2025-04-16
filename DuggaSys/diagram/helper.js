@@ -1,11 +1,18 @@
 /**
- * @description If the current keyboard event matches a keybind. Ctrl sensistive.
+ * @description If the current keyboard event matches a keybind. Ctrl, Alt, Shift and Meta sensistive.
  * @param {KeyboardEvent} e
  * @param {{key:string, ctrl:boolean}} keybind
  * @returns {boolean}
  */
 function isKeybindValid(e, keybind) {
-    return e.key.toLowerCase() == keybind.key.toLowerCase() && (e.ctrlKey == keybind.ctrl || keybind.ctrl == ctrlPressed);
+    const keyMatches = e.key.toLowerCase() === keybind.key.toLowerCase();
+
+    //Checks and compares if the pressed key is correct based on the keybind (true or false)
+    const ctrlMatches = e.ctrlKey === !!keybind.ctrl;
+    const metaMatches = e.metaKey === !!keybind.meta;
+    const shiftMatches = e.shiftKey === !!keybind.shift;
+
+    return keyMatches && ctrlMatches && metaMatches && shiftMatches;
 }
 
 /**
@@ -122,11 +129,11 @@ function entityIsOverlapping(id, x, y) {
             // Superstates can be placed on state-diagram elements and vice versa
             else if (!backgroundElement.includes(element.kind) &&
                 (data[i].kind === elementTypesNames.UMLSuperState ||
-                data[i].kind === elementTypesNames.sequenceLoopOrAlt)
+                    data[i].kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
             else if (!backgroundElement.includes(data[i].kind) &&
                 (element.kind === elementTypesNames.UMLSuperState ||
-                element.kind === elementTypesNames.sequenceLoopOrAlt)
+                    element.kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
         }
 
@@ -139,6 +146,34 @@ function entityIsOverlapping(id, x, y) {
             });
         });
 
+        // Collision detection for the ER Relation element
+        if (element.kind === "ERRelation") {
+            // Calculate centre of first element
+            const centerAX = x + element.width / 2;
+            const centerAY = y + element.height / 2;
+
+            // Calculate centre of second element
+            const centerBX = data[i].x + data[i].width / 2;
+            const centerBY = data[i].y + data[i].height / 2;
+
+            // Calculate difference of the two elements on x-axis and y-axis
+            const dx = Math.abs(centerAX - centerBX);
+            const dy = Math.abs(centerAY - centerBY);
+
+            // Calculate maximum half width and height where the elements are still overlapping
+            const sumHalfWidth = (element.width / 2) + (data[i].width / 2);
+            const sumHalfHeight = (element.height / 2) + (data[i].height / 2);
+
+            // Detects if there is an actual collision
+            if ((dx / sumHalfWidth + dy / sumHalfHeight) <= 1) {
+                return true;
+            }
+            else {
+                continue;
+            }
+        }
+
+        // Default collision detection where overlapping is derived from height and width of element in a rectangle shape
         if (x < x2 &&
             x + element.width > data[i].x &&
             y < y2 &&
@@ -212,7 +247,7 @@ function makeRandomID() {
 function calculateDeltaExceeded() {
     // Remember that mouse has moved out of starting bounds
     if ((deltaX >= maxDeltaBeforeExceeded ||
-            deltaX <= -maxDeltaBeforeExceeded) ||
+        deltaX <= -maxDeltaBeforeExceeded) ||
         (deltaY >= maxDeltaBeforeExceeded ||
             deltaY <= -maxDeltaBeforeExceeded)
     ) {
@@ -229,8 +264,8 @@ function calculateDeltaExceeded() {
  */
 function sameObjects(obj1, obj2, ignore = []) {
     // removes the reference to the sent in objects just in case the sending function didn't do it
-    obj1 = {...obj1};
-    obj2 = {...obj2};
+    obj1 = { ...obj1 };
+    obj2 = { ...obj2 };
     // remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];
