@@ -259,8 +259,10 @@ No inverse dependencies.
 ### readCourseVersions
 
 ### readGroupValues
+No inverse dependencies.
 
 ### readUserDuggaFeedback
+No inverse dependencies.
 
 ### removeListEntries
 
