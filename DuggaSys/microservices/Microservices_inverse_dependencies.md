@@ -287,6 +287,7 @@ No inverse dependencies.
 ### updateQuizDeadline
 
 ### updateVisibleListEntries
+No dependencies found.
 
 ## sharedMicroservices
 
