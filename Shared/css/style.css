@@ -871,6 +871,8 @@ p {
 
   & .view-label {
     display: none;
+  }
+  
   #SectionList {
     margin: 10px 0;
   }
