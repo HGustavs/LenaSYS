@@ -34,7 +34,7 @@ $vers=getOP('coursevers');
 $kind=getOP('kind');
 $fileName=getOP('filename');
 $textField=getOP('textField');
-$inputText=gettheOP($textField);
+$inputText=postOPValue($textField);
 $error=false;
 
 if(isset($_SESSION['uid'])){

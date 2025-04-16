@@ -27,7 +27,7 @@ session_start();
 pdoConnect(); // Connect to database and start session
 
 $link=getOP('link');
-$inputtext=gettheOP('inputtext');
+$inputtext=postOPValue('inputtext');
 $cid=getOP('cid');
 $vers=getOP('coursevers');
 $moment=getOP('moment');
