@@ -2,8 +2,8 @@
 
 include_once "./nameQuery.php";
 //include_once "./parameterQuery.php";
-//include_once "./descriptionsearch.php";
-//include_once "./directoryRendering";
+include_once "./descriptionSearch.php";
+include_once "./directoryRendering.php";
 
 $results = null;
 
@@ -24,6 +24,9 @@ elseif(isset($_GET['description'])){
     $description = $_GET['description'];
     //get list of courses with matching description
     $results = getServicesByDescription($description);
+    echo "<pre>";
+    print_r($results);
+    echo "</pre>";
 }
 else{
     echo "no valid queries found";
