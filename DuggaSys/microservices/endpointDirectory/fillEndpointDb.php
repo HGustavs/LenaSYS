@@ -48,6 +48,8 @@ foreach ($mdFiles as $mdFile) {
     // remove empty strings and lines
     $services = array_filter(array_map('trim', $services));
 
+    echo $mdFile;
+
     // loop through each microservice inside the md file
     foreach ($services as $service) {
         // remove empty spaces
@@ -63,8 +65,23 @@ foreach ($mdFiles as $mdFile) {
             $ms_name = trim($lines[0]);
         }
 
+        $description = "No description";
+        // save the next not empty line after finding description header
+        for ($i = 0; $i < count($lines); $i++) {
+            if (trim($lines[$i]) === '## Description') {
+                if (isset($lines[$i + 1])) {
+                    $nextLine = trim($lines[$i + 1]);
+                    if ($nextLine !== '') {
+                        $description = $nextLine;
+                    }
+                }
+                break;
+            }
+        }
+
         echo "<pre>";
-        print_r($ms_name);
+        print_r($ms_name . "<br>");
+        print_r($description);
         echo "</pre>";
 
         // echo "<pre>";
@@ -79,9 +96,9 @@ foreach ($mdFiles as $mdFile) {
 
 }
 
-echo "<pre>";
-print_r($mdFiles);
-echo "</pre>";
+// echo "<pre>";
+// print_r($mdFiles);
+// echo "</pre>";
 
 
 
