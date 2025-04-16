@@ -263,8 +263,10 @@ No inverse dependencies.
 ### readUserDuggaFeedback
 
 ### removeListEntries
+No inverse dependencies.
 
 ### reorderListEntries
+No inverse dependencies.
 
 ### retrieveAllCourseVersions
 
