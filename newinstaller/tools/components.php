@@ -96,7 +96,7 @@
 			echo "<div class='radiobutton'>
 					<input id='$id' type='radio' name='$radioGroupName' value='$id' $checked>
 					<label for='$id'>$label</label>
-				  </div>";
+				</div>";
 		}
 		echo "</div>";
 	}
