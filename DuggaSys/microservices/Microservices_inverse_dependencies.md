@@ -287,8 +287,10 @@ No inverse dependencies.
 
 
 ### updateListEntryOrder
+No inverse dependencies.
 
 ### updateQuizDeadline
+No inverse dependencies.
 
 ### updateVisibleListEntries
 No dependencies found.
