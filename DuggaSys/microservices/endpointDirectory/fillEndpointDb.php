@@ -34,8 +34,25 @@ function findMdFiles($dir): array
 $basePath = realpath(__DIR__ . '/../');
 $mdFiles = findMdFiles($basePath);
 
-echo "<pre>";
-print_r($mdFiles);
-echo "</pre>";
+// loop through the saved files
+foreach ($mdFiles as $mdFile) {
+    $content = file_get_contents($mdFile);
+
+    // skip files that are not structured documentation
+    if (!preg_match('/# Name of file\/service/i', $content)) {
+        continue;
+    }
+
+    echo "<pre>";
+    print_r($mdFile);
+    echo "</pre>";
+
+}
+
+// echo "<pre>";
+// print_r($mdFiles);
+// echo "</pre>";
+
+
 
 ?>
