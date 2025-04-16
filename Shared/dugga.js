@@ -189,19 +189,19 @@ function toggleloginnewpass(){
 
 // This function only resets login and forgot password fields
 function resetFields(){
-	$("#login #username").val("");
-	$("#login #password").val("");
+	document.getElementById("#login #username").value="";
+	document.getElementById("#login #password").value="";
 	//Since we need the username from this box during the answer part we cant clear it directly afterwards
 	if (status!=2){
-		$("#newpassword #username").val("");
+		document.getElementById("#newpassword #username").value="";
 	}
-	$("#showsecurityquestion #answer").val("");
+	document.getElementById("#showsecurityquestion #answer").value="";
 
   //Changes the background color back to white
-	//$("#formBox #username").css("background-color", "rgb(255, 255, 255)");
-	//$("#formBox #password").css("background-color", "rgb(255, 255, 255)");
-	//$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
-	//$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
+	//document.getElementByID("#formBox #username").body.style.backgroundColor="rgb(255, 255, 255)";
+	//document.getElementById("#formBox #password").body.style.backgroundColor="rgb(255, 255, 255)";
+	//document.getElementById("#newpassword #username").body.style.backgroundColor="rgb(255, 255, 255)";
+	//document.getElementById("#showsecurityquestion #answer").body.style.backgroundColor="rgb(255, 255, 255)";
 
   //Hides error messages
   displayAlertText("#login #message", "");
@@ -547,9 +547,9 @@ function closeWindows(){
 	var e;
 
 	//More effective to have a class for the div you want to search and pass that to your selector
-	$("*").each(function() {
+	document.querySelectorAll("*").forEach(function() {
 		//Always use a radix when using parseInt
-		var index_current = parseInt($(this).css("zIndex"), 10);
+		var index_current = parseInt(document.getElementById(this).style.zIndex="10");
 		if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
 			index_highest = index_current;
 			e=this;
@@ -578,12 +578,12 @@ function closeWindows(){
 		if (index_highest < 10000) {
 			status=1;
 			//toggleloginnewpass();
-			//$("#overlay").css("display","none");
+			document.getElementById("#overlay").style.display="none";
 			resetFields();
 		}
 	}
 
-	$(document).keyup(function(e) {
+	document.querySelector(document).keyup(function(e) {
 		if (e.which == 27){
 			resetLoginStatus();
 		}
@@ -605,16 +605,17 @@ function changeCSS(cssFile, index)
 }
 
 //----------------------------------------------------------------------------------
-// loadJS: Using Jquery Dynamically Load external JS.
+// loadJS: Using JS Dynamically Load external JS.
 //          Does not load again if previously loaded same file
+//			Previously used JQuery but has been changed to JS.
 //----------------------------------------------------------------------------------
 
 var JSFiles=[];
 
 function loadJS(src) {
 		if(JSFiles[src]!="Loaded"){
-		   var jsLink = $("<script type='text/javascript' src='"+src+"'>");
-		   $("head").append(jsLink);
+		   var jsLink = document.getElementById("<script type='text/javascript' src='"+src+"'>");
+		   document.getElementById("head").append(jsLink);
 		   JSFiles[src]="Loaded";
 		}else{
 				// Do nothing if already loaded
@@ -622,12 +623,13 @@ function loadJS(src) {
 };
 
 //----------------------------------------------------------------------------------
-// loadCSS: Using Jquery Dynamically Load external CSS
+// loadCSS: Using JS Dynamically Load external CSS.
+//			Previously used JQuery, changed to JS.
 //----------------------------------------------------------------------------------
 
 function loadCSS(href) {
-		var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-		$("head").append(cssLink);
+		var cssLink = document.getElementById("<link rel='stylesheet' type='text/css' href='"+href+"'>");
+		document.getElementById("head").append(cssLink);
 };
 
 //----------------------------------------------------------------------------------
