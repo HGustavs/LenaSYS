@@ -1,7 +1,7 @@
 <?php
 
 include_once "./nameQuery.php";
-//include_once "./parameterQuery.php";
+include_once "./parameterQuery.php";
 include_once "./descriptionSearch.php";
 include_once "./directoryRendering.php";
 
@@ -19,6 +19,9 @@ elseif(isset($_GET['parameter'])){
     $parameter = $_GET['parameter'];
     //get list of courses with matching parameters
     $results = getServicesByParameter($parameter);
+    echo "<pre>";
+        print_r($results);
+    echo "</pre>";
 }
 elseif(isset($_GET['description'])){
     $description = $_GET['description'];
