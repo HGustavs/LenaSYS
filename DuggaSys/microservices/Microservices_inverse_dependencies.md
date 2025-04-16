@@ -277,10 +277,14 @@ No inverse dependencies.
 ### updateCourseVersion_sectioned
 
 ### updateListEntries
+No inverse dependencies.
+
 
 ### updateListEntriesGradesystem
 
 ### updateListEntriesTabs
+No inverse dependencies.
+
 
 ### updateListEntryOrder
 
