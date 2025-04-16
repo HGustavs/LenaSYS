@@ -271,8 +271,10 @@ No inverse dependencies.
 ### retrieveSectionedService
 
 ### setVisibleListentries
+(no inverse dependencies found)
 
 ### updateActiveCourseVersion_sectioned
+(no inverse dependencies found)
 
 ### updateCourseVersion_sectioned
 
