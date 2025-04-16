@@ -43,9 +43,29 @@ foreach ($mdFiles as $mdFile) {
         continue;
     }
 
-    echo "<pre>";
-    print_r($mdFile);
-    echo "</pre>";
+    // split on each microservice block (if there is documentation for more than one microservice in the same md file)
+    $services = preg_split('/# Name of file\/service\s*/i', $content);
+    // remove empty strings and lines
+    $services = array_filter(array_map('trim', $services));
+
+    // loop through each microservice inside the md file
+    foreach ($services as $service) {
+        // remove empty spaces
+        if (trim($service === '')) {
+            continue;
+        }
+        // split the string ($service) into an array of rows to be able to analyze the content for each row
+        $lines = explode("\n", $service);
+
+        echo "<pre>";
+        print_r($lines);
+        echo "</pre>";
+
+    }
+
+    // echo "<pre>";
+    // print_r($mdFile);
+    // echo "</pre>";
 
 }
 
