@@ -146,8 +146,8 @@ function entityIsOverlapping(id, x, y) {
             });
         });
 
-        // Collision detection for the ER Relation element
-        if (element.kind === "ERRelation") {
+        // Collision detection for the ER and UML Relation elements
+        if (element.kind === "ERRelation" || element.kind === "UMLRelation") {
             // Calculate centre of first element
             const centerAX = x + element.width / 2;
             const centerAY = y + element.height / 2;
@@ -172,9 +172,8 @@ function entityIsOverlapping(id, x, y) {
                 continue;
             }
         }
-
         // Default collision detection where overlapping is derived from height and width of element in a rectangle shape
-        if (x < x2 &&
+        else if (x < x2 &&
             x + element.width > data[i].x &&
             y < y2 &&
             y + eHeight > data[i].y
