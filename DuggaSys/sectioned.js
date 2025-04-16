@@ -443,7 +443,10 @@ function convertDateToDeadline(date) {
 
 // Returns the values of the currently chosen relative deadline input elements
 function getRelativeDeadlineInputValues() {
-  return $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlinehours").val() + ":" + $("#relativedeadlineminutes").val();
+  return document.getElementById("relativedeadlineamount").value + ":" +
+    document.getElementById("relativedeadlinetype").value + ":" +
+    document.getElementById("relativedeadlinehours").value + ":" +
+    document.getElementById("relativedeadlineminutes").value;
 }
 
 //---------------------------------------------------------------------------------------------
@@ -455,21 +458,24 @@ function getRelativeDeadlineInputValues() {
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
   document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+  var linkElement = document.getElementById("link");
+
   if (kind == 2) {
-    $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
+    linkElement.innerHTML = makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid');
   } else if (kind == 3) {
     document.querySelector("#inputwrapper-group").style.display = "none";
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
-    $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
+    linkElement.innerHTML = makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id');
   } else if (kind == 4) {
     document.querySelector("#inputwrapper-group").style.removeProperty('display');
     document.querySelector("#inputwrapper-gradesystem").style.removeProperty('display');
   } else if (kind == 5 || kind == 7) {
-    $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
+    linkElement.innerHTML = makeoptionsItem(xelink, retdata['links'], 'filename', 'filename');
   } else {
-    $("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
+    linkElement.innerHTML = "<option value='-1'>-=# Not Applicable #=-</option>";
   }
 }
+
 
 //----------------------------------------------------------------------------------
 // refreshGithubRepo: Send course id to function in gitcommitService.php
