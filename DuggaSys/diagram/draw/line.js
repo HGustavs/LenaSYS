@@ -197,23 +197,23 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         const label = {
             id: line.id + "Label",
             labelLineID: line.id,
-            centerX: (tx + fx) / 2,
-            centerY: (ty + fy) / 2,
+            centerX: (tx + offset.x2 + fx + offset.x1) / 2,
+            centerY: (ty + offset.y2 + fy + offset.y1) / 2,
             width: textWidth + zoomfact * 4,
             height: textheight * zoomfact + zoomfact * 3,
             labelMovedX: 0,
             labelMovedY: 0,
-            lowY: Math.min(ty, fy),
-            highY: Math.max(ty, fy),
-            lowX: Math.min(tx, fx),
-            highX: Math.max(ty, fy),
+            lowY: Math.min(ty + offset.y2, fy + offset.y1),
+            highY: Math.max(ty + offset.y2, fy + offset.y1),
+            lowX: Math.min(tx + offset.x2, fx + offset.x1),
+            highX: Math.max(tx + offset.x2, fx + offset.x1),
             percentOfLine: 0,
             displacementX: 0,
             displacementY: 0,
-            fromX: fx,
-            toX: tx,
-            fromY: fy,
-            toY: ty,
+            fromX: fx + offset.x1,
+            toX: tx + offset.x2,
+            fromY: fy + offset.y1,
+            toY: ty + offset.y2,
             lineGroup: 0,
             labelMoved: false
         };
@@ -241,13 +241,21 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
         if (rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
-        // Label position for recursive edges
-        const labelPosX = (tx + fx) / 2 - ((textWidth) + zoomfact * 8) / 2;
+        // Label positioning for recursive lines
         const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionX = labelPosX + zoomfact;
         const labelPositionY = labelPosY - zoomfact;
+
+        // Label positioning for regual (non-recursive) lines
+        const labelCenterX = label.centerX - (2 * zoomfact);
+        const labelCenterY = label.centerY;
+
+        // Centers the background rectangle around the text
+        const rectPosX = labelCenterX - textWidth / 2 - zoomfact * 2;
+        const rectPosY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
+
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
+            // For recursive lines
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
@@ -266,11 +274,12 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                         ${labelValue}
                     </text>`;
         } else {
+            // For non-recursive lines
             str += `<rect
                         class='text cardinalityLabel'
-                        id=${line.id + 'Label'}
-                        x='${labelPositionX}'
-                        y='${labelPositionY}'
+                        id='${line.id + 'Label'}'
+                        x='${rectPosX}'
+                        y='${rectPosY}'
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact + zoomfact * 3}'
                     />`;
@@ -279,8 +288,8 @@ if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'nu
                         dominant-baseline='middle'
                         text-anchor='middle'
                         style='font-size:${Math.round(zoomfact * textheight)}px;'
-                        x='${label.centerX - (2 * zoomfact)}'
-                        y='${label.centerY - (2 * zoomfact)}'>
+                        x='${labelCenterX}'
+                        y='${labelCenterY}'>
                         ${labelValue}
                     </text>`;
         }
