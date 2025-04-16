@@ -130,23 +130,55 @@ function saveArrowIds(clickedElement) {
 
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
-function hideCollapsedMenus() {
-  $('.header, .section, .code, .test, .link, .group, .statisticsContent, .message').show();
-  for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
-      jQuery(ancestor).nextUntil('.moment').hide();
-      $('#selectionDrag' + menuState.hiddenElements[i]).hide();
-    }
-    ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
-      jQuery(ancestor).nextUntil('.section').hide();
-      $('#selectionDrag' + menuState.hiddenElements[i]).hide();
+   function hideCollapsedMenus() {
+    // Show all base elements first
+    var elementsToShow = document.querySelectorAll('.header, .section, .code, .test, .link, .group, .statisticsContent, .message');
+    for (var i = 0; i < elementsToShow.length; i++) {
+        elementsToShow[i].style.display = '';
     }
 
-    if (menuState.hiddenElements[i] == "statistics") {
-      $(".statistics").nextAll().hide();
+    // Hide elements specified in menuState
+    for (var i = 0; i < menuState.hiddenElements.length; i++) {
+        var elementId = menuState.hiddenElements[i];
+        var element = document.getElementById(elementId);
+        
+        if (!element) continue;
+
+        // Handle moment ancestor case
+        var ancestor = findAncestor(element, "moment");
+        if (ancestor && ancestor.classList.contains('moment')) {
+            hideNextUntil(ancestor, 'moment');
+            var dragElement = document.getElementById('selectionDrag' + elementId);
+            if (dragElement) dragElement.style.display = 'none';
+        }
+
+        // Handle section ancestor case
+        ancestor = findAncestor(element, "section");
+        if (ancestor && ancestor.classList.contains('section')) {
+            hideNextUntil(ancestor, 'section');
+            var dragElement = document.getElementById('selectionDrag' + elementId);
+            if (dragElement) dragElement.style.display = 'none';
+        }
+
+        // Handle statistics special case
+        if (elementId == "statistics") {
+            var statistics = document.querySelector(".statistics");
+            if (statistics) {
+                var nextElements = statistics.nextElementSibling;
+                while (nextElements) {
+                    nextElements.style.display = 'none';
+                    nextElements = nextElements.nextElementSibling;
+                }
+            }
+        }
     }
+}
+
+function hideNextUntil(element, className) {
+  var next = element.nextElementSibling;
+  while (next && !next.classList.contains(className)) {
+      next.style.display = 'none';
+      next = next.nextElementSibling;
   }
 }
 
@@ -154,27 +186,49 @@ function hideCollapsedMenus() {
    arrow if it is in the arrowIcons array.*/
 // The other way around for the statistics section.
 function toggleArrows(id) {
-  $('.arrowComp').show();
-  $('.arrowRight').hide();
-  $('#selectionDrag' + id).toggle();
-  for (var i = 0; i < menuState.arrowIcons.length; i++) {
-    if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-      $('#' + menuState.arrowIcons[i]).hide();
-    } else {
-      $('#' + menuState.arrowIcons[i]).show();
-    }
+  // Show all arrowComp elements
+  var arrowComps = document.querySelectorAll('.arrowComp');
+  for (var i = 0; i < arrowComps.length; i++) {
+      arrowComps[i].style.display = '';
   }
-
-  $('#arrowStatisticsOpen').show();
-  $('#arrowStatisticsClosed').hide();
+  
+  // Hide all arrowRight elements
+  var arrowRights = document.querySelectorAll('.arrowRight');
+  for (var i = 0; i < arrowRights.length; i++) {
+      arrowRights[i].style.display = 'none';
+  }
+  
+  // Toggle selection drag
+  var dragElement = document.getElementById('selectionDrag' + id);
+  if (dragElement) {
+      dragElement.style.display = dragElement.style.display === 'none' ? '' : 'none';
+  }
+  
+  // Handle arrow icons in menuState
+  for (var i = 0; i < menuState.arrowIcons.length; i++) {
+      var arrow = document.getElementById(menuState.arrowIcons[i]);
+      if (arrow) {
+          if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+              arrow.style.display = 'none';
+          } else {
+              arrow.style.display = '';
+          }
+      }
+  }
+  
+  // Handle statistics arrows
+  var statsOpen = document.getElementById('arrowStatisticsOpen');
+  var statsClosed = document.getElementById('arrowStatisticsClosed');
+  if (statsOpen) statsOpen.style.display = '';
+  if (statsClosed) statsClosed.style.display = 'none';
+  
   for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    if (menuState.hiddenElements[i] == "statistics") {
-      $('#arrowStatisticsOpen').hide();
-      $('#arrowStatisticsClosed').show();
-    }
+      if (menuState.hiddenElements[i] == "statistics") {
+          if (statsOpen) statsOpen.style.display = 'none';
+          if (statsClosed) statsClosed.style.display = '';
+      }
   }
 }
-menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // Added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
@@ -188,11 +242,13 @@ function hamburgerChange(operation = 'click') {
   }
 }
 
-$(document).on('click', function (e) {
-  if ($(e.target).closest("#hamburgerIcon").length === 0) {
-    $("#hamburgerBox").hide();
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('#hamburgerIcon')) {
+    var hamburgerBox = document.getElementById('hamburgerBox');
+    if (hamburgerBox) hamburgerBox.style.display = 'none';
   }
 });
+
 
 function toggleHamburger() {
 
