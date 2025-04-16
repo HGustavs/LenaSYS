@@ -85,7 +85,8 @@ if (!$query->execute()) {
 }
 
 if ($makeactive == 3) {
-    $ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php");
+    //$ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php");
+    $ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/courseedService/updateCourseVersion_ms.php");
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -106,7 +107,7 @@ if ($makeactive == 3) {
 
 
     file_put_contents("../../../log/log.json", "Update course run to end\n", FILE_APPEND);
-    setcookie("lastmsg", $cid, time() + 3600);
+    setcookie("Current course to set as active", $cid . ", versid: " . $versid, time() + 3600);
 
     //setAsActiveCourse($pdo, $cid, $versid);
 }
