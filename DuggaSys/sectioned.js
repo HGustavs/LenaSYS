@@ -652,15 +652,17 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+// Displaying and hiding the dynamic confirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
 
-  // it registrers both when clicking trashcan and selection trashcan
+  // it registrers both when clicking trashcan and selection trashcan - independent of selection or not.
+  // just displays popup.
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
-    selectedItemList.push(active_lid);
+    console.log('handling of one item?');
     console.log('active lid: ' + active_lid)
-    $("#sectionConfirmBox").css("display", "flex");
+    //$("#sectionConfirmBox").css("display", "flex");
+    document.getElementById("sectionConfirmBox").style.display = "flex";
   } 
   else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
@@ -675,14 +677,21 @@ function confirmBox(operation, item = null) {
   else if (operation == "openItemsConfirmBox") {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-
-    // something within this function is not working properly. When pressing the trash without selection,
-    // it doesn't have a selected item. So something that's calling this, doesn't include the items when calling
-    // from the trash.
-  } else if (operation == "deleteItem") {
-    console.log('selectedItemList: ' + selectedItemList)
-    deleteItem(selectedItemList);
-    document.getElementById("sectionConfirmBox").style.display = "none";
+  } 
+  else if (operation == "deleteItem") {
+    if(selectedItemList.length != 0){
+      console.log('selectedItemList: ' + selectedItemList);
+      console.log('activeLid (several): ' + active_lid);
+      deleteItem(selectedItemList);
+      document.getElementById("sectionConfirmBox").style.display = "none";
+    }
+    else{
+      console.log('selectedItemList: ' + selectedItemList);
+      console.log('activeLid (one): ' + active_lid);
+      selectedItemList.push(active_lid); // marks the "attached" item as selected
+      deleteItem(selectedItemList);
+      document.getElementById("sectionConfirmBox").style.display = "none";
+    }
   } 
   else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
@@ -771,8 +780,8 @@ function markedItems(item = null) {
 
   }
 
-
-  console.log("Active lid: " + active_lid);
+  // handles selections
+  console.log("Active lid (SELECTION): " + active_lid);
   if (selectedItemList.length != 0) {
     for (let i = 0; i < selectedItemList.length; i++) {
       if (selectedItemList[i] === active_lid) {
@@ -799,7 +808,6 @@ function markedItems(item = null) {
     }
   } else {
     selectedItemList.push(active_lid);
-    console.log("Added");
     for (var j = 0; j < subItems.length; j++) {
       selectedItemList.push(subItems[j]);
     }
@@ -814,6 +822,7 @@ function markedItems(item = null) {
   }
   if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
+    console.log('no element selected');
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
     hideVisibilityIcons();

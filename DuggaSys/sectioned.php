@@ -379,7 +379,7 @@
 
 				<!-- Error message, no duggas present-->
 				<div class="formFooter">
-					<input class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+					<!--<input class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />-->
 					<input class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
 					<input id="submitBtn" class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
 					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
@@ -403,6 +403,7 @@
 		</div>
 	</div>
 	
+	<!-- Handles the confirmation box popup from delete button -->
 	<script type="text/babel">
 		function ConfirmButtons() {
 			return (
