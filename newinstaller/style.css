@@ -6,6 +6,7 @@
     --primary-color: #8F58A3;
     --primary-color-hover: #773090;
     --primary-color-active: #692582;
+    --primary-color-disabled: #bd87d1;
     --secondary-color: #8F58A366;
     --accent-color: #D9D9D9;
     --page-background: #FCFCFC;
@@ -303,13 +304,39 @@ input[type=checkbox], input[type=radio] {
     font-size: var(--text-large);
 }
 
-.defaultButton:hover, .progressButton:hover {
+.disabledDownloadButton {
+    font-family: var(--body-font);
+    background-color: var(--primary-color-disabled);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    text-decoration:none;
+    width: auto;
+    height: 2.85rem;
+    padding: .75rem;
+    margin-right: auto; /* Correctly positions the single button used at page 1 & 6, without impacting position for rest of pages. Keep this */
+    font-size: var(--text-large);
+}
+
+.downloadButton {
+    font-family: var(--body-font);
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--primary-color);
+    text-decoration:none;
+    width: auto;
+    height: 2.85rem;
+    padding: .75rem;
+    margin-right: auto; /* Correctly positions the single button used at page 1 & 6, without impacting position for rest of pages. Keep this */
+    font-size: var(--text-large);
+}
+
+.defaultButton:hover, .progressButton:hover, .downloadButton:hover {
     cursor: pointer;
     background-color: var(--primary-color-hover);
     box-shadow: 1px 1px 1px var(--text-dark);
 }
 
-.defaultButton:active, .progressButton:active {
+.defaultButton:active, .progressButton:active, .downloadButton:active {
     background-color: var(--primary-color-active);
     box-shadow: 2px 2px 2px var(--text-dark);
 }

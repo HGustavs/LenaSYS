@@ -238,6 +238,9 @@
 						<?php progressBar(); ?>
 						<div id="pageButtonContainer"></div>
 					</div>
+					<a id="downloadButton" class="disabledDownloadButton" href="javascript:void(0)" download>
+						Download installation log
+					</a>
 				</div>
 			</div>
 		</div>
