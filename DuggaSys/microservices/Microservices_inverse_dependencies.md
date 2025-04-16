@@ -275,6 +275,7 @@ No inverse dependencies.
 ### setVisibleListentries
 
 ### updateActiveCourseVersion_sectioned
+No inverse dependencies.
 
 ### updateCourseVersion_sectioned
 
@@ -283,6 +284,7 @@ No inverse dependencies.
 
 
 ### updateListEntriesGradesystem
+No inverse dependencies.
 
 ### updateListEntriesTabs
 No inverse dependencies.
