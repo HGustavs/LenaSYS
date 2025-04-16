@@ -57,9 +57,19 @@ foreach ($mdFiles as $mdFile) {
         // split the string ($service) into an array of rows to be able to analyze the content for each row
         $lines = explode("\n", $service);
 
+        // microservice name is the first non-empty line
+        $ms_name = "No name";
+        if (isset($lines[0]) && trim($lines[0]) !== '') {
+            $ms_name = trim($lines[0]);
+        }
+
         echo "<pre>";
-        print_r($lines);
+        print_r($ms_name);
         echo "</pre>";
+
+        // echo "<pre>";
+        // print_r($lines);
+        // echo "</pre>";
 
     }
 
@@ -69,9 +79,9 @@ foreach ($mdFiles as $mdFile) {
 
 }
 
-// echo "<pre>";
-// print_r($mdFiles);
-// echo "</pre>";
+echo "<pre>";
+print_r($mdFiles);
+echo "</pre>";
 
 
 
