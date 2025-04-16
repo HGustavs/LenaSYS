@@ -33,6 +33,7 @@ function setAsActiveCourse()
         if (isset($_POST['cid'], $_POST['versid'])) {
             $cid = $_POST['cid'];
             $versid = $_POST['versid'];
+			setcookie("lastmsg", "post is set", time() + 3600);
         }
     }
     $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
