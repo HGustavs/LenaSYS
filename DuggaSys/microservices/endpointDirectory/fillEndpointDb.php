@@ -69,11 +69,20 @@ foreach ($mdFiles as $mdFile) {
         // save the next not empty line after finding description header
         for ($i = 0; $i < count($lines); $i++) {
             if (trim($lines[$i]) === '## Description') {
-                if (isset($lines[$i + 1])) {
-                    $nextLine = trim($lines[$i + 1]);
-                    if ($nextLine !== '') {
-                        $description = $nextLine;
+                // collect in a list if there are multiple lines
+                $descLines = [];
+                // start from the line after the description header
+                for ($j = $i + 1; $j < count($lines); $j++) {
+                    $line = trim($lines[$j]);
+                    // break if an empty line or a new header is reacher
+                    if ($line === '' || preg_match('/^#+ /', $line)) {
+                        break;
                     }
+                    $descLines[] = $line;
+                }
+                // connect the rows if a row was found 
+                if (!empty($descLines)) {
+                    $description = implode('<br>', $descLines);
                 }
                 break;
             }
@@ -95,11 +104,6 @@ foreach ($mdFiles as $mdFile) {
     // echo "</pre>";
 
 }
-
-// echo "<pre>";
-// print_r($mdFiles);
-// echo "</pre>";
-
 
 
 ?>
