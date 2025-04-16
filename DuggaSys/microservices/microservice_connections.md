@@ -31,7 +31,7 @@ In this file the connection between javascript and PHP is docummented.
 | Output | Type | Description | 
 
 | :User | :Array | :Array of userdata from databas | 
-| :UID | :String | :Identifier username | 
+| :UID | :string | :Identifier username | 
  
 
 ## Examples of Use 
@@ -235,6 +235,7 @@ Updating course settings such as course name, course code and GitHub repository.
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
+
 | :success | :bool | :DataCheck |
 
 ## Examples of Use
@@ -333,25 +334,26 @@ Function FetchGitHubRepo
 ## Description
 *Description of what the service do and its function in the system.*
 
+Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false.
+
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+
+| :githubURL | :string | :GitHub URL |
+| :action | :string | :Type of fetch |
 
 ## Calling Methods
-
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :Success | :bool | :success/failure bool |
+| :Message | :string | :Erro rmessage passed back from PHP |
 
 ## Examples of Use
 
@@ -391,41 +393,80 @@ function fetchGitHubRepo(gitHubURL) {
 ### Microservices Used
 *Includes and microservices used*
 
-Example of template for the documentation:
+gitfetchService.php
+Uses: action- getNewCourseGitHub
 
+---------------------------------------------------------------------
 # Name of file/service
+
+courseed.js
+Function fetchLatestCommit
 
 ## Description
 *Description of what the service do and its function in the system.*
+
+This function sends a GitHub repository URL of the latest commit from the GitHub repository.
+The latest commit is then stored in the database.
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+
+| :gitHubURL | :string | :URL of the GitHub repository to fetch commits from|
+| :action | :string | :getCourseID identifies type of action |
 
 ## Calling Methods
-
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :status code | :int | :HTTP status,determine the result |
+| :message | :string | :Error message |
+| :success | :bool | :success=true, Error=false |
 
 ## Examples of Use
-`CODE`
+`//Send valid GitHub-URL to PHP-script which gets and saves the latest commit in the sqllite db
+function fetchLatestCommit(gitHubURL) {
+	//Used to return success(true) or error(false) to the calling function
+	var dataCheck;
+	$.ajax({
+		async: false,
+		url: "../DuggaSys/gitcommitService.php",
+		type: "POST",
+		data: { 'githubURL': gitHubURL, 'action': 'getCourseID' },
+		success: function () {
+			//Returns true if the data and JSON is correct
+			dataCheck = true;
+		},
+		error: function (data) {
+			//Check FetchGithubRepo for the meaning of the error code.
+			switch (data.status) {
+				case 422:
+					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
+					break;
+				case 503:
+					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
+					break;
+				default:
+					toast("error", "Something went wrong...", 7);
+			}
+			dataCheck = false;
+		}
+	});
+	return dataCheck;
+}`
 
 ### Microservices Used
 *Includes and microservices used*
 
-Example of template for the documentation:
+gitcommitService.php
+action- getCourseID
 
+----------------------------------------------------------------------------------------
 # Name of file/service
 
 ## Description
