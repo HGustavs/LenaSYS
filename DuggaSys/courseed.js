@@ -14,7 +14,6 @@ var LastCourseCreated;
 var lastCC = false;
 var updateCourseName = false;
 
-
 $(document).ready(function () {
 	$('#startdate').datepicker({
 		dateFormat: "yy-mm-dd"
@@ -40,62 +39,81 @@ function closeDeleteForm() {
 
 function deleteCourse() {
 
-    let cid = $("#cid").val();
+	let cid = document.getElementById("cid").value;
     let visib = "3";
 
-    AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
-    $(".item").css("border", "none");
-    $(".item").css("box-shadow", "none");
-    $("#editCourse").css("display", "none");
-    $("#overlay").css("display", "none");
+	AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
+
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("editCourse").style.display = "none";
+	document.getElementById("overlay").style.display = "none";
 }
 
-function updateCourse() {
-	var coursename = $("#coursename").val();
-	var cid = $("#cid").val();
-	var coursecode = $("#coursecode").val();
-	var courseGitURL = $("#editcoursegit-url").val();
-	var visib = $("#visib").val();
+async function updateCourse() {
+	var dataCheck = false;
+	var coursename = document.getElementById("coursename").value;
+	var cid = document.getElementById("cid").value;
+	var coursecode = document.getElementById("coursecode").value;
+	var courseGitURL = document.getElementById("editcoursegit-url").value;
+	var visib = document.getElementById("visib").value;
 	var courseid = "C" + cid;
 
 	var token = document.getElementById("githubToken").value;
 
 	//Send information about the git url and possible git token for a course
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: { 'githubURL': courseGitURL, 'cid': cid, 'token': token || undefined, 'action': 'directInsert' },
-		success: function () {
-			//Returns true if the data and JSON is correct
+	const url = "../DuggaSys/gitcommitService.php";
+	const params = {
+		githubURL: courseGitURL,
+		cid: cid,
+		token: token || undefined,
+		action: 'directInsert'
+	};
+	try {
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(params)
+		});
+		if (!response.ok) {
+			const errorData = await response.json();
+			handleError(response.status, errorData);
+		} else {
 			dataCheck = true;
-		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 403:
-					toast("error", data.status + " Error \nplease insert valid git key", 7);
-					break;
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
-					break;
-				default:
-					toast("error", "Something went wrong with updating git token and git URL...", 7);
-			}
-			dataCheck = false;
 		}
-	});
+	} catch (error) {
+		console.error('Error:', error);
+		dataCheck = false;
+	}
+	function handleError(status, errorData) {
+		switch (status) {
+			case 403:
+				toast("error", status + " Error \nplease insert valid git key", 7);
+				break;
+			case 422:
+				toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
+				break;
+			case 503:
+				toast("error", errorData.message + "\nDid not create/update token", 7);
+				break;
+			default:
+				toast("error", "Something went wrong with updating git token and git URL...", 7);
+		}
+		dataCheck = false;
+	}
 
 	if (dataCheck) {
 		// Show dialog
-		$("#editCourse").css("display", "none");
+		document.getElementById("editCourse").style.display ="none";
 
-		// Updates the course (except the course GitHub repo. 
+		// Updates the course (except the course GitHub repo.
 		// Course GitHub repo is updated in the next block of code)
-		$("#overlay").css("display", "none");
+		document.getElementById("overlay").style.display = "none";
 		AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
 		localStorage.setItem('courseid', courseid);
 		localStorage.setItem('updateCourseName', true);
@@ -130,33 +148,38 @@ function updateCourse() {
 function updateCourseColor(courseid) {
 	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
-
 function closeEditCourse() {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#editCourse").css("display", "none");
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("editcourse").style.display = "none";
 
 	//resets all inputs
 	resetinputs();
 }
 
 function closeNewCourse() {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#newCourse").css("display", "none");
-	$("#overlay").css("display", "none");
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("newCourse").style.display = "none";
+	document.getElementById("overlay").style.display = "none";
 }
 
 function newCourse() {
-	$("#newCourse").css("display", "flex");
+	document.getElementById("newCourse").style.display = "flex";
 	//$("#overlay").css("display", "block");
 }
 
 function createNewCourse() {
-	var coursename = $("#ncoursename").val();
-	var coursecode = $("#ncoursecode").val();
-	var courseGitURL = $("#ncoursegit-url").val();
-	$("#newCourse").css("display", "none");
+	var coursename = document.getElementById("ncoursename").value;
+	var coursecode = document.getElementById("ncoursecode").value;
+	var courseGitURL = document.getElementById("ncoursegit-url").value;
+	document.getElementById("newCourse").style.display = "none";
 	//$("#overlay").css("display", "none");
 
 	//Check if user has input for Git-URL
@@ -178,7 +201,7 @@ function createNewCourse() {
 	}
 	setTimeout("location.reload()", 200) // refreshes the page after 0.2 seconds
 }
-
+//CONTINUE FROM HERE
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
 function fetchGitHubRepo(gitHubURL) {
 	//Remove .git, if it exists
