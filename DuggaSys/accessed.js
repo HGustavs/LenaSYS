@@ -62,82 +62,83 @@ function setup() {
 
 //displays dropdown when hovering search bar
 function hoverSearch() {
-	$('#dropdownSearch').css({display:'block'});
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'none');
+	document.querySelector('#dropdownSearch').style.display = 'block';
+	document.querySelector('#dropdowns').style.display = 'none';
+	document.querySelector('#dropdownc').style.display = 'none';
 }
 
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
-	$('#dropdownSearch').css({display:'none'});
+	document.querySelector('#dropdownSearch').style.display = 'none';
 }
 
 function hoverc() {
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
+	document.querySelector('#dropdowns').style.display = 'none';
+	document.querySelector('#dropdownc').style.display = 'block';
 }
 
 function hovers() {
-	$('#dropdowns').css('display', 'block');
-	$('#dropdownc').css('display', 'none');
+	document.querySelector('#dropdowns').style.display = 'block';
+	document.querySelector('#dropdownc').style.display = 'none';
 }
 
 function leavec() {
-	$('#dropdownc').css('display', 'none');
+	document.querySelector('#dropdownc').style.display = 'none';
 }
 
 function leaves() {
-	$('#dropdowns').css('display', 'none');
+	document.querySelector('#dropdowns').style.display = 'none';
 }
 
 function showEditUserPopup(id) {
-	$("#editUser").css("display", "flex");
+	document.querySelector('#editUser').style.display = 'flex';
+	
 }
 
 function showCreateUserPopup() {
-	$("#createUser").css("display", "flex");
+	document.querySelector('#createUser').style.display = 'flex';
 }
 
 function showAddUserPopup(id) {
-	$("#addUser").css("display", "flex");
+	document.querySelector('#addUser').style.display = 'flex';
 	loadUsersToDropdown(id);
 }
 
 function showRemoveUserPopup(id) {
-	$("#removeUser").css("display", "flex");
+	document.querySelector('#removeUser').style.display = 'flex';
 	loadUsersToDropdown(id);
 }
 
 function showCreateClassPopup() {
-	$("#createClass").css("display", "flex");
+	document.querySelector('#createClass').style.display = 'flex';
 }
 
 function showCreateUserPopup() {
-	$("#createUser").css("display", "flex");
+	document.querySelector('#createUser').style.display = 'flex';
 }
 
 function showCreateClassPopup() {
-	$("#createClass").css("display", "flex");
+	document.querySelector('#createClass').style.display = 'flex';
 }
 
 function hideCreateUserPopup() {
-	$("#createUser").css("display", "none");
+	document.querySelector('#createUser').style.display = 'none';
 }
 
 function hideCreateClassPopup() {
-	$("#createClass").css("display", "none");
+	document.querySelector('#createClass').style.display = 'none';
 }
 
 function hideEditUserPopup(id) {
-	$("#editUser").css("display", "none");
+	document.querySelector('#editUser').style.display = 'none';
 }
 
 function hideAddUserPopup() {
-	$("#addUser").css("display", "none");
+	document.querySelector('#addUser').style.display = 'none';
 }
 
 function hideRemoveUserPopup() {
-	$("#removeUser").css("display", "none");
+	document.querySelector('#removeUser').style.display = 'none';
 }
 
 //----------------------------------------------------------------------------
