@@ -986,34 +986,77 @@ retrievevers.php
 ----------------------------------------------------------------------------------------------
 # Name of file/service
 
+sectioned.js
+Function getStudents
+
 ## Description
 *Description of what the service do and its function in the system.*
+
+This function retrieves student 
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+
+| :cid | :string | :Course ID used to identify the current course |
+| :userid | :string | :User ID of the currently logged-in user |
 
 ## Calling Methods
-
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :finished_students | :array | :List of studens who have completed the course |
+| :non_finished_students | :array | :List of students who have not yet completed the course |
+| :Error | :string | :If request fails, error is logged to the console |
 
 ## Examples of Use
-`CODE`
+`function getStudents(cid, userid) {
+  var versid = '';
+  versid = $("#versid").val();
+  if (($("#versid").val()) != '') {
+    $("#recipient").prop("disabled", false);
+    $.ajax({
+      url: "../Shared/retrieveuser_course.php",
+      data: { cid: cid, versid: versid, remove_student: userid },
+      type: "POST",
+      success: function (data) {
+        var item = JSON.parse(data);
+        $("#recipient").find('*').not(':first').remove();
+        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
+          "</optgroup>");
+        $.each(item.finished_students, function (index, item) {
+          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname}
+          ${item.lastname}</option>`);
+        });
+        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
+          "</optgroup>");
+        $.each(item.non_finished_students, function (index, item) {
+          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
+          ${item.lastname}</option>`);
+        });
+        $(".selectLabels label input").attr("disabled", false);
+        selectRecipients();
+      },
+      error: function () {
+        console.log("*******Error user_course*******");
+      }
+    });
+  } else {
+    $("#recipient").prop("disabled", true);
+  }
+}`
 
 ### Microservices Used
 *Includes and microservices used*
+
+retrieveuser_course.php
+
+----------------------------------------------------------------------------------------------
 # Name of file/service
 
 ## Description
