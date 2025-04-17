@@ -4649,29 +4649,38 @@ function resizeBoxes(parent, templateId)
 						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
 					}
 				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+				else if (document.getElementById("box5wrapper").offsetHeight <= document.getElementById(parent).offsetHeight * 0.15 && resizeAmount < 0) {
+					const box2 = document.getElementById("box2wrapper");
+					const box3 = document.getElementById("box3wrapper");
+					const parentHeight = document.getElementById(parent).offsetHeight;
+				
+					// If both box5 and 4 are too small only resize box3
+					if (box2.offsetHeight <= parentHeight * 0.15) {
+						box3.style.height = (box3.offsetHeight + resizeAmount) + "px";
 					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					// Else if box 3 and 5 are too small only resize box2
+					else if (box3.offsetHeight <= parentHeight * 0.15) {
+						box2.style.height = (box2.offsetHeight + resizeAmount) + "px";
 					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+					else {
+						box2.style.height = (box2.offsetHeight + resizeAmount / 2) + "px";
+						box3.style.height = (box3.offsetHeight + resizeAmount / 2) + "px";
 					}
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				} else {
+					const box2 = document.getElementById("box2wrapper");
+					const box3 = document.getElementById("box3wrapper");
+					const box5 = document.getElementById("box5wrapper");
+				
+					const delta = resizeAmount / 3;
+				
+					box2.style.height = (box2.offsetHeight + delta) + "px";
+					box3.style.height = (box3.offsetHeight + delta) + "px";
+					box5.style.height = (box5.offsetHeight + delta) + "px";
 				}			
 				
 			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
+			maxHeight: (document.getElementById(parent).offsetHeight * 0.55),
+			minHeight: (document.getElementById(parent).offsetHeight * 0.15),
 			handles:"s",
 			containment: parent
 		});
@@ -4701,35 +4710,35 @@ function saveInitialBoxValues() {
 	setLocalStorageProperties(templateId, boxValArray);
 }
 
-function initResizableBoxValues(parent) {
-	var parentWidth = $(parent).width();
-	var parentHeight = $(parent).height();
-	var boxWidth;
-	var boxHeight;
-	var boxId;
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	var boxValueArray = new Array();
+function initResizableBoxValues(parentId) {
+	const parentEl = document.getElementById(parentId);
+	const parentWidth = parentEl.offsetWidth;
+	const parentHeight = parentEl.offsetHeight;
+	const boxWrapper = document.querySelectorAll("[id ^=box][id $=wrapper]");
+	const numBoxes = boxWrapper.length;
+	
+	const boxValueArray = {};
 	boxValueArray["parent"] = {
-		"id": parent,
+		"id": parentId,
 		"width": parentWidth,
 		"height": parentHeight
 	};
+	for (let i = 1; i <= numBoxes; i++) {
+		const boxEl = document.getElementById("box" + i + "wrapper");
+		if (!boxEl) continue;
 
-	for (var i = 1; i <= numBoxes; i++) {
-		boxWidth = $("#box" + i + "wrapper").width();
-		boxHeight = $("#box" + i + "wrapper").height();
-		boxId = "#box" + i + "wrapper";
 		boxValueArray["box" + i] = {
-			"id": boxId,
-			"width": boxWidth,
-			"height": boxHeight
+			id: "#box" + i + "wrapper",
+			width: boxEl.offsetWidth,
+			height: boxEl.offsetHeight
 		};
 	}
 
-	$(window).resize(function (event) {
-		if (!$(event.target).hasClass('ui-resizable')) {
-			boxValueArray['parent']['height'] = $(parent).height();
-			boxValueArray['parent']['width'] = $(parent).width();
+	// Replace jQuery resize listener
+	window.addEventListener("resize", function (event) {
+		if (!event.target.classList.contains('ui-resizable')) {
+			boxValueArray["parent"].width = parentEl.offsetWidth;
+			boxValueArray["parent"].height = parentEl.offsetHeight;
 		}
 	});
 
