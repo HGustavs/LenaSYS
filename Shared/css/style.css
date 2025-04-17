@@ -944,7 +944,7 @@ p {
 }
 
 #swimlaneSVG text {
-  font-size: 10px;
+  font-size: 1em;
 }
 
 #swimlaneSVG rect:nth-child(n of .progressBar){

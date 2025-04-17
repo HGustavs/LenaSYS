@@ -2382,7 +2382,7 @@ function returnedHighscore(data) {
 }
 
 //----------------------------------------------------------------------------------
-// drawSwimlanes: Draws schedule for deaadlines on all assignments is course
+// drawSwimlanes: Draws schedule for deadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
 function drawSwimlanes() {
@@ -2455,7 +2455,7 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7; 
   
   var colwidth = 60;
-  var weekheight = 25;
+  var weekheight = 50;
 
   var str = "";
   // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.
