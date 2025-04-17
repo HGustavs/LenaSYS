@@ -86,7 +86,8 @@ if (!$query->execute()) {
 if ($makeactive == 3) {
     //set url for setAsActiveCourse.php path
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $ch = curl_init($baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php");
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
+    $ch = curl_init($url);
 
     //options for curl
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
