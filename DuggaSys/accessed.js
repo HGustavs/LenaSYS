@@ -1166,22 +1166,20 @@ function compare(a, b) {
 }
 
 function openArrow(element){
-	var child = $(element).children(".access-dropdown");
-	var arrow = $(child).children("img");
-	$(arrow).css({
-		"-webkit-transform": "rotate(180deg)",
-		"-moz-transform": "rotate(180deg)",
-		"transform": "rotate(180deg)"
-	});
+	var child =  element.querySelector(".access-dropdown");
+	var arrow = child.querySelector("img");
+
+	arrow.style.transform ="rotate(180deg)";
+	arrow.style.webkitTransform = "rotate(180deg)";
+	arrow.style.mozTransform = "rotate(180deg)";
 }
 
 function closeArrow(arrowElement){
-	$(arrowElement).css({
-		"-webkit-transform": "rotate(0deg)",
-		"-moz-transform": "rotate(0deg)",
-		"transform": "rotate(0deg)"
-	});
+	arrowElement.style.transform ="rotate(0deg)";
+	arrowElement.style.webkitTransform = "rotate(0deg)";
+	arrowElement.style.mozTransform = "rotate(0deg)";
 }
+
 function loadUsersToDropdown(id) {
 	$.ajax({
 		url: 'accessedservice.php',
