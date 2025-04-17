@@ -411,16 +411,9 @@ function getLineAttrubutes(f, t, ctype) {
             return [f.cx, f.y2, t.cx, t.y1, offset];
 
         case lineDirection.LEFT:
-
-            offset.x1 = px;
-            offset.x2 = px * 4;
-            result = [f.x1, f.cy, t.x2, t.cy, offset];
-            break;
-
             offset.x1 = -px;          
             offset.x2 = px * 2;       
             return [f.x1, f.cy, t.x2, t.cy, offset];
-
 
         case lineDirection.RIGHT:
             offset.x1 = px;           
