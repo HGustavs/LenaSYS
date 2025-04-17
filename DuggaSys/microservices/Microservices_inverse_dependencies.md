@@ -161,8 +161,10 @@ This is a list of all inverse dependencies of files in the gitCommitService fold
 ### fetchOldToken
 
 ### getCourseID
+No inverse dependencies.
 
 ### insertIntoSQLite
+- gitCommitService/getCourseID_ms.php
 
 ### newUpdateTime
 
