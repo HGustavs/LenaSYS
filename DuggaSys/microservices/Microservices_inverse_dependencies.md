@@ -179,8 +179,10 @@ No inverse dependencies
 This is a list of all inverse dependencies of files in the gitFetchService folder.
 
 ### bfs
+No inverse dependencies.
 
 ### downloadToWebServer
+No inverse dependencies.
 
 ### getGithubURL
 No inverse dependencies
