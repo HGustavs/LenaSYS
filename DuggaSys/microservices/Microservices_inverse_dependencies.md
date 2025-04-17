@@ -181,8 +181,10 @@ This is a list of all inverse dependencies of files in the gitFetchService folde
 ### downloadToWebServer
 
 ### getGithubURL
+No inverse dependencies
 
 ### getIndexFile
+No inverse dependencies
 
 ### insertToFileLink
 
