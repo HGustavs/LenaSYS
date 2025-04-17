@@ -1220,7 +1220,7 @@ function checkIfPopupIsOpen() {
 		return true;
 	}
 	for (let popup of allPopups) {
-		if ($(popup).css("display") !== "none") {
+		if (popup.style.display !== "none") {
 			return true;
 		}
 	}
