@@ -167,8 +167,10 @@ No inverse dependencies
 ### insertIntoSQLite
 
 ### newUpdateTime
+(no inverse dependencies found)
 
 ### refreshCheck
+(no inverse dependencies found)
 
 ### refreshGithubRepo
 
