@@ -205,8 +205,10 @@ No inverse dependencies.
 This is a list of all inverse dependencies of files in the highscoreService folder.
 
 ### highscoreservice
+No inverse dependencies. (Not in use)
 
 ### retrieveHighscoreService
+- ..\highscoreService\highscoreservice_ms.php
 
 ## profileService
 
