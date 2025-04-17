@@ -84,8 +84,6 @@
     		position: relative;
   		}
 
-</style>
-
 	</style>
 
 	<!-- <link type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet"> -->
