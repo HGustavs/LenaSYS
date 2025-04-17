@@ -283,7 +283,7 @@ function returned(data)
 		var boxmenuheight = 0;
 
 		// don't create templatebox if it already exists
-		if ($("#" + contentid).length == 0) {
+		if (document.getElementById(contentid) === null) {
 			addTemplatebox(contentid);
 		}
 
@@ -298,12 +298,12 @@ function returned(data)
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
-			if ($("#" + contentid + "menu").height() == null) {
+			if (document.getElementById(contentid + "menu").offsetHeight == null) {
 				boxmenuheight = 0;
 			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
+				boxmenuheight = document.getElementById(contentid + "menu").offsetHeight;
 			}
-			$("#" + contentid).css("margin-top", boxmenuheight - 1);
+			document.getElementById(contentid).style.marginTop = (boxmenuheight - 1) + "px";
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 
@@ -352,15 +352,15 @@ function returned(data)
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
-			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 			// Make room for the menu by setting padding-top equals to height of menubox
-			if ($("#" + contentid + "menu").height() == null) {
+			if (document.getElementById(contentid + "menu") === null || document.getElementById(contentid + "menu").offsetHeight === 0) {
 				boxmenuheight = 0;
 			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
+				boxmenuheight = document.getElementById(contentid + "menu").offsetHeight;
 			}
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
 
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
@@ -389,24 +389,25 @@ function returned(data)
 				previewLink = previewLink.replace("https://", "http://");
 			}
 
-			$("#box" + boxid).html("<iframe src='" + previewLink + "'></iframe>");
-			if ($("#" + contentid + "menu").height() == null) {
+			document.getElementById("box" + boxid).innerHTML = "<iframe src='" + previewLink + "'></iframe>";
+			if (document.getElementById(contentid + "menu")?.offsetHeight == 0) {
 				boxmenuheight = 0;
 			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
+				boxmenuheight = document.getElementById(contentid + "menu").offsetHeight;
+
 			}
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
 
 		} else if (boxtype == "NOT DEFINED") {
 			if (retData['writeaccess'] == "w") {
 				createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 				// Make room for the menu by setting padding-top equals to height of menubox
-				if ($("#" + contentid + "menu").height() == null) {
+				if (document.getElementById(contentid + "menu").offsetHeight == 0) {
 					boxmenuheight = 0;
 				} else {
-					boxmenuheight = $("#" + contentid + "menu").height();
+					boxmenuheight = document.getElementById(contentid + "menu")?.offsetHeight;
 				}
-				$("#" + contentid).css("margin-top", boxmenuheight);
+				document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
 			}
 		}
 	}
@@ -414,9 +415,11 @@ function returned(data)
 	if (retData['writeaccess'] == "w") {
 		initFileDropZones();
 	} else {
-		$('.codebox').each(function() {
-			$(this).find('*').addClass('unselectable');
-		});
+		document.querySelectorAll('.codebox').forEach(function(element) {
+			element.querySelectorAll('*').forEach(function(child) {
+				child.classList.add('unselectable');
+				});
+			});
 	}
 
 	var ranges = getBlockRanges(allBlocks);
@@ -652,7 +655,7 @@ function editImpWords(editType)
 		}
 		});
 		if (exists == false) {
-			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+			document.getElementById("impwords").innerHTML += '<option>' + word + '</option>';
 			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
@@ -670,8 +673,18 @@ function editImpWords(editType)
 //----------------------------------------------------------------------------------
 
 function displayEditExample() {
-	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
-	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
+	document.getElementById("title").value = (function() {
+		var textarea = document.createElement('textarea');
+		textarea.innerHTML = retData['examplename'];
+		return textarea.value;
+	})();  	  
+	
+	document.getElementById("secttitle").value = (function() {
+		var textarea = document.createElement('textarea');
+		textarea.innerHTML = retData['sectionname'];
+		return textarea.value;
+	})();
+	
 	changeDirectory(document.getElementById("boxcontent"));
 	document.getElementById("playlink").value = retData['playlink'];
 
