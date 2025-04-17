@@ -53,18 +53,15 @@ function deleteCourse() {
 	document.getElementById("overlay").style.display = "none";
 }
 
-async function updateCourse() {
-	var dataCheck = false;
-	var coursename = document.getElementById("coursename").value;
-	var cid = document.getElementById("cid").value;
-	var coursecode = document.getElementById("coursecode").value;
-	var courseGitURL = document.getElementById("editcoursegit-url").value;
-	var visib = document.getElementById("visib").value;
-	var courseid = "C" + cid;
+function updateCourse() {
+	const coursename = document.getElementById("coursename").value;
+	const cid = document.getElementById("cid").value;
+	const coursecode = document.getElementById("coursecode").value;
+	const courseGitURL = document.getElementById("editcoursegit-url").value;
+	const visib = document.getElementById("visib").value;
+	const courseid = "C" + cid;
+	const token = document.getElementById("githubToken").value;
 
-	var token = document.getElementById("githubToken").value;
-
-	//Send information about the git url and possible git token for a course
 	const url = "../DuggaSys/gitcommitService.php";
 	const params = {
 		githubURL: courseGitURL,
@@ -72,24 +69,60 @@ async function updateCourse() {
 		token: token || undefined,
 		action: 'directInsert'
 	};
-	try {
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(params)
+
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(params)
+	})
+		.then(response => {
+			if (!response.ok) {
+				return response.json().then(errorData => {
+					handleError(response.status, errorData);
+					throw new Error('Response not ok');
+				});
+			}
+			// Show dialog
+			document.getElementById("editCourse").style.display = "none";
+
+			// Updates the course (except the course GitHub repo.
+			// Course GitHub repo is updated in the next block of code)
+			document.getElementById("overlay").style.display = "none";
+			AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
+			localStorage.setItem('courseid', courseid);
+			localStorage.setItem('updateCourseName', true);
+
+			const cookieValue = `; ${document.cookie}`;
+			const parts = cookieValue.split(`; ${"missingToken"}=`);
+
+			if (parts[1] != 1) {
+				//Check if courseGitURL has a value
+				if (courseGitURL) {
+					//Check if fetchGitHubRepo returns true
+					if (fetchGitHubRepo(courseGitURL)) {
+						localStorage.setItem('courseGitHubRepo', courseGitURL);
+						//If courseGitURL has a value, display a message stating the update (with github-link) worked
+						toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
+						updateGithubRepo(courseGitURL, cid);
+					}
+					//Else: get error message from the fetchGitHubRepo function.
+
+				} else {
+					localStorage.setItem('courseGitHubRepo', " ");
+					//If courseGitURL has no value, display an update message
+					toast("success", "Course " + coursename + " updated!", 5);
+				}
+			}
+			else {
+				toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
+			}
+		})
+		.catch(error => {
+			console.error("Fetch error:", error);
+			dataCheck = false;
 		});
-		if (!response.ok) {
-			const errorData = await response.json();
-			handleError(response.status, errorData);
-		} else {
-			dataCheck = true;
-		}
-	} catch (error) {
-		console.error('Error:', error);
-		dataCheck = false;
-	}
 	function handleError(status, errorData) {
 		switch (status) {
 			case 403:
@@ -106,44 +139,8 @@ async function updateCourse() {
 		}
 		dataCheck = false;
 	}
-
-	if (dataCheck) {
-		// Show dialog
-		document.getElementById("editCourse").style.display ="none";
-
-		// Updates the course (except the course GitHub repo.
-		// Course GitHub repo is updated in the next block of code)
-		document.getElementById("overlay").style.display = "none";
-		AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
-		localStorage.setItem('courseid', courseid);
-		localStorage.setItem('updateCourseName', true);
-
-		const cookieValue = `; ${document.cookie}`;
-		const parts = cookieValue.split(`; ${"missingToken"}=`);
-
-		if (dataCheck && parts[1] != 1) {
-			//Check if courseGitURL has a value
-			if (courseGitURL) {
-				//Check if fetchGitHubRepo returns true
-				if (fetchGitHubRepo(courseGitURL)) {
-					localStorage.setItem('courseGitHubRepo', courseGitURL);
-					//If courseGitURL has a value, display a message stating the update (with github-link) worked
-					toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
-					updateGithubRepo(courseGitURL, cid);
-				}
-				//Else: get error message from the fetchGitHubRepo function.
-
-			} else {
-				localStorage.setItem('courseGitHubRepo', " ");
-				//If courseGitURL has no value, display an update message
-				toast("success", "Course " + coursename + " updated!", 5);
-			}
-		}
-		else {
-			toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
-		}
-	}
 }
+	
 
 function updateCourseColor(courseid) {
 	document.getElementById(courseid).firstChild.classList.add("highlightChange");
