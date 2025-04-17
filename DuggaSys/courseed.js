@@ -552,169 +552,156 @@ function createVersion() {
 // Renderer
 //----------------------------------------
 
-function returnedCourse(data) {
-	versions = data['versions'];
-	entries = data['entries'];
-	if (data['LastCourseCreated'][0] != undefined) {
-		LastCourseCreated = data['LastCourseCreated'][0]['LastCourseCreatedId'];
-		localStorage.setItem('lastCourseCreatedId', LastCourseCreated);
+	function returnedCourse(data) {
+		versions = data['versions'];
+		entries = data['entries'];
+		if (data['LastCourseCreated'][0] != undefined) {
+			LastCourseCreated = data['LastCourseCreated'][0]['LastCourseCreatedId'];
+			localStorage.setItem('lastCourseCreatedId', LastCourseCreated);
 
-	}
+		}
 
-	var uname = document.getElementById('userName').innerHTML;
+		var uname = document.getElementById('userName').innerHTML;
 
-	// Fill section list with information
-	str = "";
-
-
-
-	// Course Name
-	str += "<div id='Courselistc' style='margin:60px auto;'>";
-
-	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
-	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS' target='_blank'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div id='CourseOrgSys'> Course Organization System</div>"
-	if (data['writeaccess']) {
-		str += "<img alt='settings icon' tabindex='0' class='whiteIcon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
-	}
-	str += "</div>";
-	// For now we only have two kinds of sections
-	if (data['entries'].length > 0) {
-		for (i = 0; i < data['entries'].length; i++) {
-			var item = data['entries'][i];
-			// Do not show courses the user does not have access to.
-			if (!data['writeaccess'] && !item['registered'] && uname != "Guest" && uname)
-				continue;
-
-			str += `<div class='bigg item nowrap' style='display: flex; align-items: center; justify-content: center;' id='C${item['cid']}' data-code='${item['coursecode']}'>`;
-
-			var textStyle = "";
-			if (parseInt(item['visibility']) == 0) {
-				textStyle += "hidden";
-			} else if (parseInt(item['visibility']) == 2) {
-				textStyle += "login";
-			} else if (parseInt(item['visibility']) == 3) {
-				textStyle += "deleted";
-			} else textStyle += "courseed";
-
-			var courseString = item['coursename'];
-			var courseBegin = "";
-			var courseEnd = "";
-			var courseSplitIndex = courseString.lastIndexOf(" ");
-			if (courseSplitIndex > 0) { // There is a space in the course name
-				courseBegin = courseString.substr(0, courseSplitIndex);
-				courseEnd = courseString.substr(courseSplitIndex);
-			} else { // No space in course name, so just split the name in half *chop chop*
-				courseSplitIndex = parseInt(courseString.length / 2);
-				courseBegin = courseString.substr(0, courseSplitIndex);
-				courseEnd = courseString.substr(courseSplitIndex);
-			}
-
-			if (data['writeaccess']) {
-				str += "<div class='ellipsis' style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
-				str += "<span style='margin-bottom: 0px'>";
-
-				str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+		// Fill section list with information
+		str = "";
 
 
-				str += "</span>";
-			} else {
-				str += "<div class='ellipsis'>";
 
-				if (item['registered'] == true || uname == "Guest") {
-					str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + item['coursename'] + "</a></span>";
+		// Course Name
+		str += "<div id='Courselistc' style='margin:60px auto;'>";
+
+		// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
+		str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS' target='_blank'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div id='CourseOrgSys'> Course Organization System</div>"
+		if (data['writeaccess']) {
+			str += "<img alt='settings icon' tabindex='0' class='whiteIcon' style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
+		}
+		str += "</div>";
+		// For now we only have two kinds of sections
+		if (data['entries'].length > 0) {
+			for (i = 0; i < data['entries'].length; i++) {
+				var item = data['entries'][i];
+				// Do not show courses the user does not have access to.
+				if (!data['writeaccess'] && !item['registered'] && uname != "Guest" && uname)
+					continue;
+
+				str += `<div class='bigg item nowrap' style='display: flex; align-items: center; justify-content: center;' id='C${item['cid']}' data-code='${item['coursecode']}'>`;
+
+				var textStyle = "";
+				if (parseInt(item['visibility']) == 0) {
+					textStyle += "hidden";
+				} else if (parseInt(item['visibility']) == 2) {
+					textStyle += "login";
+				} else if (parseInt(item['visibility']) == 3) {
+					textStyle += "deleted";
+				} else textStyle += "courseed";
+
+				var courseString = item['coursename'];
+				var courseBegin = "";
+				var courseEnd = "";
+				var courseSplitIndex = courseString.lastIndexOf(" ");
+				if (courseSplitIndex > 0) { // There is a space in the course name
+					courseBegin = courseString.substr(0, courseSplitIndex);
+					courseEnd = courseString.substr(courseSplitIndex);
+				} else { // No space in course name, so just split the name in half *chop chop*
+					courseSplitIndex = parseInt(courseString.length / 2);
+					courseBegin = courseString.substr(0, courseSplitIndex);
+					courseEnd = courseString.substr(courseSplitIndex);
+				}
+
+				if (data['writeaccess']) {
+					str += "<div class='ellipsis' style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
+					str += "<span style='margin-bottom: 0px'>";
+
+					str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+
+
+					str += "</span>";
 				} else {
-					str += "<a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "] '>" + item['coursename'] + "</a></span>";
+					str += "<div class='ellipsis'>";
+
+					if (item['registered'] == true || uname == "Guest") {
+						str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + item['coursename'] + "</a></span>";
+					} else {
+						str += "<a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "] '>" + item['coursename'] + "</a></span>";
+					}
+
+					str += "</div>";
 				}
 
 				str += "</div>";
 			}
-
+		} else {
+			// No items were returned!
+			str += "<div class='bigg'>";
+			str += "<span>There are no courses available at this point in time.</span>";
 			str += "</div>";
 		}
-	} else {
-		// No items were returned!
-		str += "<div class='bigg'>";
-		str += "<span>There are no courses available at this point in time.</span>";
+
 		str += "</div>";
-	}
+		// Add React component container for FAB button
+		if (data['writeaccess']) {
+			str += "<div style='float:right;' id='fab-button-container'></div>";
+		}
+		var slist = document.getElementById('Courselist');
+		slist.innerHTML = str;
 
-	str += "</div>";
-	// Add React component container for FAB button
-	if (data['writeaccess']) {
-		str += "<div style='float:right;' id='fab-button-container'></div>";
-	}
-	var slist = document.getElementById('Courselist');
-	slist.innerHTML = str;
-
-	if (data['debug'] != "NONE!") {
-		alert(data['debug']);
-	}
-
-	motd = data["motd"];
-	readonly = parseInt(data["readonly"]);
-
-	if (motd !== "UNK") {
-		document.getElementById("servermsg").innerHTML = data["motd"];
-		if (sessionStorage.getItem('show') == 'false') {
-			document.getElementById("servermsgcontainer").style.display = "none";
-			document.getElementById("motdNav").style.display = "inline-block";
-		} else {
-			document.getElementById("servermsgcontainer").style.display = "flex";
-			document.getElementById("motdNav").style.display = "none";
+		if (data['debug'] != "NONE!") {
+			alert(data['debug']);
 		}
 
+		motd = data["motd"];
+		readonly = parseInt(data["readonly"]);
+
+		if (motd !== "UNK") {
+			document.getElementById("servermsg").innerHTML = data["motd"];
+			if (sessionStorage.getItem('show') == 'false') {
+				document.getElementById("servermsgcontainer").style.display = "none";
+				document.getElementById("motdNav").style.display = "inline-block";
+			} else {
+				document.getElementById("servermsgcontainer").style.display = "flex";
+				document.getElementById("motdNav").style.display = "none";
+			}
+
+		}
+
+		resetinputs();
+		//resets all inputs
+
+		//After all courses have been created and added to the list the course code can be accessed from each course element and pushed to array
+		setActiveCodes();
+		
+		// Render the React FAB component if the user has write access
+		if (data['writeaccess'] && document.getElementById('fab-button-container')) {
+			// Import React and ReactDOM
+			import('https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js')
+				.then(() => import('https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'))
+				.then(() => {
+					// Load the FabButton component from the shared components directory
+					const scriptElement = document.createElement('script');
+					scriptElement.src = '../Shared/components/FabButton.js';
+					scriptElement.type = 'text/javascript';
+					document.head.appendChild(scriptElement);
+					
+					scriptElement.onload = () => {
+						// Once the FabButton component is loaded, render it
+						const fabContainer = document.getElementById('fab-button-container');
+						ReactDOM.render(React.createElement(window.FabButton), fabContainer);
+					};
+				})
+				.catch(error => {
+					console.error('Error loading React or FabButton component:', error);
+					// Fallback to traditional HTML if React loading fails
+					const fabContainer = document.getElementById('fab-button-container');
+					fabContainer.innerHTML = `
+						<div class='fixed-action-button extra-margin'>
+							<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>
+						</div>
+					`;
+				});
+		}
 	}
-
-	resetinputs();
-	//resets all inputs
-
-	//After all courses have been created and added to the list the course code can be accessed from each course element and pushed to array
-	setActiveCodes();
 	
-	// Render the React FAB component if the user has write access
-	if (data['writeaccess'] && document.getElementById('fab-button-container')) {
-		// Import React and ReactDOM
-		import('https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js')
-			.then(() => import('https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'))
-			.then(() => {
-				// Create a container for the FAB button component
-				const fabContainer = document.getElementById('fab-button-container');
-				
-				// Define the FabButton component
-				const FabButton = () => {
-					return React.createElement('div', { className: 'fixed-action-button extra-margin' },
-						React.createElement('a', {
-							className: 'btn-floating fab-btn-lg noselect',
-							onClick: () => window.newCourse(),
-							onKeyDown: (e) => {
-								if (e.key === 'Enter' || e.key === ' ') {
-									e.preventDefault();
-									window.newCourse();
-								}
-							},
-							tabIndex: '0',
-							role: 'button',
-							'aria-label': 'Add new course'
-						}, '+')
-					);
-				};
-				
-				// Render the React component into the container
-				ReactDOM.render(React.createElement(FabButton), fabContainer);
-			})
-			.catch(error => {
-				console.error('Error loading React:', error);
-				// Fallback to traditional HTML if React loading fails
-				const fabContainer = document.getElementById('fab-button-container');
-				fabContainer.innerHTML = `
-					<div class='fixed-action-button extra-margin'>
-						<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()' tabindex='0'>+</a>
-					</div>
-				`;
-			});
-	}
-}
-
 /* Used to enable using list entries with ' */
 function htmlFix(text) {
 	var map = {
