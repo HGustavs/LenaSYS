@@ -541,6 +541,292 @@ action- updateGithubRepo
 -----------------------------------------------------------------------------------------------------------------------------------
 # Name of file/service
 
+sectioned.js
+Function refreshGithubRepo
+
+## Description
+*Description of what the service do and its function in the system.*
+
+ It sends a POST request to gitcommitService.php with the course ID and user to retrieve the latest Git data. 
+ Returns true on success, false on failure.
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+
+| :courseid | :string | :ID of the course whose GitHub data is refreshed |
+| :user | :string | :The current user triggering refresh |
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+
+| :data | :string | :"No repo" triggers popup |
+| :status | :int | :Used for error handling |
+| :success | :bool | :Returns true or false via dataCheck |
+
+## Examples of Use
+`function refreshGithubRepo(courseid, user) {
+  //Used to return success(true) or error(false) to the calling function
+  var dataCheck;
+  $.ajax({
+    async: false,
+    url: "../DuggaSys/gitcommitService.php",
+    type: "POST",
+    data: { 'cid': courseid, 'user': user, 'action': 'refreshGithubRepo' },
+    success: function (data) {
+      if (data == "No repo") {
+        $("#githubPopupWindow").css("display", "flex");
+      }
+      else {
+        toast("",data,7);
+      }
+      dataCheck = true;
+    },
+    error: function (data) {
+      //Check gitfetchService for the meaning of the error code.
+      switch (data.status) {
+        case 403:
+        case 422:
+          toast("error",data.responseJSON.message + "\nDid not update course",7);
+          break;
+        case 503:
+          toast("error",data.responseJSON.message + "\nDid not update course",7);
+          break;
+        default:
+          toast("error","Something went wrong...",7);
+      }
+      dataCheck = false;
+    }
+  });
+  return dataCheck;
+}`
+
+### Microservices Used
+*Includes and microservices used*
+
+gitcommitService.php
+action- refreshGithubRepo
+
+-------------------------------------------------------------------------------
+
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in tables for easier readability*
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| $exampleid | string | Example ID Description |
+
+## Calling Methods
+
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in tables for easier readability*
+
+| Output | Type | Description |
+| :--- | :--- | :--- |
+| exampleid | string | Example ID Description |
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+*Includes and microservices used*
+# Name of file/service
+
 ## Description
 *Description of what the service do and its function in the system.*
 
