@@ -157,8 +157,10 @@ No inverse dependencies.
 This is a list of all inverse dependencies of files in the gitCommitService folder.
 
 ### clearGitFiles
+[refreshGithubRepo_ms.php](GitCommitService/refreshGithubRepo_ms.php)
 
 ### fetchOldToken
+No inverse dependencies
 
 ### getCourseID
 
