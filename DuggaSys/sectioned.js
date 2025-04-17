@@ -31,6 +31,7 @@ var isLoggedIn = false;
 var inputColorTheme;
 let showHidden = true;
 let count = 0;
+let retrievedItemType;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -654,11 +655,14 @@ function showSaveButton() {
 
 // Displaying and hiding the dynamic confirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
+
   if (operation == "openConfirmBox") {
+    retrievedItemType = item ? $(item).parents('tr').attr('value') : null;
+    console.log('(configuration box) itemType: ' + retrievedItemType );
+
     active_lid = item ? $(item).parents('table').attr('value') : null;
-    console.log('handling of one item?');
+
     console.log('active lid: ' + active_lid)
-    //$("#sectionConfirmBox").css("display", "flex");
     document.getElementById("sectionConfirmBox").style.display = "flex";
   } 
   else if (operation == "openHideConfirmBox") {
@@ -677,11 +681,19 @@ function confirmBox(operation, item = null) {
   } 
   else if (operation == "deleteItem") {
     //if done via trashcan (no selections)
+    
     if (selectedItemList == 0){
-      console.log('activeLid (one): ' + active_lid);
-      selectedItemList.push(active_lid); // mark the "attached" item as selected
-      console.log('selectedItemList: ' + selectedItemList);
+      console.log('gets here')
+      if (retrievedItemType == "section"){
+        console.log('registered section trash - not handled atm.')
+        // should then not delete yet, but select all.
+      }
+      else if (retrievedItemType != "section"){
+        console.log('registered general trash')
+        selectedItemList.push(active_lid); // mark the "attached" item as selected
+      }
     }
+
     // for debugging purposes (since selection already works)
     else{
       console.log('selectedItemList: ' + selectedItemList); 
@@ -2011,21 +2023,22 @@ function returnedSection(data) {
           // str += "onclick='console.log(\"RefreshButton Clicked!\");'"
         }
         
-        // Trashcan -> opens poppup.
+        // Trashcan for items
         if (itemKind !== 0 && itemKind !== 1 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Trashcan Clicked!\");'>`;
+          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"General trashcan clicked!\"  + this); confirmBox(\"openConfirmBox\", this); '>`;
           str += "</td>";  
           //onclick='confirmBox(\"openConfirmBox\", this);'>`
         }
-
+        
+        // Trashcan for sections
         if (itemKind === 1 && data['writeaccess'] || data['studentteacher']){
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Trashcan Clicked from item kind 1!\");'>`;
+          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Section trashcan clicked!\" + this); confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
 
         }
