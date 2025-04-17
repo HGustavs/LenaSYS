@@ -289,12 +289,12 @@ function tooltipFirst() {
 	let fname = document.getElementById('addFirstname').value;
 	let error = validateName(fname);
 
-	if(error && fname.length > 0) {		// Error, fade in tooltip
+	if (error && fname.length > 0) { 		// Error, show tooltip
 		document.getElementById('tooltipFirst').innerHTML = error;
-		$('#tooltipFirst').fadeIn();
+		document.getElementById('tooltipFirst').style.display = 'block';
 		fnameInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
-		$('#tooltipFirst').fadeOut();
+	} else { 	// No error, hide tooltip
+		document.getElementById('tooltipFirst').style.display = 'none';
 		fnameInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -305,12 +305,12 @@ function tooltipLast() {
 	let lname = document.getElementById('addLastname').value;
 	let error = validateName(lname);
 
-	if(error && lname.length > 0) {		// Error, fade in tooltip
+	if(error && lname.length > 0) {		// Error, show tooltip
 		document.getElementById('tooltipLast').innerHTML = error;
-		$('#tooltipLast').fadeIn();
+		document.getElementById('tooltipLast').style.display = 'block';
 		lnameInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
-		$('#tooltipLast').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipLast').style.display = 'none';
 		lnameInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -345,12 +345,12 @@ function tooltipEmail() {
 	let email = document.getElementById('addEmail').value;
 	let error = validateEmail(email);
 
-	if(error && email.length > 0) {	// Error, fade in tooltip
+	if(error && email.length > 0) {	// Error, show tooltip
 		document.getElementById('tooltipEmail').innerHTML = error;
-		$('#tooltipEmail').fadeIn();
+		document.getElementById('tooltipEmail').style.display = 'block';
 		emailInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {															// No error, fade out tooltip
-		$('#tooltipEmail').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipEmail').style.display = 'none';
 		emailInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -370,12 +370,12 @@ function tooltipTerm(element) {
 	let termInputBox = element;
 	let term = element.value;
 
-	if(error && term.length > 0) {	// Error, fade in tooltip
+	if(error && term.length > 0) {	// Error, show tooltip
 		document.getElementById('tooltipTerm').innerHTML = error;
-		$('#tooltipTerm').fadeIn();
+		document.getElementById('tooltipTerm').style.display = 'block';
 		termInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
-		$('#tooltipTerm').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipTerm').style.display = 'none';
 		termInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
