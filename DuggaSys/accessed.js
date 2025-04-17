@@ -386,14 +386,14 @@ function addClass() {
 	inputVerified = true;
 	document.getElementById("classErrorText").innerHTML = "";
 	var newClass = new Array();
-	newClass.push(verifyClassInput($("#addClass"), null, ""));
-	newClass.push(verifyClassInput($("#addResponsible"), null, ""));
-	newClass.push(verifyClassInput($("#addClassname"), null, ""));
-	newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
-	newClass.push(verifyClassInput($("#addClasscode"), null, ""));
-	newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
-	newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
-	newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
+	newClass.push(verifyClassInput(document.getElementById("addClass"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addResponsible"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addClassname"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addRegcode"), /^[0-9]*$/, "number"));
+	newClass.push(verifyClassInput(document.getElementById("addClasscode"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addHp"), /^[0-9.]*$/, "(decimal) number"));
+	newClass.push(verifyClassInput(document.getElementById("addTempo"), /^[0-9]*$/, "number"));
+	newClass.push(verifyClassInput(document.getElementById("addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
 
 	if (inputVerified) {
 		var outerArr = new Array();
