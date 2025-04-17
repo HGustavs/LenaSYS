@@ -774,7 +774,7 @@
 }
 .zoomToolTipText {
     bottom: 40px;
-    right: 0%;
+    left:0%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
@@ -784,7 +784,7 @@
     padding: 5px 0;
     pointer-events: none;
     position: absolute;
-    z-index: 20;
+    z-index:20;
 }
 
 
