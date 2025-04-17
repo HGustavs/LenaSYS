@@ -5,8 +5,9 @@ include_once "./parameterQuery.php";
 include_once "./descriptionSearch.php";
 include_once "./directoryRendering.php";
 
+// Not needed anymore
+/*
 $results = null;
-
 if(isset($_GET['name'])){
     $name = $_GET['name'];
     //get list of courses with matching name
@@ -37,7 +38,7 @@ else{
 if($results != null){
     render($results);
 }
-
+*/
 
 
 
