@@ -61,6 +61,10 @@ When you have installed your Docker desktop, then you can run Docker containers,
 
 12. To install the LenaSYS, you need to follow instruction [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
 
+### Using linux or mac?
+Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
+After changing the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
+
 ## Stop containers in Docker
 
 1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait all three containers says stopped. NOTE: If your terminal says all three are stopped, but not appear your username in your terminal, then press the up- or down-arrow keys to show your username.
@@ -88,7 +92,3 @@ When you have installed your Docker desktop, then you can run Docker containers,
 ## Stop running or pause Docker desktop
 1. To stop running or pause Docker desktop need to open Docker desktop and either you can press `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Now your Docker desktop is paused or stopped.
 ![Stop or pause docker desktop](stopdocker.png "Stop or pause docker desktop")
-
-### Using linux or mac?
-Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
-After changing the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
