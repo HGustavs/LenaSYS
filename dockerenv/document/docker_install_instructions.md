@@ -85,6 +85,10 @@ When you have installed your Docker desktop, then you can run Docker containers,
 5. To remove all images to free upp space, you need to press images in Docker desktop and select all checkboxes. When all selected, then press `Delete`-button and it will show a pop-upp if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
 ![Remove images in docker desktop](dockerimages.png "Remove images in docker desktop")
 
+## Stop running or pause Docker desktop
+1. To stop running or pause Docker desktop need to open Docker desktop and either you can press `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Now your Docker desktop is paused or stopped.
+![Stop or pause docker desktop](stopdocker.png "Stop or pause docker desktop")
+
 ### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
 After changing the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
