@@ -1059,34 +1059,89 @@ retrieveuser_course.php
 ----------------------------------------------------------------------------------------------
 # Name of file/service
 
+sectioned.js
+Function: retrieveAnnouncementsCards
+
 ## Description
 *Description of what the service do and its function in the system.*
+
+This function retrives and displays announcements relevant to a user for a given course and version.
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+
+| :uname | :string | :The username retreived from the HTML element |
+| :cid | :string | :Course ID from the URL |
+| :versid | :string | :Course version from the URL |
 
 ## Calling Methods
-
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :retrivedAnnouncementCard | :HTML | :HTML for announcement cads |
+| :nRows | :number | :Number of unread announcements |
+| :uid | :string | :User ID retrieved from first request |
 
 ## Examples of Use
-`CODE`
+`function retrieveAnnouncementsCards() {
+  var currentLocation = $(location).attr('href');
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+  var uname = $("#userName").html();
+  $.ajax({
+    url: "../Shared/retrieveUserid.php",
+    data: { uname: uname },
+    type: "GET",
+    success: function (data) {
+      var parsed_data = JSON.parse(data);
+      var uid = parsed_data.uid;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var parsed_data = JSON.parse(this.response);
+          document.getElementById("announcementCards").innerHTML =
+            parsed_data.retrievedAnnouncementCard;
+          var unread_announcements = parsed_data.nRows;
+          if (unread_announcements > 0) {
+            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            $("#announcementnotificationcount").html(parsed_data.nRows);
+          }
+          accessAdminAction();
+          var paragraph = "announcementMsgParagraph";
+          readLessOrMore(paragraph);
+          showLessOrMoreAnnouncements();
+          scrollToTheAnnnouncementForm();
+          $(".deleteBtn").click(function () {
+            sessionStorage.setItem('closeUpdateForm', true);
+
+          });
+
+        }
+      };
+      xmlhttp.open("GET", "../Shared/retrieveAnnouncements.php?cid=" + cid +
+        "&versid=" + versid + "&recipient=" + uid, true);
+      xmlhttp.send();
+    }
+  });
+}`
 
 ### Microservices Used
 *Includes and microservices used*
+
+retrieveUserid.php
+Used to get the user ID based on a username.
+
+retrieveAnnouncements.php
+Fetches announcements for a given user in a specific course version.
+
+--------------------------------------------------------------------------------------
 # Name of file/service
 
 ## Description
