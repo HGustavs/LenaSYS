@@ -910,34 +910,80 @@ Returns a list of course version IDs based on the provided cid
 -----------------------------------------------------------------------------------------------------
 # Name of file/service
 
+sectioned.js
+Function: retreieveCourseProfile
+
 ## Description
 *Description of what the service do and its function in the system.*
+
+Fetches all course versions for a given course ID (cid)
+Returns a JSON object with versids, which are appended to a dropdown
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+
+| :userid | :string | :User ID used when fetching students |
 
 ## Calling Methods
-
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :versids | :array | :Array of course version objects with a versid field |
+| :error | :string | :Message if AJAX call fails |
 
 ## Examples of Use
-`CODE`
+`function retrieveCourseProfile(userid) {
+  $(".selectLabels label input").attr("disabled", true);
+  var cid = '';
+  $("#cid").change(function () {
+    cid = $("#cid").val();
+    if (($("#cid").val()) != '') {
+      $("#versid").prop("disabled", false);
+      $.ajax({
+        url: "../Shared/retrievevers.php",
+        data: { cid: cid },
+        type: "POST",
+        success: function (data) {
+          var item = JSON.parse(data);
+          $("#versid").find('*').not(':first').remove();
+          $.each(item.versids, function (index, item) {
+            $("#versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
+          });
+
+        },
+        error: function () {
+          console.log("*******Error*******");
+        }
+      });
+
+    } else {
+      $("#versid").prop("disabled", true);
+    }
+
+  });
+  if (($("#versid option").length) <= 2) {
+    $("#versid").click(function () {
+      getStudents(cid, userid);
+    });
+  } else if (($("#versid option").length) > 2) {
+    $("#versid").change(function () {
+      getStudents(cid, userid);
+    });
+  }
+}`
 
 ### Microservices Used
 *Includes and microservices used*
+
+retrievevers.php
+
+----------------------------------------------------------------------------------------------
 # Name of file/service
 
 ## Description
