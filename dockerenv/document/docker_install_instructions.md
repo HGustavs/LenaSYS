@@ -2,19 +2,19 @@
 
 1. Press this link: [docker desktop](https://www.docker.com/products/docker-desktop/).
 
-2. In the Docker website press "chosse plan"-button.
+2. In the Docker website press `Chosse plan`-button.
 ![Docker homepage](homepage.png "Docker homepage")
 
 3. Chosse Docker Personal.
 ![Choose plan](choosePlan.png "Choose plan")
 
-4. Press "Continue with GitHub"-button.
+4. Press `Continue with GitHub`-button.
 ![Press continue github account](createAccount.png "continue github account")
 
 5. Sign in with your school-email and password.
 ![Sign in github](github.png "Sign in github")
 
-6. Now you are in Docker Home and press the "Go to download"-button. 
+6. Now you are in Docker Home and press the `Go to download`-button. 
 ![Docker Home](docker_home.png "Docker Home")
 
 7. Select which operating software (OS) that you are using.
@@ -22,7 +22,7 @@
 
 8. When you have selected OS and installed your OS, then open a Docker desktop program/app.
 
-9. Congratulations, now you have installed the Docker desktop! 
+9. Congratulations, now you have installed the Docker desktop and sign in your GitHub account if account doesn't appear in Docker desktop! 
 ![Docker desktop](dockerDesktop.png "Docker desktop")
 
 
