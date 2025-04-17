@@ -454,6 +454,26 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart) {
         y -= offsetOnLine / 2;
     }
 
+
+    if(line.kind === lineKind.RECURSIVE){
+        console.log("line.kind == lineKind.RECURSIVE")
+        if(labelStr == "startLabel"){
+            console.log("line.labelStr === startLabel")
+            x -= 9 + zoomfact;
+            y += 63 + zoomfact;
+
+        }else if(labelStr == "endLabel"){
+            console.log("line.labelStr === endLabel")
+            x += 30 + zoomfact;
+            y += 98 + zoomfact;
+        } else {
+            console.log("line.labelStr != startLabel")
+            console.log("line.labelStr != endLabel")
+        }
+    }else {
+        console.log("line.kind != lineKind.RECURSIVE");
+    }
+
     return `<rect 
                 class='text cardinalityLabel' 
                 id='${line.id + labelStr}' 
