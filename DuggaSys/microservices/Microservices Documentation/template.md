@@ -6,11 +6,15 @@ Example of template for the documentation:
 *Description of what the service do and its function in the system.*
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+*Parameters will be described in lists*
 
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+- Parameter
+   - Type
+   - Description
+
+- Parameter
+   - Type
+   - Description
 
 ## Calling Methods
 
@@ -19,11 +23,15 @@ Example of template for the documentation:
 - etc.
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
+*Output Data will be described in lists*
 
-| Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+- Output
+   - Type
+   - Description
+
+- Output
+   - Type
+   - Description
 
 ## Examples of Use
 `CODE`
