@@ -273,8 +273,33 @@ No inverse dependencies.
 No inverse dependencies.
 
 ### retrieveAllCourseVersions
+No inverse dependencies.
 
 ### retrieveSectionedService
+\sectionedService\changeActiveCourseVersion_sectioned_ms.php
+\sectionedService\createGithubCodeExample_ms.php
+\sectionedService\createListEntry_ms.php
+\sectionedService\deleteListEntries_ms.php
+\sectionedService\getCourseGroupsAndMembers_ms.php
+\sectionedService\getDeletedListEntries_ms.php
+\sectionedService\getGroupValues_ms.php
+\sectionedService\getListEntries_ms.php
+\sectionedService\getUserDuggaFeedback_ms.php
+\sectionedService\readCourseGroupsAndMembers_ms.php
+\sectionedService\readGroupValues_ms.php
+\sectionedService\readUserDuggaFeedback_ms.php
+\sectionedService\removeListEntries_ms.php
+\sectionedService\reorderListEntries_ms.php
+\sectionedService\retrieveAllCourseVersions_ms.php
+\sectionedService\setVisibleListentries_ms.php
+\sectionedService\updateActiveCourseVersion_sectioned_ms.php
+\sectionedService\updateCourseVersion_sectioned_ms.php
+\sectionedService\updateListEntries_ms.php
+\sectionedService\updateListEntriesGradesystem_ms.php
+\sectionedService\updateListEntriesTabs_ms.php
+\sectionedService\updateListEntryOrder_ms.php
+\sectionedService\updateQuizDeadline_ms.php
+\sectionedService\updateVisibleListEntries_ms.php
 
 ### setVisibleListentries
 (no inverse dependencies found)
