@@ -61,6 +61,26 @@ When you have installed your Docker desktop, then you can run Docker containers,
 
 12. To install the LenaSYS, you need to follow instruction [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
 
+## Stop containers in Docker
+
+1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait all three containers says stopped. NOTE: If your terminal says all three are stopped, but not appear your username in your terminal, then press the up- or down-arrow keys to show your username.
+![Turn off containers](terminal6.png "Turn off containers") 
+
+2. If you go back to Docker desktop and go to containers, and here you can see three containers are not running, because there are no green-circles. Now containers are not running.
+![Not running containers](containersdeactive.png "Not running containers") 
+
+## Remove containers in Docker
+
+1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
+
+2. After that run the command: `docker-compose down` in the terminal.
+![Not running containers](terminal7.png "Not running containers")
+
+3. Now your terminal says removed which means containers are removed.
+![Removed containers](terminal8.png "Removed containers") 
+
+4. You can check in Docker desktop and press containers. Here you can see that all containers are gone and now you have successful removed all containers.
+![Removed containers in docker desktop](dockerContainers2.png "Removed containers in docker desktop")
 
 ### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
