@@ -688,36 +688,71 @@ action- directInsert
 
 # Name of file/service
 
+sectioned.js
+Function: fetchGitHubRepo
+
 ## Description
 *Description of what the service do and its function in the system.*
+
+Fetch contents of the GitHub repo by using action getNewCourseGitHub, returns true if request successful, false if otherwise. Used to fetch the content of a GitHub repo and validate it before attaching it to a course.
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
 
-| :--- | :--- | :--- |
-| :--- | :--- | :--- |
-| :--- | :--- | :--- |
+| :githubURL | :string | :GitHub repository URL to be validated |
 
 ## Calling Methods
-
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :status code | :int | :HTTP response status, error handling |
+| :message | :string | :Error message |
+| :success | :bool | :true if GitHub repo is valid, false if error occurs |
 
 ## Examples of Use
-`CODE`
+`function fetchGitHubRepo(gitHubURL) {
+  //Remove .git, if it exists
+  regexURL = gitHubURL.replace(/.git$/, "");
+  //Used to return success(true) or error(false) to the calling function
+  var dataCheck;
+  $.ajax({
+    async: false,
+    url: "gitfetchService.php",
+    type: "POST",
+    data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' },
+    success: function () {
+      //Returns true if the data and JSON is correct
+      dataCheck = true;
+    },
+    error: function (data) {
+      //Check FetchGithubRepo for the meaning of the error code.
+      switch (data.status) {
+        case 422:
+        case 503:
+          toast("error",data.responseJSON.message + "\nDid not update course, double check github link?",7);
+          break;
+        default:
+          toast("error","Something went wrong...",7);
+      }
+      dataCheck = false;
+    }
+  });
+  return dataCheck;
+}`
 
 ### Microservices Used
 *Includes and microservices used*
+
+gitfetchService.php
+action- getNewCourseGitHub
+
+-----------------------------------------------------------------------------------------------
 # Name of file/service
 
 ## Description
