@@ -2021,6 +2021,29 @@ function returnedSection(data) {
 
     var slist = document.getElementById('Sectionlisti');
     slist.innerHTML = str;
+    
+    // Add drag and drop support for .courseRow
+    let draggedItem = null;
+    document.querySelectorAll('.courseRow').forEach(row => {
+    row.setAttribute('draggable', 'true');
+
+    row.addEventListener('dragstart', e => {
+    draggedItem = row;
+    row.style.opacity = '0.5';
+    });
+
+    row.addEventListener('dragend', e => {
+      row.style.opacity = '';
+    });
+
+    row.addEventListener('dragover', e => {
+      e.preventDefault();
+    });
+
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+    });
+    });
 
 
     //Creates ordered array of "rows"
