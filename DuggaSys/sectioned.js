@@ -2008,15 +2008,26 @@ function returnedSection(data) {
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
+          // str += "onclick='console.log(\"RefreshButton Clicked!\");'"
         }
         
         // Trashcan -> opens poppup.
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind !== 0 && itemKind !== 1 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Trashcan Clicked!\");'>`;
+          str += "</td>";  
+          //onclick='confirmBox(\"openConfirmBox\", this);'>`
+        }
+
+        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']){
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Trashcan Clicked from item kind 1!\");'>`;
           str += "</td>";
+
         }
 
         // Checkbox
