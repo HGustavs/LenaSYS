@@ -1627,15 +1627,23 @@ function addSecurityQuestionProfile(username) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
-				document.getElementById("#challengeQuestion").innerHTML(result['ls-security-question']);
+				document.getElementById("#challengeQuestion").innerHTML=result['ls-security-question'];
 			}else{
 				if(typeof result.reason != "undefined") {
-					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").innerHTML("<div class='alert danger'>" + result.reason + "</div>");
+					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").forEach(function(){
+						innerHTML="<div class='alert danger'>" + result.reason + "</div>"
+					});
 				} else {
-					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").innerHTML("<div class='alert danger'>" + result['getname']  + "</div>");
+					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").forEach(function(){
+						innerHTML="<div class='alert danger'>" + result['getname']  + "</div>"
+					});
 				}
-				document.querySelectorAll("#changeChallengeQuestion #challengeQuestion").style.backgroundColor="rgba(255, 0, 6, 0.2)";
-				document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").style.color="rgba(255, 0, 6, 0.8)";
+				document.querySelectorAll("#changeChallengeQuestion #challengeQuestion").forEach(function(){
+					style.backgroundColor="rgba(255, 0, 6, 0.2)"
+				});
+				document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").forEach(function(){
+					style.color="rgba(255, 0, 6, 0.8)"
+				});
 			}
 		}
 	});
@@ -1648,7 +1656,7 @@ function checkHTTPS() {
 
 function processResetPasswordCheckUsername() {
 	//Gets the security question from the database
-	var username = $("#usernamereset").val();
+	var username = document.querySelector("#usernamereset").value=this.value;
 
 	$.ajax({
 		type:"POST",
@@ -1661,7 +1669,7 @@ function processResetPasswordCheckUsername() {
 			var result = JSON.parse(data);
 				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
-				$("#showsecurityquestion #displaysecurityquestion").html(result['ls-security-question']);
+				document.querySelectorAll("#showsecurityquestion #displaysecurityquestion").innerHTML=result['ls-security-question'];
 				status = 2;
 				toggleloginnewpass();
 			}else if(result['getname'] == "limit"){
@@ -1673,22 +1681,23 @@ function processResetPasswordCheckUsername() {
 		 else if(result['getname'] == "revoked"){
 			displayAlertText("#newpassword #message2", "Permission revoked");
 		 } else{
-
 				if(typeof result.reason != "undefined") {
           displayAlertText("#newpassword #message2", result.reason);
 				} else {
           displayAlertText("#newpassword #message2", result['getname']);
 				}
-				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-			}
+				document.querySelectorAll("#newpassword #username").forEach(function(){
+					document.style.backgroundColor="rgba(255, 0, 6, 0.2)";
+				});
+		}
 		}
 	});
 }
 
 function processResetPasswordCheckSecurityAnswer() {
   //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-  var username = $("#usernamereset").val();
-  var securityquestionanswer = $("#answer").val();
+  var username = document.querySelector("#usernamereset").value=this.value;
+  var securityquestionanswer = document.querySelector("#answer").value=this.value;
   $.ajax({
     type:"POST",
     url: "../Shared/resetpw.php",
@@ -1714,7 +1723,9 @@ function processResetPasswordCheckSecurityAnswer() {
 	  else if(result['requestchange'] == "wrong"){
         displayAlertText("#showsecurityquestion #message3", "Wrong answer");
       }else{
-        $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+        document.querySelectorAll("#showsecurityquestion #answer").forEach(function(){
+			style.backgroundColor="rgba(255, 0, 0, 0.2)"
+		});
         displayAlertText("#showsecurityquestion #message3", "Something went wrong");
       }
     }
@@ -1722,9 +1733,14 @@ function processResetPasswordCheckSecurityAnswer() {
 }
 
 function processLogin() {
-    var username = $("#login #username").val();
-    var saveuserlogin = $("#login #saveuserlogin").val();
-    var password = $("#login #password").val();
+    var user = document.querySelector("#login #username");
+	var username = user ? user.value : null;
+
+    var saveuser = document.querySelector("#login #saveuserlogin");
+	var saveuserlogin = saveuser ? saveuser.value : null;
+
+    var pw = document.querySelector("#login #password");
+	var password = pw ? pw.value : null;
     if (saveuserlogin==1){
 			saveuserlogin = 'on';
     }else{
@@ -1790,16 +1806,16 @@ function processLogin() {
 //Displays an error text and makes login inputs flash red
 function loginFail(){
 	displayAlertText("#login #message", "Wrong username or password");
-	document.getElementById("input#username").classList.add("loginFail");
-	document.getElementById("input#password").classList.add("loginFail");
+	document.querySelector("input#username").classList.add("loginFail");
+	document.querySelector("input#password").classList.add("loginFail");
 	setTimeout(function(){
-		$("input#username").removeClass("loginFail");
-		$("input#password").removeClass("loginFail");
+		document.querySelector("input#username").classList.remove("loginFail");
+		document.querySelector("input#password").classList.remove("loginFail");
 	}, 2000);
 }
 
 function displayAlertText(selector, text){
-  $(selector).html("<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
+	document.querySelector(selector).innerHTML="<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>";
 }
 
 function processLogout() {
@@ -1828,9 +1844,9 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	$("#formBox").css("display","flex");
+	document.querySelector("#formBox").style.display="flex";
 	/*$("#overlay").css("display","block");*/
-	$("#username").focus();
+	document.querySelector("#username").focus();
 
 	// Reset input box color
 	//$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
@@ -1852,7 +1868,7 @@ function hideLoginPopup()
 
 function showLogoutPopup()
 {
-	$("#logoutBox").show();
+	document.querySelector("#logoutBox").show();
 	/*$("#logoutBox").css('display', 'block');
 	$(".buttonLogoutCancelBox").click(function(){
 		$("#logoutBox").hide();
