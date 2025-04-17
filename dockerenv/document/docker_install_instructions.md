@@ -9,15 +9,15 @@
 ![Choose plan](choosePlan.png "Choose plan")
 
 4. Press "Continue with GitHub"-button.
-![Sign in github](github.png "Sign in github")
+![Press continue github account](createAccount.png "continue github account")
 
 5. Sign in with your school-email and password.
-![Docker desktop](dockerDesktop.png "Docker desktop")
+![Sign in github](github.png "Sign in github")
 
 6. Now you are in Docker Home and press the "Go to download"-button. 
 ![Docker Home](docker_home.png "Docker Home")
 
-7. Select which operating software (OS) that you need.
+7. Select which operating software (OS) that you are using.
 ![Operating software](os.png "Operating software")
 
 8. When you have selected OS and installed your OS, then open a Docker desktop program/app.
