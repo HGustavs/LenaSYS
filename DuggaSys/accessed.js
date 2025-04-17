@@ -146,7 +146,7 @@ function hideRemoveUserPopup() {
 //----------------------------------------------------------------------------
 function addUserToCourse() {
 	let input = document.getElementById('addUsername2').value;
-	let term = $("#addTerm2").val();
+	let term = document.querySelector("#addTerm2").value;
 	if(input && term) {
 		$.ajax({
 			type: 'POST',
@@ -216,13 +216,13 @@ const updateCourseUsers = function(removePopup) {
 function addSingleUser() {
 
 	var newUser = new Array();
-	newUser.push($("#addSsn").val());
-	newUser.push($("#addFirstname").val());
-	newUser.push($("#addLastname").val());
-	newUser.push($("#addEmail").val());
-	newUser.push($("#addCid").val());
-	newUser.push($("#addTerm").val());
-	newUser.push($("#addPid").val());
+	newUser.push(document.querySelector("#addSsn").value);	
+	newUser.push(document.querySelector("#addFirstname").value);
+	newUser.push(document.querySelector("#addLastname").value);
+	newUser.push(document.querySelector("#addEmail").value);
+	newUser.push(document.querySelector("#addCid").value);
+	newUser.push(document.querySelector("#addTerm").value);
+	newUser.push(document.querySelector("#addPid").value);
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
@@ -835,7 +835,7 @@ function returnedAccess(data) {
 //excuted onclick button for quick searching in table
 function keyUpSearch() {
 	$('#searchinput').keyup(function () {
-		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		var val = this.value.trim().replace(/ +/g, ' ').toLowerCase();
 		$('#accesstable_body tr').show().filter(function () {
 			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 			return !~text.indexOf(val);
