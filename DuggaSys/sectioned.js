@@ -654,9 +654,6 @@ function showSaveButton() {
 
 // Displaying and hiding the dynamic confirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
-
-  // it registrers both when clicking trashcan and selection trashcan - independent of selection or not.
-  // just displays popup.
   if (operation == "openConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     console.log('handling of one item?');
@@ -679,19 +676,20 @@ function confirmBox(operation, item = null) {
     $('#close-item-button').focus();
   } 
   else if (operation == "deleteItem") {
-    if(selectedItemList.length != 0){
-      console.log('selectedItemList: ' + selectedItemList);
-      console.log('activeLid (several): ' + active_lid);
-      deleteItem(selectedItemList);
-      document.getElementById("sectionConfirmBox").style.display = "none";
-    }
-    else{
-      console.log('selectedItemList: ' + selectedItemList);
+    //if done via trashcan (no selections)
+    if (selectedItemList == 0){
       console.log('activeLid (one): ' + active_lid);
-      selectedItemList.push(active_lid); // marks the "attached" item as selected
-      deleteItem(selectedItemList);
-      document.getElementById("sectionConfirmBox").style.display = "none";
+      selectedItemList.push(active_lid); // mark the "attached" item as selected
+      console.log('selectedItemList: ' + selectedItemList);
     }
+    // for debugging purposes (since selection already works)
+    else{
+      console.log('selectedItemList: ' + selectedItemList); 
+      console.log('activeLid (several): ' + active_lid);
+    }
+    
+    deleteItem(selectedItemList);
+    document.getElementById("sectionConfirmBox").style.display = "none";
   } 
   else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
