@@ -185,8 +185,10 @@ This is a list of all inverse dependencies of files in the gitFetchService folde
 ### getIndexFile
 
 ### insertToFileLink
+No inverse dependencies.
 
 ### insertToMetadata
+No inverse dependencies.
 
 ## highscoreService
 
