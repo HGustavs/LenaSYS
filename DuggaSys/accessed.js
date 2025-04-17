@@ -912,43 +912,40 @@ function updateDropdownInTable(element, obj) {
 	myTable.updateDropdownValue(rowno, colname, celldata)
 }
 
-$(document).mouseover(function (e) {
+document.addEventListener('mouseover',function(e){
 	FABMouseOver(e);
 });
 
-$(document).mouseout(function (e) {
+document.addEventListener('mouseout',function(e){
 	FABMouseOut(e);
 });
 
-$(document).mousedown(function (e) {
+document.addEventListener('mousedown',function(e){
 	mouseDown(e);
-
 	if (e.button == 0) {
 		FABDown(e);
 	}
 });
 
-$(document).mouseup(function (e) {
-	mouseUp(e);
-
+document.addEventListener('mouseup',function(e){
+	mouseup(e);
 	if (e.button == 0) {
 		FABUp(e);
 	}
 });
 
-$(document).on("touchstart", function (e) {
-	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
-		e.preventDefault();
-	}
-
+document.addEventListener('touchstart',function(e){
+	if (e.target.closest(".fixed-action-button") !== null && e.target.closest(".fab-btn-list") === null) {
+        e.preventDefault();
+    }
 	mouseDown(e);
 	TouchFABDown(e);
 });
 
-$(document).on("touchend", function (e) {
-	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
-		e.preventDefault();
-	}
+document.addEventListener('touchend',function(e){
+	if (e.target.closest(".fixed-action-button") !== null && e.target.closest(".fab-btn-list") === null) {
+        e.preventDefault();
+    }
 	mouseUp(e);
 	TouchFABUp(e);
 });
