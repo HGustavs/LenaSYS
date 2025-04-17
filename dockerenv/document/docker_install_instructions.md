@@ -22,21 +22,21 @@
 
 8. When you have selected OS and installed your OS, then open a Docker desktop program/app.
 
-9. Congratulations, now you have installed the Docker desktop and sign in your GitHub account if account doesn't appear in Docker desktop! 
+9. Congratulations, now you have installed the Docker desktop! If account doesn't appear in Docker desktop, then sign in your GitHub account.
 ![Docker desktop](dockerDesktop.png "Docker desktop")
 
 ## Run containers in Docker
-When you have installed your Docker desktop, then you can run Docker containers, but first you need to get LenaSYS repository.
+When you have installed your Docker desktop, then you can run Docker containers, but first you need to get a LenaSYS repository.
 
 1. Open your terminal which can be bash, powershell or command. You can also use vscode terminal. 
 
-2. When you have open the terminal, then choose which folder you want to get LenaSYS repository. To do that you need to type `cd path/to/folder`. For me I using Windows and I typed: `cd  .\Downloads\` or if you use different OS then type: `cd <foldername>\`. 
+2. When you have open the terminal, then change directory where you want to get the LenaSYS repository. To do that you need to type `cd path/to/folder`. For me I using Windows and I typed: `cd  .\Downloads\` or if you use different OS then type: `cd <foldername>\`. 
 ![Windows terminal](terminal.png "Windows terminal")
 
-3. When you have chose a folder, then type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for finish to get LenaSYS repository.
+3. When you have chose a folder, then type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for finish to get the LenaSYS repository.
 ![Windows terminal to get LenaSYS repository](terminal2.png "Windows terminal to get LenaSYS repository")
 
-4. Now you have LenaSYS repository, so you need to change directory in the terminal and type: `cd LenaSYS/dockerenv/`.
+4. Now you have the LenaSYS repository, so you need to change directory in the terminal and type: `cd LenaSYS/dockerenv/`.
 ![Change directory](terminal3.png "Change directory")
 
 5. Here you need to build a few images and containers, and to do that run the command: `docker-compose up --build`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
@@ -45,7 +45,7 @@ When you have installed your Docker desktop, then you can run Docker containers,
 6. To know if Docker is finish to build images and containers when the terminal stop printing out or show blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.
 ![show building text in terminal](terminal5.png "show building text in terminal")
 
-7. Now go to Docker desktop and you can see a menu which says images and containers. Press the containers from the menu and here you can see there are three containers and each one has green-circles which means they are running. If you can not see three containers, then you need to press `drop-down`-button
+7. Now go to Docker desktop and you can see a menu which says images and containers. Press the containers from the menu and here you can see there are three containers and each one has green-circle which means they are running. If you can not see three containers, then you need to press `drop-down`-button
 ![shows three containers](dockerContainers.png "shows three containers")
 
 8. There are two ports which are apache-php and phpmyadmin server. The apache-php has a port `80:80` which can be click to open LenaSYS website. The phpmyadmin has also a port `8080:80` which open phpmyadmin website there you can manipulate sql-data, user permission and more. You need to press the `80:80` link to open the LenaSYS website.
