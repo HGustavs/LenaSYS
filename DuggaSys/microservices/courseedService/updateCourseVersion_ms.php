@@ -9,7 +9,6 @@ include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "./retrieveCourseedService_ms.php";
-include_once "../sharedMicroservices/setAsActiveCourse_ms.php";
 
 // Connect to database and start session.
 pdoConnect();

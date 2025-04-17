@@ -8,7 +8,6 @@ include_once "../../../Shared/basic.php";
 include_once "./retrieveSectionedService_ms.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "../sharedMicroservices/setAsActiveCourse_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -71,8 +70,11 @@ if (!$query->execute()) {
 }
 
 if ($makeactive == 3) {
-    $ch = curl_init("http://localhost/LenaSYS/DuggaSys/microservices/courseedService/setAsActiveCourse_ms.php");
+    //set url for setAsActiveCourse.php path
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $ch = curl_init($baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php");
 
+    //options for curl
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
@@ -81,9 +83,6 @@ if ($makeactive == 3) {
    
     curl_exec($ch);
     curl_close($ch);
-
-
-    //setAsActiveCourse($pdo, $cid, $versid);
 }
 
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";

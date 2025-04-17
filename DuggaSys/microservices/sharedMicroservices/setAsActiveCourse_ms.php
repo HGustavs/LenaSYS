@@ -12,7 +12,6 @@ header("Content-Type: application/json");
 //get values from post
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isset($_POST['cid'], $_POST['versid'])) {
-		file_put_contents("../../../log/log.json", "POST ISSET GLORY\n", FILE_APPEND);
 		$cid = $_POST['cid'];
 		$versid = $_POST['versid'];
 	}
