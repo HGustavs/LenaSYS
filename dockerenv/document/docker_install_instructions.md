@@ -25,11 +25,42 @@
 9. Congratulations, now you have installed the Docker desktop and sign in your GitHub account if account doesn't appear in Docker desktop! 
 ![Docker desktop](dockerDesktop.png "Docker desktop")
 
+## Run containers in Docker
+When you have installed your Docker desktop, then you can run Docker containers, but first you need to get LenaSYS repository.
 
-2. Open the `LenaSYS/dockerenv` directory/folder in the terminal.
-3. Run the command: `docker compose up -d` to setup and start the containers.
-4. Navigate to [localhost/LenaSYS/install/install.php](http://localhost/LenaSYS/install/install.php).
-5. Navigate through the installer (On the first page the correct info should be present). `password` is the default mysql root password in this config.
+1. Open your terminal which can be bash, powershell or command. 
+
+2. When you have open the terminal, then choose which folder you want to get LenaSYS repository. To do that you need to type `cd path/to/folder`. For me I using Windows and I typed: `cd  .\Downloads\` or if you use different OS then type: `cd <foldername>\`. 
+![Windows terminal](terminal.png "Windows terminal")
+
+3. When you have chose a folder, then type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for finish to get LenaSYS repository.
+![Windows terminal to get LenaSYS repository](terminal2.png "Windows terminal to get LenaSYS repository")
+
+4. Now you have LenaSYS repository, so you need to change directory in the terminal and type: `cd LenaSYS/dockerenv/`.
+![Change directory](terminal3.png "Change directory")
+
+5. Here you need to build a few images and containers, and to do that run the command: `docker-compose up --build`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
+![build image and containers](terminal4.png "build image and containers")
+
+6. To know if Docker is finish to build images and containers when the terminal stop printing out or show blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.
+![show building text in terminal](terminal5.png "show building text in terminal")
+
+7. Now go to Docker desktop and you can see a menu which says images and containers. Press the containers from the menu and here you can see there are three containers which are running. If you can not see three containers, then you need to press `drop-down`-button
+![shows three containers](dockerContainers.png "shows three containers")
+
+8. There are two ports which are apache-php and phpmyadmin server. The apache-php has a port `80:80` which can be click to open LenaSYS website. The phpmyadmin has also a port `8080:80` which open phpmyadmin website there you can manipulate sql-data, user permission and more. You need to press the `80:80` link to open the LenaSYS website.
+![Open the LenaSYS website link](apacheLink.png "Open the LenaSYS website link")
+
+9. Now you are in directory and you need to navigate `LenaSYS/newinstaller/installer.php` to install the LenaSYS from a new LenaSYS installer. There is also old LenaSYS installer. If the new installer doesn't work, then navigate `LenaSYS/install/install.php` to access the old LenaSYS installer.
+![LenaSYS directory](lenasys.png "LenaSYS directory")
+
+10. Congratulations, now you can use the LenaSYS website!
+![Open the LenaSYS website link](newlenasysinstaller.png "Open the LenaSYS website link") 
+
+11. Before you install the LenaSYS, it is good to know that if you see text-input says `Hostname`, then you need to type `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when you are in root user credentials, then type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
+
+12. To install the LenaSYS, you need to follow instruction [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
+
 
 ### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easisest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
