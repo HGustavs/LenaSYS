@@ -112,7 +112,7 @@ function returned(data)
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
 			toast("warning","A template has not been chosen for this example. Please choose one.",10);
-			$("#chooseTemplateContainer").css("display", "flex");
+			document.getElementById("chooseTemplateContainer").style.display = "flex";
 			return;
 		} else {
 			toast("error","The administrator of this code example has not yet chosen a template.", 10);
@@ -208,6 +208,7 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
+	// Löst detta innan på issue #16638
 	if ($('#fileedButton').length) {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
@@ -257,6 +258,7 @@ function returned(data)
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
+	// Löst detta innan på issue #16638
 	// Clear div2
 	$("#div2").html("");
 
@@ -282,6 +284,7 @@ function returned(data)
 		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
+		// Löst detta innan på issue #16638
 		// don't create templatebox if it already exists
 		if ($("#" + contentid).length == 0) {
 			addTemplatebox(contentid);
@@ -298,12 +301,15 @@ function returned(data)
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
-			if ($("#" + contentid + "menu").height() == null) {
-				boxmenuheight = 0;
-			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
-			}
-			$("#" + contentid).css("margin-top", boxmenuheight - 1);
+			const menu = document.getElementById(contentid + "menu");
+			let boxmenuheight = 0;
+
+			if (menu && menu.offsetHeight != null) {
+				boxmenuheight = menu.offsetHeight;
+			} 
+		
+			document.getElementById(contentid).style.marginTop = (boxmenuheight - 1) + "px";
+
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 
@@ -311,7 +317,7 @@ function returned(data)
 			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
 
 			// set font size
-			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+			document.getElementById(contentid).style.marginTop = (boxmenuheight - 1) + "px";
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
@@ -347,21 +353,21 @@ function returned(data)
 			desc = desc.replace(/\&\#42\;/g, "*");
 
 			/* Assign Content */
-			$("#" + contentid).html(desc);
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			const boxEl = document.getElementById(contentid);
+			boxEl.innerHTML = desc;
+			boxEl.style.marginTop = boxmenuheight + "px";
+
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
-			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 			// Make room for the menu by setting padding-top equals to height of menubox
-			if ($("#" + contentid + "menu").height() == null) {
-				boxmenuheight = 0;
-			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
-			}
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			const menu = document.getElementById(contenteid + "menu");
+			boxmenuheight = menu && menu.offsetHeight != null ? menu.offsetHeight : 0;
 
+			boxEl.style.marginTop = boxmenuheight + "px";
+			
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 			
@@ -389,33 +395,37 @@ function returned(data)
 				previewLink = previewLink.replace("https://", "http://");
 			}
 
-			$("#box" + boxid).html("<iframe src='" + previewLink + "'></iframe>");
-			if ($("#" + contentid + "menu").height() == null) {
-				boxmenuheight = 0;
-			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
-			}
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			document.getElementById("box" + boxid).innerHTML = "<iframe src='" + previewLink + "'></iframe>";
 
-		} else if (boxtype == "NOT DEFINED") {
-			if (retData['writeaccess'] == "w") {
-				createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
-				// Make room for the menu by setting padding-top equals to height of menubox
-				if ($("#" + contentid + "menu").height() == null) {
-					boxmenuheight = 0;
-				} else {
-					boxmenuheight = $("#" + contentid + "menu").height();
+			const menuEl = document.getElementById(contentid + "menu");
+			boxmenuheight = menuEl && menuEl.offsetHeight != null ? menuEl.offsetHeight : 0;
+
+			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
+
+			// NOT DEFINED
+			if (boxtype === "NOT DEFINED") {
+				if (retData['writeaccess'] === "w") {
+					createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
+
+					const menuEl = document.getElementById(contentid + "menu");
+					boxmenuheight = menuEl && menuEl.offsetHeight != null ? menuEl.offsetHeight : 0;
+
+					document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
 				}
-				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
 	}
 	// Add all drop zones
-	if (retData['writeaccess'] == "w") {
+	if (retData['writeaccess'] === "w") {
 		initFileDropZones();
 	} else {
-		$('.codebox').each(function() {
-			$(this).find('*').addClass('unselectable');
+		// Find all element with class .codebox
+		const codeboxes = document.querySelectorAll('.codebox');
+		codeboxes.forEach(codebox => {
+			// Find all child to each codebox and put it in class "unselectable"
+			codebox.querySelectorAll('*').forEach(child => {
+				child.classList.add('unselectable');
+			});
 		});
 	}
 
@@ -640,25 +650,35 @@ function editImpWords(editType)
 	if (left != right) {
 		uneven = true;
 	}
-	// word can't contain any whitespaces
-	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
-		var exists = false;
+	if (editType === "+" && word !== "" && !/\s/.test(word) && !uneven) {
+		let exists = false;
+
 		// Checks if the word already exists as an option in the selectbox
-		$('#impwords option').each(function () {
-			if (this.value == word) {
+		const options = document.querySelectorAll("#impwords option");
+		options.forEach(option => {
+			if (option.value === word) {
 				exists = true;
 			}
 		});
-		if (exists == false) {
-			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+
+		if (!exists) {
+			const impwords = document.getElementById("impwords");
+			const newOption = document.createElement("option");
+			newOption.textContent = word;
+			newOption.value = word;
+			impwords.appendChild(newOption);
 			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
-	} else if (editType == "-") {
-		word = $('option:selected', "#impwords").text();
-		$('option:selected', "#impwords").remove();
-		removedWords.push(word);
+	} else if (editType === "-") {
+		const impwords = document.getElementById("impwords");
+		const selectedOption = impwords.options[impwords.selectedIndex];
+		if (selectedOption) {
+			removedWords.push(selectedOption.text);
+			impwords.removeChild(selectedOption);
+		}
 	}
+
 }
 
 //----------------------------------------------------------------------------------
@@ -667,8 +687,15 @@ function editImpWords(editType)
 //----------------------------------------------------------------------------------
 
 function displayEditExample() {
-	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
-	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
+	function decodeHTML(html) {
+		const textarea = document.createElement("textarea");
+		textarea.innerHTML = html;
+		return textarea.value;
+	}
+
+	document.getElementById("title").value = decodeHTML(retData['examplename']);
+	document.getElementById("secttitle").value = decodeHTML(retData['sectionname']);
+
 	changeDirectory(document.getElementById("boxcontent"));
 	document.getElementById("playlink").value = retData['playlink'];
 
@@ -729,16 +756,30 @@ function updateExample() {
 	// }
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
-	if ((removedWords.length > 0) || (addedWords.length > 0) || ($("#before option:selected").val() != beforeid && beforeid != "UNK") || ($("#after option:selected").val() != afterid && afterid != "UNK") || ($("#playlink").val() != retData['playlink']) || ($("#title").val() != retData['examplename']) || ($("#secttitle").val() != retData['sectionname'])) {
+	const selectedBefore = document.getElementById("before").value;
+	const selectedAfter = document.getElementById("after").value;
+	const playlinkVal = document.getElementById("playlink").value;
+	const titleVal = document.getElementById("title").value;
+	const secttitleVal = document.getElementById("secttitle").value;
+
+	if (
+		removedWords.length > 0 ||
+		addedWords.length > 0 ||
+		(selectedBefore !== beforeid && beforeid !== "UNK") ||
+		(selectedAfter !== afterid && afterid !== "UNK") ||
+		playlinkVal !== retData['playlink'] ||
+		titleVal !== retData['examplename'] ||
+		secttitleVal !== retData['sectionname']
+	) {
+
 		var courseid = querystring['courseid'];
 		var cvers = querystring['cvers'];
 		var exampleid = querystring['exampleid'];
-		var playlink = document.getElementById("playlink").value;
-		var examplename = document.getElementById("title").value;
-		var sectionname = document.getElementById("secttitle").value;
-
-		var beforeid = $("#before option:selected").val();
-		var afterid = $("#after option:selected").val();
+		var playlink = playlinkVal;
+		var examplename = titleVal;
+		var sectionname = secttitleVal;
+		var beforeid = selectedBefore;
+		var afterid = selectedAfter;
 
 		AJAXService("EDITEXAMPLE", {
 			courseid: courseid,
@@ -753,7 +794,6 @@ function updateExample() {
 			removedWords: removedWords
 		}, "CODEVIEW");
 
-		// Clears the important words and prevents multiple inserts..
 		addedWords = [];
 		removedWords = [];
 	}
@@ -795,6 +835,7 @@ function displayEditContent(boxid)
 	document.getElementById("boxtitle").value = box[4];
 	document.getElementById("boxcontent").value = box[1];
 
+	// Löst detta innan på issue #16638
 	changeDirectory($("#boxcontent"));
 
 	if (box[5] != null) {
@@ -811,6 +852,7 @@ function displayEditContent(boxid)
 	for (var i = 0; i < wordl.length; i++) {
 		str += "<option value='" + wordl[i][0] + "'>" + wordl[i][1] + "</option>";
 	}
+	// Löst detta innan på issue #16638
 	$("#wordlist").html(str);
 	$("#wordlist").val(box[3]);
 
@@ -872,17 +914,17 @@ function changeDirectory(kind) {
 		var filenameBox = document.getElementById("filename");
 	}
 
-	if ($(kind).val() == "CODE") {
+	if (kind.value === "CODE") {
 		dir = retData['directory'][0];
 		wordlist.disabled = false;
-	} else if ($(kind).val() == "IFRAME") {
+	} else if (kind.value === "IFRAME") {
 		dir = retData['directory'][2];
 		wordlist.value = null;
-		wordlist.disabled = 'disabled';
-	} else if ($(kind).val() == "DOCUMENT") {
+		wordlist.disabled = true;
+	} else if (kind.value === "DOCUMENT") {
 		dir = retData['directory'][1];
 		wordlist.value = '4';
-		wordlist.disabled = 'disabled';
+		wordlist.disabled = true;
 	}
 
 	// Fill the file selection dropdown with files
@@ -920,37 +962,39 @@ function btnPress(){
 var addedRows = new Array();
 var removedRows = new Array();
 
-function editImpRows(editType) 
-{
-	var rowFrom = parseInt(document.getElementById("improwfrom").value);
-	var rowTo = parseInt(document.getElementById("improwto").value);
-	var row = document.getElementById("improwfrom").value + " - " + document.getElementById("improwto").value;
-	
-	if (editType == "+" &&
-		rowFrom <= rowTo &&
-		rowFrom > 0 &&
-		rowTo > 0) {
-		var exists = false;
-		$('#improws option').each(function () {
-			if (this.value == row) {
-				exists = true;
-			}
+function editImpRows(editType) {
+	const rowFrom = parseInt(document.getElementById("improwfrom").value);
+	const rowTo = parseInt(document.getElementById("improwto").value);
+	const row = document.getElementById("improwfrom").value + " - " + document.getElementById("improwto").value;
+
+	if (editType === "+" && rowFrom <= rowTo && rowFrom > 0 && rowTo > 0) {
+		let exists = false;
+		const options = document.querySelectorAll("#improws option");
+		options.forEach(opt => {
+			if (opt.value === row) exists = true;
 		});
 
-		if (exists == false) {
-			document.getElementById("improws").innerHTML += '<option>' + row + '</option>';
-			document.getElementById("improwfrom").value ="";
-			document.getElementById("improwto").value ="";
+		if (!exists) {
+			const improws = document.getElementById("improws");
+			const newOption = document.createElement("option");
+			newOption.text = row;
+			newOption.value = row;
+			improws.appendChild(newOption);
+
+			document.getElementById("improwfrom").value = "";
+			document.getElementById("improwto").value = "";
 			addedRows.push([openBoxID, rowFrom, rowTo]);
 		}
-	} else if (editType == "-") {
-		FromTo = $('option:selected', "#improws").text().split(" - ");
-		$('option:selected', "#improws").remove();
-		removedRows.push([openBoxID, FromTo[0], FromTo[1]]);
-
-	} else if (enterPress === false){
-		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
-		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
+	} else if (editType === "-") {
+		const improws = document.getElementById("improws");
+		const selected = improws.options[improws.selectedIndex];
+		if (selected) {
+			const [from, to] = selected.value.split(" - ");
+			improws.removeChild(selected);
+			removedRows.push([openBoxID, from, to]);
+		}
+	} else if (enterPress === false) {
+		alert(`Incorrect value(s) (from: ${rowFrom} to: ${rowTo}) for important rows!`);
 	}
 }
 
@@ -988,19 +1032,26 @@ function updateContent(file, content, boxnumber)
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
-	// TODO: Handle null values
 	if (useBoxContent) {
-		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+		if (
+			box[1] != document.querySelector("#boxcontent").value ||
+			box[3] != document.querySelector("#wordlist").value ||
+			box[4] != document.querySelector("#boxtitle").value ||
+			box[5] != document.getElementById("filename").value ||
+			box[6] != document.getElementById("fontsize").value ||
+			addedRows.length > 0 ||
+			removedRows.length > 0
+		) {
 			try {
-				if(file == null)
+				if (file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
-				if(content == null)
-					var boxcontent = $("#boxcontent option:selected").val();
-				if(file == null)
-					var filename = $("#filename option:selected").val();
-				
-				var wordlist = document.querySelector("#wordlist").value;
-				var fontsize = $("#fontsize option:selected").val();
+				if (content == null)
+					var boxcontent = document.getElementById("boxcontent").value;
+				if (file == null)
+					var filename = document.getElementById("filename").value;
+
+				var wordlist = document.getElementById("wordlist").value;
+				var fontsize = document.getElementById("fontsize").value;
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
