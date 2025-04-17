@@ -267,8 +267,10 @@ No inverse dependencies.
 No inverse dependencies.
 
 ### removeListEntries
+No inverse dependencies.
 
 ### reorderListEntries
+No inverse dependencies.
 
 ### retrieveAllCourseVersions
 
