@@ -6,21 +6,26 @@ $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 $db = new PDO('sqlite:' . $dbFile);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$db->exec("
-    CREATE TABLE IF NOT EXISTS microservices (
+$db->exec("CREATE TABLE IF NOT EXISTS microservices (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ms_name TEXT NOT NULL,
     description TEXT,
-    parameter TEXT,
-    parameter_type TEXT,
-    parameter_description TEXT,
     calling_methods TEXT,
     output TEXT,
     output_type TEXT,
     output_description TEXT,
     microservices_used TEXT
-    )
-");
+);");
+
+// this one to many relationship between microservices and parameter exists since a microservice can have multiple parameters
+$db->exec("CREATE TABLE IF NOT EXISTS parameters (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    microservice_id INTEGER NOT NULL,
+    parameter_name TEXT,
+    parameter_type TEXT,
+    parameter_description TEXT,
+    FOREIGN KEY (microservice_id) REFERENCES microservices(id)
+);");
 
 echo "Database has been created";
 
