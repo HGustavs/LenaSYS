@@ -585,20 +585,33 @@ function fetchGitHubRepo(gitHubURL) {
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
-  var tempMotd = motd;
-  toggleTab(true);
-  enableTab(document.getElementById("editCourseVersion"));
-  tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
-    "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
-  $("#eversname").val(versnme);
-  $("#eMOTD").val(tempMotd);
-  $("#eversid").val(querystring['coursevers']);
-  let sdate = retdata['startdate'];
-  let edate = retdata['enddate'];
-  if (sdate !== null) $("#estartdate").val(sdate.substr(0, 10));
-  if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
-  $("#editCourseVersion").css("display", "flex");
+	var tempMotd = motd;
+	toggleTab(true);
+	enableTab(document.getElementById("editCourseVersion"));
+
+	tempMotd = motd
+		.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å")
+		.replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä")
+		.replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö")
+		.replace(/&amp;/g, "&").replace(/&#63;/g, "?");
+
+	document.getElementById("eversname").value = versnme;
+	document.getElementById("eMOTD").value = tempMotd;
+	document.getElementById("eversid").value = querystring['coursevers'];
+
+	var sdate = retdata['startdate'];
+	var edate = retdata['enddate'];
+
+	if (sdate !== null) {
+		document.getElementById("estartdate").value = sdate.substr(0, 10);
+	}
+	if (edate !== null) {
+		document.getElementById("eenddate").value = edate.substr(0, 10);
+	}
+
+	document.getElementById("editCourseVersion").style.display = "flex";
 }
+
 
 // Delete items marked as deleted when page is unloaded
 window.addEventListener('beforeunload', function (event) {
@@ -657,89 +670,103 @@ function closeOpenPopupForm(){
 }
 
 function displaymessage() {
-  $(".messagebox").css("display", "block");
+	var elems = document.querySelectorAll(".messagebox");
+	for (var i = 0; i < elems.length; i++) elems[i].style.display = "block";
 }
 
 function showSubmitButton() {
-  $(".submitDugga").css("display", "inline-block");
-  $(".updateDugga").css("display", "none");
-  $(".closeDugga").css("display", "inline-block");
+	var submit = document.querySelectorAll(".submitDugga");
+	var update = document.querySelectorAll(".updateDugga");
+	var close = document.querySelectorAll(".closeDugga");
+	for (var i = 0; i < submit.length; i++) submit[i].style.display = "inline-block";
+	for (var i = 0; i < update.length; i++) update[i].style.display = "none";
+	for (var i = 0; i < close.length; i++) close[i].style.display = "inline-block";
 }
 
 function showSaveButton() {
-  $(".submitDugga").css("display", "none");
-  $(".updateDugga").css("display", "block");
-  $(".closeDugga").css("display", "block");
+	var submit = document.querySelectorAll(".submitDugga");
+	var update = document.querySelectorAll(".updateDugga");
+	var close = document.querySelectorAll(".closeDugga");
+	for (var i = 0; i < submit.length; i++) submit[i].style.display = "none";
+	for (var i = 0; i < update.length; i++) update[i].style.display = "block";
+	for (var i = 0; i < close.length; i++) close[i].style.display = "block";
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item = null) {
-  if (operation == "openConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionConfirmBox").css("display", "flex");
-  } else if (operation == "openHideConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionHideConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#tabConfirmBox").css("display", "flex");
-    $("#tabs").val(0).change();
-  } else if (operation == "openItemsConfirmBox") {
-    $("#sectionShowConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
-    deleteItem(selectedItemList);
-    document.getElementById("sectionConfirmBox").style.display = "none";
-  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
-    hideMarkedItems(selectedItemList)
-    $("#sectionHideConfirmBox").css("display", "none");
-  } else if (operation == "tabItem") {
-    tabMarkedItems(active_lid);
-    $("#tabConfirmBox").css("display", "none");
-  }
-  // Responsible for opening github moment
-  else if (operation == "openGitHubBox") {
-    $("#gitHubBox").css("display", "flex");
-  }
-  else if (operation == "saveGitHubBox") {
-  }
+function confirmBox(operation, item = null)
+{
+	if (operation == "openConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionConfirmBox").style.display = "flex";
+	}
+	else if (operation == "openHideConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionHideConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "openTabConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("tabConfirmBox").style.display = "flex";
+		var tabsElem = document.getElementById("tabs");
+		tabsElem.value = 0;
+		tabsElem.dispatchEvent(new Event("change"));
+	}
+	else if (operation == "openItemsConfirmBox") {
+		document.getElementById("sectionShowConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "deleteItem") {
+		deleteItem(selectedItemList);
+		document.getElementById("sectionConfirmBox").style.display = "none";
+	}
+	else if (operation == "hideItem" && selectedItemList.length != 0) {
+		hideMarkedItems(selectedItemList);
+		document.getElementById("sectionHideConfirmBox").style.display = "none";
+	}
+	else if (operation == "tabItem") {
+		tabMarkedItems(active_lid);
+		document.getElementById("tabConfirmBox").style.display = "none";
+	}
+	else if (operation == "openGitHubBox") {
+		document.getElementById("gitHubBox").style.display = "flex";
+	}
+	else if (operation == "saveGitHubBox") {
+		// Placeholder if needed later
+	}
+	else if (operation == "openGitHubTemplate") {
+		console.log("testworkornah?");
+		document.getElementById("gitHubTemplate").style.display = "flex";
+		gitTemplatePopupOutsideClickHandler();
+		fetchCodeExampleHiddenLinkParam(item);
+	}
+	else if (operation == "closeConfirmBox") {
+		var ids = ["gitHubBox", "gitHubTemplate", "sectionConfirmBox", "tabConfirmBox", "sectionHideConfirmBox", "noMaterialConfirmBox", "sectionShowConfirmBox"];
+		for (var i = 0; i < ids.length; i++) {
+			document.getElementById(ids[i]).style.display = "none";
+		}
+		purgeInputFieldsGitTemplate();
+	}
+	else if (operation == "showItems" && selectedItemList.length != 0) {
+		showMarkedItems(selectedItemList);
+		document.getElementById("sectionShowConfirmBox").style.display = "none";
+	}
 
-  //ändra 
-  else if (operation == "openGitHubTemplate") {
-    console.log("testworkornah?");
-    $("#gitHubTemplate").css("display", "flex");
-    gitTemplatePopupOutsideClickHandler();
-    fetchCodeExampleHiddenLinkParam(item);
-  } else if (operation == "closeConfirmBox") {
-    $("#gitHubBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
-    $("#sectionConfirmBox").css("display", "none");
-    $("#tabConfirmBox").css("display", "none");
-    $("#sectionHideConfirmBox").css("display", "none");
-    $("#noMaterialConfirmBox").css("display", "none");
-    $("#sectionShowConfirmBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none");
-    purgeInputFieldsGitTemplate();
-  }
-  else if (operation == "showItems" && !selectedItemList.length == 0) {
-    showMarkedItems(selectedItemList);
-    $("#sectionShowConfirmBox").css("display", "none");
-  }
-  document.addEventListener("keypress", event => {
-    if (event.key === 'Enter') {
-      if (event.target.classList.contains("traschcanDelItemTab")) {
-        setTimeout(function () {
-           document.getElementById('delete-item-button').focus();
-        }, 400);
-      }
-      if (event.target.id == "delete-item-button") {
-        deleteItem(active_lid);
-        document.getElementById("sectionConfirmBox").style.display = "none";
-      }
-    }
-  });
+	document.addEventListener("keypress", function(event)
+	{
+		if (event.key === "Enter") {
+			if (event.target.classList.contains("traschcanDelItemTab")) {
+				setTimeout(function () {
+					document.getElementById("delete-item-button").focus();
+				}, 400);
+			}
+			if (event.target.id == "delete-item-button") {
+				deleteItem(active_lid);
+				document.getElementById("sectionConfirmBox").style.display = "none";
+			}
+		}
+	});
 }
+
 //OnClick handler for clicking outside the template popup
 function gitTemplatePopupOutsideClickHandler(){
   const templateContainer = document.getElementById('chooseTemplate');
@@ -751,80 +778,84 @@ function gitTemplatePopupOutsideClickHandler(){
     }
   });
 }
+
 // Creates an array over all checked items
-function markedItems(item = null) {
-  var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
-  var subItems = [];
+function markedItems(item = null)
+{
+	var removed = false;
+	var kind = item ? item.closest('tr')?.getAttribute('value') : null;
+	active_lid = item ? item.closest('table')?.getAttribute('value') : null;
+	var subItems = [];
 
-  //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-  if (kind == "section" || kind == "moment") {
-    var itemInSection = true;
-    var sectionStart = false;
-    $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = $(this).attr('value');
-      if (itemInSection && sectionStart) {
-        var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = $(this).parents('tr').attr('value');
-        if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
-          itemInSection = false;
-        } else {
-          subItems.push(tempItem);
-        }
-      } else if (tempItem == active_lid) sectionStart = true;
-    });
+	//if the checkbox belongs to one of these kinds then all elements below it should also be selected.
+	if (kind == "section" || kind == "moment") {
+		var itemInSection = true;
+		var sectionStart = false;
+		var items = document.querySelectorAll("#Sectionlist .item");
 
-  }
+		for (var i = 0; i < items.length; i++) {
+			var tempItem = items[i].getAttribute('value');
+			if (itemInSection && sectionStart) {
+				var tempDisplay = document.getElementById("lid" + tempItem).style.display;
+				var tempKind = items[i].closest('tr')?.getAttribute('value');
+				if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+					itemInSection = false;
+				} else {
+					subItems.push(tempItem);
+				}
+			} else if (tempItem == active_lid) sectionStart = true;
+		}
+	}
 
+	console.log("Active lid: " + active_lid);
+	if (selectedItemList.length != 0) {
+		for (let i = 0; i < selectedItemList.length; i++) {
+			if (selectedItemList[i] === active_lid) {
+				selectedItemList.splice(i, 1);
+				i--;
+				removed = true;
+				console.log("Removed from list");
+			}
+			for (var j = 0; j < subItems.length; j++) {
+				if (selectedItemList[i] === subItems[j]) {
+					var cb = document.getElementById(subItems[j] + "-checkbox");
+					if (cb) cb.checked = false;
+					selectedItemList.splice(i, 1);
+				}
+			}
+		}
+		if (removed != true) {
+			selectedItemList.push(active_lid);
+			console.log("Adding !empty list");
+			for (var j = 0; j < subItems.length; j++) {
+				selectedItemList.push(subItems[j]);
+				console.log(subItems[j]);
+				var cb = document.getElementById(subItems[j] + "-checkbox");
+				if (cb) cb.checked = true;
+			}
+		}
+	} else {
+		selectedItemList.push(active_lid);
+		console.log("Added");
+		for (var j = 0; j < subItems.length; j++) {
+			selectedItemList.push(subItems[j]);
+		}
+		for (var i = 0; i < selectedItemList.length; i++) {
+			var cb = document.getElementById(selectedItemList[i] + "-checkbox");
+			if (cb) cb.checked = true;
+		}
+		// Show ghost button when checkbox is checked
+		document.querySelector('#hideElement').disabled = false;
+		document.querySelector('#hideElement').style.opacity = 1;
+		showVisibilityIcons();
+	}
 
-  console.log("Active lid: " + active_lid);
-  if (selectedItemList.length != 0) {
-    for (let i = 0; i < selectedItemList.length; i++) {
-      if (selectedItemList[i] === active_lid) {
-        selectedItemList.splice(i, 1);
-        i--;
-        var removed = true;
-        console.log("Removed from list");
-      }
-      for (var j = 0; j < subItems.length; j++) {
-        if (selectedItemList[i] === subItems[j]) {
-          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
-          selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
-        }
-      }
-    } if (removed != true) {
-      selectedItemList.push(active_lid);
-      console.log("Adding !empty list");
-      for (var j = 0; j < subItems.length; j++) {
-        selectedItemList.push(subItems[j]);
-        console.log(subItems[j]);
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
-      }
-    }
-  } else {
-    selectedItemList.push(active_lid);
-    console.log("Added");
-    for (var j = 0; j < subItems.length; j++) {
-      selectedItemList.push(subItems[j]);
-    }
-    for (i = 0; i < selectedItemList.length; i++) {
-      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
-      //console.log(hideItemList[i]+"-checkbox");
-    }
-    // Show ghost button when checkbox is checked
-    document.querySelector('#hideElement').disabled = false;
-    document.querySelector('#hideElement').style.opacity = 1;
-    showVisibilityIcons();
-  }
-  if (selectedItemList.length == 0) {
-    // Disable ghost button when no checkboxes is checked
-    document.querySelector('#hideElement').disabled = true;
-    document.querySelector('#hideElement').style.opacity = 0.7;
-    hideVisibilityIcons();
-
-  }
+	if (selectedItemList.length == 0) {
+		// Disable ghost button when no checkboxes is checked
+		document.querySelector('#hideElement').disabled = true;
+		document.querySelector('#hideElement').style.opacity = 0.7;
+		hideVisibilityIcons();
+	}
 }
 
 // Shows ghost and eye button
@@ -864,25 +895,34 @@ function clearHideItemList() {
 
 
 function closeSelect() {
-  toggleTab(false);
-  $(".item").css("border", "none");
-  $(".item").css("box-shadow", "none");
-  $("#editSection").css("display", "none");
-  defaultNewItem();
+	toggleTab(false);
+	document.querySelectorAll(".item").forEach(function(el) {
+		el.style.border = "none";
+		el.style.boxShadow = "none";
+	});
+	document.getElementById("editSection").style.display = "none";
+	defaultNewItem();
 }
 
 function defaultNewItem() {
+	// Resets save button to its default form
+	document.getElementById("saveBtn").removeAttribute("disabled");
 
-  $('#saveBtn').removeAttr('disabled'); // Resets save button to its default form
-  $('#submitBtn').removeAttr('disabled'); // Resets submit button to its default form
-  document.getElementById("sectionname").style.backgroundColor = backgroundColorTheme; // Resets color for name input
-  $('#tooltipTxt').hide(); // Resets tooltip text to its default form
+	// Resets submit button to its default form
+	document.getElementById("submitBtn").removeAttribute("disabled");
+
+	// Resets color for name input
+	document.getElementById("sectionname").style.backgroundColor = backgroundColorTheme;
+
+	// Resets tooltip text to its default form
+	var tooltip = document.getElementById("tooltipTxt");
+	if (tooltip) tooltip.style.display = "none";
 }
 
 function showCreateVersion() {
-  $("#newCourseVersion").css("display", "flex");
-  toggleTab(true);
-  enableTab(document.getElementById("newCourseVersion"));
+	document.getElementById("newCourseVersion").style.display = "flex";
+	toggleTab(true);
+	enableTab(document.getElementById("newCourseVersion"));
 }
 
 function incrementItemsToCreate() {
