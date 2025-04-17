@@ -6,8 +6,16 @@ function generateContextProperties() {
     let str = '';
     const element = context[0];
     const line = contextLine[0];
+
+    if ((context.length > 0 || contextLine.length > 0) && (erTableToggle || testCaseToggle)) {
+        erTableToggle = false;
+        testCaseToggle = false;
+    }
+
     let propSet = document.getElementById("propertyFieldset");
     let menuSet = document.getElementsByClassName('options-section');
+
+    propSet.innerHTML = ""; 
 
     str += "<legend>Properties</legend>";
     if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
