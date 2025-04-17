@@ -484,16 +484,42 @@ function drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash)
     let str = '';
     const length = 40 * zoomfact;
     const startX = fx;
-    str += `<polyline id="${line.id}"
-    points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact} 
-            ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact} 
-            ${startX + offset.x1 + length},${fy + offset.y1 + length} 
-            ${startX + offset.x1 * zoomfact},${fy + offset.y1 + length}"
-    fill="none" 
-    stroke="${lineColor}" 
-    stroke-width="${strokewidth}" 
-    stroke-dasharray="${strokeDash}" 
-/>`;
+   
+    if(line.type === entityType.IE) {
+        str += `<polyline id="${line.id}"
+        points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact + 25} 
+                ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact + 25} 
+                ${startX + offset.x1 + length },${fy + offset.y1 + length + 16} 
+                ${startX + offset.x1 * zoomfact },${fy + offset.y1 + length + 16}"
+        fill="none" 
+        stroke="${lineColor}" 
+        stroke-width="${strokewidth}" 
+        stroke-dasharray="${strokeDash}" 
+    />`;
+    }
+    else if(line.type === entityType.SD){
+        str += `<polyline id="${line.id}"
+        points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact + 10 } 
+                ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact + 10} 
+                ${startX + offset.x1 + length},${fy + offset.y1 + length } 
+                ${startX + offset.x1 * zoomfact - 10},${fy + offset.y1 + length }"
+        fill="none" 
+        stroke="${lineColor}" 
+        stroke-width="${strokewidth}" 
+        stroke-dasharray="${strokeDash}" 
+    />`;
+    }else if(line.type !== entityType.IE && line.type !== entityType.SD){
+        str += `<polyline id="${line.id}"
+        points="${startX + offset.x1 * zoomfact},${fy + offset.y1 * zoomfact + 40} 
+                ${startX + offset.x1 + length},${fy + offset.y1 * zoomfact + 40} 
+                ${startX + offset.x1 + length},${fy + offset.y1 + length + 35} 
+                ${startX + offset.x1 * zoomfact},${fy + offset.y1 + length + 35}"
+        fill="none" 
+        stroke="${lineColor}" 
+        stroke-width="${strokewidth}" 
+        stroke-dasharray="${strokeDash}" 
+    />`;
+    }
     return str;
 }
 
