@@ -834,13 +834,15 @@ function returnedAccess(data) {
 
 //excuted onclick button for quick searching in table
 function keyUpSearch() {
-	$('#searchinput').keyup(function () {
+	document.getElementById('searchinput').addEventListener('keyup',function(){
 		var val = this.value.trim().replace(/ +/g, ' ').toLowerCase();
-		$('#accesstable_body tr').show().filter(function () {
-			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-			return !~text.indexOf(val);
-		}).hide();
-	});
+
+		document.querySelectorAll('#accesstable_body tr').forEach(function(row) {
+			var text = row.textContent.replace(/\s+/g, ' ').toLowerCase();
+			row.style.display = !~text.indexOf(val) ? 'none' : '';
+		});
+		
+	}); 
 }
 
 // onclick for group dropdown
