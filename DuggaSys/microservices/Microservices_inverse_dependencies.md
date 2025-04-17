@@ -255,12 +255,16 @@ No inverse dependencies.
     Replaced with readUserDuggaFeedback_ms.php
 
 ### readCourseGroupsAndMembers
+No inverse dependencies.
 
 ### readCourseVersions
+- ..\sectionedService\retrieveSectionedService_ms.php
 
 ### readGroupValues
+No inverse dependencies.
 
 ### readUserDuggaFeedback
+No inverse dependencies.
 
 ### removeListEntries
 
@@ -276,6 +280,7 @@ No inverse dependencies.
 ### updateActiveCourseVersion_sectioned
 (no inverse dependencies found)
 
+
 ### updateCourseVersion_sectioned
 
 ### updateListEntries
@@ -283,14 +288,17 @@ No inverse dependencies.
 
 
 ### updateListEntriesGradesystem
+No inverse dependencies.
 
 ### updateListEntriesTabs
 No inverse dependencies.
 
 
 ### updateListEntryOrder
+No inverse dependencies.
 
 ### updateQuizDeadline
+No inverse dependencies.
 
 ### updateVisibleListEntries
 No dependencies found.
