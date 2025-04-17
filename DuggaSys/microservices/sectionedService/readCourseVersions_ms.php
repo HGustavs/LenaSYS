@@ -12,6 +12,9 @@ include_once "../sharedMicroservices/getUid_ms.php";
 // Connect to database and start session
 pdoConnect();
 
+header('Content-Type: application/json');
+// For echo 
+
 // Fetch all course versions
 $versions = array();
 try {
