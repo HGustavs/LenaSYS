@@ -169,8 +169,10 @@ This is a list of all inverse dependencies of files in the gitCommitService fold
 ### refreshCheck
 
 ### refreshGithubRepo
+No inverse dependencies.
 
 ### retrieveGitCommitService
+No inverse dependencies.
 
 ## gitFetchService
 
