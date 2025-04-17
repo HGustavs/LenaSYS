@@ -173,8 +173,10 @@ No inverse dependencies.
 ### refreshCheck
 
 ### refreshGithubRepo
+No inverse dependencies.
 
 ### retrieveGitCommitService
+No inverse dependencies.
 
 ## gitFetchService
 
