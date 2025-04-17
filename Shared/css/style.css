@@ -4127,9 +4127,12 @@ div.submit-button:disabled {
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: var(--color-background-2);
+  background-color: var(--color-sectioned-table-hi);
 }
 
+.list tbody tr:nth-child(even) {
+  background-color: var(--color-sectioned-table-lo);
+}
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
