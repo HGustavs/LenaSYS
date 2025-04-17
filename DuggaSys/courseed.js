@@ -121,7 +121,6 @@ function updateCourse() {
 		})
 		.catch(error => {
 			console.error("Fetch error:", error);
-			dataCheck = false;
 		});
 	function handleError(status, errorData) {
 		switch (status) {
@@ -137,7 +136,6 @@ function updateCourse() {
 			default:
 				toast("error", "Something went wrong with updating git token and git URL...", 7);
 		}
-		dataCheck = false;
 	}
 }
 	
@@ -198,70 +196,92 @@ function createNewCourse() {
 	}
 	setTimeout("location.reload()", 200) // refreshes the page after 0.2 seconds
 }
-//CONTINUE FROM HERE
+
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
+//Rewritten with XMLHttpRequest instead of fetch since fetch would not be able to return true/false without changing all calling implementations
+//Rewrite it if I am just dumb.
 function fetchGitHubRepo(gitHubURL) {
 	//Remove .git, if it exists
-	regexURL = gitHubURL.replace(/.git$/, "");
-	//Used to return success(true) or error(false) to the calling function
+	const regexURL = gitHubURL.replace(/.git$/, "");
 	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "gitfetchService.php",
-		type: "POST",
-		data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' },
-		success: function () {
+
+	const xhr = new XMLHttpRequest();
+	xhr.open("POST", "gitfetchService.php", false);  //Synchronous
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	const body = `githubURL=${encodeURIComponent(regexURL)}&action=getNewCourseGitHub`;
+
+	//Used to return success(true) or error(false) to the calling function
+	try {
+		xhr.send(body);
+
+		if (xhr.status === 200) {
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
-		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				default:
-					toast("error", "Something went wrong...", 7);
-			}
-			dataCheck = false;
+		} else {
+			throw xhr;
 		}
-	});
+	} catch (error) {
+		let responseData = {};
+		try {
+			responseData = JSON.parse(error.responseText);
+		} catch (e) {
+			//Default
+		}
+
+		switch (error.status) {
+			//Check FetchGithubRepo for the meaning of the error code.
+			case 422:
+				toast("error", (responseData.message || "Unprocessable entity") + "\nDid not create/update course", 7);
+				break;
+			case 503:
+				toast("error", (responseData.message || "Service unavailable") + "\nDid not create/update course", 7);
+				break;
+			default:
+				toast("error", "Something went wrong...", 7);
+		}
+		dataCheck = false;
+	}
 	return dataCheck;
 }
 
+
 //Send valid GitHub-URL to PHP-script which gets and saves the latest commit in the sqllite db
-function fetchLatestCommit(gitHubURL) {
+async function fetchLatestCommit(gitHubURL) {
 	//Used to return success(true) or error(false) to the calling function
 	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: { 'githubURL': gitHubURL, 'action': 'getCourseID' },
-		success: function () {
+	try {
+		const response = await fetch("../DuggaSys/gitcommitService.php", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: new URLSearchParams({
+				'githubURL': gitHubURL,
+				'action': 'getCourseID'
+			})
+		});
+		if (response.ok) {
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
-		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				default:
-					toast("error", "Something went wrong...", 7);
-			}
-			dataCheck = false;
+		} else {
+			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
-	});
+	} catch (error) {
+		console.error("Error fetching latest commit:", error);
+
+		//Check FetchGithubRepo for the meaning of the error code.
+		if (error.message.includes('422')) {
+			toast("error", "422 Error: Did not create/update course", 7);
+		} else if (error.message.includes('503')) {
+			toast("error", "503 Error: Did not create/update course", 7);
+		} else {
+			toast("error", "Something went wrong...", 7);
+		}
+		dataCheck = false;
+	}
 	return dataCheck;
 }
+
 
 //Send new Github URL and course id to PHP-script which gets and saves the latest commit in the sqllite db
 function updateGithubRepo(githubURL, cid) {
