@@ -84,6 +84,7 @@ if (!$query->execute()) {
 }
 
 if ($makeactive == 3) {
+    header("Content-Type: application/json");
     //set url for setAsActiveCourse.php path
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";

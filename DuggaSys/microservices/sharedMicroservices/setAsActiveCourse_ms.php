@@ -7,8 +7,6 @@ include_once "../Shared/sessions.php";
 pdoConnect();
 session_start();
 
-header("Content-Type: application/json");
-
 //get values from post
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isset($_POST['cid'], $_POST['versid'])) {
