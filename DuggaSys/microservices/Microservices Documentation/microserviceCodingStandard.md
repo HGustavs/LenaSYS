@@ -4,6 +4,7 @@ Do this
 
 ## retrieving data: GET
 
+### Calling function 
 the place where you are retrieving data needs to use curl to call the php file.
 In this case, it is _readCourseVersion_ that gives you the data for _$versions_.
 
@@ -47,6 +48,8 @@ The microservice should return JSON. We decode it into a PHP associative array:
 $data = json_decode($response, true);
 ```
 
+
+### Recieving function
 
 You need to check if the microservice you are calling have something
 like this at the bottom:
