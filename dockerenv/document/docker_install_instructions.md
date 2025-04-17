@@ -63,5 +63,5 @@ When you have installed your Docker desktop, then you can run Docker containers,
 
 
 ### Using linux or mac?
-Make sure you set the appropriate file permissions for LenaSYS. The easisest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
-After chaning the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
+Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
+After changing the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
