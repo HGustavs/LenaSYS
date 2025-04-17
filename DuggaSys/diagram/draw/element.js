@@ -112,6 +112,7 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
+            zLevel = 3;
             break;
         case elementTypesNames.sequenceLoopOrAlt:
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
@@ -900,4 +901,3 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     }
     return drawSvg(boxw, boxh + texth * length, content);
 }
-
