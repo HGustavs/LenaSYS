@@ -22,20 +22,20 @@ function drawLine(line, targetGhost = false) {
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
-    
+
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
-    if (line.kind === lineKind.RECURSIVE){
+    if (line.kind === lineKind.RECURSIVE) {
 
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
         [fx, fy, tx, ty, offset] = [fx, fy, fx, fy, offset];
     }
-    else{
+    else {
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
     }
-    
+
     // Follows the cursor while drawing the line
-    if (isCurrentlyDrawing){
+    if (isCurrentlyDrawing) {
         tx = event.clientX;
         ty = event.clientY;
     }
@@ -50,16 +50,16 @@ function drawLine(line, targetGhost = false) {
         const fromOffsetIncrease = (line.fromOffsetIndex - (line.fromNumberOfLines - 1) / 2) * lineSpacing;
         if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
             offset.x1 += fromOffsetIncrease;
-        }else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+        } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
             offset.y1 += fromOffsetIncrease;
         }
     }
 
-    if ("toOffsetIndex" in line  && "toNumberOfLines" in line) {
+    if ("toOffsetIndex" in line && "toNumberOfLines" in line) {
         const toOffsetIncrease = (line.toOffsetIndex - (line.toNumberOfLines - 1) / 2) * lineSpacing;
         if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
             offset.x2 += toOffsetIncrease;
-        }else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+        } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
             offset.y2 += toOffsetIncrease;
         }
     }
@@ -83,7 +83,7 @@ function drawLine(line, targetGhost = false) {
             let len = Math.sqrt((dx * dx) + (dy * dy));
             dy /= len;
             dx /= len;
-            
+
             const double = (a, b) => {
                 return `<line 
                 id='${line.id}-${b}' 
@@ -104,17 +104,17 @@ function drawLine(line, targetGhost = false) {
 
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             //UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
-            if(telem.kind === elementTypesNames.UMLFinalState) { 
+            if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.y2 = -4 + 3 / zoomfact;
                 offset.x2 = 0;
-            //Special offset for SD entity telem, since it can be both felem and telem. UMLInitialState can only be felem and doesn't utilize x2 or y2
+                //Special offset for SD entity telem, since it can be both felem and telem. UMLInitialState can only be felem and doesn't utilize x2 or y2
             } else if (telem.kind === elementTypesNames.SDEntity) {
                 offset.y2 = -15;
             } else { offset.y2 = 0; } //Aligning line with mouse coordinate before telem has been set
             offset.y1 = 15;
 
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
-            if(telem.kind === elementTypesNames.UMLFinalState) {
+            if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.y2 = 3;
                 offset.x2 = 0;
             } else if (telem.kind === elementTypesNames.SDEntity) {
@@ -124,7 +124,7 @@ function drawLine(line, targetGhost = false) {
 
 
         } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
-            if(telem.kind === elementTypesNames.UMLFinalState) {
+            if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.x2 = 1 / zoomfact;
                 offset.y2 = 0;
             } else if (telem.kind === elementTypesNames.SDEntity) {
@@ -132,9 +132,9 @@ function drawLine(line, targetGhost = false) {
             } else { offset.x2 = 0; }
             offset.x1 = 15;
 
-            
+
         } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
-            if(telem.kind === elementTypesNames.UMLFinalState) {
+            if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.x2 = 1 / zoomfact;
                 offset.y2 = 0;
             } else if (telem.kind === elementTypesNames.SDEntity) {
@@ -157,16 +157,16 @@ function drawLine(line, targetGhost = false) {
             str += drawRecursive(fx, fy, offset, line, lineColor, strokewidth, strokeDash);
             str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
-        else{
+        else {
             str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
-        
+
     }
     str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
-    if (line.kind === lineKind.RECURSIVE){
+    if (line.kind === lineKind.RECURSIVE) {
         str += drawLineIcon(line.endIcon, line.ctype, tx, ty + 40 * zoomfact, lineColor, line);
     }
-    else{
+    else {
         str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
     }
     // Always allow arrowheads to render if icon is ARROW
@@ -210,8 +210,8 @@ function drawLine(line, targetGhost = false) {
 
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
-                fx += offset.x1;
-                fy += offset.y1;
+            fx += offset.x1;
+            fy += offset.y1;
             str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true);
         }
         if (line.endLabel && line.endLabel != '') {
@@ -358,10 +358,10 @@ function drawLine(line, targetGhost = false) {
 function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
     if (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) {
         ay = elem.cy;
-        ax = isFirst? elem.x1 : elem.x2;
+        ax = isFirst ? elem.x1 : elem.x2;
     } else if (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) {
         ax = elem.cx;
-        ay = isFirst? elem.y1 : elem.y2;
+        ay = isFirst ? elem.y1 : elem.y2;
     }
     if (isFirst) {
         elem.recursivePos = 0;
@@ -399,7 +399,7 @@ function getLineAttrubutes(f, t, ctype) {
     const px = -1; // Don't touch
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
 
-    switch (ctype) { 
+    switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
@@ -411,18 +411,18 @@ function getLineAttrubutes(f, t, ctype) {
             return [f.cx, f.y2, t.cx, t.y1, offset];
 
         case lineDirection.LEFT:
-            offset.x1 = -px;          
-            offset.x2 = px * 2;       
+            offset.x1 = -px;
+            offset.x2 = px * 2;
             return [f.x1, f.cy, t.x2, t.cy, offset];
 
         case lineDirection.RIGHT:
-            offset.x1 = px;           
-            offset.x2 = -px * 2;      
+            offset.x1 = px;
+            offset.x2 = -px * 2;
             return [f.x2, f.cy, t.x1, t.cy, offset];
     }
 }
 
- 
+
 /**
  * @description Draw the label for the line.
  * @param {Object} line The line object for the label to be drawn.
@@ -604,10 +604,10 @@ function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, str
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
     return `<polyline id="${line.id}"
     points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
-                points="${fx + offset.x1 },${fy + offset.y1 } 
-                        ${fx + offset.x1 + 40 },${fy + offset.y1} 
-                        ${fx + offset.x1 + 40 },${fy + offset.y1 + 40 } 
-                        ${fx + offset.x1 },${fy + offset.y1 + 40 }"
+                points="${fx + offset.x1},${fy + offset.y1} 
+                        ${fx + offset.x1 + 40},${fy + offset.y1} 
+                        ${fx + offset.x1 + 40},${fy + offset.y1 + 40} 
+                        ${fx + offset.x1},${fy + offset.y1 + 40}"
                 fill="none" 
                 stroke="${lineColor}" stroke-width="${strokewidth}" stroke-dasharray="${strokeDash}" 
             />`;
@@ -668,8 +668,8 @@ function drawLineIcon(icon, ctype, x, y, lineColor, line) {
         case UMLLineIcons.BLACKDIAMOND:
             str += iconPoly(DIAMOND[ctype], x, y, lineColor, color.BLACK);
             break
-      
-            
+
+
     }
     return str;
 }
@@ -720,7 +720,7 @@ function iconPoly(arr, x, y, lineColor, fill) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
         const [a, b] = arr[i];
-        s += `${x + a * zoomfact} ${y + b * zoomfact}, `;
+        s += `${x + a * zoomfact} ${y + b * zoomfact} `;
     }
     return `<polyline 
                 points='${s}' 
@@ -770,11 +770,11 @@ function rotateArrowPoint(base, point, clockwise) {
 
     // Rotate the point around the base
     return {
-            x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
-            y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
-        };
+        x: base.x + (dx * Math.cos(direction * angle) - dy * Math.sin(direction * angle)),
+        y: base.y + (dx * Math.sin(direction * angle) + dy * Math.cos(direction * angle))
+    };
 }
-     
+
 /**
  * @description Draw the arraow head for the line.
  * @param {Point} base The start x and y coordinate.
@@ -784,7 +784,7 @@ function rotateArrowPoint(base, point, clockwise) {
  * @returns Returns a polygon for the arrow head.
  */
 function drawArrowPoint(base, point, lineColor, strokeWidth) {
-  
+
     const size = 10 * zoomfact; // arrow size
     const angle = Math.atan2(point.y - base.y, point.x - base.x);
 
@@ -830,7 +830,7 @@ function redrawArrows() {
         sortElementAssociations(data[i]);
     }
     //Going through all elements and checking for adjacent lines
-    for (let i = 0; i < data.length; i++){
+    for (let i = 0; i < data.length; i++) {
         checkAdjacentLines(data[i]);
     }
     // Draw each line using sorted line ends when applicable
@@ -944,7 +944,7 @@ function sortElementAssociations(element) {
  * @param {Object} element diagram entity 
  */
 function checkAdjacentLines(element) {
- 
+
     try {
         ['top', 'bottom', 'right', 'left'].forEach(side => {
             const linesOfTargetSide = element[side];
@@ -955,46 +955,47 @@ function checkAdjacentLines(element) {
                 if (lineIdIndex === -1) { // Check if the line exists in the lines array.
                     return false;
                 }
-                const lineObject = lines[lineIdIndex]; 
+                const lineObject = lines[lineIdIndex];
                 if (lineObject.ghostLine || lineObject.targetGhost) { //To keep ghostlines active
                     return lineObject.kind === lineKind.NORMAL;
                 }
                 return lineObject.kind !== lineKind.RECURSIVE;
             });
-    
 
-            
-            if (filteredLines.length > 1) {           
+
+
+            if (filteredLines.length > 1) {
                 filteredLines.forEach((lineID, index) => {
                     const lineIndex = findIndex(lines, lineID);
-                    if (lineIndex === -1){
-                        return; } 
+                    if (lineIndex === -1) {
+                        return;
+                    }
                     const lineObject = lines[lineIndex];
-                    
+
                     //Different offset dependant on if the line is going to or coming from a element.
                     //This file is triggered multiple times, as such both if and else if will get done fast.
                     if (lineObject.fromID === element.id) {
                         lineObject.fromOffsetIndex = index;
                         lineObject.fromNumberOfLines = filteredLines.length;
-                        
+
                     } else if (lineObject.toID === element.id) {
                         lineObject.toOffsetIndex = index;
-                        lineObject.toNumberOfLines = filteredLines.length;     
+                        lineObject.toNumberOfLines = filteredLines.length;
                     }
                 });
-            //Reverts the offset if lines are removed
-            }else if (filteredLines.length == 1) {
+                //Reverts the offset if lines are removed
+            } else if (filteredLines.length == 1) {
                 const lineIdIndex = findIndex(lines, filteredLines[0]);
-                const lineObject = lines[lineIdIndex]; 
+                const lineObject = lines[lineIdIndex];
 
                 if (lineObject.fromID === element.id) {
-                      lineObject.fromOffsetIndex = 0
-                      lineObject.fromNumberOfLines = 1              
-                }else if (lineObject.toID === element.id) {
+                    lineObject.fromOffsetIndex = 0
+                    lineObject.fromNumberOfLines = 1
+                } else if (lineObject.toID === element.id) {
                     lineObject.toOffsetIndex = 0
                     lineObject.toNumberOfLines = 1;
                 }
-                
+
             }
         });
     } catch (error) {
