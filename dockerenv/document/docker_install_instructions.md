@@ -69,7 +69,7 @@ When you have installed your Docker desktop, then you can run Docker containers,
 2. If you go back to Docker desktop and go to containers, and here you can see three containers are not running, because there are no green-circles. Now containers are not running.
 ![Not running containers](containersdeactive.png "Not running containers") 
 
-## Remove containers in Docker
+## Remove containers and images in Docker
 
 1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
 
@@ -79,8 +79,11 @@ When you have installed your Docker desktop, then you can run Docker containers,
 3. Now your terminal says removed which means containers are removed.
 ![Removed containers](terminal8.png "Removed containers") 
 
-4. You can check in Docker desktop and press containers. Here you can see that all containers are gone and now you have successful removed all containers.
+4. You can check in Docker desktop and press containers. Here you can see that all containers are gone.
 ![Removed containers in docker desktop](dockerContainers2.png "Removed containers in docker desktop")
+
+5. To remove all images to free upp space, you need to press images in Docker desktop and select all checkboxes. When all selected, then press `Delete`-button and it will show a pop-upp if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
+![Remove images in docker desktop](dockerimages.png "Remove images in docker desktop")
 
 ### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
