@@ -279,7 +279,7 @@ p {
 
 #content {
   background: var(--color-background);
-  margin: 5px 10px 15px 10px;
+  margin: 5px 0px 15px 0px;
 }
 
 #accessedcontent {
@@ -860,7 +860,6 @@ p {
   cursor: pointer;
 }
 
-
 .item {
   /*padding-top: 4px;*/
   min-height: 30px;
@@ -873,7 +872,11 @@ p {
   & .view-label {
     display: none;
   }
-
+  
+  #SectionList {
+    margin: 10px 0;
+  }
+  
   .item {
     font-size: 10pt;
   }
@@ -1348,8 +1351,58 @@ p {
 #Sectionlistc {
   /* Move up later*/
   display: block;
+
+  --rowHeight: 3rem;
+
+  & table {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  & .courseRow {
+    background-color: var(--color-sectioned-table-hi);
+    height: var(--rowHeight);
+    
+    & td {
+      font-size: 1.5rem;
+      line-height: var(--rowHeight); /*Suboptimal solution because display:flex breaks the site*/
+    }
+
+    &:first-child {
+      height: fit-content;
+    }
+    
+    &:nth-child(odd) {
+      background-color: var(--color-sectioned-table-lo);
+    }
+  }
+
+  & .courseRow:hover {
+    background-color: var(--color-background-2);
+    cursor: pointer;
+  }
+
+  @media screen and (max-width : 570px) {
+    --adjustedRowHeight: calc(var(--rowHeight) - 1.5rem)
+
+    display: block;
+
+    & div {
+      margin: 0;
+    }
+    
+    & .courseRow {   
+      height: var(--adjustedRowHeight);
+
+      & td {
+        font-size: 1rem;
+        line-height: var(--adjustedRowHeight);
+      }
+    }
+  }
 }
 
+/*TODO: Clean up section classes? */
 /* Sectionlistc */
 .sectionlistCMargin {
   margin-top: 30px;
@@ -1373,9 +1426,9 @@ p {
  }
 
  .sectionlistCWidth {
-  width: calc(100% - 30px);
-  margin-left: auto;
-  margin-right: auto;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
  }
 
 
