@@ -205,10 +205,10 @@
             "time": 1681378942204,
             "type": "UML",
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1-M",
-            "endIcon": "1"
+            "startLabel": "1..*",
+            "endLabel": "1",
+            "startIcon": "",
+            "endIcon": ""
         },
         {
             "id": "9CEAE6",
@@ -234,10 +234,10 @@
             "toID": "43B2A1",
             "time": 1681386571413,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1-M",
-            "endIcon": "0-M",
+            "startLabel": "1..*",
+            "endLabel": "0..*",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -246,10 +246,10 @@
             "toID": "AB934A",
             "time": 1681386660414,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1",
-            "endIcon": "1-M",
+            "startLabel": "1",
+            "endLabel": "1..*",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -258,10 +258,10 @@
             "toID": "4C558A",
             "time": 1681386667223,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1",
-            "endIcon": "1-M",
+            "startLabel": "1",
+            "endLabel": "1..*",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -291,10 +291,10 @@
             "toID": "AB934A",
             "time": 1681386839026,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1-M",
-            "endIcon": "1",
+            "startLabel": "1..*",
+            "endLabel": "1",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -303,10 +303,10 @@
             "toID": "2145F3",
             "time": 1681386870516,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1-M",
-            "endIcon": "0-M",
+            "startLabel": "1..*",
+            "endLabel": "0..*",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -315,10 +315,10 @@
             "toID": "447B19",
             "time": 1681386889226,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1",
-            "endIcon": "0-M",
+            "startLabel": "1",
+            "endLabel": "0..*",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -327,10 +327,10 @@
             "toID": "2145F3",
             "time": 1681386896841,
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1",
-            "endIcon": "0-M",
+            "startLabel": "1",
+            "endLabel": "0..*",
+            "startIcon": "",
+            "endIcon": "",
             "type": "UML"
         },
         {
@@ -340,10 +340,10 @@
             "time": 1681386961327,
             "type": "UML",
             "label": "",
-            "startLabel": "",
-            "endLabel": "",
-            "startIcon": "1",
-            "endIcon": "0-M"
+            "startLabel": "1",
+            "endLabel": "0..*",
+            "startIcon": "",
+            "endIcon": ""
         }
     ]
 }
