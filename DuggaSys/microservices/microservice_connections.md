@@ -755,34 +755,83 @@ action- getNewCourseGitHub
 -----------------------------------------------------------------------------------------------
 # Name of file/service
 
+sectioned.js
+Function: updateSelectDir
+
 ## Description
 *Description of what the service do and its function in the system.*
+
+The function updates the selected directory for a course. 
 
 ## Input Parameters
 *Parameters will be described in tables for easier readability*
 
 | Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+
+| :selectedDir | :string | :The directory selected by the user |
+| :cid | :string | :The course ID provided from server |
 
 ## Calling Methods
-
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
 *Output Data will be described in tables for easier readability*
 
 | Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+
+| :status | :string | :success if update went well, else, error message |
+| :message | :string | :optional error message |
+
 
 ## Examples of Use
-`CODE`
+`function updateSelectedDir() {
+  var selectedDir = $('#selectDir').val();
+  $.ajax({
+    url: "./sectioned.php",
+    type: "POST",
+    data: {
+      action: "updateSelectedDir",
+      selectedDir: selectedDir,
+      cid: cidFromServer
+    },
+    success: function (data) {
+      console.log('POST-request call successful');
+      console.log("Response: ", data);
+      toast("success",'Directory has been updated succesfully',5)
+
+      // Parse the JSON response
+      var response;
+      try {
+        response = JSON.parse(data);
+      } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        return;
+      }
+
+      // Handle the response
+      //TODO:: Server is sending html response instead of JSON
+      if (response.status === "success") {
+        console.log('Update successful');
+      } else {
+        console.error('Update failed:', response.message);
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error('Update failed:', error);
+      console.log("Status: ", status);
+      console.log("Error: ", error);
+      toast("error",'Directory update failed',7)
+    }
+  });
+}`
 
 ### Microservices Used
 *Includes and microservices used*
+
+sectioned.php
+action- updateSelectedDir
+
+---------------------------------------------------------------------------------------------
 # Name of file/service
 
 ## Description
