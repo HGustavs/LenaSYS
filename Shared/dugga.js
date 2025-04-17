@@ -46,9 +46,9 @@ if(localStorage.getItem(localStorageItemKey)){
 	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 }
 
-document.querySelector(function (){ // Used to set the position of the FAB above the cookie message
+document.getElementById(function (){ // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off")
-		document.querySelector(".fixed-action-button").style.bottom="64px";
+		document.getElementById(".fixed-action-button").style.bottom="64px";
 })
 
 // Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
@@ -152,36 +152,36 @@ function toggleloginnewpass(){
 
   	//Shows the New password-box (username input)
 	if(status == 0){
-		document.getElementById("#newpassword").style.display="block";
-		document.getElementById("#formBox").stlye.display="flex";
-    	document.getElementById("#login").style.display = "none";
-		document.getElementById("#showsecurityquestion").style.display="none";
-		document.getElementById("#resetcomplete").style.display="none";
+		document.querySelector("#newpassword").style.display="block";
+		document.querySelector("#formBox").style.display="flex";
+    	document.querySelector("#login").style.display = "none";
+		document.querySelector("#showsecurityquestion").style.display="none";
+		document.querySelector("#resetcomplete").style.display="none";
 		status= 1;
 		showing= 0;
     //Shows the Login-box
 	}else if(status == 1){
-		document.getElementById("#newpassword").style.display="none";
-		document.getElementById("#login").style.display="block";
-		document.getElementById("#showsecurityquestion").style.display="none";
-		document.getElementById("#resetcomplete").style.display="none";
+		document.querySelector("#newpassword").style.display="none";
+		document.querySelector("#login").style.display="block";
+		document.querySelector("#showsecurityquestion").style.display="none";
+		document.querySelector("#resetcomplete").style.display="none";
 		status= 0;
 		showing= 1;
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
-		document.getElementById("#newpassword").style.display="none";
-		document.getElementById("#formBox").style.display="flex";
-		document.getElementById("#showsecurityquestion").style.display="block";
-		document.getElementById("#resetcomplete").style.display="none";
+		document.querySelector("#newpassword").style.display="none";
+		document.querySelector("#formBox").style.display="flex";
+		document.querySelector("#showsecurityquestion").style.display="block";
+		document.querySelector("#resetcomplete").style.display="none";
 		status= 1;
 		showing= 2;
 	}
   //Shows the Reset complete-box
 	else if(status == 3){
-		document.getElementById("#newpassword").style.display="none";
-		document.getElementById("#formBox").style.display="flex";
-		document.getElementById("#showsecurityquestion").style.display="none";
-		document.getElementById("#resetcomplete").style.display="block";
+		document.querySelector("#newpassword").style.display="none";
+		document.querySelector("#formBox").style.display="flex";
+		document.querySelector("#showsecurityquestion").style.display="none";
+		document.querySelector("#resetcomplete").style.display="block";
 		status= 1;
 		showing= 3;
 	}
@@ -189,13 +189,13 @@ function toggleloginnewpass(){
 
 // This function only resets login and forgot password fields
 function resetFields(){
-	document.getElementById("#login #username").value="";
-	document.getElementById("#login #password").value="";
+	document.querySelectorAll("#login #username").value="";
+	document.querySelectorAll("#login #password").value="";
 	//Since we need the username from this box during the answer part we cant clear it directly afterwards
 	if (status!=2){
-		document.getElementById("#newpassword #username").value="";
+		document.querySelectorAll("#newpassword #username").value="";
 	}
-	document.getElementById("#showsecurityquestion #answer").value="";
+	document.querySelectorAll("#showsecurityquestion #answer").value="";
 
   //Changes the background color back to white
 	//document.getElementByID("#formBox #username").body.style.backgroundColor="rgb(255, 255, 255)";
@@ -547,12 +547,12 @@ function closeWindows(){
 	var e;
 
 	//More effective to have a class for the div you want to search and pass that to your selector
-	document.querySelectorAll("*").forEach(function() {
+	document.querySelectorAll("*").forEach(function(e1) {
 		//Always use a radix when using parseInt
-		var index_current = parseInt(document.getElementById(this).style.zIndex="10");
-		if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
+		var index_current = parseInt(window.getComputedStyle(e1).zIndex, 10);
+		if(index_current > index_highest && e1.style.display == "block"||index_current > index_highest && e1.style.display == "flex") {
 			index_highest = index_current;
-			e=this;
+			e=e1;
 			var tempString = e.outerHTML;
 			if(tempString.includes('<div class="previewWindow"')){
 				e.style.display="none";
@@ -578,12 +578,12 @@ function closeWindows(){
 		if (index_highest < 10000) {
 			status=1;
 			//toggleloginnewpass();
-			document.getElementById("#overlay").style.display="none";
+			document.querySelector("#overlay").style.display="none";
 			resetFields();
 		}
 	}
 
-	document.querySelector(document).keyup(function(e) {
+	document.addEventListener("keyup", function(e) {
 		if (e.which == 27){
 			resetLoginStatus();
 		}
@@ -1627,15 +1627,15 @@ function addSecurityQuestionProfile(username) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
-				$("#challengeQuestion").html(result['ls-security-question']);
+				document.getElementById("#challengeQuestion").innerHTML(result['ls-security-question']);
 			}else{
 				if(typeof result.reason != "undefined") {
-					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
+					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").innerHTML("<div class='alert danger'>" + result.reason + "</div>");
 				} else {
-					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").innerHTML("<div class='alert danger'>" + result['getname']  + "</div>");
 				}
-				$("#changeChallengeQuestion #challengeQuestion").css("background-color", "rgba(255, 0, 6, 0.2)");
-				$("#changeChallengeQuestion #securityQuestionError").css("color", "rgba(255, 0, 6, 0.8)");
+				document.querySelectorAll("#changeChallengeQuestion #challengeQuestion").style.backgroundColor="rgba(255, 0, 6, 0.2)";
+				document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").style.color="rgba(255, 0, 6, 0.8)";
 			}
 		}
 	});
@@ -1790,8 +1790,8 @@ function processLogin() {
 //Displays an error text and makes login inputs flash red
 function loginFail(){
 	displayAlertText("#login #message", "Wrong username or password");
-	$("input#username").addClass("loginFail");
-	$("input#password").addClass("loginFail");
+	document.getElementById("input#username").classList.add("loginFail");
+	document.getElementById("input#password").classList.add("loginFail");
 	setTimeout(function(){
 		$("input#username").removeClass("loginFail");
 		$("input#password").removeClass("loginFail");
