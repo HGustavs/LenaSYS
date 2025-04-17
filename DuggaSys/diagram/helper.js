@@ -114,8 +114,8 @@ function entityIsOverlapping(id, x, y) {
     });
 
     for (let i = 0; i < data.length; i++) {
+        
         if (data[i].id === id) continue;
-        if (context.includes(data[i])) break;
 
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
@@ -138,7 +138,7 @@ function entityIsOverlapping(id, x, y) {
         }
 
         const x2 = data[i].x + data[i].width;
-        let y2 = data[i].y + data[i].height;
+        let y2 = data[i].y + data[i].y2 - data[i].y1;
 
         arr.forEach(entityHeights => {
             entityHeights.forEach(entity => {
@@ -172,16 +172,25 @@ function entityIsOverlapping(id, x, y) {
                 continue;
             }
         }
+
         // Default collision detection where overlapping is derived from height and width of element in a rectangle shape
-        else if (x < x2 &&
+        // Some elements doesnt have a height so the second parameter gets the height manually
+        if ((x < x2 &&
             x + element.width > data[i].x &&
             y < y2 &&
             y + eHeight > data[i].y
-        ) {
-            isOverlapping = true;
-            break;
+        )||(
+            x < x2 &&
+            x + element.width > data[i].x &&
+            y < y2 &&
+            y + element.y2 - element.y1 > data[i].y
+        ))
+        {
+            isOverlapping = true;   
         }
+
     }
+    
     return isOverlapping;
 }
 
