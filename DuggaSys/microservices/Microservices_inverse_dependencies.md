@@ -150,6 +150,7 @@ No inverse dependencies.
 No inverse dependencies. 
 
 ### updateFileLink
+No inverse dependencies.
 
 ## gitCommitService
 
@@ -469,3 +470,8 @@ This is a list of all inverse dependencies of files in the showDuggaServices fol
 ### saveDugga
 
 ### updateActiveUsers
+
+### retrieveFileedService
+[deleteFileLink_ms.php](/fileedService/deleteFileLink_ms.php) <br>
+[getFileedService_ms.php](/fileedService/getFileedService_ms.php) <br>
+[updateFileLink_ms.php](/fileedService/updateFileLink_ms.php)
