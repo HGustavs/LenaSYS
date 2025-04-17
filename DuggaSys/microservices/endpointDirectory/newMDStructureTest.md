@@ -7,13 +7,13 @@ Testing if a second line gets extracted
 Testing a third line
 
 ## Input Parameters
-- userID
-   - int
-   - This parameter is used for this
-
-- otherParam
-   - String
-   - This parameter is used for something else
+- Parameter: userID
+   - Type: int
+   - Description: This parameter is used for this
+   
+- Parameter: otherParam
+   - Type: String
+   - Description: This parameter is used for something else
 
 ## Calling Methods
 POST

@@ -48,7 +48,7 @@ foreach ($mdFiles as $mdFile) {
     // remove empty strings and lines
     $services = array_filter(array_map('trim', $services));
 
-    echo $mdFile;
+    // echo $mdFile;
 
     // loop through each microservice inside the md file
     foreach ($services as $service) {
@@ -88,9 +88,85 @@ foreach ($mdFiles as $mdFile) {
             }
         }
 
+        // store parameter information in arrays, in case there are multiple
+        $parameters = [];
+        $parameter_types = [];
+        $parameter_descriptions = [];
+
+        $inParamSection = false;
+        $currentParam = null;
+        $currentType = null;
+        $currentDesc = null;
+
+        for ($i = 0; $i < count($lines); $i++) {
+            $line = trim($lines[$i]);
+
+            // start when we reach parameter headline
+            if ($line === '## Input Parameters') {
+                $inParamSection = true;
+                continue;
+            }
+
+            // break when reaching a new section
+            if ($inParamSection && preg_match('/^## /', $line)) {
+                break;
+            }
+
+            if ($inParamSection) {
+                // save previous parameter when a new one is found
+                if (stripos($line, '- Parameter:') === 0) {
+                    if ($currentParam !== null) {
+                        $parameters[] = $currentParam;
+                        $parameter_types[] = $currentType !== null ? $currentType : '';
+                        $parameter_descriptions[] = $currentDesc !== null ? $currentDesc : '';
+                    }
+
+                    // start a new parameter
+                    $currentParam = trim(substr($line, strlen('- Parameter:')));
+                    $currentType = null;
+                    $currentDesc = null;
+                }
+
+                // type
+                if (stripos($line, '- Type:') === 0) {
+                    $currentType = trim(substr($line, strlen('- Type:')));
+                }
+
+                // description can be multiple lines
+                if (stripos($line, '- Description:') === 0) {
+                    $currentDesc = trim(substr($line, strlen('- Description:')));
+
+                    // collect more lines without modifying $i
+                    $k = $i + 1;
+                    while ($k < count($lines)) {
+                        $next = trim($lines[$k]);
+
+                        if ($next === '' || preg_match('/^[-#]/', $next)) {
+                            break;
+                        }
+
+                        $currentDesc .= ' ' . $next;
+                        $k++;
+                    }
+                }
+            }
+        }
+
+        // add last parameter after the loop
+        if ($inParamSection && $currentParam !== null) {
+            $parameters[] = $currentParam;
+            $parameter_types[] = $currentType !== null ? $currentType : '';
+            $parameter_descriptions[] = $currentDesc !== null ? $currentDesc : '';
+        }
+
+
+        // for debugging
         echo "<pre>";
         print_r($ms_name . "<br>");
         print_r($description);
+        print_r($parameters);
+        print_r($parameter_types);
+        print_r($parameter_descriptions);
         echo "</pre>";
 
         // echo "<pre>";
