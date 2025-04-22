@@ -229,8 +229,11 @@ There is no list of all inverse dependencies
 This is a list of all inverse dependencies of files in the resultedService folder.
 
 ### getUserAnswer
+No inverse dependencies.
 
 ### retrieveResultedService
+[getUserAnswer_ms.php](resultedService\getUserAnswer_ms.php)
+
 
 ## sectionedService
 
