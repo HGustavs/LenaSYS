@@ -2,7 +2,7 @@
 
 1. Press this link: [docker desktop](https://www.docker.com/products/docker-desktop/).
 
-2. In the Docker website press `Chosse plan`-button.
+2. In the Docker website press `Choose plan`-button.
 ![Docker homepage](homepage.png "Docker homepage")
 
 3. Choose Docker Personal.
@@ -26,11 +26,11 @@
 ![Docker desktop](dockerDesktop.png "Docker desktop")
 
 ## Run containers in Docker
-When you have installed your Docker desktop, then you can run Docker containers, but first you need to get a LenaSYS repository.
+When you have installed your Docker desktop, you can run Docker containers, but first you need to get a LenaSYS repository.
 
 1. Open your terminal which can be bash, powershell or command. You can also use vscode terminal. 
 
-2. When you have opened the terminal, then change directory to where you want the LenaSYS repository. To do that you need to type `cd path/to/folder`. When using Windows I typed: `cd  .\Downloads\`  if you use different OS then type: `cd <foldername>\`. 
+2. When you have opened the terminal, change directory to where you want the LenaSYS repository. To do that you need to type `cd path/to/folder`. When using Windows I typed: `cd  .\Downloads\`  if you use a different OS then type: `cd <foldername>\`. 
 ![Windows terminal](terminal.png "Windows terminal")
 
 3. When you have chosen a folder, type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for the download to finish. When done you will have the LenaSYS repository.
@@ -59,7 +59,7 @@ When you have installed your Docker desktop, then you can run Docker containers,
 
 11. Before you install the LenaSYS, it is good to know that the text-input which says `Hostname`, needs to be `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when entering root user credentials, type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
 
-12. To install the LenaSYS, you need to follow instruction [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
+12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
 
 ### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
