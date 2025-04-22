@@ -229,6 +229,20 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
 }
 
 /**
+ * @description Escapes the html which removes problematic characters and replaces them with string-character.
+ * @param {String} str String to be escaped.
+ * @returns Returns a html-free string.
+ */
+function escapeHtml(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+/**
  * @description Draw the text for the element.
  * @param {Number} x The X coordinate for the drawn text.
  * @param {Number} y The Y coordinate for the drawn text.
@@ -238,10 +252,11 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
  * @returns Returns a string containing a svg text for the element that is drawn.
  */
 function drawText(x, y, a, t, extra = '') {
+    const safeText = escapeHtml(t);
     return `<text
                 class='text' x='${x}' y='${y}' 
                 dominant-baseline='auto' text-anchor='${a}' ${extra}
-            > ${t} </text>`;
+            > ${safeText} </text>`;
 }
 
 /**
