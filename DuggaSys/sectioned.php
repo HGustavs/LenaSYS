@@ -386,6 +386,7 @@
 				</div>
 			</div>
 		</div>
+
 	<!-- Edit Section Dialog END -->
 
 	<!-- Confirm Section Dialog START -->
@@ -402,7 +403,8 @@
 			<div id="deleteBtnPlacement" class="formFooter" ></div>
 		</div>
 	</div>
-	
+
+	<!-- React confirm delete item START -->
 	<script type="text/babel">
 		function ConfirmButtons() {
 			return (
@@ -414,6 +416,7 @@
 		}
 		ReactDOM.createRoot(document.getElementById('deleteBtnPlacement')).render(<ConfirmButtons />)
 	</script>
+	<!-- React confirm delete item END -->
 	<!-- Confirm Section Dialog END -->
 
 	<!-- Canvas Link Dialog -->
