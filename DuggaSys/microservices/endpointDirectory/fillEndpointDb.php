@@ -183,6 +183,48 @@ foreach ($mdFiles as $mdFile) {
             }
         }
 
+        $output = '';
+        $output_type = '';
+        $output_description = '';
+
+        for ($i = 0; $i < count($lines); $i++) {
+            $line = trim($lines[$i]);
+
+            // when reaching output headline
+            if ($line === "## Output Data and Format") {
+                for ($j = $i + 1; $j < count($lines); $j++) {
+                    $next = trim($lines[$j]);
+
+                    // break if new section
+                    if ($next === '' || preg_match('/^## /', $next)) {
+                        break;
+                    }
+
+                    if (stripos($next, '- Output:') === 0) {
+                        $output = trim(substr($next, strlen('- Output:')));
+                    }
+
+                    if (stripos($next, '- Type:') === 0) {
+                        $output_type = trim(substr($next, strlen('- Type:')));
+                    }
+
+                    if (stripos($next, '- Description:') === 0) {
+                        $output_description = trim(substr($next, strlen('- Description:')));
+
+                        // check if description has multiple lines
+                        for ($k = $j + 1; $k < count($lines); $k++) {
+                            $lineAfter = trim($lines[$k]);
+                            if ($lineAfter === '' || preg_match('/^[-#]/', $lineAfter)) {
+                                break;
+                            }
+                            $output_description .= ' ' . $lineAfter;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
 
         // for debugging
         echo "<pre>";
@@ -191,7 +233,10 @@ foreach ($mdFiles as $mdFile) {
         print_r($parameters);
         print_r($parameter_types);
         print_r($parameter_descriptions);
-        print_r($calling_methods);
+        print_r($calling_methods . "<br>");
+        print_r($output . "<br>");
+        print_r($output_type . "<br>");
+        print_r($output_description . "<br>");
         echo "</pre>";
 
         // echo "<pre>";
