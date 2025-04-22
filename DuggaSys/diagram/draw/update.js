@@ -254,7 +254,7 @@ function updateA4Size() {
     const scaleFactor = a4Width * zoomfact * settings.grid.a4SizeFactor / 210; 
     
     // Apply the scale factor to the font size of the text
-    const fontSize = 32; 
+    const fontSize = 14; 
     const newFontSize = fontSize * scaleFactor; 
 
     // Apply the new font size to the text
