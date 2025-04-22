@@ -112,8 +112,7 @@ function returned(data)
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
 			toast("warning","A template has not been chosen for this example. Please choose one.",10);
-			document.getElementById("chooseTemplateContainer").style.display = "flex";
-			return;
+			$("#chooseTemplateContainer").css("display", "flex");			return;
 		} else {
 			toast("error","The administrator of this code example has not yet chosen a template.", 10);
 			return;
@@ -208,7 +207,7 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	if (document.getElementById("fileedButton")) {
+	if ($('#fileedButton').length) {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
@@ -258,7 +257,7 @@ function returned(data)
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
 	// Clear div2
-	document.getElementById("div2").innerHTML = "";
+	$("#div2").html("");
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -283,7 +282,7 @@ function returned(data)
 		var boxmenuheight = 0;
 
 		// don't create templatebox if it already exists
-		if (document.getElementById(contentid) === null) {
+		if ($("#" + contentid).length == 0) {
 			addTemplatebox(contentid);
 		}
 
@@ -298,10 +297,10 @@ function returned(data)
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
-			if (document.getElementById(contentid + "menu").offsetHeight == null) {
+			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
 			} else {
-				boxmenuheight = document.getElementById(contentid + "menu").offsetHeight;
+				boxmenuheight =  $("#" + contentid + "menu").height();
 			}
 			document.getElementById(contentid).style.marginTop = (boxmenuheight - 1) + "px";
 			// Indentation fix of content
@@ -311,7 +310,7 @@ function returned(data)
 			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
 
 			// set font size
-			document.getElementById("#box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
+			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
@@ -347,21 +346,21 @@ function returned(data)
 			desc = desc.replace(/\&\#42\;/g, "*");
 
 			/* Assign Content */
-			document.getElementById(contentid).innerHTML = desc;
-			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
+			$("#" + contentid).html(desc);
+ 			$("#" + contentid).css("margin-top", boxmenuheight);
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
-			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
+			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
 
 			// Make room for the menu by setting padding-top equals to height of menubox
-			if (document.getElementById(contentid + "menu") === null || document.getElementById(contentid + "menu").offsetHeight === 0) {
+			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
 			} else {
-				boxmenuheight = document.getElementById(contentid + "menu").offsetHeight;
+				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
-
+			$("#" + contentid).css("margin-top", boxmenuheight);
+			
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 			
@@ -389,37 +388,34 @@ function returned(data)
 				previewLink = previewLink.replace("https://", "http://");
 			}
 
-			document.getElementById("box" + boxid).innerHTML = "<iframe src='" + previewLink + "'></iframe>";
-			if (document.getElementById(contentid + "menu")?.offsetHeight == 0) {
+			$("#box" + boxid).html("<iframe src='" + previewLink + "'></iframe>");
+
+			if ($("#" + contentid + "menu").height() == null) {
 				boxmenuheight = 0;
 			} else {
-				boxmenuheight = document.getElementById(contentid + "menu").offsetHeight;
-
+				boxmenuheight = $("#" + contentid + "menu").height();
 			}
-			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
+			$("#" + contentid).css("margin-top", boxmenuheight);
 
 		} else if (boxtype == "NOT DEFINED") {
 			if (retData['writeaccess'] == "w") {
 				createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 				// Make room for the menu by setting padding-top equals to height of menubox
-				if (document.getElementById(contentid + "menu").offsetHeight == 0) {
+				if ($("#" + contentid + "menu").height() == null) {
 					boxmenuheight = 0;
 				} else {
-					boxmenuheight = document.getElementById(contentid + "menu")?.offsetHeight;
+					boxmenuheight = $("#" + contentid + "menu").height();
 				}
-				document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
-			}
+				$("#" + contentid).css("margin-top", boxmenuheight);			}
 		}
 	}
 	// Add all drop zones
 	if (retData['writeaccess'] == "w") {
 		initFileDropZones();
 	} else {
-		document.querySelectorAll('.codebox').forEach(function(element) {
-			element.querySelectorAll('*').forEach(function(child) {
-				child.classList.add('unselectable');
-				});
-			});
+		$('.codebox').each(function() {
+			$(this).find('*').addClass('unselectable');
+		});
 	}
 
 	var ranges = getBlockRanges(allBlocks);
@@ -647,21 +643,19 @@ function editImpWords(editType)
 	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
 		var exists = false;
 		// Checks if the word already exists as an option in the selectbox
-		const options = document.querySelectorAll("#impwords option");
-	let exist = false;
-	options.forEach(option => {
-		if(option.value === word){
-			exist = true;
-		}
+		$('#impwords option').each(function () {
+			if (this.value == word) {
+				exists = true;
+			}
 		});
 		if (exists == false) {
-			document.getElementById("impwords").innerHTML += '<option>' + word + '</option>';
+			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
 			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
 	} else if (editType == "-") {
-		const word = document.querySelector("#impwords").value;
-		removedWords.push(word);
+		word = $('option:selected', "#impwords").text();
+		$('option:selected', "#impwords").remove();		removedWords.push(word);
 	}
 	
 	
@@ -673,17 +667,8 @@ function editImpWords(editType)
 //----------------------------------------------------------------------------------
 
 function displayEditExample() {
-	document.getElementById("title").value = (function() {
-		var textarea = document.createElement('textarea');
-		textarea.innerHTML = retData['examplename'];
-		return textarea.value;
-	})();  	  
-	
-	document.getElementById("secttitle").value = (function() {
-		var textarea = document.createElement('textarea');
-		textarea.innerHTML = retData['sectionname'];
-		return textarea.value;
-	})();
+	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
+	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
 	
 	changeDirectory(document.getElementById("boxcontent"));
 	document.getElementById("playlink").value = retData['playlink'];
