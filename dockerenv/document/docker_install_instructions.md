@@ -22,7 +22,7 @@
 
 8. When you have selected OS and installed the installer according to your OS, follow the installer and then open a Docker desktop program/app.
 
-9. Congratulations, now you have installed the Docker desktop! If account doesn't appear in Docker desktop, then sign in your GitHub account.
+9. Congratulations, you have installed the Docker desktop! If account doesn't appear in Docker desktop, then sign in your GitHub account.
 ![Docker desktop](dockerDesktop.png "Docker desktop")
 
 ## Run containers in Docker
