@@ -169,8 +169,10 @@ No inverse dependencies.
 - gitCommitService/getCourseID_ms.php
 
 ### newUpdateTime
+(no inverse dependencies found)
 
 ### refreshCheck
+(no inverse dependencies found)
 
 ### refreshGithubRepo
 No inverse dependencies.
