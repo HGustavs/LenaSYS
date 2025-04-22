@@ -484,8 +484,10 @@ This is a list of all inverse dependencies of files in the showDuggaServices fol
 ### retrieveShowDuggaService
 
 ### saveDugga
+No inverse dependencies
 
 ### updateActiveUsers
+No inverse dependencies
 
 ### retrieveFileedService
 [deleteFileLink_ms.php](/fileedService/deleteFileLink_ms.php) <br>
