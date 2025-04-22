@@ -658,23 +658,12 @@ function confirmBox(operation, item = null) {
   let retrievedItemType;
 
   if (operation == "openConfirmBox") {
-    
-    retrievedItemType = item ? item.closest('tr').getAttribute('value'): null;
     active_lid = item ? item.closest('table').getAttribute('value') : null
-    
-    console.log('what is value of item parent?: ' + item.closest('tr').getAttribute('value'));
-    
-    if(retrievedItemType != "code" && selectedItemList.length == 0){
-      markedItems(item)
+   
+    if(selectedItemList.length == 0){
+      //markedItems(item);
+      //selectedItemList.push(active_lid);
     }
-    else if(selectedItemList.length == 0){
-      selectedItemList.push(active_lid);
-    }
-
-    console.log('(configuration box) itemType: ' + retrievedItemType );
-    console.log('selected item list: ' + selectedItemList)
-    console.log('active lid: ' + active_lid)
-
     document.getElementById("sectionConfirmBox").style.display = "flex";
   } 
   else if (operation == "openHideConfirmBox") {
@@ -2018,23 +2007,26 @@ function returnedSection(data) {
         
         // Trashcan for items
         if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"General trashcan clicked!\"  + this); confirmBox(\"openConfirmBox\", this); '>`;
-          str += "</td>";  
-          //onclick='confirmBox(\"openConfirmBox\", this);'>`
-        }
-        
-        /*// Trashcan for sections
-        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']){
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Section trashcan clicked!\" + this); confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
 
-        }*/
+          // Will run marked items independent of lenght
+          console.log('selectedItemList: ' + selectedItemList.length);
+          if (itemKind === 1 && selectedItemList.length == 0){
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+            src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Section trashcan clicked and lenght!\"  + this + selectedItemList.length); 
+            if(selectedItemList.length == 0){markedItems(this)}; 
+            confirmBox(\"openConfirmBox\", this); '>`;
+            str += "</td>";
+          }
+          else{
+          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"General trashcan clicked!\"  + this); markedItems(this); confirmBox(\"openConfirmBox\", this); '>`;
+          str += "</td>";  
+          } 
+        }
 
         // Checkbox
         if (data['writeaccess'] || data['studentteacher']) {
