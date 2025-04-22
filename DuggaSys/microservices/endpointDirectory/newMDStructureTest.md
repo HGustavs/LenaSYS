@@ -24,7 +24,12 @@ POST
    - Description: Description1
 
 ## Examples of Use
-`CODE`
+`
+fetch('api/endpoint', {
+   method: 'POST',
+   body: JSON.stringify(data)
+})
+`
 
 ### Microservices Used
 another_ms

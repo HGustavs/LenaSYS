@@ -225,11 +225,48 @@ foreach ($mdFiles as $mdFile) {
             }
         }
 
+        $example_code = '';
+
+        for ($i = 0; $i < count($lines); $i++) {
+            $line = trim($lines[$i]);
+
+            // when reaching examples of use
+            if ($line === '## Examples of Use') {
+                $codeStarted = false;
+                $codeLines = [];
+
+                for ($j = $i + 1; $j < count($lines); $j++) {
+                    $currentLine = trim($lines[$j]);
+
+                    if (!$codeStarted && $currentLine === '`') {
+                        $codeStarted = true;
+                        continue;
+                    }
+
+                    if ($codeStarted) {
+                        if ($currentLine === '`') {
+                            // if its the end of the code block example
+                            break;
+                        }
+                        // keep indentations
+                        $codeLines[] = $lines[$j];
+                    }
+                }
+
+                // assemble code block
+                if (!empty($codeLines)) {
+                    $example_code = implode("\n", $codeLines);
+                }
+
+                break;
+            }
+        }
+
 
         // for debugging
         echo "<pre>";
         print_r($ms_name . "<br>");
-        print_r($description);
+        print_r($description . "<br>");
         print_r($parameters);
         print_r($parameter_types);
         print_r($parameter_descriptions);
@@ -237,6 +274,7 @@ foreach ($mdFiles as $mdFile) {
         print_r($output . "<br>");
         print_r($output_type . "<br>");
         print_r($output_description . "<br>");
+        print_r($example_code . "<br>");
         echo "</pre>";
 
         // echo "<pre>";
