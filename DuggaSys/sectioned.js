@@ -2021,30 +2021,6 @@ function returnedSection(data) {
 
     var slist = document.getElementById('Sectionlisti');
     slist.innerHTML = str;
-    
-    // Add drag and drop support for .courseRow
-    let draggedItem = null;
-    document.querySelectorAll('.courseRow').forEach(row => {
-    row.setAttribute('draggable', 'true');
-
-    row.addEventListener('dragstart', e => {
-    draggedItem = row;
-    row.style.opacity = '0.5';
-    });
-
-    row.addEventListener('dragend', e => {
-      row.style.opacity = '';
-    });
-
-    row.addEventListener('dragover', e => {
-      e.preventDefault();
-    });
-
-    row.addEventListener('drop', e => {
-      e.preventDefault();
-    });
-    });
-
 
     //Creates ordered array of "rows"
     const sectionListDivs = document.querySelectorAll('#sectionlistc > div');
@@ -2118,7 +2094,7 @@ function returnedSection(data) {
     }
 
     if (data['writeaccess']) {
-      /*// Enable sorting always if we are superuser as we refresh list on update
+      // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
@@ -2144,7 +2120,7 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
-      } */
+      } 
     }
   } else {
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>" +
