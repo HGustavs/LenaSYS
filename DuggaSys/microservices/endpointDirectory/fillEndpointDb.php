@@ -262,6 +262,34 @@ foreach ($mdFiles as $mdFile) {
             }
         }
 
+        $microservices_used = '';
+
+        for ($i = 0; $i < count($lines); $i++) {
+            $line = trim($lines[$i]);
+
+            // when reaching microservices used 
+            if ($line === '### Microservices Used') {
+                $used = [];
+
+                // collect rows until reaching an empty line or new headling
+                for ($j = $i + 1; $j < count($lines); $j++) {
+                    $nextLine = trim($lines[$j]);
+
+                    if ($nextLine === '' || preg_match('/^#+ /', $nextLine)) {
+                        break;
+                    }
+
+                    $used[] = $nextLine;
+                }
+
+                // combine into one string
+                if (!empty($used)) {
+                    $microservices_used = implode(', ', $used);
+                }
+                break;
+            }
+        }
+
 
         // for debugging
         echo "<pre>";
@@ -275,6 +303,7 @@ foreach ($mdFiles as $mdFile) {
         print_r($output_type . "<br>");
         print_r($output_description . "<br>");
         print_r($example_code . "<br>");
+        print_r($microservices_used . "<br>");
         echo "</pre>";
 
         // echo "<pre>";

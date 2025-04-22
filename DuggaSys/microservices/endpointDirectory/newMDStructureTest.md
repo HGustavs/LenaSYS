@@ -33,6 +33,7 @@ fetch('api/endpoint', {
 
 ### Microservices Used
 another_ms
+microservices_used_example_ms
 
 # Name of file/service
 example2_ms
