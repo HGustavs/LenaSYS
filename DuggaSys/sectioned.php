@@ -388,7 +388,7 @@
 			return (
 				<>
 					<Button id="deleteBtn" className="submit-button deleteDugga" title="Delete" onClick={() => deleteItem()}> Delete </Button>
-					<Button id="closeBtn" className="submit-button closeDugga" title="Cancel" onClick={() => {closeWindows(); closeSelect();}}> Cancel </Button>
+					<Button id="cancelBtn" className="submit-button closeDugga" title="Cancel" onClick={() => {closeWindows(); closeSelect();}}> Cancel </Button>
 					<Button id="submitBtn" className="submit-button submitDugga" title="Submit" onClick={() => {newItem(); showSaveButton();}}> Submit </Button>
 					<Button id="saveBtn" onMouseOver={() => quickValidateForm("editSection", "saveBtn")} className="submit-button updateDugga" title="save" onClick={() => {validateForm("editSection"); clearHideItemList();}}> Save </Button>
 				</>
