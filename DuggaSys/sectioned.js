@@ -1366,7 +1366,7 @@ function returnedGroups(data) {
   }
   if (str != "") {
     document.getElementById("grptbl").innerHTML = str;
-    document.getElementById("grptblContainer").style.display = flex;
+    document.getElementById("grptblContainer").style.display = "flex";
   }
 }
 
