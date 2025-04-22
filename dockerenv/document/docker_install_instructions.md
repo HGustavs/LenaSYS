@@ -30,7 +30,7 @@ When you have installed your Docker desktop, then you can run Docker containers,
 
 1. Open your terminal which can be bash, powershell or command. You can also use vscode terminal. 
 
-2. When you have open the terminal, then change directory where you want to get the LenaSYS repository. To do that you need to type `cd path/to/folder`. For me I using Windows and I typed: `cd  .\Downloads\` or if you use different OS then type: `cd <foldername>\`. 
+2. When you have opened the terminal, then change directory to where you want the LenaSYS repository. To do that you need to type `cd path/to/folder`. When using Windows I typed: `cd  .\Downloads\`  if you use different OS then type: `cd <foldername>\`. 
 ![Windows terminal](terminal.png "Windows terminal")
 
 3. When you have chose a folder, then type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for finish to get the LenaSYS repository.
