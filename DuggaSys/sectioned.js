@@ -655,15 +655,8 @@ function showSaveButton() {
 
 // Displaying and hiding the dynamic confirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
-  let retrievedItemType;
-
   if (operation == "openConfirmBox") {
     active_lid = item ? item.closest('table').getAttribute('value') : null
-   
-    if(selectedItemList.length == 0){
-      //markedItems(item);
-      //selectedItemList.push(active_lid);
-    }
     document.getElementById("sectionConfirmBox").style.display = "flex";
   } 
   else if (operation == "openHideConfirmBox") {
@@ -747,11 +740,14 @@ function gitTemplatePopupOutsideClickHandler(){
   });
 }
 // Creates an array over all checked items
-function markedItems(item = null) {
+function markedItems(item = null, typeInput) {
   var removed = false;
   var kind = item ? $(item).parents('tr').attr('value') : null;
   active_lid = item ? $(item).parents('table').attr('value') : null;
   var subItems = [];
+
+  console.log('typeinput: ' + typeInput);
+  console.log('item: ' + item);
 
   //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
   if (kind == "section" || kind == "moment") {
@@ -774,31 +770,63 @@ function markedItems(item = null) {
 
   // handles selections
   console.log("Active lid (SELECTION): " + active_lid);
+  console.log('selectedItemList contains: ' + selectedItemList);
+
   if (selectedItemList.length != 0) {
     for (let i = 0; i < selectedItemList.length; i++) {
-      if (selectedItemList[i] === active_lid) {
+      //removes items from selectedItemList, avoided if called via non-section trashcan.
+      console.log('typeinput: ' + typeInput);
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {
+        $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
         selectedItemList.splice(i, 1);
         i--;
         var removed = true;
-        console.log("Removed from list");
+        console.log(selectedItemList[i] + " Removed from list (1)");
       }
+      //unchecks children of section
       for (var j = 0; j < subItems.length; j++) {
         if (selectedItemList[i] === subItems[j]) {
           $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
           selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
+          console.log(subItems[j]+" Removed from list (2)");
         }
       }
-    } if (removed != true) {
+    } 
+    
+    if (removed != true) {
+    console.log('selectedItemList contains (2.1): ' + selectedItemList);
+    let activeLidInList = false;
+
+    for (var k = 0; k < selectedItemList.length; k++) {
+      if(active_lid == selectedItemList[k]){
+        console.log('activeLid exist in list');
+        activeLidInList = true;
+        break;
+      }
+    }
+    
+    if (activeLidInList == false){
+      console.log('activeLid does not exist within list');
       selectedItemList.push(active_lid);
+      $("#" + active_lid + "-checkbox").prop("checked", true);
+      console.log('selectedItemList contains (2.2): ' + selectedItemList);
+    }
+
       console.log("Adding !empty list");
+
+      //handles checking within section
       for (var j = 0; j < subItems.length; j++) {
         selectedItemList.push(subItems[j]);
-        console.log(subItems[j]);
+        console.log('subitems item: ' + subItems[j]);
+
         $("#" + subItems[j] + "-checkbox").prop("checked", true);
       }
     }
-  } else {
+      console.log('selectedItemList contains (2.3): ' + selectedItemList);
+  } 
+  // adds everything under section to selectedItems (if nothing selected beforehand)
+  else {
+    console.log('selectedItemList contains (3.1): ' + selectedItemList);
     selectedItemList.push(active_lid);
     for (var j = 0; j < subItems.length; j++) {
       selectedItemList.push(subItems[j]);
@@ -811,6 +839,7 @@ function markedItems(item = null) {
     document.querySelector('#hideElement').disabled = false;
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
+    console.log('selectedItemList contains (3.2): ' + selectedItemList);
   }
   if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
@@ -2015,7 +2044,7 @@ function returnedSection(data) {
               "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
             src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Section trashcan clicked and lenght!\"  + this + selectedItemList.length); 
-            if(selectedItemList.length == 0){markedItems(this)}; 
+            if(selectedItemList.length == 0){markedItems(this, "trash")}; 
             confirmBox(\"openConfirmBox\", this); '>`;
             str += "</td>";
           }
@@ -2023,7 +2052,8 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"General trashcan clicked!\"  + this); markedItems(this); confirmBox(\"openConfirmBox\", this); '>`;
+          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"General trashcan clicked!\"  + this); 
+          markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
           str += "</td>";  
           } 
         }
