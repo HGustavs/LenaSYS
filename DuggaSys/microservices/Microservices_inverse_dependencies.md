@@ -217,12 +217,13 @@ No inverse dependencies. (Not in use)
 This is a list of all inverse dependencies of files in the profileService folder.
 
 ### retrieveProfileService
+(no inverse dependencies found)
 
 ### updateSecurityQuestion
 The service is never used as an inverse dependency
 
 ### updateUserPassword
-There is no list of all inverse dependencies
+(no inverse dependencies found)
 
 ## resultedService
 
@@ -453,9 +454,10 @@ No inverse dependencies
     updateCourseVersion_sectioned_ms.php
     
 ### updateSecurityQuestion
+(no inverse dependencies found)
 
 ### updateUserPassword
-There is no list of all inverse dependencies
+(no inverse dependencies found)
 
 ### retrieveUsername
 
