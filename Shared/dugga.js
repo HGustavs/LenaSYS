@@ -1656,7 +1656,7 @@ function checkHTTPS() {
 
 function processResetPasswordCheckUsername() {
 	//Gets the security question from the database
-	var username = document.querySelector("#usernamereset").value=this.value;
+	var username = document.querySelector("#usernamereset").value;
 
 	$.ajax({
 		type:"POST",
@@ -1696,8 +1696,8 @@ function processResetPasswordCheckUsername() {
 
 function processResetPasswordCheckSecurityAnswer() {
   //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-  var username = document.querySelector("#usernamereset").value=this.value;
-  var securityquestionanswer = document.querySelector("#answer").value=this.value;
+  var username = document.querySelector("#usernamereset").value;
+  var securityquestionanswer = document.querySelector("#answer").value;
   $.ajax({
     type:"POST",
     url: "../Shared/resetpw.php",
@@ -1845,12 +1845,12 @@ function processLogout() {
 function showLoginPopup()
 {
 	document.querySelector("#formBox").style.display="flex";
-	/*$("#overlay").css("display","block");*/
+	/*document.querySelector("#overlay").style.display="block";*/
 	document.querySelector("#username").focus();
 
 	// Reset input box color
-	//$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
-	//$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
+	//document.querySelector("input#username").style.backgroundColor="rgba(255, 255, 255, 1)";
+	//document.querySelector("input#password").style.backgroundColor="rgba(255, 255, 255, 1)";
 
 	// Reset warning, if applicable
   displayAlertText("#login #message", "");
@@ -1860,19 +1860,20 @@ function showLoginPopup()
 
 function hideLoginPopup()
 {
-		$("#formBox").css("display","none");
-		/*$("#overlay").css("display","none");*/
+		document.querySelector("#formBox").style.display="none";
+		/*document.querySelector("#overlay").style.display="none";*/
 
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
 function showLogoutPopup()
 {
+	/*
 	document.querySelector("#logoutBox").show();
-	/*$("#logoutBox").css('display', 'block');
-	$(".buttonLogoutCancelBox").click(function(){
-		$("#logoutBox").hide();
-	});
+	document.querySelector("#logoutBox").style.display="block";
+	document.querySelector(".buttonLogoutCancelBox").onClick = function(){
+		document.querySelector("#logoutBox").style.display="none";
+	};
 	*/
 }
 //----------------------------------------------------------------------------------
@@ -1882,23 +1883,20 @@ function showLogoutPopup()
 function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
-		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){
-			$("#logoutBox").show();
-			$("#logoutBox").css('display', 'block');
-			$(".buttonLogoutCancelBox").click(function(){
-				$("#logoutBox").hide();
+		document.removeEventListener("#loginbutton", "click", false);
+		document.addEventListener("#loginbutton").onClick=function(){
+			document.getElementById("#logoutBox").style.display="block";
+			document.querySelector(".buttonLogoutCancelBox").onClick(function(){
+				document.getElementById("#logoutBox").style.display="none";
 			});
-
-
-		});
+		};
 		sessionExpireMessage();
 		sessionExpireLogOut();
 	}
 
 	else{
-		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){showLoginPopup();});
+		document.removeEventListener("#loginbutton", "click", false);
+		document.getElementById("#loginbutton").click=function(){showLoginPopup();};
 	}
 }
 
@@ -1909,13 +1907,13 @@ function toggleLoadVariant(setbool){	//setbool has a value of True or False. Thi
 
 function showLoadDuggaPopup()
 {
-	$("#loadDuggaBox").css("display","flex");
+	document.getElementById("#loadDuggaBox").style.display="flex";
 	localStorage.setItem("ls-redirect-last-url", document.URL);
 }
 
 function hideLoadDuggaPopup()
 {
-	$("#loadDuggaBox").css("display","none");
+	document.getElementById("#loadDuggaBox").style.display="none";
 }
 
 function updateReceiptText(title, URL, hash, hashPW)
@@ -1929,28 +1927,28 @@ function updateReceiptText(title, URL, hash, hashPW)
 
 function showReceiptPopup()
 {
-	$("#receiptBox").css("display","flex");
-	//$("#overlay").css("display","block");
+	document.getElementById("#receiptBox").style.display="flex";
+	//document.getElementById("#overlay").style.display="block";
 }
 
 function hideReceiptPopup()
 {
-	$("#receiptBox").css("display","none");
-	//$("#overlay").css("display","none");
+	document.getElementById("#receiptBox").style.display="none";
+	//document.getElementById("#overlay").style.display="none";
 }
 
 function hideFeedbackPopup(){
-	$("#feedbackBox").css("display","none");
+	document.getElementById("#feedbackBox").style.display="none";
 }
 
 function showFeedbackPopup(){
-	$("#feedbackBox").css("display","block");
+	document.getElementById("#feedbackBox").style.display="block";
 }
 
 function hideDuggaStatsPopup()
 {
-	$("#duggaStats").css("display", "none");
-	//$("#overlay").css("display", "none");
+	document.getElementById("#duggaStats").style.display="none";
+	//document.getElementById("#overlay").style.display="none";
 }
 
 function checkScroll(obj) {
@@ -1983,8 +1981,8 @@ function copySubmissionReceiptToClipboard() {
 // copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
-	var $temp = $("<input>");
-    $("body").append($temp);
+	var $temp = document.getElementById("<input>").value;
+    document.getElementById("body").appendChild($temp);
     $temp.val(hash).select();
     document.execCommand("copy");
 	$temp.remove();
@@ -1994,9 +1992,9 @@ function copyHashtoCB() {
 // copyURLtoCB: Copy the url to user clipboard
 //----------------------------------------------------------------------------------
 function copyUrltoCB() {
-	var $copyUrl = $("<input>");
-	$("body").append($copyUrl);
-	$copyUrl.val($('#url').text()).select();
+	var $copyUrl = document.getElementById("<input>").value;
+	document.getElementById("body").appendChild($copyUrl);
+	$copyUrl.val(document.getElementById('#url').text()).select();
 	document.execCommand("copy");
 	$copyUrl.remove();
 }
@@ -2010,7 +2008,7 @@ function getParameters(parameterName){
 }
 
 function exitHashBox(){
-    $("#hashBox").css("display","none");
+    document.getElementById("#hashBox").style.display="none";
 	window.location.href = "../DuggaSys/sectioned.php?courseid=" + getParameters("courseid") + "&coursename=" +
 	 getParameters("coursename") + "&coursevers=" + getParameters("coursevers"); //redirect to the course page
 	 
@@ -2018,7 +2016,7 @@ function exitHashBox(){
 }
 
 function hideHashBox(){
-    $("#hashBox").css("display","none");
+    document.getElementById("#hashBox").style.display="none";
 }
 
 function checkHashPassword() {
@@ -2050,8 +2048,8 @@ function checkHashPassword() {
 				location.replace(url);
 				//reloadPage();
         	}else{
-        		$('#passwordtext').text('Wrong password, try again!');
-        		$('#passwordtext').css('color','red');
+        		document.getElementById('#passwordtext').textContent='Wrong password, try again!';
+        		document.getElementById('#passwordtext').style.color='red';
 				console.log('Fail!');
         	}
 		}
@@ -2060,23 +2058,23 @@ function checkHashPassword() {
 
 function showSecurityPopup()
 {
-   $("#securitynotification").css("display","flex");
-   //$("#overlay").css("display","block");
+   document.getElementById("#securitynotification").style.display="flex";
+   //document.getElementById("#overlay").style.display="block";
 }
 
 function showDuggaInfoPopup()
 {
 
-	if ($("#receiptBox").css("display")!= "flex"){
-		$("#duggaInfoBox").css("display","flex");
-		//$("#overlay").css("display","block");
+	if (document.getElementById("#receiptBox").style.display!="flex"){
+		document.getElementById("#duggaInfoBox").style.display="flex";
+		//document.getElementById("#overlay").style.display="block";
 	}
 }
 
 function hideDuggaInfoPopup()
 {
-	$("#duggaInfoBox").css("display","none");
-	//$("#overlay").css("display","none");
+	document.getElementById("#duggaInfoBox").style.display="none";
+	//document.getElementById("#overlay").style.display="none";
 	if(startDuggaHighScore){
 		startDuggaHighScore();
 	}
