@@ -476,8 +476,15 @@ There is no list of all inverse dependencies
 This is a list of all inverse dependencies of files in the showDuggaServices folder.
 
 ### getShowDugga
+No inverse dependencies.
 
 ### loadDugga
+[retrieveShowDuggaService_ms](showDuggaService/retrieveShowDuggaService_ms.php)
+Row 60:
+```
+if($hash!="UNK"){
+	include_once("loadDugga_ms.php");
+```
 
 ### processDuggaFile
 
