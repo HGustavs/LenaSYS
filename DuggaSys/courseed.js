@@ -567,21 +567,19 @@ function updateSettings() {
 		toast("error", "You have entered incorrect information", 7);
 	}
 }
-
 function createVersion() {
-
-	var cid = $("#cid").val();
-	var versid = $("#versid").val();
-	var versname = $("#versname").val();
-	var coursecode = $("#course-coursecode").text();
-	//var courseid = $("#course-courseid").text();
-	var coursename = $("#course-coursename").text();
-	var makeactive = $("#makeactive").is(':checked');
-	var coursevers = $("#course-coursevers").text();
-	var copycourse = $("#copyvers").val();
-	//var comments = $("#comments").val();
-	var startdate = $("#startdate").val();
-	var enddate = $("#enddate").val();
+	var cid = document.getElementById("cid").value();
+	var versid = document.getElementById("versid").value();
+	var versname = document.getElementById("versname").value();
+	var coursecode = document.getElementById("course-coursecode").text();
+	//var courseid = document.getElementById("course-courseid").text();
+	var coursename = document.getElementById("course-coursename").text();
+	var makeactive = document.getElementById("makeactive").checked;
+	var coursevers = document.getElementById("course-coursevers").text();
+	var copycourse = document.getElementById("copyvers").value();
+	//var comments = document.getElementById("comments").value();
+	var startdate = document.getElementById("startdate").value();
+	var enddate = document.getElementById("enddate").value();
 
 	if (versid == "" || versname == "") {
 		toast("warning", "Version Name and Version ID must be entered!", 5);
@@ -616,8 +614,8 @@ function createVersion() {
 			}, "COURSE");
 		}
 
-		$("#newCourseVersion").css("display", "none");
-		$("#overlay").css("display", "none");
+		document.getElementById("newCourseVersion").style.display = "none";
+		document.getElementById("overlay").style.display = "none";
 	}
 
 }
@@ -1045,4 +1043,16 @@ function localStorageCourse() {
 
 function glowNewCourse(courseid) {
 	// document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+}
+
+function fadeIn(element) {
+
+}
+
+function fadeOut(element) {
+
+}
+
+function stopFade(element) {
+
 }
