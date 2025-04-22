@@ -765,32 +765,43 @@ function markedItems(item = null, typeInput) {
         }
       } else if (tempItem == active_lid) sectionStart = true;
     });
+    //console.log('subItems contains (0.1): ' + subItems);
 
   }
 
   // handles selections
-  console.log("Active lid (SELECTION): " + active_lid);
-  console.log('selectedItemList contains: ' + selectedItemList);
+  //console.log("Active lid (SELECTION): " + active_lid);
+  //console.log('selectedItemList contains: ' + selectedItemList);
 
   if (selectedItemList.length != 0) {
-    for (let i = 0; i < selectedItemList.length; i++) {
+    //console.log('subItems contains (1.1): ' + subItems);
+    let tempSelectedItemListLength = selectedItemList.length;
+    for (let i = 0; i < tempSelectedItemListLength; i++) {
+
       //removes items from selectedItemList, avoided if called via non-section trashcan.
-      console.log('typeinput: ' + typeInput);
+
       if (selectedItemList[i] === active_lid && typeInput != "trash") {
+        //document.getElementById(selectedItemList[i] + "-checkbox").setAttribute("checked", false);
+
+        console.log(selectedItemList[i] + " Removed from list (1)");
         $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
         selectedItemList.splice(i, 1);
-        i--;
         var removed = true;
-        console.log(selectedItemList[i] + " Removed from list (1)");
       }
       //unchecks children of section
       for (var j = 0; j < subItems.length; j++) {
-        if (selectedItemList[i] === subItems[j]) {
+        if (selectedItemList[i] == subItems[j]) {
+          //document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+
           $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
+          //console.log('comparing: ' + selectedItemList[i] + ' and ' + subItems);
+          //console.log('Removes: ' + selectedItemList[i] + 'selected list: ' + selectedItemList);
           selectedItemList.splice(i, 1);
-          console.log(subItems[j]+" Removed from list (2)");
+          i--;
         }
       }
+      //console.log("selecteditem pos: " + i);
+      //console.log('subItems contains (1.2): ' + subItems);
     } 
     
     if (removed != true) {
@@ -799,30 +810,33 @@ function markedItems(item = null, typeInput) {
 
     for (var k = 0; k < selectedItemList.length; k++) {
       if(active_lid == selectedItemList[k]){
-        console.log('activeLid exist in list');
+        //console.log('activeLid exist in list');
         activeLidInList = true;
         break;
       }
     }
     
     if (activeLidInList == false){
-      console.log('activeLid does not exist within list');
+      //console.log('activeLid does not exist within list');
       selectedItemList.push(active_lid);
       $("#" + active_lid + "-checkbox").prop("checked", true);
-      console.log('selectedItemList contains (2.2): ' + selectedItemList);
+
+      //console.log('subItems contains (2.2): ' + subItems);
+      //console.log('selectedItemList contains (2.2): ' + selectedItemList);
     }
 
-      console.log("Adding !empty list");
+      //console.log("Adding !empty list");
 
       //handles checking within section
       for (var j = 0; j < subItems.length; j++) {
         selectedItemList.push(subItems[j]);
-        console.log('subitems item: ' + subItems[j]);
+        //console.log('subitems item: ' + subItems[j]);
 
         $("#" + subItems[j] + "-checkbox").prop("checked", true);
       }
     }
-      console.log('selectedItemList contains (2.3): ' + selectedItemList);
+      //console.log('subItems contains (2.3): ' + subItems);
+      //console.log('selectedItemList contains (2.3): ' + selectedItemList);
   } 
   // adds everything under section to selectedItems (if nothing selected beforehand)
   else {
