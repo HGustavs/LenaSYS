@@ -48,10 +48,10 @@ When you have installed your Docker desktop, then you can run Docker containers,
 7. Now go to Docker desktop and you can see a menu which says images and containers. Press the containers from the menu and here you can see there are three containers and each one has green-circle which means they are running. If you can not see three containers, then you need to press `drop-down`-button
 ![shows three containers](dockerContainers.png "shows three containers")
 
-8. There are two ports which are apache-php and phpmyadmin server. The apache-php has a port `80:80` which can be click to open LenaSYS website. The phpmyadmin has also a port `8080:80` which open phpmyadmin website there you can manipulate sql-data, user permission and more. You need to press the `80:80` link to open the LenaSYS website.
+8. There are two ports which are apache-php and phpmyadmin server. The apache-php has a port `80:80` which can be clicked, this opens the LenaSYS website. The phpmyadmin also has a port `8080:80` which opens the phpmyadmin website. There you can manipulate sql-data, user permission and more. You need to press the `80:80` link to open the LenaSYS website.
 ![Open the LenaSYS website link](apacheLink.png "Open the LenaSYS website link")
 
-9. Now you are in directory and you need to navigate `LenaSYS/newinstaller/installer.php` to install the LenaSYS from a new LenaSYS installer. There is also old LenaSYS installer. If the new installer doesn't work, then navigate `LenaSYS/install/install.php` to access the old LenaSYS installer.
+9. In order to download LenaSYS you need to navigate to `LenaSYS/newinstaller/installer.php` this will lead you to the new installer. In case the new installer does not work for you, you can access the old installer at `LenaSYS/install/install.php`.
 ![LenaSYS directory](lenasys.png "LenaSYS directory")
 
 10. Congratulations, now you can use the LenaSYS website!
