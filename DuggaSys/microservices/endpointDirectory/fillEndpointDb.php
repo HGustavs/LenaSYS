@@ -159,6 +159,30 @@ foreach ($mdFiles as $mdFile) {
             $parameter_descriptions[] = $currentDesc !== null ? $currentDesc : '';
         }
 
+        $calling_methods = '';
+        for ($i = 0; $i < count($lines); $i++) {
+            $line = trim($lines[$i]);
+
+            if ($line === '## Calling Methods') {
+                $methods = [];
+
+                for ($j = $i + 1; $j < count($lines); $j++) {
+                    $methodLine = trim($lines[$j]);
+
+                    // break if empty line of new header
+                    if ($methodLine === '' || preg_match('/^## /', $methodLine)) {
+                        break;
+                    }
+
+                    $methods[] = $methodLine;
+                }
+
+                // combine into one string (GET, POST, etc..)
+                $calling_methods = implode(', ', $methods);
+                break;
+            }
+        }
+
 
         // for debugging
         echo "<pre>";
@@ -167,6 +191,7 @@ foreach ($mdFiles as $mdFile) {
         print_r($parameters);
         print_r($parameter_types);
         print_r($parameter_descriptions);
+        print_r($calling_methods);
         echo "</pre>";
 
         // echo "<pre>";

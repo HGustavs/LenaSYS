@@ -10,7 +10,7 @@ Testing a third line
 - Parameter: userID
    - Type: int
    - Description: This parameter is used for this
-   
+
 - Parameter: otherParam
    - Type: String
    - Description: This parameter is used for something else
@@ -19,9 +19,9 @@ Testing a third line
 POST
 
 ## Output Data and Format
-- Output1
-   - Type1
-   - Description1
+- Output: Output1
+   - Type: Type1
+   - Description: Description1
 
 ## Examples of Use
 `CODE`
@@ -44,9 +44,9 @@ This is an example to debug the datase
 GET
 
 ## Output Data and Format
-- Output2
-   - Type2
-   - Description2
+- Output: Output2
+   - Type: Type2
+   - Description: Description2
 
 ## Examples of Use
 `CODE`
