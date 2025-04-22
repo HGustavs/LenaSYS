@@ -22,6 +22,9 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
 - **Select Components**: Select **XAMPP Developer Files**.
 - Wait for XAMPP to install. This may take a few minutes.
 
+<img src="Shared/Documentation/Install/installXAMPP.png" width="512">
+
+
 ### 3. Locate the XAMPP Folder
 - Find the XAMPP folder on your computer.
 
@@ -30,7 +33,7 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
 - Clone the repository by clicking on the green **Code** button and selecting **Download ZIP**.
 
 ### 5. Extract and Rename the Folder
-- Expand the ZIP file.
+- Extract the ZIP file.
 - Rename the folder to **LenaSYS**.
 
 ### 6. Move LenaSYS to XAMPP's `htdocs` Folder
