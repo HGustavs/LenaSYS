@@ -5,7 +5,7 @@
 2. In the Docker website press `Chosse plan`-button.
 ![Docker homepage](homepage.png "Docker homepage")
 
-3. Chosse Docker Personal.
+3. Choose Docker Personal.
 ![Choose plan](choosePlan.png "Choose plan")
 
 4. Press `Continue with GitHub`-button.
