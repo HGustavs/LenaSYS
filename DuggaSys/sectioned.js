@@ -1365,8 +1365,8 @@ function returnedGroups(data) {
     grpemail = "";
   }
   if (str != "") {
-    $("#grptbl").html(str);
-    $("#grptblContainer").css("display", "flex");
+    document.getElementById("grptbl").innerHTML = str;
+    document.getElementById("grptblContainer").style.display = flex;
   }
 }
 
