@@ -33,10 +33,10 @@ When you have installed your Docker desktop, then you can run Docker containers,
 2. When you have opened the terminal, then change directory to where you want the LenaSYS repository. To do that you need to type `cd path/to/folder`. When using Windows I typed: `cd  .\Downloads\`  if you use different OS then type: `cd <foldername>\`. 
 ![Windows terminal](terminal.png "Windows terminal")
 
-3. When you have chose a folder, then type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for finish to get the LenaSYS repository.
+3. When you have chosen a folder, type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for the download to finish. When done you will have the LenaSYS repository.
 ![Windows terminal to get LenaSYS repository](terminal2.png "Windows terminal to get LenaSYS repository")
 
-4. Now you have the LenaSYS repository, so you need to change directory in the terminal and type: `cd LenaSYS/dockerenv/`.
+4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 ![Change directory](terminal3.png "Change directory")
 
 5. Here you need to build a few images and containers, and to do that run the command: `docker-compose up --build`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
