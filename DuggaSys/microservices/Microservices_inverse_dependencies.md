@@ -217,7 +217,7 @@ No inverse dependencies. (Not in use)
 This is a list of all inverse dependencies of files in the profileService folder.
 
 ### retrieveProfileService
-(no inverse dependencies found)
+Inverse dependency found on in both "DuggaSys/microservices/profileService/updtateSecurityQuestion_ms.php" and "DuggaSys/microservices/profileService/updateUserPassowrd_ms.php"
 
 ### updateSecurityQuestion
 The service is never used as an inverse dependency
