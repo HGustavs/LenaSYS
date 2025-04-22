@@ -169,14 +169,14 @@ function drawLine(line, targetGhost = false) {
         //Arrow/icon location dependant on element length, so its always in the top right corner of the element.
         const length = 40 * zoomfact;
         const elementLength = felem.x2 - felem.x1;
-        let startX = felem.x1 + elementLength - length * zoomfact;
-        let startY = felem.y1 * zoomfact;
+        let startX = felem.x1 + elementLength - length;
+        let startY = felem.y1;
         
         //Same values for UML and IE as they use the same icons, just different element values.
         if(line.type !== entityType.SD || line.type !== entityType.SE){
             line.ctype = lineDirection.UP;  //So arrows point down
-            str += drawLineIcon(line.startIcon, line.ctype, startX, startY * zoomfact, lineColor, line);
-            str += drawLineIcon(line.endIcon, line.ctype, (startX +40), startY * zoomfact, lineColor, line);
+            str += drawLineIcon(line.startIcon, line.ctype, startX, startY, lineColor, line);
+            str += drawLineIcon(line.endIcon, line.ctype, (startX + length), startY, lineColor, line);
         }
     }else {
         str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
@@ -317,14 +317,14 @@ function drawLine(line, targetGhost = false) {
             const length = 20 * zoomfact;
             const lift   = 80 * zoomfact; 
             const elementLength = felem.x2 - felem.x1;
-            let startX = felem.x1 + elementLength - length * zoomfact;
-            let startY = felem.y1  - lift  * zoomfact;
+            let startX = felem.x1 + elementLength - length;
+            let startY = felem.y1  - lift;
 
             str += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
-                        x='${((startX + zoomfact)) - textWidth / 2}'
-                        y='${((startY)+ zoomfact) - ((textheight / 4) + zoomfact)}'
+                        x='${((startX)) - textWidth / 2}'
+                        y='${((startY)) - ((textheight / 4))}'
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact}'
                     />`;
@@ -332,8 +332,8 @@ function drawLine(line, targetGhost = false) {
                         class='cardinalityLabelText'
                         dominant-baseline='middle'
                         text-anchor='middle'
-                        x='${((startX) + zoomfact)}'
-                        y='${((startY) + zoomfact) + ((textheight / 4) + zoomfact)}'
+                        x='${((startX))}'
+                        y='${((startY)) + ((textheight / 4))}'
                         style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
                         ${labelValue}
                     </text>`;
@@ -464,15 +464,15 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
         const length = 50 * zoomfact;
         const lift   = 55 * zoomfact; 
         const elementLength = felem.x2 - felem.x1;
-        x = felem.x1 + elementLength - length * zoomfact;
-        y = felem.y1  - lift  * zoomfact;
+        x = felem.x1 + elementLength - length;
+        y = felem.y1  - lift;
 
         if(labelStr == "startLabel"){
-            x -= 0 * zoomfact;
-            y -= 0 * zoomfact;
+            x -= 0;
+            y -= 0;
         }else if(labelStr == "endLabel"){
-            x += 60 * zoomfact;
-            y -= 0 * zoomfact;
+            x += length + 10;
+            y -= 0;
         } 
     }else {
         if (line.ctype == lineDirection.UP) {
@@ -533,16 +533,16 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
 
     if(line.type === entityType.IE) {
         points =
-            `${startX},${startY+lineHeight } ` +
+            `${startX},${startY + lineHeight } ` +
             `${startX},${startY} ` +
             `${startX + lineLength},${startY} ` +
             `${startX + lineLength},${startY+lineHeight }`;
     }else if(line.type === entityType.SD){
         points =
-            `${startX},${startY+lineHeight} ` +
+            `${startX},${startY + lineHeight} ` +
             `${startX},${startY} ` +
             `${startX + lineLength},${startY} ` +
-            `${startX + lineLength},${startY+lineHeight + 15}`;
+            `${startX + lineLength},${startY + lineHeight + 15}`;
     }else if(line.type !== entityType.IE && line.type !== entityType.SD){
         points =
             `${startX},${startY + lineHeight  } ` +
