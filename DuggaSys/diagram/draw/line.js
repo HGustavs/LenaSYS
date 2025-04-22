@@ -46,7 +46,7 @@ function drawLine(line, targetGhost = false) {
     }
 
 
-    const lineSpacing = 30; //Controlls spacing between lines
+    const lineSpacing = 30 * zoomfact; //Controlls spacing between lines
 
     //Checks if a line have gotten any properties from the checkAdjacentLines function 
     //fromOffsetIncrease, fromNumberOfLInes, toOffsetIncrease and toNumberOfLines
@@ -496,9 +496,9 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
                 class='text cardinalityLabel' 
                 id='${line.id + labelStr}' 
                 x='${x - textWidth / 2}' 
-                y='${y - (textheight * zoomfact + zoomfact * 3) / 2}' 
+                y='${y - (textheight + 6) / 2}' 
                 width='${textWidth + 2}' 
-                height='${(textheight - 4) * zoomfact + zoomfact * 3}'/> 
+                height='${textheight + 6}'/> 
             <text 
                 class='text cardinalityLabelText' 
                 dominant-baseline='middle' 
@@ -932,8 +932,8 @@ function clearLinesForElement(element) {
     element.y1 = domelementpos.top;
     element.x2 = domelementpos.left + domelementpos.width - 2;
     element.y2 = domelementpos.top + domelementpos.height - 2;
-    element.cx = element.x1 + (domelementpos.width * 0.5);
-    element.cy = element.y1 + (domelementpos.height * 0.5);
+    element.cx = element.x1 + element.x2;
+    element.cy = element.y1 + element.y2;
 }
 
 /**
