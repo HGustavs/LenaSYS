@@ -290,7 +290,6 @@ foreach ($mdFiles as $mdFile) {
             }
         }
 
-
         // insert into microservice
         $stmt = $db->prepare("
         INSERT INTO microservices (
@@ -336,31 +335,7 @@ foreach ($mdFiles as $mdFile) {
             ]);
         }
 
-
-        // for debugging
-        echo "<pre>";
-        print_r($ms_name . "<br>");
-        print_r($description . "<br>");
-        print_r($parameters);
-        print_r($parameter_types);
-        print_r($parameter_descriptions);
-        print_r($calling_methods . "<br>");
-        print_r($output . "<br>");
-        print_r($output_type . "<br>");
-        print_r($output_description . "<br>");
-        print_r($example_code . "<br>");
-        print_r($microservices_used . "<br>");
-        echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($lines);
-        // echo "</pre>";
-
     }
-
-    // echo "<pre>";
-    // print_r($mdFile);
-    // echo "</pre>";
 
 }
 
