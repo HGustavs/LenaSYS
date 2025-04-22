@@ -5,6 +5,65 @@ University of Skövde Code Viewer and Course Organization System
 
 # Install Instructions
 
+To install LenaSYS on your computer, you first need to install XAMPP or Docker.
+
+## How to Install XAMPP
+
+### 1. Download and Install XAMPP
+- Go to the [Apache Friends website](https://www.apachefriends.org/) and download XAMPP to your workspace.
+- Once downloaded, go to your **Downloads** folder and run the installer.
+
+**macOS Specifics**
+You may receive a warning saying Apple cannot verify that XAMPP is free from malware. To fix this:
+  1. Go to **Settings** -> **Privacy & Security**.
+  2. Select **Open Anyway**.
+
+### 2. XAMPP Setup Wizard
+- **Select Components**: Select **XAMPP Developer Files**.
+- Wait for XAMPP to install. This may take a few minutes.
+
+<img src="Shared/Documentation/Install/installXAMPP.png" width="512">
+
+
+### 3. Locate the XAMPP Folder
+- Find the XAMPP folder on your computer.
+
+### 4. Download LenaSYS
+- Go to the [LenaSYS GitHub Repository](https://github.com/HGustavs/LenaSYS).
+- Clone the repository by clicking on the green **Code** button and selecting **Download ZIP**.
+
+### 5. Extract and Rename the Folder
+- Extract the ZIP file.
+- Rename the folder to **LenaSYS**.
+
+### 6. Move LenaSYS to XAMPP's `htdocs` Folder
+- Move the **LenaSYS** folder to the **htdocs** folder inside your XAMPP directory (e.g., `/XAMPP/xamppfiles/htdocs`).
+
+### 7. Configure Apache
+- The default Apache configuration is usually fine for LenaSYS.
+
+### 8. Configure PHP
+1. Open the PHP configuration file `php.ini` located at:  
+   `/XAMPP/xamppfiles/etc/php.ini`
+   
+2. Modify the following settings:
+   - Change the `upload_max_filesize` to `128M`.
+
+3. Enable the necessary PHP drivers by uncommenting the following lines (or adding them manually if not present):
+   ```ini
+    extension=php_pdo.dll
+    extension=php_pdo_mysql.dll
+    extension=php_pdo_odbc.dll
+    extension=php_pdo_sqlite.dll
+   ```
+
+**macOS Specifics**
+- On Mac, you need to set extra permissions on the folder `xamppfiles`. 
+- To do this:
+  1. Right-click on the `xamppfiles` folder and select **Get Info** (or press `Cmd + I`).
+  2. Under **Sharing & Permissions**, make sure to select **Read & Write** for the appropriate user (www_).
+
+# Install LenaSYS
 Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information.
 
 To install a fresh copy of LenaSYS on your system an installer has been created called 'install.php'.
