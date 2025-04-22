@@ -291,6 +291,52 @@ foreach ($mdFiles as $mdFile) {
         }
 
 
+        // insert into microservice
+        $stmt = $db->prepare("
+        INSERT INTO microservices (
+            ms_name,
+            description,
+            calling_methods,
+            output,
+            output_type,
+            output_description,
+            microservices_used
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
+
+        $stmt->execute([
+            $ms_name,
+            $description,
+            $calling_methods,
+            $output,
+            $output_type,
+            $output_description,
+            $microservices_used
+        ]);
+
+        // get the id of the recently inserted microservice 
+        $microservice_id = $db->lastInsertId();
+
+        // add every parameter to the database along with the id from the last inserted microservice
+        $parameter_stmt = $db->prepare("
+        INSERT INTO parameters (microservice_id, parameter_name, parameter_type, parameter_description)
+        VALUES (?, ?, ?, ?)
+        ");
+
+        for ($i = 0; $i < count($parameters); $i++) {
+            $paramName = $parameters[$i];
+            $paramType = $parameter_types[$i] ?? '';
+            $paramDesc = $parameter_descriptions[$i] ?? '';
+
+            $parameter_stmt->execute([
+                $microservice_id,
+                $paramName,
+                $paramType,
+                $paramDesc
+            ]);
+        }
+
+
         // for debugging
         echo "<pre>";
         print_r($ms_name . "<br>");
