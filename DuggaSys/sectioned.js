@@ -911,33 +911,38 @@ function prepareItem() {
   var jsondeadline = { "deadline1": "", "comment1": "", "deadline2": "", "comment2": "", "deadline3": "", "comment3": "" };
 
   // Storing tabs in gradesys column!
-  var kind = $("#type").val()
+  var kind = document.getElementById("type").value;
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.tabs = $("#tabs").val();
+    param.tabs = document.getElementById("tabs").value;
   } else {
-    param.gradesys = $("#gradesys").val();
+    param.gradesys = document.getElementById("gradesys").value;
   }
 
-  param.lid = $("#lid").val();
+  param.lid = document.getElementById("lid").value;
   param.kind = kind;
-  param.link = $("#link").val();
-  param.highscoremode = $("#highscoremode").val();
-  param.sectname = $("#sectionname").val();
-  param.visibility = $("#visib").val();
-  param.tabs = $("#tabs").val();
-  param.moment = $("#moment").val();
-  param.comments = $("#comments").val();
-  param.grptype = $("#grptype").val();
-  param.deadline = $("#setDeadlineValue").val() + " " + $("#deadlinehours").val() + ":" + $("#deadlineminutes").val();
+  param.link = document.getElementById("link").value;
+  param.highscoremode = document.getElementById("highscoremode").value;
+  param.sectname = document.getElementById("sectionname").value;
+  param.visibility = document.getElementById("visib").value;
+  param.tabs = document.getElementById("tabs").value;
+  param.moment = document.getElementById("moment").value;
+  param.comments = document.getElementById("comments").value;
+  param.grptype = document.getElementById("grptype").value;
+  
+  param.setDeadlineValue = document.getElementById("setDeadlineValue").value;
+  param.deadlineHours = document.getElementById("deadlinehours").value;
+  param.deadlineMinutes = document.getElementById("deadlineminutes").value;
+  param.deadline = setDeadlineValue + " " + deadlineHours + ":" + deadlineMinutes;
+
   param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
-  if (!$('#absolutedeadlinecheck').prop('checked')) {
+  if (!document.getElementById("absplutedeadlinecheck").checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
-  if ($('#fdbck').prop('checked')) {
+  if (document.getElementById("fdbck").checked) {
     param.feedback = 1;
-    param.feedbackquestion = $("#fdbckque").val();
+    param.feedbackquestion = document.getElementById("fdbckque").value;
   } else {
     param.feedback = 0;
     param.feedbackquestion = null;
