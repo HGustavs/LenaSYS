@@ -229,6 +229,18 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
 }
 
 /**
+ * @description Strips everything from a string that could be html.
+ * @param {String} s String to be stripped of html.
+ * @returns Returns a html-free string.
+ */
+function stripHtml(str) {
+    if (typeof str !== 'string') return '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = str;
+    return tmp.textContent || tmp.innerText || '';
+}
+
+/**
  * @description Draw the text for the element.
  * @param {Number} x The X coordinate for the drawn text.
  * @param {Number} y The Y coordinate for the drawn text.
@@ -238,10 +250,11 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
  * @returns Returns a string containing a svg text for the element that is drawn.
  */
 function drawText(x, y, a, t, extra = '') {
+    const safeText = stripHtml(t);
     return `<text
                 class='text' x='${x}' y='${y}' 
                 dominant-baseline='auto' text-anchor='${a}' ${extra}
-            > ${t} </text>`;
+            > ${safeText} </text>`;
 }
 
 /**

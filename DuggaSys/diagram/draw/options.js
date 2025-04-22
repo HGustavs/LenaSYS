@@ -77,6 +77,18 @@ function showProperties(show, propSet, menuSet) {
 }
 
 /**
+ * @description Strips everything from a string that could be html.
+ * @param {String} s String to be stripped of html.
+ * @returns Returns a html-free string.
+ */
+function stripHtml(str) {
+    if (typeof str !== 'string') return '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = str;
+    return tmp.textContent || tmp.innerText || '';
+}
+
+/**
  * @description Makes a textarea to be able for example add new classes for UML.
  * @param {String} name Name for the header for the textarea.
  * @param {String} property What type of property the textarea is.
@@ -84,11 +96,12 @@ function showProperties(show, propSet, menuSet) {
  * @return Returns the div that is the header and the textarea for the specific element.
  */
 function textarea(name, property, element) {
+    const safeText = stripHtml(textboxFormatString(element[property]));
     return `<div style='color:${color.WHITE};'>${name}</div>
             <textarea 
                 id='elementProperty_${property}' 
                 rows='4' style='width:98%;resize:none;'
-            >${textboxFormatString(element[property])}</textarea>`;
+            >${textboxFormatString(safeText)}</textarea>`;
 }
 
 /**
@@ -97,11 +110,12 @@ function textarea(name, property, element) {
  * @return Returns the div that is the header and the text input.
  */
 function nameInput(element) {
+    const safeName = stripHtml(element.name);
     return `<div style='color:${color.WHITE};'>Name</div>
             <input 
                 id='elementProperty_name' 
                 type='text' 
-                value='${element.name}' 
+                value='${safeName}' 
             >`;
 }
 
