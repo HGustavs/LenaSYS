@@ -54,10 +54,10 @@ When you have installed your Docker desktop, then you can run Docker containers,
 9. In order to download LenaSYS you need to navigate to `LenaSYS/newinstaller/installer.php` this will lead you to the new installer. In case the new installer does not work for you, you can access the old installer at `LenaSYS/install/install.php`.
 ![LenaSYS directory](lenasys.png "LenaSYS directory")
 
-10. Congratulations, now you can use the LenaSYS website!
+10. Congratulations, you can now use the LenaSYS website!
 ![Open the LenaSYS website link](newlenasysinstaller.png "Open the LenaSYS website link") 
 
-11. Before you install the LenaSYS, it is good to know that if you see text-input says `Hostname`, then you need to type `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when you are in root user credentials, then type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
+11. Before you install the LenaSYS, it is good to know that the text-input which says `Hostname`, needs to be `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when entering root user credentials, type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
 
 12. To install the LenaSYS, you need to follow instruction [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
 
@@ -67,10 +67,10 @@ After changing the file permissions recursively over the repository, all the fil
 
 ## Stop containers in Docker
 
-1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait all three containers says stopped. NOTE: If your terminal says all three are stopped, but not appear your username in your terminal, then press the up- or down-arrow keys to show your username.
+1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait until all three containers says stopped. NOTE: If your terminal says all three are stopped, but your username does not appear in your terminal, then press the up- or down-arrow keys to show your username.
 ![Turn off containers](terminal6.png "Turn off containers") 
 
-2. If you go back to Docker desktop and go to containers, and here you can see three containers are not running, because there are no green-circles. Now containers are not running.
+2. If you go back to Docker desktop and go to containers, you can see three containers are not running, shown by the gray circles. Now containers are not running.
 ![Not running containers](containersdeactive.png "Not running containers") 
 
 ## Remove containers and images in Docker
@@ -86,7 +86,7 @@ After changing the file permissions recursively over the repository, all the fil
 4. You can check in Docker desktop and press containers. Here you can see that all containers are gone.
 ![Removed containers in docker desktop](dockerContainers2.png "Removed containers in docker desktop")
 
-5. To remove all images to free upp space, you need to press images in Docker desktop and select all checkboxes. When all selected, then press `Delete`-button and it will show a pop-upp if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
+5. To remove all images to free up space, you need to press images in Docker desktop and select all checkboxes. When all selected,  press `Delete`-button and it will show a pop-up if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
 ![Remove images in docker desktop](dockerimages.png "Remove images in docker desktop")
 
 ## Stop running or pause Docker desktop
