@@ -8,80 +8,95 @@ This is a list of all inverse dependencies of files in the accessedService folde
 
 ### addClass
 
-No dependecies
+None
 
 ### addUser
-No inverse dependencies.
+
+None
 
 ### getAccessedService
-No inverse dependencies
+
+None
 
 ### retrieveAccessedService
 
-accessedService:
-    addClass_ms.php
-    addUser_ms.php
-    getAccessedService_ms.php
-    updateUser_ms.php
+- accessedService/addClass_ms.php
+- accessedService/addUser_ms.php
+- accessedService/getAccessedService_ms.php
+- accessedService/updateUser_ms.php
 
 ### updateUser
-No inverse dependencies.
 
-### updateUserCourse (No includes)
+None
+
+### updateUserCourse
+
+None 
 
 ## codeviewerService
 
 This is a list of all inverse dependencies of files in the codeviewerService folder.
 
-### deleteCodeExample (No inverse dependencies)
+### deleteCodeExample
+
+None 
 
 ### editBoxTitle
-No inverse dependencies
 
+None
 
 ### editCodeExample
-No inverse dependencies.
+
+None
 
 ### editContentOfExample
-No inverse dependencies.
 
+None
 ### retrieveCodeviewerService
-[deleteCodeExample_ms.php](codeviewerService/deleteCodeExample_ms.php)
-[editBoxTitle_ms.php](codeviewerService/editBoxTitle_ms.php)
-[editCodeExample_ms.php](codeviewerService/editCodeExample_ms.php)
-[editContentOfExample_ms.php](codeviewerService/editContentOfExample_ms.php)
+
+- codeviewerService/deleteCodeExample_ms.php
+- codeviewerService/editBoxTitle_ms.php
+- codeviewerService/editCodeExample_ms.php
+- codeviewerService/editContentOfExample_ms.php
 
 ### updateCodeExampleTemplate
-No inverse dependencies 
+
+None 
 
 ## courseedService
 
 This is a list of all inverse dependencies of files in the courseedService folder.
 
 ### changeActiveCourseVersion_courseed
-There is no inverse dependencies
+
+None
 
 ### copyCourseVersion
-There is no list of all inverse dependencies
+
+None
 
 ### createCourseVersion
-(No inverse dependencies)
+
+None
 
 ### createMOTD
-No inverse dependencies
+
+None
 
 ### createNewCourse
-No inverse dependencies
+
+None
 
 ### deleteCourseMaterial
-[retrieveCourseedService_ms.php](courseedService/retrieveCourseedService_ms.php)
+- courseedService/retrieveCourseedService_ms.php
 
 ### getCourseed
-    No inverse dependencies
-    (completely replaced by retrieveAllCourseedServiceData)
+
+None (completely replaced by retrieveAllCourseedServiceData)
 
 ### retrieveAllCourseedServiceData
-No inverse dependencies found.
+
+None
 
 ### retrieveCourseedService
 - courseedService/changeActiveCourseVersion_courseed_ms.php
@@ -98,259 +113,233 @@ No inverse dependencies found.
 - courseedService/updateCourseVersion_ms.php
 
 ### specialUpdate
-No inverse dependencies
-
+None
 ### updateActiveCourseVersion_courseed
-No inverse dependencies.
-
+None
 ### updateCourse
-No inverse dependencies
-
+None
 ### updateCourseVersion
-No inverse dependencies
-
+None
 ## duggaedService
 
 This is a list of all inverse dependencies of files in the duggaedService folder.
 
 ### createDugga
-No inverse dependencies.
-
+None
 ### createDuggaVariant
-No inverse dependencies.
-
+None
 ### deleteDugga
-No inverse dependencies
-
+None
 ### deleteDuggaVariant
-No inverse dependencies
-
+None
 ### retrieveDuggaedService
-\duggaedService\createDugga.ms.php
-\duggaedService\createDuggaVariant_ms.php
-\duggaedService\deleteDugga_ms.php
-\duggaedService\deleteDuggaVariant_ms.php
-\duggaedService\updateDugga_ms.php
-\duggaedService\updateDuggaVariant_ms.php
+- duggaedService\createDugga.ms.php
+- duggaedService\createDuggaVariant_ms.php
+- duggaedService\deleteDugga_ms.php
+- duggaedService\deleteDuggaVariant_ms.php
+- duggaedService\updateDugga_ms.php
+- duggaedService\updateDuggaVariant_ms.php
 
 ### updateDugga
-No inverse dependencies.
-
+None
 ### updateDuggaVariant
-No inverse dependencies.
-
+None
 ## fileedService
 
 This is a list of all inverse dependencies of files in the fileedService folder.
 
 ### deleteFileLink
-No inverse dependencies.
-
+None
 ### getFileedService
-No inverse dependencies. 
-
+None
 ### updateFileLink
-No inverse dependencies.
-
+None
 ## gitCommitService
 
 This is a list of all inverse dependencies of files in the gitCommitService folder.
 
 ### clearGitFiles
-[refreshGithubRepo_ms.php](GitCommitService/refreshGithubRepo_ms.php)
+- GitCommitService/refreshGithubRepo_ms.php
 
 ### fetchOldToken
-No inverse dependencies
-
+None
 ### getCourseID
-No inverse dependencies.
-
+None
 ### insertIntoSQLite
 - gitCommitService/getCourseID_ms.php
 
 ### newUpdateTime
-(no inverse dependencies found)
-
+None
 ### refreshCheck
-(no inverse dependencies found)
-
+None
 ### refreshGithubRepo
-No inverse dependencies.
-
+None
 ### retrieveGitCommitService
-No inverse dependencies.
-
+None
 ## gitFetchService
 
 This is a list of all inverse dependencies of files in the gitFetchService folder.
 
 ### bfs
-No inverse dependencies.
-
+None
 ### downloadToWebServer
-No inverse dependencies.
-
+None
 ### getGithubURL
-No inverse dependencies
-
+None
 ### getIndexFile
-No inverse dependencies
-
+None
 ### insertToFileLink
-No inverse dependencies.
-
+None
 ### insertToMetadata
-No inverse dependencies.
+None
 
 ## highscoreService
 
 This is a list of all inverse dependencies of files in the highscoreService folder.
 
 ### highscoreservice
-No inverse dependencies. (Not in use)
-
+None 
 ### retrieveHighscoreService
-- ..\highscoreService\highscoreservice_ms.php
+- highscoreService\highscoreservice_ms.php
 
 ## profileService
 
 This is a list of all inverse dependencies of files in the profileService folder.
 
-### retrieveProfileService
-
 ### updateSecurityQuestion
-The service is never used as an inverse dependency
+
+None
 
 ### updateUserPassword
-There is no list of all inverse dependencies
+
+None
 
 ## resultedService
 
 This is a list of all inverse dependencies of files in the resultedService folder.
 
 ### getUserAnswer
-No inverse dependencies.
+
+None
 
 ### retrieveResultedService
-[getUserAnswer_ms.php](resultedService\getUserAnswer_ms.php)
 
+- resultedService\getUserAnswer_ms.php
 
 ## sectionedService
 
 This is a list of all inverse dependencies of files in the sectionedService folder.
 
 ### changeActiveCourseVersion_sectioned
-No inverse dependencies. 
 
+None 
 ### createGithubCodeExample
-No inverse dependencies.
-
+None
 ### createListEntry
-No inverse dependencies.
-
+None 
 ### deleteListEntries
-No inverse dependencies.
+None 
 
 ### getCourseGroupsAndMembers
-    No inverse dependencies.
-    (Replaced with readCourseGroupsAndMembers_ms.php)
+None (Replaced with readCourseGroupsAndMembers_ms.php)
 
 ### getCourseVersions
-    No inverse dependencies.
-    (Replaces with readCourseVersions_ms.php)
 
+None
 
 ### getDeletedListEntries
-(no inverse found)
+
+None 
 
 ### getGroupValues
-(no inverse found)
+
+None 
 
 ### getListEntries
 
-    No inverse dependencies. 
-    Supposed to be replaced with retrieveAllSectionedServiceData_ms.php   
+None replaced with retrieveAllSectionedServiceData_ms.php   
 
 ### getUserDuggaFeedback
 
-    No inverse dependencies.
-    Replaced with readUserDuggaFeedback_ms.php
+None Replaced with readUserDuggaFeedback_ms.php
 
 ### readCourseGroupsAndMembers
-No inverse dependencies.
+
+None 
 
 ### readCourseVersions
-- ..\sectionedService\retrieveSectionedService_ms.php
+- sectionedService\retrieveSectionedService_ms.php
 
 ### readGroupValues
-No inverse dependencies.
 
-### readUserDuggaFeedback
-No inverse dependencies.
+None
 
 ### removeListEntries
-No inverse dependencies.
+
+None
 
 ### reorderListEntries
-No inverse dependencies.
+
+None
 
 ### retrieveAllCourseVersions
-No inverse dependencies.
+
+None
 
 ### retrieveSectionedService
-\sectionedService\changeActiveCourseVersion_sectioned_ms.php
-\sectionedService\createGithubCodeExample_ms.php
-\sectionedService\createListEntry_ms.php
-\sectionedService\deleteListEntries_ms.php
-\sectionedService\getCourseGroupsAndMembers_ms.php
-\sectionedService\getDeletedListEntries_ms.php
-\sectionedService\getGroupValues_ms.php
-\sectionedService\getListEntries_ms.php
-\sectionedService\getUserDuggaFeedback_ms.php
-\sectionedService\readCourseGroupsAndMembers_ms.php
-\sectionedService\readGroupValues_ms.php
-\sectionedService\readUserDuggaFeedback_ms.php
-\sectionedService\removeListEntries_ms.php
-\sectionedService\reorderListEntries_ms.php
-\sectionedService\retrieveAllCourseVersions_ms.php
-\sectionedService\setVisibleListentries_ms.php
-\sectionedService\updateActiveCourseVersion_sectioned_ms.php
-\sectionedService\updateCourseVersion_sectioned_ms.php
-\sectionedService\updateListEntries_ms.php
-\sectionedService\updateListEntriesGradesystem_ms.php
-\sectionedService\updateListEntriesTabs_ms.php
-\sectionedService\updateListEntryOrder_ms.php
-\sectionedService\updateQuizDeadline_ms.php
-\sectionedService\updateVisibleListEntries_ms.php
+- \sectionedService\changeActiveCourseVersion_sectioned_ms.php
+- \sectionedService\deleteListEntries_ms.php
+- \sectionedService\getCourseGroupsAndMembers_ms.php
+- \sectionedService\getDeletedListEntries_ms.php
+- \sectionedService\getGroupValues_ms.php
+- \sectionedService\getListEntries_ms.php
+- \sectionedService\getUserDuggaFeedback_ms.php
+- \sectionedService\readCourseGroupsAndMembers_ms.php
+- \sectionedService\readGroupValues_ms.php
+- \sectionedService\readUserDuggaFeedback_ms.php
+- \sectionedService\removeListEntries_ms.php
+- \sectionedService\reorderListEntries_ms.php
+- \sectionedService\retrieveAllCourseVersions_ms.php
+- \sectionedService\setVisibleListentries_ms.php
+- \sectionedService\updateActiveCourseVersion_sectioned_ms.php
+- \sectionedService\updateCourseVersion_sectioned_ms.php
+- \sectionedService\updateListEntries_ms.php
+- \sectionedService\updateListEntriesGradesystem_ms.php
+- \sectionedService\updateListEntriesTabs_ms.php
+- \sectionedService\updateListEntryOrder_ms.php
+- \sectionedService\updateQuizDeadline_ms.php
+- \sectionedService\updateVisibleListEntries_ms.php
 
 ### setVisibleListentries
-(no inverse dependencies found)
+None
 
 ### updateActiveCourseVersion_sectioned
-(no inverse dependencies found)
-
+None
 
 ### updateCourseVersion_sectioned
 
 ### updateListEntries
-No inverse dependencies.
-
+None
 
 ### updateListEntriesGradesystem
-No inverse dependencies.
+
+None
 
 ### updateListEntriesTabs
-No inverse dependencies.
 
+None 
 
 ### updateListEntryOrder
-No inverse dependencies.
+
+None
 
 ### updateQuizDeadline
-No inverse dependencies.
+
+None 
 
 ### updateVisibleListEntries
-No dependencies found.
+
+None 
 
 ## sharedMicroservices
 
@@ -368,93 +357,91 @@ createListEntry_ms.php
 ### getUid
 
 ##### sharedMicroservices
-[createNewCodeExample_ms.php](sharedMicroservices/createNewCodeExample_ms.php)
-[retrieveUsername_ms.php](sharedMicroservices/retrieveUsername_ms.php)
-[micupdateSecurityQuestion_ms.php](sharedMicroservices/micupdateSecurityQuestion_ms.php)
-[updateSecurityQuestion_ms.php](sharedMicroservices/updateSecurityQuestion_ms.php)
-[updateUserPassword_ms.php](sharedMicroservices/updateUserPassword_ms.php)
+- sharedMicroservices/createNewCodeExample_ms.php
+- sharedMicroservices/micupdateSecurityQuestion_ms.php
+- sharedMicroservices/updateSecurityQuestion_ms.php
+- sharedMicroservices/updateUserPassword_ms.php
 
 ##### sectionedService
-[createGithubCodeExample_ms.php](sectionedService/createGithubCodeExample_ms.php)
-[createListEntry_ms.php](sectionedService/createListEntry_ms.php)
-[deleteListEntries_ms.php](sectionedService/deleteListEntries_ms.php)
-[getCourseVersions_ms.php](sectionedService/getCourseVersions_ms.php)
-[getDeletedListEntries_ms.php](sectionedService/getDeletedListEntries_ms.php)
-[getGroupValues_ms.php](sectionedService/getGroupValues_ms.php)
-[getListEntries_ms.php](sectionedService/getListEntries_ms.php)
-[readCourseVersions_ms.php](sectionedService/readCourseVersions_ms.php)
-[readGroupValues_ms.php](sectionedService/readGroupValues_ms.php)
-[removeListEntries_ms.php](sectionedService/removeListEntries_ms.php)
-[reorderListEntries_ms.php](sectionedService/reorderListEntries_ms.php)
-[setVisibleListentries_ms.php](sectionedService/setVisibleListentries_ms.php)
-[updateCourseVersion_sectioned_ms.php](sectionedService/updateCourseVersion_sectioned_ms.php)
-[updateListEntries_ms.php](sectionedService/updateListEntries_ms.php)
-[updateListEntriesGradesystem_ms.php](sectionedService/updateListEntriesGradesystem_ms.php)
-[updateListEntriesTabs_ms.php](sectionedService/updateListEntriesTabs_ms.php)
-[updateListEntryOrder_ms.php](sectionedService/updateListEntryOrder_ms.php)
-[updateVisibleListEntries_ms.php](sectionedService/updateVisibleListEntries_ms.php)
+- sectionedService/createGithubCodeExample_ms.php
+- sectionedService/createListEntry_ms.php
+- sectionedService/deleteListEntries_ms.php
+- sectionedService/getCourseVersions_ms.php
+- sectionedService/getDeletedListEntries_ms.php
+- sectionedService/getGroupValues_ms.php
+- sectionedService/getListEntries_ms.php
+- sectionedService/readCourseVersions_ms.php
+- sectionedService/reorderListEntries_ms.php
+- sectionedService/setVisibleListentries_ms.php
+- sectionedService/updateCourseVersion_sectioned_ms.php
+- sectionedService/updateListEntries_ms.php
+- sectionedService/updateListEntriesGradesystem_ms.php
+- sectionedService/updateListEntriesTabs_ms.php
+- sectionedService/updateListEntryOrder_ms.php
+- sectionedService/updateVisibleListEntries_ms.php
 
 ##### resultedService
-[getUserAnswer_ms.php](resultedService/getUserAnswer_ms.php)
+- resultedService/getUserAnswer_ms.php
 
 ##### profileService
-[updateSecurityQuestion_ms.php](profileService/updateSecurityQuestion_ms.php)
-[updateUserPassword_ms.php](profileService/updateUserPassword_ms.php)
+- profileService/updateSecurityQuestion_ms.php
+- profileService/updateUserPassword_ms.php
 
 ##### highscoreService
-[highscoreservice_ms.php](highscoreService/highscoreservice_ms.php)
+- highscoreService/highscoreservice_ms.php
 
 ##### fileedService
-[deleteFileLink_ms.php](fileedService/deleteFileLink_ms.php)
-[getFileedService_ms.php](fileedService/getFileedService_ms.php)
-[updateFileLink_ms.php](fileedService/updateFileLink_ms.php)
+- fileedService/deleteFileLink_ms.php
+- fileedService/getFileedService_ms.php
+- fileedService/updateFileLink_ms.php
 
 ##### duggaedService
-[createDugga_ms.php](duggaedService/createDugga_ms.php)
-[createDuggaVariant_ms.php](duggaedService/createDuggaVariant_ms.php)
-[deleteDugga_ms.php](duggaedService/deleteDugga_ms.php)
-[deleteDuggaVariant_ms.php](duggaedService/deleteDuggaVariant_ms.php)
-[updateDugga_ms.php](duggaedService/updateDugga_ms.php)
+- duggaedService/createDugga_ms.php
+- duggaedService/deleteDugga_ms.php
+- duggaedService/deleteDuggaVariant_ms.php
+- duggaedService/updateDugga_ms.php
 
 ###### courseedService
-[changeActiveCourseVersion_courseed_ms.php](courseedService/changeActiveCourseVersion_courseed_ms.php)
-[copyCourseVersion_ms.php](courseedService/copyCourseVersion_ms.php)
-[createCourseVersion_ms.php](courseedService/createCourseVersion_ms.php)
-[createMOTD_ms.php](courseedService/createMOTD_ms.php)
-[createNewCourse_ms.php](courseedService/createNewCourse_ms.php)
-[getCourseed_ms.php](courseedService/getCourseed_ms.php)
-[retrieveAllCourseedServiceData_ms.php](courseedService/retrieveAllCourseedServiceData_ms.php)
-[retrieveCourseedService_ms.php](courseedService/retrieveCourseedService_ms.php)
-[specialUpdate_ms.php](courseedService/specialUpdate_ms.php)
-[updateActiveCourseVersion_courseed_ms.php](courseedService/updateActiveCourseVersion_courseed_ms.php)
-[updateCourse_ms.php](courseedService/updateCourse_ms.php)
-[updateCourseVersion_ms.php](courseedService/updateCourseVersion_ms.php)
+- courseedService/changeActiveCourseVersion_courseed_ms.php
+- courseedService/copyCourseVersion_ms.php
+- courseedService/createCourseVersion_ms.php
+- courseedService/createMOTD_ms.php
+- courseedService/createNewCourse_ms.php
+- courseedService/getCourseed_ms.php
+- courseedService/retrieveAllCourseedServiceData_ms.php
+- courseedService/retrieveCourseedService_ms.php
+- courseedService/updateCourse_ms.php
+- courseedService/updateCourseVersion_ms.php
 
 ##### codeviewerService
-[deleteCodeExample_ms.php](codeviewerService/deleteCodeExample_ms.php)
-[editBoxTitle_ms.php](codeviewerService/editBoxTitle_ms.php)
-[editCodeExample_ms.php](codeviewerService/editCodeExample_ms.php)
-[editContentOfExample_ms.php](codeviewerService/editContentOfExample_ms.php)
-[updateCodeExampleTemplate_ms.php](codeviewerService/updateCodeExampleTemplate_ms.php)
+- codeviewerService/deleteCodeExample_ms.php
+- codeviewerService/editBoxTitle_ms.php
+- codeviewerService/editCodeExample_ms.php
+- codeviewerService/editContentOfExample_ms.php
+- codeviewerService/updateCodeExampleTemplate_ms.php
 
 ##### accessedService
-[addClass_ms.php](accessedService/addClass_ms.php)
-[addUser_ms.php](accessedService/addUser_ms.php)
-[getAccessedService_ms.php](accessedService/getAccessedService_ms.php)
-[updateUser_ms.php](accessedService/updateUser_ms.php)
-[updateUserCourse_ms.php](accessedService/updateUserCourse_ms.php)
+
+- accessedService/addClass_ms.php
+- accessedService/addUser_ms.php
+- accessedService/getAccessedService_ms.php
+- accessedService/updateUser_ms.php
+- accessedService/updateUserCourse_ms.php
 
 ### isSuperUser
-No inverse dependencies
+None
 
-### logUserEvent (No dependencies)
+### logUserEvent
+
+None 
 
 ### retrieveUsername
 
+TODO
+
 ### setAsActiveCourse
-    updateCourseVersion_ms.php
-    updateCourseVersion_sectioned_ms.php
-    
+- courseedService/updateCourseVersion_ms.php
+- sectionedService/updateCourseVersion_sectioned_ms.php
 ### updateSecurityQuestion
 
 ### updateUserPassword
@@ -466,8 +453,6 @@ There is no list of all inverse dependencies
 - fileedService/updateFileLink_ms.php
 - courseedService/updateCourseVersion_ms.php
 - courseedService/createCourseVersion_ms.php
-- courseedService/updateCourse_ms.php
-- courseedService/createNewCourse_ms.php
 - courseedService/copyCourseVersion_ms.php
 - sectionedService/updateCourseVersion_sectioned_ms.php
 - sectionedService/createListEntry_ms.php
@@ -480,23 +465,26 @@ This is a list of all inverse dependencies of files in the showDuggaServices fol
 
 ### getShowDugga
 
+TODO
+
 ### loadDugga
 
+TODO
+
 ### processDuggaFile
-[retrieveShowDuggaService_ms.php](/showDuggaService/retrieveShowDuggaService_ms.php) <br>
+- showDuggaService/retrieveShowDuggaService_ms.php
 
 ### retrieveShowDuggaService
-[getShowDugga_ms.php](/showDuggaService/getShowDugga_ms.php) <br>
-[loadDugga_ms.php](/showDuggaService/loadDugga_ms.php) <br>
-[saveDugga_ms.php](/showDuggaService/saveDugga_ms.php) <br>
-[updateActiveUsers_ms.php](/showDuggaService/updateActiveUsers_ms.php)
-### saveDugga
-No inverse dependencies
+- showDuggaService/getShowDugga_ms.php
+- showDuggaService/loadDugga_ms.php
+- showDuggaService/saveDugga_ms.php
+- showDuggaService/updateActiveUsers_ms.php
 
 ### updateActiveUsers
-No inverse dependencies
+
+None
 
 ### retrieveFileedService
-[deleteFileLink_ms.php](/fileedService/deleteFileLink_ms.php) <br>
-[getFileedService_ms.php](/fileedService/getFileedService_ms.php) <br>
-[updateFileLink_ms.php](/fileedService/updateFileLink_ms.php)
+- fileedService/deleteFileLink_ms.php
+- fileedService/getFileedService_ms.php
+- fileedService/updateFileLink_ms.php
