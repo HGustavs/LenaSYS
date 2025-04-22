@@ -234,11 +234,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if (kind == "undefined") kind = 0;
   xelink = elink;
   // Display Select Marker
-  $(".item").css("border", "none");
-  $(".item").css("box-shadow", "none");
-  $("#I" + lid).css("border", "2px dashed #FC5");
-  $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
-
+  const items = document.querySelectorAll(".item");
+  items.forEach(item => {
+    item.style.border = "none";
+    item.style.boxShadow = "none";
+  });
+  const element = document.getElementById("I" + lid);
+  element.style.border = "2px dashed #FC5";
+  element.style.boxShadow = "1px 1px 3px #000 inset";
   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
   document.querySelector("#inputwrapper-gradesystem").style.display = "none";
 
@@ -252,38 +255,37 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
-  $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
-  $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]));
-  $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
+  document.getElementById("gradesys").innerHTML = makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]);
+  document.getElementById("type").innerHTML = makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]);
+  document.getElementById("visib").innerHTML = makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]);
+  document.getElementById("tabs").innerHTML = makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]);
+  document.getElementById("highscoremode").innerHTML = makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]);
   if (deadline !== undefined) {
-    $("#deadlinehours").html(makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue));
-    $("#deadlineminutes").html(makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue));
-    $("#setDeadlineValue").val(!retdata['startdate'] ? "" : deadline.substr(0, 10));
+    document.getElementById("deadlinehours").innerHTML = makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue);
+    document.getElementById("deadlineminutes").innerHTML = makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue);
+    document.getElementById("setDeadlineValue").value = !retdata['startdate'] ? "" : deadline.substr(0, 10);
   }
   // Handles relative deadlines
   if (relativeDeadline !== undefined) {
     var splitdeadline = relativeDeadline.split(":");
     // relativeDeadline = amount:type:hour:minute
-    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2], hourArrOptions, hourArrValue));
-    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue));
-
-    $("#relativedeadlineamount").html(makeoptions(splitdeadline[0], amountArrOptions, amountArrValue));
-    $("#relativedeadlinetype").html(makeoptions(splitdeadline[1], typeArrOptions, typeArrValue));
+    document.getElementById("relativedeadlinehours").innerHTML = makeoptions(splitdeadline[2], hourArrOptions, hourArrValue);
+    document.getElementById("relativedeadlineminutes").innerHTML = makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue);
+    document.getElementById("relativedeadlineamount").innerHTML = makeoptions(splitdeadline[0], amountArrOptions, amountArrValue);
+    document.getElementById("relativedeadlinetype").innerHTML = makeoptions(splitdeadline[1], typeArrOptions, typeArrValue);
 
     if (relativeDeadline !== "null") {
       if (calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime()) {
-        checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+        checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
       } else {
-        checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
+        checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
       }
     } else {
-      checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+      checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
     }
   }
   if (relativeDeadline == "null" && deadline == "null") {
-    checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
+    checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -291,10 +293,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     if (!retdata['groups'].hasOwnProperty(key)) continue;
     groups.push(key);
   }
-  $("#grptype").html("<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups));
+  document.getElementById("grptype").innerHTML = "<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups);
 
   // Set Link
-  $("#link").val(elink);
+  document.getElementById("link").value = elink;
   changedType(kind);
 
   // Set Moments - requires iteration since we only process kind 4
@@ -316,43 +318,40 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     }
   }
 
-  $("#moment").html(str);
-  $("#editSectionDialogTitle").text(entryname);
+  document.getElementById("moment").innerHTML = str;
+  document.getElementById("editSectionDialogTitle").textContent = entryname;
 
   // Set Name
-  $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
-  id='sectionname' value='${entryname}' style='width:448px;'/>`);
-
+  document.getElementById("sectionname").value = entryname;
+  //document.getElementById("sectionnamewrapper").innerHTML = `<input type='text' class='form-control textinput' id='sectionname' value='${entryname}' style='width:448px;'/>`;
 
   // Set Comment
-  $("#comments").val(comments);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
-  id='comments' value='${comments}' style='width:448px;'/>`);
+  document.getElementById("comments").value = comments;
+  //document.getElementById("sectionnamewrapper").innerHTML = `<input type='text' class='form-control textinput' id='comments' value='${comments}' style='width:448px;'/>`;
 
   // Set Lid
-  $("#lid").val(lid);
+  document.getElementById("lid").value = lid;
 
   // Display Dialog
-  $("#editSection").css("display", "flex");
-
+  document.getElementById("editSection").style.display = "flex";
+    
   //------------------------------------------------------------------------------
   // Checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
   if (kind == 3) {
-    $('#inputwrapper-Feedback').css("display", "block");
+     document.getElementById('inputwrapper-Feedback').style.display = "block";
     if (feedbackenabled == 1) {
-      $("#fdbck").prop("checked", true);
-      $("#inputwrapper-FeedbackQuestion").css("display", "block");
-      $("#fdbckque").val(feedbackquestion);
+      document.getElementById("fdbck").checked = true;
+      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "block";
+      document.getElementById("fdbckque").value = feedbackquestion;
     } else {
-      $("#fdbck").prop("checked", false);
-      $("#inputwrapper-FeedbackQuestion").css("display", "none");
+      document.getElementById("fdbck").checked = false;
+      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
     }
   } else {
-    $("#inputwrapper-FeedbackQuestion").css("display", "none");
-    $('#inputwrapper-Feedback').css("display", "none");
-    $("#fdbck").prop("checked", false);
+    document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
+    document.getElementById('inputwrapper-Feedback').style.display = "none";
+    document.getElementById("fdbck").checked = false;
   }
 }
 // Handles the logic behind the checkbox for absolute deadline
