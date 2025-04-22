@@ -929,14 +929,14 @@ function prepareItem() {
   param.comments = document.getElementById("comments").value;
   param.grptype = document.getElementById("grptype").value;
   
-  param.setDeadlineValue = document.getElementById("setDeadlineValue").value;
-  param.deadlineHours = document.getElementById("deadlinehours").value;
-  param.deadlineMinutes = document.getElementById("deadlineminutes").value;
+  var setDeadlineValue = document.getElementById("setDeadlineValue").value;
+  var deadlineHours = document.getElementById("deadlinehours").value;
+  var deadlineMinutes = document.getElementById("deadlineminutes").value;
   param.deadline = setDeadlineValue + " " + deadlineHours + ":" + deadlineMinutes;
 
   param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
-  if (!document.getElementById("absplutedeadlinecheck").checked) {
+  if (!document.getElementById("absolutedeadlinecheck").checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
