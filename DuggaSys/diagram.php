@@ -1091,7 +1091,7 @@
     <div id="a4Template">
         <svg id="svgA4Template">
             <rect id="a4Rect" x="100" y="100" />
-            <rect id="vRect" x="100" y="100"/>
+            <rect id="vRect" x="100" y="100"/>            
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
     </div>  
