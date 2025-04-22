@@ -2114,7 +2114,7 @@ function sessionExpireMessage() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
-				$(".expiremessagebox").css("display","block");
+				document.querySelector(".expiremessagebox").style.display="block";
 				clearInterval(intervalId);
 			}
 
@@ -2136,8 +2136,8 @@ function sessionExpireLogOut() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-				$(".expiremessagebox").css("display","none");
-				$(".endsessionmessagebox").css("display","block");
+				document.querySelector(".expiremessagebox").style.display="none";
+				document.querySelector(".endsessionmessagebox").style.display="block";
 				processLogout();
 				clearInterval(intervalId);
 			}
@@ -2188,9 +2188,9 @@ function getCookie(cname) {
 }
 
 // EventListner for when ESC is pressed do a closeWindows()
-$(window).load(function() {
+window.addEventListener("load", function() {
 	//There is an issue with using this code, it generates errors that stop execution
-      $(window).keyup(function(event){
+      window.addEventListener("keyup", function(event){
       	if(event.keyCode == 27) {
 					if (window.location.href.indexOf('sectioned') !== -1) {
 						closeSelect();
@@ -2204,19 +2204,11 @@ $(window).load(function() {
 // Close the "logout" window by pressing the ESC button
 document.addEventListener('keydown', function (event) {
 	if (event.key === 'Escape') {
-	  $("#logoutBox").css("display", "none");
+	  document.getElementById("#logoutBox").style.display="none";
 	}
 })
 
-/*
-
 // Never make dialogs draggable - ruins everything!
-$(window).load(function() {
-	$('.formBox').draggable({ handle:'.formBoxHeader'});
-	$('.formBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
-});
-
-*/
 
 //----------------------------------------------------------------------------------
 // Help function to allow moving of elements from on index to another in array
@@ -2421,12 +2413,18 @@ function makeForm(cfield, ctype){
 
 function toggleInstructions(element)
 {
-	$(element).parent().find(".instructions-content").stop().slideToggle("slow");
+	if(document.querySelector(".instructions-content").style.display=="none")
+		document.querySelector(".instructions-content").style.display="block"
+	else
+		document.querySelector(".instructions-content").style.display="none"
 }
 
 function toggleFeedback(element)
 {
-	$(element).parent().find(".feedback-content").slideToggle("slow");
+	if(document.querySelector(".feedback-content").style.display=="none")
+	element.parentElement.document.querySelector(".feedback-content").style.display="block";
+	else
+	element.parentElement.document.querySelector(".feedback-content").style.display="none";
 }
 
 function disableSave(){
