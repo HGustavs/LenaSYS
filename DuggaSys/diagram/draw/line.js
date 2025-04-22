@@ -23,12 +23,23 @@ function drawLine(line, targetGhost = false) {
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
     
-    // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
+    // Set the to-coordinates to the same as the from-coordinates 
     // if the line is recursive
     if (line.kind === lineKind.RECURSIVE){
 
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
         [fx, fy, tx, ty, offset] = [fx, fy, fx, fy, offset];
+    }
+    if (!isCurrentlyDrawing) {
+        // Fix Sequence Actor  Sequence Object line 
+        if (felem.kind === elementTypesNames.sequenceActor) {
+            fx = felem.cx;
+            fy = felem.y1 + (felem.height / 4);
+        }
+        if (telem.kind === elementTypesNames.sequenceObject) {
+            tx = telem.cx;
+            ty = telem.y1 + (telem.height / 4);
+        }
     }
     else{
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
