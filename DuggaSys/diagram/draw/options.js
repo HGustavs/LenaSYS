@@ -77,17 +77,19 @@ function showProperties(show, propSet, menuSet) {
 }
 
 /**
- * @description Strips everything from a string that could be html.
- * @param {String} s String to be stripped of html.
+ * @description Escapes the html which removes problematic characters and replaces them with string-character.
+ * @param {String} str String to be escaped.
  * @returns Returns a html-free string.
  */
-function stripHtml(str) {
+function escapeHtml(str) {
     if (typeof str !== 'string') return '';
-    const tmp = document.createElement('div');
-    tmp.innerHTML = str;
-    return tmp.textContent || tmp.innerText || '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
-
 /**
  * @description Makes a textarea to be able for example add new classes for UML.
  * @param {String} name Name for the header for the textarea.
@@ -96,7 +98,7 @@ function stripHtml(str) {
  * @return Returns the div that is the header and the textarea for the specific element.
  */
 function textarea(name, property, element) {
-    const safeText = stripHtml(textboxFormatString(element[property]));
+    const safeText = escapeHtml(textboxFormatString(element[property]));
     return `<div style='color:${color.WHITE};'>${name}</div>
             <textarea 
                 id='elementProperty_${property}' 
@@ -110,7 +112,7 @@ function textarea(name, property, element) {
  * @return Returns the div that is the header and the text input.
  */
 function nameInput(element) {
-    const safeName = stripHtml(element.name);
+    const safeName = escapeHtml(element.name);
     return `<div style='color:${color.WHITE};'>Name</div>
             <input 
                 id='elementProperty_name' 
