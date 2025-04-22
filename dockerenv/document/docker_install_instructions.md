@@ -90,5 +90,5 @@ After changing the file permissions recursively over the repository, all the fil
 ![Remove images in docker desktop](dockerimages.png "Remove images in docker desktop")
 
 ## Stop running or pause Docker desktop
-1. To stop running or pause Docker desktop need to open Docker desktop and either you can press `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Now your Docker desktop is paused or stopped.
+1. To stop running or pause Docker desktop you need to open Docker desktop press either `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Now your Docker desktop is paused or stopped.
 ![Stop or pause docker desktop](stopdocker.png "Stop or pause docker desktop")
