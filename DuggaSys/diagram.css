@@ -18,7 +18,7 @@
   
 @media screen and (min-height: 1200px) {
     #diagram-toolbar {
-        width:90px;
+        width:70px;
     }
     #svggrid{
         left: 20px;
@@ -262,8 +262,8 @@
 .diagramIcons{
     position: relative;
     margin: auto;
-    width: 3.8vh;
-    height: 3.8vh;
+    width: 3.7vh;
+    height: 3.7vh;
     cursor:pointer;
     border: solid 1px var(--color-primary);
     margin-top: 3px;
@@ -415,7 +415,7 @@
 
 .toolTipText{
     top:-63px;
-    left: 125%;
+    left: 175%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
