@@ -483,9 +483,13 @@ This is a list of all inverse dependencies of files in the showDuggaServices fol
 ### loadDugga
 
 ### processDuggaFile
+[retrieveShowDuggaService_ms.php](/showDuggaService/retrieveShowDuggaService_ms.php) <br>
 
 ### retrieveShowDuggaService
-
+[getShowDugga_ms.php](/showDuggaService/getShowDugga_ms.php) <br>
+[loadDugga_ms.php](/showDuggaService/loadDugga_ms.php) <br>
+[saveDugga_ms.php](/showDuggaService/saveDugga_ms.php) <br>
+[updateActiveUsers_ms.php](/showDuggaService/updateActiveUsers_ms.php)
 ### saveDugga
 
 ### updateActiveUsers
