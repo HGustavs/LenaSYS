@@ -413,10 +413,14 @@ function recursiveERRelation(felem, telem, line) {
 }
 
 function getLineAttrubutes(f, t, ctype) {
-    const px = -1; // Don't touch
+    let px = -1; // Don't touch
+    if (t.kind || f.kind === elementTypesNames.IERelation){        
+        console.log("To/from");
+        px += - 5 * zoomfact;
+    }
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
 
-    switch (ctype) {
+    switch (ctype) { 
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
@@ -428,15 +432,13 @@ function getLineAttrubutes(f, t, ctype) {
             return [f.cx, f.y2, t.cx, t.y1, offset];
 
         case lineDirection.LEFT:
-
             offset.x1 = -px;          
             offset.x2 = px * 2;       
-
             return [f.x1, f.cy, t.x2, t.cy, offset];
 
         case lineDirection.RIGHT:
-            offset.x1 = px;
-            offset.x2 = -px * 2;
+            offset.x1 = px;           
+            offset.x2 = -px * 2;      
             return [f.x2, f.cy, t.x1, t.cy, offset];
     }
 }
