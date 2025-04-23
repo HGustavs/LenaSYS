@@ -8,7 +8,23 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./deleteCourseMaterial_ms.php";
+//include_once "./deleteCourseMaterial_ms.php";
+
+// Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+
+$url = $baseURL . "/LenaSYS/duggaSys/microservices/sectionedService/deleteCourseMaterial_ms.php";
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+
+$versions = $data;
+
+header('Content-Type: application/json');
+echo json_encode($data);
 
 function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuperUserVar){ 
 
