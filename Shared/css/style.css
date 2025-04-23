@@ -968,9 +968,9 @@ p {
 }
 
 @media only screen and (max-width: 800px), only screen and (orientation:portrait) {
-  #swimlaneSVG text {
+  /*#swimlaneSVG text {
       font-size: 14px;
-  }
+  }*/
 }
 
 @media only screen and (min-width: 1224px) {
