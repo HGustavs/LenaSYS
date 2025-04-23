@@ -1310,7 +1310,7 @@ function goToVersion(courseDropDown) {
 }
 
 function accessCourse() {
-  var coursevers = document.getElementById("course.coursevers").textContent;
+  var coursevers = document.getElementById("course-coursevers").textContent;
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
