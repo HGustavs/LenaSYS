@@ -66,10 +66,10 @@
 			</div>";
 	}
 
-	function inputField($inputId, $inputLabel, $inputType) {
+	function inputField($inputId, $inputLabel, $inputType, $inputValue='') {
 		echo "<div class='input-field'>
 					<label for='$inputId'>$inputLabel</label>
-					<input id='$inputId' type='$inputType'>
+					<input id='$inputId' name='$inputId' type='$inputType' value='". htmlspecialchars($inputValue) ."'>
 			</div>";
 	}
 
@@ -96,7 +96,7 @@
 			echo "<div class='radiobutton'>
 					<input id='$id' type='radio' name='$radioGroupName' value='$id' $checked>
 					<label for='$id'>$label</label>
-				  </div>";
+				</div>";
 		}
 		echo "</div>";
 	}

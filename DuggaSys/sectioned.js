@@ -1572,10 +1572,10 @@ function returnedSection(data) {
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
         // New items added get the class glow to show they are new
         if ((Date.parse(item['ts']) - dateToday) > compareWeek) {
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " glow displayBlock'>";
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " glow courseRow'>";
         }
         else {
-          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " displayBlock'>";
+          str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " courseRow'>";
         }
 
         menuState.idCounter++;
@@ -1583,13 +1583,13 @@ function returnedSection(data) {
 
         // Content table
         str += `<table id='lid${item['lid']}' value='${item['lid']}'
-        style='width:100%;table-layout:fixed;'><tr value='${makeTextArray(item['kind'], valarr)}' style='height:32px;' `;
+        ><tr value='${makeTextArray(item['kind'], valarr)}'`;
 
-        if (kk % 2 == 0) {
-          str += " class='hi' ";
-        } else {
-          str += " class='lo' ";
-        }
+        //if (kk % 2 == 0) {
+        //  str += " class='hi' ";
+        //} else {
+        //  str += " class='lo' ";
+        //}
         str += " >";
 
 
@@ -2442,7 +2442,7 @@ function returnedHighscore(data) {
 }
 
 //----------------------------------------------------------------------------------
-// drawSwimlanes: Draws schedule for deaadlines on all assignments is course
+// drawSwimlanes: Draws schedule for deadlines on all assignments is course
 //----------------------------------------------------------------------------------
 
 function drawSwimlanes() {
@@ -2515,7 +2515,7 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7; 
   
   var colwidth = 60;
-  var weekheight = 25;
+  var weekheight = 50;
 
   var str = "";
   // Fades a long text. Gradients on swimlane text depending on if dugga is submitted or not.

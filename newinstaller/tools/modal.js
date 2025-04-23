@@ -11,14 +11,18 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.style.display = "none";
     }
 
-    // Close the modal when the close button is clicked
-    closeModalBtn.onclick = function() {
-        closeModal();
+    if (closeModalBtn != null) {
+        // Close the modal when the close button is clicked
+        closeModalBtn.onclick = function() {
+            closeModal();
+        }
     }
 
-    // Open the modal when the open button is clicked
-    openModalBtn.onclick = function() {
-        openModal();
+    if (openModalBtn != null) {
+        // Open the modal when the open button is clicked
+        openModalBtn.onclick = function() {
+            openModal();
+        }
     }
 
     // Close the modal if the user clicks outside of the modal content
