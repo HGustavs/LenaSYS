@@ -1291,13 +1291,13 @@ function updateVersion() {
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
   param.makeactive = 2 + $("#emakeactive").is(':checked');
-  param.startdate = $("#estartdate").val();
-  param.enddate = $("#eenddate").val();
+  param.startdate = document.getElementById("estartdate").value;
+  param.enddate = document.getElementById("eenddate").value;
   param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "COURSE");
 
-  $("#editCourseVersion").css("display", "none");
+  document.getElementById("editCourseVersion").style.display = "none";
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
     querystring["coursename"] + "&coursevers=" + document.getElementById("eversid").value);
 }
@@ -1310,7 +1310,7 @@ function goToVersion(courseDropDown) {
 }
 
 function accessCourse() {
-  var coursevers = $("#course-coursevers").text();
+  var coursevers = document.getElementById("course.coursevers").textContent;
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
