@@ -2095,7 +2095,7 @@ function returnedSection(data) {
     }
 
     if (data['writeaccess']) {
-      /*// Enable sorting always if we are superuser as we refresh list on update
+      // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
@@ -2121,7 +2121,7 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
-      } */
+      }
     }
   } else {
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>" +
