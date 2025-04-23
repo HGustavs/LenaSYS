@@ -19,7 +19,13 @@ var openedSublists = [];
 function showGif(url, size, handle){
     handle.src = url;
     handle.style.width = size;
-    $(".playbutton").toggle();
+    var e1=document.querySelector(".playbutton");
+    if(e1.checkVisibility()==true){
+        e1.style.display="none"
+    }
+    else{
+        e1.style.display="block"
+    }
 }
 
 //Toggles between thumbnail and gif animation
@@ -29,14 +35,14 @@ function toggleGif(url1, url2,handle){
     currentSrc = currentSrc.substr(n+1);
     //alert();
     if(currentSrc == url1){
-        $(handle).removeClass("gifimage-fullsize");
+        handle.classList.remove("gifimage-fullsize");
         document.getElementById("overlay").style.display="none";
         showGif(url2, 150 + "px",handle); //Show thumbnail
     }
     else{
         showGif(url1, 80 + "%",handle); //Show big animation gif
         document.getElementById("overlay").style.display="block";
-        $(handle).addClass("gifimage-fullsize");
+        handle.classList.add("gifimage-fullsize");
     }
 }
 
@@ -457,11 +463,11 @@ function cursiveText() {
 }
 
 function showDropdown() {
-    $('#select-header').show();
+    document.querySelector('#select-header').style.display="block";
 }
 
 function selected() {
-    $('#select-header').hide();
+    document.querySelector('#select-header').style.display="none";
 }
 
 function headerVal1() {
@@ -624,12 +630,18 @@ function tabKey(){
     updatePreview(txtarea.value);
 }
 
-$(document).ready(function(){
-   $(".headerType").click(function(){
-        $("#select-header").toggle();
-        $("#select-header").addClass("show-dropdown-content");
+document.onload(function(){
+   document.querySelector(".headerType").click(function(){
+        var e1=document.querySelector("#select-header");
+        if(e1.checkVisibility()==true){
+            e1.style.display="none"
+        }
+        else{
+            e1.style.display="block"
+        }
+        document.querySelector("#select-header").classList.add("show-dropdown-content");
     });
-    $("#mrkdwntxt").keydown(function(e) {
+    document.getElementById("#mrkdwntxt").addEventListener("keydown", function(e) {
         if (e.keyCode == 9){
             e.preventDefault();
             tabKey();
@@ -639,8 +651,8 @@ $(document).ready(function(){
 });
 
 //Hide dropdown if click is outside the div
-$(document).mouseup(function(e) {
-    var container = $("#select-header");
+document.addEventListener("mouseup", function(e) {
+    var container = document.querySelector("#select-header");
     if (!container.is(e.target) && container.has(e.target).length === 0) {
         container.hide();
     }
