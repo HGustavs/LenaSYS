@@ -35,11 +35,19 @@ foreach ($lines as $line) {
     // header for a microservice has ###
     if (preg_match('/^### (.+)/', $trimmedLine, $match)) {
         $currentMicroservice = $match[1];
-        echo $currentMicroservice . "<br>";
+        // echo $currentMicroservice . "<br>";
         continue;
     }
 
+    // skip those containing "None"
+    if (strtolower($trimmedLine === "none") || $trimmedLine === '') {
+        continue;
+    }
 
+    // when reaching a valid dependency row
+    if ($currentMicroservice !== null && preg_match('/^- (.+)/', $trimmedLine, $match)) {
+        echo $currentMicroservice . "<br>";
+    }
 
 }
 
