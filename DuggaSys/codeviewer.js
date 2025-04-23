@@ -208,9 +208,13 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	if ($('#fileedButton').length) {
-		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
-		document.getElementById('fileedButton').style = "display:table-cell;";
+	// Show fileedButton and set navigation to fileed.php on click. 
+	const fileedbutton = document.getElementById('fileedButton');
+	if(fileedbutton) {
+		fileedbutton.onclick = function (){
+			navigateTo('/fileed.php', '?courseid=' + courseid + '&coursevers=' + cvers);
+		};
+		fileedbutton.style.display = "table-cell";
 	}
 
 	if (retData['debug'] != "NONE!") alert(retData['debug']);
@@ -257,8 +261,8 @@ function returned(data)
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
-	// Clear div2
-	$("#div2").html("");
+	//clear div2
+	document.getElementById("div2").innerHTML = "";
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -282,8 +286,9 @@ function returned(data)
 		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
+		
 		// don't create templatebox if it already exists
-		if ($("#" + contentid).length == 0) {
+		if(!document.getElementById(contentid)){
 			addTemplatebox(contentid);
 		}
 
@@ -795,7 +800,7 @@ function displayEditContent(boxid)
 	document.getElementById("boxtitle").value = box[4];
 	document.getElementById("boxcontent").value = box[1];
 
-	changeDirectory($("#boxcontent"));
+	changeDirectory(document.getElementById("boxcontent"));
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
@@ -811,8 +816,9 @@ function displayEditContent(boxid)
 	for (var i = 0; i < wordl.length; i++) {
 		str += "<option value='" + wordl[i][0] + "'>" + wordl[i][1] + "</option>";
 	}
-	$("#wordlist").html(str);
-	$("#wordlist").val(box[3]);
+
+	document.getElementById("wordlist").innerHTML = str;
+	document.getElementById("wordlist").value = box[3];
 
 	var str = "";
 	for (var i = 0; i < retData['improws'].length; i++) {
@@ -823,7 +829,8 @@ function displayEditContent(boxid)
 	document.getElementById("improws").innerHTML = str;
 
 	document.getElementById("editContentContainer").style.display = "flex";
-}
+} 
+
 // -----------------------------------------------------------------------------------------------
 // Listen to enterpress on "important rows" inputfield and runs the same function as the + button
 // -----------------------------------------------------------------------------------------------
@@ -1207,13 +1214,17 @@ function toggleClass(id) {
 //----------------------------------------------------------------------------------
 
 function displayDrop(dropid) {
-	drop = $("#" + dropid);
-	if ($(drop).is(":hidden")) {
-		$(".dropdown").css({
-			display: "none"
-		});
+	const drop = document.getElementById(dropid);
+	
+	//hide all other dropdowns
+	document.querySelectorAll(".dropdown").forEach(el =>{
+		el.style.display = "none"
+	});
+
+	// Toggle current one
+	if (drop && drop.offsetParent === null) {
 		drop.style.display = "block";
-	} else {
+	}else if (drop) {
 		drop.style.display = "none";
 	}
 }
@@ -4638,29 +4649,38 @@ function resizeBoxes(parent, templateId)
 						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
 					}
 				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
+				else if (document.getElementById("box5wrapper").offsetHeight <= document.getElementById(parent).offsetHeight * 0.15 && resizeAmount < 0) {
+					const box2 = document.getElementById("box2wrapper");
+					const box3 = document.getElementById("box3wrapper");
+					const parentHeight = document.getElementById(parent).offsetHeight;
+				
+					// If both box5 and 4 are too small only resize box3
+					if (box2.offsetHeight <= parentHeight * 0.15) {
+						box3.style.height = (box3.offsetHeight + resizeAmount) + "px";
 					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
+					// Else if box 3 and 5 are too small only resize box2
+					else if (box3.offsetHeight <= parentHeight * 0.15) {
+						box2.style.height = (box2.offsetHeight + resizeAmount) + "px";
 					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
+					else {
+						box2.style.height = (box2.offsetHeight + resizeAmount / 2) + "px";
+						box3.style.height = (box3.offsetHeight + resizeAmount / 2) + "px";
 					}
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
+				} else {
+					const box2 = document.getElementById("box2wrapper");
+					const box3 = document.getElementById("box3wrapper");
+					const box5 = document.getElementById("box5wrapper");
+				
+					const delta = resizeAmount / 3;
+				
+					box2.style.height = (box2.offsetHeight + delta) + "px";
+					box3.style.height = (box3.offsetHeight + delta) + "px";
+					box5.style.height = (box5.offsetHeight + delta) + "px";
 				}			
 				
 			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
+			maxHeight: (document.getElementById(parent).offsetHeight * 0.55),
+			minHeight: (document.getElementById(parent).offsetHeight * 0.15),
 			handles:"s",
 			containment: parent
 		});
@@ -4690,35 +4710,35 @@ function saveInitialBoxValues() {
 	setLocalStorageProperties(templateId, boxValArray);
 }
 
-function initResizableBoxValues(parent) {
-	var parentWidth = $(parent).width();
-	var parentHeight = $(parent).height();
-	var boxWidth;
-	var boxHeight;
-	var boxId;
-	var numBoxes = $("[id ^=box][id $=wrapper]").length;
-	var boxValueArray = new Array();
+function initResizableBoxValues(parentId) {
+	const parentEl = document.getElementById(parentId);
+	const parentWidth = parentEl.offsetWidth;
+	const parentHeight = parentEl.offsetHeight;
+	const boxWrapper = document.querySelectorAll("[id ^=box][id $=wrapper]");
+	const numBoxes = boxWrapper.length;
+	
+	const boxValueArray = {};
 	boxValueArray["parent"] = {
-		"id": parent,
+		"id": parentId,
 		"width": parentWidth,
 		"height": parentHeight
 	};
+	for (let i = 1; i <= numBoxes; i++) {
+		const boxEl = document.getElementById("box" + i + "wrapper");
+		if (!boxEl) continue;
 
-	for (var i = 1; i <= numBoxes; i++) {
-		boxWidth = $("#box" + i + "wrapper").width();
-		boxHeight = $("#box" + i + "wrapper").height();
-		boxId = "#box" + i + "wrapper";
 		boxValueArray["box" + i] = {
-			"id": boxId,
-			"width": boxWidth,
-			"height": boxHeight
+			id: "#box" + i + "wrapper",
+			width: boxEl.offsetWidth,
+			height: boxEl.offsetHeight
 		};
 	}
 
-	$(window).resize(function (event) {
-		if (!$(event.target).hasClass('ui-resizable')) {
-			boxValueArray['parent']['height'] = $(parent).height();
-			boxValueArray['parent']['width'] = $(parent).width();
+	// Replace jQuery resize listener
+	window.addEventListener("resize", function (event) {
+		if (!event.target.classList.contains('ui-resizable')) {
+			boxValueArray["parent"].width = parentEl.offsetWidth;
+			boxValueArray["parent"].height = parentEl.offsetHeight;
 		}
 	});
 
@@ -4780,18 +4800,31 @@ function copyCodeToClipboard(boxid) {
 	if (navigator.clipboard){
 		navigator.clipboard.writeText(lines);
 	} else {
-		var dummy = $('<textarea>').val(lines).appendTo('body').select();
-		document.execCommand("Copy")
-		dummy.remove();
+		var dummy = document.createElement("textarea");
+		dummy.value = lines;
+		document.body.appendChild(dummy);
+		dummy.select();
+		document.execCommand("copy");
+		document.body.removeChild(dummy);
 	}
 
 	// Notification animation
-	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
-		setTimeout(function () {
-			$("#notificationbox" + boxid).fadeOut("fast");
+	const notification = document.getElementById("notificationbox" + boxid);
+	notification.style.display = "flex";
+	notification.style.overflow = "hidden";
+	notification.style.opacity = 0;
+	notification.style.transition = "opacity 0.2s ease-in";
+	requestAnimationFrame(() => {
+	notification.style.opacity = 1;
+	setTimeout(() => {
+		notification.style.transition = "opacity 0.2s ease-out";
+		notification.style.opacity = 0;
+			setTimeout(() => {
+				notification.style.display = "none";
+			}, 200);
 		}, 500);
 	});
-}
+}	
 
 // Selectionchange EventListener
 document.addEventListener('selectionchange', function () {
@@ -4802,49 +4835,57 @@ document.addEventListener('selectionchange', function () {
 	}, 500);
   });
 
-// Detects clicks
-$(document).mousedown(function (e) {
-	var box = $(e.target);
-	if ($('#burgerMenu').is(e.target) || $('#burgerMenu').has(e.target).length !== 0) { //is the burger menu or its descendants clicked?
+  // Sets a flag to prevent closing when clicking inside valid elements
+  document.addEventListener("mousedown", function (e) {
+	const burgerMenu = document.getElementById("burgerMenu");
+	const target = e.target;
+
+	if (target === burgerMenu || burgerMenu.contains(target)) {
 		isClickedElementBox = true;
-	} else if (box[0].classList.contains("formBox")) { // is the clicked element a formBox?
+	} else if (target.classList.contains("formBox")) {
 		isClickedElementBox = true;
-	} else if ((findAncestor(box[0], "formBox") != null) // or is it inside a formBox?
-		&&
-		(findAncestor(box[0], "formBox").classList.contains("formBox"))) {
+	} else if (findAncestor(target, "formBox")) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
 	}
 });
 
-// Close the formBox when clicking outside it.
-$(document).mouseup(function (e) {
-	// Click outside the burger menu
-	var notTarget = !$('#burgerMenu').is(e.target) && !$('#codeBurger').is(e.target) // if the burger menu is visible and the target of the click isn't the container or button...
-	var notDecendant = $('#burgerMenu').has(e.target).length === 0 && $('#codeBurger').has(e.target).length === 0 // ... nor a descendant of the container or button
-	if ($('#burgerMenu').is(':visible') && notTarget && notDecendant && !isClickedElementBox) {
+// Sets a flag to prevent closing when clicking inside valid elements
+document.addEventListener("mouseup", function (e) {
+	const target = e.target;
+	const burgerMenu = document.getElementById("burgerMenu");
+	const codeBurger = document.getElementById("codeBurger");
+
+	const notTarget = target !== burgerMenu && target !== codeBurger;
+	const notDescendant = !burgerMenu.contains(target) && !codeBurger.contains(target);
+
+	if (burgerMenu.offsetParent !== null && notTarget && notDescendant && !isClickedElementBox) {
 		closeBurgerMenu();
 	}
 
-	// Click outside the formBox
-	if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) // if the target of the click isn't the container...
-		&&
-		$('.formBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&&
-		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
-	{
-		closeWindows();
-		hideIframe();
-	}
+	const formBoxes = document.querySelectorAll(".formBox");
+	formBoxes.forEach(formBox => {
+		if (
+			formBox.offsetParent !== null &&
+			target !== formBox &&
+			!formBox.contains(target) &&
+			!isClickedElementBox
+		) {
+			closeWindows();
+			hideIframe();
+		}
+	});
 });
 
+// Toggles the burger menu by cheching if its currently hidden
 function showBurgerMenu() {
-    if($('#burgerMenu').is(':hidden')){
-        showBurgerDropdown();
-    }else {
-        closeBurgerMenu();
-    }
+    const burgerMenu = document.getElementById("burgerMenu");
+		if(burgerMenu.offsetParent === null) {
+			showBurgerDropdown();
+		} else {
+			closeBurgerMenu();
+		}
 }
 
 function showBurgerDropdown(){
@@ -4867,22 +4908,26 @@ function showAllViews(){
     	showAllBox(box[0]);
  	});
 	for(i = 1; i <= retData['numbox']; i++){
-		$("#box" + i +"wrapper").css('grid-column','');
-		$("#box" + i +"wrapper").css('grid-row','');
+		const wrapper = document.getElementById("box" + i + "wrapper");
+		if (wrapper) {
+			wrapper.style.gridColumn = "";
+			wrapper.style.gridRow = "";
+		}
 	}
 }
 
 function setShowPane(id) {
 	closeBurgerMenu();
 	for(i = 1; i <= retData['numbox']; i++){
+		const wrapper = document.getElementById("box" + i + "wrapper");
+		if(!wrapper) continue;
 		if(i == id){
-			$("#box" + i +"wrapper").css("display", "inline");
-			//Setting the box to cover the entire grid of #div2
-			$("#box" + i +"wrapper").css('grid-column',"a/b");
-			$("#box" + i +"wrapper").css('grid-row',"a/l");
+			wrapper.style.display = "inline";
+			wrapper.style.gridColumn = "a/b";
+			wrapper.style.gtidRow = "a/1";
 		}
 		else{
-			$("#box" + i +"wrapper").css("display", "none");
+			wrapper.style.display = "none";
 		}
 		
 	}
@@ -4962,7 +5007,7 @@ function showHiddenIframe() {
     var filePath = 'fileed.php?courseid=' + courseid + '&coursevers=' + cvers;
     document.querySelector(".previewWindow").style.display = "block";
     document.querySelector(".previewWindowContainer").style.display = "block";
-    $("#iframeFileed").attr('src', filePath);
+	document.getElementById("iframeFileed").src = filepath;
 }
 
 function hideIframe()
@@ -5082,7 +5127,10 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 //Toggles the description text one the boxes.
 function toggleTitleDescription(toCheck){
 	var box = document.querySelector('#box' + toCheck + 'wrapper #boxtitlewrapper');
-	var boxW = $('#box' + toCheck + 'wrapper').width()/$('#div2').width() * 100;
+	const boxWrapper = document.getElementById('box' + toCheck + 'wrapper');
+	const div2 = document.getElementById('div2');
+	const boxW = (boxWrapper.offsetWidth / div2.offsetWidth) * 100;
+
 	//Check if the widht(%) of the box is < 16
 	if(boxW <= 16){
 		box.classList.add('visuallyhidden');
@@ -5123,7 +5171,8 @@ function checkIfPopupIsOpen() {
 		return true;
 	}
 	for (let popup of allPopups) {
-		if ($(popup).css("display") !== "none"){
+		const el = document.querySelector(popup);
+		if (el && window.getComputedStyle(el).display !== "none") {
 			return true;
 		}
 	}
