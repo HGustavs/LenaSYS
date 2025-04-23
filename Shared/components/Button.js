@@ -8,5 +8,3 @@ class Button extends React.Component {
         );
     }
 }
-//export globally
-window.Button = Button;
