@@ -1,9 +1,10 @@
-import React from "react";
-
-const Dropdown = ({ children, className = "" }) => {
+const Dropdown = ({ children, dropdownName, onClick, className = "" }) => {
     return (
-        <div className={'dropdown ${className}'}>
-            {children}
+        <div className={`dropdown ${className}`}>
+            <button onClick={onClick} className="dropButton">{dropdownName}</button>
+            <div className="dropdown-content">
+                {children}
+            </div>
         </div>
     );
 };
@@ -17,5 +18,3 @@ const Button = ({ children, onClick }) => {
 };
 
 Dropdown.Button = Button;
-
-export default Dropdown;
