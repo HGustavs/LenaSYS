@@ -1,8 +1,10 @@
 <?php
-// select where to create the database
-$dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 
-// create or open the database
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// connect to the database
+$dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 $db = new PDO('sqlite:' . $dbFile);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
