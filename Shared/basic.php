@@ -52,7 +52,9 @@ function makeLogEntry($userid,$entrytype,$pdo,$etext)
 
 //------------------------------------------------------------------------------------------------
 // getOP
-// Read the $name from $_POST and if $name exists returns the value of $name typecast to $type
+// Read the $name from $_POST
+// If $name exists, it returns the value of $name typecast to $type
+// The value of $name can be converted to a specific type based on $type
 // If $name does not exist in $_POST return $default
 //------------------------------------------------------------------------------------------------
 function getOP($name, $default="UNK", $type="string")
@@ -81,9 +83,10 @@ function getOP($name, $default="UNK", $type="string")
 
 //------------------------------------------------------------------------------------------------
 // getOP
+// postOPValue works similarly as to getOP - but it ONLY retrieves the value from $_POST
 //------------------------------------------------------------------------------------------------
 
-function gettheOP($name)
+function postOPValue($name)
 {
 	if(isset($_POST[$name])){
 		return $_POST[$name];
