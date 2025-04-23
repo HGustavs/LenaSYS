@@ -241,9 +241,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     item.style.boxShadow = "none";
   });
   const element = document.getElementById("I" + lid);
-  element.style.border = "2px dashed #FC5";
-  element.style.boxShadow = "1px 1px 3px #000 inset";
-
+  if (element) {
+    element.style.border = "2px dashed #FC5";
+    element.style.boxShadow = "1px 1px 3px #000 inset";
+  }
   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
   document.querySelector("#inputwrapper-gradesystem").style.display = "none";
 
