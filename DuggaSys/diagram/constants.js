@@ -39,7 +39,7 @@ const keybinds = {
     MOVING_OBJECT_DOWN: { key: "ArrowDown", ctrl: false },
     MOVING_OBJECT_LEFT: { key: "ArrowLeft", ctrl: false },
     MOVING_OBJECT_RIGHT: { key: "ArrowRight", ctrl: false },
-    TOGGLE_KEYBINDLIST: { key: "F1", ctrl: false },
+    TOGGLE_KEYBINDLIST: { key: "F1", ctrl: true },
     TOGGLE_REPLAY_MODE: { key: "r", ctrl: false },
     TOGGLE_ER_TABLE: { key: "e", ctrl: false },
     TOGGLE_TEST_CASE: { key: "u", ctrl: false },
