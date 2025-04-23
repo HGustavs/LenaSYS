@@ -2,7 +2,6 @@
 
 include_once "../../../Shared/basic.php";
 
-
 function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt="", $newusers=""){
     $entries=array();
     $teachers=array();
