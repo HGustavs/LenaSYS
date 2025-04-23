@@ -810,7 +810,6 @@ function markedItems(item = null, typeInput) {
   
   // adds everything under section to selectedItems (if nothing selected beforehand)
   else {
-    console.log('selectedItemList contains (3.1): ' + selectedItemList);
     selectedItemList.push(active_lid);
     for (var j = 0; j < subItems.length; j++) {
       selectedItemList.push(subItems[j]);
