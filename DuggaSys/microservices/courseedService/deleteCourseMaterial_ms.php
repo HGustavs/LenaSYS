@@ -6,7 +6,36 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "./retrieveCourseedService_ms.php";
+//include_once "./retrieveCourseedService_ms.php";
+
+header("Content-Type: application/json");
+
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/retrieveCourseedService_ms.php";
+$ch = curl_init($url);
+
+    //options for curl
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $cid, 'versid' => $versid
+    ]));
+
+    curl_exec($ch);
+    curl_close($ch);
+
+    //get values from post
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['cid'], $_POST['versid'])) {
+            $cid = $_POST['cid'];
+            $versid = $_POST['versid'];
+        }
+    }
+
+    //set active course in database
+    $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+    $query->bindParam(':cid', $cid);
+    $query->bindParam(':vers', $versid);
 
 function deleteCourseMaterial($pdo){
 
