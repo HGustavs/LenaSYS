@@ -1184,7 +1184,7 @@ async function newItem(itemtitle) {
 
   // Continues when AJAX call is completed
   await AJAXService("NEW", prepareItem(), "SECTION");
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
 
   // Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
@@ -1210,7 +1210,7 @@ async function newItem(itemtitle) {
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
-    $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").classList.remove("createAlertToggle");
     document.getElementById("createAlert").innerHTML = "";
   }, 3000);
 
@@ -1248,7 +1248,7 @@ function createVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#makeactive").is(':checked');
+  param.makeactive = 2 + (document.getElementById("makeactive").checked ? 1 : 0);
   param.startdate = getDateFormat(new Date($("#startdate").val()));
   param.enddate = getDateFormat(new Date($("#enddate").val()));
 
@@ -1269,7 +1269,7 @@ function createVersion() {
       // Create a fresh course version
       AJAXService("NEWVRS", param, "COURSE");
     }
-    $("#newCourseVersion").css("display", "none");
+    document.getElementById("newCourseVersion").style.display = "none";
     changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
       querystring["coursename"] + "&coursevers=" + document.getElementById("cversid").value);
   }
@@ -1290,7 +1290,7 @@ function updateVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#emakeactive").is(':checked');
+  param.makeactive = 2 + (document.getElementById("emakeactive").checked ? 1 : 0);
   param.startdate = document.getElementById("estartdate").value;
   param.enddate = document.getElementById("eenddate").value;
   param.motd = document.getElementById("eMOTD").value;
