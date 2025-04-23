@@ -4,8 +4,18 @@
 // Include basic application services
 include_once "../../../Shared/basic.php";
 
-// Include services for information retrieval
-include_once "readCourseVersions_ms.php";
+// Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sectionedService/readCourseVersions_ms.php";
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+
+$versions = $data;
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
@@ -194,9 +204,6 @@ function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $cours
     }
 
     $links = array();
-
-    // Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
-    $versions = readCourseVersions($pdo);
 
     $codeexamples = array();
 
