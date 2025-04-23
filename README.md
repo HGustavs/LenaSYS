@@ -8,7 +8,9 @@ University of Skövde Code Viewer and Course Organization System
 
 To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 
-# Docker installation instructions
+## How to Install Docker
+
+### Docker installation instructions
 
 1. Press this link: [docker desktop](https://www.docker.com/products/docker-desktop/).
 
@@ -35,7 +37,7 @@ To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 9. Congratulations, you have installed the Docker desktop! If account doesn't appear in Docker desktop, then sign in your GitHub account.
 ![Docker desktop](dockerDesktop.png "Docker desktop")
 
-## Run containers in Docker
+### Run containers in Docker
 When you have installed your Docker desktop, you can run Docker containers, but first you need to get a LenaSYS repository.
 
 1. Open your terminal which can be bash, powershell or command. You can also use vscode terminal. 
@@ -71,11 +73,11 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 
 12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](../../Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](../../README.md).
 
-### Using linux or mac?
+#### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
 After changing the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
 
-## Stop containers in Docker
+### Stop containers in Docker
 
 1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait until all three containers says stopped. NOTE: If your terminal says all three are stopped, but your username does not appear in your terminal, then press the up- or down-arrow keys to show your username.
 ![Turn off containers](terminal6.png "Turn off containers") 
@@ -83,7 +85,7 @@ After changing the file permissions recursively over the repository, all the fil
 2. If you go back to Docker desktop and go to containers, you can see three containers are not running, shown by the gray circles. Now containers are not running.
 ![Not running containers](containersdeactive.png "Not running containers") 
 
-## Remove containers and images in Docker
+### Remove containers and images in Docker
 
 1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
 
@@ -99,7 +101,7 @@ After changing the file permissions recursively over the repository, all the fil
 5. To remove all images to free up space, you need to press images in Docker desktop and select all checkboxes. When all selected,  press `Delete`-button and it will show a pop-up if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
 ![Remove images in docker desktop](dockerimages.png "Remove images in docker desktop")
 
-## Stop running or pause Docker desktop
+### Stop running or pause Docker desktop
 1. To stop running or pause Docker desktop you need to open Docker desktop press either `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Now your Docker desktop is paused or stopped.
 ![Stop or pause docker desktop](stopdocker.png "Stop or pause docker desktop")
 
