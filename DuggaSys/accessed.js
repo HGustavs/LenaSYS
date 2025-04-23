@@ -73,7 +73,6 @@ function hoverSearch() {
 
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
-	$('#dropdownSearch').css({display:'none'});
 }
 
 // displays dropdown for the filter-button
