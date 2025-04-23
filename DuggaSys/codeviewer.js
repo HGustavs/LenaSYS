@@ -1852,7 +1852,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	tokenize(codestring, "<>+-&", "=>&:");
 
 	// Iterate over token objects and print kind of each token and token type in window
-	printout = $("#" + destinationdiv);
+	printout = document.getElementById(destinationdiv);
 	str = "";
 	cont = "";
 	lineno = 0;
@@ -2123,7 +2123,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	str += "</div>";
 
 	// Print out rendered code and border with numbers
-	printout.html(createCodeborder(lineno, improws) + str);
+	printout.innerHTML = createCodeborder(lineno, improws) + str;
 
 	//css part
 	pid = "";
