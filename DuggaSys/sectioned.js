@@ -1001,7 +1001,7 @@ function deleteAll() {
       lid: lid
     }, "SECTION");
   }
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
   document.querySelector("#undoButton").style.display = "none";
 }
 
@@ -1017,7 +1017,7 @@ function cancelDelete () {
 
 // update selected directory
 function updateSelectedDir() {
-  var selectedDir = $('#selectDir').val();
+  var selectedDir = document.getElementById("selectDir").value;
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -1092,7 +1092,7 @@ function hideMarkedItems(selectedItemList) {
       lid: lid,
       visible: 3
     }, "SECTION");
-    $("#editSection").css("display", "none");
+    document.getElementById("editSection").style.display = "none";
   }
   selectedItemList = [];
 }
@@ -1101,7 +1101,7 @@ function hideMarkedItems(selectedItemList) {
 // tabMarkedItems: Tabs Item from Section List
 //----------------------------------------------------------------------------------
 function tabMarkedItems(lid) {
-  var tabs = $("#tabs").val();
+  var tabs = document.getElementById("tabs").value;
   AJAXService("UPDATETABS", {
     lid: lid,
     tabs: tabs
@@ -1162,12 +1162,12 @@ function updateItem() {
   console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
-  $("#sectionConfirmBox").css("display", "none");
-  $("#editSection").css("display", "none");
+  document.getElementById("sectionConfirmBox").style.display = "none";
+  document.getElementById("editSection").style.display = "none";
 }
 
 function updateDeadline() {
-  var kind = $("#type").val();
+  var kind = document.getElementById("type").value;
   if (kind == 3) {
     AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
   }
