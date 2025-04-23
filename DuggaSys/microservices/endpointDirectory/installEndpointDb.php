@@ -27,6 +27,13 @@ $db->exec("CREATE TABLE IF NOT EXISTS parameters (
     FOREIGN KEY (microservice_id) REFERENCES microservices(id)
 );");
 
+$db->exec("CREATE TABLE IF NOT EXISTS dependencies (
+    microservice_id INTEGER NOT NULL,
+    depends_on TEXT NOT NULL,
+    FOREIGN KEY (microservice_id) REFERENCES microservices(id),
+    FOREIGN KEY (depends_on) REFERENCES microservices(ms_name)
+);");
+
 echo "Database has been created";
 
 ?>
