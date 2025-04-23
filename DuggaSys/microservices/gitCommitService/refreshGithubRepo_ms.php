@@ -10,22 +10,28 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Include basic application services!
-include_once "../../../Shared/basic.php";
-include_once "../../../Shared/sessions.php";
-include_once "../../gitfetchService.php";
-include_once "./refreshCheck_ms.php";
-include_once "./clearGitFiles_ms.php";
+// Remove includes
+// include_once "../../../Shared/basic.php";
+// include_once "../../../Shared/sessions.php";
+// include_once "../../gitfetchService.php";
+// include_once "./refreshCheck_ms.php";
+// include_once "./clearGitFiles_ms.php";
 
 //Get data from AJAX call in courseed.js and then runs the function getCourseID, refreshGithubRepo or updateGithubRepo depending on the action
-if (isset($_POST['action'])) {
-    if ($_POST['action'] == 'refreshGithubRepo') {
-        //--------------------------------------------------------------------------------------------------
-        // refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit
-        //--------------------------------------------------------------------------------------------------
-        $cid = $_POST['cid'];
-        clearGitFiles($cid);
-    }
+if (isset($_POST['action']) && $_POST['action'] == 'refreshGithubRepo' && isset($_POST['cid']) && isset($_POST['user'])) {
+    $cid = $_POST['cid'];
+
+    // Call clearGitFiles microservice
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $clearURL = $baseURL . "/LenaSYS/DuggaSys/microservices/gitCommitService/clearGitFiles_ms.php";
+    $ch = curl_init($clearURL);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $cid
+    ]));
+    curl_exec($ch);
+    curl_close($ch);
 
     // Get old commit and URL from Sqlite 
     $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
@@ -33,7 +39,7 @@ if (isset($_POST['action'])) {
     $query->bindParam(':cid', $cid);
     $query->execute();
 
-    $commmit = "";
+    $commit = "";
     $url = "";
 
     foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -43,11 +49,39 @@ if (isset($_POST['action'])) {
 
     //If both values are valid
     if ($commit == "" && $url == "") {
-        print_r("No repo");
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'error', 'message' => 'No repo']);
     } else {
-        if (refreshCheck($_POST['cid'], $_POST['user'])) {
-            // Get the latest commit from the URL
-            $latestCommit = bfs($url, $cid, "GETCOMMIT");
+        // Call refreshCheck microservice
+        $refreshURL = $baseURL . "/LenaSYS/DuggaSys/microservices/gitCommitService/refreshCheck_ms.php";
+        $ch = curl_init($refreshURL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+            'cid' => $cid,
+            'user' => $_POST['user']
+        ]));
+        $refreshResponse = curl_exec($ch);
+        curl_close($ch);
+        
+        $refreshResult = json_decode($refreshResponse, true);
+        
+        if ($refreshResult && isset($refreshResult['status']) && $refreshResult['status'] == 'success') {
+            // Call BFS function from gitFetchService
+            $bfsURL = $baseURL . "/LenaSYS/DuggaSys/microservices/gitFetchService/bfs_ms.php";
+            $ch = curl_init($bfsURL);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+                'url' => $url,
+                'cid' => $cid,
+                'action' => 'GETCOMMIT'
+            ]));
+            $latestCommitResponse = curl_exec($ch);
+            curl_close($ch);
+            
+            $latestCommitResult = json_decode($latestCommitResponse, true);
+            $latestCommit = $latestCommitResult['commit'];
             
             // Compare old commit in db with the new one from the url
             if ($latestCommit != $commit) {
@@ -57,12 +91,30 @@ if (isset($_POST['action'])) {
                 $query->bindParam(':latestCommit', $latestCommit);
                 $query->execute();
 
-                // Download files and metadata
-                bfs($url, $cid, "DOWNLOAD");
-                print "The course has been updated, files have been downloaded!";
+                // Download files and metadata via BFS
+                $ch = curl_init($bfsURL);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+                    'url' => $url,
+                    'cid' => $cid,
+                    'action' => 'DOWNLOAD'
+                ]));
+                curl_exec($ch);
+                curl_close($ch);
+                
+                header('Content-Type: application/json');
+                echo json_encode(['status' => 'success', 'message' => 'The course has been updated, files have been downloaded!']);
             } else if (http_response_code() == 200) {
-                print "The course is already up to date!";
+                header('Content-Type: application/json');
+                echo json_encode(['status' => 'success', 'message' => 'The course is already up to date!']);
             }
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'error', 'message' => 'Refresh check failed']);
         }
     }
+} else {
+    header('Content-Type: application/json');
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request parameters']);
 }
