@@ -2204,7 +2204,7 @@ window.addEventListener("load", function() {
 // Close the "logout" window by pressing the ESC button
 document.addEventListener('keydown', function (event) {
 	if (event.key === 'Escape') {
-	  document.getElementById("#logoutBox").style.display="none";
+	  document.querySelector("#logoutBox").style.display="none";
 	}
 })
 
@@ -2491,11 +2491,11 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		}
 
 		str+="</div>";
-		$("#duggaStatus").remove();
-		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
-		$("#menuHook").hide();
+		document.getElementById("#duggaStatus").remove();
+		document.querySelectorAll("<td id='duggaStatus' align='center'>"+str+"</td>").after("#menuHook");
+		document.getElementById("#menuHook").style.display="none";
 		// Adds dugga title next to the text "Instructions"
-		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
+		document.querySelector('h3:contains("Instructions")').innerHTML=duggaTitle + " - Instructions";
 }
 
 
@@ -2615,30 +2615,19 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	$("#motdNav").css("display","inline-block");
-	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({
-		top: -$containerHeight.outerHeight()
-	},200, "easeInOutSine", () => {});
+	document.querySelector("#motdNav").style.display="inline-block";
+	document.querySelector("#servermsgcontainer").style.display="none";
 	sessionStorage.setItem('show','false');
 }
 
 function hideCookieMessage() {
-	$("#cookiemsg").animate({ opacity: 0, bottom: -70 }, 200, "easeInOutSine");
-	$(".fixed-action-button").animate({ bottom: 24 }, 200, "easeInOutSine");
-	setTimeout(function () {
-		$("#cookiemsg").css("display", "none");
-		$("#cookiemsg").css("opacity", "1");
-	}, 200);
+		document.querySelector("#cookiemsg").style.display="none";
+		document.querySelector("#cookiemsg").style.opacity="1";
 }
 
 function showServerMessage(){
-	$("#motdNav").css("display","none");
-	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({ 
-		top: 50
-	},200, "easeInOutSine", () => {});
-	$("#servermsgcontainer").css("display","content");
+	document.querySelector("#motdNav").style.display="none";
+	document.querySelector("#servermsgcontainer").style.display="inline-block";
 	sessionStorage.setItem('show','true');
 }
 
@@ -2660,34 +2649,34 @@ function duggaFeedbackCheck(){
 
 function returnedFeed(data) {
 	if (data['userfeedback']== 1 ){
-		$("#feedbackbox").css("display","block");
-		$("#feedbackquestion").html(data['feedbackquestion']);
+		document.getElementById("#feedbackbox").style.display="block";
+		document.getElementById("#feedbackquestion").innerHTML=data['feedbackquestion'];
 	} 
 }
 //----------------------------------------------------------------------------------
 //sends userinput feedback
 //----------------------------------------------------------------------------------
 function sendFeedback(entryname){
-	if ($("input[name='rating']:checked").val()) {
-		$('#submitstatus').css("display", "none");
+	if (document.querySelector("input[name='rating']:checked").value) {
+		document.getElementById('#submitstatus').style.display="none";
 		var param = {};
   		param.courseid = querystring['courseid'];
   		param.moment = querystring['moment'];
-		param.score = $("input[name='rating']:checked").val();
+		param.score = document.querySelector("input[name='rating']:checked").value;
 		param.entryname = entryname;  
-		if($("#contactable:checked").val()){
+		if(document.getElementById("#contactable:checked").value){
 			param.contactable = 1;
 		}else{
 			param.contactable = 0;
 		}
 		AJAXService("SENDFDBCK",param,"SENDDUGGAFEEDBACK");
 	}else {
-		$('#submitstatus').css({'color':'var(--color-red)',"display": "inline-block"}).text("Select a rating before saving it.");
+		document.getElementById('#submitstatus').style.display({'color':'var(--color-red)',"display": "inline-block"}).textarea("Select a rating before saving it.");
 	}
 }
 
 function returnedSubmitFeedback(){
-	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
+	document.getElementById('#submitstatus').style.display({'color':'var(--color-green)',"display": "inline-block"}).textarea("Feedback saved");
 }
 
 function setDuggaTitle(title) {
@@ -2918,9 +2907,9 @@ function editDuggaInstruction(){
 // ----------------------------- Edit dugga instructions end ------------------------
 
 //Code that makes it possible to navigate using tab and enter to click elements
-$(document).on('keydown', function(e) {
+document.addEventListener('keydown', function(e) {
 	if(e.key === 'Enter'){
-		var box = $(e.target);
+		var box = e.target;
 		var allSort = document.getElementById("all-files-sort");
 		var globalSort = document.getElementById("global-files-sort");
 		var courseLocalSort = document.getElementById("course-local-sort");
@@ -2953,9 +2942,9 @@ $(document).on('keydown', function(e) {
 		}
 		else if (box[0].classList.contains("announcement-nav")){
 			sessionStorage.removeItem("closeUpdateForm");
-			$("#announcementBoxOverlay").toggle();
-			if($("#announcementForm").is(":hidden")){
-				$("#announcementForm").show();
+			document.getElementById("#announcementBoxOverlay").toggle;
+			if(document.getElementById("#announcementForm").is(":hidden")){
+				document.getElementById("#announcementForm").show();
 			}
 		}
 		else if (box[0].classList.contains("editVers")){
@@ -3048,14 +3037,6 @@ $(document).on('keydown', function(e) {
 		}
 		else if(box[0].classList.contains("courseSettingIcon")){
 			box[0].click();
-		}
-	}
-	else if(e.key === 'Escape'){
-		if ($('.fab-btn-list').is(':visible')) {
-			$(e.target).mouseout();
-		}
-		if ($('.fab-btn-list2').is(':visible')) {
-			$(e.target).mouseout();
 		}
 	}
 });
