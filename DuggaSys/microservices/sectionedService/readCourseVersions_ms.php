@@ -13,7 +13,6 @@ include_once "../sharedMicroservices/getUid_ms.php";
 pdoConnect();
 
 // Fetch all course versions
-function readCourseVersions($pdo) {
     $versions = array();
     try {
         $query = $pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers;");
@@ -24,5 +23,6 @@ function readCourseVersions($pdo) {
         error_log("Error reading versions: " . $e->getMessage());
         return array();
     }
-    return $versions;
-}
+        
+    header('Content-Type: application/json');
+    echo json_encode($versions);
