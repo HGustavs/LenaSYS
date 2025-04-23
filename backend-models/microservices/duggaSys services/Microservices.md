@@ -2775,6 +2775,7 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 <br>
 
 #### updateUserPassword_ms.php
+
 __updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated.
 
 __Include original service files:__ sessions.php, basic.php

@@ -206,6 +206,12 @@ None
 
 This is a list of all inverse dependencies of files in the profileService folder.
 
+
+### retrieveProfileService
+
+- DuggaSys/microservices/profileService/updtateSecurityQuestion_ms.php
+- DuggaSys/microservices/profileService/updateUserPassowrd_ms.php"
+
 ### updateSecurityQuestion
 
 None
@@ -443,9 +449,10 @@ TODO
 - courseedService/updateCourseVersion_ms.php
 - sectionedService/updateCourseVersion_sectioned_ms.php
 ### updateSecurityQuestion
+(no inverse dependencies found)
 
 ### updateUserPassword
-There is no list of all inverse dependencies
+(no inverse dependencies found)
 
 ### retrieveUsername
 
@@ -464,19 +471,13 @@ There is no list of all inverse dependencies
 This is a list of all inverse dependencies of files in the showDuggaServices folder.
 
 ### getShowDugga
-No inverse dependencies.
 
-TODO
+None
+
 
 ### loadDugga
-[retrieveShowDuggaService_ms](showDuggaService/retrieveShowDuggaService_ms.php)
-Row 60:
-```
-if($hash!="UNK"){
-	include_once("loadDugga_ms.php");
-```
+- showDuggaService/retrieveShowDuggaService_ms.php
 
-TODO
 
 ### processDuggaFile
 - showDuggaService/retrieveShowDuggaService_ms.php
