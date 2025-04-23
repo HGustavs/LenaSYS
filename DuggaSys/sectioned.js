@@ -742,22 +742,22 @@ function gitTemplatePopupOutsideClickHandler(){
 // Creates an array over all checked items
 function markedItems(item = null, typeInput) {
   var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
+  var kind = item ? item.closest('tr').getAttribute('value'): null;
+  active_lid = item ? item.closest('table').getAttribute('value'): null;
   var subItems = [];
-
-  console.log('typeinput: ' + typeInput);
-  console.log('item: ' + item);
 
   //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
   if (kind == "section" || kind == "moment") {
     var itemInSection = true;
     var sectionStart = false;
     $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = $(this).attr('value');
+      var tempItem = this.getAttribute('value');
+
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = $(this).parents('tr').attr('value');
+        var tempKind = this ? this.closest('tr').getAttribute('value'): null;
+
+
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
         } else {
@@ -765,79 +765,49 @@ function markedItems(item = null, typeInput) {
         }
       } else if (tempItem == active_lid) sectionStart = true;
     });
-    //console.log('subItems contains (0.1): ' + subItems);
-
   }
 
   // handles selections
-  //console.log("Active lid (SELECTION): " + active_lid);
-  //console.log('selectedItemList contains: ' + selectedItemList);
-
   if (selectedItemList.length != 0) {
-    //console.log('subItems contains (1.1): ' + subItems);
     let tempSelectedItemListLength = selectedItemList.length;
     for (let i = 0; i < tempSelectedItemListLength; i++) {
 
       //removes items from selectedItemList, avoided if called via non-section trashcan.
-
       if (selectedItemList[i] === active_lid && typeInput != "trash") {
-        //document.getElementById(selectedItemList[i] + "-checkbox").setAttribute("checked", false);
-
-        console.log(selectedItemList[i] + " Removed from list (1)");
-        $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
+        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
         var removed = true;
       }
       //unchecks children of section
       for (var j = 0; j < subItems.length; j++) {
         if (selectedItemList[i] == subItems[j]) {
-          //document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
-
-          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
-          //console.log('comparing: ' + selectedItemList[i] + ' and ' + subItems);
-          //console.log('Removes: ' + selectedItemList[i] + 'selected list: ' + selectedItemList);
+          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
           selectedItemList.splice(i, 1);
           i--;
         }
       }
-      //console.log("selecteditem pos: " + i);
-      //console.log('subItems contains (1.2): ' + subItems);
     } 
     
     if (removed != true) {
-    console.log('selectedItemList contains (2.1): ' + selectedItemList);
-    let activeLidInList = false;
-
-    for (var k = 0; k < selectedItemList.length; k++) {
-      if(active_lid == selectedItemList[k]){
-        //console.log('activeLid exist in list');
-        activeLidInList = true;
-        break;
+      let activeLidInList = false;
+      for (var k = 0; k < selectedItemList.length; k++) {
+        if(active_lid == selectedItemList[k]){
+          activeLidInList = true;
+          break;
+        }
       }
+      if (activeLidInList == false){
+        selectedItemList.push(active_lid);
+        document.getElementById(active_lid + "-checkbox").checked = true;
     }
-    
-    if (activeLidInList == false){
-      //console.log('activeLid does not exist within list');
-      selectedItemList.push(active_lid);
-      $("#" + active_lid + "-checkbox").prop("checked", true);
-
-      //console.log('subItems contains (2.2): ' + subItems);
-      //console.log('selectedItemList contains (2.2): ' + selectedItemList);
-    }
-
-      //console.log("Adding !empty list");
-
       //handles checking within section
       for (var j = 0; j < subItems.length; j++) {
         selectedItemList.push(subItems[j]);
-        //console.log('subitems item: ' + subItems[j]);
-
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
+        document.getElementById(subItems[j] + "-checkbox").checked = true;
       }
     }
-      //console.log('subItems contains (2.3): ' + subItems);
-      //console.log('selectedItemList contains (2.3): ' + selectedItemList);
   } 
+  
   // adds everything under section to selectedItems (if nothing selected beforehand)
   else {
     console.log('selectedItemList contains (3.1): ' + selectedItemList);
@@ -846,14 +816,13 @@ function markedItems(item = null, typeInput) {
       selectedItemList.push(subItems[j]);
     }
     for (i = 0; i < selectedItemList.length; i++) {
-      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
+      document.getElementById(selectedItemList[i] + "-checkbox").checked = true;
       //console.log(hideItemList[i]+"-checkbox");
     }
     // Show ghost button when checkbox is checked
     document.querySelector('#hideElement').disabled = false;
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
-    console.log('selectedItemList contains (3.2): ' + selectedItemList);
   }
   if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
@@ -861,7 +830,6 @@ function markedItems(item = null, typeInput) {
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
     hideVisibilityIcons();
-
   }
 }
 
@@ -2045,7 +2013,6 @@ function returnedSection(data) {
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
-          // str += "onclick='console.log(\"RefreshButton Clicked!\");'"
         }
         
         // Trashcan for items
@@ -2057,17 +2024,14 @@ function returnedSection(data) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
               "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-            src='../Shared/icons/Trashcan.svg' onclick='console.log(\"Section trashcan clicked and lenght!\"  + this + selectedItemList.length); 
-            if(selectedItemList.length == 0){markedItems(this, "trash")}; 
-            confirmBox(\"openConfirmBox\", this); '>`;
+            src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
             str += "</td>";
           }
           else{
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='console.log(\"General trashcan clicked!\"  + this); 
-          markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
           str += "</td>";  
           } 
         }
