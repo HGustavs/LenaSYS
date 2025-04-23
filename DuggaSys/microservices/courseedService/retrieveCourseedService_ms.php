@@ -10,7 +10,6 @@ include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 //include_once "./deleteCourseMaterial_ms.php";
 
-// Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
 
 $url = $baseURL . "/LenaSYS/duggaSys/microservices/sectionedService/deleteCourseMaterial_ms.php";
