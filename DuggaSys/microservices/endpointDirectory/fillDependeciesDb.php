@@ -9,7 +9,7 @@ if (!file_exists($mdFile)) {
     die("Dependency markdown file not found.");
 }
 
-echo $mdFile;
+// echo $mdFile;
 
 // connect to the database
 $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
@@ -22,8 +22,25 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $content = file_get_contents($mdFile);
 $lines = explode("\n", $content);
 
-echo "<pre>";
-echo print_r($lines);
-echo "</pre>";
+// echo "<pre>";
+// echo print_r($lines);
+// echo "</pre>";
+
+$currentMicroservice = null;
+
+// loop through the lines
+foreach ($lines as $line) {
+    $trimmedLine = trim($line);
+
+    // header for a microservice has ###
+    if (preg_match('/^### (.+)/', $trimmedLine, $match)) {
+        $currentMicroservice = $match[1];
+        echo $currentMicroservice . "<br>";
+        continue;
+    }
+
+
+
+}
 
 ?>
