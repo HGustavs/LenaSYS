@@ -755,26 +755,24 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
  */
 
 function drawElementSequenceObject(element, boxw, boxh, linew) {
-    let str = "";
     let content;
-    const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
+    const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); 
 
     content = `<path 
                     class="text" 
-                    d="M ${boxw / 2},${boxw / 4 + linew}
-                        V ${boxh}"
+                    d="M${boxw / 2},${boxw / 4 + linew} V${boxh}" 
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
                     stroke-dasharray='${linew * 3},${linew * 3}'
                     fill='transparent'
-                /> 
+                />
                 <g>
                     <rect 
                         class='text'
-                        x='${linew}'
+                        x='${(boxw - (boxw * 0.8)) / 2}'
                         y='${linew}'
-                        width='${boxw - linew * 2}'
-                        height='${(boxw / 2) - linew}'
+                        width='${boxw * 0.8}'
+                        height='${boxw / 4}'
                         rx='${sequenceCornerRadius}'
                         stroke-width='${linew}'
                         stroke='${element.stroke}'
@@ -783,13 +781,12 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                     <text 
                         class='text' 
                         x='${boxw / 2}' 
-                        y='${(boxw / 2 - linew) / 2}' 
+                        y='${(boxw / 4) / 2 + linew}' 
                         dominant-baseline='middle' 
                         text-anchor='middle'
                     > ${element.name} </text>
                 </g>`;
-    str += drawSvg(boxw, boxh, content);
-    return str;
+    return drawSvg(boxw, boxh, content);
 }
 
 /**
