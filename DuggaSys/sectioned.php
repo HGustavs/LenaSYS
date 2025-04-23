@@ -213,18 +213,8 @@
   				<input id='toggleElements' type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='toggle hidden items'>
   				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="display:None"  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
   				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="display:None"  class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
-  				<input id='addElement'  type='button' value='+' class='submit-button-newitem' title='New Item'>
-
-  
-  				<input
-    				id="loadDuggaButton"
-    				type="button"
-    				class="submit-button-newitem"
-					value="Load Dugga"
-					title="Load a dugga by hash"
-					onclick="showLoadDuggaPopup();"
-					style="margin‑left:8px;"
-  				>
+  				<input id="loadDuggaButton" type="button" class="submit-button-newitem" value="Load Dugga" title="Load a dugga by hash" onclick="showLoadDuggaPopup();"style="margin‑left:8px;" >
+				<input id='addElement'  type='button' value='+' class='submit-button-newitem' title='New Item'>
 			</div>
 
 		
