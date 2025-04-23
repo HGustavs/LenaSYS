@@ -1019,9 +1019,25 @@ document.addEventListener('keydown', function (event) {
 });
 
 //Run after ajax is completed
-$(document).ajaxComplete(function () {
-	localStorageCourse();
-});
+(function ajaxComplete() {
+	//Fetch
+	const originalFetch = window.fetch;
+	window.fetch = function (...args) {
+		return originalFetch.apply(this, args).then(response => {
+			setTimeout(() => localStorageCourse(), 50); //slight delay to wait for DOM update
+			return response;
+		});
+	};
+
+	//XMPHTTPRequest
+	const originalOpen = XMLHttpRequest.prototype.open;
+	XMLHttpRequest.prototype.open = function (...args) {
+		this.addEventListener("load", function () {
+			setTimeout(() => localStorageCourse(), 50); //slight delay to wait for DOM update
+		});
+		originalOpen.apply(this, args);
+	};
+})();
 
 function localStorageCourse() {
 	// check if lastcourse created is true to add glow to the relative text 
@@ -1046,13 +1062,33 @@ function glowNewCourse(courseid) {
 }
 
 function fadeIn(element) {
+	element.style.display = "block";
+	element.style.opacity = 0;
+	element.style.transition = `opacity 400ms`;
 
+	requestAnimationFrame(() => {
+		element.style.opacity = 1;
+	});
 }
 
 function fadeOut(element) {
+	element.style.transition = `opacity 400ms`;
+	element.style.opacity = 0;
 
+	setTimeout(() => {
+		element.style.display = "none";
+	}, duration);
 }
 
 function stopFade(element) {
+	if (element._fadeTimeout) {
+		clearTimeout(element._fadeTimeout);
+		element._fadeTimeout = null;
+	}
 
+	element.style.transition = "";
+
+	for (const [property, value] of Object.entries(finalStyles)) {
+		element.style[property] = value;
+	}
 }
