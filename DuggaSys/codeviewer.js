@@ -4212,7 +4212,7 @@ function resizeBoxes(parent, templateId)
 	else if (templateId === 4) {
 		makeResizable(box1, ['e', 's'], {
 		minWidth: minW,
-		maxWidth: maxW,
+		maxWidth: maxW,	
 		minHeight: minH,
 		maxHeight: maxH,
 		onResize: (newWidth, newHeight) => {
