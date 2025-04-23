@@ -2501,21 +2501,31 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 
 function FABMouseOver(e) {
 	if (e.target.id === "fabBtn") {
-		if ($('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-list').fadeIn(0);
-			$('.fab-btn-sm').toggleClass('scale-out');
-		}
+		var e1=document.querySelectorAll('.fab-btn-sm');
+		var eL=document.querySelector('.fab-btn-list');
+
+		e1.forEach(element => {
+			if(element.classList.contains('scale-out')){
+				eL.style.display="block";
+				element.classList.toggle('scale-out');
+			}
+		});
 	} else if (e.target.id === "addElement") {
-		if ($('.fab-btn-sm2').hasClass('scale-out')) {
-			$('.fab-btn-list2').fadeIn(0);
-			$('.fab-btn-sm2').toggleClass('scale-out');
-		}
+		var e2=document.querySelectorAll('.fab-btn-sm2');
+		var eL2=document.querySelector('.fab-btn-list2');
+
+		e2.forEach(element2 => {
+			if(element2.classList.contains('scale-out')){
+				eL2.style.display="block";
+				element2.classList.toggle('scale-out');
+			}
+		});
 		
-		$('#addElement').addClass('spin');
+		document.querySelector('#addElement').classList.add('spin');
 
 		
 		setTimeout(function() {
-			$('#addElement').removeClass('spin');
+			document.querySelector('#addElement').classList.remove('spin');
 		}, 1000); 
 	}
 }
@@ -2524,13 +2534,13 @@ function FABMouseOver(e) {
 // FABMouseOut: FAB Mouse Out
 //----------------------------------------------------------------------------------
 function FABMouseOut(e) {
-	if (!$('.fab-btn-sm').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button")) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
+	if (!document.querySelector('.fab-btn-sm').classList.contains('scale-out') && !e.relatedTarget.closest(".fixed-action-button") && !e.relatedTarget.classList.contains("fixed-action-button")) {
+		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	else if (!$('.fab-btn-sm2').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button2").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button2")) {
-		$('.fab-btn-sm2').toggleClass('scale-out');
-		$('.fab-btn-list2').delay(100).fadeOut(0);
+	else if (!document.querySelector('.fab-btn-sm2').classList.contains('scale-out') && !e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list2').style.display="none";
 	}
 	
 }
@@ -2558,8 +2568,8 @@ function FABUp(e)
 function TouchFABDown(e)
 {
 	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
-		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) FABToggle();
+	if (document.querySelector('.fab-btn-list').checkVisibility()==true) {
+		if (document.querySelector('.fab-btn-list').checkVisibility()==true && document.querySelector('#fabBtn').is(e.target)) FABToggle();
 	} else {
 		if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
@@ -2573,10 +2583,10 @@ function TouchFABDown(e)
 function TouchFABUp(e)
 {
 	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
-	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+	if ((e.target.id=="fabBtn") && !document.querySelector('.fab-btn-list').checkVisibility()==true) {
 		clearTimeout(pressTimer);
 		createQuickItem();
-	}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
+	}else if (document.querySelector('.fab-btn-list').checkVisibility()==true && (e.target.id!="fabBtn")) {
 		FABToggle();
 	}
 }
@@ -2587,12 +2597,12 @@ function TouchFABUp(e)
 // Toggles action bubbles when pressing the FAB button
 //----------------------------------------------------------------------------------
 function FABToggle() {
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-				$('.fab-btn-sm').toggleClass('scale-out');
-				$('.fab-btn-list').delay(100).fadeOut(0);
+		if (!document.querySelector('.fab-btn-sm').classList.contains('scale-out')) {
+				document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+				document.querySelector('.fab-btn-list').style.display="none";
 		} else {
-				$('.fab-btn-list').fadeIn(0);
-				$('.fab-btn-sm').toggleClass('scale-out');
+				document.querySelector('.fab-btn-list').style.display="block";
+				document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		}
 }
 
