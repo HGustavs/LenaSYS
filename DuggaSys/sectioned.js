@@ -31,7 +31,6 @@ var isLoggedIn = false;
 var inputColorTheme;
 let showHidden = true;
 let count = 0;
-//let retrievedItemType;
 
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
@@ -772,7 +771,7 @@ function markedItems(item = null, typeInput) {
     let tempSelectedItemListLength = selectedItemList.length;
     for (let i = 0; i < tempSelectedItemListLength; i++) {
 
-      //removes items from selectedItemList, avoided if called via non-section trashcan.
+      //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
       if (selectedItemList[i] === active_lid && typeInput != "trash") {
         document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
@@ -991,12 +990,11 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
+    item.parentElement.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
@@ -1021,7 +1019,7 @@ function deleteAll() {
       lid: lid
     }, "SECTION");
   }
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
   document.querySelector("#undoButton").style.display = "none";
 }
 
