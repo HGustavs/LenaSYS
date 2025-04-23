@@ -448,9 +448,19 @@ function toggleOptionsPane() {
  */
 function textboxFormatString(arr) {
     let content = '';
+    
+    /* (let i = 0; i < arr.length; i++) {
+        content += arr[i] + '\n';   
+    } */
+
     for (let i = 0; i < arr.length; i++) {
-        content += arr[i] + '\n';
-    }
+        content += arr[i];
+        if(arr[i+1] == "-" && arr[i] !== " "|| arr[i+1] == "+"  && arr[i] !== " " || arr[i+1] == "*" && arr[i] !== " "){ 
+            console.log(arr[i+1])
+            content += '\n';
+
+        } 
+    } 
     return content;
 }
 
