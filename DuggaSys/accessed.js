@@ -113,7 +113,6 @@ function leaves() {
 
 function showEditUserPopup(id) {
 	document.querySelector('#editUser').style.display = 'flex';
-	
 }
 
 function showCreateUserPopup() {
@@ -235,7 +234,6 @@ const updateCourseUsers = function(removePopup) {
 }
 
 function addSingleUser() {
-
 	var newUser = new Array();
 	newUser.push(document.querySelector("#addSsn").value);	
 	newUser.push(document.querySelector("#addFirstname").value);
@@ -305,7 +303,6 @@ function validateName(name) {
 }
 
 function tooltipFirst() {
-	
 	let fnameInputBox = document.getElementById('addFirstname');
 	let fname = document.getElementById('addFirstname').value;
 	let error = validateName(fname);
@@ -321,7 +318,6 @@ function tooltipFirst() {
 }
 
 function tooltipLast() {
-
 	let lnameInputBox = document.getElementById('addLastname');
 	let lname = document.getElementById('addLastname').value;
 	let error = validateName(lname);
@@ -361,7 +357,6 @@ function validateEmail(email) {
 }
 
 function tooltipEmail() {
-	
 	let emailInputBox = document.getElementById('addEmail');
 	let email = document.getElementById('addEmail').value;
 	let error = validateEmail(email);
