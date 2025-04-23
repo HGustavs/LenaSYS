@@ -2442,8 +2442,8 @@ function createCodeborder(lineno, improws) {
 
 function changetemplate(templateno) 
 {
-	$(".tmpl").each(function (index) {
-		$(this).css("background", "#ccc");
+	document.querySelectorAll(".tmpl").forEach(function (index) {
+		index.style.backgroundColor = '#ccc';
 	});
 
 	document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
