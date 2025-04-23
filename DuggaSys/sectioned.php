@@ -101,6 +101,7 @@
 	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 	<script type="text/babel" src="../Shared/components/Button.js"></script>
+	<script type="text/babel" src="../Shared/components/Dropdown.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
@@ -247,6 +248,17 @@
 			<!-- end hide button -->
 			
 			<div id='course-label'>
+					<div id="course-label-dropdown">
+						<script type="text/babel">
+							ReactDOM.createRoot(document.getElementById('course-label-dropdown')).render(
+								<>
+									<Dropdown dropdownName="View">
+										<Dropdown.Button onClick={() => {setViewMode('Normal')}}>Normal</Dropdown.Button>
+									</Dropdown>
+								</>
+							);
+						</script>
+					</div>
 					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
 					<span id='course-coursecode'>UNK</span>
 					<span id='course-versname' class='courseVersionField'>UNK</span>
@@ -287,14 +299,15 @@
 
 		<div id='courseList'>
 
-		<!-- View mode toggle buttons -->
+		<!-- View mode toggle buttons 
 		<div class="view-label">
 			<h2>View</h2>
   			<button class="submit-button" onclick="setViewMode('normal')">Normal</button>
   			<button class="submit-button" onclick="setViewMode('scroll')">Scroll</button>
  			<button class="submit-button" onclick="setViewMode('overview')">Overview</button>
 		</div>
-
+		
+		-->
 		<!-- Section List -->
 		<div id='Sectionlisti'>
 		
