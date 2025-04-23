@@ -33,7 +33,20 @@ function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link,
 	$query->bindParam(':groupkind', $grptype);
     } else {
 	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
-	$username = retrieveUsername($pdo);
+
+    //Retrieve Username from microservice 'retrieveUsername_ms.php'
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+
+    $url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    $username = $data;
+
 	logUserEvent($userid ,$username,EventTypes::SectionItems, $entryname);
     }
 
