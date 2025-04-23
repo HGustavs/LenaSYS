@@ -369,7 +369,9 @@
 					}
 			}			
 			// Sort dialog - accessed / resulted /fileed					
+			
 			//old search bar for resulted
+			// Handles onhover-text-examples (searchbar) based on what type of data can be requested.
       if($requestedService=="accessed.php" /*|| $requestedService=="resulted.php"*/ || $requestedService=="fileed.php" || $requestedService=="duggaed.php" ){
 					echo "<td id='testSearchContainer' class='navSearchWrapper'>";
 
@@ -389,6 +391,7 @@
 					/*if($requestedService=="resulted.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> markG, markU, date <br> <b>Ex:</b> markG:färgdugga</p>";
 					}*/
+
 					if($requestedService=="fileed.php"){
 						echo    "<p aria-live='polite'><b>Keywords:</b> File name, File type <br> <b>Ex:</b> html, example1</p>";
 					}
@@ -419,11 +422,12 @@
 					}
 			}
 
-      if($requestedService=="accessed.php"){
-					echo "<td id='select' class='navButt'>";
-					echo   "<span id='filterButton'>";
-					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg'>";
-					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+			// Presents the filterButton and its connected dropdown menu.
+      		if($requestedService=="accessed.php"){
+					echo "<td id='select' class='navFilterWrapper' onclick='pressFilter();' onmouseleave='leaveFilter()'; />";
+					echo   "<span id='filterButton'; ' name='filter'; >";
+					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg' style='pointer-events: none' />";
+					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1' />";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
 					echo       "<div id='customfilter'></div>";
@@ -449,8 +453,9 @@
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";
 				}
+				
+				
 				else{
-
 					echo "<td id='select' style='display:none;' class='navButt'  onmouseover='hoverc();' onmouseleave='leavec();'>";
 					echo   "<span>";
 					echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
@@ -468,7 +473,8 @@
 					echo "</td>";
 					echo "</td>";
 					echo "<td id='menuHook' class='navSpacer' >";
-			}
+					
+				}
 
 			if($noup=='CONTRIBUTION' && (checkLogin() || git_checkLogin()))
 			{

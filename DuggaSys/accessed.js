@@ -15,6 +15,7 @@ var activeArrow;
 var shouldReRender = false;
 var str = "W";
 var x = window.matchMedia('(max-width: 380px)');
+var buttonPressed = false;
 
 x.onchange = (e) => {
     if (e.matches) {
@@ -36,6 +37,7 @@ function setup() {
 	if (localStorage.getItem("accessFilter"+querystring['courseid']) != null) {
 		accessFilter = localStorage.getItem("accessFilter"+querystring['courseid']);
 	}
+
 	var str = "<div id='sortOptionsContainer'>";
 	str += "<input type='radio' name='sortAscDesc' value='1'><label class='headerlabel'>Sort descending</label>";
 	str += "<input type='radio' name='sortAscDesc' value='0'><label class='headerlabel'>Sort ascending</label>";
@@ -43,11 +45,13 @@ function setup() {
 	str += "<button class='dropdown-button' onclick='parseSortOptions(this)'>Sort</button>";
 	document.getElementById("dropdowns").innerHTML = str;
 
+	// creates the toggleAllButton
 	var str = "<div class='checkbox-dugga'>";
 	str += "<button id='toggleAllButton' class='dropdown-button' onclick='toggleAllCheckboxes(this)'>Toggle all</button>";
 	str += "</div>"
 	document.getElementById("dropdownc").innerHTML += str;
 
+	// gets selections from database (for filtering options)
 	AJAXService("GET", {
 		courseid: querystring['courseid'],
 		coursevers: querystring['coursevers']
@@ -72,17 +76,34 @@ function leaveSearch() {
 	$('#dropdownSearch').css({display:'none'});
 }
 
+// displays dropdown for the filter-button
+function pressFilter() {
+	if (buttonPressed == false){
+		buttonPressed = true;	
+		
+		document.getElementById("dropdownc").style.display="block";
+		document.getElementById("dropdowns").style.display="none";
+	}
+}
+
+// stops displaying dropdown for the filter-button
+function leaveFilter() {
+	if (buttonPressed == true){
+		buttonPressed = false;
+		document.getElementById("dropdownc").style.display="none";}
+}
+
 function hoverc() {
 	$('#dropdowns').css('display', 'none');
 	$('#dropdownc').css('display', 'block');
 }
 
-function hovers() {
-	$('#dropdowns').css('display', 'block');
+function leavec() {
 	$('#dropdownc').css('display', 'none');
 }
 
-function leavec() {
+function hovers() {
+	$('#dropdowns').css('display', 'block');
 	$('#dropdownc').css('display', 'none');
 }
 
