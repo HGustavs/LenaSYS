@@ -237,7 +237,7 @@ __Sectioned Service:__
 - deleteListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
 - removeListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - createListentry_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
-- reorderListentries_ms.php __==finished==__ New filename: "updateOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
+- reorderListentries_ms.php __==finished==__ New filename: "updateListEntryOrder_ms.php" according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentries_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesTabs_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD and the actual function of the ms.
 - updateListentriesGradesystem_ms.php __==finished==__ Should keep existing name according to new nameconvention based on CRUD.
@@ -2775,6 +2775,7 @@ UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:
 <br>
 
 #### updateUserPassword_ms.php
+
 __updateUserPassword_ms.php__ validates the user's password against what is stored in the database to ensure user authentication. If the user passes the password check and does not have a teacher or superuser role, the password will be updated.
 
 __Include original service files:__ sessions.php, basic.php
@@ -3085,8 +3086,8 @@ INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,c
 
 <br>
 
-### updateOrder_ms.php
-Updates the order of the listentries of a course. Not to be confused with __updateListentrie_ms.php__.
+### updateListEntryOrder_ms.php
+Updates the order of the listentries of a course. Not to be confused with __updateListEntries_ms.php__.
 
 __Include original service files:__ sessions.php, basic.php
 __Include microservice:__ getUid_ms.php, retrieveSectionedService_ms.php

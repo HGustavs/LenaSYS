@@ -236,6 +236,8 @@ function updateGridPos() {
 function updateA4Size() {
     const rect = document.getElementById("a4Rect");
     const vRect = document.getElementById("vRect");
+    const text = document.getElementById("a4Text");
+
     const pxlength = (pixellength.offsetWidth / 1000) * window.devicePixelRatio;
     const a4Width = 210 * pxlength;   // Width for A4 paper in portrait mode
     const a4Height = 297 * pxlength;  // Height for A4 paper in portrait mode
@@ -248,6 +250,17 @@ function updateA4Size() {
     vRect.setAttribute("width", a4Height * zoomfact * settings.grid.a4SizeFactor + "px");
     vRect.setAttribute("height", a4Width * zoomfact * settings.grid.a4SizeFactor + "px");
 
+    // Calculate the scale factor for text size 
+    const scaleFactor = a4Width * zoomfact * settings.grid.a4SizeFactor / 210; 
+    
+    // Apply the scale factor to the font size of the text
+    const fontSize = 14; 
+    const newFontSize = fontSize * scaleFactor; 
+
+    // Apply the new font size to the text
+    text.setAttribute('font-size', newFontSize + "px");
+
+    // Update the position of the A4 elements 
     updateA4Pos();
 }
 

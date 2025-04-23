@@ -857,7 +857,7 @@ document.addEventListener('keyup', function (e) {
     if (isKeybindValid(e, keybinds.RESET_DIAGRAM)) resetDiagramAlert();
     if (isKeybindValid(e, keybinds.TOGGLE_TEST_CASE)) toggleTestCase();
 
-    //if(isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck(); Note that this functionality has been moved to hideErrorCheck(); because special conditions apply.
+    if (isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck();
 
     if (isKeybindValid(e, keybinds.COPY)) {
         // Remove the preivous copy-paste data from localstorage.

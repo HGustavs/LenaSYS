@@ -177,6 +177,7 @@ function mdown(event) {
 function ddown(event) {
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
+        canPressDeleteBtn = true;
         hasPressedDelete = checkDeleteBtn();
     }
 
@@ -393,8 +394,14 @@ function checkDeleteBtn() {
         lastMousePos.y > deleteBtnY && lastMousePos.y < (deleteBtnY + deleteBtnSize)
     ) {
         if (canPressDeleteBtn) {
-            if (context.length > 0) removeElements(context);
-            if (contextLine.length > 0) removeLines(contextLine);
+            // Checks number of selected elements/objects and removes them
+            if (context.length > 0) {
+                removeElements(context);
+            }
+            // Checks number of selected lines and removes them
+            if (contextLine.length > 0) {
+                removeLines(contextLine);
+            }
             updateSelection(null);
             canPressDeleteBtn = false;
             return true;

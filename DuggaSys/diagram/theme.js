@@ -1,9 +1,21 @@
 /**
- * @description Translate all elements to the correct coordinate
+ * @description Updates the CSS position and visual styling of all diagram elements based on the
+ * zoom, scroll position, user interaction and the current mode
+ *Also handles snapping to grid and theme-specific styling updates. 
+ * This function is essential mostly for keeping the UI consistent after user interaction or rendering changes.
  */
+ 
 function updateCSSForAllElements() {
+
+    /**
+     * @description
+     * Adjusts a single element's position based on coordinate, zoom, scroll, and snapping.
+     * @param {Object} elementData - Data model of the element
+     * @param {HTMLElement} divObject - Corresponding DOM object
+     * @param {boolean} useDelta - Whether to apply delta offset from drag operations
+     */
     function updateElementDivCSS(elementData, divObject, useDelta = false) {
-        let eRect = divObject.getBoundingClientRect();
+        let eRect = divObject.getBoundingClientRect(); // eRect is not being used so this could probably be removed unless it will serve a purpose in future update of code
         let left = Math.round(((elementData.x - zoomOrigo.x) * zoomfact) + (scrollx / zoomfact));
         let top = Math.round(((elementData.y - zoomOrigo.y) * zoomfact)) + (scrolly / zoomfact);
 
@@ -14,6 +26,7 @@ function updateCSSForAllElements() {
 
         const includedElementTypes = Object.values(elementTypesNames);
 
+        // Logic for snap to grid
         if (settings.grid.snapToGrid && useDelta) {
             if (includedElementTypes.includes(element.kind)){
                 // The element coordinates with snap point
@@ -28,7 +41,7 @@ function updateCSSForAllElements() {
                 left -= ((elementData.width * zoomfact) / 2);
                 top -= ((elementData.height * zoomfact) / 2);
             } else if (element.kind != elementTypesNames.EREntity) {
-                // The element coordinates with snap point
+                // The element coordinates with snap point, similiar logic for non-ER entities
                 let objX = Math.round((elementData.x + elementData.width / 2 - (deltaX * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
                 let objY = Math.round((elementData.y + elementData.height / 2 - (deltaY * (1.0 / zoomfact))) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
 
@@ -45,7 +58,7 @@ function updateCSSForAllElements() {
         divObject.style.top = top + "px";
     }
 
-    // Update positions of all data elements based on the zoom level and view space coordinate
+    // Loops through all elements and updates their screen positions and visual styles
     for (let i = 0; i < data.length; i++) {
         var element = data[i];
         // Element DIV (dom-object)
@@ -57,14 +70,16 @@ function updateCSSForAllElements() {
             var fillColor;
             var fontColor;
             var weakKeyUnderline;
+            // These two variables are declared but arent used, can be removed if wont serve a purpose in future update of code
             var disjointLine1Color;
             var disjointLine2Color;
+
             if (data[i].isLocked) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
-            // Edge creation does not highlight selected elements
+            // Apply visual highlights and colors if not in Edge creation mode
             if (mouseMode != mouseModes.EDGE_CREATION) {
-                // Update UMLEntity
+                // Update UMLEntity, i.e visual updates based on entity kind and selection state
                 if (element.kind == elementTypesNames.UMLEntity) {
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
@@ -106,7 +121,7 @@ function updateCSSForAllElements() {
                         }
                     }
                 }
-                // Update Elements with double borders.
+                // Update Elements with double borders, used for weak entities or mulitple instances
                 else if (element.state == "weak" || element.state == "multiple") {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[0].children[index];
@@ -120,17 +135,19 @@ function updateCSSForAllElements() {
                             fontContrast();
                         }
                     }
-                } else { // Update normal elements, and relations
+                    // Update normal elements, and relations i.e default case
+                } else { 
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     if (markedOverOne()) {
                         fillColor.style.fill = color.LIGHT_PURPLE;
                         fontColor.style.fill = color.WHITE;
+                        // If its a weakKey attribute, update underline color
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.WHITE;
                         }
-                        // If UMLRelation is not marked.
+                        
                     } else if (element.kind == "UMLRelation") {
                         if (element.state == "overlapping") {
                             fillColor.style.fill = color.BLACK;
@@ -210,7 +227,7 @@ function updateCSSForAllElements() {
             }
         }
     }
-    // Also update ghost if there is one
+    //  If a ghost element exists, ensure its position is updated too
     if (ghostElement) {
         var ghostDiv = document.getElementById(ghostElement.id);
 
@@ -219,25 +236,39 @@ function updateCSSForAllElements() {
         }
     }
 
+    /**
+     * @description Determines whether to use white or black text based on background fill color for contrast
+     * Only applies to black or pink elements 
+     */
+
     function fontContrast() {
-        //check if the fill color is black or pink, if so the font color is set to white
+        // Set text to white if background is black or pink, else black
         fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
     }
-
+    /**
+     * @description Checks if multiple elements or lines are selected/highlighted
+     * Used to determine whether to apply multi-select highlight visuals
+     */
     function markedOverOne() {
-        //If more than one element is marked.
+        
         return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
     }
+
 
     toggleBorderOfElements();
 }
 
 /**
- * @description toggles the border of all elements to white or gray; depending on current theme and fill.
+ * @description
+ * Toggles the border color of all visual text elements and their stroke outlines depending on
+ * current theme settings. Ensures visibility and contrast in both dark and light themes.
+ *
+ * Note that it effects both actual text and surrounding SVG elements that share the 'text' class.
+ * Ideally, non-text SVGs should be assigned a separate class in future updates.
  */
 function toggleBorderOfElements() {
-    //get all elements with the class text. This inludes the text in the elements but also the non text svg that surrounds the text and just has a stroke.
-    //For the future, these svg elements should probably be given a class of their own and then this function should be updated.
+    
+  // Get all elements that have the class 'text'
     let allTexts = document.getElementsByClassName('text');
     if (localStorage.getItem('diagramTheme') != null) {
         //in localStorage, diagramTheme holds a URL to the CSS file currently used. Like, style.css or blackTheme.css
@@ -260,7 +291,7 @@ function toggleBorderOfElements() {
                 }
             }
         }
-        //if the theme isnt darkmode and the fill isn't gray, make the stroke gray.
+        // If using light theme, reset any white stroke back to grey unless the fill is already grey
         else {
             for (let i = 0; i < allTexts.length; i++) {
                 let text = allTexts[i];
