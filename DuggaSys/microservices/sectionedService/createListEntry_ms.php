@@ -42,8 +42,40 @@ if($link==-1) {
     foreach($queryz2->fetchAll() as $row) {
         $exampleid=$row['exampleid'];
     }
-    $data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
-    $link=$data['link'];
+    //$data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
+    //$link=$data['link'];
+
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
+    $ch = curl_init($url);
+
+    //options for curl
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'courseid'=> $courseid,
+        'coursevers'=> $coursevers, 
+        'sectionname'=> $sectionname,
+        'link'=> $link,
+        'log_uuid'=> $log_uuid, 
+        'templateNumber'=> $templateNumber
+    ]));
+       
+    $response = curl_exec($ch);
+    if ($response === false) {
+        throw new RuntimeException('cURL error: '.curl_error($ch));
+    }
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode !== 200) {
+        throw new RuntimeException("Microservice returned HTTP $httpCode: $response");
+    }
+    
+    $data = json_decode($response, true);
+    $link = $data['link'] ?? null;
+
+
     $debug=$data['debug'];
 }
 
