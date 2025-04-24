@@ -652,29 +652,35 @@ function showSaveButton() {
   $(".closeDugga").css("display", "block");
 }
 
-// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+// Displaying and hiding the dynamic confirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
   if (operation == "openConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionConfirmBox").css("display", "flex");
-  } else if (operation == "openHideConfirmBox") {
+    active_lid = item ? item.closest('table').getAttribute('value') : null
+    document.getElementById("sectionConfirmBox").style.display = "flex";
+  } 
+  else if (operation == "openHideConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#sectionHideConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
+  } 
+  else if (operation == "openTabConfirmBox") {
     active_lid = item ? $(item).parents('table').attr('value') : null;
     $("#tabConfirmBox").css("display", "flex");
     $("#tabs").val(0).change();
-  } else if (operation == "openItemsConfirmBox") {
+  } 
+  else if (operation == "openItemsConfirmBox") {
     $("#sectionShowConfirmBox").css("display", "flex");
     $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
+  } 
+  else if (operation == "deleteItem") {
     deleteItem(selectedItemList);
     document.getElementById("sectionConfirmBox").style.display = "none";
-  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
+  } 
+  else if (operation == "hideItem" && !selectedItemList.length == 0) {
     hideMarkedItems(selectedItemList)
     $("#sectionHideConfirmBox").css("display", "none");
-  } else if (operation == "tabItem") {
+  } 
+  else if (operation == "tabItem") {
     tabMarkedItems(active_lid);
     $("#tabConfirmBox").css("display", "none");
   }
@@ -691,7 +697,8 @@ function confirmBox(operation, item = null) {
     $("#gitHubTemplate").css("display", "flex");
     gitTemplatePopupOutsideClickHandler();
     fetchCodeExampleHiddenLinkParam(item);
-  } else if (operation == "closeConfirmBox") {
+  } 
+  else if (operation == "closeConfirmBox") {
     $("#gitHubBox").css("display", "none");
     $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
     $("#sectionConfirmBox").css("display", "none");
@@ -732,10 +739,10 @@ function gitTemplatePopupOutsideClickHandler(){
   });
 }
 // Creates an array over all checked items
-function markedItems(item = null) {
+function markedItems(item = null, typeInput) {
   var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
+  var kind = item ? item.closest('tr').getAttribute('value'): null;
+  active_lid = item ? item.closest('table').getAttribute('value'): null;
   var subItems = [];
 
   //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
@@ -743,10 +750,13 @@ function markedItems(item = null) {
     var itemInSection = true;
     var sectionStart = false;
     $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = $(this).attr('value');
+      var tempItem = this.getAttribute('value');
+
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = $(this).parents('tr').attr('value');
+        var tempKind = this ? this.closest('tr').getAttribute('value'): null;
+
+
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
         } else {
@@ -754,43 +764,57 @@ function markedItems(item = null) {
         }
       } else if (tempItem == active_lid) sectionStart = true;
     });
-
   }
 
-
-  console.log("Active lid: " + active_lid);
+  // handles selections
   if (selectedItemList.length != 0) {
-    for (let i = 0; i < selectedItemList.length; i++) {
-      if (selectedItemList[i] === active_lid) {
+    let tempSelectedItemListLength = selectedItemList.length;
+    for (let i = 0; i < tempSelectedItemListLength; i++) {
+
+      //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {
+        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
-        i--;
         var removed = true;
-        console.log("Removed from list");
       }
+      //unchecks children of section
       for (var j = 0; j < subItems.length; j++) {
-        if (selectedItemList[i] === subItems[j]) {
-          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
+        if (selectedItemList[i] == subItems[j]) {
+          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
           selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
+          i--;
         }
       }
-    } if (removed != true) {
-      selectedItemList.push(active_lid);
-      console.log("Adding !empty list");
+    } 
+    
+    if (removed != true) {
+      let activeLidInList = false;
+      for (var k = 0; k < selectedItemList.length; k++) {
+        if(active_lid == selectedItemList[k]){
+          activeLidInList = true;
+          break;
+        }
+      }
+      if (activeLidInList == false){
+        selectedItemList.push(active_lid);
+        document.getElementById(active_lid + "-checkbox").checked = true;
+    }
+      //handles checking within section
       for (var j = 0; j < subItems.length; j++) {
         selectedItemList.push(subItems[j]);
-        console.log(subItems[j]);
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
+        document.getElementById(subItems[j] + "-checkbox").checked = true;
       }
     }
-  } else {
+  } 
+  
+  // adds everything under section to selectedItems (if nothing selected beforehand)
+  else {
     selectedItemList.push(active_lid);
-    console.log("Added");
     for (var j = 0; j < subItems.length; j++) {
       selectedItemList.push(subItems[j]);
     }
     for (i = 0; i < selectedItemList.length; i++) {
-      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
+      document.getElementById(selectedItemList[i] + "-checkbox").checked = true;
       //console.log(hideItemList[i]+"-checkbox");
     }
     // Show ghost button when checkbox is checked
@@ -800,10 +824,10 @@ function markedItems(item = null) {
   }
   if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
+    console.log('no element selected');
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
     hideVisibilityIcons();
-
   }
 }
 
@@ -966,12 +990,11 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
+    item.parentElement.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
@@ -996,7 +1019,7 @@ function deleteAll() {
       lid: lid
     }, "SECTION");
   }
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
   document.querySelector("#undoButton").style.display = "none";
 }
 
@@ -1988,14 +2011,26 @@ function returnedSection(data) {
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
+        
+        // Trashcan for items
+        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
 
-        // Trashcan
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+          // Will run marked items independent of lenght
+          console.log('selectedItemList: ' + selectedItemList.length);
+          if (itemKind === 1 && selectedItemList.length == 0){
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+            src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
+            str += "</td>";
+          }
+          else{
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
+          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+          str += "</td>";  
+          } 
         }
 
         // Checkbox

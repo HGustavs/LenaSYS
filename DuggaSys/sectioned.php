@@ -402,6 +402,7 @@
 		</div>
 	</div>
 	
+	<!-- Handles the confirmation box popup from delete button -->
 	<script type="text/babel">
 		function ConfirmButtons() {
 			return (
