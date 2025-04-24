@@ -139,12 +139,24 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'courseid'       => $courseid, 'coursevers'     => $coursevers, 'sectionname'    => $sectionname, 'link'           => $link,
-        'log_uuid'       => $log_uuid, 'templateNumber' => $templateNumber
+        'courseid'=> $courseid,
+        'coursevers'=> $coursevers, 
+        'sectionname'=> $sectionname,
+        'link'=> $link,
+        'log_uuid'=> $log_uuid, 
+        'templateNumber'=> $templateNumber
     ]));
        
     $response = curl_exec($ch);
+    if ($response === false) {
+        throw new RuntimeException('cURL error: '.curl_error($ch));
+    }
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+
+    if ($httpCode !== 200) {
+        throw new RuntimeException("Microservice returned HTTP $httpCode: $response");
+    }
     
     $data = json_decode($response, true);
     $link = $data['link'] ?? null;
