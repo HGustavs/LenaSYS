@@ -2257,8 +2257,8 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	str += "</div>";
 
 	// Print out rendered code and border with numbers
-	printout.css(createCodeborder(lineno, improws) + str);
- 	var borders = [...document.querySelectorAll('.codeborder')];
+	printout.innerHTML = createCodeborder(lineno, improws) + str;
+	var borders = [...document.querySelectorAll('.codeborder')];
 	borders.forEach(border => {
 		var parentScrollHeight = border.parentNode.scrollHeight;
 		var parentHeight = border.parentNode.clientHeight;
