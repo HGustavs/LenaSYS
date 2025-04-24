@@ -26,7 +26,7 @@ function drawLine(line, targetGhost = false) {
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
     if (line.kind === lineKind.RECURSIVE) {
-        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
+        [fx, fy, tx, ty, offset] = getLineAttributes(felem, felem, line.ctype);
         //Setting start position for the recursive line, to originate from the top.
         fx = felem.cx;
         fy = felem.y1;
@@ -34,9 +34,8 @@ function drawLine(line, targetGhost = false) {
         offset.y1 = 0;
         tx = fx;
         ty = fy;
-    }
-    else {
-        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+    } else {
+        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype);
     }
 
     // Follows the cursor while drawing the line
@@ -412,32 +411,61 @@ function recursiveERRelation(felem, telem, line) {
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
 
-function getLineAttrubutes(f, t, ctype) {
-    const px = -1; // Don't touch
+function getLineAttributes(f, t, ctype) {
+    let px = -1; // Don't touch
+
+    let fWidth = f.width;
+    let tWidth = t.width;
+    let fHeight = f.height;
+    let tHeight = t.height;
+
+    // Special case if line connection involves connecting from IERelation
+    if (f.kind === elementTypesNames.IERelation) {
+        fWidth = f.width * 0.3 * zoomfact;
+        fHeight = f.height * 0 * zoomfact;
+        tWidth *= zoomfact;
+        tHeight *= zoomfact;
+    }
+
+    // Special case if line connection involves connecting to IERelation
+    if (t.kind === elementTypesNames.IERelation) {
+        tWidth = t.width * 0.3 * zoomfact;
+        tHeight = t.height * 0 * zoomfact;
+        fWidth *= zoomfact;
+        fHeight *= zoomfact;
+    }
+
+    const fx1 = f.cx - fWidth / 2;
+    const fx2 = f.cx + fWidth / 2;
+    const tx1 = t.cx - tWidth / 2;
+    const tx2 = t.cx + tWidth / 2;
+    const fy1 = f.cy - fHeight / 2;
+    const fy2 = f.cy + fHeight / 2;
+    const ty1 = t.cy - tHeight / 2;
+    const ty2 = t.cy + tHeight / 2;
+
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
 
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
-            return [f.cx, f.y1, t.cx, t.y2, offset];
+            return [f.cx, fy1, t.cx, ty2, offset];
 
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
-            return [f.cx, f.y2, t.cx, t.y1, offset];
+            return [f.cx, fy2, t.cx, ty1, offset];
 
         case lineDirection.LEFT:
-
-            offset.x1 = -px;          
-            offset.x2 = px * 2;       
-
-            return [f.x1, f.cy, t.x2, t.cy, offset];
+            offset.x1 = -px;
+            offset.x2 = px * 2;
+            return [fx1, f.cy, tx2, t.cy, offset];
 
         case lineDirection.RIGHT:
             offset.x1 = px;
             offset.x2 = -px * 2;
-            return [f.x2, f.cy, t.x1, t.cy, offset];
+            return [fx2, f.cy, tx1, t.cy, offset];
     }
 }
 
