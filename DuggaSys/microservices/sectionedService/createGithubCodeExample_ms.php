@@ -19,6 +19,7 @@ $lid = getOP('lid');
 $log_uuid = getOP('log_uuid');
 $sectionname = getOP('sectionname');//Not used but needed since post sends them along
 $templateNumber = getOP('templateNumber');//Not used but needed since post sends them along
+$exampleid = getOP('exampleid');// Not used but needed since post sends them along
 $debug = "NONE!";
 
 pdoConnect();
@@ -140,6 +141,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'exampleid'=> $exampleid,
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
         'sectionname'=> $sectionname,

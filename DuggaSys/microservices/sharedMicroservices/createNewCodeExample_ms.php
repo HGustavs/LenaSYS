@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Error handling regarding the six values needed
 // These are required for the post call to work
 $required = [
-    'courseid', 'coursevers', 'sectionname',
+    'exampleid','courseid', 'coursevers', 'sectionname',
     'link', 'log_uuid', 'templateNumber'
 ];
 //If any value is missing the function will return error code 400 and a error message
@@ -28,6 +28,7 @@ foreach ($required as $f) {
     }
 }
 // Turn post values into locals
+$exampleid = $_POST['exampleid'];
 $courseid = $_POST['courseid'];
 $coursevers = $_POST['coursevers'];
 $sectionname = $_POST['sectionname'];
@@ -38,7 +39,7 @@ $templateNumber = $_POST['templateNumber'];
 // Here we call the original function
 $result = createNewCodeExample(
     $pdo,
-    null,
+    $exampleid,
     $courseid,
     $coursevers,
     $sectionname,
