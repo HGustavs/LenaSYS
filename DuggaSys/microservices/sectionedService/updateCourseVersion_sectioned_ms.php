@@ -70,27 +70,8 @@ if (!$query->execute()) {
     $debug = "Error updating entries " . $error[2];
 }
 
-// Check if selected course version should be set as active
-if ($makeactive == 3) {
-    header("Content-Type: application/json");
-    
-    // Construct the URL to the target microservice
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
-    $ch = curl_init($url);
-
-    //Configure cURL for POST with required data
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'cid' => $courseid,
-        'versid' => $versid
-    ]));
-
-    // Execute the POST request and close cURL
-    curl_exec($ch);
-    curl_close($ch);
-}
+if ($makeactive == 3)
+    setAsActiveCourse($pdo, $courseid, $versid);
 
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);
