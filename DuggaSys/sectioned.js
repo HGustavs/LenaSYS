@@ -1475,7 +1475,7 @@ function returnedSection(data) {
     // Hide som elements if to narrow
     var hiddenInline = "";
     var showInline = true;
-    if ($(window).width() < 480) {
+    if (window.innerWidth < 480) {
       showInline = false;
       hiddenInline = "none";
     } else {
@@ -2075,11 +2075,11 @@ function returnedSection(data) {
 
     if (resave == true) {
       str = "";
-      $("#Sectionlist").find(".item").each(function (i) {
+      document.querySelectorAll("#Sectionlist .item").forEach(function (currentItem, i) {
         if (i > 0) str += ",";
-        ido = $(this).attr('id');
-        phld = $(this).attr('placeholder')
-        str += i + "XX" + ido.substr(1) + "XX" + phld;
+        var ido = currentItem.id;
+        var phld = currentItem.getAttribute("placeholder");
+        str += i + "XX" + ido.slice(1) + "XX" + phld;
 
       });
       AJAXService("REORDER", {
