@@ -44,7 +44,7 @@ function drawLine(line, targetGhost = false) {
 //Looks if the lines have gotta an index value from the function getLineAttrubutes
 //If so then there are multiple lines on the same row and the offset is changed
 if (typeof line.multiLineOffset=== 'number' && typeof line.numberOfLines === 'number') {
-    const lineSpacing = 15; //Can be changed to change the spacing between lines
+    const lineSpacing = 30 * zoomfact; //Can be changed to change the spacing between lines
     const offsetIncrease = (line.multiLineOffset- (line.numberOfLines - 1) / 2) * lineSpacing;
     if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
         offset.x1 += offsetIncrease;
