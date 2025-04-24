@@ -8,13 +8,3 @@ const Dropdown = ({ children, dropdownName, onClick, className = "" }) => {
         </div>
     );
 };
-
-const Button = ({ children, onClick }) => {
-    return (
-        <button onClick={onClick}>
-            {children}
-        </button>
-    );
-};
-
-Dropdown.Button = Button;
