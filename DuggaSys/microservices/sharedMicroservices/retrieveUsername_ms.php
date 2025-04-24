@@ -7,6 +7,8 @@ if (session_status() === PHP_SESSION_NONE) {
 include_once "./getUid_ms.php";
 include_once "../../../Shared/basic.php"; // Ger tillgång till $pdo och checklogin()
 
+pdoConnect(); // ← För initialize $pdo
+
 header('Content-Type: application/json'); // Viktigt för JSON-standard
 
 date_default_timezone_set("Europe/Stockholm");
