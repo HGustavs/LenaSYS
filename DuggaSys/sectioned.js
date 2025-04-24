@@ -3654,7 +3654,7 @@ function validateDate(startDate, endDate, dialogID) {
   // If one of the dates is not filled in
   if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
     errorMsg.innerHTML = "Both start date and end date must be filled in";
-    $(errorMsg).fadeIn();
+    errorMsg.style.display = "block";
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3669,7 +3669,7 @@ function validateDate(startDate, endDate, dialogID) {
     edate.classList.remove("color-change-invalid");
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
-    $(errorMsg).fadeOut();
+   errorMsg.style.display = "none";;
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -3681,7 +3681,7 @@ function validateDate(startDate, endDate, dialogID) {
   // If end date is less than start date
   if (date2 < date1) {
     errorMsg.innerHTML = "Start date has to be before end date";
-    $(errorMsg).fadeIn();
+    errorMsg.style.display = "block";
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3734,7 +3734,7 @@ function validateDate2(ddate, dialogid) {
 
     // If deadline is between start date and end date
     if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
-      $(errorMsg).fadeOut();
+     errorMsg.style.display = "none";;
       ddate.classList.add("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
@@ -3742,14 +3742,14 @@ function validateDate2(ddate, dialogid) {
       return true;
     } else if (!$("#absolutedeadlinecheck").is(":checked")) {
       // If absolute deadline is not being used
-      $(errorMsg).fadeIn();
+      errorMsg.style.display = "block";
       ddate.classList.remove("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
     } else {
-      $(errorMsg).fadeIn();
+      errorMsg.style.display = "block";
       ddate.classList.add("color-change-invalid");
       ddate.classList.remove("color-change-valid");
       window.bool8 = false;
@@ -3764,20 +3764,20 @@ function validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
-    $(errorMsg).fadeOut();
+   errorMsg.style.display = "none";;
     element.style.backgroundColor = inputColorTheme;
     element.classList.add("color-change-valid");
     element.classList.remove("color-change-invalid");
     window.bool10 = true;
     return true;
   } else if (element.value.length > 0) { //Invalid
-    $(errorMsg).fadeIn();
+    errorMsg.style.display = "block";
     element.classList.add("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
   }else{
-    $(errorMsg).fadeOut();
+    errorMsg.style.display = "none";;
     element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
