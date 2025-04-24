@@ -46,7 +46,7 @@ function drawLine(line, targetGhost = false) {
     }
 
 
-    const lineSpacing = 30; //Controlls spacing between lines
+    const lineSpacing = 30 * zoomfact; //Controlls spacing between lines
 
     //Checks if a line have gotten any properties from the checkAdjacentLines function 
     //fromOffsetIncrease, fromNumberOfLInes, toOffsetIncrease and toNumberOfLines
