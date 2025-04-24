@@ -449,6 +449,7 @@ function toggleOptionsPane() {
 function textboxFormatString(arr) {
     let content = '';
     
+    //Its an array when the textbox have more then one line
     if (!Array.isArray(arr)) {
         return arr;  
     }
