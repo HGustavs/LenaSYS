@@ -17,6 +17,8 @@ $highscoremode = getOP('highscoremode');
 $pos = getOP('pos');
 $lid = getOP('lid');
 $log_uuid = getOP('log_uuid');
+$sectionname = getOP('sectionname');//Not used but needed since post sends them along
+$templateNumber = getOP('templateNumber');//Not used but needed since post sends them along
 $debug = "NONE!";
 
 pdoConnect();
