@@ -139,6 +139,8 @@
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
@@ -146,6 +148,8 @@
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
@@ -154,6 +158,8 @@
                                     <p>Change to IE entity</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
@@ -162,6 +168,8 @@
                                     <p>Change to state diagram state</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
