@@ -46,7 +46,14 @@ foreach ($lines as $line) {
 
     // when reaching a valid dependency row
     if ($currentMicroservice !== null && preg_match('/^- (.+)/', $trimmedLine, $match)) {
-        echo $currentMicroservice . "<br>";
+        // it will look something like this, ex: accessedService/addClass_ms.php
+        $dependsOnPath = trim($match[1]);
+
+        // get the filename without extension as the name for the microservice
+        $fileName = basename($dependsOnPath);
+        $dependsOnName = preg_replace('/_ms\.php$/', '', $fileName);
+        // echo $currentMicroservice . " depends on: " . $dependsOnName . " (filepath: " . $dependsOnPath . "<br>";
+        echo $currentMicroservice . " depends on: " . $dependsOnName . "<br>";
     }
 
 }
