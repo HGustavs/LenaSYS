@@ -2,6 +2,41 @@
 include_once "./getUid_ms.php";
 include_once "./retrieveUsername_ms.php";
 
+//Here we add a http call for post requests
+header('Content-Type: application/json');
+
+// This makes the function only accept POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Only POST allowed']);
+    exit;
+}
+
+// Turn post values into locals
+$courseid = $_POST['courseid'];
+$coursevers = $_POST['coursevers'];
+$sectionname = $_POST['sectionname'];
+$link = $_POST['link'];
+$log_uuid = $_POST['log_uuid'];
+$templateNumber = $_POST['templateNumber'];
+
+// Here we call the original function
+$result = createNewCodeExample(
+    $pdo,
+    null,
+    $courseid,
+    $coursevers,
+    $sectionname,
+    $link,
+    $log_uuid,
+    $templateNumber
+);
+
+// Return the result as JSON
+echo json_encode($result);
+exit;
+
+//Here is where the microservice function starts
 function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid, $templateNumber=0){
 	if (!is_null($exampleid)){
 		$sname = $sectname . ($exampleid + 1);
