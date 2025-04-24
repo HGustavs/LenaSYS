@@ -8,10 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php include 'tools/components.php'; ?>
 	<?php include 'tools/modal.php'; ?>
-	<script defer src="installer_ui.js"></script>
+	<script defer src="tools/modal.js"></script>
 	<script defer src="tools/components.js"></script>
 	<script defer src="tools/sse_receiver.js"></script>
-	<script defer src="tools/modal.js"></script>
+	<script defer src="installer_ui.js"></script>
 </head>
 <body>
 
@@ -235,7 +235,11 @@
 						bodyText("LenaSYS is being installed...");
 					?>
 					<div class="inner-wrapper">
-						<?php progressBar(); ?>
+						<?php 
+							progressBar(); 
+							$modal = new Modal();
+							echo $modal->render();	
+						?>
 						<div id="pageButtonContainer"></div>
 					</div>
 				</div>
