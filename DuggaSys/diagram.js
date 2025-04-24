@@ -426,6 +426,8 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
+    document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
+    document.getElementById("container").addEventListener("touchstart", tstart, { passive: false });
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -910,18 +912,6 @@ document.addEventListener("mouseout", function (event) {
     }
 });
 
-document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
-
-document.getElementById("container").addEventListener("touchstart", function(e) {
-    if (e.touches.length === 1) {
-        pointerState = pointerStates.CLICKED_CONTAINER;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        sscrollx = scrollx;
-        sscrolly = scrolly;
-    }
-}, { passive: false });
-
 // --------------------------------------- Touch Events    --------------------------------
 
 function tmoving(event) {
@@ -941,6 +931,16 @@ function tmoving(event) {
         updateA4Pos();
         drawRulerBars(scrollx, scrolly);
         calculateDeltaExceeded();
+    }
+}
+
+function tstart(event) {
+    if (event.touches.length === 1) {
+        pointerState = pointerStates.CLICKED_CONTAINER;
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        sscrollx = scrollx;
+        sscrolly = scrolly;
     }
 }
 
