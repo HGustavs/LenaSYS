@@ -200,12 +200,16 @@
                                     <p>Change to ER entity</p>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>                      
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
@@ -214,6 +218,8 @@
                                     <p>Change to IE entity</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
@@ -222,6 +228,8 @@
                                     <p>Change to state diagram state</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -239,7 +247,7 @@
                             <p>Each entity represents an object along with its attributes.</p>
                             <p>Each entity is represented by a table with a field that shows attributes.</p>
                             <br>
-                            <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton6" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -253,6 +261,8 @@
                                     <p>Change to ER entity</p>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
@@ -260,6 +270,8 @@
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
@@ -267,6 +279,8 @@
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
@@ -275,6 +289,8 @@
                                     <p>Change to state diagram state</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -292,7 +308,7 @@
                             <p>A state diagram state is a representation of a status a process can have.</p>
                             <p>Each state represents a unique status that a process can have.</p>
                             <br>
-                            <p id="tooltip-PLACE_IEENTITY" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton8" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -306,6 +322,8 @@
                                     <p>Change to ER entity</p>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
@@ -313,6 +331,8 @@
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
@@ -321,6 +341,8 @@
                                     <p>Change to IE entity</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
@@ -328,6 +350,8 @@
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -357,6 +381,8 @@
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
                                 <span class="placementTypeToolTipText"><b>ER relation</b><br>
                                     <p>Represents how entities are associated with each other.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
@@ -365,7 +391,7 @@
                                     <p>Add a ER attribute to the diagram</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
-                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
@@ -374,6 +400,8 @@
                                     <p>Change to UML inheritance</p>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
@@ -382,6 +410,8 @@
                                     <p>Change to IE inheritance</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -412,6 +442,8 @@
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation</p>
                                     <p>Represents how entities are associated with each other.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
@@ -419,6 +451,8 @@
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
@@ -427,6 +461,8 @@
                                     <p>Change to IE inheritance</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
@@ -435,7 +471,7 @@
                                     <p>Add a ER attribute to the diagram</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
-                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -466,6 +502,8 @@
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation</p>
                                     <p>Represents how entities are associated with each other.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
@@ -474,6 +512,8 @@
                                     <p>Change to UML inheritance</p>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
@@ -481,6 +521,8 @@
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
@@ -489,7 +531,7 @@
                                     <p>Add a ER attribute to the diagram</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
-                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -506,7 +548,7 @@
                             <p>Add a ER attribute to the diagram</p>
                             <p>Each attribute represents different characteristics of an entity.</p>
                             <br>
-                            <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton2" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -519,6 +561,8 @@
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation</p>
                                     <p>Represents how entities are associated with each other.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
@@ -527,6 +571,8 @@
                                     <p>Change to UML inheritance</p>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
@@ -534,6 +580,8 @@
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                             <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
@@ -542,7 +590,7 @@
                                     <p>Add a ER attribute to the diagram</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
-                                    <p id="tooltip-PLACE_ATTRIBUTE" class="key_tooltip">Keybinding:</p>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
                         </div>
@@ -579,6 +627,8 @@
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Final state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
@@ -587,6 +637,8 @@
                                     <p>Change to UML final state</p>
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Super state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
@@ -595,6 +647,8 @@
                                     <p>Change to UML super state</p>
                                     <p>Creates a super state.</p>
                                     <p>A state that can contain substates.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>                           
                         </div>
@@ -611,7 +665,7 @@
                             <p>Creates a final state for UML.</p>
                             <p>The final state represents where a process ends.</p>
                             <br>
-                            <p id="tooltip-STATE_FINAL" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton10" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -625,6 +679,8 @@
                                     <p>Change to UML initial state</p>
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Final state -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
@@ -632,6 +688,8 @@
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Super state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
@@ -640,6 +698,8 @@
                                     <p>Change to UML super state</p>
                                     <p>Creates a super state.</p>
                                     <p>A state that can contain substates.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>                           
                         </div>
@@ -656,7 +716,7 @@
                             <p>Creates a super state.</p>
                             <p>A state that can contain substates.</p>
                             <br>
-                            <p id="tooltip-STATE_SUPER" class="key_tooltip">Keybinding:</p>
+                            <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
@@ -670,6 +730,8 @@
                                     <p>Change to UML initial state</p>
                                     <p>Creates an initial state for UML.</p>
                                     <p>The initial state represents the start of a process.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>    
                                 </span>
                             </div><!--Final state -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
@@ -678,6 +740,8 @@
                                     <p>Change to UML final state</p>
                                     <p>Creates a final state for UML.</p>
                                     <p>The final state represents where a process ends.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Super state -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
@@ -685,6 +749,8 @@
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Creates a super state.</p>
                                     <p>A state that can contain substates.</p>
+                                    <br>
+                                    <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>                           
                         </div>
