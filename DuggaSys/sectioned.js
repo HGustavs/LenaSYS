@@ -935,33 +935,38 @@ function prepareItem() {
   var jsondeadline = { "deadline1": "", "comment1": "", "deadline2": "", "comment2": "", "deadline3": "", "comment3": "" };
 
   // Storing tabs in gradesys column!
-  var kind = $("#type").val()
+  var kind = document.getElementById("type").value;
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.tabs = $("#tabs").val();
+    param.tabs = document.getElementById("tabs").value;
   } else {
-    param.gradesys = $("#gradesys").val();
+    param.gradesys = document.getElementById("gradesys").value;
   }
 
-  param.lid = $("#lid").val();
+  param.lid = document.getElementById("lid").value;
   param.kind = kind;
-  param.link = $("#link").val();
-  param.highscoremode = $("#highscoremode").val();
-  param.sectname = $("#sectionname").val();
-  param.visibility = $("#visib").val();
-  param.tabs = $("#tabs").val();
-  param.moment = $("#moment").val();
-  param.comments = $("#comments").val();
-  param.grptype = $("#grptype").val();
-  param.deadline = $("#setDeadlineValue").val() + " " + $("#deadlinehours").val() + ":" + $("#deadlineminutes").val();
+  param.link = document.getElementById("link").value;
+  param.highscoremode = document.getElementById("highscoremode").value;
+  param.sectname = document.getElementById("sectionname").value;
+  param.visibility = document.getElementById("visib").value;
+  param.tabs = document.getElementById("tabs").value;
+  param.moment = document.getElementById("moment").value;
+  param.comments = document.getElementById("comments").value;
+  param.grptype = document.getElementById("grptype").value;
+  
+  var setDeadlineValue = document.getElementById("setDeadlineValue").value;
+  var deadlineHours = document.getElementById("deadlinehours").value;
+  var deadlineMinutes = document.getElementById("deadlineminutes").value;
+  param.deadline = setDeadlineValue + " " + deadlineHours + ":" + deadlineMinutes;
+
   param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
-  if (!$('#absolutedeadlinecheck').prop('checked')) {
+  if (!document.getElementById("absolutedeadlinecheck").checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
-  if ($('#fdbck').prop('checked')) {
+  if (document.getElementById("fdbck").checked) {
     param.feedback = 1;
-    param.feedbackquestion = $("#fdbckque").val();
+    param.feedbackquestion = document.getElementById("fdbckque").value;
   } else {
     param.feedback = 0;
     param.feedbackquestion = null;
@@ -1035,7 +1040,7 @@ function cancelDelete () {
 
 // update selected directory
 function updateSelectedDir() {
-  var selectedDir = $('#selectDir').val();
+  var selectedDir = document.getElementById("selectDir").value;
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -1110,7 +1115,7 @@ function hideMarkedItems(selectedItemList) {
       lid: lid,
       visible: 3
     }, "SECTION");
-    $("#editSection").css("display", "none");
+    document.getElementById("editSection").style.display = "none";
   }
   selectedItemList = [];
 }
@@ -1119,7 +1124,7 @@ function hideMarkedItems(selectedItemList) {
 // tabMarkedItems: Tabs Item from Section List
 //----------------------------------------------------------------------------------
 function tabMarkedItems(lid) {
-  var tabs = $("#tabs").val();
+  var tabs = document.getElementById("tabs").value;
   AJAXService("UPDATETABS", {
     lid: lid,
     tabs: tabs
@@ -1180,12 +1185,12 @@ function updateItem() {
   console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
-  $("#sectionConfirmBox").css("display", "none");
-  $("#editSection").css("display", "none");
+  document.getElementById("sectionConfirmBox").style.display = "none";
+  document.getElementById("editSection").style.display = "none";
 }
 
 function updateDeadline() {
-  var kind = $("#type").val();
+  var kind = document.getElementById("type").value;
   if (kind == 3) {
     AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
   }
@@ -1202,7 +1207,7 @@ async function newItem(itemtitle) {
 
   // Continues when AJAX call is completed
   await AJAXService("NEW", prepareItem(), "SECTION");
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
 
   // Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
@@ -1228,7 +1233,7 @@ async function newItem(itemtitle) {
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
-    $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").classList.remove("createAlertToggle");
     document.getElementById("createAlert").innerHTML = "";
   }, 3000);
 
@@ -1266,9 +1271,9 @@ function createVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#makeactive").is(':checked');
-  param.startdate = getDateFormat(new Date($("#startdate").val()));
-  param.enddate = getDateFormat(new Date($("#enddate").val()));
+  param.makeactive = 2 + (document.getElementById("makeactive").checked ? 1 : 0);
+  param.startdate = getDateFormat(new Date(document.getElementById("startdate").value));
+  param.enddate = getDateFormat(new Date(document.getElementById("enddate").value));
 
   //If no previous versions exist. "None" can't be selected which makes it empty. Set to "None" for if-statement a few lines down.
   if (param.copycourse == "") {
@@ -1287,7 +1292,7 @@ function createVersion() {
       // Create a fresh course version
       AJAXService("NEWVRS", param, "COURSE");
     }
-    $("#newCourseVersion").css("display", "none");
+    document.getElementById("newCourseVersion").style.display = "none";
     changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
       querystring["coursename"] + "&coursevers=" + document.getElementById("cversid").value);
   }
@@ -1308,14 +1313,14 @@ function updateVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#emakeactive").is(':checked');
-  param.startdate = $("#estartdate").val();
-  param.enddate = $("#eenddate").val();
+  param.makeactive = 2 + (document.getElementById("emakeactive").checked ? 1 : 0);
+  param.startdate = document.getElementById("estartdate").value;
+  param.enddate = document.getElementById("eenddate").value;
   param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "COURSE");
 
-  $("#editCourseVersion").css("display", "none");
+  document.getElementById("editCourseVersion").style.display = "none";
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
     querystring["coursename"] + "&coursevers=" + document.getElementById("eversid").value);
 }
@@ -1328,7 +1333,7 @@ function goToVersion(courseDropDown) {
 }
 
 function accessCourse() {
-  var coursevers = $("#course-coursevers").text();
+  var coursevers = document.getElementById("course-coursevers").textContent;
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
@@ -1383,8 +1388,8 @@ function returnedGroups(data) {
     grpemail = "";
   }
   if (str != "") {
-    $("#grptbl").html(str);
-    $("#grptblContainer").css("display", "flex");
+    document.getElementById("grptbl").innerHTML = str;
+    document.getElementById("grptblContainer").style.display = "flex";
   }
 }
 
