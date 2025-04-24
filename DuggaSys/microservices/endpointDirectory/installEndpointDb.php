@@ -31,7 +31,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS parameters (
 $db->exec("CREATE TABLE IF NOT EXISTS dependencies (
     ms_name TEXT PRIMARY KEY NOT NULL,
     depends_on TEXT NOT NULL,
-    FOREIGN KEY (microservice_id) REFERENCES microservices(id)
+    -- FOREIGN KEY (microservice_id) REFERENCES microservices(id)
     -- there can't be a foreign key before the documentation for the microservies has been created
     -- so for now the names has to be inserted, but later, the best way will be to insert the id of the ms that the ms is depending on
     -- example below

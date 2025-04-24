@@ -62,9 +62,19 @@ foreach ($lines as $line) {
             $dependsOnName = $fileName;
         }
 
+        // insert into database 
+        // TODO: Fix so it insert with ID instead
+        $stmt = $db->prepare("
+            INSERT INTO dependencies (ms_name, depends_on)
+            VALUES (?, ?)
+        ");
+        $stmt->execute([
+            $currentMicroservice,
+            $dependsOnName
+        ]);
 
+        echo "Added: " . $currentMicroservice . " depends on: " . $dependsOnName . "<br>";
         // echo $currentMicroservice . " depends on: " . $dependsOnName . " (filepath: " . $dependsOnPath . "<br>";
-        echo $currentMicroservice . " depends on: " . $dependsOnName . "<br>";
     }
 
 }
