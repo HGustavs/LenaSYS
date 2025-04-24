@@ -66,7 +66,21 @@ document.addEventListener('DOMContentLoaded', function() {
     Window.forceCreateDb = function() {
         console.log("Forcing database creation...");
         // Logic to force create database will be implemented here.
-        closeModal();
+        // If creation of database or db user fails, show modal with force option.
+       
+        Window.showModal(
+            "database or db user fails",
+            "<form action='/db_setup.php'><label for=''>Overwrite:</label> <input type='checkbox' id='overwrite'><br><br><input type='submit' value='Submit'></form>",
+            [
+              {
+                text: "Okay",
+                class: "defaultButton",
+                onclick: "Window.closeModal()"
+              }
+            ]
+        );
+
+        
     }
 
     Window.restartInstaller = function() {
