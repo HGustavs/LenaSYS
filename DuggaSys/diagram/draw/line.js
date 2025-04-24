@@ -26,7 +26,7 @@ function drawLine(line, targetGhost = false) {
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
     if (line.kind === lineKind.RECURSIVE) {
-        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
+        [fx, fy, tx, ty, offset] = getLineAttributes(felem, felem, line.ctype);
         //Setting start position for the recursive line, to originate from the top.
         fx = felem.cx;
         fy = felem.y1;
@@ -419,16 +419,18 @@ function getLineAttributes(f, t, ctype) {
     let fHeight = f.height;
     let tHeight = t.height;
 
+    // Special case if line connection involves connecting from IERelation
     if (f.kind === elementTypesNames.IERelation) {
-        fWidth = f.width * 0.8 * zoomfact;
-        fHeight = f.height * 0.8 * zoomfact;
+        fWidth = f.width * 0.3 * zoomfact;
+        fHeight = f.height * 0 * zoomfact;
         tWidth *= zoomfact;
         tHeight *= zoomfact;
     }
 
+    // Special case if line connection involves connecting to IERelation
     if (t.kind === elementTypesNames.IERelation) {
-        tWidth = t.width * 0.8 * zoomfact;
-        tHeight = t.height * 0.8 * zoomfact;
+        tWidth = t.width * 0.3 * zoomfact;
+        tHeight = t.height * 0 * zoomfact;
         fWidth *= zoomfact;
         fHeight *= zoomfact;
     }
