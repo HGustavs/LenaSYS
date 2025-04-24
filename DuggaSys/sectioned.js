@@ -3613,17 +3613,17 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
   var errorMsg1 = document.getElementById(syntaxdialogid);
   var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
-    $(errorMsg1).fadeOut()
+    errorMsg.style.display = "none";
     window.bool9 = true;
   } else {
-    $(errorMsg1).fadeIn()
+    errorMsg.style.display = "block";
     window.bool9 = false;
   }
   if (emotd.value.match(EmotdRange)) {
-    $(errorMsg2).fadeOut()
+    errorMsg.style.display = "none";
     window.bool9 = true;
   } else {
-    $(errorMsg2).fadeIn()
+    errorMsg.style.display = "block";
     window.bool9 = false;
   }
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
@@ -3701,19 +3701,19 @@ function showCourseDate(ddate, dialogid) {
   var startdate = convertDateToDeadline(new Date(retdata['startdate'])).split(" ")[0];
   var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
 
-  if (!$("#absolutedeadlinecheck").is(":checked")) {
+  if (!document.getElementById("absolutedeadlinecheck").checked) {
     rDate = /^[0:]+$/.test(convertDateToDeadline(calculateRelativeDeadline()).split(" ")[1]) ? convertDateToDeadline(calculateRelativeDeadline()).split(" ")[0] : convertDateToDeadline(calculateRelativeDeadline());
     str = "The relative deadline will be set to ";
     str += !retdata['startdate'] ? formatRelativeDeadlineToString(getRelativeDeadlineInputValues()) : rDate;
   } else {
     if (!retdata['startdate']) {
-      $(ddate).val("");
+      document.getElementById(ddate).value = ""
       str = "There is no course start date, please add one or use relative deadlines.";
     } else {
       str = "The absolute deadline date has to be between " + startdate + " and " + enddate;
     }
   }
-  $("#dialog8").html(str);
+  document.getElementById("dialog8").innerHTML = str
   return isCorrect;
 }
 
@@ -3733,14 +3733,14 @@ function validateDate2(ddate, dialogid) {
     var enddate = new Date(retdata['enddate']);
 
     // If deadline is between start date and end date
-    if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
+    if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && document.getElementById("absolutedeadlinecheck").checked) {
      errorMsg.style.display = "none";;
       ddate.classList.add("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
-    } else if (!$("#absolutedeadlinecheck").is(":checked")) {
+    } else if (!document.getElementById("absolutedeadlinecheck").checked) {
       // If absolute deadline is not being used
       errorMsg.style.display = "block";
       ddate.classList.remove("color-change-valid");
