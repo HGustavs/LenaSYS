@@ -35,7 +35,7 @@ function drawLine(line, targetGhost = false) {
         tx = fx;
         ty = fy;
     } else {
-        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
+        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype);
     }
 
     // Follows the cursor while drawing the line
@@ -411,7 +411,7 @@ function recursiveERRelation(felem, telem, line) {
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
 
-function getLineAttrubutes(f, t, ctype) {
+function getLineAttributes(f, t, ctype) {
     let px = -1; // Don't touch
 
     let fWidth = f.width;
@@ -420,19 +420,27 @@ function getLineAttrubutes(f, t, ctype) {
     let tHeight = t.height;
 
     if (f.kind === elementTypesNames.IERelation) {
-      fWidth = f.width * 0.8 * zoomfact;
-      tWidth *= zoomfact;
+        fWidth = f.width * 0.8 * zoomfact;
+        fHeight = f.height * 0.8 * zoomfact;
+        tWidth *= zoomfact;
+        tHeight *= zoomfact;
     }
-    
+
     if (t.kind === elementTypesNames.IERelation) {
-      tWidth = t.width * 0.8 * zoomfact;
-      fWidth *= zoomfact;
+        tWidth = t.width * 0.8 * zoomfact;
+        tHeight = t.height * 0.8 * zoomfact;
+        fWidth *= zoomfact;
+        fHeight *= zoomfact;
     }
 
     const fx1 = f.cx - fWidth / 2;
     const fx2 = f.cx + fWidth / 2;
     const tx1 = t.cx - tWidth / 2;
     const tx2 = t.cx + tWidth / 2;
+    const fy1 = f.cy - fHeight / 2;
+    const fy2 = f.cy + fHeight / 2;
+    const ty1 = t.cy - tHeight / 2;
+    const ty2 = t.cy + tHeight / 2;
 
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
 
@@ -440,12 +448,12 @@ function getLineAttrubutes(f, t, ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
-            return [f.cx, f.y1, t.cx, t.y2, offset];
+            return [f.cx, fy1, t.cx, ty2, offset];
 
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
-            return [f.cx, f.y2, t.cx, t.y1, offset];
+            return [f.cx, fy2, t.cx, ty1, offset];
 
         case lineDirection.LEFT:
             offset.x1 = -px;
@@ -458,6 +466,7 @@ function getLineAttrubutes(f, t, ctype) {
             return [fx2, f.cy, tx1, t.cy, offset];
     }
 }
+
 
 /**
  * @description Draw the label for the line.
