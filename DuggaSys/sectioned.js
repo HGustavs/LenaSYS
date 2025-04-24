@@ -2200,9 +2200,8 @@ function returnedSection(data) {
       drawSwimlanes(); // Create the swimlane used in the statistics section.
     }
 
-
     // Change the scroll position to where the user was last time.
-    $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+    window.scrollTop(0, localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
     // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
     replaceDefualtLink();
@@ -2279,13 +2278,12 @@ function showCanvasLinkBox(operation, btnobj) {
     document.execCommand('copy');
     textArea.remove();
 
-
-    $("#canvasLinkBox").css("display", "flex");
-    $('#close-item-button').focus();
+    document.getElementById('#canvasLinkBox').style.display='flex';
+    document.getElementById('#close-item-button').focus();
 
     document.getElementById("canvasLinkText").value = canvasLink;
   } else if (operation == "close") {
-    $("#canvasLinkBox").css("display", "none");
+    document.getElementById('#canvasLinkBox').style.display='none'
   }
 }
 
@@ -2411,9 +2409,8 @@ function returnedHighscore(data) {
     str += "<td>Score: " + data["user"]["score"] + "</td>";
     str += "</tr>";
   }
-
   var highscorelist = document.getElementById('HighscoreTable').innerHTML = str;
-  $("#HighscoreBox").css("display", "block");
+  document.getElementById("#HighscoreBox").style.display='block';
 }
 
 //----------------------------------------------------------------------------------
