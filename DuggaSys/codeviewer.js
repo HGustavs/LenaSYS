@@ -2995,12 +2995,14 @@ function disableZoomButton(zoomButton){
 //					Is called with onclick() by maximizeButton
 //-----------------------------------------------------------------------------
 
-function maximizeBoxes(boxid) 
+/* function maximizeBoxes(boxid) 
 {
 	var boxid = boxid;
 	var parentDiv = document.getElementById("div2");
 	var boxValArray = initResizableBoxValues(parentDiv);
 	var templateid = retData['templateid'];
+
+	console.log('maximize boxes run');
 
 	getLocalStorageProperties(boxValArray);
 	hideCopyButtons(templateid, boxid);
@@ -3650,6 +3652,7 @@ function maximizeBoxes(boxid)
 		}
 	}
 }
+*/
 
 //hide maximizeButton, resetButton and minimizeButton
 function hideMaximizeAndResetButton() {
