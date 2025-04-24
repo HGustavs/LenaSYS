@@ -2203,8 +2203,8 @@ window.addEventListener("load", function() {
 
 // Close the "logout" window by pressing the ESC button
 document.addEventListener('keydown', function (event) {
-	if (event.key === 'Escape') {
-	  document.querySelector("#logoutBox").style.display="none";
+	if (event.key === 'Escape' && document.querySelector(".logoutBox")) {
+	  document.getElementById("logoutBox").style.display="none";
 	}
 })
 
@@ -2413,18 +2413,22 @@ function makeForm(cfield, ctype){
 
 function toggleInstructions(element)
 {
-	if(element.parentElement.querySelector(".instructions-content").style.display=="none")
-		element.parentElement.querySelector(".instructions-content").style.display="block"
-	else
-		element.parentElement.querySelector(".instructions-content").style.display="none"
+	if(element!=undefined){
+		if(element.parentElement.querySelector(".instructions-content").style.display=="none")
+			element.parentElement.querySelector(".instructions-content").style.display="block"
+		else
+			element.parentElement.querySelector(".instructions-content").style.display="none"
+	}
 }
 
 function toggleFeedback(element)
 {
-	if(element.parentElement.querySelector(".feedback-content").style.display=="none")
-	element.parentElement.querySelector(".feedback-content").style.display="block";
-	else
-	element.parentElement.querySelector(".feedback-content").style.display="none";
+	if(element!=undefined){
+		if(element.parentElement.querySelector(".feedback-content").style.display=="none")
+			element.parentElement.querySelector(".feedback-content").style.display="block";
+		else
+			element.parentElement.querySelector(".feedback-content").style.display="none";
+	}
 }
 
 function disableSave(){

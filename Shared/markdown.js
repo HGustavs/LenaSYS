@@ -649,12 +649,14 @@ document.addEventListener("DOMContentLoaded", function(){
         });
     }
 });
-/*
+/* Does this even do anything?
 //Hide dropdown if click is outside the div
 document.addEventListener("mouseup", function(e) {
-    var container = document.querySelector("#select-header");
-    if (!container.contains(e.target)) {
-        container.style.display="none";
+    var container = document.getElementById("select-header");
+    if(container!=null){
+        if (!container.contains(e.target)) {
+            container.style.display="none";
+        }
     }
 });
 */
