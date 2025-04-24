@@ -3531,7 +3531,7 @@ function validateVersionName(versionName, dialogid) {
 
   //if versionname is 2 capital letters, 2 numbers
   if (name.value.match(Name)) {
-    $(errorMsg).fadeOut();
+    errorMsg.style.display = "none";
     name.classList.add("color-change-valid");
     name.classList.remove("color-change-invalid");
     name.style.backgroundColor = backgroundColorTheme;
@@ -3543,7 +3543,7 @@ function validateVersionName(versionName, dialogid) {
     }
     return true;
   } else if (name.value.length > 0){
-    $(errorMsg).fadeIn();
+    errorMsg.style.display = "block";
     name.classList.add("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3554,7 +3554,7 @@ function validateVersionName(versionName, dialogid) {
     }
     return false;
   }else{
-    $(errorMsg).fadeOut();
+    errorMsg.style.display = "none";
     name.classList.remove("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
