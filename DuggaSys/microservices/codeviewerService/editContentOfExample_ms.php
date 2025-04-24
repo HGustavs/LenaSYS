@@ -3,26 +3,27 @@
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveCodeviewerService_ms.php";
+//include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
 session_start();
 
-$opt=getOP('opt');
-
-$exampleId=getOP('exampleid');
-$boxId=getOP('boxid');
-$boxTitle=getOP('boxtitle');
-$boxContent=getOP('boxcontent');
-$wordlist=getOP('wordlist');
-$filename=getOP('filename');
+$opt = getOP('opt');
+$courseId = getOP('courseid');
+$courseVersion = getOP('cvers');
+$exampleId = getOP('exampleid');
+$boxId = getOP('boxid');
+$boxTitle = getOP('boxtitle');
+$boxContent = getOP('boxcontent');
+$wordlist = getOP('wordlist');
+$filename = getOP('filename');
 $fontsize = getOP('fontsize');
 $addedRows = getOP('addedRows');
 $removedRows = getOP('removedRows');
-$debug="NONE!";
-$userid=getUid();
+$debug = "NONE!";
+$userid = getUid();
 
-if(strcmp('EDITCONTENT',$opt)===0) {
+if (strcmp('EDITCONTENT', $opt) === 0) {
     $query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");
     $query->bindParam(':boxtitle', $boxTitle);
     $query->bindParam(':boxcontent', $boxContent);
@@ -59,6 +60,20 @@ if(strcmp('EDITCONTENT',$opt)===0) {
         }
     }
 }
-$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
-echo json_encode($array);
+
+//Re-engineer
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sectionedService/retrieveCodeviewerService_ms.php?" . http_build_query([
+    'opt' => $opt,
+    'exampleid' => $exampleId,
+    'courseid' => $courseId,
+    'cvers' => $courseVersion
+]);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+echo $response;
 return;

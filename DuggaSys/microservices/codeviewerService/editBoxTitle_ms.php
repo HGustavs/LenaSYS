@@ -3,7 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveCodeviewerService_ms.php";
+//include_once "./retrieveCodeviewerService_ms.php";
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 
@@ -15,9 +15,11 @@ session_start();
 $exampleId = getOP('exampleid');
 $boxId = getOP('boxid');
 $opt = getOP('opt');
+$courseId = getOP('courseid');
+$courseVersion = getOP('cvers');
 $boxTitle = getOP('boxtitle');
-$debug="NONE!";
-$userid=getUid();
+$debug = "NONE!";
+$userid = getUid();
 
 $exampleCount = 0;
 
@@ -41,6 +43,20 @@ if ($exampleCount > 0) {
 		}
 	}
 }
-$array=retrieveCodeviewerService($opt,$pdo,$userid,$debug);
-echo json_encode($array);
+
+//Re-engineer
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sectionedService/retrieveCodeviewerService_ms.php?" . http_build_query([
+	'opt' => $opt,
+	'exampleid' => $exampleId,
+	'courseid' => $courseId,
+	'cvers' => $courseVersion
+]);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+echo $response;
 return;
