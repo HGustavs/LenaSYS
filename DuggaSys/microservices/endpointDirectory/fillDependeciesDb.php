@@ -49,9 +49,20 @@ foreach ($lines as $line) {
         // it will look something like this, ex: accessedService/addClass_ms.php
         $dependsOnPath = trim($match[1]);
 
+        // some documentation uses \, replace these with / if they are used
+        $normalizedPath = str_replace('\\', '/', $dependsOnPath);
+
         // get the filename without extension as the name for the microservice
-        $fileName = basename($dependsOnPath);
-        $dependsOnName = preg_replace('/_ms\.php$/', '', $fileName);
+        $fileName = basename($normalizedPath);
+
+        // remove .php if it exists, otherwise use the name
+        if (str_ends_with($fileName, '.php')) {
+            $dependsOnName = preg_replace('/\.php$/', '', $fileName);
+        } else {
+            $dependsOnName = $fileName;
+        }
+
+
         // echo $currentMicroservice . " depends on: " . $dependsOnName . " (filepath: " . $dependsOnPath . "<br>";
         echo $currentMicroservice . " depends on: " . $dependsOnName . "<br>";
     }
