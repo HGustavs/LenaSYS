@@ -27,6 +27,7 @@ $pos=getOP('pos');
 $tabs=getOP('tabs');
 $userid=getUid();
 $log_uuid=getOP('log_uuid');
+$templateNumber=getOP('templateNumber');
 $debug = "NONE!";
 
 global $pdo;
@@ -55,7 +56,7 @@ if($link==-1) {
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
-        'sectionname'=> $sectionname,
+        'sectionname'=> $sectname,
         'link'=> $link,
         'log_uuid'=> $log_uuid, 
         'templateNumber'=> $templateNumber
