@@ -146,32 +146,18 @@ function entityIsOverlapping(id, x, y) {
             });
         });
 
-        // Collision detection for the ER and UML Relation elements
         if (element.kind === "ERRelation" || element.kind === "UMLRelation") {
-            // Calculate centre of first element
-            const centerAX = x + element.width / 2;
-            const centerAY = y + element.height / 2;
-
-            // Calculate centre of second element
-            const centerBX = data[i].x + data[i].width / 2;
-            const centerBY = data[i].y + data[i].height / 2;
-
-            // Calculate difference of the two elements on x-axis and y-axis
-            const dx = Math.abs(centerAX - centerBX);
-            const dy = Math.abs(centerAY - centerBY);
-
-            // Calculate maximum half width and height where the elements are still overlapping
-            const sumHalfWidth = (element.width / 2) + (data[i].width / 2);
-            const sumHalfHeight = (element.height / 2) + (data[i].height / 2);
-
-            // Detects if there is an actual collision
-            if ((dx / sumHalfWidth + dy / sumHalfHeight) <= 1) {
-                return true;
-            }
-            else {
-                continue;
+            // Use default rectangle collision detection
+            if (x < x2 &&
+                x + element.width > data[i].x &&
+                y < y2 &&
+                y + eHeight > data[i].y
+            ) {
+                isOverlapping = true;
+                break;
             }
         }
+
 
         // Default collision detection where overlapping is derived from height and width of element in a rectangle shape
         // Some elements doesnt have a height so the second parameter gets the height manually
