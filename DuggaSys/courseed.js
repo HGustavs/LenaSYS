@@ -14,14 +14,16 @@ var LastCourseCreated;
 var lastCC = false;
 var updateCourseName = false;
 
-$(document).ready(function () {
-	$('#startdate').datepicker({
-		dateFormat: "yy-mm-dd"
+document.addEventListener("DOMContentLoaded", function () {
+	flatpickr("#startdate", {
+		dateFormat: "Y-m-d"
 	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
+
+	flatpickr("#enddate", {
+		dateFormat: "Y-m-d"
 	});
 });
+
 
 AJAXService("GET", {}, "COURSE");
 
@@ -831,8 +833,8 @@ function elementIsValid(element) {
 	const inputwrapper = element.closest('.inputwrapper');
 	const messageElement = inputwrapper.querySelector('.formDialogText');
 
-	// Stop any ongoing animations
-	$(messageElement).stop(true, true);
+	// Stop any ongoing fade animations
+	stopFade(messageElement);
 
 	//Remove neutral tag when element is assessed.
 	element.classList.remove("color-change-neutral");
@@ -841,7 +843,7 @@ function elementIsValid(element) {
 	if (element.value.trim() === "") {
 		element.removeAttribute("style");
 		if (element.name === "githubToken" || element.name === "courseGitURL") {
-			$(messageElement).fadeOut();
+			fadeOut(messageElement);
 			element.classList.add("color-change-neutral");
 			element.classList.remove("color-change-invalid");
 			element.classList.remove("color-change-valid");
@@ -851,7 +853,7 @@ function elementIsValid(element) {
 
 	// Check against regex and handle special cases
 	if (!element.value.match(regex[element.name])) {
-		$(messageElement).fadeIn();
+		fadeIn(messageElement);
 		element.classList.add("color-change-invalid");
 		element.classList.remove("color-change-valid");
 		if (element.name === "githubToken") {
@@ -868,7 +870,7 @@ function elementIsValid(element) {
 	}
 
 	// If the input passes validation
-	$(messageElement).fadeOut();
+	fadeOut(messageElement);
 	element.classList.add("color-change-valid");
 	element.classList.remove("color-change-invalid");
 	return true;
@@ -965,20 +967,20 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton) {
 	var x4 = document.getElementById(syntaxdialogid);
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd)) {
-		$(x4).fadeOut()
+		fadeOut(x4);
 		//x4.style.display = "none";
 		window.bool9 = true;
 	} else {
-		$(x4).fadeIn()
+		fadeIn(x4);
 		//x4.style.display = "block";
 		window.bool9 = false;
 	}
 	if (emotd.value.match(EmotdRange)) {
-		$(x8).fadeOut()
+		fadeOut(x8);
 		//x8.style.display = "none";
 		window.bool9 = true;
 	} else {
-		$(x8).fadeIn()
+		fadeIn(x8);
 		//x8.style.display = "block";
 		window.bool9 = false;
 	}
@@ -1012,7 +1014,7 @@ x.addListener(MOTDbtnValueX);
 //Adds an eventlistener for keydowns. if the key is Enter and the targeted element is fab-btn-lg then perform it's onclick functionality
 document.addEventListener('keydown', function (event) {
 	if (event.key === 'Enter') {
-		if ($(event.target)[0].classList.contains("fab-btn-lg")) {
+		if (event.target.classList.contains("fab-btn-lg")) {
 			newCourse();
 		}
 	}
@@ -1062,9 +1064,10 @@ function glowNewCourse(courseid) {
 }
 
 function fadeIn(element) {
+	const duration = 400;
 	element.style.display = "block";
 	element.style.opacity = 0;
-	element.style.transition = `opacity 400ms`;
+	element.style.transition = `opacity ${duration}ms`;
 
 	requestAnimationFrame(() => {
 		element.style.opacity = 1;
@@ -1072,7 +1075,8 @@ function fadeIn(element) {
 }
 
 function fadeOut(element) {
-	element.style.transition = `opacity 400ms`;
+	const duration = 400;
+	element.style.transition = `opacity ${duration}ms`;
 	element.style.opacity = 0;
 
 	setTimeout(() => {
@@ -1081,14 +1085,19 @@ function fadeOut(element) {
 }
 
 function stopFade(element) {
-	if (element._fadeTimeout) {
-		clearTimeout(element._fadeTimeout);
-		element._fadeTimeout = null;
-	}
+	const currentOpacity = parseFloat(getComputedStyle(element).opacity);
+	const isVisible = getComputedStyle(element).display !== "none";
 
+	clearTimeout(element._fadeTimeout);
 	element.style.transition = "";
 
-	for (const [property, value] of Object.entries(finalStyles)) {
-		element.style[property] = value;
+	if (isVisible && currentOpacity < 1) {
+		//Fading in
+		element.style.opacity = "1";
+		element.style.display = "block";
+	} else if (!isVisible || currentOpacity > 0) {
+		//Fading out
+		element.style.opacity = "0";
+		element.style.display = "none";
 	}
 }

@@ -31,6 +31,7 @@ if(isset($_SESSION['uid'])){
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/loadingButton.js"></script>
@@ -39,6 +40,7 @@ if(isset($_SESSION['uid'])){
 	<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   	<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
 </head>
