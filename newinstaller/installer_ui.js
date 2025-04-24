@@ -226,19 +226,26 @@ function start_installer() {
 		},
 		error: function(data) {
 			error_occured = true;
-		
-			let dataLow = data.toLowerCase();
-			console.log("test " + data);
-
-			if (dataLow.includes("sqlstate[hy000]") || dataLow.includes(includes("no such file or directory"))) {
-				Window.forceCreateDb();
-			} else if (data instanceof "something2") {
-				//Window.restartInstaller
-			}
-			
+			callWindow(error_occured, data);	
 			addButton(error_occured);	
 		}
 	});
+	
+
+	function callWindow(error, data2) {
+		if (error) {
+			let dataLow = data2.toLowerCase();
+			console.log("test " + data2);
+
+			if (dataLow.includes("sqlstate[hy000]") || dataLow.includes(includes("no such file or directory"))) {
+				Window.forceCreateDb(data);
+			} else if (data2 instanceof "something2") {
+				//Window.restartInstaller
+			}
+		} else {
+
+		}
+	}
 
 	function addButton(error) {
 		if (!error) {
