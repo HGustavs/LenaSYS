@@ -249,11 +249,14 @@
 			
 			<div id='course-label'>
 					<div id="course-label-dropdown">
+						<!-- View mode toggle buttons  --> 
 						<script type="text/babel">
 							ReactDOM.createRoot(document.getElementById('course-label-dropdown')).render(
 								<>
-									<Dropdown dropdownName="View">
-										<Dropdown.Button onClick={() => {setViewMode('Normal')}}>Normal</Dropdown.Button>
+									<Dropdown dropdownName="View" className="view-label">
+										<Button className="submit-button" title="Normal View" onClick={() => {setViewMode('normal')}}>Normal</Button>
+										<Button className="submit-button" title="Scroll View" onClick={() => {setViewMode('scroll')}}>Scroll</Button>
+										<Button className="submit-button" title="Overview" onClick={() => {setViewMode('overview')}}>Overview</Button>
 									</Dropdown>
 								</>
 							);
