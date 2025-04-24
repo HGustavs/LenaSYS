@@ -2517,8 +2517,8 @@ function changetemplate(templateno)
 //----------------------------------------------------------------------------------
 
 function updateTemplate() {
-	templateno = $("#templateno").val();
-	$("#chooseTemplateContainer").css("display", "none");
+	var templateno = document.getElementById("templateno").value;
+	document.getElementById("chooseTemplateContainer").style.display = "none";
  
 	var selectBoxes = [...document.querySelectorAll('#templateOptions select')];
 	var examples = selectBoxes.length / 3;
@@ -2526,11 +2526,10 @@ function updateTemplate() {
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
 		var cvers = querystring['cvers'];
-		var templateno = $("#templateno").val();
 		var content = [];
 		for (var i = 0; i < examples; i++) {
-			var values = [$("#boxcontent_" + i).val(), $("#filename_" + i).val(), $("#wordlist_" + i).val()];
-			content.push(values);
+			var values = [document.getElementById("boxcontent_" + i).value, document.getElementById("filename_" + i).value, document.getElementById("wordlist_" + i).value];
+			content.push(values)
 		}
 		AJAXService("SETTEMPL", {
 			courseid: courseid,
