@@ -11,7 +11,22 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['error' => 'Only POST allowed']);
     exit;
 }
-
+// Error handling regarding the six values needed
+// These are required for the post call to work
+$required = [
+    'courseid', 'coursevers', 'sectionname',
+    'link', 'log_uuid', 'templateNumber'
+];
+//If any value is missing the function will return error code 400 and a error message
+foreach ($required as $f) {
+    if (! isset($_POST[$f])) {
+        http_response_code(400);
+        echo json_encode([
+            'error' => "Missing parameter: $f"
+        ]);
+        exit;
+    }
+}
 // Turn post values into locals
 $courseid = $_POST['courseid'];
 $coursevers = $_POST['coursevers'];
