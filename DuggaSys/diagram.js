@@ -910,6 +910,40 @@ document.addEventListener("mouseout", function (event) {
     }
 });
 
+document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
+
+document.getElementById("container").addEventListener("touchstart", function(e) {
+    if (e.touches.length === 1) {
+        pointerState = pointerStates.CLICKED_CONTAINER;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        sscrollx = scrollx;
+        sscrolly = scrolly;
+    }
+}, { passive: false });
+
+// --------------------------------------- Touch Events    --------------------------------
+
+function tmoving(event) {
+    event.preventDefault();
+    if (event.touches.length != 1) return;
+
+    const touch = event.touches[0];
+    lastMousePos = new Point(touch.clientX, touch.clientY);
+
+    if (pointerState === pointerStates.CLICKED_CONTAINER) {
+        movingContainer = true;
+        deltaX = startX - touch.clientX;
+        deltaY = startY - touch.clientY;
+        scrollx = sscrollx - Math.round(deltaX * zoomfact);
+        scrolly = sscrolly - Math.round(deltaY * zoomfact);
+        updateGridPos();
+        updateA4Pos();
+        drawRulerBars(scrollx, scrolly);
+        calculateDeltaExceeded();
+    }
+}
+
 // --------------------------------------- Mouse Events    --------------------------------
 
 /**
