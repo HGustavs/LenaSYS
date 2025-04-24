@@ -3437,12 +3437,6 @@ button.option {
   padding: 6px 12px;
 }
 
-#MOTDbutton {
- top: -2px;
- position: absolute;
- right: 20px;
- left: auto;
-}
 
 @media only screen and (max-width: 430px) {
   #MOTDbutton {
@@ -9276,21 +9270,36 @@ textarea#filecont {
 
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
-  width: 100%;
 }
 #motdArea{
   box-shadow: 1px 1px 6px grey;
   border-collapse:collapse;
   background-color: #FECC56;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   background-color: var(--color-accent);
   z-index: 1000;
   position: relative;
   margin-bottom: 7px;
   max-width: auto;
   display: none;
+  width:100%
 }
+.motdLeftContainer{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  justify-content: space-between; 
+
+}
+
+.motdRightContainer{
+width: 20%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
   vertical-align: bottom;
@@ -9501,6 +9510,7 @@ textarea#filecont {
     padding: 15px;
     width: 450px;
   }
+
 }
 .bottomBorderColor{
   border-top: 2px solid var(--color-border-list); 

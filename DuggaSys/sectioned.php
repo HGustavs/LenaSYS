@@ -150,12 +150,16 @@
 		<div id='motdArea'>
 			<?php
 				echo "<tr>";
+				echo "<div class=motdLeftContainer>";
 				echo "	<div class='motdBoxheader' >";
 				echo "		<h3>Message of the day</h3>";
-				echo "		<input type='button' id='MOTDbutton' value='Close' class='submit-button' onclick='closeMOTD()'/>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";
+				echo" 	</div>";
+				echo" 	</div>";
+				echo"<div class ='motdRightContainer'>";
+				echo "		<input type='button' id='MOTDbutton' value='Close' class='submit-button' onclick='closeMOTD()'/>";
 				echo" 	</div>";
 				echo "</tr>";
 			?>

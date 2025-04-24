@@ -2301,7 +2301,7 @@ function showMOTD() {
     if (motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
     } else {
-      document.getElementById("motdArea").style.display = "block";
+      document.getElementById("motdArea").style.display = "flex";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
     }
