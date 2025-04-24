@@ -42,9 +42,14 @@ if($link==-1) {
     foreach($queryz2->fetchAll() as $row) {
         $exampleid=$row['exampleid'];
     }
+
     $data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
     $link=$data['link'];
-    $debug=$data['debug'];
+    $debug=$data['debug']; header("Content-Type: application/json");
+    //set url for setAsActiveCourse.php path
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
+    $ch = curl_init($url);
 }
 
 $debug = createNewListEntry($pdo,

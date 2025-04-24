@@ -205,6 +205,15 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $tabs = 0;
     $groupkind = null;
     //add the codeexample to listentries
+
+    header("Content-Type: application/json");
+    //set url for setAsActiveCourse.php path
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
+    $ch = curl_init($url);
+
+
+
     createNewListEntry(
         $pdo,
         $courseid,
