@@ -32,6 +32,18 @@ var inputColorTheme;
 let showHidden = true;
 let count = 0;
 
+
+if (typeof menuState === 'undefined') {
+  menuState = {};   
+}
+
+if (!menuState.hiddenElements) {
+  menuState.hiddenElements = []; 
+}
+
+
+hideCollapsedMenus();
+
 function initInputColorTheme() {
   if(localStorage.getItem('themeBlack').includes('blackTheme')){
     inputColorTheme = "#212121";
@@ -107,12 +119,27 @@ function setup() {
   document.querySelector('#showElements').style.opacity = 0.7;
   AJAXService("get", {}, "SECTION");
   numberOfItems = 1;
+
+  const stored = localStorage.getItem('hiddenElements');
+console.log("Stored hidden elements:", stored); // Add this to debug
+if (stored){
+  menuState.hiddenElements = JSON.parse(stored);
+}else {
+  menuState.hiddenElements = []; 
+}
+
+  hideCollapsedMenus();
 }
 
 // -------------==============######## Internal Help Functions ###########==============-------------
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
+  if (!clickedElement || typeof clickedElement !== 'string') {
+    console.warn("Invalid ID passed to saveHiddenElementIDs:", clickedElement);
+    return;
+  }
+  
   addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
   localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
 }
@@ -132,7 +159,9 @@ function saveArrowIds(clickedElement) {
    hiddenElements array. */
 function hideCollapsedMenus() {
   $('.header, .section, .code, .test, .link, .group, .statisticsContent, .message').show();
+  
   for (var i = 0; i < menuState.hiddenElements.length; i++) {
+    console.log("Hiding elements for ID:", menuState.hiddenElements[i]); // Add this for debugging
     var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
       jQuery(ancestor).nextUntil('.moment').hide();
@@ -154,9 +183,35 @@ function hideCollapsedMenus() {
    arrow if it is in the arrowIcons array.*/
 // The other way around for the statistics section.
 function toggleArrows(id) {
+  if (!id || typeof id !== 'string') {
+    console.warn("Invalid ID passed to toggleArrows:", id);
+    console.trace();
+    return;
+  }  
+  console.log("Toggling arrows for id:", id);
   $('.arrowComp').show();
   $('.arrowRight').hide();
   $('#selectionDrag' + id).toggle();
+
+
+  if(menuState.hiddenElements.includes(id)){
+    menuState.hiddenElements = menuState.hiddenElements.filter(item => item !== id);
+    console.log("expanded section", id);
+  }else {
+    menuState.hiddenElements.push(id);
+    console.log("collapsed section", id)
+  }
+
+  console.log("Saving to localStorage: hiddenElements", menuState.hiddenElements);
+
+  try {
+    localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements)); 
+    console.log("Collapsed sections saved to localStorage:", menuState.hiddenElements);  
+  } catch (e) {
+    console.error("Error saving to localStorage:", e);  
+  }
+
+
   for (var i = 0; i < menuState.arrowIcons.length; i++) {
     if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
       $('#' + menuState.arrowIcons[i]).hide();
@@ -2148,7 +2203,7 @@ function returnedSection(data) {
   getHiddenElements();
   hideCollapsedMenus();
   getArrowElements();
-  toggleArrows();
+  //toggleArrows();
   menuState.idCounter = 0;
 
   // Change title of the current page depending on which page the user is on.
