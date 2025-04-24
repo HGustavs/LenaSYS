@@ -226,7 +226,22 @@ function start_installer() {
 		},
 		error: function(data) {
 			error_occured = true;
-			addButton(error_occured);
+			Window.showModal(
+				"Test Modal",
+				"<p>Test</p>",
+				[
+				  {
+					text: "Okay",
+					class: "defaultButton",
+					onclick: "Window.closeModal()"
+				  }
+				]
+			);
+
+			console.log("test " + data);
+
+
+			addButton(error_occured);	
 			alert(data);
 		}
 	});
