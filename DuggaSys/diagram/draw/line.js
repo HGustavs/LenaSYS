@@ -34,8 +34,7 @@ function drawLine(line, targetGhost = false) {
         offset.y1 = 0;
         tx = fx;
         ty = fy;
-    }
-    else {
+    } else {
         [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
     }
 
@@ -414,13 +413,30 @@ function recursiveERRelation(felem, telem, line) {
 
 function getLineAttrubutes(f, t, ctype) {
     let px = -1; // Don't touch
-    if (t.kind || f.kind === elementTypesNames.IERelation){        
-        console.log("To/from");
-        px += - 5 * zoomfact;
+
+    let fWidth = f.width;
+    let tWidth = t.width;
+    let fHeight = f.height;
+    let tHeight = t.height;
+
+    if (f.kind === elementTypesNames.IERelation) {
+      fWidth = f.width * 0.8 * zoomfact;
+      tWidth *= zoomfact;
     }
+    
+    if (t.kind === elementTypesNames.IERelation) {
+      tWidth = t.width * 0.8 * zoomfact;
+      fWidth *= zoomfact;
+    }
+
+    const fx1 = f.cx - fWidth / 2;
+    const fx2 = f.cx + fWidth / 2;
+    const tx1 = t.cx - tWidth / 2;
+    const tx2 = t.cx + tWidth / 2;
+
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
 
-    switch (ctype) { 
+    switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
@@ -432,17 +448,16 @@ function getLineAttrubutes(f, t, ctype) {
             return [f.cx, f.y2, t.cx, t.y1, offset];
 
         case lineDirection.LEFT:
-            offset.x1 = -px;          
-            offset.x2 = px * 2;       
-            return [f.x1, f.cy, t.x2, t.cy, offset];
+            offset.x1 = -px;
+            offset.x2 = px * 2;
+            return [fx1, f.cy, tx2, t.cy, offset];
 
         case lineDirection.RIGHT:
-            offset.x1 = px;           
-            offset.x2 = -px * 2;      
-            return [f.x2, f.cy, t.x1, t.cy, offset];
+            offset.x1 = px;
+            offset.x2 = -px * 2;
+            return [fx2, f.cy, tx1, t.cy, offset];
     }
 }
-
 
 /**
  * @description Draw the label for the line.
