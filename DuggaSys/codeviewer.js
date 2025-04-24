@@ -1104,9 +1104,9 @@ function addTemplatebox(id) {
 //----------------------------------------------------------------------------------
 
 function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
-	if ($("#" + contentid + "menu").length == 0) {
+	if (!document.getElementById(contentid + "menu")) {
 		var boxmenu = document.createElement("div");
-		$("#" + contentid + "wrapper").append(boxmenu);
+		document.getElementById(contentid + "wrapper").appendChild(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid + "menu");
 
@@ -1116,15 +1116,15 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', this.textContent);" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', this.textContent);" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', this.textContent);" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else {
 				str += "<td class='butto2 showdesktop'>";
@@ -1163,9 +1163,9 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 		
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
-		$(boxmenu).click(function (event) {
-			if ($(window).width() <= 1100) {
-				toggleClass($("#" + boxmenu.parentNode.id).attr("id"));
+		boxmenu.addEventListener("click", function (event) {
+			if (window.innerWidth <= 1100) {
+				toggleClass(boxmenu.parentNode.id);
 			}
 		});
 	}
@@ -1400,16 +1400,16 @@ function execSkip() {
 }
 
 //Retrieve height for building menu.
-$(window).load(function () {
-	var windowHeight = $(window).height();
-	textHeight = windowHeight - 50;
-	$("#table-scroll").css("height", textHeight);
+window.addEventListener("load", function () {
+	var windowHeight = window.innerHeight;
+	var textHeight = windowHeight - 50;
+	document.getElementById("table-scroll").style.height = textHeight + "px";
 });
 
-$(window).resize(function () {
-	var windowHeight = $(window).height();
-	textHeight = windowHeight - 50;
-	$("#table-scroll").css("height", textHeight);
+window.addEventListener("resize", function () {
+	var windowHeight = window.innerHeight;
+	var textHeight = windowHeight - 50;
+	document.getElementById("table-scroll").style.height = textHeight + "px";
 	closeBurgerMenu(); // close burgerMenu when window resize
 });
 
@@ -1448,7 +1448,7 @@ function highlightKeyword(kw) {
 	kwDoubleQuotes = '"'+kw+'"';
 	kwSingleQuote = "'"+kw+"'";
 
-	$(".impword").each(function () {
+	document.querySelectorAll(".impword").forEach(function () {
 		if(this.classList.contains("imphi")){
 			this.classList.remove("imphi");
 		}
