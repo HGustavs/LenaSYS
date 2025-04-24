@@ -1907,13 +1907,13 @@ function toggleLoadVariant(setbool){	//setbool has a value of True or False. Thi
 
 function showLoadDuggaPopup()
 {
-	document.getElementById("#loadDuggaBox").style.display="flex";
+	document.querySelector("#loadDuggaBox").style.display="flex";
 	localStorage.setItem("ls-redirect-last-url", document.URL);
 }
 
 function hideLoadDuggaPopup()
 {
-	document.getElementById("#loadDuggaBox").style.display="none";
+	document.querySelector("#loadDuggaBox").style.display="none";
 }
 
 function updateReceiptText(title, URL, hash, hashPW)
@@ -2413,22 +2413,22 @@ function makeForm(cfield, ctype){
 
 function toggleInstructions(element)
 {
-	if(document.querySelector(".instructions-content").style.display=="none")
-		document.querySelector(".instructions-content").style.display="block"
+	if(element.parentElement.querySelector(".instructions-content").style.display=="none")
+		element.parentElement.querySelector(".instructions-content").style.display="block"
 	else
-		document.querySelector(".instructions-content").style.display="none"
+		element.parentElement.querySelector(".instructions-content").style.display="none"
 }
 
 function toggleFeedback(element)
 {
-	if(document.querySelector(".feedback-content").style.display=="none")
-	element.parentElement.document.querySelector(".feedback-content").style.display="block";
+	if(element.parentElement.querySelector(".feedback-content").style.display=="none")
+	element.parentElement.querySelector(".feedback-content").style.display="block";
 	else
-	element.parentElement.document.querySelector(".feedback-content").style.display="none";
+	element.parentElement.querySelector(".feedback-content").style.display="none";
 }
 
 function disableSave(){
-	document.getElementById("saveDuggaButton").disabled = true;
+	document.querySelector("saveDuggaButton").disabled = true;
 }
 
 //----------------------------------------------------------------------------------
@@ -2534,11 +2534,13 @@ function FABMouseOver(e) {
 // FABMouseOut: FAB Mouse Out
 //----------------------------------------------------------------------------------
 function FABMouseOut(e) {
-	if (!document.querySelector('.fab-btn-sm').classList.contains('scale-out') && !e.relatedTarget.closest(".fixed-action-button") && !e.relatedTarget.classList.contains("fixed-action-button")) {
+	if (document.querySelector('.fab-btn-sm') && !document.querySelector('.fab-btn-sm').classList.contains('scale-out') &&
+	!e.relatedTarget.closest(".fixed-action-button") && !e.relatedTarget.classList.contains("fixed-action-button")) {
 		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	else if (!document.querySelector('.fab-btn-sm2').classList.contains('scale-out') && !e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
+	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
+	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
 		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list2').style.display="none";
 	}

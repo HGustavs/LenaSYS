@@ -630,30 +630,31 @@ function tabKey(){
     updatePreview(txtarea.value);
 }
 
-document.onload(function(){
-   document.querySelector(".headerType").click(function(){
-        var e1=document.querySelector("#select-header");
-        if(e1.checkVisibility()==true){
-            e1.style.display="none"
-        }
-        else{
-            e1.style.display="block"
-        }
-        document.querySelector("#select-header").classList.add("show-dropdown-content");
-    });
-    document.getElementById("#mrkdwntxt").addEventListener("keydown", function(e) {
-        if (e.keyCode == 9){
-            e.preventDefault();
-            tabKey();
-
-        }
-    });
+document.addEventListener("DOMContentLoaded", function(){
+    var e1=document.getElementById(".headerType");
+    if(e1!=null){
+        e1.addEventListener("click", function(){
+            document.querySelector("#select-header").classList.toggle();
+            document.querySelector("#select-header").classList.add("show-dropdown-content");
+        });
+    }
+    
+    var e2=document.getElementById("#mrkdwntxt");
+    if(e2!=null){
+        e2.addEventListener("keydown", function(e) {
+            if (e.keyCode == 9){
+                e.preventDefault();
+                tabKey();
+            }
+        });
+    }
 });
-
+/*
 //Hide dropdown if click is outside the div
 document.addEventListener("mouseup", function(e) {
     var container = document.querySelector("#select-header");
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
-        container.hide();
+    if (!container.contains(e.target)) {
+        container.style.display="none";
     }
 });
+*/
