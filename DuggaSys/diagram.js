@@ -1051,6 +1051,21 @@ function mmoving(event) {
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
                 // We update position of connected objects
+
+                if (context.length === 1 && context[0].kind === elementTypesNames.sequenceActivation) {
+                    const pos = screenToDiagramCoordinates(event.clientX, event.clientY);
+                    const lifelineId = findNearestLifeline(pos.x, pos.y);
+                    if (lifelineId) {
+                      
+                      snapElementToLifeline(context[0], lifelineId);
+                      
+                      startX = event.clientX;
+                      startY = event.clientY;
+                      deltaX = 0;
+                      deltaY = 0;
+                    }
+                }
+
                 updatepos();
                 calculateDeltaExceeded();
             }
