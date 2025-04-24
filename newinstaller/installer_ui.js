@@ -226,23 +226,17 @@ function start_installer() {
 		},
 		error: function(data) {
 			error_occured = true;
-			Window.showModal(
-				"Test Modal",
-				"<p>Test</p>",
-				[
-				  {
-					text: "Okay",
-					class: "defaultButton",
-					onclick: "Window.closeModal()"
-				  }
-				]
-			);
-
+		
+			let dataLow = data.toLowerCase();
 			console.log("test " + data);
 
-
+			if (dataLow.includes("sqlstate[hy000]") || dataLow.includes(includes("no such file or directory"))) {
+				Window.forceCreateDb();
+			} else if (data instanceof "something2") {
+				//Window.restartInstaller
+			}
+			
 			addButton(error_occured);	
-			alert(data);
 		}
 	});
 
