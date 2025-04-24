@@ -1945,6 +1945,7 @@ function showModal() {
         localDiagrams = JSON.parse(local);
         diagramKeys = Object.keys(localDiagrams);
     }
+
     // Remove all elements
     while (container.firstElementChild) {
         container.firstElementChild.remove();
@@ -1954,10 +1955,10 @@ function showModal() {
     if (!diagramKeys || diagramKeys.length === 0) {
         const p = document.createElement('p');
         const pText = document.createTextNode('No saves could be found');
-
         p.appendChild(pText);
         container.appendChild(p);
     } else {
+        // Loop through the saved diagrams
         for (let i = 0; i < diagramKeys.length; i++) {
             let wrapper = document.createElement('div');
             const btn = document.createElement('button');
@@ -1969,7 +1970,7 @@ function showModal() {
             wrapper.style.display = "flex";
             btn.style.width = '100%';
 
-            if (btnText.textContent !== 'AutoSave') {
+            if (btnText.textContent !== 'AutoSave') { // Only show delete button if not AutoSave
                 let delBtn = document.createElement('button');
                 delBtn.classList.add('deleteLocalDiagram');
                 delBtn.setAttribute("onclick", `removeLocalDiagram('${diagramKeys[i]}');showModal();`);
@@ -1977,9 +1978,13 @@ function showModal() {
                 wrapper.appendChild(delBtn);
             }
             container.appendChild(wrapper);
-            document.getElementById('loadCounter').innerHTML = diagramKeys.length;
         }
+
+        // Update label count, exclude AutoSave from count
+        const filteredKeys = diagramKeys.filter(key => key !== 'AutoSave'); // Exclude 'AutoSave'
+        document.getElementById('loadCounter').innerHTML = filteredKeys.length; // Set the label count
     }
+
     modal.classList.remove('hiddenLoad');
     overlay.classList.remove('hiddenLoad');
 }
@@ -2165,11 +2170,20 @@ function removeLocalDiagram(item) {
 
     if (item !== 'AutoSave') {
         delete localDiagrams[item];
+        localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+        showModal(); // Refresh the modal after deletion
     } else {
-        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'");
+        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'"); // Prevent deleting AutoSave
     }
 
-    localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
+    // After deletion, update the counter again, excluding 'AutoSave'
+    let updatedLocal = localStorage.getItem("diagrams");
+    if (updatedLocal) {
+        updatedLocal = (updatedLocal[0] == "{") ? updatedLocal : `{${updatedLocal}}`;
+        let updatedDiagrams = JSON.parse(updatedLocal);
+        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'AutoSave');
+        document.getElementById('loadCounter').innerHTML = updatedKeys.length; // Update the counter
+    }
 }
 
 /**
