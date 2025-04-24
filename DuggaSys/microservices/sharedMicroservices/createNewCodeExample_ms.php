@@ -1,6 +1,6 @@
 <?php
 include_once "./getUid_ms.php";
-include_once "./retrieveUsername_ms.php";
+
 
 function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectname, $link, $log_uuid, $templateNumber=0){
 	if (!is_null($exampleid)){
@@ -22,7 +22,18 @@ function createNewCodeExample($pdo, $exampleid, $courseid, $coursevers, $sectnam
 	$link = $pdo->lastInsertId();
 
 	$userid = getUid();
-	$username = retrieveUsername($pdo);
+	// Microservice call to retrieve username
+	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+	$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	$data = json_decode($response, true);
+	$username = $data['username'] ?? 'unknown';
+
 	logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
 	return array('debug'=>$debug,'link'=>$link);
