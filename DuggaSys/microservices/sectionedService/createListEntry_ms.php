@@ -96,6 +96,7 @@ $debug = createNewListEntry($pdo,
 
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+header('Content-Type: application/json')
 echo json_encode($data);
 return;
 ?>
