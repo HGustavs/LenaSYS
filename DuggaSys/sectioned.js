@@ -2089,9 +2089,9 @@ function returnedSection(data) {
     }
 
     if (hasDuggs === false || navigator.vendor == ("Apple Computer, Inc.")) {
-      $("#statisticsSwimlanes").hide();
-      $("#sectionList_arrowStatisticsOpen").hide();
-      $("#sectionList_arrowStatisticsClosed").hide();
+      document.getElementById("statisticsSwimlanes").style.display = "none";
+      document.getElementById("sectionList_arrowStatisticsOpen").style.display = "none";
+      document.getElementById("sectionList_arrowStatisticsClosed").style.display = "none";
     }
 
     if (data['writeaccess']) {
@@ -2128,7 +2128,7 @@ function returnedSection(data) {
       "<span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML += str;
-    $("#newCourseVersion").css("display", "block");
+    document.getElementById("newCourseVersion").style.display = "block";
 
 
 
@@ -2167,7 +2167,7 @@ function returnedSection(data) {
 
 
     // Change the scroll position to where the user was last time.
-    $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+    window.scrollTo(0, localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
     // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
     replaceDefualtLink();
