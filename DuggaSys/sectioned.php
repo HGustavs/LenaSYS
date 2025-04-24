@@ -301,16 +301,7 @@
 		<!-- FAB END -->
 
 		<div id='courseList'>
-
-		<!-- View mode toggle buttons 
-		<div class="view-label">
-			<h2>View</h2>
-  			<button class="submit-button" onclick="setViewMode('normal')">Normal</button>
-  			<button class="submit-button" onclick="setViewMode('scroll')">Scroll</button>
- 			<button class="submit-button" onclick="setViewMode('overview')">Overview</button>
-		</div>
 		
-		-->
 		<!-- Section List -->
 		<div id='Sectionlisti'>
 		
