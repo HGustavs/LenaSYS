@@ -1,14 +1,20 @@
 <?php
 
 class Modal {
+    private $id;
     private $header;
     private $body;
     private $buttons;
 
-    public function __construct($header = '', $body = '', $buttons = []) {
+    public function __construct($id = '', $header = '', $body = '', $buttons = []) {
+        $this->id = $id;
         $this->header = $header;
         $this->body = $body;
         $this->buttons = $buttons;
+    }
+
+    public function setID($id) {
+        $this->id = $id;
     }
 
     public function setHeader($header) {
@@ -24,7 +30,7 @@ class Modal {
     }
 
     public function render() {
-        echo '<div class="modal" id="genericModal">';
+        echo '<div class="modal" id="' . $this->id . '">';
         echo '  <div class="modal-content">';
         echo '      <span class="close-btn" id="closeModal">&times;</span>';
         echo '      <div id="modalHeader" class="modal-header">' . $this->header . '</div>';
@@ -40,8 +46,9 @@ class Modal {
         echo '</div>';
     }
 
-    public static function setDbConnectionErrorModal() {
+    public static function setDbConnectionErrorModal($id) {
         $modal = new self(
+            $id,
             'Database Connection Failed',
             'Unable to connect to the database. Please check your root username, password, and hostname',
             [
@@ -54,8 +61,9 @@ class Modal {
         $modal->render();
     }
 
-    public static function showFilePermissionErrorModal() {
+    public static function showFilePermissionErrorModal($id) {
         $modal = new self(
+            $id,
             'File Permission Error',
             'Failed to copy course files. Please run the following command: <code>chmod -R 755 /LenaSys/install/courses</code>',
             [
@@ -67,22 +75,24 @@ class Modal {
         $modal->render();
     }
 
-    public static function showDbCreationErrorModal() {
+    public static function showDbCreationErrorModal($id) {
         $modal = new self(
+            $id,
             'Database Creation Failed',
             'Failed to create the database or database user. Please ensure you have the necessary permissions.',
             [
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()'],
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'forceCreateDb()']
+                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'forceCreateDb('.$id.')']
             ]
         );
 
         $modal->render();
     }
 
-    public static function showSqlExecutionErrorModal() {
+    public static function showSqlExecutionErrorModal($id) {
         $modal = new self(
+            $id,
             'SQL Execution Failed',
             'An error occurred while executing SQL files. Please check the SQL syntax and try again.',
             [
