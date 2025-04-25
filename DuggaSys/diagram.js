@@ -426,8 +426,6 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    //document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
-    //document.getElementById("container").addEventListener("touchstart", tstart, { passive: false });
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -441,6 +439,7 @@ function getData() {
     generateKeybindList();
     //setPreviewValues();
     saveDiagramBeforeUnload();
+    setupTouchAsMouseSupport();
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
@@ -448,7 +447,6 @@ function getData() {
     togglePlacementType(1, 1);
     togglePlacementType(9, 9);
     togglePlacementType(12, 12);
-    setupTouchAsMouseSupport();
 }
 
 /**
@@ -917,12 +915,16 @@ document.addEventListener("mouseout", function (event) {
 
 /**
  * @description Event function triggered when touch is registered on top of the container and converts it to a mouseEvent.
- * @param {TouchEvent} tEvent Triggered touch event.
+ * @param {TouchEvent} touchEvent The original touch event to convert.
+ * @param {string} [type="mousedown"] This is the mouse event type to simulate.
+ * @returns {MouseEvent} A synthetic MouseEvent object that mimics the touch event.
  */
 
 function convertTouchToMouse(touchEvent, type = "mousedown") {
+    // Get the first changed touch point
     const touch = touchEvent.changedTouches[0];
 
+    // Create a synthetic mouse event using the touch coordinates
     const mouseEvent = new MouseEvent(type, {
         bubbles: true,
         cancelable: true,
@@ -930,46 +932,58 @@ function convertTouchToMouse(touchEvent, type = "mousedown") {
         button: 0,
         clientX: touch.clientX,
         clientY: touch.clientY,
-        ctrlKey: false,
-        shiftKey: false,
-        altKey: false,
     });
 
+    // Prevents scrolling in browser when panning the canvas
     touchEvent.preventDefault();
+
+    // Returns the synthesized mouse event
     return mouseEvent;
 }
 
+// Variables to track pinch-zooming state
 let initialPinchDistance = null;
 let lastPinchZoomTime = 0;
+
+// Constants to control pinch-zoom sensitivity
 const pinchZoomThreshold = 5; // Minimum px difference to trigger zoom
 const pinchZoomCooldown = 100; // Minimum ms between pinch zooms
 
+// Sets up touch support that simulates mouse events
 function setupTouchAsMouseSupport() {
     const container = document.getElementById("container");
 
+    // Handle touchstart: either simulates mousedown or prepare for pinch-zoom
     container.addEventListener("touchstart", function (tEvent) {
         if (tEvent.touches.length === 1) {
+            // Single touch, simulates a mouse down event
             const mouseEvent = convertTouchToMouse(tEvent, "mousedown");
             container.dispatchEvent(mouseEvent);
         } else if (tEvent.touches.length === 2) {
+            // Two fingers, start measuring pinch distance
             const dx = tEvent.touches[0].clientX - tEvent.touches[1].clientX;
             const dy = tEvent.touches[0].clientY - tEvent.touches[1].clientY;
             initialPinchDistance = Math.hypot(dx, dy);
         }
     }, { passive: false });
 
+    // Handle touchmove: either simulate mousemove or process pinch-zoom
     container.addEventListener("touchmove", function (tEvent) {
         tEvent.preventDefault();
         if (tEvent.touches.length === 1) {
+            // Singel touch, simulate mouse move event
             const mouseEvent = convertTouchToMouse(tEvent, "mousemove");
             container.dispatchEvent(mouseEvent);
         } else if (tEvent.touches.length === 2 && initialPinchDistance !== null){
+            // Two fingers, handle pinch-zoom
             handlePinchZoom(tEvent);
         }
     }, { passive: false });
 
+    // Handle touchend: simulate mouseup and reset pinch state
     container.addEventListener("touchend", function (tEvent) {
         if (tEvent.touches.length === 0) {
+            // No touches left, simulate mouse up event
             const mouseEvent = convertTouchToMouse(tEvent, "mouseup");
             container.dispatchEvent(mouseEvent);
             initialPinchDistance = null;
@@ -977,13 +991,22 @@ function setupTouchAsMouseSupport() {
     }, { passive: false });
 }
 
+/**
+ * @description Handels pinch-zoom gesture detection and triggers zoom-in or zoom-out actions.
+ * @param {TouchEvent} tEvent The current touch event containing two active touch points.
+ */
+
 function handlePinchZoom(tEvent) {
+    // Calculate the current distance between two fingers
     const dx = tEvent.touches[0].clientX - tEvent.touches[1].clientX;
     const dy = tEvent.touches[0].clientY - tEvent.touches[1].clientY;
     const newDistance = Math.hypot(dx, dy);
 
     const now = Date.now();
+
+    // Check if distance change is bigger than threshold and if enough time has passed since last zoom event
     if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
+        // Calculate the midpoint between two fingers
         const zoomCenter = {
             clientX: (tEvent.touches[0].clientX + tEvent.touches[1].clientX) / 2,
             clientY: (tEvent.touches[0].clientY + tEvent.touches[1].clientY) / 2
@@ -995,6 +1018,7 @@ function handlePinchZoom(tEvent) {
             zoomout(zoomCenter);
         }
 
+        // Update the last zoom time and reference distance
         lastPinchZoomTime = now;
         initialPinchDistance = newDistance;
     }
