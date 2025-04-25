@@ -1,4 +1,28 @@
-﻿/**
+﻿
+/**
+ * Calculates the center connection point for sequence elements like the actors or objects.
+ * @param {Object} element The element to calculate for.
+ * @returns {{ x: number, y: number }} The connection point.
+ */
+function getSequenceElementConnectionPoint(element) {
+    const bbox = document.getElementById(element.id)?.getBoundingClientRect();
+    if (!bbox) {
+        console.warn("No bounding box found for element:", element);
+        return { x: element.cx || 0, y: element.y1 || 0 };
+    }
+
+    // Set .cx, .y1, .y2 for future use 
+    element.cx = bbox.left + bbox.width / 2;
+    element.y1 = bbox.top;
+    element.y2 = bbox.top + bbox.height;
+
+    return {
+        x: element.cx,
+        y: (element.y1 + element.y2) / 2
+    };
+}
+
+/**
  * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
@@ -21,23 +45,33 @@ function drawLine(line, targetGhost = false) {
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
-    let fx, fy, tx, ty, offset;
+    let fx, fy, tx, ty;
+let offset = { x1: 0, y1: 0, x2: 0, y2: 0 };
 
-    // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
-    // if the line is recursive
-    if (line.kind === lineKind.RECURSIVE) {
-        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, felem, line.ctype);
-        //Setting start position for the recursive line, to originate from the top.
-        fx = felem.cx;
-        fy = felem.y1;
-        offset.x1 = 0;
-        offset.y1 = 0;
-        tx = fx;
-        ty = fy;
+// If it's recursive, treat both ends as the same
+if (line.kind === lineKind.RECURSIVE) {
+    const from = getSequenceElementConnectionPoint(felem);
+    fx = from.x;
+    fy = from.y;
+    tx = fx;
+    ty = fy;
+} else {
+    const from = getSequenceElementConnectionPoint(felem);
+    const to = getSequenceElementConnectionPoint(telem);
+
+    if (!from.x || !from.y || !to.x || !to.y) {
+        fx = felem.cx || (felem.x1 + felem.x2) / 2 || 0;
+        fy = felem.y2 || felem.y1 || 0;
+        tx = telem.cx || (telem.x1 + telem.x2) / 2 || 0;
+        ty = telem.y2 || telem.y1 || 0;
+    } else {
+        fx = from.x;
+        fy = from.y;
+        tx = to.x;
+        ty = to.y;
     }
-    else {
-        [fx, fy, tx, ty, offset] = getLineAttrubutes(felem, telem, line.ctype);
-    }
+}
+
 
     // Follows the cursor while drawing the line
     if (isCurrentlyDrawing) {
