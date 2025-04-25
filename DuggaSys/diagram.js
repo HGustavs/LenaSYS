@@ -135,7 +135,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
-
+        updateAutoSave()
     }
 
     /**
@@ -1811,6 +1811,23 @@ function storeDiagramInLocalStorage(key) {
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
 }
+
+//Moastly the same as storeDiagramInLocalStorage
+//Uppdates the autosave to always be in the latest state
+function updateAutoSave() {
+    if (stateMachine.currentHistoryIndex === -1) return;
+    stateMachine.removeFutureStates();
+  
+    const objToSave = {
+      historyLog:   stateMachine.historyLog,
+      initialState: stateMachine.initialState
+    };
+  
+    const raw = localStorage.getItem("diagrams") || "{}";
+    const diagrams = JSON.parse(raw);
+    diagrams.AutoSave = objToSave;
+    localStorage.setItem("diagrams", JSON.stringify(diagrams));
+  }
 
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
