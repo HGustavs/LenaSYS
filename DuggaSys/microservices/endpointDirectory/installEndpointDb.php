@@ -31,7 +31,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS parameters (
 $db->exec("CREATE TABLE IF NOT EXISTS dependencies (
     dependency_id INTEGER PRIMARY KEY AUTOINCREMENT, 
     ms_name TEXT NOT NULL,
-    depends_on TEXT NOT NULL
+    depends_on TEXT NOT NULL,
+    path TEXT NOT NULL
 );");
 
 // there can't be a foreign key before the documentation for the microservies has been created

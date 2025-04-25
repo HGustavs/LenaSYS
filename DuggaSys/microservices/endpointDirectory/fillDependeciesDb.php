@@ -65,12 +65,13 @@ foreach ($lines as $line) {
         // insert into database 
         // TODO: Fix so it insert with ID instead
         $stmt = $db->prepare("
-            INSERT INTO dependencies (ms_name, depends_on)
-            VALUES (?, ?)
+            INSERT INTO dependencies (ms_name, depends_on, path)
+            VALUES (?, ?, ?)
         ");
         $stmt->execute([
             $currentMicroservice,
-            $dependsOnName
+            $dependsOnName,
+            $dependsOnPath
         ]);
 
         echo "Added: " . $currentMicroservice . " depends on: " . $dependsOnName . "<br>";
