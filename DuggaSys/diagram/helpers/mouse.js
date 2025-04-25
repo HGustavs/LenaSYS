@@ -233,7 +233,8 @@ function snapSAToLifeline(targetId) {
     ghostElement.x = centerX - ghostElement.width / 2;
 
     // Adjust ghost Y if it's above the allowed minimum
-    const minY = lifelineData.y + getTopHeight(lifelineData) + 70;
+     const extra = lifelineData.kind === "sequenceActor" ? 70 : 0;
+     const minY  = lifelineData.y + getTopHeight(lifelineData) + extra;
     if (ghostElement.y < minY) {
         ghostElement.y = minY;
     }
