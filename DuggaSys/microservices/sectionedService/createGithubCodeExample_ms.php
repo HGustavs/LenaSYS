@@ -135,7 +135,6 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
     $ch = curl_init($url);
-
     //options for curl
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -150,18 +149,8 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     ]));
        
     $response = curl_exec($ch);
-    if ($response === false) {
-        throw new RuntimeException('cURL error: '.curl_error($ch));
-    }
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($httpCode !== 200) {
-        throw new RuntimeException("Microservice returned HTTP $httpCode: $response");
-    }
-    
     $data = json_decode($response, true);
-    $link = $data['link'] ?? null;
+    $link = $data;
 
     //select the latest codeexample created to link boxes to this codeexample
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
