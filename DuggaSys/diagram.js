@@ -426,8 +426,8 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
-    document.getElementById("container").addEventListener("touchstart", tstart, { passive: false });
+    //document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
+    //document.getElementById("container").addEventListener("touchstart", tstart, { passive: false });
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -448,6 +448,7 @@ function getData() {
     togglePlacementType(1, 1);
     togglePlacementType(9, 9);
     togglePlacementType(12, 12);
+    setupTouchAsMouseSupport();
 }
 
 /**
@@ -916,78 +917,64 @@ document.addEventListener("mouseout", function (event) {
 
 /**
  * @description Event function triggered when touch is registered on top of the container.
- * @param {TouchEvent} event Triggered touch event.
+ * @param {TouchEvent} tEvent Triggered touch event.
  */
+
+function convertTouchToMouse(touchEvent, type = "mousedown") {
+    const touch = touchEvent.changedTouches[0];
+
+    const mouseEvent = new MouseEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        button: 0,
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+    });
+
+    touchEvent.preventDefault();
+    return mouseEvent;
+}
 
 let initialPinchDistance = null;
 let lastPinchZoomTime = 0;
-const pinchZoomThreshold = 10; // Minimum px difference to trigger zoom
+const pinchZoomThreshold = 5; // Minimum px difference to trigger zoom
 const pinchZoomCooldown = 100; // Minimum ms between pinch zooms
 
-function tstart(event) {
-    // Only responds to single-finger touch
-    if (event.touches.length === 1) {
-        // Set the internal state to make the app know that user is dragging the container
-        pointerState = pointerStates.CLICKED_CONTAINER;
-        // Set initial touch position and saves the scroll offset
-        startX = event.touches[0].clientX;
-        startY = event.touches[0].clientY;
-        sscrollx = scrollx;
-        sscrolly = scrolly;
-    // Calculates the initial distance between two fingers
-    } else if (event.touches.length === 2) {
-        const dx = event.touches[0].clientX - event.touches[1].clientX;
-        const dy = event.touches[0].clientY - event.touches[1].clientY;
-        initialPinchDistance = Math.hypot(dx, dy);
-    }
-}
+function setupTouchAsMouseSupport() {
+    const container = document.getElementById("container");
 
-function tmoving(event) {
-    // Prevents scrolling in browser when panning the canvas
-    event.preventDefault();
-
-    const touch = event.touches[0];
-    lastMousePos = new Point(touch.clientX, touch.clientY);
-
-    // Calculates how far the user has dragged the finger if the finger has moved
-    if (event.touches.length === 1) {
-        
-        if (pointerState === pointerStates.CLICKED_CONTAINER) {
-            movingContainer = true;
-            deltaX = startX - touch.clientX;
-            deltaY = startY - touch.clientY;
-            scrollx = sscrollx - Math.round(deltaX * zoomfact);
-            scrolly = sscrolly - Math.round(deltaY * zoomfact);
-
-            //Refreshes all the visuals
-            updateGridPos();
-            updateA4Pos();
-            updatepos();
-            drawRulerBars(scrollx, scrolly);
-            calculateDeltaExceeded();
+    container.addEventListener("touchstart", function (tEvent) {
+        if (tEvent.touches.length === 1) {
+            const mouseEvent = convertTouchToMouse(tEvent, "mousedown");
+            container.dispatchEvent(mouseEvent);
+        } else if (tEvent.touches.length === 2) {
+            const dx = tEvent.touches[0].clientX - tEvent.touches[1].clientX;
+            const dy = tEvent.touches[0].clientY - tEvent.touches[1].clientY;
+            initialPinchDistance = Math.hypot(dx, dy);
         }
-    } else if (event.touches.length === 2 && initialPinchDistance !== null) {
-        const dx = event.touches[0].clientX - event.touches[1].clientX;
-        const dy = event.touches[0].clientY - event.touches[1].clientY;
-        const newDistance = Math.hypot(dx, dy);
+    }, { passive: false });
 
-        const now = Date.now();
-        if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
-            const fakeEvent = {
-                clientX: (event.touches[0].clientX + event.touches[1].clientX) / 2,
-                clientY: (event.touches[0].clientY + event.touches[1].clientY) / 2
-            };
-
-            if (newDistance > initialPinchDistance) {
-                zoomin(fakeEvent);
-            } else {
-                zoomout(fakeEvent);
-            }
-
-            lastPinchZoomTime = now;
-            initialPinchDistance = newDistance;
+    container.addEventListener("touchmove", function (tEvent) {
+        tEvent.preventDefault();
+        if (tEvent.touches.length === 1) {
+            const mouseEvent = convertTouchToMouse(tEvent, "mousemove");
+            container.dispatchEvent(mouseEvent);
+        } else if (tEvent.touches.length === 2 && initialPinchDistance !== null){
+            handlePinchZoom(tEvent);
         }
-    }
+    }, { passive: false });
+
+    container.addEventListener("touchend", function (tEvent) {
+        if (tEvent.touches.length === 0) {
+            const mouseEvent = convertTouchToMouse(tEvent, "mouseup");
+            container.dispatchEvent(mouseEvent);
+            initialPinchDistance = null;
+        }
+    }, { passive: false });
 }
 
 // --------------------------------------- Mouse Events    --------------------------------
