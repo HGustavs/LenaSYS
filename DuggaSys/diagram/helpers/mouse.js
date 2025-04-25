@@ -217,20 +217,25 @@ function snapElementToLifeline(element, targetId) {
     }
 }
 
-// For mmoving sequenceActivation element to snap to lifeline
-function moveableSnapToLifeline(pos, threshold = 50) {
+// For mmoving sequenceActivation element to get a visually indicated snap to lifeline
+// threshold value is changeable within the parameter
+function visualSnapToLifeline(pos, threshold = 50) {
+
+    // Check that there exists a sequenceActor or sequenceObject to snap to
     for (const ll of data) {
-      if (ll.kind !== elementTypesNames.sequenceActor &&
-          ll.kind !== elementTypesNames.sequenceObject) continue;
-  
-      const topY    = ll.y + getTopHeight(ll);
-      const botY    = ll.y + ll.height;
-      const centerX = ll.x + ll.width/2;
-      const dx      = Math.abs(centerX - pos.x);
-  
-      if (dx < threshold && pos.y >= topY && pos.y <= botY) {
-        return ll.id;
-      }
+        if (ll.kind !== elementTypesNames.sequenceActor &&
+            ll.kind !== elementTypesNames.sequenceObject) continue;
+
+        // Get coordinates for sequenceActor/sequenceObject and compare to position of moving object
+        const topY = ll.y + getTopHeight(ll);
+        const botY = ll.y + ll.height;
+        const centerX = ll.x + ll.width / 2;
+        const dx = Math.abs(centerX - pos.x);
+
+        // Check if within snap threshold and boundaries of the lifeline
+        if (dx < threshold && pos.y >= topY && pos.y <= botY) {
+            return ll.id;
+        }
     }
     return null;
 }
