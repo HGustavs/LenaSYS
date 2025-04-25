@@ -781,83 +781,96 @@ function gitTemplatePopupOutsideClickHandler(){
 
 
 // Creates an array over all checked items
-function markedItems(item = null)
-{
-	var removed = false;
-	var kind = item ? item.closest('tr')?.getAttribute('value') : null;
-	active_lid = item ? item.closest('table')?.getAttribute('value') : null;
-	var subItems = [];
+function markedItems(item = null, typeInput) {
+  var removed = false;
+  var kind = item ? item.closest('tr').getAttribute('value'): null;
+  active_lid = item ? item.closest('table').getAttribute('value'): null;
+  var subItems = [];
 
-	//if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-	if (kind == "section" || kind == "moment") {
-		var itemInSection = true;
-		var sectionStart = false;
-		var items = document.querySelectorAll("#Sectionlist .item");
+  //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
+  if (kind == "section" || kind == "moment") {
+    var itemInSection = true;
+    var sectionStart = false;
+    $("#Sectionlist").find(".item").each(function (i) {
+      var tempItem = this.getAttribute('value');
 
-		for (var i = 0; i < items.length; i++) {
-			var tempItem = items[i].getAttribute('value');
-			if (itemInSection && sectionStart) {
-				var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-				var tempKind = items[i].closest('tr')?.getAttribute('value');
-				if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
-					itemInSection = false;
-				} else {
-					subItems.push(tempItem);
-				}
-			} else if (tempItem == active_lid) sectionStart = true;
-		}
-	}
+      if (itemInSection && sectionStart) {
+        var tempDisplay = document.getElementById("lid" + tempItem).style.display;
+        var tempKind = this ? this.closest('tr').getAttribute('value'): null;
 
-	console.log("Active lid: " + active_lid);
-	if (selectedItemList.length != 0) {
-		for (let i = 0; i < selectedItemList.length; i++) {
-			if (selectedItemList[i] === active_lid) {
-				selectedItemList.splice(i, 1);
-				i--;
-				removed = true;
-				console.log("Removed from list");
-			}
-			for (var j = 0; j < subItems.length; j++) {
-				if (selectedItemList[i] === subItems[j]) {
-					var cb = document.getElementById(subItems[j] + "-checkbox");
-					if (cb) cb.checked = false;
-					selectedItemList.splice(i, 1);
-				}
-			}
-		}
-		if (removed != true) {
-			selectedItemList.push(active_lid);
-			console.log("Adding !empty list");
-			for (var j = 0; j < subItems.length; j++) {
-				selectedItemList.push(subItems[j]);
-				console.log(subItems[j]);
-				var cb = document.getElementById(subItems[j] + "-checkbox");
-				if (cb) cb.checked = true;
-			}
-		}
-	} else {
-		selectedItemList.push(active_lid);
-		console.log("Added");
-		for (var j = 0; j < subItems.length; j++) {
-			selectedItemList.push(subItems[j]);
-		}
-		for (var i = 0; i < selectedItemList.length; i++) {
-			var cb = document.getElementById(selectedItemList[i] + "-checkbox");
-			if (cb) cb.checked = true;
-		}
-		// Show ghost button when checkbox is checked
-		document.querySelector('#hideElement').disabled = false;
-		document.querySelector('#hideElement').style.opacity = 1;
-		showVisibilityIcons();
-	}
 
-	if (selectedItemList.length == 0) {
-		// Disable ghost button when no checkboxes is checked
-		document.querySelector('#hideElement').disabled = true;
-		document.querySelector('#hideElement').style.opacity = 0.7;
-		hideVisibilityIcons();
-	}
+        if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+          itemInSection = false;
+        } else {
+          subItems.push(tempItem);
+        }
+      } else if (tempItem == active_lid) sectionStart = true;
+    });
+  }
 
+  // handles selections
+  if (selectedItemList.length != 0) {
+    let tempSelectedItemListLength = selectedItemList.length;
+    for (let i = 0; i < tempSelectedItemListLength; i++) {
+
+      //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {
+        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+        selectedItemList.splice(i, 1);
+        var removed = true;
+      }
+      //unchecks children of section
+      for (var j = 0; j < subItems.length; j++) {
+        if (selectedItemList[i] == subItems[j]) {
+          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+          selectedItemList.splice(i, 1);
+          i--;
+        }
+      }
+    } 
+    
+    if (removed != true) {
+      let activeLidInList = false;
+      for (var k = 0; k < selectedItemList.length; k++) {
+        if(active_lid == selectedItemList[k]){
+          activeLidInList = true;
+          break;
+        }
+      }
+      if (activeLidInList == false){
+        selectedItemList.push(active_lid);
+        document.getElementById(active_lid + "-checkbox").checked = true;
+    }
+      //handles checking within section
+      for (var j = 0; j < subItems.length; j++) {
+        selectedItemList.push(subItems[j]);
+        document.getElementById(subItems[j] + "-checkbox").checked = true;
+      }
+    }
+  } 
+  
+  // adds everything under section to selectedItems (if nothing selected beforehand)
+  else {
+    selectedItemList.push(active_lid);
+    for (var j = 0; j < subItems.length; j++) {
+      selectedItemList.push(subItems[j]);
+    }
+    for (i = 0; i < selectedItemList.length; i++) {
+      document.getElementById(selectedItemList[i] + "-checkbox").checked = true;
+      //console.log(hideItemList[i]+"-checkbox");
+    }
+    // Show ghost button when checkbox is checked
+    document.querySelector('#hideElement').disabled = false;
+    document.querySelector('#hideElement').style.opacity = 1;
+    showVisibilityIcons();
+  }
+  if (selectedItemList.length == 0) {
+    // Disable ghost button when no checkboxes is checked
+    console.log('no element selected');
+    document.querySelector('#hideElement').disabled = true;
+    document.querySelector('#hideElement').style.opacity = 0.7;
+    hideVisibilityIcons();
+  }
 }
 
 // Shows ghost and eye button
