@@ -320,27 +320,4 @@ $array = array(
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCodeviewerService_ms.php", $userid, $info);
 
 header("Content-Type: application/json");
-echo json_encode([
-    'opt' => $opt,
-    'before' => $backwardExamples,
-    'after' => $forwardExamples,
-    'templateid' => $templateId,
-    'stylesheet' => $styleSheet,
-    'numbox' => $numBox,
-    'box' => $box,
-    'improws' => $importantRows,
-    'impwords' => $importantWordList,
-    'directory' => $directories,
-    'examplename' => $exampleName,
-    'sectionname' => $sectionName,
-    'playlink' => $playlink,
-    'exampleno' => $exampleNumber,
-    'words' => $words,
-    'wordlists' => $wordLists,
-    'writeaccess' => $writeAccess,
-    'debug' => $debug,
-    'beforeafter' => $beforeAfters,
-    'public' => $public,
-    'courseid' => $courseId,
-    'courseversion' => $courseVersion
-]);
+echo json_encode($array);

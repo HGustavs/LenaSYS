@@ -75,5 +75,6 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
 
-echo $response;
+$data = json_decode($response, true);
+echo json_encode($data);
 return;
