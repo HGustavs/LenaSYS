@@ -1052,18 +1052,15 @@ function mmoving(event) {
                 deltaY = startY - event.clientY;
                 // We update position of connected objects
 
-                if (context.length === 1 && context[0].kind === elementTypesNames.sequenceActivation) {
-                    const pos = screenToDiagramCoordinates(event.clientX, event.clientY);
-                    const lifelineId = findNearestLifeline(pos.x, pos.y);
-                    if (lifelineId) {
-                      
-                      snapElementToLifeline(context[0], lifelineId);
-                      
-                      startX = event.clientX;
-                      startY = event.clientY;
-                      deltaX = 0;
-                      deltaY = 0;
-                    }
+                
+                const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
+                const snapId = moveableSnapToLifeline(moveableElementPos);
+                
+                if (snapId) {
+                    const lLine = data.find(el => el.id === snapId);
+                    context[0].x = lLine.x + lLine.width/2 - context[0].width/2;
+                    startX = event.clientX;
+                    deltaX = 0;
                 }
 
                 updatepos();

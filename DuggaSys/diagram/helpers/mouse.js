@@ -217,6 +217,25 @@ function snapElementToLifeline(element, targetId) {
     }
 }
 
+// For mmoving sequenceActivation element to snap to lifeline
+function moveableSnapToLifeline(pos, threshold = 50) {
+    for (const ll of data) {
+      if (ll.kind !== elementTypesNames.sequenceActor &&
+          ll.kind !== elementTypesNames.sequenceObject) continue;
+  
+      const topY    = ll.y + getTopHeight(ll);
+      const botY    = ll.y + ll.height;
+      const centerX = ll.x + ll.width/2;
+      const dx      = Math.abs(centerX - pos.x);
+  
+      if (dx < threshold && pos.y >= topY && pos.y <= botY) {
+        return ll.id;
+      }
+    }
+    return null;
+}
+  
+
 /**
  * Snaps the ghostElement (hover preview) to the center of a lifeline and adjusts its Y-position.
  * @param {string} targetId - The ID of the lifeline to snap to.
