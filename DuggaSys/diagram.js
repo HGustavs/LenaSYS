@@ -929,6 +929,11 @@ function tstart(event) {
         startY = event.touches[0].clientY;
         sscrollx = scrollx;
         sscrolly = scrolly;
+    // Calculates the initial distance between two fingers
+    } else if (event.touches.length === 2) {
+        const dx = event.touches[0].clientX - event.touches[1].clientX;
+        const dy = event.touches[0].clientY - event.touches[1].clientY;
+        initialPinchDistance = Math.hypot(dx, dy);
     }
 }
 
