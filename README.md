@@ -5,7 +5,6 @@ University of Skövde Code Viewer and Course Organization System
 
 # Install Instructions
 
-
 To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 
 ## How to Install XAMPP
@@ -66,6 +65,7 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
 
 # Install LenaSYS
 Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information.
+
 
 
 To install a fresh copy of LenaSYS on your system an installer has been created called 'install.php'.

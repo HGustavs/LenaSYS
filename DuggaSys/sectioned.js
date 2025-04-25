@@ -130,23 +130,55 @@ function saveArrowIds(clickedElement) {
 
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
-function hideCollapsedMenus() {
-  $('.header, .section, .code, .test, .link, .group, .statisticsContent, .message').show();
-  for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
-      jQuery(ancestor).nextUntil('.moment').hide();
-      $('#selectionDrag' + menuState.hiddenElements[i]).hide();
-    }
-    ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
-      jQuery(ancestor).nextUntil('.section').hide();
-      $('#selectionDrag' + menuState.hiddenElements[i]).hide();
+   function hideCollapsedMenus() {
+    // Show all base elements first
+    var elementsToShow = document.querySelectorAll('.header, .section, .code, .test, .link, .group, .statisticsContent, .message');
+    for (var i = 0; i < elementsToShow.length; i++) {
+        elementsToShow[i].style.display = '';
     }
 
-    if (menuState.hiddenElements[i] == "statistics") {
-      $(".statistics").nextAll().hide();
+    // Hide elements specified in menuState
+    for (var i = 0; i < menuState.hiddenElements.length; i++) {
+        var elementId = menuState.hiddenElements[i];
+        var element = document.getElementById(elementId);
+        
+        if (!element) continue;
+
+        // Handle moment ancestor case
+        var ancestor = findAncestor(element, "moment");
+        if (ancestor && ancestor.classList.contains('moment')) {
+            hideNextUntil(ancestor, 'moment');
+            var dragElement = document.getElementById('selectionDrag' + elementId);
+            if (dragElement) dragElement.style.display = 'none';
+        }
+
+        // Handle section ancestor case
+        ancestor = findAncestor(element, "section");
+        if (ancestor && ancestor.classList.contains('section')) {
+            hideNextUntil(ancestor, 'section');
+            var dragElement = document.getElementById('selectionDrag' + elementId);
+            if (dragElement) dragElement.style.display = 'none';
+        }
+
+        // Handle statistics special case
+        if (elementId == "statistics") {
+            var statistics = document.querySelector(".statistics");
+            if (statistics) {
+                var nextElements = statistics.nextElementSibling;
+                while (nextElements) {
+                    nextElements.style.display = 'none';
+                    nextElements = nextElements.nextElementSibling;
+                }
+            }
+        }
     }
+}
+
+function hideNextUntil(element, className) {
+  var next = element.nextElementSibling;
+  while (next && !next.classList.contains(className)) {
+      next.style.display = 'none';
+      next = next.nextElementSibling;
   }
 }
 
@@ -154,27 +186,49 @@ function hideCollapsedMenus() {
    arrow if it is in the arrowIcons array.*/
 // The other way around for the statistics section.
 function toggleArrows(id) {
-  $('.arrowComp').show();
-  $('.arrowRight').hide();
-  $('#selectionDrag' + id).toggle();
-  for (var i = 0; i < menuState.arrowIcons.length; i++) {
-    if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-      $('#' + menuState.arrowIcons[i]).hide();
-    } else {
-      $('#' + menuState.arrowIcons[i]).show();
-    }
+  // Show all arrowComp elements
+  var arrowComps = document.querySelectorAll('.arrowComp');
+  for (var i = 0; i < arrowComps.length; i++) {
+      arrowComps[i].style.display = '';
   }
-
-  $('#arrowStatisticsOpen').show();
-  $('#arrowStatisticsClosed').hide();
+  
+  // Hide all arrowRight elements
+  var arrowRights = document.querySelectorAll('.arrowRight');
+  for (var i = 0; i < arrowRights.length; i++) {
+      arrowRights[i].style.display = 'none';
+  }
+  
+  // Toggle selection drag
+  var dragElement = document.getElementById('selectionDrag' + id);
+  if (dragElement) {
+      dragElement.style.display = dragElement.style.display === 'none' ? '' : 'none';
+  }
+  
+  // Handle arrow icons in menuState
+  for (var i = 0; i < menuState.arrowIcons.length; i++) {
+      var arrow = document.getElementById(menuState.arrowIcons[i]);
+      if (arrow) {
+          if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+              arrow.style.display = 'none';
+          } else {
+              arrow.style.display = '';
+          }
+      }
+  }
+  
+  // Handle statistics arrows
+  var statsOpen = document.getElementById('arrowStatisticsOpen');
+  var statsClosed = document.getElementById('arrowStatisticsClosed');
+  if (statsOpen) statsOpen.style.display = '';
+  if (statsClosed) statsClosed.style.display = 'none';
+  
   for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    if (menuState.hiddenElements[i] == "statistics") {
-      $('#arrowStatisticsOpen').hide();
-      $('#arrowStatisticsClosed').show();
-    }
+      if (menuState.hiddenElements[i] == "statistics") {
+          if (statsOpen) statsOpen.style.display = 'none';
+          if (statsClosed) statsClosed.style.display = '';
+      }
   }
 }
-menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // Added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
@@ -188,11 +242,13 @@ function hamburgerChange(operation = 'click') {
   }
 }
 
-$(document).on('click', function (e) {
-  if ($(e.target).closest("#hamburgerIcon").length === 0) {
-    $("#hamburgerBox").hide();
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('#hamburgerIcon')) {
+    var hamburgerBox = document.getElementById('hamburgerBox');
+    if (hamburgerBox) hamburgerBox.style.display = 'none';
   }
 });
+
 
 function toggleHamburger() {
 
@@ -356,11 +412,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     document.getElementById('inputwrapper-Feedback').style.display = "none";
     document.getElementById("fdbck").checked = false;
   }
+
 }
+
 // Handles the logic behind the checkbox for absolute deadline
 function checkDeadlineCheckbox(e, check) {
 
   if (check !== undefined) e.checked = check;
+
 
   const absDeadlineCheck = document.getElementById("absolutedeadlinecheck");
   const deadlineValue = document.getElementById("setDeadlineValue");
@@ -369,11 +428,13 @@ function checkDeadlineCheckbox(e, check) {
 
   if (e.checked) {
     absDeadlineCheck.checked = true;
+
     deadlineValue.disabled = false;
     deadlineMinutes.disabled = false;
     deadlineHours.disabled = false;
   } else {
     absDeadlineCheck.checked = false;
+
     deadlineValue.disabled = true;
     deadlineMinutes.disabled = true;
     deadlineHours.disabled = true;
@@ -437,9 +498,11 @@ function convertDateToDeadline(date) {
 // Returns the values of the currently chosen relative deadline input elements
 function getRelativeDeadlineInputValues() {
   return document.getElementById("relativedeadlineamount").value + ":" +
+
          document.getElementById("relativedeadlinetype").value + ":" +
          document.getElementById("relativedeadlinehours").value + ":" +
          document.getElementById("relativedeadlineminutes").value;
+
 }
 
 //---------------------------------------------------------------------------------------------
@@ -451,7 +514,10 @@ function getRelativeDeadlineInputValues() {
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
   document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+  var linkElement = document.getElementById("link");
+
   if (kind == 2) {
+
     document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid');
   } else if (kind == 3) {
     document.querySelector("#inputwrapper-group").style.display = "none";
@@ -463,8 +529,10 @@ function changedType(kind) {
   } else if (kind == 5 || kind == 7) {
     document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['links'], 'filename', 'filename')
     document.getElementById("link").innerHTML = "<option value='-1'>-=# Not Applicable #=-</option>";
+   
   }
 }
+
 
 //----------------------------------------------------------------------------------
 // refreshGithubRepo: Send course id to function in gitcommitService.php
@@ -574,20 +642,33 @@ function fetchGitHubRepo(gitHubURL) {
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
-  var tempMotd = motd;
-  toggleTab(true);
-  enableTab(document.getElementById("editCourseVersion"));
-  tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
-    "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
-  $("#eversname").val(versnme);
-  $("#eMOTD").val(tempMotd);
-  $("#eversid").val(querystring['coursevers']);
-  let sdate = retdata['startdate'];
-  let edate = retdata['enddate'];
-  if (sdate !== null) $("#estartdate").val(sdate.substr(0, 10));
-  if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
-  $("#editCourseVersion").css("display", "flex");
+	var tempMotd = motd;
+	toggleTab(true);
+	enableTab(document.getElementById("editCourseVersion"));
+
+	tempMotd = motd
+		.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å")
+		.replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä")
+		.replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö")
+		.replace(/&amp;/g, "&").replace(/&#63;/g, "?");
+
+	document.getElementById("eversname").value = versnme;
+	document.getElementById("eMOTD").value = tempMotd;
+	document.getElementById("eversid").value = querystring['coursevers'];
+
+	var sdate = retdata['startdate'];
+	var edate = retdata['enddate'];
+
+	if (sdate !== null) {
+		document.getElementById("estartdate").value = sdate.substr(0, 10);
+	}
+	if (edate !== null) {
+		document.getElementById("eenddate").value = edate.substr(0, 10);
+	}
+
+	document.getElementById("editCourseVersion").style.display = "flex";
 }
+
 
 // Delete items marked as deleted when page is unloaded
 window.addEventListener('beforeunload', function (event) {
@@ -646,13 +727,17 @@ function closeOpenPopupForm(){
 }
 
 function displaymessage() {
-  $(".messagebox").css("display", "block");
+	var elems = document.querySelectorAll(".messagebox");
+	for (var i = 0; i < elems.length; i++) elems[i].style.display = "block";
 }
 
 function showSubmitButton() {
-  $(".submitDugga").css("display", "inline-block");
-  $(".updateDugga").css("display", "none");
-  $(".closeDugga").css("display", "inline-block");
+	var submit = document.querySelectorAll(".submitDugga");
+	var update = document.querySelectorAll(".updateDugga");
+	var close = document.querySelectorAll(".closeDugga");
+	for (var i = 0; i < submit.length; i++) submit[i].style.display = "inline-block";
+	for (var i = 0; i < update.length; i++) update[i].style.display = "none";
+	for (var i = 0; i < close.length; i++) close[i].style.display = "inline-block";
 }
 
 function showSaveButton() {
@@ -671,73 +756,80 @@ function showSaveButton() {
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item = null) {
-  if (operation == "openConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionConfirmBox").css("display", "flex");
-  } else if (operation == "openHideConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionHideConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#tabConfirmBox").css("display", "flex");
-    $("#tabs").val(0).change();
-  } else if (operation == "openItemsConfirmBox") {
-    $("#sectionShowConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
-    deleteItem(selectedItemList);
-    document.getElementById("sectionConfirmBox").style.display = "none";
-  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
-    hideMarkedItems(selectedItemList)
-    $("#sectionHideConfirmBox").css("display", "none");
-  } else if (operation == "tabItem") {
-    tabMarkedItems(active_lid);
-    $("#tabConfirmBox").css("display", "none");
-  }
-  // Responsible for opening github moment
-  else if (operation == "openGitHubBox") {
-    $("#gitHubBox").css("display", "flex");
-  }
-  else if (operation == "saveGitHubBox") {
-  }
+function confirmBox(operation, item = null)
+{
+	if (operation == "openConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionConfirmBox").style.display = "flex";
+	}
+	else if (operation == "openHideConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionHideConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "openTabConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("tabConfirmBox").style.display = "flex";
+		var tabsElem = document.getElementById("tabs");
+		tabsElem.value = 0;
+		tabsElem.dispatchEvent(new Event("change"));
+	}
+	else if (operation == "openItemsConfirmBox") {
+		document.getElementById("sectionShowConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "deleteItem") {
+		deleteItem(selectedItemList);
+		document.getElementById("sectionConfirmBox").style.display = "none";
+	}
+	else if (operation == "hideItem" && selectedItemList.length != 0) {
+		hideMarkedItems(selectedItemList);
+		document.getElementById("sectionHideConfirmBox").style.display = "none";
+	}
+	else if (operation == "tabItem") {
+		tabMarkedItems(active_lid);
+		document.getElementById("tabConfirmBox").style.display = "none";
+	}
+	else if (operation == "openGitHubBox") {
+		document.getElementById("gitHubBox").style.display = "flex";
+	}
+	else if (operation == "saveGitHubBox") {
+		// Placeholder if needed later
+	}
+	else if (operation == "openGitHubTemplate") {
+		console.log("testworkornah?");
+		document.getElementById("gitHubTemplate").style.display = "flex";
+		gitTemplatePopupOutsideClickHandler();
+		fetchCodeExampleHiddenLinkParam(item);
+	}
+	else if (operation == "closeConfirmBox") {
+		var ids = ["gitHubBox", "gitHubTemplate", "sectionConfirmBox", "tabConfirmBox", "sectionHideConfirmBox", "noMaterialConfirmBox", "sectionShowConfirmBox"];
+		for (var i = 0; i < ids.length; i++) {
+			document.getElementById(ids[i]).style.display = "none";
+		}
+		purgeInputFieldsGitTemplate();
+	}
+	else if (operation == "showItems" && selectedItemList.length != 0) {
+		showMarkedItems(selectedItemList);
+		document.getElementById("sectionShowConfirmBox").style.display = "none";
+	}
 
-  //ändra 
-  else if (operation == "openGitHubTemplate") {
-    console.log("testworkornah?");
-    $("#gitHubTemplate").css("display", "flex");
-    gitTemplatePopupOutsideClickHandler();
-    fetchCodeExampleHiddenLinkParam(item);
-  } else if (operation == "closeConfirmBox") {
-    $("#gitHubBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
-    $("#sectionConfirmBox").css("display", "none");
-    $("#tabConfirmBox").css("display", "none");
-    $("#sectionHideConfirmBox").css("display", "none");
-    $("#noMaterialConfirmBox").css("display", "none");
-    $("#sectionShowConfirmBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none");
-    purgeInputFieldsGitTemplate();
-  }
-  else if (operation == "showItems" && !selectedItemList.length == 0) {
-    showMarkedItems(selectedItemList);
-    $("#sectionShowConfirmBox").css("display", "none");
-  }
-  document.addEventListener("keypress", event => {
-    if (event.key === 'Enter') {
-      if (event.target.classList.contains("traschcanDelItemTab")) {
-        setTimeout(function () {
-           document.getElementById('delete-item-button').focus();
-        }, 400);
-      }
-      if (event.target.id == "delete-item-button") {
-        deleteItem(active_lid);
-        document.getElementById("sectionConfirmBox").style.display = "none";
-      }
-    }
-  });
+	document.addEventListener("keypress", function(event)
+	{
+		if (event.key === "Enter") {
+			if (event.target.classList.contains("traschcanDelItemTab")) {
+				setTimeout(function () {
+					document.getElementById("delete-item-button").focus();
+				}, 400);
+			}
+			if (event.target.id == "delete-item-button") {
+				deleteItem(active_lid);
+				document.getElementById("sectionConfirmBox").style.display = "none";
+			}
+		}
+	});
 }
+
 //OnClick handler for clicking outside the template popup
 function gitTemplatePopupOutsideClickHandler(){
   const templateContainer = document.getElementById('chooseTemplate');
@@ -749,80 +841,86 @@ function gitTemplatePopupOutsideClickHandler(){
     }
   });
 }
+
+
 // Creates an array over all checked items
-function markedItems(item = null) {
-  var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
-  var subItems = [];
+function markedItems(item = null)
+{
+	var removed = false;
+	var kind = item ? item.closest('tr')?.getAttribute('value') : null;
+	active_lid = item ? item.closest('table')?.getAttribute('value') : null;
+	var subItems = [];
 
-  //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-  if (kind == "section" || kind == "moment") {
-    var itemInSection = true;
-    var sectionStart = false;
-    $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = $(this).attr('value');
-      if (itemInSection && sectionStart) {
-        var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = $(this).parents('tr').attr('value');
-        if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
-          itemInSection = false;
-        } else {
-          subItems.push(tempItem);
-        }
-      } else if (tempItem == active_lid) sectionStart = true;
-    });
+	//if the checkbox belongs to one of these kinds then all elements below it should also be selected.
+	if (kind == "section" || kind == "moment") {
+		var itemInSection = true;
+		var sectionStart = false;
+		var items = document.querySelectorAll("#Sectionlist .item");
 
-  }
+		for (var i = 0; i < items.length; i++) {
+			var tempItem = items[i].getAttribute('value');
+			if (itemInSection && sectionStart) {
+				var tempDisplay = document.getElementById("lid" + tempItem).style.display;
+				var tempKind = items[i].closest('tr')?.getAttribute('value');
+				if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+					itemInSection = false;
+				} else {
+					subItems.push(tempItem);
+				}
+			} else if (tempItem == active_lid) sectionStart = true;
+		}
+	}
 
+	console.log("Active lid: " + active_lid);
+	if (selectedItemList.length != 0) {
+		for (let i = 0; i < selectedItemList.length; i++) {
+			if (selectedItemList[i] === active_lid) {
+				selectedItemList.splice(i, 1);
+				i--;
+				removed = true;
+				console.log("Removed from list");
+			}
+			for (var j = 0; j < subItems.length; j++) {
+				if (selectedItemList[i] === subItems[j]) {
+					var cb = document.getElementById(subItems[j] + "-checkbox");
+					if (cb) cb.checked = false;
+					selectedItemList.splice(i, 1);
+				}
+			}
+		}
+		if (removed != true) {
+			selectedItemList.push(active_lid);
+			console.log("Adding !empty list");
+			for (var j = 0; j < subItems.length; j++) {
+				selectedItemList.push(subItems[j]);
+				console.log(subItems[j]);
+				var cb = document.getElementById(subItems[j] + "-checkbox");
+				if (cb) cb.checked = true;
+			}
+		}
+	} else {
+		selectedItemList.push(active_lid);
+		console.log("Added");
+		for (var j = 0; j < subItems.length; j++) {
+			selectedItemList.push(subItems[j]);
+		}
+		for (var i = 0; i < selectedItemList.length; i++) {
+			var cb = document.getElementById(selectedItemList[i] + "-checkbox");
+			if (cb) cb.checked = true;
+		}
+		// Show ghost button when checkbox is checked
+		document.querySelector('#hideElement').disabled = false;
+		document.querySelector('#hideElement').style.opacity = 1;
+		showVisibilityIcons();
+	}
 
-  console.log("Active lid: " + active_lid);
-  if (selectedItemList.length != 0) {
-    for (let i = 0; i < selectedItemList.length; i++) {
-      if (selectedItemList[i] === active_lid) {
-        selectedItemList.splice(i, 1);
-        i--;
-        var removed = true;
-        console.log("Removed from list");
-      }
-      for (var j = 0; j < subItems.length; j++) {
-        if (selectedItemList[i] === subItems[j]) {
-          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
-          selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
-        }
-      }
-    } if (removed != true) {
-      selectedItemList.push(active_lid);
-      console.log("Adding !empty list");
-      for (var j = 0; j < subItems.length; j++) {
-        selectedItemList.push(subItems[j]);
-        console.log(subItems[j]);
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
-      }
-    }
-  } else {
-    selectedItemList.push(active_lid);
-    console.log("Added");
-    for (var j = 0; j < subItems.length; j++) {
-      selectedItemList.push(subItems[j]);
-    }
-    for (i = 0; i < selectedItemList.length; i++) {
-      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
-      //console.log(hideItemList[i]+"-checkbox");
-    }
-    // Show ghost button when checkbox is checked
-    document.querySelector('#hideElement').disabled = false;
-    document.querySelector('#hideElement').style.opacity = 1;
-    showVisibilityIcons();
-  }
-  if (selectedItemList.length == 0) {
-    // Disable ghost button when no checkboxes is checked
-    document.querySelector('#hideElement').disabled = true;
-    document.querySelector('#hideElement').style.opacity = 0.7;
-    hideVisibilityIcons();
+	if (selectedItemList.length == 0) {
+		// Disable ghost button when no checkboxes is checked
+		document.querySelector('#hideElement').disabled = true;
+		document.querySelector('#hideElement').style.opacity = 0.7;
+		hideVisibilityIcons();
+	}
 
-  }
 }
 
 // Shows ghost and eye button
@@ -862,6 +960,7 @@ function clearHideItemList() {
 
 
 function closeSelect() {
+
   toggleTab(false);
   const items = document.querySelectorAll(".item");
   items.forEach(item => {
@@ -885,9 +984,9 @@ function defaultNewItem() {
 }
 
 function showCreateVersion() {
-  $("#newCourseVersion").css("display", "flex");
-  toggleTab(true);
-  enableTab(document.getElementById("newCourseVersion"));
+	document.getElementById("newCourseVersion").style.display = "flex";
+	toggleTab(true);
+	enableTab(document.getElementById("newCourseVersion"));
 }
 
 function incrementItemsToCreate() {
@@ -991,12 +1090,11 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
+    item.parentElement.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
@@ -1021,7 +1119,7 @@ function deleteAll() {
       lid: lid
     }, "SECTION");
   }
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
   document.querySelector("#undoButton").style.display = "none";
 }
 
@@ -1037,7 +1135,7 @@ function cancelDelete () {
 
 // update selected directory
 function updateSelectedDir() {
-  var selectedDir = $('#selectDir').val();
+  var selectedDir = document.getElementById("selectDir").value;
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -1112,7 +1210,7 @@ function hideMarkedItems(selectedItemList) {
       lid: lid,
       visible: 3
     }, "SECTION");
-    $("#editSection").css("display", "none");
+    document.getElementById("editSection").style.display = "none";
   }
   selectedItemList = [];
 }
@@ -1121,7 +1219,7 @@ function hideMarkedItems(selectedItemList) {
 // tabMarkedItems: Tabs Item from Section List
 //----------------------------------------------------------------------------------
 function tabMarkedItems(lid) {
-  var tabs = $("#tabs").val();
+  var tabs = document.getElementById("tabs").value;
   AJAXService("UPDATETABS", {
     lid: lid,
     tabs: tabs
@@ -1204,7 +1302,7 @@ async function newItem(itemtitle) {
 
   // Continues when AJAX call is completed
   await AJAXService("NEW", prepareItem(), "SECTION");
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
 
   // Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
@@ -1230,7 +1328,7 @@ async function newItem(itemtitle) {
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
-    $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").classList.remove("createAlertToggle");
     document.getElementById("createAlert").innerHTML = "";
   }, 3000);
 
@@ -1330,7 +1428,7 @@ function goToVersion(courseDropDown) {
 }
 
 function accessCourse() {
-  var coursevers = $("#course-coursevers").text();
+  var coursevers = document.getElementById("course-coursevers").textContent;
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
@@ -1385,8 +1483,8 @@ function returnedGroups(data) {
     grpemail = "";
   }
   if (str != "") {
-    $("#grptbl").html(str);
-    $("#grptblContainer").css("display", "flex");
+    document.getElementById("grptbl").innerHTML = str;
+    document.getElementById("grptblContainer").style.display = "flex";
   }
 }
 
@@ -1516,7 +1614,7 @@ function returnedSection(data) {
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
-    str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+    /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
 
     str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
@@ -2013,14 +2111,26 @@ function returnedSection(data) {
           src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
+        
+        // Trashcan for items
+        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
 
-        // Trashcan
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+          // Will run marked items independent of lenght
+          console.log('selectedItemList: ' + selectedItemList.length);
+          if (itemKind === 1 && selectedItemList.length == 0){
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+            src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
+            str += "</td>";
+          }
+          else{
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
+          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+          str += "</td>";  
+          } 
         }
 
         // Checkbox
@@ -2120,7 +2230,7 @@ function returnedSection(data) {
     }
 
     if (data['writeaccess']) {
-      /*// Enable sorting always if we are superuser as we refresh list on update
+      // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
@@ -2146,7 +2256,7 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
-      } */
+      }
     }
   } else {
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>" +

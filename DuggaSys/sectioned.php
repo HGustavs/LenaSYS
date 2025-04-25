@@ -207,13 +207,14 @@
 			
 			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
 		
-			<div class='fixed-action-button3 sectioned3 display_none'  id="HIDEStatic">
-				<!-- <input id='tabElement'  type='button' value="&#8633;" class='submit-button-newitem' title='Tab items' onclick='confirmBox("openTabConfirmBox");'> -->
-				<input id='toggleElements' type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='toggle hidden items'>
-				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="display:None"  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
-				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="display:None"  class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+			<div class='fixed-action-button3 sectioned3 display_none' id="HIDEStatic">
+  				<input id='toggleElements' type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='toggle hidden items'>
+  				<input id='showElements'  type='image' src='../Shared/icons/eye_icon.svg' style="display:None"  class='submit-button-newitem' title='Show hidden items' onclick='confirmBox("openItemsConfirmBox");'>
+  				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="display:None"  class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
+  				<input id="loadDuggaButton" type="button" class="submit-button-newitem" value="Load Dugga" title="Load a dugga by hash" onclick="showLoadDuggaPopup();"style="margin‑left:8px;" >
 				<input id='addElement'  type='button' value='+' class='submit-button-newitem' title='New Item'>
 			</div>
+
 		
 			<!-- end hide button -->
 
@@ -411,6 +412,7 @@
 		</div>
 	</div>
 	
+	<!-- Handles the confirmation box popup from delete button -->
 	<script type="text/babel">
 		function ConfirmButtons() {
 			return (
