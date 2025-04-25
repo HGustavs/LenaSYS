@@ -915,7 +915,7 @@ document.addEventListener("mouseout", function (event) {
 
 /**
  * @description Event function triggered when touch is registered on top of the container and converts it to a mouseEvent.
- * @param {TouchEvent} touchEvent The original touch event to convert.
+ * @param {TouchEvent} touchEvent The original touch event to convert to mouse event.
  * @param {string} [type="mousedown"] This is the mouse event type to simulate.
  * @returns {MouseEvent} A synthetic MouseEvent object that mimics the touch event.
  */
