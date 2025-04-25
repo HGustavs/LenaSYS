@@ -4475,6 +4475,21 @@ function setViewMode(mode){
   }
 }
 
+//elementID is the ID that gets passed to the dropdown component.
 function showDropdown(elementID) {
   let element = getElementById(elementID);
 }
+
+// Adds the ability to close dropdown by clicking anywhere on the page.
+window.addEventListener("click", function(event){
+  if (!event.target.matches(".dropButton")) {
+    let dropdowns = this.document.getElementsByClassName("dropdown-content");
+    let i;
+    for (i = 0; i < dropdowns.length; i++) {
+      let dropdown = dropdowns[i];
+      if (dropdown.classList.contains("dropdown-content-show")) {
+        dropdown.classList.remove("dropdown-content-show");
+      }
+    }
+  }
+});
