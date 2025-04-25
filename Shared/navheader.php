@@ -89,7 +89,6 @@
 					echo "<div id='homeBurgerDiv'>";
 					echo "<a id='homeBurger' href='../DuggaSys/courseed.php'>";
 					echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
-					echo "<a/>";
 					echo"</div>";
 					
 					echo "<div id='goBackBurgerDiv'>";
@@ -113,6 +112,7 @@
 					echo"</div>";
 					echo"</div>";					
 				}
+			echo "</a>";
 			
 			// Always show home button which links to course homepage			
 			// Home button original code <a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a>
