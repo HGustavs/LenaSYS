@@ -208,13 +208,9 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	// Show fileedButton and set navigation to fileed.php on click. 
-	const fileedbutton = document.getElementById('fileedButton');
-	if(fileedbutton) {
-		fileedbutton.onclick = function (){
-			navigateTo('/fileed.php', '?courseid=' + courseid + '&coursevers=' + cvers);
-		};
-		fileedbutton.style.display = "table-cell";
+	if ($('#fileedButton').length) {
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
+		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
 
 	if (retData['debug'] != "NONE!") alert(retData['debug']);
@@ -261,8 +257,8 @@ function returned(data)
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
-	//clear div2
-	document.getElementById("div2").innerHTML = "";
+	// Clear div2
+	$("#div2").html("");
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -286,9 +282,8 @@ function returned(data)
 		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
-		
 		// don't create templatebox if it already exists
-		if(!document.getElementById(contentid)){
+		if ($("#" + contentid).length == 0) {
 			addTemplatebox(contentid);
 		}
 
@@ -800,7 +795,7 @@ function displayEditContent(boxid)
 	document.getElementById("boxtitle").value = box[4];
 	document.getElementById("boxcontent").value = box[1];
 
-	changeDirectory(document.getElementById("boxcontent"));
+	changeDirectory($("#boxcontent"));
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
@@ -816,9 +811,8 @@ function displayEditContent(boxid)
 	for (var i = 0; i < wordl.length; i++) {
 		str += "<option value='" + wordl[i][0] + "'>" + wordl[i][1] + "</option>";
 	}
-
-	document.getElementById("wordlist").innerHTML = str;
-	document.getElementById("wordlist").value = box[3];
+	$("#wordlist").html(str);
+	$("#wordlist").val(box[3]);
 
 	var str = "";
 	for (var i = 0; i < retData['improws'].length; i++) {
@@ -829,8 +823,7 @@ function displayEditContent(boxid)
 	document.getElementById("improws").innerHTML = str;
 
 	document.getElementById("editContentContainer").style.display = "flex";
-} 
-
+}
 // -----------------------------------------------------------------------------------------------
 // Listen to enterpress on "important rows" inputfield and runs the same function as the + button
 // -----------------------------------------------------------------------------------------------
@@ -1104,9 +1097,9 @@ function addTemplatebox(id) {
 //----------------------------------------------------------------------------------
 
 function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
-	if (!document.getElementById(contentid + "menu")) {
+	if ($("#" + contentid + "menu").length == 0) {
 		var boxmenu = document.createElement("div");
-		document.getElementById(contentid + "wrapper").appendChild(boxmenu);
+		$("#" + contentid + "wrapper").append(boxmenu);
 		boxmenu.setAttribute("class", "buttomenu2 buttomenu2Style");
 		boxmenu.setAttribute("id", contentid + "menu");
 
@@ -1116,15 +1109,15 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 		if (retData['writeaccess'] == "w") {
 			if (type == "DOCUMENT") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', this.textContent);" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "CODE") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', this.textContent);" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else if (type == "IFRAME") {
 				str += "<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent(" + boxid + ");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', this.textContent);" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
+				str += '<td id = "boxtitlewrapper" class="butto2 boxtitlewrap" title="Title"><span id="boxtitle2" class="boxtitleEditable" onblur="editTitle('+boxid+', $(this).text());" contenteditable>' + retData['box'][boxid - 1][4] + '</span></td>';
 				str += `<div id='iframeBoxes'><td class='butto2 editbtn' onclick='showIframe("${filepath}", "${filename}", ${filekind});'><img title='Edit file' class='markdownIcon' src='../Shared/icons/newMarkdown.svg'></div>`;
 			} else {
 				str += "<td class='butto2 showdesktop'>";
@@ -1163,9 +1156,9 @@ function createboxmenu(contentid, boxid, type, filepath, filename, filekind) {
 		
 		str += '</tr></table>';
 		boxmenu.innerHTML = str;
-		boxmenu.addEventListener("click", function (event) {
-			if (window.innerWidth <= 1100) {
-				toggleClass(boxmenu.parentNode.id);
+		$(boxmenu).click(function (event) {
+			if ($(window).width() <= 1100) {
+				toggleClass($("#" + boxmenu.parentNode.id).attr("id"));
 			}
 		});
 	}
@@ -1214,17 +1207,13 @@ function toggleClass(id) {
 //----------------------------------------------------------------------------------
 
 function displayDrop(dropid) {
-	const drop = document.getElementById(dropid);
-	
-	//hide all other dropdowns
-	document.querySelectorAll(".dropdown").forEach(el =>{
-		el.style.display = "none"
-	});
-
-	// Toggle current one
-	if (drop && drop.offsetParent === null) {
+	drop = $("#" + dropid);
+	if ($(drop).is(":hidden")) {
+		$(".dropdown").css({
+			display: "none"
+		});
 		drop.style.display = "block";
-	}else if (drop) {
+	} else {
 		drop.style.display = "none";
 	}
 }
@@ -1400,16 +1389,16 @@ function execSkip() {
 }
 
 //Retrieve height for building menu.
-window.addEventListener("load", function () {
-	var windowHeight = window.innerHeight;
-	var textHeight = windowHeight - 50;
-	document.getElementById("table-scroll").style.height = textHeight + "px";
+$(window).load(function () {
+	var windowHeight = $(window).height();
+	textHeight = windowHeight - 50;
+	$("#table-scroll").css("height", textHeight);
 });
 
-window.addEventListener("resize", function () {
-	var windowHeight = window.innerHeight;
-	var textHeight = windowHeight - 50;
-	document.getElementById("table-scroll").style.height = textHeight + "px";
+$(window).resize(function () {
+	var windowHeight = $(window).height();
+	textHeight = windowHeight - 50;
+	$("#table-scroll").css("height", textHeight);
 	closeBurgerMenu(); // close burgerMenu when window resize
 });
 
@@ -1448,7 +1437,7 @@ function highlightKeyword(kw) {
 	kwDoubleQuotes = '"'+kw+'"';
 	kwSingleQuote = "'"+kw+"'";
 
-	document.querySelectorAll(".impword").forEach(function () {
+	$(".impword").each(function () {
 		if(this.classList.contains("imphi")){
 			this.classList.remove("imphi");
 		}
@@ -2442,8 +2431,8 @@ function createCodeborder(lineno, improws) {
 
 function changetemplate(templateno) 
 {
-	document.querySelectorAll(".tmpl").forEach(function (index) {
-		index.style.backgroundColor = '#ccc';
+	$(".tmpl").each(function (index) {
+		$(this).css("background", "#ccc");
 	});
 
 	document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
@@ -4120,571 +4109,409 @@ function resetBoxes()
 //-----------------------------------------------------------------------------
 function resizeBoxes(parent, templateId) 
 {
-	var remaining;
-	if(templateId == 1)
-	{
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();	
-				//box wrapper 2 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = div2 widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
+	if (templateId == 1) return;
 
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}						
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
-		});
+	const box1 = document.getElementById('box1wrapper');
+	const box2 = document.getElementById('box2wrapper');
+	const box3 = document.getElementById('box3wrapper');
+	const box4 = document.getElementById('box4wrapper');
+	const box5 = document.getElementById('box5wrapper');
+
+	const containerWidth = parent.offsetWidth;
+	const containerHeight = parent.offsetHeight;
+
+	const minW = containerWidth * 0.15;
+	const maxW = containerWidth * 0.85;
+	const minH = containerHeight * 0.15;
+	const maxH = containerHeight * 0.85;
+
+	let startX, startY, startWidth, startHeight;
+
+	function toggleAllDescriptions() {
+		for (let i = 1; i <= retData.numbox; i++) {
+		toggleTitleDescription(i);
+		}
 	}
-	if(templateId == 2){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box1wrapper').height();
-				document.querySelector('#box2wrapper').style.height = remaining + "px";		
-			},		
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "s",
-			containment: parent	
-		});
-	}
-	if(templateId == 3){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";	
 
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
+	function makeResizable(el, directions, options = {}) {
+		directions.forEach(dir => {
+		const handle = document.createElement('div');
+		handle.className = `resize-handle ${dir}`;
+		handle.style.position = 'absolute';
+		handle.style.background = 'transparent';
+		handle.style.zIndex = '10';
 
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-				document.querySelector('#box3wrapper').style.height = remaining + "px";
-			},
-		handles: "s",
-		containment: parent,
-		maxHeight: ($(parent).height()*0.85),
-		minHeight: ($(parent).height()*0.16)
-		});
-	}
-	if(templateId == 4){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box1wrapper').width();
-					$('#box2wrapper').css('width', remaining + "px");
+		if (dir === 'e') {
+			Object.assign(handle.style, {
+			right: '0', top: '0', width: '5px', height: '100%', cursor: 'e-resize'
+			});
+		} else if (dir === 's') {
+			Object.assign(handle.style, {
+			bottom: '0', left: '0', width: '100%', height: '5px', cursor: 's-resize'
+			});
+		}
 
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}	
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-					$('#box3wrapper').css('height', remainingHeight + "px");
-				}		
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "e,s",
-			containment: parent
-	
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
+		el.appendChild(handle);
 
-				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
-				$('#box3wrapper').css('height', remaining + "px");
-			},
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "s",
-			containment: parent
-		});
-	}
-	if(templateId == 5){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
+		handle.addEventListener('mousedown', (e) => {
+			startX = e.clientX;
+			startY = e.clientY;
+			startWidth = el.offsetWidth;
+			startHeight = el.offsetHeight;
 
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box1wrapper').width();
-					$('#box2wrapper').css('width', remaining + "px");
+			function onMouseMove(e) {
+			let newWidth = startWidth;
+			let newHeight = startHeight;
 
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}	
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-					$('#box3wrapper').css('height', remainingHeight + "px");
-					$('#box4wrapper').css('height', remainingHeight + "px");
-				}					
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16),
-			handles: "e, s",
-			containment: parent
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
-				$('#box3wrapper').css('height', remainingHeight + "px");
-				$('#box4wrapper').css('height', remainingHeight + "px");
-			},
-			handles: "s",
-			containment: parent,
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16)	
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();	
-				$('#box1wrapper').css('width', $('#box3wrapper').width());
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");
+			if (dir === 'e') {
+				newWidth = Math.max(options.minWidth || 0, Math.min(options.maxWidth || Infinity, startWidth + (e.clientX - startX)));
+			}
+			if (dir === 's') {
+				newHeight = Math.max(options.minHeight || 0, Math.min(options.maxHeight || Infinity, startHeight + (e.clientY - startY)));
+			}
 
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
+			if (options.onResize) options.onResize(newWidth, newHeight);
+			}
+
+			function onMouseUp() {
+			document.removeEventListener('mousemove', onMouseMove);
+			document.removeEventListener('mouseup', onMouseUp);
+			}
+
+			document.addEventListener('mousemove', onMouseMove);
+			document.addEventListener('mouseup', onMouseUp);
+		});
 		});
 	}
 
-	if(templateId == 6){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");	
-				
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e" ,
-			containment: parent
-	
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
 
-				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
-				}
-				else{
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-				}
-				
-			},
-			//Since there are 3 boxes in this columm the maxheight will be 70% of the screen instead of 85%
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			containment: parent,
-			handles:"s"
+	if (templateId === 2 || templateId === 3) {
+		makeResizable(box1, ['e'], {
+		minWidth: minW,
+		maxWidth: maxW,
+		onResize: (newWidth) => {
+			box1.style.width = newWidth + 'px';
+			box2.style.width = (containerWidth - newWidth) + 'px';
+			toggleAllDescriptions();
+		}
 		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
 
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-				}
-			},			
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			containment: parent,
-			handles: "s"
+		makeResizable(box1, ['s'], {
+		minHeight: minH,
+		maxHeight: maxH,
+		onResize: (w, newHeight) => {
+			box1.style.height = newHeight + 'px';
+			box2.style.height = (containerHeight - newHeight) + 'px';
+			if (box3) box3.style.height = (containerHeight - newHeight) + 'px';
+		}
 		});
 	}
-	if(templateId == 7){
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box2wrapper').width();
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
-					$('#box4wrapper').css('width', $('#box2wrapper').width() + "px");
 
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-					if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-					}
-					else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-					}
-				}					
-			},
-			handles:"s, e",
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
+
+	else if (templateId === 4) {
+		makeResizable(box1, ['e', 's'], {
+		minWidth: minW,
+		maxWidth: maxW,	
+		minHeight: minH,
+		maxHeight: maxH,
+		onResize: (newWidth, newHeight) => {
+			const isWidthChanged = newWidth + box2.offsetWidth !== parent.offsetWidth;
+			if (isWidthChanged) {
+			box1.style.width = newWidth + 'px';
+			box2.style.width = (parent.offsetWidth - newWidth) + 'px';
+			toggleAllDescriptions();
+			} else {
+			box1.style.height = newHeight + 'px';
+			box2.style.height = newHeight + 'px';
+			box3.style.height = (parent.offsetHeight - newHeight) + 'px';
+			}
+		}
 		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
 
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box3wrapper').width() != $(parent).width()){
-					//East resizing	
-					remaining = ($(parent).width()) - $('#box3wrapper').width();			
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
-					$('#box4wrapper').css('width', $('#box3wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-					if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-					}
-					else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-					}	
-				}
-			},
-			handles: "s, e",
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-
-		});
-		$('#box4wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box4wrapper').width();	
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box4wrapper').width() + "px");
-				$('#box3wrapper').css('width', $('#box4wrapper').width() + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},
-			handles: "e",
-			maxHeight: ($(parent).width()*0.85),
-			minHeight: ($(parent).width()*0.15),
-			containment: parent
+		makeResizable(box2, ['s'], {
+		minHeight: minH,
+		maxHeight: maxH,
+		onResize: (w, newHeight) => {
+			box2.style.height = newHeight + 'px';
+			box1.style.height = newHeight + 'px';
+			box3.style.height = (parent.offsetHeight - newHeight) + 'px';
+		}
 		});
 	}
-	if(templateId == 8){
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box2wrapper').width();
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-					$('#box3wrapper').css('height', remainingHeight + "px");
-				}				
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles:"e,s",
-			containment: parent
-		});
-		//This one currently doens't work
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-			},
-			handles: "e",
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-		});
-	}
-	if(templateId == 9){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();	
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");
-				$('#box5wrapper').css('width', remaining + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles:"e",
-			containment: parent
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-
-				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 3
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-					}
-				}
-				else{
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
-				}
-				
-			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
-			handles:"s",
-			containment: parent
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 2 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 2
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					//Else if box 2 an 5 are too small only resize box 4
-					else if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-					}
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
-				}			
-			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
-			handles:"s",
-			containment: parent
-		});
-		$('#box4wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 3
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if (document.getElementById("box5wrapper").offsetHeight <= document.getElementById(parent).offsetHeight * 0.15 && resizeAmount < 0) {
-					const box2 = document.getElementById("box2wrapper");
-					const box3 = document.getElementById("box3wrapper");
-					const parentHeight = document.getElementById(parent).offsetHeight;
-				
-					// If both box5 and 4 are too small only resize box3
-					if (box2.offsetHeight <= parentHeight * 0.15) {
-						box3.style.height = (box3.offsetHeight + resizeAmount) + "px";
-					}
-					// Else if box 3 and 5 are too small only resize box2
-					else if (box3.offsetHeight <= parentHeight * 0.15) {
-						box2.style.height = (box2.offsetHeight + resizeAmount) + "px";
-					}
-					else {
-						box2.style.height = (box2.offsetHeight + resizeAmount / 2) + "px";
-						box3.style.height = (box3.offsetHeight + resizeAmount / 2) + "px";
-					}
+		else if (templateId === 5) {
+			makeResizable(box1, ['e', 's'], {
+			minWidth: minW,
+			maxWidth: maxW,
+			minHeight: containerHeight * 0.16,
+			maxHeight: maxH,
+			onResize: (newWidth, newHeight) => {
+				const isWidthChanged = newWidth + box2.offsetWidth !== parent.offsetWidth;
+				if (isWidthChanged) {
+				const remaining = parent.offsetWidth - newWidth;
+				box1.style.width = newWidth + 'px';
+				box2.style.width = remaining + 'px';
+				toggleAllDescriptions();
 				} else {
-					const box2 = document.getElementById("box2wrapper");
-					const box3 = document.getElementById("box3wrapper");
-					const box5 = document.getElementById("box5wrapper");
+				const remainingHeight = parent.offsetHeight - newHeight;
+				box1.style.height = newHeight + 'px';
+				box2.style.height = newHeight + 'px';
+				box3.style.height = remainingHeight + 'px';
+				box4.style.height = remainingHeight + 'px';
+				}
+			}
+			});
+		
+			makeResizable(box2, ['s'], {
+			minHeight: containerHeight * 0.16,
+			maxHeight: maxH,
+			onResize: (w, newHeight) => {
+				const remainingHeight = parent.offsetHeight - newHeight;
+				box1.style.height = newHeight + 'px';
+				box2.style.height = newHeight + 'px';
+				box3.style.height = remainingHeight + 'px';
+				box4.style.height = remainingHeight + 'px';
+			}
+			});
+		
+			makeResizable(box3, ['e'], {
+			minWidth: minW,
+			maxWidth: maxW,
+			onResize: (newWidth) => {
+				const remaining = parent.offsetWidth - newWidth;
+				box3.style.width = newWidth + 'px';
+				box1.style.width = newWidth + 'px';
+				box2.style.width = remaining + 'px';
+				box4.style.width = remaining + 'px';
+				toggleAllDescriptions();
+			}
+			});
+		}
+
+			else if (templateId === 6) {
+				makeResizable(box1, ['e'], {
+				minWidth: minW,
+				maxWidth: maxW,
+				onResize: (newWidth) => {
+					const remaining = parent.offsetWidth - newWidth;
+					box1.style.width = newWidth + 'px';
+					box2.style.width = remaining + 'px';
+					box3.style.width = remaining + 'px';
+					box4.style.width = remaining + 'px';
+					toggleAllDescriptions();
+				}
+				});
+			
+				makeResizable(box2, ['s'], {
+				minHeight: minH,
+				maxHeight: containerHeight * 0.7,
+				onResize: (w, newHeight) => {
+					const resizeAmount = parent.offsetHeight - newHeight - box3.offsetHeight - box4.offsetHeight;
+					box2.style.height = newHeight + 'px';
+			
+					if (box3.offsetHeight <= minH && resizeAmount < 0) {
+					box4.style.height = (box4.offsetHeight + resizeAmount) + 'px';
+					} else if (box4.offsetHeight <= minH && resizeAmount < 0) {
+					box3.style.height = (box3.offsetHeight + resizeAmount) + 'px';
+					} else {
+					box3.style.height = (box3.offsetHeight + resizeAmount / 2) + 'px';
+					box4.style.height = (box4.offsetHeight + resizeAmount / 2) + 'px';
+					}
+				}
+				});
+			
+				makeResizable(box3, ['s'], {
+				minHeight: minH,
+				maxHeight: containerHeight * 0.7,
+				onResize: (w, newHeight) => {
+					const resizeAmount = parent.offsetHeight - box2.offsetHeight - newHeight - box4.offsetHeight;
+					box3.style.height = newHeight + 'px';
+			
+					if (box2.offsetHeight <= minH && resizeAmount < 0) {
+					box4.style.height = (box4.offsetHeight + resizeAmount) + 'px';
+					} else if (box4.offsetHeight <= minH && resizeAmount < 0) {
+					box2.style.height = (box2.offsetHeight + resizeAmount) + 'px';
+					} else {
+					box2.style.height = (box2.offsetHeight + resizeAmount / 2) + 'px';
+					box4.style.height = (box4.offsetHeight + resizeAmount / 2) + 'px';
+					}
+				}
+				});
+			}
+		
+				else if (templateId === 7) {
+					makeResizable(box2, ['s', 'e'], {
+					minWidth: minW,
+					maxWidth: maxW,
+					minHeight: minH,
+					maxHeight: containerHeight * 0.7,
+					onResize: (newWidth, newHeight) => {
+						const isWidthChanged = newWidth + box1.offsetWidth !== parent.offsetWidth;
+						if (isWidthChanged) {
+						const remaining = parent.offsetWidth - newWidth;
+						box2.style.width = newWidth + 'px';
+						box1.style.width = remaining + 'px';
+						box3.style.width = newWidth + 'px';
+						box4.style.width = newWidth + 'px';
+						toggleAllDescriptions();
+						} else {
+						const resizeAmount = containerHeight - newHeight - box3.offsetHeight - box4.offsetHeight;
+						box2.style.height = newHeight + 'px';
 				
-					const delta = resizeAmount / 3;
+						if (box3.offsetHeight <= minH && resizeAmount < 0) {
+							box4.style.height = (box4.offsetHeight + resizeAmount) + 'px';
+						} else if (box4.offsetHeight <= minH && resizeAmount < 0) {
+							box3.style.height = (box3.offsetHeight + resizeAmount) + 'px';
+						} else {
+							box3.style.height = (box3.offsetHeight + resizeAmount / 2) + 'px';
+							box4.style.height = (box4.offsetHeight + resizeAmount / 2) + 'px';
+						}
+						}
+					}
+					});
 				
-					box2.style.height = (box2.offsetHeight + delta) + "px";
-					box3.style.height = (box3.offsetHeight + delta) + "px";
-					box5.style.height = (box5.offsetHeight + delta) + "px";
-				}			
+					makeResizable(box3, ['s', 'e'], {
+					minWidth: minW,
+					maxWidth: maxW,
+					minHeight: minH,
+					maxHeight: containerHeight * 0.7,
+					onResize: (newWidth, newHeight) => {
+						const isWidthChanged = newWidth + box1.offsetWidth !== parent.offsetWidth;
+						if (isWidthChanged) {
+						const remaining = parent.offsetWidth - newWidth;
+						box3.style.width = newWidth + 'px';
+						box1.style.width = remaining + 'px';
+						box2.style.width = newWidth + 'px';
+						box4.style.width = newWidth + 'px';
+						toggleAllDescriptions();
+						} else {
+						const resizeAmount = containerHeight - box2.offsetHeight - newHeight - box4.offsetHeight;
+						box3.style.height = newHeight + 'px';
 				
-			},
-			maxHeight: (document.getElementById(parent).offsetHeight * 0.55),
-			minHeight: (document.getElementById(parent).offsetHeight * 0.15),
-			handles:"s",
-			containment: parent
-		});
-	}
+						if (box2.offsetHeight <= minH && resizeAmount < 0) {
+							box4.style.height = (box4.offsetHeight + resizeAmount) + 'px';
+						} else if (box4.offsetHeight <= minH && resizeAmount < 0) {
+							box2.style.height = (box2.offsetHeight + resizeAmount) + 'px';
+						} else {
+							box2.style.height = (box2.offsetHeight + resizeAmount / 2) + 'px';
+							box4.style.height = (box4.offsetHeight + resizeAmount / 2) + 'px';
+						}
+						}
+					}
+					});
+				
+					makeResizable(box4, ['e'], {
+					minWidth: minW,
+					maxWidth: maxW,
+					onResize: (newWidth) => {
+						const remaining = parent.offsetWidth - newWidth;
+						box4.style.width = newWidth + 'px';
+						box1.style.width = remaining + 'px';
+						box2.style.width = newWidth + 'px';
+						box3.style.width = newWidth + 'px';
+						toggleAllDescriptions();
+					}
+					});
+				}
+			
+					else if (templateId === 8) {
+						makeResizable(box2, ['e', 's'], {
+						minWidth: minW,
+						maxWidth: maxW,
+						minHeight: minH,
+						maxHeight: maxH,
+						onResize: (newWidth, newHeight) => {
+							const isWidthChanged = newWidth + box1.offsetWidth !== parent.offsetWidth;
+							if (isWidthChanged) {
+							const remaining = parent.offsetWidth - newWidth;
+							box2.style.width = newWidth + 'px';
+							box1.style.width = remaining + 'px';
+							box3.style.width = newWidth + 'px';
+							toggleAllDescriptions();
+							} else {
+							const remainingHeight = parent.offsetHeight - newHeight;
+							box2.style.height = newHeight + 'px';
+							box3.style.height = remainingHeight + 'px';
+							}
+						}
+						});
+					
+						makeResizable(box3, ['e'], {
+						minWidth: minW,
+						maxWidth: maxW,
+						onResize: (newWidth) => {
+							const remaining = parent.offsetWidth - newWidth;
+							box3.style.width = newWidth + 'px';
+							box1.style.width = remaining + 'px';
+							box2.style.width = newWidth + 'px';
+							toggleAllDescriptions();
+						}
+						});
+					}
+				
+						else if (templateId === 9) {
+							makeResizable(box1, ['e'], {
+							minWidth: minW,
+							maxWidth: maxW,
+							onResize: (newWidth) => {
+								const remaining = parent.offsetWidth - newWidth;
+								box1.style.width = newWidth + 'px';
+								box2.style.width = remaining + 'px';
+								box3.style.width = remaining + 'px';
+								box4.style.width = remaining + 'px';
+								box5.style.width = remaining + 'px';
+								toggleAllDescriptions();
+							}
+							});
+						
+							[box2, box3, box4].forEach((box, index) => {
+							makeResizable(box, ['s'], {
+								minHeight: minH,
+								maxHeight: containerHeight * 0.55,
+								onResize: (w, newHeight) => {
+								const heights = [
+									box2.offsetHeight,
+									box3.offsetHeight,
+									box4.offsetHeight,
+									box5.offsetHeight
+								];
+						
+								const updatedHeights = [...heights];
+								updatedHeights[index + 1] = newHeight;
+						
+								const totalUsed = updatedHeights.reduce((a, b) => a + b, 0);
+								const resizeAmount = containerHeight - totalUsed;
+						
+								const updateIfValid = (idx, amt) => {
+									if (updatedHeights[idx] > minH || amt > 0) {
+									updatedHeights[idx] += amt;
+									}
+								};
+						
+								const redistribute = () => {
+									const remainingBoxes = [0, 1, 2, 3].filter(i => i !== index + 1);
+									if (resizeAmount < 0) {
+									for (let i of remainingBoxes) {
+										if (updatedHeights[i] <= minH) continue;
+										updateIfValid(i, resizeAmount / remainingBoxes.length);
+									}
+									} else {
+									for (let i of remainingBoxes) {
+										updateIfValid(i, resizeAmount / remainingBoxes.length);
+									}
+									}
+								};
+						
+								redistribute();
+						
+								box2.style.height = updatedHeights[0] + 'px';
+								box3.style.height = updatedHeights[1] + 'px';
+								box4.style.height = updatedHeights[2] + 'px';
+								box5.style.height = updatedHeights[3] + 'px';
+								}
+							});
+							});
+						}
+					
 }	
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
@@ -4710,35 +4537,35 @@ function saveInitialBoxValues() {
 	setLocalStorageProperties(templateId, boxValArray);
 }
 
-function initResizableBoxValues(parentId) {
-	const parentEl = document.getElementById(parentId);
-	const parentWidth = parentEl.offsetWidth;
-	const parentHeight = parentEl.offsetHeight;
-	const boxWrapper = document.querySelectorAll("[id ^=box][id $=wrapper]");
-	const numBoxes = boxWrapper.length;
-	
-	const boxValueArray = {};
+function initResizableBoxValues(parent) {
+	var parentWidth = $(parent).width();
+	var parentHeight = $(parent).height();
+	var boxWidth;
+	var boxHeight;
+	var boxId;
+	var numBoxes = $("[id ^=box][id $=wrapper]").length;
+	var boxValueArray = new Array();
 	boxValueArray["parent"] = {
-		"id": parentId,
+		"id": parent,
 		"width": parentWidth,
 		"height": parentHeight
 	};
-	for (let i = 1; i <= numBoxes; i++) {
-		const boxEl = document.getElementById("box" + i + "wrapper");
-		if (!boxEl) continue;
 
+	for (var i = 1; i <= numBoxes; i++) {
+		boxWidth = $("#box" + i + "wrapper").width();
+		boxHeight = $("#box" + i + "wrapper").height();
+		boxId = "#box" + i + "wrapper";
 		boxValueArray["box" + i] = {
-			id: "#box" + i + "wrapper",
-			width: boxEl.offsetWidth,
-			height: boxEl.offsetHeight
+			"id": boxId,
+			"width": boxWidth,
+			"height": boxHeight
 		};
 	}
 
-	// Replace jQuery resize listener
-	window.addEventListener("resize", function (event) {
-		if (!event.target.classList.contains('ui-resizable')) {
-			boxValueArray["parent"].width = parentEl.offsetWidth;
-			boxValueArray["parent"].height = parentEl.offsetHeight;
+	$(window).resize(function (event) {
+		if (!$(event.target).hasClass('ui-resizable')) {
+			boxValueArray['parent']['height'] = $(parent).height();
+			boxValueArray['parent']['width'] = $(parent).width();
 		}
 	});
 
@@ -4800,31 +4627,18 @@ function copyCodeToClipboard(boxid) {
 	if (navigator.clipboard){
 		navigator.clipboard.writeText(lines);
 	} else {
-		var dummy = document.createElement("textarea");
-		dummy.value = lines;
-		document.body.appendChild(dummy);
-		dummy.select();
-		document.execCommand("copy");
-		document.body.removeChild(dummy);
+		var dummy = $('<textarea>').val(lines).appendTo('body').select();
+		document.execCommand("Copy")
+		dummy.remove();
 	}
 
 	// Notification animation
-	const notification = document.getElementById("notificationbox" + boxid);
-	notification.style.display = "flex";
-	notification.style.overflow = "hidden";
-	notification.style.opacity = 0;
-	notification.style.transition = "opacity 0.2s ease-in";
-	requestAnimationFrame(() => {
-	notification.style.opacity = 1;
-	setTimeout(() => {
-		notification.style.transition = "opacity 0.2s ease-out";
-		notification.style.opacity = 0;
-			setTimeout(() => {
-				notification.style.display = "none";
-			}, 200);
+	$("#notificationbox" + boxid).css("display", "flex").css("overflow", "hidden").hide().fadeIn("fast", function () {
+		setTimeout(function () {
+			$("#notificationbox" + boxid).fadeOut("fast");
 		}, 500);
 	});
-}	
+}
 
 // Selectionchange EventListener
 document.addEventListener('selectionchange', function () {
@@ -4835,57 +4649,49 @@ document.addEventListener('selectionchange', function () {
 	}, 500);
   });
 
-  // Sets a flag to prevent closing when clicking inside valid elements
-  document.addEventListener("mousedown", function (e) {
-	const burgerMenu = document.getElementById("burgerMenu");
-	const target = e.target;
-
-	if (target === burgerMenu || burgerMenu.contains(target)) {
+// Detects clicks
+$(document).mousedown(function (e) {
+	var box = $(e.target);
+	if ($('#burgerMenu').is(e.target) || $('#burgerMenu').has(e.target).length !== 0) { //is the burger menu or its descendants clicked?
 		isClickedElementBox = true;
-	} else if (target.classList.contains("formBox")) {
+	} else if (box[0].classList.contains("formBox")) { // is the clicked element a formBox?
 		isClickedElementBox = true;
-	} else if (findAncestor(target, "formBox")) {
+	} else if ((findAncestor(box[0], "formBox") != null) // or is it inside a formBox?
+		&&
+		(findAncestor(box[0], "formBox").classList.contains("formBox"))) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
 	}
 });
 
-// Sets a flag to prevent closing when clicking inside valid elements
-document.addEventListener("mouseup", function (e) {
-	const target = e.target;
-	const burgerMenu = document.getElementById("burgerMenu");
-	const codeBurger = document.getElementById("codeBurger");
-
-	const notTarget = target !== burgerMenu && target !== codeBurger;
-	const notDescendant = !burgerMenu.contains(target) && !codeBurger.contains(target);
-
-	if (burgerMenu.offsetParent !== null && notTarget && notDescendant && !isClickedElementBox) {
+// Close the formBox when clicking outside it.
+$(document).mouseup(function (e) {
+	// Click outside the burger menu
+	var notTarget = !$('#burgerMenu').is(e.target) && !$('#codeBurger').is(e.target) // if the burger menu is visible and the target of the click isn't the container or button...
+	var notDecendant = $('#burgerMenu').has(e.target).length === 0 && $('#codeBurger').has(e.target).length === 0 // ... nor a descendant of the container or button
+	if ($('#burgerMenu').is(':visible') && notTarget && notDecendant && !isClickedElementBox) {
 		closeBurgerMenu();
 	}
 
-	const formBoxes = document.querySelectorAll(".formBox");
-	formBoxes.forEach(formBox => {
-		if (
-			formBox.offsetParent !== null &&
-			target !== formBox &&
-			!formBox.contains(target) &&
-			!isClickedElementBox
-		) {
-			closeWindows();
-			hideIframe();
-		}
-	});
+	// Click outside the formBox
+	if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) // if the target of the click isn't the container...
+		&&
+		$('.formBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&&
+		(!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+	{
+		closeWindows();
+		hideIframe();
+	}
 });
 
-// Toggles the burger menu by cheching if its currently hidden
 function showBurgerMenu() {
-    const burgerMenu = document.getElementById("burgerMenu");
-		if(burgerMenu.offsetParent === null) {
-			showBurgerDropdown();
-		} else {
-			closeBurgerMenu();
-		}
+    if($('#burgerMenu').is(':hidden')){
+        showBurgerDropdown();
+    }else {
+        closeBurgerMenu();
+    }
 }
 
 function showBurgerDropdown(){
@@ -4908,26 +4714,22 @@ function showAllViews(){
     	showAllBox(box[0]);
  	});
 	for(i = 1; i <= retData['numbox']; i++){
-		const wrapper = document.getElementById("box" + i + "wrapper");
-		if (wrapper) {
-			wrapper.style.gridColumn = "";
-			wrapper.style.gridRow = "";
-		}
+		$("#box" + i +"wrapper").css('grid-column','');
+		$("#box" + i +"wrapper").css('grid-row','');
 	}
 }
 
 function setShowPane(id) {
 	closeBurgerMenu();
 	for(i = 1; i <= retData['numbox']; i++){
-		const wrapper = document.getElementById("box" + i + "wrapper");
-		if(!wrapper) continue;
 		if(i == id){
-			wrapper.style.display = "inline";
-			wrapper.style.gridColumn = "a/b";
-			wrapper.style.gtidRow = "a/1";
+			$("#box" + i +"wrapper").css("display", "inline");
+			//Setting the box to cover the entire grid of #div2
+			$("#box" + i +"wrapper").css('grid-column',"a/b");
+			$("#box" + i +"wrapper").css('grid-row',"a/l");
 		}
 		else{
-			wrapper.style.display = "none";
+			$("#box" + i +"wrapper").css("display", "none");
 		}
 		
 	}
@@ -5007,7 +4809,7 @@ function showHiddenIframe() {
     var filePath = 'fileed.php?courseid=' + courseid + '&coursevers=' + cvers;
     document.querySelector(".previewWindow").style.display = "block";
     document.querySelector(".previewWindowContainer").style.display = "block";
-	document.getElementById("iframeFileed").src = filepath;
+    $("#iframeFileed").attr('src', filePath);
 }
 
 function hideIframe()
@@ -5127,10 +4929,7 @@ function toggleTitleWrapper(targetBox, boxNum, boxW){
 //Toggles the description text one the boxes.
 function toggleTitleDescription(toCheck){
 	var box = document.querySelector('#box' + toCheck + 'wrapper #boxtitlewrapper');
-	const boxWrapper = document.getElementById('box' + toCheck + 'wrapper');
-	const div2 = document.getElementById('div2');
-	const boxW = (boxWrapper.offsetWidth / div2.offsetWidth) * 100;
-
+	var boxW = $('#box' + toCheck + 'wrapper').width()/$('#div2').width() * 100;
 	//Check if the widht(%) of the box is < 16
 	if(boxW <= 16){
 		box.classList.add('visuallyhidden');
@@ -5171,8 +4970,7 @@ function checkIfPopupIsOpen() {
 		return true;
 	}
 	for (let popup of allPopups) {
-		const el = document.querySelector(popup);
-		if (el && window.getComputedStyle(el).display !== "none") {
+		if ($(popup).css("display") !== "none"){
 			return true;
 		}
 	}
