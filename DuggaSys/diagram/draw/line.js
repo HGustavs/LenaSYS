@@ -218,22 +218,24 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
+    // Draws the cardinality labels for the line for UML
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
-            fx += offset.x1;
-            fy += offset.y1;
-            str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fx, fy, true, felem);
+            const fxCardinality = fx + offset.x1;
+            const fyCardinality = fy + offset.y1;
+            str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem);
         }
         if (line.endLabel && line.endLabel != '') {
-            tx += offset.x1;
-            ty += offset.y2;
-            str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', tx, ty, false, felem);
+            const txCardinality = tx + offset.x1;
+            const tyCardinality = ty + offset.y2;
+            str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem);
         }
     } else {
         if (line.cardinality) {
             str += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
+        
     if (isSelected) {
         str += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
