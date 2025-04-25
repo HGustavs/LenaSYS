@@ -37,8 +37,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "highscoreservice.php
 //------------------------------------------------------------------------------------------------
 
 //Re-engineer
-$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sectionedService/retrieveHighscoreService_ms.php?" . http_build_query([
+$baseURL = "http://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/highscoreService/retrieveHighscoreService_ms.php?" . http_build_query([
     'did' => $duggaid,
     'lid' => $variant
 ]);
