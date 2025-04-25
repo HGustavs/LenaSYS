@@ -11,7 +11,7 @@ function getSequenceElementConnectionPoint(element) {
         return { x: element.cx || 0, y: element.y1 || 0 };
     }
 
-    // Set .cx, .y1, .y2 for future use 
+    // Set .cx, .y1, .y2 for future use if needed (helpful)
     element.cx = bbox.left + bbox.width / 2;
     element.y1 = bbox.top;
     element.y2 = bbox.top + bbox.height;
@@ -446,34 +446,6 @@ function recursiveERRelation(felem, telem, line) {
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
 
-function getLineAttrubutes(f, t, ctype) {
-    const px = -1; // Don't touch
-    const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
-
-    switch (ctype) {
-        case lineDirection.UP:
-            offset.y1 = px;
-            offset.y2 = -px * 2;
-            return [f.cx, f.y1, t.cx, t.y2, offset];
-
-        case lineDirection.DOWN:
-            offset.y1 = -px * 2;
-            offset.y2 = px;
-            return [f.cx, f.y2, t.cx, t.y1, offset];
-
-        case lineDirection.LEFT:
-
-            offset.x1 = -px;          
-            offset.x2 = px * 2;       
-
-            return [f.x1, f.cy, t.x2, t.cy, offset];
-
-        case lineDirection.RIGHT:
-            offset.x1 = px;
-            offset.x2 = -px * 2;
-            return [f.x2, f.cy, t.x1, t.cy, offset];
-    }
-}
 
 
 /**
