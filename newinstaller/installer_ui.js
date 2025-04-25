@@ -235,10 +235,10 @@ function start_installer() {
 	function callWindow(error, data2) {
 		if (error) {
 			let dataLow = data2.toLowerCase();
-			console.log("test " + data2);
 
 			if (dataLow.includes("sqlstate[hy000]") || dataLow.includes(includes("no such file or directory"))) {
-				Window.forceCreateDb(data);
+				Window.setModal("dbConnectionError");
+				//Window.forceCreateDb(data, "dbConnectionError");
 			} else if (data2 instanceof "something2") {
 				//Window.restartInstaller
 			}
