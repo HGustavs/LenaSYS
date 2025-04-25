@@ -228,33 +228,12 @@ function start_installer(newData) {
 			
 			update();
 		},
-		error: function(data) {
+		error: function(dataError) {
 			error_occured = true;	
 			addButton(error_occured);	
-			checkTypeOfError(data);
+			Window.checkTypeOfError(dataError, data);
 		}
 	});
-
-	function checkTypeOfError(dataError) {
-		let dataLow = dataError.toLowerCase();
-
-		console.log(dataLow);
-
-		if (dataLow.includes("test1")) {
-			Window.addModalID("dbConnectionError");
-
-		} else if (dataLow.includes("test2")) {
-			Window.addModalID("permissionError");
-
-		}else if (dataLow.includes("database exists error")) {
-			Window.addModalID("dbCreationError");
-
-		}else if (dataLow.includes("test3")) {
-			Window.addModalID("SqlError");
-		}
-
-		Window.addData(data);
-	}
 
 	function addButton(error) {
 		if (!error) {

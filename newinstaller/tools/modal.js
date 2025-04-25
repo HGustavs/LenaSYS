@@ -2,13 +2,26 @@ document.addEventListener('DOMContentLoaded', function() {
     let modal = document.getElementById("genericModal");
     let closeModalBtn = document.getElementById("closeModal");
     let openModalBtn = document.getElementById("openModal");
+    let dataError;
     let data;
-    
-    Window.addModalID = function(id) {
-        modal = document.getElementById(id);
-    }
 
-    Window.addData = function(newData) {
+    Window.checkTypeOfError = function(newDataError, newData) {
+        
+        let dataLowerCase = newDataError.toLowerCase();
+        
+		if (dataLowerCase.includes("test1")) {
+			modal = document.getElementById("dbConnectionError");
+
+		} else if (dataLowerCase.includes("test2")) {
+			modal = document.getElementById("permissionError");
+
+		}else if (dataLowerCase.includes("database exists error")) {
+			modal = document.getElementById("dbCreationError");
+
+		}else if (dataLowerCase.includes("test3")) {
+			modal = document.getElementById("SqlError");
+		}
+        dataError = dataLowerCase;
         data = newData;
     }
 
@@ -62,7 +75,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Example functions for modal actions
     Window.retryInstaller = function() {
         console.log("Retrying the installer...");
-        // Logic for retying the installer will be implemented here.
+
+        if (dataError.includes("test1")) {
+			navigateTo('page1');
+
+		} else if (dataError.includes("test2")) {
+			navigateTo('page1');
+
+		}else if (dataError.includes("database exists error")) {
+			navigateTo('page3');
+
+		}else if (dataError.includes("test3")) {
+			navigateTo('page1');
+		}
+        
         closeModal();
     }
 
