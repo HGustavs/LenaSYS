@@ -229,7 +229,6 @@ function drawLine(line, targetGhost = false) {
         if (line.endLabel && line.endLabel != '') {
             const txCardinality = tx + offset.x1;
             const tyCardinality = ty + offset.y2;
-
             str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem);
         }
     } else {
@@ -237,6 +236,7 @@ function drawLine(line, targetGhost = false) {
             str += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
+        
     if (isSelected) {
         str += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
