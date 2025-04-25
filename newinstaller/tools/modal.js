@@ -2,9 +2,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let modal = document.getElementById("genericModal");
     let closeModalBtn = document.getElementById("closeModal");
     let openModalBtn = document.getElementById("openModal");
+    let data;
     
     Window.addModalID = function(id) {
         modal = document.getElementById(id);
+    }
+
+    Window.addData = function(newData) {
+        data = newData;
     }
 
     function openModal() {
@@ -71,6 +76,17 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Forcing database creation...");
         // Logic to force create database will be implemented here.
         // If creation of database or db user fails, show modal with force option.
+
+        console.log("oldtemp: ", data);
+
+        data["overwrite_db"] = "true";
+        data["overwrite_user"] = "true";
+
+        start_installer(data);
+
+
+        console.log("newtemp: ", data);
+
         closeModal();
     }
 
