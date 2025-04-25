@@ -2739,7 +2739,7 @@ function mouseUp(e) {
 // event handlers: Detect mouse / touch gestures uniformly
 //----------------------------------------------------------------------------------
 
-$(window).keyup(function (event) {
+window.addEventListener("keyup", function (event) {
     var deleteButtonDisplay = window.getComputedStyle(document.getElementById('sectionConfirmBox')).display;
   if (event.keyCode == 27) {
     // If key is escape
@@ -2749,10 +2749,10 @@ $(window).keyup(function (event) {
   } else if (event.keyCode == 13) {
     // Remember that keycode 13 = enter button
     document.activeElement.blur();
-    var saveButtonDisplay = ($('#saveBtn').css('display'));
-    var editSectionDisplay = ($('#editSection').css('display'));
-    var submitButtonDisplay = ($('#submitBtn').css('display'));
-    var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
+    var saveButtonDisplay = (document.getElementById('saveBtn').style.display);
+    var editSectionDisplay = (document.getElementById('editSection').style.display);
+    var submitButtonDisplay = (document.getElementById('submitBtn').style.display);
+    var errorMissingMaterialDisplay = (document.getElementById('noMaterialConfirmBox').style.display);
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       //If all information is correct -> item can be updated
       if (window.bool10 == true && window.bool11 == true) {
