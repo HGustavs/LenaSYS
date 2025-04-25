@@ -916,7 +916,7 @@ document.addEventListener("mouseout", function (event) {
 // --------------------------------------- Touch Events    --------------------------------
 
 /**
- * @description Event function triggered when touch is registered on top of the container.
+ * @description Event function triggered when touch is registered on top of the container and converts it to a mouseEvent.
  * @param {TouchEvent} tEvent Triggered touch event.
  */
 
@@ -975,6 +975,29 @@ function setupTouchAsMouseSupport() {
             initialPinchDistance = null;
         }
     }, { passive: false });
+}
+
+function handlePinchZoom(tEvent) {
+    const dx = tEvent.touches[0].clientX - tEvent.touches[1].clientX;
+    const dy = tEvent.touches[0].clientY - tEvent.touches[1].clientY;
+    const newDistance = Math.hypot(dx, dy);
+
+    const now = Date.now();
+    if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
+        const zoomCenter = {
+            clientX: (tEvent.touches[0].clientX + tEvent.touches[1].clientX) / 2,
+            clientY: (tEvent.touches[0].clientY + tEvent.touches[1].clientY) / 2
+        };
+
+        if (newDistance > initialPinchDistance) {
+            zoomin(zoomCenter);
+        } else {
+            zoomout(zoomCenter);
+        }
+
+        lastPinchZoomTime = now;
+        initialPinchDistance = newDistance;
+    }
 }
 
 // --------------------------------------- Mouse Events    --------------------------------
