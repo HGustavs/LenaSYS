@@ -121,7 +121,7 @@ function navigateToPreviousPage() {
     }
 }
 
-function start_installer() {
+function start_installer(newData) {
 	let error_occured = false;
 	let languageSupportChecked = false;
 
@@ -131,7 +131,7 @@ function start_installer() {
                ['text', 'password', 'radio', 'checkbox'].includes(element.type);
     });
 
-	const data = {
+	let data = {
         verbose: false,
         overwrite_db: false,
         overwrite_user: false,
@@ -188,6 +188,10 @@ function start_installer() {
             }
         }
     });
+
+	if (newData != null) {
+		data = newData;
+	}
 
 	console.log("Form Data:", data);
 
