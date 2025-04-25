@@ -1,3 +1,4 @@
+console.log("sectioned.js loaded ✅");
 // -------------==============######## Globals ###########==============-------------
 
 var querystring = parseGet();
@@ -54,7 +55,7 @@ function IsLoggedIn(bool) {
 
 
 /*navburger*/
-function navBurgerChange(operation = 'click') {
+window.navBurgerChange = function(operation = 'click') {
 
   var x = document.getElementById("navBurgerBox");
   if (x.style.display === "block") {
