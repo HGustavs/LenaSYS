@@ -296,7 +296,13 @@ function findNearestLifeline(x, y) {
  * @returns {number} The calculated top height of the element.
  */
 function getTopHeight(element) {
-    let boxw = Math.round(element.width * zoomfact);
-    return (boxw * 0.55) / zoomfact; 
+    const boxw = Math.round(element.width * zoomfact);
+
+    if (element.kind === "sequenceActor") {
+        return (boxw * 0.50) / zoomfact;      // 55 %
+    }
+
+    // 52 %
+    return (boxw * 0.52) / zoomfact;
 }
 

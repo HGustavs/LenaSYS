@@ -60,7 +60,7 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:2;` :
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:;` :
              `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
@@ -755,24 +755,26 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
  */
 
 function drawElementSequenceObject(element, boxw, boxh, linew) {
+    let str = "";
     let content;
-    const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); 
+    const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
 
     content = `<path 
                     class="text" 
-                    d="M${boxw / 2},${boxw / 4 + linew} V${boxh}" 
+                    d="M ${boxw / 2},${boxw / 4 + linew}
+                        V ${boxh}"
                     stroke-width='${linew}'
                     stroke='${element.stroke}'
                     stroke-dasharray='${linew * 3},${linew * 3}'
                     fill='transparent'
-                />
+                /> 
                 <g>
                     <rect 
                         class='text'
-                        x='${(boxw - (boxw * 0.8)) / 2}'
+                        x='${linew}'
                         y='${linew}'
-                        width='${boxw * 0.8}'
-                        height='${boxw / 4}'
+                        width='${boxw - linew * 2}'
+                        height='${(boxw / 2) - linew}'
                         rx='${sequenceCornerRadius}'
                         stroke-width='${linew}'
                         stroke='${element.stroke}'
@@ -781,12 +783,13 @@ function drawElementSequenceObject(element, boxw, boxh, linew) {
                     <text 
                         class='text' 
                         x='${boxw / 2}' 
-                        y='${(boxw / 4) / 2 + linew}' 
+                        y='${(boxw / 2 - linew) / 2}' 
                         dominant-baseline='middle' 
                         text-anchor='middle'
                     > ${element.name} </text>
                 </g>`;
-    return drawSvg(boxw, boxh, content);
+    str += drawSvg(boxw, boxh, content);
+    return str;
 }
 
 /**
