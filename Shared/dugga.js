@@ -1981,22 +1981,22 @@ function copySubmissionReceiptToClipboard() {
 // copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
-	var $temp = document.getElementById("<input>").value;
-    document.getElementById("body").appendChild($temp);
-    $temp.val(hash).select();
+	var temp = document.createElement("input");
+    document.getElementById("body").appendChild(temp);
+    temp.value = hash;
     document.execCommand("copy");
-	$temp.remove();
+	temp.remove();
 }
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
 //----------------------------------------------------------------------------------
 function copyUrltoCB() {
-	var $copyUrl = document.getElementById("<input>").value;
-	document.getElementById("body").appendChild($copyUrl);
-	$copyUrl.val(document.getElementById('#url').text()).select();
+	var copyUrl = document.createElement("input");
+	document.getElementById("body").appendChild(copyUrl);
+	copyUrl.value = document.getElementById('#url').textContent;
 	document.execCommand("copy");
-	$copyUrl.remove();
+	copyUrl.remove();
 }
 
 //----------------------------------------------------------------------------------
