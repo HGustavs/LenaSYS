@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let closeModalBtn = document.getElementById("closeModal");
     let openModalBtn = document.getElementById("openModal");
     
-    Window.setModal = function(id) {
+    Window.addModalID = function(id) {
         modal = document.getElementById(id);
     }
 
@@ -55,26 +55,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Example functions for modal actions
-    Window.retryInstaller = function(id) {
+    Window.retryInstaller = function() {
         console.log("Retrying the installer...");
         // Logic for retying the installer will be implemented here.
         closeModal();
     }
 
-    Window.changeDbSettings = function(id) {
+    Window.changeDbSettings = function() {
         console.log("Changing DB settings...");
         // Logic for changing DB settings will be implemented here.
         closeModal();
     }
 
-    Window.forceCreateDb = function(id) {
+    Window.forceCreateDb = function() {
         console.log("Forcing database creation...");
         // Logic to force create database will be implemented here.
         // If creation of database or db user fails, show modal with force option.
-        setModal(id);
+        closeModal();
     }
 
-    Window.restartInstaller = function(id) {
+    Window.restartInstaller = function() {
         console.log("Restarting installer...");
         // Logic to restart the installer will be implemented here.
         closeModal();
