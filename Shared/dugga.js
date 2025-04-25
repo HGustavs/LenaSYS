@@ -1927,27 +1927,27 @@ function updateReceiptText(title, URL, hash, hashPW)
 
 function showReceiptPopup()
 {
-	document.getElementById("#receiptBox").style.display="flex";
+	document.getElementById("receiptBox").style.display="flex";
 	//document.getElementById("#overlay").style.display="block";
 }
 
 function hideReceiptPopup()
 {
-	document.getElementById("#receiptBox").style.display="none";
+	document.getElementById("receiptBox").style.display="none";
 	//document.getElementById("#overlay").style.display="none";
 }
 
 function hideFeedbackPopup(){
-	document.getElementById("#feedbackBox").style.display="none";
+	document.getElementById("feedbackBox").style.display="none";
 }
 
 function showFeedbackPopup(){
-	document.getElementById("#feedbackBox").style.display="block";
+	document.getElementById("feedbackBox").style.display="block";
 }
 
 function hideDuggaStatsPopup()
 {
-	document.getElementById("#duggaStats").style.display="none";
+	document.getElementById("duggaStats").style.display="none";
 	//document.getElementById("#overlay").style.display="none";
 }
 
@@ -2432,7 +2432,7 @@ function toggleFeedback(element)
 }
 
 function disableSave(){
-	document.querySelector("saveDuggaButton").disabled = true;
+	document.getElementById("saveDuggaButton").disabled = true;
 }
 
 //----------------------------------------------------------------------------------

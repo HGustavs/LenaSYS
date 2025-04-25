@@ -630,16 +630,18 @@ function tabKey(){
     updatePreview(txtarea.value);
 }
 
+/* If this breaks something add it back, otherwise leave it commented or remove entirely.
+It does not seem to affect anything so not why it's here.
 document.addEventListener("DOMContentLoaded", function(){
-    var e1=document.getElementById(".headerType");
+    var e1=document.querySelector(".headerType");
     if(e1!=null){
         e1.addEventListener("click", function(){
-            document.querySelector("#select-header").classList.toggle();
-            document.querySelector("#select-header").classList.add("show-dropdown-content");
+            document.getElementById("select-header").classList.toggle();
+            document.getElementById("select-header").classList.add("show-dropdown-content");
         });
     }
     
-    var e2=document.getElementById("#mrkdwntxt");
+    var e2=document.getElementById("mrkdwntxt");
     if(e2!=null){
         e2.addEventListener("keydown", function(e) {
             if (e.keyCode == 9){
@@ -649,7 +651,7 @@ document.addEventListener("DOMContentLoaded", function(){
         });
     }
 });
-/* Does this even do anything?
+
 //Hide dropdown if click is outside the div
 document.addEventListener("mouseup", function(e) {
     var container = document.getElementById("select-header");
