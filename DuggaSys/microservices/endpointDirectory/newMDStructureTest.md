@@ -42,9 +42,9 @@ example2_ms
 This is an example to debug the datase
 
 ## Input Parameters
-- thirdParam
-   - String
-   - This is a parameter description
+- Parameter: userID
+   - Type: int
+   - Description: This parameter is used for this
 
 ## Calling Methods
 GET
