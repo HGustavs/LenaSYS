@@ -1672,27 +1672,48 @@ function setElementPlacementType(type = elementTypes.EREntity) {
 }
 
 /**
- * @description Function to open a subtoolbar when pressing down on a button for a certan period of time
+ * @description Function to open a subtoolbar when hovering over a button
  * USED IN PHP
  */
+function hoverPlacementButton(num) {
+    // Directly toggle the subtoolbar when hovering, without the delay
+    togglePlacementTypeBox(num);
+}
+
+// Modified original function to work with hovering and also handle pressing if needed
 function holdPlacementButtonDown(num) {
     mousePressed = true;
     if (document.getElementById("togglePlacementTypeBox" + num).classList.contains("activeTogglePlacementTypeBox")) {
         mousePressed = false;
         togglePlacementTypeBox(num);
     }
-    setTimeout(() => {
-        if (!!mousePressed) {
-            togglePlacementTypeBox(num);
-        }
-    }, 500);
+    // We don't need the timeout delay anymore since we're now handling hover instead of long-press
+    if (!!mousePressed) {
+        togglePlacementTypeBox(num);
+    }
 }
 
-/**
- * @description Function to open a subtoolbar when rightclicking a button
- */
-function rightClickOpenSubtoolbar(num) {
-    togglePlacementTypeBox(num);
+// Add hover-specific event listeners for elements
+for (let i = 0; i <= 4; i++) { // Adjust the range based on your number of elements
+    const element = document.getElementById("elementPlacement" + i);
+    
+    // For hover, use 'mouseenter' and 'mouseleave' to trigger the hoverPlacementButton
+    element.addEventListener('mouseenter', function() {
+        hoverPlacementButton(i);
+    });
+
+    element.addEventListener('mouseleave', function() {
+        hoverPlacementButton(i);
+    });
+
+    // Optionally, keep the original mousedown/mouseup if needed
+    element.addEventListener('mousedown', function() {
+        holdPlacementButtonDown(i);
+    });
+
+    element.addEventListener('mouseup', function() {
+        holdPlacementButtonDown(i);
+    });
 }
 
 /**

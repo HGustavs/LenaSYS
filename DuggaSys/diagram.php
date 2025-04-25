@@ -362,8 +362,8 @@
                     <div id="elementPlacement1"
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(1); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(1)"> <!--<-- UML functionality -->
+                         onmouseenter='holdPlacementButtonUp();'
+                         onmouseleave="holdPlacementButtonDown(1)"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Add a ER relation to the diagram</p>
@@ -763,8 +763,8 @@
                     <div id="elementPlacement12"
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(12); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(12)">
+                         onmouseenter='holdPlacementButtonUp()'
+                         onmouseleave="holdPlacementButtonDown(12)">
                          <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram</p>
