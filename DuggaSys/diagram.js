@@ -954,37 +954,37 @@ function setupTouchAsMouseSupport() {
     const container = document.getElementById("container");
 
     // Handle touchstart: either simulates mousedown or prepare for pinch-zoom
-    container.addEventListener("touchstart", function (tEvent) {
-        if (tEvent.touches.length === 1) {
+    container.addEventListener("touchstart", function (event) {
+        if (event.touches.length === 1) {
             // Single touch, simulates a mouse down event
-            const mouseEvent = convertTouchToMouse(tEvent, "mousedown");
+            const mouseEvent = convertTouchToMouse(event, "mousedown");
             container.dispatchEvent(mouseEvent);
-        } else if (tEvent.touches.length === 2) {
+        } else if (event.touches.length === 2) {
             // Two fingers, start measuring pinch distance
-            const dx = tEvent.touches[0].clientX - tEvent.touches[1].clientX;
-            const dy = tEvent.touches[0].clientY - tEvent.touches[1].clientY;
+            const dx = event.touches[0].clientX - event.touches[1].clientX;
+            const dy = event.touches[0].clientY - event.touches[1].clientY;
             initialPinchDistance = Math.hypot(dx, dy);
         }
     }, { passive: false });
 
     // Handle touchmove: either simulate mousemove or process pinch-zoom
-    container.addEventListener("touchmove", function (tEvent) {
-        tEvent.preventDefault();
-        if (tEvent.touches.length === 1) {
+    container.addEventListener("touchmove", function (event) {
+        event.preventDefault();
+        if (event.touches.length === 1) {
             // Singel touch, simulate mouse move event
-            const mouseEvent = convertTouchToMouse(tEvent, "mousemove");
+            const mouseEvent = convertTouchToMouse(event, "mousemove");
             container.dispatchEvent(mouseEvent);
-        } else if (tEvent.touches.length === 2 && initialPinchDistance !== null){
+        } else if (event.touches.length === 2 && initialPinchDistance !== null){
             // Two fingers, handle pinch-zoom
-            handlePinchZoom(tEvent);
+            handlePinchZoom(event);
         }
     }, { passive: false });
 
     // Handle touchend: simulate mouseup and reset pinch state
-    container.addEventListener("touchend", function (tEvent) {
-        if (tEvent.touches.length === 0) {
+    container.addEventListener("touchend", function (event) {
+        if (event.touches.length === 0) {
             // No touches left, simulate mouse up event
-            const mouseEvent = convertTouchToMouse(tEvent, "mouseup");
+            const mouseEvent = convertTouchToMouse(event, "mouseup");
             container.dispatchEvent(mouseEvent);
             initialPinchDistance = null;
         }
@@ -993,13 +993,13 @@ function setupTouchAsMouseSupport() {
 
 /**
  * @description Handels pinch-zoom gesture detection and triggers zoom-in or zoom-out actions.
- * @param {TouchEvent} tEvent The current touch event containing two active touch points.
+ * @param {TouchEvent} event The current touch event containing two active touch points.
  */
 
-function handlePinchZoom(tEvent) {
+function handlePinchZoom(event) {
     // Calculate the current distance between two fingers
-    const dx = tEvent.touches[0].clientX - tEvent.touches[1].clientX;
-    const dy = tEvent.touches[0].clientY - tEvent.touches[1].clientY;
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
     const newDistance = Math.hypot(dx, dy);
 
     const now = Date.now();
@@ -1008,8 +1008,8 @@ function handlePinchZoom(tEvent) {
     if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
         // Calculate the midpoint between two fingers
         const zoomCenter = {
-            clientX: (tEvent.touches[0].clientX + tEvent.touches[1].clientX) / 2,
-            clientY: (tEvent.touches[0].clientY + tEvent.touches[1].clientY) / 2
+            clientX: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+            clientY: (event.touches[0].clientY + event.touches[1].clientY) / 2
         };
 
         if (newDistance > initialPinchDistance) {
