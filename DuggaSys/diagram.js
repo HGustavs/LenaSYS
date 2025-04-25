@@ -426,6 +426,8 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
+    document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
+    document.getElementById("container").addEventListener("touchstart", tstart, { passive: false });
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -909,6 +911,53 @@ document.addEventListener("mouseout", function (event) {
         mouseMode_onMouseUp();
     }
 });
+
+// --------------------------------------- Touch Events    --------------------------------
+
+/**
+ * @description Event function triggered when touch is registered on top of the container.
+ * @param {TouchEvent} event Triggered touch event.
+ */
+
+function tstart(event) {
+    // Only responds to single-finger touch
+    if (event.touches.length === 1) {
+        // Set the internal state to make the app know that user is dragging the container
+        pointerState = pointerStates.CLICKED_CONTAINER;
+        // Set initial touch position and saves the scroll offset
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        sscrollx = scrollx;
+        sscrolly = scrolly;
+    }
+}
+
+function tmoving(event) {
+    // Prevents scrolling in browser when panning the canvas
+    event.preventDefault();
+
+    // Caches if more than one finger is used (Prevents interfering with pinch-gestures).
+    if (event.touches.length != 1) return;
+
+    const touch = event.touches[0];
+    lastMousePos = new Point(touch.clientX, touch.clientY);
+
+    // Calculates how far the user has dragged the finger if the finger has moved
+    if (pointerState === pointerStates.CLICKED_CONTAINER) {
+        movingContainer = true;
+        deltaX = startX - touch.clientX;
+        deltaY = startY - touch.clientY;
+        scrollx = sscrollx - Math.round(deltaX * zoomfact);
+        scrolly = sscrolly - Math.round(deltaY * zoomfact);
+
+        //Refreshes all the visuals
+        updateGridPos();
+        updateA4Pos();
+        updatepos();
+        drawRulerBars(scrollx, scrolly);
+        calculateDeltaExceeded();
+    }
+}
 
 // --------------------------------------- Mouse Events    --------------------------------
 
