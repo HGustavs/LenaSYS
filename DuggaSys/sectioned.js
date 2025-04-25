@@ -746,7 +746,7 @@ function markedItems(item = null, typeInput) {
   var subItems = [];
 
   //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-  if (kind == "section" || kind == "moment") {
+  if (kind == "section" || kind == "moment" || kind == "header") {
     var itemInSection = true;
     var sectionStart = false;
     $("#Sectionlist").find(".item").each(function (i) {
@@ -2013,7 +2013,7 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/Trashcan.svg' onclick='markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
         
