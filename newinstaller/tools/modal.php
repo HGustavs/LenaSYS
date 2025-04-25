@@ -83,7 +83,7 @@ class Modal {
             [
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()'],
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'forceCreateDb('.$id.')']
+                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'forceCreateDb()']
             ]
         );
 
