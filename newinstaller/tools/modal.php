@@ -52,9 +52,9 @@ class Modal {
             'Database Connection Failed',
             'Unable to connect to the database. Please check your root username, password, and hostname',
             [
-                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Change Settings', 'progressButton' => 'settings-button', 'onclick' => 'changeDbSettings()'],
-                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()']
+                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
+                ['text' => 'Change Settings', 'progressButton' => 'settings-button', 'onclick' => 'Window.changeDbSettings()'],
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
 
@@ -67,8 +67,8 @@ class Modal {
             'File Permission Error',
             'Failed to copy course files. Please run the following command: <code>chmod -R 755 /LenaSys/install/courses</code>',
             [
-                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()']
+                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
 
@@ -81,9 +81,9 @@ class Modal {
             'Database Creation Failed',
             'Failed to create the database or database user. Please ensure you have the necessary permissions.',
             [
-                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()'],
-                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'forceCreateDb()']
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()'],
+                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
+                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'Window.forceCreateDb()']
             ]
         );
 
@@ -96,9 +96,9 @@ class Modal {
             'SQL Execution Failed',
             'An error occurred while executing SQL files. Please check the SQL syntax and try again.',
             [
-                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'retryInstaller()'],
-                ['text' => 'Restart Installer', 'progressButton' => 'restart-button', 'onclick' => 'restartInstaller()'],
-                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'closeModal()']
+                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
+                ['text' => 'Restart Installer', 'progressButton' => 'restart-button', 'onclick' => 'Window.restartInstaller()'],
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
 
