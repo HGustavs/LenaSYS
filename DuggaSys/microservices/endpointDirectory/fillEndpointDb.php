@@ -188,46 +188,75 @@ foreach ($mdFiles as $mdFile) {
             }
         }
 
-        $output = '';
-        $output_type = '';
-        $output_description = '';
+        // store output information in arrays, in case there are multiple
+        $outputs = [];
+        $output_types = [];
+        $output_descriptions = [];
+
+        $inOutputSection = false;
+        $currentOutput = null;
+        $currentOutputType = null;
+        $currentOutputDesc = null;
 
         for ($i = 0; $i < count($lines); $i++) {
             $line = trim($lines[$i]);
 
-            // when reaching output headline
-            if ($line === "## Output Data and Format") {
-                for ($j = $i + 1; $j < count($lines); $j++) {
-                    $next = trim($lines[$j]);
+            // start when we reach output headline
+            if ($line === '## Output Data and Format') {
+                $inOutputSection = true;
+                continue;
+            }
 
-                    // break if new section
-                    if ($next === '' || preg_match('/^## /', $next)) {
-                        break;
-                    }
-
-                    if (stripos($next, '- Output:') === 0) {
-                        $output = trim(substr($next, strlen('- Output:')));
-                    }
-
-                    if (stripos($next, '- Type:') === 0) {
-                        $output_type = trim(substr($next, strlen('- Type:')));
-                    }
-
-                    if (stripos($next, '- Description:') === 0) {
-                        $output_description = trim(substr($next, strlen('- Description:')));
-
-                        // check if description has multiple lines
-                        for ($k = $j + 1; $k < count($lines); $k++) {
-                            $lineAfter = trim($lines[$k]);
-                            if ($lineAfter === '' || preg_match('/^[-#]/', $lineAfter)) {
-                                break;
-                            }
-                            $output_description .= ' ' . $lineAfter;
-                        }
-                    }
-                }
+            // break when reaching a new section
+            if ($inOutputSection && preg_match('/^## /', $line)) {
                 break;
             }
+
+            if ($inOutputSection) {
+                // save previous output when a new one is found
+                if (stripos($line, '- Output:') === 0) {
+                    if ($currentOutput !== null) {
+                        $outputs[] = $currentOutput;
+                        $output_types[] = $currentOutputType !== null ? $currentOutputType : '';
+                        $output_descriptions[] = $currentOutputDesc !== null ? $currentOutputDesc : '';
+                    }
+
+                    // start a new output
+                    $currentOutput = trim(substr($line, strlen('- Output:')));
+                    $currentOutputType = null;
+                    $currentOutputDesc = null;
+                }
+
+                // type
+                if (stripos($line, '- Type:') === 0) {
+                    $currentOutputType = trim(substr($line, strlen('- Type:')));
+                }
+
+                // description can be multiple lines
+                if (stripos($line, '- Description:') === 0) {
+                    $currentOutputDesc = trim(substr($line, strlen('- Description:')));
+
+                    // collect more lines without modifying $i
+                    $j = $i + 1;
+                    while ($j < count($lines)) {
+                        $next = trim($lines[$j]);
+
+                        if ($next === '' || preg_match('/^[-#]/', $next)) {
+                            break;
+                        }
+
+                        $currentOutputDesc .= ' ' . $next;
+                        $j++;
+                    }
+                }
+            }
+        }
+
+        // add last output after the loop
+        if ($inOutputSection && $currentOutput !== null) {
+            $outputs[] = $currentOutput;
+            $output_types[] = $currentOutputType !== null ? $currentOutputType : '';
+            $output_descriptions[] = $currentOutputDesc !== null ? $currentOutputDesc : '';
         }
 
         $example_code = '';
@@ -306,20 +335,14 @@ foreach ($mdFiles as $mdFile) {
             ms_name,
             description,
             calling_methods,
-            output,
-            output_type,
-            output_description,
             microservices_used
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?)
         ");
 
         $stmt->execute([
             $ms_name,
             $description,
             $calling_methods,
-            $output,
-            $output_type,
-            $output_description,
             $microservices_used
         ]);
 
@@ -342,6 +365,26 @@ foreach ($mdFiles as $mdFile) {
                 $paramName,
                 $paramType,
                 $paramDesc
+            ]);
+        }
+
+        // prepare statement to insert outputs
+        $output_stmt = $db->prepare("
+        INSERT INTO outputs (microservice_id, output_name, output_type, output_description)
+        VALUES (?, ?, ?, ?)
+        ");
+
+        // loop through all collected outputs for the current microservice and insert them
+        for ($i = 0; $i < count($outputs); $i++) {
+            $outputName = $outputs[$i];
+            $outputType = $output_types[$i] ?? '';
+            $outputDesc = $output_descriptions[$i] ?? '';
+
+            $output_stmt->execute([
+                $microservice_id,
+                $outputName,
+                $outputType,
+                $outputDesc
             ]);
         }
 

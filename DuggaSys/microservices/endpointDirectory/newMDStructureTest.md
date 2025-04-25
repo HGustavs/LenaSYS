@@ -24,6 +24,10 @@ Testing a third line
    - Type: Type1
    - Description: Description1
 
+- Output: Output2
+   - Type: Type2
+   - Description: Description2
+
 ## Examples of Use
 `
 fetch('api/endpoint', {
