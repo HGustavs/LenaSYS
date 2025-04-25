@@ -919,6 +919,11 @@ document.addEventListener("mouseout", function (event) {
  * @param {TouchEvent} event Triggered touch event.
  */
 
+let initialPinchDistance = null;
+let lastPinchZoomTime = 0;
+const pinchZoomThreshold = 10; // Minimum px difference to trigger zoom
+const pinchZoomCooldown = 100; // Minimum ms between pinch zooms
+
 function tstart(event) {
     // Only responds to single-finger touch
     if (event.touches.length === 1) {
@@ -941,26 +946,47 @@ function tmoving(event) {
     // Prevents scrolling in browser when panning the canvas
     event.preventDefault();
 
-    // Caches if more than one finger is used (Prevents interfering with pinch-gestures).
-    if (event.touches.length != 1) return;
-
     const touch = event.touches[0];
     lastMousePos = new Point(touch.clientX, touch.clientY);
 
     // Calculates how far the user has dragged the finger if the finger has moved
-    if (pointerState === pointerStates.CLICKED_CONTAINER) {
-        movingContainer = true;
-        deltaX = startX - touch.clientX;
-        deltaY = startY - touch.clientY;
-        scrollx = sscrollx - Math.round(deltaX * zoomfact);
-        scrolly = sscrolly - Math.round(deltaY * zoomfact);
+    if (event.touches.length === 1) {
+        
+        if (pointerState === pointerStates.CLICKED_CONTAINER) {
+            movingContainer = true;
+            deltaX = startX - touch.clientX;
+            deltaY = startY - touch.clientY;
+            scrollx = sscrollx - Math.round(deltaX * zoomfact);
+            scrolly = sscrolly - Math.round(deltaY * zoomfact);
 
-        //Refreshes all the visuals
-        updateGridPos();
-        updateA4Pos();
-        updatepos();
-        drawRulerBars(scrollx, scrolly);
-        calculateDeltaExceeded();
+            //Refreshes all the visuals
+            updateGridPos();
+            updateA4Pos();
+            updatepos();
+            drawRulerBars(scrollx, scrolly);
+            calculateDeltaExceeded();
+        }
+    } else if (event.touches.length === 2 && initialPinchDistance !== null) {
+        const dx = event.touches[0].clientX - event.touches[1].clientX;
+        const dy = event.touches[0].clientY - event.touches[1].clientY;
+        const newDistance = Math.hypot(dx, dy);
+
+        const now = Date.now();
+        if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
+            const fakeEvent = {
+                clientX: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+                clientY: (event.touches[0].clientY + event.touches[1].clientY) / 2
+            };
+
+            if (newDistance > initialPinchDistance) {
+                zoomin(fakeEvent);
+            } else {
+                zoomout(fakeEvent);
+            }
+
+            lastPinchZoomTime = now;
+            initialPinchDistance = newDistance;
+        }
     }
 }
 
