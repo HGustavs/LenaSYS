@@ -284,6 +284,11 @@ foreach ($mdFiles as $mdFile) {
                         break;
                     }
 
+                    // skip placeholder-text in the template
+                    if (trim($nextLine) === '*Includes and microservices used*') {
+                        continue;
+                    }
+
                     $used[] = $nextLine;
                 }
 

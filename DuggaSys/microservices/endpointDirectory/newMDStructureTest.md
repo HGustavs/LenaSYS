@@ -19,6 +19,7 @@ Testing a third line
 - POST
 
 ## Output Data and Format
+*Output Data will be described in lists*
 - Output: Output1
    - Type: Type1
    - Description: Description1
@@ -32,6 +33,7 @@ fetch('api/endpoint', {
 `
 
 ### Microservices Used
+*Includes and microservices used*
 another_ms
 microservices_used_example_ms
 
