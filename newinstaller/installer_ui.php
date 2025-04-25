@@ -238,8 +238,14 @@
 						<?php 
 							progressBar(); 
 							$modal = new Modal();
-							echo $modal->render();	
+							$modal->setDbConnectionErrorModal("dbConnectionError");
+							$modal->showFilePermissionErrorModal("permissionError");
+							$modal->showDbCreationErrorModal("dbCreationError");
+							$modal->showSqlExecutionErrorModal("SqlError");
 						?>
+						<div>
+							<button class="defaultButton" id="openModal" type="button">Open Modal</button>
+						</div>
 						<div id="pageButtonContainer"></div>
 					</div>
 				</div>
