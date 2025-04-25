@@ -1805,6 +1805,7 @@ function storeDiagramInLocalStorage(key) {
         local = (local[0] == "{") ? local : `{${local}}`;
 
         let localDiagrams = JSON.parse(local);
+        objToSave.timestamp = new Date().getTime(); 
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
@@ -1989,10 +1990,17 @@ function showModal() {
     let localDiagrams;
 
     let local = localStorage.getItem("diagrams");
+
+
+    // Parse saved diagrams from localstorage and sort them so autosave always remains at top and all other saves are ordered by most recent timestamp to appear closest to top.
     if (local) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
-        diagramKeys = Object.keys(localDiagrams);
+        diagramKeys = Object.keys(localDiagrams).sort((a, b) => {
+            if (a === "AutoSave") return -1;
+            if (b === "AutoSave") return 1;
+            return localDiagrams[b].timestamp - localDiagrams[a].timestamp; 
+        });
     }
 
     // Remove all elements
