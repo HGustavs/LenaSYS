@@ -151,6 +151,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $response = curl_exec($ch);
     $data = json_decode($response, true);
     $link = $data;
+    curl_close($ch);
 
     //select the latest codeexample created to link boxes to this codeexample
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
