@@ -3022,11 +3022,12 @@ function validateUpdateAnnouncementForm() {
 }
 // Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = $(location).attr('href');
+  var currentLocation = window.location.href;
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
-  var uname = $("#userName").html();
+  var uname = document.getElementById("userName").innerHTML;
+  
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3082,27 +3083,43 @@ function handleResponse(xhttp, updateannouncementid, cid, versid) {
   var parsed_data = JSON.parse(xhttp.response);
   title = parsed_data.title;
   message = parsed_data.message;
-  if ($("#announcementForm").is(":hidden")) {
-    $("#announcementForm").show();
+
+  var announcementForm = document.getElementById("announcementForm");
+  if (announcementForm && announcemenetForm.offsetParent == null) {
+    announcementForm.style.display = "";
   }
-  $(".formTitle").html("Update announcement");
-  $(".formSubtitle").html("Please fill in this form to update the announcement.");
-  $("#announcementTitle").val(title);
-  $("#announcementMsg").html(message);
-  $(".createBtn").html("Update");
-  $(".createBtn").attr("name", "updateBtn");
-  $(".createBtn").attr("onclick", "validateUpdateAnnouncementForm()");
-  $("#courseidAndVersid").remove();
-  $("#recipientBox").remove();
 
-  $("#announcementForm .announcementFormcontainer .clearfix")
-    .before('<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="'
-      + updateannouncementid + '"></div>');
-  $("#announcementForm .announcementFormcontainer .clearfix")
-    .before('<div><input type="hidden" name="cid" id="cid" value="' + cid + '"></div>');
-  $("#announcementForm .announcementFormcontainer .clearfix")
-    .before('<div><input type="hidden" name="versid" id="versid" value="' + versid + '"></div>');
+  document.querySelector(".formTitle").innerHTML = "Update announcement";
+  document.querySelector(".formSubtitle").innerHTML = "Please fill in this form to update the announcement."
+  document.getElementById("announcementTitle").value = title;
+  document.getElementById("announcementMsg").innerHTML = message;
 
+  var createBtn = document.querySelector(".createBtn");
+  createBtn.innerHTML = "Update";
+  createBtn.setAttribute("name", "updateBtn");
+  createBtn.setAttribute("onclick", "validateUpdateAnnouncementForm()");
+
+  var courseidAndVersid = document.getElementById("courseidAndVersid");
+  if (courseidAndVersid) courseidAndVersid.remove();
+
+  var recipientBox = document.getElementById("recipientBox");
+  if (recipientBox) recipientBox.remove();
+
+  var target = document.querySelector("#announcementForm .announcementFormcontainar .clearfix");
+
+  if(target){
+    target.insertAdjacentHTML(
+      "beforebegin", '<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="' +
+        updateannouncementid +
+        '"></div>' +
+        '<div><input type="hidden" name="cid" id="cid" value="' +
+        cid +
+        '"></div>' +
+        '<div><input type="hidden" name="versid" id="versid" value="' +
+        versid +
+        '"></div>'
+    )
+  }
 
 }
 
@@ -3524,7 +3541,7 @@ setInterval(function () {
 
       //since createExamples returns a promise. We can let the async call complete entirely before logging.
       Promise.all(returnedPromises).then(() => {
-        console.log("All code examples have been automatically updated successfully!");
+        console.log("All code examples have been automatically u  pdated successfully!");
       }).catch(error => {
         console.error("An error occurred while updating code examples:", error);
       });
