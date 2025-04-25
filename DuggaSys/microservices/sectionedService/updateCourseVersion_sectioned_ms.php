@@ -70,8 +70,13 @@ if (!$query->execute()) {
     $debug = "Error updating entries " . $error[2];
 }
 
-if ($makeactive == 3)
-    setAsActiveCourse($pdo, $courseid, $versid);
+if ($makeactive == 3) { 
+    callPost(
+        "/sharedMicroservices/setAsActiveCourse_ms.php",
+        ['cid' => $cid, 'vers' => $vers],
+        false // no return value
+    );
+}
 
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);

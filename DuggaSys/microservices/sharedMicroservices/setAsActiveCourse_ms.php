@@ -2,16 +2,19 @@
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
+include_once "../HelperFunction_ms.php";
 
-function setAsActiveCourse($pdo, $cid, $versid)
-{
-	$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-	$query->bindParam(':cid', $cid);
-	$query->bindParam(':vers', $versid);
+pdoConnect();
+session_start();
 
-	if (!$query->execute()) {
-		$error = $query->errorInfo();
-		$debug = "Error updating entries\n" . $error[2];
-		echo json_encode($debug);
-	}
+$data = recievePost(['cid', 'vers']);
+
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+$query->bindParam(':cid', $data['cid']);
+$query->bindParam(':vers', $data['vers']);
+
+if (!$query->execute()) {
+    $error = $query->errorInfo();
+    $debug = "Error updating entries\n" . $error[2];
+    echo json_encode($debug);
 }
