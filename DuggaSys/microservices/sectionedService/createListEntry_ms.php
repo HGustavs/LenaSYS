@@ -46,39 +46,27 @@ if($link==-1) {
     //$data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
     //$link=$data['link'];
 
+    //set url for createNewCodeExample.php path
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
     $ch = curl_init($url);
-
     //options for curl
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'exampleid'=>$exampleid,
+        'exampleid'=> $exampleid,
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
-        'sectionname'=> $sectname,
+        'sectionname'=> $sectionname,
         'link'=> $link,
         'log_uuid'=> $log_uuid, 
         'templateNumber'=> $templateNumber
     ]));
        
     $response = curl_exec($ch);
-    if ($response === false) {
-        throw new RuntimeException('cURL error: '.curl_error($ch));
-    }
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($httpCode !== 200) {
-        throw new RuntimeException("Microservice returned HTTP $httpCode: $response");
-    }
-    
     $data = json_decode($response, true);
-    $link = $data['link'] ?? null;
-
-
-    $debug=$data['debug'];
+    $link = $data;
+    curl_close($ch);
 }
 
 $debug = createNewListEntry($pdo,
