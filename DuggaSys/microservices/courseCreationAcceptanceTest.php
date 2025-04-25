@@ -14,7 +14,7 @@ $opt = 'NEW';
 $username = 'brom';
 $password = 'password';
 $coursename = 'Test Course';
-$coursecode = 'TE001S';
+$coursecode = 'TE002S';
 $courseGitURL = 'https://github.com/LenaSYS/Webbprogrammering-Examples';
 $AUtoken = 1;
 
@@ -84,26 +84,26 @@ if( $courseFound ){
     echo "Course found in response." . "<br/>";
 }
 else{
-    echo "Course not found in response." . "<br/>";
+    echo "Course not found in response or already exists in database." . "<br/>";
 }
 
 //output if test passed or failed
 if ($testPassed) {
     echo "Test passed: Course has correct giturl: " . $connectedURL  . "<br/>";
 } else {
-    echo "Test passed: Course does not have correct giturl: " . "<br/>";
+    echo "Test not passed: Course does not have correct giturl: " . "<br/>";
 }
-    //delete test case from database
-    $query_2 = $pdo->prepare("DELETE FROM course WHERE coursecode = :coursecode");
 
-	//binds the parameters
-    $query_2->bindParam(':coursecode', $coursecode);
+//delete test case from database
+$query_2 = $pdo->prepare("DELETE FROM course WHERE coursecode = :coursecode");
 
-	//execute the query and handle errors
-	if(!$query_2->execute()) {
-        $error=$query_2->errorInfo();
-        $debug="Error updating entries\n".$error[2];
-    }
+//binds the parameters
+$query_2->bindParam(':coursecode', $coursecode);
 
+//execute the query and handle errors
+if(!$query_2->execute()) {
+    $error=$query_2->errorInfo();
+    $debug="Error updating entries\n".$error[2];
+}
 
 ?>
