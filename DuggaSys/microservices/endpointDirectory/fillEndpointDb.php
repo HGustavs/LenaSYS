@@ -174,6 +174,11 @@ foreach ($mdFiles as $mdFile) {
                         break;
                     }
 
+                    // remove "- " if it exists at start
+                    if (strpos($methodLine, '- ') === 0) {
+                        $methodLine = substr($methodLine, 2);
+                    }
+
                     $methods[] = $methodLine;
                 }
 

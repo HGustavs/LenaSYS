@@ -16,7 +16,7 @@ Testing a third line
    - Description: This parameter is used for something else
 
 ## Calling Methods
-POST
+- POST
 
 ## Output Data and Format
 - Output: Output1
