@@ -238,8 +238,6 @@ function start_installer(newData) {
 	function addButton(error) {
 		if (!error) {
 			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=location.href='../DuggaSys/courseed.php'>Finish</button>";
-		}else {
-			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=navigateTo('page1')>Retry</button>";
 		}
 	}
 }

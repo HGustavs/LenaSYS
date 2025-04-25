@@ -243,10 +243,9 @@
 							$modal->showDbCreationErrorModal("dbCreationError");
 							$modal->showSqlExecutionErrorModal("SqlError");
 						?>
-						<div>
-							<button class="defaultButton" id="openModal" type="button">Open Modal</button>
+						<div id="pageButtonContainer">
+							<button class="defaultButton" id="openModal" type="button" style="display: none;">Open Modal</button>
 						</div>
-						<div id="pageButtonContainer"></div>
 					</div>
 				</div>
 			</div>
