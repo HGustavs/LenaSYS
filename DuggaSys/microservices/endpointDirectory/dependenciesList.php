@@ -8,7 +8,7 @@ $dependencies = $query->fetchAll(PDO::FETCH_ASSOC);
 
 echo "<h2>Dependencies in database</h2>";
 echo "<table border='1''>";
-echo "<tr><th>ID</th><th>Microservice</th><th>Depends on</th><th>Path<th></tr>";
+echo "<tr><th>ID</th><th>Microservice</th><th>Depends on</th><th>Path</th></tr>";
 
 foreach ($dependencies as $dependency) {
     echo "<tr>";

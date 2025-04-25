@@ -30,18 +30,12 @@ $db->exec("CREATE TABLE IF NOT EXISTS parameters (
 // this table will document inverse dependecies that microservies has
 $db->exec("CREATE TABLE IF NOT EXISTS dependencies (
     dependency_id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    -- microservice_id INTEGER NOT NULL,
     ms_name TEXT NOT NULL,
     depends_on TEXT NOT NULL,
     path TEXT NOT NULL
+    -- FOREIGN KEY (microservice_id) REFERENCES microservices(id)
 );");
-
-// there can't be a foreign key before the documentation for the microservies has been created
-// so for now the names has to be inserted, but later, the best way will be to insert the id of the ms that the ms is depending on
-// example below
-// FOREIGN KEY (microservice_id) REFERENCES microservices(id)
-// microservice_id INTEGER NOT NULL,
-// depends_on INTEGER NOT NULL,
-// FOREIGN KEY (depends_on) REFERENCES microservices(id)
 
 echo "Database has been created";
 

@@ -9,22 +9,16 @@ if (!file_exists($mdFile)) {
     die("Dependency markdown file not found.");
 }
 
-// echo $mdFile;
-
 // connect to the database
 $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 $db = new PDO('sqlite:' . $dbFile);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // clear previous dependencies
-// $db->exec("DELETE FROM dependencies");
+$db->exec("DELETE FROM dependencies");
 
 $content = file_get_contents($mdFile);
 $lines = explode("\n", $content);
-
-// echo "<pre>";
-// echo print_r($lines);
-// echo "</pre>";
 
 $currentMicroservice = null;
 
@@ -35,7 +29,6 @@ foreach ($lines as $line) {
     // header for a microservice has ###
     if (preg_match('/^### (.+)/', $trimmedLine, $match)) {
         $currentMicroservice = $match[1];
-        // echo $currentMicroservice . "<br>";
         continue;
     }
 
