@@ -15,6 +15,8 @@ $query->bindParam(':vers', $data['vers']);
 
 if (!$query->execute()) {
     $error = $query->errorInfo();
-    $debug = "Error updating entries\n" . $error[2];
-    echo json_encode($debug);
+    echo json_encode(["success" => false, "error" => $error[2]]);
+    exit;
 }
+
+echo json_encode(["success" => true]);

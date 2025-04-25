@@ -1,11 +1,5 @@
 <?php
 
-
-
-
-<!-- POST METHOD  -->
-
-<!-- Calling Function -->
 function callPost(string $path, array $dataToSend, bool $returnValue) {
     header("Content-Type: application/json");
     //set url course path
@@ -17,14 +11,16 @@ function callPost(string $path, array $dataToSend, bool $returnValue) {
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataToSend));
 
-    curl_exec($ch);
+    $response = curl_exec($ch);
+    if (curl_errno($ch)) {
+        echo json_encode(['error' => curl_error($ch)]);
+    }
     curl_close($ch);
+    return $returnValue ? $response : null;
 }
 
-
-<!-- Recieving Function -->
-
 function recievePost(array $requiredKeys = []) {
+
     $receivedData = [];
 
     foreach ($requiredKeys as $key) {

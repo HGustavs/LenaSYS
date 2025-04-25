@@ -74,7 +74,7 @@ if ($makeactive == 3) {
     callPost(
         "/sharedMicroservices/setAsActiveCourse_ms.php",
         ['cid' => $cid, 'vers' => $vers],
-        false // no return value
+        true // no return value
     );
 }
 
