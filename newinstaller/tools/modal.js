@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         let dataLowerCase = newDataError.toLowerCase();
         
-		if (dataLowerCase.includes("test1")) {
+		if (dataLowerCase.includes("connection to database could not be established.")) {
 			modal = document.getElementById("dbConnectionError");
 
 		} else if (dataLowerCase.includes("test2")) {
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
         dataError = dataLowerCase;
         data = newData;
+        openModalBtn.style.display = "block";
     }
 
     function openModal() {
@@ -76,8 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
     Window.retryInstaller = function() {
         console.log("Retrying the installer...");
 
-        if (dataError.includes("test1")) {
-			navigateTo('page1');
+        if (dataError.includes("connection to database could not be established.")) {
+			navigateTo('page3');
 
 		} else if (dataError.includes("test2")) {
 			navigateTo('page1');
@@ -100,19 +101,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     Window.forceCreateDb = function() {
         console.log("Forcing database creation...");
-        // Logic to force create database will be implemented here.
-        // If creation of database or db user fails, show modal with force option.
-
-        console.log("oldtemp: ", data);
 
         data["overwrite_db"] = "true";
         data["overwrite_user"] = "true";
 
         start_installer(data);
-
-
-        console.log("newtemp: ", data);
-
         closeModal();
     }
 
