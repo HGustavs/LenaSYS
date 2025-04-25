@@ -4474,3 +4474,7 @@ function setViewMode(mode){
     section.classList.add("overview-mode");
   }
 }
+
+function showDropdown(elementID) {
+  let element = getElementById(elementID);
+}
