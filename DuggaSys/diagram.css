@@ -756,9 +756,9 @@
     height: 34px;
 }
 
-.placementTypeToolTipText {
-    top: 0%;
-    left: 100%;
+.placementTypeToolTipText{
+    top: -55%;
+    left: 110%;
     visibility: hidden;
     width: 250px;
     background: rgba(0, 0, 0, 0.8);
