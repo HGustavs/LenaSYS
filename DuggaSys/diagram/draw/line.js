@@ -219,6 +219,7 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
+    // Draws the cardinality labels for the line for UML
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
             const fxCardinality = fx + offset.x1;
