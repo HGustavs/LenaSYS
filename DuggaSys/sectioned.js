@@ -2652,16 +2652,16 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
-$(document).mouseover(function (e) {
+document.addEventListener("mouseover", function (e) {
   // showFabList(e);
   FABMouseOver(e);
 });
 
-$(document).mouseout(function (e) {
+document.addEventListener("mouseout", function (e) {
   FABMouseOut(e);
 });
 
-$(document).mousedown(function (e) {
+document.addEventListener("mousedown", function (e) {
   mouseDown(e);
 
   if (e.button == 0) {
@@ -2669,28 +2669,26 @@ $(document).mousedown(function (e) {
   }
 });
 
-$(document).mouseup(function (e) {
+document.addEventListener("mouseup", function (e) {
   mouseUp(e);
-
-
 });
 
-$(document).ready(function () {
-  $(fabBtn).on("touchstart", function (e) {
-    if ($(e.target).parents(".fixed-action-button").length !== 0 &&
-      $(e.target).parents(".fab-btn-list").length === 0) {
+document.onload=function () {
+  fabBtn.addEventListener("touchstart", function (e) {
+    if (e.target.closest(".fixed-action-button").length !== 0 &&
+      e.target.closest(".fab-btn-list").length === 0) {
       e.preventDefault();
     }
 
-    $("#fabBtnList").show();
+    document.getElementById("fabBtnList").style.display="block";
     mouseDown(e);
     TouchFABDown(e);
   });
-});
+};
 
-$(document).on("touchend", function (e) {
-  if ($(e.target).parents(".fixed-action-button").length !== 0 &&
-    $(e.target).parents(".fab-btn-list").length === 0) {
+document.addEventListener("touchend", function (e) {
+  if (e.target.closest(".fixed-action-button").length !== 0 &&
+    e.target.closest(".fab-btn-list").length === 0) {
     e.preventDefault();
   }
   mouseUp(e);
@@ -2703,13 +2701,13 @@ $(document).on("touchend", function (e) {
 
 function mouseDown(e) {
 
-  var box = $(e.target);
+  var box = e.target;
 
   // Is the clicked element a formBox? or is it inside a formBox?
-  if (box[0].classList.contains("formBox")) {
+  if (box.classList.contains("formBox")) {
     isClickedElementBox = true;
-  } else if ((findAncestor(box[0], "formBox") != null) &&
-    (findAncestor(box[0], "formBox").classList.contains("formBox"))) {
+  } else if ((findAncestor(box, "formBox") != null) &&
+    (findAncestor(box, "formBox").classList.contains("formBox"))) {
     isClickedElementBox = true;
   } else {
     isClickedElementBox = false;
@@ -2724,15 +2722,15 @@ function mouseDown(e) {
 function mouseUp(e) {
   /* If the target of the click isn't the container nor a descendant of the container,
      or if we have clicked inside box and dragged it outside and released it */
-  if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) &&
-    $('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+  if (document.querySelector('.formBox').visible ? 1 : 0 && !document.querySelector('.formBox').e.target ? 1 : 0 &&
+    document.querySelector('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
     event.preventDefault();
 
     closeWindows();
     closeSelect();
     showSaveButton();
-  } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
+  } else if (!findAncestor(e.target, "hamburgerClickable") && document.querySelector('.hamburgerMenu').visible ? 1 : 0) {
     hamburgerChange("notAClick");
   }
 }
