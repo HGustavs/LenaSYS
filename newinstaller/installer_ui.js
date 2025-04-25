@@ -225,27 +225,27 @@ function start_installer() {
 			update();
 		},
 		error: function(data) {
-			error_occured = true;
-			callWindow(error_occured, data);	
-			addButton(error_occured);	
+			error_occured = true;	
+			addButton(error_occured);
+
+			let dataLow = data.toLowerCase();
+
+			console.log(dataLow);
+
+			if (dataLow.includes("test1")) {
+				Window.addModalID("dbConnectionError");
+
+			} else if (dataLow.includes("test2")) {
+				Window.addModalID("permissionError");
+
+			}else if (dataLow.includes("database exists error")) {
+				Window.addModalID("dbCreationError");
+
+			}else if (dataLow.includes("test3")) {
+				Window.addModalID("SqlError");
+			}	
 		}
 	});
-	
-
-	function callWindow(error, data2) {
-		if (error) {
-			let dataLow = data2.toLowerCase();
-
-			if (dataLow.includes("sqlstate[hy000]") || dataLow.includes(includes("no such file or directory"))) {
-				Window.setModal("dbConnectionError");
-				//Window.forceCreateDb(data, "dbConnectionError");
-			} else if (data2 instanceof "something2") {
-				//Window.restartInstaller
-			}
-		} else {
-
-		}
-	}
 
 	function addButton(error) {
 		if (!error) {
