@@ -253,7 +253,7 @@
 						<script type="text/babel">
 							ReactDOM.createRoot(document.getElementById('course-label-dropdown')).render(
 								<>
-									<Dropdown dropdownName="View" onClick={() => showDropdown('course-label-dropdown-content')} className="view-label" id="course-label-dropdown-content">
+									<Dropdown dropdownName="View" onClick={() => showDropdown('course-label-dropdown-content')} id="course-label-dropdown-content">
 										<Button className="submit-button" title="Normal View" onClick={() => {setViewMode('normal')}}>Normal</Button>
 										<Button className="submit-button" title="Scroll View" onClick={() => {setViewMode('scroll')}}>Scroll</Button>
 										<Button className="submit-button" title="Overview" onClick={() => {setViewMode('overview')}}>Overview</Button>

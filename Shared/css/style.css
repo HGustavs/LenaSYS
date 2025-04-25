@@ -830,6 +830,7 @@ p {
  text-decoration: underline;
 }
 /*End of recent feedback from the teacher*/
+
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
@@ -860,7 +861,6 @@ p {
   }
 }
 
-/*WIP:Placera dropdown CSS utanför så att alla dropdowns har samma CSS?*/
 #course-label-dropdown {
   display: flex;
   justify-content: flex-start;
@@ -2725,7 +2725,11 @@ resulted.php END
  }
 
  #course-label {
-  flex-grow:1
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
  }
 
 #editSectionLoginBox {
