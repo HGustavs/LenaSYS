@@ -53,7 +53,7 @@ class Modal {
             'Unable to connect to the database. Please check your root username, password, and hostname',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
-                ['text' => 'Change Settings', 'progressButton' => 'settings-button', 'onclick' => 'Window.changeDbSettings()'],
+                ['text' => 'ChangeSettings', 'class' => 'progressButton', 'onclick' => 'Window.changeDbSettings()'],
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
