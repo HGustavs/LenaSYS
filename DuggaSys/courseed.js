@@ -26,6 +26,23 @@ $(document).ready(function () {
 
 AJAXService("GET", {}, "COURSE");
 
+function setup() {
+	const navBurger = document.getElementById("navBurgerIcon");
+	if (navBurger) navBurger.style.display = "block";
+
+	const navBox = document.getElementById("navBurgerBox");
+	if (navBox) {
+		navBox.style.removeProperty("display"); 
+	}
+
+	document.addEventListener("click", function (e) {
+		if (!e.target.closest("#navBurgerIcon")) {
+			if (navBox) navBox.style.display = "none";
+		}
+	});
+}
+
+
 //----------------------------------------
 // Commands:
 //----------------------------------------
@@ -969,3 +986,30 @@ function localStorageCourse() {
 function glowNewCourse(courseid) {
 	// document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
 }
+
+  function navBurgerChange() {
+	const navBox = document.getElementById("navBurgerBox");
+	if (navBox) {
+	  navBox.style.display = navBox.style.display === "block" ? "none" : "block";
+	}
+  }
+
+  function burgerToggleDarkmode() {
+	const themeStylesheet = document.getElementById('themeBlack');
+  
+	if (themeStylesheet.href.includes('blackTheme')) {
+	  themeStylesheet.href = "../Shared/css/style.css";
+	  localStorage.setItem('themeBlack', themeStylesheet.href);
+	} else {
+	  themeStylesheet.href = "../Shared/css/blackTheme.css";
+	  localStorage.setItem('themeBlack', themeStylesheet.href);
+	}
+  }
+  
+  function hamburgerChange() {
+	const hamburgerBox = document.getElementById("hamburgerBox");
+	if (hamburgerBox) {
+	  hamburgerBox.style.display = hamburgerBox.style.display === "block" ? "none" : "block";
+	}
+  }
+  

@@ -11,7 +11,6 @@ if (file_exists("../.git/refs/heads/master")) {
 } else {
 	$version = "v0.7+";
 }
-$noup="NONE";
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];	
@@ -23,6 +22,7 @@ if(isset($_SESSION['uid'])){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,9 +43,9 @@ if(isset($_SESSION['uid'])){
 	<script src="courseed.js"></script>
 </head>
 <body>
-
 	<?php
-	include '../Shared/navheader.php';
+		$noup="COURSE";
+		include '../Shared/navheader.php';
 	?>
 
 	<!-- content START -->
@@ -198,8 +198,6 @@ if(isset($_SESSION['uid'])){
     	</div>
 	</div>
 	<!-- Edit Server Settings END -->
-
-
 
 </body>
 </html>
