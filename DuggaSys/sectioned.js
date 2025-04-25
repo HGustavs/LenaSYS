@@ -2776,7 +2776,7 @@ window.addEventListener("keyup", function (event) {
         }, 200);
         //Duration time for the alert before remove
         setTimeout(function () {
-          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").classList.remove("createAlertToggle");
           document.getElementById("updateAlert").innerHTML = "";
         }, 3000);
       }
@@ -2798,31 +2798,35 @@ window.addEventListener("keyup", function (event) {
   }
   else if (event.keyCode == 39) {
     if (deleteButtonDisplay == 'flex') {
-      $('#close-item-button').focus();
+      document.getElementById('close-item-button').focus();
     }
   }
 });
 
 // React to scroll events
-$(document).scroll(function (e) {
+document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
-    localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+    localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollTop);
   }
 });
 
 // Functions to prevent collapsing when clicking icons
-$(document).on('click', '#corf', function (e) {
-  e.stopPropagation();
+document.addEventListener('click', function (e) {
+  if(e.target.id==='corf'){
+    e.stopPropagation();
+  }
 });
 
-$(document).on('click', '#dorf', function (e) {
-  e.stopPropagation();
+document.addEventListener('click', function (e) {
+  if(e.target.id==='dorf'){
+    e.stopPropagation();
+  }
 });
 
 
 // The event handler returns two elements. The following two if statements gets the element of interest.
-$(document).on('click', '.moment, .section, .statistics', function () {
-
+document.addEventListener('click', function () {
+if(this.id==='.moment' || '.section' || '.statistics'){
   if (this.id.length > 0) {
     saveHiddenElementIDs(this.id);
   }
@@ -2831,7 +2835,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
   }
   hideCollapsedMenus();
   toggleArrows(this.id);
-
+}
 });
 
 
