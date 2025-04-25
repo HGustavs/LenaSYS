@@ -849,13 +849,10 @@ p {
   display: none;
   position: absolute;
   z-index: 1;
-
-  display: flex;
   flex-direction: column;
   
-  & .dropdown-content-show {
+  &.dropdown-content-show {
     display: flex;
-    flex-direction: column;
   }
 
   & button {
