@@ -2826,69 +2826,69 @@ document.addEventListener('click', function (e) {
 
 // The event handler returns two elements. The following two if statements gets the element of interest.
 document.addEventListener('click', function () {
-if(this.id==='.moment' || '.section' || '.statistics'){
-  if (this.id.length > 0) {
-    saveHiddenElementIDs(this.id);
+  if(this.id!=null){
+    if(this.id==='.moment' || '.section' || '.statistics'){
+      if (this.id.length > 0) {
+        saveHiddenElementIDs(this.id);
+      }
+      if (this.id.length > 0) {
+        saveArrowIds(this.id);
+      }
+      hideCollapsedMenus();
+      toggleArrows(this.id);
+    }
   }
-  if (this.id.length > 0) {
-    saveArrowIds(this.id);
-  }
-  hideCollapsedMenus();
-  toggleArrows(this.id);
-}
 });
 
 
 // Setup (when loaded rather than when ready)
-$(window).load(function () {
+window.onload=function () {
   accessAdminAction();
-  $(".messagebox").hover(function () {
-    $("#testbutton").css("background-color", "red");
+  document.querySelector(".messagebox").hover=function () {
+    document.getElementById("testbutton").style.backgroundColor="red";
+  };
+  document.querySelector(".messagebox").addEventListener("mouseout", function () {
+    document.getElementById("testbutton").style.backgroundColor="#614875";
   });
-  $(".messagebox").mouseout(function () {
-    $("#testbutton").css("background-color", "#614875");
-  });
-  $("#sectionList_arrowStatisticsOpen").click(function () {
-    $("#sectionList_arrowStatisticsOpen").hide();
-    $("#sectionList_arrowStatisticsClosed").show();
-    $("#statisticsList").show();
-    $("#statistics").hide();
-    $(".statisticsContent").show();
-    $("#courseList").css({
-      'display': 'flex',
-      'flex-direction': 'column'
-    });
-    $(".statisticsContentBottom").show();
+  document.getElementById("sectionList_arrowStatisticsOpen").addEventListener("click", function () {
+    document.getElementById("sectionList_arrowStatisticsOpen").style.display="none";
+    document.getElementById("sectionList_arrowStatisticsClosed").style.display="block";
+    document.getElementById("statisticsList").style.display="block";
+    document.getElementById("statistics").style.display="none";
+    document.querySelector(".statisticsContent").style.display="block";
+    document.getElementById("courseList").style.display="flex";
+    document.getElementById("courseList").style.flexDirection="column";
+    document.querySelector(".statisticsContentBottom").style.display="block";
     if (hasDuggs) {
-      $("#swimlaneSVG").show();
-      $("#statisticsSwimlanes").show();
+      document.getElementById("swimlaneSVG").style.display="block";
+      document.getElementById("statisticsSwimlanes").style.display="block";
     }
   });
-  $("#sectionList_arrowStatisticsClosed").click(function () {
-    $("#sectionList_arrowStatisticsOpen").show();
-    $("#sectionList_arrowStatisticsClosed").hide();
-    $("#statisticsList").hide();
-    $("#swimlaneSVG").hide();
-    $("#statisticsSwimlanes").hide();
+  document.getElementById("sectionList_arrowStatisticsClosed").addEventListener("click", function () {
+    document.getElementById("sectionList_arrowStatisticsOpen").style.display="block";
+    document.getElementById("sectionList_arrowStatisticsClosed").style.display="none";
+    document.getElementById("statisticsList").style.display="none";
+    document.getElementById("swimlaneSVG").style.display="none";
+    document.getElementById("statisticsSwimlanes").style.display="none";
 
   });
-  $("#announcement").click(function () {
+  document.getElementById("announcement").addEventListener("click", function () {
     sessionStorage.removeItem("closeUpdateForm");
-    $("#announcementBoxOverlay").toggle();
-    if ($("#announcementForm").is(":hidden")) {
-      $("#announcementForm").show();
+    document.getElementById("announcementBoxOverlay").toggle();
+    if (document.getElementById("announcementForm").style.display="none") {
+      document.getElementById("announcementForm").style.display="block";
     }
 
   });
-  $("#announcementBurger").click(function () {
+  document.getElementById("announcementBurger").addEventListener("click", function () {
     sessionStorage.removeItem("closeUpdateForm");
-    $("#announcementBoxOverlay").toggle();
-    if ($("#announcementForm").is(":hidden")) {
-      $("#announcementForm").show();
+    document.getElementById("announcementBoxOverlay").toggle();
+    if (document.getElementById("announcementForm").style.display="none") {
+      document.getElementById("announcementForm").style.display="block";
     }
 
   });
-  $(".createBtn").click(function () {
+  document.querySelector(".createBtn").addEventListener("click", function () {
     sessionStorage.setItem('closeUpdateForm', true);
   });
 
@@ -2898,7 +2898,7 @@ $(window).load(function () {
   displayAnnouncementBoxOverlay();
   multiSelect();
   // toggleFeedbacks();
-});
+};
 
 
 // Show the full announcement
