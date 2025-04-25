@@ -211,7 +211,7 @@
 					?>
 					<div class="inner-wrapper">
 						<div class="input-flex">
-							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer();\""); ?>
+							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer(null);\""); ?>
 						</div>
 					</div>
 				</div>
