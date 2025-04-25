@@ -4477,7 +4477,8 @@ function setViewMode(mode){
 
 //elementID is the ID that gets passed to the dropdown component.
 function showDropdown(elementID) {
-  let element = getElementById(elementID);
+  let element = document.getElementById(elementID);
+  element.classList.toggle("dropdown-content-show");
 }
 
 // Adds the ability to close dropdown by clicking anywhere on the page.
