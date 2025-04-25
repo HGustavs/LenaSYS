@@ -6391,17 +6391,21 @@ only screen and (max-device-width: 568px) {
 #homeBurger,#goBackBurger,#darkModeBurger{
 display: none;
 }
-#navBurgerIcon { 
+.navBurgerIcon { 
   display: none;
   
 }
-@media only screen and (max-width: 380px),
-only screen and (max-device-width: 568px) {
+@media only screen and (max-width: 570px) {
 
-  #navBurgerIcon { 
+   .navBurgerIcon { 
     display: block;
     color:white;
-  }
+    font-style:24px;
+    width: 29px;
+    vertical-align: middle;
+    margin-top: 15px;
+    margin-left: 15px
+  } 
  
   #navBurgerBox{
     display: block;
