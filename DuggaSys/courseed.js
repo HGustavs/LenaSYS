@@ -196,7 +196,7 @@ function createNewCourse() {
 		AJAXService("NEW", { coursename: coursename, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
 		toast("success", "New course, " + coursename + " added!", 5);
 	}
-	setTimeout("location.reload()", 200) // refreshes the page after 0.2 seconds
+	AJAXService("GET", {}, "COURSE");
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
@@ -330,8 +330,8 @@ function updateGithubRepo(githubURL, cid) {
 
 
 function copyVersion() {
-	svers = document.getElementById("copyversion").value();
-	dvers = document.getElementById("versid").value();
+	svers = document.getElementById("copyversion").value;
+	dvers = document.getElementById("versid").value;
 	sstr = "Are you sure you want to copy from the version with id " + svers + " to a new version with the id " + dvers;
 	//all inputs = empty
 }
@@ -360,9 +360,9 @@ function createVersion() {
 	document.getElementById("editCourse").style.display = "none";
 
 	// Set Name
-	var versid = document.getElementById("versid").value();
-	var versname = document.getElementById("versname").value();
-	var cid = document.getElementById("cid").value();
+	var versid = document.getElementById("versid").value;
+	var versname = document.getElementById("versname").value;
+	var cid = document.getElementById("cid").value;
 
 	AJAXService("NEWVRS", { cid: cid, versid: versid, versname: versname }, "COURSE");
 
@@ -570,18 +570,18 @@ function updateSettings() {
 	}
 }
 function createVersion() {
-	var cid = document.getElementById("cid").value();
-	var versid = document.getElementById("versid").value();
-	var versname = document.getElementById("versname").value();
-	var coursecode = document.getElementById("course-coursecode").text();
-	//var courseid = document.getElementById("course-courseid").text();
-	var coursename = document.getElementById("course-coursename").text();
+	var cid = document.getElementById("cid").value;
+	var versid = document.getElementById("versid").value;
+	var versname = document.getElementById("versname").value;
+	var coursecode = document.getElementById("course-coursecode").textContent;
+	//var courseid = document.getElementById("course-courseid").textContent;
+	var coursename = document.getElementById("course-coursename").textContent;
 	var makeactive = document.getElementById("makeactive").checked;
-	var coursevers = document.getElementById("course-coursevers").text();
-	var copycourse = document.getElementById("copyvers").value();
-	//var comments = document.getElementById("comments").value();
-	var startdate = document.getElementById("startdate").value();
-	var enddate = document.getElementById("enddate").value();
+	var coursevers = document.getElementById("course-coursevers").textContent;
+	var copycourse = document.getElementById("copyvers").value;
+	//var comments = document.getElementById("comments").value;
+	var startdate = document.getElementById("startdate").value;
+	var enddate = document.getElementById("enddate").value;
 
 	if (versid == "" || versname == "") {
 		toast("warning", "Version Name and Version ID must be entered!", 5);
