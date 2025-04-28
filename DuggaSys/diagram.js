@@ -1100,6 +1100,18 @@ function mmoving(event) {
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
                 // We update position of connected objects
+
+                // Check coordinates of moveable element and if they are within snap threshold
+                const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
+                const snapId = visualSnapToLifeline(moveableElementPos);
+                
+                // Visualize the context snapping to lifeline (only a visual indication)
+                if (snapId) {
+                    const lLine = data.find(el => el.id === snapId);
+                    context[0].x = lLine.x + lLine.width/2 - context[0].width/2;
+                    startX = event.clientX;
+                    deltaX = 0;
+                }
                 updatepos();
                 calculateDeltaExceeded();
             }
