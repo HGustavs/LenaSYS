@@ -50,7 +50,30 @@ class Modal {
         $modal = new self(
             $id,
             'Database Connection Failed',
-            'Unable to connect to the database. Please check your root username, password, and hostname',
+            '
+                Unable to connect to the database. Please check your root username, password, and hostname.
+                Press the retry-button if you want to return to the installer at the step where it failed or 
+                change settings root user credentials and hostname here:
+
+                <div>
+                    <div class="input-grid">
+                        <div class="input-field">
+                            <label for="changeRootUsername">Root username:</label>
+                            <input id="changeRootUsername" type="text"">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="changeRootPassword">Root password:</label>
+                            <input id="changeRootPassword" type="password">
+                        </div>
+
+                        <div class="input-field">
+                            <label for="changeHostname">Hostname:</label>
+                            <input id="changeHostname" type="text">
+                        </div>
+                    </div>
+                </div> 
+            ',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
                 ['text' => 'ChangeSettings', 'class' => 'progressButton', 'onclick' => 'Window.changeDbSettings()'],
