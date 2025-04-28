@@ -3,16 +3,16 @@
 # createNewCodeExample_ms.php
 
 ## Description
-This service creates a new code example in the ‘codeexample’ table in the database and logs the event (the event of creating a new code example). 
-It retrieves the user ID (getUid_ms.php) and username (retrieveUsername_ms.php), inserts a new entry into the 'codeexample' table, generates a link for the new entry, and logs the event. The microservice then returns the link to the newly created code example as the output.
+Creates a new code example in the ‘codeexample’ table and logs the event of creating a new code example. 
+It retrieves the user ID and username, inserts a new entry into the table, generates a link for the new entry, and logs the event. Then returns the link to the newly created code example as the output.
 
 ## Input Parameters
 - Parameter: $pdo
    - Type: Database object
-   - Database connection (PDO)
+   - Description: Database connection 
 
 - Parameter: $exampleid
-   - Type: int
+   - Type: mediumint
    - Description: Example ID (optional), used to name the example section incrementally
 
 - Parameter: $courseid
@@ -24,11 +24,11 @@ It retrieves the user ID (getUid_ms.php) and username (retrieveUsername_ms.php),
    - Description: Course version
 
 - Parameter: $sectname
-   - Type: String
+   - Type: varchar
    - Description: Name of section that the code example will belong to
 
 - Parameter: $link
-   - Type: String
+   - Type: varchar
    - Description: Reference link, updated later with the new example ID. Used to store the ID of the new code example
 
 - Parameter: $log_uuid
@@ -55,14 +55,14 @@ It retrieves the user ID (getUid_ms.php) and username (retrieveUsername_ms.php),
 -
 
 ### Microservices Used
-- getUID_ms.php retrieves user ID, to log who has created a new code example
-- retrieveUsername_ms.php retrieves the username of the user ID, to log who has created a new code example
+- getUID_ms.php
+- retrieveUsername_ms.php
 
 
 # createNewListEntry_ms.php
 
 ## Description
-Inserts a new entry into the ‘listentries’ table in the database, fetches the username of the user who created the entry of the current user (through retrieveUsername_ms.php) and logs the event. Actions and events logged in the system need to be associated with a user.
+Inserts a new entry into the ‘listentries’ table in the database, fetches the username of the user who created the entry of the current user and logs the event. Actions and events logged in the system need to be associated with a user.
 
 ## Input Parameters
 - Parameter: $pdo
@@ -74,7 +74,7 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
    - Description: Course ID to which the list entry belongs to
 
 - Parameter: $coursesvers
-   - Type: int
+   - Type: varchar
    - Description: Course version
 
 - Parameter: $userid
@@ -82,11 +82,11 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
    - Description: User ID of who created the entry
 
 - Parameter: $entryname
-   - Type: String (?)
+   - Type: varchar
    - Description: Name of the entry
 
 - Parameter: $link
-   - Type: String (?)
+   - Type: varchar
    - Description: URL associated with the list entry (?)
 
 - Parameter: $kind
@@ -94,11 +94,11 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
    - Description: Type/kind of list entry
 
 - Parameter: $comment
-   - Type: int
+   - Type: varchar
    - Description: Comment about list entry
 
 - Parameter: $visible
-   - Type: int
+   - Type: tinyint
    - Description: Visibility
 
 - Parameter: $highscoremode
@@ -114,11 +114,11 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
    - Description: Grading system. Used for entries with kind 4.
 
 - Parameter: $tabs
-   - Type: int
+   - Type: tinyiny
    - Description: Tabs setting. Used for all entry-types, except for kind 4.
 
 - Parameter: $grptype
-   - Type: int
+   - Type: varchar
    - Description: Group kind/type for the entry. If it is UNK/grptype is not used, username of the user who created the entry is logged instead.
 
 ## Calling Methods
@@ -133,5 +133,5 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
 -
 
 ### Microservices Used
-- retrieveUsername_ms.php as an include_once
+- retrieveUsername_ms.php
 - basic.php 
