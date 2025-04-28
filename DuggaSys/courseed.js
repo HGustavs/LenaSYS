@@ -970,6 +970,10 @@ function glowNewCourse(courseid) {
 	// document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
 }
 
+/* --------------===============################================-------------- *
+ * 							Hamburger menu functions							*
+ * --------------================################================-------------- */
+
 /*navburger*/
 function navBurgerChange(operation = 'click') {
 	var x = document.getElementById("navBurgerBox");

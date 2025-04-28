@@ -93,7 +93,7 @@
 				echo"</div>";
 				
 				echo "<div id='goBackBurgerDiv'>";
-			
+				// Code to not show the "go-back" button in courseed.php.
 				if($noup=='NONE'){
 					echo "<a id='goBackBurger'style='display: none;'>";
 				}
