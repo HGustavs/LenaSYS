@@ -12,6 +12,7 @@ What i mean with function with parameter and no return is a function like this:
 When you get an issue you will get something like Re-engineer microservice setAsActiveCourse. This means that you will need to change how this service works, as well as all services that use it. 
 
 In the case of setAsActiveCourse we can check the inverse dependency documentation and see that updateCourseVersion and updateCourseVersionSectioned uses this service.
+[Inverse Dependencies](../Microservices_inverse_dependencies.md)
 
 The end goal is to be able to remove the include /.../setAsActiveCourse from the two updateCourseVersion files.
 
@@ -34,6 +35,10 @@ In the file updateCourseVersion on line 86 we find, the function has been locate
 In our case here we see a simple function call with no return expected (ie, no $result = setAsActiveCourse())
 
 This means we want to use a POST call to be able to send variables, and set our return option to false since we don't expect an answer from the function.
+
+# What is POST and cURL
+POST is a method to transfer data, it is used most often when something should be changed in the database (create, update or delete). cURL is the tool used to send the data via HTTP. So cURL starts the connection to HTTP, tells it to send the provided data using POST. We can then retrieve the data at the specified location in the call.
+
 
 # Implement the POST call
 
@@ -61,7 +66,7 @@ This will replace the function call setAsActiveCourse($pdo, $cid, $versid);
 This might look like a lot but if we take it step by step there isn't alot of crazy things happening.
 
 ## header
-First line is a header to say that the information we will send is of type json.
+First line is a header to say that the information we will send is of type json. (This will always be the case in our context)
 
 ## url setup
 The next two lines are to setup the url to the service we want to call, since we don't have the include anymore we must tell our program where to send the POST call.
@@ -72,7 +77,7 @@ The next line is to initialise a curl call on the url provided, this just tells 
 
 Next three lines are options to the curl call, 
 first is to say we don't want a return, 
-next is to specify that we want to use POSt,
+next is to specify that we want to use POST,
 last is to specify the fields to send with the POST.
 
 The fields will be the same as the ones in the original function call (setAsActiveCourse($pdo, $cid, $versid);), you will see that $pdo is missing, this is because we cannot send a pdo object over HTTP POST. Don't worry about that for now.
