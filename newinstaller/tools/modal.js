@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let modal = document.getElementById("genericModal");
+    let modal;
     let closeModalBtn = document.getElementById("closeModal");
     let openModalBtn = document.getElementById("openModal");
     let dataError;
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
         dataError = dataLowerCase;
         data = newData;
-        openModalBtn.style.display = "block";
+        showModalButton();
     }
 
     function openModal() {
@@ -32,6 +32,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeModal() {
         modal.style.display = "none";
+    }
+
+    function showModalButton() {
+        openModalBtn.style.display = "block";
+    }
+
+    function hideModalButton() {
+        openModalBtn.style.display = "none";
     }
 
     if (closeModalBtn != null) {
@@ -91,12 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
         
         closeModal();
+        hideModalButton();
     }
 
     Window.changeDbSettings = function() {
         console.log("Changing DB settings...");
         // Logic for changing DB settings will be implemented here.
         closeModal();
+        hideModalButton();
     }
 
     Window.forceCreateDb = function() {
@@ -107,12 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         start_installer(data);
         closeModal();
+        hideModalButton();
     }
 
     Window.restartInstaller = function() {
         console.log("Restarting installer...");
         // Logic to restart the installer will be implemented here.
         closeModal();
+        hideModalButton();
     }
 
     // Expose the closeModal function globally
