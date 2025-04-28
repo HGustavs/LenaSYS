@@ -78,6 +78,10 @@ foreach ($mdFiles as $mdFile) {
                     if ($line === '' || preg_match('/^#+ /', $line)) {
                         break;
                     }
+                    // skip template placeholder text
+                    if ($line === '*Description of what the service do and its function in the system.*') {
+                        continue;
+                    }
                     $descLines[] = $line;
                 }
                 // connect the rows if a row was found 
