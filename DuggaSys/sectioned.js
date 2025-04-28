@@ -1611,7 +1611,7 @@ function returnedSection(data) {
     // Hide som elements if to narrow
     var hiddenInline = "";
     var showInline = true;
-    if ($(window).width() < 480) {
+    if (window.innerWidth < 480) {
       showInline = false;
       hiddenInline = "none";
     } else {
@@ -2223,11 +2223,11 @@ function returnedSection(data) {
 
     if (resave == true) {
       str = "";
-      $("#Sectionlist").find(".item").each(function (i) {
+      document.querySelectorAll("#Sectionlist .item").forEach(function (currentItem, i) {
         if (i > 0) str += ",";
-        ido = $(this).attr('id');
-        phld = $(this).attr('placeholder')
-        str += i + "XX" + ido.substr(1) + "XX" + phld;
+        var ido = currentItem.id;
+        var phld = currentItem.getAttribute("placeholder");
+        str += i + "XX" + ido.slice(1) + "XX" + phld;
 
       });
       AJAXService("REORDER", {
@@ -2237,9 +2237,9 @@ function returnedSection(data) {
     }
 
     if (hasDuggs === false || navigator.vendor == ("Apple Computer, Inc.")) {
-      $("#statisticsSwimlanes").hide();
-      $("#sectionList_arrowStatisticsOpen").hide();
-      $("#sectionList_arrowStatisticsClosed").hide();
+      document.getElementById("statisticsSwimlanes").style.display = "none";
+      document.getElementById("sectionList_arrowStatisticsOpen").style.display = "none";
+      document.getElementById("sectionList_arrowStatisticsClosed").style.display = "none";
     }
 
     if (data['writeaccess']) {
@@ -2276,7 +2276,7 @@ function returnedSection(data) {
       "<span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML += str;
-    $("#newCourseVersion").css("display", "block");
+    document.getElementById("newCourseVersion").style.display = "block";
 
 
 
@@ -2314,7 +2314,8 @@ function returnedSection(data) {
     }
 
     // Change the scroll position to where the user was last time.
-    window.scrollTop(0, localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+    window.scrollTo(0, localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
 
     // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
     replaceDefualtLink();
