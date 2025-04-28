@@ -15,19 +15,19 @@ Creates a new user-event entry and adds it to the database 'log_db'. Helps maint
    - Description: Username associated with the uid (user ID)
 
 - Parameter: eventType
-   - Type: String
+   - Type: int
    - Description: The type of event triggered by the user
 
 - Parameter: description
-   - Type: String
+   - Type: varchar
    - Description: Text explaining the event
 
 - Parameter: userAgent
-   - Type: String
+   - Type: text
    - Description: Not an input parameter. The device and browser used by the user, retrieved automatically.
 
 - Parameter: remoteAddress
-   - Type: String
+   - Type: varchar
    - Description: Not an input parameter. The IP address of the user's device, retrieved automatically.
 
 ## Calling Methods
