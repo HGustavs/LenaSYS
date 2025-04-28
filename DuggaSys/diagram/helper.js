@@ -119,8 +119,12 @@ function entityIsOverlapping(id, x, y) {
 
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
-            // Sequence life-lines can be placed on activations
-            if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") && element.kind === "sequenceActivation") continue;
+        if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") &&
+        element.kind === "sequenceActivation") {
+
+        if (y < headerBottom) return true;   
+        continue;                            
+    }
 
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
             else if (data[i].type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
