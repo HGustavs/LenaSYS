@@ -70,6 +70,7 @@ if (!$query->execute()) {
     $debug = "Error updating entries " . $error[2];
 }
 
+
 // Check if selected course version should be set as active
 if ($makeactive == 3) {
     header("Content-Type: application/json");
@@ -90,6 +91,7 @@ if ($makeactive == 3) {
     // Execute the POST request and close cURL
     curl_exec($ch);
     curl_close($ch);
+
 }
 
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
