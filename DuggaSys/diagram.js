@@ -135,7 +135,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
-        updateAutoSave()
+        updateLatestChange()
     }
 
     /**
@@ -1795,9 +1795,9 @@ function storeDiagramInLocalStorage(key) {
             initialState: stateMachine.initialState
         };
 
-        // Sets the autosave diagram first, if it is not already set.
+        // Sets the latestChange diagram first, if it is not already set.
         if (!localStorage.getItem("diagrams")) {
-            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`;
+            let s = `{"latestChange": ${JSON.stringify(objToSave)}}`;
             localStorage.setItem("diagrams", s);
         }
         // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
@@ -1813,21 +1813,22 @@ function storeDiagramInLocalStorage(key) {
 }
 
 //Moastly the same as storeDiagramInLocalStorage
-//Uppdates the autosave to always be in the latest state
-function updateAutoSave() {
-    if (stateMachine.currentHistoryIndex === -1) return;
+//Uppdates the latestChange to always be in the latest state
+function updateLatestChange() {
+    if (stateMachine.currentHistoryIndex === -1){
+       return; 
+    }
     stateMachine.removeFutureStates();
   
     const objToSave = {
-      historyLog:   stateMachine.historyLog,
-      initialState: stateMachine.initialState
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
     };
-  
-    const raw = localStorage.getItem("diagrams") || "{}";
-    const diagrams = JSON.parse(raw);
-    diagrams.AutoSave = objToSave;
+    const jsonData = localStorage.getItem("diagrams") || "{}";
+    const diagrams = JSON.parse(jsonData);
+    diagrams.latestChange = objToSave;
     localStorage.setItem("diagrams", JSON.stringify(diagrams));
-  }
+}
 
 /**
  * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
@@ -2036,7 +2037,7 @@ function showModal() {
             wrapper.style.display = "flex";
             btn.style.width = '100%';
 
-            if (btnText.textContent !== 'AutoSave') { // Only show delete button if not AutoSave
+            if (btnText.textContent !== 'latestChange') { // Only show delete button if not latestChange
                 let delBtn = document.createElement('button');
                 delBtn.classList.add('deleteLocalDiagram');
                 delBtn.setAttribute("onclick", `removeLocalDiagram('${diagramKeys[i]}');showModal();`);
@@ -2046,8 +2047,8 @@ function showModal() {
             container.appendChild(wrapper);
         }
 
-        // Update label count, exclude AutoSave from count
-        const filteredKeys = diagramKeys.filter(key => key !== 'AutoSave'); // Exclude 'AutoSave'
+        // Update label count, exclude latestChange from count
+        const filteredKeys = diagramKeys.filter(key => key !== 'latestChange'); // Exclude 'latestChange'
         document.getElementById('loadCounter').innerHTML = filteredKeys.length; // Set the label count
     }
 
@@ -2088,7 +2089,7 @@ function loadDiagramFromLocalStorage(key) {
 function saveDiagramBeforeUnload() {
     if (data.length) {
         window.addEventListener("beforeunload", (e) => {
-            storeDiagramInLocalStorage("AutoSave");
+            storeDiagramInLocalStorage("latestChange");
         })
     }
 }
@@ -2234,20 +2235,20 @@ function removeLocalDiagram(item) {
     local = (local[0] == "{") ? local : `{${local}}`;
     let localDiagrams = JSON.parse(local);
 
-    if (item !== 'AutoSave') {
+    if (item !== 'latestChange') {
         delete localDiagrams[item];
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
         showModal(); // Refresh the modal after deletion
     } else {
-        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'"); // Prevent deleting AutoSave
+        displayMessage(messageTypes.ERROR, "Error, unable to delete 'latestChange'"); // Prevent deleting latestChange
     }
 
-    // After deletion, update the counter again, excluding 'AutoSave'
+    // After deletion, update the counter again, excluding 'latestChange'
     let updatedLocal = localStorage.getItem("diagrams");
     if (updatedLocal) {
         updatedLocal = (updatedLocal[0] == "{") ? updatedLocal : `{${updatedLocal}}`;
         let updatedDiagrams = JSON.parse(updatedLocal);
-        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'AutoSave');
+        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'latestChange');
         document.getElementById('loadCounter').innerHTML = updatedKeys.length; // Update the counter
     }
 }
