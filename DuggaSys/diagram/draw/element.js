@@ -60,7 +60,7 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:;` :
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:2;` :
              `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
