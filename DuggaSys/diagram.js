@@ -1693,29 +1693,6 @@ function holdPlacementButtonDown(num) {
     }
 }
 
-// Add hover-specific event listeners for elements
-for (let i = 0; i <= 4; i++) { // Adjust the range based on your number of elements
-    const element = document.getElementById("elementPlacement" + i);
-    
-    // For hover, use 'mouseenter' and 'mouseleave' to trigger the hoverPlacementButton
-    element.addEventListener('mouseenter', function() {
-        hoverPlacementButton(i);
-    });
-
-    element.addEventListener('mouseleave', function() {
-        hoverPlacementButton(i);
-    });
-
-    // Optionally, keep the original mousedown/mouseup if needed
-    element.addEventListener('mousedown', function() {
-        holdPlacementButtonDown(i);
-    });
-
-    element.addEventListener('mouseup', function() {
-        holdPlacementButtonDown(i);
-    });
-}
-
 /**
  * @description resets the mousepress.
  * USED IN PHP

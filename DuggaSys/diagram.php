@@ -118,8 +118,8 @@
                     <div id="elementPlacement0"
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(0); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(0)"><!--<-- UML functionality -->
+                         onmouseenter='hoverPlacementButton(0)'
+                         onmouseleave="hoverPlacementButton()"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Add an ER entity to the diagram</p>
@@ -179,8 +179,8 @@
                     <div id="elementPlacement4"
                          class="UMLButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(4); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(4)">
+                         onmouseenter='hoverPlacementButton(4)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
                             <p>Add an UML class to the diagram</p>
@@ -239,8 +239,8 @@
                     <div id="elementPlacement6"
                          class="IEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(6); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(6)">
+                         onmouseenter='hoverPlacementButton(6)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
                             <p>Add an IE entity to the diagram</p>
@@ -300,8 +300,8 @@
                     <div id="elementPlacement8" 
                         class="SDButton diagramIcons toolbarMode" 
                         onclick='setElementPlacementType(8); setMouseMode(2);'
-                        onmouseup='holdPlacementButtonUp();'
-                        onmousedown='holdPlacementButtonDown(8);'>
+                        onmouseenter='hoverPlacementButton(8);'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add state diagram state to the diagram</p>
@@ -362,8 +362,8 @@
                     <div id="elementPlacement1"
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(1); setMouseMode(2);'
-                         onmouseenter='holdPlacementButtonUp();'
-                         onmouseleave="holdPlacementButtonDown(1)"> <!--<-- UML functionality -->
+                         onmouseenter='hoverPlacementButton(1);'
+                         onmouseleave="hoverPlacementButton()"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Add a ER relation to the diagram</p>
@@ -421,8 +421,8 @@
                     <div id="elementPlacement5"
                          class="UMLButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(5); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(5)">
+                         onmouseenter='hoverPlacementButton(5)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Add an UML inheritance to the diagram</p>
@@ -481,8 +481,8 @@
                     <div id="elementPlacement7"
                          class="IEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(7); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(7)">
+                         onmouseenter='hoverPlacementButton(7)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
                             <p>Add an IE inheritance to the diagram</p>
@@ -541,8 +541,8 @@
                     <div id="elementPlacement2"
                          class="ERAttribute diagramIcons toolbarMode"
                          onclick='setElementPlacementType(2); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(2)">
+                         onmouseenter='hoverPlacementButton(2)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>ER Attribute</b><br>
                             <p>Add a ER attribute to the diagram</p>
@@ -607,8 +607,8 @@
                     <div id="elementPlacement9"
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(9); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(9)"><!--<-- UML functionality -->
+                         onmouseenter='hoverPlacementButton(9)'
+                         onmouseleave="hoverPlacementButton()"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         <span class="toolTipText"><b>UML initial state</b><br>
                             <p>Creates an initial state for UML.</p>
@@ -658,8 +658,8 @@
                     <div id="elementPlacement10"
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(10); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(10)">
+                         onmouseenter='hoverPlacementButton(10)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         <span class="toolTipText"><b>UML final state</b><br>
                             <p>Creates a final state for UML.</p>
@@ -709,8 +709,8 @@
                     <div id="elementPlacement11" 
                          class="SDButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(11); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp();'
-                         onmousedown="holdPlacementButtonDown(11)">
+                         onmouseenter='hoverPlacementButton(11)'
+                         onmouseleave="hoverPlacementButton()">
                         <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         <span class="toolTipText"><b>UML super state</b><br>
                             <p>Creates a super state.</p>
@@ -763,8 +763,8 @@
                     <div id="elementPlacement12"
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(12); setMouseMode(2);'
-                         onmouseenter='holdPlacementButtonUp()'
-                         onmouseleave="holdPlacementButtonDown(12)">
+                         onmouseenter='hoverPlacementButton(12)'
+                         onmouseleave="hoverPlacementButton()">
                          <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram</p>
@@ -822,8 +822,8 @@
                     <div id="elementPlacement16"
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(16); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(16)">
+                         onmouseenter='hoverPlacementButton(16)'
+                         onmouseleave="hoverPlacementButton()">
                          <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Creates an activation box.</p>
@@ -880,8 +880,8 @@
                     <div id="elementPlacement13"
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(13); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(13)">
+                         onmouseenter='hoverPlacementButton(13)'
+                         onmouseleave="hoverPlacementButton()">
                          <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Creates an activation box.</p>
@@ -938,8 +938,8 @@
                     <div id="elementPlacement14"
                          class="SEButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(14); setMouseMode(2);'
-                         onmouseup='holdPlacementButtonUp()'
-                         onmousedown="holdPlacementButtonDown(14)">
+                         onmouseenter='hoverPlacementButton(14)'
+                         onmouseleave="hoverPlacementButton()">
                          <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
                                 <p>Creates a option loop or alternative.</p><br>
