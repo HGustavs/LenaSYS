@@ -969,3 +969,13 @@ function localStorageCourse() {
 function glowNewCourse(courseid) {
 	// document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
 }
+
+/*navburger*/
+function navBurgerChange(operation = 'click') {
+	var x = document.getElementById("navBurgerBox");
+	if(x.style.display === "block") {
+	  x.style.display = "none";
+	} else {
+	  x.style.display = "block";
+	}
+}
