@@ -55,7 +55,7 @@ function IsLoggedIn(bool) {
 
 
 /*navburger*/
-window.navBurgerChange = function(operation = 'click') {
+function navBurgerChange(operation = 'click') {
 
   var x = document.getElementById("navBurgerBox");
   if (x.style.display === "block") {
