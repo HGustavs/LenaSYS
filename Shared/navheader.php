@@ -93,6 +93,10 @@
 				echo"</div>";
 				
 				echo "<div id='goBackBurgerDiv'>";
+			
+				if($noup=='NONE'){
+					echo "<a id='goBackBurger'style='display: none;'>";
+				}
 				if($noup=='COURSE'){
 				echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
 				}
