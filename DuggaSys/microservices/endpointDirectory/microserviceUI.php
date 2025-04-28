@@ -4,6 +4,16 @@ $db = new PDO('sqlite:endpointDirectory_db.sqlite');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $services = $db->query("SELECT * FROM microservices")->fetchAll();
 
+// search functionality safe from injections
+if (isset($_GET['search'])) {
+    $searchTerm = "%".$_GET['search']."%";
+    $stmt = $db->prepare("SELECT * FROM microservices WHERE ms_name LIKE ? OR description LIKE ?");
+    $stmt->execute([$searchTerm, $searchTerm]);
+    $services = $stmt->fetchAll();
+} else {
+    $services = $db->query("SELECT * FROM microservices")->fetchAll();
+}
+
 // show microservices and view details
 if (isset($_GET['id'])) {
     $stmt = $db->prepare("SELECT * FROM microservices WHERE id = ?");
@@ -40,9 +50,13 @@ if (isset($_GET['id'])) {
             <h1>Microservice Directory</h1>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <form method="" style="display: flex; gap: 5px;">
-                <input type="text" name="search" placeholder="Search...">
-                <button type="submit">Search</button>
+
+            <form method="GET">
+                <input type="text" name="search" placeholder="Search name/description">
+                    <button type="submit">Search</button>
+                <?php if (isset($_GET['search'])): ?>
+                    <a href="?">Reset</a>
+                <?php endif; ?>
             </form>
 
             <div style="display: flex; gap: 10px;">
