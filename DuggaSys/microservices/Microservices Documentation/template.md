@@ -8,13 +8,13 @@ Example of template for the documentation:
 ## Input Parameters
 *Parameters will be described in lists*
 
-- Parameter
-   - Type
-   - Description
+- Parameter: paramName
+   - Type: int
+   - Description: describe parameter
 
-- Parameter
-   - Type
-   - Description
+- Parameter: paramName
+   - Type: int
+   - Description: describe parameter
 
 ## Calling Methods
 

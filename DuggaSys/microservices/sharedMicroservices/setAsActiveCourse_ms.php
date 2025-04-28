@@ -1,22 +1,41 @@
 <?php
+
+//----------------------------------------------------------------------------------
+// setAsActiveCourse_ms.php - Used to update which course version should be active
+//----------------------------------------------------------------------------------
+
 date_default_timezone_set("Europe/Stockholm");
-
 include_once "../../../Shared/basic.php";
-include_once "../HelperFunction_ms.php";
 
-pdoConnect();
-session_start();
 
-$data = recievePost(['cid', 'vers']);
 
-$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-$query->bindParam(':cid', $data['cid']);
-$query->bindParam(':vers', $data['vers']);
+header("Content-Type: application/json");
 
-if (!$query->execute()) {
-    $error = $query->errorInfo();
-    echo json_encode(["success" => false, "error" => $error[2]]);
-    exit;
+// Connect to database
+pdoConnect(); 
+
+$cid;
+$versid;
+
+
+// Handle incoming POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['cid'], $_POST['versid'])) {
+        $cid = $_POST['cid'];
+        $versid = $_POST['versid'];
+	}
 }
 
-echo json_encode(["success" => true]);
+// Prepare the SQL update
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $versid);
+
+// Executes the query and handles the response 
+if ($query->execute()) {
+    echo json_encode(["status" => "success"]);
+} else {
+    $error = $query->errorInfo();
+    echo json_encode(["status" => "error", "message" => $error[2]]);
+}
+
