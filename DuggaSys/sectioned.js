@@ -860,7 +860,7 @@ function markedItems(item = null, typeInput) {
       const element = elements[i];
       var tempItem = element.getAttribute('value');
 
-      console.log('affected item: ' + tempItem);
+      //console.log('affected item: ' + tempItem);
 
       // if part of a section, add it to subItems.
       if (itemInSection && sectionStart) {
@@ -870,12 +870,12 @@ function markedItems(item = null, typeInput) {
         // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
-          console.log('item isnt in section. ( ' + tempItem + ' ) ');
+          //console.log('item isnt in section. ( ' + tempItem + ' ) ');
           break;
         } 
         else {
           subItems.push(tempItem);
-          console.log('pushed to subitems: ' + tempItem );
+          //console.log('pushed to subitems: ' + tempItem );
         }
       } 
       
@@ -883,32 +883,7 @@ function markedItems(item = null, typeInput) {
         sectionStart = true;
       }
     }
-
-    /*document.querySelectorAll('#Sectionlist .item').forEach(function(element, i){
-      var tempItem = element.getAttribute('value');
-      console.log('affected item: ' + tempItem);
-
-      // if part of a section, add it to subItems.
-      if (itemInSection && sectionStart) {
-        var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = element ? element.closest('tr').getAttribute('value'): null;
-
-        // if not part of current section, (should stop looking.)
-        if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
-          itemInSection = false;
-          console.log('item isnt in section. ( ' + tempItem + ' ) ');
-        } 
-        else {
-          subItems.push(tempItem);
-          console.log('pushed to subitems: ' + tempItem );
-        }
-      } 
-      
-      else if (tempItem == active_lid){ 
-        sectionStart = true;
-      }
-
-    });*/
+    
   }
 
   // handles selections
@@ -916,12 +891,51 @@ function markedItems(item = null, typeInput) {
     let tempSelectedItemListLength = selectedItemList.length;
     for (let i = 0; i < tempSelectedItemListLength; i++) {
 
+      var tempKind = item ? item.closest('tr').getAttribute('value'): null;
+      console.log('this is tempKind' + tempKind);
+
       //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
       if (selectedItemList[i] === active_lid && typeInput != "trash") {
         document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
         var removed = true;
+
+        if (tempKind != "section" || tempKind != "moment" || tempKind != "header"){
+          var itemInSection = true;
+          var sectionEnd = false;
+          const elements = document.querySelectorAll('#Sectionlist .item');
+      
+          for (let i = elements.length - 1 ; i >= 0 ; i--){
+            const element = elements[i];
+            var tempItem = element.getAttribute('value');
+            console.log('affected item: ' + tempItem);
+
+            if (itemInSection && sectionEnd) {
+              var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+      
+              // if not part of current section, stop looking.
+              if ((tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+                itemInSection = false;
+                console.log('item is section header: ( ' + tempItem + ' ) ');
+                
+                // removes the section-header from selectedItemList, and unchecks it
+                document.getElementById(tempItem + "-checkbox").checked = false;
+                for (let i = 0; i < tempSelectedItemListLength; i++) {
+                  if (selectedItemList[i] === tempItem){
+                    selectedItemList.splice(i, 1);
+                  }
+                }
+                break;
+              } 
+            } 
+            else if (tempItem == active_lid){ 
+              sectionEnd = true;
+              console.log('this is first!');
+            }
+          }
+        }
       }
+
       //unchecks children of section
       for (var j = 0; j < subItems.length; j++) {
         if (selectedItemList[i] == subItems[j]) {
