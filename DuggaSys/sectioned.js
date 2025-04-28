@@ -1,4 +1,3 @@
-console.log("sectioned.js loaded ✅");
 // -------------==============######## Globals ###########==============-------------
 
 var querystring = parseGet();
