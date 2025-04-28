@@ -6418,6 +6418,7 @@ header td.navBurgerIcon {
  
   #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
     display: block;
+    margin-bottom: 10px;
   }
 
  #home, #back, #theme-toggle{
