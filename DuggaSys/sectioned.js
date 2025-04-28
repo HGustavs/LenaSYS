@@ -870,12 +870,10 @@ function markedItems(item = null, typeInput) {
         // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
-          //console.log('item isnt in section. ( ' + tempItem + ' ) ');
           break;
         } 
         else {
           subItems.push(tempItem);
-          //console.log('pushed to subitems: ' + tempItem );
         }
       } 
       
@@ -883,7 +881,6 @@ function markedItems(item = null, typeInput) {
         sectionStart = true;
       }
     }
-    
   }
 
   // handles selections
@@ -896,43 +893,24 @@ function markedItems(item = null, typeInput) {
 
       //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
       if (selectedItemList[i] === active_lid && typeInput != "trash") {
-        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
-        selectedItemList.splice(i, 1);
-        var removed = true;
+        
+        //console.log('lid: ' + active_lid + '- ' + tempKind);
 
-        if (tempKind != "section" || tempKind != "moment" || tempKind != "header"){
-          var itemInSection = true;
-          var sectionEnd = false;
-          const elements = document.querySelectorAll('#Sectionlist .item');
-      
-          for (let i = elements.length - 1 ; i >= 0 ; i--){
-            const element = elements[i];
-            var tempItem = element.getAttribute('value');
-            console.log('affected item: ' + tempItem);
-
-            if (itemInSection && sectionEnd) {
-              var tempKind = element ? element.closest('tr').getAttribute('value'): null;
-      
-              // if not part of current section, stop looking.
-              if ((tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
-                itemInSection = false;
-                console.log('item is section header: ( ' + tempItem + ' ) ');
-                
-                // removes the section-header from selectedItemList, and unchecks it
-                document.getElementById(tempItem + "-checkbox").checked = false;
-                for (let i = 0; i < tempSelectedItemListLength; i++) {
-                  if (selectedItemList[i] === tempItem){
-                    selectedItemList.splice(i, 1);
-                  }
-                }
-                break;
-              } 
-            } 
-            else if (tempItem == active_lid){ 
-              sectionEnd = true;
-              console.log('this is first!');
+        // deselection of child -> deselect parent
+        if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
+          let parent = recieveCodeParent(active_lid);
+          //console.log('parent: ' + parent);
+          document.getElementById(parent + "-checkbox").checked = false;
+          for (let i = 0; i < tempSelectedItemListLength; i++) {
+            if (selectedItemList[i] === parent){
+              selectedItemList.splice(i, 1);
             }
           }
+        }
+        else {            
+          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+          selectedItemList.splice(i, 1);
+          var removed = true;
         }
       }
 
@@ -1025,6 +1003,35 @@ function clearHideItemList() {
   selectedItemList = [];
 }
 
+// Finds code-duggas parent - used in markedItems() for unselection of section
+function recieveCodeParent(item){
+  var itemInSection = true;
+  var sectionStart = false;
+  const elements = document.querySelectorAll('#Sectionlist .item');
+
+  for (let i = elements.length - 1 ; i >= 0 ; i--){
+    const element = elements[i];
+    var tempItem = element.getAttribute('value');
+    console.log('affected item: ' + tempItem);
+
+    if (itemInSection && sectionStart) {
+      var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+
+      // if section head, parent found.
+      if ((tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+        itemInSection = false;
+        console.log('item is section header: ( ' + tempItem + ' ) ');
+        parent = tempItem;
+        return parent;
+      } 
+    } 
+
+    else if (tempItem == item){ 
+      sectionStart = true;
+      console.log('this is our unchecked item!');
+    }
+  }
+}
 
 function closeSelect() {
 
