@@ -6391,13 +6391,13 @@ only screen and (max-device-width: 568px) {
 #homeBurger,#goBackBurger,#darkModeBurger{
 display: none;
 }
-.navBurgerIcon { 
-  display: none;
-  
-}
-@media only screen and (max-width: 570px) {
 
-   .navBurgerIcon { 
+header td.navBurgerIcon {
+  display: none;
+}
+
+@media only screen and (max-width: 570px) {
+  header td.navBurgerIcon {
     display: block;
     color:white;
     font-size:24px;
