@@ -3004,20 +3004,23 @@ function validateCreateAnnouncementForm() {
   });
 }
 function validateUpdateAnnouncementForm() {
-  $("#announcementForm").submit(function (e) {
-    var announcementTitle = ($("#announcementTitle").val()).trim();
-    var announcementMsg = ($("#announcementMsg").val()).trim();
+  const form = document.getElementById("announcementForm");
 
-    if (announcementTitle == null || announcementTitle == '') {
-      $("#announcementTitle").addClass('errorCreateAnnouncement');
+  form.addEventListener("submit", function (e) {
+    const announcementTitle = document.getElementById("announcementTitle");
+    const announcementMsg   = document.getElementById("announcementMsg");
+    const title = announcementTitle.value.trim();
+    const msg   = announcementMsg.value.trim();
+
+    if (!title) {
+      announcementTitle.classList.add("errorCreateAnnouncement");
       e.preventDefault();
-    } else if (announcementMsg == null || announcementMsg == '') {
-      $("#announcementMsg").addClass('errorCreateAnnouncement');
+    } else if (!msg) {
+      announcementMsg.classList.add("errorCreateAnnouncement");
       e.preventDefault();
     }
-    $(".errorCreateAnnouncement").css({
-      'border': '1px solid red'
-    });
+
+    document.querySelectorAll(".errorCreateAnnouncement").forEach(el => (el.style.border = "1px solid red"));
   });
 }
 // Retrive announcements
@@ -3125,46 +3128,41 @@ function handleResponse(xhttp, updateannouncementid, cid, versid) {
 
 // Announcement card grid and list view
 function displayListAndGrid() {
-  $("#displayAnnouncements").prepend('<div id="btnContainer"><button class="btn listBtn">' +
-    '<i alt="list icon" class="fa fa-bars"></i> List</button>' +
-    '<button class="btn active gridBtn"><i alt="grid icon" class="fa fa-th-large">' +
-    '</i> Grid</button></div><br>');
+  const disp = document.getElementById("displayAnnouncements");
+  disp.insertAdjacentHTML(
+    "afterbegin",
+    `<div id="btnContainer">
+       <button class="btn listBtn"><i class="fa fa-bars"  alt="list icon"></i> List</button>
+       <button class="btn active gridBtn"><i class="fa fa-th-large" alt="grid icon"></i> Grid</button>
+     </div><br>`
+  );
 
-  var announcementCard = document.getElementsByClassName("announcementCard");
-  var i;
+  const cards = Array.from(document.getElementsByClassName("announcementCard"));
 
-  $(".listBtn").click(function () {
-    for (i = 0; i < announcementCard.length; i++) {
-      announcementCard[i].style.width = "100%";
-    }
-  });
+  document.querySelector(".listBtn").addEventListener("click", () => cards.forEach(c => (c.style.width = "100%")));
+  document.querySelector(".gridBtn").addEventListener("click", () => cards.forEach(c => (c.style.width = "48%")));
 
-  $(".gridBtn").click(function () {
-    for (i = 0; i < announcementCard.length; i++) {
-      announcementCard[i].style.width = "48%";
-    }
-  });
-
-  var btnContainer = document.getElementById("btnContainer");
-  var btns = btnContainer.getElementsByClassName("btn");
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function () {
-      var current = document.getElementsByClassName("active");
-      current[0].className = current[0].className.replace(" active", "");
-      this.className += " active";
+  document.querySelectorAll("#btnContainer .btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      document.querySelector("#btnContainer .btn.active")?.classList.remove("active");
+      this.classList.add("active");
     });
-  }
-
-  $(window).resize(function () {
-    if (($(window).width()) < 1050) {
-      $(".gridBtn").removeClass("active");
-      $(".listBtn").addClass("active");
-    } else {
-      $(".listBtn").removeClass("active");
-      $(".gridBtn").addClass("active");
-    }
   });
+
+  function toggleButtons() {
+    if (window.innerWidth < 1050) {
+      document.querySelector(".gridBtn").classList.remove("active");
+      document.querySelector(".listBtn").classList.add("active");
+    } else {
+      document.querySelector(".listBtn").classList.remove("active");
+      document.querySelector(".gridBtn").classList.add("active");
+    }
+  }
+  window.addEventListener("resize", toggleButtons);
+  toggleButtons();
 }
+
+
 function accessAdminAction() {
   var adminLoggedin = $("#adminLoggedin").val();
   if (adminLoggedin == 'yes') {
@@ -3181,84 +3179,100 @@ function accessAdminAction() {
   }
 }
 function displayAnnouncementForm(reload) {
-  if ($("#updateannouncementid").length > 0) {
+  if (document.getElementById("updateannouncementid")) {
     location.reload();
-    sessionStorage.setItem('closeUpdateForm', true);
-
+    sessionStorage.setItem("closeUpdateForm", "true");
   } else {
-    $("#announcementForm").hide();
+    document.getElementById("announcementForm").style.display = "none";
     sessionStorage.removeItem("closeUpdateForm");
-
   }
-
 }
 function displayAnnouncementBoxOverlay() {
-  var closeUpdateForm = sessionStorage.getItem("closeUpdateForm");
-  if (closeUpdateForm == 'true') {
-    $("#announcementBoxOverlay").show();
-
+  if (sessionStorage.getItem("closeUpdateForm") === "true") {
+    document.getElementById("announcementBoxOverlay").style.display = "block";
   }
 }
 function scrollToTheAnnnouncementForm() {
-  $(".editBtn").click(function () {
-    $('html,body').animate({
-      scrollTop: $("#announcementForm").offset().top
-    },
-      'slow');
-  });
+  document.querySelectorAll(".editBtn").forEach(btn =>
+    btn.addEventListener("click", () =>
+      document
+        .getElementById("announcementForm")
+        .scrollIntoView({ behavior: "smooth" })
+    )
+  );
 }
 function closeActionLogDisplay() {
-  $(".closeActionLogDisplay").parent().remove();
+  const close = document.querySelector(".closeActionLogDisplay");
+  close?.parentElement?.remove();
 }
 // Read less or more announcement card
 function readLessOrMore(paragraph) {
-  var maxLength = 70;
+  const maxLength = 70;
+  document.querySelectorAll(`.${paragraph}`).forEach(p => {
+    const text = p.textContent.trim();
+    if (text.length <= maxLength) return;
 
-  $("." + paragraph).each(function () {
+    const first = text.slice(0, maxLength);
+    const rest  = text.slice(maxLength);
 
-    var myStr = $(this).text();
+    p.innerHTML =
+      `${first} <a href="javascript:void(0);" class="read-more">read more...</a>` +
+      `<span class="more-text">${rest}</span>`;
 
-    if ($.trim(myStr).length > maxLength) {
-      var newStr = myStr.substring(0, maxLength);
-      var removedStr = myStr.substring(maxLength, $.trim(myStr).length);
-      $(this).empty().html(newStr);
-      $(this).append(' <a href="javascript:void(0);" class="read-more">read more...</a>');
-      $(this).append('<span class="more-text">' + removedStr + '</span>');
+    p.querySelector(".read-more").addEventListener("click", function () {
+      this.previousSibling.textContent +=
+        this.nextSibling.textContent; // append remaining text
+      this.nextSibling.remove();
+      this.remove();
 
-    }
-
-  });
-
-  var announcementCard = document.getElementsByClassName("announcementCard");
-  $(".read-more").click(function () {
-    $(this).siblings(".more-text").contents().unwrap();
-    $(this).remove();
-    if (paragraph == 'announcementMsgParagraph') {
-      for (i = 0; i < announcementCard.length; i++) {
-        announcementCard[i].style.width = "100%";
+      if (paragraph === "announcementMsgParagraph") {
+        document
+          .querySelectorAll(".announcementCard")
+          .forEach(card => (card.style.width = "100%"));
       }
-    }
-
+    });
   });
 }
-
+  
 function showLessOrMoreAnnouncements() {
-  var announcementCardLength = $(".announcementCard").length;
-  if (announcementCardLength == 0) {
-    $("#announcementCards").append("<p style='color:#775886;'>No announcements yet</p>");
-  } else if (announcementCardLength > 6) {
-    $(".announcementCard:gt(5)").hide();
-    $("#displayAnnouncements")
-      .append('<div class="showmoreBtnContainer"><button class="showAllAnnouncement">' +
-        '<span class="hvr-icon-forward"><span class="showmore">Show more</span>' +
-        '<i class="fa fa-chevron-circle-right hvr-icon"></i></span>' +
-        '</button></div>');
-  }
-  $('.showAllAnnouncement').on('click', function () {
-    $('.announcementCard:gt(5)').toggle();
-    $(".showmore").text() === 'Show more' ? $(".showmore").text('Show less') : $(".showmore").text('Show more');
-  });
+  const cards = Array.from(document.getElementsByClassName("announcementCard"));
+  const container = document.getElementById("displayAnnouncements");
 
+  if (cards.length === 0) {
+    document
+      .getElementById("announcementCards")
+      .insertAdjacentHTML(
+        "beforeend",
+        "<p style='color:#775886;'>No announcements yet</p>"
+      );
+    return;
+  }
+
+  if (cards.length > 6) {
+    cards.slice(6).forEach(c => (c.style.display = "none"));
+
+    container.insertAdjacentHTML(
+      "beforeend",
+      `<div class="showmoreBtnContainer">
+         <button class="showAllAnnouncement">
+           <span class="hvr-icon-forward"><span class="showmore">Show more</span>
+           <i class="fa fa-chevron-circle-right hvr-icon"></i></span>
+         </button>
+       </div>`
+    );
+
+    const btn = container.querySelector(".showAllAnnouncement");
+    btn.addEventListener("click", () => {
+      const hidden = cards.slice(6).filter(c => c.style.display === "none");
+      if (hidden.length) {
+        hidden.forEach(c => (c.style.display = ""));
+        btn.querySelector(".showmore").textContent = "Show less";
+      } else {
+        cards.slice(6).forEach(c => (c.style.display = "none"));
+        btn.querySelector(".showmore").textContent = "Show more";
+      }
+    });
+  }
 }
 function updateReadStatus(announcementid, cid, versid) {
   var uname = $("#userName").html();
@@ -3281,51 +3295,54 @@ function updateReadStatus(announcementid, cid, versid) {
 
 }
 function selectRecipients() {
-  $(".selectAll input").change(function () {
-    if (this.checked) {
-      $("#recipient option").not(":first").prop("selected", true);
-      $("#recipient option").not(":first").attr("selected", "selected");
-      $(".selectFinished input, .selectNonFinished input").prop("checked", false);
-    } else {
-      $("#recipient option").attr("selected", false);
-    }
-  });
-  $(".selectFinished input").change(function () {
-    if (this.checked) {
-      $("#finishedStudents option").prop("selected", true);
-      $("#finishedStudents option").attr("selected", "selected");
-      $(".selectAll input, .selectNonFinished input").prop("checked", false);
-      $("#nonfinishedStudents option").attr("selected", false);
-    } else {
-      $("#recipient option").attr("selected", false);
-    }
-  });
-  $(".selectNonFinished input").change(function () {
-    if (this.checked) {
-      $("#nonfinishedStudents option").prop("selected", true);
-      $("#nonfinishedStudents option").attr("selected", "selected");
-      $(".selectAll input, .selectFinished input").prop("checked", false);
-      $("#finishedStudents option").attr("selected", false);
+  const selectAll       = document.querySelector(".selectAll input");
+  const selectFinished  = document.querySelector(".selectFinished input");
+  const selectNonFin    = document.querySelector(".selectNonFinished input");
+  const recipient       = document.getElementById("recipient");
+  const finished        = document.getElementById("finishedStudents");
+  const nonFinished     = document.getElementById("nonfinishedStudents");
 
+  selectAll.addEventListener("change", function () {
+    if (this.checked) {
+      [...recipient.options].forEach((o, i) => i && (o.selected = true));
+      selectFinished.checked = selectNonFin.checked = false;
     } else {
-      $("#recipient option").attr("selected", false);
+      [...recipient.options].forEach(o => (o.selected = false));
     }
   });
 
+  selectFinished.addEventListener("change", function () {
+    if (this.checked) {
+      [...finished.options].forEach(o => (o.selected = true));
+      [...nonFinished.options].forEach(o => (o.selected = false));
+      selectAll.checked = selectNonFin.checked = false;
+    } else {
+      [...recipient.options].forEach(o => (o.selected = false));
+    }
+  });
+
+  selectNonFin.addEventListener("change", function () {
+    if (this.checked) {
+      [...nonFinished.options].forEach(o => (o.selected = true));
+      [...finished.options].forEach(o => (o.selected = false));
+      selectAll.checked = selectFinished.checked = false;
+    } else {
+      [...recipient.options].forEach(o => (o.selected = false));
+    }
+  });
 }
 function multiSelect() {
-  $("#recipient").mousedown(function (e) {
+  const sel = document.getElementById("recipient");
+
+  sel.addEventListener("mousedown", function (e) {
     e.preventDefault();
+    const scroll = this.scrollTop;
+    e.target.selected = !e.target.selected;       
+    setTimeout(() => (this.scrollTop = scroll), 0);
+    this.focus();
+  });
 
-    var select = this;
-    var scroll = select.scrollTop;
-
-    e.target.selected = !e.target.selected;
-
-    setTimeout(function () { select.scrollTop = scroll; }, 0);
-
-    $(select).focus();
-  }).mousemove(function (e) { e.preventDefault() });
+  sel.addEventListener("mousemove", e => e.preventDefault());
 }
 // Start of recent feedback from the teacher
 function toggleFeedbacks() {
