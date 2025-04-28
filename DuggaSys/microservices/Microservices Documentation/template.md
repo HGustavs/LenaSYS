@@ -15,6 +15,8 @@ Example of template for the documentation:
    - Type: int
    - Description: describe parameter
 
+
+
 ## Calling Methods
 - GET
 - POST
