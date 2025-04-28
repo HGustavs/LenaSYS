@@ -57,7 +57,19 @@ function retrieveShowDuggaService(
 	unset($param);
 	if (isSuperUser($userid)){
 		if($hash!="UNK"){
-			include_once("loadDugga_ms.php");
+			//include_once("loadDugga_ms.php");
+			//Retrieve information from microservice 'loadDugga_ms.php'
+			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+
+			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php";
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($ch);
+			curl_close($ch);
+
+			$data = json_decode($response, true);
+
+			$versions = $data;
 
 			$sql="SELECT entryname FROM listentries WHERE lid=:moment";
 			$query = $pdo->prepare($sql);
