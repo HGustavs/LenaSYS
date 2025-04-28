@@ -7,21 +7,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     Window.checkTypeOfError = function(newDataError, newData) {
         
-        let dataLowerCase = newDataError.toLowerCase();
-        
-		if (dataLowerCase.includes("connection to database could not be established.")) {
+		if (newDataError.data.includes("Connection to database could not be established.")) {
 			modal = document.getElementById("dbConnectionError");
 
-		} else if (dataLowerCase.includes("test2")) {
+		} else if (newDataError.data.includes("Failed on step set_permissions")) {
 			modal = document.getElementById("permissionError");
 
-		}else if (dataLowerCase.includes("database exists error")) {
+		}else if (newDataError.data.includes("Failed on step create_db")) {
 			modal = document.getElementById("dbCreationError");
 
-		}else if (dataLowerCase.includes("test3")) {
+		}else if (newDataError.data.includes("test3")) {
 			modal = document.getElementById("SqlError");
 		}
-        dataError = dataLowerCase;
+
+        dataError = newDataError;
         data = newData;
         showModalButton();
     }
@@ -85,16 +84,16 @@ document.addEventListener('DOMContentLoaded', function() {
     Window.retryInstaller = function() {
         console.log("Retrying the installer...");
 
-        if (dataError.includes("connection to database could not be established.")) {
+        if (dataError.data.includes("Connection to database could not be established.")) {
 			navigateTo('page3');
 
-		} else if (dataError.includes("test2")) {
+		}else if (dataError.failed_step.includes("set_permissions")) {
 			navigateTo('page1');
 
-		}else if (dataError.includes("database exists error")) {
+		}else if (dataError.failed_step.includes("create_db")) {
 			navigateTo('page3');
 
-		}else if (dataError.includes("test3")) {
+		}else if (dataError.failed_step.includes("test3")) {
 			navigateTo('page1');
 		}
         
