@@ -2910,7 +2910,7 @@ function showAnnouncement() {
 
 // Retrieve the announcment author
 function retrieveAnnouncementAuthor() {
-  var uname = document.getElementById("userName").innerHTML();
+  var uname = document.getElementById("userName").innerHTML;
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -2930,7 +2930,7 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  document.querySelector(".selectLabels label input").attributes("disabled", true);
+  document.querySelector(".selectLabels label input")["disabled"] = true;
   var cid = '';
   document.getElementById("cid").onchange(function () {
     cid = document.getElementById("cid").value;
@@ -3044,29 +3044,29 @@ function validateCreateAnnouncementForm() {
   });
 }
 function validateUpdateAnnouncementForm() {
-  $("#announcementForm").submit(function (e) {
-    var announcementTitle = ($("#announcementTitle").val()).trim();
-    var announcementMsg = ($("#announcementMsg").val()).trim();
+  document.getElementById("announcementForm").addEventListener("submit", function (e) {
+    var announcementTitle = (document.getElementById("announcementTitle").value).trim();
+    var announcementMsg = (document.getElementById("announcementMsg").value).trim();
 
     if (announcementTitle == null || announcementTitle == '') {
-      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      document.getElementById("announcementTitle").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     } else if (announcementMsg == null || announcementMsg == '') {
-      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      document.getElementById("announcementMsg").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     }
-    $(".errorCreateAnnouncement").css({
+    document.querySelector(".errorCreateAnnouncement").style.display={
       'border': '1px solid red'
-    });
+    };
   });
 }
 // Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = $(location).attr('href');
+  var currentLocation = location.attributes('href');
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
-  var uname = $("#userName").html();
+  var uname = document.getElementById("userName").innerHTML;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3082,15 +3082,15 @@ function retrieveAnnouncementsCards() {
             parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if (unread_announcements > 0) {
-            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
-            $("#announcementnotificationcount").html(parsed_data.nRows);
+            document.getElementById("announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            document.getElementById("announcementnotificationcount").innerHTML = parsed_data.nRows;
           }
           accessAdminAction();
           var paragraph = "announcementMsgParagraph";
           readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
-          $(".deleteBtn").click(function () {
+          document.querySelector(".deleteBtn").addEventListener("click", function () {
             sessionStorage.setItem('closeUpdateForm', true);
 
           });
