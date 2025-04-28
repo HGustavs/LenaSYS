@@ -124,15 +124,18 @@ if (strcmp('EDITEXAMPLE', $opt) === 0) {
 
 //Re-engineer
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sectionedService/retrieveCodeviewerService_ms.php?" . http_build_query([
-	'opt' => $opt,
-	'exampleid' => $exampleId,
-	'courseid' => $courseId,
-	'cvers' => $courseVersion
-]);
+$url = $baseURL . "/DuggaSys/microservices/codeviewerService/retrieveCodeviewerService_ms.php";
 
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'opt' => $opt,
+    'exampleid' => $exampleId,
+    'courseid' => $courseId,
+    'cvers' => $courseVersion
+]));
+
 $response = curl_exec($ch);
 curl_close($ch);
 

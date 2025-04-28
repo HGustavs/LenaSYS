@@ -14,14 +14,24 @@ include_once "../../../Shared/sessions.php";
 pdoConnect();
 session_start();
 
+$debug = "";
+
+$userid = getUid();
+
 // Global variables
-$exampleId = getOP('exampleid');
-$courseId = getOP('courseid');
-$courseVersion = getOP('cvers');
-$sectionName = getOP('sectionname');
-$exampleName = getOP('examplename');
-$playlink = getOP('playlink');
-$log_uuid = getOP('log_uuid');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['exampleid'], $_POST['courseid'], $_POST['cvers'], $_POST['opt'])) {
+        $exampleId = $_POST['exampleid'];
+        $courseId = $_POST['courseid'];
+        $courseVersion = $_POST['cvers'];
+        $opt = $_POST['opt'];
+    }
+}
+
+$sectionName = $_POST['sectionname'] ?? null;
+$exampleName = $_POST['examplename'] ?? null;
+$playlink = $_POST['playlink'] ?? null;
+$log_uuid = $_POST['log_uuid'] ?? null;
 
 $importantRows = array();
 $importantWordList = array();
