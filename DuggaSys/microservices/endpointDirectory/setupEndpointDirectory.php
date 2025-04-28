@@ -14,14 +14,11 @@ if (file_exists($dbFile)) {
 
 // create a new database
 require_once __DIR__ . '/installEndpointDb.php';
-// echo "New database created.<br>";
 
 // fill database with microservice documentation
 require_once __DIR__ . '/fillEndpointDb.php';
-echo "Microservices documentation inserted.<br>";
 
 // fill database with dependencies documentation
 require_once __DIR__ . '/fillDependenciesDb.php';
-echo "Dependencies inserted.<br>";
 
 ?>

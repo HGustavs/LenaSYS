@@ -67,10 +67,10 @@ foreach ($lines as $line) {
             $dependsOnPath
         ]);
 
-        echo "Added: " . $currentMicroservice . " depends on: " . $dependsOnName . "<br>";
-        // echo $currentMicroservice . " depends on: " . $dependsOnName . " (filepath: " . $dependsOnPath . "<br>";
     }
 
 }
+
+echo "Dependencies inserted.<br>";
 
 ?>
