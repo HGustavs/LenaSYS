@@ -16,12 +16,17 @@ Testing a third line
    - Description: This parameter is used for something else
 
 ## Calling Methods
-POST
+- POST
 
 ## Output Data and Format
+*Output Data will be described in lists*
 - Output: Output1
    - Type: Type1
    - Description: Description1
+
+- Output: Output2
+   - Type: Type2
+   - Description: Description2
 
 ## Examples of Use
 `
@@ -32,6 +37,7 @@ fetch('api/endpoint', {
 `
 
 ### Microservices Used
+*Includes and microservices used*
 another_ms
 microservices_used_example_ms
 
