@@ -1,4 +1,4 @@
-# sectionService Documentation
+# sectionedService Documentation
 
 # createListEntry_ms
 
