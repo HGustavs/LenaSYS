@@ -247,24 +247,25 @@
 		
 			<!-- end hide button -->
 			
+			<div id="course-header-dropdown">
+				<!-- View mode toggle buttons -->
+				<script type="text/babel">
+					ReactDOM.createRoot(document.getElementById('course-header-dropdown')).render(
+						<>
+							<Dropdown dropdownName="View" onClick={() => showDropdown('course-header-dropdown-content')} id="course-header-dropdown-content">
+								<Button className="submit-button" title="Normal View" onClick={() => {setViewMode('normal')}}>Normal</Button>
+								<Button className="submit-button" title="Scroll View" onClick={() => {setViewMode('scroll')}}>Scroll</Button>
+								<Button className="submit-button" title="Overview" onClick={() => {setViewMode('overview')}}>Overview</Button>
+							</Dropdown>
+						</>
+					);
+				</script>
+			</div>
+
 			<div id='course-label'>
-					<div id="course-label-dropdown">
-						<!-- View mode toggle buttons  --> 
-						<script type="text/babel">
-							ReactDOM.createRoot(document.getElementById('course-label-dropdown')).render(
-								<>
-									<Dropdown dropdownName="View" onClick={() => showDropdown('course-label-dropdown-content')} id="course-label-dropdown-content">
-										<Button className="submit-button" title="Normal View" onClick={() => {setViewMode('normal')}}>Normal</Button>
-										<Button className="submit-button" title="Scroll View" onClick={() => {setViewMode('scroll')}}>Scroll</Button>
-										<Button className="submit-button" title="Overview" onClick={() => {setViewMode('overview')}}>Overview</Button>
-									</Dropdown>
-								</>
-							);
-						</script>
-					</div>
-					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
-					<span id='course-coursecode'>UNK</span>
-					<span id='course-versname' class='courseVersionField'>UNK</span>
+				<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
+				<span id='course-coursecode'>UNK</span>
+				<span id='course-versname' class='courseVersionField'>UNK</span>
 			</div>
 
 

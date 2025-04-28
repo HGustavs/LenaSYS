@@ -896,11 +896,6 @@ p {
   }
 }
 
-#course-label-dropdown {
-  display: flex;
-  justify-content: flex-start;
-}
-
 #sectionList_arrowStatisticsClosed{
   display: inline;
 }
@@ -2740,9 +2735,11 @@ resulted.php END
  * --------------================################================--------------*/
  
  #courseHeader {
-  display:flex; 
-  align-items:center; 
-  justify-content:flex-end; 
+  display:flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
  }
 
  #course-newitem {
@@ -2759,13 +2756,13 @@ resulted.php END
   margin-right:10px;
  }
 
- #course-label {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: 1;
- }
+#course-label {
+  /*Temporary fix because flex and grid does not work properly at the time.
+  TODO: Implement a flex or grid layout properly.*/
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%);
+}
 
 #editSectionLoginBox {
  width:460px;
