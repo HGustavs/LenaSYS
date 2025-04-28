@@ -2,7 +2,7 @@
 
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
-include_once "../sharedMicroservices/createNewListEntry_ms.php";
+//include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "./retrieveSectionedService_ms.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
@@ -206,14 +206,6 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $groupkind = null;
     //add the codeexample to listentries
 
-    header("Content-Type: application/json");
-    //set url for setAsActiveCourse.php path
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
-    $ch = curl_init($url);
-
-
-
     createNewListEntry(
         $pdo,
         $courseid,
@@ -231,6 +223,21 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
         $groupkind,
         null
     );
+
+    header("Content-Type: application/json");
+    //set url for setAsActiveCourse.php path
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewListEntry_ms.php";
+    $ch = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $cid, 'versid' => $versid
+    ]));
+   
+    curl_exec($ch);
+    curl_close($ch);
 }
 
 function NoCodeExampleNoFiles($exampleName)

@@ -5,7 +5,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/retrieveUsername_ms.php";
-include_once "../sharedMicroservices/createNewListEntry_ms.php";
+//include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
 include_once "./retrieveSectionedService_ms.php";
 
@@ -46,10 +46,7 @@ if($link==-1) {
     $data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
     $link=$data['link'];
     $debug=$data['debug']; header("Content-Type: application/json");
-    //set url for setAsActiveCourse.php path
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
-    $ch = curl_init($url);
+    
 }
 
 $debug = createNewListEntry($pdo,
@@ -67,6 +64,18 @@ $debug = createNewListEntry($pdo,
     $tabs,
     $grptype);
 
+//get values from post
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['cid'], $_POST['versid'])) {
+        $cid = $_POST['cid'];
+        $versid = $_POST['versid'];
+    }
+}
+
+//set active course in database
+$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+$query->bindParam(':cid', $cid);
+$query->bindParam(':vers', $versid);
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
