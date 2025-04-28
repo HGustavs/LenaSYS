@@ -1683,21 +1683,13 @@ function hoverPlacementButton(num) {
 // Modified original function to work with hovering and also handle pressing if needed
 function holdPlacementButtonDown(num) {
     mousePressed = true;
-    if (document.getElementById("togglePlacementTypeBox" + num).classList.contains("activeTogglePlacementTypeBox")) {
-        mousePressed = false;
-        togglePlacementTypeBox(num);
-    }
-    // We don't need the timeout delay anymore since we're now handling hover instead of long-press
-    if (!!mousePressed) {
-        togglePlacementTypeBox(num);
-    }
 }
 
 /**
  * @description resets the mousepress.
  * USED IN PHP
  */
-function holdPlacementButtonUp() {
+function holdPlacementButtonUp(num) {
     mousePressed = false;
 }
 
