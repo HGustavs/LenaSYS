@@ -65,7 +65,10 @@ class Modal {
         $modal = new self(
             $id,
             'File Permission Error',
-            'Failed to copy course files. Please run the following command: <code>chmod -R 755 /LenaSys/install/courses</code>',
+            '
+                Failed to copy course files. Please run the following command: <code>chmod -R 755 /LenaSys/install/courses</code>
+                Press the retry-button if you want to return to the installer at the step where it failed.
+            ',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
@@ -79,7 +82,11 @@ class Modal {
         $modal = new self(
             $id,
             'Database Creation Failed',
-            'Failed to create the database or database user. Please ensure you have the necessary permissions.',
+            '
+                Failed to create the database or database user. Please ensure you have the necessary permissions. 
+                Press the force-button if you want overwrite database and database user or 
+                press the retry-button if you want to return to the installer at the step where it failed.
+            ',
             [
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()'],
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
@@ -94,7 +101,11 @@ class Modal {
         $modal = new self(
             $id,
             'SQL Execution Failed',
-            'An error occurred while executing SQL files. Please check the SQL syntax and try again.',
+            '
+                An error occurred while executing SQL files. Please check the SQL syntax and try again.
+                Press the retry-button if you want to return to the installer at the step where it failed or 
+                press the restart installer-button to restart installer.
+            ',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
                 ['text' => 'Restart Installer', 'progressButton' => 'restart-button', 'onclick' => 'Window.restartInstaller()'],
