@@ -9,35 +9,35 @@ Also logs events into serviceLogEntries-table.
 ## Input Parameters
 
 - Parameter: $opt
-   - Type: String
+   - Type: ?
    - Description: Operation type
 
 - Parameter: $courseId
-   - Type: String
+   - Type: int
    - Description: Course ID
 
 - Parameter: $courseVersion
-   - Type: String
+   - Type: varchar
    - Description: Course version
 
 - Parameter: $exampleName
-   - Type: String
+   - Type: varchar
    - Description: Name of the accessed example
 
 - Parameter: $sectionName
-   - Type: String
+   - Type: varchar
    - Description: Name of the section within the course
 
 - Parameter: $exampleId
-   - Type: String
+   - Type: int
    - Description: Unique ID for the example
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: char
    - Description: Unique identifier for logging the event
 
 - Parameter: $log_timestamp
-   - Type: String
+   - Type: int
    - Description: Timestamp for when the log event occured
 
 ## Calling Methods
@@ -45,7 +45,7 @@ Also logs events into serviceLogEntries-table.
 
 ## Output Data and Format
 - Output: userId
-   - Type: String
+   - Type: int
    - Description: Returns the user's ID from the session, or guest ID if not logged in
 
 ## Examples of Use
@@ -69,7 +69,7 @@ Also logs events into serviceLogEntries-table.
    - Description: Database connection
 
 - Parameter: $userId
-   - Type: String
+   - Type: int
    - Description: The user ID, to check if it is a superuser
 
 ## Calling Methods
