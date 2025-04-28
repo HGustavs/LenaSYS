@@ -3016,31 +3016,31 @@ function getStudents(cid, userid) {
 
 // Validate create announcement form
 function validateCreateAnnouncementForm() {
-  document.getElementById("announcementForm").addEventListener("submit", function (e) {
-    var announcementTitle = (document.getElementById("announcementTitle").value).trim();
-    var announcementMsg = (document.getElementById("announcementMsg").value).trim();
-    var cid = document.getElementById("cid").value;
-    var versid = document.getElementById("versid").value;
-    var recipients = document.getElementById("recipient").value;
+  $("#announcementForm").submit(function (e) {
+    var announcementTitle = ($("#announcementTitle").val()).trim();
+    var announcementMsg = ($("#announcementMsg").val()).trim();
+    var cid = $("#cid").val();
+    var versid = $("#versid").val();
+    var recipients = $("#recipient").val();
     if (announcementTitle == null || announcementTitle == '') {
-      document.getElementById("announcementTitle").classList.add('errorCreateAnnouncement');
+      $("#announcementTitle").addClass('errorCreateAnnouncement');
       e.preventDefault();
     } else if (announcementMsg == null || announcementMsg == '') {
-      document.getElementById("announcementMsg").classList.add('errorCreateAnnouncement');
+      $("#announcementMsg").addClass('errorCreateAnnouncement');
       e.preventDefault();
     } else if (cid == null || cid == '') {
-      document.getElementById("cid").classList.add('errorCreateAnnouncement');
+      $("#cid").addClass('errorCreateAnnouncement');
       e.preventDefault();
     } else if (versid == null || versid == '') {
-      document.getElementById("versid").classList.add('errorCreateAnnouncement');
+      $("#versid").addClass('errorCreateAnnouncement');
       e.preventDefault();
     } else if (recipients == null || recipients == '') {
-      document.getElementById("recipient").classList.add('errorCreateAnnouncement');
+      $("#recipient").addClass('errorCreateAnnouncement');
       e.preventDefault();
     }
-    document.querySelector(".errorCreateAnnouncement").style.display={
+    $(".errorCreateAnnouncement").css({
       'border': '1px solid red'
-    };
+    });
   });
 }
 function validateUpdateAnnouncementForm() {
