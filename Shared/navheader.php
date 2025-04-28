@@ -98,13 +98,12 @@
 					echo "<a id='goBackBurger'style='display: none;'>";
 				}
 				if($noup=='COURSE'){
-				echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
+					echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
 				}
 				else if($noup=='SECTION'){
-				echo "<a id='goBackBurger' href='";
-				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
-				echo "'>";
-				
+					echo "<a id='goBackBurger' href='";
+					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+					echo "'>";
 				}
 				echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
 				echo "</a>";
