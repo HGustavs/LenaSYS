@@ -10,7 +10,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 
 include_once "./retrieveCourseedService_ms.php";
 include_once "../sharedMicroservices/createNewListEntry_ms.php";
-include_once "../sharedMicroservices/createNewCodeExample_ms.php";
+
 
 // Connect to the database and start the session
 pdoConnect();
