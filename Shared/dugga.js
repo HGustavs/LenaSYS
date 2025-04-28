@@ -46,11 +46,9 @@ if(localStorage.getItem(localStorageItemKey)){
 	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 }
 
-
-$(function () {  // Used to set the position of the FAB above the cookie message
-	if(localStorage.getItem("cookieMessage")!="off"){
-		$(".fixed-action-button").css("bottom", "64px");
-	}
+document.getElementById(function (){ // Used to set the position of the FAB above the cookie message
+	if(localStorage.getItem("cookieMessage")!="off")
+		document.getElementById(".fixed-action-button").style.bottom="64px";
 })
 
 // Enables save and reset button after activity on assignments (save and reset always available for students on submitted assignments)
@@ -152,38 +150,38 @@ function resetLoginStatus(){
 function toggleloginnewpass(){
 	resetFields();
 
-  //Shows the New password-box (username input)
+  	//Shows the New password-box (username input)
 	if(status == 0){
-		$("#newpassword").css("display", "block");
-		$("#formBox").css("display", "flex");
-    $("#login").hide();
-		$("#showsecurityquestion").css("display", "none");
-		$("#resetcomplete").css("display", "none");
+		document.querySelector("#newpassword").style.display="block";
+		document.querySelector("#formBox").style.display="flex";
+    	document.querySelector("#login").style.display = "none";
+		document.querySelector("#showsecurityquestion").style.display="none";
+		document.querySelector("#resetcomplete").style.display="none";
 		status= 1;
 		showing= 0;
     //Shows the Login-box
 	}else if(status == 1){
-		$("#newpassword").css("display", "none");
-		$("#login").css("display", "block");
-		$("#showsecurityquestion").css("display", "none");
-		$("#resetcomplete").css("display", "none");
+		document.querySelector("#newpassword").style.display="none";
+		document.querySelector("#login").style.display="block";
+		document.querySelector("#showsecurityquestion").style.display="none";
+		document.querySelector("#resetcomplete").style.display="none";
 		status= 0;
 		showing= 1;
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
-		$("#newpassword").css("display", "none");
-		$("#formBox").css("display", "flex");
-		$("#showsecurityquestion").css("display", "block");
-		$("#resetcomplete").css("display", "none");
+		document.querySelector("#newpassword").style.display="none";
+		document.querySelector("#formBox").style.display="flex";
+		document.querySelector("#showsecurityquestion").style.display="block";
+		document.querySelector("#resetcomplete").style.display="none";
 		status= 1;
 		showing= 2;
 	}
   //Shows the Reset complete-box
 	else if(status == 3){
-		$("#newpassword").css("display", "none");
-		$("#formBox").css("display", "flex");
-		$("#showsecurityquestion").css("display", "none");
-		$("#resetcomplete").css("display", "block");
+		document.querySelector("#newpassword").style.display="none";
+		document.querySelector("#formBox").style.display="flex";
+		document.querySelector("#showsecurityquestion").style.display="none";
+		document.querySelector("#resetcomplete").style.display="block";
 		status= 1;
 		showing= 3;
 	}
@@ -191,19 +189,19 @@ function toggleloginnewpass(){
 
 // This function only resets login and forgot password fields
 function resetFields(){
-	$("#login #username").val("");
-	$("#login #password").val("");
+	document.querySelectorAll("#login #username").value="";
+	document.querySelectorAll("#login #password").value="";
 	//Since we need the username from this box during the answer part we cant clear it directly afterwards
 	if (status!=2){
-		$("#newpassword #username").val("");
+		document.querySelectorAll("#newpassword #username").value="";
 	}
-	$("#showsecurityquestion #answer").val("");
+	document.querySelectorAll("#showsecurityquestion #answer").value="";
 
   //Changes the background color back to white
-	//$("#formBox #username").css("background-color", "rgb(255, 255, 255)");
-	//$("#formBox #password").css("background-color", "rgb(255, 255, 255)");
-	//$("#newpassword #username").css("background-color", "rgb(255, 255, 255)");
-	//$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
+	//document.getElementByID("#formBox #username").body.style.backgroundColor="rgb(255, 255, 255)";
+	//document.getElementById("#formBox #password").body.style.backgroundColor="rgb(255, 255, 255)";
+	//document.getElementById("#newpassword #username").body.style.backgroundColor="rgb(255, 255, 255)";
+	//document.getElementById("#showsecurityquestion #answer").body.style.backgroundColor="rgb(255, 255, 255)";
 
   //Hides error messages
   displayAlertText("#login #message", "");
@@ -549,12 +547,12 @@ function closeWindows(){
 	var e;
 
 	//More effective to have a class for the div you want to search and pass that to your selector
-	$("*").each(function() {
+	document.querySelectorAll("*").forEach(function(e1) {
 		//Always use a radix when using parseInt
-		var index_current = parseInt($(this).css("zIndex"), 10);
-		if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
+		var index_current = parseInt(window.getComputedStyle(e1).zIndex, 10);
+		if(index_current > index_highest && e1.style.display == "block"||index_current > index_highest && e1.style.display == "flex") {
 			index_highest = index_current;
-			e=this;
+			e=e1;
 			var tempString = e.outerHTML;
 			if(tempString.includes('<div class="previewWindow"')){
 				e.style.display="none";
@@ -580,12 +578,12 @@ function closeWindows(){
 		if (index_highest < 10000) {
 			status=1;
 			//toggleloginnewpass();
-			//$("#overlay").css("display","none");
+			document.querySelector("#overlay").style.display="none";
 			resetFields();
 		}
 	}
 
-	$(document).keyup(function(e) {
+	document.addEventListener("keyup", function(e) {
 		if (e.which == 27){
 			resetLoginStatus();
 		}
@@ -607,16 +605,17 @@ function changeCSS(cssFile, index)
 }
 
 //----------------------------------------------------------------------------------
-// loadJS: Using Jquery Dynamically Load external JS.
+// loadJS: Using JS Dynamically Load external JS.
 //          Does not load again if previously loaded same file
+//			Previously used JQuery but has been changed to JS.
 //----------------------------------------------------------------------------------
 
 var JSFiles=[];
 
 function loadJS(src) {
 		if(JSFiles[src]!="Loaded"){
-		   var jsLink = $("<script type='text/javascript' src='"+src+"'>");
-		   $("head").append(jsLink);
+		   var jsLink = document.getElementById("<script type='text/javascript' src='"+src+"'>");
+		   document.getElementById("head").append(jsLink);
 		   JSFiles[src]="Loaded";
 		}else{
 				// Do nothing if already loaded
@@ -624,12 +623,13 @@ function loadJS(src) {
 };
 
 //----------------------------------------------------------------------------------
-// loadCSS: Using Jquery Dynamically Load external CSS
+// loadCSS: Using JS Dynamically Load external CSS.
+//			Previously used JQuery, changed to JS.
 //----------------------------------------------------------------------------------
 
 function loadCSS(href) {
-		var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-		$("head").append(cssLink);
+		var cssLink = document.getElementById("<link rel='stylesheet' type='text/css' href='"+href+"'>");
+		document.getElementById("head").append(cssLink);
 };
 
 //----------------------------------------------------------------------------------
@@ -1627,15 +1627,23 @@ function addSecurityQuestionProfile(username) {
 		success:function(data) {
 			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
-				$("#challengeQuestion").html(result['ls-security-question']);
+				document.getElementById("#challengeQuestion").innerHTML=result['ls-security-question'];
 			}else{
 				if(typeof result.reason != "undefined") {
-					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
+					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").forEach(function(){
+						innerHTML="<div class='alert danger'>" + result.reason + "</div>"
+					});
 				} else {
-					$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").forEach(function(){
+						innerHTML="<div class='alert danger'>" + result['getname']  + "</div>"
+					});
 				}
-				$("#changeChallengeQuestion #challengeQuestion").css("background-color", "rgba(255, 0, 6, 0.2)");
-				$("#changeChallengeQuestion #securityQuestionError").css("color", "rgba(255, 0, 6, 0.8)");
+				document.querySelectorAll("#changeChallengeQuestion #challengeQuestion").forEach(function(){
+					style.backgroundColor="rgba(255, 0, 6, 0.2)"
+				});
+				document.querySelectorAll("#changeChallengeQuestion #securityQuestionError").forEach(function(){
+					style.color="rgba(255, 0, 6, 0.8)"
+				});
 			}
 		}
 	});
@@ -1648,7 +1656,7 @@ function checkHTTPS() {
 
 function processResetPasswordCheckUsername() {
 	//Gets the security question from the database
-	var username = $("#usernamereset").val();
+	var username = document.querySelector("#usernamereset").value;
 
 	$.ajax({
 		type:"POST",
@@ -1661,7 +1669,7 @@ function processResetPasswordCheckUsername() {
 			var result = JSON.parse(data);
 				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
-				$("#showsecurityquestion #displaysecurityquestion").html(result['ls-security-question']);
+				document.querySelectorAll("#showsecurityquestion #displaysecurityquestion").innerHTML=result['ls-security-question'];
 				status = 2;
 				toggleloginnewpass();
 			}else if(result['getname'] == "limit"){
@@ -1673,22 +1681,23 @@ function processResetPasswordCheckUsername() {
 		 else if(result['getname'] == "revoked"){
 			displayAlertText("#newpassword #message2", "Permission revoked");
 		 } else{
-
 				if(typeof result.reason != "undefined") {
           displayAlertText("#newpassword #message2", result.reason);
 				} else {
           displayAlertText("#newpassword #message2", result['getname']);
 				}
-				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-			}
+				document.querySelectorAll("#newpassword #username").forEach(function(){
+					document.style.backgroundColor="rgba(255, 0, 6, 0.2)";
+				});
+		}
 		}
 	});
 }
 
 function processResetPasswordCheckSecurityAnswer() {
   //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-  var username = $("#usernamereset").val();
-  var securityquestionanswer = $("#answer").val();
+  var username = document.querySelector("#usernamereset").value;
+  var securityquestionanswer = document.querySelector("#answer").value;
   $.ajax({
     type:"POST",
     url: "../Shared/resetpw.php",
@@ -1714,7 +1723,9 @@ function processResetPasswordCheckSecurityAnswer() {
 	  else if(result['requestchange'] == "wrong"){
         displayAlertText("#showsecurityquestion #message3", "Wrong answer");
       }else{
-        $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+        document.querySelectorAll("#showsecurityquestion #answer").forEach(function(){
+			style.backgroundColor="rgba(255, 0, 0, 0.2)"
+		});
         displayAlertText("#showsecurityquestion #message3", "Something went wrong");
       }
     }
@@ -1722,9 +1733,14 @@ function processResetPasswordCheckSecurityAnswer() {
 }
 
 function processLogin() {
-    var username = $("#login #username").val();
-    var saveuserlogin = $("#login #saveuserlogin").val();
-    var password = $("#login #password").val();
+    var user = document.querySelector("#login #username");
+	var username = user ? user.value : null;
+
+    var saveuser = document.querySelector("#login #saveuserlogin");
+	var saveuserlogin = saveuser ? saveuser.value : null;
+
+    var pw = document.querySelector("#login #password");
+	var password = pw ? pw.value : null;
     if (saveuserlogin==1){
 			saveuserlogin = 'on';
     }else{
@@ -1790,16 +1806,16 @@ function processLogin() {
 //Displays an error text and makes login inputs flash red
 function loginFail(){
 	displayAlertText("#login #message", "Wrong username or password");
-	$("input#username").addClass("loginFail");
-	$("input#password").addClass("loginFail");
+	document.querySelector("input#username").classList.add("loginFail");
+	document.querySelector("input#password").classList.add("loginFail");
 	setTimeout(function(){
-		$("input#username").removeClass("loginFail");
-		$("input#password").removeClass("loginFail");
+		document.querySelector("input#username").classList.remove("loginFail");
+		document.querySelector("input#password").classList.remove("loginFail");
 	}, 2000);
 }
 
 function displayAlertText(selector, text){
-  $(selector).html("<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
+	document.querySelector(selector).innerHTML="<div style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>";
 }
 
 function processLogout() {
@@ -1828,13 +1844,13 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	$("#formBox").css("display","flex");
-	/*$("#overlay").css("display","block");*/
-	$("#username").focus();
+	document.querySelector("#formBox").style.display="flex";
+	/*document.querySelector("#overlay").style.display="block";*/
+	document.querySelector("#username").focus();
 
 	// Reset input box color
-	//$("input#username").css("background-color", "rgba(255, 255, 255, 1)");
-	//$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
+	//document.querySelector("input#username").style.backgroundColor="rgba(255, 255, 255, 1)";
+	//document.querySelector("input#password").style.backgroundColor="rgba(255, 255, 255, 1)";
 
 	// Reset warning, if applicable
   displayAlertText("#login #message", "");
@@ -1844,19 +1860,20 @@ function showLoginPopup()
 
 function hideLoginPopup()
 {
-		$("#formBox").css("display","none");
-		/*$("#overlay").css("display","none");*/
+		document.querySelector("#formBox").style.display="none";
+		/*document.querySelector("#overlay").style.display="none";*/
 
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
 
 function showLogoutPopup()
 {
-	$("#logoutBox").show();
-	/*$("#logoutBox").css('display', 'block');
-	$(".buttonLogoutCancelBox").click(function(){
-		$("#logoutBox").hide();
-	});
+	/*
+	document.querySelector("#logoutBox").show();
+	document.querySelector("#logoutBox").style.display="block";
+	document.querySelector(".buttonLogoutCancelBox").onClick = function(){
+		document.querySelector("#logoutBox").style.display="none";
+	};
 	*/
 }
 //----------------------------------------------------------------------------------
@@ -1866,23 +1883,20 @@ function showLogoutPopup()
 function setupLoginLogoutButton(isLoggedIn){
 
 	if(isLoggedIn == "true"){
-		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){
-			$("#logoutBox").show();
-			$("#logoutBox").css('display', 'block');
-			$(".buttonLogoutCancelBox").click(function(){
-				$("#logoutBox").hide();
+		document.removeEventListener("#loginbutton", "click", false);
+		document.addEventListener("#loginbutton").onClick=function(){
+			document.getElementById("#logoutBox").style.display="block";
+			document.querySelector(".buttonLogoutCancelBox").onClick(function(){
+				document.getElementById("#logoutBox").style.display="none";
 			});
-
-
-		});
+		};
 		sessionExpireMessage();
 		sessionExpireLogOut();
 	}
 
 	else{
-		$("#loginbutton").off("click");
-		$("#loginbutton").click(function(){showLoginPopup();});
+		document.removeEventListener("#loginbutton", "click", false);
+		document.getElementById("#loginbutton").click=function(){showLoginPopup();};
 	}
 }
 
@@ -1893,13 +1907,13 @@ function toggleLoadVariant(setbool){	//setbool has a value of True or False. Thi
 
 function showLoadDuggaPopup()
 {
-	$("#loadDuggaBox").css("display","flex");
+	document.querySelector("#loadDuggaBox").style.display="flex";
 	localStorage.setItem("ls-redirect-last-url", document.URL);
 }
 
 function hideLoadDuggaPopup()
 {
-	$("#loadDuggaBox").css("display","none");
+	document.querySelector("#loadDuggaBox").style.display="none";
 }
 
 function updateReceiptText(title, URL, hash, hashPW)
@@ -1913,28 +1927,28 @@ function updateReceiptText(title, URL, hash, hashPW)
 
 function showReceiptPopup()
 {
-	$("#receiptBox").css("display","flex");
-	//$("#overlay").css("display","block");
+	document.getElementById("receiptBox").style.display="flex";
+	//document.getElementById("#overlay").style.display="block";
 }
 
 function hideReceiptPopup()
 {
-	$("#receiptBox").css("display","none");
-	//$("#overlay").css("display","none");
+	document.getElementById("receiptBox").style.display="none";
+	//document.getElementById("#overlay").style.display="none";
 }
 
 function hideFeedbackPopup(){
-	$("#feedbackBox").css("display","none");
+	document.getElementById("feedbackBox").style.display="none";
 }
 
 function showFeedbackPopup(){
-	$("#feedbackBox").css("display","block");
+	document.getElementById("feedbackBox").style.display="block";
 }
 
 function hideDuggaStatsPopup()
 {
-	$("#duggaStats").css("display", "none");
-	//$("#overlay").css("display", "none");
+	document.getElementById("duggaStats").style.display="none";
+	//document.getElementById("#overlay").style.display="none";
 }
 
 function checkScroll(obj) {
@@ -1967,22 +1981,22 @@ function copySubmissionReceiptToClipboard() {
 // copyhashtoCB: Copy the hash to user clipboard
 //----------------------------------------------------------------------------------
 function copyHashtoCB() {
-	var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val(hash).select();
+	var temp = document.createElement("input");
+    document.getElementById("body").appendChild(temp);
+    temp.value = hash;
     document.execCommand("copy");
-	$temp.remove();
+	temp.remove();
 }
 
 //----------------------------------------------------------------------------------
 // copyURLtoCB: Copy the url to user clipboard
 //----------------------------------------------------------------------------------
 function copyUrltoCB() {
-	var $copyUrl = $("<input>");
-	$("body").append($copyUrl);
-	$copyUrl.val($('#url').text()).select();
+	var copyUrl = document.createElement("input");
+	document.getElementById("body").appendChild(copyUrl);
+	copyUrl.value = document.getElementById('#url').textContent;
 	document.execCommand("copy");
-	$copyUrl.remove();
+	copyUrl.remove();
 }
 
 //----------------------------------------------------------------------------------
@@ -1994,7 +2008,7 @@ function getParameters(parameterName){
 }
 
 function exitHashBox(){
-    $("#hashBox").css("display","none");
+    document.getElementById("#hashBox").style.display="none";
 	window.location.href = "../DuggaSys/sectioned.php?courseid=" + getParameters("courseid") + "&coursename=" +
 	 getParameters("coursename") + "&coursevers=" + getParameters("coursevers"); //redirect to the course page
 	 
@@ -2002,7 +2016,7 @@ function exitHashBox(){
 }
 
 function hideHashBox(){
-    $("#hashBox").css("display","none");
+    document.getElementById("#hashBox").style.display="none";
 }
 
 function checkHashPassword() {
@@ -2034,8 +2048,8 @@ function checkHashPassword() {
 				location.replace(url);
 				//reloadPage();
         	}else{
-        		$('#passwordtext').text('Wrong password, try again!');
-        		$('#passwordtext').css('color','red');
+        		document.getElementById('#passwordtext').textContent='Wrong password, try again!';
+        		document.getElementById('#passwordtext').style.color='red';
 				console.log('Fail!');
         	}
 		}
@@ -2044,23 +2058,23 @@ function checkHashPassword() {
 
 function showSecurityPopup()
 {
-   $("#securitynotification").css("display","flex");
-   //$("#overlay").css("display","block");
+   document.getElementById("#securitynotification").style.display="flex";
+   //document.getElementById("#overlay").style.display="block";
 }
 
 function showDuggaInfoPopup()
 {
 
-	if ($("#receiptBox").css("display")!= "flex"){
-		$("#duggaInfoBox").css("display","flex");
-		//$("#overlay").css("display","block");
+	if (document.getElementById("#receiptBox").style.display!="flex"){
+		document.getElementById("#duggaInfoBox").style.display="flex";
+		//document.getElementById("#overlay").style.display="block";
 	}
 }
 
 function hideDuggaInfoPopup()
 {
-	$("#duggaInfoBox").css("display","none");
-	//$("#overlay").css("display","none");
+	document.getElementById("#duggaInfoBox").style.display="none";
+	//document.getElementById("#overlay").style.display="none";
 	if(startDuggaHighScore){
 		startDuggaHighScore();
 	}
@@ -2100,7 +2114,7 @@ function sessionExpireMessage() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
-				$(".expiremessagebox").css("display","block");
+				document.querySelector(".expiremessagebox").style.display="block";
 				clearInterval(intervalId);
 			}
 
@@ -2122,8 +2136,8 @@ function sessionExpireLogOut() {
 	function checkIfExpired() {
 
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-				$(".expiremessagebox").css("display","none");
-				$(".endsessionmessagebox").css("display","block");
+				document.querySelector(".expiremessagebox").style.display="none";
+				document.querySelector(".endsessionmessagebox").style.display="block";
 				processLogout();
 				clearInterval(intervalId);
 			}
@@ -2174,9 +2188,9 @@ function getCookie(cname) {
 }
 
 // EventListner for when ESC is pressed do a closeWindows()
-$(window).load(function() {
+window.addEventListener("load", function() {
 	//There is an issue with using this code, it generates errors that stop execution
-      $(window).keyup(function(event){
+      window.addEventListener("keyup", function(event){
       	if(event.keyCode == 27) {
 					if (window.location.href.indexOf('sectioned') !== -1) {
 						closeSelect();
@@ -2189,20 +2203,12 @@ $(window).load(function() {
 
 // Close the "logout" window by pressing the ESC button
 document.addEventListener('keydown', function (event) {
-	if (event.key === 'Escape') {
-	  $("#logoutBox").css("display", "none");
+	if (event.key === 'Escape' && document.querySelector(".logoutBox")) {
+	  document.getElementById("logoutBox").style.display="none";
 	}
 })
 
-/*
-
 // Never make dialogs draggable - ruins everything!
-$(window).load(function() {
-	$('.formBox').draggable({ handle:'.formBoxHeader'});
-	$('.formBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
-});
-
-*/
 
 //----------------------------------------------------------------------------------
 // Help function to allow moving of elements from on index to another in array
@@ -2407,12 +2413,22 @@ function makeForm(cfield, ctype){
 
 function toggleInstructions(element)
 {
-	$(element).parent().find(".instructions-content").stop().slideToggle("slow");
+	if(element!=undefined){
+		if(element.parentElement.querySelector(".instructions-content").style.display=="none")
+			element.parentElement.querySelector(".instructions-content").style.display="block"
+		else
+			element.parentElement.querySelector(".instructions-content").style.display="none"
+	}
 }
 
 function toggleFeedback(element)
 {
-	$(element).parent().find(".feedback-content").slideToggle("slow");
+	if(element!=undefined){
+		if(element.parentElement.querySelector(".feedback-content").style.display=="none")
+			element.parentElement.querySelector(".feedback-content").style.display="block";
+		else
+			element.parentElement.querySelector(".feedback-content").style.display="none";
+	}
 }
 
 function disableSave(){
@@ -2479,31 +2495,41 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		}
 
 		str+="</div>";
-		$("#duggaStatus").remove();
-		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
-		$("#menuHook").hide();
+		document.getElementById("#duggaStatus").remove();
+		document.querySelectorAll("<td id='duggaStatus' align='center'>"+str+"</td>").after("#menuHook");
+		document.getElementById("#menuHook").style.display="none";
 		// Adds dugga title next to the text "Instructions"
-		$('h3:contains("Instructions")').html(duggaTitle + " - Instructions");
+		document.querySelector('h3:contains("Instructions")').innerHTML=duggaTitle + " - Instructions";
 }
 
 
 function FABMouseOver(e) {
 	if (e.target.id === "fabBtn") {
-		if ($('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-list').fadeIn(0);
-			$('.fab-btn-sm').toggleClass('scale-out');
-		}
+		var e1=document.querySelectorAll('.fab-btn-sm');
+		var eL=document.querySelector('.fab-btn-list');
+
+		e1.forEach(element => {
+			if(element.classList.contains('scale-out')){
+				eL.style.display="block";
+				element.classList.toggle('scale-out');
+			}
+		});
 	} else if (e.target.id === "addElement") {
-		if ($('.fab-btn-sm2').hasClass('scale-out')) {
-			$('.fab-btn-list2').fadeIn(0);
-			$('.fab-btn-sm2').toggleClass('scale-out');
-		}
+		var e2=document.querySelectorAll('.fab-btn-sm2');
+		var eL2=document.querySelector('.fab-btn-list2');
+
+		e2.forEach(element2 => {
+			if(element2.classList.contains('scale-out')){
+				eL2.style.display="block";
+				element2.classList.toggle('scale-out');
+			}
+		});
 		
-		$('#addElement').addClass('spin');
+		document.querySelector('#addElement').classList.add('spin');
 
 		
 		setTimeout(function() {
-			$('#addElement').removeClass('spin');
+			document.querySelector('#addElement').classList.remove('spin');
 		}, 1000); 
 	}
 }
@@ -2512,13 +2538,15 @@ function FABMouseOver(e) {
 // FABMouseOut: FAB Mouse Out
 //----------------------------------------------------------------------------------
 function FABMouseOut(e) {
-	if (!$('.fab-btn-sm').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button")) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
+	if (document.querySelector('.fab-btn-sm') && !document.querySelector('.fab-btn-sm').classList.contains('scale-out') &&
+	!e.relatedTarget.closest(".fixed-action-button") && !e.relatedTarget.classList.contains("fixed-action-button")) {
+		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	else if (!$('.fab-btn-sm2').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button2").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button2")) {
-		$('.fab-btn-sm2').toggleClass('scale-out');
-		$('.fab-btn-list2').delay(100).fadeOut(0);
+	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
+	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list2').style.display="none";
 	}
 	
 }
@@ -2546,8 +2574,8 @@ function FABUp(e)
 function TouchFABDown(e)
 {
 	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
-		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) FABToggle();
+	if (document.querySelector('.fab-btn-list').checkVisibility()==true) {
+		if (document.querySelector('.fab-btn-list').checkVisibility()==true && document.querySelector('#fabBtn').is(e.target)) FABToggle();
 	} else {
 		if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
@@ -2561,10 +2589,10 @@ function TouchFABDown(e)
 function TouchFABUp(e)
 {
 	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
-	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+	if ((e.target.id=="fabBtn") && !document.querySelector('.fab-btn-list').checkVisibility()==true) {
 		clearTimeout(pressTimer);
 		createQuickItem();
-	}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
+	}else if (document.querySelector('.fab-btn-list').checkVisibility()==true && (e.target.id!="fabBtn")) {
 		FABToggle();
 	}
 }
@@ -2575,12 +2603,12 @@ function TouchFABUp(e)
 // Toggles action bubbles when pressing the FAB button
 //----------------------------------------------------------------------------------
 function FABToggle() {
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-				$('.fab-btn-sm').toggleClass('scale-out');
-				$('.fab-btn-list').delay(100).fadeOut(0);
+		if (!document.querySelector('.fab-btn-sm').classList.contains('scale-out')) {
+				document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+				document.querySelector('.fab-btn-list').style.display="none";
 		} else {
-				$('.fab-btn-list').fadeIn(0);
-				$('.fab-btn-sm').toggleClass('scale-out');
+				document.querySelector('.fab-btn-list').style.display="block";
+				document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		}
 }
 
@@ -2603,30 +2631,19 @@ function generateTimeSheetOptions(course, moment, selected) {
 //----------------------------------------------------------------------------------
 
 function hideServerMessage() {
-	$("#motdNav").css("display","inline-block");
-	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({
-		top: -$containerHeight.outerHeight()
-	},200, "easeInOutSine", () => {});
+	document.querySelector("#motdNav").style.display="inline-block";
+	document.querySelector("#servermsgcontainer").style.display="none";
 	sessionStorage.setItem('show','false');
 }
 
 function hideCookieMessage() {
-	$("#cookiemsg").animate({ opacity: 0, bottom: -70 }, 200, "easeInOutSine");
-	$(".fixed-action-button").animate({ bottom: 24 }, 200, "easeInOutSine");
-	setTimeout(function () {
-		$("#cookiemsg").css("display", "none");
-		$("#cookiemsg").css("opacity", "1");
-	}, 200);
+		document.querySelector("#cookiemsg").style.display="none";
+		document.querySelector("#cookiemsg").style.opacity="1";
 }
 
 function showServerMessage(){
-	$("#motdNav").css("display","none");
-	var $containerHeight = $("#servermsgcontainer");
-	$containerHeight.animate({ 
-		top: 50
-	},200, "easeInOutSine", () => {});
-	$("#servermsgcontainer").css("display","content");
+	document.querySelector("#motdNav").style.display="none";
+	document.querySelector("#servermsgcontainer").style.display="inline-block";
 	sessionStorage.setItem('show','true');
 }
 
@@ -2648,34 +2665,34 @@ function duggaFeedbackCheck(){
 
 function returnedFeed(data) {
 	if (data['userfeedback']== 1 ){
-		$("#feedbackbox").css("display","block");
-		$("#feedbackquestion").html(data['feedbackquestion']);
+		document.getElementById("#feedbackbox").style.display="block";
+		document.getElementById("#feedbackquestion").innerHTML=data['feedbackquestion'];
 	} 
 }
 //----------------------------------------------------------------------------------
 //sends userinput feedback
 //----------------------------------------------------------------------------------
 function sendFeedback(entryname){
-	if ($("input[name='rating']:checked").val()) {
-		$('#submitstatus').css("display", "none");
+	if (document.querySelector("input[name='rating']:checked").value) {
+		document.getElementById('#submitstatus').style.display="none";
 		var param = {};
   		param.courseid = querystring['courseid'];
   		param.moment = querystring['moment'];
-		param.score = $("input[name='rating']:checked").val();
+		param.score = document.querySelector("input[name='rating']:checked").value;
 		param.entryname = entryname;  
-		if($("#contactable:checked").val()){
+		if(document.getElementById("#contactable:checked").value){
 			param.contactable = 1;
 		}else{
 			param.contactable = 0;
 		}
 		AJAXService("SENDFDBCK",param,"SENDDUGGAFEEDBACK");
 	}else {
-		$('#submitstatus').css({'color':'var(--color-red)',"display": "inline-block"}).text("Select a rating before saving it.");
+		document.getElementById('#submitstatus').style.display({'color':'var(--color-red)',"display": "inline-block"}).textarea("Select a rating before saving it.");
 	}
 }
 
 function returnedSubmitFeedback(){
-	$('#submitstatus').css({'color':'var(--color-green)',"display": "inline-block"}).text("Feedback saved");
+	document.getElementById('#submitstatus').style.display({'color':'var(--color-green)',"display": "inline-block"}).textarea("Feedback saved");
 }
 
 function setDuggaTitle(title) {
@@ -2906,9 +2923,9 @@ function editDuggaInstruction(){
 // ----------------------------- Edit dugga instructions end ------------------------
 
 //Code that makes it possible to navigate using tab and enter to click elements
-$(document).on('keydown', function(e) {
+document.addEventListener('keydown', function(e) {
 	if(e.key === 'Enter'){
-		var box = $(e.target);
+		var box = e.target;
 		var allSort = document.getElementById("all-files-sort");
 		var globalSort = document.getElementById("global-files-sort");
 		var courseLocalSort = document.getElementById("course-local-sort");
@@ -2941,9 +2958,9 @@ $(document).on('keydown', function(e) {
 		}
 		else if (box[0].classList.contains("announcement-nav")){
 			sessionStorage.removeItem("closeUpdateForm");
-			$("#announcementBoxOverlay").toggle();
-			if($("#announcementForm").is(":hidden")){
-				$("#announcementForm").show();
+			document.getElementById("#announcementBoxOverlay").toggle;
+			if(document.getElementById("#announcementForm").is(":hidden")){
+				document.getElementById("#announcementForm").show();
 			}
 		}
 		else if (box[0].classList.contains("editVers")){
@@ -3036,14 +3053,6 @@ $(document).on('keydown', function(e) {
 		}
 		else if(box[0].classList.contains("courseSettingIcon")){
 			box[0].click();
-		}
-	}
-	else if(e.key === 'Escape'){
-		if ($('.fab-btn-list').is(':visible')) {
-			$(e.target).mouseout();
-		}
-		if ($('.fab-btn-list2').is(':visible')) {
-			$(e.target).mouseout();
 		}
 	}
 });
