@@ -170,19 +170,15 @@
 
 							echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
 							echo "    <div class='editVers menuButton' tabindex='0'>";
-              echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
+             				echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
 
 					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {
 
-
-
-
-
 							echo "<td class='newVers' style='display: inline-block;'>";
 							echo "    <div class='newVers menuButton' tabindex='0'>";
-              echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
+              				echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
 							echo "</td>";
 					}
@@ -204,8 +200,8 @@
 
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
-              echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img alt='files icon' id='editFiles' class='navButt' src='../Shared/icons/files_icon.svg'>";
+             				echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+              				echo "        <img alt='files icon' id='editFiles' class='navButt' src='../Shared/icons/files_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";
