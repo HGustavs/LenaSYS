@@ -1738,7 +1738,7 @@ function generateStateDiagramInfo() {
             } else if (re.test(connections[i][LABEL])) {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
             } else {
-                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with label "${connections[i][LABEL]}"</p>`;
+                output += `<p>"${escapeHtml(head[ENTITY].name)}" goes to "${escapeHtml(connections[i][ENTITY].name)}" with label "${escapeHtml(connections[i][LABEL])}"</p>`;
             }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
