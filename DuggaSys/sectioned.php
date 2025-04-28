@@ -318,73 +318,83 @@
 
 
 		<div id='editSection' onmouseover=" validateDate2('setDeadlineValue','dialog8');"  class='loginBoxContainer display_none'>
-		<div id='editSectionLoginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
+			<div id='editSectionLoginBox' class='loginBox DarkModeBackgrounds DarkModeText'>
 
 
-			<div class='formBoxHeader'>
-				<h3 id='editSectionDialogTitle'>Edit Item</h3>
-				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
-			</div>
-			<div class="formBody">
-				<input type='hidden' id='lid' value='Toddler' />
-				<input type='hidden' id='comments'  />
-				<div id='inputwrapper-name' class='inputwrapper'>
-					<span>Name:</span>
-					<div class="dialogwrapper">
-						<div class="formDialog">
-							<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+				<div class='formBoxHeader'>
+					<h3 id='editSectionDialogTitle'>Edit Item</h3>
+					<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
+				</div>
+				<div class="formBody">
+					<input type='hidden' id='lid' value='Toddler' />
+					<input type='hidden' id='comments'  />
+					<div id='inputwrapper-name' class='inputwrapper'>
+						<span>Name:</span>
+						<div class="dialogwrapper">
+							<div class="formDialog">
+								<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+							</div>
+							<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
 						</div>
-						<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
 					</div>
-				</div>
-				<div id='inputwrapper-type' class='inputwrapper'>
-					<span>Type:</span>
-					 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
-						If they don't, change the width of formBox select in the CSS file -->
-					<select id='type' value='type' onchange='changedType(document.getElementById("type").value);'></select>
-					</div>
-					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
-					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
+					<div id='inputwrapper-type' class='inputwrapper'>
+						<span>Type:</span>
+						 <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
+							If they don't, change the width of formBox select in the CSS file -->
+						<select id='type' value='type' onchange='changedType(document.getElementById("type").value);'></select>
+						</div>
+						<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
+						<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
 
-					<div id='inputwrapper-deadline' class='inputwrapper'>
-							<legend><h3>Deadline</h3></legend>
-							<span>Absolute</span>
-							<span style='float:right'>
-								<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' style='margin:0 0 0 10px;' type='date' id='setDeadlineValue' value='' />
-								<select class='selectDeadlineTime' style='width:55px;' id='deadlineminutes'></select>
-								<select class='selectDeadlineTime' style='width:55px;' id='deadlinehours'></select>
-								<input type='checkbox' id='absolutedeadlinecheck' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
-							</span>
-							<br />
-							<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
-							<span style='float:right;'>
-								<select class='selectDeadlineTime' style='width:130px;' id='relativedeadlinetype'></select>
-								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineamount'></select>
-								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineminutes'></select>
-								<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlinehours'></select>
-							</span>
-							<div id="relativeFormDialog" class="formDialogWide">
-  		      					<span id="dialog8" class="formDialogText">Deadline has to be between start date and end date</span>
-  		      				</div>
+						<div id='inputwrapper-deadline' class='inputwrapper'>
+								<legend><h3>Deadline</h3></legend>
+								<span>Absolute</span>
+								<span style='float:right'>
+									<input onchange="quickValidateForm('editSection', 'saveBtn');" class='textinput' style='margin:0 0 0 10px;' type='date' id='setDeadlineValue' value='' />
+									<select class='selectDeadlineTime' style='width:55px;' id='deadlineminutes'></select>
+									<select class='selectDeadlineTime' style='width:55px;' id='deadlinehours'></select>
+									<input type='checkbox' id='absolutedeadlinecheck' onclick='checkDeadlineCheckbox(this); quickValidateForm("editSection", "saveBtn");'/>
+								</span>
+								<br />
+								<span title="Relative deadline that relates to the start of the course instead of a set date">Relative</span>
+								<span style='float:right;'>
+									<select class='selectDeadlineTime' style='width:130px;' id='relativedeadlinetype'></select>
+									<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineamount'></select>
+									<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlineminutes'></select>
+									<select class='selectDeadlineTime' style='width:55px;' id='relativedeadlinehours'></select>
+								</span>
+								<div id="relativeFormDialog" class="formDialogWide">
+  		      						<span id="dialog8" class="formDialogText">Deadline has to be between start date and end date</span>
+  		      					</div>
+						</div>
+						<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
+						<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
+						<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
+						<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select class="align_right" id='visib'></select></div>
+						<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select class="align_right" id='grptype'></select></div>
+						<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  class="align_center" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
+						<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 					</div>
-					<!-- <div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div> -->
-					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
-					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
-					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select class="align_right" id='visib'></select></div>
-					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select class="align_right" id='grptype'></select></div>
-					<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  class="align_center" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-					<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
-				</div>
 
-				<!-- Error message, no duggas present-->
-				<div class="formFooter">
-					<input class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
-					<input class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
-					<input id="submitBtn" class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-					<input id="saveBtn" onmouseover='quickValidateForm("editSection", "saveBtn");' class='submit-button updateDugga' type='button' value='Save' onclick='validateForm("editSection"); clearHideItemList();' />
+					<!-- Error message, no duggas present-->
+					<div id= "saveBtnPlacement" class="formFooter"></div>
 				</div>
 			</div>
 		</div>
+
+		<script type="text/babel">
+			function SubmitButtons() {
+				return (
+					<>
+						<Button id="deleteBtn" className="submit-button deleteDugga" title="Delete" onClick={() => deleteItem()}> Delete </Button>
+						<Button id="cancelBtn" className="submit-button closeDugga" title="Cancel" onClick={() => {closeWindows(); closeSelect();}}> Cancel </Button>
+						<Button id="submitBtn" className="submit-button submitDugga" title="Submit" onClick={() => {newItem(); showSaveButton();}}> Submit </Button>
+						<Button id="saveBtn" onMouseOver={() => quickValidateForm("editSection", "saveBtn")} className="submit-button updateDugga" title="save" onClick={() => {validateForm("editSection"); clearHideItemList();}}> Save </Button>
+					</>
+				);
+			}
+			ReactDOM.createRoot(document.getElementById('saveBtnPlacement')).render(<SubmitButtons />)
+		</script>
 	<!-- Edit Section Dialog END -->
 
 	<!-- Confirm Section Dialog START -->

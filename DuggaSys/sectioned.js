@@ -269,99 +269,150 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
-	document.getElementById("sectionname").focus();
-	toggleTab(true);
-	enableTab(document.getElementById("editSection"));
+  // console.log("myConsole lid: " + lid);
+  // console.log("myConsole typeof: " + typeof lid);
+  document.getElementById("sectionname").focus();
+  toggleTab(true);
+  enableTab(document.getElementById("editSection"));
+  // Variables for the different options and values for the deadlne time dropdown meny.
+  var hourArrOptions = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
+  var hourArrValue = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+  var minuteArrOptions = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+  var minuteArrValue = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+  var amountArrOptions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"];
+  var amountArrValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+  var typeArrOptions = ["Days", "Weeks", "Months"];
+  var typeArrValue = [1, 2, 3];
 
-	var hourArrOptions = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
-	var hourArrValue = Array.from({length: 24}, (_, i) => i);
-	var minuteArrOptions = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
-	var minuteArrValue = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-	var amountArrOptions = Array.from({length: 30}, (_, i) => String(i + 1));
-	var amountArrValue = Array.from({length: 30}, (_, i) => i + 1);
-	var typeArrOptions = ["Days", "Weeks", "Months"];
-	var typeArrValue = [1, 2, 3];
 
-	nameSet = false;
-	if (entryname === "undefined") entryname = "New Header";
-	if (kind === "undefined") kind = 0;
-	xelink = elink;
+  nameSet = false;
+  if (entryname == "undefined") entryname = "New Header";
+  if (kind == "undefined") kind = 0;
+  xelink = elink;
 
-	document.querySelectorAll(".item").forEach(el => {
-		el.style.border = "none";
-		el.style.boxShadow = "none";
-	});
-	let selected = document.getElementById("I" + lid);
-	if (selected) {
-		selected.style.border = "2px dashed #FC5";
-		selected.style.boxShadow = "1px 1px 3px #000 inset";
-	}
-	document.getElementById("inputwrapper-gradesystem").style.display = "none";
+  // Display Select Marker
+  const items = document.querySelectorAll(".item");
+  items.forEach(item => {
+    item.style.border = "none";
+    item.style.boxShadow = "none";
+  });
+  const element = document.getElementById("I" + lid);
+  if (element) {
+    element.style.border = "2px dashed #FC5";
+    element.style.boxShadow = "1px 1px 3px #000 inset";
+  }
+  // Default showing of gradesystem. Will show if has type "Test" or "Moment"
+  document.querySelector("#inputwrapper-gradesystem").style.display = "none";
 
-	if (kind != 3) {
-		document.getElementById("inputwrapper-deadline").style.display = "none";
-		document.getElementById("dialog8").style.display = "none";
-	} else {
-		document.getElementById("inputwrapper-deadline").style.display = "block";
-	}
-	document.getElementById("gradesys").innerHTML = makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]);
-	document.getElementById("type").innerHTML = makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]);
-	document.getElementById("visib").innerHTML = makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]);
-	document.getElementById("tabs").innerHTML = makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]);
-	document.getElementById("highscoremode").innerHTML = makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]);
 
-	if (deadline !== undefined) {
-		document.getElementById("deadlinehours").innerHTML = makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue);
-		document.getElementById("deadlineminutes").innerHTML = makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue);
-		document.getElementById("setDeadlineValue").value = !retdata['startdate'] ? "" : deadline.substr(0, 10);
-	}
+  // Default showing of set deadline. Will show if has type "Test" only
+  if (kind != 3) {
+    document.querySelector("#inputwrapper-deadline").style.display = "none";
+    document.querySelector("#dialog8").style.display = "none";
+  } else {
+    document.querySelector("#inputwrapper-deadline").style.display = "block";
+  }
 
-	if (relativeDeadline !== undefined) {
-		var splitdeadline = relativeDeadline.split(":");
-		document.getElementById("relativedeadlinehours").innerHTML = makeoptions(splitdeadline[2], hourArrOptions, hourArrValue);
-		document.getElementById("relativedeadlineminutes").innerHTML = makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue);
-		document.getElementById("relativedeadlineamount").innerHTML = makeoptions(splitdeadline[0], amountArrOptions, amountArrValue);
-		document.getElementById("relativedeadlinetype").innerHTML = makeoptions(splitdeadline[1], typeArrOptions, typeArrValue);
+  // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
+  document.getElementById("gradesys").innerHTML = makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]);
+  document.getElementById("type").innerHTML = makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]);
+  document.getElementById("visib").innerHTML = makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]);
+  document.getElementById("tabs").innerHTML = makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]);
+  document.getElementById("highscoremode").innerHTML = makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]);
+  if (deadline !== undefined) {
+    document.getElementById("deadlinehours").innerHTML = makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue);
+    document.getElementById("deadlineminutes").innerHTML = makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue);
+    document.getElementById("setDeadlineValue").value = !retdata['startdate'] ? "" : deadline.substr(0, 10);
+  }
+  // Handles relative deadlines
+  if (relativeDeadline !== undefined) {
+    var splitdeadline = relativeDeadline.split(":");
+    // relativeDeadline = amount:type:hour:minute
+    document.getElementById("relativedeadlinehours").innerHTML = makeoptions(splitdeadline[2], hourArrOptions, hourArrValue);
+    document.getElementById("relativedeadlineminutes").innerHTML = makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue);
+    document.getElementById("relativedeadlineamount").innerHTML = makeoptions(splitdeadline[0], amountArrOptions, amountArrValue);
+    document.getElementById("relativedeadlinetype").innerHTML = makeoptions(splitdeadline[1], typeArrOptions, typeArrValue);
 
-		if (relativeDeadline !== "null") {
-			let check = calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime();
-			checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), check);
-		} else {
-			checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
-		}
-	}
+    if (relativeDeadline !== "null") {
+      if (calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime()) {
+        checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
+      } else {
+        checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
+      }
+    } else {
+      checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
+    }
+  }
+  if (relativeDeadline == "null" && deadline == "null") {
+    checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
+  }
+  var groups = [];
+  for (var key in retdata['groups']) {
+    // Skip loop if the property is from prototype
+    if (!retdata['groups'].hasOwnProperty(key)) continue;
+    groups.push(key);
+  }
+    document.getElementById("grptype").innerHTML = "<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups);
 
-	if (relativeDeadline === "null" && deadline === "null") {
-		checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
-	}
+  // Set Link
+  document.getElementById("link").value = elink;
+  changedType(kind);
 
-	var groups = [];
-	for (var key in retdata['groups']) {
-		if (!retdata['groups'].hasOwnProperty(key)) continue;
-		groups.push(key);
-	}
-	document.getElementById("grptype").innerHTML = "<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups);
-	document.getElementById("link").value = elink;
-	changedType(kind);
+  // Set Moments - requires iteration since we only process kind 4
+  str = "";
+  if (retdata['entries'].length > 0) {
 
-	var str = "";
-	if (retdata['entries'].length > 0) {
-		str += moment === "" ? "<option selected='selected' value='null'>&lt;None&gt;</option>" : "<option value='null'>&lt;None&gt;</option>";
-		for (var i = 0; i < retdata['entries'].length; i++) {
-			var item = retdata['entries'][i];
-			if (item['kind'] == 4) {
-				str += parseInt(moment) == parseInt(item['lid'])
-					? `<option selected='selected' value='${item['lid']}'>${item['entryname']}</option>`
-					: `<option value='${item['lid']}'>${item['entryname']}</option>`;
-			}
-		}
-	}
-	document.getElementById("moment").innerHTML = str;
-	document.getElementById("editSectionDialogTitle").textContent = entryname;
-	document.getElementById("sectionname").value = entryname;
-	document.getElementById("comments").value = comments;
-	document.getElementById("lid").value = lid;
-	document.getElementById("editSection").style.display = "flex";
+    // Account for null
+    if (moment == "") str += "<option selected='selected' value='null'>&lt;None&gt;</option>"
+    else str += "<option value='null'>&lt;None&gt;</option>";
+
+    // Account for rest of moments!
+    for (var i = 0; i < retdata['entries'].length; i++) {
+      var item = retdata['entries'][i];
+      if (item['kind'] == 4) {
+        if (parseInt(moment) == parseInt(item['lid'])) str += "<option selected='selected' " +
+          "value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
+        else str += "<option value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
+      }
+    }
+  }
+
+  document.getElementById("moment").innerHTML = str;
+  document.getElementById("editSectionDialogTitle").textContent = entryname;
+
+  // Set Name
+  document.getElementById("sectionname").value = entryname;
+  //document.getElementById("sectionnamewrapper").innerHTML = `<input type='text' class='form-control textinput' id='sectionname' value='${entryname}' style='width:448px;'/>`;
+
+  // Set Comment
+  document.getElementById("comments").value = comments;
+  //document.getElementById("sectionnamewrapper").innerHTML = `<input type='text' class='form-control textinput' id='comments' value='${comments}' style='width:448px;'/>`;
+
+  // Set Lid
+  document.getElementById("lid").value = lid;
+
+  // Display Dialog
+  document.getElementById("editSection").style.display = "flex";
+
+  //------------------------------------------------------------------------------
+  // Checks if feedback is enabled and enables input box for feedbackquestion choice.
+  //------------------------------------------------------------------------------
+  if (kind == 3) {
+    document.getElementById('inputwrapper-Feedback').style.display = "block";
+    if (feedbackenabled == 1) {
+      document.getElementById("fdbck").checked = true;
+      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "block";
+      document.getElementById("fdbckque").value = feedbackquestion;
+    } else {
+      document.getElementById("fdbck").checked = false;
+      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
+    }
+  } else {
+    document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
+    document.getElementById('inputwrapper-Feedback').style.display = "none";
+    document.getElementById("fdbck").checked = false;
+  }
+
 }
 
 // Handles the logic behind the checkbox for absolute deadline
@@ -369,18 +420,21 @@ function checkDeadlineCheckbox(e, check) {
 
   if (check !== undefined) e.checked = check;
 
-  var checkbox = document.getElementById("absolutedeadlinecheck");
-  var deadlineValue = document.getElementById("setDeadlineValue");
-  var deadlineMinutes = document.getElementById("deadlineminutes");
-  var deadlineHours = document.getElementById("deadlinehours");
+
+  const absDeadlineCheck = document.getElementById("absolutedeadlinecheck");
+  const deadlineValue = document.getElementById("setDeadlineValue");
+  const deadlineMinutes = document.getElementById("deadlineminutes");
+  const deadlineHours = document.getElementById("deadlinehours");
 
   if (e.checked) {
-    checkbox.checked = true;
+    absDeadlineCheck.checked = true;
+
     deadlineValue.disabled = false;
     deadlineMinutes.disabled = false;
     deadlineHours.disabled = false;
   } else {
-    checkbox.checked = false;
+    absDeadlineCheck.checked = false;
+
     deadlineValue.disabled = true;
     deadlineMinutes.disabled = true;
     deadlineHours.disabled = true;
@@ -444,9 +498,11 @@ function convertDateToDeadline(date) {
 // Returns the values of the currently chosen relative deadline input elements
 function getRelativeDeadlineInputValues() {
   return document.getElementById("relativedeadlineamount").value + ":" +
-    document.getElementById("relativedeadlinetype").value + ":" +
-    document.getElementById("relativedeadlinehours").value + ":" +
-    document.getElementById("relativedeadlineminutes").value;
+
+         document.getElementById("relativedeadlinetype").value + ":" +
+         document.getElementById("relativedeadlinehours").value + ":" +
+         document.getElementById("relativedeadlineminutes").value;
+
 }
 
 //---------------------------------------------------------------------------------------------
@@ -461,18 +517,19 @@ function changedType(kind) {
   var linkElement = document.getElementById("link");
 
   if (kind == 2) {
-    linkElement.innerHTML = makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid');
+
+    document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid');
   } else if (kind == 3) {
     document.querySelector("#inputwrapper-group").style.display = "none";
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
-    linkElement.innerHTML = makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id');
+    document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id');
   } else if (kind == 4) {
     document.querySelector("#inputwrapper-group").style.removeProperty('display');
     document.querySelector("#inputwrapper-gradesystem").style.removeProperty('display');
   } else if (kind == 5 || kind == 7) {
-    linkElement.innerHTML = makeoptionsItem(xelink, retdata['links'], 'filename', 'filename');
-  } else {
-    linkElement.innerHTML = "<option value='-1'>-=# Not Applicable #=-</option>";
+    document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['links'], 'filename', 'filename')
+    document.getElementById("link").innerHTML = "<option value='-1'>-=# Not Applicable #=-</option>";
+   
   }
 }
 
@@ -684,12 +741,18 @@ function showSubmitButton() {
 }
 
 function showSaveButton() {
-	var submit = document.querySelectorAll(".submitDugga");
-	var update = document.querySelectorAll(".updateDugga");
-	var close = document.querySelectorAll(".closeDugga");
-	for (var i = 0; i < submit.length; i++) submit[i].style.display = "none";
-	for (var i = 0; i < update.length; i++) update[i].style.display = "block";
-	for (var i = 0; i < close.length; i++) close[i].style.display = "block";
+  const submitButtons = document.querySelectorAll(".submitDugga");
+  const updateButtons = document.querySelectorAll(".updateDugga");
+  const closeButtons = document.querySelectorAll(".closeDugga");
+  submitButtons.forEach(btn => {
+    btn.style.display = "none";
+  });
+  updateButtons.forEach(btn => {
+    btn.style.display = "block";
+  });
+  closeButtons.forEach(btn => {
+    btn.style.display = "block";
+  });
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
@@ -910,28 +973,27 @@ function clearHideItemList() {
 
 
 function closeSelect() {
-	toggleTab(false);
-	document.querySelectorAll(".item").forEach(function(el) {
-		el.style.border = "none";
-		el.style.boxShadow = "none";
-	});
-	document.getElementById("editSection").style.display = "none";
-	defaultNewItem();
+
+  toggleTab(false);
+  const items = document.querySelectorAll(".item");
+  items.forEach(item => {
+    item.style.border = "none";
+    item.style.boxShadow = "none";
+  });
+  const editSection = document.getElementById("editSection");
+  editSection.style.display = "none";
+  defaultNewItem();
 }
 
 function defaultNewItem() {
-	// Resets save button to its default form
-	document.getElementById("saveBtn").removeAttribute("disabled");
-
-	// Resets submit button to its default form
-	document.getElementById("submitBtn").removeAttribute("disabled");
-
-	// Resets color for name input
-	document.getElementById("sectionname").style.backgroundColor = backgroundColorTheme;
-
-	// Resets tooltip text to its default form
-	var tooltip = document.getElementById("tooltipTxt");
-	if (tooltip) tooltip.style.display = "none";
+  const saveBtn = document.getElementById("saveBtn");
+  const submitBtn = document.getElementById("submitBtn");
+  const sectionName = document.getElementById("sectionname");
+  const tooltipTxt = document.getElementById("tooltipTxt");
+  saveBtn.removeAttribute("disabled"); // Resets save button to its default form
+  submitBtn.removeAttribute("disabled"); // Resets submit button to its default form
+  sectionName.style.backgroundColor = backgroundColorTheme; // Resets color for name input
+  tooltipTxt.style.display = "none"; // Resets tooltip text to its default form
 }
 
 function showCreateVersion() {
@@ -1003,19 +1065,14 @@ function prepareItem() {
   param.moment = document.getElementById("moment").value;
   param.comments = document.getElementById("comments").value;
   param.grptype = document.getElementById("grptype").value;
-  
-  var setDeadlineValue = document.getElementById("setDeadlineValue").value;
-  var deadlineHours = document.getElementById("deadlinehours").value;
-  var deadlineMinutes = document.getElementById("deadlineminutes").value;
-  param.deadline = setDeadlineValue + " " + deadlineHours + ":" + deadlineMinutes;
-
+  param.deadline = document.getElementById("setDeadlineValue").value + " " + document.getElementById("deadlinehours").value + ":" + document.getElementById("deadlineminutes").value;
   param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
-  if (!document.getElementById("absolutedeadlinecheck").checked) {
+  if (!document.getElementById('absolutedeadlinecheck').checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
-  if (document.getElementById("fdbck").checked) {
+  if (document.getElementById('fdbck').checked) {
     param.feedback = 1;
     param.feedbackquestion = document.getElementById("fdbckque").value;
   } else {
@@ -1322,7 +1379,7 @@ function createVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + (document.getElementById("makeactive").checked ? 1 : 0);
+  param.makeactive = 2 + document.getElementById("makeactive").checked;
   param.startdate = getDateFormat(new Date(document.getElementById("startdate").value));
   param.enddate = getDateFormat(new Date(document.getElementById("enddate").value));
 
@@ -1364,7 +1421,7 @@ function updateVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + (document.getElementById("emakeactive").checked ? 1 : 0);
+  param.makeactive = 2 + document.getElementById("emakeactive").checked;
   param.startdate = document.getElementById("estartdate").value;
   param.enddate = document.getElementById("eenddate").value;
   param.motd = document.getElementById("eMOTD").value;
@@ -3582,7 +3639,13 @@ function validateVersionName(versionName, dialogid) {
 
   //if versionname is 2 capital letters, 2 numbers
   if (name.value.match(Name)) {
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     name.classList.add("color-change-valid");
     name.classList.remove("color-change-invalid");
     name.style.backgroundColor = backgroundColorTheme;
@@ -3594,7 +3657,14 @@ function validateVersionName(versionName, dialogid) {
     }
     return true;
   } else if (name.value.length > 0){
-    $(errorMsg).fadeIn();
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     name.classList.add("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3605,7 +3675,13 @@ function validateVersionName(versionName, dialogid) {
     }
     return false;
   }else{
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     name.classList.remove("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3626,19 +3702,38 @@ function validateCourseID(courseid, dialogid) {
   var errorMsg = document.getElementById(dialogid);
 
   if (cid.value.match(Code)) {
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     cid.classList.add("color-change-valid");
     cid.classList.remove("color-change-invalid");
     cid.style.backgroundColor = backgroundColorTheme;
     window.bool = true;
   } else if (cid.value.length > 0){
-    $(errorMsg).fadeIn();
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    };
     cid.classList.add("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
     return false;
   }else{
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     cid.classList.remove("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
@@ -3647,7 +3742,14 @@ function validateCourseID(courseid, dialogid) {
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === cid.value);
   if (versionIsValid) {
     errorMsg.innerHTML = "Version ID already exists, try another";
-    $(errorMsg).fadeIn();
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     cid.classList.add("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
@@ -3664,17 +3766,43 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
   var errorMsg1 = document.getElementById(syntaxdialogid);
   var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
-    $(errorMsg1).fadeOut()
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     window.bool9 = true;
   } else {
-    $(errorMsg1).fadeIn()
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     window.bool9 = false;
   }
   if (emotd.value.match(EmotdRange)) {
-    $(errorMsg2).fadeOut()
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     window.bool9 = true;
   } else {
-    $(errorMsg2).fadeIn()
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     window.bool9 = false;
   }
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
@@ -3705,7 +3833,14 @@ function validateDate(startDate, endDate, dialogID) {
   // If one of the dates is not filled in
   if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
     errorMsg.innerHTML = "Both start date and end date must be filled in";
-    $(errorMsg).fadeIn();
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3720,7 +3855,13 @@ function validateDate(startDate, endDate, dialogID) {
     edate.classList.remove("color-change-invalid");
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -3732,7 +3873,14 @@ function validateDate(startDate, endDate, dialogID) {
   // If end date is less than start date
   if (date2 < date1) {
     errorMsg.innerHTML = "Start date has to be before end date";
-    $(errorMsg).fadeIn();
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3752,19 +3900,20 @@ function showCourseDate(ddate, dialogid) {
   var startdate = convertDateToDeadline(new Date(retdata['startdate'])).split(" ")[0];
   var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
 
-  if (!$("#absolutedeadlinecheck").is(":checked")) {
+  if (!document.getElementById("absolutedeadlinecheck").checked) {
     rDate = /^[0:]+$/.test(convertDateToDeadline(calculateRelativeDeadline()).split(" ")[1]) ? convertDateToDeadline(calculateRelativeDeadline()).split(" ")[0] : convertDateToDeadline(calculateRelativeDeadline());
     str = "The relative deadline will be set to ";
     str += !retdata['startdate'] ? formatRelativeDeadlineToString(getRelativeDeadlineInputValues()) : rDate;
   } else {
     if (!retdata['startdate']) {
-      $(ddate).val("");
+      ddate.value = "";
       str = "There is no course start date, please add one or use relative deadlines.";
     } else {
       str = "The absolute deadline date has to be between " + startdate + " and " + enddate;
     }
   }
-  $("#dialog8").html(str);
+  const dialog8 = document.getElementById("dialog8");
+  dialog8.innerHTML = str;
   return isCorrect;
 }
 
@@ -3783,24 +3932,47 @@ function validateDate2(ddate, dialogid) {
     var startdate = new Date(retdata['startdate']);
     var enddate = new Date(retdata['enddate']);
 
+    const absolutedeadlinecheck = document.getElementById("absolutedeadlinecheck");
+    const absolutedeadlinecheckIsChecked = absolutedeadlinecheck && absolutedeadlinecheck.checked;
+
     // If deadline is between start date and end date
-    if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
-      $(errorMsg).fadeOut();
+    if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && absolutedeadlinecheckIsChecked) {
+      if (errorMsg) {
+        errorMsg.style.transition = "opacity 0.3s ease";
+        errorMsg.style.opacity = 0;
+        setTimeout(() => {
+          errorMsg.style.display = "none";
+        }, 300);
+      }
       ddate.classList.add("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
-    } else if (!$("#absolutedeadlinecheck").is(":checked")) {
+    } else if (!absolutedeadlinecheckIsChecked) {
       // If absolute deadline is not being used
-      $(errorMsg).fadeIn();
+      if (errorMsg) {
+        errorMsg.style.opacity = 0;
+        errorMsg.style.display = "block";
+        errorMsg.style.transition = "opacity 0.3s ease";
+        requestAnimationFrame(() => {
+            errorMsg.style.opacity = 1;
+        });
+      }
       ddate.classList.remove("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
     } else {
-      $(errorMsg).fadeIn();
+      if (errorMsg) {
+        errorMsg.style.opacity = 0;
+        errorMsg.style.display = "block";
+        errorMsg.style.transition = "opacity 0.3s ease";
+        requestAnimationFrame(() => {
+            errorMsg.style.opacity = 1;
+        });
+      }
       ddate.classList.add("color-change-invalid");
       ddate.classList.remove("color-change-valid");
       window.bool8 = false;
@@ -3815,20 +3987,39 @@ function validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     element.style.backgroundColor = inputColorTheme;
     element.classList.add("color-change-valid");
     element.classList.remove("color-change-invalid");
     window.bool10 = true;
     return true;
   } else if (element.value.length > 0) { //Invalid
-    $(errorMsg).fadeIn();
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     element.classList.add("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
   }else{
-    $(errorMsg).fadeOut();
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
@@ -4093,7 +4284,7 @@ function validateForm(formid) {
       }, 200);
       //Duration time for the alert before remove
       setTimeout(function () {
-        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").classList.remove("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       }, 3000);
     } else {
@@ -4128,7 +4319,7 @@ function validateForm(formid) {
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
       alert('New version created');
       createVersion();
-      $('#newCourseVersion input').val("");
+      document.querySelector('#newCourseVersion input').value = "";
 
     } else {
       toast("Error","You have entered incorrect information",5);
@@ -4156,14 +4347,14 @@ function validateForm(formid) {
   }
 
   if (formid === 'githubPopupWindow') {
-    var repoLink = $("#gitRepoURL").val();
-    var repoKey = $("#gitAPIKey").val();
-    var cid = $("#cidTrue").val();
+    var repoLink = document.getElementById("gitRepoURL").value;
+    var repoKey = document.getElementById("gitAPIKey").value;
+    var cid = document.getElementById("cidTrue").value;
     if (repoLink) {
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
-        $("#githubPopupWindow").css("display", "none");
+        document.getElementById("githubPopupWindow").style.display = "none";
         updateGithubRepo(repoLink, cid, repoKey);
         // Refresh page after github link
         //location.reload();
@@ -4278,10 +4469,11 @@ function contactStudent(entryname, username) {
 // Displays the feedback question input on enable-button toggle.
 //------------------------------------------------------------------------------
 function showFeedbackquestion() {
-  if ($("#fdbck").prop('checked')) {
-    $("#inputwrapper-FeedbackQuestion").css("display", "block");
+  const feedbackQuestionWrapper = document.getElementById("inputwrapper-FeedbackQuestion");
+  if (document.getElementById("fdbck").checked) {
+    feedbackQuestionWrapper.style.display = "block"
   } else {
-    $("#inputwrapper-FeedbackQuestion").css("display", "none");
+    feedbackQuestionWrapper.style.display = "none"
   }
 }
 
