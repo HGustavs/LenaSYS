@@ -103,7 +103,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     Window.changeDbSettings = function() {
         console.log("Changing DB settings...");
-        // Logic for changing DB settings will be implemented here.
+        
+        data.changeRootUsername = document.getElementById("changeRootUsername").value;
+        data.changeRootPassword = document.getElementById("changeRootPassword").value;
+        data.changeHostname = document.getElementById("changeHostname").value;
+        
+        data.root_username = data.changeRootUsername;
+        data.root_password = data.changeRootPassword;
+        data.hostname = data.changeHostname;
+
+        start_installer(data); 
         closeModal();
         hideModalButton();
     }
