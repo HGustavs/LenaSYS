@@ -24,7 +24,7 @@ if(isset($_SESSION['uid'])){
 <html lang="en">
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Course Editor</title>
