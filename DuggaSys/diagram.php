@@ -1001,7 +1001,7 @@
         </fieldset>
         <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="showSavePopout()">
+            <div id="localSave" class="diagramIcons" onclick="getActiveFile()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram.</p>
@@ -1012,7 +1012,7 @@
         </fieldset>
         <fieldset id="localSaveAsField" class="disabledIcon">
             <legend aria-hidden="true">Save As</legend>
-            <div id="localSaveAs" class="diagramIcons">
+            <div id="localSaveAs" class="diagramIcons" onclick="showSavePopout()">
                 <img src="../Shared/icons/diagram_save_as_icon.svg" alt="Save diagram as"/>
                 <span class="toolTipText"><b>Save current diagram to file</b><br>
                     <p>Click to save current diagram <br> to file.</p>
@@ -1240,7 +1240,7 @@
                     <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
                 </div>
                 <div class="button-row">
-                    <input type="submit" class="submit-button" onclick="saveDiagramAs(); hideSavePopout();" value="Save"/>
+                    <input type="submit" class="submit-button" onclick="storeDiagramInLocalStorage(getCurrentFileName()); hideSavePopout();" value="Save"/>
                 </div>
             </div>
         </div>

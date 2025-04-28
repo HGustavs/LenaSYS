@@ -1759,7 +1759,7 @@ function storeDiagramInLocalStorage(key) {
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
-        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
+        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram to file " + key);
     }
 }
 
@@ -2030,8 +2030,10 @@ function saveDiagramBeforeUnload() {
 function disableIfDataEmpty() {
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         document.getElementById('localSaveField').classList.add('disabledIcon');
+        document.getElementById('localSaveAsField').classList.add('disabledIcon');
     } else {
         document.getElementById('localSaveField').classList.remove('disabledIcon');
+        document.getElementById('localSaveAsField').classList.remove('disabledIcon');
     }
 }
 
@@ -2056,18 +2058,24 @@ function closeOverridePopout() {
     $("#overrideContainer").css("display", "none");
 }
 
+let activeFile = null;
+
 //get the current file name that the user wants to use for saving to local storage.
 function getCurrentFileName() {
     let fileName = document.getElementById("saveDiagramAs");
+    activeFile = fileName
     return fileName.value;
 }
 
-function saveDiagramAs() {
-    let elem = document.getElementById("saveDiagramAs");
-    if (!elem) {
-        return;
+function getActiveFile() {
+    if (activeFile == null) {
+        showSavePopout();
+    } else {
+        saveDiagramAs();
     }
-    let fileName = elem.value;
+}
+
+function saveDiagramAs() {
 
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -2078,11 +2086,6 @@ function saveDiagramAs() {
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
     const formattedDate = year + "-" + month + "-" + day + " ";
     const formattedTime = hours + ":" + minutes + ":" + seconds;
-
-    // Assigns date/time as name if file name is left empty
-    if (fileName.trim() === "") {
-        fileName = "diagram " + formattedDate + formattedTime;
-    }
 
     let names = [];
     let localDiagrams;
@@ -2101,14 +2104,14 @@ function saveDiagramAs() {
 
     // Check if diagram name is unique
     for (let i = 0; i < names.length; i++) {
-        if (names[i] == fileName) {
+        if (names[i] == activeFile) {
             hideSavePopout();
             showOverridePopout();
             return;
         }
     }
 
-    storeDiagramInLocalStorage(fileName);
+    storeDiagramInLocalStorage(activeFile);
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true) {
