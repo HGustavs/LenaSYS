@@ -1473,7 +1473,7 @@ function returnedGroups(data) {
       j = 1;
       if (grp != "") {
         str += "</tbody>";
-        str += "</table>";
+        //str += "</table>";
         str += `<div style='text-align:right;border-top:2px solid #434343'>
         <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
         grpemail = "";
@@ -1490,7 +1490,7 @@ function returnedGroups(data) {
   }
   if (grp != "") {
     str += "</tbody>";
-    str += "</table>";
+    //str += "</table>";
     str += `<div style='text-align:right;border-top:2px solid #434343'><a
     href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
@@ -1630,6 +1630,8 @@ function returnedSection(data) {
     /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
 
     str += "<div id='Sectionlistc'>";
+    str += "<table id='SectionlistTable'>";
+    
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
       var kk = 0;
@@ -1643,6 +1645,7 @@ function returnedSection(data) {
         if(deadline==null) {
           deadline = item['deadline'];
         }
+        //str += "<tr>";
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
@@ -1654,12 +1657,14 @@ function returnedSection(data) {
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " courseRow'>";
         }
 
+        //str += "</tr>";
+
         menuState.idCounter++;
         // All are visible according to database
+        
 
         // Content table
-        str += `<table id='lid${item['lid']}' value='${item['lid']}'
-        ><tr value='${makeTextArray(item['kind'], valarr)}'`;
+        str += `<tr id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}'`;
 
         //if (kk % 2 == 0) {
         //  str += " class='hi' ";
@@ -1667,6 +1672,7 @@ function returnedSection(data) {
         //  str += " class='lo' ";
         //}
         str += " >";
+        
 
 
         var hideState = "";
@@ -2155,7 +2161,7 @@ function returnedSection(data) {
         }
 
         str += "</tr>";
-        str += "</table></div>";
+        //str += "</table></div>";
       } // End of for-loop
 
     } else {
@@ -2163,7 +2169,7 @@ function returnedSection(data) {
       str += "<div id='noAccessMessage' class='bigg'>";
       str += "<span>You either have no access or there isn't anything under this course</span>";
       str += "</div>";
-    }
+    } str += "</table>";
 
     str += "</div></div>";
 
@@ -2281,7 +2287,7 @@ function returnedSection(data) {
 
 
 
-  }
+  } 
   
   //Force elements that are deleted to not show up unless pressing undo delete or reloading the page
   for(var i = 0; i < delArr.length; i++){
@@ -2328,7 +2334,7 @@ function returnedSection(data) {
   document.getElementById('toggleElements').addEventListener('click', toggleButtonClickHandler);
   toggleHidden();
 }
- 
+
 function toggleHidden() { //Look for all td's that have the class "hidden"
   const hiddenTds = document.querySelectorAll('#Sectionlistc td.hidden');
   const hiddenDivs = [];
@@ -4451,7 +4457,7 @@ function createUserFeedbackTable(data) {
     str += "</tr>";
   }
 
-  str += "</tbody></table>";
+  str += "</tbody>"; //</table>
   return str;
 }
 
