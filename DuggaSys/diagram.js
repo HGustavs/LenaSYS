@@ -581,18 +581,6 @@ elements.forEach(element => {
     }
 });
 
-for (let i = 0; i <= maxNum; i++) {
-    let element = document.getElementById("elementPlacement" + i);
-    if (element) {
-        // Add event listener for click
-        element.addEventListener("mousedown", function (event) {
-            if (event.button === 2) {
-                rightClickOpenSubtoolbar(i);
-            }
-        });
-    }
-}
-
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
 });
@@ -1672,12 +1660,42 @@ function setElementPlacementType(type = elementTypes.EREntity) {
 }
 
 /**
+ * @description Variable to hold current subtoolbar
+ * USED LOCALLY
+ */
+let currentlyOpenSubmenu = null;
+
+/**
  * @description Function to open a subtoolbar when hovering over a button
  * USED IN PHP
  */
-function hoverPlacementButton(num) {
-    // Directly toggle the subtoolbar when hovering, without the delay
-    togglePlacementTypeBox(num);
+function hoverPlacementButton(index) {
+    // First, hide the old submenu if a new button is hovered
+    if (currentlyOpenSubmenu !== null && currentlyOpenSubmenu !== index) {
+        hidePlacementType();
+    }
+
+    let submenu = document.getElementById(`togglePlacementTypeBox${index}`);
+    if (submenu) {
+        submenu.classList.add("activeTogglePlacementTypeBox");
+        currentlyOpenSubmenu = index;
+    } else {
+        currentlyOpenSubmenu = null;
+    }
+}
+
+/**
+ * @description Function to hide submenu
+ * USED IN PHP
+ */ 
+function hidePlacementType() {
+    if (currentlyOpenSubmenu !== null) {
+        let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
+        if (submenu){
+            submenu.classList.remove("activeTogglePlacementTypeBox"); // Hide submenu
+        }             
+        currentlyOpenSubmenu = null;
+    }
 }
 
 // Modified original function to work with hovering and also handle pressing if needed

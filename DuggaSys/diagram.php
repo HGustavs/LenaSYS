@@ -100,14 +100,14 @@
     <div id="diagram-toolbar">
         <fieldset>
             <legend aria-hidden="true">Modes</legend>
-                <div id="mouseMode0" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
+                <div id="mouseMode0" onmouseenter='hidePlacementType()' class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <span>Allows you to select and move different elements as well as navigate the workspace</span><br>
                         <span id="tooltip-POINTER" class="key_tooltip">Keybinding:</span>
                     </span>
                 </div>
-                <div id="mouseMode1" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
+                <div id="mouseMode1" onmouseenter='hidePlacementType()' class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area</p><br>
@@ -119,7 +119,7 @@
                          class="ERButton diagramIcons toolbarMode"
                          onclick='setElementPlacementType(0); setMouseMode(2);'
                          onmouseenter='hoverPlacementButton(0)'><!--<-- UML functionality -->
-                        <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
+                         <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Add an ER entity to the diagram</p>
                             <p>Each entity represents an object which is a representation of concepts or data.</p>
@@ -131,7 +131,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(0), hidePlacementType()'>
                         <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
@@ -190,7 +190,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(4), hidePlacementType()'>
                         <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
@@ -250,7 +250,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(6), hidePlacementType()'>
                         <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
@@ -310,7 +310,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(8), hidePlacementType()'>
                         <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
@@ -370,7 +370,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div> 
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(1), hidePlacementType()'>
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                             <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
@@ -429,7 +429,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
-                    <div id="diagramPopOut">  
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(5), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox5" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
@@ -488,7 +488,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
-                    <div id="diagramPopOut">  
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(7), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
@@ -546,7 +546,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
-                    <div id="diagramPopOut">  
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(2), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox2" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
@@ -588,7 +588,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="mouseMode3" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
+                <div id="mouseMode3" onmouseenter='hidePlacementType()' class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between elements</p><br>
@@ -611,7 +611,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="diagramPopOut"><!--Initial state -->
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(9), hidePlacementType()'><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
@@ -661,7 +661,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut"><!--Initial state -->
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(10), hidePlacementType()'><!--Initial state -->
                         <div id="togglePlacementTypeBox10" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
@@ -711,7 +711,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut"><!--Initial state -->
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(11), hidePlacementType()'><!--Initial state -->
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
@@ -765,7 +765,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(12), hidePlacementType()'>
                         <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline object"/>
@@ -822,7 +822,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(16), hidePlacementType()'>
                         <div id="togglePlacementTypeBox16" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
@@ -879,7 +879,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(13), hidePlacementType()'>
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
@@ -934,7 +934,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>    
-                    <div id="diagramPopOut">
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(14), hidePlacementType()'>
                         <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
@@ -977,7 +977,7 @@
                 </div> <!-- SEQUENCE CONDITION/LOOP END -->
                 <!-- SEQUENCE POP-OUT END -->
                 <!-- NOTE -->
-                <div id="elementPlacement15" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);'>
+                <div id="elementPlacement15" onmouseenter='hidePlacementType()' class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_note.svg"/>
                     <span class="toolTipText"><b>Note</b><br>
                         <p>Creates a note</p><br>
