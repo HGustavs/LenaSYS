@@ -7,9 +7,6 @@ pdoConnect();
 session_start();
 
 
-header('Content-Type: application/json');
-
-
 //get values from post
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['exampleid'], $_POST['courseid'], $_POST['coursevers'], $_POST['sectname'], $_POST['link'], $_POST['log_uuid'], $_POST['templatenumber'])) {
@@ -45,6 +42,7 @@ $userid = getUid();
 $username = retrieveUsername($pdo);
 logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
-$response = ['debug'=>$debug, 'link'=>$link];
-echo json_encode($response);
-exit;
+$result = array('debug'=>$debug,'link'=>$link);
+header('Content-Type: application/json');
+echo json_encode($result);
+

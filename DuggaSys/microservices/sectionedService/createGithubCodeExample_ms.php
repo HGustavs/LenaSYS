@@ -143,16 +143,15 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
         'exampleid'=> $exampleid,
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
-        'sectionname'=> $sectionname,
+        'sectname'=> $sectionname,
         'link'=> $link,
         'log_uuid'=> $log_uuid, 
-        'templateNumber'=> $templateNumber
+        'templatenumber'=> $templateNumber
     ]));
        
     $response = curl_exec($ch);
-    $data = json_decode($response, true);
-    $link = $data;
-    curl_close($ch);
+    $link = json_decode($response, true);
+
 
     //select the latest codeexample created to link boxes to this codeexample
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
@@ -461,5 +460,5 @@ function NoCodeExampleNoFiles($exampleName)
 }
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-header('Content-Type: application/json')
+header('Content-Type: application/json');
 echo json_encode($data);

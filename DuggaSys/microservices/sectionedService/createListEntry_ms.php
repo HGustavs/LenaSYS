@@ -58,16 +58,16 @@ if($link==-1) {
         'exampleid'=> $exampleid,
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
-        'sectionname'=> $sectionname,
+        'sectname'=> $sectname,
         'link'=> $link,
-        'log_uuid'=> $log_uuid, 
-        'templateNumber'=> $templateNumber
+        'log_uuid'=> $log_uuid,
+        'templatenumber'=> $templateNumber 
     ]));
        
     $response = curl_exec($ch);
     $data = json_decode($response, true);
-    $link = $data;
-    curl_close($ch);
+    $link=$data['link'];
+
 }
 
 $debug = createNewListEntry($pdo,
@@ -87,7 +87,7 @@ $debug = createNewListEntry($pdo,
 
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-header('Content-Type: application/json')
+header('Content-Type: application/json');
 echo json_encode($data);
 return;
 ?>
