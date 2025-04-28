@@ -45,5 +45,6 @@ $userid = getUid();
 $username = retrieveUsername($pdo);
 logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
-return array('debug'=>$debug,'link'=>$link);
-
+$response = ['debug'=>$debug, 'link'=>$link];
+echo json_encode($response);
+exit;

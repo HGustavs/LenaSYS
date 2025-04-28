@@ -47,6 +47,7 @@ if($link==-1) {
     //$link=$data['link'];
 
     //set url for createNewCodeExample.php path
+    header("Content-Type: application/json");
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
     $ch = curl_init($url);

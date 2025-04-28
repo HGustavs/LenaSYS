@@ -132,6 +132,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     //$link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
 
     //set url for createNewCodeExample.php path
+    header("Content-Type: application/json");
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
     $ch = curl_init($url);
