@@ -80,6 +80,7 @@
 
 
 			//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
+			//Always on courseed.php ($noup is none). Contains only home and darkmode icons.
 			if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid'])) || $noup=='NONE'){
 				
 				echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'></td>";
