@@ -1002,6 +1002,7 @@ function handlePinchZoom(event) {
     const dy = event.touches[0].clientY - event.touches[1].clientY;
     const newDistance = Math.hypot(dx, dy);
 
+    // Save the current time to check if enough time has passed to trigger a new pinch-zoom
     const now = Date.now();
 
     // Check if distance change is bigger than threshold and if enough time has passed since last zoom event
