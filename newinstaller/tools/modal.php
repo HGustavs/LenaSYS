@@ -76,7 +76,7 @@ class Modal {
             ',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
-                ['text' => 'ChangeSettings', 'class' => 'progressButton', 'onclick' => 'Window.changeDbSettings()'],
+                ['text' => 'Change Settings', 'class' => 'progressButton', 'onclick' => 'Window.changeDbSettings()'],
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
@@ -127,11 +127,11 @@ class Modal {
             '
                 An error occurred while executing SQL files. Please check the SQL syntax and try again.
                 Press the retry-button if you want to return to the installer at the step where it failed or 
-                press the restart installer-button to restart installer.
+                press the restart installer-button to restart installer and reset all values.
             ',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
-                ['text' => 'Restart Installer', 'progressButton' => 'restart-button', 'onclick' => 'Window.restartInstaller()'],
+                ['text' => 'Restart Installer', 'class' => 'progressButton', 'onclick' => 'Window.restartInstaller()'],
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
