@@ -59,8 +59,7 @@ basic.php
 # isSuperUser_ms.php
 
 ## Description
-Retrieves the user's UID (user ID) from the session. If a user is not logged in, guest ID is returned instead.
-Also logs events into serviceLogEntries-table.
+Checks if a user is a superuser. Used to control access permission.
 
 ## Input Parameters
 
