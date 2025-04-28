@@ -31,6 +31,7 @@ if(isset($_SESSION['uid'])){
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/loadingButton.js"></script>
@@ -41,6 +42,7 @@ if(isset($_SESSION['uid'])){
   	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
+	
 </head>
 <body>
 
