@@ -538,104 +538,141 @@ function changedType(kind) {
 // refreshGithubRepo: Send course id to function in gitcommitService.php
 //----------------------------------------------------------------------------------
 
-function refreshGithubRepo(courseid, user) {
-  //Used to return success(true) or error(false) to the calling function
-  var dataCheck;
-  $.ajax({
-    async: false,
-    url: "../DuggaSys/gitcommitService.php",
-    type: "POST",
-    data: { 'cid': courseid, 'user': user, 'action': 'refreshGithubRepo' },
-    success: function (data) {
+var refreshGithubRepo = async function (courseid, user) {
+  var dataCheck = false;
+
+  try {
+    var response = await fetch("../DuggaSys/gitcommitService.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "cid=" + encodeURIComponent(courseid) +
+        "&user=" + encodeURIComponent(user) +
+        "&action=refreshGithubRepo"
+    });
+
+    if (!response.ok) {
+      switch (response.status) {
+        case 403:
+        case 422:
+        case 503:
+          var errorData = await response.json();
+          toast("error", errorData.message + "\nDid not update course", 7);
+          break;
+        default:
+          toast("error", "Something went wrong...", 7);
+      }
+      dataCheck = false;
+    }
+    else {
+      var data = await response.text();
       if (data == "No repo") {
-        $("#githubPopupWindow").css("display", "flex");
+        document.getElementById("githubPopupWindow").style.display = "flex";
+      }
+      else if (data == "Too soon since last update, please wait.") {
+        toast(" ", data, 7);
       }
       else {
-        toast("",data,7);
+        toast("success", "GitHub repo refreshed successfully.", 7);
       }
       dataCheck = true;
-    },
-    error: function (data) {
-      //Check gitfetchService for the meaning of the error code.
-      switch (data.status) {
-        case 403:
-        case 422:
-          toast("error",data.responseJSON.message + "\nDid not update course",7);
-          break;
-        case 503:
-          toast("error",data.responseJSON.message + "\nDid not update course",7);
-          break;
-        default:
-          toast("error","Something went wrong...",7);
-      }
-      dataCheck = false;
     }
-  });
+  }
+  catch (error) {
+    toast("error", "Something went wrong...", 7);
+    dataCheck = false;
+  }
   return dataCheck;
-}
+};
 
 //Send new Github URL and course id to PHP-script which gets and saves the latest commit in the sqllite db
-function updateGithubRepo(githubURL, cid, githubKey) {
-  //Used to return success(true) or error(false) to the calling function
-  regexURL = githubURL.replace(/.git$/, "");
-  var dataCheck;
-  console.log("updateGithubRepo");
-  $.ajax({
-    async: false,
-    url: "../DuggaSys/gitcommitService.php",
-    type: "POST",
-    data: { 'githubURL': regexURL, 'cid': cid,'token': githubKey , 'action': 'directInsert'},
-    success: function () {
-      //Returns true if the data and JSON is correct
-      dataCheck = true;
-    },
-    error: function (data) {
-      //Check FetchGithubRepo for the meaning of the error code.
-      switch (data.status) {
+var updateGithubRepo = async function (githubURL, cid, githubKey) {
+  var regexURL = githubURL.replace(/.git$/, "");
+  var dataCheck = false;
+  try {
+    var response = await fetch("../DuggaSys/gitcommitService.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "githubURL=" + encodeURIComponent(regexURL) +
+        "&cid=" + encodeURIComponent(cid) +
+        "&token=" + encodeURIComponent(githubKey) +
+        "&action=directInsert"
+    });
+    if (!response.ok) {
+      switch (response.status) {
         case 403:
         case 422:
         case 503:
-          toast("error",data.responseJSON.message + "\nFailed to update github repo",7);
+          var errorData = await response.json();
+          toast("error", errorData.message + "\nFailed to update github repo", 7);
           break;
         default:
-          toast("error","Something went wrong...",7);
+          toast("error", "Something went wrong...", 7);
       }
       dataCheck = false;
     }
-  });
+    else {
+      var data = await response.text();
+      if (data == "Too soon since last update, please wait.") {
+        toast(" ", data, 7);
+      }
+      else {
+        toast("success", "GitHub repo refreshed successfully.", 7);
+      }
+      dataCheck = true;
+    }
+  }
+  catch (error) {
+    toast("error", "Something went wrong...", 7);
+    dataCheck = false;
+  }
   return dataCheck;
-}
+};
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
-function fetchGitHubRepo(gitHubURL) {
-  //Remove .git, if it exists
-  regexURL = gitHubURL.replace(/.git$/, "");
-  //Used to return success(true) or error(false) to the calling function
-  var dataCheck;
-  $.ajax({
-    async: false,
-    url: "gitfetchService.php",
-    type: "POST",
-    data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' },
-    success: function () {
-      //Returns true if the data and JSON is correct
-      dataCheck = true;
-    },
-    error: function (data) {
-      //Check FetchGithubRepo for the meaning of the error code.
-      switch (data.status) {
+var fetchGitHubRepo = async function (gitHubURL) {
+  var regexURL = gitHubURL.replace(/.git$/, "");
+  var dataCheck = false;
+  try {
+    var response = await fetch("../DuggaSys/gitfetchService.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "githubURL=" + encodeURIComponent(regexURL) +
+        "&action=getNewCourseGitHub"
+    });
+    if (!response.ok) {
+      switch (response.status) {
         case 422:
         case 503:
-          toast("error",data.responseJSON.message + "\nDid not update course, double check github link?",7);
+          var errorData = await response.json();
+          toast("error", errorData.message + "\nDid not update course, double check github link?", 7);
           break;
         default:
-          toast("error","Something went wrong...",7);
+          toast("error", "Something went wrong...", 7);
       }
       dataCheck = false;
     }
-  });
+    else {
+      if (data == "Too soon since last update, please wait.") {
+        toast(" ", data, 7);
+      }
+      else {
+        toast("success", "Fetched GitHub repo successfully.", 7);
+      }
+      dataCheck = true;
+    }
+  }
+  catch (error) {
+    toast("error", "Something went wrong...", 7);
+    dataCheck = false;
+  }
   return dataCheck;
-}
+};
 
 //----------------------------------------------------------------------------------
 // showEditVersion: Displays Edit Version Dialog
