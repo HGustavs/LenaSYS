@@ -575,7 +575,13 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
             `${startX},${startY} ` +
             `${startX + lineLength},${startY} ` +
             `${startX + lineLength},${startY + lineHeight + 15}`;
-    }else if(line.type !== entityType.IE && line.type !== entityType.SD){
+    }else if(line.type === entityType.SE){
+        points =
+            `${startX},${startY + lineHeight  } ` +
+            `${startX},${startY} ` +
+            `${startX + lineLength},${startY} ` +
+            `${startX + lineLength},${startY+lineHeight  }`;
+    }else {
         points =
             `${startX},${startY + lineHeight  } ` +
             `${startX},${startY} ` +
