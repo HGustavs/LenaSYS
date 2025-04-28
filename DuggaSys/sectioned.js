@@ -854,23 +854,49 @@ function markedItems(item = null, typeInput) {
   if (kind == "section" || kind == "moment") {
     var itemInSection = true;
     var sectionStart = false;
+    const elements = document.querySelectorAll('#Sectionlist .item');
 
-    $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = this.getAttribute('value');
+    for (let i = 0 ; i < elements.length ; i++){
+      const element = elements[i];
+      var tempItem = element.getAttribute('value');
+
       console.log('affected item: ' + tempItem);
 
       // if part of a section, add it to subItems.
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = this ? this.closest('tr').getAttribute('value'): null;
+        var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+
+        // if not part of current section, stop looking.
+        if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+          itemInSection = false;
+          console.log('item isnt in section. ( ' + tempItem + ' ) ');
+          break;
+        } 
+        else {
+          subItems.push(tempItem);
+          console.log('pushed to subitems: ' + tempItem );
+        }
+      } 
+      
+      else if (tempItem == active_lid){ 
+        sectionStart = true;
+      }
+    }
+
+    /*document.querySelectorAll('#Sectionlist .item').forEach(function(element, i){
+      var tempItem = element.getAttribute('value');
+      console.log('affected item: ' + tempItem);
+
+      // if part of a section, add it to subItems.
+      if (itemInSection && sectionStart) {
+        var tempDisplay = document.getElementById("lid" + tempItem).style.display;
+        var tempKind = element ? element.closest('tr').getAttribute('value'): null;
 
         // if not part of current section, (should stop looking.)
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
           console.log('item isnt in section. ( ' + tempItem + ' ) ');
-
-          // stop looking?
-
         } 
         else {
           subItems.push(tempItem);
@@ -882,7 +908,7 @@ function markedItems(item = null, typeInput) {
         sectionStart = true;
       }
 
-    });
+    });*/
   }
 
   // handles selections
