@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
     Window.forceCreateDb = function() {
         console.log("Forcing database creation...");
 
-        data["overwrite_db"] = "true";
-        data["overwrite_user"] = "true";
+        data.overwrite_db = "true";
+        data.overwrite_user = "true";
 
         start_installer(data);
         closeModal();
