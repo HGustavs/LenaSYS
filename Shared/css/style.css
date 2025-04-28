@@ -6408,7 +6408,6 @@ header td.navBurgerIcon {
   } 
  
   #navBurgerBox{
-    display: block;
     position: absolute;
     top: 50px;
     width: 32px;
