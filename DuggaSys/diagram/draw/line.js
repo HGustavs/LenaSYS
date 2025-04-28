@@ -69,7 +69,7 @@ function drawLine(line, targetGhost = false) {
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
-        [fx, fy, tx, ty] = recursiveERRelation(felem, telem, line);
+        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype);
         if (line.kind == lineKind.NORMAL) {
             str += `<line 
                         id='${line.id}' 
@@ -447,29 +447,62 @@ function getLineAttributes(f, t, ctype) {
     const ty2 = t.cy + tHeight / 2;
 
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
+    let fx, fy, tx, ty;
 
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
-            return [f.cx, fy1, t.cx, ty2, offset];
+            fx = f.cx;
+            fy = fy1;
+            tx = t.cx;
+            ty = ty2;
+            break;
 
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
-            return [f.cx, fy2, t.cx, ty1, offset];
+            fx = f.cx;
+            fy = fy2;
+            tx = t.cx;
+            ty = ty1;
+            break;
 
         case lineDirection.LEFT:
             offset.x1 = -px;
             offset.x2 = px * 2;
-            return [fx1, f.cy, tx2, t.cy, offset];
+            fx = fx1;
+            fy = f.cy;
+            tx = tx2;
+            ty = t.cy;
+            break;
 
         case lineDirection.RIGHT:
             offset.x1 = px;
             offset.x2 = -px * 2;
-            return [fx2, f.cy, tx1, t.cy, offset];
+            fx = fx2;
+            fy = f.cy;
+            tx = tx1;
+            ty = t.cy;
+            break;
     }
+
+    
+    if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation) {
+        const shrink = 8 * zoomfact; 
+
+        if (ctype === lineDirection.LEFT || ctype === lineDirection.RIGHT) {
+            offset.x1 += (ctype === lineDirection.LEFT ? shrink : -shrink);
+            offset.x2 += (ctype === lineDirection.LEFT ? -shrink : shrink);
+        } else {
+            offset.y1 += (ctype === lineDirection.UP ? shrink : -shrink);
+            offset.y2 += (ctype === lineDirection.UP ? -shrink : shrink);
+        }
+    }
+
+    return [fx, fy, tx, ty, offset];
 }
+
 
 
 /**
