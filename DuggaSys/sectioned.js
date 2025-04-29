@@ -1473,7 +1473,7 @@ function returnedGroups(data) {
       j = 1;
       if (grp != "") {
         str += "</tbody>";
-        //str += "</table>";
+        str += "</table>";
         str += `<div style='text-align:right;border-top:2px solid #434343'>
         <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
         grpemail = "";
@@ -1490,7 +1490,7 @@ function returnedGroups(data) {
   }
   if (grp != "") {
     str += "</tbody>";
-    //str += "</table>";
+    str += "</table>";
     str += `<div style='text-align:right;border-top:2px solid #434343'><a
     href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
