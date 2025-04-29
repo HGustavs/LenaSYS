@@ -86,10 +86,10 @@ Teachers and superusers are not allowed to change passwords.
 
 - Parameter: $action
    - Type: ?
-   - Description: Specifies the action. Here it is "password", for chaning the password.
+   - Description: Specifies the action. Here it is "password", for changing the password.
 
 - Parameter: $newPassword
-   - Type: varchar
+   - Type: tinyint
    - Description: The new password the user wants to change to
 
 - Parameter: $log_uuid
@@ -116,6 +116,4 @@ Teachers and superusers are not allowed to change passwords.
 -
 
 ### Microservices Used
-basic.php
-sessions.php
 getUid_ms.php
