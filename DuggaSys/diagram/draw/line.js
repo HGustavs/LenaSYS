@@ -103,7 +103,7 @@ function drawLine(line, targetGhost = false) {
         }
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
-            str += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
+            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
 
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             //UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
