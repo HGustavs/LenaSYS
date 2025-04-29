@@ -894,23 +894,25 @@ function markedItems(item = null, typeInput) {
       //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
       if (selectedItemList[i] === active_lid && typeInput != "trash") {
         
-        //console.log('lid: ' + active_lid + '- ' + tempKind);
+        //console.log('lid: ' + active_lid + '- ' + tempKind)
+               
+        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+        selectedItemList.splice(i, 1);
+        var removed = true;
 
         // deselection of child -> deselect parent
         if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
           let parent = recieveCodeParent(active_lid);
-          //console.log('parent: ' + parent);
-          document.getElementById(parent + "-checkbox").checked = false;
+
+          console.log('parent recieved: ' + parent);
+
           for (let i = 0; i < tempSelectedItemListLength; i++) {
-            if (selectedItemList[i] === parent){
+            if (selectedItemList[i] == parent){
+              console.log('parent found and unchecked: ' + parent);
+              document.getElementById(parent + "-checkbox").checked = false;
               selectedItemList.splice(i, 1);
             }
           }
-        }
-        else {            
-          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
-          selectedItemList.splice(i, 1);
-          var removed = true;
         }
       }
 
@@ -1012,7 +1014,7 @@ function recieveCodeParent(item){
   for (let i = elements.length - 1 ; i >= 0 ; i--){
     const element = elements[i];
     var tempItem = element.getAttribute('value');
-    console.log('affected item: ' + tempItem);
+    //console.log('affected item: ' + tempItem);
 
     if (itemInSection && sectionStart) {
       var tempKind = element ? element.closest('tr').getAttribute('value'): null;
