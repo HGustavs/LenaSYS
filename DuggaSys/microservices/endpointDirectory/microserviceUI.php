@@ -4,6 +4,15 @@ $db = new PDO('sqlite:endpointDirectory_db.sqlite');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $services = $db->query("SELECT * FROM microservices")->fetchAll();
 
+// delete functionality
+if (isset($_POST['deleteID'])) {
+    $id = $_POST['deleteID'];
+    $stmt = $db->prepare("DELETE FROM microservices WHERE id = ?");
+    $stmt->execute([$id]);
+    header("Location: ?");
+    exit();
+}
+
 // search functionality safe from injections
 if (isset($_GET['search'])) {
     $searchTerm = "%".$_GET['search']."%";
@@ -107,7 +116,8 @@ if (isset($_GET['id'])) {
                 <button type="submit">Edit</button>
             </form>
 
-            <form method="">
+            <form method="post" onsubmit="return confirm('Are you sure you want to delete this microservice?')">
+                <input type="hidden" name="deleteID" value="<?php echo $microservice['id']; ?>">
                 <button type="submit">Delete</button>
             </form>
         </div>
