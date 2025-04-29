@@ -82,25 +82,9 @@ if($link==-1) {
     $link=$data['link'];
 
 }
-
-$debug = createNewListEntry($pdo,
-    $courseid,
-    $coursevers,
-    $userid,
-    $sectname,
-    $link,
-    $kind,
-    $comments,
-    $visibility,
-    $highscoremode,
-    $pos,
-    $gradesys,
-    $tabs,
-    $grptype);
-
     
     header("Content-Type: application/json");
-    //set url for setAsActiveCourse.php path
+    
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewListEntry_ms.php";
     $ch = curl_init($url);
@@ -109,7 +93,7 @@ $debug = createNewListEntry($pdo,
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
         'cid' => $courseid, 
-        'versid' => $coursevers 
+        'versid' => $coursevers, 
         'userid' => $userid, 
         'examplename' => $examplename, 
         'link' => $link, 

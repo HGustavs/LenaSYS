@@ -233,26 +233,8 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $groupkind = null;
     //add the codeexample to listentries
 
-    createNewListEntry(
-        $pdo,
-        $courseid,
-        $coursevers,
-        $userid,
-        $examplename,
-        $link,
-        $kind,
-        $comment,
-        $visible,
-        $highscoremode,
-        $pos,
-        $gradesys,
-        $tabs,
-        $groupkind,
-        null
-    );
-
     header("Content-Type: application/json");
-    //set url for setAsActiveCourse.php path
+    
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewListEntry_ms.php";
     $ch = curl_init($url);
@@ -261,7 +243,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
         'cid' => $courseid, 
-        'versid' => $coursevers 
+        'versid' => $coursevers,
         'userid' => $userid, 
         'examplename' => $examplename, 
         'link' => $link, 

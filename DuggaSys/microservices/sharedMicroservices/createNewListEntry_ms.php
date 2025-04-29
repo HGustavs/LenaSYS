@@ -1,8 +1,34 @@
 <?php
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['cid'],
+     $_POST['versid'],
+      $_POST['userid'], 
+      $_POST['sectname'], 
+      $_POST['link'], 
+      $_POST['kind'], 
+      $_POST['comments'], 
+      $_POST['visibility'], 
+      $_POST['highscoremode'], 
+      $_POST['pos'], 
+      $_POST['gradesys'], 
+      $_POST['tabs'], 
+      $_POST['grptype'])) {
+        $courseid = $_POST['cid'];
+        $coursevers = $_POST['versid'];
+        $userid = $_POST['userid'];
+        $sectname = $_POST['sectname'];
+        $link = $_POST['link'];
+        $kind = $_POST['kind'];
+        $comments = $_POST['comments'];
+        $visibility = $_POST['visibility'];
+        $highscoremode = $_POST['highscoremode'];
+        $pos = $_POST['pos'];
+        $gradesys = $_POST['gradesys'];
+        $tabs = $_POST['tabs'];
+        $grptype = $_POST['grptype'];
 
-function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link, $kind, $comment, $visible, $highscoremode, $pos, $gradesys, $tabs, $grptype){
-    
+
     //Change position of elements one increment up to make space for insertion.
     $query = $pdo->prepare("UPDATE listentries SET pos = pos+1 WHERE cid = :cid and vers = :cvs and pos >= :pos");
     $query->bindParam(":cid", $cid);
@@ -55,38 +81,6 @@ function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link,
     }
     return $debug;
 
-//get values from post
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['cid'],
-     $_POST['versid'],
-      $_POST['userid'], 
-      $_POST['sectname'], 
-      $_POST['link'], 
-      $_POST['kind'], 
-      $_POST['comments'], 
-      $_POST['visibility'], 
-      $_POST['highscoremode'], 
-      $_POST['pos'], 
-      $_POST['gradesys'], 
-      $_POST['tabs'], 
-      $_POST['grptype'])) {
-        $courseid = $_POST['cid'];
-        $coursevers = $_POST['versid'];
-        $userid = $_POST['userid'];
-        $sectname = $_POST['sectname'];
-        $link = $_POST['link'];
-        $kind = $_POST['kind'];
-        $comments = $_POST['comments'];
-        $visibility = $_POST['visibility'];
-        $highscoremode = $_POST['highscoremode'];
-        $pos = $_POST['pos'];
-        $gradesys = $_POST['gradesys'];
-        $tabs = $_POST['tabs'];
-        $grptype = $_POST['grptype'];
-
-    }
-}
-
 //set active course in database
 $query = $pdo->prepare("INSERT INTO listentries 
 (cid, versid, userid, sectname, link, kind, comments, visibility, highscoremode, pos, gradesys, tabs, grptype)
@@ -108,4 +102,6 @@ $query->bindParam(':tabs', $tabs);
 $query->bindParam(':grptype', $grptype);
 
 $query->execute();
+
+    }
 }
