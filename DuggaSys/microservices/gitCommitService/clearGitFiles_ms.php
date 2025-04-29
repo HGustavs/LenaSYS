@@ -1,4 +1,5 @@
 <?php
+// test from code space
 header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['status'=>'error','message'=>'Only POST allowed']);
