@@ -3003,8 +3003,10 @@ function validateCreateAnnouncementForm() {
     });
   });
 }
+
 function validateUpdateAnnouncementForm() {
   const form = document.getElementById("announcementForm");
+  if (!form) return; 
 
   form.addEventListener("submit", function (e) {
     const announcementTitle = document.getElementById("announcementTitle");
@@ -3023,6 +3025,7 @@ function validateUpdateAnnouncementForm() {
     document.querySelectorAll(".errorCreateAnnouncement").forEach(el => (el.style.border = "1px solid red"));
   });
 }
+
 // Retrive announcements
 function retrieveAnnouncementsCards() {
   var currentLocation = window.location.href;
