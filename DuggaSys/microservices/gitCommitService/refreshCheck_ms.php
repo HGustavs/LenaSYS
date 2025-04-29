@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 
 // Remove includes
 // include_once "../../../Shared/sessions.php";
@@ -49,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check if the user has superuser privileges
         if($user == 1) { // 1 = superuser
             if(($currentTime - $_SESSION["updatetGitReposCooldown"][$cid]) < $shortdeadline) { // If they to, use the short deadline
-                header('Content-Type: application/json');
+                
                 echo json_encode(['status' => 'error', 'message' => 'Too soon since last update, please wait.']);
             } else {
                 // Call newUpdateTime microservice
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 curl_exec($ch);
                 curl_close($ch);
                 
-                header('Content-Type: application/json');
+                
                 echo json_encode(['status' => 'success']);
             }
         } else { 
@@ -83,18 +84,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 curl_exec($ch);
                 curl_close($ch);
                 
-                header('Content-Type: application/json');
+                
                 echo json_encode(['status' => 'success']);
             } else {
-                header('Content-Type: application/json');
+                
                 echo json_encode(['status' => 'error', 'message' => 'Too soon since last update, please wait.']);
             }
         }
     } else {
-        header('Content-Type: application/json');
+        
         echo json_encode(['status' => 'error', 'message' => 'Missing required parameters']);
     }
 } else {
-    header('Content-Type: application/json');
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method. Use POST.']);
 }

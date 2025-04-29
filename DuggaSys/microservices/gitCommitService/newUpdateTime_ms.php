@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 
 //--------------------------------------------------------------------------------------------------
 // newUpdateTime: Updates the MySQL database to save the latest update time
@@ -23,17 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query->bindParam(':parsedTime', $parsedTime);
         
         if ($query->execute()) {
-            header('Content-Type: application/json');
             echo json_encode(['status' => 'success']);
         } else {
-            header('Content-Type: application/json');
             echo json_encode(['status' => 'error', 'message' => 'Failed to update time']);
         }
     } else {
-        header('Content-Type: application/json');
         echo json_encode(['status' => 'error', 'message' => 'Missing required parameters']);
     }
 } else {
-    header('Content-Type: application/json');
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method. Use POST.']);
 }

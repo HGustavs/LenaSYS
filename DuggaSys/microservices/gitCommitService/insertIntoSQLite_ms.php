@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 
 // Remove includes
 // include_once "../../../Shared/basic.php";
@@ -65,8 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$query->execute()) {
             $error = $query->errorInfo();
             $errorvar = $error[2];
-            header('Content-Type: application/json');
-            echo json_encode(['status' => 'error', 'message' => "Error updating file entries: " . $errorvar]);
+                        echo json_encode(['status' => 'error', 'message' => "Error updating file entries: " . $errorvar]);
         } else {
             // Call BFS function for REFRESH
             $ch = curl_init($bfsURL);
@@ -80,15 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             curl_exec($ch);
             curl_close($ch);
             
-            header('Content-Type: application/json');
             echo json_encode(['status' => 'success']);
         }
     } else {
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => 'Missing required parameters']);
+         echo json_encode(['status' => 'error', 'message' => 'Missing required parameters']);
     }
 } else {
-    header('Content-Type: application/json');
     echo json_encode(['status' => 'error', 'message' => 'Invalid request method. Use POST.']);
 }
 ?>

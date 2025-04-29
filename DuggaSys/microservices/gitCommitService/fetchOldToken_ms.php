@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 
 // Check if it's a POST request and get parameters
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,17 +17,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $old_token = $row['gitToken'];
         }
 
-        header('Content-Type: application/json');
-        if(strlen($old_token) > 1) {
+                if(strlen($old_token) > 1) {
             echo json_encode(['status' => 'success', 'token' => $old_token]);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'No token found']);
         }
     } else {
-        header('Content-Type: application/json');
-        echo json_encode(['status' => 'error', 'message' => 'Missing required parameters']);
+                echo json_encode(['status' => 'error', 'message' => 'Missing required parameters']);
     }
 } else {
-    header('Content-Type: application/json');
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method. Use POST.']);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method. Use POST.']);
 }
