@@ -4983,10 +4983,8 @@ function saveInitialBoxValues() {
 	setLocalStorageProperties(templateId, boxValArray);
 }
 
-function initResizableBoxValues(parent) {
-	const parentEl = (typeof parent === "string")
-		? document.querySelector(parent)
-		: parent;
+function initResizableBoxValues(parentId) {
+	const parentEl = document.getElementById(parentId);
 
 	const parentWidth = parentEl.offsetWidth;
 	const parentHeight = parentEl.offsetHeight;
@@ -4995,7 +4993,7 @@ function initResizableBoxValues(parent) {
 	
 	const boxValueArray = {};
 	boxValueArray["parent"] = {
-		"id": parent,
+		"id": parentid,
 		"width": parentWidth,
 		"height": parentHeight
 	};
