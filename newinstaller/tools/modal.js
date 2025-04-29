@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}else if (newDataError.data.includes("Failed on step create_db")) {
 			modal = document.getElementById("dbCreationError");
 
-		}else if (newDataError.data.includes("test3")) {
+		}else if (newDataError.data.includes("SQL error")) {
 			modal = document.getElementById("SqlError");
 		}
 
@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Example functions for modal actions
     Window.retryInstaller = function() {
-        console.log("Retrying the installer...");
 
         if (dataError.data.includes("Connection to database could not be established.")) {
 			navigateTo('page3');
@@ -93,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}else if (dataError.failed_step.includes("create_db")) {
 			navigateTo('page3');
 
-		}else if (dataError.failed_step.includes("test3")) {
+		}else if (dataError.data.includes("SQL error")) {
 			navigateTo('page1');
 		}
         
@@ -102,8 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     Window.changeDbSettings = function() {
-        console.log("Changing DB settings...");
-        
+
         data.changeRootUsername = document.getElementById("changeRootUsername").value;
         data.changeRootPassword = document.getElementById("changeRootPassword").value;
         data.changeHostname = document.getElementById("changeHostname").value;
@@ -118,7 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     Window.forceCreateDb = function() {
-        console.log("Forcing database creation...");
 
         data.overwrite_db = "true";
         data.overwrite_user = "true";
@@ -129,8 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     Window.restartInstaller = function() {
-        console.log("Restarting installer...");
-
+        
         let inputFields = document.getElementsByClassName("input-field");
 
         // Clear each input field
