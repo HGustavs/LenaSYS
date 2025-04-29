@@ -39,7 +39,7 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
 function callMicroserviceGET($microservicePath){
     $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
-
+  
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     $response = curl_exec($ch);

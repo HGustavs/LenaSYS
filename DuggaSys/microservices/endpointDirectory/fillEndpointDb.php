@@ -48,8 +48,6 @@ foreach ($mdFiles as $mdFile) {
     // remove empty strings and lines
     $services = array_filter(array_map('trim', $services));
 
-    // echo $mdFile;
-
     // loop through each microservice inside the md file
     foreach ($services as $service) {
         // remove empty spaces
@@ -393,8 +391,8 @@ foreach ($mdFiles as $mdFile) {
         }
 
     }
-
 }
 
+echo "Microservices documentation inserted.<br>";
 
 ?>
