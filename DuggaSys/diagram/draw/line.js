@@ -197,6 +197,9 @@ function drawLine(line, targetGhost = false) {
             const startX = felem.x1 + elementLength - lineLength + offset.x1 * zoomfact;
             const startY = felem.y1  - lift + offset.y1 * zoomfact;
 
+            //locking the recursive line to always be segmented, easier to draw arrows this way
+            line.innerType = SDLineType.SEGMENT;
+
             if (line.startIcon === SDLineIcons.ARROW) {
                     str += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
             }
