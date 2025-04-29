@@ -30,7 +30,7 @@ try {
     }
 
 } catch (PDOException $e) {
-    echo "Database is not installed";
+    $dbError = "Database is not installed - instal it first!";
 }
 
 ?>
@@ -83,32 +83,38 @@ try {
 
 <body>
 
-    <?php if (!isset($microservice)) { ?>
+    <div class="line">
+        <h1>Microservice Directory</h1>
+    </div>
+    <?php if (!isset($dbError)) {
+        if (!isset($microservice)) { ?>
 
-        <div class="line">
-            <h1>Microservice Directory</h1>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 
-            <form method="GET">
-                <input type="text" name="search" placeholder="Search name/description">
-                <button type="submit">Search</button>
-                <?php if (isset($_GET['search'])): ?>
-                    <a href="?">Reset</a>
-                <?php endif; ?>
-            </form>
-
-            <div style="display: flex; gap: 10px;">
-                <form method="">
-                    <button type="submit">Filter</button>
+                <form method="GET">
+                    <input type="text" name="search" placeholder="Search name/description">
+                    <button type="submit">Search</button>
+                    <?php if (isset($_GET['search'])): ?>
+                        <a href="?">Reset</a>
+                    <?php endif; ?>
                 </form>
 
-                <form method="">
-                    <button type="submit">Add Microservice</button>
-                </form>
+                <div style="display: flex; gap: 10px;">
+                    <form method="">
+                        <button type="submit">Filter</button>
+                    </form>
+
+                    <form method="">
+                        <button type="submit">Add Microservice</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    <?php } ?>
+            <?php
+        }
+    } else {
+        echo "<p style= 'color:red';>" . $dbError;
+    }
+    ?>
 
     <?php if (isset($microservice)) { ?>
 
