@@ -55,8 +55,8 @@ It retrieves the user ID and username, inserts a new entry into the table, gener
 -
 
 ### Microservices Used
-- getUID_ms.php
-- retrieveUsername_ms.php
+getUID_ms.php
+retrieveUsername_ms.php
 
 
 # createNewListEntry_ms.php
@@ -133,5 +133,4 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
 -
 
 ### Microservices Used
-- retrieveUsername_ms.php
-- basic.php 
+retrieveUsername_ms.php
