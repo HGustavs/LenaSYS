@@ -257,7 +257,8 @@ function snapSAToLifeline(targetId) {
     ghostElement.x = centerX - ghostElement.width / 2;
 
     // Adjust ghost Y if it's above the allowed minimum
-    const minY = lifelineData.y + getTopHeight(lifelineData) + 70;
+     const extra = lifelineData.kind === "sequenceActor" ? 70 : 0;
+     const minY  = lifelineData.y + getTopHeight(lifelineData) + extra;
     if (ghostElement.y < minY) {
         ghostElement.y = minY;
     }
@@ -319,8 +320,13 @@ function findNearestLifeline(x, y) {
  * @returns {number} The calculated top height of the element.
  */
 function getTopHeight(element) {
-    let boxw = Math.round(element.width * zoomfact);
-    let boxHeight = (element.kind === "sequenceObject") ? (boxw * 1.05 + 16 * zoomfact) : (boxw * 0.55);
-    return boxHeight / zoomfact;
+    const boxw = Math.round(element.width * zoomfact);
+
+    if (element.kind === "sequenceActor") {
+        return (boxw * 0.50) / zoomfact;      // 55 %
+    }
+
+    // 52 %
+    return (boxw * 0.52) / zoomfact;
 }
 
