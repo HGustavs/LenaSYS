@@ -1452,6 +1452,7 @@ function saveProperties() {
         }
         addToLine("primaryKey", "*");
         addToLine("attributes", "-");
+        addToLine("stereotype", "");
         addToLine("functions", "+");
     }
     stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
