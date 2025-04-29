@@ -16,35 +16,35 @@ Logs the event and performs authentication.
    - Type: JSON-array?
    - Description: Represents the new class to be added (contains class, responsible, classname, regcode, classcode, hp, tempo, hpProgress)
 
-   - Parameter: $class
+- Parameter: $class
    - Type: varchar
    - Description: Unique name of the class
 
-   - Parameter: $responsible
+- Parameter: $responsible
    - Type: int
    - Description: -
 
-   - Parameter: $classname
+- Parameter: $classname
    - Type: varchar
    - Description: Classname
 
-   - Parameter: $regcode
+- Parameter: $regcode
    - Type: int
    - Description: Registration code for the class 
 
-   - Parameter: $classcode
+- Parameter: $classcode
    - Type: varchar
    - Description: Classcode
 
-   - Parameter: $hp
+- Parameter: $hp
    - Type: decimal
    - Description: HP - högskolepoäng
 
-   - Parameter: $tempo
+- Parameter: $tempo
    - Type: int
    - Description: Tempo of the course as percentage
 
-   - Parameter: $hpProgress
+- Parameter: $hpProgress
    - Type: decimal
    - Description: HP (högskolepoäng) progress
 
