@@ -2740,7 +2740,7 @@ $(window).keyup(function (event) {
         }, 200);
         //Duration time for the alert before remove
         setTimeout(function () {
-          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").classList.remove("createAlertToggle");
           document.getElementById("updateAlert").innerHTML = "";
         }, 3000);
       }
@@ -3613,17 +3613,17 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
   var errorMsg1 = document.getElementById(syntaxdialogid);
   var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
-    errorMsg.style.display = "none";
+    errorMsg1.style.display = "none";
     window.bool9 = true;
   } else {
-    errorMsg.style.display = "block";
+    errorMsg2.style.display = "block";
     window.bool9 = false;
   }
   if (emotd.value.match(EmotdRange)) {
-    errorMsg.style.display = "none";
+    errorMsg1.style.display = "none";
     window.bool9 = true;
   } else {
-    errorMsg.style.display = "block";
+    errorMsg2.style.display = "block";
     window.bool9 = false;
   }
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
@@ -4042,7 +4042,7 @@ function validateForm(formid) {
       }, 200);
       //Duration time for the alert before remove
       setTimeout(function () {
-        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").classList.remove("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       }, 3000);
     } else {
@@ -4077,7 +4077,7 @@ function validateForm(formid) {
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
       alert('New version created');
       createVersion();
-      $('#newCourseVersion input').val("");
+      document.querySelectorAll('#newCourseVersion input').forEach(input => input.value = "");
 
     } else {
       toast("Error","You have entered incorrect information",5);
