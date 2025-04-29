@@ -103,7 +103,7 @@
                 <div id="mouseMode0" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
-                        <span>Allows you to select and move different elements as well as navigate the workspace</span><br>
+                        <span>Allows you to select and move different elements as well as navigate the workspace</span><br><br>
                         <span id="tooltip-POINTER" class="key_tooltip">Keybinding:</span>
                     </span>
                 </div>
@@ -121,7 +121,7 @@
                          onmouseenter='hoverPlacementButton(0)'><!--<-- UML functionality -->
                          <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
-                            <p>Add an ER entity to the diagram</p>
+                            <p>Insert an ER entity to the diagram</p>
                             <p>Each entity represents an object which is a representation of concepts or data.</p>
                             <p>The entity only holds the name of the object and if it depends on another object.</p>
                             <br>
@@ -181,7 +181,7 @@
                          onmouseenter='hoverPlacementButton(4)'>
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
-                            <p>Add an UML class to the diagram</p>
+                            <p>Create a UML class to the diagram</p>
                             <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
                             <br>
                             <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
@@ -240,7 +240,7 @@
                          onmouseenter='hoverPlacementButton(6)'>
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
-                            <p>Add an IE entity to the diagram</p>
+                            <p>Place an IE entity into the diagram</p>
                             <p>Each entity represents an object along with its attributes.</p>
                             <p>Each entity is represented by a table with a field that shows attributes.</p>
                             <br>
@@ -300,7 +300,7 @@
                         onmouseenter='hoverPlacementButton(8);'>
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
-                            <p>Add state diagram state to the diagram</p>
+                            <p>Add a state diagram state to the diagram</p>
                             <p>A state diagram state is a representation of a status a process can have.</p>
                             <p>Each state represents a unique status that a process can have.</p>
                             <br>
@@ -361,7 +361,7 @@
                          onmouseenter='hoverPlacementButton(1);'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
-                            <p>Add a ER relation to the diagram</p>
+                            <p>Place an ER relation into the diagram</p>
                             <p>Represents how entities are associated with each other.</p>
                             <br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -383,7 +383,7 @@
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Change to ER attribute</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -419,7 +419,7 @@
                          onmouseenter='hoverPlacementButton(5)'>
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
-                            <p>Add an UML inheritance to the diagram</p>
+                            <p>Insert a UML inheritance to the diagram</p>
                             <p>A relation between a superclass and subclasses.</p>
                             <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                             <br>
@@ -462,7 +462,7 @@
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Change to ER attribute</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -478,7 +478,7 @@
                          onmouseenter='hoverPlacementButton(7)'>
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
-                            <p>Add an IE inheritance to the diagram</p>
+                            <p>Create an IE inheritance to the diagram</p>
                             <p>A relation between two or more entities.</p>
                             <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                             <br>
@@ -521,7 +521,7 @@
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Change to ER attribute</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -570,6 +570,7 @@
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
+                                    <p>Change to IE inheritance</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                     <br>
@@ -602,7 +603,7 @@
                          onmouseenter='hoverPlacementButton(9)'><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         <span class="toolTipText"><b>UML initial state</b><br>
-                            <p>Creates an initial state for UML.</p>
+                            <p>Insert an initial state for UML.</p>
                             <p>The initial state represents the start of a process.</p>
                             <br>
                             <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
@@ -616,9 +617,7 @@
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
-                                    <p>Creates an initial state for UML.</p>
-                                    <p>The initial state represents the start of a process.</p>
-                                    <br>
+                                    <p>The initial state represents the start of a process.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Final state -->
@@ -626,9 +625,7 @@
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Change to UML final state</p>
-                                    <p>Creates a final state for UML.</p>
-                                    <p>The final state represents where a process ends.</p>
-                                    <br>
+                                    <p>The final state represents where a process ends.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Super state -->
@@ -636,9 +633,7 @@
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                    <br>
+                                    <p>A state that can contain substates.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>                           
@@ -652,9 +647,8 @@
                          onmouseenter='hoverPlacementButton(10)'>
                         <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         <span class="toolTipText"><b>UML final state</b><br>
-                            <p>Creates a final state for UML.</p>
-                            <p>The final state represents where a process ends.</p>
-                            <br>
+                            <p>Place a final state for UML.</p>
+                            <p>The final state represents where a process ends.</p><br>
                             <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton10" class="placementTypeIcon togglePlacementTypeButton">
@@ -667,18 +661,14 @@
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Change to UML initial state</p>
-                                    <p>Creates an initial state for UML.</p>
-                                    <p>The initial state represents the start of a process.</p>
-                                    <br>
+                                    <p>The initial state represents the start of a process.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Final state -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
-                                    <p>Creates a final state for UML.</p>
-                                    <p>The final state represents where a process ends.</p>
-                                    <br>
+                                    <p>The final state represents where a process ends.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Super state -->
@@ -686,9 +676,7 @@
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Change to UML super state</p>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                    <br>
+                                    <p>A state that can contain substates.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>                           
@@ -702,9 +690,8 @@
                          onmouseenter='hoverPlacementButton(11)'>
                         <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         <span class="toolTipText"><b>UML super state</b><br>
-                            <p>Creates a super state.</p>
-                            <p>A state that can contain substates.</p>
-                            <br>
+                            <p>Create a super state.</p>
+                            <p>A state that can contain substates.</p><br>
                             <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton11" class="placementTypeIcon togglePlacementTypeButton">
@@ -717,9 +704,7 @@
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Change to UML initial state</p>
-                                    <p>Creates an initial state for UML.</p>
-                                    <p>The initial state represents the start of a process.</p>
-                                    <br>
+                                    <p>The initial state represents the start of a process.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>    
                                 </span>
                             </div><!--Final state -->
@@ -727,18 +712,14 @@
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Change to UML final state</p>
-                                    <p>Creates a final state for UML.</p>
-                                    <p>The final state represents where a process ends.</p>
-                                    <br>
+                                    <p>The final state represents where a process ends.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div><!--Super state -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
-                                    <p>Creates a super state.</p>
-                                    <p>A state that can contain substates.</p>
-                                    <br>
+                                    <p>A state that can contain substates.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>                           
@@ -757,8 +738,7 @@
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram</p>
                             <p>Represents the passage of time.</p>
-                            <p>Shows events that occur to an object during the process.</p>
-                            <br>
+                            <p>This version is used for human users, external hardware or other subjects</p><br>
                             <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton12" class="placementTypeIcon togglePlacementTypeButton">
@@ -769,37 +749,31 @@
                         <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline object"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>This version is used for human users, external hardware or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>Shows events that occur to an object during the process.</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Creates an activation box.</p>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                                <br>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                           </div>     
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Object</b><br>
-                                <p>Creates a option loop or alternative.</p><br>
+                                <p>Option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
@@ -812,10 +786,9 @@
                          onclick='setElementPlacementType(16); setMouseMode(2);'
                          onmouseenter='hoverPlacementButton(16)'>
                          <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
-                        <span class="toolTipText"><b>Sequence lifeline (object)</b><br>
-                            <p>Creates an activation box.</p>
-                            <p>Represents the passage of time.</p>
-                            <br>
+                        <span class="toolTipText"><b>Sequence activation</b><br>
+                            <p>Place an activation box.</p>
+                            <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
                             <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton16" class="placementTypeIcon togglePlacementTypeButton">
@@ -826,37 +799,31 @@
                         <div id="togglePlacementTypeBox16" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>This version is used for human users, external hardware or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>Shows events that occur to an object during the process.</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Creates an activation box.</p>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                                <br>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>     
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
-                                <p>Creates a option loop or alternative.</p><br>
+                                <p>Option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
@@ -870,7 +837,7 @@
                          onmouseenter='hoverPlacementButton(13)'>
                          <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
-                            <p>Creates an activation box.</p>
+                            <p>Place an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
                             <br>
                             <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
@@ -883,37 +850,31 @@
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>This version is used for human users, external hardware or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>Shows events that occur to an object during the process.</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Creates an activation box.</p>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                                <br>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>     
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
-                                <p>Creates a option loop or alternative.</p><br>
+                                <p>Option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
@@ -927,7 +888,7 @@
                          onmouseenter='hoverPlacementButton(14)'>
                          <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
-                                <p>Creates a option loop or alternative.</p><br>
+                                <p>Add an option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                         <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
@@ -938,37 +899,31 @@
                         <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
+                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>This version is used for human users, external hardware, or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Creates a lifeline for a sequnece diagram</p>
                                 <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p>
-                                <br>
+                                <p>Shows events that occur to an object during the process.</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Creates an activation box.</p>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
-                                <br>
+                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
                                 <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>      
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
-                                <p>Creates a option loop or alternative.</p><br>
+                                <p>Option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>                         
