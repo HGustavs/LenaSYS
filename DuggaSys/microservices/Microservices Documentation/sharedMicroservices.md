@@ -6,27 +6,27 @@
 Creates a new user-event entry and adds it to the database 'log_db'. Helps maintain records of user action, for logging purposes.
 
 ## Input Parameters
-- Parameter: uid
+- Parameter: $uid
    - Type: int
    - Description: Unique user ID of the user who triggered an event
 
-- Parameter: username
+- Parameter: $username
    - Type: varchar
    - Description: Username associated with the uid (user ID)
 
-- Parameter: eventType
+- Parameter: $eventType
    - Type: int
    - Description: The type of event triggered by the user
 
-- Parameter: description
+- Parameter: $description
    - Type: varchar
    - Description: Text explaining the event
 
-- Parameter: userAgent
+- Parameter: $userAgent
    - Type: text
    - Description: Not an input parameter. The device and browser used by the user, retrieved automatically.
 
-- Parameter: remoteAddress
+- Parameter: $remoteAddress
    - Type: varchar
    - Description: Not an input parameter. The IP address of the user's device, retrieved automatically.
 
@@ -37,7 +37,7 @@ Creates a new user-event entry and adds it to the database 'log_db'. Helps maint
 None
 
 ## Examples of Use
-`CODE`
+-
 
 ### Microservices Used
 None
@@ -65,6 +65,52 @@ Retrieves the username of a specific user ID. Username is only fetched if a user
 - Output: $username
    - Type: varchar
    - Description: 
+
+## Examples of Use
+-
+
+### Microservices Used
+getUid_ms.php
+
+
+# updateUserPassword_ms.php
+
+## Description
+Handles changes to passwords for users who are logged in. Password is changed by verifying the current password. If it is entered correctly, the user is allowed to change the password, which is then updated in the 'user' table.
+Teachers and superusers are not allowed to change passwords.
+
+## Input Parameters
+- Parameter: $password
+   - Type: varchar
+   - Description: The user's current password, entered to verify the user
+
+- Parameter: $action
+   - Type: ?
+   - Description: Specifies the action. Here it is "password", for changing the password.
+
+- Parameter: $newPassword
+   - Type: tinyint
+   - Description: The new password the user wants to change to
+
+- Parameter: $log_uuid
+   - Type: char
+   - Description: Unique identifier, used to log the event
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $success
+   - Type: boolean
+   - Description: Informs whether the operation was successful or not
+
+- Output: $status
+   - Type: ?
+   - Description: Describes to result status. Either "teacher", "wrong password" or empty
+
+- Output: $debug
+   - Type: ?
+   - Description: Displays error message is something went wrong
 
 ## Examples of Use
 -
