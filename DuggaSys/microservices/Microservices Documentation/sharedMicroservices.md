@@ -24,7 +24,7 @@ None. Only notifies if the update is successful or not.
 -
 
 ### Microservices Used
-basic.php
+None
 
 
 # updateSecurityQuestion_ms.php
@@ -74,6 +74,4 @@ Changes of security questions are not permitted for superusers or teachers.
 -
 
 ### Microservices Used
-basic.php
-sessions.php
 getUid_ms.php
