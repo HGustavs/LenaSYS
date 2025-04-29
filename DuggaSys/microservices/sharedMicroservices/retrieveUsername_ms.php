@@ -3,7 +3,8 @@
 
 include_once "./getUid_ms.php";
 
-
+function retrieveUsername($pdo)
+{
 	date_default_timezone_set("Europe/Stockholm");
 
 	$userid = getUid();
@@ -18,5 +19,5 @@ include_once "./getUid_ms.php";
 		}
 	}
 
-	header('Content-Type: application/json');
-	echo json_encode($data);
+	return $username;
+}
