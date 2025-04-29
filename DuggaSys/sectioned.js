@@ -1659,12 +1659,6 @@ function returnedSection(data) {
         menuState.idCounter++;
         // All are visible according to database
         
-        // Create a row in the main table
-        str += `<tr id='lid${item['lid']}' value='${item['lid']}' value='${makeTextArray(item['kind'], valarr)}'`;
-        str += " >";
-        
-
-
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
         else if (parseInt(item['visible']) === 3) hideState = " deleted"
