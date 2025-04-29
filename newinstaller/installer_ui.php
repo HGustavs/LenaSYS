@@ -244,7 +244,7 @@
 							$modal->showSqlExecutionErrorModal("SqlError");
 						?>
 						<div id="pageButtonContainer">
-							<button class="defaultButton pageButton" id="openModal" type="button" style="display: none;">Open Modal</button>
+							<button class="defaultButton pageButton" id="openModal" type="button" style="display: none;">View Problem</button>
 						</div>
 					</div>
 				</div>
