@@ -1658,6 +1658,14 @@ function returnedSection(data) {
 
         menuState.idCounter++;
         // All are visible according to database
+
+        //str += `<tr id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}' >`;
+
+        //if (kk % 2 == 0) {
+        //  str += " class='hi' ";
+        //} else {
+        //  str += " class='lo' ";
+        //}
         
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
