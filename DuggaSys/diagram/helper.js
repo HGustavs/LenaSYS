@@ -121,6 +121,9 @@ function entityIsOverlapping(id, x, y) {
         if (data[i].kind !== element.kind) {
         if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") &&
         element.kind === "sequenceActivation") {
+        const headerHeight = getTopHeight(data[i]);          
+        const extra        = data[i].kind === "sequenceActor" ; 
+        const headerBottom = data[i].y + headerHeight + extra;
 
         if (y < headerBottom) return true;   
         continue;                            
