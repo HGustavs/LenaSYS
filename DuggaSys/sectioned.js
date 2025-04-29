@@ -1659,8 +1659,8 @@ function returnedSection(data) {
         menuState.idCounter++;
         // All are visible according to database
         
-        // Content table
-        str += `<table id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}'`;
+        // Create a row in the main table
+        str += `<tr id='lid${item['lid']}' value='${item['lid']}' value='${makeTextArray(item['kind'], valarr)}'`;
         str += " >";
         
 
