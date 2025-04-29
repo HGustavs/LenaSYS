@@ -3414,30 +3414,35 @@ function toggleFeedbacks() {
   });
 }
 function viewOldFeedbacks() {
-  $(".feedbackHeader h2").html("Old Feedback");
-  $(".noFeedbacks").remove();
-  $(".feedbackContent").append('<div id="loadMore"><span>Load More</span><div>');
-  if ($(".feedback_card").length <= 5) {
-    $("#loadMore").hide();
+  document.querySelector(".feedbackHeader h2").innerHTML = "Old Feedback";    // was $(".feedbackHeader h2").html()
+  document.querySelectorAll(".noFeedbacks").forEach(el => el.remove());       // was $(".noFeedbacks").remove()
+
+  const feedbackContent = document.querySelector(".feedbackContent");
+  feedbackContent.insertAdjacentHTML("beforeend", '<div id="loadMore"><span>Load More</span><div>');
+
+  const cards = Array.from(document.querySelectorAll(".feedback_card"));
+
+  if (cards.length <= 5) {
+    document.getElementById("loadMore").style.display = "none";
   }
-  $(".feedback_card").slice(0, 5).show();
-  $("#loadMore").on('click', function (e) {
+
+  // show first 5 cards
+  cards.forEach((c, idx) => (c.style.display = idx < 5 ? "" : "none"));
+
+  document.getElementById("loadMore").addEventListener("click", function (e) {
     e.preventDefault();
-    $(".feedback_card:hidden").slice(0, 5).slideDown();
-    if ($(".feedback_card:hidden").length == 0) {
-      $("#loadMore").hide();
+    let hidden = cards.filter(c => c.style.display === "none").slice(0, 5);
+    hidden.forEach(c => (c.style.display = ""));
+    if (cards.every(c => c.style.display !== "none")) {
+      this.style.display = "none";
     }
-    $('html,body').animate({
-      scrollTop: $(this).offset().top
-    }, 1500);
+    this.scrollIntoView({ behavior: "smooth" });
   });
 }
+
 function hideIconButton() {
-  $("#iconButton").hide();
-}
-// Checks if <a> link is external
-function link_is_external(link_element) {
-  return (link_element.host !== window.location.host);
+  const iconBtn = document.getElementById("iconButton");   // was $("#iconButton").hide()
+  if (iconBtn) iconBtn.style.display = "none";
 }
 
 // Replaces the link corresponding wtih the dropdown choices ---===######===--- with a link to errorpage instead
