@@ -1,5 +1,5 @@
 <?php
-include_once "./retrieveUsername_ms.php";
+
 
 function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link, $kind, $comment, $visible, $highscoremode, $pos, $gradesys, $tabs, $grptype){
     
@@ -33,8 +33,19 @@ function createNewListentry($pdo, $cid, $coursevers, $userid, $entryname, $link,
 	$query->bindParam(':groupkind', $grptype);
     } else {
 	$query->bindValue(':groupkind', null, PDO::PARAM_STR);
-	$username = retrieveUsername($pdo);
-	logUserEvent($userid ,$username,EventTypes::SectionItems, $entryname);
+    // Microservice retrieveUsername
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    $data = json_decode($response, true);
+    $username = $data['username'] ?? 'unknown';
+    
+    logUserEvent($userid, $username, EventTypes::SectionItems, $entryname);
     }
 
     $debug = "NONE!";

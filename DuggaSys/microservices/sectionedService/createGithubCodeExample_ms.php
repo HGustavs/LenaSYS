@@ -1,8 +1,10 @@
 <?php
 
 include_once "../sharedMicroservices/getUid_ms.php";
+
 include_once "../sharedMicroservices/createNewCodeExample_ms.php";
 //include_once "../sharedMicroservices/createNewListEntry_ms.php";
+
 include_once "./retrieveSectionedService_ms.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
@@ -17,6 +19,9 @@ $highscoremode = getOP('highscoremode');
 $pos = getOP('pos');
 $lid = getOP('lid');
 $log_uuid = getOP('log_uuid');
+$sectionname = getOP('sectionname');//Not used but needed since post sends them along
+$templateNumber = getOP('templateNumber');//Not used but needed since post sends them along
+$exampleid = getOP('exampleid');// Not used but needed since post sends them along
 $debug = "NONE!";
 
 pdoConnect();
@@ -127,7 +132,29 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $sectionname = $exampleName;
 
     //create codeexample
-    $link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
+    //$link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
+
+    //set url for createNewCodeExample.php path
+    header("Content-Type: application/json");
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
+    $ch = curl_init($url);
+    //options for curl
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'exampleid'=> $exampleid,
+        'courseid'=> $courseid,
+        'coursevers'=> $coursevers, 
+        'sectname'=> $sectionname,
+        'link'=> $link,
+        'log_uuid'=> $log_uuid, 
+        'templatenumber'=> $templateNumber
+    ]));
+       
+    $response = curl_exec($ch);
+    $link = json_decode($response, true);
+
 
     //select the latest codeexample created to link boxes to this codeexample
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
@@ -465,4 +492,5 @@ function NoCodeExampleNoFiles($exampleName)
 }
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+header('Content-Type: application/json');
 echo json_encode($data);

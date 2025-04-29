@@ -25,6 +25,19 @@ $grptype=getOP('grptype');
 $pos=getOP('pos');
 $tabs=getOP('tabs');
 $userid=getUid();
+
+// Microservice for retrieveUsername
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+$username = $data['username'] ?? 'unknown';
+
 $log_uuid=getOP('log_uuid');
 $templateNumber=getOP('templateNumber');
 $exampleid=getOP('exampleid');
