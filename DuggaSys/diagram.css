@@ -431,6 +431,11 @@
     top: -15px;
 }
 
+#toolTipExtra {
+    font-size: 14px;
+    color: #BBBBBB;
+}
+
 .diagramIcons:hover .toolTipText{
     visibility: visible;
     transition-delay: 700ms;

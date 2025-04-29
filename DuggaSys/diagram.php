@@ -1001,12 +1001,13 @@
         </fieldset>
         <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="getActiveFile()">
+            <div id="localSave" class="diagramIcons" onclick="quickSaveDiagram()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram.</p>
+                    <p id="toolTipExtra">(Saves diagram to the last saved file. If no file has been saved to yet, it prompts to create new one.)</p>
                     <br>
-                    <p id="tooltip-SAVE_DIAGRAM" class="key_tooltip">Keybinding: "CTRL + S"</p>
+                    <p id="tooltip-SAVE_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -1015,9 +1016,9 @@
             <div id="localSaveAs" class="diagramIcons" onclick="showSavePopout()">
                 <img src="../Shared/icons/diagram_save_as_icon.svg" alt="Save diagram as"/>
                 <span class="toolTipText"><b>Save current diagram to file</b><br>
-                    <p>Click to save current diagram <br> to file.</p>
+                    <p>Click to save current diagram <br> to a specific file.</p>
                     <br>
-                    <p id="tooltip-SAVE_DIAGRAM_AS" class="key_tooltip">Keybinding: "CTRL + SHIFT + S"</p>
+                    <p id="tooltip-SAVE_DIAGRAM_AS" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -1028,7 +1029,7 @@
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram.</p>
                     <br>
-                    <p id="tooltip-LOAD_DIAGRAM" class="key_tooltip">Keybinding: "CTRL + L"</p>
+                    <p id="tooltip-LOAD_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -1048,7 +1049,7 @@
         <div class="formBox">
             <div class="formBoxHeader">
                 <h3>
-                    Filename already exists
+                    Filename already exists!
                 </h3>
                 <div class="cursorPointer" onclick="closeOverridePopout()">
                     x
@@ -1228,7 +1229,7 @@
         <div class="formBox">
             <div class="formBoxHeader">
                 <h3>
-                    Save current diagram as
+                    Save current diagram as:
                 </h3>
                 <div class="cursorPointer" onclick="hideSavePopout()">
                     x
@@ -1240,7 +1241,7 @@
                     <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
                 </div>
                 <div class="button-row">
-                    <input type="submit" class="submit-button" onclick="storeDiagramInLocalStorage(getCurrentFileName()); hideSavePopout();" value="Save"/>
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(getCurrentFileName()); hideSavePopout();" value="Save"/>
                 </div>
             </div>
         </div>
