@@ -142,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             for (let j = 0; j < inputs.length; j++) {
                 inputs[j].value = ""; 
-                console.log(inputs[j].value);
             }
         }
 
