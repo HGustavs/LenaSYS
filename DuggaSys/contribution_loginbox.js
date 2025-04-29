@@ -1,86 +1,77 @@
-function contribution_addEventListeners()
-{
-
-  // loginbox
-  $('#username').on("keyup", function(e) {if (e.keyCode == 13) {$("#loginBox_button").click();}});
-
-  // newpassword/resetpass
-  $('#usernamereset').on("keyup", function(e) {if (e.keyCode == 13) {$("#newpassword_button").click();}});
-
-  // userexists
-  $('#UserExistslogin_username').on("keyup", function(e) {if (e.keyCode == 13) {$("#UserExistslogin_button").click();}});
-  $('#UserExistslogin_password').on("keyup", function(e) {if (e.keyCode == 13) {$("#UserExistslogin_button").click();}});
-
-  // new git user
-  $('#newGit-UserCreation_username').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
-  $('#newGit-UserCreation_password1').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
-  $('#newGit-UserCreation_password2').on("keyup", function(e) {if (e.keyCode == 13) {$("#newGit-UserCreation_button").click();}});
-
-
+function addEnterKeyListener(inputId, buttonId) {
+    document.getElementById(inputId)?.addEventListener('keyup', function (e) {
+        if (e.key === 'Enter') {
+            document.getElementById(buttonId)?.click();
+        }
+    });
 }
+
+
+function contribution_addEventListeners() {
+    // loginbox
+    addEnterKeyListener('username', 'loginBox_button');
+    // newpassword/resetpass
+    addEnterKeyListener('usernamereset', 'newpassword_button');
+    // userexists
+    addEnterKeyListener('UserExistslogin_username', 'UserExistslogin_button');
+    addEnterKeyListener('UserExistslogin_password', 'UserExistslogin_button');
+    // new git user
+    addEnterKeyListener('newGit-UserCreation_username', 'newGit-UserCreation_button');
+    addEnterKeyListener('newGit-UserCreation_password1', 'newGit-UserCreation_button');
+    addEnterKeyListener('newGit-UserCreation_password2', 'newGit-UserCreation_button');
+}
+
 
 function contribution_newGitUserCreation()
 {
-  $("#newGit-UserCreation_username").val($("#username").val());
-
-  $("#login").css("display","none");
-  $("#newpassword").css("display","none");
-  $("#UserExistslogin").css("display","none");
-  
-  $("#newGit-UserCreation").css("display","");
-
-  $("#newGit-UserCreation_password1").focus();     
-
-
+    document.getElementById('newGit-UserCreation_username').value = document.getElementById('username').value;
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('newpassword').style.display = 'none';
+    document.getElementById('UserExistslogin').style.display = 'none';
+    document.getElementById('newGit-UserCreation').style.display = '';
+    document.getElementById('newGit-UserCreation_password1').focus;
 }
 
 
 function contribution_resetLoginStatus() // return to initial login
 {
-  contribution_resetFields();
-  $("#UserExistslogin").css("display","none"); 
-  $("#newGit-UserCreation").css("display","none"); 
-  $("#newpassword").css("display","none");
-
-  $("#login").css("display",""); 
-  $("#username").focus();     
-
+    contribution_resetFields();
+    document.getElementById('UserExistslogin').style.display = 'none';
+    document.getElementById('newGit-UserCreation').style.display = 'none';
+    document.getElementById('newpassword').style.display = 'none';
+    document.getElementById('login').style.display = '';
+    document.getElementById('username').focus;
 }
 
 
 function contribution_resetFields()
 {
-  $("#login #username").val("");
-	$("#login #password").val("");
-  $("#usernamereset").val("");
-	$("#UserExistslogin_username").val("");
-	$("#UserExistslogin_password").val("");
-  $("#NewGit-UserCreation_username").val("");
-  $("#newGit-UserCreation_password1").val("");
-  $("#newGit-UserCreation_password2").val("");
+    document.querySelector('#login #username').value = '';
+    document.querySelector('#login #password').value = '';
+    document.getElementById('usernamereset').value = '';
+    document.getElementById('UserExistslogin_username').value = '';
+    document.getElementById('UserExistslogin_password').value = '';
+    document.getElementById('NewGit-UserCreation_username').value = '';
+    document.getElementById('newGit-UserCreation_password1').value = '';
+    document.getElementById('newGit-UserCreation_password2').value = '';
 }
 
 function contribution_userExistsLogin()
 {
-  $("#UserExistslogin_username").val($("#username").val());
-  
-  $("#login").css("display","none");
-  $("#newGit-UserCreation").css("display","none");
-  $("#newpassword").css("display","none");
-
-  $("#UserExistslogin").css("display",""); 
-
-  $("#UserExistslogin_password").focus();     
-
-  
+    document.getElementById('UserExistslogin_username').value = document.getElementById('username').value;
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('newGit-UserCreation').style.display = 'none';
+    document.getElementById('newpassword').style.display = 'none';
+    document.getElementById('UserExistslogin').style.display = '';    
+    document.getElementById('UserExistslogin_password').focus;
 }
 
 function contribution_showLoginPopup()
 {
-  contribution_addEventListeners();
-  $("#login").css("display",""); // show inital login box
-  $("#formBox").css("display","flex"); // show background
-  $("#username").focus();     
+    contribution_addEventListeners();
+    document.getElementById('login').style.display = ''; // show inital login box
+    document.getElementById('formBox').style.display = 'flex'; // show background
+    document.getElementById('username').focus;
 }
 
 function returned_git_user_login(data)
