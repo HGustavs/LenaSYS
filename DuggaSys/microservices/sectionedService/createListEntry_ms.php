@@ -67,15 +67,44 @@ $debug = createNewListEntry($pdo,
 //get values from post
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['cid'], $_POST['versid'])) {
-        $cid = $_POST['cid'];
-        $versid = $_POST['versid'];
+        $courseid = $_POST['courseid'];
+        $coursevers = $_POST['coursevers'];
+        $userid = $_POST['userid'];
+        $sectname = $_POST['sectname'];
+        $link = $_POST['link'];
+        $kind = $_POST['kind'];
+        $comments = $_POST['comments'];
+        $visibility = $_POST['visibility'];
+        $highscoremode = $_POST['highscoremode'];
+        $pos = $_POST['pos'];
+        $gradesys = $_POST['gradesys'];
+        $tabs = $_POST['tabs'];
+        $grptype = $_POST['grptype'];
+
     }
 }
 
 //set active course in database
-$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
-$query->bindParam(':cid', $cid);
-$query->bindParam(':vers', $versid);
+$query = $pdo->prepare("INSERT INTO listentries 
+(courseid, coursevers, userid, sectname, link, kind, comments, visibility, highscoremode, pos, gradesys, tabs, grptype)
+VALUES
+(:courseid, :coursevers, :userid, :sectname, :link, :kind, :comments, :visibility, :highscoremode, :pos, :gradesys, :tabs, :grptype)");
+
+$query->bindParam(':courseid', $courseid);
+$query->bindParam(':coursevers', $coursevers);
+$query->bindParam(':userid', $userid);
+$query->bindParam(':sectname', $sectname);
+$query->bindParam(':link', $link);
+$query->bindParam(':kind', $kind);
+$query->bindParam(':comments', $comments);
+$query->bindParam(':visibility', $visibility);
+$query->bindParam(':highscoremode', $highscoremode);
+$query->bindParam(':pos', $pos);
+$query->bindParam(':gradesys', $gradesys);
+$query->bindParam(':tabs', $tabs);
+$query->bindParam(':grptype', $grptype);
+
+$query->execute();
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);
