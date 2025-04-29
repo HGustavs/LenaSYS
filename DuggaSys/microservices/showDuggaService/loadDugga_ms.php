@@ -58,5 +58,15 @@ if($hash!="UNK"){
 
 }
 
+$array = array(
+    'variant' => $variant,
+    'answer' => $answer,
+    'variantanswer' => $variantanswer,
+    'param' => $param,
+    'newcourseid' => $newcourseid,
+    'newcoursevers' => $newcoursevers,
+    'newduggaid' => $newduggaid
+);
+
 header('Content-Type: application/json');
-echo json_encode($data);
+echo json_encode($array);
