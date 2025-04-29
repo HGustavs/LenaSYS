@@ -122,7 +122,7 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
    - Description: Group kind/type for the entry. If it is UNK/grptype is not used, username of the user who created the entry is logged instead.
 
 ## Calling Methods
-- POST
+-
 
 ## Output Data and Format
 - Output: $debug
