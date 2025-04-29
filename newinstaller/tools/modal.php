@@ -111,9 +111,9 @@ class Modal {
                 press the retry-button if you want to return to the installer at the step where it failed.
             ',
             [
-                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()'],
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
-                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'Window.forceCreateDb()']
+                ['text' => 'Force', 'class' => 'progressButton', 'onclick' => 'Window.forceCreateDb()'],
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
 
