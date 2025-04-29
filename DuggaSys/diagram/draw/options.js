@@ -99,12 +99,19 @@ function escapeHtml(str) {
  */
 function textarea(name, property, element) {
     const safeText = escapeHtml(textboxFormatString(element[property]));
+    const safeName = escapeHtml(element[property]);
+    let shownProperty = element[property];
+
+    if (shownProperty === null){
+        shownProperty = "";
+    }
     if (property == "stereotype"){
-        return `<div style='color:${color.WHITE};'>${name}</div>
-            <textarea 
+        return `<div style='color:${color.WHITE};'>${safeName}</div>
+            <input 
                 id='elementProperty_${property}' 
-                rows='1' style='width:98%;resize:none;'
-            >${textboxFormatString(safeText)}</textarea>`;
+                maxlength='10'
+                value='${shownProperty}'
+            >${safeName}</input>`;
     }
     else{
         return `<div style='color:${color.WHITE};'>${name}</div>
