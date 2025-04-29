@@ -860,9 +860,7 @@ function markedItems(item = null, typeInput) {
       const element = elements[i];
       var tempItem = element.getAttribute('value');
 
-      //console.log('affected item: ' + tempItem);
-
-      // if part of a section, add it to subItems.
+      // if part of a section, add to subItems.
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
         var tempKind = element ? element.closest('tr').getAttribute('value'): null;
@@ -876,39 +874,30 @@ function markedItems(item = null, typeInput) {
           subItems.push(tempItem);
         }
       } 
-      
       else if (tempItem == active_lid){ 
         sectionStart = true;
       }
     }
   }
 
-  // handles selections
+  // handles selections & deselections
   if (selectedItemList.length != 0) {
     let tempSelectedItemListLength = selectedItemList.length;
-    for (let i = 0; i < tempSelectedItemListLength; i++) {
-
+    for (var i = 0; i < tempSelectedItemListLength; i++) {
       var tempKind = item ? item.closest('tr').getAttribute('value'): null;
-      console.log('this is tempKind' + tempKind);
 
       //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
-      if (selectedItemList[i] === active_lid && typeInput != "trash") {
-        
-        //console.log('lid: ' + active_lid + '- ' + tempKind)
-               
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {        
         document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
         var removed = true;
 
         // deselection of child -> deselect parent
         if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
-          let parent = recieveCodeParent(active_lid);
+          var parent = recieveCodeParent(active_lid);
 
-          console.log('parent recieved: ' + parent);
-
-          for (let i = 0; i < tempSelectedItemListLength; i++) {
+          for (var i = 0; i < tempSelectedItemListLength; i++) {
             if (selectedItemList[i] == parent){
-              console.log('parent found and unchecked: ' + parent);
               document.getElementById(parent + "-checkbox").checked = false;
               selectedItemList.splice(i, 1);
             }
@@ -933,8 +922,7 @@ function markedItems(item = null, typeInput) {
           activeLidInList = true;
           break;
         }
-      }
-      if (activeLidInList == false){
+      } if (activeLidInList == false){
         selectedItemList.push(active_lid);
         document.getElementById(active_lid + "-checkbox").checked = true;
     }
@@ -946,7 +934,7 @@ function markedItems(item = null, typeInput) {
     }
   } 
   
-  // adds everything under section to selectedItems (if nothing selected beforehand)
+  // adds everything under section to selectedItems
   else {
     selectedItemList.push(active_lid);
     for (var j = 0; j < subItems.length; j++) {
@@ -960,8 +948,7 @@ function markedItems(item = null, typeInput) {
     document.querySelector('#hideElement').disabled = false;
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
-  }
-  if (selectedItemList.length == 0) {
+  } if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
     console.log('no element selected');
     document.querySelector('#hideElement').disabled = true;
@@ -1022,15 +1009,11 @@ function recieveCodeParent(item){
       // if section head, parent found.
       if ((tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
         itemInSection = false;
-        console.log('item is section header: ( ' + tempItem + ' ) ');
         parent = tempItem;
         return parent;
       } 
-    } 
-
-    else if (tempItem == item){ 
+    } else if (tempItem == item){ 
       sectionStart = true;
-      console.log('this is our unchecked item!');
     }
   }
 }
