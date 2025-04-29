@@ -1519,7 +1519,7 @@ function returnedGroups(data) {
       j = 1;
       if (grp != "") {
         str += "</tbody>";
-        str += "</table>";
+        //str += "</table>";
         str += `<div style='text-align:right;border-top:2px solid #434343'>
         <a style='white-space:nowrap' href='mailto:${grpemail}'>Email group</a></div>`
         grpemail = "";
@@ -1536,7 +1536,7 @@ function returnedGroups(data) {
   }
   if (grp != "") {
     str += "</tbody>";
-    str += "</table>";
+    //str += "</table>";
     str += `<div style='text-align:right;border-top:2px solid #434343'><a
     href='mailto:${grpemail}'>Email group</a></div>`
     grpemail = "";
@@ -1675,7 +1675,8 @@ function returnedSection(data) {
     str += "</div>";
     /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
 
-    
+    str += "<div id='Sectionlistc'>";
+    str += "<table id='SectionlistTable'>";
     
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
@@ -1690,6 +1691,7 @@ function returnedSection(data) {
         if(deadline==null) {
           deadline = item['deadline'];
         }
+        //str += "<tr>";
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
@@ -1701,19 +1703,24 @@ function returnedSection(data) {
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " courseRow'>";
         }
 
+        //str += "</tr>";
+
         menuState.idCounter++;
         // All are visible according to database
+        
 
-        //str += `<tr id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}' >`;
+        // Content table
+        str += `<tr id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}'`;
 
         //if (kk % 2 == 0) {
         //  str += " class='hi' ";
         //} else {
         //  str += " class='lo' ";
         //}
+        str += " >";
+        
 
-        
-        
+
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
         else if (parseInt(item['visible']) === 3) hideState = " deleted"
@@ -1734,7 +1741,6 @@ function returnedSection(data) {
           var marked;
           var submitted;
           var lastSubmit = null;
-          
 
           for (var jjj = 0; jjj < data['results'].length; jjj++) {
             var lawtem = data['results'][jjj];
@@ -1768,8 +1774,6 @@ function returnedSection(data) {
 
             }
           }
-          str += "<div id='Sectionlistc'>";
-          str += "<table id='SectionlistTable'>";
 
           if (retdata['writeaccess']) {
             if (itemKind === 3) {
