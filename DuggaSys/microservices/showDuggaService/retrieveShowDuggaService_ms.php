@@ -67,7 +67,7 @@ function retrieveShowDuggaService(
 			//include_once("loadDugga_ms.php");
 			//Retrieve information from microservice 'loadDugga_ms.php'
 			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php" . http_build_query([
+			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php?" . http_build_query([
 				'variant' => $variant,
 				'answer' => $answer,
 				'variantanswer' => $variantanswer,
