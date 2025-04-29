@@ -101,14 +101,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     Window.changeDbSettings = function() {
-
+        
+        // Get updated data settings from input fields
         data.changeRootUsername = document.getElementById("changeRootUsername").value;
         data.changeRootPassword = document.getElementById("changeRootPassword").value;
         data.changeHostname = document.getElementById("changeHostname").value;
         
+        // Set main data config values
         data.root_username = data.changeRootUsername;
         data.root_password = data.changeRootPassword;
         data.hostname = data.changeHostname;
+
+        // Update form fields to prevent using old values on retry
+        document.getElementById("root_username").value = data.changeRootUsername;
+        document.getElementById("root_password").value = data.changeRootPassword;
+        document.getElementById("hostname").value = data.changeHostname;
 
         start_installer(data); 
         closeModal();
