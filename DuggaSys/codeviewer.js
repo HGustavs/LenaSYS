@@ -4118,6 +4118,278 @@ function resetBoxes()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
+
+//---- Resize helper methods ----------------------------------------------
+
+	function setupFlexContainer(container, orientation) {
+		container.style.display = 'flex';
+		container.style.flexDirection = orientation === 'width' ? 'row' : 'column';
+		container.style.position = 'relative';
+		}
+
+		function computeLimits(container, minFraction, maxFraction, orientation) {
+		const total = orientation === 'width'
+			? container.clientWidth
+			: container.clientHeight;
+		return {
+			total,
+			minSize: total * minFraction,
+			maxSize: total * maxFraction
+		};
+	}
+
+	function initPane(pane, orientation, limits) {
+		pane.style.flex = '0 0 auto';
+		if (orientation === 'width') {
+			pane.style.width    = `${limits.total * 0.5}px`;
+			pane.style.minWidth = `${limits.minSize}px`;
+			pane.style.maxWidth = `${limits.maxSize}px`;
+		} else {
+			pane.style.height     = `${limits.total * 0.5}px`;
+			pane.style.minHeight  = `${limits.minSize}px`;
+			pane.style.maxHeight  = `${limits.maxSize}px`;
+		}
+		pane.style.overflow   = 'auto';
+		pane.style.userSelect = 'none';
+		}
+
+		function allowSiblingsToFlex(selectors) {
+		selectors.forEach(sel => {
+			const sib = document.querySelector(sel);
+			if (sib) sib.style.flex = '1 1 auto';
+		});
+	}
+
+	function setupCursorChange(pane, orientation) {
+		const EDGE = 6;
+		pane.addEventListener('mousemove', ({ offsetX, offsetY, clientWidth, clientHeight }) => {
+			const atEdge = orientation === 'width'
+			? offsetX > clientWidth - EDGE
+			: offsetY > clientHeight - EDGE;
+			pane.style.cursor = atEdge
+			? (orientation === 'width' ? 'ew-resize' : 'ns-resize')
+			: '';
+		});
+		pane.addEventListener('mouseleave', () => pane.style.cursor = '');
+	}
+
+	function setupDragHandlers(pane, orientation, limits) {
+		const coord = orientation === 'width' ? 'pageX' : 'pageY';
+		const sizeProp = orientation === 'width' ? 'width' : 'height';
+		let startPos, startSize;
+
+		pane.addEventListener('mousedown', e => {
+			const mouseOffset = orientation === 'width' ? e.offsetX : e.offsetY;
+			const edgeLimit  = orientation === 'width'
+			? e.target.clientWidth - 6
+			: e.target.clientHeight - 6;
+			if (mouseOffset < edgeLimit) return;
+
+			e.preventDefault();
+			startPos  = e[coord];
+			const rect = pane.getBoundingClientRect();
+			startSize = orientation === 'width' ? rect.width : rect.height;
+
+			function onMouseMove(ev) {
+			const delta = ev[coord] - startPos;
+			const newSize = Math.max(limits.minSize, Math.min(limits.maxSize, startSize + delta));
+			pane.style[sizeProp] = `${newSize}px`;
+			}
+			function onMouseUp() {
+			document.removeEventListener('mousemove', onMouseMove);
+			document.removeEventListener('mouseup',   onMouseUp);
+			}
+			document.addEventListener('mousemove', onMouseMove);
+			document.addEventListener('mouseup',   onMouseUp);
+		});
+	}
+
+	function setupResizeObserver(pane) {
+		const observer = new ResizeObserver(() => {
+		});
+		observer.observe(pane);
+	}
+
+	
+	function makeResizer(paneSelector, containerSelector, options) {
+		const container = document.querySelector(containerSelector);
+		const pane      = document.querySelector(paneSelector);
+		if (!container || !pane) {
+			console.error(`makeResizer: missing ${containerSelector} or ${paneSelector}`);
+			return;
+		}
+
+		setupFlexContainer(container, options.axis);
+		const limits = computeLimits(container, options.minRatio, options.maxRatio, options.axis);
+		initPane(pane, options.axis, limits);
+
+	}
+  
+
+  
+
+  function resizeBoxes(parentSelected, templateId) {
+	switch (String(templateId)) {
+		case "1":
+			makeResizer('#box1wrapper', parentSelected, {
+			axis:    'width',
+			siblings:['#box2wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+		break;
+  
+	  	case "2":
+			makeResizer('#box1wrapper', parentSelected, {
+			axis:    'height',
+			siblings:['#box2wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+		break;
+	  	case "3":
+			makeResizer('#box1wrapper', parentSelected, {
+			axis:    'width',
+			siblings:['#box2wrapper','#box3wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+			makeResizer('#box2wrapper', parentSelected, {
+			axis:    'height',
+			siblings:['#box3wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+		break;
+		case "4":
+			makeResizer('#box1wrapper', parentSelected, {
+			axis:    'width',
+			siblings:['#box2wrapper','#box3wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+			makeResizer('#box2wrapper', parentSelected, {
+			axis:    'height',
+			siblings:['#box1wrapper','#box3wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+		break;
+		case "5":
+			makeResizer('#box1wrapper', parentSelected, {
+			axis:    'height',
+			siblings:['#box2wrapper','#box3wrapper','#box4wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+			makeResizer('#box2wrapper', parentSelected, {
+			axis:    'height',
+			siblings:['#box1wrapper','#box3wrapper','#box4wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+			makeResizer('#box3wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box2wrapper','#box4wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+		break;
+		case "6":
+			makeResizer('#box1wrapper', parentSelected, {
+			axis:    'width',
+			siblings:['#box2wrapper','#box3wrapper','#box4wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+			makeResizer('#box2wrapper', parentSelected, {
+			axis:    'height',
+			siblings:['#box2wrapper','#box3wrapper','#box4wrapper'],
+			minRatio:0.15,
+			maxRatio:0.85
+			});
+			makeResizer('#box3wrapper', parentSelected, {
+				axis:    'height',
+				siblings:['#box2wrapper','#box3wrapper','#box4wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+		break;
+		case "7":
+			makeResizer('#box2wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box3wrapper','#box4wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+			makeResizer('#box3wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box2wrapper','#box4wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+			makeResizer('#box4wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box2wrapper','#box3wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+				});
+		break;
+		case "8":
+			makeResizer('#box2wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box3wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+			makeResizer('#box3wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box2wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+			makeResizer('#box4wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box1wrapper','#box2wrapper','#box3wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+				});
+		break;
+		case "9":
+			makeResizer('#box1wrapper', parentSelected, {
+				axis:    'width',
+				siblings:['#box2wrapper','#box3wrapper','#box4wrapper','#box5wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+			makeResizer('#box2wrapper', parentSelected, {
+				axis:    'height',
+				siblings:['#box3wrapper','#box4wrapper','#box5wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+			});
+			makeResizer('#box3wrapper', parentSelected, {
+				axis:    'height',
+				siblings:['#box2wrapper','#box3wrapper','#box4wrapper','#box5wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+				});
+				makeResizer('#box4wrapper', parentSelected, {
+				axis:    'height',
+				siblings:['#box2wrapper','#box3wrapper','#box5wrapper'],
+				minRatio:0.15,
+				maxRatio:0.85
+				});
+		break;
+	
+  
+	  default:
+		console.warn(`resizeBoxes: unsupported templateId ${templateId}`);
+	}
+  }
+  
+
+/*
 function resizeBoxes(parent, templateId) 
 {
 	var remaining;
@@ -4686,6 +4958,7 @@ function resizeBoxes(parent, templateId)
 		});
 	}
 }	
+*/
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
 //------------------------------------------------------------------------------------------------------------------------------
@@ -4710,8 +4983,11 @@ function saveInitialBoxValues() {
 	setLocalStorageProperties(templateId, boxValArray);
 }
 
-function initResizableBoxValues(parentId) {
-	const parentEl = document.getElementById(parentId);
+function initResizableBoxValues(parent) {
+	const parentEl = (typeof parent === "string")
+		? document.querySelector(parent)
+		: parent;
+
 	const parentWidth = parentEl.offsetWidth;
 	const parentHeight = parentEl.offsetHeight;
 	const boxWrapper = document.querySelectorAll("[id ^=box][id $=wrapper]");
@@ -4719,7 +4995,7 @@ function initResizableBoxValues(parentId) {
 	
 	const boxValueArray = {};
 	boxValueArray["parent"] = {
-		"id": parentId,
+		"id": parent,
 		"width": parentWidth,
 		"height": parentHeight
 	};
