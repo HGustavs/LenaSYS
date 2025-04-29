@@ -130,7 +130,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     Window.restartInstaller = function() {
         console.log("Restarting installer...");
-        // Logic to restart the installer will be implemented here.
+
+        let inputFields = document.getElementsByClassName("input-field");
+
+        // Clear each input field
+        for (let i = 0; i < inputFields.length; i++) {
+            let inputs = inputFields[i].getElementsByTagName("input");
+
+            for (let j = 0; j < inputs.length; j++) {
+                inputs[j].value = ""; 
+                console.log(inputs[j].value);
+            }
+        }
+
+        navigateTo('page1');
         closeModal();
         hideModalButton();
     }
