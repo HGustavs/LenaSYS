@@ -351,6 +351,12 @@ function drawLineProperties(line) {
             }
             break;
         case entityType.SE:
+
+            // Each recursive SE-line looks the same and shouldnt be modified
+            if (line.kind === lineKind.RECURSIVE){
+                break;
+            }
+            
             str += includeSELabel(line);
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);

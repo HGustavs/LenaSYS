@@ -155,7 +155,7 @@ function drawLine(line, targetGhost = false) {
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
-            str += drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+
         }
         else {
             str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
@@ -561,7 +561,8 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
     const elementLength = felem.x2 - felem.x1;
     const startX = felem.x1 + elementLength - lineLength + offset.x1 * zoomfact;
     const startY = felem.y1  - lift + offset.y1 * zoomfact;
-    
+    const SEconst = 15 * zoomfact;
+    const arrowSize = 20 * zoomfact;
 
     if(line.type === entityType.IE) {
         points =
@@ -577,10 +578,26 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
             `${startX + lineLength},${startY + lineHeight + 15}`;
     }else if(line.type === entityType.SE){
         points =
-            `${startX},${startY + lineHeight  } ` +
-            `${startX},${startY} ` +
-            `${startX + lineLength},${startY} ` +
-            `${startX + lineLength},${startY+lineHeight  }`;
+            `${startX - SEconst + lift},${startY + lineHeight } ` +
+            `${startX - SEconst + lift + lineHeight},${startY + lineHeight } ` +
+            `${startX - SEconst + lift + lineHeight},${startY + lineLength + lineHeight } ` +
+            `${startX - SEconst + lift},${startY + lineLength + lineHeight }`;
+        
+        const endX = startX - SEconst + lift;
+        const endY = startY + lineLength + lineHeight;
+
+        str += `
+                <polygon
+                  points="
+                  ${endX},${endY} 
+                  ${endX + arrowSize},${endY - arrowSize/2} 
+                  ${endX + arrowSize},${endY + arrowSize/2}
+                  "
+                  fill="${lineColor}"
+                />
+          `;
+        
+        
     }else {
         points =
             `${startX},${startY + lineHeight  } ` +
