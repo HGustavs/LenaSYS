@@ -889,7 +889,7 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     const availableTextWidth = boxw - padding * 2;
 
     // Approximate number of characters per line based on font size
-    const avgCharWidth = texth * 0.6; // average char width in px
+    const avgCharWidth = texth * 0.48; // average char width in px
     const maxCharactersPerLine = Math.floor(availableTextWidth / avgCharWidth);
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
