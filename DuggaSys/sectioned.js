@@ -1665,11 +1665,7 @@ function returnedSection(data) {
       hiddenInline = "inline";
     }
 
-
-    //Swimlane and 'Load Dugga' button.
-
-
-
+    //Swimlane //and 'Load Dugga' button.
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
@@ -1677,6 +1673,7 @@ function returnedSection(data) {
 
     str += "<div id='Sectionlistc'>";
     str += "<table id='SectionlistTable'>";
+    
     
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
@@ -1692,6 +1689,7 @@ function returnedSection(data) {
           deadline = item['deadline'];
         }
         //str += "<tr>";
+        
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
@@ -2299,6 +2297,7 @@ function returnedSection(data) {
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
+        items: "tr", //added so tr's could also be dragable
         helper: 'clone',
         update: function (event, ui) {
           str = "";
@@ -2307,7 +2306,6 @@ function returnedSection(data) {
             ido = $(this).attr('id');
             phld = $(this).attr('placeholder')
             str += i + "XX" + ido.substr(1) + "XX" + phld;
-
           });
 
           AJAXService("REORDER", {
@@ -2316,7 +2314,6 @@ function returnedSection(data) {
           resave = true;
           return false;
         }
-
       });
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
