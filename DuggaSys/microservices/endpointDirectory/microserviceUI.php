@@ -86,8 +86,84 @@ try {
     <div class="line">
         <h1>Microservice Directory</h1>
     </div>
-    <?php if (!isset($dbError)) {
-        if (!isset($microservice)) { ?>
+    <?php
+    if (isset($dbError)) {
+        echo "<p style= 'color:red';>" . $dbError;
+    } else {
+        if (!isset($microservice)) {
+            if (isset($microservice)) { ?>
+
+                <div class="line">
+                    <h1><?php echo $microservice['ms_name']; ?> details</h1>
+                </div>
+
+                <h2><b>ID: </b><?php echo $microservice['id']; ?></h2>
+                <p><b>Description:</b> <?php echo $microservice['description']; ?></p>
+                <p><b>Calling methods:</b> <?php echo $microservice['calling_methods']; ?>
+                <p><b>Output:</b> <?php echo $microservice['output']; ?>
+                <p><b>Output description:</b> <?php echo $microservice['output_description']; ?>
+                <p><b>Microservices used:</b> <?php echo $microservice['microservices_used']; ?>
+
+                <h3>Parameters</h3>
+                <?php if (!empty($parameters)) { ?>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        <?php
+                        foreach ($parameters as $param) {
+                            echo '<tr>';
+                            echo '<td>' . $param['parameter_name'] . '</td>';
+                            echo '<td>' . $param['parameter_type'] . '</td>';
+                            echo '<td>' . $param['parameter_description'] . '</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </table>
+                <?php } else { ?>
+                    <p>No parameters</p>
+                <?php } ?>
+
+                <div style="display: flex; gap: 5px;">
+                    <form method="">
+                        <button type="submit">Edit</button>
+                    </form>
+
+                    <form method="">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+
+                <p><a href="?">Back to list</a></p>
+
+            <?php } else { ?>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>View</th>
+                    </tr>
+                    <?php
+                    foreach ($services as $service) {
+                        echo '<tr>';
+                        echo '<td>' . $service['id'] . '</td>';
+                        echo '<td>' . $service['ms_name'] . '</td>';
+                        echo '<td>';
+                        if (strlen($service['description']) > 50) {
+                            echo substr($service['description'], 0, 50) . '...';
+                        } else {
+                            echo $service['description'];
+                        }
+                        echo '</td>';
+                        echo '<td><a href="?id=' . $service['id'] . '">View</a></td>';
+                        echo '</tr>';
+                    }
+                    ?>
+                </table>
+            <?php } ?>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
 
@@ -111,84 +187,8 @@ try {
             </div>
             <?php
         }
-    } else {
-        echo "<p style= 'color:red';>" . $dbError;
     }
     ?>
-
-    <?php if (isset($microservice)) { ?>
-
-        <div class="line">
-            <h1><?php echo $microservice['ms_name']; ?> details</h1>
-        </div>
-
-        <h2><b>ID: </b><?php echo $microservice['id']; ?></h2>
-        <p><b>Description:</b> <?php echo $microservice['description']; ?></p>
-        <p><b>Calling methods:</b> <?php echo $microservice['calling_methods']; ?>
-        <p><b>Output:</b> <?php echo $microservice['output']; ?>
-        <p><b>Output description:</b> <?php echo $microservice['output_description']; ?>
-        <p><b>Microservices used:</b> <?php echo $microservice['microservices_used']; ?>
-
-        <h3>Parameters</h3>
-        <?php if (!empty($parameters)) { ?>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                </tr>
-                <?php
-                foreach ($parameters as $param) {
-                    echo '<tr>';
-                    echo '<td>' . $param['parameter_name'] . '</td>';
-                    echo '<td>' . $param['parameter_type'] . '</td>';
-                    echo '<td>' . $param['parameter_description'] . '</td>';
-                    echo '</tr>';
-                }
-                ?>
-            </table>
-        <?php } else { ?>
-            <p>No parameters</p>
-        <?php } ?>
-
-        <div style="display: flex; gap: 5px;">
-            <form method="">
-                <button type="submit">Edit</button>
-            </form>
-
-            <form method="">
-                <button type="submit">Delete</button>
-            </form>
-        </div>
-
-        <p><a href="?">Back to list</a></p>
-
-    <?php } else { ?>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>View</th>
-            </tr>
-            <?php
-            foreach ($services as $service) {
-                echo '<tr>';
-                echo '<td>' . $service['id'] . '</td>';
-                echo '<td>' . $service['ms_name'] . '</td>';
-                echo '<td>';
-                if (strlen($service['description']) > 50) {
-                    echo substr($service['description'], 0, 50) . '...';
-                } else {
-                    echo $service['description'];
-                }
-                echo '</td>';
-                echo '<td><a href="?id=' . $service['id'] . '">View</a></td>';
-                echo '</tr>';
-            }
-            ?>
-        </table>
-    <?php } ?>
 </body>
 
 </html>
