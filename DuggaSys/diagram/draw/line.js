@@ -4,10 +4,9 @@
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
 function drawLine(line, targetGhost = false) {
-    //let str = ""; // both lines and labels
 
     let lineStr = ""; // only the lines, polylines, arrows etc
-    let labelStr = ""; // labels and albel backgrounds
+    let labelStr = ""; // labels and label backgrounds
 
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
