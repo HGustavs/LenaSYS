@@ -1,49 +1,88 @@
 <?php
-// database
-$db = new PDO('sqlite:endpointDirectory_db.sqlite');
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$services = $db->query("SELECT * FROM microservices")->fetchAll();
 
-// search functionality safe from injections
-if (isset($_GET['search'])) {
-    $searchTerm = "%".$_GET['search']."%";
-    $stmt = $db->prepare("SELECT * FROM microservices WHERE ms_name LIKE ? OR description LIKE ?");
-    $stmt->execute([$searchTerm, $searchTerm]);
-    $services = $stmt->fetchAll();
-} else {
+try {
+    // database
+    $db = new PDO('sqlite:endpointDirectory_db.sqlite');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
+
+    // search functionality safe from injections
+    if (isset($_GET['search'])) {
+        $searchTerm = "%" . $_GET['search'] . "%";
+        $stmt = $db->prepare("SELECT * FROM microservices WHERE ms_name LIKE ? OR description LIKE ?");
+        $stmt->execute([$searchTerm, $searchTerm]);
+        $services = $stmt->fetchAll();
+    } else {
+        $services = $db->query("SELECT * FROM microservices")->fetchAll();
+    }
+
+    // show microservices and view details
+    if (isset($_GET['id'])) {
+        $stmt = $db->prepare("SELECT * FROM microservices WHERE id = ?");
+        $stmt->execute([$_GET['id']]);
+        $microservice = $stmt->fetch();
+
+        if ($microservice) {
+            $stmt = $db->prepare("SELECT * FROM parameters WHERE microservice_id = ?");
+            $stmt->execute([$_GET['id']]);
+            $parameters = $stmt->fetchAll();
+        }
+    }
+
+} catch (PDOException $e) {
+    echo "Database is not installed";
 }
 
-// show microservices and view details
-if (isset($_GET['id'])) {
-    $stmt = $db->prepare("SELECT * FROM microservices WHERE id = ?");
-    $stmt->execute([$_GET['id']]);
-    $microservice = $stmt->fetch();
-    
-    if ($microservice) {
-        $stmt = $db->prepare("SELECT * FROM parameters WHERE microservice_id = ?");
-        $stmt->execute([$_GET['id']]);
-        $parameters = $stmt->fetchAll();
-    }
-}
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Microservice Directory</title>
     <style>
-        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        form { margin: 20px 0; }
-        input, button { padding: 5px; }
-        .line { border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+        body {
+            font-family: Arial;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        input,
+        button {
+            padding: 5px;
+        }
+
+        .line {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
+
 <body>
-    
+
     <?php if (!isset($microservice)) { ?>
 
         <div class="line">
@@ -53,7 +92,7 @@ if (isset($_GET['id'])) {
 
             <form method="GET">
                 <input type="text" name="search" placeholder="Search name/description">
-                    <button type="submit">Search</button>
+                <button type="submit">Search</button>
                 <?php if (isset($_GET['search'])): ?>
                     <a href="?">Reset</a>
                 <?php endif; ?>
@@ -87,8 +126,12 @@ if (isset($_GET['id'])) {
         <h3>Parameters</h3>
         <?php if (!empty($parameters)) { ?>
             <table>
-                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-                <?php 
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <?php
                 foreach ($parameters as $param) {
                     echo '<tr>';
                     echo '<td>' . $param['parameter_name'] . '</td>';
@@ -113,27 +156,33 @@ if (isset($_GET['id'])) {
         </div>
 
         <p><a href="?">Back to list</a></p>
-        
+
     <?php } else { ?>
         <table>
-    <tr><th>ID</th><th>Name</th><th>Description</th><th>View</th></tr>
-    <?php 
-    foreach ($services as $service) {
-        echo '<tr>';
-        echo '<td>' . $service['id'] . '</td>';
-        echo '<td>' . $service['ms_name'] . '</td>';
-        echo '<td>';
-        if (strlen($service['description']) > 50) {
-            echo substr($service['description'], 0, 50) . '...';
-        } else {
-            echo $service['description'];
-        }
-        echo '</td>';
-        echo '<td><a href="?id=' . $service['id'] . '">View</a></td>';
-        echo '</tr>';
-    }
-    ?>
-</table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>View</th>
+            </tr>
+            <?php
+            foreach ($services as $service) {
+                echo '<tr>';
+                echo '<td>' . $service['id'] . '</td>';
+                echo '<td>' . $service['ms_name'] . '</td>';
+                echo '<td>';
+                if (strlen($service['description']) > 50) {
+                    echo substr($service['description'], 0, 50) . '...';
+                } else {
+                    echo $service['description'];
+                }
+                echo '</td>';
+                echo '<td><a href="?id=' . $service['id'] . '">View</a></td>';
+                echo '</tr>';
+            }
+            ?>
+        </table>
     <?php } ?>
 </body>
+
 </html>
