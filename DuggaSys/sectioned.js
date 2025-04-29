@@ -1675,8 +1675,7 @@ function returnedSection(data) {
     str += "</div>";
     /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
 
-    str += "<div id='Sectionlistc'>";
-    str += "<table id='SectionlistTable'>";
+    
     
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
@@ -1712,6 +1711,8 @@ function returnedSection(data) {
         //} else {
         //  str += " class='lo' ";
         //}
+
+        
         
         var hideState = "";
         if (parseInt(item['visible']) === 0) hideState = " hidden"
@@ -1733,6 +1734,7 @@ function returnedSection(data) {
           var marked;
           var submitted;
           var lastSubmit = null;
+          
 
           for (var jjj = 0; jjj < data['results'].length; jjj++) {
             var lawtem = data['results'][jjj];
@@ -1766,6 +1768,8 @@ function returnedSection(data) {
 
             }
           }
+          str += "<div id='Sectionlistc'>";
+          str += "<table id='SectionlistTable'>";
 
           if (retdata['writeaccess']) {
             if (itemKind === 3) {
