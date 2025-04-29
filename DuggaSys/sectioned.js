@@ -1645,7 +1645,6 @@ function returnedSection(data) {
         if(deadline==null) {
           deadline = item['deadline'];
         }
-        //str += "<tr>";
 
         // Separating sections into different classes
         var valarr = ["header", "section", "code", "test", "moment", "link", "group", "message"];
@@ -1657,20 +1656,11 @@ function returnedSection(data) {
           str += "<div id='" + makeTextArray(item['kind'], valarr) + menuState.idCounter + data.coursecode + "' class='" + makeTextArray(item['kind'], valarr) + " courseRow'>";
         }
 
-        //str += "</tr>";
-
         menuState.idCounter++;
         // All are visible according to database
         
-
         // Content table
-        str += `<tr id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}'`;
-
-        //if (kk % 2 == 0) {
-        //  str += " class='hi' ";
-        //} else {
-        //  str += " class='lo' ";
-        //}
+        str += `<table id='lid${item['lid']}' value='${item['lid']}'><tr value='${makeTextArray(item['kind'], valarr)}'`;
         str += " >";
         
 
