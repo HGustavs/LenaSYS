@@ -22,6 +22,7 @@ function drawLine(line, targetGhost = false) {
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
     let fx, fy, tx, ty, offset;
+    
 
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
@@ -188,32 +189,48 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
-        // Handle start arrow
-        if (line.startIcon === SDLineIcons.ARROW) {
-            if (line.innerType === SDLineType.SEGMENT) {
-                str += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
-            } else {
-                str += drawArrowPoint(
-                    calculateArrowBase(to, from, 10 * zoomfact),
-                    from,
-                    lineColor,
-                    strokewidth
-                );
-            }
-        }
+        if(line.kind === lineKind.RECURSIVE){
+        
+            const lineLength = 40 * zoomfact; 
+            const lift   = 1 * zoomfact; 
+            const elementLength = felem.x2 - felem.x1;
+            const startX = felem.x1 + elementLength - lineLength + offset.x1 * zoomfact;
+            const startY = felem.y1  - lift + offset.y1 * zoomfact;
 
-        // Handle end arrow
-        if (line.endIcon === SDLineIcons.ARROW) {
-            const reverseCtype = line.ctype.split('').reverse().join('');
-            if (line.innerType === SDLineType.SEGMENT) {
-                str += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
-            } else {
-                str += drawArrowPoint(
-                    calculateArrowBase(from, to, 10 * zoomfact),
-                    to,
-                    lineColor,
-                    strokewidth
-                );
+            if (line.startIcon === SDLineIcons.ARROW) {
+                    str += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
+            }
+            if (line.endIcon === SDLineIcons.ARROW) {
+                    str += iconPoly(SD_ARROW[line.ctype], startX + lineLength, startY +(10 * zoomfact), lineColor, color.BLACK);
+            }
+
+        }else{
+            // Handle start arrow
+            if (line.startIcon === SDLineIcons.ARROW) {
+                if (line.innerType === SDLineType.SEGMENT) {
+                    str += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
+                } else {
+                    str += drawArrowPoint(
+                        calculateArrowBase(to, from, 10 * zoomfact),
+                        from,
+                        lineColor,
+                        strokewidth
+                    );
+                }
+            }
+            // Handle end arrow
+            if (line.endIcon === SDLineIcons.ARROW) {
+                const reverseCtype = line.ctype.split('').reverse().join('');
+                if (line.innerType === SDLineType.SEGMENT) {
+                    str += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
+                } else {
+                    str += drawArrowPoint(
+                        calculateArrowBase(from, to, 10 * zoomfact),
+                        to,
+                        lineColor,
+                        strokewidth
+                    );
+                }
             }
         }
     }
