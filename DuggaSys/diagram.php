@@ -425,7 +425,7 @@
                          onmousedown="holdPlacementButtonDown(5)">
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
-                            <p>Insert an UML inheritance to the diagram</p>
+                            <p>Insert a UML inheritance to the diagram</p>
                             <p>A relation between a superclass and subclasses.</p>
                             <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                             <br>
@@ -750,7 +750,7 @@
                         <span class="toolTipText"><b>Sequence lifeline (actor)</b><br>
                             <p>Creates a lifeline for a sequence diagram</p>
                             <p>Represents the passage of time.</p>
-                            <p>This version is used for human users, external hardware, or other subjects</p><br>
+                            <p>This version is used for human users, external hardware or other subjects</p><br>
                             <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                         </span>
                         <div id="togglePlacementTypeButton12" class="placementTypeIcon togglePlacementTypeButton">
@@ -763,7 +763,7 @@
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline object"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware, or other subjects</p><br>
+                                <p>This version is used for human users, external hardware or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
@@ -814,7 +814,7 @@
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware, or other subjects</p><br>
+                                <p>This version is used for human users, external hardware or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
@@ -866,7 +866,7 @@
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                 <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware, or other subjects</p><br>
+                                <p>This version is used for human users, external hardware or other subjects</p><br>
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
