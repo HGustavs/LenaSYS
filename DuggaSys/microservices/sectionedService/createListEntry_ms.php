@@ -64,47 +64,33 @@ $debug = createNewListEntry($pdo,
     $tabs,
     $grptype);
 
-//get values from post
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['cid'], $_POST['versid'])) {
-        $courseid = $_POST['courseid'];
-        $coursevers = $_POST['coursevers'];
-        $userid = $_POST['userid'];
-        $sectname = $_POST['sectname'];
-        $link = $_POST['link'];
-        $kind = $_POST['kind'];
-        $comments = $_POST['comments'];
-        $visibility = $_POST['visibility'];
-        $highscoremode = $_POST['highscoremode'];
-        $pos = $_POST['pos'];
-        $gradesys = $_POST['gradesys'];
-        $tabs = $_POST['tabs'];
-        $grptype = $_POST['grptype'];
+    header("Content-Type: application/json");
+    //set url for setAsActiveCourse.php path
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewListEntry_ms.php";
+    $ch = curl_init($url);
 
-    }
-}
-
-//set active course in database
-$query = $pdo->prepare("INSERT INTO listentries 
-(courseid, coursevers, userid, sectname, link, kind, comments, visibility, highscoremode, pos, gradesys, tabs, grptype)
-VALUES
-(:courseid, :coursevers, :userid, :sectname, :link, :kind, :comments, :visibility, :highscoremode, :pos, :gradesys, :tabs, :grptype)");
-
-$query->bindParam(':courseid', $courseid);
-$query->bindParam(':coursevers', $coursevers);
-$query->bindParam(':userid', $userid);
-$query->bindParam(':sectname', $sectname);
-$query->bindParam(':link', $link);
-$query->bindParam(':kind', $kind);
-$query->bindParam(':comments', $comments);
-$query->bindParam(':visibility', $visibility);
-$query->bindParam(':highscoremode', $highscoremode);
-$query->bindParam(':pos', $pos);
-$query->bindParam(':gradesys', $gradesys);
-$query->bindParam(':tabs', $tabs);
-$query->bindParam(':grptype', $grptype);
-
-$query->execute();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $courseid, 
+        'versid' => $coursevers 
+        'userid' => $userid, 
+        'examplename' => $examplename, 
+        'link' => $link, 
+        'kind' => $kind, 
+        'comment' => $comment, 
+        'visible' => $visible, 
+        'highscoremode' => $highscoremode,
+        'pos' => $pos,
+        'gradesys' => $gradesys,
+        'tabs' => $tabs,
+        'groupkind' => $groupkind,
+        'moment' => null
+    ]));
+   
+    curl_exec($ch);
+    curl_close($ch);
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 echo json_encode($data);

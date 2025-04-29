@@ -233,8 +233,8 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'courseid' => $courseid, 
-        'coursevers' => $coursevers 
+        'cid' => $courseid, 
+        'versid' => $coursevers 
         'userid' => $userid, 
         'examplename' => $examplename, 
         'link' => $link, 
