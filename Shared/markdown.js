@@ -19,7 +19,13 @@ var openedSublists = [];
 function showGif(url, size, handle){
     handle.src = url;
     handle.style.width = size;
-    $(".playbutton").toggle();
+    var e1=document.querySelector(".playbutton");
+    if(e1.checkVisibility()==true){
+        e1.style.display="none"
+    }
+    else{
+        e1.style.display="block"
+    }
 }
 
 //Toggles between thumbnail and gif animation
@@ -29,14 +35,14 @@ function toggleGif(url1, url2,handle){
     currentSrc = currentSrc.substr(n+1);
     //alert();
     if(currentSrc == url1){
-        $(handle).removeClass("gifimage-fullsize");
+        handle.classList.remove("gifimage-fullsize");
         document.getElementById("overlay").style.display="none";
         showGif(url2, 150 + "px",handle); //Show thumbnail
     }
     else{
         showGif(url1, 80 + "%",handle); //Show big animation gif
         document.getElementById("overlay").style.display="block";
-        $(handle).addClass("gifimage-fullsize");
+        handle.classList.add("gifimage-fullsize");
     }
 }
 
@@ -457,11 +463,11 @@ function cursiveText() {
 }
 
 function showDropdown() {
-    $('#select-header').show();
+    document.querySelector('#select-header').style.display="block";
 }
 
 function selected() {
-    $('#select-header').hide();
+    document.querySelector('#select-header').style.display="none";
 }
 
 function headerVal1() {
@@ -624,24 +630,35 @@ function tabKey(){
     updatePreview(txtarea.value);
 }
 
-$(document).ready(function(){
-   $(".headerType").click(function(){
-        $("#select-header").toggle();
-        $("#select-header").addClass("show-dropdown-content");
-    });
-    $("#mrkdwntxt").keydown(function(e) {
-        if (e.keyCode == 9){
-            e.preventDefault();
-            tabKey();
-
-        }
-    });
+/* If this breaks something add it back, otherwise leave it commented or remove entirely.
+It does not seem to affect anything so not why it's here.
+document.addEventListener("DOMContentLoaded", function(){
+    var e1=document.querySelector(".headerType");
+    if(e1!=null){
+        e1.addEventListener("click", function(){
+            document.getElementById("select-header").classList.toggle();
+            document.getElementById("select-header").classList.add("show-dropdown-content");
+        });
+    }
+    
+    var e2=document.getElementById("mrkdwntxt");
+    if(e2!=null){
+        e2.addEventListener("keydown", function(e) {
+            if (e.keyCode == 9){
+                e.preventDefault();
+                tabKey();
+            }
+        });
+    }
 });
 
 //Hide dropdown if click is outside the div
-$(document).mouseup(function(e) {
-    var container = $("#select-header");
-    if (!container.is(e.target) && container.has(e.target).length === 0) {
-        container.hide();
+document.addEventListener("mouseup", function(e) {
+    var container = document.getElementById("select-header");
+    if(container!=null){
+        if (!container.contains(e.target)) {
+            container.style.display="none";
+        }
     }
 });
+*/
