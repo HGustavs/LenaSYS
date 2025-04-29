@@ -104,10 +104,10 @@ function burgerToggleDarkmode(operation = 'click') {
 var menuState = {
   idCounter: 0,
   /* Used to give elements unique ids. This might? brake
-     because an element is not guaranteed to recieve the
+    because an element is not guaranteed to recieve the
      same id every time. */
-  hiddenElements: [], // Stores the id of elements who's childs should be hidden.
-  arrowIcons: [] // Stores ids of arrows whose state needs to be remembered.
+     hiddenElements: JSON.parse(localStorage.getItem('hiddenElements')) || [], // Stores the id of elements who's childs should be hidden.
+     arrowIcons: JSON.parse(localStorage.getItem('arrowIcons')) || [] // Stores ids of arrows whose state needs to be remembered.
 }
 
 function setup() {
@@ -158,11 +158,17 @@ function saveArrowIds(clickedElement) {
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
 function hideCollapsedMenus() {
+  console.log(localStorage.getItem('hiddenElements'))
   $('.header, .section, .code, .test, .link, .group, .statisticsContent, .message').show();
   
   for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    console.log("Hiding elements for ID:", menuState.hiddenElements[i]); // Add this for debugging
-    var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
+    const el = $("#" + menuState.hiddenElements[i])[0];
+    if (!el){
+      console.warn("Element not found for ID:" , menuState.hiddenElements[i]);
+      continue;
+    }
+
+    var ancestor = findAncestor(el, "moment");
     if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
       jQuery(ancestor).nextUntil('.moment').hide();
       $('#selectionDrag' + menuState.hiddenElements[i]).hide();
@@ -185,50 +191,58 @@ function hideCollapsedMenus() {
 function toggleArrows(id) {
   if (!id || typeof id !== 'string') {
     console.warn("Invalid ID passed to toggleArrows:", id);
-    console.trace();
     return;
-  }  
-  console.log("Toggling arrows for id:", id);
-  $('.arrowComp').show();
-  $('.arrowRight').hide();
-  $('#selectionDrag' + id).toggle();
-
-
-  if(menuState.hiddenElements.includes(id)){
-    menuState.hiddenElements = menuState.hiddenElements.filter(item => item !== id);
-    console.log("expanded section", id);
-  }else {
-    menuState.hiddenElements.push(id);
-    console.log("collapsed section", id)
   }
 
-  console.log("Saving to localStorage: hiddenElements", menuState.hiddenElements);
+  console.log("Toggling arrows for id:", id);
 
+  // Check if the section is collapsed (using hiddenElements array)
+  const isCollapsed = menuState.hiddenElements.includes(id);
+  console.log("Is this section collapsed?", isCollapsed);
+
+  // Toggle the visibility of the content based on collapse state
+  if (isCollapsed) {
+    console.log("Expanding section:", id);
+    $("#" + id).show();  // Show the content when expanded
+  } else {
+    console.log("Collapsing section:", id);
+    $("#" + id).hide();  // Hide the content when collapsed
+  }
+
+  // Specific handling for the statistics section arrows
+  if (id === 'statistics') {
+    if (isCollapsed) {
+      console.log("Show open arrow and hide closed arrow for statistics");
+      $('#sectionList_arrowStatisticsOpen').show();  // Show open arrow
+      $('#sectionList_arrowStatisticsClosed').hide();  // Hide closed arrow
+    } else {
+      console.log("Show closed arrow and hide open arrow for statistics");
+      $('#sectionList_arrowStatisticsOpen').hide();  // Hide open arrow
+      $('#sectionList_arrowStatisticsClosed').show();  // Show closed arrow
+    }
+  }
+
+  // Update the hiddenElements state in the menuState and localStorage
+  if (isCollapsed) {
+    // If the section is collapsed, remove it from hiddenElements
+    menuState.hiddenElements = menuState.hiddenElements.filter(item => item !== id);
+    console.log("Expanded section, updated hiddenElements:", menuState.hiddenElements);
+  } else {
+    // If the section is expanded, add it to hiddenElements
+    menuState.hiddenElements.push(id);
+    console.log("Collapsed section, updated hiddenElements:", menuState.hiddenElements);
+  }
+
+  // Save the updated state to localStorage
   try {
     localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements)); 
     console.log("Collapsed sections saved to localStorage:", menuState.hiddenElements);  
   } catch (e) {
     console.error("Error saving to localStorage:", e);  
   }
-
-
-  for (var i = 0; i < menuState.arrowIcons.length; i++) {
-    if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-      $('#' + menuState.arrowIcons[i]).hide();
-    } else {
-      $('#' + menuState.arrowIcons[i]).show();
-    }
-  }
-
-  $('#arrowStatisticsOpen').show();
-  $('#arrowStatisticsClosed').hide();
-  for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    if (menuState.hiddenElements[i] == "statistics") {
-      $('#arrowStatisticsOpen').hide();
-      $('#arrowStatisticsClosed').show();
-    }
-  }
 }
+
+
 menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // Added some if-statements so escapePress wont always toggle
@@ -2808,8 +2822,8 @@ $(document).on('click', '.moment, .section, .statistics', function () {
   if (this.id.length > 0) {
     saveArrowIds(this.id);
   }
-  hideCollapsedMenus();
   toggleArrows(this.id);
+  hideCollapsedMenus();
 
 });
 
