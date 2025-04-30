@@ -298,6 +298,24 @@
     }
 }
 
+@media (max-width: 414px){
+    .icon-wrapper{
+        display: block !important;
+    }
+
+    #diagram-replay-box{
+        position: fixed !important;
+    }
+
+    #diagram-replay-message{
+        left: 10% !important;
+    }
+
+    #rulerOverlay{
+        position: fixed !important;
+    }
+}
+
 .diagramIcons:hover,
 .active {
     background: var(--color-primary-light);
@@ -1011,4 +1029,11 @@
 *****************/
 #replay-time-container {
     width: 250px;
+}
+
+/****************
+    Chevron-icons
+****************/
+.icon-wrapper{
+    display: none;
 }
