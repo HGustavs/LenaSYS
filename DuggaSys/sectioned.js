@@ -4829,7 +4829,7 @@ function getLocalStorage() {
 function setViewMode(mode){
   const section = document.getElementById("Sectionlisti")
 
-  // Remove previously applie mode
+  // Remove previously applied mode
   section.classList.remove("scroll-mode", "overview-mode");
 
   // Apply selecte view mode
