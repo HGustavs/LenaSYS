@@ -37,5 +37,5 @@ if ($query->execute()) {
 } else {
     $error = $query->errorInfo();
     echo json_encode(["status" => "error", "message" => $error[2]]);
-}
 
+}

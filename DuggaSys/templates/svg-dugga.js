@@ -42,7 +42,7 @@ function returnedDugga(data)
 	if(data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		//document.querySelector('#submission-receipt').innerHTML=`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`;
 		showReceiptPopup();
 	}
 
@@ -89,10 +89,10 @@ function returnedDugga(data)
         fb += "</tbody></table>";
         document.getElementById('feedbackTable').innerHTML = fb;		
         document.getElementById('feedbackBox').style.display = "block";
-        $("#showFeedbackButton").css("display","block");
+        document.getElementById("#showFeedbackButton").style.display="block";
     }
-    $("#submitButtonTable").appendTo("#content");
-    $("#lockedDuggaInfo").appendTo("#content");
+    document.querySelector("#submitButtonTable").append("#content");
+    document.querySelector("#lockedDuggaInfo").append("#content");
     displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
     hash = data["hash"];
     svgSetup();

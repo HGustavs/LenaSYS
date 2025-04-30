@@ -130,23 +130,55 @@ function saveArrowIds(clickedElement) {
 
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
-function hideCollapsedMenus() {
-  $('.header, .section, .code, .test, .link, .group, .statisticsContent, .message').show();
-  for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
-      jQuery(ancestor).nextUntil('.moment').hide();
-      $('#selectionDrag' + menuState.hiddenElements[i]).hide();
-    }
-    ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
-    if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
-      jQuery(ancestor).nextUntil('.section').hide();
-      $('#selectionDrag' + menuState.hiddenElements[i]).hide();
+   function hideCollapsedMenus() {
+    // Show all base elements first
+    var elementsToShow = document.querySelectorAll('.header, .section, .code, .test, .link, .group, .statisticsContent, .message');
+    for (var i = 0; i < elementsToShow.length; i++) {
+        elementsToShow[i].style.display = '';
     }
 
-    if (menuState.hiddenElements[i] == "statistics") {
-      $(".statistics").nextAll().hide();
+    // Hide elements specified in menuState
+    for (var i = 0; i < menuState.hiddenElements.length; i++) {
+        var elementId = menuState.hiddenElements[i];
+        var element = document.getElementById(elementId);
+        
+        if (!element) continue;
+
+        // Handle moment ancestor case
+        var ancestor = findAncestor(element, "moment");
+        if (ancestor && ancestor.classList.contains('moment')) {
+            hideNextUntil(ancestor, 'moment');
+            var dragElement = document.getElementById('selectionDrag' + elementId);
+            if (dragElement) dragElement.style.display = 'none';
+        }
+
+        // Handle section ancestor case
+        ancestor = findAncestor(element, "section");
+        if (ancestor && ancestor.classList.contains('section')) {
+            hideNextUntil(ancestor, 'section');
+            var dragElement = document.getElementById('selectionDrag' + elementId);
+            if (dragElement) dragElement.style.display = 'none';
+        }
+
+        // Handle statistics special case
+        if (elementId == "statistics") {
+            var statistics = document.querySelector(".statistics");
+            if (statistics) {
+                var nextElements = statistics.nextElementSibling;
+                while (nextElements) {
+                    nextElements.style.display = 'none';
+                    nextElements = nextElements.nextElementSibling;
+                }
+            }
+        }
     }
+}
+
+function hideNextUntil(element, className) {
+  var next = element.nextElementSibling;
+  while (next && !next.classList.contains(className)) {
+      next.style.display = 'none';
+      next = next.nextElementSibling;
   }
 }
 
@@ -154,27 +186,49 @@ function hideCollapsedMenus() {
    arrow if it is in the arrowIcons array.*/
 // The other way around for the statistics section.
 function toggleArrows(id) {
-  $('.arrowComp').show();
-  $('.arrowRight').hide();
-  $('#selectionDrag' + id).toggle();
-  for (var i = 0; i < menuState.arrowIcons.length; i++) {
-    if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-      $('#' + menuState.arrowIcons[i]).hide();
-    } else {
-      $('#' + menuState.arrowIcons[i]).show();
-    }
+  // Show all arrowComp elements
+  var arrowComps = document.querySelectorAll('.arrowComp');
+  for (var i = 0; i < arrowComps.length; i++) {
+      arrowComps[i].style.display = '';
   }
-
-  $('#arrowStatisticsOpen').show();
-  $('#arrowStatisticsClosed').hide();
+  
+  // Hide all arrowRight elements
+  var arrowRights = document.querySelectorAll('.arrowRight');
+  for (var i = 0; i < arrowRights.length; i++) {
+      arrowRights[i].style.display = 'none';
+  }
+  
+  // Toggle selection drag
+  var dragElement = document.getElementById('selectionDrag' + id);
+  if (dragElement) {
+      dragElement.style.display = dragElement.style.display === 'none' ? '' : 'none';
+  }
+  
+  // Handle arrow icons in menuState
+  for (var i = 0; i < menuState.arrowIcons.length; i++) {
+      var arrow = document.getElementById(menuState.arrowIcons[i]);
+      if (arrow) {
+          if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+              arrow.style.display = 'none';
+          } else {
+              arrow.style.display = '';
+          }
+      }
+  }
+  
+  // Handle statistics arrows
+  var statsOpen = document.getElementById('arrowStatisticsOpen');
+  var statsClosed = document.getElementById('arrowStatisticsClosed');
+  if (statsOpen) statsOpen.style.display = '';
+  if (statsClosed) statsClosed.style.display = 'none';
+  
   for (var i = 0; i < menuState.hiddenElements.length; i++) {
-    if (menuState.hiddenElements[i] == "statistics") {
-      $('#arrowStatisticsOpen').hide();
-      $('#arrowStatisticsClosed').show();
-    }
+      if (menuState.hiddenElements[i] == "statistics") {
+          if (statsOpen) statsOpen.style.display = 'none';
+          if (statsClosed) statsClosed.style.display = '';
+      }
   }
 }
-menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // Added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
@@ -188,11 +242,13 @@ function hamburgerChange(operation = 'click') {
   }
 }
 
-$(document).on('click', function (e) {
-  if ($(e.target).closest("#hamburgerIcon").length === 0) {
-    $("#hamburgerBox").hide();
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('#hamburgerIcon')) {
+    var hamburgerBox = document.getElementById('hamburgerBox');
+    if (hamburgerBox) hamburgerBox.style.display = 'none';
   }
 });
+
 
 function toggleHamburger() {
 
@@ -233,12 +289,18 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   if (entryname == "undefined") entryname = "New Header";
   if (kind == "undefined") kind = 0;
   xelink = elink;
-  // Display Select Marker
-  $(".item").css("border", "none");
-  $(".item").css("box-shadow", "none");
-  $("#I" + lid).css("border", "2px dashed #FC5");
-  $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
+  // Display Select Marker
+  const items = document.querySelectorAll(".item");
+  items.forEach(item => {
+    item.style.border = "none";
+    item.style.boxShadow = "none";
+  });
+  const element = document.getElementById("I" + lid);
+  if (element) {
+    element.style.border = "2px dashed #FC5";
+    element.style.boxShadow = "1px 1px 3px #000 inset";
+  }
   // Default showing of gradesystem. Will show if has type "Test" or "Moment"
   document.querySelector("#inputwrapper-gradesystem").style.display = "none";
 
@@ -252,38 +314,37 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   }
 
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]));
-  $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
-  $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
-  $("#tabs").html(makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]));
-  $("#highscoremode").html(makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]));
+  document.getElementById("gradesys").innerHTML = makeoptions(gradesys, ["-", "U-G-VG", "U-G"], [0, 1, 2]);
+  document.getElementById("type").innerHTML = makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]);
+  document.getElementById("visib").innerHTML = makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]);
+  document.getElementById("tabs").innerHTML = makeoptions(tabs, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "0 tab + end", "1 tab + end", "2 tabs + end", "3 tabs + end"], [0, 1, 2, 3, 7, 4, 5, 6]);
+  document.getElementById("highscoremode").innerHTML = makeoptions(highscoremode, ["None", "Time Based", "Click Based"], [0, 1, 2]);
   if (deadline !== undefined) {
-    $("#deadlinehours").html(makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue));
-    $("#deadlineminutes").html(makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue));
-    $("#setDeadlineValue").val(!retdata['startdate'] ? "" : deadline.substr(0, 10));
+    document.getElementById("deadlinehours").innerHTML = makeoptions(deadline.substr(11, 2), hourArrOptions, hourArrValue);
+    document.getElementById("deadlineminutes").innerHTML = makeoptions(deadline.substr(14, 2), minuteArrOptions, minuteArrValue);
+    document.getElementById("setDeadlineValue").value = !retdata['startdate'] ? "" : deadline.substr(0, 10);
   }
   // Handles relative deadlines
   if (relativeDeadline !== undefined) {
     var splitdeadline = relativeDeadline.split(":");
     // relativeDeadline = amount:type:hour:minute
-    $("#relativedeadlinehours").html(makeoptions(splitdeadline[2], hourArrOptions, hourArrValue));
-    $("#relativedeadlineminutes").html(makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue));
-
-    $("#relativedeadlineamount").html(makeoptions(splitdeadline[0], amountArrOptions, amountArrValue));
-    $("#relativedeadlinetype").html(makeoptions(splitdeadline[1], typeArrOptions, typeArrValue));
+    document.getElementById("relativedeadlinehours").innerHTML = makeoptions(splitdeadline[2], hourArrOptions, hourArrValue);
+    document.getElementById("relativedeadlineminutes").innerHTML = makeoptions(splitdeadline[3], minuteArrOptions, minuteArrValue);
+    document.getElementById("relativedeadlineamount").innerHTML = makeoptions(splitdeadline[0], amountArrOptions, amountArrValue);
+    document.getElementById("relativedeadlinetype").innerHTML = makeoptions(splitdeadline[1], typeArrOptions, typeArrValue);
 
     if (relativeDeadline !== "null") {
       if (calculateRelativeDeadline(relativeDeadline).getTime() !== new Date(deadline).getTime()) {
-        checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+        checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
       } else {
-        checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
+        checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
       }
     } else {
-      checkDeadlineCheckbox($("#absolutedeadlinecheck"), true);
+      checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), true);
     }
   }
   if (relativeDeadline == "null" && deadline == "null") {
-    checkDeadlineCheckbox($("#absolutedeadlinecheck"), false);
+    checkDeadlineCheckbox(document.getElementById("absolutedeadlinecheck"), false);
   }
   var groups = [];
   for (var key in retdata['groups']) {
@@ -291,10 +352,10 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     if (!retdata['groups'].hasOwnProperty(key)) continue;
     groups.push(key);
   }
-  $("#grptype").html("<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups));
+    document.getElementById("grptype").innerHTML = "<option value='UNK'>Select Group type</option>" + makeoptions(grptype, groups, groups);
 
   // Set Link
-  $("#link").val(elink);
+  document.getElementById("link").value = elink;
   changedType(kind);
 
   // Set Moments - requires iteration since we only process kind 4
@@ -316,60 +377,67 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
     }
   }
 
-  $("#moment").html(str);
-  $("#editSectionDialogTitle").text(entryname);
+  document.getElementById("moment").innerHTML = str;
+  document.getElementById("editSectionDialogTitle").textContent = entryname;
 
   // Set Name
-  $("#sectionname").val(entryname);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
-  id='sectionname' value='${entryname}' style='width:448px;'/>`);
-
+  document.getElementById("sectionname").value = entryname;
+  //document.getElementById("sectionnamewrapper").innerHTML = `<input type='text' class='form-control textinput' id='sectionname' value='${entryname}' style='width:448px;'/>`;
 
   // Set Comment
-  $("#comments").val(comments);
-  $("sectionnamewrapper").html(`<input type='text' class='form-control textinput'
-  id='comments' value='${comments}' style='width:448px;'/>`);
+  document.getElementById("comments").value = comments;
+  //document.getElementById("sectionnamewrapper").innerHTML = `<input type='text' class='form-control textinput' id='comments' value='${comments}' style='width:448px;'/>`;
 
   // Set Lid
-  $("#lid").val(lid);
+  document.getElementById("lid").value = lid;
 
   // Display Dialog
-  $("#editSection").css("display", "flex");
+  document.getElementById("editSection").style.display = "flex";
 
   //------------------------------------------------------------------------------
   // Checks if feedback is enabled and enables input box for feedbackquestion choice.
   //------------------------------------------------------------------------------
   if (kind == 3) {
-    $('#inputwrapper-Feedback').css("display", "block");
+    document.getElementById('inputwrapper-Feedback').style.display = "block";
     if (feedbackenabled == 1) {
-      $("#fdbck").prop("checked", true);
-      $("#inputwrapper-FeedbackQuestion").css("display", "block");
-      $("#fdbckque").val(feedbackquestion);
+      document.getElementById("fdbck").checked = true;
+      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "block";
+      document.getElementById("fdbckque").value = feedbackquestion;
     } else {
-      $("#fdbck").prop("checked", false);
-      $("#inputwrapper-FeedbackQuestion").css("display", "none");
+      document.getElementById("fdbck").checked = false;
+      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
     }
   } else {
-    $("#inputwrapper-FeedbackQuestion").css("display", "none");
-    $('#inputwrapper-Feedback').css("display", "none");
-    $("#fdbck").prop("checked", false);
+    document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
+    document.getElementById('inputwrapper-Feedback').style.display = "none";
+    document.getElementById("fdbck").checked = false;
   }
+
 }
+
 // Handles the logic behind the checkbox for absolute deadline
 function checkDeadlineCheckbox(e, check) {
 
   if (check !== undefined) e.checked = check;
 
+
+  const absDeadlineCheck = document.getElementById("absolutedeadlinecheck");
+  const deadlineValue = document.getElementById("setDeadlineValue");
+  const deadlineMinutes = document.getElementById("deadlineminutes");
+  const deadlineHours = document.getElementById("deadlinehours");
+
   if (e.checked) {
-    $("#absolutedeadlinecheck").prop("checked", true);
-    $("#setDeadlineValue").prop("disabled", false);
-    $("#deadlineminutes").prop("disabled", false);
-    $("#deadlinehours").prop("disabled", false);
+    absDeadlineCheck.checked = true;
+
+    deadlineValue.disabled = false;
+    deadlineMinutes.disabled = false;
+    deadlineHours.disabled = false;
   } else {
-    $("#absolutedeadlinecheck").prop("checked", false);
-    $("#setDeadlineValue").prop("disabled", true);
-    $("#deadlineminutes").prop("disabled", true);
-    $("#deadlinehours").prop("disabled", true);
+    absDeadlineCheck.checked = false;
+
+    deadlineValue.disabled = true;
+    deadlineMinutes.disabled = true;
+    deadlineHours.disabled = true;
   }
 }
 // Takes a relative deadline format and returns a readable string ex: "Course Week 5, 15:00"
@@ -429,7 +497,12 @@ function convertDateToDeadline(date) {
 
 // Returns the values of the currently chosen relative deadline input elements
 function getRelativeDeadlineInputValues() {
-  return $("#relativedeadlineamount").val() + ":" + $("#relativedeadlinetype").val() + ":" + $("#relativedeadlinehours").val() + ":" + $("#relativedeadlineminutes").val();
+  return document.getElementById("relativedeadlineamount").value + ":" +
+
+         document.getElementById("relativedeadlinetype").value + ":" +
+         document.getElementById("relativedeadlinehours").value + ":" +
+         document.getElementById("relativedeadlineminutes").value;
+
 }
 
 //---------------------------------------------------------------------------------------------
@@ -441,21 +514,25 @@ function getRelativeDeadlineInputValues() {
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
   document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+  var linkElement = document.getElementById("link");
+
   if (kind == 2) {
-    $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
+
+    document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid');
   } else if (kind == 3) {
     document.querySelector("#inputwrapper-group").style.display = "none";
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
-    $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
+    document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id');
   } else if (kind == 4) {
     document.querySelector("#inputwrapper-group").style.removeProperty('display');
     document.querySelector("#inputwrapper-gradesystem").style.removeProperty('display');
   } else if (kind == 5 || kind == 7) {
-    $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
-  } else {
-    $("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
+    document.getElementById("link").innerHTML = makeoptionsItem(xelink, retdata['links'], 'filename', 'filename')
+    document.getElementById("link").innerHTML = "<option value='-1'>-=# Not Applicable #=-</option>";
+   
   }
 }
+
 
 //----------------------------------------------------------------------------------
 // refreshGithubRepo: Send course id to function in gitcommitService.php
@@ -565,20 +642,33 @@ function fetchGitHubRepo(gitHubURL) {
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
-  var tempMotd = motd;
-  toggleTab(true);
-  enableTab(document.getElementById("editCourseVersion"));
-  tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g,
-    "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
-  $("#eversname").val(versnme);
-  $("#eMOTD").val(tempMotd);
-  $("#eversid").val(querystring['coursevers']);
-  let sdate = retdata['startdate'];
-  let edate = retdata['enddate'];
-  if (sdate !== null) $("#estartdate").val(sdate.substr(0, 10));
-  if (edate !== null) $("#eenddate").val(edate.substr(0, 10));
-  $("#editCourseVersion").css("display", "flex");
+	var tempMotd = motd;
+	toggleTab(true);
+	enableTab(document.getElementById("editCourseVersion"));
+
+	tempMotd = motd
+		.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å")
+		.replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä")
+		.replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö")
+		.replace(/&amp;/g, "&").replace(/&#63;/g, "?");
+
+	document.getElementById("eversname").value = versnme;
+	document.getElementById("eMOTD").value = tempMotd;
+	document.getElementById("eversid").value = querystring['coursevers'];
+
+	var sdate = retdata['startdate'];
+	var edate = retdata['enddate'];
+
+	if (sdate !== null) {
+		document.getElementById("estartdate").value = sdate.substr(0, 10);
+	}
+	if (edate !== null) {
+		document.getElementById("eenddate").value = edate.substr(0, 10);
+	}
+
+	document.getElementById("editCourseVersion").style.display = "flex";
 }
+
 
 // Delete items marked as deleted when page is unloaded
 window.addEventListener('beforeunload', function (event) {
@@ -637,89 +727,109 @@ function closeOpenPopupForm(){
 }
 
 function displaymessage() {
-  $(".messagebox").css("display", "block");
+	var elems = document.querySelectorAll(".messagebox");
+	for (var i = 0; i < elems.length; i++) elems[i].style.display = "block";
 }
 
 function showSubmitButton() {
-  $(".submitDugga").css("display", "inline-block");
-  $(".updateDugga").css("display", "none");
-  $(".closeDugga").css("display", "inline-block");
+	var submit = document.querySelectorAll(".submitDugga");
+	var update = document.querySelectorAll(".updateDugga");
+	var close = document.querySelectorAll(".closeDugga");
+	for (var i = 0; i < submit.length; i++) submit[i].style.display = "inline-block";
+	for (var i = 0; i < update.length; i++) update[i].style.display = "none";
+	for (var i = 0; i < close.length; i++) close[i].style.display = "inline-block";
 }
 
 function showSaveButton() {
-  $(".submitDugga").css("display", "none");
-  $(".updateDugga").css("display", "block");
-  $(".closeDugga").css("display", "block");
+  const submitButtons = document.querySelectorAll(".submitDugga");
+  const updateButtons = document.querySelectorAll(".updateDugga");
+  const closeButtons = document.querySelectorAll(".closeDugga");
+  submitButtons.forEach(btn => {
+    btn.style.display = "none";
+  });
+  updateButtons.forEach(btn => {
+    btn.style.display = "block";
+  });
+  closeButtons.forEach(btn => {
+    btn.style.display = "block";
+  });
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item = null) {
-  if (operation == "openConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionConfirmBox").css("display", "flex");
-  } else if (operation == "openHideConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionHideConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#tabConfirmBox").css("display", "flex");
-    $("#tabs").val(0).change();
-  } else if (operation == "openItemsConfirmBox") {
-    $("#sectionShowConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
-    deleteItem(selectedItemList);
-    document.getElementById("sectionConfirmBox").style.display = "none";
-  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
-    hideMarkedItems(selectedItemList)
-    $("#sectionHideConfirmBox").css("display", "none");
-  } else if (operation == "tabItem") {
-    tabMarkedItems(active_lid);
-    $("#tabConfirmBox").css("display", "none");
-  }
-  // Responsible for opening github moment
-  else if (operation == "openGitHubBox") {
-    $("#gitHubBox").css("display", "flex");
-  }
-  else if (operation == "saveGitHubBox") {
-  }
+function confirmBox(operation, item = null)
+{
+	if (operation == "openConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionConfirmBox").style.display = "flex";
+	}
+	else if (operation == "openHideConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionHideConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "openTabConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("tabConfirmBox").style.display = "flex";
+		var tabsElem = document.getElementById("tabs");
+		tabsElem.value = 0;
+		tabsElem.dispatchEvent(new Event("change"));
+	}
+	else if (operation == "openItemsConfirmBox") {
+		document.getElementById("sectionShowConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "deleteItem") {
+		deleteItem(selectedItemList);
+		document.getElementById("sectionConfirmBox").style.display = "none";
+	}
+	else if (operation == "hideItem" && selectedItemList.length != 0) {
+		hideMarkedItems(selectedItemList);
+		document.getElementById("sectionHideConfirmBox").style.display = "none";
+	}
+	else if (operation == "tabItem") {
+		tabMarkedItems(active_lid);
+		document.getElementById("tabConfirmBox").style.display = "none";
+	}
+	else if (operation == "openGitHubBox") {
+		document.getElementById("gitHubBox").style.display = "flex";
+	}
+	else if (operation == "saveGitHubBox") {
+		// Placeholder if needed later
+	}
+	else if (operation == "openGitHubTemplate") {
+		console.log("testworkornah?");
+		document.getElementById("gitHubTemplate").style.display = "flex";
+		gitTemplatePopupOutsideClickHandler();
+		fetchCodeExampleHiddenLinkParam(item);
+	}
+	else if (operation == "closeConfirmBox") {
+		var ids = ["gitHubBox", "gitHubTemplate", "sectionConfirmBox", "tabConfirmBox", "sectionHideConfirmBox", "noMaterialConfirmBox", "sectionShowConfirmBox"];
+		for (var i = 0; i < ids.length; i++) {
+			document.getElementById(ids[i]).style.display = "none";
+		}
+		purgeInputFieldsGitTemplate();
+	}
+	else if (operation == "showItems" && selectedItemList.length != 0) {
+		showMarkedItems(selectedItemList);
+		document.getElementById("sectionShowConfirmBox").style.display = "none";
+	}
 
-  //ändra 
-  else if (operation == "openGitHubTemplate") {
-    console.log("testworkornah?");
-    $("#gitHubTemplate").css("display", "flex");
-    gitTemplatePopupOutsideClickHandler();
-    fetchCodeExampleHiddenLinkParam(item);
-  } else if (operation == "closeConfirmBox") {
-    $("#gitHubBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
-    $("#sectionConfirmBox").css("display", "none");
-    $("#tabConfirmBox").css("display", "none");
-    $("#sectionHideConfirmBox").css("display", "none");
-    $("#noMaterialConfirmBox").css("display", "none");
-    $("#sectionShowConfirmBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none");
-    purgeInputFieldsGitTemplate();
-  }
-  else if (operation == "showItems" && !selectedItemList.length == 0) {
-    showMarkedItems(selectedItemList);
-    $("#sectionShowConfirmBox").css("display", "none");
-  }
-  document.addEventListener("keypress", event => {
-    if (event.key === 'Enter') {
-      if (event.target.classList.contains("traschcanDelItemTab")) {
-        setTimeout(function () {
-           document.getElementById('delete-item-button').focus();
-        }, 400);
-      }
-      if (event.target.id == "delete-item-button") {
-        deleteItem(active_lid);
-        document.getElementById("sectionConfirmBox").style.display = "none";
-      }
-    }
-  });
+	document.addEventListener("keypress", function(event)
+	{
+		if (event.key === "Enter") {
+			if (event.target.classList.contains("traschcanDelItemTab")) {
+				setTimeout(function () {
+					document.getElementById("delete-item-button").focus();
+				}, 400);
+			}
+			if (event.target.id == "delete-item-button") {
+				deleteItem(active_lid);
+				document.getElementById("sectionConfirmBox").style.display = "none";
+			}
+		}
+	});
 }
+
 //OnClick handler for clicking outside the template popup
 function gitTemplatePopupOutsideClickHandler(){
   const templateContainer = document.getElementById('chooseTemplate');
@@ -731,79 +841,119 @@ function gitTemplatePopupOutsideClickHandler(){
     }
   });
 }
+
+
 // Creates an array over all checked items
-function markedItems(item = null) {
+function markedItems(item = null, typeInput) {
   var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
+  var kind = item ? item.closest('tr').getAttribute('value'): null;
+  active_lid = item ? item.closest('table').getAttribute('value'): null;
   var subItems = [];
 
   //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-  if (kind == "section" || kind == "moment") {
+  if (kind == "section" || kind == "moment" || kind == "header") {
     var itemInSection = true;
     var sectionStart = false;
-    $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = $(this).attr('value');
+    const elements = document.querySelectorAll('#Sectionlist .item');
+
+    for (let i = 0 ; i < elements.length ; i++){
+      const element = elements[i];
+      var tempItem = element.getAttribute('value');
+
+      // if part of a section, add to subItems.
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = $(this).parents('tr').attr('value');
+        var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+
+        // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
-        } else {
+          break;
+        } 
+        else {
           subItems.push(tempItem);
         }
-      } else if (tempItem == active_lid) sectionStart = true;
-    });
-
-  }
-
-
-  console.log("Active lid: " + active_lid);
-  if (selectedItemList.length != 0) {
-    for (let i = 0; i < selectedItemList.length; i++) {
-      if (selectedItemList[i] === active_lid) {
-        selectedItemList.splice(i, 1);
-        i--;
-        var removed = true;
-        console.log("Removed from list");
-      }
-      for (var j = 0; j < subItems.length; j++) {
-        if (selectedItemList[i] === subItems[j]) {
-          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
-          selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
-        }
-      }
-    } if (removed != true) {
-      selectedItemList.push(active_lid);
-      console.log("Adding !empty list");
-      for (var j = 0; j < subItems.length; j++) {
-        selectedItemList.push(subItems[j]);
-        console.log(subItems[j]);
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
+      } 
+      else if (tempItem == active_lid){ 
+        sectionStart = true;
       }
     }
-  } else {
+  }
+
+  // handles selections & deselections
+  if (selectedItemList.length != 0) {
+    let tempSelectedItemListLength = selectedItemList.length;
+    for (var i = 0; i < tempSelectedItemListLength; i++) {
+      var tempKind = item ? item.closest('tr').getAttribute('value'): null;
+
+      //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {        
+        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+        selectedItemList.splice(i, 1);
+        var removed = true;
+
+        // deselection of child -> deselect parent
+        if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
+          var parent = recieveCodeParent(active_lid);
+
+          for (var i = 0; i < tempSelectedItemListLength; i++) {
+            if (selectedItemList[i] == parent){
+              document.getElementById(parent + "-checkbox").checked = false;
+              selectedItemList.splice(i, 1);
+            }
+          }
+        }
+      }
+
+      //unchecks children of section
+      for (var j = 0; j < subItems.length; j++) {
+        if (selectedItemList[i] == subItems[j]) {
+          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+          selectedItemList.splice(i, 1);
+          i--;
+        }
+      }
+    } 
+    
+    if (removed != true) {
+      let activeLidInList = false;
+      for (var k = 0; k < selectedItemList.length; k++) {
+        if(active_lid == selectedItemList[k]){
+          activeLidInList = true;
+          break;
+        }
+      } if (activeLidInList == false){
+        selectedItemList.push(active_lid);
+        document.getElementById(active_lid + "-checkbox").checked = true;
+    }
+      //handles checking within section
+      for (var j = 0; j < subItems.length; j++) {
+        selectedItemList.push(subItems[j]);
+        document.getElementById(subItems[j] + "-checkbox").checked = true;
+      }
+    }
+  } 
+  
+  // adds everything under section to selectedItems
+  else {
     selectedItemList.push(active_lid);
-    console.log("Added");
     for (var j = 0; j < subItems.length; j++) {
       selectedItemList.push(subItems[j]);
     }
     for (i = 0; i < selectedItemList.length; i++) {
-      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
+      document.getElementById(selectedItemList[i] + "-checkbox").checked = true;
       //console.log(hideItemList[i]+"-checkbox");
     }
     // Show ghost button when checkbox is checked
     document.querySelector('#hideElement').disabled = false;
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
-  }
-  if (selectedItemList.length == 0) {
+  } if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
+    console.log('no element selected');
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
     hideVisibilityIcons();
-
   }
 }
 
@@ -842,27 +992,60 @@ function clearHideItemList() {
   selectedItemList = [];
 }
 
+// Finds code-duggas parent - used in markedItems() for unselection of section
+function recieveCodeParent(item){
+  var itemInSection = true;
+  var sectionStart = false;
+  const elements = document.querySelectorAll('#Sectionlist .item');
+
+  for (let i = elements.length - 1 ; i >= 0 ; i--){
+    const element = elements[i];
+    var tempItem = element.getAttribute('value');
+    //console.log('affected item: ' + tempItem);
+
+    if (itemInSection && sectionStart) {
+      var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+
+      // if section head, parent found.
+      if ((tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+        itemInSection = false;
+        parent = tempItem;
+        return parent;
+      } 
+    } else if (tempItem == item){ 
+      sectionStart = true;
+    }
+  }
+}
 
 function closeSelect() {
+
   toggleTab(false);
-  $(".item").css("border", "none");
-  $(".item").css("box-shadow", "none");
-  $("#editSection").css("display", "none");
+  const items = document.querySelectorAll(".item");
+  items.forEach(item => {
+    item.style.border = "none";
+    item.style.boxShadow = "none";
+  });
+  const editSection = document.getElementById("editSection");
+  editSection.style.display = "none";
   defaultNewItem();
 }
 
 function defaultNewItem() {
-
-  $('#saveBtn').removeAttr('disabled'); // Resets save button to its default form
-  $('#submitBtn').removeAttr('disabled'); // Resets submit button to its default form
-  document.getElementById("sectionname").style.backgroundColor = backgroundColorTheme; // Resets color for name input
-  $('#tooltipTxt').hide(); // Resets tooltip text to its default form
+  const saveBtn = document.getElementById("saveBtn");
+  const submitBtn = document.getElementById("submitBtn");
+  const sectionName = document.getElementById("sectionname");
+  const tooltipTxt = document.getElementById("tooltipTxt");
+  saveBtn.removeAttribute("disabled"); // Resets save button to its default form
+  submitBtn.removeAttribute("disabled"); // Resets submit button to its default form
+  sectionName.style.backgroundColor = backgroundColorTheme; // Resets color for name input
+  tooltipTxt.style.display = "none"; // Resets tooltip text to its default form
 }
 
 function showCreateVersion() {
-  $("#newCourseVersion").css("display", "flex");
-  toggleTab(true);
-  enableTab(document.getElementById("newCourseVersion"));
+	document.getElementById("newCourseVersion").style.display = "flex";
+	toggleTab(true);
+	enableTab(document.getElementById("newCourseVersion"));
 }
 
 function incrementItemsToCreate() {
@@ -911,33 +1094,33 @@ function prepareItem() {
   var jsondeadline = { "deadline1": "", "comment1": "", "deadline2": "", "comment2": "", "deadline3": "", "comment3": "" };
 
   // Storing tabs in gradesys column!
-  var kind = $("#type").val()
+  var kind = document.getElementById("type").value;
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.tabs = $("#tabs").val();
+    param.tabs = document.getElementById("tabs").value;
   } else {
-    param.gradesys = $("#gradesys").val();
+    param.gradesys = document.getElementById("gradesys").value;
   }
 
-  param.lid = $("#lid").val();
+  param.lid = document.getElementById("lid").value;
   param.kind = kind;
-  param.link = $("#link").val();
-  param.highscoremode = $("#highscoremode").val();
-  param.sectname = $("#sectionname").val();
-  param.visibility = $("#visib").val();
-  param.tabs = $("#tabs").val();
-  param.moment = $("#moment").val();
-  param.comments = $("#comments").val();
-  param.grptype = $("#grptype").val();
-  param.deadline = $("#setDeadlineValue").val() + " " + $("#deadlinehours").val() + ":" + $("#deadlineminutes").val();
+  param.link = document.getElementById("link").value;
+  param.highscoremode = document.getElementById("highscoremode").value;
+  param.sectname = document.getElementById("sectionname").value;
+  param.visibility = document.getElementById("visib").value;
+  param.tabs = document.getElementById("tabs").value;
+  param.moment = document.getElementById("moment").value;
+  param.comments = document.getElementById("comments").value;
+  param.grptype = document.getElementById("grptype").value;
+  param.deadline = document.getElementById("setDeadlineValue").value + " " + document.getElementById("deadlinehours").value + ":" + document.getElementById("deadlineminutes").value;
   param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
-  if (!$('#absolutedeadlinecheck').prop('checked')) {
+  if (!document.getElementById('absolutedeadlinecheck').checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
-  if ($('#fdbck').prop('checked')) {
+  if (document.getElementById('fdbck').checked) {
     param.feedback = 1;
-    param.feedbackquestion = $("#fdbckque").val();
+    param.feedbackquestion = document.getElementById("fdbckque").value;
   } else {
     param.feedback = 0;
     param.feedbackquestion = null;
@@ -966,12 +1149,11 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
+    item.parentElement.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
@@ -996,7 +1178,7 @@ function deleteAll() {
       lid: lid
     }, "SECTION");
   }
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
   document.querySelector("#undoButton").style.display = "none";
 }
 
@@ -1012,7 +1194,7 @@ function cancelDelete () {
 
 // update selected directory
 function updateSelectedDir() {
-  var selectedDir = $('#selectDir').val();
+  var selectedDir = document.getElementById("selectDir").value;
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -1087,7 +1269,7 @@ function hideMarkedItems(selectedItemList) {
       lid: lid,
       visible: 3
     }, "SECTION");
-    $("#editSection").css("display", "none");
+    document.getElementById("editSection").style.display = "none";
   }
   selectedItemList = [];
 }
@@ -1096,7 +1278,7 @@ function hideMarkedItems(selectedItemList) {
 // tabMarkedItems: Tabs Item from Section List
 //----------------------------------------------------------------------------------
 function tabMarkedItems(lid) {
-  var tabs = $("#tabs").val();
+  var tabs = document.getElementById("tabs").value;
   AJAXService("UPDATETABS", {
     lid: lid,
     tabs: tabs
@@ -1157,12 +1339,12 @@ function updateItem() {
   console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
-  $("#sectionConfirmBox").css("display", "none");
-  $("#editSection").css("display", "none");
+  document.getElementById("sectionConfirmBox").style.display = "none";
+  document.getElementById("editSection").style.display = "none";
 }
 
 function updateDeadline() {
-  var kind = $("#type").val();
+  var kind = document.getElementById("type").value;
   if (kind == 3) {
     AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
   }
@@ -1179,7 +1361,7 @@ async function newItem(itemtitle) {
 
   // Continues when AJAX call is completed
   await AJAXService("NEW", prepareItem(), "SECTION");
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
 
   // Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
@@ -1205,7 +1387,7 @@ async function newItem(itemtitle) {
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
-    $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").classList.remove("createAlertToggle");
     document.getElementById("createAlert").innerHTML = "";
   }, 3000);
 
@@ -1243,9 +1425,9 @@ function createVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#makeactive").is(':checked');
-  param.startdate = getDateFormat(new Date($("#startdate").val()));
-  param.enddate = getDateFormat(new Date($("#enddate").val()));
+  param.makeactive = 2 + document.getElementById("makeactive").checked;
+  param.startdate = getDateFormat(new Date(document.getElementById("startdate").value));
+  param.enddate = getDateFormat(new Date(document.getElementById("enddate").value));
 
   //If no previous versions exist. "None" can't be selected which makes it empty. Set to "None" for if-statement a few lines down.
   if (param.copycourse == "") {
@@ -1264,7 +1446,7 @@ function createVersion() {
       // Create a fresh course version
       AJAXService("NEWVRS", param, "COURSE");
     }
-    $("#newCourseVersion").css("display", "none");
+    document.getElementById("newCourseVersion").style.display = "none";
     changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
       querystring["coursename"] + "&coursevers=" + document.getElementById("cversid").value);
   }
@@ -1285,14 +1467,14 @@ function updateVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#emakeactive").is(':checked');
-  param.startdate = $("#estartdate").val();
-  param.enddate = $("#eenddate").val();
+  param.makeactive = 2 + document.getElementById("emakeactive").checked;
+  param.startdate = document.getElementById("estartdate").value;
+  param.enddate = document.getElementById("eenddate").value;
   param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "COURSE");
 
-  $("#editCourseVersion").css("display", "none");
+  document.getElementById("editCourseVersion").style.display = "none";
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
     querystring["coursename"] + "&coursevers=" + document.getElementById("eversid").value);
 }
@@ -1305,7 +1487,7 @@ function goToVersion(courseDropDown) {
 }
 
 function accessCourse() {
-  var coursevers = $("#course-coursevers").text();
+  var coursevers = document.getElementById("course-coursevers").textContent;
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
@@ -1360,8 +1542,8 @@ function returnedGroups(data) {
     grpemail = "";
   }
   if (str != "") {
-    $("#grptbl").html(str);
-    $("#grptblContainer").css("display", "flex");
+    document.getElementById("grptbl").innerHTML = str;
+    document.getElementById("grptblContainer").style.display = "flex";
   }
 }
 
@@ -1475,7 +1657,7 @@ function returnedSection(data) {
     // Hide som elements if to narrow
     var hiddenInline = "";
     var showInline = true;
-    if ($(window).width() < 480) {
+    if (window.innerWidth < 480) {
       showInline = false;
       hiddenInline = "none";
     } else {
@@ -1491,7 +1673,7 @@ function returnedSection(data) {
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
-    str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+    /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
 
     str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
@@ -1985,17 +2167,29 @@ function returnedSection(data) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
+          src='../Shared/icons/Trashcan.svg' onclick='markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
+        
+        // Trashcan for items
+        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
 
-        // Trashcan
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+          // Will run marked items independent of lenght
+          console.log('selectedItemList: ' + selectedItemList.length);
+          if (itemKind === 1 && selectedItemList.length == 0){
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+            src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
+            str += "</td>";
+          }
+          else{
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
+          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+          str += "</td>";  
+          } 
         }
 
         // Checkbox
@@ -2075,11 +2269,11 @@ function returnedSection(data) {
 
     if (resave == true) {
       str = "";
-      $("#Sectionlist").find(".item").each(function (i) {
+      document.querySelectorAll("#Sectionlist .item").forEach(function (currentItem, i) {
         if (i > 0) str += ",";
-        ido = $(this).attr('id');
-        phld = $(this).attr('placeholder')
-        str += i + "XX" + ido.substr(1) + "XX" + phld;
+        var ido = currentItem.id;
+        var phld = currentItem.getAttribute("placeholder");
+        str += i + "XX" + ido.slice(1) + "XX" + phld;
 
       });
       AJAXService("REORDER", {
@@ -2089,13 +2283,13 @@ function returnedSection(data) {
     }
 
     if (hasDuggs === false || navigator.vendor == ("Apple Computer, Inc.")) {
-      $("#statisticsSwimlanes").hide();
-      $("#sectionList_arrowStatisticsOpen").hide();
-      $("#sectionList_arrowStatisticsClosed").hide();
+      document.getElementById("statisticsSwimlanes").style.display = "none";
+      document.getElementById("sectionList_arrowStatisticsOpen").style.display = "none";
+      document.getElementById("sectionList_arrowStatisticsClosed").style.display = "none";
     }
 
     if (data['writeaccess']) {
-      /*// Enable sorting always if we are superuser as we refresh list on update
+      // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
@@ -2121,14 +2315,14 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
-      } */
+      }
     }
   } else {
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>" +
       "<span style='font-weight:bold; width:100%'>Bummer!</span> This version does not seem to exist!</div>";
 
     document.getElementById('Sectionlist').innerHTML += str;
-    $("#newCourseVersion").css("display", "block");
+    document.getElementById("newCourseVersion").style.display = "block";
 
 
 
@@ -2165,9 +2359,9 @@ function returnedSection(data) {
       drawSwimlanes(); // Create the swimlane used in the statistics section.
     }
 
-
     // Change the scroll position to where the user was last time.
-    $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+    window.scrollTo(0, localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
 
     // Replaces the link corresponding with dropdown choice ---===######===--- with dummylink, in this case error page 403
     replaceDefualtLink();
@@ -2244,13 +2438,12 @@ function showCanvasLinkBox(operation, btnobj) {
     document.execCommand('copy');
     textArea.remove();
 
-
-    $("#canvasLinkBox").css("display", "flex");
-    $('#close-item-button').focus();
+    document.getElementById("canvasLinkBox").style.display="flex";
+    document.getElementById("close-item-button").focus();
 
     document.getElementById("canvasLinkText").value = canvasLink;
   } else if (operation == "close") {
-    $("#canvasLinkBox").css("display", "none");
+    document.getElementById("canvasLinkBox").style.display = "none";
   }
 }
 
@@ -2261,7 +2454,7 @@ function showMOTD() {
     if (motd == 'UNK' || motd == 'Test' || motd == null || motd == "") {
       document.getElementById("motdArea").style.display = "none";
     } else {
-      document.getElementById("motdArea").style.display = "block";
+      document.getElementById("motdArea").style.display = "flex";
       document.getElementById("motd").innerHTML = "<tr><td>" + motd + "</td></tr>";
       document.getElementById("FABStatic2").style.top = "auto";
     }
@@ -2376,9 +2569,8 @@ function returnedHighscore(data) {
     str += "<td>Score: " + data["user"]["score"] + "</td>";
     str += "</tr>";
   }
-
-  var highscorelist = document.getElementById('HighscoreTable').innerHTML = str;
-  $("#HighscoreBox").css("display", "block");
+  var highscorelist = document.getElementById("HighscoreTable").innerHTML = str;
+  document.getElementById("HighscoreBox").style.display="block";
 }
 
 //----------------------------------------------------------------------------------
@@ -2700,7 +2892,7 @@ $(window).keyup(function (event) {
         }, 200);
         //Duration time for the alert before remove
         setTimeout(function () {
-          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").classList.remove("createAlertToggle");
           document.getElementById("updateAlert").innerHTML = "";
         }, 3000);
       }
@@ -3491,7 +3683,14 @@ function validateVersionName(versionName, dialogid) {
 
   //if versionname is 2 capital letters, 2 numbers
   if (name.value.match(Name)) {
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     name.classList.add("color-change-valid");
     name.classList.remove("color-change-invalid");
     name.style.backgroundColor = backgroundColorTheme;
@@ -3503,7 +3702,16 @@ function validateVersionName(versionName, dialogid) {
     }
     return true;
   } else if (name.value.length > 0){
-    $(errorMsg).fadeIn();
+
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
+
     name.classList.add("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3514,7 +3722,15 @@ function validateVersionName(versionName, dialogid) {
     }
     return false;
   }else{
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
+
     name.classList.remove("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3535,19 +3751,44 @@ function validateCourseID(courseid, dialogid) {
   var errorMsg = document.getElementById(dialogid);
 
   if (cid.value.match(Code)) {
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
+
     cid.classList.add("color-change-valid");
     cid.classList.remove("color-change-invalid");
     cid.style.backgroundColor = backgroundColorTheme;
     window.bool = true;
   } else if (cid.value.length > 0){
-    $(errorMsg).fadeIn();
+
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    };
+
     cid.classList.add("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
     return false;
   }else{
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
+
     cid.classList.remove("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
@@ -3556,7 +3797,16 @@ function validateCourseID(courseid, dialogid) {
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === cid.value);
   if (versionIsValid) {
     errorMsg.innerHTML = "Version ID already exists, try another";
-    $(errorMsg).fadeIn();
+
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
+
     cid.classList.add("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
@@ -3573,17 +3823,45 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
   var errorMsg1 = document.getElementById(syntaxdialogid);
   var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
-    $(errorMsg1).fadeOut()
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     window.bool9 = true;
   } else {
-    $(errorMsg1).fadeIn()
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
     window.bool9 = false;
   }
   if (emotd.value.match(EmotdRange)) {
-    $(errorMsg2).fadeOut()
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
     window.bool9 = true;
   } else {
-    $(errorMsg2).fadeIn()
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
+
     window.bool9 = false;
   }
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
@@ -3614,7 +3892,16 @@ function validateDate(startDate, endDate, dialogID) {
   // If one of the dates is not filled in
   if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
     errorMsg.innerHTML = "Both start date and end date must be filled in";
-    $(errorMsg).fadeIn();
+
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
+
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3629,7 +3916,15 @@ function validateDate(startDate, endDate, dialogID) {
     edate.classList.remove("color-change-invalid");
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
+
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -3641,7 +3936,16 @@ function validateDate(startDate, endDate, dialogID) {
   // If end date is less than start date
   if (date2 < date1) {
     errorMsg.innerHTML = "Start date has to be before end date";
-    $(errorMsg).fadeIn();
+
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
+
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3661,19 +3965,23 @@ function showCourseDate(ddate, dialogid) {
   var startdate = convertDateToDeadline(new Date(retdata['startdate'])).split(" ")[0];
   var enddate = convertDateToDeadline(new Date(retdata['enddate'])).split(" ")[0];
 
-  if (!$("#absolutedeadlinecheck").is(":checked")) {
+  if (!document.getElementById("absolutedeadlinecheck").checked) {
     rDate = /^[0:]+$/.test(convertDateToDeadline(calculateRelativeDeadline()).split(" ")[1]) ? convertDateToDeadline(calculateRelativeDeadline()).split(" ")[0] : convertDateToDeadline(calculateRelativeDeadline());
     str = "The relative deadline will be set to ";
     str += !retdata['startdate'] ? formatRelativeDeadlineToString(getRelativeDeadlineInputValues()) : rDate;
   } else {
     if (!retdata['startdate']) {
-      $(ddate).val("");
+
+      document.getElementById(ddate).value = ""
+
       str = "There is no course start date, please add one or use relative deadlines.";
     } else {
       str = "The absolute deadline date has to be between " + startdate + " and " + enddate;
     }
   }
-  $("#dialog8").html(str);
+
+  document.getElementById("dialog8").innerHTML = str
+
   return isCorrect;
 }
 
@@ -3692,24 +4000,53 @@ function validateDate2(ddate, dialogid) {
     var startdate = new Date(retdata['startdate']);
     var enddate = new Date(retdata['enddate']);
 
+    const absolutedeadlinecheck = document.getElementById("absolutedeadlinecheck");
+    const absolutedeadlinecheckIsChecked = absolutedeadlinecheck && absolutedeadlinecheck.checked;
+
     // If deadline is between start date and end date
-    if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && $("#absolutedeadlinecheck").is(":checked")) {
-      $(errorMsg).fadeOut();
+
+    if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && absolutedeadlinecheckIsChecked) {
+      if (errorMsg) {
+        errorMsg.style.transition = "opacity 0.3s ease";
+        errorMsg.style.opacity = 0;
+        setTimeout(() => {
+          errorMsg.style.display = "none";
+        }, 300);
+      }
+
       ddate.classList.add("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
-    } else if (!$("#absolutedeadlinecheck").is(":checked")) {
+
+    } else if (!absolutedeadlinecheckIsChecked) {
       // If absolute deadline is not being used
-      $(errorMsg).fadeIn();
+      if (errorMsg) {
+        errorMsg.style.opacity = 0;
+        errorMsg.style.display = "block";
+        errorMsg.style.transition = "opacity 0.3s ease";
+        requestAnimationFrame(() => {
+            errorMsg.style.opacity = 1;
+        });
+      }
+
       ddate.classList.remove("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
     } else {
-      $(errorMsg).fadeIn();
+
+      if (errorMsg) {
+        errorMsg.style.opacity = 0;
+        errorMsg.style.display = "block";
+        errorMsg.style.transition = "opacity 0.3s ease";
+        requestAnimationFrame(() => {
+            errorMsg.style.opacity = 1;
+        });
+      }
+
       ddate.classList.add("color-change-invalid");
       ddate.classList.remove("color-change-valid");
       window.bool8 = false;
@@ -3724,20 +4061,45 @@ function validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
+
     element.style.backgroundColor = inputColorTheme;
     element.classList.add("color-change-valid");
     element.classList.remove("color-change-invalid");
     window.bool10 = true;
     return true;
   } else if (element.value.length > 0) { //Invalid
-    $(errorMsg).fadeIn();
+
+    if (errorMsg) {
+      errorMsg.style.opacity = 0;
+      errorMsg.style.display = "block";
+      errorMsg.style.transition = "opacity 0.3s ease";
+      requestAnimationFrame(() => {
+        errorMsg.style.opacity = 1;
+      });
+    }
+
     element.classList.add("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
   }else{
-    $(errorMsg).fadeOut();
+
+    if (errorMsg) {
+      errorMsg.style.transition = "opacity 0.3s ease";
+      errorMsg.style.opacity = 0;
+      setTimeout(() => {
+        errorMsg.style.display = "none";
+      }, 300);
+    }
+
     element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
@@ -4002,7 +4364,7 @@ function validateForm(formid) {
       }, 200);
       //Duration time for the alert before remove
       setTimeout(function () {
-        $("#updateAlert").removeClass("createAlertToggle");
+        document.getElementById("updateAlert").classList.remove("createAlertToggle");
         document.getElementById("updateAlert").innerHTML = "";
       }, 3000);
     } else {
@@ -4037,7 +4399,9 @@ function validateForm(formid) {
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
       alert('New version created');
       createVersion();
-      $('#newCourseVersion input').val("");
+
+      document.querySelectorAll('#newCourseVersion input').forEach(input => input.value = "");
+
 
     } else {
       toast("Error","You have entered incorrect information",5);
@@ -4065,14 +4429,14 @@ function validateForm(formid) {
   }
 
   if (formid === 'githubPopupWindow') {
-    var repoLink = $("#gitRepoURL").val();
-    var repoKey = $("#gitAPIKey").val();
-    var cid = $("#cidTrue").val();
+    var repoLink = document.getElementById("gitRepoURL").value;
+    var repoKey = document.getElementById("gitAPIKey").value;
+    var cid = document.getElementById("cidTrue").value;
     if (repoLink) {
       if (fetchGitHubRepo(repoLink)) {
         AJAXService("SPECIALUPDATE", { cid: cid, courseGitURL: repoLink }, "COURSE");
         localStorage.setItem('courseGitHubRepo', repoLink);
-        $("#githubPopupWindow").css("display", "none");
+        document.getElementById("githubPopupWindow").style.display = "none";
         updateGithubRepo(repoLink, cid, repoKey);
         // Refresh page after github link
         //location.reload();
@@ -4106,10 +4470,10 @@ function refreshMoment(momentID) {
 //------------------------------------------------------------------------------
 function showUserFeedBack(lid, feedbackquestion) {
   AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
-  $("#userFeedbackDialog").css("display", "flex");
-  $("#feedbacktablecontainer").html("");
-  $("#statscontainer").css("display", "none");
-  $("#duggaFeedbackQuestion").html(feedbackquestion);
+  document.getElementById("userFeedbackDialog").style.display = "flex";
+  document.getElementById("feedbacktablecontainer").innerHTML = "";
+  document.getElementById("statscontainer").style.display = "none";
+  document.getElementById("duggaFeedbackQuestion").innerHTML = feedbackquestion;
 }
 
 //------------------------------------------------------------------------------
@@ -4117,9 +4481,9 @@ function showUserFeedBack(lid, feedbackquestion) {
 //------------------------------------------------------------------------------
 function returnedUserFeedback(data) {
   if (data.userfeedback.length == 0) {
-    $("#feedbacktablecontainer").html("<p>No feedback available</p>");
+    document.getElementById("feedbacktablecontainer").innerHTML = "<p>No feedback available</p>";
   } else {
-    $("#statscontainer").css("display", "flex");
+    document.getElementById("statscontainer").style.display = "flex";
     var averagerating = parseFloat(data.avgfeedbackscore);
     var highestscore = 0;
     var lowestscore = 10;
@@ -4132,10 +4496,10 @@ function returnedUserFeedback(data) {
         lowestscore = data.userfeedback[i].score;
       }
     }
-    $("#avg-feedback").html(averagerating.toFixed(2));
-    $("#median-feedback").html(highestscore + " / " + lowestscore);
-    $("#total-feedback").html(data.userfeedback.length);
-    $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
+    document.getElementById("avg-feedback").innerHTML = averagerating.toFixed(2);
+    document.getElementById("median-feedback").innerHTML = highestscore + " / " + lowestscore;
+    document.getElementById("total-feedback").innerHTML = data.userfeedback.length;
+    document.getElementById("feedbacktablecontainer").innerHTML = createUserFeedbackTable(data);
   }
 
 }
@@ -4187,10 +4551,11 @@ function contactStudent(entryname, username) {
 // Displays the feedback question input on enable-button toggle.
 //------------------------------------------------------------------------------
 function showFeedbackquestion() {
-  if ($("#fdbck").prop('checked')) {
-    $("#inputwrapper-FeedbackQuestion").css("display", "block");
+  const feedbackQuestionWrapper = document.getElementById("inputwrapper-FeedbackQuestion");
+  if (document.getElementById("fdbck").checked) {
+    feedbackQuestionWrapper.style.display = "block"
   } else {
-    $("#inputwrapper-FeedbackQuestion").css("display", "none");
+    feedbackQuestionWrapper.style.display = "none"
   }
 }
 
@@ -4364,14 +4729,14 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     location.replace(location.href);
 }
 function updateTemplate() {
-  templateNo = $("#templateno").val();
-  $("#chooseTemplateContainer").css("display", "none");
-  var templateNo = $("#templateno").val();
+  templateNo = document.getElementById("templateno").value;
+  document.getElementById("chooseTemplateContainer").style.display = "none";
+  var templateNo = document.getElementById("templateno").value;
   return templateNo;
 }  
 function changetemplate(templateno) {
-  $(".tmpl").each(function (index) {
-    $(this).css("background", "#ccc");
+  document.querySelectorAll(".tmpl").forEach((element) => {
+    element.style.background = "#ccc";
   });
 
   document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
@@ -4474,3 +4839,23 @@ function setViewMode(mode){
     section.classList.add("overview-mode");
   }
 }
+
+//elementID is the ID that gets passed to the dropdown component.
+function showDropdown(elementID) {
+  let element = document.getElementById(elementID);
+  element.classList.toggle("dropdown-content-show");
+}
+
+// Adds the ability to close dropdown by clicking anywhere on the page.
+window.addEventListener("click", function(event){
+  if (!event.target.matches(".dropButton")) {
+    let dropdowns = this.document.getElementsByClassName("dropdown-content");
+    let i;
+    for (i = 0; i < dropdowns.length; i++) {
+      let dropdown = dropdowns[i];
+      if (dropdown.classList.contains("dropdown-content-show")) {
+        dropdown.classList.remove("dropdown-content-show");
+      }
+    }
+  }
+});
