@@ -81,44 +81,37 @@ function returned_git_user_login(data)
   else if(data['status'] == "wrong pass")
   {
     displayAlertText("#UserExistslogin_message", "Invalid password <br />");
-
-    $("#UserExistslogin_password").addClass("loginFail");
+    document.getElementById('UserExistslogin_password').classList.add('loginFail');
 
     setTimeout(function()
     {
-      $("#UserExistslogin_password").removeClass("loginFail");
+      document.getElementById('UserExistslogin_password').classList.remove('loginFail');
       displayAlertText("#UserExistslogin_message", "Try again");
 
       setTimeout(() => {
         displayAlertText("#UserExistslogin_message", "");
       }, 2000);
-
-
     }, 2000);
   }
   else if(data['status'] == "revoked")
   {
     displayAlertText("#UserExistslogin_message", "User revoked <br />");
-
-    $("#UserExistslogin_password").addClass("loginFail");
+    document.getElementById('UserExistslogin_password').classList.add('loginFail');
 
     setTimeout(function()
     {
-      $("#UserExistslogin_password").removeClass("loginFail");
+      document.getElementById('UserExistslogin_password').classList.remove('loginFail');
       displayAlertText("#UserExistslogin_message", "");
-
-
     }, 2000);
   }
   else if(data['status'] == "pending")
   {
     displayAlertText("#UserExistslogin_message", "User pending <br />");
-
-    $("#UserExistslogin_password").addClass("loginFail");
+    document.getElementById('UserExistslogin_password').classList.add('loginFail');
 
     setTimeout(function()
     {
-      $("#UserExistslogin_password").removeClass("loginFail");
+      document.getElementById('UserExistslogin_password').classList.remove('loginFail');
       displayAlertText("#UserExistslogin_message", "");
 
     }, 2000);
@@ -127,36 +120,33 @@ function returned_git_user_login(data)
 
 
 function contribution_git_processLogin()
-  {
-    let git_username = $("#UserExistslogin_username").val();
-    let git_password = $("#UserExistslogin_password").val();
+{
+  let git_username = document.getElementById('UserExistslogin_username').value;
+  let git_password = document.getElementById('UserExistslogin_password').value;
 
     
 
-    AJAXService("requestContributionUserLogin", 
-    {username: git_username, userpass: git_password, return: returned_git_user_login}, "CONT_LOGINBOX_SERVICE");
-
+  AJAXService("requestContributionUserLogin", 
+  {username: git_username, userpass: git_password, return: returned_git_user_login}, "CONT_LOGINBOX_SERVICE");
   }
 
 function git_logout()
 {
-  
   let git_username = null; // nothing entered will logout
   let git_password = null;
 
 
-    AJAXService("requestContributionUserLogin", 
-    {username: git_username, userpass: git_password, return: returned_git_user_login}, "CONT_LOGINBOX_SERVICE");
-
+  AJAXService("requestContributionUserLogin", 
+  {username: git_username, userpass: git_password, return: returned_git_user_login}, "CONT_LOGINBOX_SERVICE");
 }
 
 { // scope for local-storage of in-between function variables
 
-    let userExists_Git = null; // if it exists in the git data
-    let userExists_Lenasys = null; // if it exists in the lenasys data
-    let userStatus_Lenasys = null; // if it is a super/teache
+  let userExists_Git = null; // if it exists in the git data
+  let userExists_Lenasys = null; // if it exists in the lenasys data
+  let userStatus_Lenasys = null; // if it is a super/teache
    
-    function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
+  function checkIfGitUserExists(username, _callback) // checks if user exists in the git data and or the lenasys data
   {
     userExists_Git = null; // reset back to null if we want to do a check for another user
     userExists_Lenasys = null;
@@ -168,35 +158,27 @@ function git_logout()
     }
     else
     {
-
-        AJAXService("checkForGitUser", 
-        {userid: username, return: returned_git_user_check}, "CONT_LOGINBOX_SERVICE");
+      AJAXService("checkForGitUser", 
+      {userid: username, return: returned_git_user_check}, "CONT_LOGINBOX_SERVICE");
   
-        // ##############################
+      // ##############################
 
-
-        AJAXService("checkForLenasysUser", 
-        {userid: username, return: returned_lenasys_user_check}, "CONT_LOGINBOX_SERVICE");
-
-    
+      AJAXService("checkForLenasysUser", 
+      {userid: username, return: returned_lenasys_user_check}, "CONT_LOGINBOX_SERVICE");
   
-        function checkAsyncFlags() 
+      function checkAsyncFlags() 
+      {
+        if(userExists_Git == null || userExists_Lenasys == null || userStatus_Lenasys == null) 
         {
-          if(userExists_Git == null || userExists_Lenasys == null || userStatus_Lenasys == null) 
-          {
-             window.setTimeout(checkAsyncFlags, 100);
-          } else 
-          {
-            _callback(userExists_Git,userExists_Lenasys, userStatus_Lenasys);
-  
-          }
+           window.setTimeout(checkAsyncFlags, 100);
+        } else 
+        {
+          _callback(userExists_Git,userExists_Lenasys, userStatus_Lenasys);
         }
-        checkAsyncFlags();
-  
-          
+      }
+      checkAsyncFlags();    
     }   
-  
-    }
+  }
   
     function contribution_requestGitUserCreation() // function to create the git user in the lenasys database, make sure requestedpasswordchange is pending(101)
     {
@@ -213,67 +195,56 @@ function git_logout()
         {
   
           displayAlertText("#newGit-UserCreation_message", "invalid password <br />");
+          document.getElementById('newGit-UserCreation_password1').classList.add('loginFail');
+          document.getElementById('newGit-UserCreation_password2').classList.add('loginFail');
+          setTimeout(function()
+          {
+            document.getElementById('newGit-UserCreation_password1').classList.remove('loginFail');
+            document.getElementById('newGit-UserCreation_password2').classList.remove('loginFail');
   
-          $("#newGit-UserCreation_password1").addClass("loginFail");
-              $("#newGit-UserCreation_password2").addClass("loginFail");
-                setTimeout(function()
-            {
-                  $("#newGit-UserCreation_password1").removeClass("loginFail");
-              $("#newGit-UserCreation_password2").removeClass("loginFail");
-  
-              setTimeout(() => {
+            setTimeout(() => {
                 displayAlertText("#newGit-UserCreation_message", "");
-              }, 2000);
-  
-                    }, 2000);
+            }, 2000); 
+          }, 2000);
         }
         else if(!(regexVert.test(pass1) && pass1.length < 64 && pass1.length>= 8)){
           displayAlertText("#newGit-UserCreation_message", `invalid password, needs to be: <br />
-            *between 8 and 64 characters <br />
-            * A-Z, a-z  or numbers <br/>`);
-          $("#newGit-UserCreation_password1").addClass("loginFail");
-              $("#newGit-UserCreation_password2").addClass("loginFail");
-                setTimeout(function()
+          *between 8 and 64 characters <br />
+          * A-Z, a-z  or numbers <br/>`);
+
+          document.getElementById('newGit-UserCreation_password1').classList.add('loginFail');
+          document.getElementById('newGit-UserCreation_password2').classList.add('loginFail');
+          setTimeout(function()
+          {
+            document.getElementById('newGit-UserCreation_password1').classList.remove('loginFail');
+            document.getElementById('newGit-UserCreation_password2').classList.remove('loginFail');
+            setTimeout(function()
             {
-                  $("#newGit-UserCreation_password1").removeClass("loginFail");
-              $("#newGit-UserCreation_password2").removeClass("loginFail");
-            
-              setTimeout(function()
-              {
-                 displayAlertText("#newGit-UserCreation_message", '');
-              },2000)
-            
-                    }, 2000); 
+              displayAlertText("#newGit-UserCreation_message", '');
+            },2000)
+          }, 2000); 
         }
         else
         {
-
-            AJAXService("requestGitUserCreation", 
-            {userid: username, userpass: pass1, return: returned_lenasys_user_creation}, "CONT_LOGINBOX_SERVICE");
-
-            
+          AJAXService("requestGitUserCreation", 
+          {userid: username, userpass: pass1, return: returned_lenasys_user_creation}, "CONT_LOGINBOX_SERVICE");
         }
       }
-      
       else
       {
         displayAlertText("#newGit-UserCreation_message", "password doesnt match <br />");
   
-        $("#newGit-UserCreation_password1").addClass("loginFail");
-              $("#newGit-UserCreation_password2").addClass("loginFail");
-                setTimeout(function()
-          {
-                $("#newGit-UserCreation_password1").removeClass("loginFail");
-            $("#newGit-UserCreation_password2").removeClass("loginFail");
-  
-            setTimeout(() => {
-              displayAlertText("#newGit-UserCreation_message", "");
-            }, 2000);
-  
-  
-                  }, 2000);
+        document.getElementById('newGit-UserCreation_password1').classList.add('loginFail');
+        document.getElementById('newGit-UserCreation_password2').classList.add('loginFail');
+        setTimeout(function()
+        {
+          document.getElementById('newGit-UserCreation_password1').classList.remove('loginFail');
+          document.getElementById('newGit-UserCreation_password2').classList.remove('loginFail');
+          setTimeout(() => {
+            displayAlertText("#newGit-UserCreation_message", "");
+          }, 2000);
+        }, 2000);
       }
-      
     }
   
     function returned_lenasys_user_creation(data)
@@ -284,43 +255,36 @@ function git_logout()
         if(data == false) // didnt create user
         {
           displayAlertText("#newGit-UserCreation_message", "could not create user <br />");
-  
-          $("#newGit-UserCreation_username").addClass("loginFail");
-              $("#newGit-UserCreation_password1").addClass("loginFail");
-          $("#newGit-UserCreation_password2").addClass("loginFail");
-  
-                setTimeout(function()
+          document.getElementById('newGit-UserCreation_username').classList.add('loginFail');
+          document.getElementById('newGit-UserCreation_password1').classList.add('loginFail');
+          document.getElementById('newGit-UserCreation_password2').classList.add('loginFail');
+          setTimeout(function()
           {
-                $("#newGit-UserCreation_username").removeClass("loginFail");
-            $("#newGit-UserCreation_password1").removeClass("loginFail");
-            $("#newGit-UserCreation_password2").removeClass("loginFail");
+            document.getElementById('newGit-UserCreation_username').classList.remove('loginFail');
+            document.getElementById('newGit-UserCreation_password1').classList.remove('loginFail');
+            document.getElementById('newGit-UserCreation_password2').classList.remove('loginFail');
   
             displayAlertText("#UserExistslogin_message", "");
             contribution_resetLoginStatus();
-                  }, 2000);
+          }, 2000);
         }
         else // created user
         {
-  
-          $("#newGit-UserCreation_username").addClass("loginPass");
-              $("#newGit-UserCreation_password1").addClass("loginPass");
-          $("#newGit-UserCreation_password2").addClass("loginPass");
-                setTimeout(function()
+          document.getElementById('newGit-UserCreation_username').classList.add('loginPass');
+          document.getElementById('newGit-UserCreation_password1').classList.add('loginPass');
+          document.getElementById('newGit-UserCreation_password2').classList.add('loginPass');
+          setTimeout(function()
           {
-                $("#newGit-UserCreation_usernam").removeClass("loginPass");
-            $("#newGit-UserCreation_password1").removeClass("loginPass");
-            $("#newGit-UserCreation_password2").removeClass("loginPass");
+            document.getElementById('newGit-UserCreation_usernam').classList.remove('loginPass');//"newGit-UserCreation_usernam" is this a typo?
+            document.getElementById('newGit-UserCreation_password1').classList.remove('loginPass');
+            document.getElementById('newGit-UserCreation_password2').classList.remove('loginPass');
             contribution_resetLoginStatus();
-                  }, 2000);
+          }, 2000);
         }
       }
       else
         alert("invalid data returned from git-data");
-  
     }
-  
-  
-  
   
     function returned_git_user_check(data)
     {
@@ -330,9 +294,7 @@ function git_logout()
       }
       else
         alert("invalid data returned from git-data");
-  
       return userExists_Git;
-  
     }
   
     function returned_lenasys_user_check(data)
@@ -354,9 +316,8 @@ function git_logout()
       } 
       else
       {
-  
         checkIfGitUserExists(username ,function(_onGit, _onLena, _userStatus) 
-          {
+        {
             
   
             /*
@@ -379,55 +340,46 @@ function git_logout()
               else // youre on solely lena but not a teacher/super
               {
                 displayAlertText("#login #message", "User does not have permission <br />");
-  
-                $("input#username").addClass("loginFail");
-                      $("input#password").addClass("loginFail");
-                      setTimeout(function()
+                document.getElementById('username').classList.add('loginFail');
+                document.getElementById('password').classList.add('loginFail');
+                setTimeout(function()
                 {
-                        $("input#username").removeClass("loginFail");
-                  $("input#password").removeClass("loginFail");
+                  document.getElementById('username').classList.remove('loginFail');
+                  document.getElementById('password').classList.remove('loginFail');
                   displayAlertText("#login #message", "Try again");
-
-                    setTimeout(() => {
-                      displayAlertText("#login #message", ""); // hide it
-                    }, 2000);
-
-
-                          }, 2000);
+                  setTimeout(() => {
+                    displayAlertText("#login #message", ""); // hide it
+                  }, 2000);
+                }, 2000);
               }
             }
             if(!_onLena && _onGit) // onlena is false, ongit true, create new user
             {
               contribution_newGitUserCreation();
-  
             }
             if(!_onLena && !_onGit)
             { // default to user does not exist if nothing else
               displayAlertText("#login #message", "User does not exist <br />");
-  
-              $("input#username").addClass("loginFail");
-                    $("input#password").addClass("loginFail");
-                    setTimeout(function()
+              document.getElementById('username').classList.add('loginFail');
+              document.getElementById('password').classList.add('loginFail');
+              setTimeout(function()
               {
-                      $("input#username").removeClass("loginFail");
-                $("input#password").removeClass("loginFail");
+                document.getElementById('username').classList.remove('loginFail');
+                document.getElementById('password').classList.remove('loginFail');
                 displayAlertText("#login #message", "Try again");
-
                 setTimeout(() => {
                   displayAlertText("#login #message", ""); // hide it
                 }, 2000);
-
-                }, 2000);
-  
+              }, 2000);
             }
-          });    
+        });    
       }
     }
 }
 
 function git_showLogoutPopup()
 {
-  $("#git_logoutBox").show();
+    document.getElementById('git_logoutBox').style.display = 'block';
 }
 
 
@@ -435,7 +387,6 @@ function CONT_LOGINBOX_SERVICE_RETURN(data)
 {
     let returnData = JSON.parse(data["returnData"]);
     let returnMethod = data["returnMethod"];
-
 
     if(returnMethod == returned_git_user_login)
     {
@@ -477,11 +428,6 @@ function CONT_LOGINBOX_SERVICE_RETURN(data)
     {
       window.location.href = "courseed.php"; 
     }
-
-
   }
 }
-
-
-
 console.error
