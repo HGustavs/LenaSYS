@@ -1,10 +1,10 @@
 //------------------------------------------------------------------------------
 // Scroll to top of page function 
 //------------------------------------------------------------------------------
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("scrollUp").addEventListener("click", function (event) {
-        window.scrollTo(0, 0);
-    });
+$(document).ready(function(){
+	$("#scrollUp").on('click', function(event) {
+	  window.scrollTo(0, 0);
+	});
 });   
   
 // Show the up-arrow when user has scrolled down 200 pixels on the page
