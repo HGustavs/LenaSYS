@@ -198,6 +198,7 @@ function mouseEnterSeq(event) {
  * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
 /**
  * Snaps a given element to the center of a lifeline and adjusts its Y-position if necessary.
+ * Checks if the lifeline has ended, or not started, and if that is the case the sequenceActivation does not snap to the Y-position of the lifeline
  * @param {Object} element - The element to snap (a placed object).
  * @param {string} targetId - The ID of the lifeline to snap to.
  */
@@ -205,16 +206,21 @@ function snapElementToLifeline(element, targetId) {
     const lifeline = document.getElementById(targetId);
     if (!lifeline) return; // Exit if the DOM element doesn't exist
 
-    // Search for the lifeline data in the main data array
-    for (let i = 0; i < data.length; i++) {
-        const ll = data[i];
-        if ((ll.kind === "sequenceActor" || ll.kind === "sequenceObject") && ll.id === targetId) {
-            // Snap the element horizontally to the center of the lifeline
-            element.x = ll.x + (ll.width / 2) - (element.width / 2);
-            updatepos(); // Refresh position on screen
-            break;
-        }
-    }
+    const ll = data.find(item =>
+        (item.kind === "sequenceActor" || item.kind === "sequenceObject") && 
+        item.id === target
+    );
+
+    if (!ll) return;
+
+    // Element won't snap to the lifeline if it is outside the lifeline's range
+    const topY = ll.y + getTopHeight(ll);
+    const botY = ll.y + ll.height;
+    if (element.y < topY || element.y > botY) return;
+
+    // Snap the element horizontally to the center of the lifeline
+    element.x = ll.x + (ll.width / 2) - (element.width / 2);
+    updatepos(); // Refresh position on screen
 }
 
 // For mmoving sequenceActivation element to get a visually indicated snap to lifeline
@@ -300,8 +306,12 @@ function findNearestLifeline(x, y) {
     data.forEach(el => {
         if (el.kind === "sequenceActor" || el.kind === "sequenceObject") {
             const centerX = el.x + el.width / 2;
+            const topY = el.y + getTopHeight(el);
+            const botY = el.y + el.height;
             const dx = Math.abs(centerX - x);
-            if (dx < 50 && dx < minDistance) { // Use 50px as snapping threshold
+
+            // Only snaps to the lifeline if within the lifeline's range
+            if (dx < 50 && dx < minDistance && y >= topY && y >= botY) { 
                 minDistance = dx;
                 closestId = el.id;
             }
