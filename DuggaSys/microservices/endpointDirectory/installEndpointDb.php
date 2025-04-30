@@ -2,7 +2,7 @@
 // select where to create the database
 $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 
-// create or open the database
+// create the database
 $db = new PDO('sqlite:' . $dbFile);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -44,6 +44,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS dependencies (
     -- FOREIGN KEY (microservice_id) REFERENCES microservices(id)
 );");
 
-echo "Database has been created";
+echo "Database has been created<br>";
+
+
 
 ?>

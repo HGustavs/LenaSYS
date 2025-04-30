@@ -7,7 +7,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "./retrieveSectionedService_ms.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
+
 include_once "../sharedMicroservices/setAsActiveCourse_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
@@ -26,7 +26,19 @@ $startdate = getOP('startdate');
 $enddate = getOP('enddate');
 $makeactive = getOP('makeactive');
 $userid = getUid();
-$username = retrieveUsername($pdo);
+
+// Microservice for retrieveUsername
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+$username = $data['username'] ?? 'unknown';
+
 $debug = "NONE!";
 
 // Permission checks
