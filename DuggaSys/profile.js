@@ -72,10 +72,10 @@ function processChallenge(password, question, answer){
 //A function that validates the form used for changing password
 function validatePassword(){
     //Variables for form elements
-    var currentField = $("#currentPassword2");
-    var newField = $("#newPassword");
-    var confirmField = $("#newPassword2");
-    var message = $("#passwordMessage");
+    var currentField = document.getElementById("currentPassword2");
+    var newField = document.getElementById("newPassword");
+    var confirmField = document.getElementById("newPassword2");
+    var message = document.getElementById("passwordMessage");
     
     //Fetching inputs from the password form
     var password = currentField.val();
@@ -153,10 +153,10 @@ function clearField(field){
 //Sends data from form to profileservice.php
 function changePassword(){
     //Form inputs
-    var currentField = $("#currentPassword2");
-    var newField = $("#newPassword");
-    var confirmField = $("#newPassword2");
-    var message = $("#passwordMessage");
+    var currentField = document.getElementById("currentPassword2");
+    var newField = document.getElementById("newPassword");
+    var confirmField = document.getElementById("newPassword2");
+    var message = document.getElementById("passwordMessage");
     //Value of form inputs
     var password = currentField.val();
     var newPassword = newField.val();
@@ -176,7 +176,7 @@ function changePassword(){
                 clearField(currentField);
                 clearField(newField);
                 clearField(confirmField);
-				$("#passwordForm").trigger("reset");
+				document.getElementById("passwordForm").reset();
 				message.html("Password successfully updated!");
 			} else {
 				if (data.status == "teacher") {
@@ -199,17 +199,17 @@ function changePassword(){
 }
 
 
-$(function() {
-	$("#passwordForm").submit(function(event) {
+document.addEventListener("DOMContentLoaded", function() {
+	document.getElementById("passwordForm").addEventListener("submit", function(event) {
 		event.preventDefault();
 		validatePassword();
 	});
-	$("#challengeForm").submit(function(event) {
+	document.getElementById("challengeForm").addEventListener("submit", function(event) {
 		event.preventDefault();
 		validateChallenge();
 	});
 
 	if (!checkHTTPS()){
-		$("#content").html("Profile settings can only be changed on a secure HTTPS connection.");
+		document.getElementById("content").innerHTML="Profile settings can only be changed on a secure HTTPS connection.";
 	}
 });
