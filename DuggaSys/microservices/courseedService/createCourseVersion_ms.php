@@ -9,7 +9,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
 include_once "./retrieveCourseedService_ms.php";
 
 // Connect to database and start session.
@@ -18,6 +17,12 @@ session_start();
 
 $opt=getOP('opt');
 $cid=getOP('cid');
+// Permission check, same as in copyCourseVersion
+if (strcmp($opt, "ADDVRS") !== 0) {
+    $debug = "OPT does not match.";
+    echo json_encode(retrieveCourseedService($pdo, false, $debug, null, $isSuperUserVar));
+    return;
+}
 $coursecode=getOP('coursecode');
 $coursename=getOP('coursename');
 $coursenamealt=getOP('coursenamealt');
@@ -80,7 +85,20 @@ if($ha) {
 
 	// Logging for create a fresh course version
 	$description=$cid." ".$versid;
-	logUserEvent($userid, retrieveUsername($pdo), EventTypes::AddCourseVers, $description);
+	
+	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+	$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	$data = json_decode($response, true);
+	$username = $data['username'] ?? 'unknown';
+
+	logUserEvent($userid, $username, EventTypes::AddCourseVers, $description);
+
 }
 
 echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));

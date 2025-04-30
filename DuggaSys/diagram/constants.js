@@ -39,12 +39,13 @@ const keybinds = {
     MOVING_OBJECT_DOWN: { key: "ArrowDown", ctrl: false },
     MOVING_OBJECT_LEFT: { key: "ArrowLeft", ctrl: false },
     MOVING_OBJECT_RIGHT: { key: "ArrowRight", ctrl: false },
-    TOGGLE_KEYBINDLIST: { key: "F1", ctrl: false },
+    TOGGLE_KEYBINDLIST: { key: "F1", ctrl: true },
     TOGGLE_REPLAY_MODE: { key: "r", ctrl: false },
     TOGGLE_ER_TABLE: { key: "e", ctrl: false },
     TOGGLE_TEST_CASE: { key: "u", ctrl: false },
     TOGGLE_ERROR_CHECK: { key: "h", ctrl: false },
     SAVE_DIAGRAM: { key: "s", ctrl: true, meta: false, shift: false, alt: false },
+    SAVE_DIAGRAM_AS: { key: "s", ctrl: true, meta: false, shift: true, alt: false },
     LOAD_DIAGRAM: { key: "l", ctrl: true },
     RESET_DIAGRAM: { key: "i", ctrl: false }
 };

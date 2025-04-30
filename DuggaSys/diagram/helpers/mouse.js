@@ -198,6 +198,7 @@ function mouseEnterSeq(event) {
  * @description Snaps the sequenceActivation to a lifeline (currently only works for ghosts)
 /**
  * Snaps a given element to the center of a lifeline and adjusts its Y-position if necessary.
+ * Checks if the lifeline has ended, or not started, and if that is the case the sequenceActivation does not snap to the Y-position of the lifeline
  * @param {Object} element - The element to snap (a placed object).
  * @param {string} targetId - The ID of the lifeline to snap to.
  */
@@ -205,17 +206,46 @@ function snapElementToLifeline(element, targetId) {
     const lifeline = document.getElementById(targetId);
     if (!lifeline) return; // Exit if the DOM element doesn't exist
 
-    // Search for the lifeline data in the main data array
-    for (let i = 0; i < data.length; i++) {
-        const ll = data[i];
-        if ((ll.kind === "sequenceActor" || ll.kind === "sequenceObject") && ll.id === targetId) {
-            // Snap the element horizontally to the center of the lifeline
-            element.x = ll.x + (ll.width / 2) - (element.width / 2);
-            updatepos(); // Refresh position on screen
-            break;
+    const ll = data.find(item =>
+        (item.kind === "sequenceActor" || item.kind === "sequenceObject") && 
+        item.id === target
+    );
+
+    if (!ll) return;
+
+    // Element won't snap to the lifeline if it is outside the lifeline's range
+    const topY = ll.y + getTopHeight(ll);
+    const botY = ll.y + ll.height;
+    if (element.y < topY || element.y > botY) return;
+
+    // Snap the element horizontally to the center of the lifeline
+    element.x = ll.x + (ll.width / 2) - (element.width / 2);
+    updatepos(); // Refresh position on screen
+}
+
+// For mmoving sequenceActivation element to get a visually indicated snap to lifeline
+// threshold value is changeable within the parameter
+function visualSnapToLifeline(pos, threshold = 50) {
+
+    // Check that there exists a sequenceActor or sequenceObject to snap to
+    for (const ll of data) {
+        if (ll.kind !== elementTypesNames.sequenceActor &&
+            ll.kind !== elementTypesNames.sequenceObject) continue;
+
+        // Get coordinates for sequenceActor/sequenceObject and compare to position of moving object
+        const topY = ll.y + getTopHeight(ll);
+        const botY = ll.y + ll.height;
+        const centerX = ll.x + ll.width / 2;
+        const dx = Math.abs(centerX - pos.x);
+
+        // Check if within snap threshold and boundaries of the lifeline
+        if (dx < threshold && pos.y >= topY && pos.y <= botY) {
+            return ll.id;
         }
     }
+    return null;
 }
+  
 
 /**
  * Snaps the ghostElement (hover preview) to the center of a lifeline and adjusts its Y-position.
@@ -233,7 +263,8 @@ function snapSAToLifeline(targetId) {
     ghostElement.x = centerX - ghostElement.width / 2;
 
     // Adjust ghost Y if it's above the allowed minimum
-    const minY = lifelineData.y + getTopHeight(lifelineData) + 70;
+     const extra = lifelineData.kind === "sequenceActor" ? 70 : 0;
+     const minY  = lifelineData.y + getTopHeight(lifelineData) + extra;
     if (ghostElement.y < minY) {
         ghostElement.y = minY;
     }
@@ -275,8 +306,12 @@ function findNearestLifeline(x, y) {
     data.forEach(el => {
         if (el.kind === "sequenceActor" || el.kind === "sequenceObject") {
             const centerX = el.x + el.width / 2;
+            const topY = el.y + getTopHeight(el);
+            const botY = el.y + el.height;
             const dx = Math.abs(centerX - x);
-            if (dx < 50 && dx < minDistance) { // Use 50px as snapping threshold
+
+            // Only snaps to the lifeline if within the lifeline's range
+            if (dx < 50 && dx < minDistance && y >= topY && y >= botY) { 
                 minDistance = dx;
                 closestId = el.id;
             }
@@ -295,8 +330,13 @@ function findNearestLifeline(x, y) {
  * @returns {number} The calculated top height of the element.
  */
 function getTopHeight(element) {
-    let boxw = Math.round(element.width * zoomfact);
-    let boxHeight = (element.kind === "sequenceObject") ? (boxw * 1.05 + 16 * zoomfact) : (boxw * 0.55);
-    return boxHeight / zoomfact;
+    const boxw = Math.round(element.width * zoomfact);
+
+    if (element.kind === "sequenceActor") {
+        return (boxw * 0.50) / zoomfact;      // 55 %
+    }
+
+    // 52 %
+    return (boxw * 0.52) / zoomfact;
 }
 
