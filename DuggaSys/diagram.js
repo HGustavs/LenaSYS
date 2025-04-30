@@ -135,7 +135,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
-
+        updateLatestChange()
     }
 
     /**
@@ -439,6 +439,7 @@ function getData() {
     generateKeybindList();
     //setPreviewValues();
     saveDiagramBeforeUnload();
+    setupTouchAsMouseSupport();
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
@@ -579,18 +580,6 @@ elements.forEach(element => {
     }
 });
 
-for (let i = 0; i <= maxNum; i++) {
-    let element = document.getElementById("elementPlacement" + i);
-    if (element) {
-        // Add event listener for click
-        element.addEventListener("mousedown", function (event) {
-            if (event.button === 2) {
-                rightClickOpenSubtoolbar(i);
-            }
-        });
-    }
-}
-
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
 });
@@ -610,7 +599,7 @@ document.addEventListener('keydown', function (e) {
         if (document.getElementById("lineLabel")) {
             changeLineProperties();
         } else if (document.activeElement.id == "saveDiagramAs") {
-            saveDiagramAs();
+            saveDiagramAs(getCurrentFileName());
             hideSavePopout();
         } else {
             let propField = document.getElementById("elementProperty_name");
@@ -746,6 +735,11 @@ document.addEventListener('keydown', function (e) {
 
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) {
         e.preventDefault();
+        quickSaveDiagram();
+    }
+
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) {
+        e.preventDefault();
         showSavePopout();
     }
 
@@ -853,7 +847,8 @@ document.addEventListener('keyup', function (e) {
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
     if (isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
     if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) quickSaveDiagram();
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) showSavePopout();
     if (isKeybindValid(e, keybinds.RESET_DIAGRAM)) resetDiagramAlert();
     if (isKeybindValid(e, keybinds.TOGGLE_TEST_CASE)) toggleTestCase();
 
@@ -909,6 +904,120 @@ document.addEventListener("mouseout", function (event) {
         mouseMode_onMouseUp();
     }
 });
+
+// --------------------------------------- Touch Events    --------------------------------
+
+/**
+ * @description Event function triggered when touch is registered on top of the container and converts it to a mouseEvent.
+ * @param {TouchEvent} touchEvent The original touch event to convert to mouse event.
+ * @param {string} [type="mousedown"] This is the mouse event type to simulate.
+ * @returns {MouseEvent} A synthetic MouseEvent object that mimics the touch event.
+ */
+
+function convertTouchToMouse(touchEvent, type = "mousedown") {
+    // Get the first changed touch point
+    const touch = touchEvent.changedTouches[0];
+
+    // Create a synthetic mouse event using the touch coordinates
+    const mouseEvent = new MouseEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        button: 0,
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+    });
+
+    // Prevents scrolling in browser when panning the canvas
+    touchEvent.preventDefault();
+
+    // Returns the synthesized mouse event
+    return mouseEvent;
+}
+
+// Variables to track pinch-zooming state
+let initialPinchDistance = null;
+let lastPinchZoomTime = 0;
+
+// Constants to control pinch-zoom sensitivity
+const pinchZoomThreshold = 5; // Minimum px difference to trigger zoom
+const pinchZoomCooldown = 100; // Minimum ms between pinch zooms
+
+// Sets up touch support that simulates mouse events
+function setupTouchAsMouseSupport() {
+    const container = document.getElementById("container");
+
+    // Handle touchstart: either simulates mousedown or prepare for pinch-zoom
+    container.addEventListener("touchstart", function (event) {
+        if (event.touches.length === 1) {
+            // Single touch, simulates a mouse down event
+            const mouseEvent = convertTouchToMouse(event, "mousedown");
+            container.dispatchEvent(mouseEvent);
+        } else if (event.touches.length === 2) {
+            // Two fingers, start measuring pinch distance
+            const dx = event.touches[0].clientX - event.touches[1].clientX;
+            const dy = event.touches[0].clientY - event.touches[1].clientY;
+            initialPinchDistance = Math.hypot(dx, dy);
+        }
+    }, { passive: false });
+
+    // Handle touchmove: either simulate mousemove or process pinch-zoom
+    container.addEventListener("touchmove", function (event) {
+        event.preventDefault();
+        if (event.touches.length === 1) {
+            // Singel touch, simulate mouse move event
+            const mouseEvent = convertTouchToMouse(event, "mousemove");
+            container.dispatchEvent(mouseEvent);
+        } else if (event.touches.length === 2 && initialPinchDistance !== null){
+            // Two fingers, handle pinch-zoom
+            handlePinchZoom(event);
+        }
+    }, { passive: false });
+
+    // Handle touchend: simulate mouseup and reset pinch state
+    container.addEventListener("touchend", function (event) {
+        if (event.touches.length === 0) {
+            // No touches left, simulate mouse up event
+            const mouseEvent = convertTouchToMouse(event, "mouseup");
+            container.dispatchEvent(mouseEvent);
+            initialPinchDistance = null;
+        }
+    }, { passive: false });
+}
+
+/**
+ * @description Handels pinch-zoom gesture detection and triggers zoom-in or zoom-out actions.
+ * @param {TouchEvent} event The current touch event containing two active touch points.
+ */
+
+function handlePinchZoom(event) {
+    // Calculate the current distance between two fingers
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+    const newDistance = Math.hypot(dx, dy);
+
+    // Save the current time to check if enough time has passed to trigger a new pinch-zoom
+    const now = Date.now();
+
+    // Check if distance change is bigger than threshold and if enough time has passed since last zoom event
+    if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
+        // Calculate the midpoint between two fingers
+        const zoomCenter = {
+            clientX: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+            clientY: (event.touches[0].clientY + event.touches[1].clientY) / 2
+        };
+
+        if (newDistance > initialPinchDistance) {
+            zoomin(zoomCenter);
+        } else {
+            zoomout(zoomCenter);
+        }
+
+        // Update the last zoom time and reference distance
+        lastPinchZoomTime = now;
+        initialPinchDistance = newDistance;
+    }
+}
 
 // --------------------------------------- Mouse Events    --------------------------------
 
@@ -1051,6 +1160,18 @@ function mmoving(event) {
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
                 // We update position of connected objects
+
+                // Check coordinates of moveable element and if they are within snap threshold
+                const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
+                const snapId = visualSnapToLifeline(moveableElementPos);
+                
+                // Visualize the context snapping to lifeline (only a visual indication)
+                if (snapId) {
+                    const lLine = data.find(el => el.id === snapId);
+                    context[0].x = lLine.x + lLine.width/2 - context[0].width/2;
+                    startX = event.clientX;
+                    deltaX = 0;
+                }
                 updatepos();
                 calculateDeltaExceeded();
             }
@@ -1337,6 +1458,7 @@ function saveProperties() {
         }
         addToLine("primaryKey", "*");
         addToLine("attributes", "-");
+        addToLine("stereotype", "");
         addToLine("functions", "+");
     }
     stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -1623,34 +1745,54 @@ function setElementPlacementType(type = elementTypes.EREntity) {
 }
 
 /**
- * @description Function to open a subtoolbar when pressing down on a button for a certan period of time
+ * @description Variable to hold current subtoolbar
+ * USED LOCALLY
+ */
+let currentlyOpenSubmenu = null;
+
+/**
+ * @description Function to open a subtoolbar when hovering over a button
  * USED IN PHP
  */
-function holdPlacementButtonDown(num) {
-    mousePressed = true;
-    if (document.getElementById("togglePlacementTypeBox" + num).classList.contains("activeTogglePlacementTypeBox")) {
-        mousePressed = false;
-        togglePlacementTypeBox(num);
+function hoverPlacementButton(index) {
+    // First, hide the old submenu if a new button is hovered
+    if (currentlyOpenSubmenu !== null && currentlyOpenSubmenu !== index) {
+        hidePlacementType();
     }
-    setTimeout(() => {
-        if (!!mousePressed) {
-            togglePlacementTypeBox(num);
-        }
-    }, 500);
+
+    let submenu = document.getElementById(`togglePlacementTypeBox${index}`);
+    if (submenu) {
+        submenu.classList.add("activeTogglePlacementTypeBox");
+        currentlyOpenSubmenu = index;
+    } else {
+        currentlyOpenSubmenu = null;
+    }
 }
 
 /**
- * @description Function to open a subtoolbar when rightclicking a button
- */
-function rightClickOpenSubtoolbar(num) {
-    togglePlacementTypeBox(num);
+ * @description Function to hide submenu
+ * USED IN PHP
+ */ 
+function hidePlacementType() {
+    if (currentlyOpenSubmenu !== null) {
+        let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
+        if (submenu){
+            submenu.classList.remove("activeTogglePlacementTypeBox"); // Hide submenu
+        }             
+        currentlyOpenSubmenu = null;
+    }
+}
+
+// Modified original function to work with hovering and also handle pressing if needed
+function holdPlacementButtonDown(num) {
+    mousePressed = true;
 }
 
 /**
  * @description resets the mousepress.
  * USED IN PHP
  */
-function holdPlacementButtonUp() {
+function holdPlacementButtonUp(num) {
     mousePressed = false;
 }
 
@@ -1668,6 +1810,11 @@ function generateToolTips() {
             let str = "Keybinding: ";
 
             if (keybinds[id].ctrl) str += "CTRL + ";
+
+            if (keybinds[id].shift) str += "SHIFT + ";
+
+            if (keybinds[id].alt) str += "ALT + ";
+
             str += '"' + keybinds[id].key.toUpperCase() + '"';
 
             element.innerHTML = str;
@@ -1746,9 +1893,9 @@ function storeDiagramInLocalStorage(key) {
             initialState: stateMachine.initialState
         };
 
-        // Sets the autosave diagram first, if it is not already set.
+        // Sets the latestChange diagram first, if it is not already set.
         if (!localStorage.getItem("diagrams")) {
-            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`;
+            let s = `{"latestChange": ${JSON.stringify(objToSave)}}`;
             localStorage.setItem("diagrams", s);
         }
         // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
@@ -1756,11 +1903,30 @@ function storeDiagramInLocalStorage(key) {
         local = (local[0] == "{") ? local : `{${local}}`;
 
         let localDiagrams = JSON.parse(local);
+        objToSave.timestamp = new Date().getTime(); 
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
-        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
+        displayMessage(messageTypes.SUCCESS, "Diagram saved! (File saved to: " + key + ")");
     }
+}
+
+//Moastly the same as storeDiagramInLocalStorage
+//Uppdates the latestChange to always be in the latest state
+function updateLatestChange() {
+    if (stateMachine.currentHistoryIndex === -1){
+       return; 
+    }
+    stateMachine.removeFutureStates();
+  
+    const objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+    const jsonData = localStorage.getItem("diagrams") || "{}";
+    const diagrams = JSON.parse(jsonData);
+    diagrams.latestChange = objToSave;
+    localStorage.setItem("diagrams", JSON.stringify(diagrams));
 }
 
 /**
@@ -1940,10 +2106,17 @@ function showModal() {
     let localDiagrams;
 
     let local = localStorage.getItem("diagrams");
+
+
+    // Parse saved diagrams from localstorage and sort them so autosave always remains at top and all other saves are ordered by most recent timestamp to appear closest to top.
     if (local) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
-        diagramKeys = Object.keys(localDiagrams);
+        diagramKeys = Object.keys(localDiagrams).sort((a, b) => {
+            if (a === "AutoSave") return -1;
+            if (b === "AutoSave") return 1;
+            return localDiagrams[b].timestamp - localDiagrams[a].timestamp; 
+        });
     }
 
     // Remove all elements
@@ -1970,7 +2143,7 @@ function showModal() {
             wrapper.style.display = "flex";
             btn.style.width = '100%';
 
-            if (btnText.textContent !== 'AutoSave') { // Only show delete button if not AutoSave
+            if (btnText.textContent !== 'latestChange') { // Only show delete button if not latestChange
                 let delBtn = document.createElement('button');
                 delBtn.classList.add('deleteLocalDiagram');
                 delBtn.setAttribute("onclick", `removeLocalDiagram('${diagramKeys[i]}');showModal();`);
@@ -1980,8 +2153,8 @@ function showModal() {
             container.appendChild(wrapper);
         }
 
-        // Update label count, exclude AutoSave from count
-        const filteredKeys = diagramKeys.filter(key => key !== 'AutoSave'); // Exclude 'AutoSave'
+        // Update label count, exclude latestChange from count
+        const filteredKeys = diagramKeys.filter(key => key !== 'latestChange'); // Exclude 'latestChange'
         document.getElementById('loadCounter').innerHTML = filteredKeys.length; // Set the label count
     }
 
@@ -2022,7 +2195,7 @@ function loadDiagramFromLocalStorage(key) {
 function saveDiagramBeforeUnload() {
     if (data.length) {
         window.addEventListener("beforeunload", (e) => {
-            storeDiagramInLocalStorage("AutoSave");
+            storeDiagramInLocalStorage("latestChange");
         })
     }
 }
@@ -2030,8 +2203,10 @@ function saveDiagramBeforeUnload() {
 function disableIfDataEmpty() {
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         document.getElementById('localSaveField').classList.add('disabledIcon');
+        document.getElementById('localSaveAsField').classList.add('disabledIcon');
     } else {
         document.getElementById('localSaveField').classList.remove('disabledIcon');
+        document.getElementById('localSaveAsField').classList.remove('disabledIcon');
     }
 }
 
@@ -2056,19 +2231,30 @@ function closeOverridePopout() {
     $("#overrideContainer").css("display", "none");
 }
 
-//get the current file name that the user wants to use for saving to local storage.
+//Variable for checking if there's a file that has been saved to already. Used for quicksaving.
+let activeFile = null;
+
+//Get the current file name that the user wants to use for saving to local storage. Also stores that current file to the activefile variable.
 function getCurrentFileName() {
     let fileName = document.getElementById("saveDiagramAs");
+    activeFile = fileName.value;
     return fileName.value;
 }
 
-function saveDiagramAs() {
-    let elem = document.getElementById("saveDiagramAs");
-    if (!elem) {
-        return;
+//Function for quicksaving, checks if there's an active file
+function quickSaveDiagram() {
+    if (activeFile == null) {
+        showSavePopout();
+    } else {
+        storeDiagramInLocalStorage(activeFile);
     }
-    let fileName = elem.value;
+}
 
+//Checks
+function saveDiagramAs(input) {
+
+    //Code for getting date and time. Not used anymore but kept in in case it should be needed elsewhere.
+    /*
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1; // Note: January is month 0
@@ -2077,12 +2263,7 @@ function saveDiagramAs() {
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
     const formattedDate = year + "-" + month + "-" + day + " ";
-    const formattedTime = hours + ":" + minutes + ":" + seconds;
-
-    // Assigns date/time as name if file name is left empty
-    if (fileName.trim() === "") {
-        fileName = "diagram " + formattedDate + formattedTime;
-    }
+    const formattedTime = hours + ":" + minutes + ":" + seconds;*/
 
     let names = [];
     let localDiagrams;
@@ -2101,14 +2282,14 @@ function saveDiagramAs() {
 
     // Check if diagram name is unique
     for (let i = 0; i < names.length; i++) {
-        if (names[i] == fileName) {
+        if (names[i] == input) {
             hideSavePopout();
             showOverridePopout();
             return;
         }
     }
 
-    storeDiagramInLocalStorage(fileName);
+    storeDiagramInLocalStorage(input);
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true) {
@@ -2168,20 +2349,24 @@ function removeLocalDiagram(item) {
     local = (local[0] == "{") ? local : `{${local}}`;
     let localDiagrams = JSON.parse(local);
 
-    if (item !== 'AutoSave') {
+    if (item !== 'latestChange') {
         delete localDiagrams[item];
+        //Resets activeFile to null if the item deleted was the file currently saved to.
+        if (item == activeFile){
+            activeFile = null;
+        }
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
         showModal(); // Refresh the modal after deletion
     } else {
-        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'"); // Prevent deleting AutoSave
+        displayMessage(messageTypes.ERROR, "Error, unable to delete 'latestChange'"); // Prevent deleting latestChange
     }
 
-    // After deletion, update the counter again, excluding 'AutoSave'
+    // After deletion, update the counter again, excluding 'latestChange'
     let updatedLocal = localStorage.getItem("diagrams");
     if (updatedLocal) {
         updatedLocal = (updatedLocal[0] == "{") ? updatedLocal : `{${updatedLocal}}`;
         let updatedDiagrams = JSON.parse(updatedLocal);
-        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'AutoSave');
+        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'latestChange');
         document.getElementById('loadCounter').innerHTML = updatedKeys.length; // Update the counter
     }
 }

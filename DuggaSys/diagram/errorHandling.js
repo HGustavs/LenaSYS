@@ -7,14 +7,27 @@ function checkEREntityErrors(element) {
     let keyQuantity, primaryCount, strongEntity, weakrelation;
     let fElement, fElement0, fElement1, tElement, tElement0, tElement1, line, line0, line1;
 
+    // Check if entity is connected to anything at all
+    let isConnected = false;
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].fromID === element.id || lines[i].toID === element.id) {
+            isConnected = true;
+            break;
+        }
+    }
+    if (!isConnected) {
+        errorData.push(element);
+        return; // Skip further checks since the element is floating
+    }
+
     // Checks for entities with the same name
     for (let i = 0; i < data.length; i++) {
         if (element.name == data[i].name && element.id != data[i].id) {
             errorData.push(element);
         }
     }
-    for (let i = 0; i < line.length; i++) {
-                line = line[i];
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i];
                 fElement = data[findIndex(data, line.fromID)];
                 tElement = data[findIndex(data, line.toID)];
         
@@ -24,6 +37,7 @@ function checkEREntityErrors(element) {
                 if (tElement.id == element.id && fElement.kind ==           elementTypesNames.EREntity) {
                     errorData.push(element);
                 }
+
             }
         
     // Checks if connected attribute is connected with another relation or entity
