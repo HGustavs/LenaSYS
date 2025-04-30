@@ -2438,12 +2438,12 @@ function showCanvasLinkBox(operation, btnobj) {
     document.execCommand('copy');
     textArea.remove();
 
-    document.getElementById('#canvasLinkBox').style.display='flex';
-    document.getElementById('#close-item-button').focus();
+    document.getElementById("canvasLinkBox").style.display="flex";
+    document.getElementById("close-item-button").focus();
 
     document.getElementById("canvasLinkText").value = canvasLink;
   } else if (operation == "close") {
-    document.getElementById('#canvasLinkBox').style.display='none'
+    document.getElementById("canvasLinkBox").style.display = "none";
   }
 }
 
@@ -2569,8 +2569,8 @@ function returnedHighscore(data) {
     str += "<td>Score: " + data["user"]["score"] + "</td>";
     str += "</tr>";
   }
-  var highscorelist = document.getElementById('HighscoreTable').innerHTML = str;
-  document.getElementById("#HighscoreBox").style.display='block';
+  var highscorelist = document.getElementById("HighscoreTable").innerHTML = str;
+  document.getElementById("HighscoreBox").style.display="block";
 }
 
 //----------------------------------------------------------------------------------
