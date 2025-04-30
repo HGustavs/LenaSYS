@@ -1,5 +1,11 @@
 <?php
 
+if (isset($_POST['create_database'])){
+    include 'setupEndpointDirectory.php';
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
 try {
     // database
     $db = new PDO('sqlite:endpointDirectory_db.sqlite');
@@ -96,7 +102,10 @@ try {
     </div>
     <?php
     if (isset($dbError)) {
-        echo "<p style= 'color:red';>" . $dbError;
+        echo "<p style='color:red;'>" . $dbError . "</p>";
+        echo '<form method="POST">';
+        echo '<button type="submit" name="create_database">Create Database</button';
+        echo '</form>';
     } else {
         if (!isset($microservice)) {
             if (isset($microservice)) { ?>
