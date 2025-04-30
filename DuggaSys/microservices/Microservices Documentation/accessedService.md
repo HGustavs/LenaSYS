@@ -1,6 +1,5 @@
-# accessedService documentation
-
-# addClass_ms.php
+# Name of file/service
+addClass_ms.php
 
 ## Description
 Allows a superuser to add/insert a new class (course) to the 'class' table. Takes data for a new class (course) in JSON format.
@@ -72,8 +71,8 @@ getUid_ms.php
 retrieveAccessedService_ms.php
 
 
-
-# addUser_ms.php
+# Name of file/service
+addUser_ms.php
 
 ## Description
 Adding or updating user records and enrollments in specific courses.
