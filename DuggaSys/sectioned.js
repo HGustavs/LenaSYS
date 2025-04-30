@@ -4432,10 +4432,10 @@ function refreshMoment(momentID) {
 //------------------------------------------------------------------------------
 function showUserFeedBack(lid, feedbackquestion) {
   AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
-  $("#userFeedbackDialog").css("display", "flex");
-  $("#feedbacktablecontainer").html("");
-  $("#statscontainer").css("display", "none");
-  $("#duggaFeedbackQuestion").html(feedbackquestion);
+  document.getElementById("userFeedbackDialog").style.display = "flex";
+  document.getElementById("feedbacktablecontainer").innerHTML = "";
+  document.getElementById("statscontainer").style.display = "none";
+  document.getElementById("duggaFeedbackQuestion").innerHTML = feedbackquestion;
 }
 
 //------------------------------------------------------------------------------
@@ -4443,9 +4443,9 @@ function showUserFeedBack(lid, feedbackquestion) {
 //------------------------------------------------------------------------------
 function returnedUserFeedback(data) {
   if (data.userfeedback.length == 0) {
-    $("#feedbacktablecontainer").html("<p>No feedback available</p>");
+    document.getElementById("feedbacktablecontainer").innerHTML = "<p>No feedback available</p>";
   } else {
-    $("#statscontainer").css("display", "flex");
+    document.getElementById("statscontainer").style.display = "flex";
     var averagerating = parseFloat(data.avgfeedbackscore);
     var highestscore = 0;
     var lowestscore = 10;
@@ -4458,10 +4458,10 @@ function returnedUserFeedback(data) {
         lowestscore = data.userfeedback[i].score;
       }
     }
-    $("#avg-feedback").html(averagerating.toFixed(2));
-    $("#median-feedback").html(highestscore + " / " + lowestscore);
-    $("#total-feedback").html(data.userfeedback.length);
-    $("#feedbacktablecontainer").html(createUserFeedbackTable(data));
+    document.getElementById("avg-feedback").innerHTML = averagerating.toFixed(2);
+    document.getElementById("median-feedback").innerHTML = highestscore + " / " + lowestscore;
+    document.getElementById("total-feedback").innerHTML = data.userfeedback.length;
+    document.getElementById("feedbacktablecontainer").innerHTML = createUserFeedbackTable(data);
   }
 
 }
@@ -4691,14 +4691,14 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     location.replace(location.href);
 }
 function updateTemplate() {
-  templateNo = $("#templateno").val();
-  $("#chooseTemplateContainer").css("display", "none");
-  var templateNo = $("#templateno").val();
+  templateNo = document.getElementById("templateno").value;
+  document.getElementById("chooseTemplateContainer").style.display = "none";
+  var templateNo = document.getElementById("templateno").value;
   return templateNo;
 }  
 function changetemplate(templateno) {
-  $(".tmpl").each(function (index) {
-    $(this).css("background", "#ccc");
+  document.querySelectorAll(".tmpl").forEach((element) => {
+    element.style.background = "#ccc";
   });
 
   document.getElementById("templat" + templateno).style.backgroundColor = "#fc4";
