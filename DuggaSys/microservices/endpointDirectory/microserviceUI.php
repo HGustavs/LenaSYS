@@ -35,6 +35,12 @@ if (isset($_GET['id'])) {
         $stmt->execute([$_GET['id']]);
         $parameters = $stmt->fetchAll();
     }
+
+    if ($microservice) {
+        $stmt = $db->prepare("SELECT * FROM outputs WHERE microservice_id = ?");
+        $stmt->execute([$_GET['id']]);
+        $outputs = $stmt->fetchAll();
+    }
 }
 
 } catch (PDOException $e) {
