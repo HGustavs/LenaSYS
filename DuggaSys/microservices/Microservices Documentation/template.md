@@ -7,7 +7,6 @@ Example of template for the documentation:
 
 ## Input Parameters
 *Parameters will be described in lists*
-
 - Parameter: paramName
    - Type: int
    - Description: describe parameter
@@ -15,23 +14,23 @@ Example of template for the documentation:
 - Parameter: paramName
    - Type: int
    - Description: describe parameter
+
+
 
 ## Calling Methods
-
 - GET
 - POST
 - etc.
 
 ## Output Data and Format
 *Output Data will be described in lists*
+- Output: outputName
+   - Type: int
+   - Description: describe the output
 
-- Output
-   - Type
-   - Description
-
-- Output
-   - Type
-   - Description
+- Output: outputName
+   - Type: String
+   - Description: describe the output
 
 ## Examples of Use
 `CODE`
