@@ -84,7 +84,7 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
 
 function checkConnectionErrors(to, from) {
     if (from.id == to.id &&
-        (to.kind != elementTypesNames.SDEntity && to.kind != elementTypesNames.UMLEntity && to.kind != elementTypesNames.IEEntity)
+        (to.kind != elementTypesNames.SDEntity && to.kind != elementTypesNames.UMLEntity && to.kind != elementTypesNames.IEEntity && to.kind != "sequenceActivation")
     ) {
         return `Not possible to draw a line between: ${from.name} and ${to.name}, they are the same element`;
     }
