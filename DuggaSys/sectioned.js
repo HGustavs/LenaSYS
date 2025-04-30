@@ -854,34 +854,57 @@ function markedItems(item = null, typeInput) {
   if (kind == "section" || kind == "moment" || kind == "header") {
     var itemInSection = true;
     var sectionStart = false;
-    $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = this.getAttribute('value');
+    const elements = document.querySelectorAll('#Sectionlist .item');
 
+    for (let i = 0 ; i < elements.length ; i++){
+      const element = elements[i];
+      var tempItem = element.getAttribute('value');
+
+      // if part of a section, add to subItems.
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = this ? this.closest('tr').getAttribute('value'): null;
+        var tempKind = element ? element.closest('tr').getAttribute('value'): null;
 
-
+        // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
-        } else {
+          break;
+        } 
+        else {
           subItems.push(tempItem);
         }
-      } else if (tempItem == active_lid) sectionStart = true;
-    });
+      } 
+      else if (tempItem == active_lid){ 
+        sectionStart = true;
+      }
+    }
   }
 
-  // handles selections
+  // handles selections & deselections
   if (selectedItemList.length != 0) {
     let tempSelectedItemListLength = selectedItemList.length;
-    for (let i = 0; i < tempSelectedItemListLength; i++) {
+    for (var i = 0; i < tempSelectedItemListLength; i++) {
+      var tempKind = item ? item.closest('tr').getAttribute('value'): null;
 
       //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
-      if (selectedItemList[i] === active_lid && typeInput != "trash") {
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {        
         document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
         var removed = true;
+
+        // deselection of child -> deselect parent
+        if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
+          var parent = recieveCodeParent(active_lid);
+
+          for (var i = 0; i < tempSelectedItemListLength; i++) {
+            if (selectedItemList[i] == parent){
+              document.getElementById(parent + "-checkbox").checked = false;
+              selectedItemList.splice(i, 1);
+            }
+          }
+        }
       }
+
       //unchecks children of section
       for (var j = 0; j < subItems.length; j++) {
         if (selectedItemList[i] == subItems[j]) {
@@ -899,8 +922,7 @@ function markedItems(item = null, typeInput) {
           activeLidInList = true;
           break;
         }
-      }
-      if (activeLidInList == false){
+      } if (activeLidInList == false){
         selectedItemList.push(active_lid);
         document.getElementById(active_lid + "-checkbox").checked = true;
     }
@@ -912,7 +934,7 @@ function markedItems(item = null, typeInput) {
     }
   } 
   
-  // adds everything under section to selectedItems (if nothing selected beforehand)
+  // adds everything under section to selectedItems
   else {
     selectedItemList.push(active_lid);
     for (var j = 0; j < subItems.length; j++) {
@@ -926,8 +948,7 @@ function markedItems(item = null, typeInput) {
     document.querySelector('#hideElement').disabled = false;
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
-  }
-  if (selectedItemList.length == 0) {
+  } if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
     console.log('no element selected');
     document.querySelector('#hideElement').disabled = true;
@@ -971,6 +992,31 @@ function clearHideItemList() {
   selectedItemList = [];
 }
 
+// Finds code-duggas parent - used in markedItems() for unselection of section
+function recieveCodeParent(item){
+  var itemInSection = true;
+  var sectionStart = false;
+  const elements = document.querySelectorAll('#Sectionlist .item');
+
+  for (let i = elements.length - 1 ; i >= 0 ; i--){
+    const element = elements[i];
+    var tempItem = element.getAttribute('value');
+    //console.log('affected item: ' + tempItem);
+
+    if (itemInSection && sectionStart) {
+      var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+
+      // if section head, parent found.
+      if ((tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
+        itemInSection = false;
+        parent = tempItem;
+        return parent;
+      } 
+    } else if (tempItem == item){ 
+      sectionStart = true;
+    }
+  }
+}
 
 function closeSelect() {
 
