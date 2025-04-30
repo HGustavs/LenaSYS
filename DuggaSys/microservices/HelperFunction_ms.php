@@ -1,18 +1,20 @@
 <?php
-function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue) {
-    header("Content-Type: application/json");
+function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue = false) {
     //set url course path
     $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
     $ch = curl_init($url);
     //options for curl
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, $returnValue);
     curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($dataToSend));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $dataToSend);
 
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
-        echo json_encode(['error' => curl_error($ch)]);
+        $response = json_encode(['error' => curl_error($ch)]);
     }
     curl_close($ch);
     return $returnValue ? $response : null;
@@ -35,11 +37,9 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
 //Supposed to be used instead of includes
 
 function callMicroserviceGET($microservicePath){
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    //$baseURL = "http://localhost";
-
-    //The variable microservicePath will be used to locate the correct file
-    $url = $baseURL . $microservicePath;
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
+    $url = $baseURL . $path;
+  
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     $response = curl_exec($ch);

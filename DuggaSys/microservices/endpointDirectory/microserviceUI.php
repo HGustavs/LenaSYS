@@ -6,9 +6,18 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
 
+    // delete functionality
+    if (isset($_POST['deleteID'])) {
+        $id = $_POST['deleteID'];
+        $stmt = $db->prepare("DELETE FROM microservices WHERE id = ?");
+        $stmt->execute([$id]);
+        header("Location: ?");
+        exit();
+    }
+
     // search functionality safe from injections
     if (isset($_GET['search'])) {
-        $searchTerm = "%" . $_GET['search'] . "%";
+        $searchTerm = "%".$_GET['search']."%";
         $stmt = $db->prepare("SELECT * FROM microservices WHERE ms_name LIKE ? OR description LIKE ?");
         $stmt->execute([$searchTerm, $searchTerm]);
         $services = $stmt->fetchAll();
@@ -30,9 +39,8 @@ try {
     }
 
 } catch (PDOException $e) {
-    $dbError = "Database is not installed - instal it first!";
+    $dbError = "Database is not installed. Execute 'setupEndpointDirectory.php' to install it. ";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -185,10 +193,8 @@ try {
                     </form>
                 </div>
             </div>
-            <?php
-        }
-    }
-    ?>
+        <?php }
+    } ?>
 </body>
 
 </html>
