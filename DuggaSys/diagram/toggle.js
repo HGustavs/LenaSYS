@@ -528,3 +528,25 @@ function hideErrorCheck(show) {
         document.getElementById("errorCheckField").style.display = "none";
     }
 }
+/**
+ * @description Toggles the visibility of the diagram toolbar 
+ */
+
+function toggleToolbar(){
+    let toggleBtn = document.querySelector(".icon-wrapper");
+    let toolbar = document.getElementById("diagram-toolbar");
+    let chevronIcon = document.querySelector(".toggle-chevron");
+
+    let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
+    let toolbarActive = toolbar.classList.toggle("toolbar-active");
+
+    /*
+    * Determines wether to rotate the chevron icon if the toolbar and * toggleBtn is in a active state
+    */
+    if(ChevronActive && toolbarActive){
+        chevronIcon.style.transform = `rotate(180deg)`;
+    }
+    else{   
+        chevronIcon.style.transform = `rotate(0deg)`;
+    }
+}

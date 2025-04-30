@@ -7,6 +7,7 @@
 
 :root{
     --diagram-toolbar-height: 5rem;
+    --normal-transition: all 300ms ease-in-out;
 }
 @keyframes loadingSpin {
     0% {
@@ -309,6 +310,7 @@
         z-index: 10;
         bottom: 7%;
         left: calc(50% - 2%);
+        transition: var(--normal-transition);
     }
 
     .icon-wrapper.toolbar-active{
@@ -341,6 +343,7 @@
         overflow-x: auto;
         column-gap: .8rem;
         transform: translateY(var(--diagram-toolbar-height));
+        transition: var(--normal-transition);
     }
 
     #diagram-toolbar.toolbar-active{
@@ -357,10 +360,6 @@
 
     #zoom-container{
         left: 5% !important;
-    }
-
-    #rulerCorner{
-        z-index: 2 !important;
     }
 }
 
