@@ -439,7 +439,7 @@ function getLineAttributes(f, t, ctype) {
         fWidth *= zoomfact;
         fHeight *= zoomfact;
     }
-
+    
     const fx1 = f.cx - fWidth / 2;
     const fx2 = f.cx + fWidth / 2;
     const tx1 = t.cx - tWidth / 2;
@@ -474,18 +474,18 @@ function getLineAttributes(f, t, ctype) {
         case lineDirection.LEFT:
             offset.x1 = -px;
             offset.x2 = px * 2;
-            fx = fx1;
+            fx = f.x1;
             fy = f.cy;
-            tx = tx2;
+            tx = t.x2;
             ty = t.cy;
             break;
 
         case lineDirection.RIGHT:
             offset.x1 = px;
             offset.x2 = -px * 2;
-            fx = fx2;
+            fx = f.x2;
             fy = f.cy;
-            tx = tx1;
+            tx = t.x1;
             ty = t.cy;
             break;
     }
