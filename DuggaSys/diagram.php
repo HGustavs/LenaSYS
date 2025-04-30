@@ -110,7 +110,7 @@
                 <div id="mouseMode1" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
-                        <p>Click and drag to select multiple elements within the selected area</p><br>
+                        <p>Click and drag to select multiple elements within the selected area.</p><br>
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -145,7 +145,7 @@
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                    <p>Change to UML class</p>
+                                    <p>Change to UML class.</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
                                     <br>
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
@@ -154,7 +154,7 @@
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                    <p>Change to IE entity</p>
+                                    <p>Change to IE entity.</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
                                     <br>
@@ -164,7 +164,7 @@
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
-                                    <p>Change to state diagram state</p>
+                                    <p>Change to state diagram state.</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
                                     <br>
@@ -195,7 +195,7 @@
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
-                                    <p>Change to ER entity</p>
+                                    <p>Change to ER entity.</p>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
                                     <br>
@@ -213,7 +213,7 @@
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                    <p>Change to IE entity</p>
+                                    <p>Change to IE entity.</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
                                     <br>
@@ -223,7 +223,7 @@
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
-                                    <p>Change to state diagram state</p>
+                                    <p>Change to state diagram state.</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
                                     <br>
@@ -255,7 +255,7 @@
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
-                                    <p>Change to ER entity</p>
+                                    <p>Change to ER entity.</p>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
                                     <br>
@@ -265,7 +265,7 @@
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                    <p>Change to UML class</p>
+                                    <p>Change to UML class.</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
                                     <br>
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
@@ -283,7 +283,7 @@
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
-                                    <p>Change to state diagram state</p>
+                                    <p>Change to state diagram state.</p>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
                                     <p>Each state represents a unique status that a process can have.</p>
                                     <br>
@@ -315,7 +315,7 @@
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
-                                    <p>Change to ER entity</p>
+                                    <p>Change to ER entity.</p>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
                                     <p>The entity only holds the name of the object and if it depends on another object.</p>
                                     <br>
@@ -325,7 +325,7 @@
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
-                                    <p>Change to UML class</p>
+                                    <p>Change to UML class.</p>
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
                                     <br>
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
@@ -334,7 +334,7 @@
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
-                                    <p>Change to IE entity</p>
+                                    <p>Change to IE entity.</p>
                                     <p>Each entity represents an object along with its attributes.</p>
                                     <p>Each entity is represented by a table with a field that shows attributes.</p>
                                     <br>
@@ -392,7 +392,7 @@
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML Inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
-                                    <p>Change to UML inheritance</p>
+                                    <p>Change to UML inheritance.</p>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                     <br>
@@ -402,7 +402,7 @@
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
-                                    <p>Change to IE inheritance</p>
+                                    <p>Change to IE inheritance.</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                     <br>
@@ -434,7 +434,7 @@
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
-                                    <p>Change to ER relation</p>
+                                    <p>Change to ER relation.</p>
                                     <p>Represents how entities are associated with each other.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -452,7 +452,7 @@
                             <div class="IEButton placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
-                                    <p>Change to IE inheritance</p>
+                                    <p>Change to IE inheritance.</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                     <br>
@@ -493,7 +493,7 @@
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
-                                    <p>Change to ER relation</p>
+                                    <p>Change to ER relation.</p>
                                     <p>Represents how entities are associated with each other.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -502,7 +502,7 @@
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
-                                    <p>Change to UML inheritance</p>
+                                    <p>Change to UML inheritance.</p>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                     <br>
@@ -537,7 +537,7 @@
                          onmouseenter='hoverPlacementButton(2)'>
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>ER Attribute</b><br>
-                            <p>Add a ER attribute to the diagram</p>
+                            <p>Add a ER attribute to the diagram.</p>
                             <p>Each attribute represents different characteristics of an entity.</p>
                             <br>
                             <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -551,7 +551,7 @@
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
-                                    <p>Change to ER relation</p>
+                                    <p>Change to ER relation.</p>
                                     <p>Represents how entities are associated with each other.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -560,7 +560,7 @@
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
-                                    <p>Change to UML inheritance</p>
+                                    <p>Change to UML inheritance.</p>
                                     <p>A relation between a superclass and subclasses.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
                                     <br>
@@ -580,7 +580,7 @@
                             <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram</p>
+                                    <p>Add a ER attribute to the diagram.</p>
                                     <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
@@ -592,7 +592,7 @@
                 <div id="mouseMode3" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
-                        <p>Make a line between elements</p><br>
+                        <p>Make a line between elements.</p><br>
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -736,7 +736,7 @@
                          onmouseenter='hoverPlacementButton(12)'>
                          <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
-                            <p>Creates a lifeline for a sequnece diagram</p>
+                            <p>Creates a lifeline for a sequnece diagram.</p>
                             <p>Represents the passage of time.</p>
                             <p>This version is used for human users, external hardware or other subjects</p><br>
                             <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
@@ -935,7 +935,7 @@
                 <div id="elementPlacement15" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_note.svg"/>
                     <span class="toolTipText"><b>Note</b><br>
-                        <p>Creates a note</p><br>
+                        <p>Creates a note.</p><br>
                         <p id="tooltip-NOTE_ENTITY" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
@@ -945,7 +945,7 @@
             <div id="camtoOrigo" data-single="true" class="diagramIcons" onclick="centerCamera();">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 <span class="toolTipText"><b>Reset view</b><br>
-                    <p>Reset view to show all elements</p><br>
+                    <p>Reset view to show all elements.</p><br>
                     <p id="tooltip-CENTER_CAMERA" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -955,28 +955,28 @@
             <div id="diagramReset" data-single="true" class="diagramIcons" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
-                    <p>Reset diagram to default state</p><br>
+                    <p>Reset diagram to default state.</p><br>
                     <p id="tooltip-RESET_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepForwardToggle" data-single="true" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg" alt="Redo"/>
                 <span class="toolTipText"><b>Redo</b><br>
-                    <p>Redo last change</p><br>
+                    <p>Redo last change.</p><br>
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="stepBackToggle" data-single="true" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg" alt="Undo"/>
                 <span class="toolTipText"><b>Undo</b><br>
-                    <p>Undo last change</p><br>
+                    <p>Undo last change.</p><br>
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
             <div id="replayToggle" data-single="true" class="diagramIcons" onclick="toggleReplay()">
                 <img src="../Shared/icons/diagram_replay.svg" alt="Enter replay mode"/>
                 <span class="toolTipText"><b>Enter replay mode</b><br>
-                    <p>View history of changes made</p><br>
+                    <p>View history of changes made.</p><br>
                     <p id="tooltip-TOGGLE_REPLAY_MODE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -986,7 +986,7 @@
             <div id="erTableToggle" data-single="true" class="diagramIcons toolbarMode" onclick="toggleErTable()">
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
-                    <p>Click to toggle ER-Table in options</p><br>
+                    <p>Click to toggle ER-Table in options.</p><br>
                     <p id="tooltip-TOGGLE_ER_TABLE" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
@@ -996,7 +996,7 @@
             <div id="testCaseToggle" data-single="true" class="diagramIcons toolbarMode" onclick="toggleTestCase()"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
-                    <p>Click to toggle test-cases in options</p><br>
+                    <p>Click to toggle test-cases in options.</p><br>
                     <p id="tooltip-TOGGLE_TEST_CASE" class="key_tooltip">Keybinding: "CTRL + ALT + T"</p>
                 </span>
             </div>
@@ -1006,7 +1006,7 @@
             <div id="errorCheckToggle" data-single="true" class="diagramIcons" onclick="toggleErrorCheck()">
                 <img src="../Shared/icons/diagram_errorCheck.svg" alt="Toggle error check"/>
                 <span class="toolTipText"><b>Toggle error check</b><br>
-                    <p>Click to toggle error checking on/off</p>
+                    <p>Click to toggle error checking on/off.</p>
                     <p>Highlights errors inside a diagram.</p>
                     <br>
                     <p id="tooltip-TOGGLE_ERROR_CHECK" class="key_tooltip">Keybinding:</p>
@@ -1015,12 +1015,24 @@
         </fieldset>
         <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" data-single="true" class="diagramIcons" onclick="showSavePopout()">
+            <div id="localSave" class="diagramIcons" onclick="quickSaveDiagram()">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
-                    <p>Click to save current diagram</p>
+                    <p>Click to save current diagram.</p>
+                    <p id="toolTipExtra">(Saves diagram to the last saved file. If no file has been saved to yet, it prompts to create new one.)</p>
                     <br>
-                    <p id="tooltip-SAVE_DIAGRAM" class="key_tooltip">Keybinding: "CTRL + S"</p>
+                    <p id="tooltip-SAVE_DIAGRAM" class="key_tooltip">Keybinding:</p>
+                </span>
+            </div>
+        </fieldset>
+        <fieldset id="localSaveAsField" class="disabledIcon">
+            <legend aria-hidden="true">Save As</legend>
+            <div id="localSaveAs" class="diagramIcons" onclick="showSavePopout()">
+                <img src="../Shared/icons/diagram_save_as_icon.svg" alt="Save diagram as"/>
+                <span class="toolTipText"><b>Save current diagram to file</b><br>
+                    <p>Click to save current diagram <br> to a specific file.</p>
+                    <br>
+                    <p id="tooltip-SAVE_DIAGRAM_AS" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -1029,9 +1041,9 @@
             <div id="localLoad" data-single="true" class="diagramIcons" onclick="showModal();">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
-                    <p>Click to load a diagram</p>
+                    <p>Click to load a diagram.</p>
                     <br>
-                    <p id="tooltip-LOAD_DIAGRAM" class="key_tooltip">Keybinding: "CTRL + L"</p>
+                    <p id="tooltip-LOAD_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
         </fieldset>
@@ -1051,7 +1063,7 @@
         <div class="formBox">
             <div class="formBoxHeader">
                 <h3>
-                    Filename already exists
+                    Filename already exists!
                 </h3>
                 <div class="cursorPointer" onclick="closeOverridePopout()">
                     x
@@ -1231,7 +1243,7 @@
         <div class="formBox">
             <div class="formBoxHeader">
                 <h3>
-                    Save current diagram as
+                    Save current diagram as:
                 </h3>
                 <div class="cursorPointer" onclick="hideSavePopout()">
                     x
@@ -1243,7 +1255,7 @@
                     <input class="textinput" type="text" id="saveDiagramAs" placeholder="Untitled" value='' autocomplete="off"/>
                 </div>
                 <div class="button-row">
-                    <input type="submit" class="submit-button" onclick="saveDiagramAs(); hideSavePopout();" value="Save"/>
+                    <input type="submit" class="submit-button" onclick="saveDiagramAs(getCurrentFileName()); hideSavePopout();" value="Save"/>
                 </div>
             </div>
         </div>

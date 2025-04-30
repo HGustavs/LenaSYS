@@ -599,7 +599,7 @@ document.addEventListener('keydown', function (e) {
         if (document.getElementById("lineLabel")) {
             changeLineProperties();
         } else if (document.activeElement.id == "saveDiagramAs") {
-            saveDiagramAs();
+            saveDiagramAs(getCurrentFileName());
             hideSavePopout();
         } else {
             let propField = document.getElementById("elementProperty_name");
@@ -735,6 +735,11 @@ document.addEventListener('keydown', function (e) {
 
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) {
         e.preventDefault();
+        quickSaveDiagram();
+    }
+
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) {
+        e.preventDefault();
         showSavePopout();
     }
 
@@ -842,7 +847,8 @@ document.addEventListener('keyup', function (e) {
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)) centerCamera();
     if (isKeybindValid(e, keybinds.TOGGLE_REPLAY_MODE)) toggleReplay();
     if (isKeybindValid(e, keybinds.TOGGLE_ER_TABLE)) toggleErTable();
-    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) showSavePopout();
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) quickSaveDiagram();
+    if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) showSavePopout();
     if (isKeybindValid(e, keybinds.RESET_DIAGRAM)) resetDiagramAlert();
     if (isKeybindValid(e, keybinds.TOGGLE_TEST_CASE)) toggleTestCase();
 
@@ -1804,6 +1810,11 @@ function generateToolTips() {
             let str = "Keybinding: ";
 
             if (keybinds[id].ctrl) str += "CTRL + ";
+
+            if (keybinds[id].shift) str += "SHIFT + ";
+
+            if (keybinds[id].alt) str += "ALT + ";
+
             str += '"' + keybinds[id].key.toUpperCase() + '"';
 
             element.innerHTML = str;
@@ -1896,7 +1907,7 @@ function storeDiagramInLocalStorage(key) {
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
-        displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
+        displayMessage(messageTypes.SUCCESS, "Diagram saved! (File saved to: " + key + ")");
     }
 }
 
@@ -2192,8 +2203,10 @@ function saveDiagramBeforeUnload() {
 function disableIfDataEmpty() {
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         document.getElementById('localSaveField').classList.add('disabledIcon');
+        document.getElementById('localSaveAsField').classList.add('disabledIcon');
     } else {
         document.getElementById('localSaveField').classList.remove('disabledIcon');
+        document.getElementById('localSaveAsField').classList.remove('disabledIcon');
     }
 }
 
@@ -2218,19 +2231,30 @@ function closeOverridePopout() {
     $("#overrideContainer").css("display", "none");
 }
 
-//get the current file name that the user wants to use for saving to local storage.
+//Variable for checking if there's a file that has been saved to already. Used for quicksaving.
+let activeFile = null;
+
+//Get the current file name that the user wants to use for saving to local storage. Also stores that current file to the activefile variable.
 function getCurrentFileName() {
     let fileName = document.getElementById("saveDiagramAs");
+    activeFile = fileName.value;
     return fileName.value;
 }
 
-function saveDiagramAs() {
-    let elem = document.getElementById("saveDiagramAs");
-    if (!elem) {
-        return;
+//Function for quicksaving, checks if there's an active file
+function quickSaveDiagram() {
+    if (activeFile == null) {
+        showSavePopout();
+    } else {
+        storeDiagramInLocalStorage(activeFile);
     }
-    let fileName = elem.value;
+}
 
+//Checks
+function saveDiagramAs(input) {
+
+    //Code for getting date and time. Not used anymore but kept in in case it should be needed elsewhere.
+    /*
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1) < 10 ? `0${currentDate.getMonth() + 1}` : currentDate.getMonth() + 1; // Note: January is month 0
@@ -2239,12 +2263,7 @@ function saveDiagramAs() {
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
     const formattedDate = year + "-" + month + "-" + day + " ";
-    const formattedTime = hours + ":" + minutes + ":" + seconds;
-
-    // Assigns date/time as name if file name is left empty
-    if (fileName.trim() === "") {
-        fileName = "diagram " + formattedDate + formattedTime;
-    }
+    const formattedTime = hours + ":" + minutes + ":" + seconds;*/
 
     let names = [];
     let localDiagrams;
@@ -2263,14 +2282,14 @@ function saveDiagramAs() {
 
     // Check if diagram name is unique
     for (let i = 0; i < names.length; i++) {
-        if (names[i] == fileName) {
+        if (names[i] == input) {
             hideSavePopout();
             showOverridePopout();
             return;
         }
     }
 
-    storeDiagramInLocalStorage(fileName);
+    storeDiagramInLocalStorage(input);
 }
 
 function loadDiagramFromString(temp, shouldDisplayMessage = true) {
@@ -2332,6 +2351,10 @@ function removeLocalDiagram(item) {
 
     if (item !== 'latestChange') {
         delete localDiagrams[item];
+        //Resets activeFile to null if the item deleted was the file currently saved to.
+        if (item == activeFile){
+            activeFile = null;
+        }
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
         showModal(); // Refresh the modal after deletion
     } else {
