@@ -24,6 +24,7 @@ class Element {
             functions = null,
             altOrLoop = null,
             alternatives = null,
+            stereotype = null,
         } = {}
     ) {
         this.name = name;
@@ -44,6 +45,7 @@ class Element {
         this.primaryKey = primaryKey;
         this.altOrLoop = altOrLoop;
         this.alternatives = alternatives;
+        this.stereotype = stereotype;
     }
     static Default(type) {
         return new Element(defaults[Object.keys(elementTypes).find(key => elementTypes[key] === type)]);
@@ -108,7 +110,8 @@ class Element {
         return {
             attributes: element.attributes,
             functions: element.functions,
-            name: element.name
+            name: element.name,
+            stereotype: element.stereotype,
         }
     }
 }

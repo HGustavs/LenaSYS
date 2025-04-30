@@ -42,7 +42,7 @@
 - Copy elements or lines = CTRL + ”C”
 - Paste elements or lines = CTRL + ”V”
 - Mark all elements and lines = CTRL + ”A”
-- Toggle keybindlist - ”F1”
+- Toggle keybindlist - ”F1 + CTRL”
 
 
 ## ER-Table

@@ -63,13 +63,7 @@ Below you have to add an entry for the new template. Lets say the name of the ne
 
 # codeviewer.js
 
-## maximizeBoxes:
-
-**For creating new template:**
-Locate the function: maximizeBoxes. This function makes boxes able to be maximized quickly by pressing a button. To add this function to the new template scroll down to the bottom of the function and add an if statement for the new template. If your templates name is template12 its templateid == 12. Now try to find a template with the same amount of boxes in this function and start out by trying something similar. You might have to align the boxes with a different function or order depending on the layout of your template.
-
 ## resizeBoxes:
-
 
 **For creating new template:**
 Look at the function resizeBoxes. And find an entry with the same amount of boxes as the new template. Lets say we have a new template with 3 boxes. Then you would start out by copy and pasting an already existing entry that also has 3 boxes. For this example we copy the entry for template 6 but change the templateid to look for the new end number for the new template. So for template12:
