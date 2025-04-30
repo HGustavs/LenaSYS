@@ -135,7 +135,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
-
+        updateLatestChange()
     }
 
     /**
@@ -426,8 +426,6 @@ function getData() {
     document.getElementById("container").addEventListener("mouseup", mup);
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    document.getElementById("container").addEventListener("touchmove", tmoving, { passive: false });
-    document.getElementById("container").addEventListener("touchstart", tstart, { passive: false });
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -441,6 +439,7 @@ function getData() {
     generateKeybindList();
     //setPreviewValues();
     saveDiagramBeforeUnload();
+    setupTouchAsMouseSupport();
 
     // Setup and show only the first element of each PlacementType, hide the others in dropdown
     // SHOULD BE CHANGED LATER
@@ -580,18 +579,6 @@ elements.forEach(element => {
         maxNum = num;
     }
 });
-
-for (let i = 0; i <= maxNum; i++) {
-    let element = document.getElementById("elementPlacement" + i);
-    if (element) {
-        // Add event listener for click
-        element.addEventListener("mousedown", function (event) {
-            if (event.button === 2) {
-                rightClickOpenSubtoolbar(i);
-            }
-        });
-    }
-}
 
 document.addEventListener('contextmenu', event => {
     event.preventDefault();
@@ -915,47 +902,114 @@ document.addEventListener("mouseout", function (event) {
 // --------------------------------------- Touch Events    --------------------------------
 
 /**
- * @description Event function triggered when touch is registered on top of the container.
- * @param {TouchEvent} event Triggered touch event.
+ * @description Event function triggered when touch is registered on top of the container and converts it to a mouseEvent.
+ * @param {TouchEvent} touchEvent The original touch event to convert to mouse event.
+ * @param {string} [type="mousedown"] This is the mouse event type to simulate.
+ * @returns {MouseEvent} A synthetic MouseEvent object that mimics the touch event.
  */
 
-function tstart(event) {
-    // Only responds to single-finger touch
-    if (event.touches.length === 1) {
-        // Set the internal state to make the app know that user is dragging the container
-        pointerState = pointerStates.CLICKED_CONTAINER;
-        // Set initial touch position and saves the scroll offset
-        startX = event.touches[0].clientX;
-        startY = event.touches[0].clientY;
-        sscrollx = scrollx;
-        sscrolly = scrolly;
-    }
+function convertTouchToMouse(touchEvent, type = "mousedown") {
+    // Get the first changed touch point
+    const touch = touchEvent.changedTouches[0];
+
+    // Create a synthetic mouse event using the touch coordinates
+    const mouseEvent = new MouseEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        button: 0,
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+    });
+
+    // Prevents scrolling in browser when panning the canvas
+    touchEvent.preventDefault();
+
+    // Returns the synthesized mouse event
+    return mouseEvent;
 }
 
-function tmoving(event) {
-    // Prevents scrolling in browser when panning the canvas
-    event.preventDefault();
+// Variables to track pinch-zooming state
+let initialPinchDistance = null;
+let lastPinchZoomTime = 0;
 
-    // Caches if more than one finger is used (Prevents interfering with pinch-gestures).
-    if (event.touches.length != 1) return;
+// Constants to control pinch-zoom sensitivity
+const pinchZoomThreshold = 5; // Minimum px difference to trigger zoom
+const pinchZoomCooldown = 100; // Minimum ms between pinch zooms
 
-    const touch = event.touches[0];
-    lastMousePos = new Point(touch.clientX, touch.clientY);
+// Sets up touch support that simulates mouse events
+function setupTouchAsMouseSupport() {
+    const container = document.getElementById("container");
 
-    // Calculates how far the user has dragged the finger if the finger has moved
-    if (pointerState === pointerStates.CLICKED_CONTAINER) {
-        movingContainer = true;
-        deltaX = startX - touch.clientX;
-        deltaY = startY - touch.clientY;
-        scrollx = sscrollx - Math.round(deltaX * zoomfact);
-        scrolly = sscrolly - Math.round(deltaY * zoomfact);
+    // Handle touchstart: either simulates mousedown or prepare for pinch-zoom
+    container.addEventListener("touchstart", function (event) {
+        if (event.touches.length === 1) {
+            // Single touch, simulates a mouse down event
+            const mouseEvent = convertTouchToMouse(event, "mousedown");
+            container.dispatchEvent(mouseEvent);
+        } else if (event.touches.length === 2) {
+            // Two fingers, start measuring pinch distance
+            const dx = event.touches[0].clientX - event.touches[1].clientX;
+            const dy = event.touches[0].clientY - event.touches[1].clientY;
+            initialPinchDistance = Math.hypot(dx, dy);
+        }
+    }, { passive: false });
 
-        //Refreshes all the visuals
-        updateGridPos();
-        updateA4Pos();
-        updatepos();
-        drawRulerBars(scrollx, scrolly);
-        calculateDeltaExceeded();
+    // Handle touchmove: either simulate mousemove or process pinch-zoom
+    container.addEventListener("touchmove", function (event) {
+        event.preventDefault();
+        if (event.touches.length === 1) {
+            // Singel touch, simulate mouse move event
+            const mouseEvent = convertTouchToMouse(event, "mousemove");
+            container.dispatchEvent(mouseEvent);
+        } else if (event.touches.length === 2 && initialPinchDistance !== null){
+            // Two fingers, handle pinch-zoom
+            handlePinchZoom(event);
+        }
+    }, { passive: false });
+
+    // Handle touchend: simulate mouseup and reset pinch state
+    container.addEventListener("touchend", function (event) {
+        if (event.touches.length === 0) {
+            // No touches left, simulate mouse up event
+            const mouseEvent = convertTouchToMouse(event, "mouseup");
+            container.dispatchEvent(mouseEvent);
+            initialPinchDistance = null;
+        }
+    }, { passive: false });
+}
+
+/**
+ * @description Handels pinch-zoom gesture detection and triggers zoom-in or zoom-out actions.
+ * @param {TouchEvent} event The current touch event containing two active touch points.
+ */
+
+function handlePinchZoom(event) {
+    // Calculate the current distance between two fingers
+    const dx = event.touches[0].clientX - event.touches[1].clientX;
+    const dy = event.touches[0].clientY - event.touches[1].clientY;
+    const newDistance = Math.hypot(dx, dy);
+
+    // Save the current time to check if enough time has passed to trigger a new pinch-zoom
+    const now = Date.now();
+
+    // Check if distance change is bigger than threshold and if enough time has passed since last zoom event
+    if (Math.abs(newDistance - initialPinchDistance) > pinchZoomThreshold && now - lastPinchZoomTime > pinchZoomCooldown) {
+        // Calculate the midpoint between two fingers
+        const zoomCenter = {
+            clientX: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+            clientY: (event.touches[0].clientY + event.touches[1].clientY) / 2
+        };
+
+        if (newDistance > initialPinchDistance) {
+            zoomin(zoomCenter);
+        } else {
+            zoomout(zoomCenter);
+        }
+
+        // Update the last zoom time and reference distance
+        lastPinchZoomTime = now;
+        initialPinchDistance = newDistance;
     }
 }
 
@@ -1398,6 +1452,7 @@ function saveProperties() {
         }
         addToLine("primaryKey", "*");
         addToLine("attributes", "-");
+        addToLine("stereotype", "");
         addToLine("functions", "+");
     }
     stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
@@ -1684,34 +1739,54 @@ function setElementPlacementType(type = elementTypes.EREntity) {
 }
 
 /**
- * @description Function to open a subtoolbar when pressing down on a button for a certan period of time
+ * @description Variable to hold current subtoolbar
+ * USED LOCALLY
+ */
+let currentlyOpenSubmenu = null;
+
+/**
+ * @description Function to open a subtoolbar when hovering over a button
  * USED IN PHP
  */
-function holdPlacementButtonDown(num) {
-    mousePressed = true;
-    if (document.getElementById("togglePlacementTypeBox" + num).classList.contains("activeTogglePlacementTypeBox")) {
-        mousePressed = false;
-        togglePlacementTypeBox(num);
+function hoverPlacementButton(index) {
+    // First, hide the old submenu if a new button is hovered
+    if (currentlyOpenSubmenu !== null && currentlyOpenSubmenu !== index) {
+        hidePlacementType();
     }
-    setTimeout(() => {
-        if (!!mousePressed) {
-            togglePlacementTypeBox(num);
-        }
-    }, 500);
+
+    let submenu = document.getElementById(`togglePlacementTypeBox${index}`);
+    if (submenu) {
+        submenu.classList.add("activeTogglePlacementTypeBox");
+        currentlyOpenSubmenu = index;
+    } else {
+        currentlyOpenSubmenu = null;
+    }
 }
 
 /**
- * @description Function to open a subtoolbar when rightclicking a button
- */
-function rightClickOpenSubtoolbar(num) {
-    togglePlacementTypeBox(num);
+ * @description Function to hide submenu
+ * USED IN PHP
+ */ 
+function hidePlacementType() {
+    if (currentlyOpenSubmenu !== null) {
+        let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
+        if (submenu){
+            submenu.classList.remove("activeTogglePlacementTypeBox"); // Hide submenu
+        }             
+        currentlyOpenSubmenu = null;
+    }
+}
+
+// Modified original function to work with hovering and also handle pressing if needed
+function holdPlacementButtonDown(num) {
+    mousePressed = true;
 }
 
 /**
  * @description resets the mousepress.
  * USED IN PHP
  */
-function holdPlacementButtonUp() {
+function holdPlacementButtonUp(num) {
     mousePressed = false;
 }
 
@@ -1807,9 +1882,9 @@ function storeDiagramInLocalStorage(key) {
             initialState: stateMachine.initialState
         };
 
-        // Sets the autosave diagram first, if it is not already set.
+        // Sets the latestChange diagram first, if it is not already set.
         if (!localStorage.getItem("diagrams")) {
-            let s = `{"AutoSave": ${JSON.stringify(objToSave)}}`;
+            let s = `{"latestChange": ${JSON.stringify(objToSave)}}`;
             localStorage.setItem("diagrams", s);
         }
         // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
@@ -1823,6 +1898,24 @@ function storeDiagramInLocalStorage(key) {
 
         displayMessage(messageTypes.SUCCESS, "You have saved the current diagram");
     }
+}
+
+//Moastly the same as storeDiagramInLocalStorage
+//Uppdates the latestChange to always be in the latest state
+function updateLatestChange() {
+    if (stateMachine.currentHistoryIndex === -1){
+       return; 
+    }
+    stateMachine.removeFutureStates();
+  
+    const objToSave = {
+        historyLog: stateMachine.historyLog,
+        initialState: stateMachine.initialState
+    };
+    const jsonData = localStorage.getItem("diagrams") || "{}";
+    const diagrams = JSON.parse(jsonData);
+    diagrams.latestChange = objToSave;
+    localStorage.setItem("diagrams", JSON.stringify(diagrams));
 }
 
 /**
@@ -2039,7 +2132,7 @@ function showModal() {
             wrapper.style.display = "flex";
             btn.style.width = '100%';
 
-            if (btnText.textContent !== 'AutoSave') { // Only show delete button if not AutoSave
+            if (btnText.textContent !== 'latestChange') { // Only show delete button if not latestChange
                 let delBtn = document.createElement('button');
                 delBtn.classList.add('deleteLocalDiagram');
                 delBtn.setAttribute("onclick", `removeLocalDiagram('${diagramKeys[i]}');showModal();`);
@@ -2049,8 +2142,8 @@ function showModal() {
             container.appendChild(wrapper);
         }
 
-        // Update label count, exclude AutoSave from count
-        const filteredKeys = diagramKeys.filter(key => key !== 'AutoSave'); // Exclude 'AutoSave'
+        // Update label count, exclude latestChange from count
+        const filteredKeys = diagramKeys.filter(key => key !== 'latestChange'); // Exclude 'latestChange'
         document.getElementById('loadCounter').innerHTML = filteredKeys.length; // Set the label count
     }
 
@@ -2091,7 +2184,7 @@ function loadDiagramFromLocalStorage(key) {
 function saveDiagramBeforeUnload() {
     if (data.length) {
         window.addEventListener("beforeunload", (e) => {
-            storeDiagramInLocalStorage("AutoSave");
+            storeDiagramInLocalStorage("latestChange");
         })
     }
 }
@@ -2237,20 +2330,20 @@ function removeLocalDiagram(item) {
     local = (local[0] == "{") ? local : `{${local}}`;
     let localDiagrams = JSON.parse(local);
 
-    if (item !== 'AutoSave') {
+    if (item !== 'latestChange') {
         delete localDiagrams[item];
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
         showModal(); // Refresh the modal after deletion
     } else {
-        displayMessage(messageTypes.ERROR, "Error, unable to delete 'AutoSave'"); // Prevent deleting AutoSave
+        displayMessage(messageTypes.ERROR, "Error, unable to delete 'latestChange'"); // Prevent deleting latestChange
     }
 
-    // After deletion, update the counter again, excluding 'AutoSave'
+    // After deletion, update the counter again, excluding 'latestChange'
     let updatedLocal = localStorage.getItem("diagrams");
     if (updatedLocal) {
         updatedLocal = (updatedLocal[0] == "{") ? updatedLocal : `{${updatedLocal}}`;
         let updatedDiagrams = JSON.parse(updatedLocal);
-        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'AutoSave');
+        const updatedKeys = Object.keys(updatedDiagrams).filter(key => key !== 'latestChange');
         document.getElementById('loadCounter').innerHTML = updatedKeys.length; // Update the counter
     }
 }

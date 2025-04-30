@@ -459,7 +459,7 @@
     top: -43px;
 }
 
-.diagramIcons:hover .toolTipText {
+.diagramIcons[data-single="true"]:hover .toolTipText {
     visibility: visible;
     transition-delay: 700ms;
 }
@@ -517,6 +517,7 @@
 
 #options-pane-button:hover .toolTipText {
     visibility: visible;
+    transition-delay: 700ms;
 }
 
 #fab .toolTipText {

@@ -4,7 +4,10 @@
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
 function drawLine(line, targetGhost = false) {
-    let str = "";
+
+    let lineStr = ""; // only the lines, polylines, arrows etc
+    let labelStr = ""; // labels and label backgrounds
+
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     let telem;
@@ -15,7 +18,7 @@ function drawLine(line, targetGhost = false) {
         telem = data[findIndex(data, line.toID)];
         isCurrentlyDrawing = false;
     }
-    if (!felem || !telem) return;
+    if (!felem || !telem) return { lineStr: "", labelStr: "" };
     line.type = (telem.type == entityType.note) ? telem.type : felem.type;
     let strokeDash = (line.kind == lineKind.DASHED || line.type == entityType.note) ? "10" : "0";
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
@@ -69,9 +72,9 @@ function drawLine(line, targetGhost = false) {
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
-        [fx, fy, tx, ty] = recursiveERRelation(felem, telem, line);
+        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype);
         if (line.kind == lineKind.NORMAL) {
-            str += `<line 
+            lineStr += `<line 
                         id='${line.id}' 
                         x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
                         x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
@@ -95,12 +98,12 @@ function drawLine(line, targetGhost = false) {
                 
                 />`;
             };
-            str += double(1, 1);
-            str += double(-1, 2);
+            lineStr += double(1, 1);
+            lineStr += double(-1, 2);
         }
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.kind == lineKind.RECURSIVE) {
-            str += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
+            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
 
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             //UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
@@ -144,7 +147,7 @@ function drawLine(line, targetGhost = false) {
 
         }
 
-        str += `<line 
+        lineStr += `<line 
                     id='${line.id}' 
                     x1='${fx + offset.x1 * zoomfact}' 
                     y1='${fy + offset.y1 * zoomfact}' 
@@ -155,10 +158,9 @@ function drawLine(line, targetGhost = false) {
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
             str += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
-
         }
         else {
-            str += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+            lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
 
     }
@@ -174,12 +176,12 @@ function drawLine(line, targetGhost = false) {
         //Same values for UML and IE as they use the same icons, just different element values.
         if(line.type !== entityType.SD || line.type !== entityType.SE){
             line.ctype = lineDirection.UP;  //So arrows point down
-            str += drawLineIcon(line.startIcon, line.ctype, startX, startY, lineColor, line);
-            str += drawLineIcon(line.endIcon, line.ctype, (startX + length), startY, lineColor, line);
+            lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY, lineColor, line);
+            lineStr += drawLineIcon(line.endIcon, line.ctype, (startX + length), startY, lineColor, line);
         }
     }else {
-        str += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
-        str += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
+        lineStr += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
+        lineStr += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
     }
     // Always allow arrowheads to render if icon is ARROW
     // If the line is SEGMENTED (has 90-degree bends), draw a fixed arrowhead with iconPoly.
@@ -191,9 +193,9 @@ function drawLine(line, targetGhost = false) {
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
             if (line.innerType === SDLineType.SEGMENT) {
-                str += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
+                lineStr += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
             } else {
-                str += drawArrowPoint(
+                lineStr += drawArrowPoint(
                     calculateArrowBase(to, from, 10 * zoomfact),
                     from,
                     lineColor,
@@ -206,9 +208,9 @@ function drawLine(line, targetGhost = false) {
         if (line.endIcon === SDLineIcons.ARROW) {
             const reverseCtype = line.ctype.split('').reverse().join('');
             if (line.innerType === SDLineType.SEGMENT) {
-                str += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
+                lineStr += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
             } else {
-                str += drawArrowPoint(
+                lineStr += drawArrowPoint(
                     calculateArrowBase(from, to, 10 * zoomfact),
                     to,
                     lineColor,
@@ -223,21 +225,21 @@ function drawLine(line, targetGhost = false) {
         if (line.startLabel && line.startLabel != '') {
             const fxCardinality = fx + offset.x1;
             const fyCardinality = fy + offset.y1;
-            str += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem);
+            labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem);
         }
         if (line.endLabel && line.endLabel != '') {
             const txCardinality = tx + offset.x1;
             const tyCardinality = ty + offset.y2;
-            str += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem);
+            labelStr += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem);
         }
     } else {
         if (line.cardinality) {
-            str += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
+            labelStr += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
         
     if (isSelected) {
-        str += `<rect 
+        labelStr += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
                     y='${((fy + ty) / 2) - (2 * zoomfact)}' 
                     width='${4 * zoomfact}' 
@@ -321,7 +323,7 @@ function drawLine(line, targetGhost = false) {
             let startX = felem.x1 + elementLength - length;
             let startY = felem.y1  - lift;
 
-            str += `<rect
+            labelStr += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
                         x='${((startX)) - textWidth / 2}'
@@ -329,7 +331,7 @@ function drawLine(line, targetGhost = false) {
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact}'
                     />`;
-            str += `<text
+            labelStr += `<text
                         class='cardinalityLabelText'
                         dominant-baseline='middle'
                         text-anchor='middle'
@@ -340,7 +342,7 @@ function drawLine(line, targetGhost = false) {
                     </text>`;
         } else {
             // For non-recursive lines
-            str += `<rect
+            labelStr += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
                         x='${rectPosX}'
@@ -348,7 +350,7 @@ function drawLine(line, targetGhost = false) {
                         width='${(textWidth + zoomfact * 4)}'
                         height='${textheight * zoomfact + zoomfact * 3}'
                     />`;
-            str += ` <text
+            labelStr += ` <text
                         class='cardinalityLabelText'
                         dominant-baseline='middle'
                         text-anchor='middle'
@@ -359,7 +361,7 @@ function drawLine(line, targetGhost = false) {
                     </text>`;
         }
     }
-    return str;
+    return { lineStr, labelStr };
 }
 
 /**
@@ -447,29 +449,62 @@ function getLineAttributes(f, t, ctype) {
     const ty2 = t.cy + tHeight / 2;
 
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
+    let fx, fy, tx, ty;
 
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
-            return [f.cx, fy1, t.cx, ty2, offset];
+            fx = f.cx;
+            fy = fy1;
+            tx = t.cx;
+            ty = ty2;
+            break;
 
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
-            return [f.cx, fy2, t.cx, ty1, offset];
+            fx = f.cx;
+            fy = fy2;
+            tx = t.cx;
+            ty = ty1;
+            break;
 
         case lineDirection.LEFT:
             offset.x1 = -px;
             offset.x2 = px * 2;
-            return [fx1, f.cy, tx2, t.cy, offset];
+            fx = fx1;
+            fy = f.cy;
+            tx = tx2;
+            ty = t.cy;
+            break;
 
         case lineDirection.RIGHT:
             offset.x1 = px;
             offset.x2 = -px * 2;
-            return [fx2, f.cy, tx1, t.cy, offset];
+            fx = fx2;
+            fy = f.cy;
+            tx = tx1;
+            ty = t.cy;
+            break;
     }
+
+    
+    if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation) {
+        const shrink = 8 * zoomfact; 
+
+        if (ctype === lineDirection.LEFT || ctype === lineDirection.RIGHT) {
+            offset.x1 += (ctype === lineDirection.LEFT ? shrink : -shrink);
+            offset.x2 += (ctype === lineDirection.LEFT ? -shrink : shrink);
+        } else {
+            offset.y1 += (ctype === lineDirection.UP ? shrink : -shrink);
+            offset.y2 += (ctype === lineDirection.UP ? -shrink : shrink);
+        }
+    }
+
+    return [fx, fy, tx, ty, offset];
 }
+
 
 
 /**
@@ -933,7 +968,8 @@ function drawArrowPoint(base, point, lineColor, strokeWidth) {
  * @returns String containing all the new lines-elements
  */
 function redrawArrows() {
-    let str = '';
+    let linesStr = "";
+    let labelsStr = "";
     // Clear all lines and update with dom object dimensions
     for (let i = 0; i < data.length; i++) {
         clearLinesForElement(data[i]);
@@ -956,16 +992,20 @@ function redrawArrows() {
     }
     // Draw each line using sorted line ends when applicable
     for (let i = 0; i < lines.length; i++) {
-        str += drawLine(lines[i]);
+        const { lineStr, labelStr } = drawLine(lines[i]);
+        linesStr += lineStr;
+        labelsStr += labelStr;
     }
     if (ghostLine && ghostElement) {
-        str += drawLine(ghostLine, true);
+        const { lineStr, labelStr } = drawLine(ghostLine, true);
+        linesStr += lineStr;
+        labelsStr += labelStr;
     }
     // Remove all neighbour maps from elements
     for (let i = 0; i < data.length; i++) {
         delete data[i].neighbours;
     }
-    return str;
+    return linesStr + labelsStr;
 }
 
 /**
