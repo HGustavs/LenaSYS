@@ -96,6 +96,11 @@
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
+    <!-- The chevron/arrows used for toggling the diagram-toolbar-->
+    <div class="icon-wrapper">
+        <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
+    </div>
+
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar">
         <fieldset>

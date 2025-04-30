@@ -1,3 +1,9 @@
+/*
+    Great for debugging and searching for causing overflows, uncomment it when using it and comment when it is not of use. 
+*/
+/* *{
+    outline: 2px solid lightgreen;
+} */
 @keyframes loadingSpin {
     0% {
         rotate: 0deg;
