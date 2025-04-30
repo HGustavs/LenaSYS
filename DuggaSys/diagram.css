@@ -301,6 +301,10 @@
 @media (max-width: 414px){
     .icon-wrapper{
         display: block !important;
+        position: fixed;
+        z-index: 10;
+        bottom: 7%;
+        left: calc(50% - 2%);
     }
 
     #diagram-replay-box{
@@ -313,6 +317,29 @@
 
     #rulerOverlay{
         position: fixed !important;
+    }
+
+    #diagram-toolbar{
+        position: fixed !important;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5rem !important; /*Remember - Do it to an variable*/
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        overflow-y: hidden;
+        overflow-x: auto;
+        transform: translateY(100px);
+    }
+
+    #zoom-container{
+        left: 5% !important;
+    }
+
+    #rulerCorner{
+        z-index: 2 !important;
     }
 }
 
@@ -1036,4 +1063,12 @@
 ****************/
 .icon-wrapper{
     display: none;
+}
+
+.toggle-chevron{
+    font-size: 1.4rem;
+    background-color: var(--color-background-2);
+    padding: .3rem;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
 }
