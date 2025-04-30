@@ -7,6 +7,8 @@
 date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 
+
+
 header("Content-Type: application/json");
 
 // Connect to database
@@ -35,4 +37,5 @@ if ($query->execute()) {
 } else {
     $error = $query->errorInfo();
     echo json_encode(["status" => "error", "message" => $error[2]]);
+
 }

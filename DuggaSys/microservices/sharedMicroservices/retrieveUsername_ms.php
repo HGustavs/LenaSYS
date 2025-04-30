@@ -1,23 +1,31 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 // This microservice is used to retrieve a username from a specific userid (uid) 
 
 include_once "./getUid_ms.php";
+include_once "../../../Shared/basic.php"; // Ger tillgång till $pdo och checklogin()
 
-function retrieveUsername($pdo)
-{
-	date_default_timezone_set("Europe/Stockholm");
+pdoConnect(); // ← För initialize $pdo
 
-	$userid = getUid();
+header('Content-Type: application/json'); // Viktigt för JSON-standard
 
-	$query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
-	$query->bindParam(':uid', $userid);
-	$query->execute();
+date_default_timezone_set("Europe/Stockholm");
 
-	if (checklogin() == true) {
-		while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-			$username = $row['username'];
-		}
-	}
+$userid = getUid();  // Hämtar inloggad användares UID (från session eller token)
 
-	return $username;
+$username = "unknown";
+
+if (checklogin() === true) {
+    $query = $pdo->prepare("SELECT username FROM user WHERE uid = :uid");
+    $query->bindParam(':uid', $userid);
+    $query->execute();
+
+    $row = $query->fetch(PDO::FETCH_ASSOC);
+    if ($row && isset($row['username'])) {
+        $username = $row['username'];
+    }
 }
+
+echo json_encode(['username' => $username]);  // Skickar tillbaka som JSON

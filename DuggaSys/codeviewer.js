@@ -3986,6 +3986,7 @@ function resizeBoxes(parent, templateId)
 					else{
 						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
 						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
+
 					}
 				}
 				else if (document.getElementById("box5wrapper").offsetHeight <= document.getElementById(parent).offsetHeight * 0.15 && resizeAmount < 0) {
@@ -4020,6 +4021,7 @@ function resizeBoxes(parent, templateId)
 			},
 			maxHeight: (document.getElementById(parent).offsetHeight * 0.55),
 			minHeight: (document.getElementById(parent).offsetHeight * 0.15),
+
 			handles:"s",
 			containment: parent
 		});
