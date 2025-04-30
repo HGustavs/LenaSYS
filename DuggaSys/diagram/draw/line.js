@@ -158,7 +158,7 @@ function drawLine(line, targetGhost = false) {
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
-            str += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
+            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
         }
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
@@ -191,6 +191,22 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
+        const lineLength = 40 * zoomfact; 
+        const elementLength = felem.x2 - felem.x1;
+        const startX = felem.x1 + elementLength - lineLength + offset.x1 * zoomfact;
+        const startY = felem.y1 + offset.y1 * zoomfact;
+
+    //Draws the Segmented version for arrow and not straight line
+    if(line.kind === lineKind.RECURSIVE){
+        if(line.startIcon === SDLineIcons.ARROW){
+            lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
+        }
+        if(line.endIcon === SDLineIcons.ARROW){
+            lineStr += iconPoly(SD_ARROW[line.ctype], startX + lineLength, startY +(10 * zoomfact), lineColor, color.BLACK);
+        }
+        
+
+    }else{
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
             if (line.innerType === SDLineType.SEGMENT) {
@@ -219,6 +235,8 @@ function drawLine(line, targetGhost = false) {
                 );
             }
         }
+    }    
+        
     }
 
     // Draws the cardinality labels for the line for UML
