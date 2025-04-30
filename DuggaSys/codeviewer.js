@@ -4263,7 +4263,7 @@ function setShowPane(id) {
 		if(i == id){
 			wrapper.style.display = "inline";
 			wrapper.style.gridColumn = "a/b";
-			wrapper.style.gtidRow = "a/1";
+			wrapper.style.gridRow = "a/1";
 		}
 		else{
 			wrapper.style.display = "none";
@@ -4331,9 +4331,11 @@ function showIframe(path, name, kind) {
 		});
         
         // Load the right file in to the preview window
-        $.getScript("fileed.js", function(){
-            loadPreview(path, name, kind);
-        });
+		let s = document.createElement('script');
+		s.src = "fileed.js";
+		s.onload = () => loadPreview(path, name, kind);
+		document.head.appendChild(s);
+
     }).catch(function (err) {
         // Display potential errors as a warning
         console.warn('Something went wrong.', err);
