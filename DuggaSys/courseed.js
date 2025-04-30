@@ -1101,3 +1101,38 @@ function stopFade(element) {
 		element.style.display = "none";
 	}
 }
+
+/* --------------===============################================-------------- *
+ * 							Hamburger menu functions							*
+ * --------------================################================-------------- */
+
+/*navburger*/
+function navBurgerChange(operation = 'click') {
+	var x = document.getElementById("navBurgerBox");
+	if(x.style.display === "block") {
+	  x.style.display = "none";
+	} else {
+	  x.style.display = "block";
+	}
+}
+
+/*Dark mode*/ 
+function burgerToggleDarkmode(operation = 'click') {
+	const storedTheme = localStorage.getItem('themeBlack');
+	if (storedTheme) {
+		themeStylesheet.href = storedTheme;
+	}
+	const themeToggle = document.getElementById('theme-toggle');
+	// if it's light -> go dark
+	if (themeStylesheet.href.includes('blackTheme')) {
+		themeStylesheet.href = "../Shared/css/style.css";
+		localStorage.setItem('themeBlack', themeStylesheet.href)
+		backgroundColorTheme = "#121212";
+	}
+	else if (!themeStylesheet.href.includes('blackTheme')) {
+		// if it's dark -> go light
+		themeStylesheet.href = "../Shared/css/blackTheme.css";
+		localStorage.setItem('themeBlack', themeStylesheet.href)
+		backgroundColorTheme = "#fff";
+	}
+}

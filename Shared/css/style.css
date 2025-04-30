@@ -6414,24 +6414,30 @@ only screen and (max-device-width: 568px) {
 
 #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
   display:none;
+  margin-bottom: 10px;
 }
 #homeBurger,#goBackBurger,#darkModeBurger{
 display: none;
 }
-#navBurgerIcon { 
+
+header td.navBurgerIcon{ 
   display: none;
   
 }
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
 
-  #navBurgerIcon { 
+  header td.navBurgerIcon {
     display: block;
     color:white;
-  }
+    font-size:24px;
+    width: 29px;
+    vertical-align: middle;
+    margin-top: 15px;
+    margin-left: 15px
+  } 
  
   #navBurgerBox{
-    display: block;
     position: absolute;
     top: 50px;
     width: 32px;
