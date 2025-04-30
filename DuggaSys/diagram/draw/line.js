@@ -649,6 +649,21 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
 }
 
 /**
+ * @description Base values for recursive line
+ * @param {Object} felem = from element
+ * @param {Object} offset = offset for the x and y coordinates
+ * @returns {Object} Returns the base values for the recursive line.
+ */
+function recursiveParams(felem, offset) {
+    const length = 40 * zoomfact;
+    const elementLength = felem.x2 - felem.x1;
+    const startX = felem.x1 + elementLength - length + offset.x1 * zoomfact;
+    const startY = felem.y1 + offset.y1 * zoomfact;
+
+    return{length, elementLength, startX, startY};
+}
+
+/**
  * @description Draw the cardinalities label for the line.
  * @param {Object} line The line object for the cardinality to be drawn to.
  * @param {Object} lineColor Where the start and end label should be.
@@ -1378,3 +1393,4 @@ function displaceFromLine(newX, newY) {
         targetLabel.labelGroup = 0;
     }
 }
+
