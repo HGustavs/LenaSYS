@@ -1,4 +1,5 @@
-﻿/**
+﻿
+/**
  * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line

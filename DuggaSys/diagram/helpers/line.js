@@ -81,7 +81,6 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
     }
     return result;
 }
-
 function checkConnectionErrors(to, from) {
     if (from.id == to.id &&
         (to.kind != elementTypesNames.SDEntity && to.kind != elementTypesNames.UMLEntity && to.kind != elementTypesNames.IEEntity && to.kind != "sequenceActivation")
@@ -97,9 +96,17 @@ function checkConnectionErrors(to, from) {
     if (limitEREntitiesToAttriutes(from, to)) {
         return `ER attributes can only be attached to max 1 entity`;
     }
+    if (sequenceTypeError(from, to)) {
+        return `Lines in sequence diagram can only be drawn between sequence activations`;
+    }
     return '';
 }
 
+function sequenceTypeError(from,to){
+    if((from.kind == elementTypesNames.sequenceObject || from.kind == elementTypesNames.sequenceActor) || (to.kind == elementTypesNames.sequenceObject || to.kind == elementTypesNames.sequenceActor)){
+        return true;
+    }
+}
 function sameTypeError(from, to, arr) {
     let result = false;
     arr.forEach((type) => {
