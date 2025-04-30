@@ -1,7 +1,6 @@
 <?php
 
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
 
 function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt="", $newusers=""){
     $entries=array();
@@ -159,7 +158,20 @@ function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt=""
     );
 
 
-    $info="opt: ".$opt." cid: ".$cid." uid: ".$userid." username: ".retrieveUsername($pdo)." newusers: ".$newusers;
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    $data = json_decode($response, true);
+    $username = $data['username'] ?? 'unknown';
+    
+    $info = "opt: ".$opt." cid: ".$cid." uid: ".$userid." username: ".$username." newusers: ".$newusers;
+
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "accessedservice.php",$userid,$info);
+    
     return $array;
 }

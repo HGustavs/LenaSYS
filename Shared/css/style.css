@@ -830,6 +830,7 @@ p {
  text-decoration: underline;
 }
 /*End of recent feedback from the teacher*/
+
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
@@ -843,9 +844,55 @@ p {
     background-color: #5e4776;  
     color: white;               
   }
+}
 
-  & .view-label {
-    padding: 0.5rem;
+.dropButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.5em auto;
+}
+
+@keyframes dropDownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  flex-direction: column;
+  
+  &.dropdown-content-show {
+    display: flex;
+
+    > * {
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: dropDownSlide 0.3s ease-out forwards;
+    }
+
+    /*To stagger the animation*/
+    > *:nth-child(1) { animation-delay: 0.05s; }
+    > *:nth-child(2) { animation-delay: 0.10s; }
+    > *:nth-child(3) { animation-delay: 0.15s; }
+    > *:nth-child(4) { animation-delay: 0.20s; }
+    > *:nth-child(5) { animation-delay: 0.25s; }
+    > *:nth-child(6) { animation-delay: 0.30s; }
+    > *:nth-child(7) { animation-delay: 0.35s; }
+    > *:nth-child(8) { animation-delay: 0.40s; }
+    > *:nth-child(9) { animation-delay: 0.45s; }
+  }
+
+  & button {
+    margin: 0;
   }
 }
 
@@ -968,9 +1015,9 @@ p {
 }
 
 @media only screen and (max-width: 800px), only screen and (orientation:portrait) {
-  #swimlaneSVG text {
+  /*#swimlaneSVG text {
       font-size: 14px;
-  }
+  }*/
 }
 
 @media only screen and (min-width: 1224px) {
@@ -995,9 +1042,9 @@ p {
         /*width: 70%;*/
         margin: auto;
     }
-    #swimlaneSVG text {
+    /*#swimlaneSVG text {
         font-size: 16px;
-    }
+    }*/
 }
 
 /*Swimlane styling Ends*/
@@ -2688,10 +2735,12 @@ resulted.php END
  * --------------================################================--------------*/
  
  #courseHeader {
-  display:flex; 
+  display:flex;
   flex-wrap: wrap;
-  align-items:center; 
-  justify-content:flex-end; 
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
  }
 
  #course-newitem {
@@ -2708,12 +2757,13 @@ resulted.php END
   margin-right:10px;
  }
 
- #course-label {
-  flex-grow:1;
-  text-align: center;
-  margin: 4px 0;
- }
- 
+#course-label {
+  /*Temporary fix because flex and grid does not work properly at the time.
+  TODO: Implement a flex or grid layout properly.*/
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%);
+}
 
 #editSectionLoginBox {
  width:460px;
@@ -3437,31 +3487,8 @@ button.option {
   padding: 6px 12px;
 }
 
-#MOTDbutton {
- top: -2px;
- position: absolute;
- right: 20px;
- left: auto;
-}
 
-@media only screen and (max-width: 430px) {
-  #MOTDbutton {
-    width:20%;
-   }
-	#courseDropdownTop {
-        width: 50px;
-    }
-}
-@media only screen and (max-width: 330px) {
-  #MOTDbutton {
-    width:15%;
-   }
-}
-@media only screen and (max-width: 275px) {
-  #MOTDbutton {
-    width:10%;
-   }
-}
+
 
 #courseBtn {
   margin-left: 8px;
@@ -9276,21 +9303,37 @@ textarea#filecont {
 
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
-  width: 100%;
+  margin-left:5%;
 }
 #motdArea{
   box-shadow: 1px 1px 6px grey;
   border-collapse:collapse;
   background-color: #FECC56;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   background-color: var(--color-accent);
   z-index: 1000;
   position: relative;
   margin-bottom: 7px;
   max-width: auto;
   display: none;
+  width:100%
 }
+.motdLeftContainer{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  justify-content: space-between; 
+
+}
+
+.motdRightContainer{
+width: 10%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
   vertical-align: bottom;
@@ -9299,6 +9342,7 @@ textarea#filecont {
   display: flex;
   justify-content: space-around;
   position: relative;
+  margin-left:5%;
 
 }
 .motdBoxheader h3 {
@@ -9501,6 +9545,8 @@ textarea#filecont {
     padding: 15px;
     width: 450px;
   }
+ 
+
 }
 .bottomBorderColor{
   border-top: 2px solid var(--color-border-list); 
@@ -10500,6 +10546,12 @@ margin:2px;
 
   .typeIcon {
     font-size: 2.5rem;
+  }
+  .motdLeftContainer{
+    width:85%;
+  }
+  .motdRightContainer{
+    width:15%;
   }
 }
 
