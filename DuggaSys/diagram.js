@@ -584,6 +584,8 @@ document.addEventListener('contextmenu', event => {
     event.preventDefault();
 });
 
+
+//Eventhandler that checks if key has been pressed, needs to be reworked to accomodate the new quicksave.
 document.addEventListener('keydown', function (e) {
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && !ctrlPressed) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && !altPressed) altPressed = true;
@@ -754,6 +756,8 @@ document.addEventListener('keydown', function (e) {
     historyHandler.inputCounter = (historyHandler.inputCounter + 1) % 1024;
 });
 
+
+//Eventhandler that checks for a key being released, probably also needs to be modified to accomodate quicksave.
 document.addEventListener('keyup', function (e) {
     const pressedKey = e.key.toLowerCase();
 
