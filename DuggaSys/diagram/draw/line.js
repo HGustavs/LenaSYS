@@ -158,7 +158,7 @@ function drawLine(line, targetGhost = false) {
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
-            str += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
+            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
         }
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
