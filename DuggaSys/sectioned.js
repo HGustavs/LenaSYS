@@ -2892,7 +2892,7 @@ $(window).keyup(function (event) {
         }, 200);
         //Duration time for the alert before remove
         setTimeout(function () {
-          $("#updateAlert").removeClass("createAlertToggle");
+          document.getElementById("updateAlert").classList.remove("createAlertToggle");
           document.getElementById("updateAlert").innerHTML = "";
         }, 3000);
       }
@@ -3683,6 +3683,7 @@ function validateVersionName(versionName, dialogid) {
 
   //if versionname is 2 capital letters, 2 numbers
   if (name.value.match(Name)) {
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -3701,6 +3702,7 @@ function validateVersionName(versionName, dialogid) {
     }
     return true;
   } else if (name.value.length > 0){
+
     if (errorMsg) {
       errorMsg.style.opacity = 0;
       errorMsg.style.display = "block";
@@ -3709,6 +3711,7 @@ function validateVersionName(versionName, dialogid) {
         errorMsg.style.opacity = 1;
       });
     }
+
     name.classList.add("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3719,6 +3722,7 @@ function validateVersionName(versionName, dialogid) {
     }
     return false;
   }else{
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -3726,6 +3730,7 @@ function validateVersionName(versionName, dialogid) {
         errorMsg.style.display = "none";
       }, 300);
     }
+
     name.classList.remove("color-change-invalid");
     name.classList.remove("color-change-valid");
     if (versionName === 'versname') {
@@ -3746,6 +3751,7 @@ function validateCourseID(courseid, dialogid) {
   var errorMsg = document.getElementById(dialogid);
 
   if (cid.value.match(Code)) {
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -3753,11 +3759,13 @@ function validateCourseID(courseid, dialogid) {
         errorMsg.style.display = "none";
       }, 300);
     }
+
     cid.classList.add("color-change-valid");
     cid.classList.remove("color-change-invalid");
     cid.style.backgroundColor = backgroundColorTheme;
     window.bool = true;
   } else if (cid.value.length > 0){
+
     if (errorMsg) {
       errorMsg.style.opacity = 0;
       errorMsg.style.display = "block";
@@ -3766,11 +3774,13 @@ function validateCourseID(courseid, dialogid) {
         errorMsg.style.opacity = 1;
       });
     };
+
     cid.classList.add("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
     return false;
   }else{
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -3778,6 +3788,7 @@ function validateCourseID(courseid, dialogid) {
         errorMsg.style.display = "none";
       }, 300);
     }
+
     cid.classList.remove("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
@@ -3786,6 +3797,7 @@ function validateCourseID(courseid, dialogid) {
   const versionIsValid = retdata["versions"].some(object => object.cid === retdata["courseid"] && object.vers === cid.value);
   if (versionIsValid) {
     errorMsg.innerHTML = "Version ID already exists, try another";
+
     if (errorMsg) {
       errorMsg.style.opacity = 0;
       errorMsg.style.display = "block";
@@ -3794,6 +3806,7 @@ function validateCourseID(courseid, dialogid) {
         errorMsg.style.opacity = 1;
       });
     }
+
     cid.classList.add("color-change-invalid");
     cid.classList.remove("color-change-valid");
     window.bool = false;
@@ -3810,6 +3823,7 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
   var errorMsg1 = document.getElementById(syntaxdialogid);
   var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -3847,6 +3861,7 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid) {
         errorMsg.style.opacity = 1;
       });
     }
+
     window.bool9 = false;
   }
   if (emotd.value.match(Emotd) && emotd.value.match(EmotdRange) && emotd.value.length > 0) {
@@ -3877,6 +3892,7 @@ function validateDate(startDate, endDate, dialogID) {
   // If one of the dates is not filled in
   if (sdate.value == 'yyyy-mm-dd' || sdate.value == "" || edate.value == 'yyyy-mm-dd' || edate.value == "") {
     errorMsg.innerHTML = "Both start date and end date must be filled in";
+
     if (errorMsg) {
       errorMsg.style.opacity = 0;
       errorMsg.style.display = "block";
@@ -3885,6 +3901,7 @@ function validateDate(startDate, endDate, dialogID) {
         errorMsg.style.opacity = 1;
       });
     }
+
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3899,6 +3916,7 @@ function validateDate(startDate, endDate, dialogID) {
     edate.classList.remove("color-change-invalid");
     sdate.style.backgroundColor = backgroundColorTheme;
     edate.style.backgroundColor = backgroundColorTheme;
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -3906,6 +3924,7 @@ function validateDate(startDate, endDate, dialogID) {
         errorMsg.style.display = "none";
       }, 300);
     }
+
     if (startDate === 'startdate' && endDate === 'enddate') {
       window.bool5 = true;
     }
@@ -3917,6 +3936,7 @@ function validateDate(startDate, endDate, dialogID) {
   // If end date is less than start date
   if (date2 < date1) {
     errorMsg.innerHTML = "Start date has to be before end date";
+
     if (errorMsg) {
       errorMsg.style.opacity = 0;
       errorMsg.style.display = "block";
@@ -3925,6 +3945,7 @@ function validateDate(startDate, endDate, dialogID) {
         errorMsg.style.opacity = 1;
       });
     }
+
     sdate.classList.add("color-change-invalid");
     edate.classList.add("color-change-invalid");
     sdate.classList.remove("color-change-valid");
@@ -3950,14 +3971,17 @@ function showCourseDate(ddate, dialogid) {
     str += !retdata['startdate'] ? formatRelativeDeadlineToString(getRelativeDeadlineInputValues()) : rDate;
   } else {
     if (!retdata['startdate']) {
-      ddate.value = "";
+
+      document.getElementById(ddate).value = ""
+
       str = "There is no course start date, please add one or use relative deadlines.";
     } else {
       str = "The absolute deadline date has to be between " + startdate + " and " + enddate;
     }
   }
-  const dialog8 = document.getElementById("dialog8");
-  dialog8.innerHTML = str;
+
+  document.getElementById("dialog8").innerHTML = str
+
   return isCorrect;
 }
 
@@ -3980,6 +4004,7 @@ function validateDate2(ddate, dialogid) {
     const absolutedeadlinecheckIsChecked = absolutedeadlinecheck && absolutedeadlinecheck.checked;
 
     // If deadline is between start date and end date
+
     if (startdate <= deadline && enddate >= deadline && retdata['startdate'] && absolutedeadlinecheckIsChecked) {
       if (errorMsg) {
         errorMsg.style.transition = "opacity 0.3s ease";
@@ -3988,11 +4013,13 @@ function validateDate2(ddate, dialogid) {
           errorMsg.style.display = "none";
         }, 300);
       }
+
       ddate.classList.add("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
+
     } else if (!absolutedeadlinecheckIsChecked) {
       // If absolute deadline is not being used
       if (errorMsg) {
@@ -4003,12 +4030,14 @@ function validateDate2(ddate, dialogid) {
             errorMsg.style.opacity = 1;
         });
       }
+
       ddate.classList.remove("color-change-valid");
       ddate.classList.remove("color-change-invalid");
       ddate.style.backgroundColor = inputColorTheme;
       window.bool8 = true;
       return true;
     } else {
+
       if (errorMsg) {
         errorMsg.style.opacity = 0;
         errorMsg.style.display = "block";
@@ -4017,6 +4046,7 @@ function validateDate2(ddate, dialogid) {
             errorMsg.style.opacity = 1;
         });
       }
+
       ddate.classList.add("color-change-invalid");
       ddate.classList.remove("color-change-valid");
       window.bool8 = false;
@@ -4031,6 +4061,7 @@ function validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
   if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -4038,12 +4069,14 @@ function validateSectName(name) {
         errorMsg.style.display = "none";
       }, 300);
     }
+
     element.style.backgroundColor = inputColorTheme;
     element.classList.add("color-change-valid");
     element.classList.remove("color-change-invalid");
     window.bool10 = true;
     return true;
   } else if (element.value.length > 0) { //Invalid
+
     if (errorMsg) {
       errorMsg.style.opacity = 0;
       errorMsg.style.display = "block";
@@ -4052,11 +4085,13 @@ function validateSectName(name) {
         errorMsg.style.opacity = 1;
       });
     }
+
     element.classList.add("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
     return false;
   }else{
+
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
       errorMsg.style.opacity = 0;
@@ -4064,6 +4099,7 @@ function validateSectName(name) {
         errorMsg.style.display = "none";
       }, 300);
     }
+
     element.classList.remove("color-change-invalid");
     element.classList.remove("color-change-valid");
     window.bool10 = false;
@@ -4363,7 +4399,9 @@ function validateForm(formid) {
     if (window.bool5 === true && window.bool3 === true && window.bool === true) {
       alert('New version created');
       createVersion();
-      document.querySelector('#newCourseVersion input').value = "";
+
+      document.querySelectorAll('#newCourseVersion input').forEach(input => input.value = "");
+
 
     } else {
       toast("Error","You have entered incorrect information",5);
