@@ -1,8 +1,8 @@
 function validateChallenge(){
-    var message = $("#challengeMessage");
-    var curPassword = $("#currentPassword");
-    var secQuestion = $("#securityQuestion");
-    var chaAnswer = $("#challengeAnswer");
+    var message = document.getElementById("challengeMessage");
+    var curPassword = document.getElementById("currentPassword");
+    var secQuestion = document.getElementById("securityQuestion");
+    var chaAnswer = document.getElementById("challengeAnswer");
     
     var password = curPassword.val();
     var question = secQuestion.val();
@@ -23,10 +23,10 @@ function validateChallenge(){
 }
 
 function processChallenge(password, question, answer){
-	var message = $("#challengeMessage");
-    var curPassword = $("#currentPassword");
-    var secQuestion = $("#securityQuestion");
-    var chaAnswer = $("#challengeAnswer");
+	var message = document.getElementById("challengeMessage");
+    var curPassword = document.getElementById("currentPassword");
+    var secQuestion = document.getElementById("securityQuestion");
+    var chaAnswer = document.getElementById("#challengeAnswer");
     
     $.ajax({
 		type: "POST",
