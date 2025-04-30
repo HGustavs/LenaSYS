@@ -99,11 +99,28 @@ function escapeHtml(str) {
  */
 function textarea(name, property, element) {
     const safeText = escapeHtml(textboxFormatString(element[property]));
-    return `<div style='color:${color.WHITE};'>${name}</div>
+    const safeName = escapeHtml(element[property]);
+    let shownProperty = element[property];
+
+    if (shownProperty === null){
+        shownProperty = "";
+    }
+    if (property == "stereotype"){
+        return `<div style='color:${color.WHITE};'>${name}</div>
+            <input 
+                id='elementProperty_${property}' 
+                maxlength='10'
+                value='${shownProperty}'
+            >${safeName}</input>`;
+    }
+    else{
+        return `<div style='color:${color.WHITE};'>${name}</div>
             <textarea 
                 id='elementProperty_${property}' 
                 rows='4' style='width:98%;resize:none;'
             >${textboxFormatString(safeText)}</textarea>`;
+    }
+    
 }
 
 /**
@@ -186,6 +203,7 @@ function drawElementProperties(element) {
             str += dropdown('Variant', 'normal', entityState, element);
             break;
         case elementTypesNames.UMLEntity:
+            str += textarea('Stereotype', 'stereotype', element);
             str += nameInput(element);
             str += textarea('Attributes', 'attributes', element);
             str += textarea('Functions', 'functions', element);
@@ -351,6 +369,14 @@ function drawLineProperties(line) {
             }
             break;
         case entityType.SE:
+
+
+            if (line.kind === lineKind.RECURSIVE){
+                str += includeSELabel(line);
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>`;
+                break;
+            }
+
             str += includeSELabel(line);
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);
@@ -1733,12 +1759,12 @@ function generateStateDiagramInfo() {
         }
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-            if (connections[i][LABEL] == undefined) {
+            if (connections[i][LABEL] == undefined || connections[i][LABEL].trim() === "") {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
             } else if (re.test(connections[i][LABEL])) {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
             } else {
-                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with label "${connections[i][LABEL]}"</p>`;
+                output += `<p>"${escapeHtml(head[ENTITY].name)}" goes to "${escapeHtml(connections[i][ENTITY].name)}" with label "${escapeHtml(connections[i][LABEL])}"</p>`;
             }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;
