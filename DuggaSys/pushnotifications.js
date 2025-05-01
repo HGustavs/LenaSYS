@@ -2,17 +2,34 @@
 
 $(function() {
 
-	let sendPushRegistrationToServer = function(subscription, deregister) {
-		$.ajax({
-			url: "pushnotifications.php",
-			type: "POST",
-			data: {action: (deregister == true ? 'deregister' : 'register'), subscription: subscription.toJSON()},
-			dataType: "text",
-			success: function() {
-				window.setTimeout(function() {
-					updateTextAndButton((deregister != true));
-				}, 1000);
-			}
+	let sendPushRegistrationToServer = function (subscription, deregister) {
+		let action;
+
+		if (deregister === true) {
+			action = "deregister";
+		} else {
+			action = "register";
+		}
+
+		let data = new URLSearchParams();
+		data.append("action", action);
+		data.append("subscription", JSON.stringify(subscription.toJSON()));
+
+		fetch("pushnotifications.php", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: data
+		})
+		.then(response => response.text())
+		.then(() => {
+			window.setTimeout(function () {
+				updateTextAndButton(deregister !== true);
+			}, 1000);
+		})
+		.catch(error => {
+			console.error("Error sending push registration:", error);
 		});
 	};
 
