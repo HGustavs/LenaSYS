@@ -27,46 +27,58 @@ function processChallenge(password, question, answer){
     var curPassword = document.getElementById("currentPassword");
     var secQuestion = document.getElementById("securityQuestion");
     var chaAnswer = document.getElementById("#challengeAnswer");
+
+    const url = ("../DuggaSys/profileservice.php");
+    const params = {
+        password: password,
+        question:question,
+        answer: answer,
+        action: "challenge"
+    };
     
-    $.ajax({
-		type: "POST",
-		url: "profileservice.php",
-		data: {
-			password: password,
-			question:question,
-			answer: answer,
-			action: "challenge"
-		},
-		dataType: "json",
-		success:function(data) {
-			if (data.success) {
-				message.innerHTML="Challenge has been updated!!";
-				clearField(curPassword);
+    fetch(url, {
+		method: "POST",
+		headers: {
+            "Content-Type": "application/json"
+        },
+		body: JSON.stringify(params)
+    })
+	.then(response => {
+            if(!response.ok){
+            error();
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if(!data) return;
+        if (data.success) {
+			message.innerHTML="Challenge has been updated!!";
+			clearField(curPassword);
+			clearField(secQuestion);
+			clearField(chaAnswer);
+		} else {
+			if(data.status == "teacher") {
+				message.innerHTML="Teachers are not allowed to change challenge question!";
+				updateField(curPassword);
+				updateField(secQuestion);
+				updateField(chaAnswer);
+			} else if (data.status == "wrongpassword") {
+				message.innerHTML="Incorrect password!";
 				clearField(secQuestion);
 				clearField(chaAnswer);
+				updateField(curPassword);
 			} else {
-				if(data.status == "teacher") {
-					message.innerHTML="Teachers are not allowed to change challenge question!";
-					updateField(curPassword);
-					updateField(secQuestion);
-					updateField(chaAnswer);
-				} else if (data.status == "wrongpassword") {
-					message.innerHTML="Incorrect password!";
-					clearField(secQuestion);
-					clearField(chaAnswer);
-					updateField(curPassword);
-				} else {
-					message.innerHTML="Unknown error.";
-					clearField(curPassword);
-					updateField(secQuestion);
-					updateField(chaAnswer);
-				}
+				message.innerHTML="Unknown error.";
+				clearField(curPassword);
+				updateField(secQuestion);
+				updateField(chaAnswer);
 			}
-		},
-		error:function() {
-			message.innerHTML="Error: Could not communicate with server";
 		}
-	});
+	})
+	error = function() {
+		message.innerHTML="Error: Could not communicate with server";		
+    }
 }
 
 //A function that validates the form used for changing password
@@ -160,42 +172,54 @@ function changePassword(){
     //Value of form inputs
     var password = currentField.value;
     var newPassword = newField.value;
-    
-    $.ajax({
-        type: "POST",
-        url: "profileservice.php",
-        data: {
-            password: password,
-            newPassword: newPassword,
-            action: "password"
+
+    const url=("../DuggaSys/profileservice.php")
+    const params = {
+        password: password,
+        newPassword: newPassword,
+        action: "password"
+    }
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
         },
-		dataType: "json",
-        success:function(data){
-			if(data.success){
-                //Resets form
-                clearField(currentField);
-                clearField(newField);
-                clearField(confirmField);
-				document.getElementById("passwordForm").reset();
-				message.innerHTML="Password successfully updated!";
+        body: JSON.stringify(params)
+    })
+    .then(response => {
+        if(!response.ok){
+            error();
+            return;
+        }
+        return response.json
+    })
+    .then(data => {
+        if(!data) return;
+		if(data.success){
+            //Resets form
+            clearField(currentField);
+            clearField(newField);
+            clearField(confirmField);
+			document.getElementById("passwordForm").reset();
+			message.innerHTML="Password successfully updated!";
+		} else {
+			if (data.status == "teacher") {
+				message.innerHTML="Teachers can't change password.";
+				updateField(currentField);
+				updateField(newField);
+				updateField(confirmField);
+			} else if (data.status == "wrongpassword") {
+				message.innerHTML="Current password is not correct.";
+				updateField(currentField);
 			} else {
-				if (data.status == "teacher") {
-					message.innerHTML="Teachers can't change password.";
-					updateField(currentField);
-					updateField(newField);
-					updateField(confirmField);
-				} else if (data.status == "wrongpassword") {
-					message.innerHTML="Current password is not correct.";
-					updateField(currentField);
-				} else {
-					message.innerHTML="Unknown error."
-				}
+				message.innerHTML="Unknown error."
 			}
-		},
-		error:function() {
-			message.innerHTML="Error: Could not communicate with server";
 		}
-	});
+	})
+	error = function() {
+		message.innerHTML="Error: Could not communicate with server";
+	}
 }
 
 
