@@ -1674,6 +1674,11 @@ function returnedSection(data) {
     str += "<div id='Sectionlistc'>";
     str += "<table id='SectionlistTable'>";
     
+    function duggaTable(data){
+      
+    }
+    
+    
     
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
