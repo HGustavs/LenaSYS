@@ -1,6 +1,7 @@
 <?php
 include_once "./getUid_ms.php";
 include_once "./logUserEvent_ms.php";
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
