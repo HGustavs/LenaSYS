@@ -851,6 +851,10 @@ p {
   align-items: center;
   gap: 1em;
   padding: 0.5em auto;
+    
+    > img {
+      pointer-events: none;
+    }
 }
 
 @keyframes dropDownSlide {
