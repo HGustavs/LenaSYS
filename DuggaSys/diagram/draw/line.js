@@ -191,6 +191,21 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
+        let {length, elementLength, startX, startY} = recursiveParam(felem);
+        startX += offset.x1 * zoomfact;
+        startY += offset.y1 * zoomfact; 
+    
+    //Draws the Segmented version for arrow and not straight line
+    if(line.kind === lineKind.RECURSIVE){
+        if(line.startIcon === SDLineIcons.ARROW){
+            lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
+        }
+        if(line.endIcon === SDLineIcons.ARROW){
+            lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
+        }
+        
+
+    }else{
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
             if (line.innerType === SDLineType.SEGMENT) {
@@ -219,6 +234,8 @@ function drawLine(line, targetGhost = false) {
                 );
             }
         }
+    }    
+        
     }
 
     // Draws the cardinality labels for the line for UML
@@ -320,9 +337,9 @@ function drawLine(line, targetGhost = false) {
             //Calculatin the lable possition based on element size, so it follows when resized.
             const length = 20 * zoomfact;
             const lift   = 80 * zoomfact; 
-            const elementLength = felem.x2 - felem.x1;
-            let startX = felem.x1 + elementLength - length;
-            let startY = felem.y1  - lift;
+            let {lineLength, elementLength, startX, startY } = recursiveParam(felem);
+            startY -= lift;
+            startX += length;
 
             labelStr += `<rect
                         class='text cardinalityLabel'
@@ -529,17 +546,16 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
 
     if(line.kind === lineKind.RECURSIVE){
         //Calculatin the cardinality possition based on element size, so it follows when resized.
-        const length = 50 * zoomfact;
         const lift   = 55 * zoomfact; 
-        const elementLength = felem.x2 - felem.x1;
-        x = felem.x1 + elementLength - length;
-        y = felem.y1  - lift;
+        const {length, elementLength, startX, startY } = recursiveParam(felem);
+        x = startX
+        y = startY - lift;
 
         if(labelStr == "startLabel"){
-            x -= 0;
+            x -= 10;
             y -= 0;
         }else if(labelStr == "endLabel"){
-            x += length + 10;
+            x += length +10;
             y -= 0;
         } 
     }else {
@@ -592,13 +608,15 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
     //Draw the recursive line top right of the element.
     //Using the elemtns length to dynamicly change when re-sized.
     const lineHeight = 60 * zoomfact; 
-    const lineLength = 40 * zoomfact; 
     const lift   = 55 * zoomfact; 
-    const elementLength = felem.x2 - felem.x1;
-    const startX = felem.x1 + elementLength - lineLength + offset.x1 * zoomfact;
-    const startY = felem.y1  - lift + offset.y1 * zoomfact;
     const SEconst = 15 * zoomfact;
     const arrowSize = 20 * zoomfact;
+
+    let {length, elementLength, startX, startY} = recursiveParam(felem);
+    
+    const lineLength = length;
+    startX += offset.x1 * zoomfact;
+    startY += offset.y1 - lift;
 
     if(line.type === entityType.IE) {
         points =
@@ -632,8 +650,6 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
                   fill="${lineColor}"
                 />
           `;
-        
-        
     }else {
         points =
             `${startX},${startY + lineHeight  } ` +
@@ -652,6 +668,20 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
             />
           `;
     return str;
+}
+
+
+/** Localization the basic parameters for the recursive lines.    
+ * @param {Object} felem the element the arrows originates from.
+ */
+
+function recursiveParam(felem){
+    const length = 40 * zoomfact;
+    const elementLength = felem.x2 - felem.x1;
+    const startX = felem.x1 + elementLength -length;
+    const startY = felem.y1;
+
+    return {length, elementLength, startX, startY};
 }
 
 /**
