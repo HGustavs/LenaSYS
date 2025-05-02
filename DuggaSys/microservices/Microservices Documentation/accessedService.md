@@ -145,3 +145,111 @@ Checks if a user exists based on the username, creates a new user if it not and 
 ### Microservices Used
 getUid_ms.php
 retrieveAccessedService_ms.php";
+
+
+# Name of file/service
+updateUser_ms.php
+
+## Description
+Handles updating user's properties in the 'user' table. Can be only be done by superusers.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation option
+
+- Parameter: $prop
+   - Type: ?
+   - Description: Property to update
+
+- Parameter: $courseid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $uid
+   - Type: int
+   - Description: User ID
+
+- Parameter: $firstname
+   - Type: int
+   - Description: Firstname
+
+- Parameter: $lastname
+   - Type: int
+   - Description: Lastname
+
+- Parameter: $ssn
+   - Type: int
+   - Description: Social security number
+
+- Parameter: $user_name
+   - Type: int
+   - Description: Username
+
+- Parameter: $classname
+   - Type: int
+   - Description: Class (program) name
+
+- Parameter: $log_uuid
+   - Type: varchar
+   - Description: Unique identifier for logging purposes
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $debug
+   - Type: String
+   - Description: Displays message if there are errors in operations
+
+- Output: $array
+   - Type: JSON
+   - Description: Shows logging of the operation and what has been updated
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveAccessedService_ms.php
+
+
+# Name of file/service
+updateUserCourse_ms.php
+
+## Description
+Updates properties for a specific user in the 'user_course' table. Can only be done by superusers or users with specific access.
+
+## Input Parameters
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $prop
+   - Type: ?
+   - Description: Property to update
+
+- Parameter: $group
+   - Type: varchar
+   - Description: Group
+
+- Parameter: $vers
+   - Type: varchar
+   - Description: Course version
+
+- Parameter: $access
+   - Type: varchar
+   - Description: Level of access a user has
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $debug
+   - Type: String
+   - Description: Displays message if there are errors in operations
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
