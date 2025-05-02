@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}else if (newDataError.data.includes("Failed on step create_db")) {
 			modal = document.getElementById("dbCreationError");
 
-		}else if (newDataError.data.includes("SQL error")) {
+		}else if (newDataError.data.includes("SQL error") || newDataError.data.includes("File error.")) {
 			modal = document.getElementById("SqlError");
 		}
 
@@ -92,12 +92,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		}else if (dataError.failed_step.includes("create_db")) {
 			navigateTo('page3');
 
-		}else if (dataError.data.includes("SQL error")) {
+		}else if (dataError.data.includes("SQL error") || dataError.data.includes("File error.")) {
 			navigateTo('page1');
 		}
         
         closeModal();
         hideModalButton();
+        setProgressBarWidth(0);
     }
 
     Window.changeDbSettings = function() {
@@ -148,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         navigateTo('page1');
         closeModal();
         hideModalButton();
+        setProgressBarWidth(0);
     }
 
     // Expose the closeModal function globally
