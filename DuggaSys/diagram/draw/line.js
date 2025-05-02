@@ -425,51 +425,27 @@ function getLineAttributes(f, t, ctype) {
     let fHeight = f.height;
     let tHeight = t.height;
 
-    // Special case if line connection involves connecting from IERelation
-    if (f.kind === elementTypesNames.IERelation) {
-        fWidth = f.width * 0.3 * zoomfact;
-        fHeight = f.height * 0 * zoomfact;
-        tWidth *= zoomfact;
-        tHeight *= zoomfact;
-    }
-
-    // Special case if line connection involves connecting to IERelation
-    if (t.kind === elementTypesNames.IERelation) {
-        tWidth = t.width * 0.3 * zoomfact;
-        tHeight = t.height * 0 * zoomfact;
-        fWidth *= zoomfact;
-        fHeight *= zoomfact;
-    }
-    
-    const fx1 = f.cx - fWidth / 2;
-    const fx2 = f.cx + fWidth / 2;
-    const tx1 = t.cx - tWidth / 2;
-    const tx2 = t.cx + tWidth / 2;
-    const fy1 = f.cy - fHeight / 2;
-    const fy2 = f.cy + fHeight / 2;
-    const ty1 = t.cy - tHeight / 2;
-    const ty2 = t.cy + tHeight / 2;
-
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
     let fx, fy, tx, ty;
 
+    // General settings for line attributes
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
             fx = f.cx;
-            fy = fy1;
+            fy = f.y1;
             tx = t.cx;
-            ty = ty2;
+            ty = t.y2;
             break;
 
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
             fx = f.cx;
-            fy = fy2;
+            fy = f.y2;
             tx = t.cx;
-            ty = ty1;
+            ty = t.y1;
             break;
 
         case lineDirection.LEFT:
@@ -491,7 +467,47 @@ function getLineAttributes(f, t, ctype) {
             break;
     }
 
+    // Special case if line is connected to or from IERelation
+    if (f.kind === elementTypesNames.IERelation || t.kind === elementTypesNames.IERelation) {
+
+        tWidth = t.width * 0.3 * zoomfact;
+        tHeight = t.height * 0 * zoomfact;
+        fWidth *= zoomfact;
+        fHeight *= zoomfact;
+        
+        const fx1 = f.cx - fWidth / 2;
+        const fx2 = f.cx + fWidth / 2;
+        const tx1 = t.cx - tWidth / 2;
+        const tx2 = t.cx + tWidth / 2;
+        const fy1 = f.cy - fHeight / 2;
+        const fy2 = f.cy + fHeight / 2;
+        const ty1 = t.cy - tHeight / 2;
+        const ty2 = t.cy + tHeight / 2;
+
+        switch (ctype) {
+            case lineDirection.UP:
+                fy = fy1;
+                ty = ty2;
+                break;
+
+            case lineDirection.DOWN:
+                fy = fy2;
+                ty = ty1;
+                break;
+
+            case lineDirection.LEFT:
+                fx = fx1;
+                tx = tx2;
+                break;
+
+            case lineDirection.RIGHT:
+                fx = fx2;
+                tx = tx1;
+                break;
+        } 
+    } 
     
+    // Special case if line is connected to or from a ER realation
     if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation) {
         const shrink = 8 * zoomfact; 
 
