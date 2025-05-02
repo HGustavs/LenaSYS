@@ -792,6 +792,6 @@ ALTER TABLE listentries ADD COLUMN githubDir VARCHAR(255);
 CREATE TABLE duggaFiles(
 	filename				VARCHAR(100) NOT NULL UNIQUE,
 	quiz					INT(11) NOT NULL,
-	cid						INT(10) NOT NULL
+	cid						INT(10) NOT NULL,
 	PRIMARY KEY (filename)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
