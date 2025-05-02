@@ -1,5 +1,7 @@
 <?php
 include_once "./getUid_ms.php";
+include_once "../../../Shared/basic.php";
+include_once "../../../DuggaSys/microservices/curlService.php"; // curlService
 
 
 // Connect to database and start session
@@ -8,19 +10,9 @@ session_start();
 
 
 	$userid = getUid();
-	// Microservice call to retrieve username
-	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-	$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
-
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$response = curl_exec($ch);
-	curl_close($ch);
-
-	$data = json_decode($response, true);
+	$data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
 	$username = $data['username'] ?? 'unknown';
 
-	logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
 
 //get values from post
@@ -54,8 +46,7 @@ if (!$query2->execute()) {
 }
 $link = $pdo->lastInsertId();
 
-$userid = getUid();
-$username = retrieveUsername($pdo);
+
 logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
 $result = array('debug'=>$debug,'link'=>$link);
