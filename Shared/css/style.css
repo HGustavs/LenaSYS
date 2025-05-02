@@ -6416,8 +6416,10 @@ only screen and (max-device-width: 568px) {
   display:none;
   margin-bottom: 10px;
 }
+
 #homeBurger,#goBackBurger,#darkModeBurger{
-display: none;
+  display: none;
+  margin-bottom: 10px;
 }
 
 header td.navBurgerIcon{ 
@@ -6442,15 +6444,23 @@ only screen and (max-device-width: 568px) {
     top: 50px;
     width: 32px;
     padding: 10px;
-    height: 100px;
+    height: 120px;
     background-color: var(--color-primary-2);
+
+  }
+  
+  #motdNav {
+    display: none; 
+  }
+  #motdBurgerDiv {
+    display: block;
   }
  
   #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
     display: block;
   }
 
- #home, #back, #theme-toggle{
+ #home, #back, #theme-toggle, .motd-nav{
     display: none;
   }
 }
