@@ -29,7 +29,7 @@ function contribution_newGitUserCreation()
     document.getElementById('newpassword').style.display = 'none';
     document.getElementById('UserExistslogin').style.display = 'none';
     document.getElementById('newGit-UserCreation').style.display = '';
-    document.getElementById('newGit-UserCreation_password1').focus;
+    document.getElementById('newGit-UserCreation_password1').focus();
 }
 
 
@@ -40,7 +40,7 @@ function contribution_resetLoginStatus() // return to initial login
     document.getElementById('newGit-UserCreation').style.display = 'none';
     document.getElementById('newpassword').style.display = 'none';
     document.getElementById('login').style.display = '';
-    document.getElementById('username').focus;
+    document.getElementById('username').focus();
 }
 
 
@@ -63,7 +63,7 @@ function contribution_userExistsLogin()
     document.getElementById('newGit-UserCreation').style.display = 'none';
     document.getElementById('newpassword').style.display = 'none';
     document.getElementById('UserExistslogin').style.display = '';    
-    document.getElementById('UserExistslogin_password').focus;
+    document.getElementById('UserExistslogin_password').focus();
 }
 
 function contribution_showLoginPopup()
@@ -71,7 +71,7 @@ function contribution_showLoginPopup()
     contribution_addEventListeners();
     document.getElementById('login').style.display = ''; // show inital login box
     document.getElementById('formBox').style.display = 'flex'; // show background
-    document.getElementById('username').focus;
+    document.getElementById('username').focus();
 }
 
 function returned_git_user_login(data)
@@ -275,7 +275,7 @@ function git_logout()
           document.getElementById('newGit-UserCreation_password2').classList.add('loginPass');
           setTimeout(function()
           {
-            document.getElementById('newGit-UserCreation_usernam').classList.remove('loginPass');//"newGit-UserCreation_usernam" is this a typo?
+            document.getElementById('newGit-UserCreation_username').classList.remove('loginPass');
             document.getElementById('newGit-UserCreation_password1').classList.remove('loginPass');
             document.getElementById('newGit-UserCreation_password2').classList.remove('loginPass');
             contribution_resetLoginStatus();
