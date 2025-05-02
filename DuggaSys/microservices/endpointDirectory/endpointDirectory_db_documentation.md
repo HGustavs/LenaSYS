@@ -14,6 +14,7 @@
 | description | TEXT | Description of what the microservice does |
 | calling_methods | TEXT | A list of calling methods, seperated by a "," |
 | microservices_used | TEXT | A list of other microservices that this microservice use, seperated by a "," |
+
 Relationships: No relationships, but other tables references to microservices(id).
 
 ### parameters
@@ -24,6 +25,7 @@ Relationships: No relationships, but other tables references to microservices(id
 | parameter_name | TEXT | Name of the parameter |
 | parameter_type | TEXT | Datatype of the parameter (string, int etc.) |
 | parameter_description | TEXT | Description of what the parameter does |
+
 Relationships: One-to-many relationship to microservices(id) via microservice_id.
 
 ### outputs
@@ -34,4 +36,15 @@ Relationships: One-to-many relationship to microservices(id) via microservice_id
 | output_name | TEXT | Name of the output |
 | output_type | TEXT | Datatype of the output (string, int etc.) |
 | output_description | TEXT | Description of the output |
+
 Relationships: One-to-many relationship to microservices(id) via microservice_id.
+
+### dependencies
+| Field | Type | Description |
+| ------ | ------ | ------ |
+| dependency_id | INTEGER | Primary key, auto incrementing integer |
+| ms_name | TEXT | Name of the microservice that depends on another microservice |
+| depends_on | TEXT | Name of the microservice that ms_name depends on |
+| path | TEXT | Searchpath to the microservice (depends_on) |
+
+Relationships: No relationships.
