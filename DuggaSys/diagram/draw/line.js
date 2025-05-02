@@ -201,7 +201,6 @@ function drawLine(line, targetGhost = false) {
             lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
         }
         if(line.endIcon === SDLineIcons.ARROW){
-            console.log("startx: " + startX)
             lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
         }
         
@@ -609,12 +608,13 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
     //Draw the recursive line top right of the element.
     //Using the elemtns length to dynamicly change when re-sized.
     const lineHeight = 60 * zoomfact; 
-    const lineLength = 40 * zoomfact; 
     const lift   = 55 * zoomfact; 
     const SEconst = 15 * zoomfact;
     const arrowSize = 20 * zoomfact;
 
     let {length, elementLength, startX, startY} = recursiveParam(felem);
+    
+    const lineLength = length;
     startX += offset.x1 * zoomfact;
     startY += offset.y1 - lift;
 
@@ -669,6 +669,11 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
           `;
     return str;
 }
+
+
+/** Localization the basic parameters for the recursive lines.    
+ * @param {Object} felem the element the arrows originates from.
+ */
 
 function recursiveParam(felem){
     const length = 40 * zoomfact;
