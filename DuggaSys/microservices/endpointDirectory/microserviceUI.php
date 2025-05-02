@@ -35,6 +35,12 @@ if (isset($_GET['id'])) {
         $stmt->execute([$_GET['id']]);
         $parameters = $stmt->fetchAll();
     }
+
+    if ($microservice) {
+        $stmt = $db->prepare("SELECT * FROM outputs WHERE microservice_id = ?");
+        $stmt->execute([$_GET['id']]);
+        $outputs = $stmt->fetchAll();
+    }
 }
 
 } catch (PDOException $e) {
@@ -98,8 +104,6 @@ if (isset($_GET['id'])) {
         <h2><b>ID: </b><?php echo $microservice['id']; ?></h2>
         <p><b>Description:</b> <?php echo $microservice['description']; ?></p>
         <p><b>Calling methods:</b> <?php echo $microservice['calling_methods']; ?>
-        <p><b>Output:</b> <?php echo $microservice['output']; ?>
-        <p><b>Output description:</b> <?php echo $microservice['output_description']; ?>
         <p><b>Microservices used:</b> <?php echo $microservice['microservices_used']; ?>
 
         <h3>Parameters</h3>
@@ -118,6 +122,24 @@ if (isset($_GET['id'])) {
             </table>
         <?php } else { ?>
             <p>No parameters</p>
+        <?php } ?>
+
+        <h3>Outputs</h3>
+        <?php if (!empty($outputs)) { ?>
+            <table>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                <?php 
+                foreach ($outputs as $output) {
+                    echo '<tr>';
+                    echo '<td>' . $output['output_name'] . '</td>';
+                    echo '<td>' . $output['output_type'] . '</td>';
+                    echo '<td>' . $output['output_description'] . '</td>';
+                    echo '</tr>';
+                }
+                ?>
+            </table>
+        <?php } else { ?>
+            <p>No outputs</p>
         <?php } ?>
 
         <div style="display: flex; gap: 5px;">
