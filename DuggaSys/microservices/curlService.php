@@ -59,7 +59,7 @@ function callMicroserviceGET($microservicePath){
 //
 //  Replaces the include. Change the path to the correct microservice, and find a suitable or the correct variable to use
 //  This is supposed to be in the file that USES the include:
-//                      include_once "../microservices/HelperFunction_ms.php";
+//                      include_once "../microservices/curlService.php";
 //                      $uid = callMicroserviceGET("../sharedMicroservices/getUid_ms.php");
 //
 //  In the file that is used as an include, in this example the "getUid_ms.php" file, put this instead of the return:
