@@ -107,11 +107,13 @@ function setPos(elements, x, y) {
                 ];
                 if (entityKinds.includes(obj.kind)) {
                     const candidateX = obj.x - (x / zoomfact);
+                    const candidateY = obj.y - (y / zoomfact);
                     obj.x = Math.round(candidateX / (settings.grid.gridSize/2)) * (settings.grid.gridSize/2);
+                    obj.y = Math.round(candidateY / (settings.grid.gridSize/2)) * (settings.grid.gridSize/2);
                 } else {
                     obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.width / 2;
+                    obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.height / 2;
                 }
-                obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.height / 2;
             } else {
                 obj.x -= (x / zoomfact);
                 obj.y -= (y / zoomfact);
