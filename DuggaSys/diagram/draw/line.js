@@ -4,6 +4,7 @@
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
+
 function drawLine(line, targetGhost = false) {
 
     let lineStr = ""; // only the lines, polylines, arrows etc
@@ -79,7 +80,7 @@ function drawLine(line, targetGhost = false) {
                         id='${line.id}' 
                         x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
                         x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
-                        stroke='${lineColor}' stroke-width='${strokewidth}'
+                        stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'
                     />`;
         } else if (line.kind == lineKind.DOUBLE) {
             let dy = -(tx - fx);
@@ -95,7 +96,7 @@ function drawLine(line, targetGhost = false) {
                 y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
                 x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
                 y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
-                stroke='${lineColor}' stroke-width='${strokewidth}'
+                stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'
                 
                 />`;
             };
@@ -154,7 +155,7 @@ function drawLine(line, targetGhost = false) {
                     y1='${fy + offset.y1 * zoomfact}' 
                     x2='${tx + offset.x2 * zoomfact}' 
                     y2='${ty + offset.y2 * zoomfact}' 
-                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
@@ -647,7 +648,7 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
               points="${points}"
               fill="none"
               stroke="${lineColor}"
-              stroke-width="${strokewidth}"
+              stroke-width="${strokewidth * zoomfact}"
               stroke-dasharray="${strokeDash}"
             />
           `;
@@ -751,11 +752,10 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
     return `<polyline 
                 id='${line.id}' 
                 points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}' 
             />`;
 
 }
-
 function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
@@ -766,7 +766,7 @@ function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, str
                         ${fx + offset.x1 + 40},${fy + offset.y1 + 40} 
                         ${fx + offset.x1},${fy + offset.y1 + 40}"
                 fill="none" 
-                stroke="${lineColor}" stroke-width="${strokewidth}" stroke-dasharray="${strokeDash}" 
+                stroke="${lineColor}" stroke-width="${strokewidth * zoomfact}" stroke-dasharray="${strokeDash}" 
             />`;
 
 }
