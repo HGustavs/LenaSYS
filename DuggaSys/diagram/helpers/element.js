@@ -54,6 +54,8 @@ function setPos(elements, x, y) {
     const idList = [];
     let overlappingObject = null;
 
+    const ignoreIds = elements.map(e => e.id);
+
     // Check for overlaps
     elements.forEach(elem => {
         let newX = elem.x - deltaX / zoomfact;
@@ -66,53 +68,39 @@ function setPos(elements, x, y) {
             newX -= elem.width / 2;
             newY -= elem.height / 2;
         }
-        if (entityIsOverlapping(elem.id, newX, newY)) {
+        if (entityIsOverlapping(elem.id, newX, newY, ignoreIds)) {
             overlappingObject = elem;
         }
     });
 
     if (overlappingObject) {
-        // If overlap is detected, move the overlapping object back by one step
-        const previousX = overlappingObject.x;
-        const previousY = overlappingObject.y;
+        // Display error message
+        displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        return;
+    }
 
-        // Move the object back one step
-        overlappingObject.x -= x / zoomfact;
-        overlappingObject.y -= y / zoomfact;
+    // Move all the elements in the group
+    elements.forEach(obj => {
+        if (obj.isLocked) return;
 
-        // Check again if the adjusted position still overlaps
-        if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
-            // If it still overlaps, revert to the previous position
-            overlappingObject.x = previousX;
-            overlappingObject.y = previousY;
-
-            // Display error message
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+        if (settings.grid.snapToGrid && !ctrlPressed) {
+            obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+            obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+            obj.x -= obj.width / 2;
+            obj.y -= obj.height / 2;
         } else {
             // If no longer overlaps after adjustment, proceed with saving the new position
-            idList.push(overlappingObject.id);
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
         }
-    } else {
-        elements.forEach(obj => {
-            if (obj.isLocked) return;
-            if (settings.grid.snapToGrid && !ctrlPressed) {
-                // Calculate nearest snap point
-                obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                // Set the new snap point to center of element
-                obj.x -= obj.width / 2;
-                obj.y -= obj.height / 2;
-            } else {
-                obj.x -= (x / zoomfact);
-                obj.y -= (y / zoomfact);
-            }
-            // Add the object-id to the idList
-            idList.push(obj.id);
-            // Make the coordinates without decimals
-            obj.x = Math.round(obj.x);
-            obj.y = Math.round(obj.y);
-        });
-        if (idList.length) stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
+
+        obj.x = Math.round(obj.x);
+        obj.y = Math.round(obj.y);
+        idList.push(obj.id);
+    });
+
+    if (idList.length) {
+        stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
     }
     // Update positions
     updatepos();
