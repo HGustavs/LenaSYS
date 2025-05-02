@@ -28,11 +28,11 @@ function getCourseID($githubURL) {
 
     // Check if not null, else add it to Sqlite db
     if($cid != null) {
-        //insertIntoSQLite($githubURL, $cid, "");
+        //insertIntoSQLite($githubURL, $cid, ""); <------ Old line, reengineered version below.
         header("Content-Type: application/json");
         //set url for setAsActiveCourse.php path
         $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-        $url = $baseURL . "/LenaSYS/DuggaSys/microservices/gitCommitService/getCourseID_ms.php";
+        $url = $baseURL . "/LenaSYS/DuggaSys/microservices/gitCommitService/insertIntoSQLite_ms.php";
         $ch = curl_init($url);
             //options for curl
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
