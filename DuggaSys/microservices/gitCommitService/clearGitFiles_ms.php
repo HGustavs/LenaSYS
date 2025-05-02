@@ -1,24 +1,34 @@
 <?php
+// Set JSON content type header
+header('Content-Type: application/json');
 
-// Include basic application services!
-include_once "../../../Shared/basic.php";
-include_once "../../../Shared/sessions.php";
+// Only allow POST requests
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['status'=>'error', 'message'=>'Only POST supported']);
+    exit;
+}
 
-global $pdo;
+// Validate input parameters
+$cid = filter_input(INPUT_POST, 'cid', FILTER_VALIDATE_INT);
+if ($cid === null || $cid === false) {
+    echo json_encode(['status'=>'error', 'message'=>'Missing or bad cid']);
+    exit;
+}
 
-//--------------------------------------------------------------------------------------------------
-// clearGitFiles: Clear the gitFiles table in SQLite db when a course has been updated with a new github repo. This function is used by other github microservices.
-//--------------------------------------------------------------------------------------------------
-
-function clearGitFiles($cid) {
+// Since there is no deleteGitFiles_ms.php yet, we'll implement the logic directly here
+// In a proper microservice architecture, this would be a call to another microservice
+try {
     $pdolite = new PDO('sqlite:../../githubMetadata/metadata2.db');
     $query = $pdolite->prepare("DELETE FROM gitFiles WHERE cid = :cid"); 
     $query->bindParam(':cid', $cid);
-    if (!$query->execute()) {
+    
+    if ($query->execute()) {
+        echo json_encode(['status'=>'success', 'message'=>'Git files cleared']);
+    } else {
         $error = $query->errorInfo();
-        echo "Error updating file entries" . $error[2];
-        $errorvar = $error[2];
-        print_r($error);
-        echo $errorvar;
+        echo json_encode(['status'=>'error', 'message'=>'Error clearing git files: ' . $error[2]]);
     }
+} catch (Exception $e) {
+    echo json_encode(['status'=>'error', 'message'=>'Database error: ' . $e->getMessage()]);
 }
+exit;
