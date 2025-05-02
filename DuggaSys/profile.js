@@ -4,19 +4,19 @@ function validateChallenge(){
     var secQuestion = document.getElementById("securityQuestion");
     var chaAnswer = document.getElementById("challengeAnswer");
     
-    var password = curPassword.val();
-    var question = secQuestion.val();
-    var answer = chaAnswer.val();
+    var password = curPassword.value;
+    var question = secQuestion.value;
+    var answer = chaAnswer.value;
     var chars = "^[a-zåäöéA-ZÅÄÖÉ 0-9\-\_\']*$";
        
     if(password != "" && question != "" && answer != ""){
         if(answer.match(chars)){
             processChallenge(password, question, answer);
         } else {
-             message.html("Enter valid characters (a-ö, space, 0-9, -_')");
+             message.innerHTML="Enter valid characters (a-ö, space, 0-9, -_')";
         }
     } else {
-        message.html("Fill out all the fields");
+        message.innerHTML="Fill out all the fields";
         updateField(chaAnswer);
         updateField(curPassword);
     }
@@ -40,23 +40,23 @@ function processChallenge(password, question, answer){
 		dataType: "json",
 		success:function(data) {
 			if (data.success) {
-				message.html("Challenge has been updated!!");
+				message.innerHTML="Challenge has been updated!!";
 				clearField(curPassword);
 				clearField(secQuestion);
 				clearField(chaAnswer);
 			} else {
 				if(data.status == "teacher") {
-					message.html("Teachers are not allowed to change challenge question!");
+					message.innerHTML="Teachers are not allowed to change challenge question!";
 					updateField(curPassword);
 					updateField(secQuestion);
 					updateField(chaAnswer);
 				} else if (data.status == "wrongpassword") {
-					message.html("Incorrect password!");
+					message.innerHTML="Incorrect password!";
 					clearField(secQuestion);
 					clearField(chaAnswer);
 					updateField(curPassword);
 				} else {
-					message.html("Unknown error.");
+					message.innerHTML="Unknown error.";
 					clearField(curPassword);
 					updateField(secQuestion);
 					updateField(chaAnswer);
@@ -64,7 +64,7 @@ function processChallenge(password, question, answer){
 			}
 		},
 		error:function() {
-			message.html("Error: Could not communicate with server");
+			message.innerHTML="Error: Could not communicate with server";
 		}
 	});
 }
@@ -78,9 +78,9 @@ function validatePassword(){
     var message = document.getElementById("passwordMessage");
     
     //Fetching inputs from the password form
-    var password = currentField.val();
-    var newPassword = newField.val();
-    var confirmedPassword = confirmField.val();
+    var password = currentField.value;
+    var newPassword = newField.value;
+    var confirmedPassword = confirmField.value;
     
     //Checking for empty inputs 
     if(password === "" || newPassword === "" || confirmedPassword === ""){
@@ -104,14 +104,14 @@ function validatePassword(){
         else{
             clearField(confirmField);
         }
-        message.html("Missing form data, please enter all fields");
+        message.innerHTML="Missing form data, please enter all fields";
         return;
     }
     
     //Comparing new password with old one
     if(password === newPassword){
         updateField(newField);
-        message.html("New password cannot be the same as the current one.");
+        message.innerHTML="New password cannot be the same as the current one.";
         return;
     }
     else{
@@ -124,14 +124,14 @@ function validatePassword(){
        }
     else{
         updateField(newField);
-        message.html("New password must follow the specified rules above.");
+        message.innerHTML="New password must follow the specified rules above.";
         return;
     }
     
     //Checks the confirmed password
     if(newPassword !== confirmedPassword){
         updateField(confirmField);
-        message.html("New password did not match with the confirmation.");
+        message.innerHTML="New password did not match with the confirmation.";
         return;
     }
     else{
@@ -143,11 +143,11 @@ function validatePassword(){
 
 //Changes text input fields to red if validation fails
 function updateField(field){
-    field.css("background-color", "rgba(255, 0, 6, 0.2)");
+    field.style.display="backgroundColor", "rgba(255, 0, 6, 0.2)";
 }
 //Resets a field color
 function clearField(field){
-    field.css("background-color", "white");
+    field.style.display="backgroundColor", "white";
 }
 
 //Sends data from form to profileservice.php
@@ -158,8 +158,8 @@ function changePassword(){
     var confirmField = document.getElementById("newPassword2");
     var message = document.getElementById("passwordMessage");
     //Value of form inputs
-    var password = currentField.val();
-    var newPassword = newField.val();
+    var password = currentField.value;
+    var newPassword = newField.value;
     
     $.ajax({
         type: "POST",
@@ -177,23 +177,23 @@ function changePassword(){
                 clearField(newField);
                 clearField(confirmField);
 				document.getElementById("passwordForm").reset();
-				message.html("Password successfully updated!");
+				message.innerHTML="Password successfully updated!";
 			} else {
 				if (data.status == "teacher") {
-					message.html("Teachers can't change password.");
+					message.innerHTML="Teachers can't change password.";
 					updateField(currentField);
 					updateField(newField);
 					updateField(confirmField);
 				} else if (data.status == "wrongpassword") {
-					message.html("Current password is not correct.");
+					message.innerHTML="Current password is not correct.";
 					updateField(currentField);
 				} else {
-					message.html("Unknown error.")
+					message.innerHTML="Unknown error."
 				}
 			}
 		},
 		error:function() {
-			message.html("Error: Could not communicate with server");
+			message.innerHTML="Error: Could not communicate with server";
 		}
 	});
 }
