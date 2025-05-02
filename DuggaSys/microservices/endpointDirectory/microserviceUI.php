@@ -45,7 +45,7 @@ try {
     }
 
 } catch (PDOException $e) {
-    $dbError = "Database is not installed. Execute 'setupEndpointDirectory.php' to install it. ";
+    $dbError = "Database is not installed. Press the button below to create a database. ";
 }
 ?>
 
