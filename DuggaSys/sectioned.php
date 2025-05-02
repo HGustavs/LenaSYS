@@ -101,6 +101,7 @@
 	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 	<script type="text/babel" src="../Shared/components/Button.js"></script>
+	<script type="text/babel" src="../Shared/components/Dropdown.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
@@ -150,12 +151,16 @@
 		<div id='motdArea'>
 			<?php
 				echo "<tr>";
+				echo "<div class=motdLeftContainer>";
 				echo "	<div class='motdBoxheader' >";
 				echo "		<h3>Message of the day</h3>";
-				echo "		<input type='button' id='MOTDbutton' value='Close' class='submit-button' onclick='closeMOTD()'/>";
 				echo "	</div>";
 				echo "  <div id='motdContent' style='text-align:center'>";
 				echo "		<p style='text-align:center' id='motd'></p>";
+				echo" 	</div>";
+				echo" 	</div>";
+				echo"<div class ='motdRightContainer'>";
+				echo "		<input type='button' id='MOTDbutton' value='Close' class='submit-button' onclick='closeMOTD()'/>";
 				echo" 	</div>";
 				echo "</tr>";
 			?>
@@ -247,10 +252,25 @@
 		
 			<!-- end hide button -->
 			
+			<div id="course-header-dropdown">
+				<!-- View mode toggle buttons -->
+				<script type="text/babel">
+					ReactDOM.createRoot(document.getElementById('course-header-dropdown')).render(
+						<>
+							<Dropdown dropdownName="View" onClick={() => showDropdown('course-header-dropdown-content')} id="course-header-dropdown-content">
+								<Button className="submit-button" title="Normal View" onClick={() => {setViewMode('normal')}}>Normal</Button>
+								<Button className="submit-button" title="Scroll View" onClick={() => {setViewMode('scroll')}}>Scroll</Button>
+								<Button className="submit-button" title="Overview" onClick={() => {setViewMode('overview')}}>Overview</Button>
+							</Dropdown>
+						</>
+					);
+				</script>
+			</div>
+
 			<div id='course-label'>
-					<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
-					<span id='course-coursecode'>UNK</span>
-					<span id='course-versname' class='courseVersionField'>UNK</span>
+				<span id='course-coursename' class='nowrap ellipsis' >UNK</span>
+				<span id='course-coursecode'>UNK</span>
+				<span id='course-versname' class='courseVersionField'>UNK</span>
 			</div>
 
 
@@ -287,15 +307,7 @@
 		<!-- FAB END -->
 
 		<div id='courseList'>
-
-		<!-- View mode toggle buttons -->
-		<div class="view-label">
-			<h2>View</h2>
-  			<button class="submit-button" onclick="setViewMode('normal')">Normal</button>
-  			<button class="submit-button" onclick="setViewMode('scroll')">Scroll</button>
- 			<button class="submit-button" onclick="setViewMode('overview')">Overview</button>
-		</div>
-
+		
 		<!-- Section List -->
 		<div id='Sectionlisti'>
 		
