@@ -148,7 +148,7 @@ Checks if a user exists based on the username, creates a new user if it not and 
 
 
 
-# getAccessedService_ms.php
+# name of file/service
 getAccessedService_ms.php
 
 ## Description
@@ -156,7 +156,7 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: int
+   - Type: String
    - Description: Operation option
 
 - Parameter: $courseid
@@ -164,7 +164,7 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
    - Description: Course ID
 
 - Parameter: $log_uuid
-   - Type: int
+   - Type: varchar
    - Description: Unique identifier for logging purposes
 
 ## Calling Methods
@@ -183,7 +183,7 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
 - retrieveAccessedService_ms.php
 
 
-# retrieveAccessedService_ms.php
+# name of file/service
 retrieveAccessedService_ms.php
 
 ## Description
@@ -209,7 +209,7 @@ The data is only retrieved for users who have specific access.
    - Description: Course ID
 
 - Parameter: $log_uuid
-   - Type: int
+   - Type: varchar
    - Description: Unique identifier for logging purposes
 
 - Parameter: $opt
@@ -263,7 +263,7 @@ The data is only retrieved for users who have specific access.
 - Output: $access
    - Type: boolean
    - Description: Whether a user has access or not to view the course data
-   
+
 - Output: $username
    - Type: varchar
    - Description: Username
