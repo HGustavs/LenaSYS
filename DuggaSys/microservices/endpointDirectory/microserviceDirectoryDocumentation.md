@@ -1,3 +1,5 @@
+# Endpoint Directory Database Setup Tutorial
+
 # Endpoint Directory Database Table Documentation
 ## Tables
 - microservices
