@@ -34,6 +34,8 @@ class StateMachine {
         this.currentTime = new Date().getTime();
         /** Keeps track of the type of change being made */
         this.changeType = undefined;
+
+        this.numberOfChanges = 0;
     }
 
     /**
@@ -135,6 +137,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
+        stateMachine.numberOfChanges++;
         updateLatestChange()
     }
 
@@ -1906,8 +1909,9 @@ function storeDiagramInLocalStorage(key) {
         objToSave.timestamp = new Date().getTime(); 
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
-
+        stateMachine.numberOfChanges = 0; // Reset the number of changes to 0, so that the user can save again without having to make a change first.
         displayMessage(messageTypes.SUCCESS, "Diagram saved! (File saved to: " + key + ")");
+        
     }
 }
 
@@ -2175,6 +2179,20 @@ function closeModal() {
  * @param {string} key The name/key of the diagram to load.
  */
 function loadDiagramFromLocalStorage(key) {
+
+    console.log("numberOfChanges: " + stateMachine.numberOfChanges);
+        if(stateMachine.numberOfChanges > 0) {
+
+            // Check if there are unsaved changes
+            if (confirm("You have unsave stuff, do you want to save it?") == true) {
+                stateMachine.numberOfChanges = 0;
+                quickSaveDiagram();
+            } else {
+                stateMachine.numberOfChanges = 0;
+                console.log("you pressed cancel")
+            } 
+        }
+    
     if (localStorage.getItem("diagrams")) {
         let diagramFromLocalStorage = localStorage.getItem("diagrams");
         diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
@@ -2245,6 +2263,7 @@ function getCurrentFileName() {
 function quickSaveDiagram() {
     if (activeFile == null) {
         showSavePopout();
+        stateMachine.numberOfChanges = 0;
     } else {
         storeDiagramInLocalStorage(activeFile);
     }
@@ -2303,7 +2322,6 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true) {
 
         // Scrub to the latest point in the diagram
         stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
-
         // Display success message for load
         if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
 
