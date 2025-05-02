@@ -433,8 +433,8 @@ function returned(data)
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
-	// Allows resizing of boxes on the page
-	resizeBoxes("#div2", retData["templateid"]);
+	// Allows resizing of boxes on the page & requestAnimationFrame for delay so boxes loads after page
+	requestAnimationFrame(() => resizeBoxes("#div2", retData["templateid"]));
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
@@ -3457,6 +3457,134 @@ function resetBoxes()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
+
+
+function resizeBoxes(containerSelector) {
+    const container = document.querySelector(containerSelector);
+
+    container.querySelectorAll('.resizer-horizontal, .resizer-vertical').forEach(r => r.remove());
+
+    let wrappers = Array.from(container.querySelectorAll('.boxwrapper'));
+
+    wrappers.sort((a, b) => {
+        const rectA = a.getBoundingClientRect();
+        const rectB = b.getBoundingClientRect();
+        return rectA.top !== rectB.top ? rectA.top - rectB.top : rectA.left - rectB.left;
+    });
+
+    for (let i = 0; i < wrappers.length - 1; i++) {
+        const current = wrappers[i];
+        const next = wrappers[i + 1];
+        const rect1 = current.getBoundingClientRect();
+        const rect2 = next.getBoundingClientRect();
+
+        const horizontalOverlap = rect1.bottom > rect2.top && rect1.top < rect2.bottom;
+        const verticalOverlap = rect1.right > rect2.left && rect1.left < rect2.right;
+
+        const horizontal = horizontalOverlap && Math.abs(rect1.right - rect2.left) < 10;
+        const vertical = verticalOverlap && Math.abs(rect1.bottom - rect2.top) < 10;
+
+        const direction = horizontal ? 'horizontal' : vertical ? 'vertical' : null;
+
+        if (!direction) continue;
+
+        const resizer = document.createElement('div');
+        resizer.classList.add(`resizer-${direction}`);
+        resizer.style.position = 'absolute';
+        resizer.style.zIndex = '10';
+		resizer.style.background = 'transparent';
+        resizer.style.cursor = direction === 'horizontal' ? 'col-resize' : 'row-resize';
+
+        if (direction === 'horizontal') {
+            resizer.style.right = '0';
+            resizer.style.top = '0';
+            resizer.style.width = '6px';
+            resizer.style.height = '100%';
+        } else {
+            resizer.style.left = '0';
+            resizer.style.bottom = '0';
+            resizer.style.width = '100%';
+            resizer.style.height = '6px';
+        }
+
+        current.style.position = 'relative';
+        current.style.margin = '0';
+        next.style.margin = '0';
+        current.appendChild(resizer);
+
+
+
+        makeSplitter(resizer, current, next, direction);
+    }
+}
+
+
+function makeSplitter(resizer, firstWrapper, secondWrapper, direction) {
+    let start = 0;
+    let firstStart = 0;
+    let secondStart = 0;
+
+    function onMouseDown(e) {
+        e.preventDefault();
+        start = direction === 'horizontal' ? e.clientX : e.clientY;
+        firstStart = getEffectiveSize(firstWrapper, direction);
+        secondStart = getEffectiveSize(secondWrapper, direction);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    }
+
+	function onMouseMove(e) {
+		const current = direction === 'horizontal' ? e.clientX : e.clientY;
+		const delta = current - start;
+	
+		const newFirstSize = Math.max(100, firstStart + delta);
+		const newSecondSize = Math.max(100, secondStart - delta);
+	
+		applySize(firstWrapper, direction, newFirstSize);
+		applySize(secondWrapper, direction, newSecondSize);
+	}
+
+    function onMouseUp() {
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    resizer.addEventListener('mousedown', onMouseDown);
+}
+
+function applySize(el, direction, size) {
+	el.style.flexBasis = size + 'px';
+  }
+
+function getEffectiveSize(el, direction) {
+    const parentDisplay = window.getComputedStyle(el.parentElement).display;
+    const isFlex = parentDisplay.includes('flex');
+    const isRow = window.getComputedStyle(el.parentElement).flexDirection === 'row';
+
+    if (isFlex && ((direction === 'horizontal' && isRow) || (direction === 'vertical' && !isRow))) {
+        const basis = window.getComputedStyle(el).flexBasis;
+        return parseFloat(basis) || el.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
+    } else {
+        return el.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+/*
 function resizeBoxes(parent, templateId) 
 {
 	var remaining;
@@ -4027,6 +4155,8 @@ function resizeBoxes(parent, templateId)
 		});
 	}
 }	
+*/
+
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
 //------------------------------------------------------------------------------------------------------------------------------
