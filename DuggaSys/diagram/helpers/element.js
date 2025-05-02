@@ -94,29 +94,41 @@ function setPos(elements, x, y) {
         }
     } else {
         elements.forEach(obj => {
-            if (obj.isLocked) return;
+            if (obj.isLocked) {
+                return;
+            }
+
             if (settings.grid.snapToGrid && !ctrlPressed) {
-                console.log('Snap-to-grid branch for', obj.id);
-                // Calculate nearest snap point
-                obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                // Set the new snap point to center of element
-                obj.x -= obj.width / 2;
-                obj.y -= obj.height / 2;
-                console.log('obj value x and y in snapToGrid:', obj.x, obj.y);
+                const entityKinds = [
+                    elementTypesNames.EREntity,
+                    elementTypesNames.UMLEntity,
+                    elementTypesNames.IEEntity,
+                    elementTypesNames.SDEntity
+                ];
+                if (entityKinds.includes(obj.kind)) {
+                    const candidateX = obj.x - (x / zoomfact);
+                    obj.x = Math.round(candidateX / (settings.grid.gridSize/2)) * (settings.grid.gridSize/2);
+                } else {
+                    obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.width / 2;
+                }
+                obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.height / 2;
             } else {
                 obj.x -= (x / zoomfact);
                 obj.y -= (y / zoomfact);
             }
+            
             // Add the object-id to the idList
             idList.push(obj.id);
             // Make the coordinates without decimals
             obj.x = Math.round(obj.x);
             obj.y = Math.round(obj.y);
-            console.log('value without decimals x and y in snapToGrid:', obj.x, obj.y);
         });
-        if (idList.length) stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
+
+        if (idList.length) {
+            stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
+        }
     }
+
     // Update positions
     updatepos();
 }
