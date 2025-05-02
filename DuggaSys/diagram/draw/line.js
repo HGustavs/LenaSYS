@@ -508,7 +508,8 @@ function getLineAttributes(f, t, ctype) {
     } 
     
     // Special case if line is connected to or from a ER realation
-    if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation) {
+    if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation ||
+        f.kind === elementTypesNames.EREntity || t.kind === elementTypesNames.EREntity) {
         const shrink = 8 * zoomfact; 
 
         if (ctype === lineDirection.LEFT || ctype === lineDirection.RIGHT) {
