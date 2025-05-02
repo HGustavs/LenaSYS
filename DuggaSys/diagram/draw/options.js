@@ -1517,13 +1517,16 @@ function generateErTableString() {
                             if (Array.isArray(allEntityList[i][lastList][k][l])) {
                                 for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
                                     currentString += `${allEntityList[i][lastList][k][l][m].name}`;
+                                    console.log("if ",currentString);
                                 }
                             } else {
                                 currentString += `${allEntityList[i][lastList][k][l].name}`;
+                                console.log("else ",currentString);
                             }
                         }
                         currentString += `</span>, `;
                     }
+                    console.log("else ",currentString);
                 }
             } else {
                 // Again iterate through the list and push in only normal attributes

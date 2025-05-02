@@ -785,6 +785,7 @@
 .options-fieldset {
     width: 90%;
     margin: auto;
+    word-break: break-word;
 }
 
 .options-fieldset-show {
