@@ -79,42 +79,44 @@
 			}
 
 
-				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
+			//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 			//Always on courseed.php ($noup is none). Contains only home and darkmode icons.
 			if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid'])) || $noup=='NONE'){
-					
+				
 				echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'></td>";
 				echo "<td class='navBurgerIcon' style='display: none;'> </td>";
 				echo "<div id='navBurgerBox' style='display: none;'>";
+				echo "	<div id='homeBurgerDiv'>";
+				echo "		<a id='homeBurger' href='../DuggaSys/courseed.php'>";
+				echo "			<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
+				echo "		</a>";
+				echo "	</div>";
+				
+				echo "	<div id='goBackBurgerDiv'>";
+							// Code to not show the "go-back" button in courseed.php.
+							if($noup=='NONE'){
+								echo "<a id='goBackBurger'style='display: none;'>";
+							}
+							if($noup=='COURSE'){
+								echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
+							}
+							else if($noup=='SECTION'){
+								echo "<a id='goBackBurger' href='";
+								echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+								echo "'>";
+							}
+				echo "				<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
+				echo "			</a>";
+				echo"		</div>";
 
-				echo "<div id='homeBurgerDiv'>";
-				echo "<a id='homeBurger' href='../DuggaSys/courseed.php'>";
-				echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
-				echo "</a>";
-				echo"</div>";
+				echo "	<div id='darkModeBurgerDiv'>";
+				echo "		<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
+				echo "			<img alt ='Dark' class='navBurgerButt' title='Toggle between dark mode' src='../Shared/icons/ThemeToggle.svg'></>";
+				echo "		</a>";
+				echo "	</a>";
+				echo"	</div>";
 
-				echo "<div id='goBackBurgerDiv'>";
-				// Code to not show the "go-back" button in courseed.php.
-				if($noup=='NONE'){
-					echo "<a id='goBackBurger'style='display: none;'>";
-				}
-				if($noup=='COURSE'){
-					echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
-				}
-				else if($noup=='SECTION'){
-					echo "<a id='goBackBurger' href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
-					echo "'>";
-				}
-				echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
-				echo "</a>";
-				echo"</div>";
-				echo "<div id='darkModeBurgerDiv'>";
-				echo "<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
-				echo "<img alt ='Dark' class='navBurgerButt' title='Toggle between dark mode' src='../Shared/icons/ThemeToggle.svg'></>";
-				echo "</a>";
-				echo "</a>";
-				echo"</div>";
+
 				echo"</div>";					
 			}
 			
@@ -136,6 +138,7 @@
 						<img alt='motd icon' src='../Shared/icons/MOTD.svg'>
 					</div>
 				</td>";
+				
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -173,11 +176,12 @@
 
 							echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
 							echo "    <div class='editVers menuButton' tabindex='0'>";
-              				echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
+             				echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
 
 					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {
+
 							echo "<td class='newVers' style='display: inline-block;'>";
 							echo "    <div class='newVers menuButton' tabindex='0'>";
               				echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
