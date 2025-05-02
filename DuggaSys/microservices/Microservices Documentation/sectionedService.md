@@ -1,12 +1,12 @@
 # sectionedService Documentation
 
-# createListEntry_ms
+# Name of file/service
+createListEntry_ms
 
 ## Description
 Adds a new list entry to a course, handling the creation of a new code example if necessary, and then retrieves the updated sectioned data for the course. List entries are duggas, headers, tests etc.
 
 ## Input Parameters
-
 - Parameter: $opt
    - Type: ?
    - Description: Operation type.
@@ -68,21 +68,17 @@ Adds a new list entry to a course, handling the creation of a new code example i
    - Description: For logging purposes.
 
 ## Calling Methods
-
-- GET (getOP)
+- GET
 
 ## Output Data and Format
-
 - Output
    - Type: JSON
    - Description: The script returns a JSON object describing the updated course content, after inserting a new item (like a code example, text, or list entry) into the course.
 
 ## Examples of Use
-
 'SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;'
 
 ### Microservices Used
-
 getUid_ms
 createNewListEntry_ms
 createNewCodeExample_ms
@@ -90,15 +86,13 @@ retrieveSectionedService_ms
 
 ---
 
-# deleteListEntries_ms
+# Name of file/service
+deleteListEntries_ms
 
 ## Description
 Deletes list entries from the database. List entries are duggas, headers, tests etc.
 
 ## Input Parameters
-
-$sectid = getOP('lid');
-
 - Parameter: $opt
    - Type: ?
    - Description: Operation type.
@@ -120,22 +114,18 @@ $sectid = getOP('lid');
    - Description: For logging purposes.
 
 ## Calling Methods
-
-- GET (getOP)
+- GET
 
 ## Output Data and Format
-
 - Output
    - Type: JSON
    - Description: The script returns a JSON object describing which listentry that should be deleted from the listentries-table.
 
 ## Examples of Use
-
 'DELETE FROM useranswer WHERE moment=:lid'
 
 'DELETE FROM listentries WHERE lid = :lid'
 
 ### Microservices Used
-
 getUid_ms
 retrieveSectionedService_ms
