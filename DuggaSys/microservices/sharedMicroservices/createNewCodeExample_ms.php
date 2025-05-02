@@ -1,6 +1,6 @@
 <?php
 include_once "./getUid_ms.php";
-
+include_once "./logUserEvent_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -11,11 +11,8 @@ session_start();
 	// Microservice call to retrieve username
 	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
 	$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
-
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$response = curl_exec($ch);
-	curl_close($ch);
+	
+	$response = callMicroservicePOST($url, [], true);
 
 	$data = json_decode($response, true);
 	$username = $data['username'] ?? 'unknown';
