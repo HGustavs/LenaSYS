@@ -86,6 +86,13 @@
 				echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'></td>";
 				echo "<td class='navBurgerIcon' style='display: none;'> </td>";
 				echo "<div id='navBurgerBox' style='display: none;'>";
+			
+				echo "	<div id='motdDiv' class='navButt' onclick='showServerMessage();' >";
+				echo "		<a id='motdBurger'>";
+				echo "			<img alt='motd' class='navBurgerButt' src='../Shared/icons/MOTD.svg'>";
+				echo "		</a>";
+				echo "	</div>";
+
 				echo "	<div id='homeBurgerDiv'>";
 				echo "		<a id='homeBurger' href='../DuggaSys/courseed.php'>";
 				echo "			<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
