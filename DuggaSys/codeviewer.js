@@ -208,8 +208,8 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	// Löst detta innan på issue #16638
-	if ($('#fileedButton').length) {
+	
+	if (document.getElementById('fileedButton')) {
 		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
 		document.getElementById('fileedButton').style = "display:table-cell;";
 	}
@@ -258,9 +258,9 @@ function returned(data)
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
-	// Löst detta innan på issue #16638
 	// Clear div2
-	$("#div2").html("");
+	document.getElementById("div2").innerHTML = "";
+
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -284,9 +284,9 @@ function returned(data)
 		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
-		// Löst detta innan på issue #16638
+
 		// don't create templatebox if it already exists
-		if ($("#" + contentid).length == 0) {
+		if (!document.getElementById(contentid)) {
 			addTemplatebox(contentid);
 		}
 
@@ -835,8 +835,8 @@ function displayEditContent(boxid)
 	document.getElementById("boxtitle").value = box[4];
 	document.getElementById("boxcontent").value = box[1];
 
-	// Löst detta innan på issue #16638
-	changeDirectory($("#boxcontent"));
+	changeDirectory(document.getElementById("boxcontent"));
+
 
 	if (box[5] != null) {
 		box[5] = box[5].replace(/&#47;/g, "/");
@@ -852,9 +852,10 @@ function displayEditContent(boxid)
 	for (var i = 0; i < wordl.length; i++) {
 		str += "<option value='" + wordl[i][0] + "'>" + wordl[i][1] + "</option>";
 	}
-	// Löst detta innan på issue #16638
-	$("#wordlist").html(str);
-	$("#wordlist").val(box[3]);
+
+	document.getElementById("wordlist").innerHTML = str;
+	document.getElementById("wordlist").value = box[3];
+
 
 	var str = "";
 	for (var i = 0; i < retData['improws'].length; i++) {
@@ -2976,6 +2977,10 @@ function zoomText(boxid, increment)
 
 	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
 	
+	if (isNaN(fontSize)) {
+		fontSize = parseInt(window.getComputedStyle(document.getElementById("box" + boxid)).fontSize);
+	  }
+	  
 	var zoomOutButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
 	var zoomInButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
 
