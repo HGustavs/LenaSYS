@@ -585,18 +585,22 @@ document.addEventListener('contextmenu', event => {
 });
 
 
-//Eventhandler that checks if key has been pressed, needs to be reworked to accomodate the new quicksave.
+//Adds an EventListener to the document, that listens for keys being pressed.
+//NOTE: If adding additional keyboard shortcuts, keep in mind that if the action taken happens instantaneously and is only meant to happen once per press, only call upon the function in the other EventListener below.
 document.addEventListener('keydown', function (e) {
+    //Sets variables for each special key (Ctrl, Alt, etc.) to true if they are being pressed down.
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && !ctrlPressed) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && !altPressed) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && !ctrlPressed) ctrlPressed = true;
 
+    //Exits out of the replay mode if the escape button is pressed when replay mode is active.
     if (isKeybindValid(e, keybinds.ESCAPE) && !escPressed && settings.replay.active) {
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
     }
 
+    //Special functionality for if the enter button is pressed when writing something in an input field.
     if (isKeybindValid(e, keybinds.ENTER) && /INPUT|SELECT/.test(document.activeElement.nodeName.toUpperCase())) {
         if (document.getElementById("lineLabel")) {
             changeLineProperties();
@@ -630,6 +634,8 @@ document.addEventListener('keydown', function (e) {
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
+    //Functionality for each available keyboard shortcut in the diagram. Check constants.js to see all keybinds.
+    //"e.preventDefault() prevents the browser from taking action upon a keyboard shortcut being pressed." This ensures that no keyboard shortcuts for the diagram end up clashing with commonplace browser shortcuts.
     if (isKeybindValid(e, keybinds.ZOOM_IN)) {
         e.preventDefault();
         zoomin();
@@ -638,23 +644,20 @@ document.addEventListener('keydown', function (e) {
         e.preventDefault();
         zoomout();
     }
-
     if (isKeybindValid(e, keybinds.ZOOM_RESET)) {
         e.preventDefault();
         zoomreset();
     }
-
     if (isKeybindValid(e, keybinds.SELECT_ALL)) {
         e.preventDefault();
         document.getElementById("mouseMode0").click();
         selectAll();
     }
-
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)) {
         e.preventDefault();
     }
 
-    // Moving object with arrows
+    // Moving object with arrow keys.
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
         e.preventDefault();
         let overlapDetected = false;
@@ -735,16 +738,14 @@ document.addEventListener('keydown', function (e) {
         }
     }
 
+    //Saving and loading diagrams.
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) {
         e.preventDefault();
-        quickSaveDiagram();
     }
-
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) {
         e.preventDefault();
         showSavePopout();
     }
-
     if (isKeybindValid(e, keybinds.LOAD_DIAGRAM)) {
         e.preventDefault();
         showModal();
@@ -757,7 +758,7 @@ document.addEventListener('keydown', function (e) {
 });
 
 
-//Eventhandler that checks for a key being released, probably also needs to be modified to accomodate quicksave.
+//Adds an EventListener to the document that listens for keys being released. Only call upon functions here if the press is only meant to trigger the action once AND the action is instantaneous.
 document.addEventListener('keyup', function (e) {
     const pressedKey = e.key.toLowerCase();
 
@@ -773,6 +774,7 @@ document.addEventListener('keyup', function (e) {
 
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        //Reverts input name if not saved and closes the options panel if ESC is pressed during element renaming.
         if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
             if (context.length == 1) {
                 document.activeElement.value = context[0].name;
@@ -841,6 +843,7 @@ document.addEventListener('keyup', function (e) {
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
+    //Actions which are taken if the keyboard shortcut has been pressed and released.
     if (isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
     if (isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
     if (isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
