@@ -4,8 +4,17 @@
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../gitfetchService.php";
+pdoConnect();
+session_start();
 
-function insertIntoSQLite($url, $cid, $token) { 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['githubURL'], $_POST['cid'], $_POST['token'])) {
+        $githubURL =$_POST['githubURL'];
+        $cid = $_POST['cid'];
+        $token = $_POST['token'];
+    }
+}
     if(strlen($token)<1)
     {
         $token=fetchOldToken($cid);
@@ -33,5 +42,5 @@ function insertIntoSQLite($url, $cid, $token) {
     } else {
         bfs($url, $cid, "REFRESH");
     }
-}
+
 ?>
