@@ -1581,7 +1581,7 @@ function generateErTableString() {
                     }
                 }
                 lastList = allEntityList[i].length - 1;
-                if (Array.isArray(allEntityList[i][lastList])) {
+                if (Array.isArray(allEntityList[i][lastList]) && lastList != 1) {
                     // Push in foregin attributes, for every list push in entity followed by its value
                     for (let k = 0; k < allEntityList[i][lastList].length; k++) {
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;
