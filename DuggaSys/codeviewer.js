@@ -3456,6 +3456,7 @@ function resetBoxes()
 //-----------------------------------------------------------------------------
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
+// Includes helper methods: makeSplitter, applySize, createResizer, and getEffectiveSize
 //-----------------------------------------------------------------------------
 
 
@@ -3464,698 +3465,133 @@ function resizeBoxes(containerSelector) {
 
     container.querySelectorAll('.resizer-horizontal, .resizer-vertical').forEach(r => r.remove());
 
-    let wrappers = Array.from(container.querySelectorAll('.boxwrapper'));
-
-    wrappers.sort((a, b) => {
-        const rectA = a.getBoundingClientRect();
-        const rectB = b.getBoundingClientRect();
-        return rectA.top !== rectB.top ? rectA.top - rectB.top : rectA.left - rectB.left;
+    const wrappers = Array.from(container.querySelectorAll('.boxwrapper')).sort((a, b) => {
+        const aRect = a.getBoundingClientRect();
+        const bRect = b.getBoundingClientRect();
+        return aRect.top !== bRect.top ? aRect.top - bRect.top : aRect.left - bRect.left;
     });
 
-    for (let i = 0; i < wrappers.length - 1; i++) {
+    for (let i = 0; i < wrappers.length; i++) {
         const current = wrappers[i];
-        const next = wrappers[i + 1];
         const rect1 = current.getBoundingClientRect();
-        const rect2 = next.getBoundingClientRect();
 
-        const horizontalOverlap = rect1.bottom > rect2.top && rect1.top < rect2.bottom;
-        const verticalOverlap = rect1.right > rect2.left && rect1.left < rect2.right;
+        for (let j = 0; j < wrappers.length; j++) {
+            if (i === j) continue;
 
-        const horizontal = horizontalOverlap && Math.abs(rect1.right - rect2.left) < 10;
-        const vertical = verticalOverlap && Math.abs(rect1.bottom - rect2.top) < 10;
+            const compare = wrappers[j];
+            const rect2 = compare.getBoundingClientRect();
 
-        const direction = horizontal ? 'horizontal' : vertical ? 'vertical' : null;
+            const overlapsHorizontally = rect1.bottom > rect2.top && rect1.top < rect2.bottom;
+            const overlapsVertically = rect1.right > rect2.left && rect1.left < rect2.right;
 
-        if (!direction) continue;
+            const nearRightEdge = Math.abs(rect1.right - rect2.left) < 10;
+            const nearBottomEdge = Math.abs(rect1.bottom - rect2.top) < 10;
 
-        const resizer = document.createElement('div');
-        resizer.classList.add(`resizer-${direction}`);
-        resizer.style.position = 'absolute';
-        resizer.style.zIndex = '10';
-		resizer.style.background = 'transparent';
-        resizer.style.cursor = direction === 'horizontal' ? 'col-resize' : 'row-resize';
+            const isHorizontal = overlapsHorizontally && nearRightEdge;
+            const isVertical = overlapsVertically && nearBottomEdge;
 
-        if (direction === 'horizontal') {
-            resizer.style.right = '0';
-            resizer.style.top = '0';
-            resizer.style.width = '6px';
-            resizer.style.height = '100%';
-        } else {
-            resizer.style.left = '0';
-            resizer.style.bottom = '0';
-            resizer.style.width = '100%';
-            resizer.style.height = '6px';
+            const direction = isHorizontal ? 'horizontal' : isVertical ? 'vertical' : null;
+            if (!direction) continue;
+
+            const resizer = createResizer(direction);
+            current.style.position = 'relative';
+            current.style.margin = '0';
+            compare.style.margin = '0';
+            current.appendChild(resizer);
+
+            makeSplitter(resizer, current, compare, direction);
         }
-
-        current.style.position = 'relative';
-        current.style.margin = '0';
-        next.style.margin = '0';
-        current.appendChild(resizer);
-
-
-
-        makeSplitter(resizer, current, next, direction);
     }
 }
 
+function createResizer(direction) {
+    const resizer = document.createElement('div');
+    resizer.classList.add(`resizer-${direction}`);
+    resizer.style.position = 'absolute';
+    resizer.style.cursor = direction === 'horizontal' ? 'ew-resize' : 'ns-resize';
+    resizer.style.zIndex = '10';
 
-function makeSplitter(resizer, firstWrapper, secondWrapper, direction) {
+    if (direction === 'horizontal') {
+        Object.assign(resizer.style, {
+            right: '0',
+            top: '0',
+            width: '6px',
+            height: '100%'
+        });
+    } else {
+        Object.assign(resizer.style, {
+            left: '0',
+            bottom: '0',
+            width: '100%',
+            height: '6px'
+        });
+    }
+
+    return resizer;
+}
+
+function makeSplitter(resizer, firstBox, secondBox, direction) {
     let start = 0;
-    let firstStart = 0;
-    let secondStart = 0;
+    let initialFirst = 0;
+    let initialSecond = 0;
 
-    function onMouseDown(e) {
+    resizer.addEventListener('mousedown', (e) => {
         e.preventDefault();
         start = direction === 'horizontal' ? e.clientX : e.clientY;
-        firstStart = getEffectiveSize(firstWrapper, direction);
-        secondStart = getEffectiveSize(secondWrapper, direction);
+        initialFirst = getEffectiveSize(firstBox, direction);
+        initialSecond = getEffectiveSize(secondBox, direction);
+
+        function onMouseMove(e) {
+            const current = direction === 'horizontal' ? e.clientX : e.clientY;
+            const delta = current - start;
+
+            const newFirstSize = Math.max(100, initialFirst + delta);
+            const newSecondSize = Math.max(100, initialSecond - delta);
+
+            applySize(firstBox, direction, newFirstSize);
+            applySize(secondBox, direction, newSecondSize);
+        }
+
+        function onMouseUp() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
-    }
-
-	function onMouseMove(e) {
-		const current = direction === 'horizontal' ? e.clientX : e.clientY;
-		const delta = current - start;
-	
-		const newFirstSize = Math.max(100, firstStart + delta);
-		const newSecondSize = Math.max(100, secondStart - delta);
-	
-		applySize(firstWrapper, direction, newFirstSize);
-		applySize(secondWrapper, direction, newSecondSize);
-	}
-
-    function onMouseUp() {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    }
-
-    resizer.addEventListener('mousedown', onMouseDown);
+    });
 }
 
-function applySize(el, direction, size) {
-	el.style.flexBasis = size + 'px';
-  }
+function applySize(element, direction, size) {
+    const style = window.getComputedStyle(element.parentElement);
+    const isFlex = style.display.includes('flex');
+    const isRowDirection = style.flexDirection === 'row';
 
-function getEffectiveSize(el, direction) {
-    const parentDisplay = window.getComputedStyle(el.parentElement).display;
-    const isFlex = parentDisplay.includes('flex');
-    const isRow = window.getComputedStyle(el.parentElement).flexDirection === 'row';
+    element.style.margin = '0';
 
-    if (isFlex && ((direction === 'horizontal' && isRow) || (direction === 'vertical' && !isRow))) {
-        const basis = window.getComputedStyle(el).flexBasis;
-        return parseFloat(basis) || el.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
+    if (isFlex) {
+        element.style.flexShrink = '0';
+        element.style.flexGrow = '0';
+        element.style.flexBasis = `${size}px`;
+        element.style[direction === 'horizontal' ? 'width' : 'height'] = `${size}px`;
     } else {
-        return el.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
+        element.style[direction === 'horizontal' ? 'width' : 'height'] = `${size}px`;
     }
 }
 
+function getEffectiveSize(element, direction) {
+    const style = window.getComputedStyle(element.parentElement);
+    const isFlex = style.display.includes('flex');
+    const isRowDirection = style.flexDirection === 'row';
 
+    if (isFlex && ((direction === 'horizontal' && isRowDirection) || (direction === 'vertical' && !isRowDirection))) {
+        const basis = window.getComputedStyle(element).flexBasis;
+        return parseFloat(basis) || element.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
+    }
 
+    return element.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
+}
 
-
-
-
-
-
-
-
-
-
-  
-  
-
-/*
-function resizeBoxes(parent, templateId) 
-{
-	var remaining;
-	if(templateId == 1)
-	{
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();	
-				//box wrapper 2 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = div2 widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}						
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
-		});
-	}
-	if(templateId == 2){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box1wrapper').height();
-				document.querySelector('#box2wrapper').style.height = remaining + "px";		
-			},		
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "s",
-			containment: parent	
-		});
-	}
-	if(templateId == 3){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";	
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
-
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-				document.querySelector('#box3wrapper').style.height = remaining + "px";
-			},
-		handles: "s",
-		containment: parent,
-		maxHeight: ($(parent).height()*0.85),
-		minHeight: ($(parent).height()*0.16)
-		});
-	}
-	if(templateId == 4){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box1wrapper').width();
-					$('#box2wrapper').css('width', remaining + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}	
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-					$('#box3wrapper').css('height', remainingHeight + "px");
-				}		
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "e,s",
-			containment: parent
-	
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-
-				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
-				$('#box3wrapper').css('height', remaining + "px");
-			},
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "s",
-			containment: parent
-		});
-	}
-	if(templateId == 5){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box1wrapper').width();
-					$('#box2wrapper').css('width', remaining + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}	
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-					$('#box3wrapper').css('height', remainingHeight + "px");
-					$('#box4wrapper').css('height', remainingHeight + "px");
-				}					
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16),
-			handles: "e, s",
-			containment: parent
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
-				$('#box3wrapper').css('height', remainingHeight + "px");
-				$('#box4wrapper').css('height', remainingHeight + "px");
-			},
-			handles: "s",
-			containment: parent,
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16)	
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();	
-				$('#box1wrapper').css('width', $('#box3wrapper').width());
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
-		});
-	}
-
-	if(templateId == 6){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");	
-				
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e" ,
-			containment: parent
-	
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-
-				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
-				}
-				else{
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-				}
-				
-			},
-			//Since there are 3 boxes in this columm the maxheight will be 70% of the screen instead of 85%
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			containment: parent,
-			handles:"s"
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-				}
-			},			
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			containment: parent,
-			handles: "s"
-		});
-	}
-	if(templateId == 7){
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box2wrapper').width();
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
-					$('#box4wrapper').css('width', $('#box2wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-					if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-					}
-					else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-					}
-				}					
-			},
-			handles:"s, e",
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box3wrapper').width() != $(parent).width()){
-					//East resizing	
-					remaining = ($(parent).width()) - $('#box3wrapper').width();			
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
-					$('#box4wrapper').css('width', $('#box3wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-					if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-					}
-					else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-					}	
-				}
-			},
-			handles: "s, e",
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-
-		});
-		$('#box4wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box4wrapper').width();	
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box4wrapper').width() + "px");
-				$('#box3wrapper').css('width', $('#box4wrapper').width() + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},
-			handles: "e",
-			maxHeight: ($(parent).width()*0.85),
-			minHeight: ($(parent).width()*0.15),
-			containment: parent
-		});
-	}
-	if(templateId == 8){
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box2wrapper').width();
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-					$('#box3wrapper').css('height', remainingHeight + "px");
-				}				
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles:"e,s",
-			containment: parent
-		});
-		//This one currently doens't work
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-			},
-			handles: "e",
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-		});
-	}
-	if(templateId == 9){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();	
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");
-				$('#box5wrapper').css('width', remaining + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles:"e",
-			containment: parent
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-
-				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 3
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-					}
-				}
-				else{
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
-				}
-				
-			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
-			handles:"s",
-			containment: parent
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 2 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 2
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					//Else if box 2 an 5 are too small only resize box 4
-					else if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-					}
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
-				}			
-			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
-			handles:"s",
-			containment: parent
-		});
-		$('#box4wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 3
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-
-					}
-				}
-				else if (document.getElementById("box5wrapper").offsetHeight <= document.getElementById(parent).offsetHeight * 0.15 && resizeAmount < 0) {
-					const box2 = document.getElementById("box2wrapper");
-					const box3 = document.getElementById("box3wrapper");
-					const parentHeight = document.getElementById(parent).offsetHeight;
-				
-					// If both box5 and 4 are too small only resize box3
-					if (box2.offsetHeight <= parentHeight * 0.15) {
-						box3.style.height = (box3.offsetHeight + resizeAmount) + "px";
-					}
-					// Else if box 3 and 5 are too small only resize box2
-					else if (box3.offsetHeight <= parentHeight * 0.15) {
-						box2.style.height = (box2.offsetHeight + resizeAmount) + "px";
-					}
-					else {
-						box2.style.height = (box2.offsetHeight + resizeAmount / 2) + "px";
-						box3.style.height = (box3.offsetHeight + resizeAmount / 2) + "px";
-					}
-				} else {
-					const box2 = document.getElementById("box2wrapper");
-					const box3 = document.getElementById("box3wrapper");
-					const box5 = document.getElementById("box5wrapper");
-				
-					const delta = resizeAmount / 3;
-				
-					box2.style.height = (box2.offsetHeight + delta) + "px";
-					box3.style.height = (box3.offsetHeight + delta) + "px";
-					box5.style.height = (box5.offsetHeight + delta) + "px";
-				}			
-				
-			},
-			maxHeight: (document.getElementById(parent).offsetHeight * 0.55),
-			minHeight: (document.getElementById(parent).offsetHeight * 0.15),
-
-			handles:"s",
-			containment: parent
-		});
-	}
-}	
-*/
 
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
