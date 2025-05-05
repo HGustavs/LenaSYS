@@ -71,6 +71,12 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
 
   --color-fileLink-table-1: #ccc;
   --color-fileLink-table-2: #eae8eb;
+
+  --button-bg: var(--color-primary);
+  --button-text: var(--color-text-header);
+  --button-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --button-size: 14px;
+  --button-height: 30px;
 }
 
 /* --------------================################================-------------- *
@@ -3585,16 +3591,15 @@ button.option {
 
 
 input.submit-button {
-  background-color: var(--color-primary);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--button-bg);
+  font-family: var(--button-font);
   border: 0px;
-  height: 30px;
-  color: var(--color-text-header);
+  height: var(--button-height);
+  color: var(--button-text);
   cursor: pointer;
   margin: 8px 2px 4px 2px;
-  font-size: 14px;
+  font-size: var(--button-size);
   transition: 0.1s background-color;
-
   -webkit-appearance: none
 }
 
@@ -3612,16 +3617,16 @@ input.submit-button {
 */
 
 div.submit-button {
-  background-color: var(--color-primary);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--button-bg);
+  font-family: var(--button-font);
   border: 0px;
   width: 90px;
-  height: 30px;
-  color: var(--color-text-header);
+  height: var(--button-height);
+  color: var(--button-text);
   cursor: pointer;
   margin-bottom: 5px;
   margin-left: 4px;
-  font-size: 14px;
+  font-size: var(--button-size);
   transition: 1s background-color;
   float: left;
   border-radius: 4px;
@@ -4971,21 +4976,19 @@ div.reset-pw:hover{
 }
 
 .submit-button {
-  background-color: var(--color-primary);
+  background-color: var(--button-bg);
   border: 0px;
   width: 110px;
-  height: 30px;
-  color: var(--color-text-header);
+  height: var(--button-height);
+  color: var(--button-text);
   cursor: pointer;
   margin: 8px 2px 4px 2px;
-  font-size: 14px;
+  font-size: var(--button-size);
   transition: 0.1s background-color;
   left: 87px;
   line-height: 30px;
   text-align: center;
   box-shadow: 0 1px 3px var(--box-shadow), 0 1px 2px rgba(0, 0, 0, 0.24);
-
-
 }
 
 .btn-disable {
