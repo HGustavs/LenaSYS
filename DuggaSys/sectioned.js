@@ -2922,7 +2922,7 @@ window.addEventListener("keyup", function (event) {
 // React to scroll events
 document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
-    localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollTop);
+    localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
   }
 });
 
