@@ -756,72 +756,78 @@ function showSaveButton() {
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item = null) {
-  if (operation == "openConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionConfirmBox").css("display", "flex");
-  } else if (operation == "openHideConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#sectionHideConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "openTabConfirmBox") {
-    active_lid = item ? $(item).parents('table').attr('value') : null;
-    $("#tabConfirmBox").css("display", "flex");
-    $("#tabs").val(0).change();
-  } else if (operation == "openItemsConfirmBox") {
-    $("#sectionShowConfirmBox").css("display", "flex");
-    $('#close-item-button').focus();
-  } else if (operation == "deleteItem") {
-    deleteItem(selectedItemList);
-    document.getElementById("sectionConfirmBox").style.display = "none";
-  } else if (operation == "hideItem" && !selectedItemList.length == 0) {
-    hideMarkedItems(selectedItemList)
-    $("#sectionHideConfirmBox").css("display", "none");
-  } else if (operation == "tabItem") {
-    tabMarkedItems(active_lid);
-    $("#tabConfirmBox").css("display", "none");
-  }
-  // Responsible for opening github moment
-  else if (operation == "openGitHubBox") {
-    $("#gitHubBox").css("display", "flex");
-  }
-  else if (operation == "saveGitHubBox") {
-  }
+function confirmBox(operation, item = null)
+{
+	if (operation == "openConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionConfirmBox").style.display = "flex";
+	}
+	else if (operation == "openHideConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("sectionHideConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "openTabConfirmBox") {
+		active_lid = item ? item.closest("table").getAttribute("value") : null;
+		document.getElementById("tabConfirmBox").style.display = "flex";
+		var tabsElem = document.getElementById("tabs");
+		tabsElem.value = 0;
+		tabsElem.dispatchEvent(new Event("change"));
+	}
+	else if (operation == "openItemsConfirmBox") {
+		document.getElementById("sectionShowConfirmBox").style.display = "flex";
+		document.getElementById("close-item-button").focus();
+	}
+	else if (operation == "deleteItem") {
+		deleteItem(selectedItemList);
+		document.getElementById("sectionConfirmBox").style.display = "none";
+	}
+	else if (operation == "hideItem" && selectedItemList.length != 0) {
+		hideMarkedItems(selectedItemList);
+		document.getElementById("sectionHideConfirmBox").style.display = "none";
+	}
+	else if (operation == "tabItem") {
+		tabMarkedItems(active_lid);
+		document.getElementById("tabConfirmBox").style.display = "none";
+	}
+	else if (operation == "openGitHubBox") {
+		document.getElementById("gitHubBox").style.display = "flex";
+	}
+	else if (operation == "saveGitHubBox") {
+		// Placeholder if needed later
+	}
+	else if (operation == "openGitHubTemplate") {
+		console.log("testworkornah?");
+		document.getElementById("gitHubTemplate").style.display = "flex";
+		gitTemplatePopupOutsideClickHandler();
+		fetchCodeExampleHiddenLinkParam(item);
+	}
+	else if (operation == "closeConfirmBox") {
+		var ids = ["gitHubBox", "gitHubTemplate", "sectionConfirmBox", "tabConfirmBox", "sectionHideConfirmBox", "noMaterialConfirmBox", "sectionShowConfirmBox"];
+		for (var i = 0; i < ids.length; i++) {
+			document.getElementById(ids[i]).style.display = "none";
+		}
+		purgeInputFieldsGitTemplate();
+	}
+	else if (operation == "showItems" && selectedItemList.length != 0) {
+		showMarkedItems(selectedItemList);
+		document.getElementById("sectionShowConfirmBox").style.display = "none";
+	}
 
-  //ändra 
-  else if (operation == "openGitHubTemplate") {
-    console.log("testworkornah?");
-    $("#gitHubTemplate").css("display", "flex");
-    gitTemplatePopupOutsideClickHandler();
-    fetchCodeExampleHiddenLinkParam(item);
-  } else if (operation == "closeConfirmBox") {
-    $("#gitHubBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none"); // ändra till githubtemplate
-    $("#sectionConfirmBox").css("display", "none");
-    $("#tabConfirmBox").css("display", "none");
-    $("#sectionHideConfirmBox").css("display", "none");
-    $("#noMaterialConfirmBox").css("display", "none");
-    $("#sectionShowConfirmBox").css("display", "none");
-    $("#gitHubTemplate").css("display", "none");
-    purgeInputFieldsGitTemplate();
-  }
-  else if (operation == "showItems" && !selectedItemList.length == 0) {
-    showMarkedItems(selectedItemList);
-    $("#sectionShowConfirmBox").css("display", "none");
-  }
-  document.addEventListener("keypress", event => {
-    if (event.key === 'Enter') {
-      if (event.target.classList.contains("traschcanDelItemTab")) {
-        setTimeout(function () {
-           document.getElementById('delete-item-button').focus();
-        }, 400);
-      }
-      if (event.target.id == "delete-item-button") {
-        deleteItem(active_lid);
-        document.getElementById("sectionConfirmBox").style.display = "none";
-      }
-    }
-  });
+	document.addEventListener("keypress", function(event)
+	{
+		if (event.key === "Enter") {
+			if (event.target.classList.contains("traschcanDelItemTab")) {
+				setTimeout(function () {
+					document.getElementById("delete-item-button").focus();
+				}, 400);
+			}
+			if (event.target.id == "delete-item-button") {
+				deleteItem(active_lid);
+				document.getElementById("sectionConfirmBox").style.display = "none";
+			}
+		}
+	});
 }
 
 //OnClick handler for clicking outside the template popup
@@ -838,78 +844,116 @@ function gitTemplatePopupOutsideClickHandler(){
 
 
 // Creates an array over all checked items
-function markedItems(item = null) {
+function markedItems(item = null, typeInput) {
   var removed = false;
-  var kind = item ? $(item).parents('tr').attr('value') : null;
-  active_lid = item ? $(item).parents('table').attr('value') : null;
+  var kind = item ? item.closest('tr').getAttribute('value'): null;
+  active_lid = item ? item.closest('table').getAttribute('value'): null;
   var subItems = [];
 
   //if the checkbox belongs to one of these kinds then all elements below it should also be selected.
-  if (kind == "section" || kind == "moment") {
+  if (kind == "section" || kind == "moment" || kind == "header") {
     var itemInSection = true;
     var sectionStart = false;
-    $("#Sectionlist").find(".item").each(function (i) {
-      var tempItem = $(this).attr('value');
+    const elements = document.querySelectorAll('#Sectionlist .item');
+
+    for (let i = 0 ; i < elements.length ; i++){
+      const element = elements[i];
+      var tempItem = element.getAttribute('value');
+
+      // if part of a section, add to subItems.
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
-        var tempKind = $(this).parents('tr').attr('value');
+        var tempKind = element ? element.closest('tr').getAttribute('value'): null;
+
+        // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
-        } else {
+          break;
+        } 
+        else {
           subItems.push(tempItem);
         }
-      } else if (tempItem == active_lid) sectionStart = true;
-    });
-
-  }
-
-
-  console.log("Active lid: " + active_lid);
-  if (selectedItemList.length != 0) {
-    for (let i = 0; i < selectedItemList.length; i++) {
-      if (selectedItemList[i] === active_lid) {
-        selectedItemList.splice(i, 1);
-        i--;
-        var removed = true;
-        console.log("Removed from list");
-      }
-      for (var j = 0; j < subItems.length; j++) {
-        if (selectedItemList[i] === subItems[j]) {
-          $("#" + selectedItemList[i] + "-checkbox").prop("checked", false);
-          selectedItemList.splice(i, 1);
-          //console.log(subItems[j]+" Removed from list");
-        }
-      }
-    } if (removed != true) {
-      selectedItemList.push(active_lid);
-      console.log("Adding !empty list");
-      for (var j = 0; j < subItems.length; j++) {
-        selectedItemList.push(subItems[j]);
-        console.log(subItems[j]);
-        $("#" + subItems[j] + "-checkbox").prop("checked", true);
+      } 
+      else if (tempItem == active_lid){ 
+        sectionStart = true;
       }
     }
-  } else {
+  }
+
+  // handles selections & deselections
+  if (selectedItemList.length != 0) {
+    let tempSelectedItemListLength = selectedItemList.length;
+    for (var i = 0; i < tempSelectedItemListLength; i++) {
+      var tempKind = item ? item.closest('tr').getAttribute('value'): null;
+
+      //removes & unchecks items from selectedItemList, avoided if called via non-section trashcan.
+      if (selectedItemList[i] === active_lid && typeInput != "trash") {        
+        document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+        selectedItemList.splice(i, 1);
+        var removed = true;
+
+        // deselection of child -> deselect parent
+        if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
+          var parent = recieveCodeParent(active_lid);
+
+          for (var i = 0; i < tempSelectedItemListLength; i++) {
+            if (selectedItemList[i] == parent){
+              document.getElementById(parent + "-checkbox").checked = false;
+              selectedItemList.splice(i, 1);
+            }
+          }
+        }
+      }
+
+      //unchecks children of section
+      for (var j = 0; j < subItems.length; j++) {
+        if (selectedItemList[i] == subItems[j]) {
+          document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
+          selectedItemList.splice(i, 1);
+          i--;
+        }
+      }
+    } 
+    
+    if (removed != true) {
+      let activeLidInList = false;
+      for (var k = 0; k < selectedItemList.length; k++) {
+        if(active_lid == selectedItemList[k]){
+          activeLidInList = true;
+          break;
+        }
+      } if (activeLidInList == false){
+        selectedItemList.push(active_lid);
+        document.getElementById(active_lid + "-checkbox").checked = true;
+    }
+      //handles checking within section
+      for (var j = 0; j < subItems.length; j++) {
+        selectedItemList.push(subItems[j]);
+        document.getElementById(subItems[j] + "-checkbox").checked = true;
+      }
+    }
+  } 
+  
+  // adds everything under section to selectedItems
+  else {
     selectedItemList.push(active_lid);
-    console.log("Added");
     for (var j = 0; j < subItems.length; j++) {
       selectedItemList.push(subItems[j]);
     }
     for (i = 0; i < selectedItemList.length; i++) {
-      $("#" + selectedItemList[i] + "-checkbox").prop("checked", true);
+      document.getElementById(selectedItemList[i] + "-checkbox").checked = true;
       //console.log(hideItemList[i]+"-checkbox");
     }
     // Show ghost button when checkbox is checked
     document.querySelector('#hideElement').disabled = false;
     document.querySelector('#hideElement').style.opacity = 1;
     showVisibilityIcons();
-  }
-  if (selectedItemList.length == 0) {
+  } if (selectedItemList.length == 0) {
     // Disable ghost button when no checkboxes is checked
+    console.log('no element selected');
     document.querySelector('#hideElement').disabled = true;
     document.querySelector('#hideElement').style.opacity = 0.7;
     hideVisibilityIcons();
-
   }
 }
 
@@ -1050,33 +1094,33 @@ function prepareItem() {
   var jsondeadline = { "deadline1": "", "comment1": "", "deadline2": "", "comment2": "", "deadline3": "", "comment3": "" };
 
   // Storing tabs in gradesys column!
-  var kind = $("#type").val()
+  var kind = document.getElementById("type").value;
   if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7) {
-    param.tabs = $("#tabs").val();
+    param.tabs = document.getElementById("tabs").value;
   } else {
-    param.gradesys = $("#gradesys").val();
+    param.gradesys = document.getElementById("gradesys").value;
   }
 
-  param.lid = $("#lid").val();
+  param.lid = document.getElementById("lid").value;
   param.kind = kind;
-  param.link = $("#link").val();
-  param.highscoremode = $("#highscoremode").val();
-  param.sectname = $("#sectionname").val();
-  param.visibility = $("#visib").val();
-  param.tabs = $("#tabs").val();
-  param.moment = $("#moment").val();
-  param.comments = $("#comments").val();
-  param.grptype = $("#grptype").val();
-  param.deadline = $("#setDeadlineValue").val() + " " + $("#deadlinehours").val() + ":" + $("#deadlineminutes").val();
+  param.link = document.getElementById("link").value;
+  param.highscoremode = document.getElementById("highscoremode").value;
+  param.sectname = document.getElementById("sectionname").value;
+  param.visibility = document.getElementById("visib").value;
+  param.tabs = document.getElementById("tabs").value;
+  param.moment = document.getElementById("moment").value;
+  param.comments = document.getElementById("comments").value;
+  param.grptype = document.getElementById("grptype").value;
+  param.deadline = document.getElementById("setDeadlineValue").value + " " + document.getElementById("deadlinehours").value + ":" + document.getElementById("deadlineminutes").value;
   param.relativedeadline = getRelativeDeadlineInputValues();
   // If absolute deadline is not checked, always use relative deadline
-  if (!$('#absolutedeadlinecheck').prop('checked')) {
+  if (!document.getElementById('absolutedeadlinecheck').checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
-  if ($('#fdbck').prop('checked')) {
+  if (document.getElementById('fdbck').checked) {
     param.feedback = 1;
-    param.feedbackquestion = $("#fdbckque").val();
+    param.feedbackquestion = document.getElementById("fdbckque").value;
   } else {
     param.feedback = 0;
     param.feedbackquestion = null;
@@ -1105,12 +1149,11 @@ function prepareItem() {
 // deleteItem: Deletes Item from Section List
 //----------------------------------------------------------------------------------
 
-
 function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.style.display = "none";
+    item.parentElement.style.display = "none";
     item.classList.add("deleted");
     document.querySelector("#undoButton").style.display = "block";
   }
@@ -1135,7 +1178,7 @@ function deleteAll() {
       lid: lid
     }, "SECTION");
   }
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
   document.querySelector("#undoButton").style.display = "none";
 }
 
@@ -1151,7 +1194,7 @@ function cancelDelete () {
 
 // update selected directory
 function updateSelectedDir() {
-  var selectedDir = $('#selectDir').val();
+  var selectedDir = document.getElementById("selectDir").value;
   $.ajax({
     url: "./sectioned.php",
     type: "POST",
@@ -1226,7 +1269,7 @@ function hideMarkedItems(selectedItemList) {
       lid: lid,
       visible: 3
     }, "SECTION");
-    $("#editSection").css("display", "none");
+    document.getElementById("editSection").style.display = "none";
   }
   selectedItemList = [];
 }
@@ -1235,7 +1278,7 @@ function hideMarkedItems(selectedItemList) {
 // tabMarkedItems: Tabs Item from Section List
 //----------------------------------------------------------------------------------
 function tabMarkedItems(lid) {
-  var tabs = $("#tabs").val();
+  var tabs = document.getElementById("tabs").value;
   AJAXService("UPDATETABS", {
     lid: lid,
     tabs: tabs
@@ -1296,12 +1339,12 @@ function updateItem() {
   console.log("Running updateItem");
   AJAXService("UPDATE", prepareItem(), "SECTION");
 
-  $("#sectionConfirmBox").css("display", "none");
-  $("#editSection").css("display", "none");
+  document.getElementById("sectionConfirmBox").style.display = "none";
+  document.getElementById("editSection").style.display = "none";
 }
 
 function updateDeadline() {
-  var kind = $("#type").val();
+  var kind = document.getElementById("type").value;
   if (kind == 3) {
     AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
   }
@@ -1318,7 +1361,7 @@ async function newItem(itemtitle) {
 
   // Continues when AJAX call is completed
   await AJAXService("NEW", prepareItem(), "SECTION");
-  $("#editSection").css("display", "none");
+  document.getElementById("editSection").style.display = "none";
 
   // Toggle for alert when create a New Item
   var element = document.getElementById("createAlert");
@@ -1344,7 +1387,7 @@ async function newItem(itemtitle) {
   }, 200);
   // Duration time for the alert before remove
   setTimeout(function () {
-    $("#createAlert").removeClass("createAlertToggle");
+    document.getElementById("createAlert").classList.remove("createAlertToggle");
     document.getElementById("createAlert").innerHTML = "";
   }, 3000);
 
@@ -1382,9 +1425,9 @@ function createVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#makeactive").is(':checked');
-  param.startdate = getDateFormat(new Date($("#startdate").val()));
-  param.enddate = getDateFormat(new Date($("#enddate").val()));
+  param.makeactive = 2 + document.getElementById("makeactive").checked;
+  param.startdate = getDateFormat(new Date(document.getElementById("startdate").value));
+  param.enddate = getDateFormat(new Date(document.getElementById("enddate").value));
 
   //If no previous versions exist. "None" can't be selected which makes it empty. Set to "None" for if-statement a few lines down.
   if (param.copycourse == "") {
@@ -1403,7 +1446,7 @@ function createVersion() {
       // Create a fresh course version
       AJAXService("NEWVRS", param, "COURSE");
     }
-    $("#newCourseVersion").css("display", "none");
+    document.getElementById("newCourseVersion").style.display = "none";
     changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
       querystring["coursename"] + "&coursevers=" + document.getElementById("cversid").value);
   }
@@ -1424,14 +1467,14 @@ function updateVersion() {
   param.copycourse = document.getElementById("copyvers").value;
   param.coursecode = retdata.coursecode;
   param.coursename = querystring["coursename"];
-  param.makeactive = 2 + $("#emakeactive").is(':checked');
-  param.startdate = $("#estartdate").val();
-  param.enddate = $("#eenddate").val();
+  param.makeactive = 2 + document.getElementById("emakeactive").checked;
+  param.startdate = document.getElementById("estartdate").value;
+  param.enddate = document.getElementById("eenddate").value;
   param.motd = document.getElementById("eMOTD").value;
 
   AJAXService("UPDATEVRS", param, "COURSE");
 
-  $("#editCourseVersion").css("display", "none");
+  document.getElementById("editCourseVersion").style.display = "none";
   changeCourseVersURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" +
     querystring["coursename"] + "&coursevers=" + document.getElementById("eversid").value);
 }
@@ -1444,7 +1487,7 @@ function goToVersion(courseDropDown) {
 }
 
 function accessCourse() {
-  var coursevers = $("#course-coursevers").text();
+  var coursevers = document.getElementById("course-coursevers").textContent;
   window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
@@ -1499,8 +1542,8 @@ function returnedGroups(data) {
     grpemail = "";
   }
   if (str != "") {
-    $("#grptbl").html(str);
-    $("#grptblContainer").css("display", "flex");
+    document.getElementById("grptbl").innerHTML = str;
+    document.getElementById("grptblContainer").style.display = "flex";
   }
 }
 
@@ -1630,7 +1673,7 @@ function returnedSection(data) {
     str += "<div id='statisticsSwimlanes'>";
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
-    str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+    /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
 
     str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
@@ -2127,14 +2170,26 @@ function returnedSection(data) {
           src='../Shared/icons/Trashcan.svg' onclick='markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this);'>`;
           str += "</td>";
         }
+        
+        // Trashcan for items
+        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
 
-        // Trashcan
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+          // Will run marked items independent of lenght
+          console.log('selectedItemList: ' + selectedItemList.length);
+          if (itemKind === 1 && selectedItemList.length == 0){
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+            src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
+            str += "</td>";
+          }
+          else{
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
+          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+          str += "</td>";  
+          } 
         }
 
         // Checkbox
@@ -2234,7 +2289,7 @@ function returnedSection(data) {
     }
 
     if (data['writeaccess']) {
-      /*// Enable sorting always if we are superuser as we refresh list on update
+      // Enable sorting always if we are superuser as we refresh list on update
 
       $("#Sectionlistc").sortable({
         handle: ".dragbleArea",
@@ -2260,7 +2315,7 @@ function returnedSection(data) {
       // But disable sorting if there is a #noAccessMessage
       if ($("#noAccessMessage").length) {
         $("#Sectionlistc").sortable("disable");
-      } */
+      }
     }
   } else {
     str = "<div class='err' style='z-index:500; position:absolute; top:60%; width:95%;'>" +
@@ -2963,7 +3018,7 @@ function showAnnouncement() {
   document.getElementById('fullAnnnouncementOverlay').style.display = "block";
 }
 
-// Retrieve the announcment author
+// Retrieve the announcement author
 function retrieveAnnouncementAuthor() {
   var uname = $("#userName").html();
   var xmlhttp = new XMLHttpRequest();
@@ -3023,6 +3078,7 @@ function retrieveCourseProfile(userid) {
     });
   }
 }
+
 function getStudents(cid, userid) {
   var versid = '';
   versid = $("#versid").val();
@@ -3061,64 +3117,61 @@ function getStudents(cid, userid) {
 
 // Validate create announcement form
 function validateCreateAnnouncementForm() {
-  $("#announcementForm").submit(function (e) {
-    var announcementTitle = ($("#announcementTitle").val()).trim();
-    var announcementMsg = ($("#announcementMsg").val()).trim();
-    var cid = $("#cid").val();
-    var versid = $("#versid").val();
-    var recipients = $("#recipient").val();
-    if (announcementTitle == null || announcementTitle == '') {
-      $("#announcementTitle").addClass('errorCreateAnnouncement');
-      e.preventDefault();
-    } else if (announcementMsg == null || announcementMsg == '') {
-      $("#announcementMsg").addClass('errorCreateAnnouncement');
-      e.preventDefault();
-    } else if (cid == null || cid == '') {
-      $("#cid").addClass('errorCreateAnnouncement');
-      e.preventDefault();
-    } else if (versid == null || versid == '') {
-      $("#versid").addClass('errorCreateAnnouncement');
-      e.preventDefault();
-    } else if (recipients == null || recipients == '') {
-      $("#recipient").addClass('errorCreateAnnouncement');
+  const form = document.getElementById("announcementForm");
+  if (!form) return;
+  form.addEventListener("submit", function (e) {
+    const titleEl     = document.getElementById("announcementTitle");
+    const msgEl       = document.getElementById("announcementMsg");
+    const cidEl       = document.getElementById("cid");
+    const versidEl    = document.getElementById("versid");
+    const recipientEl = document.getElementById("recipient");
+
+    const title      = titleEl.value.trim();
+    const msg        = msgEl.value.trim();
+    const cid        = cidEl.value;
+    const versid     = versidEl.value;
+    const recipients = recipientEl.value;
+
+    function markError(el) {
+      el.classList.add("errorCreateAnnouncement");
       e.preventDefault();
     }
-    $(".errorCreateAnnouncement").css({
-      'border': '1px solid red'
-    });
+    if (!title)          markError(titleEl);
+    else if (!msg)       markError(msgEl);
+    else if (!cid)       markError(cidEl);
+    else if (!versid)    markError(versidEl);
+    else if (!recipients) markError(recipientEl);
+
+    document.querySelectorAll(".errorCreateAnnouncement")
+            .forEach(el => (el.style.border = "1px solid red"));
   });
 }
 
 function validateUpdateAnnouncementForm() {
   const form = document.getElementById("announcementForm");
-  if (!form) return; 
-
+  if (!form) return;
   form.addEventListener("submit", function (e) {
-    const announcementTitle = document.getElementById("announcementTitle");
-    const announcementMsg   = document.getElementById("announcementMsg");
-    const title = announcementTitle.value.trim();
-    const msg   = announcementMsg.value.trim();
-
-    if (!title) {
-      announcementTitle.classList.add("errorCreateAnnouncement");
+    const titleEl = document.getElementById("announcementTitle");
+    const msgEl   = document.getElementById("announcementMsg");
+    if (!titleEl.value.trim()) {
+      titleEl.classList.add("errorCreateAnnouncement");
       e.preventDefault();
-    } else if (!msg) {
-      announcementMsg.classList.add("errorCreateAnnouncement");
+    } else if (!msgEl.value.trim()) {
+      msgEl.classList.add("errorCreateAnnouncement");
       e.preventDefault();
     }
-
-    document.querySelectorAll(".errorCreateAnnouncement").forEach(el => (el.style.border = "1px solid red"));
+    document.querySelectorAll(".errorCreateAnnouncement")
+            .forEach(el => (el.style.border = "1px solid red"));
   });
 }
 
-// Retrive announcements
+// Retrieve announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = window.location.href;
+  var currentLocation = $(location).attr('href');
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
-  var uname = document.getElementById("userName").innerHTML;
-  
+  var uname = $("#userName").html();
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3155,7 +3208,8 @@ function retrieveAnnouncementsCards() {
     }
   });
 }
-// Update anouncement form
+
+// Update announcement form
 function updateannouncementForm(updateannouncementid, cid, versid, tempFuction) {
   var xmlhttp = new XMLHttpRequest();
 
@@ -3169,189 +3223,167 @@ function updateannouncementForm(updateannouncementid, cid, versid, tempFuction) 
   xmlhttp.send();
 
 }
+
 function handleResponse(xhttp, updateannouncementid, cid, versid) {
-  var title, message;
   var parsed_data = JSON.parse(xhttp.response);
-  title = parsed_data.title;
-  message = parsed_data.message;
+  var title   = parsed_data.title;
+  var message = parsed_data.message;
 
-  var announcementForm = document.getElementById("announcementForm");
-  if (announcementForm && announcemenetForm.offsetParent == null) {
-    announcementForm.style.display = "";
-  }
+  const form = document.getElementById("announcementForm");
+  if (form && form.style.display === "none") form.style.display = "";
 
-  document.querySelector(".formTitle").innerHTML = "Update announcement";
-  document.querySelector(".formSubtitle").innerHTML = "Please fill in this form to update the announcement."
-  document.getElementById("announcementTitle").value = title;
+  document.querySelector(".formTitle").textContent    = "Update announcement";
+  document.querySelector(".formSubtitle").textContent = "Please fill in this form to update the announcement.";
+  document.getElementById("announcementTitle").value  = title;
   document.getElementById("announcementMsg").innerHTML = message;
 
-  var createBtn = document.querySelector(".createBtn");
-  createBtn.innerHTML = "Update";
-  createBtn.setAttribute("name", "updateBtn");
-  createBtn.setAttribute("onclick", "validateUpdateAnnouncementForm()");
+  const btn = document.querySelector(".createBtn");
+  btn.textContent = "Update";
+  btn.name = "updateBtn";
+  btn.setAttribute("onclick", "validateUpdateAnnouncementForm()");
 
-  var courseidAndVersid = document.getElementById("courseidAndVersid");
-  if (courseidAndVersid) courseidAndVersid.remove();
+  document.getElementById("courseidAndVersid")?.remove();
+  document.getElementById("recipientBox")?.remove();
 
-  var recipientBox = document.getElementById("recipientBox");
-  if (recipientBox) recipientBox.remove();
-
-  var target = document.querySelector("#announcementForm .announcementFormcontainar .clearfix");
-
-  if(target){
-    target.insertAdjacentHTML(
-      "beforebegin", '<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="' +
-        updateannouncementid +
-        '"></div>' +
-        '<div><input type="hidden" name="cid" id="cid" value="' +
-        cid +
-        '"></div>' +
-        '<div><input type="hidden" name="versid" id="versid" value="' +
-        versid +
-        '"></div>'
-    )
+  const target = document.querySelector("#announcementForm .announcementFormcontainer .clearfix");
+  if (target) {
+    target.insertAdjacentHTML("beforebegin",
+      `<div><input type="hidden" name="updateannouncementid" id="updateannouncementid" value="${updateannouncementid}"></div>
+       <div><input type="hidden" name="cid" id="cid" value="${cid}"></div>
+       <div><input type="hidden" name="versid" id="versid" value="${versid}"></div>`);
   }
-
 }
 
 // Announcement card grid and list view
 function displayListAndGrid() {
   const disp = document.getElementById("displayAnnouncements");
-  disp.insertAdjacentHTML(
-    "afterbegin",
+  if (!disp) return;
+  disp.insertAdjacentHTML("afterbegin",
     `<div id="btnContainer">
-       <button class="btn listBtn"><i class="fa fa-bars"  alt="list icon"></i> List</button>
+       <button class="btn listBtn"><i class="fa fa-bars" alt="list icon"></i> List</button>
        <button class="btn active gridBtn"><i class="fa fa-th-large" alt="grid icon"></i> Grid</button>
-     </div><br>`
-  );
+     </div><br>`);
 
-  const cards = Array.from(document.getElementsByClassName("announcementCard"));
+  const cards   = Array.from(document.getElementsByClassName("announcementCard"));
+  const listBtn = document.querySelector(".listBtn");
+  const gridBtn = document.querySelector(".gridBtn");
 
-  document.querySelector(".listBtn").addEventListener("click", () => cards.forEach(c => (c.style.width = "100%")));
-  document.querySelector(".gridBtn").addEventListener("click", () => cards.forEach(c => (c.style.width = "48%")));
+  listBtn.addEventListener("click", () => cards.forEach(c => (c.style.width = "100%")));
+  gridBtn.addEventListener("click", () => cards.forEach(c => (c.style.width = "48%")));
 
-  document.querySelectorAll("#btnContainer .btn").forEach(btn => {
+  document.querySelectorAll("#btnContainer .btn").forEach(btn =>
     btn.addEventListener("click", function () {
       document.querySelector("#btnContainer .btn.active")?.classList.remove("active");
       this.classList.add("active");
-    });
-  });
+    })
+  );
 
-  function toggleButtons() {
+  const resizeCheck = () => {
     if (window.innerWidth < 1050) {
-      document.querySelector(".gridBtn").classList.remove("active");
-      document.querySelector(".listBtn").classList.add("active");
+      gridBtn.classList.remove("active");
+      listBtn.classList.add("active");
     } else {
-      document.querySelector(".listBtn").classList.remove("active");
-      document.querySelector(".gridBtn").classList.add("active");
+      listBtn.classList.remove("active");
+      gridBtn.classList.add("active");
     }
-  }
-  window.addEventListener("resize", toggleButtons);
-  toggleButtons();
+  };
+  window.addEventListener("resize", resizeCheck);
+  resizeCheck();
 }
-
 
 function accessAdminAction() {
-  var adminLoggedin = $("#adminLoggedin").val();
-  if (adminLoggedin == 'yes') {
-    $("#announcementForm").add();
-    $(".actionBtns").add();
-  } else {
-    $("#announcementForm").remove();
-    $(".actionBtns").remove();
-    if ($("#announcementForm").is(":hidden") || ($("#announcementForm").length) == 0) {
-      $("#displayAnnouncements").css("margin-top", "0px");
-    } else {
-      $("#displayAnnouncements").css("margin-top", "20px");
-    }
-  }
+  const isAdmin = document.getElementById("adminLoggedin")?.value === "yes";
+  const form    = document.getElementById("announcementForm");
+  const acts    = document.querySelectorAll(".actionBtns");
+  const disp    = document.getElementById("displayAnnouncements");
+
+  if (isAdmin) return;
+
+  form?.remove();
+  acts.forEach(a => a.remove());
+  if (!form || form.style.display === "none") disp.style.marginTop = "0px";
+  else disp.style.marginTop = "20px";
 }
-function displayAnnouncementForm(reload) {
+
+function displayAnnouncementForm() {
   if (document.getElementById("updateannouncementid")) {
     location.reload();
     sessionStorage.setItem("closeUpdateForm", "true");
   } else {
-    document.getElementById("announcementForm").style.display = "none";
+    const form = document.getElementById("announcementForm");
+    if (form) form.style.display = "none";
     sessionStorage.removeItem("closeUpdateForm");
   }
 }
+
 function displayAnnouncementBoxOverlay() {
   if (sessionStorage.getItem("closeUpdateForm") === "true") {
     document.getElementById("announcementBoxOverlay").style.display = "block";
   }
 }
+
 function scrollToTheAnnnouncementForm() {
   document.querySelectorAll(".editBtn").forEach(btn =>
     btn.addEventListener("click", () =>
-      document
-        .getElementById("announcementForm")
-        .scrollIntoView({ behavior: "smooth" })
+      document.getElementById("announcementForm")?.scrollIntoView({ behavior: "smooth" })
     )
   );
 }
+
 function closeActionLogDisplay() {
-  const close = document.querySelector(".closeActionLogDisplay");
-  close?.parentElement?.remove();
+  document.querySelectorAll(".closeActionLogDisplay").forEach(el =>
+    el.parentElement?.remove()
+  );
 }
+
 // Read less or more announcement card
 function readLessOrMore(paragraph) {
   const maxLength = 70;
+
   document.querySelectorAll(`.${paragraph}`).forEach(p => {
-    const text = p.textContent.trim();
-    if (text.length <= maxLength) return;
+    const full = p.textContent.trim();
+    if (full.length <= maxLength) return;
 
-    const first = text.slice(0, maxLength);
-    const rest  = text.slice(maxLength);
-
-    p.innerHTML =
-      `${first} <a href="javascript:void(0);" class="read-more">read more...</a>` +
-      `<span class="more-text">${rest}</span>`;
-
-    p.querySelector(".read-more").addEventListener("click", function () {
-      this.previousSibling.textContent +=
-        this.nextSibling.textContent; // append remaining text
-      this.nextSibling.remove();
-      this.remove();
-
-      if (paragraph === "announcementMsgParagraph") {
-        document
-          .querySelectorAll(".announcementCard")
-          .forEach(card => (card.style.width = "100%"));
-      }
-    });
+    const first = full.slice(0, maxLength);
+    const rest  = full.slice(maxLength);
+    p.innerHTML = `${first} <a href="javascript:void(0);" class="read-more">read more...</a><span class="more-text">${rest}</span>`;
   });
+
+  const cards = Array.from(document.getElementsByClassName("announcementCard"));
+  document.querySelectorAll(".read-more").forEach(a =>
+    a.addEventListener("click", function () {
+      const more = this.nextElementSibling;
+      this.parentNode.insertBefore(document.createTextNode(more.textContent), this);
+      more.remove();
+      this.remove();
+      if (paragraph === "announcementMsgParagraph") cards.forEach(c => (c.style.width = "100%"));
+    })
+  );
 }
-  
+
 function showLessOrMoreAnnouncements() {
   const cards = Array.from(document.getElementsByClassName("announcementCard"));
-  const container = document.getElementById("displayAnnouncements");
+  const cardContainer = document.getElementById("displayAnnouncements");
 
   if (cards.length === 0) {
-    document
-      .getElementById("announcementCards")
-      .insertAdjacentHTML(
-        "beforeend",
-        "<p style='color:#775886;'>No announcements yet</p>"
-      );
+    document.getElementById("announcementCards")
+            .insertAdjacentHTML("beforeend", "<p style='color:#775886;'>No announcements yet</p>");
     return;
   }
 
   if (cards.length > 6) {
     cards.slice(6).forEach(c => (c.style.display = "none"));
-
-    container.insertAdjacentHTML(
-      "beforeend",
+    cardContainer.insertAdjacentHTML("beforeend",
       `<div class="showmoreBtnContainer">
          <button class="showAllAnnouncement">
            <span class="hvr-icon-forward"><span class="showmore">Show more</span>
            <i class="fa fa-chevron-circle-right hvr-icon"></i></span>
          </button>
-       </div>`
-    );
-
-    const btn = container.querySelector(".showAllAnnouncement");
+       </div>`);
+    const btn = cardContainer.querySelector(".showAllAnnouncement");
     btn.addEventListener("click", () => {
       const hidden = cards.slice(6).filter(c => c.style.display === "none");
+
       if (hidden.length) {
         hidden.forEach(c => (c.style.display = ""));
         btn.querySelector(".showmore").textContent = "Show less";
@@ -3362,6 +3394,7 @@ function showLessOrMoreAnnouncements() {
     });
   }
 }
+
 function updateReadStatus(announcementid, cid, versid) {
   var uname = $("#userName").html();
   $.ajax({
@@ -3383,55 +3416,54 @@ function updateReadStatus(announcementid, cid, versid) {
 
 }
 function selectRecipients() {
-  const selectAll       = document.querySelector(".selectAll input");
-  const selectFinished  = document.querySelector(".selectFinished input");
-  const selectNonFin    = document.querySelector(".selectNonFinished input");
-  const recipient       = document.getElementById("recipient");
-  const finished        = document.getElementById("finishedStudents");
-  const nonFinished     = document.getElementById("nonfinishedStudents");
+  const allInp    = document.querySelector(".selectAll input");
+  const finInp    = document.querySelector(".selectFinished input");
+  const nonFinInp = document.querySelector(".selectNonFinished input");
+  const select    = document.getElementById("recipient");
+  const finGrp    = document.getElementById("finishedStudents");
+  const nonFinGrp = document.getElementById("nonfinishedStudents");
 
-  selectAll.addEventListener("change", function () {
+  if (!select) return;
+  const clearAll = () => [...select.options].forEach(o => (o.selected = false));
+
+  allInp.addEventListener("change", function () {
     if (this.checked) {
-      [...recipient.options].forEach((o, i) => i && (o.selected = true));
-      selectFinished.checked = selectNonFin.checked = false;
-    } else {
-      [...recipient.options].forEach(o => (o.selected = false));
-    }
+      [...select.options].forEach((o, i) => i && (o.selected = true));
+      finInp.checked = nonFinInp.checked = false;
+    } else clearAll();
   });
 
-  selectFinished.addEventListener("change", function () {
+  finInp.addEventListener("change", function () {
     if (this.checked) {
-      [...finished.options].forEach(o => (o.selected = true));
-      [...nonFinished.options].forEach(o => (o.selected = false));
-      selectAll.checked = selectNonFin.checked = false;
-    } else {
-      [...recipient.options].forEach(o => (o.selected = false));
-    }
+      [...finGrp.options].forEach(o => (o.selected = true));
+      [...nonFinGrp.options].forEach(o => (o.selected = false));
+      allInp.checked = nonFinInp.checked = false;
+    } else clearAll();
   });
 
-  selectNonFin.addEventListener("change", function () {
+  nonFinInp.addEventListener("change", function () {
     if (this.checked) {
-      [...nonFinished.options].forEach(o => (o.selected = true));
-      [...finished.options].forEach(o => (o.selected = false));
-      selectAll.checked = selectFinished.checked = false;
-    } else {
-      [...recipient.options].forEach(o => (o.selected = false));
-    }
+      [...nonFinGrp.options].forEach(o => (o.selected = true));
+      [...finGrp.options].forEach(o => (o.selected = false));
+      allInp.checked = finInp.checked = false;
+    } else clearAll();
   });
 }
+
 function multiSelect() {
   const sel = document.getElementById("recipient");
-
+  if (!sel) return;
   sel.addEventListener("mousedown", function (e) {
     e.preventDefault();
+    if (e.target.tagName !== "OPTION") return;
     const scroll = this.scrollTop;
-    e.target.selected = !e.target.selected;       
+    e.target.selected = !e.target.selected;
     setTimeout(() => (this.scrollTop = scroll), 0);
     this.focus();
   });
-
   sel.addEventListener("mousemove", e => e.preventDefault());
 }
+
 // Start of recent feedback from the teacher
 function toggleFeedbacks() {
   let uname = $("#userName").html();
@@ -3501,36 +3533,27 @@ function toggleFeedbacks() {
     }
   });
 }
-function viewOldFeedbacks() {
-  document.querySelector(".feedbackHeader h2").innerHTML = "Old Feedback";    // was $(".feedbackHeader h2").html()
-  document.querySelectorAll(".noFeedbacks").forEach(el => el.remove());       // was $(".noFeedbacks").remove()
 
-  const feedbackContent = document.querySelector(".feedbackContent");
-  feedbackContent.insertAdjacentHTML("beforeend", '<div id="loadMore"><span>Load More</span><div>');
+function viewOldFeedbacks() {
+  document.querySelector(".feedbackHeader h2").textContent = "Old Feedback";
+  document.querySelectorAll(".noFeedbacks").forEach(el => el.remove());
+
+  const content = document.querySelector(".feedbackContent");
+  content.insertAdjacentHTML("beforeend", '<div id="loadMore"><span>Load More</span></div>');
 
   const cards = Array.from(document.querySelectorAll(".feedback_card"));
+  const load  = document.getElementById("loadMore");
 
-  if (cards.length <= 5) {
-    document.getElementById("loadMore").style.display = "none";
-  }
+  const showBatch = () => cards.forEach((c, i) => (c.style.display = i < 5 ? "" : "none"));
+  showBatch();
+  if (cards.length <= 5) load.style.display = "none";
 
-  // show first 5 cards
-  cards.forEach((c, idx) => (c.style.display = idx < 5 ? "" : "none"));
-
-  document.getElementById("loadMore").addEventListener("click", function (e) {
+  load.addEventListener("click", e => {
     e.preventDefault();
-    let hidden = cards.filter(c => c.style.display === "none").slice(0, 5);
-    hidden.forEach(c => (c.style.display = ""));
-    if (cards.every(c => c.style.display !== "none")) {
-      this.style.display = "none";
-    }
-    this.scrollIntoView({ behavior: "smooth" });
+    cards.filter(c => c.style.display === "none").slice(0, 5).forEach(c => (c.style.display = ""));
+    if (cards.every(c => c.style.display !== "none")) load.style.display = "none";
+    load.scrollIntoView({ behavior: "smooth" });
   });
-}
-
-function hideIconButton() {
-  const iconBtn = document.getElementById("iconButton");   // was $("#iconButton").hide()
-  if (iconBtn) iconBtn.style.display = "none";
 }
 
 // Replaces the link corresponding wtih the dropdown choices ---===######===--- with a link to errorpage instead
@@ -3651,7 +3674,7 @@ setInterval(function () {
 
       //since createExamples returns a promise. We can let the async call complete entirely before logging.
       Promise.all(returnedPromises).then(() => {
-        console.log("All code examples have been automatically u  pdated successfully!");
+        console.log("All code examples have been automatically updated successfully!");
       }).catch(error => {
         console.error("An error occurred while updating code examples:", error);
       });
@@ -4816,7 +4839,7 @@ function getLocalStorage() {
 function setViewMode(mode){
   const section = document.getElementById("Sectionlisti")
 
-  // Remove previously applie mode
+  // Remove previously applied mode
   section.classList.remove("scroll-mode", "overview-mode");
 
   // Apply selecte view mode
