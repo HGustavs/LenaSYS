@@ -129,3 +129,117 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
 ### Microservices Used
 getUid_ms
 retrieveSectionedService_ms
+
+
+
+
+# Name of file/service
+getCourseGroupsAndMembers_ms
+
+## Description
+Returns a list of group members related to a specific course ID and course version.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $courseid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $coursevers
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $log_uuid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $showgrp
+   - Type: int
+   - Description: describe parameter
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $grplist
+   - Type: int
+   - Description: describe the output
+
+- Output: $grpmembershp
+   - Type: String
+   - Description: describe the output
+
+- Output: $debug
+   - Type: int
+   - Description: describe the output
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+- coursesyspw.php
+- retrieveSectionedService_ms.php
+
+
+
+# Name of file/service
+getCourseVersion_ms
+
+## Description
+Retreives all course versions from the 'verse' table.
+
+## Input Parameters
+None
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $versions
+   - Type: array
+   - Description: Array that includes cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd
+
+- Output: $cid
+   - Type: int
+   - Description: describe the output
+
+- Output: $coursecode
+   - Type: String
+   - Description: describe the output
+
+- Output: $vers
+   - Type: int
+   - Description: describe the output
+
+- Output: $versname
+   - Type: int
+   - Description: describe the output
+
+- Output: $coursename
+   - Type: String
+   - Description: describe the output
+
+- Output: $coursenamealt
+   - Type: int
+   - Description: describe the output
+
+- Output: $startdate
+   - Type: int
+   - Description: describe the output
+
+- Output: $enddate
+   - Type: String
+   - Description: describe the output
+
+- Output: $motd
+   - Type: int
+   - Description: describe the output
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+- getUid_ms.php
