@@ -57,7 +57,6 @@ function retrieveShowDuggaService(
 	unset($param);
 	if (isSuperUser($userid)){
 		if($hash!="UNK"){
-			//include_once("loadDugga_ms.php");
 			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
 			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php?" . http_build_query([
 				'hash' => $hash,
