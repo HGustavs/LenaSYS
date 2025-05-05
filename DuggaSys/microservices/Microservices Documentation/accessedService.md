@@ -67,8 +67,8 @@ Logs the event and performs authentication.
 -
 
 ### Microservices Used
-getUid_ms.php
-retrieveAccessedService_ms.php
+- getUid_ms.php
+- retrieveAccessedService_ms.php
 
 
 # Name of file/service
@@ -143,5 +143,245 @@ Checks if a user exists based on the username, creates a new user if it not and 
 -
 
 ### Microservices Used
-getUid_ms.php
-retrieveAccessedService_ms.php";
+- getUid_ms.php
+- retrieveAccessedService_ms.php;
+
+
+
+# name of file/service
+getAccessedService_ms.php
+
+## Description
+Calls retrieveAccessedService_ms.php to fetch and return data. 
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation option
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $log_uuid
+   - Type: varchar
+   - Description: Unique identifier for logging purposes
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: array
+   - Type: JSON
+   - Description: String containing data for a user in a specific course, along with logging information
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
+- retrieveAccessedService_ms.php
+
+
+# name of file/service
+retrieveAccessedService_ms.php
+
+## Description
+Retrieves user data, teachers, classes, groups, courses and submission related to a specific course. 
+Displays the data as an array.
+The data is only retrieved for users who have specific access.
+
+## Input Parameters
+- Parameter: $pdo
+   - Type: PDO
+   - Description: Database connection
+
+- Parameter: $debug
+   - Type: String
+   - Description: To log or return debug information in case of errors during the operations
+
+- Parameter: $userid
+   - Type: int
+   - Description: User ID
+
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $log_uuid
+   - Type: varchar
+   - Description: Unique identifier for logging purposes
+
+- Parameter: $opt
+   - Type: String
+   - Description: Operation option. Optional
+
+- Parameter: $newusers
+   - Type: String
+   - Description: String of newly added users. Optional
+
+## Calling Methods
+-
+
+## Output Data and Format
+- Output: $entries
+   - Type: array
+   - Description: Array of data for all users in a course, JSON-encoded. Contains username, ssn, firstname, lastname, class, modified, examiner, vers, access, groups and requestedpasswordchange
+
+- Output: $debug
+   - Type: String
+   - Description: Information in case of errors during operations
+
+- Output: $teachers
+   - Type: array
+   - Description: Array of teachers with access to the specific course. Contains firstname, lastname and uid
+
+- Output: $classes
+   - Type: array
+   - Description: Array of all classes from the 'class' table. Contains class, responsible, classname, regcode, classcode, hp, tempo and hpProgress
+
+- Output: $courses
+   - Type: array
+   - Description: Array containing all versions of the specific course. Contains cid, coursecode, vers, versname, coursename, coursenamealt, startdate and enddate
+
+- Output: $groups
+   - Type: array
+   - Description: Array of all groups. Contains groupval, groupkind and groupint
+
+- Output: $queryResult
+   - Type: array
+   - Description: Placeholder variable, unused and set to "NONE!"
+
+- Output: $examiners
+   - Type: array
+   - Description: Array of users with "w" access to the course, which are examiners. Contains uid and username
+
+- Output: $submissions
+   - Type: array
+   - Description: Array of user submissions in old courses. Contains cid, uid, vers and versname
+
+- Output: $access
+   - Type: boolean
+   - Description: Whether a user has access or not to view the course data
+
+- Output: $username
+   - Type: varchar
+   - Description: Username
+
+- Output: $ssn
+   - Type: varchar
+   - Description: Social security number
+
+- Output: $firstname
+   - Type: varchar
+   - Description: User's firstname
+
+- Output: $lastname
+   - Type: varchar
+   - Description: User's lastname
+
+- Output: $class
+   - Type: varchar
+   - Description: Class (program)
+
+- Output: $modified
+   - Type: timestamp
+   - Description: Last modified
+
+- Output: $examiner
+   - Type: int
+   - Description: Specific courseexaminor
+
+- Output: $access
+   - Type: varchar
+   - Description: Access to change/view data or not
+
+- Output: $groups
+   - Type: varchar
+   - Description: Group
+
+- Output: $requestedpasswordchange
+   - Type: tinyint
+   - Description: ?
+
+- Output: $uid
+   - Type: varchar
+   - Description: User ID
+
+- Output: $responsible
+   - Type: int
+   - Description: Who is responsible of the class
+
+- Output: $classname
+   - Type: varchar
+   - Description: Class' name
+
+- Output: $regcode
+   - Type: int
+   - Description: Registration number
+
+- Output: $classcode
+   - Type: varchar
+   - Description: Class (program) code
+
+- Output: $hp
+   - Type: decimal
+   - Description: HP (högskolepoäng)
+
+- Output: $tempo
+   - Type: int
+   - Description: Class tempo/speed 
+
+- Output: $hpProgress
+   - Type: decimal
+   - Description: HP (högskolepoäng) progress
+
+- Output: $cid
+   - Type: int
+   - Description: Course ID
+
+- Output: $coursecode
+   - Type: varchar
+   - Description: Course code
+
+- Output: $vers
+   - Type: varchar
+   - Description: Course version
+
+- Output: $versname
+   - Type: int
+   - Description: Course version name
+
+- Output: $coursename
+   - Type: varchar
+   - Description: Course name
+
+- Output: $coursenamealt
+   - Type: varchar
+   - Description: Course name alternative
+
+- Output: $startdate
+   - Type: datetime
+   - Description: Course's start date
+
+- Output: $enddate
+   - Type: datetime
+   - Description: Course's end date
+
+- Output: $groupval
+   - Type: varchar
+   - Description: ?
+
+- Output: $groupkind
+   - Type: datetime
+   - Description: Group kind/type
+
+- Output: $groupint
+   - Type: int
+   - Description: ?
+
+## Examples of Use
+-
+
+### Microservices Used
+None
