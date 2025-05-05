@@ -103,7 +103,8 @@ function setPos(elements, x, y) {
                     elementTypesNames.EREntity,
                     elementTypesNames.UMLEntity,
                     elementTypesNames.IEEntity,
-                    elementTypesNames.SDEntity
+                    elementTypesNames.SDEntity,
+                    elementTypesNames.note
                 ];
                 if (entityKinds.includes(obj.kind)) {
                     const candidateX = obj.x - (x / zoomfact);
