@@ -3816,10 +3816,11 @@ function validateCourseID(courseid, dialogid) {
   return false
 }
 
-function validateMOTD(motd, syntaxdialogid, rangedialogid) {
+function validateMOTD(motd, syntaxdialogid, rangedialogid, dialogid) {
   var emotd = document.getElementById(motd);
   var Emotd = /(^$)|(^[-a-zåäöA-ZÅÄÖ0-9_+§&%# ?!,.]*$)/;
   var EmotdRange = /^.{0,50}$/;
+  var errorMsg = document.getElementById(dialogid);
   var errorMsg1 = document.getElementById(syntaxdialogid);
   var errorMsg2 = document.getElementById(rangedialogid);
   if (emotd.value.match(Emotd)) {
