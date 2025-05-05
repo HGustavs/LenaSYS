@@ -7728,7 +7728,7 @@ only screen and (max-device-width: 568px) {
 
 .fixed-action-button3 {
   position: absolute;
-  top: auto;
+  top: 15;
   right: 24px;
   z-index: 1;
   touch-action: none;
@@ -7748,21 +7748,60 @@ only screen and (max-device-width: 568px) {
   #course-label {
     min-width: 135px;
     margin-right: 150px;
-  }
+    display: flex; /* Enable Flexbox for centering */
+    flex-direction: column; /* Stack the spans vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    flex-wrap: wrap; /* Allow wrapping of elements */
+    height: auto;
 }
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 568px) {
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 10px; /* Nudges the FAB 10px up from the bottom */
+}
+
+@media only screen and (max-width: 430px), only screen and (max-device-width: 568px) {
   #course-label {
     font-size: 16px;
     margin-right: 25px;
     position: relative;
     text-align: center;
     height: 1.6cm;
-    width: 1.6cm;
+    width: 100%; /* Make sure the width is 100% to avoid overflow */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the elements horizontally */
+    justify-content: center; /* Center them vertically */
+    flex-wrap: wrap; /* Allow content to wrap if needed */
+    height: auto; 
   }
   #showElements, #hideElement {
     display: none;
   }
+  
+  #course-coursename,
+  #course-coursecode,
+  #course-versname {
+    text-align: center;
+    display: block; 
+    width: 100%;
+    margin-bottom: 5px; 
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+  }
+
+  #course-label span {
+    padding: 2px 5px; 
+  }
+
+  .fixed-action-button {
+    position: fixed;
+    bottom: 100px; /* Nudges the FAB 10px up from the bottom */
+  }
+}
 }
 
 #Courselist div.fixed-action-button a:hover {
