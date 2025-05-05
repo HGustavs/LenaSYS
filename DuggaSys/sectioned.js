@@ -3044,12 +3044,12 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  document.querySelector(".selectLabels label input")["disabled"] = true;
+  document.querySelector(".selectLabels label input").getAttribute("disabled", true);
   var cid = '';
   document.getElementById("cid").onchange(function () {
     cid = document.getElementById("cid").value;
     if ((document.getElementById("cid").value) != '') {
-      document,getElementById("versid")["disabled"] = false;
+      document,getElementById("versid").getAttribute("disabled", false);
       $.ajax({
         url: "../Shared/retrievevers.php",
         data: { cid: cid },
@@ -3073,7 +3073,7 @@ function retrieveCourseProfile(userid) {
       });
 
     } else {
-      document.getElementById("versid")["disabled"] = true;
+      document.getElementById("versid").getAttribute("disabled", true);
     }
 
   });
@@ -3091,7 +3091,7 @@ function getStudents(cid, userid) {
   var versid = '';
   versid = document.getElementById("#versid").value;
   if ((document.getElementById("versid").value) != '') {
-    document.getElementById("recipient")["disabled"] = false;
+    document.getElementById("recipient").getAttribute("disabled", false);
     $.ajax({
       url: "../Shared/retrieveuser_course.php",
       data: { cid: cid, versid: versid, remove_student: userid },
@@ -3116,7 +3116,7 @@ function getStudents(cid, userid) {
           document.getElementById("nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
-        document.querySelector(".selectLabels label input").attributes("disabled", false);
+        document.querySelector(".selectLabels label input").getAttribute("disabled", false);
         selectRecipients();
       },
       error: function () {
@@ -3124,7 +3124,7 @@ function getStudents(cid, userid) {
       }
     });
   } else {
-    document.getElementById("recipient")["disabled"] = true;
+    document.getElementById("recipient").getAttribute("disabled", true);
   }
 }
 
