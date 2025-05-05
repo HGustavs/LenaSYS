@@ -2174,39 +2174,58 @@ function closeModal() {
     overlay.classList.add('hiddenLoad');
 }
 
+
+/**
+ * @description popup if changes are made to the diagram and the user tries to load a new diagram before saving the current one.
+ * @returns {Promise} A promise that resolves when the user clicks either "yes" or "no".
+ * @see loadDiagramFromLocalStorage
+ **/
+function loadPopup() {
+
+    if (stateMachine.numberOfChanges <= 0) { //early exit if no changes
+      return Promise.resolve();    
+    }
+    //Promise to force popup to finish before loading a new diagram.
+    //Caused problems with loading save to fast before the popup was closed otherwise.
+    let promise = new Promise(resolve => {
+      $("#confirmationPopup").css("display", "flex");
+      $("#confirmYes, #confirmNo").click(function() {
+          $("#confirmationPopup").hide();
+          resolve(this.id === "confirmYes"); //resolvar if butten had id "confirmYes"
+        });
+    })
+    //userClickedYes contains the resolved boolean value of the promise.
+    //If the user clicked yes, then this is run and the diagram is saved.
+    promise.then(userClickedYes => {
+      stateMachine.numberOfChanges = 0;
+      if (userClickedYes) quickSaveDiagram();
+    });
+    return promise; 
+  }
+  
+
 /**
  * @description Check whether there is a diagram saved in localstorage and load it.
  * @param {string} key The name/key of the diagram to load.
  */
 function loadDiagramFromLocalStorage(key) {
 
-    console.log("numberOfChanges: " + stateMachine.numberOfChanges);
-        if(stateMachine.numberOfChanges > 0) {
-
-            // Check if there are unsaved changes
-            if (confirm("You have unsave stuff, do you want to save it?") == true) {
-                stateMachine.numberOfChanges = 0;
-                quickSaveDiagram();
+    loadPopup().then(function() {   //loadPopup promise that checks if there exists unsaved changes.
+        if (localStorage.getItem("diagrams")) {
+            let diagramFromLocalStorage = localStorage.getItem("diagrams");
+            diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
+            let obj = JSON.parse(diagramFromLocalStorage);
+            if (obj[key] === undefined) {
+                console.error("Undefined key")
             } else {
-                stateMachine.numberOfChanges = 0;
-                console.log("you pressed cancel")
-            } 
-        }
-    
-    if (localStorage.getItem("diagrams")) {
-        let diagramFromLocalStorage = localStorage.getItem("diagrams");
-        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
-        let obj = JSON.parse(diagramFromLocalStorage);
-        if (obj[key] === undefined) {
-            console.error("Undefined key")
+                loadDiagramFromString(obj[key]);
+            }
         } else {
-            loadDiagramFromString(obj[key]);
+            // Failed to load content
+            console.error("No content to load")
         }
-    } else {
-        // Failed to load content
-        console.error("No content to load")
-    }
-    disableIfDataEmpty();
+        disableIfDataEmpty();
+     });
 }
 
 // Save current diagram when user leaves the page
