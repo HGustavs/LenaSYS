@@ -897,7 +897,7 @@ function markedItems(item = null, typeInput) {
           var parent = recieveCodeParent(active_lid);
 
           for (var i = 0; i < tempSelectedItemListLength; i++) {
-            if (selectedItemList[i] == parent){
+            if (selectedItemList[i] == parent && parent != null){
               document.getElementById(parent + "-checkbox").checked = false;
               selectedItemList.splice(i, 1);
             }
