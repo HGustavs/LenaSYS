@@ -1,5 +1,9 @@
 # Endpoint Directory Database Setup Tutorial
-1. [installEndpointDb.php](http://localhost/LenaSYS/DuggaSys/microservices/endpointDirectory/installEndpointDb.php) - This installs an empty SQLite database with [these tables](#-Endpoint-Directory-Database-Table-Documentation)
+There are two ways to install the Endpoint Directory database. The 'easy' way and the 'manual' way, both of these has the same endresult. Below are step by step guides on how to use both. 
+
+The easy installation combines the step of the manual installation in a script - which means that you don't need to run them yourself. Use this guide if you just need the database and it's data.
+
+
 
 # Endpoint Directory Database Table Documentation
 ## Tables
