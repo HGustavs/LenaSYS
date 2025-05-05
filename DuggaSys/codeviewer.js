@@ -363,7 +363,7 @@ function returned(data)
 			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 			// Make room for the menu by setting padding-top equals to height of menubox
-			const menu = document.getElementById(contenteid + "menu");
+			const menu = document.getElementById(contentid + "menu");
 			boxmenuheight = menu && menu.offsetHeight != null ? menu.offsetHeight : 0;
 
 			boxEl.style.marginTop = boxmenuheight + "px";
@@ -778,8 +778,8 @@ function updateExample() {
 		var playlink = playlinkVal;
 		var examplename = titleVal;
 		var sectionname = secttitleVal;
-		var beforeid = selectedBefore;
-		var afterid = selectedAfter;
+		/*var beforeid = selectedBefore;
+		var afterid = selectedAfter;*/
 
 		AJAXService("EDITEXAMPLE", {
 			courseid: courseid,
