@@ -445,6 +445,15 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Change to ER attribute</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -460,15 +469,6 @@
                                     <p>Change to IE inheritance.</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
-                                </span>
-                            </div>
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Change to ER attribute</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
@@ -504,6 +504,15 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Change to ER attribute</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -519,15 +528,6 @@
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
-                                </span>
-                            </div>
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Change to ER attribute</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
@@ -562,6 +562,15 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram.</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -581,16 +590,7 @@
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div>
-                            <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram.</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
-                                </span>
-                            </div>
+                            </div> 
                         </div>
                     </div>
                 </div>
