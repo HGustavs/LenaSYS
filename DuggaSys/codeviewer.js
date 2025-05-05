@@ -433,8 +433,8 @@ function returned(data)
 	//hides maximize button if not supported
 	hideMaximizeAndResetButton();
 
-	// Allows resizing of boxes on the page & requestAnimationFrame for delay so boxes loads after page
-	requestAnimationFrame(() => resizeBoxes("#div2", retData["templateid"]));
+	// Allows resizing of boxes on the page
+	resizeBoxes("div2", retData["templateid"]);
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
@@ -3460,137 +3460,93 @@ function resetBoxes()
 //-----------------------------------------------------------------------------
 
 
-function resizeBoxes(containerSelector) {
-    const container = document.querySelector(containerSelector);
+function resizeBoxes(parentId, templateId) {
+    const parent = document.getElementById(parentId);
+	templateId = parseInt(templateId, 10);
+	console.log('resizeBoxes has been entered',templateId);
+    function makeBoxesResizable(element, direction, options = {}) {
+        const resizer = document.createElement('div');
+        resizer.className = 'resizer-' + direction;
+        resizer.style.position = 'absolute';
+        resizer.style.background = 'transparent';
+        resizer.style.zIndex = '10';
+        resizer.style[direction === 'e' ? 'right' : 'bottom'] = '0';
+        resizer.style[direction === 'e' ? 'top' : 'left'] = '0';
+        resizer.style[direction === 'e' ? 'bottom' : 'right'] = '0';
+        resizer.style.cursor = direction + '-resize';
+        resizer.style[direction === 'e' ? 'width' : 'height'] = '5px';
 
-    container.querySelectorAll('.resizer-horizontal, .resizer-vertical').forEach(r => r.remove());
+        element.style.position = 'relative';
+        element.appendChild(resizer);
 
-    const wrappers = Array.from(container.querySelectorAll('.boxwrapper')).sort((a, b) => {
-        const aRect = a.getBoundingClientRect();
-        const bRect = b.getBoundingClientRect();
-        return aRect.top !== bRect.top ? aRect.top - bRect.top : aRect.left - bRect.left;
-    });
+		
 
-    for (let i = 0; i < wrappers.length; i++) {
-        const current = wrappers[i];
-        const rect1 = current.getBoundingClientRect();
+        resizer.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = parseInt(window.getComputedStyle(element).width, 10);
+            const startHeight = parseInt(window.getComputedStyle(element).height, 10);
 
-        for (let j = 0; j < wrappers.length; j++) {
-            if (i === j) continue;
+            function doDrag(e) {
+                let newSize;
+                if (direction === 'e') {
+                    newSize = startWidth + e.clientX - startX;
+                    if (options.min && newSize < options.min) newSize = options.min;
+                    if (options.max && newSize > options.max) newSize = options.max;
+                    element.style.width = newSize + 'px';
+                } else if (direction === 's') {
+                    newSize = startHeight + e.clientY - startY;
+                    if (options.min && newSize < options.min) newSize = options.min;
+                    if (options.max && newSize > options.max) newSize = options.max;
+                    element.style.height = newSize + 'px';
+                }
+                if (options.onResize) options.onResize();
+            }
 
-            const compare = wrappers[j];
-            const rect2 = compare.getBoundingClientRect();
+            function stopDrag() {
+                document.documentElement.removeEventListener('mousemove', doDrag);
+                document.documentElement.removeEventListener('mouseup', stopDrag);
+            }
 
-            const overlapsHorizontally = rect1.bottom > rect2.top && rect1.top < rect2.bottom;
-            const overlapsVertically = rect1.right > rect2.left && rect1.left < rect2.right;
-
-            const nearRightEdge = Math.abs(rect1.right - rect2.left) < 10;
-            const nearBottomEdge = Math.abs(rect1.bottom - rect2.top) < 10;
-
-            const isHorizontal = overlapsHorizontally && nearRightEdge;
-            const isVertical = overlapsVertically && nearBottomEdge;
-
-            const direction = isHorizontal ? 'horizontal' : isVertical ? 'vertical' : null;
-            if (!direction) continue;
-
-            const resizer = createResizer(direction);
-            current.style.position = 'relative';
-            current.style.margin = '0';
-            compare.style.margin = '0';
-            current.appendChild(resizer);
-
-            makeSplitter(resizer, current, compare, direction);
-        }
-    }
-}
-
-function createResizer(direction) {
-    const resizer = document.createElement('div');
-    resizer.classList.add(`resizer-${direction}`);
-    resizer.style.position = 'absolute';
-    resizer.style.cursor = direction === 'horizontal' ? 'ew-resize' : 'ns-resize';
-    resizer.style.zIndex = '10';
-
-    if (direction === 'horizontal') {
-        Object.assign(resizer.style, {
-            right: '0',
-            top: '0',
-            width: '6px',
-            height: '100%'
-        });
-    } else {
-        Object.assign(resizer.style, {
-            left: '0',
-            bottom: '0',
-            width: '100%',
-            height: '6px'
+            document.documentElement.addEventListener('mousemove', doDrag);
+            document.documentElement.addEventListener('mouseup', stopDrag);
         });
     }
 
-    return resizer;
+	const boxes = {};
+	for (let i = 1; i <= 9; i++) {
+		boxes[`box${i}`] = document.getElementById(`box${i}wrapper`);
+	}
+
+	const width = parent.offsetWidth;
+	const height = parent.offsetHeight;
+    const minWidth = width * 0.15;
+    const maxWidth = width * 0.85;
+    const minHeight = height * 0.15;
+    const maxHeight = height * 0.85;
+
+	if (templateId === 1) {
+		console.log(templateId);
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+                for (let i = 1; i <= retData["numbox"]; i++) toggleTitleDescription(i);
+            }
+        });
+    } else if (templateId === 2) {
+        makeBoxesResizable(boxes.box1, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                boxes.box2.style.height = (height - boxes.box1.offsetHeight) + 'px';
+            }
+        });
+	}
 }
 
-function makeSplitter(resizer, firstBox, secondBox, direction) {
-    let start = 0;
-    let initialFirst = 0;
-    let initialSecond = 0;
-
-    resizer.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        start = direction === 'horizontal' ? e.clientX : e.clientY;
-        initialFirst = getEffectiveSize(firstBox, direction);
-        initialSecond = getEffectiveSize(secondBox, direction);
-
-        function onMouseMove(e) {
-            const current = direction === 'horizontal' ? e.clientX : e.clientY;
-            const delta = current - start;
-
-            const newFirstSize = Math.max(100, initialFirst + delta);
-            const newSecondSize = Math.max(100, initialSecond - delta);
-
-            applySize(firstBox, direction, newFirstSize);
-            applySize(secondBox, direction, newSecondSize);
-        }
-
-        function onMouseUp() {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-        }
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    });
-}
-
-function applySize(element, direction, size) {
-    const style = window.getComputedStyle(element.parentElement);
-    const isFlex = style.display.includes('flex');
-    const isRowDirection = style.flexDirection === 'row';
-
-    element.style.margin = '0';
-
-    if (isFlex) {
-        element.style.flexShrink = '0';
-        element.style.flexGrow = '0';
-        element.style.flexBasis = `${size}px`;
-        element.style[direction === 'horizontal' ? 'width' : 'height'] = `${size}px`;
-    } else {
-        element.style[direction === 'horizontal' ? 'width' : 'height'] = `${size}px`;
-    }
-}
-
-function getEffectiveSize(element, direction) {
-    const style = window.getComputedStyle(element.parentElement);
-    const isFlex = style.display.includes('flex');
-    const isRowDirection = style.flexDirection === 'row';
-
-    if (isFlex && ((direction === 'horizontal' && isRowDirection) || (direction === 'vertical' && !isRowDirection))) {
-        const basis = window.getComputedStyle(element).flexBasis;
-        return parseFloat(basis) || element.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
-    }
-
-    return element.getBoundingClientRect()[direction === 'horizontal' ? 'width' : 'height'];
-}
 
 
 //------------------------------------------------------------------------------------------------------------------------------
