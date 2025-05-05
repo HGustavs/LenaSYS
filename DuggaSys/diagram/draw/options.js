@@ -56,6 +56,12 @@ function generateContextProperties() {
         str += saveButton('toggleEntityLocked();', 'lockbtn', locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
+    var inputs = propSet.querySelectorAll('input, textarea');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', function() {
+            saveProperties();
+        });
+    }
     multipleColorsTest();
 }
 
