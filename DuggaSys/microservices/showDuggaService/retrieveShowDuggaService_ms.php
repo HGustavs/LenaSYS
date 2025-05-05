@@ -60,13 +60,8 @@ function retrieveShowDuggaService(
 			//include_once("loadDugga_ms.php");
 			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
 			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php?" . http_build_query([
-				'variant' => $variant,
-				'answer' => $answer,
-				'variantanswer' => $variantanswer,
-				'param' => $param,
-				'newcourseid' => $newcourseid,
-				'newcoursevers' => $newcoursevers,
-				'newduggaid' => $newduggaid
+				'hash' => $hash,
+				'moment' => $moment
 			]);
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -74,7 +69,13 @@ function retrieveShowDuggaService(
 			curl_close($ch);
 
 			$data = json_decode($response, true);
-			echo json_encode($data);
+			$variant = $data['variant'];
+			$answer = $data['answer'];
+			$variantanswer = $data['variantanswer'];
+			$param = $data['param'];
+			$newcourseid = $data['newcourseid'];
+			$newcoursevers = $data['newcoursevers'];
+			$newduggaid = $data['newduggaid'];
 			
 			$sql="SELECT entryname FROM listentries WHERE lid=:moment";
 			$query = $pdo->prepare($sql);
