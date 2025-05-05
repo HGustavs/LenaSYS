@@ -54,8 +54,6 @@ function setPos(elements, x, y) {
     const idList = [];
     let overlappingObject = null;
 
-    const ignoreIds = elements.map(e => e.id);
-
     // Check for overlaps
     elements.forEach(elem => {
         let newX = elem.x - deltaX / zoomfact;
@@ -68,30 +66,31 @@ function setPos(elements, x, y) {
             newX -= elem.width / 2;
             newY -= elem.height / 2;
         }
-        if (entityIsOverlapping(elem.id, newX, newY, ignoreIds)) {
+        if (entityIsOverlapping(elem.id, newX, newY)) {
             overlappingObject = elem;
         }
     });
 
     if (overlappingObject) {
-        // Display error message
-        displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        return;
-    }
+        // If overlap is detected, move the overlapping object back by one step
+        const previousX = overlappingObject.x;
+        const previousY = overlappingObject.y;
 
-    // Move all the elements in the group
-    elements.forEach(obj => {
-        if (obj.isLocked) return;
+        // Move the object back one step
+        overlappingObject.x -= x / zoomfact;
+        overlappingObject.y -= y / zoomfact;
 
-        if (settings.grid.snapToGrid && !ctrlPressed) {
-            obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-            obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-            obj.x -= obj.width / 2;
-            obj.y -= obj.height / 2;
+        // Check again if the adjusted position still overlaps
+        if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
+            // If it still overlaps, revert to the previous position
+            overlappingObject.x = previousX;
+            overlappingObject.y = previousY;
+
+            // Display error message
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         } else {
             // If no longer overlaps after adjustment, proceed with saving the new position
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
+            idList.push(overlappingObject.id);
         }
     } else {
         elements.forEach(obj => {
