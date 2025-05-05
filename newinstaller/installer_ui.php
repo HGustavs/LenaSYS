@@ -8,10 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php include 'tools/components.php'; ?>
 	<?php include 'tools/modal.php'; ?>
-	<script defer src="installer_ui.js"></script>
+	<script defer src="tools/modal.js"></script>
 	<script defer src="tools/components.js"></script>
 	<script defer src="tools/sse_receiver.js"></script>
-	<script defer src="tools/modal.js"></script>
+	<script defer src="installer_ui.js"></script>
 </head>
 <body>
 
@@ -211,7 +211,7 @@
 					?>
 					<div class="inner-wrapper">
 						<div class="input-flex">
-							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer();\""); ?>
+							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer(null);\""); ?>
 						</div>
 					</div>
 				</div>
@@ -235,8 +235,17 @@
 						bodyText("LenaSYS is being installed...");
 					?>
 					<div class="inner-wrapper">
-						<?php progressBar(); ?>
-						<div id="pageButtonContainer"></div>
+						<?php 
+							progressBar(); 
+							$modal = new Modal();
+							$modal->setDbConnectionErrorModal("dbConnectionError");
+							$modal->showFilePermissionErrorModal("permissionError");
+							$modal->showDbCreationErrorModal("dbCreationError");
+							$modal->showSqlExecutionErrorModal("SqlError");
+						?>
+						<div id="pageButtonContainer">
+							<button class="defaultButton pageButton" id="openModal" type="button" style="display: none;">View Problem</button>
+						</div>
 					</div>
 				</div>
 			</div>
