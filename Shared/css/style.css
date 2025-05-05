@@ -8000,6 +8000,7 @@ only screen and (max-device-width: 568px) {
     transform: rotate(90deg);
     transform-origin: top left;
   }
+  
 
   .fab-btn-list2 li {
     transform: rotate(225deg);
@@ -8362,6 +8363,9 @@ only screen and (max-device-width: 568px) {
 @media only screen and (max-width: 601px) {
   .fileView{
     width: 75%;
+  }
+  .fixed-action-button.extra-margin{
+    right:20px;
   }
 
 
