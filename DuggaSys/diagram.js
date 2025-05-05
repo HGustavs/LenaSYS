@@ -452,117 +452,8 @@ function getData() {
 /**
  * @description Used to determine the tools shown depending on diagram type.
  */
-function showDiagramTypes() {
-    let firstShown = false; // used to not hide the first button in either category
 
-    // ER buttons
-    if (diagramType.ER) { // if this type should be here, add functions to it
-        document.getElementById("elementPlacement0").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement1").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
 
-        if (firstShown) { // if the first type is already shown hide this one since it will then be a submenu
-            document.getElementById("elementPlacement0").classList.add("hiddenPlacementType");
-            document.getElementById("elementPlacement1").classList.add("hiddenPlacementType");
-        }
-        firstShown = true; // could be placed inside an else after the above if-statement
-    } else { // if this type shouldn't be here, hide it entirely
-        Array.from(document.getElementsByClassName("ERButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-
-    // UML buttons
-    if (diagramType.UML) {
-        document.getElementById("elementPlacement4").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement5").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement4").classList.add("hiddenPlacementType");
-            document.getElementById("elementPlacement5").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    } else {
-        Array.from(document.getElementsByClassName("UMLButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-
-    // IE buttons
-    if (diagramType.IE) {
-        document.getElementById("elementPlacement6").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-        document.getElementById("elementPlacement7").onmousedown = function () {
-            holdPlacementButtonDown(1);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement6").classList.add("hiddenPlacementType");
-            document.getElementById("elementPlacement7").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    } else {
-        Array.from(document.getElementsByClassName("IEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-
-    // SD buttons
-    if (diagramType.UML) {
-        document.getElementById("elementPlacement8").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement8").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    } else {
-        Array.from(document.getElementsByClassName("SDButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-
-    // SE buttons
-    if (diagramType.SE) {
-        document.getElementById("elementPlacement12").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement12").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    } else {
-        Array.from(document.getElementsByClassName("SEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-
-        });
-    }
-    // NOTE button
-    if (diagramType.NOTE) {
-        document.getElementById("elementPlacement15").onmousedown = function () {
-            holdPlacementButtonDown(0);
-        };
-
-        if (firstShown) {
-            document.getElementById("elementPlacement15").classList.add("hiddenPlacementType");
-        }
-        firstShown = true;
-    } else {
-        Array.from(document.getElementsByClassName("NOTEButton")).forEach(button => {
-            button.classList.add("hiddenPlacementType");
-        });
-    }
-}
 
 //#endregion ===================================================================================
 //#region ================================ EVENTS ==============================================
@@ -968,7 +859,7 @@ function setupTouchAsMouseSupport() {
             // Singel touch, simulate mouse move event
             const mouseEvent = convertTouchToMouse(event, "mousemove");
             container.dispatchEvent(mouseEvent);
-        } else if (event.touches.length === 2 && initialPinchDistance !== null){
+        } else if (event.touches.length === 2 && initialPinchDistance !== null) {
             // Two fingers, handle pinch-zoom
             handlePinchZoom(event);
         }
@@ -1164,11 +1055,11 @@ function mmoving(event) {
                 // Check coordinates of moveable element and if they are within snap threshold
                 const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
                 const snapId = visualSnapToLifeline(moveableElementPos);
-                
+
                 // Visualize the context snapping to lifeline (only a visual indication)
                 if (snapId) {
                     const lLine = data.find(el => el.id === snapId);
-                    context[0].x = lLine.x + lLine.width/2 - context[0].width/2;
+                    context[0].x = lLine.x + lLine.width / 2 - context[0].width / 2;
                     startX = event.clientX;
                     deltaX = 0;
                 }
@@ -1772,13 +1663,13 @@ function hoverPlacementButton(index) {
 /**
  * @description Function to hide submenu
  * USED IN PHP
- */ 
+ */
 function hidePlacementType() {
     if (currentlyOpenSubmenu !== null) {
         let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
-        if (submenu){
+        if (submenu) {
             submenu.classList.remove("activeTogglePlacementTypeBox"); // Hide submenu
-        }             
+        }
         currentlyOpenSubmenu = null;
     }
 }
@@ -1903,7 +1794,7 @@ function storeDiagramInLocalStorage(key) {
         local = (local[0] == "{") ? local : `{${local}}`;
 
         let localDiagrams = JSON.parse(local);
-        objToSave.timestamp = new Date().getTime(); 
+        objToSave.timestamp = new Date().getTime();
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
@@ -1914,11 +1805,11 @@ function storeDiagramInLocalStorage(key) {
 //Moastly the same as storeDiagramInLocalStorage
 //Uppdates the latestChange to always be in the latest state
 function updateLatestChange() {
-    if (stateMachine.currentHistoryIndex === -1){
-       return; 
+    if (stateMachine.currentHistoryIndex === -1) {
+        return;
     }
     stateMachine.removeFutureStates();
-  
+
     const objToSave = {
         historyLog: stateMachine.historyLog,
         initialState: stateMachine.initialState
@@ -2115,7 +2006,7 @@ function showModal() {
         diagramKeys = Object.keys(localDiagrams).sort((a, b) => {
             if (a === "AutoSave") return -1;
             if (b === "AutoSave") return 1;
-            return localDiagrams[b].timestamp - localDiagrams[a].timestamp; 
+            return localDiagrams[b].timestamp - localDiagrams[a].timestamp;
         });
     }
 
@@ -2352,7 +2243,7 @@ function removeLocalDiagram(item) {
     if (item !== 'latestChange') {
         delete localDiagrams[item];
         //Resets activeFile to null if the item deleted was the file currently saved to.
-        if (item == activeFile){
+        if (item == activeFile) {
             activeFile = null;
         }
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
@@ -2388,4 +2279,18 @@ function resetDiagramAlert() {
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
+
+window.addEventListener("resize", () => {
+    const ruler = document.getElementById("rulerOverlay");
+    if (!settings.ruler.isRulerActive) return;
+
+    if (window.innerWidth > 414) {
+        ruler.style.left = "50px";
+        ruler.style.top = "0px";
+    }
+    else {
+        ruler.style.left = "0px";
+        ruler.style.top = "0px";
+    }
+});
 //#endregion =====================================================================================

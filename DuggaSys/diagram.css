@@ -1,3 +1,14 @@
+/*
+    Great for debugging and searching for causing overflows, uncomment it when using it and comment when it is not of use. 
+*/
+/* *{
+    outline: 2px solid lightgreen;
+} */
+
+:root{
+    --diagram-toolbar-height: 5rem;
+    --normal-transition: all 300ms ease-in-out;
+}
 @keyframes loadingSpin {
     0% {
         rotate: 0deg;
@@ -289,6 +300,66 @@
     .diagramIcons {
         width: 3vh;
         height: 3vh;
+    }
+}
+
+@media (max-width: 414px){
+    .icon-wrapper{
+        display: block !important;
+        position: fixed;
+        z-index: 10;
+        bottom: 7%;
+        left: calc(50% - 2%);
+        transition: var(--normal-transition);
+    }
+
+    .icon-wrapper.toolbar-active{
+        margin-bottom: calc(var(--diagram-toolbar-height) - 2rem);
+    }
+
+    #diagram-replay-box{
+        position: fixed !important;
+    }
+
+    #diagram-replay-message{
+        left: 10% !important;
+    }
+
+    #rulerOverlay{
+        position: fixed !important;
+    }
+
+    #diagram-toolbar{
+        position: fixed !important;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: var(--diagram-toolbar-height) !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        overflow-y: hidden;
+        overflow-x: auto;
+        column-gap: .8rem;
+        transform: translateY(var(--diagram-toolbar-height));
+        transition: var(--normal-transition);
+    }
+
+    #diagram-toolbar.toolbar-active{
+        transform: translateY(0px);
+    }
+
+    #diagram-toolbar fieldset:nth-of-type(1),
+    #diagram-toolbar fieldset:nth-of-type(3){
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: .5rem;
+    }
+
+    #zoom-container{
+        left: 5% !important;
     }
 }
 
@@ -785,6 +856,7 @@
 .options-fieldset {
     width: 90%;
     margin: auto;
+    word-break: break-word;
 }
 
 .options-fieldset-show {
@@ -1005,4 +1077,19 @@
 *****************/
 #replay-time-container {
     width: 250px;
+}
+
+/****************
+    Chevron-icons
+****************/
+.icon-wrapper{
+    display: none;
+}
+
+.toggle-chevron{
+    font-size: 1.4rem;
+    background-color: var(--color-background-2);
+    padding: .3rem;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
 }
