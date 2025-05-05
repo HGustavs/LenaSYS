@@ -134,7 +134,7 @@ function toggleTestCase() {
  * @description Toggles the A4 template ON/OFF.
  */
 function toggleA4Template() {
-    const template = document.getElementById("a4Template");    
+    const template = document.getElementById("a4Template");
     const a4Rect = document.getElementById("a4Rect");
     const vRect = document.getElementById("vRect");
 
@@ -173,7 +173,7 @@ function setA4SizeFactor(e) {
 function toggleA4Vertical() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
-    
+
     vRect.style.display = "none";  // Hide horizontal
     a4Rect.style.display = "block";  // Show vertical
 }
@@ -184,7 +184,7 @@ function toggleA4Vertical() {
 function toggleA4Horizontal() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
-    
+
     a4Rect.style.display = "none";  // Hide vertical
     vRect.style.display = "block";  // Show horizontal
 }
@@ -225,15 +225,25 @@ function toggleRuler() {
 
     // Toggle active ruler + color change of button to clarify if button is pressed or not
     if (settings.ruler.isRulerActive) {
-        ruler.style.left = "-100px";
-        ruler.style.top = "-100px";
+        // ruler.style.left = "-100px";
+        // ruler.style.top = "-100px";
+        ruler.style.display = 'none';
         rulerToggleButton.style.backgroundColor = "transparent";
         rulerToggleButton.style.border = `3px solid ${color.PURPLE}`;
         rulerToggleButton.style.color = color.PURPLE;
         rulerToggleButton.style.fontWeight = "bold";
     } else {
-        ruler.style.left = "50px";
-        ruler.style.top = "0px";
+        ruler.style.display = 'block';
+
+        if (window.innerWidth > 414) {
+            ruler.style.left = "50px";
+            ruler.style.top = "0px";
+        }
+        else {
+            ruler.style.left = "0px";
+            ruler.style.top = "0px";
+        }
+
         rulerToggleButton.style.backgroundColor = color.PURPLE;
         rulerToggleButton.style.color = color.WHITE;
         rulerToggleButton.style.fontWeight = "normal";
@@ -487,7 +497,7 @@ function setElementColors(clickedCircleID) {
             context[i].stroke = color;
             elementIDs[i] = context[i].id;
         }
-        stateMachine.save(elementIDs,StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+        stateMachine.save(elementIDs, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     } else {
         console.error(`${menu.id} is not a valid ID`);
     }
@@ -532,7 +542,7 @@ function hideErrorCheck(show) {
  * @description Toggles the visibility of the diagram toolbar 
  */
 
-function toggleToolbar(){
+function toggleToolbar() {
     let toggleBtn = document.querySelector(".icon-wrapper");
     let toolbar = document.getElementById("diagram-toolbar");
     let chevronIcon = document.querySelector(".toggle-chevron");
@@ -543,10 +553,10 @@ function toggleToolbar(){
     /*
     * Determines wether to rotate the chevron icon if the toolbar and * toggleBtn is in a active state
     */
-    if(ChevronActive && toolbarActive){
+    if (ChevronActive && toolbarActive) {
         chevronIcon.style.transform = `rotate(180deg)`;
     }
-    else{   
+    else {
         chevronIcon.style.transform = `rotate(0deg)`;
     }
 }
