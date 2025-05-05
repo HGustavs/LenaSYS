@@ -7779,16 +7779,19 @@ only screen and (max-device-width: 568px) {
 only screen and (max-device-width: 568px) {
   #course-label {
     font-size: 16px;
-    margin-top: 10px;
-    margin-right: 25px;
     position: fixed;
+    margin-bottom: 40px;
     text-align: center;
-    height: 1.6cm;
-    width: 6.6cm;
+    height: 0.5cm;
+    width: 4cm;
   }
   #showElements, #hideElement {
     display: none;
   }
+}
+
+.submit-button {
+  margin: 12px 2px 4px 2px;
 }
 
 #Courselist div.fixed-action-button a:hover {
