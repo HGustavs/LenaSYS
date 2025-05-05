@@ -859,7 +859,7 @@ function setupTouchAsMouseSupport() {
             // Singel touch, simulate mouse move event
             const mouseEvent = convertTouchToMouse(event, "mousemove");
             container.dispatchEvent(mouseEvent);
-        } else if (event.touches.length === 2 && initialPinchDistance !== null){
+        } else if (event.touches.length === 2 && initialPinchDistance !== null) {
             // Two fingers, handle pinch-zoom
             handlePinchZoom(event);
         }
@@ -1055,11 +1055,11 @@ function mmoving(event) {
                 // Check coordinates of moveable element and if they are within snap threshold
                 const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
                 const snapId = visualSnapToLifeline(moveableElementPos);
-                
+
                 // Visualize the context snapping to lifeline (only a visual indication)
                 if (snapId) {
                     const lLine = data.find(el => el.id === snapId);
-                    context[0].x = lLine.x + lLine.width/2 - context[0].width/2;
+                    context[0].x = lLine.x + lLine.width / 2 - context[0].width / 2;
                     startX = event.clientX;
                     deltaX = 0;
                 }
@@ -1663,13 +1663,13 @@ function hoverPlacementButton(index) {
 /**
  * @description Function to hide submenu
  * USED IN PHP
- */ 
+ */
 function hidePlacementType() {
     if (currentlyOpenSubmenu !== null) {
         let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
-        if (submenu){
+        if (submenu) {
             submenu.classList.remove("activeTogglePlacementTypeBox"); // Hide submenu
-        }             
+        }
         currentlyOpenSubmenu = null;
     }
 }
@@ -1794,7 +1794,7 @@ function storeDiagramInLocalStorage(key) {
         local = (local[0] == "{") ? local : `{${local}}`;
 
         let localDiagrams = JSON.parse(local);
-        objToSave.timestamp = new Date().getTime(); 
+        objToSave.timestamp = new Date().getTime();
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
 
@@ -1805,11 +1805,11 @@ function storeDiagramInLocalStorage(key) {
 //Moastly the same as storeDiagramInLocalStorage
 //Uppdates the latestChange to always be in the latest state
 function updateLatestChange() {
-    if (stateMachine.currentHistoryIndex === -1){
-       return; 
+    if (stateMachine.currentHistoryIndex === -1) {
+        return;
     }
     stateMachine.removeFutureStates();
-  
+
     const objToSave = {
         historyLog: stateMachine.historyLog,
         initialState: stateMachine.initialState
@@ -2006,7 +2006,7 @@ function showModal() {
         diagramKeys = Object.keys(localDiagrams).sort((a, b) => {
             if (a === "AutoSave") return -1;
             if (b === "AutoSave") return 1;
-            return localDiagrams[b].timestamp - localDiagrams[a].timestamp; 
+            return localDiagrams[b].timestamp - localDiagrams[a].timestamp;
         });
     }
 
@@ -2243,7 +2243,7 @@ function removeLocalDiagram(item) {
     if (item !== 'latestChange') {
         delete localDiagrams[item];
         //Resets activeFile to null if the item deleted was the file currently saved to.
-        if (item == activeFile){
+        if (item == activeFile) {
             activeFile = null;
         }
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
@@ -2279,4 +2279,18 @@ function resetDiagramAlert() {
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
+
+window.addEventListener("resize", () => {
+    const ruler = document.getElementById("rulerOverlay");
+    if (!settings.ruler.isRulerActive) return;
+
+    if (window.innerWidth > 414) {
+        ruler.style.left = "50px";
+        ruler.style.top = "0px";
+    }
+    else {
+        ruler.style.left = "0px";
+        ruler.style.top = "0px";
+    }
+});
 //#endregion =====================================================================================
