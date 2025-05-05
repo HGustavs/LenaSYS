@@ -1263,9 +1263,19 @@
 
     <div id="confirmationPopup" class="loginBoxContainer" style="display:none">  
         <div class="formBox">
-            <p>You have unsaved changes, do you want to save them?</p>
-            <button id="confirmYes">Yes</button>
-            <button id="confirmNo">No</button>
+           <div class="formBoxHeader">
+                <h3>
+                    You have unsaved changes!
+                </h3>
+                <div id="closeWindow" class="cursorPointer">
+                    x
+                </div>
+            </div>
+            <p> Do you want to save before leaving? </p>
+            <div class="buttonGroup">
+                <button class="confirmButton" id="confirmYes">Yes</button>
+                <button class="confirmButton"  id="confirmNo">No</button>
+            </div>
         </div>
     </div>
     <!-- content END -->

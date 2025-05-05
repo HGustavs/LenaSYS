@@ -1000,6 +1000,21 @@
     width: 100%;
 }
 
+
+.buttonGroup {
+    text-align: center;
+}
+
+.confirmButton {
+    background-color: #614875;
+    border: 0px;
+    color: #fff;
+    cursor: pointer;
+    width: 40px;
+    height: 25px;
+    transition: 1s background-color;
+}
+
 /****************
    REPLAY BOX 
 *****************/

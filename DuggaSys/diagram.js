@@ -2180,7 +2180,7 @@ function closeModal() {
  * @returns {Promise} A promise that resolves when the user clicks either "yes" or "no".
  * @see loadDiagramFromLocalStorage
  **/
-function loadPopup() {
+function loadConfirmPopup() {
 
     if (stateMachine.numberOfChanges <= 0) { //early exit if no changes
       return Promise.resolve();    
@@ -2189,7 +2189,7 @@ function loadPopup() {
     //Caused problems with loading save to fast before the popup was closed otherwise.
     let promise = new Promise(resolve => {
       $("#confirmationPopup").css("display", "flex");
-      $("#confirmYes, #confirmNo").click(function() {
+      $("#confirmYes, #confirmNo, #closeWindow").click(function() {
           $("#confirmationPopup").hide();
           resolve(this.id === "confirmYes"); //resolvar if butten had id "confirmYes"
         });
@@ -2210,7 +2210,7 @@ function loadPopup() {
  */
 function loadDiagramFromLocalStorage(key) {
 
-    loadPopup().then(function() {   //loadPopup promise that checks if there exists unsaved changes.
+    loadConfirmPopup().then(function() {   //loadConfirmPopup promise that checks if there exists unsaved changes.
         if (localStorage.getItem("diagrams")) {
             let diagramFromLocalStorage = localStorage.getItem("diagrams");
             diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
