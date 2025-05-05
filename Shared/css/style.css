@@ -7733,6 +7733,10 @@ only screen and (max-device-width: 568px) {
     font-size: small;
   }
 
+  .submit-button {
+    margin: 12px 2px 4px 2px;
+  }
+
   input.submit-button-newitem {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
@@ -7787,6 +7791,33 @@ only screen and (max-device-width: 568px) {
   }
   #showElements, #hideElement {
     display: none;
+  }
+}
+@media screen and (max-width: 350px) {
+
+  input.submit-button-newitem {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  #loadDuggaButton {
+    font-size: xx-small;
+    min-width: 30px;
+    height: 20px;
+  }
+
+  #course-label {
+    font-size: 16px;
+    position: fixed;
+    margin-bottom: 40px;
+    text-align: center;
+    height: 0.5cm;
+    width: 4cm;
+  }
+
+  .submit-button {
+    margin: 12px 2px 4px 2px;
   }
 }
 
