@@ -1260,6 +1260,14 @@
             </div>
         </div>
     </div>
+
+    <div id="confirmationPopup" class="loginBoxContainer" style="display:none">  
+        <div class="formBox">
+            <p>You have unsaved changes, do you want to save them?</p>
+            <button id="confirmYes">Yes</button>
+            <button id="confirmNo">No</button>
+        </div>
+    </div>
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
