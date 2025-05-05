@@ -1,9 +1,12 @@
 # Endpoint Directory Database Setup Tutorial
-There are two ways to install the Endpoint Directory database. The 'easy' way and the 'manual' way, both of these has the same endresult. Below are step by step guides on how to use both. 
+There are two ways to install the Endpoint Directory database. The 'scripted installation' and the 'manual installation', both of these has the same endresult. Below are step by step guides on how to use both. 
 
-The easy installation combines the step of the manual installation in a script - which means that you don't need to run them yourself. Use this guide if you just need the database and it's data.
+The scripted installation combines the step of the manual installation in a script - which means that you don't need to run them yourself. Use this guide if you just need the database and it's data.
 
-
+### Scripted installation
+1. Open your [LenaSYS](http://localhost/LenaSYS) directory and navigate to the [endpointDirectory](http://localhost/LenaSYS/DuggaSys/microservices/endpointDirectory/) folder. (LenaSYS/DuggaSys/microservices/endpointDirectory)
+2. In the endpointDirectory folder, open [setupEndpointDirectory.php](http://localhost/LenaSYS/DuggaSys/microservices/endpointDirectory/setupEndpointDirectory.php) - This script will first remove the database (if you have it). It will then run the steps in the manual mode - install the database and then populate it. (See the manual installation guide if you are interested in the specifics of the steps)
+3. To ensure that the setup has been successful and that it has been populated with data you can visit [microserviceUI.php](http://localhost/LenaSYS/DuggaSys/microservices/endpointDirectory/microserviceUI.php) and check if there is any data.
 
 # Endpoint Directory Database Table Documentation
 ## Tables
