@@ -138,4 +138,18 @@ class Modal {
 
         $modal->render();
     }
+
+    public static function showOperationErrorModal($id) {
+        $modal = new self(
+            $id,
+            'Operation Failed',
+            '<div id="failedStep"></div>',
+            [
+                ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
+                ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
+            ]
+        );
+
+        $modal->render();
+    }
 }
