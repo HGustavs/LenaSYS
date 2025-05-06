@@ -36,7 +36,7 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
 }
 //Supposed to be used instead of includes
 
-function callMicroserviceGET($microservicePath){
+function callMicroserviceGET(string $path){
     $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
   
