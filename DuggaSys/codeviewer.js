@@ -360,7 +360,7 @@ function returned(data)
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
-			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
+			boxEl.style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 			// Make room for the menu by setting padding-top equals to height of menubox
 			const menu = document.getElementById(contentid + "menu");
@@ -756,40 +756,45 @@ function updateExample() {
 	// }
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
-	const selectedBefore = document.getElementById("before").value;
-	const selectedAfter = document.getElementById("after").value;
-	const playlinkVal = document.getElementById("playlink").value;
-	const titleVal = document.getElementById("title").value;
-	const secttitleVal = document.getElementById("secttitle").value;
+	const playlinkEl = document.getElementById("playlink");
+	const titleEl = document.getElementById("title");
+	const secttitleEl = document.getElementById("secttitle");
+
+	const playlinkVal = playlinkEl?.value ?? "";
+	const titleVal = titleEl?.value ?? "";
+	const secttitleVal = secttitleEl?.value ?? "";
+
+	const beforeEl = document.getElementById("before");
+	const afterEl = document.getElementById("after");
+
+	const selectedBefore = beforeEl ? beforeEl.value : "UNK";
+	const selectedAfter = afterEl ? afterEl.value : "UNK";
 
 	if (
 		removedWords.length > 0 ||
 		addedWords.length > 0 ||
-		(selectedBefore !== beforeid && beforeid !== "UNK") ||
-		(selectedAfter !== afterid && afterid !== "UNK") ||
 		playlinkVal !== retData['playlink'] ||
 		titleVal !== retData['examplename'] ||
-		secttitleVal !== retData['sectionname']
+		secttitleVal !== retData['sectionname'] ||
+		selectedBefore !== "UNK" ||
+		selectedAfter !== "UNK"
 	) {
 
-		var courseid = querystring['courseid'];
-		var cvers = querystring['cvers'];
-		var exampleid = querystring['exampleid'];
-		var playlink = playlinkVal;
-		var examplename = titleVal;
-		var sectionname = secttitleVal;
-		/*var beforeid = selectedBefore;
-		var afterid = selectedAfter;*/
+		const courseid = querystring ['courseid'];
+		const cvers = querystring['cvers'];
+		const exampleid = querystring['exampleid'];
 
 		AJAXService("EDITEXAMPLE", {
 			courseid: courseid,
 			cvers: cvers,
 			exampleid: exampleid,
-			beforeid: beforeid,
-			afterid: afterid,
-			playlink: playlink,
-			examplename: examplename,
-			sectionname: sectionname,
+
+			beforeid: selectedBefore,
+			afterid: selectedAfter,
+			playlink: playlinkVal,
+			examplename: titleVal,
+			sectionname: secttitleVal,
+
 			addedWords: addedWords,
 			removedWords: removedWords
 		}, "CODEVIEW");
