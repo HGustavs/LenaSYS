@@ -2787,10 +2787,10 @@ document.addEventListener("mouseup", function (e) {
   mouseUp(e);
 });
 
-document.onload=function () {
+document.addEventListener("DOMContentLoaded", function () {
   fabBtn.addEventListener("touchstart", function (e) {
-    if (e.target.closest(".fixed-action-button").length !== 0 &&
-      e.target.closest(".fab-btn-list").length === 0) {
+    if (e.target.closest(".fixed-action-button") &&
+      !e.target.closest(".fab-btn-list")) {
       e.preventDefault();
     }
 
@@ -2798,11 +2798,11 @@ document.onload=function () {
     mouseDown(e);
     TouchFABDown(e);
   });
-};
+});
 
 document.addEventListener("touchend", function (e) {
-  if (e.target.closest(".fixed-action-button").length !== 0 &&
-    e.target.closest(".fab-btn-list").length === 0) {
+  if (e.target.closest(".fixed-action-button") &&
+    !e.target.closest(".fab-btn-list")) {
     e.preventDefault();
   }
   mouseUp(e);
