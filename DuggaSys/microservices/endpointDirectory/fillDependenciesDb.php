@@ -55,28 +55,18 @@ foreach ($lines as $line) {
             $dependsOnName = $fileName;
         }
 
-        // normalize the names to always have the correct format
-        $searchNameCurrent = normalizeMsName($currentMicroservice);
-        $searchNameDepends = normalizeMsName($dependsOnName);
+        // search for an id match in the microservice table
+        $microserviceId = findMicroserviceId($db, $currentMicroservice);
+        $dependsOnId = findMicroserviceId($db, $dependsOnName);
 
-        // get id for current microservice
-        $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
-        $stmt->execute([$searchNameCurrent]);
-        $microserviceId = $stmt->fetchColumn();
-
-        // get id for the microservice that is depended on
-        $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
-        $stmt->execute([$searchNameDepends]);
-        $dependsOnId = $stmt->fetchColumn();
-
-        // insert wether id is found or not
+        // insert into database
         $stmt = $db->prepare("
             INSERT INTO dependencies (microservice_id, depends_on_id, ms_name, depends_on, path)
             VALUES (?, ?, ?, ?, ?)
         ");
         $stmt->execute([
-            $microserviceId ?: null, // null if none was found
-            $dependsOnId ?: null,
+            $microserviceId,
+            $dependsOnId,
             $currentMicroservice,
             $dependsOnName,
             $dependsOnPath
@@ -86,13 +76,27 @@ foreach ($lines as $line) {
 
 }
 
-function normalizeMsName($name) {
-    // if name already ends with '_ms.php' return
-    if (str_ends_with($name, '_ms.php')) {
-        return $name;
+// nullable type function (returns either int or null)
+function findMicroserviceId(PDO $db, string $name): ?int {
+    // remove possible blankspaces
+    $name = trim($name);
+    // list the different variants of the names
+    $variants = [
+        $name,
+        $name . '_ms',
+        $name . '_ms.php',
+        $name . '.php'
+    ];
+    // loop through the variants to try to find them
+    foreach ($variants as $variant) {
+        $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
+        $stmt->execute([$variant]);
+        if ($id = $stmt->fetchColumn()) {
+            return (int) $id;
+        }
     }
-    // otherwise, add '_ms.php'
-    return $name . '_ms.php';
+    // return null if no match was found
+    return null;
 }
 
 echo "Dependencies inserted.<br>";
