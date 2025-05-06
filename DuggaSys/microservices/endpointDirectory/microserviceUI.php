@@ -1,4 +1,13 @@
 <?php
+
+
+if (isset($_POST['create_database'])){
+    include 'setupEndpointDirectory.php';
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+
 try {
 // database
 $db = new PDO('sqlite:endpointDirectory_db.sqlite');
@@ -44,7 +53,7 @@ if (isset($_GET['id'])) {
 }
 
 } catch (PDOException $e) {
-    $dbError = "Database is not installed. Execute 'setupEndpointDirectory.php' to install it. ";
+    $dbError = "Database is not installed. Press the button below to create a database. ";
 }
 ?>
 
