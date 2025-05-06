@@ -3456,7 +3456,6 @@ function resetBoxes()
 //-----------------------------------------------------------------------------
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
-// Includes helper methods: makeSplitter, applySize, createResizer, and getEffectiveSize
 //-----------------------------------------------------------------------------
 
 
@@ -3742,7 +3741,6 @@ function resizeBoxes(parentId, templateId) {
 	}
 	
 }
-
 
 
 //------------------------------------------------------------------------------------------------------------------------------
