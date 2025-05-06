@@ -3,12 +3,15 @@
 // deleteFileLink_ms - Used when deleting files from a course
 //---------------------------------------------------------------------------------------------------------------
 
+header('Content-Type: application/json');
+
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveFileedService_ms.php";
+//include_once "./retrieveFileedService_ms.php";
+include_once "../../../DuggaSys/microservices/curlService.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -34,21 +37,45 @@ if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUs
 
 if (!(checklogin() && $hasAccess)) {
     $debug = "Access not granted.";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+    $retrieveArray = callMicroserviceGET(
+        "sectionedService/retrieveFileedService_ms.php?" .
+        "courseid=" . urlencode($cid) .
+        "&coursevers=" . urlencode($coursevers) .
+        "&fid=" . urlencode($fid) .
+        "&opt=" . urlencode($opt) .
+        "&log_uuid=" . urlencode($log_uuid) .
+        "&kind=" . urlencode($kind)
+    );
     echo json_encode($retrieveArray);
     return;
 }
 
 if ($kind == 2 && (isSuperUser($userid) == false)) {
     $debug = "Access not granted.";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+    $retrieveArray = callMicroserviceGET(
+        "sectionedService/retrieveFileedService_ms.php?" .
+        "courseid=" . urlencode($cid) .
+        "&coursevers=" . urlencode($coursevers) .
+        "&fid=" . urlencode($fid) .
+        "&opt=" . urlencode($opt) .
+        "&log_uuid=" . urlencode($log_uuid) .
+        "&kind=" . urlencode($kind)
+    );
     echo json_encode($retrieveArray);
     return;
 }
 
 if (!(strcmp($opt, "DELFILE") === 0 && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)))) {
     $debug = "OPT does not match.";
-    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+    $retrieveArray = callMicroserviceGET(
+        "sectionedService/retrieveFileedService_ms.php?" .
+        "courseid=" . urlencode($cid) .
+        "&coursevers=" . urlencode($coursevers) .
+        "&fid=" . urlencode($fid) .
+        "&opt=" . urlencode($opt) .
+        "&log_uuid=" . urlencode($log_uuid) .
+        "&kind=" . urlencode($kind)
+    );
     echo json_encode($retrieveArray);
     return;
 }
@@ -115,5 +142,13 @@ if ($counted == 0) {
     $debug = "This file is part of a code example. Remove it from there before removing the file.";
 }
 
-$retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+$retrieveArray = callMicroserviceGET(
+    "sectionedService/retrieveFileedService_ms.php?" .
+    "courseid=" . urlencode($cid) .
+    "&coursevers=" . urlencode($coursevers) .
+    "&fid=" . urlencode($fid) .
+    "&opt=" . urlencode($opt) .
+    "&log_uuid=" . urlencode($log_uuid) .
+    "&kind=" . urlencode($kind)
+);
 echo json_encode($retrieveArray);

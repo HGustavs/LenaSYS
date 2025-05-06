@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['token'])) {
@@ -74,7 +75,7 @@ if (isset($_GET['id'])) {
 }
 
 } catch (PDOException $e) {
-    $dbError = "Database is not installed. Execute 'setupEndpointDirectory.php' to install it. ";
+    $dbError = "Database is not installed. Press the button below to create a database. ";
 }
 ?>
 
@@ -82,15 +83,7 @@ if (isset($_GET['id'])) {
 <html>
 <head>
     <title>Microservice Directory</title>
-    <style>
-        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        form { margin: 20px 0; }
-        input, button { padding: 5px; }
-        .line { border-bottom: 1px solid #ddd; margin-bottom: 20px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -112,14 +105,14 @@ if (isset($_GET['id'])) {
     
     <?php    
     if (isset($dbError)) {
-        echo "<p style= 'color:red';>" . $dbError;
+        echo "<p class='error_message'>" . $dbError . "</p>";
     } else {
         if (!isset($microservice)) { ?>
 
         <div class="line">
             <h1>Microservice Directory</h1>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="search-container">
 
             <form method="GET">
                 <input type="text" name="search" placeholder="Search name/description">
@@ -129,7 +122,7 @@ if (isset($_GET['id'])) {
                 <?php endif; ?>
             </form>
 
-            <div style="display: flex; gap: 10px;">
+            <div class="button-container">
                 <form method="">
                     <button type="submit">Filter</button>
                 </form>
@@ -137,6 +130,7 @@ if (isset($_GET['id'])) {
                 <form method="">
                     <button type="submit">Add Microservice</button>
                 </form>
+                <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
             </div>
         </div>
     <?php } ?>

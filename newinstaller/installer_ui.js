@@ -121,7 +121,7 @@ function navigateToPreviousPage() {
     }
 }
 
-function start_installer() {
+function start_installer(newData) {
 	let error_occured = false;
 	let languageSupportChecked = false;
 
@@ -131,7 +131,7 @@ function start_installer() {
                ['text', 'password', 'radio', 'checkbox'].includes(element.type);
     });
 
-	const data = {
+	let data = {
         verbose: false,
         overwrite_db: false,
         overwrite_user: false,
@@ -189,6 +189,10 @@ function start_installer() {
         }
     });
 
+	if (newData != null) {
+		data = newData;
+	}
+
 	console.log("Form Data:", data);
 
 	fetch('installer.php', {
@@ -224,18 +228,16 @@ function start_installer() {
 			
 			update();
 		},
-		error: function(data) {
-			error_occured = true;
-			addButton(error_occured);
-			alert(data);
+		error: function(dataError) {
+			error_occured = true;	
+			addButton(error_occured);	
+			Window.checkTypeOfError(dataError, data);
 		}
 	});
 
 	function addButton(error) {
 		if (!error) {
 			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=location.href='../DuggaSys/courseed.php'>Finish</button>";
-		}else {
-			document.getElementById("pageButtonContainer").innerHTML = "<button class='defaultButton pageButton' onclick=navigateTo('page1')>Retry</button>";
 		}
 	}
 }
