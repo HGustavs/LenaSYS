@@ -2176,30 +2176,27 @@ function closeModal() {
 
 
 /**
- * @description popup if changes are made to the diagram and the user tries to load a new diagram before saving the current one.
+ * @description Dynamic Confirmation popup, can be used for any confirmation popup.
+ * @param {string} headerText The text to display in the header of the popup.
+ * @param {string} messageText The text to display in the body of the popup.
  * @returns {Promise} A promise that resolves when the user clicks either "yes" or "no".
  * @see loadDiagramFromLocalStorage
  **/
-function loadConfirmPopup() {
+function loadConfirmPopup(headerText, messageText) {
 
     if (stateMachine.numberOfChanges <= 0) { //early exit if no changes
       return Promise.resolve();    
     }
-    //Promise to force popup to finish before loading a new diagram.
-    //Caused problems with loading save to fast before the popup was closed otherwise.
+    //Promise to force popup to finish before code continues
     let promise = new Promise(resolve => {
       $("#confirmationPopup").css("display", "flex");
+      $("#confirmPopupHeader").text(headerText);
+      $("#confrimPopupText").text(messageText);
       $("#confirmYes, #confirmNo, #closeWindow").click(function() {
           $("#confirmationPopup").hide();
           resolve(this.id === "confirmYes"); //resolvar if butten had id "confirmYes"
         });
     })
-    //userClickedYes contains the resolved boolean value of the promise.
-    //If the user clicked yes, then this is run and the diagram is saved.
-    promise.then(userClickedYes => {
-      stateMachine.numberOfChanges = 0;
-      if (userClickedYes) quickSaveDiagram();
-    });
     return promise; 
   }
   
@@ -2208,9 +2205,17 @@ function loadConfirmPopup() {
  * @description Check whether there is a diagram saved in localstorage and load it.
  * @param {string} key The name/key of the diagram to load.
  */
-function loadDiagramFromLocalStorage(key) {
+function loadDiagramFromLocalStorage(key) { 
+    const popupHeader = "You have unsaved changes!";
+    const popupMessage = "Do you want to save them before loading a new diagram?";
 
-    loadConfirmPopup().then(function() {   //loadConfirmPopup promise that checks if there exists unsaved changes.
+    // Check if there are unsaved changes and show confirmation popup
+    // If there are no changes, load the diagram directly
+    loadConfirmPopup(popupHeader, popupMessage).then(userClickedYes => {
+        stateMachine.numberOfChanges = 0;
+        if (userClickedYes) quickSaveDiagram(); //Only true if press Yes
+
+        //this is inside the promise .then so it will wait for the user to click before executing
         if (localStorage.getItem("diagrams")) {
             let diagramFromLocalStorage = localStorage.getItem("diagrams");
             diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
