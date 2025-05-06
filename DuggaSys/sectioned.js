@@ -2958,13 +2958,19 @@ document.addEventListener('click', function () {
 
 
 // Setup (when loaded rather than when ready)
-window.onload=function () {
+window.addEventListener("DOMContentLoaded", function () {
   accessAdminAction();
-  document.querySelector(".messagebox").hover=function () {
-    document.getElementById("testbutton").style.backgroundColor="red";
-  };
-  document.querySelector(".messagebox").addEventListener("mouseout", function () {
-    document.getElementById("testbutton").style.backgroundColor="#614875";
+  document.addEventListener("hover", function (e) {
+    const target = e.target.closest(".messagebox");
+    if(target){
+      document.getElementById("testbutton").style.backgroundColor="red";
+    }
+  });
+  document.addEventListener("mouseout", function (e) {
+    const target = e.target.closest(".messagebox");
+    if(target){
+      document.getElementById("testbutton").style.backgroundColor="#614875";
+    }
   });
   document.getElementById("sectionList_arrowStatisticsOpen").addEventListener("click", function () {
     document.getElementById("sectionList_arrowStatisticsOpen").style.display="none";
@@ -2988,24 +2994,44 @@ window.onload=function () {
     document.getElementById("statisticsSwimlanes").style.display="none";
 
   });
-  document.getElementById("announcement").addEventListener("click", function () {
-    sessionStorage.removeItem("closeUpdateForm");
-    document.getElementById("announcementBoxOverlay").toggle();
-    if (document.getElementById("announcementForm").style.display="none") {
-      document.getElementById("announcementForm").style.display="block";
+  document.addEventListener("click", function (e) {
+    const target = e.target.closest("#announcement");
+    if(target){
+      sessionStorage.removeItem("closeUpdateForm");
+      if(document.getElementById("announcementBoxOverlay").style.display==="none" ||
+      window.getComputedStyle(document.getElementById("announcementBoxOverlay")).display === "none"){
+        document.getElementById("announcementBoxOverlay").style.display="block"
+      }
+      else{
+        document.getElementById("announcementBoxOverlay").style.display="none";
+      }
+      if (document.getElementById("announcementForm").style.display==="none") {
+        document.getElementById("announcementForm").style.display="block";
+      }
+      else{
+        document.getElementById("announcementForm").style.display="none";
+      }
     }
 
   });
-  document.getElementById("announcementBurger").addEventListener("click", function () {
-    sessionStorage.removeItem("closeUpdateForm");
-    document.getElementById("announcementBoxOverlay").toggle();
-    if (document.getElementById("announcementForm").style.display="none") {
-      document.getElementById("announcementForm").style.display="block";
+  document.addEventListener("click", function (e) {
+    const target = e.target.closest("#announcementBurger");
+    if(target){
+      sessionStorage.removeItem("closeUpdateForm");
+      if(document.getElementById("announcementBoxOverlay").style.display==="none" ||
+      window.getComputedStyle(document.getElementById("announcementBoxOverlay")).display === "none"){
+        document.getElementById("announcementBoxOverlay").style.display="block";
+      }
+      else{
+        document.getElementById("announcementBoxOverlay").style.display="none";
+      }
     }
-
   });
-  document.querySelector(".createBtn").addEventListener("click", function () {
-    sessionStorage.setItem('closeUpdateForm', true);
+  document.addEventListener("click", function (e) {
+    const target = e.target.closest(".createBtn");
+    if(target){
+      sessionStorage.setItem('closeUpdateForm', true);
+    }
   });
 
   // retrieveAnnouncementAuthor();
@@ -3014,7 +3040,7 @@ window.onload=function () {
   displayAnnouncementBoxOverlay();
   multiSelect();
   // toggleFeedbacks();
-};
+});
 
 
 // Show the full announcement
