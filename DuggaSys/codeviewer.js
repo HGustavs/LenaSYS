@@ -3570,6 +3570,7 @@ function resizeBoxes(parentId, templateId) {
                 const totalW = boxes.box1.offsetWidth + boxes.box2.offsetWidth;
                 if (totalW !== width) {
                     boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+					for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
                 } else {
                     const remH = height - boxes.box1.offsetHeight;
                     boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
@@ -3688,6 +3689,7 @@ function resizeBoxes(parentId, templateId) {
 				const remW = parent.offsetWidth - boxes.box2.offsetWidth;
 				boxes.box1.style.width = remW + 'px';
 				boxes.box3.style.width = boxes.box2.offsetWidth + 'px';
+				for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
 			}
 		});
 	
@@ -3707,6 +3709,7 @@ function resizeBoxes(parentId, templateId) {
 				const remW = parent.offsetWidth - boxes.box3.offsetWidth;
 				boxes.box1.style.width = remW + 'px';
 				boxes.box2.style.width = boxes.box3.offsetWidth + 'px';
+				for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
 			}
 		});
 	}
@@ -3718,6 +3721,7 @@ function resizeBoxes(parentId, templateId) {
 				const remW = width - boxes.box1.offsetWidth;
 				['box2','box3','box4','box5'].forEach(id => {
 					boxes[id].style.width = remW + 'px';
+					for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
 				});
 			}
 		});
