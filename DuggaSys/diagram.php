@@ -101,6 +101,11 @@
         <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
     </div>
 
+    <!-- The FAB-btn for the diagram.php, STARTS HERE!-->
+    <div class="fixed-action-button diagram-fab">
+        <button class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
+    </div>
+
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar">
         <fieldset>
