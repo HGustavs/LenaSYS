@@ -3093,39 +3093,37 @@ function retrieveCourseProfile(userid) {
   }
 }
 function getStudents(cid, userid) {
-  var versid = '';
-  versid = $("#versid").val();
-  if (($("#versid").val()) != '') {
-    $("#recipient").prop("disabled", false);
-    $.ajax({
-      url: "../Shared/retrieveuser_course.php",
-      data: { cid: cid, versid: versid, remove_student: userid },
-      type: "POST",
-      success: function (data) {
-        var item = JSON.parse(data);
-        $("#recipient").find('*').not(':first').remove();
-        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
-          "</optgroup>");
-        $.each(item.finished_students, function (index, item) {
-          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname}
-          ${item.lastname}</option>`);
-        });
-        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
-          "</optgroup>");
-        $.each(item.non_finished_students, function (index, item) {
-          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
-          ${item.lastname}</option>`);
-        });
-        $(".selectLabels label input").attr("disabled", false);
+  var versid = document.getElementById("versid").value;
+  if (versid !== "") {
+    var recipient = document.getElementById("recipient");
+    recipient.disabled = false;
+    fetch("../Shared/retrieveuser_course.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "cid=" + encodeURIComponent(cid) + "&versid=" + encodeURIComponent(versid) + "&remove_student=" + encodeURIComponent(userid)
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (item) {
+        var str = "<optgroup id='finishedStudents' label='Finished students'>";
+        for (var i = 0; i < item.finished_students.length; i++) {
+          var s = item.finished_students[i];
+          str += "<option value='" + s.uid + "'>" + s.firstname + " " + s.lastname + "</option>";
+        }
+        str += "</optgroup><optgroup id='nonfinishedStudents' label='Non-finished students'>";
+        for (var j = 0; j < item.non_finished_students.length; j++) {
+          var s = item.non_finished_students[j];
+          str += "<option value='" + s.uid + "'>" + s.firstname + " " + s.lastname + "</option>";
+        }
+        str += "</optgroup>";
+        while (recipient.options.length > 1) { recipient.remove(1); }
+        recipient.innerHTML += str;
+        var inputs = document.querySelectorAll(".selectLabels label input");
+        for (var k = 0; k < inputs.length; k++) inputs[k].disabled = false;
         selectRecipients();
-      },
-      error: function () {
-        console.log("*******Error user_course*******");
-      }
-    });
-  } else {
-    $("#recipient").prop("disabled", true);
+      })
+      .catch(function () { console.log("*******Error user_course*******"); });
   }
+  else document.getElementById("recipient").disabled = true;
 }
 
 // Validate create announcement form
