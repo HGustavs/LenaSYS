@@ -865,6 +865,11 @@ function markedItems(item = null, typeInput) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
         var tempKind = element ? element.closest('tr').getAttribute('value'): null;
 
+        console.log(getComputedStyle(element.parentElement).display == 'none');
+        /*console.log('element display: ' + element.style.display);
+        console.log('tempDisplay: ' + tempDisplay);
+        console.log('tempkind: ' + tempKind);*/
+        
         // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
@@ -916,6 +921,7 @@ function markedItems(item = null, typeInput) {
     } 
     
     if (removed != true) {
+      //console.log('not removed');
       let activeLidInList = false;
       for (var k = 0; k < selectedItemList.length; k++) {
         if(active_lid == selectedItemList[k]){
@@ -928,7 +934,9 @@ function markedItems(item = null, typeInput) {
     }
       //handles checking within section
       for (var j = 0; j < subItems.length; j++) {
+        //console.log('subItems: ' + subItems);
         selectedItemList.push(subItems[j]);
+        //console.log('subitem: ' + subItems[j] + 'is added to selected items');
         document.getElementById(subItems[j] + "-checkbox").checked = true;
       }
     }
@@ -937,7 +945,9 @@ function markedItems(item = null, typeInput) {
   // adds everything under section to selectedItems
   else {
     selectedItemList.push(active_lid);
+    console.log('hmm' + active_lid);
     for (var j = 0; j < subItems.length; j++) {
+      console.log(subItems[j]);
       selectedItemList.push(subItems[j]);
     }
     for (i = 0; i < selectedItemList.length; i++) {
@@ -990,6 +1000,15 @@ function showMarkedItems(selectedItemList) {
 // Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList() {
   selectedItemList = [];
+}
+
+function checkIfSelected (lid, tempListLenght){
+  for (var i = 0; i < tempListLenght; i++){
+    if (lid == selectedItemList[i]){
+      console.log('comparison success');
+      return i;
+    }
+  }
 }
 
 // Finds code-duggas parent - used in markedItems() for unselection of section
@@ -1155,6 +1174,10 @@ function deleteItem(item_lid = []) {
     item = document.getElementById("lid" + lid[i]);
     item.parentElement.style.display = "none";
     item.classList.add("deleted");
+
+    console.log('this is item; ' + item);
+    console.log('this is lid; ' + lid);
+    
     document.querySelector("#undoButton").style.display = "block";
   }
 
