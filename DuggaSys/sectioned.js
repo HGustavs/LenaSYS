@@ -29,7 +29,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
-let showHidden = true;
+let showHidden = false;
 let count = 0;
 
 function initInputColorTheme() {
@@ -2403,6 +2403,22 @@ function toggleHidden() { //Look for all td's that have the class "hidden"
       document.getElementById(element).classList.add('displayNone');
     });
   }
+}
+
+function toggleButtonClickHandler() {
+  const toggleButton = document.getElementById('toggleElements');
+
+  showHidden = !showHidden;
+
+  if (showHidden) {
+    toggleButton.src = '../Shared/icons/eye_closed_icon.svg';
+    toggleButton.title = 'Hide hidden items';
+  } else {
+    toggleButton.src = '../Shared/icons/eye_icon.svg';
+    toggleButton.title = 'Show hidden items';
+  }
+
+  toggleHidden();
 }
 
 function openCanvasLink(btnobj) {
