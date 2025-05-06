@@ -3,7 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../microservices/curlService.php";
+include_once "../curlService.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();

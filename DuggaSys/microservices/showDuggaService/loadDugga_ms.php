@@ -3,7 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../microservices/curlService.php";
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -34,6 +34,7 @@ $query = $pdo->prepare($sql);
 $query->bindParam(':hash', $hash);
 $result = $query->execute();
 $rows = $query->fetchAll();
+}
 
 //if the hash didn't work then retrive all answers for that moment
 if($rows == NULL){
@@ -68,4 +69,3 @@ $response = callMicroservicePOST(
 
 header("Content-Type: application/json");
 echo $response;
-}
