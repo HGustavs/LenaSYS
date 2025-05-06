@@ -34,6 +34,8 @@ class StateMachine {
         this.currentTime = new Date().getTime();
         /** Keeps track of the type of change being made */
         this.changeType = undefined;
+
+        this.numberOfChanges = 0;
     }
 
     /**
@@ -135,6 +137,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
+        stateMachine.numberOfChanges++;
         updateLatestChange()
     }
 
@@ -475,17 +478,23 @@ document.addEventListener('contextmenu', event => {
     event.preventDefault();
 });
 
+
+//Adds an EventListener to the document, that listens for keys being pressed.
+//NOTE: If adding additional keyboard shortcuts, keep in mind that if the action taken happens instantaneously and is only meant to happen once per press, only call upon the function in the other EventListener below.
 document.addEventListener('keydown', function (e) {
+    //Sets variables for each special key (Ctrl, Alt, etc.) to true if they are being pressed down.
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && !ctrlPressed) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && !altPressed) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && !ctrlPressed) ctrlPressed = true;
 
+    //Exits out of the replay mode if the escape button is pressed when replay mode is active.
     if (isKeybindValid(e, keybinds.ESCAPE) && !escPressed && settings.replay.active) {
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
     }
 
+    //Special functionality for if the enter button is pressed when writing something in an input field.
     if (isKeybindValid(e, keybinds.ENTER) && /INPUT|SELECT/.test(document.activeElement.nodeName.toUpperCase())) {
         if (document.getElementById("lineLabel")) {
             changeLineProperties();
@@ -519,6 +528,8 @@ document.addEventListener('keydown', function (e) {
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
+    //Functionality for each available keyboard shortcut in the diagram. Check constants.js to see all keybinds.
+    //"e.preventDefault() prevents the browser from taking action upon a keyboard shortcut being pressed." This ensures that no keyboard shortcuts for the diagram end up clashing with commonplace browser shortcuts.
     if (isKeybindValid(e, keybinds.ZOOM_IN)) {
         e.preventDefault();
         zoomin();
@@ -527,23 +538,20 @@ document.addEventListener('keydown', function (e) {
         e.preventDefault();
         zoomout();
     }
-
     if (isKeybindValid(e, keybinds.ZOOM_RESET)) {
         e.preventDefault();
         zoomreset();
     }
-
     if (isKeybindValid(e, keybinds.SELECT_ALL)) {
         e.preventDefault();
         document.getElementById("mouseMode0").click();
         selectAll();
     }
-
     if (isKeybindValid(e, keybinds.CENTER_CAMERA)) {
         e.preventDefault();
     }
 
-    // Moving object with arrows
+    // Moving object with arrow keys.
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
         e.preventDefault();
         let overlapDetected = false;
@@ -624,16 +632,14 @@ document.addEventListener('keydown', function (e) {
         }
     }
 
+    //Saving and loading diagrams.
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) {
         e.preventDefault();
-        quickSaveDiagram();
     }
-
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) {
         e.preventDefault();
         showSavePopout();
     }
-
     if (isKeybindValid(e, keybinds.LOAD_DIAGRAM)) {
         e.preventDefault();
         showModal();
@@ -645,6 +651,8 @@ document.addEventListener('keydown', function (e) {
     historyHandler.inputCounter = (historyHandler.inputCounter + 1) % 1024;
 });
 
+
+//Adds an EventListener to the document that listens for keys being released. Only call upon functions here if the press is only meant to trigger the action once AND the action is instantaneous.
 document.addEventListener('keyup', function (e) {
     const pressedKey = e.key.toLowerCase();
 
@@ -660,6 +668,7 @@ document.addEventListener('keyup', function (e) {
 
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
+        //Reverts input name if not saved and closes the options panel if ESC is pressed during element renaming.
         if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
             if (context.length == 1) {
                 document.activeElement.value = context[0].name;
@@ -728,6 +737,7 @@ document.addEventListener('keyup', function (e) {
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
+    //Actions which are taken if the keyboard shortcut has been pressed and released.
     if (isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
     if (isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
     if (isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
@@ -859,7 +869,7 @@ function setupTouchAsMouseSupport() {
             // Singel touch, simulate mouse move event
             const mouseEvent = convertTouchToMouse(event, "mousemove");
             container.dispatchEvent(mouseEvent);
-        } else if (event.touches.length === 2 && initialPinchDistance !== null){
+        } else if (event.touches.length === 2 && initialPinchDistance !== null) {
             // Two fingers, handle pinch-zoom
             handlePinchZoom(event);
         }
@@ -1055,11 +1065,11 @@ function mmoving(event) {
                 // Check coordinates of moveable element and if they are within snap threshold
                 const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
                 const snapId = visualSnapToLifeline(moveableElementPos);
-                
+
                 // Visualize the context snapping to lifeline (only a visual indication)
                 if (snapId) {
                     const lLine = data.find(el => el.id === snapId);
-                    context[0].x = lLine.x + lLine.width/2 - context[0].width/2;
+                    context[0].x = lLine.x + lLine.width / 2 - context[0].width / 2;
                     startX = event.clientX;
                     deltaX = 0;
                 }
@@ -1663,13 +1673,13 @@ function hoverPlacementButton(index) {
 /**
  * @description Function to hide submenu
  * USED IN PHP
- */ 
+ */
 function hidePlacementType() {
     if (currentlyOpenSubmenu !== null) {
         let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
-        if (submenu){
+        if (submenu) {
             submenu.classList.remove("activeTogglePlacementTypeBox"); // Hide submenu
-        }             
+        }
         currentlyOpenSubmenu = null;
     }
 }
@@ -1794,22 +1804,23 @@ function storeDiagramInLocalStorage(key) {
         local = (local[0] == "{") ? local : `{${local}}`;
 
         let localDiagrams = JSON.parse(local);
-        objToSave.timestamp = new Date().getTime(); 
+        objToSave.timestamp = new Date().getTime();
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
-
+        stateMachine.numberOfChanges = 0; // Reset the number of changes to 0, so that the user can save again without having to make a change first.
         displayMessage(messageTypes.SUCCESS, "Diagram saved! (File saved to: " + key + ")");
+        
     }
 }
 
 //Moastly the same as storeDiagramInLocalStorage
 //Uppdates the latestChange to always be in the latest state
 function updateLatestChange() {
-    if (stateMachine.currentHistoryIndex === -1){
-       return; 
+    if (stateMachine.currentHistoryIndex === -1) {
+        return;
     }
     stateMachine.removeFutureStates();
-  
+
     const objToSave = {
         historyLog: stateMachine.historyLog,
         initialState: stateMachine.initialState
@@ -2006,7 +2017,7 @@ function showModal() {
         diagramKeys = Object.keys(localDiagrams).sort((a, b) => {
             if (a === "AutoSave") return -1;
             if (b === "AutoSave") return 1;
-            return localDiagrams[b].timestamp - localDiagrams[a].timestamp; 
+            return localDiagrams[b].timestamp - localDiagrams[a].timestamp;
         });
     }
 
@@ -2061,26 +2072,64 @@ function closeModal() {
     overlay.classList.add('hiddenLoad');
 }
 
+
+/**
+ * @description Dynamic Confirmation popup, can be used for any confirmation popup.
+ * @param {string} headerText The text to display in the header of the popup.
+ * @param {string} messageText The text to display in the body of the popup.
+ * @returns {Promise} A promise that resolves when the user clicks either "yes" or "no".
+ * @see loadDiagramFromLocalStorage
+ **/
+function loadConfirmPopup(headerText, messageText) {
+
+    if (stateMachine.numberOfChanges <= 0) { //early exit if no changes
+      return Promise.resolve();    
+    }
+    //Promise to force popup to finish before code continues
+    let promise = new Promise(resolve => {
+      $("#confirmationPopup").css("display", "flex");
+      $("#confirmPopupHeader").text(headerText);
+      $("#confrimPopupText").text(messageText);
+      $("#confirmYes, #confirmNo, #closeWindow").click(function() {
+          $("#confirmationPopup").hide();
+          resolve(this.id === "confirmYes"); //resolvar if butten had id "confirmYes"
+        });
+    })
+    return promise; 
+  }
+  
+
 /**
  * @description Check whether there is a diagram saved in localstorage and load it.
  * @param {string} key The name/key of the diagram to load.
  */
-function loadDiagramFromLocalStorage(key) {
-    if (localStorage.getItem("diagrams")) {
-        let diagramFromLocalStorage = localStorage.getItem("diagrams");
-        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
-        let obj = JSON.parse(diagramFromLocalStorage);
-        if (obj[key] === undefined) {
-            console.error("Undefined key")
+function loadDiagramFromLocalStorage(key) { 
+    const popupHeader = "You have unsaved changes!";
+    const popupMessage = "Do you want to save them before loading a new diagram?";
+
+    // Check if there are unsaved changes and show confirmation popup
+    // If there are no changes, load the diagram directly
+    loadConfirmPopup(popupHeader, popupMessage).then(userClickedYes => {
+        stateMachine.numberOfChanges = 0;
+        if (userClickedYes) quickSaveDiagram(); //Only true if press Yes
+
+        //this is inside the promise .then so it will wait for the user to click before executing
+        if (localStorage.getItem("diagrams")) {
+            let diagramFromLocalStorage = localStorage.getItem("diagrams");
+            diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
+            let obj = JSON.parse(diagramFromLocalStorage);
+            if (obj[key] === undefined) {
+                console.error("Undefined key")
+            } else {
+                activeFile = key;
+                loadDiagramFromString(obj[key]);
+            }
         } else {
-            activeFile = key;
-            loadDiagramFromString(obj[key]);
+            // Failed to load content
+            console.error("No content to load")
         }
-    } else {
-        // Failed to load content
-        console.error("No content to load")
-    }
-    disableIfDataEmpty();
+        disableIfDataEmpty();
+     });
 }
 
 // Save current diagram when user leaves the page
@@ -2137,6 +2186,7 @@ function getCurrentFileName() {
 function quickSaveDiagram() {
     if (activeFile == null) {
         showSavePopout();
+        stateMachine.numberOfChanges = 0;
     } else {
         storeDiagramInLocalStorage(activeFile);
     }
@@ -2195,7 +2245,6 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true) {
 
         // Scrub to the latest point in the diagram
         stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
-
         // Display success message for load
         if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
 
@@ -2244,7 +2293,7 @@ function removeLocalDiagram(item) {
     if (item !== 'latestChange') {
         delete localDiagrams[item];
         //Resets activeFile to null if the item deleted was the file currently saved to.
-        if (item == activeFile){
+        if (item == activeFile) {
             activeFile = null;
         }
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
@@ -2280,4 +2329,18 @@ function resetDiagramAlert() {
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
+
+window.addEventListener("resize", () => {
+    const ruler = document.getElementById("rulerOverlay");
+    if (!settings.ruler.isRulerActive) return;
+
+    if (window.innerWidth > 414) {
+        ruler.style.left = "50px";
+        ruler.style.top = "0px";
+    }
+    else {
+        ruler.style.left = "0px";
+        ruler.style.top = "0px";
+    }
+});
 //#endregion =====================================================================================

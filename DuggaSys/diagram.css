@@ -326,24 +326,28 @@
     }
 
     #rulerOverlay{
+        left: 0;
         position: fixed !important;
     }
 
-    #diagram-toolbar{
-        position: fixed !important;
+    #ruler-y-svg {
+        left: 0;
+    }
+
+    #diagram-toolbar {
+        position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        height: var(--diagram-toolbar-height) !important;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
         overflow-y: hidden;
         overflow-x: auto;
-        column-gap: .8rem;
+        column-gap: 0.8rem;
         transform: translateY(var(--diagram-toolbar-height));
-        transition: var(--normal-transition);
+        transition: transform 0.3s ease-in-out;
     }
 
     #diagram-toolbar.toolbar-active{
@@ -359,7 +363,7 @@
     }
 
     #zoom-container{
-        left: 5% !important;
+        visibility: hidden !important;
     }
 }
 
@@ -448,7 +452,6 @@
 
 #diagram-toolbar {
     position: absolute;
-    height: 100%;
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
@@ -856,6 +859,7 @@
 .options-fieldset {
     width: 90%;
     margin: auto;
+    word-break: break-word;
 }
 
 .options-fieldset-show {
@@ -1069,6 +1073,28 @@
 
 #option-import>input {
     width: 100%;
+}
+
+/*****************
+   Confirm buttons
+*****************/
+.buttonGroup {
+    text-align: center;
+}
+
+.confirmButton {
+    background-color: #614875;
+    border: 0px;
+    color: #fff;
+    cursor: pointer;
+    width: 65px;
+    height: 30px;
+    margin: 15px 10px, 10px 10px;
+}
+
+.confirmButton:hover {
+    background: #815e9d;
+    color: #FFF;
 }
 
 /****************

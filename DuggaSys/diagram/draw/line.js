@@ -4,6 +4,7 @@
  * @param {Object} line The line object that is drawn.
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
+
 function drawLine(line, targetGhost = false) {
 
     let lineStr = ""; // only the lines, polylines, arrows etc
@@ -79,7 +80,7 @@ function drawLine(line, targetGhost = false) {
                         id='${line.id}' 
                         x1='${fx + offset.x1}' y1='${fy + offset.y1}' 
                         x2='${tx + offset.x2}' y2='${ty + offset.y2}' 
-                        stroke='${lineColor}' stroke-width='${strokewidth}'
+                        stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'
                     />`;
         } else if (line.kind == lineKind.DOUBLE) {
             let dy = -(tx - fx);
@@ -95,7 +96,7 @@ function drawLine(line, targetGhost = false) {
                 y1='${fy + a * dy * strokewidth * 1.5 + offset.y1}' 
                 x2='${tx + a * dx * strokewidth * 1.5 + offset.x2}' 
                 y2='${ty + a * dy * strokewidth * 1.5 + offset.y2}' 
-                stroke='${lineColor}' stroke-width='${strokewidth}'
+                stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}'
                 
                 />`;
             };
@@ -154,7 +155,7 @@ function drawLine(line, targetGhost = false) {
                     y1='${fy + offset.y1 * zoomfact}' 
                     x2='${tx + offset.x2 * zoomfact}' 
                     y2='${ty + offset.y2 * zoomfact}' 
-                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}'
+                    fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
         if (line.kind == lineKind.RECURSIVE) {
@@ -441,74 +442,91 @@ function getLineAttributes(f, t, ctype) {
     let fHeight = f.height;
     let tHeight = t.height;
 
-    // Special case if line connection involves connecting from IERelation
-    if (f.kind === elementTypesNames.IERelation) {
-        fWidth = f.width * 0.3 * zoomfact;
-        fHeight = f.height * 0 * zoomfact;
-        tWidth *= zoomfact;
-        tHeight *= zoomfact;
-    }
-
-    // Special case if line connection involves connecting to IERelation
-    if (t.kind === elementTypesNames.IERelation) {
-        tWidth = t.width * 0.3 * zoomfact;
-        tHeight = t.height * 0 * zoomfact;
-        fWidth *= zoomfact;
-        fHeight *= zoomfact;
-    }
-
-    const fx1 = f.cx - fWidth / 2;
-    const fx2 = f.cx + fWidth / 2;
-    const tx1 = t.cx - tWidth / 2;
-    const tx2 = t.cx + tWidth / 2;
-    const fy1 = f.cy - fHeight / 2;
-    const fy2 = f.cy + fHeight / 2;
-    const ty1 = t.cy - tHeight / 2;
-    const ty2 = t.cy + tHeight / 2;
-
     const offset = { x1: 0, x2: 0, y1: 0, y2: 0 };
     let fx, fy, tx, ty;
 
+    // General settings for line attributes
     switch (ctype) {
         case lineDirection.UP:
             offset.y1 = px;
             offset.y2 = -px * 2;
             fx = f.cx;
-            fy = fy1;
+            fy = f.y1;
             tx = t.cx;
-            ty = ty2;
+            ty = t.y2;
             break;
 
         case lineDirection.DOWN:
             offset.y1 = -px * 2;
             offset.y2 = px;
             fx = f.cx;
-            fy = fy2;
+            fy = f.y2;
             tx = t.cx;
-            ty = ty1;
+            ty = t.y1;
             break;
 
         case lineDirection.LEFT:
             offset.x1 = -px;
             offset.x2 = px * 2;
-            fx = fx1;
+            fx = f.x1;
             fy = f.cy;
-            tx = tx2;
+            tx = t.x2;
             ty = t.cy;
             break;
 
         case lineDirection.RIGHT:
             offset.x1 = px;
             offset.x2 = -px * 2;
-            fx = fx2;
+            fx = f.x2;
             fy = f.cy;
-            tx = tx1;
+            tx = t.x1;
             ty = t.cy;
             break;
     }
 
+    // Special case if line is connected to or from IERelation
+    if (f.kind === elementTypesNames.IERelation || t.kind === elementTypesNames.IERelation) {
+
+        tWidth = t.width * 0.3 * zoomfact;
+        tHeight = t.height * 0 * zoomfact;
+        fWidth *= zoomfact;
+        fHeight *= zoomfact;
+        
+        const fx1 = f.cx - fWidth / 2;
+        const fx2 = f.cx + fWidth / 2;
+        const tx1 = t.cx - tWidth / 2;
+        const tx2 = t.cx + tWidth / 2;
+        const fy1 = f.cy - fHeight / 2;
+        const fy2 = f.cy + fHeight / 2;
+        const ty1 = t.cy - tHeight / 2;
+        const ty2 = t.cy + tHeight / 2;
+
+        switch (ctype) {
+            case lineDirection.UP:
+                fy = fy1;
+                ty = ty2;
+                break;
+
+            case lineDirection.DOWN:
+                fy = fy2;
+                ty = ty1;
+                break;
+
+            case lineDirection.LEFT:
+                fx = fx1;
+                tx = tx2;
+                break;
+
+            case lineDirection.RIGHT:
+                fx = fx2;
+                tx = tx1;
+                break;
+        } 
+    } 
     
-    if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation) {
+    // Special case if line is connected to or from a ER realation
+    if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation ||
+        f.kind === elementTypesNames.EREntity || t.kind === elementTypesNames.EREntity) {
         const shrink = 8 * zoomfact; 
 
         if (ctype === lineDirection.LEFT || ctype === lineDirection.RIGHT) {
@@ -663,7 +681,7 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
               points="${points}"
               fill="none"
               stroke="${lineColor}"
-              stroke-width="${strokewidth}"
+              stroke-width="${strokewidth * zoomfact}"
               stroke-dasharray="${strokeDash}"
             />
           `;
@@ -781,11 +799,10 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
     return `<polyline 
                 id='${line.id}' 
                 points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
-                fill='none' stroke='${lineColor}' stroke-width='${strokewidth}' stroke-dasharray='${strokeDash}' 
+                fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}' 
             />`;
 
 }
-
 function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
@@ -796,7 +813,7 @@ function drawRecursiveLineSegmented(fx, fy, tx, ty, offset, line, lineColor, str
                         ${fx + offset.x1 + 40},${fy + offset.y1 + 40} 
                         ${fx + offset.x1},${fy + offset.y1 + 40}"
                 fill="none" 
-                stroke="${lineColor}" stroke-width="${strokewidth}" stroke-dasharray="${strokeDash}" 
+                stroke="${lineColor}" stroke-width="${strokewidth * zoomfact}" stroke-dasharray="${strokeDash}" 
             />`;
 
 }

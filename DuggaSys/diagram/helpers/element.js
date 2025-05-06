@@ -54,8 +54,6 @@ function setPos(elements, x, y) {
     const idList = [];
     let overlappingObject = null;
 
-    const ignoreIds = elements.map(e => e.id);
-
     // Check for overlaps
     elements.forEach(elem => {
         let newX = elem.x - deltaX / zoomfact;
@@ -68,40 +66,83 @@ function setPos(elements, x, y) {
             newX -= elem.width / 2;
             newY -= elem.height / 2;
         }
-        if (entityIsOverlapping(elem.id, newX, newY, ignoreIds)) {
+        if (entityIsOverlapping(elem.id, newX, newY)) {
             overlappingObject = elem;
         }
     });
 
     if (overlappingObject) {
-        // Display error message
-        displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        return;
-    }
+        // If overlap is detected, move the overlapping object back by one step
+        const previousX = overlappingObject.x;
+        const previousY = overlappingObject.y;
 
-    // Move all the elements in the group
-    elements.forEach(obj => {
-        if (obj.isLocked) return;
+        // Move the object back one step
+        overlappingObject.x -= x / zoomfact;
+        overlappingObject.y -= y / zoomfact;
 
-        if (settings.grid.snapToGrid && !ctrlPressed) {
-            obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-            obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-            obj.x -= obj.width / 2;
-            obj.y -= obj.height / 2;
+        // Check again if the adjusted position still overlaps
+        if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
+            // If it still overlaps, revert to the previous position
+            overlappingObject.x = previousX;
+            overlappingObject.y = previousY;
+
+            // Display error message
+            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
         } else {
             // If no longer overlaps after adjustment, proceed with saving the new position
-            obj.x -= (x / zoomfact);
-            obj.y -= (y / zoomfact);
+            idList.push(overlappingObject.id);
         }
+    } else {
+        elements.forEach(obj => {
 
-        obj.x = Math.round(obj.x);
-        obj.y = Math.round(obj.y);
-        idList.push(obj.id);
-    });
+            // Check if element is locked and immovable
+            if (obj.isLocked) {
+                return;
+            }
 
-    if (idList.length) {
-        stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
+            // If snapToGrid is activated
+            if (settings.grid.snapToGrid && !ctrlPressed) {
+
+                // Snap logic for rectangular elements
+                // Snaps to grid lines
+                const entityKinds = [
+                    elementTypesNames.EREntity,
+                    elementTypesNames.UMLEntity,
+                    elementTypesNames.IEEntity,
+                    elementTypesNames.SDEntity,
+                    elementTypesNames.note
+                ];
+                if (entityKinds.includes(obj.kind)) {
+                    const candidateX = obj.x - (x / zoomfact);
+                    const candidateY = obj.y - (y / zoomfact);
+                    obj.x = Math.round(candidateX / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+                    obj.y = Math.round(candidateY / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+                } else {
+
+                    // Snap logic for non-rectangular elements
+                    // Snaps to center
+                    obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.width / 2;
+                    obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.height / 2;
+                }
+            } else {
+
+                // For dragging elements without snapToGrid mode active
+                obj.x -= (x / zoomfact);
+                obj.y -= (y / zoomfact);
+            }
+
+            // Add the object-id to the idList
+            idList.push(obj.id);
+            // Make the coordinates without decimals
+            obj.x = Math.round(obj.x);
+            obj.y = Math.round(obj.y);
+        });
+
+        if (idList.length) {
+            stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
+        }
     }
+
     // Update positions
     updatepos();
 }
