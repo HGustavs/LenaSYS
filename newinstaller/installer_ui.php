@@ -242,6 +242,7 @@
 							$modal->showFilePermissionErrorModal("permissionError");
 							$modal->showDbCreationErrorModal("dbCreationError");
 							$modal->showSqlExecutionErrorModal("SqlError");
+							$modal->showOperationErrorModal("operationError");
 						?>
 						<div id="pageButtonContainer">
 							<button class="defaultButton pageButton" id="openModal" type="button" style="display: none;">View Problem</button>

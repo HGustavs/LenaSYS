@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (newDataError.data.includes("Connection to database could not be established.")) {
 			modal = document.getElementById("dbConnectionError");
 
-		} else if (newDataError.data.includes("Failed on step set_permissions")) {
+		}else if (newDataError.data.includes("Failed on step set_permissions")) {
 			modal = document.getElementById("permissionError");
 
 		}else if (newDataError.data.includes("Failed on step create_db")) {
@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		}else if (newDataError.data.includes("SQL error") || newDataError.data.includes("File error.")) {
 			modal = document.getElementById("SqlError");
-		}
+		}else {
+            modal = document.getElementById("operationError");
+            document.getElementById("failedStep").innerHTML = newDataError.data;
+        }
 
         dataError = newDataError;
         data = newData;
@@ -94,7 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		}else if (dataError.data.includes("SQL error") || dataError.data.includes("File error.")) {
 			navigateTo('page1');
-		}
+		}else{
+            navigateTo('page1');
+        }
         
         closeModal();
         hideModalButton();
