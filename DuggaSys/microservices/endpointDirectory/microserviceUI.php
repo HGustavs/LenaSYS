@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+
 try {
 // database
 $db = new PDO('sqlite:endpointDirectory_db.sqlite');
@@ -16,6 +22,10 @@ if (isset($_POST['deleteID'])) {
 
 // update functionality
 if (isset($_POST['updateID'])) {
+    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
+        http_response_code(403);
+        exit('Invalid CSRF token');
+    }
     $id = $_POST['updateID'];
     $name = $_POST['ms_name'];
     $description = $_POST['description'];
@@ -89,6 +99,7 @@ if (isset($_GET['id'])) {
             <h1>Edit Microservice</h1>
         </div>
         <form method="post">
+            <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
             <input type="hidden" name="updateID" value="<?php echo $editMicroservice['id']; ?>">
             <p><b><label>Microservice name:<br><input type="text" name="ms_name" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
             <p><label>Description:<br><textarea name="description" rows="5" cols="40"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
