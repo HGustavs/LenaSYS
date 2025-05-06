@@ -55,13 +55,24 @@ foreach ($lines as $line) {
             $dependsOnName = $fileName;
         }
 
-        // insert into database 
-        // TODO: Fix so it insert with ID instead
+        // get id for current microservice
+        $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
+        $stmt->execute([$currentMicroservice]);
+        $microserviceId = $stmt->fetchColumn();
+
+        // get id for the microservice that is depended on
+        $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
+        $stmt->execute([$dependsOnName]);
+        $dependsOnId = $stmt->fetchColumn();
+
+        // insert wether id is found or not
         $stmt = $db->prepare("
-            INSERT INTO dependencies (ms_name, depends_on, path)
-            VALUES (?, ?, ?)
+            INSERT INTO dependencies (microservice_id, depends_on_id, ms_name, depends_on, path)
+            VALUES (?, ?, ?, ?, ?)
         ");
         $stmt->execute([
+            $microserviceId ?: null, // null if none was found
+            $dependsOnId ?: null,
             $currentMicroservice,
             $dependsOnName,
             $dependsOnPath
