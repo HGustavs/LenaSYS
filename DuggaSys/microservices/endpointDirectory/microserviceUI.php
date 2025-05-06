@@ -91,6 +91,7 @@ if (isset($_GET['id'])) {
                 <form method="">
                     <button type="submit">Add Microservice</button>
                 </form>
+                <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
             </div>
         </div>
     <?php } ?>
