@@ -129,3 +129,47 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
 ### Microservices Used
 getUid_ms
 retrieveSectionedService_ms
+
+
+# Name of file/service
+getListEntries_ms.php
+
+## Description
+Fetches all list entries from the database. List entries are duggas, headers, tests etc.
+
+## Input Parameters
+
+- Parameter: $opt
+   - Type: string
+   - Description: Retrieval options
+
+- Parameter: $courseid
+   - Type: int(10)
+   - Description: Course ID.
+
+- Parameter: $coursevers
+   - Type: int(11)
+   - Description: Course version.
+
+- Parameter: $log_uuid
+   - Type: char
+   - Description: For logging purposes.
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: The script returns a JSON object describing which listentry that should be fetched from the listentries-table.
+
+## Examples of Use
+'SELECT FROM useranswer WHERE moment=:lid'
+
+'SELECT FROM listentries WHERE lid = :lid'
+
+### Microservices Used
+Shared/basic.php
+Shared/sessions.php
+sharedMicroservices/getUid_ms.php
+retrieveSectionedService_ms.php
