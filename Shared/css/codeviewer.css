@@ -25,14 +25,14 @@
 /* DOCUMENT CONTENT STYLE STOP */
 
 
-/* style for resizeBoxes  - START*/
+/* style for resizeBoxes resizers start */
 .resizer-e, .resizer-s {
     background: transparent;
     position: absolute;
     z-index: 10;
 }
 
-/* style for div and boxwrappers - resizeBox - STOP*/
+/*style for resizeBoxes resizers end */
 
 .tooltip{
 	color:white;
