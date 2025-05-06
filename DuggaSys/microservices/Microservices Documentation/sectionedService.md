@@ -195,7 +195,7 @@ Only available to users who are logged in.
    - Description: Displays "Failed to get group members!" if the operation failes
 
 ## Examples of Use
-`CODE`
+-
 
 ### Microservices Used
 - coursesyspw.php
@@ -256,7 +256,7 @@ None
    - Description: Message of the day for the course version
 
 ## Examples of Use
-`CODE`
+-
 
 ### Microservices Used
 - getUid_ms.php
