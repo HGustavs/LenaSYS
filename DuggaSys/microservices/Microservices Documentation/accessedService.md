@@ -145,10 +145,9 @@ Checks if a user exists based on the username, creates a new user if it not and 
 ### Microservices Used
 - getUid_ms.php
 - retrieveAccessedService_ms.php;
+- 
 
-
-
-# name of file/service
+# Name of file/service
 getAccessedService_ms.php
 
 ## Description
@@ -183,7 +182,7 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
 - retrieveAccessedService_ms.php
 
 
-# name of file/service
+# Name of file/service
 retrieveAccessedService_ms.php
 
 ## Description
@@ -385,3 +384,106 @@ The data is only retrieved for users who have specific access.
 
 ### Microservices Used
 None
+
+
+# Name of file/service
+updateUser_ms.php
+
+## Description
+Handles updating user's properties in the 'user' table. Can be only be done by superusers.
+
+- Parameter: $prop
+   - Type: String
+   - Description: Property to update
+
+- Parameter: $courseid
+   - Type: String
+   - Description: describe parameter
+
+- Parameter: $uid
+   - Type: int
+   - Description: User ID
+
+- Parameter: $firstname
+   - Type: String
+   - Description: Firstname
+
+- Parameter: $lastname
+   - Type: String
+   - Description: Lastname
+
+- Parameter: $ssn
+   - Type: String
+   - Description: Social security number
+
+- Parameter: $user_name
+   - Type: String
+   - Description: Username
+
+- Parameter: $classname
+   - Type: String
+   - Description: Class (program) name
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier for logging purposes
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $debug
+   - Type: String
+   - Description: Displays message if there are errors in operations
+
+- Output: $array
+   - Type: JSON
+   - Description: Shows logging of the operation and what has been updated
+
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveAccessedService_ms.php
+
+# Name of file/service
+updateUserCourse_ms.php
+
+## Description
+Updates properties for a specific user in the 'user_course' table. Can only be done by superusers or users with specific access.
+
+## Input Parameters
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $prop
+   - Type: String
+   - Description: Property to update
+
+- Parameter: $group
+   - Type: String
+   - Description: Group
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version
+
+- Parameter: $access
+   - Type: String
+   - Description: Level of access a user has
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $debug
+   - Type: String
+   - Description: Displays message if there are errors in operations
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
