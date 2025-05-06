@@ -1000,7 +1000,9 @@
     width: 100%;
 }
 
-
+/*****************
+   Confirm buttons
+*****************/
 .buttonGroup {
     text-align: center;
 }
@@ -1010,9 +1012,14 @@
     border: 0px;
     color: #fff;
     cursor: pointer;
-    width: 40px;
-    height: 25px;
-    transition: 1s background-color;
+    width: 65px;
+    height: 30px;
+    margin: 15px 10px, 10px 10px;
+}
+
+.confirmButton:hover {
+    background: #815e9d;
+    color: #FFF;
 }
 
 /****************
