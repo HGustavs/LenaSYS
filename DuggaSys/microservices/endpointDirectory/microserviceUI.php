@@ -1,4 +1,13 @@
 <?php
+
+
+if (isset($_POST['create_database'])){
+    include 'setupEndpointDirectory.php';
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+
 try {
 // database
 $db = new PDO('sqlite:endpointDirectory_db.sqlite');
@@ -44,7 +53,7 @@ if (isset($_GET['id'])) {
 }
 
 } catch (PDOException $e) {
-    $dbError = "Database is not installed. Execute 'setupEndpointDirectory.php' to install it. ";
+    $dbError = "Database is not installed. Press the button below to create a database. ";
 }
 ?>
 
@@ -66,7 +75,10 @@ if (isset($_GET['id'])) {
     
     <?php    
     if (isset($dbError)) {
-        echo "<p style= 'color:red';>" . $dbError;
+        echo "<p style='color:red;'>" . $dbError . "</p>";
+        echo '<form method="POST">';
+        echo '<button type="submit" name="create_database">Create Database</button';
+        echo '</form>';
     } else {
         if (!isset($microservice)) { ?>
 
