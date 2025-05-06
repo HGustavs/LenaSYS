@@ -1,27 +1,84 @@
 <?php
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "retrieveShowDuggaService_ms.php";
 
-pdoConnect();
+pdoConnect(); // Connect to database and start session
 session_start();
 
-// Get values from GET/POST
-$hash = getOP('hash');
-$AUtoken = getOP('AUtoken');
-
-// Update active_users in groupdugga
 $query = $pdo->prepare("SELECT active_users FROM groupdugga WHERE hash=:hash");
 $query->bindParam(':hash', $hash);
 $query->execute();
 $result = $query->fetch();
 $active = $result['active_users'];
+$opt=getOP('opt');
+$courseid=getOP('courseid');
+$coursevers=getOP('coursevers');
+$duggaid=getOP('did');
+$moment=getOP('moment');
+$segment=getOP('segment');
+$answer=getOP('answer');
+$highscoremode=getOP('highscoremode');
+$setanswer=postOPValue('setanswer');
+$showall=getOP('showall');
+$contactable=getOP('contactable');
+$rating=getOP('score');
+$entryname=getOP('entryname');
+$hash=getOP('hash');
+$hashpwd=getOP('password');
+$password=getOP('password');
+$AUtoken=getOP('AUtoken');
+$variantvalue= getOP('variant');
+$hashvariant="UNK";
+$duggatitle="UNK";
+$duggatitle=getOP('qname');
+$link="UNK";
 
-if ($active === null) {
+$showall="true";
+$param = "UNK";
+$savedanswer = "";
+$highscoremode = "";
+$quizfile = "UNK";
+$grade = "UNK";
+$submitted = "";
+$marked ="";
+
+$insertparam = false;
+$score = 0;
+$timeUsed;
+$stepsUsed;
+$duggafeedback = "UNK";
+$variants=array();
+$variantsize;
+$ishashindb = false;
+$timesSubmitted = 0;
+$timesAccessed = 0;
+
+$savedvariant="UNK";
+$newvariant="UNK";
+$savedanswer="UNK";
+$isIndb=false;
+$variantsize="UNK";
+$variantvalue="UNK";
+$files= array();
+$isTeacher=false;
+// Create empty array for dugga info!
+$duggainfo=array();
+$duggainfo['deadline']="UNK";
+$duggainfo['qrelease']="UNK";
+$hr=false;
+$userfeedback="UNK";
+$feedbackquestion="UNK";
+$isFileSubmitted="UNK";
+
+$debug="NONE!";	
+
+if($active == null){
     $query = $pdo->prepare("INSERT INTO groupdugga(hash,active_users) VALUES(:hash,:AUtoken);");
     $query->bindParam(':hash', $hash);
     $query->bindParam(':AUtoken', $AUtoken);
     $query->execute();
-} else {
+}else{
     $newToken = (int)$active + (int)$AUtoken;
     $query = $pdo->prepare("UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash;");
     $query->bindParam(':hash', $hash);
@@ -29,23 +86,33 @@ if ($active === null) {
     $query->execute();
 }
 
-// Call the microservice instead of using include
-$baseURL = "http://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-
-// Send only the minimum required parameters
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-    'hash' => $hash,
-    'moment' => getOP('moment')
-]));
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-// Output the JSON response from the microservice
-header("Content-Type: application/json");
-echo $response;
+echo json_encode(retrieveShowDuggaService(
+	$moment, 
+	$pdo, 
+	$courseid, 
+	$hash, 
+	$hashpwd, 
+	$coursevers, 
+	$duggaid, 
+	$opt, 
+	$group, 
+	$score, 
+	$highscoremode, 
+	$grade, 
+	$submitted,
+	$duggainfo,
+	$marked,
+	$userfeedback,
+	$feedbackquestion,
+	$files,
+	$savedvariant,
+	$ishashindb,
+	$variantsize,
+	$variantvalue,
+	$password,
+	$hashvariant,
+	$isFileSubmitted,
+	$variants,
+	$active,
+	$debug
+	));
