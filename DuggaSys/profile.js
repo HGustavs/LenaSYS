@@ -26,7 +26,7 @@ function processChallenge(password, question, answer){
 	var message = document.getElementById("challengeMessage");
     var curPassword = document.getElementById("currentPassword");
     var secQuestion = document.getElementById("securityQuestion");
-    var chaAnswer = document.getElementById("#challengeAnswer");
+    var chaAnswer = document.getElementById("challengeAnswer");
 
     const url = ("../DuggaSys/profileservice.php");
     const params = {
@@ -44,9 +44,8 @@ function processChallenge(password, question, answer){
 		body: JSON.stringify(params)
     })
 	.then(response => {
-            if(!response.ok){
-            error();
-            return;
+        if(!response.ok){
+            throw new Error("Response not OK");
         }
         return response.json();
     })
@@ -76,9 +75,9 @@ function processChallenge(password, question, answer){
 			}
 		}
 	})
-	error = function() {
+	.catch(() => {
 		message.innerHTML="Error: Could not communicate with server";		
-    }
+    });
 }
 
 //A function that validates the form used for changing password
@@ -155,11 +154,11 @@ function validatePassword(){
 
 //Changes text input fields to red if validation fails
 function updateField(field){
-    field.style.display="backgroundColor", "rgba(255, 0, 6, 0.2)";
+    field.style.backgroundColor="rgba(255, 0, 6, 0.2)";
 }
 //Resets a field color
 function clearField(field){
-    field.style.display="backgroundColor", "white";
+    field.style.backgroundColor="white";
 }
 
 //Sends data from form to profileservice.php
@@ -189,10 +188,9 @@ function changePassword(){
     })
     .then(response => {
         if(!response.ok){
-            error();
-            return;
+            throw new Error("Response not OK");
         }
-        return response.json
+        return response.json();
     })
     .then(data => {
         if(!data) return;
@@ -217,9 +215,9 @@ function changePassword(){
 			}
 		}
 	})
-	error = function() {
+	.catch(() => {
 		message.innerHTML="Error: Could not communicate with server";
-	}
+	});
 }
 
 
@@ -232,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		event.preventDefault();
 		validateChallenge();
 	});
-
+    
 	if (!checkHTTPS()){
 		document.getElementById("content").innerHTML="Profile settings can only be changed on a secure HTTPS connection.";
 	}
