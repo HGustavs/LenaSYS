@@ -14,6 +14,7 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
  * --------------================################================-------------- */
 
 :root {
+  --purple-icon-filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
   --color-text-primary: #775886;
   --color-text-primary-darker: #620C5B;
   --color-text-secondary: #434343;
@@ -851,6 +852,10 @@ p {
   align-items: center;
   gap: 1em;
   padding: 0.5em auto;
+    
+    > img {
+      pointer-events: none;
+    }
 }
 
 @keyframes dropDownSlide {
@@ -952,12 +957,12 @@ p {
   filter: invert(0); }
 
 .code #NewTabLink{
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
   cursor: pointer;
 } 
 
 #tabElement{
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
   cursor: pointer;
 }
 #Sectionlist .header {
@@ -4110,9 +4115,8 @@ div.submit-button:disabled {
   display: block;
   margin: auto;
   /* Makes the icons purple */
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
 }
-
 
 #Sectionlist .moment #dorf {
   filter: invert(1);
