@@ -19,6 +19,18 @@
     }
 }
 
+
+@media screen and (min-width: 768px) {
+    #diagram-toolbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 50px; 
+        height: 100vh; 
+        z-index: 1000;
+    }
+}
 @media screen and (min-height: 1199px) {
     #diagram-toolbar {
         width: 50px;
