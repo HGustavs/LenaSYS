@@ -138,43 +138,61 @@ getCourseGroupsAndMembers_ms
 
 ## Description
 Returns a list of group members related to a specific course ID and course version.
+Also creates and email address if a user does not have one.
+Only available to users who are logged in.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: int
-   - Description: describe parameter
+   - Type: String
+   - Description: Operation type
 
 - Parameter: $courseid
    - Type: int
-   - Description: describe parameter
+   - Description: Course ID
 
 - Parameter: $coursevers
-   - Type: int
-   - Description: describe parameter
+   - Type: String
+   - Description: Course version
 
 - Parameter: $log_uuid
-   - Type: int
-   - Description: describe parameter
+   - Type: String
+   - Description: Unique identifier, for logging purposes
 
 - Parameter: $showgrp
-   - Type: int
-   - Description: describe parameter
+   - Type: String
+   - Description: Retrieves a specific group based on the first two characters of the group name. Used as a filter to fetch the $grplst 
 
 ## Calling Methods
 - GET
 
 ## Output Data and Format
-- Output: $grplist
-   - Type: int
-   - Description: describe the output
+- Output: $grplst
+   - Type: array
+   - Description: Contains $groups, $fistname, $lastname and email, for users whose group name matches the 2 caracters specified in $showgrp.
+
+- Output: $groups
+   - Type: String
+   - Description: Groups that users are part of
+
+- Output: $firstname
+   - Type: String
+   - Description: Firstname
+
+- Output: $lastname
+   - Type: String
+   - Description: Lastname
+
+- Output: $email
+   - Type: String
+   - Description: Email address
 
 - Output: $grpmembershp
    - Type: String
-   - Description: describe the output
+   - Description: Contains a list of groups a user is part of
 
 - Output: $debug
-   - Type: int
-   - Description: describe the output
+   - Type: String
+   - Description: Displays "Failed to get group members!" if the operation failes
 
 ## Examples of Use
 `CODE`
@@ -182,8 +200,6 @@ Returns a list of group members related to a specific course ID and course versi
 ### Microservices Used
 - coursesyspw.php
 - retrieveSectionedService_ms.php
-
-
 
 # Name of file/service
 getCourseVersion_ms
@@ -196,6 +212,7 @@ None
 
 ## Calling Methods
 - GET
+- POST
 
 ## Output Data and Format
 - Output: $versions
@@ -204,39 +221,39 @@ None
 
 - Output: $cid
    - Type: int
-   - Description: describe the output
+   - Description: Course ID
 
 - Output: $coursecode
    - Type: String
-   - Description: describe the output
+   - Description: Course code
 
 - Output: $vers
-   - Type: int
-   - Description: describe the output
+   - Type: String
+   - Description: Course version
 
 - Output: $versname
-   - Type: int
-   - Description: describe the output
+   - Type: String
+   - Description: Name of the course version
 
 - Output: $coursename
    - Type: String
-   - Description: describe the output
+   - Description: Course name
 
 - Output: $coursenamealt
-   - Type: int
-   - Description: describe the output
+   - Type: String
+   - Description: Alternative course name
 
 - Output: $startdate
-   - Type: int
-   - Description: describe the output
+   - Type: String
+   - Description: Start date of course version
 
 - Output: $enddate
    - Type: String
-   - Description: describe the output
+   - Description: End date of course version
 
 - Output: $motd
-   - Type: int
-   - Description: describe the output
+   - Type: String
+   - Description: Message of the day for the course version
 
 ## Examples of Use
 `CODE`
