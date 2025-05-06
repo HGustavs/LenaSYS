@@ -159,11 +159,11 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
    - Description: Operation option
 
 - Parameter: $prop
-   - Type: ?
+   - Type: String
    - Description: Property to update
 
 - Parameter: $courseid
-   - Type: int
+   - Type: String
    - Description: describe parameter
 
 - Parameter: $uid
@@ -171,27 +171,27 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
    - Description: User ID
 
 - Parameter: $firstname
-   - Type: int
+   - Type: String
    - Description: Firstname
 
 - Parameter: $lastname
-   - Type: int
+   - Type: String
    - Description: Lastname
 
 - Parameter: $ssn
-   - Type: int
+   - Type: String
    - Description: Social security number
 
 - Parameter: $user_name
-   - Type: int
+   - Type: String
    - Description: Username
 
 - Parameter: $classname
-   - Type: int
+   - Type: String
    - Description: Class (program) name
 
 - Parameter: $log_uuid
-   - Type: varchar
+   - Type: String
    - Description: Unique identifier for logging purposes
 
 ## Calling Methods
@@ -212,7 +212,6 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
 ### Microservices Used
 - retrieveAccessedService_ms.php
 
-
 # Name of file/service
 updateUserCourse_ms.php
 
@@ -225,19 +224,19 @@ Updates properties for a specific user in the 'user_course' table. Can only be d
    - Description: Course ID
 
 - Parameter: $prop
-   - Type: ?
+   - Type: String
    - Description: Property to update
 
 - Parameter: $group
-   - Type: varchar
+   - Type: String
    - Description: Group
 
 - Parameter: $vers
-   - Type: varchar
+   - Type: String
    - Description: Course version
 
 - Parameter: $access
-   - Type: varchar
+   - Type: String
    - Description: Level of access a user has
 
 ## Calling Methods
