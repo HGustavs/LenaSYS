@@ -3040,40 +3040,54 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  $(".selectLabels label input").attr("disabled", true);
-  var cid = '';
-  $("#cid").change(function () {
-    cid = $("#cid").val();
-    if (($("#cid").val()) != '') {
-      $("#versid").prop("disabled", false);
-      $.ajax({
-        url: "../Shared/retrievevers.php",
-        data: { cid: cid },
-        type: "POST",
-        success: function (data) {
-          var item = JSON.parse(data);
-          $("#versid").find('*').not(':first').remove();
-          $.each(item.versids, function (index, item) {
-            $("#versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
-          });
-
-        },
-        error: function () {
-          console.log("*******Error*******");
-        }
-      });
-
-    } else {
-      $("#versid").prop("disabled", true);
-    }
-
+  // Disable all inputs inside .selectLabels labels
+  document.querySelectorAll(".selectLabels label input").forEach(function (input) {
+    input.disabled = true;
   });
-  if (($("#versid option").length) <= 2) {
-    $("#versid").click(function () {
+
+  var cid = '';
+  var cidSelect = document.getElementById("cid");
+  var versidSelect = document.getElementById("versid");
+
+  cidSelect.addEventListener("change", function () {
+    cid = cidSelect.value;
+    if (cid !== '') {
+      versidSelect.disabled = false;
+      // Retrieve course versions from database
+      fetch("../Shared/retrievevers.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "cid=" + encodeURIComponent(cid)
+      })
+        .then(response => response.json())
+        .then(function (item) {
+          // Remove all options except the first
+          while (versidSelect.options.length > 1) {
+            versidSelect.remove(1);
+          }
+
+          item.versids.forEach(function (v) {
+            var opt = document.createElement("option");
+            opt.value = v.versid;
+            opt.textContent = v.versid;
+            versidSelect.appendChild(opt);
+          });
+        })
+        .catch(function () {
+          console.log("*******Error*******");
+        });
+    } else {
+      versidSelect.disabled = true;
+    }
+  });
+  if (versidSelect.options.length <= 2) {
+    versidSelect.addEventListener("click", function () {
       getStudents(cid, userid);
     });
-  } else if (($("#versid option").length) > 2) {
-    $("#versid").change(function () {
+  } else {
+    versidSelect.addEventListener("change", function () {
       getStudents(cid, userid);
     });
   }
