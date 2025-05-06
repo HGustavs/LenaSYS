@@ -71,8 +71,6 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
 
   --color-fileLink-table-1: #ccc;
   --color-fileLink-table-2: #eae8eb;
-  --button-bg: var(--color-primary);
-  --button-text: var(--color-text-header);
   --button-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --button-size: 14px;
   --button-height: 30px;
@@ -3592,15 +3590,16 @@ button.option {
 
 
 input.submit-button {
-  background-color: var(--button-bg);
-  font-family: var(--button-font);
+  background-color: var(--color-primary);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
-  height: var(--button-height);
-  color: var(--button-text);
+  height: 30px;
+  color: var(--color-text-header);
   cursor: pointer;
   margin: 8px 2px 4px 2px;
-  font-size: var(--button-size);
-  -webkit-appearance: none;
+  font-size: 14px;
+  transition: 0.1s background-color;
+  -webkit-appearance: none
 }
 
 /* reduce button size for phone-viewing
@@ -3617,16 +3616,16 @@ input.submit-button {
 */
 
 div.submit-button {
-  background-color: var(--button-bg);
-  font-family: var(--button-font);
+  background-color: var(--color-primary);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 90px;
-  height: var(--button-height);
-  color: var(--button-text);
+  height: 30px;
+  color: var(--color-text-header);
   cursor: pointer;
   margin-bottom: 5px;
   margin-left: 4px;
-  font-size: var(--button-size);
+  font-size: 14px;
   transition: 1s background-color;
   float: left;
   border-radius: 4px;
@@ -4976,14 +4975,14 @@ div.reset-pw:hover{
 }
 
 .submit-button {
-  background-color: var(--button-bg);
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
-  height: var(--button-height);
-  color: var(--button-text);
+  height: 30px;
+  color: var(--color-text-header);
   cursor: pointer;
   margin: 8px 2px 4px 2px;
-  font-size: var(--button-size);
+  font-size: 14px;
   transition: 0.1s background-color;
   left: 87px;
   line-height: 30px;
