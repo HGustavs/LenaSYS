@@ -7939,6 +7939,25 @@ only screen and (max-device-width: 568px) {
   transform-origin: right center 0;
 }
 
+/********************************
+        FAB diagram.php
+*********************************/
+.diagram-fab{
+  bottom: 10vh;
+  right: 15vw;
+  display: none;
+}
+.diagram-btn-fab{
+  line-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+@media only screen and (max-width: 414px){
+  .diagram-fab{
+    display: block;
+  }
+}
 /*===============================*/
 
 /* FAB action buttons background */
