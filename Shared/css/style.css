@@ -6414,37 +6414,53 @@ only screen and (max-device-width: 568px) {
 
 #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
   display:none;
+  margin-bottom: 10px;
 }
+
 #homeBurger,#goBackBurger,#darkModeBurger{
-display: none;
+  display: none;
+  margin-bottom: 10px;
 }
-#navBurgerIcon { 
+
+header td.navBurgerIcon{ 
   display: none;
   
 }
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
 
-  #navBurgerIcon { 
+  header td.navBurgerIcon {
     display: block;
     color:white;
-  }
+    font-size:24px;
+    width: 29px;
+    vertical-align: middle;
+    margin-top: 15px;
+    margin-left: 15px
+  } 
  
   #navBurgerBox{
-    display: block;
     position: absolute;
     top: 50px;
     width: 32px;
     padding: 10px;
-    height: 100px;
+    height: 120px;
     background-color: var(--color-primary-2);
+
+  }
+  
+  #motdNav {
+    display: none; 
+  }
+  #motdBurgerDiv {
+    display: block;
   }
  
   #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
     display: block;
   }
 
- #home, #back, #theme-toggle{
+ #home, #back, #theme-toggle, .motd-nav{
     display: none;
   }
 }
@@ -7712,7 +7728,7 @@ only screen and (max-device-width: 568px) {
 
 .fixed-action-button3 {
   position: absolute;
-  top: auto;
+  top: 15;
   right: 24px;
   z-index: 1;
   touch-action: none;
@@ -7777,10 +7793,21 @@ only screen and (max-device-width: 568px) {
   #course-label {
     min-width: 135px;
     margin-right: 150px;
-  }
+    display: flex; /* Enable Flexbox for centering */
+    flex-direction: column; /* Stack the spans vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    flex-wrap: wrap; /* Allow wrapping of elements */
+    height: auto;
 }
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 568px) {
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 10px; /* Nudges the FAB 10px up from the bottom */
+}
+
+@media only screen and (max-width: 430px), only screen and (max-device-width: 568px) {
   #course-label {
     font-size: 16px;
     position: fixed;
@@ -7792,6 +7819,28 @@ only screen and (max-device-width: 568px) {
   #showElements, #hideElement {
     display: none;
   }
+  
+  #course-coursename,
+  #course-coursecode,
+  #course-versname {
+    text-align: center;
+    display: block; 
+    width: 100%;
+    margin-bottom: 5px; 
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+  }
+
+  #course-label span {
+    padding: 2px 5px; 
+  }
+
+  .fixed-action-button {
+    position: fixed;
+    bottom: 100px; /* Nudges the FAB 10px up from the bottom */
+  }
+}
 }
 @media screen and (max-width: 350px) {
 
