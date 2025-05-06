@@ -7,7 +7,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "./retrieveSectionedService_ms.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../sharedMicroservices/retrieveUsername_ms.php";
+
 include_once "../sharedMicroservices/setAsActiveCourse_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
@@ -26,7 +26,19 @@ $startdate = getOP('startdate');
 $enddate = getOP('enddate');
 $makeactive = getOP('makeactive');
 $userid = getUid();
-$username = retrieveUsername($pdo);
+
+// Microservice for retrieveUsername
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+$username = $data['username'] ?? 'unknown';
+
 $debug = "NONE!";
 
 // Permission checks
@@ -70,8 +82,29 @@ if (!$query->execute()) {
     $debug = "Error updating entries " . $error[2];
 }
 
-if ($makeactive == 3)
-    setAsActiveCourse($pdo, $courseid, $versid);
+
+// Check if selected course version should be set as active
+if ($makeactive == 3) {
+    header("Content-Type: application/json");
+    
+    // Construct the URL to the target microservice
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
+    $ch = curl_init($url);
+
+    //Configure cURL for POST with required data
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'cid' => $courseid,
+        'versid' => $versid
+    ]));
+
+    // Execute the POST request and close cURL
+    curl_exec($ch);
+    curl_close($ch);
+
+}
 
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);

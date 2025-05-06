@@ -14,6 +14,7 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
  * --------------================################================-------------- */
 
 :root {
+  --purple-icon-filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
   --color-text-primary: #775886;
   --color-text-primary-darker: #620C5B;
   --color-text-secondary: #434343;
@@ -830,6 +831,7 @@ p {
  text-decoration: underline;
 }
 /*End of recent feedback from the teacher*/
+
 #Sectionlist {
   margin: 10px;
   background-color: var(--color-background);
@@ -843,9 +845,59 @@ p {
     background-color: #5e4776;  
     color: white;               
   }
+}
 
-  & .view-label {
-    padding: 0.5rem;
+.dropButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.5em auto;
+    
+    > img {
+      pointer-events: none;
+    }
+}
+
+@keyframes dropDownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  flex-direction: column;
+  
+  &.dropdown-content-show {
+    display: flex;
+
+    > * {
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: dropDownSlide 0.3s ease-out forwards;
+    }
+
+    /*To stagger the animation*/
+    > *:nth-child(1) { animation-delay: 0.05s; }
+    > *:nth-child(2) { animation-delay: 0.10s; }
+    > *:nth-child(3) { animation-delay: 0.15s; }
+    > *:nth-child(4) { animation-delay: 0.20s; }
+    > *:nth-child(5) { animation-delay: 0.25s; }
+    > *:nth-child(6) { animation-delay: 0.30s; }
+    > *:nth-child(7) { animation-delay: 0.35s; }
+    > *:nth-child(8) { animation-delay: 0.40s; }
+    > *:nth-child(9) { animation-delay: 0.45s; }
+  }
+
+  & button {
+    margin: 0;
   }
 }
 
@@ -905,12 +957,12 @@ p {
   filter: invert(0); }
 
 .code #NewTabLink{
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
   cursor: pointer;
 } 
 
 #tabElement{
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
   cursor: pointer;
 }
 #Sectionlist .header {
@@ -947,7 +999,7 @@ p {
 }
 
 #swimlaneSVG text {
-  font-size: 10px;
+  font-size: 1em;
 }
 
 #swimlaneSVG rect:nth-child(n of .progressBar){
@@ -968,9 +1020,9 @@ p {
 }
 
 @media only screen and (max-width: 800px), only screen and (orientation:portrait) {
-  #swimlaneSVG text {
+  /*#swimlaneSVG text {
       font-size: 14px;
-  }
+  }*/
 }
 
 @media only screen and (min-width: 1224px) {
@@ -995,9 +1047,9 @@ p {
         /*width: 70%;*/
         margin: auto;
     }
-    #swimlaneSVG text {
+    /*#swimlaneSVG text {
         font-size: 16px;
-    }
+    }*/
 }
 
 /*Swimlane styling Ends*/
@@ -2688,9 +2740,12 @@ resulted.php END
  * --------------================################================--------------*/
  
  #courseHeader {
-  display:flex; 
-  align-items:center; 
-  justify-content:flex-end; 
+  display:flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
  }
 
  #course-newitem {
@@ -2707,9 +2762,13 @@ resulted.php END
   margin-right:10px;
  }
 
- #course-label {
-  flex-grow:1
- }
+#course-label {
+  /*Temporary fix because flex and grid does not work properly at the time.
+  TODO: Implement a flex or grid layout properly.*/
+ position: absolute;
+ left: 50%;
+ transform: translateX(-50%);
+}
 
 #editSectionLoginBox {
  width:460px;
@@ -3433,31 +3492,8 @@ button.option {
   padding: 6px 12px;
 }
 
-#MOTDbutton {
- top: -2px;
- position: absolute;
- right: 20px;
- left: auto;
-}
 
-@media only screen and (max-width: 430px) {
-  #MOTDbutton {
-    width:20%;
-   }
-	#courseDropdownTop {
-        width: 50px;
-    }
-}
-@media only screen and (max-width: 330px) {
-  #MOTDbutton {
-    width:15%;
-   }
-}
-@media only screen and (max-width: 275px) {
-  #MOTDbutton {
-    width:10%;
-   }
-}
+
 
 #courseBtn {
   margin-left: 8px;
@@ -3485,6 +3521,19 @@ input.submit-button {
 
   -webkit-appearance: none
 }
+
+/* reduce button size for phone-viewing
+
+@media only screen and (max-width: 600px) {
+  input.submit-button {
+    width: 60px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    font-size: 10px;
+  }
+}
+*/
 
 div.submit-button {
   background-color: var(--color-primary);
@@ -3538,12 +3587,24 @@ input.submit-button-newitem {
   text-align: center;
   transition: 1s background-color;
   -webkit-appearance: none; 
-  float: right;
+  float: left;
 }
 
 input.submit-button-newitem:hover {
   transition: 0.4s;
   background-color: rgb(283, 233, 126);
+}
+
+/* override to customize only loadDuggaButton */
+#loadDuggaButton {
+  float: left;
+  width: auto;
+  min-width: 80px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0px;
+  margin: 2px 10px 2px 0;
+    
 }
 
 input.diagram-sidebar-buttons {
@@ -4054,9 +4115,8 @@ div.submit-button:disabled {
   display: block;
   margin: auto;
   /* Makes the icons purple */
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
 }
-
 
 #Sectionlist .moment #dorf {
   filter: invert(1);
@@ -4127,9 +4187,12 @@ div.submit-button:disabled {
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: var(--color-background-2);
+  background-color: var(--color-sectioned-table-hi);
 }
 
+.list tbody tr:nth-child(even) {
+  background-color: var(--color-sectioned-table-lo);
+}
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
@@ -6355,37 +6418,53 @@ only screen and (max-device-width: 568px) {
 
 #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
   display:none;
+  margin-bottom: 10px;
 }
+
 #homeBurger,#goBackBurger,#darkModeBurger{
-display: none;
+  display: none;
+  margin-bottom: 10px;
 }
-#navBurgerIcon { 
+
+header td.navBurgerIcon{ 
   display: none;
   
 }
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
 
-  #navBurgerIcon { 
+  header td.navBurgerIcon {
     display: block;
     color:white;
-  }
+    font-size:24px;
+    width: 29px;
+    vertical-align: middle;
+    margin-top: 15px;
+    margin-left: 15px
+  } 
  
   #navBurgerBox{
-    display: block;
     position: absolute;
     top: 50px;
     width: 32px;
     padding: 10px;
-    height: 100px;
+    height: 120px;
     background-color: var(--color-primary-2);
+
+  }
+  
+  #motdNav {
+    display: none; 
+  }
+  #motdBurgerDiv {
+    display: block;
   }
  
   #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
     display: block;
   }
 
- #home, #back, #theme-toggle{
+ #home, #back, #theme-toggle, .motd-nav{
     display: none;
   }
 }
@@ -7653,7 +7732,7 @@ only screen and (max-device-width: 568px) {
 
 .fixed-action-button3 {
   position: absolute;
-  top: auto;
+  top: 15;
   right: 24px;
   z-index: 1;
   touch-action: none;
@@ -7673,17 +7752,60 @@ only screen and (max-device-width: 568px) {
   #course-label {
     min-width: 135px;
     margin-right: 150px;
-  }
+    display: flex; /* Enable Flexbox for centering */
+    flex-direction: column; /* Stack the spans vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    flex-wrap: wrap; /* Allow wrapping of elements */
+    height: auto;
 }
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 568px) {
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 10px; /* Nudges the FAB 10px up from the bottom */
+}
+
+@media only screen and (max-width: 430px), only screen and (max-device-width: 568px) {
   #course-label {
-    font-size: 12px;
+    font-size: 16px;
     margin-right: 25px;
+    position: relative;
+    text-align: center;
+    height: 1.6cm;
+    width: 100%; /* Make sure the width is 100% to avoid overflow */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the elements horizontally */
+    justify-content: center; /* Center them vertically */
+    flex-wrap: wrap; /* Allow content to wrap if needed */
+    height: auto; 
   }
   #showElements, #hideElement {
     display: none;
   }
+  
+  #course-coursename,
+  #course-coursecode,
+  #course-versname {
+    text-align: center;
+    display: block; 
+    width: 100%;
+    margin-bottom: 5px; 
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+  }
+
+  #course-label span {
+    padding: 2px 5px; 
+  }
+
+  .fixed-action-button {
+    position: fixed;
+    bottom: 100px; /* Nudges the FAB 10px up from the bottom */
+  }
+}
 }
 
 #Courselist div.fixed-action-button a:hover {
@@ -9240,21 +9362,37 @@ textarea#filecont {
 
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
-  width: 100%;
+  margin-left:5%;
 }
 #motdArea{
   box-shadow: 1px 1px 6px grey;
   border-collapse:collapse;
   background-color: #FECC56;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   background-color: var(--color-accent);
   z-index: 1000;
   position: relative;
   margin-bottom: 7px;
   max-width: auto;
   display: none;
+  width:100%
 }
+.motdLeftContainer{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  justify-content: space-between; 
+
+}
+
+.motdRightContainer{
+width: 10%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
 .motdBoxheader{
   background-color: rgba(254, 204, 86, 1);
   vertical-align: bottom;
@@ -9263,6 +9401,7 @@ textarea#filecont {
   display: flex;
   justify-content: space-around;
   position: relative;
+  margin-left:5%;
 
 }
 .motdBoxheader h3 {
@@ -9465,6 +9604,8 @@ textarea#filecont {
     padding: 15px;
     width: 450px;
   }
+ 
+
 }
 .bottomBorderColor{
   border-top: 2px solid var(--color-border-list); 
@@ -10464,6 +10605,12 @@ margin:2px;
 
   .typeIcon {
     font-size: 2.5rem;
+  }
+  .motdLeftContainer{
+    width:85%;
+  }
+  .motdRightContainer{
+    width:15%;
   }
 }
 

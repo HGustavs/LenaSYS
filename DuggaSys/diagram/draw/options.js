@@ -6,8 +6,16 @@ function generateContextProperties() {
     let str = '';
     const element = context[0];
     const line = contextLine[0];
+
+    if ((context.length > 0 || contextLine.length > 0) && (erTableToggle || testCaseToggle)) {
+        erTableToggle = false;
+        testCaseToggle = false;
+    }
+
     let propSet = document.getElementById("propertyFieldset");
     let menuSet = document.getElementsByClassName('options-section');
+
+    propSet.innerHTML = ""; 
 
     str += "<legend>Properties</legend>";
     if (context.length == 0 && contextLine.length == 0 && !erTableToggle && !testCaseToggle) {
@@ -69,6 +77,20 @@ function showProperties(show, propSet, menuSet) {
 }
 
 /**
+ * @description Escapes the html which removes problematic characters and replaces them with string-character.
+ * @param {String} str String to be escaped.
+ * @returns Returns a html-free string.
+ */
+function escapeHtml(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+/**
  * @description Makes a textarea to be able for example add new classes for UML.
  * @param {String} name Name for the header for the textarea.
  * @param {String} property What type of property the textarea is.
@@ -76,11 +98,29 @@ function showProperties(show, propSet, menuSet) {
  * @return Returns the div that is the header and the textarea for the specific element.
  */
 function textarea(name, property, element) {
-    return `<div style='color:${color.WHITE};'>${name}</div>
+    const safeText = escapeHtml(textboxFormatString(element[property]));
+    const safeName = escapeHtml(element[property]);
+    let shownProperty = element[property];
+
+    if (shownProperty === null){
+        shownProperty = "";
+    }
+    if (property == "stereotype"){
+        return `<div style='color:${color.WHITE};'>${name}</div>
+            <input 
+                id='elementProperty_${property}' 
+                maxlength='10'
+                value='${shownProperty}'
+            >${safeName}</input>`;
+    }
+    else{
+        return `<div style='color:${color.WHITE};'>${name}</div>
             <textarea 
                 id='elementProperty_${property}' 
                 rows='4' style='width:98%;resize:none;'
-            >${textboxFormatString(element[property])}</textarea>`;
+            >${textboxFormatString(safeText)}</textarea>`;
+    }
+    
 }
 
 /**
@@ -89,11 +129,12 @@ function textarea(name, property, element) {
  * @return Returns the div that is the header and the text input.
  */
 function nameInput(element) {
+    const safeName = escapeHtml(element.name);
     return `<div style='color:${color.WHITE};'>Name</div>
             <input 
                 id='elementProperty_name' 
                 type='text' 
-                value='${element.name}' 
+                value='${safeName}' 
             >`;
 }
 
@@ -162,6 +203,7 @@ function drawElementProperties(element) {
             str += dropdown('Variant', 'normal', entityState, element);
             break;
         case elementTypesNames.UMLEntity:
+            str += textarea('Stereotype', 'stereotype', element);
             str += nameInput(element);
             str += textarea('Attributes', 'attributes', element);
             str += textarea('Functions', 'functions', element);
@@ -327,6 +369,14 @@ function drawLineProperties(line) {
             }
             break;
         case entityType.SE:
+
+
+            if (line.kind === lineKind.RECURSIVE){
+                str += includeSELabel(line);
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>`;
+                break;
+            }
+
             str += includeSELabel(line);
             str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);
@@ -424,9 +474,16 @@ function toggleOptionsPane() {
  */
 function textboxFormatString(arr) {
     let content = '';
-    for (let i = 0; i < arr.length; i++) {
-        content += arr[i] + '\n';
+    
+    //Its an array when the textbox have more then one line
+    if (!Array.isArray(arr)) {
+        return arr;  
     }
+
+    for(let i = 0; i < arr.length; i++) {
+        content += arr[i] + '\n';   
+    }
+
     return content;
 }
 
@@ -1702,12 +1759,12 @@ function generateStateDiagramInfo() {
         }
         // Add any connected entity to the output string, and if it has not been "seen" it is added to the queue.
         for (let i = 0; i < connections.length; i++) {
-            if (connections[i][LABEL] == undefined) {
+            if (connections[i][LABEL] == undefined || connections[i][LABEL].trim() === "") {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}"</p>`;
             } else if (re.test(connections[i][LABEL])) {
                 output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with guard "${connections[i][LABEL]}"</p>`;
             } else {
-                output += `<p>"${head[ENTITY].name}" goes to "${connections[i][ENTITY].name}" with label "${connections[i][LABEL]}"</p>`;
+                output += `<p>"${escapeHtml(head[ENTITY].name)}" goes to "${escapeHtml(connections[i][ENTITY].name)}" with label "${escapeHtml(connections[i][LABEL])}"</p>`;
             }
             if (connections[i][SEEN] === false) {
                 connections[i][SEEN] = true;

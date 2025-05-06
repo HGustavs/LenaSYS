@@ -4,15 +4,15 @@
  * @param {{key:string, ctrl:boolean}} keybind
  * @returns {boolean}
  */
+
 function isKeybindValid(e, keybind) {
     const keyMatches = e.key.toLowerCase() === keybind.key.toLowerCase();
-
-    //Checks and compares if the pressed key is correct based on the keybind (true or false)
     const ctrlMatches = e.ctrlKey === !!keybind.ctrl;
+    const altMatches = e.altKey === !!keybind.alt;
     const metaMatches = e.metaKey === !!keybind.meta;
     const shiftMatches = e.shiftKey === !!keybind.shift;
 
-    return keyMatches && ctrlMatches && metaMatches && shiftMatches;
+    return keyMatches && ctrlMatches && altMatches && metaMatches && shiftMatches;
 }
 
 /**
@@ -114,13 +114,20 @@ function entityIsOverlapping(id, x, y) {
     });
 
     for (let i = 0; i < data.length; i++) {
+        
         if (data[i].id === id) continue;
-        if (context.includes(data[i])) break;
 
         // No element can be placed over another of the same kind
         if (data[i].kind !== element.kind) {
-            // Sequence life-lines can be placed on activations
-            if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") && element.kind === "sequenceActivation") continue;
+        if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") &&
+        element.kind === "sequenceActivation") {
+        const headerHeight = getTopHeight(data[i]);          
+        const extra        = data[i].kind === "sequenceActor" ; 
+        const headerBottom = data[i].y + headerHeight + extra;
+
+        if (y < headerBottom) return true;   
+        continue;                            
+    }
 
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
             else if (data[i].type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
@@ -138,7 +145,7 @@ function entityIsOverlapping(id, x, y) {
         }
 
         const x2 = data[i].x + data[i].width;
-        let y2 = data[i].y + data[i].height;
+        let y2 = data[i].y + data[i].y2 - data[i].y1;
 
         arr.forEach(entityHeights => {
             entityHeights.forEach(entity => {
@@ -146,42 +153,37 @@ function entityIsOverlapping(id, x, y) {
             });
         });
 
-        // Collision detection for the ER and UML Relation elements
         if (element.kind === "ERRelation" || element.kind === "UMLRelation") {
-            // Calculate centre of first element
-            const centerAX = x + element.width / 2;
-            const centerAY = y + element.height / 2;
-
-            // Calculate centre of second element
-            const centerBX = data[i].x + data[i].width / 2;
-            const centerBY = data[i].y + data[i].height / 2;
-
-            // Calculate difference of the two elements on x-axis and y-axis
-            const dx = Math.abs(centerAX - centerBX);
-            const dy = Math.abs(centerAY - centerBY);
-
-            // Calculate maximum half width and height where the elements are still overlapping
-            const sumHalfWidth = (element.width / 2) + (data[i].width / 2);
-            const sumHalfHeight = (element.height / 2) + (data[i].height / 2);
-
-            // Detects if there is an actual collision
-            if ((dx / sumHalfWidth + dy / sumHalfHeight) <= 1) {
-                return true;
-            }
-            else {
-                continue;
+            // Use default rectangle collision detection
+            if (x < x2 &&
+                x + element.width > data[i].x &&
+                y < y2 &&
+                y + eHeight > data[i].y
+            ) {
+                isOverlapping = true;
+                break;
             }
         }
+
+
         // Default collision detection where overlapping is derived from height and width of element in a rectangle shape
-        else if (x < x2 &&
+        // Some elements doesnt have a height so the second parameter gets the height manually
+        if ((x < x2 &&
             x + element.width > data[i].x &&
             y < y2 &&
             y + eHeight > data[i].y
-        ) {
-            isOverlapping = true;
-            break;
+        )||(
+            x < x2 &&
+            x + element.width > data[i].x &&
+            y < y2 &&
+            y + element.y2 - element.y1 > data[i].y
+        ))
+        {
+            isOverlapping = true;   
         }
+
     }
+    
     return isOverlapping;
 }
 

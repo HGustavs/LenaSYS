@@ -60,7 +60,7 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:2;` :
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:;` :
              `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
         case elementTypesNames.UMLInitialState:
@@ -112,6 +112,7 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
+            zLevel = 3;
             break;
         case elementTypesNames.sequenceLoopOrAlt:
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
@@ -228,6 +229,20 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
 }
 
 /**
+ * @description Escapes the html which removes problematic characters and replaces them with string-character.
+ * @param {String} str String to be escaped.
+ * @returns Returns a html-free string.
+ */
+function escapeHtml(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+/**
  * @description Draw the text for the element.
  * @param {Number} x The X coordinate for the drawn text.
  * @param {Number} y The Y coordinate for the drawn text.
@@ -237,10 +252,11 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
  * @returns Returns a string containing a svg text for the element that is drawn.
  */
 function drawText(x, y, a, t, extra = '') {
+    const safeText = escapeHtml(t);
     return `<text
                 class='text' x='${x}' y='${y}' 
                 dominant-baseline='auto' text-anchor='${a}' ${extra}
-            > ${t} </text>`;
+            > ${safeText} </text>`;
 }
 
 /**
@@ -324,11 +340,15 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let height = texth * (headerLines.length + 1) * lineHeight;
     let headRect = drawRect(boxw, height, linew, element);
     let headText = "";
+    let headStereotype = "";
+    if (element.stereotype != "" && element.stereotype != null) {
+        headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', `«${element.stereotype}»`);
+    }
     for (let i = 0; i < headerLines.length; i++) {
-        const y = texth * (i + 1) * lineHeight;
+        const y = texth * (i + 1.5) * lineHeight;
         headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
     }
-    let headSvg = drawSvg(boxw, height, headRect + headText);
+    let headSvg = drawSvg(boxw, height, headRect + headText + headStereotype);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
     // Content, Attributes
@@ -868,13 +888,21 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
  * @returns Returns a SVG for the note that is going to be drawn.
  */
 function drawElementNote(element, boxw, boxh, linew, texth) {
-    const maxCharactersPerLine = Math.floor((boxw / texth) * 1.05);
+    const padding = 10; // Padding in pixels
     const lineHeight = 1.5;
+    const availableTextWidth = boxw - padding * 2;
+
+    // Approximate number of characters per line based on font size
+    const avgCharWidth = texth * 0.48; // average char width in px
+    const maxCharactersPerLine = Math.floor(availableTextWidth / avgCharWidth);
+
     const text = splitFull(element.attributes, maxCharactersPerLine);
-    let length = (text.length > 4) ? text.length : 4;
-    let totalHeight = boxh + texth * length;
-    const maxWidth = (boxw - linew * 2);
-    const maxHeight = (boxh + (texth * length) - linew * 2)
+    const textLineCount = Math.max(4, text.length);
+    const totalHeight = boxh + texth * textLineCount * lineHeight;
+
+    const maxWidth = boxw - linew * 2;
+    const maxHeight = totalHeight - linew * 2;
+
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
@@ -895,9 +923,11 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
             stroke='${element.stroke}'
             fill='${element.fill}'
         />`;
+    // Draw each line of text with padding from the left
     for (let i = 0; i < text.length; i++) {
-        content += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', text[i]);
+        const x = padding;
+        const y = texth * (i + 1) * lineHeight;
+        content += drawText(x, y, 'start', text[i]);
     }
-    return drawSvg(boxw, boxh + texth * length, content);
+    return drawSvg(boxw, totalHeight, content);
 }
-

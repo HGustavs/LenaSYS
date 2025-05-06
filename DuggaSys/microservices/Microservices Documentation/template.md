@@ -6,24 +6,31 @@ Example of template for the documentation:
 *Description of what the service do and its function in the system.*
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+*Parameters will be described in lists*
+- Parameter: paramName
+   - Type: int
+   - Description: describe parameter
 
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| $exampleid | string | Example ID Description |
+- Parameter: paramName
+   - Type: int
+   - Description: describe parameter
+
+
 
 ## Calling Methods
-
 - GET
 - POST
 - etc.
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
+*Output Data will be described in lists*
+- Output: outputName
+   - Type: int
+   - Description: describe the output
 
-| Output | Type | Description |
-| :--- | :--- | :--- |
-| exampleid | string | Example ID Description |
+- Output: outputName
+   - Type: String
+   - Description: describe the output
 
 ## Examples of Use
 `CODE`

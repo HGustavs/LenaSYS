@@ -14,15 +14,16 @@ var LastCourseCreated;
 var lastCC = false;
 var updateCourseName = false;
 
-
-$(document).ready(function () {
-	$('#startdate').datepicker({
-		dateFormat: "yy-mm-dd"
+document.addEventListener("DOMContentLoaded", function () {
+	flatpickr("#startdate", {
+		dateFormat: "Y-m-d"
 	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
+
+	flatpickr("#enddate", {
+		dateFormat: "Y-m-d"
 	});
 });
+
 
 AJAXService("GET", {}, "COURSE");
 
@@ -40,123 +41,142 @@ function closeDeleteForm() {
 
 function deleteCourse() {
 
-    let cid = $("#cid").val();
+	let cid = document.getElementById("cid").value;
     let visib = "3";
 
-    AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
-    $(".item").css("border", "none");
-    $(".item").css("box-shadow", "none");
-    $("#editCourse").css("display", "none");
-    $("#overlay").css("display", "none");
+	AJAXService("UPDATE", { cid: cid, visib: visib }, "COURSE");
+
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("editCourse").style.display = "none";
+	document.getElementById("overlay").style.display = "none";
 }
 
 function updateCourse() {
-	var coursename = $("#coursename").val();
-	var cid = $("#cid").val();
-	var coursecode = $("#coursecode").val();
-	var courseGitURL = $("#editcoursegit-url").val();
-	var visib = $("#visib").val();
-	var courseid = "C" + cid;
+	const coursename = document.getElementById("coursename").value;
+	const cid = document.getElementById("cid").value;
+	const coursecode = document.getElementById("coursecode").value;
+	const courseGitURL = document.getElementById("editcoursegit-url").value;
+	const visib = document.getElementById("visib").value;
+	const courseid = "C" + cid;
+	const token = document.getElementById("githubToken").value;
 
-	var token = document.getElementById("githubToken").value;
+	const url = "../DuggaSys/gitcommitService.php";
+	const params = {
+		githubURL: courseGitURL,
+		cid: cid,
+		token: token || undefined,
+		action: 'directInsert'
+	};
 
-	//Send information about the git url and possible git token for a course
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: { 'githubURL': courseGitURL, 'cid': cid, 'token': token || undefined, 'action': 'directInsert' },
-		success: function () {
-			//Returns true if the data and JSON is correct
-			dataCheck = true;
+	fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
 		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 403:
-					toast("error", data.status + " Error \nplease insert valid git key", 7);
-					break;
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
-					break;
-				default:
-					toast("error", "Something went wrong with updating git token and git URL...", 7);
+		body: JSON.stringify(params)
+	})
+		.then(response => {
+			if (!response.ok) {
+				return response.json().then(errorData => {
+					handleError(response.status, errorData);
+					throw new Error('Response not ok');
+				});
 			}
-			dataCheck = false;
-		}
-	});
+			// Show dialog
+			document.getElementById("editCourse").style.display = "none";
 
-	if (dataCheck) {
-		// Show dialog
-		$("#editCourse").css("display", "none");
+			// Updates the course (except the course GitHub repo.
+			// Course GitHub repo is updated in the next block of code)
+			document.getElementById("overlay").style.display = "none";
+			AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
+			localStorage.setItem('courseid', courseid);
+			localStorage.setItem('updateCourseName', true);
 
-		// Updates the course (except the course GitHub repo. 
-		// Course GitHub repo is updated in the next block of code)
-		$("#overlay").css("display", "none");
-		AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
-		localStorage.setItem('courseid', courseid);
-		localStorage.setItem('updateCourseName', true);
+			const cookieValue = `; ${document.cookie}`;
+			const parts = cookieValue.split(`; ${"missingToken"}=`);
 
-		const cookieValue = `; ${document.cookie}`;
-		const parts = cookieValue.split(`; ${"missingToken"}=`);
+			if (parts[1] != 1) {
+				//Check if courseGitURL has a value
+				if (courseGitURL) {
+					//Check if fetchGitHubRepo returns true
+					if (fetchGitHubRepo(courseGitURL)) {
+						localStorage.setItem('courseGitHubRepo', courseGitURL);
+						//If courseGitURL has a value, display a message stating the update (with github-link) worked
+						toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
+						updateGithubRepo(courseGitURL, cid);
+					}
+					//Else: get error message from the fetchGitHubRepo function.
 
-		if (dataCheck && parts[1] != 1) {
-			//Check if courseGitURL has a value
-			if (courseGitURL) {
-				//Check if fetchGitHubRepo returns true
-				if (fetchGitHubRepo(courseGitURL)) {
-					localStorage.setItem('courseGitHubRepo', courseGitURL);
-					//If courseGitURL has a value, display a message stating the update (with github-link) worked
-					toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
-					updateGithubRepo(courseGitURL, cid);
+				} else {
+					localStorage.setItem('courseGitHubRepo', " ");
+					//If courseGitURL has no value, display an update message
+					toast("success", "Course " + coursename + " updated!", 5);
 				}
-				//Else: get error message from the fetchGitHubRepo function.
-
-			} else {
-				localStorage.setItem('courseGitHubRepo', " ");
-				//If courseGitURL has no value, display an update message
-				toast("success", "Course " + coursename + " updated!", 5);
 			}
-		}
-		else {
-			toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
+			else {
+				toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
+			}
+		})
+		.catch(error => {
+			console.error("Fetch error:", error);
+		});
+	function handleError(status, errorData) {
+		switch (status) {
+			case 403:
+				toast("error", status + " Error \nplease insert valid git key", 7);
+				break;
+			case 422:
+				toast("error", data.responseJSON.message + "\nDid not create/update token", 7);
+				break;
+			case 503:
+				toast("error", errorData.message + "\nDid not create/update token", 7);
+				break;
+			default:
+				toast("error", "Something went wrong with updating git token and git URL...", 7);
 		}
 	}
 }
+	
 
 function updateCourseColor(courseid) {
 	document.getElementById(courseid).firstChild.classList.add("highlightChange");
 }
-
 function closeEditCourse() {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#editCourse").css("display", "none");
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("editcourse").style.display = "none";
 
 	//resets all inputs
 	resetinputs();
 }
 
 function closeNewCourse() {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#newCourse").css("display", "none");
-	$("#overlay").css("display", "none");
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("newCourse").style.display = "none";
+	document.getElementById("overlay").style.display = "none";
 }
 
 function newCourse() {
-	$("#newCourse").css("display", "flex");
+	document.getElementById("newCourse").style.display = "flex";
 	//$("#overlay").css("display", "block");
 }
 
 function createNewCourse() {
-	var coursename = $("#ncoursename").val();
-	var coursecode = $("#ncoursecode").val();
-	var courseGitURL = $("#ncoursegit-url").val();
-	$("#newCourse").css("display", "none");
+	var coursename = document.getElementById("ncoursename").value;
+	var coursecode = document.getElementById("ncoursecode").value;
+	var courseGitURL = document.getElementById("ncoursegit-url").value;
+	document.getElementById("newCourse").style.display = "none";
 	//$("#overlay").css("display", "none");
 
 	//Check if user has input for Git-URL
@@ -176,129 +196,173 @@ function createNewCourse() {
 		AJAXService("NEW", { coursename: coursename, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
 		toast("success", "New course, " + coursename + " added!", 5);
 	}
-	setTimeout("location.reload()", 200) // refreshes the page after 0.2 seconds
+	AJAXService("GET", {}, "COURSE");
 }
 
 //Send valid GitHub-URL to PHP-script which fetches the contents of the repo
+//Rewritten with XMLHttpRequest instead of fetch since fetch would not be able to return true/false without changing all calling implementations
+//Rewrite it if I am just dumb.
 function fetchGitHubRepo(gitHubURL) {
 	//Remove .git, if it exists
-	regexURL = gitHubURL.replace(/.git$/, "");
-	//Used to return success(true) or error(false) to the calling function
+	const regexURL = gitHubURL.replace(/.git$/, "");
 	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "gitfetchService.php",
-		type: "POST",
-		data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' },
-		success: function () {
+
+	const xhr = new XMLHttpRequest();
+	xhr.open("POST", "gitfetchService.php", false);  //Synchronous
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	const body = `githubURL=${encodeURIComponent(regexURL)}&action=getNewCourseGitHub`;
+
+	//Used to return success(true) or error(false) to the calling function
+	try {
+		xhr.send(body);
+
+		if (xhr.status === 200) {
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
-		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				default:
-					toast("error", "Something went wrong...", 7);
-			}
-			dataCheck = false;
+		} else {
+			throw xhr;
 		}
-	});
+	} catch (error) {
+		let responseData = {};
+		try {
+			responseData = JSON.parse(error.responseText);
+		} catch (e) {
+			//Default
+		}
+
+		switch (error.status) {
+			//Check FetchGithubRepo for the meaning of the error code.
+			case 422:
+				toast("error", (responseData.message || "Unprocessable entity") + "\nDid not create/update course", 7);
+				break;
+			case 503:
+				toast("error", (responseData.message || "Service unavailable") + "\nDid not create/update course", 7);
+				break;
+			default:
+				toast("error", "Something went wrong...", 7);
+		}
+		dataCheck = false;
+	}
 	return dataCheck;
 }
 
+
 //Send valid GitHub-URL to PHP-script which gets and saves the latest commit in the sqllite db
-function fetchLatestCommit(gitHubURL) {
+async function fetchLatestCommit(gitHubURL) {
 	//Used to return success(true) or error(false) to the calling function
 	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: { 'githubURL': gitHubURL, 'action': 'getCourseID' },
-		success: function () {
+	try {
+		const response = await fetch("../DuggaSys/gitcommitService.php", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: new URLSearchParams({
+				'githubURL': gitHubURL,
+				'action': 'getCourseID'
+			})
+		});
+		if (response.ok) {
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
-		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				default:
-					toast("error", "Something went wrong...", 7);
-			}
-			dataCheck = false;
+		} else {
+			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
-	});
+	} catch (error) {
+		console.error("Error fetching latest commit:", error);
+
+		//Check FetchGithubRepo for the meaning of the error code.
+		if (error.message.includes('422')) {
+			toast("error", "422 Error: Did not create/update course", 7);
+		} else if (error.message.includes('503')) {
+			toast("error", "503 Error: Did not create/update course", 7);
+		} else {
+			toast("error", "Something went wrong...", 7);
+		}
+		dataCheck = false;
+	}
 	return dataCheck;
 }
 
 //Send new Github URL and course id to PHP-script which gets and saves the latest commit in the sqllite db
+//XMLHttpRequest, same as fetchGitHubRepo
 function updateGithubRepo(githubURL, cid) {
-	//Used to return success(true) or error(false) to the calling function
+	// Used to return success(true) or error(false) to the calling function
 	var dataCheck;
-	$.ajax({
-		async: false,
-		url: "../DuggaSys/gitcommitService.php",
-		type: "POST",
-		data: { 'githubURL': githubURL, 'cid': cid, 'action': 'updateGithubRepo' },
-		success: function () {
+
+	const xhr = new XMLHttpRequest();
+	xhr.open("POST", "../DuggaSys/gitcommitService.php", false); // false = synchronous
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	const body = `githubURL=${encodeURIComponent(githubURL)}&cid=${encodeURIComponent(cid)}&action=updateGithubRepo`;
+
+	try {
+		xhr.send(body);
+
+		if (xhr.status === 200) {
 			//Returns true if the data and JSON is correct
 			dataCheck = true;
-		},
-		error: function (data) {
-			//Check FetchGithubRepo for the meaning of the error code.
-			switch (data.status) {
-				case 422:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				case 503:
-					toast("error", data.responseJSON.message + "\nDid not create/update course", 7);
-					break;
-				default:
-					toast("error", "Something went wrong...", 7);
-			}
-			dataCheck = false;
+		} else {
+			throw xhr;
 		}
-	});
+	} catch (error) {
+		let responseData = {};
+		try {
+			responseData = JSON.parse(error.responseText);
+		} catch (e) {
+			//Default
+		}
+
+		switch (error.status) {
+			//Check FetchGithubRepo for the meaning of the error code.
+			case 422:
+				toast("error", (responseData.message || "Unprocessable entity") + "\nDid not create/update course", 7);
+				break;
+			case 503:
+				toast("error", (responseData.message || "Service unavailable") + "\nDid not create/update course", 7);
+				break;
+			default:
+				toast("error", "Something went wrong...", 7);
+		}
+		dataCheck = false;
+	}
 	return dataCheck;
 }
 
+
 function copyVersion() {
-	svers = $("#copyversion").val();
-	dvers = $("#versid").val();
+	svers = document.getElementById("copyversion").value;
+	dvers = document.getElementById("versid").value;
 	sstr = "Are you sure you want to copy from the version with id " + svers + " to a new version with the id " + dvers;
 	//all inputs = empty
 }
 
 function resetinputs() {
-	$('#coursename').val("");
-	$('#coursecode').val("");
-	$('#versid').val("");
-	$('#versname').val("");
+	var coursename = document.getElementById("coursename");
+	if (coursename) coursename.value = "";
+
+	var coursecode = document.getElementById("coursecode");
+	if (coursecode) coursecode.value = "";
+
+	var versid = document.getElementById("versid");
+	if (versid) versid.value = "";
+
+	var versname = document.getElementById("versname");
+	if (versname) versname.value = "";
 }
 
 function createVersion() {
-	$(".item").css("background", "#fff");
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$(".item").css("background", "#fff");
-	$("#editCourse").css("display", "none");
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.background = "#fff";
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
+	document.getElementById("editCourse").style.display = "none";
 
 	// Set Name
-	var versid = $("#versid").val();
-	var versname = $("#versname").val();
-	var cid = $("#cid").val();
+	var versid = document.getElementById("versid").value;
+	var versname = document.getElementById("versname").value;
+	var cid = document.getElementById("cid").value;
 
 	AJAXService("NEWVRS", { cid: cid, versid: versid, versname: versname }, "COURSE");
 
@@ -307,8 +371,11 @@ function createVersion() {
 }
 
 function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl) {
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
+	let items = document.querySelectorAll(".item");
+	items.forEach(item => {
+		item.style.border = "none";
+		item.style.boxShadow = "none";
+	});
 
 	// Convert representation of swedish letters
 	var tempCoursename = coursename;
@@ -320,21 +387,21 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 	tempCoursename = tempCoursename.replace(/&ouml;/g, "ö");
 
 	// Set Name
-	$("#coursename").val(tempCoursename);
+	document.getElementById("coursename").value = tempCoursename;
 	// Set Cid
-	$("#cid").val(cid);
+	document.getElementById("cid").value = cid;
 	// Set Code
-	$("#coursecode").val(coursecode);
+	document.getElementById("coursecode").value = coursecode;
 	// Set github url. If there is no github url then the field should be left empty. 
 	if (gitHubUrl != "null" && gitHubUrl != "UNK") {
-		$("#editcoursegit-url").val(gitHubUrl);
+		document.getElementById("editcoursegit-url").value = gitHubUrl;
 	} else {
-		$("#editcoursegit-url").val("");
+		document.getElementById("editcoursegit-url").value = "";
 	}
-	$("#githubToken").val("");
+	document.getElementById("githubToken").value = "";
 
 	//Give data attribute to course code input to check if input value is same as actual code for validation
-	$("#coursecode").attr("data-origincode", coursecode);
+	document.getElementById("coursecode").setAttribute("data-origincode", coursecode);
 
 	// Set Visibiliy
 	str = "";
@@ -357,7 +424,10 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 		str += "<option value='2'>Login</option>";
 	}
 
-	$("#visib").html(str);
+	var visibElem = document.getElementById("visib");
+	if (visibElem) {
+		visibElem.innerHTML = str;
+	}
 	var cstr = "";
 	var sstr = "";
 	var estr = "";
@@ -384,12 +454,21 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl
 		}
 	}
 
-	$("#activeversion").html(sstr);
-	$("#activeedversion").html(estr);
-	$("#copyversion").html(cstr);
+	var activeVersionElem = document.getElementById("activeversion");
+	if (activeVersionElem) {
+		activeVersionElem.innerHTML = sstr;
+	}
+	var activeEdVersionElem = document.getElementById("activeedversion");
+	if (activeEdVersionElem) {
+		activeEdVersionElem.innerHTML = estr;
+	}
+	var copyVersionElem = document.getElementById("copyversion");
+	if (copyVersionElem) {
+		copyVersionElem.innerHTML = cstr;
+	}
 
 	// Show dialog
-	$("#editCourse").css("display", "flex");
+	document.getElementById("editCourse").style.display = "flex";
 	// Get focus on the first input to use tab function
 	document.getElementById("coursename").focus();
 
@@ -490,21 +569,19 @@ function updateSettings() {
 		toast("error", "You have entered incorrect information", 7);
 	}
 }
-
 function createVersion() {
-
-	var cid = $("#cid").val();
-	var versid = $("#versid").val();
-	var versname = $("#versname").val();
-	var coursecode = $("#course-coursecode").text();
-	var courseid = $("#course-courseid").text();
-	var coursename = $("#course-coursename").text();
-	var makeactive = $("#makeactive").is(':checked');
-	var coursevers = $("#course-coursevers").text();
-	var copycourse = $("#copyvers").val();
-	var comments = $("#comments").val();
-	var startdate = $("#startdate").val();
-	var enddate = $("#enddate").val();
+	var cid = document.getElementById("cid").value;
+	var versid = document.getElementById("versid").value;
+	var versname = document.getElementById("versname").value;
+	var coursecode = document.getElementById("course-coursecode").textContent;
+	//var courseid = document.getElementById("course-courseid").textContent;
+	var coursename = document.getElementById("course-coursename").textContent;
+	var makeactive = document.getElementById("makeactive").checked;
+	var coursevers = document.getElementById("course-coursevers").textContent;
+	var copycourse = document.getElementById("copyvers").value;
+	//var comments = document.getElementById("comments").value;
+	var startdate = document.getElementById("startdate").value;
+	var enddate = document.getElementById("enddate").value;
 
 	if (versid == "" || versname == "") {
 		toast("warning", "Version Name and Version ID must be entered!", 5);
@@ -539,8 +616,8 @@ function createVersion() {
 			}, "COURSE");
 		}
 
-		$("#newCourseVersion").css("display", "none");
-		$("#overlay").css("display", "none");
+		document.getElementById("newCourseVersion").style.display = "none";
+		document.getElementById("overlay").style.display = "none";
 	}
 
 }
@@ -756,8 +833,8 @@ function elementIsValid(element) {
 	const inputwrapper = element.closest('.inputwrapper');
 	const messageElement = inputwrapper.querySelector('.formDialogText');
 
-	// Stop any ongoing animations
-	$(messageElement).stop(true, true);
+	// Stop any ongoing fade animations
+	stopFade(messageElement);
 
 	//Remove neutral tag when element is assessed.
 	element.classList.remove("color-change-neutral");
@@ -766,7 +843,7 @@ function elementIsValid(element) {
 	if (element.value.trim() === "") {
 		element.removeAttribute("style");
 		if (element.name === "githubToken" || element.name === "courseGitURL") {
-			$(messageElement).fadeOut();
+			fadeOut(messageElement);
 			element.classList.add("color-change-neutral");
 			element.classList.remove("color-change-invalid");
 			element.classList.remove("color-change-valid");
@@ -776,7 +853,7 @@ function elementIsValid(element) {
 
 	// Check against regex and handle special cases
 	if (!element.value.match(regex[element.name])) {
-		$(messageElement).fadeIn();
+		fadeIn(messageElement);
 		element.classList.add("color-change-invalid");
 		element.classList.remove("color-change-valid");
 		if (element.name === "githubToken") {
@@ -793,7 +870,7 @@ function elementIsValid(element) {
 	}
 
 	// If the input passes validation
-	$(messageElement).fadeOut();
+	fadeOut(messageElement);
 	element.classList.add("color-change-valid");
 	element.classList.remove("color-change-invalid");
 	return true;
@@ -890,20 +967,20 @@ function validateMOTD(motd, syntaxdialogid, rangedialogid, submitButton) {
 	var x4 = document.getElementById(syntaxdialogid);
 	var x8 = document.getElementById(rangedialogid);
 	if (emotd.value.match(Emotd)) {
-		$(x4).fadeOut()
+		fadeOut(x4);
 		//x4.style.display = "none";
 		window.bool9 = true;
 	} else {
-		$(x4).fadeIn()
+		fadeIn(x4);
 		//x4.style.display = "block";
 		window.bool9 = false;
 	}
 	if (emotd.value.match(EmotdRange)) {
-		$(x8).fadeOut()
+		fadeOut(x8);
 		//x8.style.display = "none";
 		window.bool9 = true;
 	} else {
-		$(x8).fadeIn()
+		fadeIn(x8);
 		//x8.style.display = "block";
 		window.bool9 = false;
 	}
@@ -937,16 +1014,32 @@ x.addListener(MOTDbtnValueX);
 //Adds an eventlistener for keydowns. if the key is Enter and the targeted element is fab-btn-lg then perform it's onclick functionality
 document.addEventListener('keydown', function (event) {
 	if (event.key === 'Enter') {
-		if ($(event.target)[0].classList.contains("fab-btn-lg")) {
+		if (event.target.classList.contains("fab-btn-lg")) {
 			newCourse();
 		}
 	}
 });
 
 //Run after ajax is completed
-$(document).ajaxComplete(function () {
-	localStorageCourse();
-});
+(function ajaxComplete() {
+	//Fetch
+	const originalFetch = window.fetch;
+	window.fetch = function (...args) {
+		return originalFetch.apply(this, args).then(response => {
+			setTimeout(() => localStorageCourse(), 50); //slight delay to wait for DOM update
+			return response;
+		});
+	};
+
+	//XMPHTTPRequest
+	const originalOpen = XMLHttpRequest.prototype.open;
+	XMLHttpRequest.prototype.open = function (...args) {
+		this.addEventListener("load", function () {
+			setTimeout(() => localStorageCourse(), 50); //slight delay to wait for DOM update
+		});
+		originalOpen.apply(this, args);
+	};
+})();
 
 function localStorageCourse() {
 	// check if lastcourse created is true to add glow to the relative text 
@@ -968,4 +1061,78 @@ function localStorageCourse() {
 
 function glowNewCourse(courseid) {
 	// document.getElementById("C"+courseid).firstChild.setAttribute("class", "highlightChange");
+}
+
+function fadeIn(element) {
+	const duration = 400;
+	element.style.display = "block";
+	element.style.opacity = 0;
+	element.style.transition = `opacity ${duration}ms`;
+
+	requestAnimationFrame(() => {
+		element.style.opacity = 1;
+	});
+}
+
+function fadeOut(element) {
+	const duration = 400;
+	element.style.transition = `opacity ${duration}ms`;
+	element.style.opacity = 0;
+
+	setTimeout(() => {
+		element.style.display = "none";
+	}, duration);
+}
+
+function stopFade(element) {
+	const currentOpacity = parseFloat(getComputedStyle(element).opacity);
+	const isVisible = getComputedStyle(element).display !== "none";
+
+	clearTimeout(element._fadeTimeout);
+	element.style.transition = "";
+
+	if (isVisible && currentOpacity < 1) {
+		//Fading in
+		element.style.opacity = "1";
+		element.style.display = "block";
+	} else if (!isVisible || currentOpacity > 0) {
+		//Fading out
+		element.style.opacity = "0";
+		element.style.display = "none";
+	}
+}
+
+/* --------------===============################================-------------- *
+ * 							Hamburger menu functions							*
+ * --------------================################================-------------- */
+
+/*navburger*/
+function navBurgerChange(operation = 'click') {
+	var x = document.getElementById("navBurgerBox");
+	if(x.style.display === "block") {
+	  x.style.display = "none";
+	} else {
+	  x.style.display = "block";
+	}
+}
+
+/*Dark mode*/ 
+function burgerToggleDarkmode(operation = 'click') {
+	const storedTheme = localStorage.getItem('themeBlack');
+	if (storedTheme) {
+		themeStylesheet.href = storedTheme;
+	}
+	const themeToggle = document.getElementById('theme-toggle');
+	// if it's light -> go dark
+	if (themeStylesheet.href.includes('blackTheme')) {
+		themeStylesheet.href = "../Shared/css/style.css";
+		localStorage.setItem('themeBlack', themeStylesheet.href)
+		backgroundColorTheme = "#121212";
+	}
+	else if (!themeStylesheet.href.includes('blackTheme')) {
+		// if it's dark -> go light
+		themeStylesheet.href = "../Shared/css/blackTheme.css";
+		localStorage.setItem('themeBlack', themeStylesheet.href)
+		backgroundColorTheme = "#fff";
+	}
 }
