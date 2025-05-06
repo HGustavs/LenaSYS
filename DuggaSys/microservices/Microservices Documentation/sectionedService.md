@@ -164,11 +164,84 @@ Fetches all list entries from the database. List entries are duggas, headers, te
    - Description: The script returns a JSON object describing which listentry that should be fetched from the listentries-table.
 
 ## Examples of Use
-'SELECT FROM useranswer WHERE moment=:lid'
+### Request
+GET /getListEntries_ms.php?opt=all&courseid=42&coursevers=3
 
-'SELECT FROM listentries WHERE lid = :lid'
+### Response 
+[
+  {
+    "sectionName": "Module 1",
+    "entries": [
+      { "id": 101, "type": "header", "title": "Introduction" },
+      { "id": 102, "type": "dugga",  "title": "Quiz 1"       }
+    ]
+  },
+  {
+    "sectionName": "Module 2",
+    "entries": [
+      { "id": 201, "type": "header", "title": "Advanced Topics" },
+      { "id": 202, "type": "dugga",  "title": "Quiz 2"            }
+    ]
+  }
+]
 
-### Microservices Used
+## Microservices Used
+Shared/basic.php
+Shared/sessions.php
+sharedMicroservices/getUid_ms.php
+retrieveSectionedService_ms.php
+
+# Name of file/service
+getUserDuggaFeedback_ms.php
+
+## Description
+Fetches All data from Userduggafeedback
+
+## Input Parameters
+
+- Parameter: $opt
+   - Type: string
+   - Description: Retrieval options
+
+- Parameter: $courseid
+   - Type: int(10)
+   - Description: Course ID.
+
+- Parameter: $coursevers
+   - Type: int(11)
+   - Description: Course version.
+
+- Parameter: $log_uuid
+   - Type: char
+   - Description: For logging purposes.
+
+- Parameter: $moment
+   - Type: int
+   - Description: The ID of a specific list entry.
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: The service will return the courses list entries divided into sections . If opt is set to GETUF the service will also return A list of evert piece of feedback individual students have given for the specific entry along with a single int representing the average of all feedback scores
+
+## Examples of Use
+### Request
+GET /getUserDuggaFeedback_ms.php?opt=GETUF&courseid=42&moment=7
+
+### Response
+{
+  "sections": [ /* list of course sections and entries */ ],
+  "userfeedback": [
+    { "username": "student1", "score": 4 },
+    { "username": "student2", "score": 3 }
+  ],
+  "avgfeedbackscore": 3.5
+}
+
+## Microservices Used
 Shared/basic.php
 Shared/sessions.php
 sharedMicroservices/getUid_ms.php
