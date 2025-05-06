@@ -3461,10 +3461,20 @@ function resetBoxes()
 
 
 function resizeBoxes(parentId, templateId) {
-    const parent = document.getElementById(parentId);
+    const parent = document.getElementById(parentId);	
 	templateId = parseInt(templateId, 10);
-	console.log('resizeBoxes has been entered',templateId);
+
+	const width = parent.offsetWidth;
+	const height = parent.offsetHeight;
+	const minWidth = width * 0.15;
+	const maxWidth = width * 0.85;
+	const minHeight = height * 0.15;
+	const maxHeight = height * 0.85;
+	const minHeightMulti = height * 0.15;
+	const maxHeightMulti = height * 0.55; 
+
     function makeBoxesResizable(element, direction, options = {}) {
+		if (!element) return;
         const resizer = document.createElement('div');
         resizer.className = 'resizer-' + direction;
         resizer.style.position = 'absolute';
@@ -3479,8 +3489,6 @@ function resizeBoxes(parentId, templateId) {
         element.style.position = 'relative';
         element.appendChild(resizer);
 
-		
-
         resizer.addEventListener('mousedown', function (e) {
             e.preventDefault();
             const startX = e.clientX;
@@ -3491,14 +3499,12 @@ function resizeBoxes(parentId, templateId) {
             function doDrag(e) {
                 let newSize;
                 if (direction === 'e') {
-                    newSize = startWidth + e.clientX - startX;
-                    if (options.min && newSize < options.min) newSize = options.min;
-                    if (options.max && newSize > options.max) newSize = options.max;
+                    newSize = startWidth + (e.clientX - startX);
+                    newSize = Math.max(options.min || 0, Math.min(options.max || Infinity, newSize));
                     element.style.width = newSize + 'px';
-                } else if (direction === 's') {
-                    newSize = startHeight + e.clientY - startY;
-                    if (options.min && newSize < options.min) newSize = options.min;
-                    if (options.max && newSize > options.max) newSize = options.max;
+                } else {
+                    newSize = startHeight + (e.clientY - startY);
+                    newSize = Math.max(options.min || 0, Math.min(options.max || Infinity, newSize));
                     element.style.height = newSize + 'px';
                 }
                 if (options.onResize) options.onResize();
@@ -3519,24 +3525,17 @@ function resizeBoxes(parentId, templateId) {
 		boxes[`box${i}`] = document.getElementById(`box${i}wrapper`);
 	}
 
-	const width = parent.offsetWidth;
-	const height = parent.offsetHeight;
-    const minWidth = width * 0.15;
-    const maxWidth = width * 0.85;
-    const minHeight = height * 0.15;
-    const maxHeight = height * 0.85;
-
 	if (templateId === 1) {
-		console.log(templateId);
         makeBoxesResizable(boxes.box1, 'e', {
             min: minWidth,
             max: maxWidth,
             onResize: () => {
                 boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
-                for (let i = 1; i <= retData["numbox"]; i++) toggleTitleDescription(i);
+                for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
             }
         });
-    } else if (templateId === 2) {
+    }
+    else if (templateId === 2) {
         makeBoxesResizable(boxes.box1, 's', {
             min: minHeight,
             max: maxHeight,
@@ -3544,7 +3543,204 @@ function resizeBoxes(parentId, templateId) {
                 boxes.box2.style.height = (height - boxes.box1.offsetHeight) + 'px';
             }
         });
+    }
+    else if (templateId === 3) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                const rem = width - boxes.box1.offsetWidth;
+                boxes.box2.style.width = rem + 'px';
+                boxes.box3.style.width = rem + 'px';
+                for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+            }
+        });
+        makeBoxesResizable(boxes.box2, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                boxes.box3.style.height = (height - boxes.box2.offsetHeight) + 'px';
+            }
+        });
+    }
+    else if (templateId === 4) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                const totalW = boxes.box1.offsetWidth + boxes.box2.offsetWidth;
+                if (totalW !== width) {
+                    boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+                } else {
+                    const remH = height - boxes.box1.offsetHeight;
+                    boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
+                    boxes.box3.style.height = remH + 'px';
+                }
+            }
+        });
+        makeBoxesResizable(boxes.box1, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                const remH = height - boxes.box1.offsetHeight;
+                boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
+                boxes.box3.style.height = remH + 'px';
+            }
+        });
+        makeBoxesResizable(boxes.box2, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                boxes.box1.style.height = boxes.box2.offsetHeight + 'px';
+                boxes.box3.style.height = (height - boxes.box2.offsetHeight) + 'px';
+            }
+        });
+    }
+    else if (templateId === 5) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+                for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+            }
+        });
+        makeBoxesResizable(boxes.box1, 's', {
+            min: minHeightMulti,
+            max: maxHeight,
+            onResize: () => {
+                const remH = height - boxes.box1.offsetHeight;
+                boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
+                boxes.box3.style.height = remH + 'px';
+                boxes.box4.style.height = remH + 'px';
+            }
+        });
+        makeBoxesResizable(boxes.box2, 's', {
+            min: minHeightMulti,
+            max: maxHeight,
+            onResize: () => {
+                const remH = height - boxes.box2.offsetHeight;
+                boxes.box3.style.height = remH + 'px';
+                boxes.box4.style.height = remH + 'px';
+            }
+        });
+    }
+	else if (templateId === 6) 
+	{
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                const remaining = width - boxes.box1.offsetWidth;
+                boxes.box2.style.width = remaining + 'px';
+                boxes.box3.style.width = remaining + 'px';
+                boxes.box4.style.width = remaining + 'px';
+                for (let i = 1; i <= retData["numbox"]; i++) toggleTitleDescription(i);
+            }
+        });
+        ['box2', 'box3'].forEach((box) => {
+            makeBoxesResizable(boxes[box], 's', {
+                min: minHeightMulti,
+                max: height * 0.70,
+                onResize: () => {
+                    const total = boxes.box2.offsetHeight + boxes.box3.offsetHeight + boxes.box4.offsetHeight;
+                    const delta = height - total;
+                    if (delta !== 0) {
+                        const targets = [boxes.box2, boxes.box3, boxes.box4].filter(b => b !== boxes[box]);
+                        targets.forEach(b => b.style.height = (b.offsetHeight + delta / 2) + 'px');
+                    }
+                }
+            });
+        });
+    } 
+	else if (templateId === 7) 
+	{
+        ['box2', 'box3', 'box4'].forEach((box) => {
+            makeBoxesResizable(boxes[box], 'e', {
+                min: minWidth,
+                max: maxWidth,
+                onResize: () => {
+                    const remaining = width - boxes[box].offsetWidth;
+                    boxes.box1.style.width = remaining + 'px';
+                    const others = ['box2', 'box3', 'box4'].filter(b => b !== box);
+                    others.forEach(b => boxes[b].style.width = boxes[box].offsetWidth + 'px');
+                    for (let i = 1; i <= retData["numbox"]; i++) toggleTitleDescription(i);
+                }
+            });
+        });
+        ['box2', 'box3', 'box4'].forEach((box) => {
+            makeBoxesResizable(boxes[box], 's', {
+                min: minHeightMulti,
+                max: maxHeightMulti,
+                onResize: () => {
+                    const total = boxes.box2.offsetHeight + boxes.box3.offsetHeight + boxes.box4.offsetHeight;
+                    const delta = height - total;
+                    const others = ['box2', 'box3', 'box4'].filter(b => b !== box);
+                    others.forEach(b => boxes[b].style.height = (boxes[b].offsetHeight + delta / 2) + 'px');
+                }
+            });
+        });
+    } 
+	else if (templateId === 8) {
+		makeBoxesResizable(boxes.box2, 'e', {
+			min: minWidth,
+			max: maxWidth,
+			onResize: () => {
+				const remW = parent.offsetWidth - boxes.box2.offsetWidth;
+				boxes.box1.style.width = remW + 'px';
+				boxes.box3.style.width = boxes.box2.offsetWidth + 'px';
+			}
+		});
+	
+		makeBoxesResizable(boxes.box2, 's', {
+			min: minHeight,
+			max: maxHeight,
+			onResize: () => {
+				const remH = parent.offsetHeight - boxes.box2.offsetHeight;
+				boxes.box3.style.height = remH + 'px';
+			}
+		});
+	
+		makeBoxesResizable(boxes.box3, 'e', {
+			min: minWidth,
+			max: maxWidth,
+			onResize: () => {
+				const remW = parent.offsetWidth - boxes.box3.offsetWidth;
+				boxes.box1.style.width = remW + 'px';
+				boxes.box2.style.width = boxes.box3.offsetWidth + 'px';
+			}
+		});
 	}
+	else if (templateId === 9) {
+		makeBoxesResizable(boxes.box1, 'e', {
+			min: minWidth,
+			max: maxWidth,
+			onResize: () => {
+				const remW = width - boxes.box1.offsetWidth;
+				['box2','box3','box4','box5'].forEach(id => {
+					boxes[id].style.width = remW + 'px';
+				});
+			}
+		});
+		['box2','box3','box4','box5'].forEach(boxId => {
+			makeBoxesResizable(boxes[boxId], 's', {
+				min: minHeightMulti,
+				max: maxHeightMulti,
+				onResize: () => {
+				  const freshH = parent.offsetHeight;
+				  const remH = freshH - boxes[boxId].offsetHeight;
+				  const peers = ['box2','box3','box4','box5'].filter(id => id !== boxId);
+				  const share = Math.floor(remH / peers.length);
+				  let leftover = remH - share * peers.length;
+				  peers.forEach((id, idx) => {
+					const h = share + (idx === 0 ? leftover : 0);
+					boxes[id].style.height = h + 'px';
+				  });
+				}
+			});
+		});
+	}
+	
 }
 
 

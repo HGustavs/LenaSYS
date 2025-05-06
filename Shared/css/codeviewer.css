@@ -243,6 +243,7 @@
     line-height: 15px;
 	/* Width of .no and .impo */
 	width: 32px !important;
+    height: auto !important;
 }
 
 .codeborder .no {
