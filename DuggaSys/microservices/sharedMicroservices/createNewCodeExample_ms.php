@@ -8,31 +8,37 @@ pdoConnect();
 session_start();
 
 
-	$userid = getUid();
-	// Microservice call to retrieve username
-	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-	$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
-	
-	$response = callMicroservicePOST($url, [], true);
+$userid = getUid();
+// Microservice call to retrieve username
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
 
-	$data = json_decode($response, true);
-	$username = $data['username'] ?? 'unknown';
+$response = callMicroservicePOST($url, [], true);
 
-	logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
+$data = json_decode($response, true);
+$username = $data['username'] ?? 'unknown';
 
+logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
-//get values from post
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['exampleid'], $_POST['courseid'], $_POST['coursevers'], $_POST['sectname'], $_POST['link'], $_POST['log_uuid'], $_POST['templatenumber'])) {
-		$exampleid = $_POST['exampleid'];
-		$courseid = $_POST['courseid'];
-		$coursevers = $_POST['coursevers'];
-		$sectname = $_POST['sectname'];
-		$link = $_POST['link'];
-		$log_uuid  = $_POST['log_uuid'];
-		$templateNumber = $_POST['templatenumber'];
-    }
-}
+$requiredKeys = [
+	'exampleid',
+	'courseid',
+	'coursevers',
+	'sectname',
+	'link',
+	'log_uuid',
+	'templatenumber'
+];
+
+$receivedData = recieveMicroservicePOST($requiredKeys);
+
+$exampleid = $receivedData['exampleid'];
+$courseid = $receivedData['courseid'];
+$coursevers = $receivedData['coursevers'];
+$sectname = $receivedData['sectname'];
+$link = $receivedData['link'];
+$log_uuid  = $receivedData['log_uuid'];
+$templateNumber = $receivedData['templatenumber'];
 
 if (!is_null($exampleid)){
 	$sname = $sectname . ($exampleid + 1);
