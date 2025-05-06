@@ -2766,16 +2766,16 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
-$(document).mouseover(function (e) {
+document.addEventListener("mouseover", function (e) {
   // showFabList(e);
   FABMouseOver(e);
 });
 
-$(document).mouseout(function (e) {
+document.addEventListener("mouseout", function (e) {
   FABMouseOut(e);
 });
 
-$(document).mousedown(function (e) {
+document.addEventListener("mousedown", function (e) {
   mouseDown(e);
 
   if (e.button == 0) {
@@ -2783,28 +2783,26 @@ $(document).mousedown(function (e) {
   }
 });
 
-$(document).mouseup(function (e) {
+document.addEventListener("mouseup", function (e) {
   mouseUp(e);
-
-
 });
 
-$(document).ready(function () {
-  $(fabBtn).on("touchstart", function (e) {
-    if ($(e.target).parents(".fixed-action-button").length !== 0 &&
-      $(e.target).parents(".fab-btn-list").length === 0) {
+document.addEventListener("DOMContentLoaded", function () {
+  fabBtn.addEventListener("touchstart", function (e) {
+    if (e.target.closest(".fixed-action-button") &&
+      !e.target.closest(".fab-btn-list")) {
       e.preventDefault();
     }
 
-    $("#fabBtnList").show();
+    document.getElementById("fabBtnList").style.display="block";
     mouseDown(e);
     TouchFABDown(e);
   });
 });
 
-$(document).on("touchend", function (e) {
-  if ($(e.target).parents(".fixed-action-button").length !== 0 &&
-    $(e.target).parents(".fab-btn-list").length === 0) {
+document.addEventListener("touchend", function (e) {
+  if (e.target.closest(".fixed-action-button") &&
+    !e.target.closest(".fab-btn-list")) {
     e.preventDefault();
   }
   mouseUp(e);
@@ -2817,13 +2815,13 @@ $(document).on("touchend", function (e) {
 
 function mouseDown(e) {
 
-  var box = $(e.target);
+  var box = e.target;
 
   // Is the clicked element a formBox? or is it inside a formBox?
-  if (box[0].classList.contains("formBox")) {
+  if (box.classList.contains("formBox")) {
     isClickedElementBox = true;
-  } else if ((findAncestor(box[0], "formBox") != null) &&
-    (findAncestor(box[0], "formBox").classList.contains("formBox"))) {
+  } else if ((findAncestor(box, "formBox") != null) &&
+    (findAncestor(box, "formBox").classList.contains("formBox"))) {
     isClickedElementBox = true;
   } else {
     isClickedElementBox = false;
@@ -2838,24 +2836,26 @@ function mouseDown(e) {
 function mouseUp(e) {
   /* If the target of the click isn't the container nor a descendant of the container,
      or if we have clicked inside box and dragged it outside and released it */
-  if ($('.formBox').is(':visible') && !$('.formBox').is(e.target) &&
-    $('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
+  if (document.querySelector('.formBox').visible ? 1 : 0 && !document.querySelector('.formBox').e.target ? 1 : 0 &&
+    document.querySelector('.formBox').has(e.target).length === 0 && (!isClickedElementBox)) {
 
     event.preventDefault();
 
     closeWindows();
     closeSelect();
     showSaveButton();
-  } else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
-    hamburgerChange("notAClick");
-  }
+  } else if(document.querySelector('.hamburgerMenu')!=null){
+    if (!findAncestor(e.target, "hamburgerClickable") && document.querySelector('.hamburgerMenu').visible ? 1 : 0) {
+      hamburgerChange("notAClick");
+    }
+  } 
 }
 
 //----------------------------------------------------------------------------------
 // event handlers: Detect mouse / touch gestures uniformly
 //----------------------------------------------------------------------------------
 
-$(window).keyup(function (event) {
+window.addEventListener("keyup", function (event) {
     var deleteButtonDisplay = window.getComputedStyle(document.getElementById('sectionConfirmBox')).display;
   if (event.keyCode == 27) {
     // If key is escape
@@ -2865,10 +2865,10 @@ $(window).keyup(function (event) {
   } else if (event.keyCode == 13) {
     // Remember that keycode 13 = enter button
     document.activeElement.blur();
-    var saveButtonDisplay = ($('#saveBtn').css('display'));
-    var editSectionDisplay = ($('#editSection').css('display'));
-    var submitButtonDisplay = ($('#submitBtn').css('display'));
-    var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
+    var saveButtonDisplay = (document.getElementById('saveBtn').style.display);
+    var editSectionDisplay = (document.getElementById('editSection').style.display);
+    var submitButtonDisplay = (document.getElementById('submitBtn').style.display);
+    var errorMissingMaterialDisplay = (document.getElementById('noMaterialConfirmBox').style.display);
     if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       //If all information is correct -> item can be updated
       if (window.bool10 == true && window.bool11 == true) {
@@ -2914,94 +2914,124 @@ $(window).keyup(function (event) {
   }
   else if (event.keyCode == 39) {
     if (deleteButtonDisplay == 'flex') {
-      $('#close-item-button').focus();
+      document.getElementById('close-item-button').focus();
     }
   }
 });
 
 // React to scroll events
-$(document).scroll(function (e) {
+document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
-    localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+    localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
   }
 });
 
 // Functions to prevent collapsing when clicking icons
-$(document).on('click', '#corf', function (e) {
-  e.stopPropagation();
+document.addEventListener('click', function (e) {
+  if(e.target.id==='corf'){
+    e.stopPropagation();
+  }
 });
 
-$(document).on('click', '#dorf', function (e) {
-  e.stopPropagation();
+document.addEventListener('click', function (e) {
+  if(e.target.id==='dorf'){
+    e.stopPropagation();
+  }
 });
 
 
 // The event handler returns two elements. The following two if statements gets the element of interest.
-$(document).on('click', '.moment, .section, .statistics', function () {
-
-  if (this.id.length > 0) {
-    saveHiddenElementIDs(this.id);
+document.addEventListener('click', function () {
+  if(this.id!=null){
+    if(this.id==='.moment' || '.section' || '.statistics'){
+      if (this.id.length > 0) {
+        saveHiddenElementIDs(this.id);
+      }
+      if (this.id.length > 0) {
+        saveArrowIds(this.id);
+      }
+      hideCollapsedMenus();
+      toggleArrows(this.id);
+    }
   }
-  if (this.id.length > 0) {
-    saveArrowIds(this.id);
-  }
-  hideCollapsedMenus();
-  toggleArrows(this.id);
-
 });
 
 
 // Setup (when loaded rather than when ready)
-$(window).load(function () {
+window.addEventListener("DOMContentLoaded", function () {
   accessAdminAction();
-  $(".messagebox").hover(function () {
-    $("#testbutton").css("background-color", "red");
+  document.addEventListener("hover", function (e) {
+    const target = e.target.closest(".messagebox");
+    if(target){
+      document.getElementById("testbutton").style.backgroundColor="red";
+    }
   });
-  $(".messagebox").mouseout(function () {
-    $("#testbutton").css("background-color", "#614875");
+  document.addEventListener("mouseout", function (e) {
+    const target = e.target.closest(".messagebox");
+    if(target){
+      document.getElementById("testbutton").style.backgroundColor="#614875";
+    }
   });
-  $("#sectionList_arrowStatisticsOpen").click(function () {
-    $("#sectionList_arrowStatisticsOpen").hide();
-    $("#sectionList_arrowStatisticsClosed").show();
-    $("#statisticsList").show();
-    $("#statistics").hide();
-    $(".statisticsContent").show();
-    $("#courseList").css({
-      'display': 'flex',
-      'flex-direction': 'column'
-    });
-    $(".statisticsContentBottom").show();
+  document.getElementById("sectionList_arrowStatisticsOpen").addEventListener("click", function () {
+    document.getElementById("sectionList_arrowStatisticsOpen").style.display="none";
+    document.getElementById("sectionList_arrowStatisticsClosed").style.display="block";
+    document.getElementById("statisticsList").style.display="block";
+    document.getElementById("statistics").style.display="none";
+    document.querySelector(".statisticsContent").style.display="block";
+    document.getElementById("courseList").style.display="flex";
+    document.getElementById("courseList").style.flexDirection="column";
+    document.querySelector(".statisticsContentBottom").style.display="block";
     if (hasDuggs) {
-      $("#swimlaneSVG").show();
-      $("#statisticsSwimlanes").show();
+      document.getElementById("swimlaneSVG").style.display="block";
+      document.getElementById("statisticsSwimlanes").style.display="block";
     }
   });
-  $("#sectionList_arrowStatisticsClosed").click(function () {
-    $("#sectionList_arrowStatisticsOpen").show();
-    $("#sectionList_arrowStatisticsClosed").hide();
-    $("#statisticsList").hide();
-    $("#swimlaneSVG").hide();
-    $("#statisticsSwimlanes").hide();
+  document.getElementById("sectionList_arrowStatisticsClosed").addEventListener("click", function () {
+    document.getElementById("sectionList_arrowStatisticsOpen").style.display="block";
+    document.getElementById("sectionList_arrowStatisticsClosed").style.display="none";
+    document.getElementById("statisticsList").style.display="none";
+    document.getElementById("swimlaneSVG").style.display="none";
+    document.getElementById("statisticsSwimlanes").style.display="none";
 
   });
-  $("#announcement").click(function () {
-    sessionStorage.removeItem("closeUpdateForm");
-    $("#announcementBoxOverlay").toggle();
-    if ($("#announcementForm").is(":hidden")) {
-      $("#announcementForm").show();
+  document.addEventListener("click", function (e) {
+    const target = e.target.closest("#announcement");
+    if(target){
+      sessionStorage.removeItem("closeUpdateForm");
+      if(document.getElementById("announcementBoxOverlay").style.display==="none" ||
+      window.getComputedStyle(document.getElementById("announcementBoxOverlay")).display === "none"){
+        document.getElementById("announcementBoxOverlay").style.display="block"
+      }
+      else{
+        document.getElementById("announcementBoxOverlay").style.display="none";
+      }
+      if (document.getElementById("announcementForm").style.display==="none") {
+        document.getElementById("announcementForm").style.display="block";
+      }
+      else{
+        document.getElementById("announcementForm").style.display="none";
+      }
     }
 
   });
-  $("#announcementBurger").click(function () {
-    sessionStorage.removeItem("closeUpdateForm");
-    $("#announcementBoxOverlay").toggle();
-    if ($("#announcementForm").is(":hidden")) {
-      $("#announcementForm").show();
+  document.addEventListener("click", function (e) {
+    const target = e.target.closest("#announcementBurger");
+    if(target){
+      sessionStorage.removeItem("closeUpdateForm");
+      if(document.getElementById("announcementBoxOverlay").style.display==="none" ||
+      window.getComputedStyle(document.getElementById("announcementBoxOverlay")).display === "none"){
+        document.getElementById("announcementBoxOverlay").style.display="block";
+      }
+      else{
+        document.getElementById("announcementBoxOverlay").style.display="none";
+      }
     }
-
   });
-  $(".createBtn").click(function () {
-    sessionStorage.setItem('closeUpdateForm', true);
+  document.addEventListener("click", function (e) {
+    const target = e.target.closest(".createBtn");
+    if(target){
+      sessionStorage.setItem('closeUpdateForm', true);
+    }
   });
 
   // retrieveAnnouncementAuthor();
@@ -3020,13 +3050,13 @@ function showAnnouncement() {
 
 // Retrieve the announcment author
 function retrieveAnnouncementAuthor() {
-  var uname = $("#userName").html();
+  var uname = document.getElementById("userName").innerHTML;
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      if ($("#userid").length > 0) {
+      if (document.getElementById("userid").length > 0) {
         var parsed_data = JSON.parse(this.response);
-        if (($("#announcementForm").length) > 0) {
+        if ((document.getElementById("announcementForm").length) > 0) {
           document.getElementById("userid").value = parsed_data.uid;
           retrieveCourseProfile(parsed_data.uid);
         }
@@ -3040,21 +3070,26 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  $(".selectLabels label input").attr("disabled", true);
+  document.querySelector(".selectLabels label input").getAttribute("disabled", true);
   var cid = '';
-  $("#cid").change(function () {
-    cid = $("#cid").val();
-    if (($("#cid").val()) != '') {
-      $("#versid").prop("disabled", false);
+  document.getElementById("cid").onchange(function () {
+    cid = document.getElementById("cid").value;
+    if ((document.getElementById("cid").value) != '') {
+      document,getElementById("versid").getAttribute("disabled", false);
       $.ajax({
         url: "../Shared/retrievevers.php",
         data: { cid: cid },
         type: "POST",
         success: function (data) {
           var item = JSON.parse(data);
-          $("#versid").find('*').not(':first').remove();
+          var e = document.getElementById("versid").querySelectorAll('*');
+          e.forEach((e1, idx) => {
+            if(idx !== 0){
+              e1.classList.remove;
+            }
+          });
           $.each(item.versids, function (index, item) {
-            $("#versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
+            document.getElementById("versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
           });
 
         },
@@ -3064,45 +3099,50 @@ function retrieveCourseProfile(userid) {
       });
 
     } else {
-      $("#versid").prop("disabled", true);
+      document.getElementById("versid").getAttribute("disabled", true);
     }
 
   });
-  if (($("#versid option").length) <= 2) {
-    $("#versid").click(function () {
+  if ((document.getElementById("versid option").length) <= 2) {
+    document.getElementById("#versid").addEventListener("click", function () {
       getStudents(cid, userid);
     });
-  } else if (($("#versid option").length) > 2) {
-    $("#versid").change(function () {
+  } else if ((document.getElementById("versid option").length) > 2) {
+    document.getElementById("#versid").onchange(function () {
       getStudents(cid, userid);
     });
   }
 }
 function getStudents(cid, userid) {
   var versid = '';
-  versid = $("#versid").val();
-  if (($("#versid").val()) != '') {
-    $("#recipient").prop("disabled", false);
+  versid = document.getElementById("#versid").value;
+  if ((document.getElementById("versid").value) != '') {
+    document.getElementById("recipient").getAttribute("disabled", false);
     $.ajax({
       url: "../Shared/retrieveuser_course.php",
       data: { cid: cid, versid: versid, remove_student: userid },
       type: "POST",
       success: function (data) {
         var item = JSON.parse(data);
-        $("#recipient").find('*').not(':first').remove();
-        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
+        var e = document.getElementById("recipient").querySelectorAll('*');
+        e.forEach((e1, idx) => {
+          if(idx !== 0){
+            e1.classList.remove;
+          }
+        });
+        document.getElementById("recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
           "</optgroup>");
         $.each(item.finished_students, function (index, item) {
-          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname}
+          document.getElementById("finishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
-        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
+        document.getElementById("recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
           "</optgroup>");
         $.each(item.non_finished_students, function (index, item) {
-          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
+          document.getElementById("nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
-        $(".selectLabels label input").attr("disabled", false);
+        document.querySelector(".selectLabels label input").getAttribute("disabled", false);
         selectRecipients();
       },
       error: function () {
@@ -3110,63 +3150,63 @@ function getStudents(cid, userid) {
       }
     });
   } else {
-    $("#recipient").prop("disabled", true);
+    document.getElementById("recipient").getAttribute("disabled", true);
   }
 }
 
 // Validate create announcement form
 function validateCreateAnnouncementForm() {
-  $("#announcementForm").submit(function (e) {
-    var announcementTitle = ($("#announcementTitle").val()).trim();
-    var announcementMsg = ($("#announcementMsg").val()).trim();
-    var cid = $("#cid").val();
-    var versid = $("#versid").val();
-    var recipients = $("#recipient").val();
+  document.getElementById("announcementForm").addEventListener("submit", function (e) {
+    var announcementTitle = (document.getElementById("announcementTitle").value).trim();
+    var announcementMsg = (document.getElementById("announcementMsg").value).trim();
+    var cid = document.getElementById("cid").value;
+    var versid = document.getElementById("versid").value;
+    var recipients = document.getElementById("recipient").value;
     if (announcementTitle == null || announcementTitle == '') {
-      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      document.getElementById("announcementTitle").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     } else if (announcementMsg == null || announcementMsg == '') {
-      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      document.getElementById("announcementMsg").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     } else if (cid == null || cid == '') {
-      $("#cid").addClass('errorCreateAnnouncement');
+      document.getElementById("cid").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     } else if (versid == null || versid == '') {
-      $("#versid").addClass('errorCreateAnnouncement');
+      document.getElementById("versid").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     } else if (recipients == null || recipients == '') {
-      $("#recipient").addClass('errorCreateAnnouncement');
+      document.getElementById("recipient").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     }
-    $(".errorCreateAnnouncement").css({
+    document.querySelector(".errorCreateAnnouncement").style.display={
       'border': '1px solid red'
-    });
+    };
   });
 }
 function validateUpdateAnnouncementForm() {
-  $("#announcementForm").submit(function (e) {
-    var announcementTitle = ($("#announcementTitle").val()).trim();
-    var announcementMsg = ($("#announcementMsg").val()).trim();
+  document.getElementById("announcementForm").addEventListener("submit", function (e) {
+    var announcementTitle = (document.getElementById("announcementTitle").value).trim();
+    var announcementMsg = (document.getElementById("announcementMsg").value).trim();
 
     if (announcementTitle == null || announcementTitle == '') {
-      $("#announcementTitle").addClass('errorCreateAnnouncement');
+      document.getElementById("announcementTitle").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     } else if (announcementMsg == null || announcementMsg == '') {
-      $("#announcementMsg").addClass('errorCreateAnnouncement');
+      document.getElementById("announcementMsg").classList.add('errorCreateAnnouncement');
       e.preventDefault();
     }
-    $(".errorCreateAnnouncement").css({
+    document.querySelector(".errorCreateAnnouncement").style.display={
       'border': '1px solid red'
-    });
+    };
   });
 }
 // Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = $(location).attr('href');
+  var currentLocation = location.attributes('href');
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
-  var uname = $("#userName").html();
+  var uname = document.getElementById("userName").innerHTML;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3182,15 +3222,15 @@ function retrieveAnnouncementsCards() {
             parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if (unread_announcements > 0) {
-            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
-            $("#announcementnotificationcount").html(parsed_data.nRows);
+            document.getElementById("announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            document.getElementById("announcementnotificationcount").innerHTML = parsed_data.nRows;
           }
           accessAdminAction();
           var paragraph = "announcementMsgParagraph";
           readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
-          $(".deleteBtn").click(function () {
+          document.querySelector(".deleteBtn").addEventListener("click", function () {
             sessionStorage.setItem('closeUpdateForm', true);
 
           });
