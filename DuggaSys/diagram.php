@@ -1265,6 +1265,24 @@
             </div>
         </div>
     </div>
+
+    <!-- Conformation Popup, use loadConfirmPopup function -->
+    <div id="confirmationPopup" class="loginBoxContainer" style="display:none">  
+        <div class="formBox">
+           <div class="formBoxHeader">
+                <h3 id="confirmPopupHeader">  </h3>
+                <div id="closeWindow" class="cursorPointer">
+                    x
+                </div>
+            </div>
+            <p id="confrimPopupText">  </p>
+            <div class="buttonGroup">
+                <button class="confirmButton" id="confirmYes">Yes</button>
+                <button class="confirmButton"  id="confirmNo">No</button>
+            </div>
+        </div>
+    </div>
+
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';

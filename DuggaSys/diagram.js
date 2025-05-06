@@ -34,6 +34,8 @@ class StateMachine {
         this.currentTime = new Date().getTime();
         /** Keeps track of the type of change being made */
         this.changeType = undefined;
+
+        this.numberOfChanges = 0;
     }
 
     /**
@@ -135,6 +137,7 @@ class StateMachine {
                 console.error(`Missing implementation for soft state change: ${stateChange}!`);
                 break;
         }
+        stateMachine.numberOfChanges++;
         updateLatestChange()
     }
 
@@ -1804,8 +1807,9 @@ function storeDiagramInLocalStorage(key) {
         objToSave.timestamp = new Date().getTime();
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
-
+        stateMachine.numberOfChanges = 0; // Reset the number of changes to 0, so that the user can save again without having to make a change first.
         displayMessage(messageTypes.SUCCESS, "Diagram saved! (File saved to: " + key + ")");
+        
     }
 }
 
@@ -2068,25 +2072,63 @@ function closeModal() {
     overlay.classList.add('hiddenLoad');
 }
 
+
+/**
+ * @description Dynamic Confirmation popup, can be used for any confirmation popup.
+ * @param {string} headerText The text to display in the header of the popup.
+ * @param {string} messageText The text to display in the body of the popup.
+ * @returns {Promise} A promise that resolves when the user clicks either "yes" or "no".
+ * @see loadDiagramFromLocalStorage
+ **/
+function loadConfirmPopup(headerText, messageText) {
+
+    if (stateMachine.numberOfChanges <= 0) { //early exit if no changes
+      return Promise.resolve();    
+    }
+    //Promise to force popup to finish before code continues
+    let promise = new Promise(resolve => {
+      $("#confirmationPopup").css("display", "flex");
+      $("#confirmPopupHeader").text(headerText);
+      $("#confrimPopupText").text(messageText);
+      $("#confirmYes, #confirmNo, #closeWindow").click(function() {
+          $("#confirmationPopup").hide();
+          resolve(this.id === "confirmYes"); //resolvar if butten had id "confirmYes"
+        });
+    })
+    return promise; 
+  }
+  
+
 /**
  * @description Check whether there is a diagram saved in localstorage and load it.
  * @param {string} key The name/key of the diagram to load.
  */
-function loadDiagramFromLocalStorage(key) {
-    if (localStorage.getItem("diagrams")) {
-        let diagramFromLocalStorage = localStorage.getItem("diagrams");
-        diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
-        let obj = JSON.parse(diagramFromLocalStorage);
-        if (obj[key] === undefined) {
-            console.error("Undefined key")
+function loadDiagramFromLocalStorage(key) { 
+    const popupHeader = "You have unsaved changes!";
+    const popupMessage = "Do you want to save them before loading a new diagram?";
+
+    // Check if there are unsaved changes and show confirmation popup
+    // If there are no changes, load the diagram directly
+    loadConfirmPopup(popupHeader, popupMessage).then(userClickedYes => {
+        stateMachine.numberOfChanges = 0;
+        if (userClickedYes) quickSaveDiagram(); //Only true if press Yes
+
+        //this is inside the promise .then so it will wait for the user to click before executing
+        if (localStorage.getItem("diagrams")) {
+            let diagramFromLocalStorage = localStorage.getItem("diagrams");
+            diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
+            let obj = JSON.parse(diagramFromLocalStorage);
+            if (obj[key] === undefined) {
+                console.error("Undefined key")
+            } else {
+                loadDiagramFromString(obj[key]);
+            }
         } else {
-            loadDiagramFromString(obj[key]);
+            // Failed to load content
+            console.error("No content to load")
         }
-    } else {
-        // Failed to load content
-        console.error("No content to load")
-    }
-    disableIfDataEmpty();
+        disableIfDataEmpty();
+     });
 }
 
 // Save current diagram when user leaves the page
@@ -2143,6 +2185,7 @@ function getCurrentFileName() {
 function quickSaveDiagram() {
     if (activeFile == null) {
         showSavePopout();
+        stateMachine.numberOfChanges = 0;
     } else {
         storeDiagramInLocalStorage(activeFile);
     }
@@ -2201,7 +2244,6 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true) {
 
         // Scrub to the latest point in the diagram
         stateMachine.scrubHistory(stateMachine.currentHistoryIndex);
-
         // Display success message for load
         if (shouldDisplayMessage) displayMessage(messageTypes.SUCCESS, "Save-file loaded");
 

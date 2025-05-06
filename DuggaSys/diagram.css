@@ -1072,6 +1072,28 @@
     width: 100%;
 }
 
+/*****************
+   Confirm buttons
+*****************/
+.buttonGroup {
+    text-align: center;
+}
+
+.confirmButton {
+    background-color: #614875;
+    border: 0px;
+    color: #fff;
+    cursor: pointer;
+    width: 65px;
+    height: 30px;
+    margin: 15px 10px, 10px 10px;
+}
+
+.confirmButton:hover {
+    background: #815e9d;
+    color: #FFF;
+}
+
 /****************
    REPLAY BOX 
 *****************/
