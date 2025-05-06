@@ -61,8 +61,13 @@ foreach($rows as $row){
 $response = callMicroservicePOST(
 	"showDuggaService/retrieveShowDuggaService_ms.php",
 	[
+		'moment' => $moment,
+		'courseid' => $courseid,
 		'hash' => $hash,
-		'moment' => $moment
+		'password' => $hashpwd,
+		'coursevers' => $coursevers,
+		'duggaid' => $duggaid,
+		'opt' => $opt
 	],
 	true
 );
