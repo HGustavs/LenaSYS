@@ -38,7 +38,7 @@ function getCourseID($githubURL) {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-            'githubURL'=> $githubURL,'cid' => $cid, '' => $token
+            'githubURL'=> $githubURL,'cid' => $cid, 'token' => ''
         ]));
     
         curl_exec($ch);
