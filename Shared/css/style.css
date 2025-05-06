@@ -7779,7 +7779,6 @@ only screen and (max-device-width: 568px) {
     align-items: center; /* Center the elements horizontally */
     justify-content: center; /* Center them vertically */
     flex-wrap: wrap; /* Allow content to wrap if needed */
-    height: auto; 
   }
   #showElements, #hideElement {
     display: none;
