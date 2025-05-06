@@ -4,6 +4,10 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "processDuggaFile_ms.php";
+include_once "../curlService.php";
+
+pdoConnect();
+session_start();
 
 function retrieveShowDuggaService(
     $moment, 
@@ -36,8 +40,6 @@ function retrieveShowDuggaService(
     $debug
     ){
 
-pdoConnect();
-session_start();
 
 if(checklogin()){
     if(isset($_SESSION['uid'])){
@@ -268,8 +270,7 @@ $array = array(
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 header('Content-Type: application/json');
-    
-return $array;
+echo json_encode($array);
 
 
 }
