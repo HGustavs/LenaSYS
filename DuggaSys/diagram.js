@@ -2073,6 +2073,7 @@ function loadDiagramFromLocalStorage(key) {
         if (obj[key] === undefined) {
             console.error("Undefined key")
         } else {
+            activeFile = key;
             loadDiagramFromString(obj[key]);
         }
     } else {
