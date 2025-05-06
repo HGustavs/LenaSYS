@@ -317,7 +317,7 @@ function returned(data)
 			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
 
 			// set font size
-			document.getElementById(contentid).style.marginTop = (boxmenuheight - 1) + "px";
+			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
@@ -360,8 +360,8 @@ function returned(data)
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
-			boxEl.style.fontSize = retData['box'][boxid - 1][6] + "px";
-
+			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
+			
 			// Make room for the menu by setting padding-top equals to height of menubox
 			const menu = document.getElementById(contentid + "menu");
 			boxmenuheight = menu && menu.offsetHeight != null ? menu.offsetHeight : 0;
