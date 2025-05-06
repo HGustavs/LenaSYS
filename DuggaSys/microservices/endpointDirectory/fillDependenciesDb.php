@@ -55,14 +55,18 @@ foreach ($lines as $line) {
             $dependsOnName = $fileName;
         }
 
+        // normalize the names to always have the correct format
+        $searchNameCurrent = normalizeMsName($currentMicroservice);
+        $searchNameDepends = normalizeMsName($dependsOnName);
+
         // get id for current microservice
         $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
-        $stmt->execute([$currentMicroservice]);
+        $stmt->execute([$searchNameCurrent]);
         $microserviceId = $stmt->fetchColumn();
 
         // get id for the microservice that is depended on
         $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
-        $stmt->execute([$dependsOnName]);
+        $stmt->execute([$searchNameDepends]);
         $dependsOnId = $stmt->fetchColumn();
 
         // insert wether id is found or not
@@ -80,6 +84,15 @@ foreach ($lines as $line) {
 
     }
 
+}
+
+function normalizeMsName($name) {
+    // if name already ends with '_ms.php' return
+    if (str_ends_with($name, '_ms.php')) {
+        return $name;
+    }
+    // otherwise, add '_ms.php'
+    return $name . '_ms.php';
 }
 
 echo "Dependencies inserted.<br>";
