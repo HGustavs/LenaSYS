@@ -84,7 +84,7 @@ function updateCSSForAllElements() {
                     for (let index = 0; index < 3; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if (markedOverOne()) {
+                        if (contextLengthCheck()) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
@@ -98,7 +98,7 @@ function updateCSSForAllElements() {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if (markedOverOne()) {
+                        if (contextLengthCheck()) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
@@ -112,7 +112,7 @@ function updateCSSForAllElements() {
                     for (let index = 0; index < 2; index++) {
                         fillColor = elementDiv.children[index].children[0].children[0];
                         fontColor = elementDiv.children[index].children[0];
-                        if (markedOverOne()) {
+                        if (contextLengthCheck()) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
@@ -127,7 +127,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.children[0].children[index];
                         fontColor = elementDiv.children[0];
 
-                        if (markedOverOne()) {
+                        if (contextLengthCheck()) {
                             fillColor.style.fill = color.LIGHT_PURPLE;
                             fontColor.style.fill = color.WHITE;
                         } else {
@@ -140,7 +140,7 @@ function updateCSSForAllElements() {
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
-                    if (markedOverOne()) {
+                    if (contextLengthCheck()) {
                         fillColor.style.fill = color.LIGHT_PURPLE;
                         fontColor.style.fill = color.WHITE;
                         // If its a weakKey attribute, update underline color
@@ -205,7 +205,7 @@ function updateCSSForAllElements() {
                     fillColor = elementDiv.children[0].children[0];
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
-                    if (markedOverOne()) {
+                    if (contextLengthCheck()) {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
@@ -249,9 +249,9 @@ function updateCSSForAllElements() {
      * @description Checks if multiple elements or lines are selected/highlighted
      * Used to determine whether to apply multi-select highlight visuals
      */
-    function markedOverOne() {
+    function contextLengthCheck() {
         
-        return inContext && context.length > 1 || inContext && context.length > 0 && contextLine.length > 0;
+        return inContext && context.length > 0 || inContext && context.length > 0 && contextLine.length > 0;
     }
 
 
