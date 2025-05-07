@@ -39,29 +39,29 @@ To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 ### Run containers in Docker
 Once you have installed Docker desktop, you can run Docker containers, but first you need to get a LenaSYS repository.
 
-1. Open your terminal which can be bash, powershell or command. You can also use vscode terminal. 
+1. Open your terminal, this can be bash, PowerShell or Command Prompt. You can also use the VS code terminal. 
 
-2. When you have opened the terminal, change directory to where you want the LenaSYS repository. To do that you need to type `cd path/to/folder`. When using Windows I typed: `cd  .\Downloads\`  if you use a different OS then type: `cd <foldername>\`. 
+2. Once you have opened the terminal, change directory to where you want the LenaSYS repository. To do this, type `cd path/to/folder`. When using Windows, type: `cd  .\Downloads\`  if you use a different OS then use: `cd <foldername>\`. 
 <img src="Shared/Documentation/docker_images/terminal.png" width="512">
 
-3. When you have chosen a folder, type this command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for the download to finish. When done you will have the LenaSYS repository.
+3. When you have chosen a folder, type the following command: `git clone https://github.com/HGustavs/LenaSYS.git` and wait for the download to finish. When it's done you will have the LenaSYS repository.
 <img src="Shared/Documentation/docker_images/terminal2.png" width="512">
 
-4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
+4. Now that you have the LenaSYS repository, access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 <img src="Shared/Documentation/docker_images/terminal3.png" width="512">
 
-5. Here you need to build a few images and containers, and to do that run the command for Windows: `docker-compose up --build`
+5. Here you need to build a few images and containers. To do this, run the following command for Windows: `docker-compose up --build`
 or macOS: `docker compose up --build`.
-NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
+NOTE: Docker desktop must be open and running, otherwise this command will result in an error and won't work.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
-6. Docker has finished building images and containers when the terminal stops printing out or/and shows a blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.
+6. Docker has finished building images and containers when the terminal stops printing output or/and displays a blue apache-php name. NOTE: Do not close the terminal while docker is running, otherwise the containers will shut down.
 <img src="Shared/Documentation/docker_images/terminal5.png" width="512">
 
-7. Now go to Docker desktop and you can see a menu which says images and containers. Press the containers from the menu and here you can see there are three containers and each one has green-circle which means they are running. If you can not see three containers, then you need to press `drop-down`-button
+7. Now open Docker desktop where you will see a menu which says images and containers. Click on containers from the menu, here you should see three containers. Each one with a green-circle that indicating they are running. If you do not see three containers, then you need to press `drop-down`-button
 <img src="Shared/Documentation/docker_images/dockerContainers.png" width="512">
 
-8. There are two ports which are apache-php and phpmyadmin server. The apache-php has a port `80:80` which can be clicked, this opens the LenaSYS website. The phpmyadmin also has a port `8080:80` which opens the phpmyadmin website. There you can manipulate sql-data, user permission and more. You need to press the `80:80` link to open the LenaSYS website.
+8. There are two ports which are apache-php and phpmyadmin server. The apache-php uses port `80:80`, You need to press the `80:80` link to open the LenaSYS website. The phpmyadmin uses port `8080:80` which opens the phpmyadmin website where you can manipulate sql-data, user permission and more. 
 <img src="Shared/Documentation/docker_images/apacheLink.png" width="512">
 
 9. In order to download LenaSYS you need to navigate to `LenaSYS/newinstaller/installer.php` this will lead you to the new installer. In case the new installer does not work for you, you can access the old installer at `LenaSYS/install/install.php`.
