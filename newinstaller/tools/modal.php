@@ -34,7 +34,14 @@ class Modal {
         echo '  <div class="modal-content">';
         echo '      <span class="close-btn" id="closeModal">&times;</span>';
         echo '      <div id="modalHeader" class="modal-header">' . $this->header . '</div>';
-        echo '      <div id="modalBody" class="modal-body">' . $this->body . '</div>';
+        echo '      <div id="modalBody" class="modal-body">';
+        echo            $this->body;
+        echo '          <details class="modal-body">';
+        echo '              <summary>Show previous entered</summary>';
+        echo '              <div class="summary-content"></div>';
+        echo '          </details>';
+        echo '      </div>';
+        echo '      <div id="modalBody" class="modal-body entered-fields"></div>';
         echo '      <div id="modalFooter" class="modal-footer">';
 
         foreach ($this->buttons as $button) {
