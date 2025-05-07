@@ -4,11 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let openModalBtn = document.getElementById("openModal");
     let dataError;
     let data;
+    let changeRootUsernameInput = document.getElementById("changeRootUsername");
+    let changeRootPasswordInput = document.getElementById("changeRootPassword");
+    let changeHostnameInput = document.getElementById("changeHostname");
 
     Window.checkTypeOfError = function(newDataError, newData) {
         
 		if (newDataError.data.includes("Connection to database could not be established.")) {
 			modal = document.getElementById("dbConnectionError");
+            
+            // Set input fields values from lenaSYS installer input fields data
+            changeRootUsernameInput.value = newData.root_username;
+            changeRootPasswordInput.value = newData.root_password;
+            changeHostnameInput.value = newData.hostname;
 
 		}else if (newDataError.data.includes("Failed on step set_permissions")) {
 			modal = document.getElementById("permissionError");
@@ -148,10 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     Window.changeDbSettings = function() {
         
-        // Get updated data settings from input fields
-        data.changeRootUsername = document.getElementById("changeRootUsername").value;
-        data.changeRootPassword = document.getElementById("changeRootPassword").value;
-        data.changeHostname = document.getElementById("changeHostname").value;
+        // Set data config values from database connection failed input fields
+        data.changeRootUsername = changeRootUsernameInput.value;
+        data.changeRootPassword = changeRootPasswordInput.value;
+        data.changeHostname = changeHostnameInput.value;
         
         // Set main data config values
         data.root_username = data.changeRootUsername;
