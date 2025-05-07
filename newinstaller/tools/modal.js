@@ -89,10 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dataError.data.includes("Connection to database could not be established.")) {
 			navigateTo('page3');
 
-		}else if (dataError.failed_step.includes("set_permissions")) {
+		}else if (dataError.data.includes("Failed on step set_permissions")) {
 			navigateTo('page1');
 
-		}else if (dataError.failed_step.includes("create_db")) {
+		}else if (dataError.data.includes("Failed on step create_db")) {
 			navigateTo('page3');
 
 		}else if (dataError.data.includes("SQL error") || dataError.data.includes("File error.")) {
