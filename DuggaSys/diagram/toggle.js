@@ -523,17 +523,13 @@ function toggleErrorCheck() {
 }
 
 /**
- * @description hides the error check button when not allowed
+ * @description Function that toggles the visibility of the error check button in the diagram toolbar depending on input.
+ * @param {boolean} show Boolean which defines visibility. "true" enables it, and "false" disables it.
  */
-function hideErrorCheck(show) {
+//Previously named "hideErrorCheck", functionality is the same - but showing the check while "hideErrorCheck(true)" was a bit confusing and misleading.
+function showErrorCheck(show) {
     if (show) {
         document.getElementById("errorCheckField").style.display = "flex";
-        // Enables error check by pressing 'h', only when error check button is visible
-        document.addEventListener("keyup", event => {
-            if (event.key === 'h') {
-                toggleErrorCheck();
-            }
-        });
     } else {
         document.getElementById("errorCheckField").style.display = "none";
     }
