@@ -1172,7 +1172,7 @@ function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.parentElement.style.display = "none";
+    item.style.display = "none";
     item.classList.add("deleted");
 
     console.log('this is item; ' + item);
