@@ -191,7 +191,7 @@ if (isset($_GET['id'])) {
         echo "<h3>Dependencies</h3>";
         if (!empty($dependencies)) {
             echo "<table>";
-            echo $microservice['ms_name'] . " depends on";
+            echo "List of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
             echo "<tr><th>Microservice</th><th>Path</th></tr>";
             foreach ($dependencies as $dependency) {
                 echo '<tr>';
