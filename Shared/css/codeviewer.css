@@ -24,6 +24,16 @@
 
 /* DOCUMENT CONTENT STYLE STOP */
 
+
+/* style for resizeBoxes resizers start */
+.resizer-e, .resizer-s {
+    background: transparent;
+    position: absolute;
+    z-index: 10;
+}
+
+/*style for resizeBoxes resizers end */
+
 .tooltip{
 	color:white;
 }
@@ -233,6 +243,7 @@
     line-height: 15px;
 	/* Width of .no and .impo */
 	width: 32px !important;
+    height: auto !important;
 }
 
 .codeborder .no {

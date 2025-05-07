@@ -79,47 +79,73 @@
 			}
 
 
-				//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
-				if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid']))){
-					
-					echo "<td class='navBurger fa fa-bars' id='navBurgerIcon' style='font-size:24px; width: 29px; vertical-align: middle; margin-top: 15px; margin-left: 15px' onclick='navBurgerChange()'</td>";
-					echo "<td id='navBurgerIcon' style='display: none;'> </td>";
-					echo "<div id='navBurgerBox' style='display: none;'>";
+			//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
+			//Always on courseed.php ($noup is none). Contains only home and darkmode icons.
+			if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid'])) || $noup=='NONE'){
 				
-					echo "<div id='homeBurgerDiv'>";
-					echo "<a id='homeBurger' href='../DuggaSys/courseed.php'>";
-					echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
-					echo "<a/>";
-					echo"</div>";
-					
-					echo "<div id='goBackBurgerDiv'>";
-					if($noup=='COURSE'){
-					echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
-					}
-					else if($noup=='SECTION'){
-					echo "<a id='goBackBurger' href='";
-					echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
-					echo "'>";
-					
-					}
-					echo "<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
-					echo "</a>";
-					echo"</div>";
-					echo "<div id='darkModeBurgerDiv'>";
-					echo "<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
-					echo "<img alt ='Dark' class='navBurgerButt' title='Toggle between dark mode' src='../Shared/icons/ThemeToggle.svg'></>";
-					echo "</a>";
-					echo "</a>";
-					echo"</div>";
-					echo"</div>";					
-				}
+				echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'></td>";
+				echo "<td class='navBurgerIcon' style='display: none;'> </td>";
+				echo "<div id='navBurgerBox' style='display: none;'>";
+			
+				echo "	<div id='motdDiv' class='navButt' onclick='showServerMessage();' >";
+				echo "		<a id='motdBurger'>";
+				echo "			<img alt='motd' class='navBurgerButt' src='../Shared/icons/MOTD.svg'>";
+				echo "		</a>";
+				echo "	</div>";
+
+				echo "	<div id='homeBurgerDiv'>";
+				echo "		<a id='homeBurger' href='../DuggaSys/courseed.php'>";
+				echo "			<img alt ='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>";
+				echo "		</a>";
+				echo "	</div>";
+				
+				echo "	<div id='goBackBurgerDiv'>";
+							// Code to not show the "go-back" button in courseed.php.
+							if($noup=='NONE'){
+								echo "<a id='goBackBurger'style='display: none;'>";
+							}
+							if($noup=='COURSE'){
+								echo "<a id='goBackBurger' href='../DuggaSys/courseed.php'>";
+							}
+							else if($noup=='SECTION'){
+								echo "<a id='goBackBurger' href='";
+								echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
+								echo "'>";
+							}
+				echo "				<img alt ='home' class='navBurgerButt' src='../Shared/icons/Up.svg'>";
+				echo "			</a>";
+				echo"		</div>";
+
+				echo "	<div id='darkModeBurgerDiv'>";
+				echo "		<a id='darkModeBurger' onclick = 'burgerToggleDarkmode()'  >";
+				echo "			<img alt ='Dark' class='navBurgerButt' title='Toggle between dark mode' src='../Shared/icons/ThemeToggle.svg'></>";
+				echo "		</a>";
+				echo "	</a>";
+				echo"	</div>";
+
+
+				echo"</div>";					
+			}
 			
 			// Always show home button which links to course homepage			
 			// Home button original code <a id='homeIcon' class='navButt'><img alt='home button icon' src='../Shared/icons/Home.svg'></a>
-			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'><div class='home-nav' tabindex='0'><img alt='home button icon' src='../Shared/icons/Home.svg'></div></td>";
+			echo "<td class='navButt' id='home' title='Home' onclick='navigateToUrl(\"../DuggaSys/courseed.php\")'>
+					<div class='home-nav' tabindex='0'>
+						<img alt='home button icon' src='../Shared/icons/Home.svg'>
+					</div>
+				</td>";
 			// Always show toggle button. When clicked it changes between dark and light mode.
-			echo "<td class='navButt' id='theme-toggle'><div class='theme-toggle-nav' tabindex='0'><img src='../Shared/icons/ThemeToggle.svg' title='Toggle between dark mode' alt='an icon on a moon, which indicates dark mode and light mood'></div></td>";
-			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'><div class='motd-nav' tabindex='0'><img alt='motd icon' src='../Shared/icons/MOTD.svg'></div></td>";
+			echo "<td class='navButt' id='theme-toggle'>
+					<div class='theme-toggle-nav' tabindex='0'>
+						<img src='../Shared/icons/ThemeToggle.svg' title='Toggle between dark mode' alt='an icon on a moon, which indicates dark mode and light mood'>
+					</div>
+				</td>";
+			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'>
+					<div class='motd-nav' tabindex='0'>
+						<img alt='motd icon' src='../Shared/icons/MOTD.svg'>
+					</div>
+				</td>";
+				
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
@@ -157,19 +183,15 @@
 
 							echo "<td class='editVers' style='display: inline-block;margin-left:8px;'>";
 							echo "    <div class='editVers menuButton' tabindex='0'>";
-              echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
+             				echo "      <img alt='settings icon' id='versionCog' class='navButt' title='Edit the selected version' onclick=showEditVersion(); src='../Shared/icons/CogwheelWhite.svg'>";
 							echo "    </div>";
 							echo "</td>";
 
 					if(checklogin() && (isSuperUser($_SESSION['uid']) )) {
 
-
-
-
-
 							echo "<td class='newVers' style='display: inline-block;'>";
 							echo "    <div class='newVers menuButton' tabindex='0'>";
-              echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
+              				echo "      <img alt='plus sign icon' id='versionPlus' value='New version' class='navButt' title='Create a new version of this course' onclick='showCreateVersion();' src='../Shared/icons/PlusS.svg'>";
 							echo "    </div>";
 							echo "</td>";
 					}
@@ -191,8 +213,8 @@
 
 							echo "<td class='files' style='display: inline-block;'>";
 							echo "    <div class='files menuButton'>";
-              echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
-              echo "        <img alt='files icon' id='editFiles' class='navButt' src='../Shared/icons/files_icon.svg'>";
+             				echo "      <a id='filesBTN' title='Show files' value='Files' href='fileed.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers']."' >";
+              				echo "        <img alt='files icon' id='editFiles' class='navButt' src='../Shared/icons/files_icon.svg'>";
 							echo "      </a>";
 							echo "    </div>";
 							echo "</td>";

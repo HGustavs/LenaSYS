@@ -2575,7 +2575,7 @@ function TouchFABDown(e)
 {
 	// If the fab list is visible, there should be no timeout to toggle the list
 	if (document.querySelector('.fab-btn-list').checkVisibility()==true) {
-		if (document.querySelector('.fab-btn-list').checkVisibility()==true && document.querySelector('#fabBtn').is(e.target)) FABToggle();
+		if (document.querySelector('.fab-btn-list').checkVisibility()==true && document.getElementById('fabBtn') === e.target) FABToggle();
 	} else {
 		if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
@@ -2603,13 +2603,18 @@ function TouchFABUp(e)
 // Toggles action bubbles when pressing the FAB button
 //----------------------------------------------------------------------------------
 function FABToggle() {
-		if (!document.querySelector('.fab-btn-sm').classList.contains('scale-out')) {
-				document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
-				document.querySelector('.fab-btn-list').style.display="none";
+	var e1=document.querySelectorAll('.fab-btn-sm');
+	var eL=document.querySelector('.fab-btn-list');
+
+	e1.forEach(element => {
+		if (!element.classList.contains('scale-out')) {
+				element.classList.toggle('scale-out');
+				eL.style.display="none";
 		} else {
-				document.querySelector('.fab-btn-list').style.display="block";
-				document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+				eL.style.display="block";
+				element.classList.toggle('scale-out');
 		}
+	});
 }
 
 function generateTimeSheetOptions(course, moment, selected) {

@@ -14,6 +14,7 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
  * --------------================################================-------------- */
 
 :root {
+  --purple-icon-filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
   --color-text-primary: #775886;
   --color-text-primary-darker: #620C5B;
   --color-text-secondary: #434343;
@@ -956,12 +957,12 @@ p {
   filter: invert(0); }
 
 .code #NewTabLink{
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
   cursor: pointer;
 } 
 
 #tabElement{
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
   cursor: pointer;
 }
 #Sectionlist .header {
@@ -4114,9 +4115,8 @@ div.submit-button:disabled {
   display: block;
   margin: auto;
   /* Makes the icons purple */
-  filter: invert(32%) sepia(42%) saturate(444%) hue-rotate(230deg) brightness(88%) contrast(96%);
+  filter: var(--purple-icon-filter);
 }
-
 
 #Sectionlist .moment #dorf {
   filter: invert(1);
@@ -6418,37 +6418,53 @@ only screen and (max-device-width: 568px) {
 
 #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
   display:none;
+  margin-bottom: 10px;
 }
+
 #homeBurger,#goBackBurger,#darkModeBurger{
-display: none;
+  display: none;
+  margin-bottom: 10px;
 }
-#navBurgerIcon { 
+
+header td.navBurgerIcon{ 
   display: none;
   
 }
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
 
-  #navBurgerIcon { 
+  header td.navBurgerIcon {
     display: block;
     color:white;
-  }
+    font-size:24px;
+    width: 29px;
+    vertical-align: middle;
+    margin-top: 15px;
+    margin-left: 15px
+  } 
  
   #navBurgerBox{
-    display: block;
     position: absolute;
     top: 50px;
     width: 32px;
     padding: 10px;
-    height: 100px;
+    height: 120px;
     background-color: var(--color-primary-2);
+
+  }
+  
+  #motdNav {
+    display: none; 
+  }
+  #motdBurgerDiv {
+    display: block;
   }
  
   #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
     display: block;
   }
 
- #home, #back, #theme-toggle{
+ #home, #back, #theme-toggle, .motd-nav{
     display: none;
   }
 }
@@ -7716,7 +7732,7 @@ only screen and (max-device-width: 568px) {
 
 .fixed-action-button3 {
   position: absolute;
-  top: auto;
+  top: 15;
   right: 24px;
   z-index: 1;
   touch-action: none;
@@ -7729,6 +7745,51 @@ only screen and (max-device-width: 568px) {
     display:none;
   }
 
+  .fixed-action-button3 {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    z-index: 1;
+    font-size: small;
+  }
+
+  .submit-button {
+    margin: 12px 2px 4px 2px;
+  }
+
+  input.submit-button-newitem {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    background-color: var(--color-accent);
+    border: 0px;
+    width: 30px;
+    height: 20px;
+    color: rgb(97, 73, 116);
+    cursor: pointer;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-left: 7px;
+    margin-left: 10px;
+    padding-right:7px; 
+    margin-right: 10px;
+    font-size: 16px;
+    text-align: center;
+    transition: 1s background-color;
+    -webkit-appearance: none; 
+    float: left;
+  }
+
+  #loadDuggaButton {
+    float: left;
+    width: auto;
+    font-size: small;
+    min-width: 40px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0px;
+    margin: 2px 2px 2px 2px;   
+  }
+
   #showElements {
     margin-right: 10px !important;
   }
@@ -7736,21 +7797,69 @@ only screen and (max-device-width: 568px) {
   #course-label {
     min-width: 135px;
     margin-right: 150px;
-  }
+    display: flex; /* Enable Flexbox for centering */
+    flex-direction: column; /* Stack the spans vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    text-align: center;
+    flex-wrap: wrap; /* Allow wrapping of elements */
+    height: auto;
 }
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 568px) {
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 10px; /* Nudges the FAB 10px up from the bottom */
+}
+
+@media only screen and (max-width: 430px), only screen and (max-device-width: 568px) {
   #course-label {
     font-size: 16px;
-    margin-right: 25px;
-    position: relative;
+    position: fixed;
+    margin-bottom: 40px;
     text-align: center;
-    height: 1.6cm;
-    width: 1.6cm;
+    height: 0.5cm;
+    width: 4cm;
   }
   #showElements, #hideElement {
     display: none;
   }
+
+  .fixed-action-button {
+    position: fixed;
+    bottom: 100px; /* Nudges the FAB 10px up from the bottom */
+  }
+}
+}
+@media screen and (max-width: 350px) {
+
+  input.submit-button-newitem {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  #loadDuggaButton {
+    font-size: xx-small;
+    min-width: 30px;
+    height: 20px;
+  }
+
+  #course-label {
+    font-size: 16px;
+    position: fixed;
+    margin-bottom: 40px;
+    text-align: center;
+    height: 0.5cm;
+    width: 4cm;
+  }
+
+  .submit-button {
+    margin: 12px 2px 4px 2px;
+  }
+}
+
+.submit-button {
+  margin: 12px 2px 4px 2px;
 }
 
 #Courselist div.fixed-action-button a:hover {
