@@ -44,16 +44,38 @@ $coursevers = $_POST['coursevers'] ?? "UNK";
 $duggaid = $_POST['duggaid'] ?? "UNK";
 $opt = $_POST['opt'] ?? "UNK";
 
-$debug = "NONE!";
-$variant = "UNK";
-$answer = "UNK";
-$variantanswer = "UNK";
-$param = "{}";
-$link = "UNK";
-$duggatitle = "UNK";
-$duggainfo = ['deadline' => 'UNK', 'qrelease' => 'UNK'];
+	unset($variant);
+	unset($answer);
+	unset($variantanswer);
+	unset($param);
+	if (isSuperUser($userid)){
+		if($hash!="UNK"){
+			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php?" . http_build_query([
+				'hash' => $hash,
+				'moment' => $moment
+			]);
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($ch);
+			curl_close($ch);
 
-$isTeacher = isSuperUser($_SESSION["uid"] ?? "") ? 1 : 0;
+			$data = json_decode($response, true);
+			$variant = $data['variant'];
+			$answer = $data['answer'];
+			$variantanswer = $data['variantanswer'];
+			$param = $data['param'];
+			$newcourseid = $data['newcourseid'];
+			$newcoursevers = $data['newcoursevers'];
+			$newduggaid = $data['newduggaid'];
+			
+			$sql="SELECT entryname FROM listentries WHERE lid=:moment";
+			$query = $pdo->prepare($sql);
+			$query->bindParam(':moment', $moment);
+			$query->execute();
+			foreach($query->fetchAll() as $row){
+				$duggatitle=$row['entryname'];
+			}
 
 			if(isset($variant)){
 				$_SESSION["submission-$courseid-$newcoursevers-$newduggaid"]=$hash;
