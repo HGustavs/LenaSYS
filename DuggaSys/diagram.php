@@ -815,7 +815,7 @@
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Represents the passage of time.</p>
@@ -823,7 +823,7 @@
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
                                 <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
