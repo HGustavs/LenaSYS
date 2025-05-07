@@ -132,6 +132,134 @@ retrieveSectionedService_ms
 
 
 # Name of file/service
+getCourseGroupsAndMembers_ms
+
+## Description
+Returns a list of group members related to a specific course ID and course version.
+Also creates and email address if a user does not have one.
+Only available to users who are logged in.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier, for logging purposes
+
+- Parameter: $showgrp
+   - Type: String
+   - Description: Retrieves a specific group based on the first two characters of the group name. Used as a filter to fetch the $grplst 
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $grplst
+   - Type: array
+   - Description: Contains $groups, $fistname, $lastname and email, for users whose group name matches the 2 caracters specified in $showgrp.
+
+- Output: $groups
+   - Type: String
+   - Description: Groups that users are part of
+
+- Output: $firstname
+   - Type: String
+   - Description: Firstname
+
+- Output: $lastname
+   - Type: String
+   - Description: Lastname
+
+- Output: $email
+   - Type: String
+   - Description: Email address
+
+- Output: $grpmembershp
+   - Type: String
+   - Description: Contains a list of groups a user is part of
+
+- Output: $debug
+   - Type: String
+   - Description: Displays "Failed to get group members!" if the operation failes
+
+## Examples of Use
+-
+
+### Microservices Used
+- coursesyspw.php
+- retrieveSectionedService_ms.php
+
+# Name of file/service
+getCourseVersion_ms
+
+## Description
+Retreives all course versions from the 'verse' table.
+
+## Input Parameters
+None
+
+## Calling Methods
+- GET
+- POST
+
+## Output Data and Format
+- Output: $versions
+   - Type: array
+   - Description: Array that includes cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd
+
+- Output: $cid
+   - Type: int
+   - Description: Course ID
+
+- Output: $coursecode
+   - Type: String
+   - Description: Course code
+
+- Output: $vers
+   - Type: String
+   - Description: Course version
+
+- Output: $versname
+   - Type: String
+   - Description: Name of the course version
+
+- Output: $coursename
+   - Type: String
+   - Description: Course name
+
+- Output: $coursenamealt
+   - Type: String
+   - Description: Alternative course name
+
+- Output: $startdate
+   - Type: String
+   - Description: Start date of course version
+
+- Output: $enddate
+   - Type: String
+   - Description: End date of course version
+
+- Output: $motd
+   - Type: String
+   - Description: Message of the day for the course version
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
+
+# Name of file/service
 getListEntries_ms.php
 
 ## Description

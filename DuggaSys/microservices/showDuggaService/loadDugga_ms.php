@@ -17,24 +17,15 @@ if(isset($_SESSION['uid'])){
 	$userid = "student";		
 }
 
-$hash = getOP('hash');
-$moment = getOP('moment');
+$array = array(
+    'variant' => $variant,
+    'answer' => $answer,
+    'variantanswer' => $variantanswer,
+    'param' => $param,
+    'newcourseid' => $newcourseid,
+    'newcoursevers' => $newcoursevers,
+    'newduggaid' => $newduggaid
+);
 
-// === Replace the include with a cURL call to the microservice ===
-$baseURL = "http://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-	'hash' => $hash,
-	'moment' => $moment
-]));
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-// === Output the response as JSON ===
-header("Content-Type: application/json");
-echo $response;
+header('Content-Type: application/json');
+echo json_encode($array);
