@@ -550,7 +550,13 @@
     top: -43px;
 }
 
-.diagramIcons[data-single="true"]:hover .toolTipText {
+
+.diagramIcons:hover .toolTipText {
+    visibility: visible;
+    transition-delay: 700ms;
+}
+
+.disabledIcon:hover .toolTipText {
     visibility: visible;
     transition-delay: 700ms;
 }
@@ -1069,6 +1075,9 @@
     background-color: #8d68ab;
 }
 
+    .disabledIcon:hover .toolTipText {
+        visibility: visible;
+    }
 #a4options {
     display: flex;
 }
