@@ -1,4 +1,69 @@
+# logUserEvent_ms.php
+
+## Description
+Creates a new user-event entry and adds it to the database 'log_db'. Helps maintain records of user action, for logging purposes.
+
+## Input Parameters
+- Parameter: $uid
+   - Type: int
+   - Description: Unique user ID of the user who triggered an event
+
+- Parameter: $username
+   - Type: varchar
+   - Description: Username associated with the uid (user ID)
+
+- Parameter: $eventType
+   - Type: int
+   - Description: The type of event triggered by the user
+
+- Parameter: $description
+   - Type: varchar
+   - Description: Text explaining the event
+
+- Parameter: $userAgent
+   - Type: text
+   - Description: Not an input parameter. The device and browser used by the user, retrieved automatically.
+
+- Parameter: $remoteAddress
+   - Type: varchar
+   - Description: Not an input parameter. The IP address of the user's device, retrieved automatically.
+
+## Calling Methods
+-
+
+## Output Data and Format
+None
+
+## Examples of Use
+-
+
 # sharedMicroservices Documentation
+
+# setAsActiveCourse_ms.php
+
+## Description
+Used to set a specific version of a course as the active version, by updating the 'course' table. 
+
+## Input Parameters
+- Parameter: $cid
+   - Type: int
+   - Description: Unique course ID, to specify which course should be set as active.
+
+- Parameter: $versid
+   - Type: varchar
+   - Description: The version ID that should be set as the active course version.
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+None. Only notifies if the update is successful or not.
+
+## Examples of Use
+-
+
+### Microservices Used
+None
 
 # createNewCodeExample_ms.php
 
@@ -40,24 +105,72 @@ It retrieves the user ID and username, inserts a new entry into the table, gener
    - Description: Template number/ID for the code example, defaults to 0
 
 ## Calling Methods
--
+- 
 
 ## Output Data and Format
-- Output: $debug	
+- Output: debug	
    - Type: String
    - Description: Displays either “Error updating entries” or “NONE!”
 
-- Output: $link
+- Output: link
    - Type: String
    - Description: Displays the ID of the newly inserted code example in the database
+
+# getUid_ms.php
+
+## Description
+Retrieves the user's UID (user ID) from the session. If a user is not logged in, guest ID is returned instead.
+Also logs events into serviceLogEntries-table.
+
+## Input Parameters
+
+- Parameter: $opt
+   - Type: ?
+   - Description: Operation type
+
+- Parameter: $courseId
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $courseVersion
+   - Type: varchar
+   - Description: Course version
+
+- Parameter: $exampleName
+   - Type: varchar
+   - Description: Name of the accessed example
+
+- Parameter: $sectionName
+   - Type: varchar
+   - Description: Name of the section within the course
+
+- Parameter: $exampleId
+   - Type: int
+   - Description: Unique ID for the example
+
+- Parameter: $log_uuid
+   - Type: char
+   - Description: Unique identifier for logging the event
+
+- Parameter: $log_timestamp
+   - Type: int
+   - Description: Timestamp for when the log event occured
+
+## Calling Methods
+- POST (from getOP-function in basic.php)
+
+## Output Data and Format
+- Output: userId
+   - Type: int
+   - Description: Returns the user's ID from the session, or guest ID if not logged in
+
 
 ## Examples of Use
 -
 
 ### Microservices Used
-- getUID_ms.php
-- retrieveUsername_ms.php
-
+getUID_ms.php
+retrieveUsername_ms.php
 
 # createNewListEntry_ms.php
 
@@ -65,9 +178,24 @@ It retrieves the user ID and username, inserts a new entry into the table, gener
 Inserts a new entry into the ‘listentries’ table in the database, fetches the username of the user who created the entry of the current user and logs the event. Actions and events logged in the system need to be associated with a user.
 
 ## Input Parameters
+sessions.php
+basic.php
+
+
+# isSuperUser_ms.php
+
+## Description
+Checks if a user is a superuser. Used to control access permission.
+
+## Input Parameters
+
 - Parameter: $pdo
    - Type: PDO
    - Description: Database connection
+
+- Parameter: $userid
+   - Type: int
+   - Description: Username associated with the uid (user ID)
 
 - Parameter: $cid
    - Type: int
@@ -114,91 +242,12 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
    - Description: Grading system. Used for entries with kind 4.
 
 - Parameter: $tabs
-   - Type: tinyiny
+   - Type: tinyint
    - Description: Tabs setting. Used for all entry-types, except for kind 4.
 
 - Parameter: $grptype
    - Type: varchar
    - Description: Group kind/type for the entry. If it is UNK/grptype is not used, username of the user who created the entry is logged instead.
-
-## Calling Methods
--
-
-## Output Data and Format
-- Output: $debug
-   - Type: String
-   - Description: Displays message if entries could not be updated
-
-## Examples of Use
--
-
-### Microservices Used
-- retrieveUsername_ms.php
-
-# getUid_ms.php
-
-## Description
-Retrieves the user's UID (user ID) from the session. If a user is not logged in, guest ID is returned instead.
-Also logs events into serviceLogEntries-table.
-
-## Input Parameters
-
-- Parameter: $opt
-   - Type: ?
-   - Description: Operation type
-
-- Parameter: $courseId
-   - Type: int
-   - Description: Course ID
-
-- Parameter: $courseVersion
-   - Type: varchar
-   - Description: Course version
-
-- Parameter: $exampleName
-   - Type: varchar
-   - Description: Name of the accessed example
-
-- Parameter: $sectionName
-   - Type: varchar
-   - Description: Name of the section within the course
-
-- Parameter: $exampleId
-   - Type: int
-   - Description: Unique ID for the example
-
-- Parameter: $log_uuid
-   - Type: char
-   - Description: Unique identifier for logging the event
-
-- Parameter: $log_timestamp
-   - Type: int
-   - Description: Timestamp for when the log event occured
-
-## Calling Methods
-- POST (from getOP-function in basic.php)
-
-## Output Data and Format
-- Output: $userId
-   - Type: int
-   - Description: Returns the user's ID from the session, or guest ID if not logged in
-
-## Examples of Use
--
-
-### Microservices Used
-None
-
-# isSuperUser_ms.php
-
-## Description
-Checks if a user is a superuser. Used to control access permission.
-
-## Input Parameters
-
-- Parameter: $pdo
-   - Type: PDO
-   - Description: Database connection
 
 - Parameter: $userId
    - Type: int
@@ -208,111 +257,14 @@ Checks if a user is a superuser. Used to control access permission.
 -
 
 ## Output Data and Format
+- Output: $username
+   - Type: varchar
+- Output: $debug
+   - Type: String
+   - Description: 
 - Output: -
    - Type: boolean
    - Description: True if the user is a superuser, false if not
-
-## Examples of Use
--
-
-### Microservices Used
-None
-
-# logUserEvent_ms.php
-
-## Description
-Creates a new user-event entry and adds it to the database 'log_db'. Helps maintain records of user action, for logging purposes.
-
-## Input Parameters
-- Parameter: $uid
-   - Type: int
-   - Description: Unique user ID of the user who triggered an event
-
-- Parameter: $username
-   - Type: varchar
-   - Description: Username associated with the uid (user ID)
-
-- Parameter: $eventType
-   - Type: int
-   - Description: The type of event triggered by the user
-
-- Parameter: $description
-   - Type: varchar
-   - Description: Text explaining the event
-
-- Parameter: $userAgent
-   - Type: text
-   - Description: Not an input parameter. The device and browser used by the user, retrieved automatically.
-
-- Parameter: $remoteAddress
-   - Type: varchar
-   - Description: Not an input parameter. The IP address of the user's device, retrieved automatically.
-
-## Calling Methods
--
-
-## Output Data and Format
--
-
-## Examples of Use
--
-
-### Microservices Used
-None
-
-# retrieveUsername_ms.php
-
-## Description
-Retrieves the username of a specific user ID. Username is only fetched if a user is logged in.
-
-## Input Parameters
-- Parameter: $pdo
-   - Type: PDO
-   - Description: Database connection
-
-- Parameter: $userid
-   - Type: int
-   - Description: Username associated with the uid (user ID)
-
-## Calling Methods
--
-
-## Output Data and Format
-- Output: $username
-   - Type: varchar
-   - Description: 
-
-## Examples of Use
--
-
-### Microservices Used
-- getUid_ms.php
-
-# setAsActiveCourse_ms.php
-
-## Description
-Used to set a specific version of a course as the active version, by updating the 'course' table. 
-
-## Input Parameters
-- Parameter: $cid
-   - Type: int
-   - Description: Unique course ID, to specify which course should be set as active.
-
-- Parameter: $versid
-   - Type: varchar
-   - Description: The version ID that should be set as the active course version.
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-None. Only notifies if the update is successful or not.
-
-## Examples of Use
--
-
-### Microservices Used
-None
 
 # updateSecurityQuestion_ms.php
 
@@ -354,14 +306,25 @@ Changes of security questions are not permitted for superusers or teachers.
    - Description: Describes the result. Either "teacher", "wrongpassword" or empty.
 
 - Output: $debug
-   - Type: String
+   - Type: ?
    - Description: Contains error message if something went wrong.
 
 ## Examples of Use
 -
 
 ### Microservices Used
-- getUid_ms.php
+
+getUid_ms.php
+retrieveUsername_ms.php
+None
+
+# retrieveUsername_ms.php
+
+## Description
+Retrieves the username of a specific user ID. Username is only fetched if a user is logged in.
+
+getUid_ms.php
+
 
 # updateUserPassword_ms.php
 
@@ -399,11 +362,11 @@ Teachers and superusers are not allowed to change passwords.
    - Description: Describes to result status. Either "teacher", "wrong password" or empty
 
 - Output: $debug
-   - Type: String
+   - Type: ?
    - Description: Displays error message is something went wrong
 
 ## Examples of Use
 -
 
 ### Microservices Used
-- getUid_ms.php
+getUid_ms.php

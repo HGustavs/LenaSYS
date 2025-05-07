@@ -96,16 +96,6 @@
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
-    <!-- The chevron/arrows used for toggling the diagram-toolbar-->
-    <div class="icon-wrapper" onclick="toggleToolbar();">
-        <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
-    </div>
-
-    <!-- The FAB-btn for the diagram.php, STARTS HERE!-->
-    <div class="fixed-action-button diagram-fab">
-        <button class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
-    </div>
-
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar">
         <fieldset>
@@ -450,15 +440,6 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Change to ER attribute</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
-                                </span>
-                            </div>
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -474,6 +455,15 @@
                                     <p>Change to IE inheritance.</p>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Change to ER attribute</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
@@ -509,15 +499,6 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Change to ER attribute</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
-                                </span>
-                            </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -533,6 +514,15 @@
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>A relation between two or more entities.</p>
                                     <p>The subclasses acquire all the properties and behaviors from the superclass.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
+                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Change to ER attribute</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
@@ -567,15 +557,6 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
-                            <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
-                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
-                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
-                                    <p>Add a ER attribute to the diagram.</p>
-                                    <p>Each attribute represents different characteristics of an entity.</p>
-                                    <br>
-                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
-                                </span>
-                            </div>
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -595,7 +576,16 @@
                                     <br>
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div> 
+                            </div>
+                            <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
+                                <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
+                                <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
+                                    <p>Add a ER attribute to the diagram.</p>
+                                    <p>Each attribute represents different characteristics of an entity.</p>
+                                    <br>
+                                    <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -815,7 +805,7 @@
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                             <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                 <p>Represents the passage of time.</p>
@@ -823,7 +813,7 @@
                                 <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
                             </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                             <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
                                 <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
@@ -1270,24 +1260,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Conformation Popup, use loadConfirmPopup function -->
-    <div id="confirmationPopup" class="loginBoxContainer" style="display:none">  
-        <div class="formBox">
-           <div class="formBoxHeader">
-                <h3 id="confirmPopupHeader">  </h3>
-                <div id="closeWindow" class="cursorPointer">
-                    x
-                </div>
-            </div>
-            <p id="confrimPopupText">  </p>
-            <div class="buttonGroup">
-                <button class="confirmButton" id="confirmYes">Yes</button>
-                <button class="confirmButton"  id="confirmNo">No</button>
-            </div>
-        </div>
-    </div>
-
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';

@@ -787,11 +787,3 @@ INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"class","C",1);
 INSERT INTO word(wordlistid, word,label,uid) VALUES (3,"id","D",1);
 
 ALTER TABLE listentries ADD COLUMN githubDir VARCHAR(255);
-
-/* Table for filenames in courses and duggor associated with issue #16987 */
-CREATE TABLE duggaFiles(
-	filename				VARCHAR(100) NOT NULL UNIQUE,
-	quiz					INT(11) NOT NULL,
-	cid						INT(10) NOT NULL,
-	PRIMARY KEY (filename)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;

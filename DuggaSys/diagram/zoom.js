@@ -279,7 +279,7 @@ function determineZoomfact(maxX, maxY, minX, minY) {
         x: window.innerWidth,
         y: window.innerHeight
     };
-    // Checks if elements are within the window for the smallest zoomfact
+    // Checks if elements are within the window for the smalest zoomfact
     desiredZoomfact = 0.25;
     if (maxX - minX < ((screenResolution.x * 1.25 * 1.5) - 150) && maxY - minY < ((screenResolution.y * 1.25 * 1.5) - 100)) desiredZoomfact = 0.5;
     if (maxX - minX < ((screenResolution.x * 1.25) - 150) && maxY - minY < ((screenResolution.y * 1.25) - 100)) desiredZoomfact = 0.75;

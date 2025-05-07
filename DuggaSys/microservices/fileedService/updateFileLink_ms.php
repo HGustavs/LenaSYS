@@ -6,15 +6,13 @@
 // Microservice that writes to files and updates their filesize in fileLink
 //---------------------------------------------------------------------------------------------------------------
 
-header('Content-Type: application/json');
-
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
-//include_once "./retrieveFileedService_ms.php";
+
+include_once "./retrieveFileedService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -31,7 +29,6 @@ $userid = getUid();
 // Microservice for retrieveUsername
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
 $url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
-$fid = getOP('fid');
 
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -66,60 +63,28 @@ if (hasAccess($userid, $cid, 'w') || hasAccess($userid, $cid, 'st') || isSuperUs
 
 if (strcmp($opt, "SAVEFILE") !== 0) {
     $debug = "Wrong opt";
-    $retrieveArray = callMicroserviceGET(
-        "sectionedService/retrieveFileedService_ms.php?" .
-        "courseid=" . urlencode($cid) .
-        "&coursevers=" . urlencode($coursevers) .
-        "&fid=" . urlencode($fid) .
-        "&opt=" . urlencode($opt) .
-        "&log_uuid=" . urlencode($log_uuid) .
-        "&kind=" . urlencode($kind)
-    );
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
 }
 
 if (!checklogin()) {
     $debug = "You need to be logged in to update a file";
-    $retrieveArray = callMicroserviceGET(
-        "sectionedService/retrieveFileedService_ms.php?" .
-        "courseid=" . urlencode($cid) .
-        "&coursevers=" . urlencode($coursevers) .
-        "&fid=" . urlencode($fid) .
-        "&opt=" . urlencode($opt) .
-        "&log_uuid=" . urlencode($log_uuid) .
-        "&kind=" . urlencode($kind)
-    );
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
 }
 
 if (!$hasAccess) {
     $debug = "Access denied";
-    $retrieveArray = callMicroserviceGET(
-        "sectionedService/retrieveFileedService_ms.php?" .
-        "courseid=" . urlencode($cid) .
-        "&coursevers=" . urlencode($coursevers) .
-        "&fid=" . urlencode($fid) .
-        "&opt=" . urlencode($opt) .
-        "&log_uuid=" . urlencode($log_uuid) .
-        "&kind=" . urlencode($kind)
-    );
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
 }
 
 if ($kind == 2 && !(isSuperUser($userid))) {
     $debug = "Access denied: Only superusers can update global files";
-    $retrieveArray = callMicroserviceGET(
-        "sectionedService/retrieveFileedService_ms.php?" .
-        "courseid=" . urlencode($cid) .
-        "&coursevers=" . urlencode($coursevers) .
-        "&fid=" . urlencode($fid) .
-        "&opt=" . urlencode($opt) .
-        "&log_uuid=" . urlencode($log_uuid) .
-        "&kind=" . urlencode($kind)
-    );
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
 }
@@ -156,15 +121,7 @@ switch ($kind) {
 // Check if file exists at current working directory
 if (!file_exists($currcwd)) {
     $debug = "No such file exists";
-    $retrieveArray = callMicroserviceGET(
-        "sectionedService/retrieveFileedService_ms.php?" .
-        "courseid=" . urlencode($cid) .
-        "&coursevers=" . urlencode($coursevers) .
-        "&fid=" . urlencode($fid) .
-        "&opt=" . urlencode($opt) .
-        "&log_uuid=" . urlencode($log_uuid) .
-        "&kind=" . urlencode($kind)
-    );
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
 }
@@ -172,15 +129,7 @@ if (!file_exists($currcwd)) {
 // Try writing to file
 if (!file_put_contents($currcwd, html_entity_decode($contents))) {
     $debug = "Something went wrong when updating the file";
-    $retrieveArray = callMicroserviceGET(
-        "sectionedService/retrieveFileedService_ms.php?" .
-        "courseid=" . urlencode($cid) .
-        "&coursevers=" . urlencode($coursevers) .
-        "&fid=" . urlencode($fid) .
-        "&opt=" . urlencode($opt) .
-        "&log_uuid=" . urlencode($log_uuid) .
-        "&kind=" . urlencode($kind)
-    );
+    $retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
     echo json_encode($retrieveArray);
     return;
 }  
@@ -214,13 +163,5 @@ if (!$query->execute()) {
 
 logUserEvent($userid, $username, EventTypes::EditFile, $description);
 
-$retrieveArray = callMicroserviceGET(
-    "sectionedService/retrieveFileedService_ms.php?" .
-    "courseid=" . urlencode($cid) .
-    "&coursevers=" . urlencode($coursevers) .
-    "&fid=" . urlencode($fid) .
-    "&opt=" . urlencode($opt) .
-    "&log_uuid=" . urlencode($log_uuid) .
-    "&kind=" . urlencode($kind)
-);
+$retrieveArray = retrieveFileedService($debug, null, $hasAccess, $pdo, $cid, $coursevers, $userid, $log_uuid, $opt, null, $kind);
 echo json_encode($retrieveArray);

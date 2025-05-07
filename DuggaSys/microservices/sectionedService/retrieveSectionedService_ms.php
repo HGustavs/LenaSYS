@@ -4,6 +4,9 @@
 // Include basic application services
 include_once "../../../Shared/basic.php";
 
+// Include services for information retrieval
+include_once "readCourseVersions_ms.php";
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
@@ -193,7 +196,7 @@ function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $cours
     $links = array();
 
     // Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
-    $versions = callMicroserviceGET("sectionedService/readCourseVersions_ms.php");
+    $versions = readCourseVersions($pdo);
 
     $codeexamples = array();
 
@@ -338,3 +341,5 @@ function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $cours
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveSectionedService_ms.php", $userid, $info);
     return $array;
 }
+
+?>

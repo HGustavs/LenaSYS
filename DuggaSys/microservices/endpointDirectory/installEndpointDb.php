@@ -37,13 +37,11 @@ $db->exec("CREATE TABLE IF NOT EXISTS outputs (
 // this table will document inverse dependecies that microservies has
 $db->exec("CREATE TABLE IF NOT EXISTS dependencies (
     dependency_id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    microservice_id INTEGER,
-    depends_on_id INTEGER,
+    -- microservice_id INTEGER NOT NULL,
     ms_name TEXT NOT NULL,
     depends_on TEXT NOT NULL,
-    path TEXT NOT NULL,
-    FOREIGN KEY (microservice_id) REFERENCES microservices(id),
-    FOREIGN KEY (depends_on_id) REFERENCES microservices(id)
+    path TEXT NOT NULL
+    -- FOREIGN KEY (microservice_id) REFERENCES microservices(id)
 );");
 
 echo "Database has been created<br>";

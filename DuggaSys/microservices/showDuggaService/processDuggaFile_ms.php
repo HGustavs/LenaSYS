@@ -2,10 +2,8 @@
 //---------------------------------------------------------------------------------------------------------------
 // processDuggafile_ms.php - Retreive all submissions Uses service selectFromTableSubmission to get information it requires from submission.
 //---------------------------------------------------------------------------------------------------------------
-function processDuggaFiles($courseid,$coursevers,$duggaid,$duggainfo, $moment)
+function processDuggaFiles(PDO $pdo, $courseid,$coursevers,$duggaid,$duggainfo, $moment)
 {
-	pdoConnect();
-	global $pdo;
 	$files= array();
 
 	if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 

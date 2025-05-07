@@ -56,12 +56,6 @@ function generateContextProperties() {
         str += saveButton('toggleEntityLocked();', 'lockbtn', locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
-    var inputs = propSet.querySelectorAll('input, textarea');
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('input', function() {
-            saveProperties();
-        });
-    }
     multipleColorsTest();
 }
 
@@ -1516,22 +1510,19 @@ function generateErTableString() {
                 if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
                     for (let k = 0; k < allEntityList[i][lastList].length; k++) {
-                        // Makes sure only entities with attributes are affected.
-                        if(allEntityList[i][lastList][k].length > 0){
-                            currentString += `<span style='text-decoration: overline black solid 2px;'>`;
-                            // Iterate through all the lists with foreign keys
-                            for (let l = 0; l < allEntityList[i][lastList][k].length; l++) {
-                                // If element is array, aka strong key for weak entity
-                                if (Array.isArray(allEntityList[i][lastList][k][l])) {
-                                    for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
-                                        currentString += `${allEntityList[i][lastList][k][l][m].name}`;
-                                    }
-                                } else {
-                                    currentString += `${allEntityList[i][lastList][k][l].name}`;
+                        currentString += `<span style='text-decoration: overline black solid 2px;'>`;
+                        // Iterate through all the lists with foreign keys
+                        for (let l = 0; l < allEntityList[i][lastList][k].length; l++) {
+                            // If element is array, aka strong key for weak entity
+                            if (Array.isArray(allEntityList[i][lastList][k][l])) {
+                                for (let m = 0; m < allEntityList[i][lastList][k][l].length; m++) {
+                                    currentString += `${allEntityList[i][lastList][k][l][m].name}`;
                                 }
+                            } else {
+                                currentString += `${allEntityList[i][lastList][k][l].name}`;
                             }
-                            currentString += `</span>, `;
                         }
+                        currentString += `</span>, `;
                     }
                 }
             } else {
@@ -1587,7 +1578,7 @@ function generateErTableString() {
                     }
                 }
                 lastList = allEntityList[i].length - 1;
-                if (Array.isArray(allEntityList[i][lastList]) && lastList != 1) {
+                if (Array.isArray(allEntityList[i][lastList])) {
                     // Push in foregin attributes, for every list push in entity followed by its value
                     for (let k = 0; k < allEntityList[i][lastList].length; k++) {
                         currentString += `<span style='text-decoration: overline black solid 2px;'>`;

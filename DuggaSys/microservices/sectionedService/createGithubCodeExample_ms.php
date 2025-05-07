@@ -129,24 +129,29 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $sectionname = $exampleName;
 
     //create codeexample
-    
+    //$link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
+
     //set url for createNewCodeExample.php path
     header("Content-Type: application/json");
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
-
-    $dataToSend = [
+    $ch = curl_init($url);
+    //options for curl
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
         'exampleid'=> $exampleid,
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
         'sectname'=> $sectionname,
         'link'=> $link,
-        'log_uuid'=> $log_uuid,
-        'templatenumber'=> $templateNumber 
-    ];
-
-    $response = callMicroservicePOST ($url,  $dataToSend, true);
+        'log_uuid'=> $log_uuid, 
+        'templatenumber'=> $templateNumber
+    ]));
+       
+    $response = curl_exec($ch);
     $link = json_decode($response, true);
+
 
     //select the latest codeexample created to link boxes to this codeexample
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");

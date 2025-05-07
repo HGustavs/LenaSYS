@@ -226,9 +226,6 @@ function snapElementToLifeline(element, targetId) {
 // For mmoving sequenceActivation element to get a visually indicated snap to lifeline
 // threshold value is changeable within the parameter
 function visualSnapToLifeline(pos, threshold = 50) {
-   
-    // Restrict snapping to only sequence activations
-    if (pos.kind !== elementTypesNames.sequenceActivation) return null;
 
     // Check that there exists a sequenceActor or sequenceObject to snap to
     for (const ll of data) {

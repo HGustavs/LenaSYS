@@ -123,6 +123,21 @@ class Rect {
     }
 
     /**
+     * @description Checks if the innermost 50% of provided rect is within this rect. Used as a less strict check during box selection.
+     * @param {Rect} other
+     * @returns {boolean}
+     */
+    partialOverlap(other) {
+        const lower = 0.25;
+        const upper = 0.75;
+        let x1 = this.left < other.left + other.width * lower;
+        let x2 = this.right > other.left + other.width * upper;
+        let y1 = this.top < other.top + other.height * lower;
+        let y2 = this.bottom > other.top + other.height * upper;
+        return x1 && x2 && y1 && y2;
+    }
+
+    /**
      * @description Checks if the provided rect overlaps with this rect at any point.
      * @param {Rect} other
      * @returns {boolean}

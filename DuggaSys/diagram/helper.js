@@ -97,7 +97,7 @@ function getExtension(filename) {
  * @param {number} y
  * @returns {boolean}
  */
-function entityIsOverlapping(id, x, y, ignoreIds = []) {
+function entityIsOverlapping(id, x, y) {
     let isOverlapping = false;
     const foundIndex = findIndex(data, id);
 
@@ -109,56 +109,57 @@ function entityIsOverlapping(id, x, y, ignoreIds = []) {
 
     arr.forEach(entityHeights => {
         entityHeights.forEach(entity => {
-            if (element.id == entity.id) eHeight = entity.height;
+            if (element.id == entity.id) eHeight = entity.height
         });
     });
 
     for (let i = 0; i < data.length; i++) {
-        const other = data[i];
-        if (other.id === id || ignoreIds.includes(other.id)) continue;
+        
+        if (data[i].id === id) continue;
 
         // No element can be placed over another of the same kind
-        if (other.kind !== element.kind) {
-        if ((other.kind === "sequenceActor" || other.kind === "sequenceObject") &&
+        if (data[i].kind !== element.kind) {
+        if ((data[i].kind === "sequenceActor" || data[i].kind === "sequenceObject") &&
         element.kind === "sequenceActivation") {
-        const headerHeight = getTopHeight(other);          
-        const extra        = other.kind === "sequenceActor"; 
-        const headerBottom = other.y + headerHeight + extra;
+        const headerHeight = getTopHeight(data[i]);          
+        const extra        = data[i].kind === "sequenceActor" ; 
+        const headerBottom = data[i].y + headerHeight + extra;
 
         if (y < headerBottom) return true;   
         continue;                            
     }
 
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
-            else if (other.type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
-            else if (element.type === "SE" && (other.kind === "sequenceLoopOrAlt" || other.kind === "sequenceActivation")) continue;
+            else if (data[i].type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
+            else if (element.type === "SE" && (data[i].kind === "sequenceLoopOrAlt" || data[i].kind === "sequenceActivation")) continue;
 
             // Superstates can be placed on state-diagram elements and vice versa
             else if (!backgroundElement.includes(element.kind) &&
-                (other.kind === elementTypesNames.UMLSuperState ||
-                    other.kind === elementTypesNames.sequenceLoopOrAlt)
+                (data[i].kind === elementTypesNames.UMLSuperState ||
+                    data[i].kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
-            else if (!backgroundElement.includes(other.kind) &&
+            else if (!backgroundElement.includes(data[i].kind) &&
                 (element.kind === elementTypesNames.UMLSuperState ||
                     element.kind === elementTypesNames.sequenceLoopOrAlt)
             ) continue;
         }
 
-        const x2 = other.x + other.width;
-        let y2 = other.y + other.y2 - other.y1;
+        const x2 = data[i].x + data[i].width;
+        let y2 = data[i].y + data[i].y2 - data[i].y1;
 
         arr.forEach(entityHeights => {
             entityHeights.forEach(entity => {
-                if (other.id == entity.id) y2 = other.y + entity.height;
+                if (data[i].id == entity.id) y2 = data[i].y + entity.height;
             });
         });
 
         if (element.kind === "ERRelation" || element.kind === "UMLRelation") {
             // Use default rectangle collision detection
             if (x < x2 &&
-                x + element.width > other.x &&
+                x + element.width > data[i].x &&
                 y < y2 &&
-                y + eHeight > other.y) {
+                y + eHeight > data[i].y
+            ) {
                 isOverlapping = true;
                 break;
             }
@@ -168,16 +169,17 @@ function entityIsOverlapping(id, x, y, ignoreIds = []) {
         // Default collision detection where overlapping is derived from height and width of element in a rectangle shape
         // Some elements doesnt have a height so the second parameter gets the height manually
         if ((x < x2 &&
-            x + element.width > other.x &&
+            x + element.width > data[i].x &&
             y < y2 &&
-            y + eHeight > other.y
+            y + eHeight > data[i].y
         )||(
             x < x2 &&
-            x + element.width > other.x &&
+            x + element.width > data[i].x &&
             y < y2 &&
-            y + element.y2 - element.y1 > other.y
-        )) {
-            isOverlapping = true;
+            y + element.y2 - element.y1 > data[i].y
+        ))
+        {
+            isOverlapping = true;   
         }
 
     }

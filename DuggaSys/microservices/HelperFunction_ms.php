@@ -36,12 +36,12 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
 }
 //Supposed to be used instead of includes
 
-function callMicroserviceGET(string $path){
+function callMicroserviceGET($microservicePath){
     $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
   
     $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
     $response = curl_exec($ch);
     curl_close($ch);
 
@@ -59,7 +59,7 @@ function callMicroserviceGET(string $path){
 //
 //  Replaces the include. Change the path to the correct microservice, and find a suitable or the correct variable to use
 //  This is supposed to be in the file that USES the include:
-//                      include_once "../microservices/curlService.php";
+//                      include_once "../microservices/HelperFunction_ms.php";
 //                      $uid = callMicroserviceGET("../sharedMicroservices/getUid_ms.php");
 //
 //  In the file that is used as an include, in this example the "getUid_ms.php" file, put this instead of the return:

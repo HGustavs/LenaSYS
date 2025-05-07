@@ -103,7 +103,7 @@ const elementTypesNames = {
     sequenceObject: "sequenceObject",
     sequenceActivation: "sequenceActivation",
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
-    note: "note",
+    note: "Note",
     UMLRelation: "UMLRelation",
 };
 

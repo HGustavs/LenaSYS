@@ -285,7 +285,7 @@ input[type=checkbox], input[type=radio] {
     background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-    width: 9.3rem;
+    width: 6.25rem;
     height: 2.85rem;
     padding: .75rem;
     font-size: var(--text-large);
@@ -296,7 +296,7 @@ input[type=checkbox], input[type=radio] {
     background-color: var(--primary-color);
     color: var(--text-light);
     border: 1px solid var(--primary-color);
-    width: 9.3rem;
+    width: 6.25rem;
     height: 2.85rem;
     padding: .75rem;
     margin-left: auto; /* Correctly positions the single button used at page 1 & 6, without impacting position for rest of pages. Keep this */

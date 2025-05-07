@@ -1,7 +1,6 @@
 Example of template for the documentation:
 
 # Name of file/service
-example_ms (replace this line with the name of the microservice)
 
 ## Description
 *Description of what the service do and its function in the system.*

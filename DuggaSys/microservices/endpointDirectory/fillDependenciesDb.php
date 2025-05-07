@@ -55,18 +55,13 @@ foreach ($lines as $line) {
             $dependsOnName = $fileName;
         }
 
-        // search for an id match in the microservice table
-        $microserviceId = findMicroserviceId($db, $currentMicroservice);
-        $dependsOnId = findMicroserviceId($db, $dependsOnName);
-
-        // insert into database
+        // insert into database 
+        // TODO: Fix so it insert with ID instead
         $stmt = $db->prepare("
-            INSERT INTO dependencies (microservice_id, depends_on_id, ms_name, depends_on, path)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO dependencies (ms_name, depends_on, path)
+            VALUES (?, ?, ?)
         ");
         $stmt->execute([
-            $microserviceId,
-            $dependsOnId,
             $currentMicroservice,
             $dependsOnName,
             $dependsOnPath
@@ -74,29 +69,6 @@ foreach ($lines as $line) {
 
     }
 
-}
-
-// nullable type function (returns either int or null)
-function findMicroserviceId(PDO $db, string $name): ?int {
-    // remove possible blankspaces
-    $name = trim($name);
-    // list the different variants of the names
-    $variants = [
-        $name,
-        $name . '_ms',
-        $name . '_ms.php',
-        $name . '.php'
-    ];
-    // loop through the variants to try to find them
-    foreach ($variants as $variant) {
-        $stmt = $db->prepare("SELECT id FROM microservices WHERE ms_name = ?");
-        $stmt->execute([$variant]);
-        if ($id = $stmt->fetchColumn()) {
-            return (int) $id;
-        }
-    }
-    // return null if no match was found
-    return null;
 }
 
 echo "Dependencies inserted.<br>";

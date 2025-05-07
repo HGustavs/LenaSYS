@@ -1,32 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let modal;
+    let modal = document.getElementById("genericModal");
     let closeModalBtn = document.getElementById("closeModal");
     let openModalBtn = document.getElementById("openModal");
-    let dataError;
-    let data;
-
-    Window.checkTypeOfError = function(newDataError, newData) {
-        
-		if (newDataError.data.includes("Connection to database could not be established.")) {
-			modal = document.getElementById("dbConnectionError");
-
-		}else if (newDataError.data.includes("Failed on step set_permissions")) {
-			modal = document.getElementById("permissionError");
-
-		}else if (newDataError.data.includes("Failed on step create_db")) {
-			modal = document.getElementById("dbCreationError");
-
-		}else if (newDataError.data.includes("SQL error") || newDataError.data.includes("File error.")) {
-			modal = document.getElementById("SqlError");
-		}else {
-            modal = document.getElementById("operationError");
-            document.getElementById("failedStep").innerHTML = newDataError.data;
-        }
-
-        dataError = newDataError;
-        data = newData;
-        showModalButton();
-    }
 
     function openModal() {
         modal.style.display = "block";
@@ -34,14 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeModal() {
         modal.style.display = "none";
-    }
-
-    function showModalButton() {
-        openModalBtn.style.display = "block";
-    }
-
-    function hideModalButton() {
-        openModalBtn.style.display = "none";
     }
 
     if (closeModalBtn != null) {
@@ -85,76 +52,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Example functions for modal actions
     Window.retryInstaller = function() {
-
-        if (dataError.data.includes("Connection to database could not be established.")) {
-			navigateTo('page3');
-
-		}else if (dataError.failed_step.includes("set_permissions")) {
-			navigateTo('page1');
-
-		}else if (dataError.failed_step.includes("create_db")) {
-			navigateTo('page3');
-
-		}else if (dataError.data.includes("SQL error") || dataError.data.includes("File error.")) {
-			navigateTo('page1');
-		}else{
-            navigateTo('page1');
-        }
-        
+        console.log("Retrying the installer...");
+        // Logic for retying the installer will be implemented here.
         closeModal();
-        hideModalButton();
-        setProgressBarWidth(0);
     }
 
     Window.changeDbSettings = function() {
-        
-        // Get updated data settings from input fields
-        data.changeRootUsername = document.getElementById("changeRootUsername").value;
-        data.changeRootPassword = document.getElementById("changeRootPassword").value;
-        data.changeHostname = document.getElementById("changeHostname").value;
-        
-        // Set main data config values
-        data.root_username = data.changeRootUsername;
-        data.root_password = data.changeRootPassword;
-        data.hostname = data.changeHostname;
-
-        // Update form fields to prevent using old values on retry
-        document.getElementById("root_username").value = data.changeRootUsername;
-        document.getElementById("root_password").value = data.changeRootPassword;
-        document.getElementById("hostname").value = data.changeHostname;
-
-        start_installer(data); 
+        console.log("Changing DB settings...");
+        // Logic for changing DB settings will be implemented here.
         closeModal();
-        hideModalButton();
     }
 
     Window.forceCreateDb = function() {
-
-        data.overwrite_db = "true";
-        data.overwrite_user = "true";
-
-        start_installer(data);
+        console.log("Forcing database creation...");
+        // Logic to force create database will be implemented here.
         closeModal();
-        hideModalButton();
     }
 
     Window.restartInstaller = function() {
-        
-        let inputFields = document.getElementsByClassName("input-field");
-
-        // Clear each input field
-        for (let i = 0; i < inputFields.length; i++) {
-            let inputs = inputFields[i].getElementsByTagName("input");
-
-            for (let j = 0; j < inputs.length; j++) {
-                inputs[j].value = ""; 
-            }
-        }
-
-        navigateTo('page1');
+        console.log("Restarting installer...");
+        // Logic to restart the installer will be implemented here.
         closeModal();
-        hideModalButton();
-        setProgressBarWidth(0);
     }
 
     // Expose the closeModal function globally
