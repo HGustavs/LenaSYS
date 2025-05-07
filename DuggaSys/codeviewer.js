@@ -112,7 +112,7 @@ function returned(data)
 	if ((retData['templateid'] == 0)) {
 		if (retData['writeaccess'] == "w") {
 			toast("warning","A template has not been chosen for this example. Please choose one.",10);
-			$("#chooseTemplateContainer").css("display", "flex");
+			document.getElementById("chooseTemplateContainer").style.display = "flex";
 			return;
 		} else {
 			toast("error","The administrator of this code example has not yet chosen a template.", 10);
@@ -208,13 +208,11 @@ function returned(data)
 		window.location.href = 'sectioned.php?courseid='+courseid+'&coursevers='+cvers;
 	}
 
-	// Show fileedButton and set navigation to fileed.php on click. 
-	const fileedbutton = document.getElementById('fileedButton');
-	if(fileedbutton) {
-		fileedbutton.onclick = function (){
-			navigateTo('/fileed.php', '?courseid=' + courseid + '&coursevers=' + cvers);
-		};
-		fileedbutton.style.display = "table-cell";
+
+	if (document.getElementById('fileedButton')) {
+		document.getElementById('fileedButton').onclick = new Function("navigateTo('/fileed.php','?courseid=" + courseid + "&coursevers=" + cvers + "');");
+		document.getElementById('fileedButton').style = "display:table-cell;";
+
 	}
 
 	if (retData['debug'] != "NONE!") alert(retData['debug']);
@@ -261,8 +259,9 @@ function returned(data)
 	mobExName.innerHTML = data['examplename'];
 	mobExSection.innerHTML = data['sectionname'] + "&nbsp;:&nbsp;";
 
-	//clear div2
+	// Clear div2
 	document.getElementById("div2").innerHTML = "";
+
 
 	// Possible crash warning if returned number of boxes is wrong
 	if (retData['numbox'] == 0 || retData['numbox'] == null) {
@@ -286,9 +285,10 @@ function returned(data)
 		var boxfilekind = retData['box'][i][8];
 		var boxmenuheight = 0;
 
-		
+
 		// don't create templatebox if it already exists
-		if(!document.getElementById(contentid)){
+		if (!document.getElementById(contentid)) {
+
 			addTemplatebox(contentid);
 		}
 
@@ -303,12 +303,15 @@ function returned(data)
 			// Make room for the menu by setting padding-top equal to height of menubox
 			// Without this fix the code box is placed at same height as the menu, obstructing first lines of the code
 			// Setting boxmenuheight to 0, possible cause to example malfunction?
-			if ($("#" + contentid + "menu").height() == null) {
-				boxmenuheight = 0;
-			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
-			}
-			$("#" + contentid).css("margin-top", boxmenuheight - 1);
+			const menu = document.getElementById(contentid + "menu");
+			let boxmenuheight = 0;
+
+			if (menu && menu.offsetHeight != null) {
+				boxmenuheight = menu.offsetHeight;
+			} 
+		
+			document.getElementById(contentid).style.marginTop = (boxmenuheight - 1) + "px";
+
 			// Indentation fix of content
 			boxcontent = tabLine(boxcontent);
 
@@ -316,7 +319,7 @@ function returned(data)
 			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
 
 			// set font size
-			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
+			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
 		} else if (boxtype === "DOCUMENT") {
 			// Print out description in a document box
@@ -352,21 +355,21 @@ function returned(data)
 			desc = desc.replace(/\&\#42\;/g, "*");
 
 			/* Assign Content */
-			$("#" + contentid).html(desc);
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			const boxEl = document.getElementById(contentid);
+			boxEl.innerHTML = desc;
+			boxEl.style.marginTop = boxmenuheight + "px";
+
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 
 			// set font size
-			$("#box" + boxid).css("font-size", retData['box'][boxid - 1][6] + "px");
-
+			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
+			
 			// Make room for the menu by setting padding-top equals to height of menubox
-			if ($("#" + contentid + "menu").height() == null) {
-				boxmenuheight = 0;
-			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
-			}
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			const menu = document.getElementById(contentid + "menu");
+			boxmenuheight = menu && menu.offsetHeight != null ? menu.offsetHeight : 0;
 
+			boxEl.style.marginTop = boxmenuheight + "px";
+			
 		} else if (boxtype === "IFRAME") {
 			createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
 			
@@ -394,33 +397,37 @@ function returned(data)
 				previewLink = previewLink.replace("https://", "http://");
 			}
 
-			$("#box" + boxid).html("<iframe src='" + previewLink + "'></iframe>");
-			if ($("#" + contentid + "menu").height() == null) {
-				boxmenuheight = 0;
-			} else {
-				boxmenuheight = $("#" + contentid + "menu").height();
-			}
-			$("#" + contentid).css("margin-top", boxmenuheight);
+			document.getElementById("box" + boxid).innerHTML = "<iframe src='" + previewLink + "'></iframe>";
 
-		} else if (boxtype == "NOT DEFINED") {
-			if (retData['writeaccess'] == "w") {
-				createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
-				// Make room for the menu by setting padding-top equals to height of menubox
-				if ($("#" + contentid + "menu").height() == null) {
-					boxmenuheight = 0;
-				} else {
-					boxmenuheight = $("#" + contentid + "menu").height();
+			const menuEl = document.getElementById(contentid + "menu");
+			boxmenuheight = menuEl && menuEl.offsetHeight != null ? menuEl.offsetHeight : 0;
+
+			document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
+
+			// NOT DEFINED
+			if (boxtype === "NOT DEFINED") {
+				if (retData['writeaccess'] === "w") {
+					createboxmenu(contentid, boxid, boxtype, boxfilepath, boxfilename, boxfilekind);
+
+					const menuEl = document.getElementById(contentid + "menu");
+					boxmenuheight = menuEl && menuEl.offsetHeight != null ? menuEl.offsetHeight : 0;
+
+					document.getElementById(contentid).style.marginTop = boxmenuheight + "px";
 				}
-				$("#" + contentid).css("margin-top", boxmenuheight);
 			}
 		}
 	}
 	// Add all drop zones
-	if (retData['writeaccess'] == "w") {
+	if (retData['writeaccess'] === "w") {
 		initFileDropZones();
 	} else {
-		$('.codebox').each(function() {
-			$(this).find('*').addClass('unselectable');
+		// Find all element with class .codebox
+		const codeboxes = document.querySelectorAll('.codebox');
+		codeboxes.forEach(codebox => {
+			// Find all child to each codebox and put it in class "unselectable"
+			codebox.querySelectorAll('*').forEach(child => {
+				child.classList.add('unselectable');
+			});
 		});
 	}
 
@@ -434,7 +441,7 @@ function returned(data)
 	hideMaximizeAndResetButton();
 
 	// Allows resizing of boxes on the page
-	resizeBoxes("#div2", retData["templateid"]);
+	resizeBoxes("div2", retData["templateid"]);
 	var titles = [...document.querySelectorAll('[contenteditable="true"]')];
 
 	titles.forEach(title => {
@@ -645,25 +652,35 @@ function editImpWords(editType)
 	if (left != right) {
 		uneven = true;
 	}
-	// word can't contain any whitespaces
-	if (editType == "+" && word != "" && /\s/.test(word) == false && uneven == false) {
-		var exists = false;
+	if (editType === "+" && word !== "" && !/\s/.test(word) && !uneven) {
+		let exists = false;
+
 		// Checks if the word already exists as an option in the selectbox
-		$('#impwords option').each(function () {
-			if (this.value == word) {
+		const options = document.querySelectorAll("#impwords option");
+		options.forEach(option => {
+			if (option.value === word) {
 				exists = true;
 			}
 		});
-		if (exists == false) {
-			$("#impwords")[0].innerHTML += '<option>' + word + '</option>';
+
+		if (!exists) {
+			const impwords = document.getElementById("impwords");
+			const newOption = document.createElement("option");
+			newOption.textContent = word;
+			newOption.value = word;
+			impwords.appendChild(newOption);
 			document.getElementById("impword").value = word;
 			addedWords.push(word);
 		}
-	} else if (editType == "-") {
-		word = $('option:selected', "#impwords").text();
-		$('option:selected', "#impwords").remove();
-		removedWords.push(word);
+	} else if (editType === "-") {
+		const impwords = document.getElementById("impwords");
+		const selectedOption = impwords.options[impwords.selectedIndex];
+		if (selectedOption) {
+			removedWords.push(selectedOption.text);
+			impwords.removeChild(selectedOption);
+		}
 	}
+
 }
 
 //----------------------------------------------------------------------------------
@@ -672,8 +689,15 @@ function editImpWords(editType)
 //----------------------------------------------------------------------------------
 
 function displayEditExample() {
-	document.getElementById("title").value = $('<textarea />').html(retData['examplename']).text();
-	document.getElementById("secttitle").value = $('<textarea />').html(retData['sectionname']).text();
+	function decodeHTML(html) {
+		const textarea = document.createElement("textarea");
+		textarea.innerHTML = html;
+		return textarea.value;
+	}
+
+	document.getElementById("title").value = decodeHTML(retData['examplename']);
+	document.getElementById("secttitle").value = decodeHTML(retData['sectionname']);
+
 	changeDirectory(document.getElementById("boxcontent"));
 	document.getElementById("playlink").value = retData['playlink'];
 
@@ -734,31 +758,49 @@ function updateExample() {
 	// }
 
 	// Checks if any field in the edit box has been changed, an update would otherwise be unnecessary
-	if ((removedWords.length > 0) || (addedWords.length > 0) || ($("#before option:selected").val() != beforeid && beforeid != "UNK") || ($("#after option:selected").val() != afterid && afterid != "UNK") || ($("#playlink").val() != retData['playlink']) || ($("#title").val() != retData['examplename']) || ($("#secttitle").val() != retData['sectionname'])) {
-		var courseid = querystring['courseid'];
-		var cvers = querystring['cvers'];
-		var exampleid = querystring['exampleid'];
-		var playlink = document.getElementById("playlink").value;
-		var examplename = document.getElementById("title").value;
-		var sectionname = document.getElementById("secttitle").value;
+	const playlinkEl = document.getElementById("playlink");
+	const titleEl = document.getElementById("title");
+	const secttitleEl = document.getElementById("secttitle");
 
-		var beforeid = $("#before option:selected").val();
-		var afterid = $("#after option:selected").val();
+	const playlinkVal = playlinkEl?.value ?? "";
+	const titleVal = titleEl?.value ?? "";
+	const secttitleVal = secttitleEl?.value ?? "";
+
+	const beforeEl = document.getElementById("before");
+	const afterEl = document.getElementById("after");
+
+	const selectedBefore = beforeEl ? beforeEl.value : "UNK";
+	const selectedAfter = afterEl ? afterEl.value : "UNK";
+
+	if (
+		removedWords.length > 0 ||
+		addedWords.length > 0 ||
+		playlinkVal !== retData['playlink'] ||
+		titleVal !== retData['examplename'] ||
+		secttitleVal !== retData['sectionname'] ||
+		selectedBefore !== "UNK" ||
+		selectedAfter !== "UNK"
+	) {
+
+		const courseid = querystring ['courseid'];
+		const cvers = querystring['cvers'];
+		const exampleid = querystring['exampleid'];
 
 		AJAXService("EDITEXAMPLE", {
 			courseid: courseid,
 			cvers: cvers,
 			exampleid: exampleid,
-			beforeid: beforeid,
-			afterid: afterid,
-			playlink: playlink,
-			examplename: examplename,
-			sectionname: sectionname,
+
+			beforeid: selectedBefore,
+			afterid: selectedAfter,
+			playlink: playlinkVal,
+			examplename: titleVal,
+			sectionname: secttitleVal,
+
 			addedWords: addedWords,
 			removedWords: removedWords
 		}, "CODEVIEW");
 
-		// Clears the important words and prevents multiple inserts..
 		addedWords = [];
 		removedWords = [];
 	}
@@ -820,6 +862,7 @@ function displayEditContent(boxid)
 	document.getElementById("wordlist").innerHTML = str;
 	document.getElementById("wordlist").value = box[3];
 
+
 	var str = "";
 	for (var i = 0; i < retData['improws'].length; i++) {
 		if (retData['improws'][i][0] == boxid) {
@@ -879,17 +922,17 @@ function changeDirectory(kind) {
 		var filenameBox = document.getElementById("filename");
 	}
 
-	if ($(kind).val() == "CODE") {
+	if (kind.value === "CODE") {
 		dir = retData['directory'][0];
 		wordlist.disabled = false;
-	} else if ($(kind).val() == "IFRAME") {
+	} else if (kind.value === "IFRAME") {
 		dir = retData['directory'][2];
 		wordlist.value = null;
-		wordlist.disabled = 'disabled';
-	} else if ($(kind).val() == "DOCUMENT") {
+		wordlist.disabled = true;
+	} else if (kind.value === "DOCUMENT") {
 		dir = retData['directory'][1];
 		wordlist.value = '4';
-		wordlist.disabled = 'disabled';
+		wordlist.disabled = true;
 	}
 
 	// Fill the file selection dropdown with files
@@ -927,37 +970,39 @@ function btnPress(){
 var addedRows = new Array();
 var removedRows = new Array();
 
-function editImpRows(editType) 
-{
-	var rowFrom = parseInt(document.getElementById("improwfrom").value);
-	var rowTo = parseInt(document.getElementById("improwto").value);
-	var row = document.getElementById("improwfrom").value + " - " + document.getElementById("improwto").value;
-	
-	if (editType == "+" &&
-		rowFrom <= rowTo &&
-		rowFrom > 0 &&
-		rowTo > 0) {
-		var exists = false;
-		$('#improws option').each(function () {
-			if (this.value == row) {
-				exists = true;
-			}
+function editImpRows(editType) {
+	const rowFrom = parseInt(document.getElementById("improwfrom").value);
+	const rowTo = parseInt(document.getElementById("improwto").value);
+	const row = document.getElementById("improwfrom").value + " - " + document.getElementById("improwto").value;
+
+	if (editType === "+" && rowFrom <= rowTo && rowFrom > 0 && rowTo > 0) {
+		let exists = false;
+		const options = document.querySelectorAll("#improws option");
+		options.forEach(opt => {
+			if (opt.value === row) exists = true;
 		});
 
-		if (exists == false) {
-			document.getElementById("improws").innerHTML += '<option>' + row + '</option>';
-			document.getElementById("improwfrom").value ="";
-			document.getElementById("improwto").value ="";
+		if (!exists) {
+			const improws = document.getElementById("improws");
+			const newOption = document.createElement("option");
+			newOption.text = row;
+			newOption.value = row;
+			improws.appendChild(newOption);
+
+			document.getElementById("improwfrom").value = "";
+			document.getElementById("improwto").value = "";
 			addedRows.push([openBoxID, rowFrom, rowTo]);
 		}
-	} else if (editType == "-") {
-		FromTo = $('option:selected', "#improws").text().split(" - ");
-		$('option:selected', "#improws").remove();
-		removedRows.push([openBoxID, FromTo[0], FromTo[1]]);
-
-	} else if (enterPress === false){
-		//alert("editType == +: " + (editType=="+") + " (rowFrom <= rowTo): " + (rowFrom <= rowTo) + " (rowFrom > 0): " + (rowFrom > 0) + " (rowTo > 0): " + (rowTo > 0) + " rowFrom: " + rowFrom + " rowTo: " + rowTo);
-		alert("Incorrect value(s) (from: " + rowFrom + " to: " + rowTo + ")  for important rows!");
+	} else if (editType === "-") {
+		const improws = document.getElementById("improws");
+		const selected = improws.options[improws.selectedIndex];
+		if (selected) {
+			const [from, to] = selected.value.split(" - ");
+			improws.removeChild(selected);
+			removedRows.push([openBoxID, from, to]);
+		}
+	} else if (enterPress === false) {
+		alert(`Incorrect value(s) (from: ${rowFrom} to: ${rowTo}) for important rows!`);
 	}
 }
 
@@ -995,19 +1040,26 @@ function updateContent(file, content, boxnumber)
 	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
-	// TODO: Handle null values
 	if (useBoxContent) {
-		if (box[1] != document.querySelector("#boxcontent").value || box[3] != document.querySelector("#wordlist").value || box[4] != document.querySelector("#boxtitle").value || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+		if (
+			box[1] != document.querySelector("#boxcontent").value ||
+			box[3] != document.querySelector("#wordlist").value ||
+			box[4] != document.querySelector("#boxtitle").value ||
+			box[5] != document.getElementById("filename").value ||
+			box[6] != document.getElementById("fontsize").value ||
+			addedRows.length > 0 ||
+			removedRows.length > 0
+		) {
 			try {
-				if(file == null)
+				if (file == null)
 					var boxtitle = document.querySelector("#boxtitle").value;
-				if(content == null)
-					var boxcontent = $("#boxcontent option:selected").val();
-				if(file == null)
-					var filename = $("#filename option:selected").val();
-				
-				var wordlist = document.querySelector("#wordlist").value;
-				var fontsize = $("#fontsize option:selected").val();
+				if (content == null)
+					var boxcontent = document.getElementById("boxcontent").value;
+				if (file == null)
+					var filename = document.getElementById("filename").value;
+
+				var wordlist = document.getElementById("wordlist").value;
+				var fontsize = document.getElementById("fontsize").value;
 				var exampleid = querystring['exampleid'];
 				var boxid = box[0];
 
@@ -2935,6 +2987,10 @@ function zoomText(boxid, increment)
 
 	var fontSize = parseInt(document.getElementById("box" + boxid).style.fontSize);
 	
+	if (isNaN(fontSize)) {
+		fontSize = parseInt(window.getComputedStyle(document.getElementById("box" + boxid)).fontSize);
+	  }
+	  
 	var zoomOutButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
 	var zoomInButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
 
@@ -3457,576 +3513,296 @@ function resetBoxes()
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
-function resizeBoxes(parent, templateId) 
-{
-	var remaining;
-	if(templateId == 1)
+
+
+function resizeBoxes(parentId, templateId) {
+    const parent = document.getElementById(parentId);	
+	templateId = parseInt(templateId, 10);
+
+	const width = parent.offsetWidth;
+	const height = parent.offsetHeight;
+	const minWidth = width * 0.15;
+	const maxWidth = width * 0.85;
+	const minHeight = height * 0.15;
+	const maxHeight = height * 0.85;
+	const minHeightMulti = height * 0.15;
+	const maxHeightMulti = height * 0.55; 
+
+    function makeBoxesResizable(element, direction, options = {}) {
+		if (!element) return;
+        const resizer = document.createElement('div');
+        resizer.className = 'resizer-' + direction;
+        resizer.style.position = 'absolute';
+        resizer.style.background = 'transparent';
+        resizer.style.zIndex = '10';
+        resizer.style[direction === 'e' ? 'right' : 'bottom'] = '0';
+        resizer.style[direction === 'e' ? 'top' : 'left'] = '0';
+        resizer.style[direction === 'e' ? 'bottom' : 'right'] = '0';
+        resizer.style.cursor = direction + '-resize';
+        resizer.style[direction === 'e' ? 'width' : 'height'] = '5px';
+
+        element.style.position = 'relative';
+        element.appendChild(resizer);
+
+        resizer.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = parseInt(window.getComputedStyle(element).width, 10);
+            const startHeight = parseInt(window.getComputedStyle(element).height, 10);
+
+            function doDrag(e) {
+                let newSize;
+                if (direction === 'e') {
+                    newSize = startWidth + (e.clientX - startX);
+                    newSize = Math.max(options.min || 0, Math.min(options.max || Infinity, newSize));
+                    element.style.width = newSize + 'px';
+                } else {
+                    newSize = startHeight + (e.clientY - startY);
+                    newSize = Math.max(options.min || 0, Math.min(options.max || Infinity, newSize));
+                    element.style.height = newSize + 'px';
+                }
+                if (options.onResize) options.onResize();
+            }
+
+            function stopDrag() {
+                document.documentElement.removeEventListener('mousemove', doDrag);
+                document.documentElement.removeEventListener('mouseup', stopDrag);
+            }
+
+            document.documentElement.addEventListener('mousemove', doDrag);
+            document.documentElement.addEventListener('mouseup', stopDrag);
+        });
+    }
+
+	const boxes = {};
+	for (let i = 1; i <= 9; i++) {
+		boxes[`box${i}`] = document.getElementById(`box${i}wrapper`);
+	}
+
+	if (templateId === 1) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+                for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+            }
+        });
+    }
+    else if (templateId === 2) {
+        makeBoxesResizable(boxes.box1, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                boxes.box2.style.height = (height - boxes.box1.offsetHeight) + 'px';
+            }
+        });
+    }
+    else if (templateId === 3) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                const rem = width - boxes.box1.offsetWidth;
+                boxes.box2.style.width = rem + 'px';
+                boxes.box3.style.width = rem + 'px';
+                for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+            }
+        });
+        makeBoxesResizable(boxes.box2, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                boxes.box3.style.height = (height - boxes.box2.offsetHeight) + 'px';
+            }
+        });
+    }
+    else if (templateId === 4) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                const totalW = boxes.box1.offsetWidth + boxes.box2.offsetWidth;
+                if (totalW !== width) {
+                    boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+					for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+                } else {
+                    const remH = height - boxes.box1.offsetHeight;
+                    boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
+                    boxes.box3.style.height = remH + 'px';
+                }
+            }
+        });
+        makeBoxesResizable(boxes.box1, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                const remH = height - boxes.box1.offsetHeight;
+                boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
+                boxes.box3.style.height = remH + 'px';
+            }
+        });
+        makeBoxesResizable(boxes.box2, 's', {
+            min: minHeight,
+            max: maxHeight,
+            onResize: () => {
+                boxes.box1.style.height = boxes.box2.offsetHeight + 'px';
+                boxes.box3.style.height = (height - boxes.box2.offsetHeight) + 'px';
+            }
+        });
+    }
+    else if (templateId === 5) {
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                boxes.box2.style.width = (width - boxes.box1.offsetWidth) + 'px';
+                for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+            }
+        });
+        makeBoxesResizable(boxes.box1, 's', {
+            min: minHeightMulti,
+            max: maxHeight,
+            onResize: () => {
+                const remH = height - boxes.box1.offsetHeight;
+                boxes.box2.style.height = boxes.box1.offsetHeight + 'px';
+                boxes.box3.style.height = remH + 'px';
+                boxes.box4.style.height = remH + 'px';
+            }
+        });
+        makeBoxesResizable(boxes.box2, 's', {
+            min: minHeightMulti,
+            max: maxHeight,
+            onResize: () => {
+                const remH = height - boxes.box2.offsetHeight;
+                boxes.box3.style.height = remH + 'px';
+                boxes.box4.style.height = remH + 'px';
+            }
+        });
+    }
+	else if (templateId === 6) 
 	{
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();	
-				//box wrapper 2 widht = widht of screen - box wrapper 1 widht. ( this means the screen is always filled.) (box1wrapper + box2wrapper = div2 widht.)
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}						
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
+        makeBoxesResizable(boxes.box1, 'e', {
+            min: minWidth,
+            max: maxWidth,
+            onResize: () => {
+                const remaining = width - boxes.box1.offsetWidth;
+                boxes.box2.style.width = remaining + 'px';
+                boxes.box3.style.width = remaining + 'px';
+                boxes.box4.style.width = remaining + 'px';
+                for (let i = 1; i <= retData["numbox"]; i++) toggleTitleDescription(i);
+            }
+        });
+        ['box2', 'box3'].forEach((box) => {
+            makeBoxesResizable(boxes[box], 's', {
+                min: minHeightMulti,
+                max: height * 0.70,
+                onResize: () => {
+                    const total = boxes.box2.offsetHeight + boxes.box3.offsetHeight + boxes.box4.offsetHeight;
+                    const delta = height - total;
+                    if (delta !== 0) {
+                        const targets = [boxes.box2, boxes.box3, boxes.box4].filter(b => b !== boxes[box]);
+                        targets.forEach(b => b.style.height = (b.offsetHeight + delta / 2) + 'px');
+                    }
+                }
+            });
+        });
+    } 
+	else if (templateId === 7) 
+	{
+        ['box2', 'box3', 'box4'].forEach((box) => {
+            makeBoxesResizable(boxes[box], 'e', {
+                min: minWidth,
+                max: maxWidth,
+                onResize: () => {
+                    const remaining = width - boxes[box].offsetWidth;
+                    boxes.box1.style.width = remaining + 'px';
+                    const others = ['box2', 'box3', 'box4'].filter(b => b !== box);
+                    others.forEach(b => boxes[b].style.width = boxes[box].offsetWidth + 'px');
+                    for (let i = 1; i <= retData["numbox"]; i++) toggleTitleDescription(i);
+                }
+            });
+        });
+        ['box2', 'box3', 'box4'].forEach((box) => {
+            makeBoxesResizable(boxes[box], 's', {
+                min: minHeightMulti,
+                max: maxHeightMulti,
+                onResize: () => {
+                    const total = boxes.box2.offsetHeight + boxes.box3.offsetHeight + boxes.box4.offsetHeight;
+                    const delta = height - total;
+                    const others = ['box2', 'box3', 'box4'].filter(b => b !== box);
+                    others.forEach(b => boxes[b].style.height = (boxes[b].offsetHeight + delta / 2) + 'px');
+                }
+            });
+        });
+    } 
+	else if (templateId === 8) {
+		makeBoxesResizable(boxes.box2, 'e', {
+			min: minWidth,
+			max: maxWidth,
+			onResize: () => {
+				const remW = parent.offsetWidth - boxes.box2.offsetWidth;
+				boxes.box1.style.width = remW + 'px';
+				boxes.box3.style.width = boxes.box2.offsetWidth + 'px';
+				for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+			}
 		});
-	}
-	if(templateId == 2){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box1wrapper').height();
-				document.querySelector('#box2wrapper').style.height = remaining + "px";		
-			},		
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "s",
-			containment: parent	
-		});
-	}
-	if(templateId == 3){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				document.querySelector('#box2wrapper').style.width = remaining + "px";
-				document.querySelector('#box3wrapper').style.width = remaining + "px";	
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
-
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-				document.querySelector('#box3wrapper').style.height = remaining + "px";
-			},
-		handles: "s",
-		containment: parent,
-		maxHeight: ($(parent).height()*0.85),
-		minHeight: ($(parent).height()*0.16)
-		});
-	}
-	if(templateId == 4){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box1wrapper').width();
-					$('#box2wrapper').css('width', remaining + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}	
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-					$('#box3wrapper').css('height', remainingHeight + "px");
-				}		
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "e,s",
-			containment: parent
 	
+		makeBoxesResizable(boxes.box2, 's', {
+			min: minHeight,
+			max: maxHeight,
+			onResize: () => {
+				const remH = parent.offsetHeight - boxes.box2.offsetHeight;
+				boxes.box3.style.height = remH + 'px';
+			}
 		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).height()) - $('#box2wrapper').height();
-
-				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
-				$('#box3wrapper').css('height', remaining + "px");
-			},
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles: "s",
-			containment: parent
-		});
-	}
-	if(templateId == 5){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box1wrapper').width();
-					$('#box2wrapper').css('width', remaining + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}	
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box1wrapper').height();
-					$('#box2wrapper').css('height', $('#box1wrapper').height() + "px");
-					$('#box3wrapper').css('height', remainingHeight + "px");
-					$('#box4wrapper').css('height', remainingHeight + "px");
-				}					
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16),
-			handles: "e, s",
-			containment: parent
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-				$('#box1wrapper').css('height', $('#box2wrapper').height() + "px");
-				$('#box3wrapper').css('height', remainingHeight + "px");
-				$('#box4wrapper').css('height', remainingHeight + "px");
-			},
-			handles: "s",
-			containment: parent,
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.16)	
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();	
-				$('#box1wrapper').css('width', $('#box3wrapper').width());
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e",
-			containment: parent
-		});
-	}
-
-	if(templateId == 6){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");	
-				
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-			},		
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles: "e" ,
-			containment: parent
 	
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-
-				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
-				}
-				else{
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-				}
-				
-			},
-			//Since there are 3 boxes in this columm the maxheight will be 70% of the screen instead of 85%
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			containment: parent,
-			handles:"s"
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-				}
-			},			
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			containment: parent,
-			handles: "s"
+		makeBoxesResizable(boxes.box3, 'e', {
+			min: minWidth,
+			max: maxWidth,
+			onResize: () => {
+				const remW = parent.offsetWidth - boxes.box3.offsetWidth;
+				boxes.box1.style.width = remW + 'px';
+				boxes.box2.style.width = boxes.box3.offsetWidth + 'px';
+				for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+			}
 		});
 	}
-	if(templateId == 7){
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box2wrapper').width();
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
-					$('#box4wrapper').css('width', $('#box2wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-					if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-					}
-					else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount) + "px");
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/2) + "px");
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-					}
-				}					
-			},
-			handles:"s, e",
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
+	else if (templateId === 9) {
+		makeBoxesResizable(boxes.box1, 'e', {
+			min: minWidth,
+			max: maxWidth,
+			onResize: () => {
+				const remW = width - boxes.box1.offsetWidth;
+				['box2','box3','box4','box5'].forEach(id => {
+					boxes[id].style.width = remW + 'px';
+					for (let j = 1; j <= retData.numbox; j++) toggleTitleDescription(j);
+				});
+			}
 		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box3wrapper').width() != $(parent).width()){
-					//East resizing	
-					remaining = ($(parent).width()) - $('#box3wrapper').width();			
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
-					$('#box4wrapper').css('width', $('#box3wrapper').width() + "px");
-
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height();
-					if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount) + "px");
-					}
-					else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount) + "px");
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/2) + "px");
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/2) + "px");
-					}	
+		['box2','box3','box4','box5'].forEach(boxId => {
+			makeBoxesResizable(boxes[boxId], 's', {
+				min: minHeightMulti,
+				max: maxHeightMulti,
+				onResize: () => {
+				  const freshH = parent.offsetHeight;
+				  const remH = freshH - boxes[boxId].offsetHeight;
+				  const peers = ['box2','box3','box4','box5'].filter(id => id !== boxId);
+				  const share = Math.floor(remH / peers.length);
+				  let leftover = remH - share * peers.length;
+				  peers.forEach((id, idx) => {
+					const h = share + (idx === 0 ? leftover : 0);
+					boxes[id].style.height = h + 'px';
+				  });
 				}
-			},
-			handles: "s, e",
-			maxHeight: ($(parent).height()*0.70),
-			minHeight: ($(parent).height()*0.15),
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-
-		});
-		$('#box4wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box4wrapper').width();	
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box4wrapper').width() + "px");
-				$('#box3wrapper').css('width', $('#box4wrapper').width() + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},
-			handles: "e",
-			maxHeight: ($(parent).width()*0.85),
-			minHeight: ($(parent).width()*0.15),
-			containment: parent
+			});
 		});
 	}
-	if(templateId == 8){
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				//Blocking widht resizing if the width of the boxes has not changed.
-				if($('#box1wrapper').width()+ $('#box2wrapper').width() != $(parent).width()){
-					//East resizing
-					remaining = ($(parent).width()) - $('#box2wrapper').width();
-					$('#box1wrapper').css('width', remaining + "px");
-					$('#box3wrapper').css('width', $('#box2wrapper').width() + "px");
+	
+}
 
-					//Check if any descriptions needs to be hidden/shown
-					for(i = 1; i <= retData["numbox"];i++){
-						toggleTitleDescription(i);
-					}
-				}else{
-					//South resizing
-					remainingHeight = ($(parent).height()) - $('#box2wrapper').height();
-					$('#box3wrapper').css('height', remainingHeight + "px");
-				}				
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			maxHeight: ($(parent).height()*0.85),
-			minHeight: ($(parent).height()*0.15),
-			handles:"e,s",
-			containment: parent
-		});
-		//This one currently doens't work
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box3wrapper').width();
-				$('#box1wrapper').css('width', remaining + "px");
-				$('#box2wrapper').css('width', $('#box3wrapper').width() + "px");
 
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}	
-			},
-			handles: "e",
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			containment: parent
-		});
-	}
-	if(templateId == 9){
-		$('#box1wrapper').resizable({
-			resize: function( event, ui ) {
-				remaining = ($(parent).width()) - $('#box1wrapper').width();	
-				$('#box2wrapper').css('width', remaining + "px");
-				$('#box3wrapper').css('width', remaining + "px");
-				$('#box4wrapper').css('width', remaining + "px");
-				$('#box5wrapper').css('width', remaining + "px");
-
-				//Check if any descriptions needs to be hidden/shown
-				for(i = 1; i <= retData["numbox"];i++){
-					toggleTitleDescription(i);
-				}				
-			},
-			maxWidth: ($(parent).width()*0.85),
-			minWidth: ($(parent).width()*0.15),
-			handles:"e",
-			containment: parent
-		});
-		$('#box2wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-
-				if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 3
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-					}
-				}
-				else{
-					$('#box3wrapper').css('height', ($('#box3wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
-				}
-				
-			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
-			handles:"s",
-			containment: parent
-		});
-		$('#box3wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 2 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box4wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 2
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-				}
-				else if($('#box5wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box5 and 4 are too small only resize box3
-					if($('#box4wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					//Else if box 2 an 5 are too small only resize box 4
-					else if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box4wrapper').css('height', ($('#box4wrapper').height() + resizeAmount/2));
-					}
-				}
-				else{
-					$('#box2wrapper').css('height', ($('#box2wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box4wrapper').css('height', ($('#box4wrapper').height() + (resizeAmount)/3) + "px");
-					$('#box5wrapper').css('height', ($('#box5wrapper').height() + (resizeAmount)/3) + "px");
-				}			
-			},
-			maxHeight: ($(parent).height()*0.55),
-			minHeight: ($(parent).height()*0.15),
-			handles:"s",
-			containment: parent
-		});
-		$('#box4wrapper').resizable({
-			resize: function( event, ui ) {
-				resizeAmount = $(parent).height() - $('#box2wrapper').height() - $('#box3wrapper').height() - $('#box4wrapper').height() - $('#box5wrapper').height();
-				if($('#box2wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box2 and 4 are too small only resize box5
-					if($('#box3wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 3 an 5 are too small only resize box 4
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box3wrapper').css('height', ($('#box3wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-					}
-
-				}
-				else if($('#box3wrapper').height() <= $(parent).height()*0.15 && resizeAmount < 0){
-					//If both box3 and 4 are too small only resize box5
-					if($('#box2wrapper').height() <= $(parent).height()*0.15){
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount));
-					}
-					//Else if box 4 an 5 are too small only resize box 3
-					else if($('#box5wrapper').height() <= $(parent).height()*0.15){
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount));
-					}
-					else{
-						$('#box2wrapper').css('height', ($('#box2wrapper').height() + resizeAmount/2));
-						$('#box5wrapper').css('height', ($('#box5wrapper').height() + resizeAmount/2));
-
-					}
-				}
-				else if (document.getElementById("box5wrapper").offsetHeight <= document.getElementById(parent).offsetHeight * 0.15 && resizeAmount < 0) {
-					const box2 = document.getElementById("box2wrapper");
-					const box3 = document.getElementById("box3wrapper");
-					const parentHeight = document.getElementById(parent).offsetHeight;
-				
-					// If both box5 and 4 are too small only resize box3
-					if (box2.offsetHeight <= parentHeight * 0.15) {
-						box3.style.height = (box3.offsetHeight + resizeAmount) + "px";
-					}
-					// Else if box 3 and 5 are too small only resize box2
-					else if (box3.offsetHeight <= parentHeight * 0.15) {
-						box2.style.height = (box2.offsetHeight + resizeAmount) + "px";
-					}
-					else {
-						box2.style.height = (box2.offsetHeight + resizeAmount / 2) + "px";
-						box3.style.height = (box3.offsetHeight + resizeAmount / 2) + "px";
-					}
-				} else {
-					const box2 = document.getElementById("box2wrapper");
-					const box3 = document.getElementById("box3wrapper");
-					const box5 = document.getElementById("box5wrapper");
-				
-					const delta = resizeAmount / 3;
-				
-					box2.style.height = (box2.offsetHeight + delta) + "px";
-					box3.style.height = (box3.offsetHeight + delta) + "px";
-					box5.style.height = (box5.offsetHeight + delta) + "px";
-				}			
-				
-			},
-			maxHeight: (document.getElementById(parent).offsetHeight * 0.55),
-			minHeight: (document.getElementById(parent).offsetHeight * 0.15),
-
-			handles:"s",
-			containment: parent
-		});
-	}
-}	
 //------------------------------------------------------------------------------------------------------------------------------
 // Hide or show scrollbars on a box depending on if the content of the box takes more or less space than the box itself.
 //------------------------------------------------------------------------------------------------------------------------------

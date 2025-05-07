@@ -39,7 +39,8 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 ![Change directory](terminal3.png "Change directory")
 
-5. Here you need to build a few images and containers, and to do that run the command: `docker-compose up --build`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
+5. Here you need to build a few images and containers, and to do that run the command for Windows: `docker-compose up --build` or macOS: `docker compose up --build`.
+NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
 ![build image and containers](terminal4.png "build image and containers")
 
 6. Docker has finished building images and containers when the terminal stops printing out or/and shows a blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.

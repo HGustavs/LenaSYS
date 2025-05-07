@@ -24,7 +24,7 @@ if(isset($_SESSION['uid'])){
 <html lang="en">
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Course Editor</title>
@@ -32,6 +32,7 @@ if(isset($_SESSION['uid'])){
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<script src="darkmodeToggle.js"></script>
 	<script src="../Shared/loadingButton.js"></script>
@@ -43,6 +44,7 @@ if(isset($_SESSION['uid'])){
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="courseed.js"></script>
+	
 </head>
 <body>
 

@@ -341,14 +341,26 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let headRect = drawRect(boxw, height, linew, element);
     let headText = "";
     let headStereotype = "";
+    let headSvg = "";
+
     if (element.stereotype != "" && element.stereotype != null) {
         headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', `«${element.stereotype}»`);
+        for (let i = 0; i < headerLines.length; i++) {
+            const y = texth * (i + 1.5) * lineHeight;
+            headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+        }
+        headSvg = drawSvg(boxw, height, headRect + headText + headStereotype);
     }
-    for (let i = 0; i < headerLines.length; i++) {
-        const y = texth * (i + 1.5) * lineHeight;
-        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+    else {
+        height = texth * (headerLines.length + 0.5) * lineHeight;
+        for (let i = 0; i < headerLines.length; i++) {
+            const y = texth * (i + 1) * lineHeight;
+            headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+        }
+        headSvg = drawSvg(boxw, height, headRect + headText);
     }
-    let headSvg = drawSvg(boxw, height, headRect + headText + headStereotype);
+    
+    
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);
 
     // Content, Attributes
