@@ -7,6 +7,7 @@ include_once "../sharedMicroservices/getUid_ms.php";
 
 include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "./retrieveSectionedService_ms.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
@@ -56,18 +57,13 @@ if($link==-1) {
     foreach($queryz2->fetchAll() as $row) {
         $exampleid=$row['exampleid'];
     }
-    //$data = createNewCodeExample($pdo,$exampleid, $courseid, $coursevers, $sectname,$link,$log_uuid);
-    //$link=$data['link'];
 
     //set url for createNewCodeExample.php path
     header("Content-Type: application/json");
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
-    $ch = curl_init($url);
-    //options for curl
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+
+    $dataToSend = [
         'exampleid'=> $exampleid,
         'courseid'=> $courseid,
         'coursevers'=> $coursevers, 
@@ -75,9 +71,9 @@ if($link==-1) {
         'link'=> $link,
         'log_uuid'=> $log_uuid,
         'templatenumber'=> $templateNumber 
-    ]));
-       
-    $response = curl_exec($ch);
+    ];
+
+    $response = callMicroservicePOST ($url,  $dataToSend, true);
     $data = json_decode($response, true);
     $link=$data['link'];
 

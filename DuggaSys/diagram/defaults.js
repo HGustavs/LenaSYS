@@ -151,7 +151,7 @@ const defaults = {
     note: {
         name: "Note",
         type: entityType.note,
-        kind: "note",
+        kind: elementTypesNames.note,
         width: 200,
         height: 50,
         minWidth: 150,
