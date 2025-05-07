@@ -1916,9 +1916,12 @@ function multipleColorsTest() {
  * @description Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {        
-    
+
     // updates the line
     for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
+        if((key === "kind" && contextLine[0].kind === "Recursive" && value === "Dashed") || (key === "kind" &&contextLine[0].kind === "Recursive" && value === "Normal")){
+            continue;
+        }
         contextLine[0][key] = value;
     }
 
