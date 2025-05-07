@@ -1412,10 +1412,9 @@ p {
   }
 
   & .courseRow {
+    height: var(--rowHeight);
     background-color: var(--color-sectioned-table-hi);
-    height: fit-content;
     display: block;
-    
     
     & td {
       font-size: 1.5rem;
