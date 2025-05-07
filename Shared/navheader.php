@@ -346,7 +346,7 @@
 
 							// Refresh button for Github repo in hamburger menu
 							echo "<div id='refreshBurger' onclick='refreshGithubRepo(".$_SESSION['courseid'].");' style ='cursor:pointer;'>";
-            	echo "<span id='refreshBTN' title='Download Github Repo' value='Refresh' href='#'>";
+            				echo "<span id='refreshBTN' title='Download Github Repo' value='Refresh' href='#'>";
 							echo "<img alt='refresh icon'  class='burgerButt refreshBurgerIMG' src='../Shared/icons/gitrefresh.svg'>";
 							echo "</span";
 							echo "<a class='burgerButtText' href='#' >Download github repo</a></div>";
@@ -391,50 +391,45 @@
 					}
 			}		
 
-				if (isset($showDugga)) {
-				  echo "<td class='navBurgerIcon fa fa-bars' id='hamburgerIcon' onclick='navBurgerChange()'><img src='../Shared/icons/hamburger_menu_google_fonts.svg' alt='Menu'></td>";
-				  echo "<td class='navBurgerIcon' style='display: none;'> </td>";
-				}
+					if (isset($showDugga)) {
+					  echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'><img src='../Shared/icons/hamburger_menu_google_fonts.svg' alt='Menu'></td>";
+					  echo "<td class='navBurgerIcon' style='display: none;'> </td>";
+					}
 
-				// Place this HTML outside your <table>
-				echo '<div id="navBurgerBox" class="navBurgerBox" style="display: none;">';
+					echo "<div id='navBurgerBox' class='navBurgerBox' style='display: none;'>";
 
-				echo '<div id="homeBurgerDiv">
-						<a id="homeBurger" href="../DuggaSys/courseed.php">
-						  <img alt="home" class="navBurgerButt" src="../Shared/icons/Home.svg">
-						</a>
-					  </div>';
+					echo "<div id='homeBurgerDiv'>
+							<a id='homeBurger' href='../DuggaSys/courseed.php'>
+							  <img alt='home' class='navBurgerButt' src='../Shared/icons/Home.svg'>
+							</a>
+						  </div>";
 
-				echo '<div id="darkModeBurgerDiv">
-						<a id="darkModeBurger" onclick="burgerToggleDarkmode()">
-						  <img alt="Dark" class="navBurgerButt" title="Toggle between dark mode" src="../Shared/icons/ThemeToggle.svg">
-						</a>
-					  </div>';
+					echo "<div id='darkModeBurgerDiv'>
+							<a id='darkModeBurger' onclick='burgerToggleDarkmode()'>
+							  <img alt='Dark' class='navBurgerButt' title='Toggle between dark mode' src='../Shared/icons/ThemeToggle.svg'>
+							</a>
+						  </div>";
 
-				if ($noup === 'COURSE') {
-				  // Go back button for COURSE
-				  echo "<div id='goBackBurgerDiv'>";
-				  echo "<a href='../DuggaSys/courseed.php'>";
-				  echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
-				  echo "<span>Return</span>"; // Text for the go-back button
-				  echo "</a>";
-				  echo "</div>";
-				} 
-				else if ($noup === 'SECTION') {
-				  // Go back button for SECTION
-				  $backHref = ($_SESSION['courseid'] !== "UNK") 
-					? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] 
-					: "../DuggaSys/courseed.php";
+					if ($noup === 'COURSE') {
+					  echo "<div id='goBackBurgerDiv'>";
+					  echo "<a href='../DuggaSys/courseed.php'>";
+					  echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
+					  echo "<span>Return</span>"; 
+					  echo "</a>";
+					  echo "</div>";
+					} 
+					else if ($noup === 'SECTION') {
+					  $backHref = ($_SESSION['courseid'] !== "UNK") 
+						? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] 
+						: "../DuggaSys/courseed.php";
 
-				  echo "<div id='goBackBurgerDiv'>";
-				  echo "<a href='$backHref'>";
-				  echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
-				  //echo "<span>Return</span>"; // Text for the go-back button
-				  echo "</a>";
-				  echo "</div>";
-				}
-
-				echo '</div>'; // Close #navBurgerBox
+					  echo "<div id='goBackBurgerDiv'>";
+					  echo "<a href='$backHref'>";
+					  echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
+					  echo "</a>";
+					  echo "</div>";
+					}
+					echo '</div>'; 
 				
 
 
