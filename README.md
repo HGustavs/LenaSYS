@@ -13,10 +13,10 @@ To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 
 1. Press this link: [docker desktop](https://www.docker.com/products/docker-desktop/).
 
-2. In the Docker website press `Choose plan`-button.
+2. On the Docker website press `Choose plan`-button.
 <img src="Shared/Documentation/docker_images/homepage.png" width="512">
 
-3. Choose Docker Personal.
+3. Choose: Docker Personal.
 <img src="Shared/Documentation/docker_images/choosePlan.png" width="512">
 
 4. Press `Continue with GitHub`-button.
@@ -25,19 +25,19 @@ To install LenaSYS on your computer, you first need to install XAMPP or Docker.
 5. Sign in with your school-email and password.
 <img src="Shared/Documentation/docker_images/github.png" width="512">
 
-6. Now you are in Docker Home and press the `Go to download`-button. 
+6. Now that you are in Docker Home, press the `Go to download`-button. 
 <img src="Shared/Documentation/docker_images/docker_home.png" width="512">
 
 7. Select which operating software (OS) that you are using.
 <img src="Shared/Documentation/docker_images/os.png" width="512">
 
-8. When you have selected OS and installed the installer according to your OS, follow the installer and then open a Docker desktop program/app.
+8. When you have selected your OS and installed the installer accordingly, follow the installation steps and then open the Docker desktop program/app.
 
-9. Congratulations, you have installed the Docker desktop! If account doesn't appear in Docker desktop, then sign in your GitHub account.
+9. Congratulations, you have installed Docker desktop! If your account doesn't appear in Docker desktop, sign in with your GitHub account.
 <img src="Shared/Documentation/docker_images/dockerDesktop.png" width="512">
 
 ### Run containers in Docker
-When you have installed your Docker desktop, you can run Docker containers, but first you need to get a LenaSYS repository.
+Once you have installed Docker desktop, you can run Docker containers, but first you need to get a LenaSYS repository.
 
 1. Open your terminal which can be bash, powershell or command. You can also use vscode terminal. 
 
