@@ -38,6 +38,14 @@ $mdFiles = findMdFiles($basePath);
 foreach ($mdFiles as $mdFile) {
     $content = file_get_contents($mdFile);
 
+    // skip the file named 'microservice_connections.md', its content is not wanted in the database
+    if (basename($mdFile) === 'microservice_connections.md') {
+        continue;
+    }
+    // also skip the template file
+    if (basename($mdFile) === 'template.md') {
+        continue;
+    }
     // skip files that are not structured documentation
     if (!preg_match('/# Name of file\/service/i', $content)) {
         continue;
