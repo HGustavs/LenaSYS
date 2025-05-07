@@ -15,7 +15,7 @@ class SSEReceiver {
 		let data = JSON.parse(event.data);
 		if (!data.success) {
 			if (this.callbacks.error) {
-				this.callbacks.error(data.data);
+				this.callbacks.error(data);
 			}
 			return;
 		}
