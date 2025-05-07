@@ -1348,6 +1348,9 @@ function updateDeadline() {
   if (kind == 3) {
     AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
   }
+  else if(kind==2){
+    AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+  }
 }
 
 function setActiveLid(lid) {
