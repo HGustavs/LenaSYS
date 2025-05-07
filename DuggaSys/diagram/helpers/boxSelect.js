@@ -22,7 +22,7 @@ function getElementsInsideCoordinateBox(selectionRect) {
     const elements = [];
     data.forEach(element => {
         // Box collision test
-        if (selectionRect.partialOverlap(Rect.FromElement(element))) {
+        if (selectionRect.overlap(Rect.FromElement(element))) {
             elements.push(element);
         }
     });
