@@ -936,6 +936,7 @@ p {
   .dateSize {
     width: 25%;
     font-size: 10pt;
+    display: none;
   }
 	.internal-link {
         font-size: 10pt;
