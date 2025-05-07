@@ -54,6 +54,7 @@ Relationships: No relationships, but other tables references to microservices(id
 | parameter_description | TEXT | Description of what the parameter does |
 
 Relationships: One-to-many relationship to microservices(id) via microservice_id.
+- microservice_id referenses microservice(id)
 
 ### outputs
 | Field | Type | Description |
@@ -65,13 +66,18 @@ Relationships: One-to-many relationship to microservices(id) via microservice_id
 | output_description | TEXT | Description of the output |
 
 Relationships: One-to-many relationship to microservices(id) via microservice_id.
+- microservice_id referenses microservice(id)
 
 ### dependencies
 | Field | Type | Description |
 | ------ | ------ | ------ |
 | dependency_id | INTEGER | Primary key, auto incrementing integer |
+| microservice_id | INTEGER | Foreign key to microservices.id, refers to the microservice that depends on another microservice |
+| depends_on_id | INTEGER | Foreign key to microservices.id, refers to the microservice that the microservice depends on |
 | ms_name | TEXT | Name of the microservice that depends on another microservice |
 | depends_on | TEXT | Name of the microservice that ms_name depends on |
 | path | TEXT | Searchpath to the microservice (depends_on) |
 
-Relationships: No relationships.
+Relationships: microservice_id and depends_on_id refers to entries in microservice table (these can be null) 
+- microservice_id referenses microservice(id)
+- depends_on_id referenses microservice(id)
