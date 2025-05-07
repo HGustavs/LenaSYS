@@ -399,6 +399,10 @@ input[type=checkbox], input[type=radio] {
     padding: 0.75rem;
 }
 
+details {
+    margin-top: 10px;
+}
+
 details,
 summary {
     cursor: pointer;
