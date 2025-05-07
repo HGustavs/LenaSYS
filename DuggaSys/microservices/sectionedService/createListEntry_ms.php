@@ -12,20 +12,20 @@ include_once "../curlService.php";
 pdoConnect();
 session_start();
 
-$opt=getOP('opt'); 
-$courseid=getOP('courseid');
-$coursevers=getOP('coursevers');
-$sectname=getOP('sectname');
-$kind=getOP('kind');
-$link=getOP('link');
-$visibility=getOP('visibility');
-$gradesys=getOP('gradesys');
-$highscoremode=getOP('highscoremode');
-$comments=getOP('comments');
-$grptype=getOP('grptype');
-$pos=getOP('pos');
-$tabs=getOP('tabs');
-$userid=getUid();
+$opt = getOP('opt');
+$courseid = getOP('courseid');
+$coursevers = getOP('coursevers');
+$sectname = getOP('sectname');
+$kind = getOP('kind');
+$link = getOP('link');
+$visibility = getOP('visibility');
+$gradesys = getOP('gradesys');
+$highscoremode = getOP('highscoremode');
+$comments = getOP('comments');
+$grptype = getOP('grptype');
+$pos = getOP('pos');
+$tabs = getOP('tabs');
+$userid = getUid();
 
 // Microservice for retrieveUsername
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
@@ -39,23 +39,23 @@ curl_close($ch);
 $data = json_decode($response, true);
 $username = $data['username'] ?? 'unknown';
 
-$log_uuid=getOP('log_uuid');
-$templateNumber=getOP('templateNumber');
-$exampleid=getOP('exampleid');
+$log_uuid = getOP('log_uuid');
+$templateNumber = getOP('templateNumber');
+$exampleid = getOP('exampleid');
 $debug = "NONE!";
 
 global $pdo;
 
 
 // Insert a new code example and update variables accordingly.
-if($link==-1) {
+if ($link == -1) {
     $queryz2 = $pdo->prepare("SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1");
-    if(!$queryz2->execute()) {
-        $error=$queryz2->errorInfo();
-        $debug="Error reading entries".$error[2];
+    if (!$queryz2->execute()) {
+        $error = $queryz2->errorInfo();
+        $debug = "Error reading entries" . $error[2];
     }
-    foreach($queryz2->fetchAll() as $row) {
-        $exampleid=$row['exampleid'];
+    foreach ($queryz2->fetchAll() as $row) {
+        $exampleid = $row['exampleid'];
     }
 
     //set url for createNewCodeExample.php path
@@ -64,39 +64,38 @@ if($link==-1) {
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
 
     $dataToSend = [
-        'exampleid'=> $exampleid,
-        'courseid'=> $courseid,
-        'coursevers'=> $coursevers, 
-        'sectname'=> $sectname,
-        'link'=> $link,
-        'log_uuid'=> $log_uuid,
-        'templatenumber'=> $templateNumber 
+        'exampleid' => $exampleid,
+        'courseid' => $courseid,
+        'coursevers' => $coursevers,
+        'sectname' => $sectname,
+        'link' => $link,
+        'log_uuid' => $log_uuid,
+        'templatenumber' => $templateNumber
     ];
 
-    $response = callMicroservicePOST ($url,  $dataToSend, true);
+    $response = callMicroservicePOST($url,  $dataToSend, true);
     $data = json_decode($response, true);
-    $link=$data['link'];
-
+    $link = $data['link'];
 }
 
-$debug = createNewListEntry($pdo,
-    $courseid,
-    $coursevers,
-    $userid,
-    $sectname,
-    $link,
-    $kind,
-    $comments,
-    $visibility,
-    $highscoremode,
-    $pos,
-    $gradesys,
-    $tabs,
-    $grptype);
+$listEntryData = [
+    'cid' => $courseid,
+    'cvs' => $coursevers,
+    'usrid' => $userid,
+    'entryname' => $sectname,
+    'link' => $link,
+    'kind' => $kind,
+    'comment' => $comments,
+    'visible' => $visibility,
+    'highscore' => $highscoremode,
+    'pos' => $pos,
+    'gradesys' => $gradesys,
+    'tabs' => $tabs,
+    'groupkind' => $grptype
+];
 
+$debug = callMicroservicePOST("sharedMicroservices/createNewListEntry_ms.php", $ListEntryData, true);
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
 header('Content-Type: application/json');
 echo json_encode($data);
-return;
-?>

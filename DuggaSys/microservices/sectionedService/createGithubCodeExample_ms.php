@@ -223,6 +223,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $highscoremode = 0;
     $tabs = 0;
     $groupkind = null;
+
     //add the codeexample to listentries
     $createListData = [
         $pdo,
@@ -241,7 +242,6 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
         $groupkind,
         null
     ];
-
 
     callMicroservicePOST("sharedMicroservices/createNewListEntry_ms.php", $createListData, false);
 }
