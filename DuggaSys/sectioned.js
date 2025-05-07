@@ -896,11 +896,14 @@ function markedItems(item = null, typeInput) {
         if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
           var parent = recieveCodeParent(active_lid);
 
-          for (var i = 0; i < tempSelectedItemListLength; i++) {
-            if (selectedItemList[i] == parent){
-              document.getElementById(parent + "-checkbox").checked = false;
-              selectedItemList.splice(i, 1);
-            }
+          var indexNr = checkIfSelected(parent, tempSelectedItemListLength);
+
+          console.log('indexNr (1) : ' + indexNr);
+          
+          if(indexNr != null){
+            console.log('indexNr (2) : ' + indexNr);
+            document.getElementById(selectedItemList[indexNr] + "-checkbox").checked = false;
+            selectedItemList.splice(indexNr, 1);
           }
         }
       }
@@ -990,6 +993,16 @@ function showMarkedItems(selectedItemList) {
 // Without this, the array will be populated but checkboxes will not be reset.
 function clearHideItemList() {
   selectedItemList = [];
+}
+
+//checks if the element is selected.
+function checkIfSelected (lid, tempListLenght){
+  for (var i = 0; i < tempListLenght; i++){
+    if (selectedItemList[i] == lid){
+      console.log('comparison success');
+      return i;
+    }
+  }
 }
 
 // Finds code-duggas parent - used in markedItems() for unselection of section
