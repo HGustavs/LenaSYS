@@ -72,6 +72,12 @@ if (isset($_GET['id'])) {
         $stmt->execute([$_GET['id']]);
         $outputs = $stmt->fetchAll();
     }
+
+    if ($microservice) {
+        $stmt = $db->prepare("SELECT * FROM dependencies WHERE microservice_id = ?");
+        $stmt->execute([$_GET['id']]);
+        $dependencies = $stmt->fetchAll();
+    }
 }
 
 } catch (PDOException $e) {
