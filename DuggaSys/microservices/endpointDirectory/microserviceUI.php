@@ -1,4 +1,11 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION['token'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+
 try {
 // database
 $db = new PDO('sqlite:endpointDirectory_db.sqlite');
@@ -12,6 +19,30 @@ if (isset($_POST['deleteID'])) {
     $stmt->execute([$id]);
     header("Location: ?");
     exit();
+}
+
+// update functionality
+if (isset($_POST['updateID'])) {
+    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
+        http_response_code(403);
+        exit('Invalid CSRF token');
+    }
+    $id = $_POST['updateID'];
+    $name = $_POST['ms_name'];
+    $description = $_POST['description'];
+    $methods = $_POST['calling_methods'];
+    $used = $_POST['microservices_used'];
+
+    $stmt = $db->prepare("UPDATE microservices SET ms_name = ?, description = ?, calling_methods = ?, microservices_used = ? WHERE id = ?");
+    $stmt->execute([$name, $description, $methods, $used, $id]);
+    header("Location: ?id=" . $id);
+    exit();
+}
+
+if (isset($_GET['edit']) && isset($_GET['id'])) {
+    $stmt = $db->prepare("SELECT * FROM microservices WHERE id = ?");
+    $stmt->execute([$_GET['id']]);
+    $editMicroservice = $stmt->fetch();
 }
 
 // search functionality safe from injections
@@ -44,7 +75,7 @@ if (isset($_GET['id'])) {
 }
 
 } catch (PDOException $e) {
-    $dbError = "Database is not installed. Execute 'setupEndpointDirectory.php' to install it. ";
+    $dbError = "Database is not installed. Press the button below to create a database. ";
 }
 ?>
 
@@ -52,28 +83,36 @@ if (isset($_GET['id'])) {
 <html>
 <head>
     <title>Microservice Directory</title>
-    <style>
-        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        form { margin: 20px 0; }
-        input, button { padding: 5px; }
-        .line { border-bottom: 1px solid #ddd; margin-bottom: 20px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <?php if (isset($editMicroservice)) { ?>
+        <div class="line">
+            <h1>Edit Microservice</h1>
+        </div>
+        <form method="post">
+            <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+            <input type="hidden" name="updateID" value="<?php echo $editMicroservice['id']; ?>">
+            <p><b><label>Microservice name:<br><input type="text" name="ms_name" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
+            <p><label>Description:<br><textarea name="description" rows="5" cols="40"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
+            <p><label>Calling Methods:<br><input type="text" name="calling_methods" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
+            <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
+            <button type="submit">Save Changes</button>
+            <a href="?id=<?php echo $editMicroservice['id']; ?>">Cancel</a>
+        </form>
+    <?php } ?>
     
     <?php    
     if (isset($dbError)) {
-        echo "<p style= 'color:red';>" . $dbError;
+        echo "<p class='error_message'>" . $dbError . "</p>";
     } else {
         if (!isset($microservice)) { ?>
 
         <div class="line">
             <h1>Microservice Directory</h1>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="search-container">
 
             <form method="GET">
                 <input type="text" name="search" placeholder="Search name/description">
@@ -83,7 +122,7 @@ if (isset($_GET['id'])) {
                 <?php endif; ?>
             </form>
 
-            <div style="display: flex; gap: 10px;">
+            <div class="button-container">
                 <form method="">
                     <button type="submit">Filter</button>
                 </form>
@@ -91,6 +130,7 @@ if (isset($_GET['id'])) {
                 <form method="">
                     <button type="submit">Add Microservice</button>
                 </form>
+                <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
             </div>
         </div>
     <?php } ?>
@@ -143,7 +183,9 @@ if (isset($_GET['id'])) {
         <?php } ?>
 
         <div style="display: flex; gap: 5px;">
-            <form method="">
+            <form method="get">
+                <input type="hidden" name="id" value="<?php echo $microservice['id']; ?>">
+                <input type="hidden" name="edit" value="1">
                 <button type="submit">Edit</button>
             </form>
 

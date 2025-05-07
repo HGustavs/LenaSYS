@@ -1,6 +1,8 @@
 <?php
+date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
 include_once "processDuggaFile_ms.php";
 
 function retrieveShowDuggaService(
@@ -34,22 +36,13 @@ function retrieveShowDuggaService(
 	$debug
 	){
 
-	if(checklogin()){
-		if(isset($_SESSION['uid'])){
-			$userid=$_SESSION['uid'];
-			$loginname=$_SESSION['loginname'];
-			$lastname=$_SESSION['lastname'];
-			$firstname=$_SESSION['firstname'];
-		}else{
-			$userid="guest";		
-		} 	
-	}
-	
-	if(isSuperUser($userid)){
-		$isTeacher=1;
-	}else{
-		$isTeacher=0;
-	}
+$moment = $_POST['moment'] ?? "UNK";
+$courseid = $_POST['courseid'] ?? "UNK";
+$hash = $_POST['hash'] ?? "UNK";
+$password = $_POST['password'] ?? "UNK";
+$coursevers = $_POST['coursevers'] ?? "UNK";
+$duggaid = $_POST['duggaid'] ?? "UNK";
+$opt = $_POST['opt'] ?? "UNK";
 
 	unset($variant);
 	unset($answer);
@@ -89,14 +82,7 @@ function retrieveShowDuggaService(
 				$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 				$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
-				processDuggaFiles(
-					$pdo,
-					$courseid,
-					$coursevers,
-					$duggaid,
-					$duggainfo,
-					$moment
-				);
+				retrieveProcessDuggaFiles();
 			}else{
 				$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
 				$variant="UNK";
@@ -132,12 +118,7 @@ function retrieveShowDuggaService(
 				$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 				$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
-				processDuggaFiles($pdo,
-				$courseid,
-				$coursevers,
-				$duggaid,
-				$duggainfo,
-				$moment);
+				retrieveProcessDuggaFiles();
 			}else{
 				$debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
 				$variant="UNK";
@@ -171,12 +152,7 @@ function retrieveShowDuggaService(
 				}
 		
 				if(isset($param)){
-					processDuggaFiles($pdo,
-					$courseid,
-					$coursevers,
-					$duggaid,
-					$duggainfo,
-					$moment);
+					retrieveProcessDuggaFiles();
 				}else{
 					$debug="[Guest] Missing hash/password/variant! Not found in db.";
 					$variant="UNK";
@@ -212,12 +188,7 @@ function retrieveShowDuggaService(
 					}
 			
 					if(isset($param)){
-						processDuggaFiles($pdo,
-						$courseid,
-						$coursevers,
-						$duggaid,
-						$duggainfo,
-						$moment);
+						retrieveProcessDuggaFiles();
 					}else{
 						$debug="[Guest] Missing hash/password/variant! Not found in db.";
 						$variant="UNK";
@@ -241,45 +212,31 @@ function retrieveShowDuggaService(
 			}
 		}
 	}		
-	
 
-$array = array(
-		"debug" => $debug,
-		"param" => $param,
-		"answer" => $answer,
-		"danswer" => $variantanswer,
-		"score" => $score,
-		"highscoremode" => $highscoremode,
-		"grade" => $grade,
-		"submitted" => $submitted,
-		"marked" => $marked,
-		"deadline" => $duggainfo['deadline'],
-		"release" => $duggainfo['qrelease'],
-		"files" => $files,
-		"userfeedback" => $userfeedback,
-		"feedbackquestion" => $feedbackquestion,
-		"variant" => $savedvariant,
-		"ishashindb" => $ishashindb,
-		"variantsize" => $variantsize,
-		"variantvalue" => $variantvalue,
-		"password" => $password,
-		"hashvariant" => $hashvariant,
-		"isFileSubmitted" => $isFileSubmitted,
-		"isTeacher" => $isTeacher, // isTeacher is true for both teachers and superusers
-		"variants" => $variants,
-		"duggaTitle" => $duggatitle,
-		"hash" => $hash,
-		"hashpwd" => $hashpwd,
-		"opt" => $opt,
-		"link" => $link,
-		"activeusers" => $active,
-
-	);
-	if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
-
-	header('Content-Type: application/json');
-		
-	return $array;
+        processDuggaFiles($pdo, $courseid, $coursevers, $duggaid, $duggainfo, $moment);
+    } else {
+        $debug = "[Guest] Could not load dugga! Invalid hash/password.";
+    }
+} else {
+    $debug = "[Guest] Missing hash/password.";
+}
+function retrieveProcessDuggaFiles(){
+	processDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 }
 
-?>
+header('Content-Type: application/json');
+echo json_encode([
+    "debug" => $debug,
+    "param" => $param,
+    "answer" => $answer,
+    "danswer" => $variantanswer,
+    "hash" => $hash,
+    "hashpwd" => $password,
+    "duggaTitle" => $duggatitle,
+    "opt" => $opt,
+    "variant" => $variant,
+    "deadline" => $duggainfo['deadline'],
+    "release" => $duggainfo['qrelease'],
+    "link" => $link,
+    "isTeacher" => $isTeacher
+]);

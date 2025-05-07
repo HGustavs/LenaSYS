@@ -8,7 +8,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./deleteCourseMaterial_ms.php";
 
 function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuperUserVar){ 
 
@@ -52,7 +51,18 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
         $userCourse[$row['cid']] = $row['access'];
     }
 
-    deleteCourseMaterial($pdo);
+  //  deleteCourseMaterial($pdo);
+
+    header("Content-Type: application/json");
+    //set url for setAsActiveCourse.php path
+    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
+    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/courseedService/deleteCourseMaterial";
+    $ch = curl_init($url);
+    //options for curl
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);   
+    curl_exec($ch);
+    curl_close($ch);
+
 
     $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversion,activeedversion FROM course ORDER BY coursename");
 
