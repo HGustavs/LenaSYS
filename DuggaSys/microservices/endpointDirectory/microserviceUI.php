@@ -187,7 +187,23 @@ if (isset($_GET['id'])) {
         <?php } else { ?>
             <p>No outputs</p>
         <?php } ?>
-
+        <?php 
+            echo "<h3>Dependencies</h3>";
+        if (!empty($dependencies)) {
+            echo "<table>";
+            echo $microservice['ms_name'] . " depends on";
+            echo "<tr><th>Microservice</th><th>Path</th></tr>";
+            foreach ($dependencies as $dependency) {
+                echo '<tr>';
+                echo '<td>' . $dependency['depends_on'] . '</td>';
+                echo '<td>' . $dependency['path'] . '</td>';
+                echo '</tr>';
+            }
+        } else {
+            echo "<p>No dependencies</p>";
+        }
+        ?>
+        </table>
         <div style="display: flex; gap: 5px;">
             <form method="get">
                 <input type="hidden" name="id" value="<?php echo $microservice['id']; ?>">
