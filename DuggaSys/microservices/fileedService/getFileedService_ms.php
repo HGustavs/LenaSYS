@@ -3,10 +3,13 @@
 // getFileedService_ms - Gets all fileLinks
 //---------------------------------------------------------------------------------------------------------------
 
+header('Content-Type: application/json');
+
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveFileedService_ms.php";
+//include_once "./retrieveFileedService_ms.php";
+include_once "../../../DuggaSys/microservices/curlService.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -21,5 +24,16 @@ $log_uuid = getOP('log_uuid');
 $userid = getUid();
 $debug = "NONE!";
 
-$retrieveArray = retrieveFileedService($debug, null, null, $pdo, $courseid, $coursevers, $userid, $log_uuid, $opt, $fid, $kind);
+$kind = getOP('kind');
+
+$retrieveArray = callMicroserviceGET(
+    "sectionedService/retrieveFileedService_ms.php?" .
+    "courseid=" . urlencode($courseid) . 
+    "&coursevers=" . urlencode($coursevers) . 
+    "&fid=" . urlencode($fid) . 
+    "&opt=" . urlencode($opt) . 
+    "&log_uuid=" . urlencode($log_uuid) . 
+    "&kind=" . urlencode($kind)
+);
+
 echo json_encode($retrieveArray);
