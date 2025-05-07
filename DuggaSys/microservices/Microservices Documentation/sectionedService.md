@@ -8,64 +8,64 @@ Adds a new list entry to a course, handling the creation of a new code example i
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
-   - Description: Operation type.
+   - Type: String
+   - Description: Operation type
 
 - Parameter: $courseid
-   - Type: int(10)
-   - Description: Course ID.
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
    
 - Parameter: $coursevers
-   - Type: int(11)
-   - Description: Course version.
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $sectname
-   - Type: varchar(64)
-   - Description: Section name.
+   - Type: String
+   - Description: Section name. Stored as varchar(64) in the database
 
 - Parameter: $kind
-   - Type: int(10)
-   - Description: Kind/type of section. 
+   - Type: int
+   - Description: Kind/type of section. Stored as int(10) in the database
 
 - Parameter: $link
-   - Type: varchar(200)
-   - Description: Link ID, which indicates whether to create a new code example. If 'link' is '-1', it indicates that a new code example needs to be created.
+   - Type: String
+   - Description: Link ID, which indicates whether to create a new code example. If 'link' is '-1', it indicates that a new code example needs to be created. Stored as varchar(200) in the database
 
 - Parameter: $visibility
-   - Type: tinyint(1)
-   - Description: Visibility of the section.
+   - Type: int
+   - Description: Visibility of the section. Stored as tinyint(1) in the database
 
 - Parameter: $gradesys
-   - Type: tinyint(1)
-   - Description: Grading system.
+   - Type: int
+   - Description: Grading system. Stored as tinyint(1) in the database
 
 - Parameter: $highscoremode
-   - Type: int(11)
-   - Description: Highscore mode.
+   - Type: int
+   - Description: Highscore mode. Stored as int(11) in the database
 
 - Parameter: $comments
-   - Type: varchar(512)
-   - Description: Comments for the section.
+   - Type: String
+   - Description: Comments for the section. Stored as varchar(512) in the database
 
 - Parameter: $grptype
-   - Type: varchar(16)
-   - Description: Group type.
+   - Type: String
+   - Description: Group type. Stored as varchar(16) in the database
 
 - Parameter: $pos
-   - Type: int(11)
-   - Description: Position of the section.
+   - Type: int
+   - Description: Position of the section. Stored as int(11) in the database
 
 - Parameter: $tabs
-   - Type: tinyint(4)
-   - Description: Tabs setting.
+   - Type: int
+   - Description: Tabs setting. Stored as tinyiny(4) in the database
 
 - Parameter: $userid
-   - Type: int(10)
-   - Description: ID of the user.
+   - Type: int
+   - Description: ID of the user. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: char
-   - Description: For logging purposes.
+   - Type: String
+   - Description: For logging purposes
 
 ## Calling Methods
 - GET
@@ -79,10 +79,10 @@ Adds a new list entry to a course, handling the creation of a new code example i
 'SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;'
 
 ### Microservices Used
-getUid_ms
-createNewListEntry_ms
-createNewCodeExample_ms
-retrieveSectionedService_ms
+- getUid_ms
+- createNewListEntry_ms
+- createNewCodeExample_ms
+- retrieveSectionedService_ms
 
 ---
 
@@ -94,24 +94,24 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
-   - Description: Operation type.
+   - Type: String
+   - Description: Operation type
 
 - Parameter: $courseid
-   - Type: int(10)
-   - Description: Course ID.
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
    
 - Parameter: $coursevers
-   - Type: int(11)
-   - Description: Course version.
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $sectid
-   - Type: int(10)
-   - Description: Section ID.
+   - Type: int
+   - Description: Section ID. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: char
-   - Description: For logging purposes.
+   - Type: String
+   - Description: For logging purposes
 
 ## Calling Methods
 - GET
@@ -127,8 +127,8 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
 'DELETE FROM listentries WHERE lid = :lid'
 
 ### Microservices Used
-getUid_ms
-retrieveSectionedService_ms
+- getUid_ms
+- retrieveSectionedService_ms
 
 
 # Name of file/service
@@ -199,6 +199,8 @@ Only available to users who are logged in.
 - coursesyspw.php
 - retrieveSectionedService_ms.php
 
+
+
 # Name of file/service
 getCourseVersion_ms
 
@@ -258,6 +260,12 @@ None
 
 ### Microservices Used
 - getUid_ms.php
+
+
+
+
+
+
 
 # Name of file/service
 getListEntries_ms.php
