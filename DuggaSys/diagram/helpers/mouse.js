@@ -234,7 +234,7 @@ function snapElementToLifeline(element, targetId) {
 function visualSnapToLifeline(pos, threshold = 50) {
    
     // Restrict snapping to only sequence activations
-    if (pos.kind !== elementTypesNames.sequenceActivation) return null;
+   // if (pos.kind !== elementTypesNames.sequenceActivation) return null;
 
     // Check that there exists a sequenceActor or sequenceObject to snap to
     for (const ll of data) {
