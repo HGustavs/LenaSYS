@@ -2,7 +2,6 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "./insertIntoSQLite_ms.php";
 
 
 function getCourseID($githubURL) {
