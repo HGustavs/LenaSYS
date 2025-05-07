@@ -206,10 +206,16 @@ function snapElementToLifeline(element, targetId) {
     const lifeline = document.getElementById(targetId);
     if (!lifeline) return; // Exit if the DOM element doesn't exist
 
-    const ll = data.find(item =>
-        (item.kind === "sequenceActor" || item.kind === "sequenceObject") && 
-        item.id === target
-    );
+    // Search for the lifeline data in the main data array
+    for (let i = 0; i < data.length; i++) {
+        const ll = data[i];
+        if ((ll.kind === "sequenceActor" || ll.kind === "sequenceObject") && ll.id === targetId) {
+            // Snap the element horizontally to the center of the lifeline
+            element.x = ll.x + (ll.width / 2) - (element.width / 2);
+            updatepos(); // Refresh position on screen
+            break;
+        }
+    }
 
     if (!ll) return;
 
@@ -314,7 +320,7 @@ function findNearestLifeline(x, y) {
             const dx = Math.abs(centerX - x);
 
             // Only snaps to the lifeline if within the lifeline's range
-            if (dx < 50 && dx < minDistance && y >= topY && y >= botY) { 
+            if (dx < 50 && dx < minDistance) { 
                 minDistance = dx;
                 closestId = el.id;
             }
