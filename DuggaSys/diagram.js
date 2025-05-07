@@ -60,16 +60,48 @@ class StateMachine {
                 });
                 break;
             case StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED:
-                for (const element of StateChange.ElementsAreLocked()) {
-                    if (Array.isArray(id)) id = getItemsFromNestedArrays(id)[0];
+                // Normalize ID if it is in an Array
+                const elementId = Array.isArray(id) ? getItemsFromNestedArrays(id)[0] : id;
+                const element = Element.FindElementById(elementId);
+
+                const currentText = element.name || "";
+
+                if (!this.lastTypedTextMap) this.lastTypedTextMap = {};
+
+                const lastText = this.lastTypedTextMap[elementId] || "";
+
+                // Check is a word boundary was typed (space or punctuation) and if change has happend it is logged (no change means no logging)
+                const isWordBoundary = currentText.length > lastText.length && /\s|[.,;!?]/.test(currentText.slice(-1));
+                const isNewText = currentText !== lastText;
+
+                if (isNewText && isWordBoundary) {
+                    // Save a full snapshot of the element to the history log
+                    // Ensures undo/redo works correctly without corrupting or losing the element
                     this.pushToHistoryLog({
-                        ...element,
-                        ...Element.GetFillColor(id),
-                        ...Element.GetStrokeColor(id),
+                        id: elementId,
+                        changeType: StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED,
+                        isLocked: element.isLocked,
+                        attributes: element.attributes,
+                        functions: element.functions,
+                        name: element.name, 
+                        stereotype: element.stereotype, 
+
+                        // Correctly reconstructs element
+                        kind: element.kind,
+                        x: element.x,
+                        y: element.y,
+                        width: element.width,
+                        height: element.height, 
+
+                        ...Element.GetFillColor(elementId),
+                        ...Element.GetStrokeColor(elementId),
                         ...StateChange.GetSequenceAlternatives(),
-                        ...Element.GetProperties(id),
                         state: StateChange.ChangeElementState()
                     });
+                    this.lastTypedTextMap[elementId] = currentText;
+
+                    this.numberOfChanges++;
+                    updateLatestChange();
                 }
                 break;
             case StateChange.ChangeTypes.ELEMENT_RESIZED:
