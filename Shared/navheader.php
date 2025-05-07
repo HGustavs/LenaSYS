@@ -82,7 +82,7 @@
 			//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 			//Always on courseed.php ($noup is none). Contains only home and darkmode icons.
 			if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid'])) || $noup=='NONE'){
-				
+
 				echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'></td>";
 				echo "<td class='navBurgerIcon' style='display: none;'> </td>";
 				echo "<div id='navBurgerBox' style='display: none;'>";
@@ -389,7 +389,55 @@
 							echo"</div>";
 							echo"</div>";
 					}
-			}			
+			}		
+
+				if (isset($showDugga)) {
+				  echo "<td class='navBurgerIcon fa fa-bars' id='hamburgerIcon' onclick='navBurgerChange()'><img src='../Shared/icons/hamburger_menu_google_fonts.svg' alt='Menu'></td>";
+				  echo "<td class='navBurgerIcon' style='display: none;'> </td>";
+				}
+
+				// Place this HTML outside your <table>
+				echo '<div id="navBurgerBox" class="navBurgerBox" style="display: none;">';
+
+				echo '<div id="homeBurgerDiv">
+						<a id="homeBurger" href="../DuggaSys/courseed.php">
+						  <img alt="home" class="navBurgerButt" src="../Shared/icons/Home.svg">
+						</a>
+					  </div>';
+
+				echo '<div id="darkModeBurgerDiv">
+						<a id="darkModeBurger" onclick="burgerToggleDarkmode()">
+						  <img alt="Dark" class="navBurgerButt" title="Toggle between dark mode" src="../Shared/icons/ThemeToggle.svg">
+						</a>
+					  </div>';
+
+				if ($noup === 'COURSE') {
+				  // Go back button for COURSE
+				  echo "<div id='goBackBurgerDiv'>";
+				  echo "<a href='../DuggaSys/courseed.php'>";
+				  echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
+				  echo "<span>Return</span>"; // Text for the go-back button
+				  echo "</a>";
+				  echo "</div>";
+				} 
+				else if ($noup === 'SECTION') {
+				  // Go back button for SECTION
+				  $backHref = ($_SESSION['courseid'] !== "UNK") 
+					? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] 
+					: "../DuggaSys/courseed.php";
+
+				  echo "<div id='goBackBurgerDiv'>";
+				  echo "<a href='$backHref'>";
+				  echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
+				  //echo "<span>Return</span>"; // Text for the go-back button
+				  echo "</a>";
+				  echo "</div>";
+				}
+
+				echo '</div>'; // Close #navBurgerBox
+				
+
+
 			// Sort dialog - accessed / resulted /fileed					
 			
 			//old search bar for resulted

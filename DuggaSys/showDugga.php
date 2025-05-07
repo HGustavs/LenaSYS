@@ -113,6 +113,7 @@
 
 	<?php
 		$noup="SECTION";
+		$showDugga = true;
 		include '../Shared/navheader.php';
 	?>
 
