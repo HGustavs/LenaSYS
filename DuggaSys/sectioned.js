@@ -2941,19 +2941,18 @@ document.addEventListener('click', function (e) {
 
 
 // The event handler returns two elements. The following two if statements gets the element of interest.
-document.addEventListener('click', function () {
-  if(this.id!=null){
-    if(this.id==='.moment' || '.section' || '.statistics'){
-      if (this.id.length > 0) {
-        saveHiddenElementIDs(this.id);
+document.addEventListener('click', function (e) {
+  const target = e.target.closest('.moment, .section, .statistics');
+    if(target){
+      if (target.id.length > 0) {
+        saveHiddenElementIDs(target.id);
       }
-      if (this.id.length > 0) {
-        saveArrowIds(this.id);
+      if (target.id.length > 0){
+        saveArrowIds(target.id);
       }
       hideCollapsedMenus();
-      toggleArrows(this.id);
+      toggleArrows(target.id);
     }
-  }
 });
 
 
