@@ -243,7 +243,11 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         // Set text to white if background is black or pink, else black
-        fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
+        if (element.fill == color.BLACK || element.fill == color.PINK) {
+            fontColor.style.fill = color.WHITE;
+        } else {
+            fontColor.style.fill = color.BLACK;
+        }
     }
     /**
      * @description Checks if multiple elements or lines are selected/highlighted
