@@ -77,6 +77,12 @@ if (isset($_GET['id'])) {
         $stmt->execute([$_GET['id']]);
         $outputs = $stmt->fetchAll();
     }
+
+    if ($microservice) {
+        $stmt = $db->prepare("SELECT * FROM dependencies WHERE microservice_id = ?");
+        $stmt->execute([$_GET['id']]);
+        $dependencies = $stmt->fetchAll();
+    }
 }
 
 } catch (PDOException $e) {
@@ -194,7 +200,23 @@ if (isset($_GET['id'])) {
         <?php } else { ?>
             <p>No outputs</p>
         <?php } ?>
-
+        <?php 
+        echo "<h3>Dependencies</h3>";
+        if (!empty($dependencies)) {
+            echo "<table>";
+            echo "List of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
+            echo "<tr><th>Microservice</th><th>Path</th></tr>";
+            foreach ($dependencies as $dependency) {
+                echo '<tr>';
+                echo '<td>' . "<a href=?id=" . $dependency['depends_on_id'] . ">" . $dependency['depends_on'] . '</td>';
+                echo '<td>' . $dependency['path'] . '</td>';
+                echo '</tr>';
+            }
+        } else {
+            echo "<p>No dependencies</p>";
+        }
+        ?>
+        </table>
         <div style="display: flex; gap: 5px;">
             <form method="get">
                 <input type="hidden" name="id" value="<?php echo $microservice['id']; ?>">
