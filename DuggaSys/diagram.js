@@ -70,17 +70,19 @@ class StateMachine {
 
                 const currentFields = {
                     name: element.name || "",
-                    attributes: element.attributes || ""
+                    attributes: element.attributes || "",
+                    functions: element.functions || ""
                 };
 
                 const lastFields = this.lastTypedTextMap[elementId] || {
                     name: "",
-                    attributes: ""
+                    attributes: "",
+                    functions: ""
                 };
 
                 let hasChanged = false;
 
-                for (const key of ["name", "attributes"]) {
+                for (const key of ["name", "attributes", "functions"]) {
                     const currentText = (currentFields[key] ?? "").toString();
                     const lastText = (lastFields[key] ?? "").toString();
 
@@ -120,7 +122,8 @@ class StateMachine {
                     });
                     this.lastTypedTextMap[elementId] = {
                         name: currentFields.name,
-                        attributes: currentFields.attributes
+                        attributes: currentFields.attributes,
+                        functions: currentFields.functions
                     };
     
                     this.numberOfChanges++;
