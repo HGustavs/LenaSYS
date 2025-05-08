@@ -1,4 +1,149 @@
 # sectionedService Documentation
+ 
+# Name of file/service
+changeActiveCourseVersion_sectioned_ms
+
+## Description
+Updates the active version of a specific course. After the update, retrieveSectionedService_ms is called to fetch all relevent and updated data, which is then used as the output as a JSON-encoded string.
+
+## Input Parameters
+- Parameter: $courseid
+   - Type: int
+   - Description: Unique identifier of the course to be updated. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Current course version. Stored as varchar(8) in the database
+
+- Parameter: $versid
+   - Type: String
+   - Description: The updated course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier, for logging purposes
+
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+## Calling Methods
+- GET
+- POST
+
+## Output Data and Format
+- Output: $data
+   - Type: array
+   - Description: Contains all relevant and updates data after a successful update. Contains $duggor, $releases, $resulties, $entries, $links, $codeexamples, $versions, $startdate, $enddate, $grpmembershp, $userfeedback, $groups, $grplst, $feedbackquestion, $avgfeedbackscore
+
+- Output: $duggor
+   - Type: String
+   - Description: Details about quizzes. Contains id, qname, release, deadline and realtivedeadline from the 'quiz' table
+
+- Output: $releases
+   - Type: String
+   - Description: Dates regarding quizzes. Contains release, deadline and realtivedeadline from the 'quiz' table
+
+- Output: $resulties
+   - Type: String
+   - Description: Results of submissions for quizzes. Contains moment, grade, submitted, marked and useranswer from the 'useranswer' table
+
+- Output: $entries
+   - Type: String
+   - Description: Details about entries for quizzes. Contains entryname, lid, pos, kind, moment, link, visible, highscoremode, gradesys, groupKind, comments, tabs, feedbackenabled, feedbackquestion, ts and code_id from the 'listentries' table. As well as deadline, relativedeadline, qrelease and qstart from the 'quiz' table. Done as LEFT OUTER JOIN
+
+- Output: $links
+   - Type: String
+   - Description: Information about files related to the course. Contains fieldid and fieldname from the 'filelink' table
+
+- Output: $codeexamples
+   - Type: String
+   - Description: Details about code examples related to the course. Contains exampleid, cid, examplename, sectionname, runlink and cversion from the 'codeexample' table
+
+- Output: $versions
+   - Type: String
+   - Description: A list of all course versions for a specific course ID
+
+- Output: $startdate
+   - Type: String
+   - Description: Start date of the course version, from the 'vers' table. Stored as datetime in the database
+
+- Output: $enddate
+   - Type: String
+   - Description: End date of the course version, from the 'vers' table. Stored as datetime in the database
+
+- Output: $grpmembershp
+   - Type: String
+   - Description: Group memberships
+
+- Output: $userfeedback
+   - Type: array
+   - Description: Stores feedback entries
+
+- Output: $groups
+   - Type: array
+   - Description: Stores information related to different groups
+
+- Output: $grplst
+   - Type: array
+   - Description: List of groups
+
+- Output: $feedbackquestion
+   - Type: array
+   - Description: Stores feedback questions for users to answer
+
+- Output: $avgfeedbackscore
+   - Type: array
+   - Description: Stores avarage feedback scores
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveSectionedService_ms
+
+
+
+# Name of file/service
+createGithubCodeExample_ms
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+*Parameters will be described in lists*
+- Parameter: paramName
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: paramName
+   - Type: int
+   - Description: describe parameter
+
+## Calling Methods
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in lists*
+- Output: outputName
+   - Type: int
+   - Description: describe the output
+
+- Output: outputName
+   - Type: String
+   - Description: describe the output
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms
+- createNewListEntry_ms
+- retrieveSectionedService_ms
+
+
 
 # Name of file/service
 createListEntry_ms
