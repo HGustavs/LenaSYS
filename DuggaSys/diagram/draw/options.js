@@ -293,7 +293,6 @@ function option(object, icon) {
 
 function radio(line, arr) {
     let result = "";
-    console.log(line.kind + " " + lineKind.RECURSIVE);
         result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
         arr.forEach(lineKind => {
             let checked = (line.kind == lineKind) ? 'checked' : '';
@@ -1919,14 +1918,11 @@ function multipleColorsTest() {
  * @description Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {        
-
     // updates the line
     for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
         contextLine[0][key] = value;
     }
-
     // save all the changes
     stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
-
     showdata();
 }
