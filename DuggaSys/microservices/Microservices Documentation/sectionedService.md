@@ -142,12 +142,8 @@ retrieveSectionedService_ms
 
 ---
 
-# getDeletedListEntries_ms
-
-### Microservices Used
-
-- getUid_ms  
-- retrieveSectionedService_ms
+# Name of file/service  
+getDeletedListEntries_ms
 
 ## Description
 Retrieves all list entries with visibility set to 3 (i.e., marked as deleted) from the 'listentries' table. Used to show items that were previously deleted from the course structure.
@@ -188,14 +184,15 @@ Retrieves all list entries with visibility set to 3 (i.e., marked as deleted) fr
 
 'SELECT * FROM listentries WHERE visible = '3''
 
----
-
-# getGroupValues_ms
-
 ### Microservices Used
 
 - getUid_ms  
 - retrieveSectionedService_ms
+
+---
+
+# Name of file/service  
+getGroupValues_ms
 
 ## Description
 Retrieves all available group kinds and their values from the 'groups' table. Used to display group options when interacting with group-related features in a course.
@@ -235,3 +232,8 @@ Retrieves all available group kinds and their values from the 'groups' table. Us
 ## Examples of Use
 
 'SELECT groupKind, groupVal FROM groups'
+
+### Microservices Used
+
+- getUid_ms  
+- retrieveSectionedService_ms
