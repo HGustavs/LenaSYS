@@ -272,7 +272,7 @@ function drawLine(line, targetGhost = false) {
         const canvas = document.getElementById('canvasOverlay');
         const canvasContext = canvas.getContext('2d');
         canvasContext.font = `${height}px ${canvasContext.font.split('px')[1]}`;
-        const labelValue = line.label.replaceAll('<', "&#60").replaceAll('>', "&#62");
+        const labelValue = line.label.replaceAll('<', "&#60;").replaceAll('>', "&#62;");
         const textWidth = canvasContext.measureText(line.label).width;
         const label = {
             id: line.id + "Label",
