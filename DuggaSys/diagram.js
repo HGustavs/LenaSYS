@@ -70,8 +70,8 @@ class StateMachine {
 
                 const lastText = this.lastTypedTextMap[elementId] || "";
 
-                // Check is a word boundary was typed (space or punctuation) and if change has happend it is logged (no change means no logging)
-                const isWordBoundary = currentText.length > lastText.length && /\s|[.,;!?]/.test(currentText.slice(-1));
+                // Check is a word boundary was typed (space or punctuation or longer than 4 symbols) and if change has happend it is logged (no change means no logging)
+                const isWordBoundary = currentText.length > lastText.length && (/\s|[.,;!?]/.test(currentText.slice(-1)) || currentText.length - lastText.length > 3);
                 const isNewText = currentText !== lastText;
 
                 if (isNewText && isWordBoundary) {
@@ -170,7 +170,7 @@ class StateMachine {
                 break;
         }
         stateMachine.numberOfChanges++;
-        updateLatestChange()
+        updateLatestChange();
     }
 
     /**
