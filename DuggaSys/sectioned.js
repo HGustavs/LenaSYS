@@ -3218,46 +3218,46 @@ function validateUpdateAnnouncementForm() {
 }
 // Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = location.attributes('href');
+  var currentLocation = location.href;
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
   var uname = document.getElementById("userName").innerHTML;
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: { uname: uname },
-    type: "GET",
-    success: function (data) {
-      var parsed_data = JSON.parse(data);
+
+  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
+    .then(function (response) { return response.json(); })
+    .then(function (parsed_data) {
       var uid = parsed_data.uid;
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          var parsed_data = JSON.parse(this.response);
-          document.getElementById("announcementCards").innerHTML =
-            parsed_data.retrievedAnnouncementCard;
-          var unread_announcements = parsed_data.nRows;
-          if (unread_announcements > 0) {
-            document.getElementById("announcement img").after("<span id='announcementnotificationcount'>0</span>");
-            document.getElementById("announcementnotificationcount").innerHTML = parsed_data.nRows;
+      fetch("../Shared/retrieveAnnouncements.php?cid=" + encodeURIComponent(cid) +
+        "&versid=" + encodeURIComponent(versid) +
+        "&recipient=" + encodeURIComponent(uid))
+        .then(function (response) { return response.json(); })
+        .then(function (parsed_data) {
+          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+
+          if (parsed_data.nRows > 0) {
+            var img = document.getElementById("announcement").querySelector("img");
+            if (img) {
+              var span = document.createElement("span");
+              span.id = "announcementnotificationcount";
+              span.innerHTML = parsed_data.nRows;
+              img.after(span);
+            }
           }
+
           accessAdminAction();
-          var paragraph = "announcementMsgParagraph";
-          readLessOrMore(paragraph);
+          readLessOrMore("announcementMsgParagraph");
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
-          document.querySelector(".deleteBtn").addEventListener("click", function () {
-            sessionStorage.setItem('closeUpdateForm', true);
 
-          });
-
-        }
-      };
-      xmlhttp.open("GET", "../Shared/retrieveAnnouncements.php?cid=" + cid +
-        "&versid=" + versid + "&recipient=" + uid, true);
-      xmlhttp.send();
-    }
-  });
+          var btn = document.querySelector(".deleteBtn");
+          if (btn) {
+            btn.addEventListener("click", function () {
+              sessionStorage.setItem("closeUpdateForm", true);
+            });
+          }
+        });
+    });
 }
 // Update anouncement form
 function updateannouncementForm(updateannouncementid, cid, versid, tempFuction) {
