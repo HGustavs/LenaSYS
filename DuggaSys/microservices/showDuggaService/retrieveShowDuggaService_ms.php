@@ -263,12 +263,11 @@ $array = array(
     "hashpwd" => $hashpwd,
     "opt" => $opt,
     "link" => $link,
-	"isTeacher" => $isTeacher,
     "activeusers" => $active,
 
 );
 if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
 header('Content-Type: application/json');
-echo json_encode($array);
+return ($array);
 }

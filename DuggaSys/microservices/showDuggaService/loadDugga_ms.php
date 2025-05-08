@@ -34,7 +34,7 @@ $query = $pdo->prepare($sql);
 $query->bindParam(':hash', $hash);
 $result = $query->execute();
 $rows = $query->fetchAll();
-}
+
 
 //if the hash didn't work then retrive all answers for that moment
 if($rows == NULL){
@@ -54,6 +54,8 @@ foreach($rows as $row){
 	$newcourseid=$row['cid'];
 	$newcoursevers=$row['vers'];
 	$newduggaid=$row['quiz'];
+}
+
 }
 
 
