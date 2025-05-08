@@ -2412,10 +2412,10 @@ function toggleButtonClickHandler() {
 
   if (!showHidden) {
     toggleButton.src = '../Shared/icons/eye_closed_icon.svg';
-    toggleButton.title = 'Hide hidden items';
+    toggleButton.title = 'Show hidden items';
   } else {
     toggleButton.src = '../Shared/icons/eye_icon.svg';
-    toggleButton.title = 'Show hidden items';
+    toggleButton.title = 'Hide hidden items';
   }
 
   toggleHidden();
