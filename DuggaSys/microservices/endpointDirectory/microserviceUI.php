@@ -45,11 +45,16 @@ if (isset($_GET['edit']) && isset($_GET['id'])) {
     $editMicroservice = $stmt->fetch();
 }
 
-// search functionality safe from injections
+// search functionality safe from injections, filter functionality for POST and GET
 if (isset($_GET['search'])) {
     $searchTerm = "%".$_GET['search']."%";
     $stmt = $db->prepare("SELECT * FROM microservices WHERE ms_name LIKE ? OR description LIKE ?");
     $stmt->execute([$searchTerm, $searchTerm]);
+    $services = $stmt->fetchAll();
+} elseif (isset($_GET['filter_method']) && in_array($_GET['filter_method'], ['GET', 'POST'])) {
+    $method = $_GET['filter_method'];
+    $stmt = $db->prepare("SELECT * FROM microservices WHERE calling_methods = ?");
+    $stmt->execute([$method]);
     $services = $stmt->fetchAll();
 } else {
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
@@ -123,9 +128,17 @@ if (isset($_GET['id'])) {
             </form>
 
             <div class="button-container">
-                <form method="">
-                    <button type="submit">Filter</button>
-                </form>
+            <form method="GET">
+                <select name="filter_method">
+                    <option value="">-Select Method-</option>
+                    <option value="GET" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'GET') echo 'selected'; ?>>GET</option>
+                    <option value="POST" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'POST') echo 'selected'; ?>>POST</option>
+                </select>
+                <button type="submit">Filter</button>
+                <?php if (isset($_GET['filter_method'])): ?>
+                    <a href="?">Reset</a>
+                <?php endif; ?>
+            </form>
 
                 <form method="">
                     <button type="submit">Add Microservice</button>
