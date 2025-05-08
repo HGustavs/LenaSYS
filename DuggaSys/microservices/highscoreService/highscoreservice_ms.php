@@ -11,6 +11,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 //include_once "retrieveHighscoreService_ms.php";
+include_once "../microservices/curlService.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -47,7 +48,12 @@ $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
-
+/* //Change to curlService
+$response = callMicroservicePOST("../highscoreService/retrieveHighscoreService_ms.php", [
+    'did' => $duggaid,
+    'lid' => $variant
+], true );
+*/
 $data = json_decode($response, true);
 echo json_encode($data);
 
