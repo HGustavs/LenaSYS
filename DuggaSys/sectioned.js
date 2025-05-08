@@ -4715,24 +4715,19 @@ function fetchGitCodeExamples(courseid){
       var repo = parts[4]
   
       var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
-      // Ajax request to fetch all filenames in folder
-      $.ajax({
-        url: apiGitUrl,
-        method: 'GET',
-        success: function(response) {
-          // Check if response is an array or single object, then parse the response to extract file names.
-          // resolve() returns all filenames.
-          var response = response.filter(item => item.type === 'file');
-          var files = Array.isArray(response) ? response : [response];
-          var fileNames = files.map(function(file) {
-            return file.name;
-          });
-          resolve(fileNames);
-        },
-        error: function(xhr, status, error) {
-          reject(error);
+      // JS fetch request to fetch all filenames in folder
+      fetch(apiGitUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
         }
-      });
+      })
+      .then(response => response.text)
+      .then(data => data.filter(item => item.type === 'file'))
+      .then(files = Array.isArray(data) ? data : [data])
+      .then(fileNames = files.map(function(file) { return file.name; }))
+      .then(resolve(fileNames))   
+      .catch(error => reject(error))
     });
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
