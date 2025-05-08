@@ -68,13 +68,33 @@ class StateMachine {
 
                 if (!this.lastTypedTextMap) this.lastTypedTextMap = {};
 
-                const lastText = this.lastTypedTextMap[elementId] || "";
+                const currentFields = {
+                    name: element.name || "",
+                    attributes: element.attributes || ""
+                };
 
-                // Check is a word boundary was typed (space or punctuation or longer than 4 symbols) and if change has happend it is logged (no change means no logging)
-                const isWordBoundary = currentText.length > lastText.length && (/\s|[.,;!?]/.test(currentText.slice(-1)) || currentText.length - lastText.length > 3);
-                const isNewText = currentText !== lastText;
+                const lastFields = this.lastTypedTextMap[elementId] || {
+                    name: "",
+                    attributes: ""
+                };
 
-                if (isNewText && isWordBoundary) {
+                let hasChanged = false;
+
+                for (const key of ["name", "attributes"]) {
+                    const currentText = (currentFields[key] ?? "").toString();
+                    const lastText = (lastFields[key] ?? "").toString();
+
+                    // Check is a word boundary was typed (space or punctuation or longer than 4 symbols) and if change has happend it is logged (no change means no logging)
+                    const isWordBoundary = currentText.length > lastText.length && (/\s|[.,;!?]/.test(currentText.slice(-1)) || currentText.length - lastText.length > 3);
+                    const isNewText = currentText !== lastText;
+
+                    if (isNewText && isWordBoundary) {
+                        hasChanged = true;
+                        break;
+                    }
+                }
+
+                if (hasChanged) {
                     // Save a full snapshot of the element to the history log
                     // Ensures undo/redo works correctly without corrupting or losing the element
                     this.pushToHistoryLog({
@@ -85,21 +105,24 @@ class StateMachine {
                         functions: element.functions,
                         name: element.name, 
                         stereotype: element.stereotype, 
-
+    
                         // Correctly reconstructs element
                         kind: element.kind,
                         x: element.x,
                         y: element.y,
                         width: element.width,
                         height: element.height, 
-
+    
                         ...Element.GetFillColor(elementId),
                         ...Element.GetStrokeColor(elementId),
                         ...StateChange.GetSequenceAlternatives(),
                         state: StateChange.ChangeElementState()
                     });
-                    this.lastTypedTextMap[elementId] = currentText;
-
+                    this.lastTypedTextMap[elementId] = {
+                        name: currentFields.name,
+                        attributes: currentFields.attributes
+                    };
+    
                     this.numberOfChanges++;
                     updateLatestChange();
                 }
