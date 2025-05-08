@@ -3440,25 +3440,22 @@ function showLessOrMoreAnnouncements() {
 
 }
 function updateReadStatus(announcementid, cid, versid) {
-  var uname = $("#userName").html();
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: { uname: uname },
-    type: "GET",
-    success: function (data) {
-      var parsed_data = JSON.parse(data);
+  var uname = document.getElementById("userName").innerHTML;
+  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
+    .then(function (response) { return response.json(); })
+    .then(function (parsed_data) {
       var uid = parsed_data.uid;
-      $.ajax({
-        url: "../Shared/updateviewedAnnouncementCards.php",
-        data: { announcementid: announcementid, uid: uid, cid: cid, versid: versid },
-        type: "POST",
-        success: function (data) {
-        }
+      fetch("../Shared/updateviewedAnnouncementCards.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "announcementid=" + encodeURIComponent(announcementid) +
+          "&uid=" + encodeURIComponent(uid) +
+          "&cid=" + encodeURIComponent(cid) +
+          "&versid=" + encodeURIComponent(versid)
       });
-    }
-  });
-
+    });
 }
+
 function selectRecipients() {
   $(".selectAll input").change(function () {
     if (this.checked) {
