@@ -64,46 +64,46 @@ NOTE: Docker desktop must be open and running, otherwise this command will resul
 8. There are two ports which are apache-php and phpmyadmin server. The apache-php uses port `80:80`, You need to press the `80:80` link to open the LenaSYS website. The phpmyadmin uses port `8080:80` which opens the phpmyadmin website where you can manipulate sql-data, user permission and more. 
 <img src="Shared/Documentation/docker_images/apacheLink.png" width="512">
 
-9. In order to download LenaSYS you need to navigate to `LenaSYS/newinstaller/installer.php` this will lead you to the new installer. In case the new installer does not work for you, you can access the old installer at `LenaSYS/install/install.php`.
+9. To download LenaSYS, navigate to `LenaSYS/newinstaller/installer.php`. This will take you to the new installer. In case the new installer does not work for you, you can access the old installer at `LenaSYS/install/install.php`.
 <img src="Shared/Documentation/docker_images/lenasys.png" width="512">
 
 10. Congratulations, you can now use the LenaSYS website!
 <img src="Shared/Documentation/docker_images/newlenasysinstaller.png" width="512">
 
-11. Before you install the LenaSYS, it is good to know that the text-input which says `Hostname`, needs to be `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when entering root user credentials, type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
+11. Before installing LenaSYS, it is important to know that the text-input which says `Hostname`, needs to be `db`, not `localhost`. You also need to check/turn on `Use Distributed Environment`-checkbox. When entering root user credentials, type in root user: `root` and root password: `password`, because all default values are set in docker-compose-yml.
 
-12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](README.md/#install-lenasys).
+12. To install LenaSYS, you need to follow instructions for [new LenaSYS installer](Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](README.md/#install-lenasys).
 
 #### Using linux or mac?
-Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
-After changing the file permissions recursively over the repository, all the files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
+Ensure you set the appropriate file permissions for LenaSYS. The easiest way to do this is by running the command `sudo chmod -R 777 LenaSYS`.
+After changing the file permissions recursively across the repository, all files may show up as changes. To fix this, run `git config core.fileMode false` in the root of the repository.
 
 ### Stop containers in Docker
 
-1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait until all three containers says stopped. NOTE: If your terminal says all three are stopped, but your username does not appear in your terminal, then press the up- or down-arrow keys to show your username.
+1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait until all three containers show as stopped. NOTE: If the terminal indicates that all three are stopped, but your username does not appear in the terminal, then press the up- or down-arrow keys to show your username.
 <img src="Shared/Documentation/docker_images/terminal6.png" width="512">
 
-2. If you go back to Docker desktop and go to containers, you can see three containers are not running, shown by the gray circles. Now containers are not running.
+2. If you go back to Docker desktop and navigte to containers, you will see that three containers are no longer running, indicated by the gray circles. This means the containers have been stopped.
 <img src="Shared/Documentation/docker_images/containersdeactive.png" width="512">
 
 ### Remove containers and images in Docker
 
-1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
+1. If you want to remove all containers, first, stop running containers by following these steps [stop containers in Docker](#stop-containers-in-docker).
 
-2. After that run the command: `docker-compose down` in the terminal.
+2. Then run the following command: `docker-compose down` in the terminal.
 <img src="Shared/Documentation/docker_images/terminal7.png" width="512">
 
-3. Now your terminal says removed which means containers are removed.
+3. Once your terminal displays removed, it means the containers have been successfuly deleted.
 <img src="Shared/Documentation/docker_images/terminal8.png" width="512">
 
-4. You can check in Docker desktop and press containers. Here you can see that all containers are gone.
+4. To confirm this, open Docker desktop and click on the containers tab. You should see that all containers are gone.
 <img src="Shared/Documentation/docker_images/dockerContainers2.png" width="512">
 
-5. To remove all images to free up space, you need to press images in Docker desktop and select all checkboxes. When all selected,  press `Delete`-button and it will show a pop-up if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
+5. To remove all images and free disk space, open Docker desktop, press images and select all checkboxes. Once all are selected, click `Delete`-button. A confirmation pop-up will appear, press `Delete forever`-button. Now you have successful removed all containers and images.
 <img src="Shared/Documentation/docker_images/dockerimages.png" width="512">
 
 ### Stop running or pause Docker desktop
-1. To stop running or pause Docker desktop you need to open Docker desktop press either `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Now your Docker desktop is paused or stopped.
+1. To stop or pause Docker desktop, open Docker desktop and press either `pause`-button to pause docker or `Quit Docker Desktop`-button to stop running docker. Your Docker desktop is now paused or stopped.
 <img src="Shared/Documentation/docker_images/stopdocker.png" width="512">
 
 ---
