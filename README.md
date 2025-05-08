@@ -52,7 +52,7 @@ Once you have installed Docker desktop, you can run Docker containers, but first
 
 5. Here you need to build a few images and containers. To do this, run the following command for Windows: `docker-compose up --build`
 or macOS: `docker compose up --build`.
-NOTE: Docker desktop must be open and running, otherwise this command will result in an error and won't work.
+NOTE: You must keep Docker desktop open and running, otherwise this command will result in an error and won't work.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
 6. Docker has finished building images and containers when the terminal stops printing output or/and displays a blue apache-php name. NOTE: Do not close the terminal while docker is running, otherwise the containers will shut down.
