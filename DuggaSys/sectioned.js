@@ -4663,18 +4663,17 @@ function fetchGitCodeExamples(courseid){
     //Foreach loop to fetch each file in the filteredFiles array
     filteredFiles.forEach(function(filename){
       var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;
-      // Ajax request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
+      // JS fetch request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
       var promise = new Promise(function(resolveFile, rejectFile){
-        $.ajax({
-          url: apiGitUrl,
-          method: 'GET',
-          success: function(response) {
-            resolveFile({filename: filename, content: response});
-          },
-          error: function(xhr, status, error) {
-            rejectFile(error);
+        fetch(apiGitUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
           }
-        });
+        })
+        .then(response => response.text)
+        .then(data => resolveFile({filename: filename, content: data}))
+        .catch(error => rejectFile(error))
       });
       results.push(promise);
     });
