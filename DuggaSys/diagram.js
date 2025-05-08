@@ -430,6 +430,13 @@ function getData() {
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
+    
+    document.getElementById("diagram-fab").addEventListener("click", () =>{
+        document.querySelectorAll('.fab-inner').forEach(button => {
+            button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
+          });
+    });
+   
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
