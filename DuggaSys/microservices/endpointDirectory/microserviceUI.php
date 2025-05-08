@@ -247,7 +247,7 @@ if (isset($_GET['id'])) {
             echo $service['description'];
         }
         echo '</td>';
-        echo '<td><a href="?id=' . $service['id'] . '">View</a></td>';
+        echo '<td><a href="?id=' . $service['id'] . '" class="a-button">View</a></td>';
         echo '</tr>';
     }
     ?>
