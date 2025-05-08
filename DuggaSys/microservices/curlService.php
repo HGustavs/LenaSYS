@@ -1,22 +1,34 @@
 <?php
+
+//----------------------------------------------------------------------------------
+// callMicroservicePOST - Sends a POST request to a microservice.
+//----------------------------------------------------------------------------------
+
 function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue = false) {
-    //set url course path
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
+    // Build the full URL for the microservice endpoint
+    $baseURL = "http://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
+
+    // Initialize cURL session
     $ch = curl_init($url);
-    //options for curl
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
+    
+    // Set cURL options for a POST request
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, $returnValue);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataToSend);
 
+    // Execute the request
     $response = curl_exec($ch);
+
+    // Handle potential cURL errors
     if (curl_errno($ch)) {
         $response = json_encode(['error' => curl_error($ch)]);
     }
+
+    // Close the cURL session
     curl_close($ch);
+
+    // Return response if requested
     return $returnValue ? $response : null;
 }
 
