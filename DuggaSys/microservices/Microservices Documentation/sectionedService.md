@@ -102,38 +102,174 @@ Updates the active version of a specific course. After the update, retrieveSecti
 ### Microservices Used
 - retrieveSectionedService_ms
 
-
-
 # Name of file/service
 createGithubCodeExample_ms
 
 ## Description
-*Description of what the service do and its function in the system.*
+Creates and/or updates code examples based on GitHub files available in the GitHub directory for a specific course and course version.
+Retrieves all updated data from the database through retrieveSectionedService_ms.php, and uses it as its output.
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
    - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $kind
+   - Type: int
+   - Description: List entry type. Stored as int(10) in the database
+
+- Parameter: $link
+   - Type: String
+   - Description: List entry link. Stored as varchar(200) in the database
+
+- Parameter: $gradesys
+   - Type: int
+   - Description: Gradesystem. Stored as tinyint(1) in the database
+
+- Parameter: $highscoremode
+   - Type: int
+   - Description: Highscore mode. Stored as int(11) in the database
+
+- Parameter: $pos
+   - Type: int
+   - Description: Listentry position, +1 for each new listentry created. Stored as int(11) in the database
+
+- Parameter: $lid
+   - Type: int
+   - Description: Listentry ID. Stored as int(10) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier, for logging purposes
+
+- Parameter: $sectionname
+   - Type: String
+   - Description: Name of section. Stored as varchar(64) in the database
+
+- Parameter: $templateNumber
+   - Type: int
+   - Description: Template ID. Stored as int(10) in the database
+
+- Parameter: $exampleid ('listentries' table)
+   - Type: int
+   - Description: ID of code example. Stored as mediumint(8) in the database  
+
+- Parameter: $exampleName
+   - Type: String
+   - Description: Name of code example. Stored as varchar(64) in the database
+
+- Parameter: $boxid
+   - Type: int
+   - Description: Box ID. Stored as int(10) in the database
+
+- Parameter: $exampleid('box' table)
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
+
+- Parameter: $boxtitle
+   - Type: String
+   - Description: Box title, code example title. Stored as varchar(20) in the database
+
+- Parameter: $boxcontent
+   - Type: String
+   - Description: Type of content (code or document) inside box. Stored as varchar(64) in the database
+
+- Parameter: $fileName
+   - Type: String
+   - Description: File name. Stored as varchar(256) in the database
+
+- Parameter: $settings
+   - Type: String
+   - Description: Settings for example box. Setting for important = 1. Stored as varchar(1024) in the database 
+
+- Parameter: $wordlistid
+   - Type: int
+   - Description: Wordlist ID. Stored as mediumint(8) in the database
+
+- Parameter: $fontsize
+   - Type: int
+   - Description: Font size, for text related to the box. Stored as int(11) in the database
+
+- Parameter: $eid
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
+
+- Parameter: $boxName
+   - Type: String
+   - Description: New or updated filename. Stored as varchar(256) in the database
+
+- Parameter: $newBoxID
+   - Type: New or updated box ID. Stored as int(10) in the database
    - Description: describe parameter
 
-- Parameter: paramName
+- Parameter: $oldBoxID
    - Type: int
-   - Description: describe parameter
+   - Description: Old box ID. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
 - POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
+- Output: $courseid 
    - Type: int
-   - Description: describe the output
+   - Description: Course ID. Stored as int(10) in the database
 
-- Output: outputName
+- Output: $coursevers 
    - Type: String
-   - Description: describe the output
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Output: $userid 
+   - Type: int
+   - Description: User ID. Stored as int(10) in the database
+
+- Output: $examplename 
+   - Type: String
+   - Description: Code example name. Stored as varchar(64) in the database
+
+- Output: $link 
+   - Type: String
+   - Description: List entry link. Stored as varchar(200) in the database
+
+- Output: $kind 
+   - Type: int
+   - Description: Type of list entry. Stored as int(10) in the database
+
+- Output: $comment 
+   - Type: String
+   - Description: Comment on list entry. Stored as varchar(512) in the database
+
+- Output: $visible 
+   - Type: int
+   - Description: Listentry visibility. Either visible or not. Stored as tinyint(1) in the database
+
+- Output: $highscoremode 
+   - Type: int
+   - Description: Highscore mode. Stored as int(11) in the database
+
+- Output: $pos 
+   - Type: int
+   - Description: Listentry position, +1 for each new listentry created. Stored as int(11) in the database 
+
+- Output: $gradesys 
+   - Type: int
+   - Description: Gradesystem. Stored as tinyint(1) in the database
+
+- Output: $tabs 
+   - Type: int
+   - Description: Tabs settings. Stored as tinyint(4) in the database
+
+- Output: $groupkind 
+   - Type: String
+   - Description: Group type. Stored as varchar(16) in the database
 
 ## Examples of Use
 -
@@ -142,6 +278,8 @@ createGithubCodeExample_ms
 - getUid_ms
 - createNewListEntry_ms
 - retrieveSectionedService_ms
+
+
 
 
 
