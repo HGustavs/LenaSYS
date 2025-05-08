@@ -196,7 +196,7 @@ function drawLine(line, targetGhost = false) {
         startX += offset.x1 * zoomfact;
         startY += offset.y1 * zoomfact; 
     
-    //Draws the Segmented version for arrow and not straight line
+    //Draws both the straight and the segmented lines
     if(line.kind === lineKind.RECURSIVE){
         if(line.startIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
@@ -209,31 +209,15 @@ function drawLine(line, targetGhost = false) {
     }else{
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
-            if (line.innerType === SDLineType.SEGMENT) {
-                lineStr += iconPoly(SD_ARROW[line.ctype], from.x, from.y, lineColor, color.BLACK);
-            } else {
-                lineStr += drawArrowPoint(
-                    calculateArrowBase(to, from, 10 * zoomfact),
-                    from,
-                    lineColor,
-                    strokewidth
-                );
-            }
+            const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
+            lineStr += iconPoly(SD_ARROW[line.ctype], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK);
         }
 
         // Handle end arrow
         if (line.endIcon === SDLineIcons.ARROW) {
+            const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
             const reverseCtype = line.ctype.split('').reverse().join('');
-            if (line.innerType === SDLineType.SEGMENT) {
-                lineStr += iconPoly(SD_ARROW[reverseCtype], to.x, to.y, lineColor, color.BLACK);
-            } else {
-                lineStr += drawArrowPoint(
-                    calculateArrowBase(from, to, 10 * zoomfact),
-                    to,
-                    lineColor,
-                    strokewidth
-                );
-            }
+            lineStr += iconPoly(SD_ARROW[reverseCtype], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK);
         }
     }    
         
@@ -335,7 +319,7 @@ function drawLine(line, targetGhost = false) {
 
         //Add label with styling based on selection.
         if (line.kind === lineKind.RECURSIVE) {
-            //Calculatin the lable possition based on element size, so it follows when resized.
+            //Calculation the lable possition based on element size, so it follows when resized.
             const length = 20 * zoomfact;
             const lift   = 80 * zoomfact; 
             let {lineLength, elementLength, startX, startY } = recursiveParam(felem);
@@ -381,6 +365,22 @@ function drawLine(line, targetGhost = false) {
         }
     }
     return { lineStr, labelStr };
+}
+
+// Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed.
+function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth = 0, targetHeight = 0) {
+    const dx = tx - fx;
+    const dy = ty - fy;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    const offsetX = (targetWidth / 2) * (dx / length);
+    const offsetY = (targetHeight / 2) * (dy / length);
+
+    if (position === "start") {
+        return { x: fx, y: fy };
+    } else if (position === "end") {
+        return { x: tx - offsetX, y: ty - offsetY };
+    }
 }
 
 /**
