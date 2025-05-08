@@ -294,7 +294,6 @@ function option(object, icon) {
 function radio(line, arr) {
     let result = "";
     console.log(line.kind + " " + lineKind.RECURSIVE);
-    if(line.kind !== lineKind.RECURSIVE){
         result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
         arr.forEach(lineKind => {
             let checked = (line.kind == lineKind) ? 'checked' : '';
@@ -302,7 +301,6 @@ function radio(line, arr) {
                     <label for='lineRadio${lineKind}'>${lineKind}</label>
                     <br>`
         });    
-    }
     return result;
 }
 
@@ -1924,9 +1922,6 @@ function changeLineProperties() {
 
     // updates the line
     for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
-        if((key === "kind" && contextLine[0].kind === "Recursive" && value === "Dashed") || (key === "kind" &&contextLine[0].kind === "Recursive" && value === "Normal")){
-            continue;
-        }
         contextLine[0][key] = value;
     }
 

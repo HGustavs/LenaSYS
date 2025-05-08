@@ -30,7 +30,7 @@ function drawLine(line, targetGhost = false) {
 
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
-    if (line.kind === lineKind.RECURSIVE) {
+    if (line.recursive) {
         [fx, fy, tx, ty, offset] = getLineAttributes(felem, felem, line.ctype);
         //Setting start position for the recursive line, to originate from the top.
         fx = felem.cx;
@@ -104,7 +104,7 @@ function drawLine(line, targetGhost = false) {
             lineStr += double(-1, 2);
         }
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
-        if (line.kind == lineKind.RECURSIVE) {
+        if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
 
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
@@ -158,7 +158,7 @@ function drawLine(line, targetGhost = false) {
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}'
                 />`;
     } else { // UML, IE or SD
-        if (line.kind == lineKind.RECURSIVE) {
+        if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
         }
         else {
@@ -168,7 +168,7 @@ function drawLine(line, targetGhost = false) {
     }
 
     //Drawing Arrow and other line icons for UML abnd IE lines
-    if (line.kind === lineKind.RECURSIVE) {
+    if (line.recursive) {
         //Arrow/icon location dependant on element length, so its always in the top right corner of the element.
         const length = 40 * zoomfact;
         const elementLength = felem.x2 - felem.x1;
@@ -197,7 +197,7 @@ function drawLine(line, targetGhost = false) {
         startY += offset.y1 * zoomfact; 
     
     //Draws the Segmented version for arrow and not straight line
-    if(line.kind === lineKind.RECURSIVE){
+    if(line.recursive){
         if(line.startIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
         }
@@ -334,7 +334,7 @@ function drawLine(line, targetGhost = false) {
         const rectPosY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
 
         //Add label with styling based on selection.
-        if (line.kind === lineKind.RECURSIVE) {
+        if (line.recursive) {
             //Calculatin the lable possition based on element size, so it follows when resized.
             const length = 20 * zoomfact;
             const lift   = 80 * zoomfact; 
@@ -562,7 +562,7 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
     let textWidth = canvasContext.measureText(label).width;
 
 
-    if(line.kind === lineKind.RECURSIVE){
+    if(line.recursive){
         //Calculatin the cardinality possition based on element size, so it follows when resized.
         const lift   = 55 * zoomfact; 
         const {length, elementLength, startX, startY } = recursiveParam(felem);
