@@ -88,8 +88,20 @@ retrieveSectionedService_ms
 # Name of file/service
 bfs_ms.php
 ## Description
+Traverses a GitHub repository using a breadth-first search (BFS) approach to retrieve metadata or download files. The operation varies depending on the $opt parameter. It supports refreshing metadata, downloading files, or fetching the latest commit hash from a repository. Utilizes GitHub API and optionally a personal access token for extended API access.
 
 ## Input Parameters
+- Parameter: $url
+   - Type: string
+   - Description: Url to github commit.
+
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID.
+   
+- Parameter: $opt
+   - Type: string
+   - Description: Options for different operations, can be: GETCOMMIT, REFRESH, DOWNLOAD
 
 ## Calling Methods
 
