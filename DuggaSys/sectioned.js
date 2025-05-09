@@ -3084,24 +3084,24 @@ function showAnnouncement() {
   document.getElementById('fullAnnnouncementOverlay').style.display = "block";
 }
 
-// Retrieve the announcement author
 function retrieveAnnouncementAuthor() {
-  var uname = $("#userName").html();
-  var xmlhttp = new XMLHttpRequest();
+  const uname = document.getElementById("userName").innerHTML;
+
+  const xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      if ($("#userid").length > 0) {
-        var parsed_data = JSON.parse(this.response);
-        if (($("#announcementForm").length) > 0) {
+    if (this.readyState === 4 && this.status === 200) {
+      if (document.getElementById("userid")) {
+        const parsed_data = JSON.parse(this.response);
+
+        if (document.getElementById("announcementForm")) {
           document.getElementById("userid").value = parsed_data.uid;
           retrieveCourseProfile(parsed_data.uid);
         }
       }
     }
   };
-  xmlhttp.open("GET", "../Shared/retrieveUserid.php?uname=" + uname, true);
+  xmlhttp.open("GET", `../Shared/retrieveUserid.php?uname=${uname}`, true);
   xmlhttp.send();
-
 }
 
 // Retrieve course profile
