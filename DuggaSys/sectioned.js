@@ -3194,6 +3194,7 @@ function getStudents(cid, userid) {
   else document.getElementById("recipient").disabled = true;
 }
 
+
 // Validate create announcement form
 function validateCreateAnnouncementForm() {
   const form = document.getElementById("announcementForm");
@@ -3244,13 +3245,13 @@ function validateUpdateAnnouncementForm() {
   });
 }
 
-// Retrieve announcements
+// Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = $(location).attr('href');
+  var currentLocation = location.attributes('href');
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
-  var uname = $("#userName").html();
+  var uname = document.getElementById("userName").innerHTML;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3266,15 +3267,15 @@ function retrieveAnnouncementsCards() {
             parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if (unread_announcements > 0) {
-            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
-            $("#announcementnotificationcount").html(parsed_data.nRows);
+            document.getElementById("announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            document.getElementById("announcementnotificationcount").innerHTML = parsed_data.nRows;
           }
           accessAdminAction();
           var paragraph = "announcementMsgParagraph";
           readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
-          $(".deleteBtn").click(function () {
+          document.querySelector(".deleteBtn").addEventListener("click", function () {
             sessionStorage.setItem('closeUpdateForm', true);
 
           });
