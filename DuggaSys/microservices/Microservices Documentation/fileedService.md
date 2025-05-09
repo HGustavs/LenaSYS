@@ -7,7 +7,6 @@ deleteFileLink_ms
 This microservice detects files that are not in use and deletes them based on that fact.
 
 ## Input Parameters
-*Parameters will be described in lists*
 - Parameter: $opt
    - Type: String
    - Description: Operation type
@@ -45,7 +44,6 @@ This microservice detects files that are not in use and deletes them based on th
 
 
 ## Output Data and Format
-*Output Data will be described in lists*
 - Output: JSON response
    - Type: JSON object
    - Description: The json encoded response following the delete operation based on its success and/or any error messages that follows
@@ -56,5 +54,62 @@ This microservice detects files that are not in use and deletes them based on th
 
 ### Microservices Used
 - sharedMicroservices/getUid_ms.php
-- retrieveFileedService_ms.php
+- retrieveFileedService_ms.php ---> Inlcude has been replaced with curlService call
+- DuggaSys/microservices/curlService.php
+
+---
+
+# Name of file/service
+getFiledService_ms
+
+## Description
+This microservice gets all filelinks.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Output: $cid
+   - Type: int
+   - Description: Course ID
+
+- Parameter: $coursevers
+   - Type: int(11)
+   - Description: Course version.
+
+- Parameter: $userid
+   - Type: int(10)
+   - Description: ID of the user.
+
+- Parameter: $log_uuid
+   - Type: char
+   - Description: For logging purposes.
+
+- Parameter: $fid
+   - Type: int
+   - Description: ID of the file.
+
+## Calling Methods
+- GET
+
+
+## Output Data and Format
+- Output: retrieveArray
+   - Type: JSON object
+   - Description: The microservice will create and return an array with the following fields     
+        - "courseid=" . urlencode($courseid)
+        - "&coursevers=" . urlencode($coursevers) 
+        - "&fid=" . urlencode($fid) 
+        - "&opt=" . urlencode($opt)
+        - "&log_uuid=" . urlencode($log_uuid) 
+        - "&kind=" . urlencode($kind)
+
+
+## Examples of Use
+- 
+
+### Microservices Used
+- sharedMicroservices/getUid_ms.php
+- retrieveFileedService_ms.php ---> Inlcude has been replaced with curlService call
 - DuggaSys/microservices/curlService.php
