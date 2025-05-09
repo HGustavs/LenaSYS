@@ -39,7 +39,27 @@ if (isset($_POST['updateID'])) {
     exit();
 }
 
-if (isset($_GET['edit']) && isset($_GET['id'])) {
+// add functionality
+if (isset($_POST['addMicroservice'])) {
+    if (!isset($_POST['token']) || $_POST['token'] !== $_SESSION['token']) {
+        http_response_code(403);
+        exit('Invalid CSRF token');
+    }
+
+    $name = $_POST['ms_name'];
+    $description = $_POST['description'];
+    $methods = $_POST['calling_methods'];
+    $used = $_POST['microservices_used'];
+
+    $stmt = $db->prepare("INSERT INTO microservices (ms_name, description, calling_methods, microservices_used) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$name, $description, $methods, $used]);
+    header("Location: ?");
+    exit();
+}
+
+if (isset($_GET['add'])) {
+    $addingNew = true;
+} elseif (isset($_GET['edit']) && isset($_GET['id'])) {
     $stmt = $db->prepare("SELECT * FROM microservices WHERE id = ?");
     $stmt->execute([$_GET['id']]);
     $editMicroservice = $stmt->fetch();
@@ -113,6 +133,22 @@ if (isset($_GET['id'])) {
             <a href="?id=<?php echo $editMicroservice['id']; ?>">Cancel</a>
         </form>
     <?php } ?>
+
+    <?php if (isset($addingNew)) { ?>
+        <div class="line">
+            <h1>Add New Microservice</h1>
+        </div>
+        <form method="post">
+            <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+            <input type="hidden" name="addMicroservice" value="1">
+            <p><b><label>Microservice name:<br><input type="text" name="ms_name" required placeholder="Enter name" ></label></p>
+            <p><label>Description:<br><textarea name="description" rows="5" cols="40" placeholder="Enter description..."></textarea></label></p>
+            <p><label>Calling Methods:<br><input type="text" name="calling_methods" required placeholder="Enter method"></label></p>
+            <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" required placeholder="Enter microservices"></label></p>
+            <button type="submit">Add Microservice</button>
+            <a href="?">Cancel</a>
+        </form>
+    <?php } ?>
     
     <?php    
     if (isset($dbError)) {
@@ -145,8 +181,8 @@ if (isset($_GET['id'])) {
                     <a href="?">Reset</a>
                 <?php endif; ?>
             </form>
-
-                <form method="">
+                <form method="get">
+                    <input type="hidden" name="add" value="1">
                     <button type="submit">Add Microservice</button>
                 </form>
                 <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
