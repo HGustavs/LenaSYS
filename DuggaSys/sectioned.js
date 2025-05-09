@@ -1678,8 +1678,6 @@ function returnedSection(data) {
     str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
     if (data['entries'].length > 0) {
-      var kk = 0;
-
       for (i = 0; i < data['entries'].length; i++) {
         var item = data['entries'][i];
         var deadline = item['handindeadline'];
@@ -1707,11 +1705,6 @@ function returnedSection(data) {
         str += `<table id='lid${item['lid']}' value='${item['lid']}'
         ><tr value='${makeTextArray(item['kind'], valarr)}'`;
 
-        //if (kk % 2 == 0) {
-        //  str += " class='hi' ";
-        //} else {
-        //  str += " class='lo' ";
-        //}
         str += " >";
 
 
@@ -1724,481 +1717,39 @@ function returnedSection(data) {
         var itemKind = parseInt(item['kind']);
         itemKinds[i] = itemKind;
 
-
-        if (itemKind === 3 || itemKind === 4) {
-
-          // If there exists atleast one test or moment swimlanes shall be hidden
-          hasDuggs = true;
-
-          var grady = -1;
-          var status = "";
-          var marked;
-          var submitted;
-          var lastSubmit = null;
-
-          for (var jjj = 0; jjj < data['results'].length; jjj++) {
-            var lawtem = data['results'][jjj];
-            if ((lawtem['moment'] == item['lid'])) {
-              grady = lawtem['grade'];
-              status = "";
-
-              var st = lawtem['submitted'];
-              if (st !== null) submitted = new Date(st)
-              else submitted = null;
-
-              var mt = lawtem['marked'];
-              if (mt !== null) marked = new Date(mt)
-              else marked = null;
-
-              if (itemKind === 3 || itemKind === 6) {
-                if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
-                  status = "pending";
-                }
-                if (submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())) {
-                  status = "pending";
-                }
-                if (lastSubmit === null) {
-                  lastSubmit = submitted;
-                } else if (submitted !== null) {
-                  if (lastSubmit.getTime() < submitted.getTime()) {
-                    lastSubmit = submitted;
-                  }
-                }
-              }
-
-            }
-          }
-
-          if (retdata['writeaccess']) {
-            if (itemKind === 3) {
-              if (isLoggedIn) {
-                str += "<td class='LightBox" + hideState + "'>";
-                str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-              }
-            } else if (itemKind === 4) {
-              if (isLoggedIn) {
-                str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
-                str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-              }
-            }
-            str += "</td>";
-          }
+        switch (itemKind){
+          case 0:
+            str += composeHeader(data, itemKind, item, hideState, str);
+            break;
+          case 1:
+            str += composeSection(data, itemKind, item, hideState, str);
+            break;
+          case 2:
+            str += composeCode(data, itemKind, item, hideState, str);
+            break;
+          case 3: 
+            str += composeTest(data, itemKind, item, hideState, str);
+            break;
+          case 4:
+            str += composeMoment(data, itemKind, item, hideState, str);
+            break;
+          case 5:
+            str += composeLink(data, itemKind, item, hideState, str);
+            break;
+          case 6: 
+            str += composeGroup_Moment(data, itemKind, item, hideState, str);
+            break;
+          case 7:
+            str += composeMessage(data, itemKind, item, hideState, str);
+            break;
+          default:
+            break;
         }
-
-        if (retdata['writeaccess']) {
-          if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
-            str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
-            str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div>";
-
-          }
-          str += "</td>";
+        if (itemKind <= 7 && itemKind >= 0){
+          str += composeEnd(data, itemKind, item, hideState, str);
         }
-        // Make tabs to align each section element
-        // kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
-        if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 3 || itemKind === 5 || itemKind === 6 || itemKind === 7) {
-          var itemGradesys = parseInt(item['gradesys']);
-          if (itemGradesys > 0 && itemGradesys < 4) {
-            for (var numSpacers = 0; numSpacers < itemGradesys; numSpacers++) {
-              str += addColorsToTabSections(itemKind, hideState, "L");
-            }
-          } else if (itemGradesys == 4) {
-            str += addColorsToTabSections(itemKind, hideState, "L");
-            str += addColorsToTabSections(itemKind, hideState, "E");
-          } else if (itemGradesys == 5) {
-            str += addColorsToTabSections(itemKind, hideState, "L");
-            str += addColorsToTabSections(itemKind, hideState, "L");
-            str += addColorsToTabSections(itemKind, hideState, "E");
-          } else if (itemGradesys == 6) {
-            str += addColorsToTabSections(itemKind, hideState, "L");
-            str += addColorsToTabSections(itemKind, hideState, "L");
-            str += addColorsToTabSections(itemKind, hideState, "L");
-            str += addColorsToTabSections(itemKind, hideState, "E");
-          } else if (itemGradesys == 7) {
-            str += addColorsToTabSections(itemKind, hideState, "E");
-          }
-        }
-        // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
-        collectedLid.push(item['lid']);
-        // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
-        if (itemKind === 0) {
-          // Styling for header row
-          str += `</td><td class='header item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' `;
-          kk = 0;
+        //add the compose versions
 
-        } else if (itemKind === 1) {
-          if (isLoggedIn) {
-            // Styling for Section row
-            str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
-            str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
-          }
-          str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;' `;
-          kk = 0;
-
-        } else if (itemKind === 2) {
-
-
-          str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
-
-          kk++;
-
-        } else if (itemKind === 3) {
-          if (retdata['writeaccess']) {
-            str += "<td class='LightBox" + hideState + "'>";
-            str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' title='Quiz' src='../Shared/icons/PenT.svg'></div>";
-          }
-
-          if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png'
-            onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
-          }
-          str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
-          kk++;
-
-        } else if (itemKind === 4) {
-          str += "<td class='LightBoxFilled" + hideState + "'>";
-          str += "<div ><img alt='pen icon dugga' title='Moment' src='../Shared/icons/list_docfiles.svg'></div>";
-
-          // New moment bool equals true
-          momentexists = item['lid'];
-          str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;' `;
-          kk = 0;
-
-        } else if (itemKind === 5) { // Link
-
-          str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}' `;
-          kk++;
-
-        } else if (itemKind === 6) { // Group
-          // Alt 1
-          var grptype = item['grptype'] + "_";
-          var grp = grptype + "UNK";
-          // Check if the grpmbershp has data in the entry. 
-          if(data['grpmembershp'] != null) {
-            let grpmembershp = data['grpmembershp'].split(" ");
-            if (document.getElementById("userName").innerHTML != "Guest") {
-              for (let i = 0; i < grpmembershp.length; i++) {
-                let g = grpmembershp[i].replace(grptype, "");
-                if (g.length < grpmembershp[i].length) {
-                  if (grp !== grptype + "UNK") {
-                    grp += ",";
-                  } else {
-                    grp = "";
-                  }
-                  grp += grptype + g;
-                }
-              }
-            }
-          }
-
-          str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'><img src='../Shared/icons/group-iconDrk.svg'
-          style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
-          str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
-          ' placeholder='${momentexists}' id='I${item['lid']}' `;
-
-        } else if (itemKind === 7) { // Message
-          if (!(item['link'] == "" || item['link'] == "---===######===---")) {
-            str += `<td style='width:32px;'><img title='Important message'
-            src='../Shared/icons/warningTriangle.svg'></td>`;
-          }
-          str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}' `;
-        }
-
-        // Close Information
-        str += " value='" + item['lid'] + "' onclick='duggaRowClick(this)' >";
-        // Content of Section Item
-        if (itemKind == 0) {
-          // Header
-          str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
-        } else if (itemKind == 1) {
-          // Section
-          str += `<div ('arrowComp${item['lid']}')" class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center ;
-          ' title='${item['entryname']}'>`;
-          str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
-          str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:block;'>`;
-          str += `<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
-        } else if (itemKind == 4) {
-          // Moment
-          var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
-          str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
-          str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
-          str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:block;'>";
-          str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
-          str += "</div>";
-        } else if (itemKind == 2) {
-          // Code Example
-          var param = {
-            'exampleid': item['link'],
-            'courseid': querystring['courseid'],
-            'coursename': querystring['coursename'],
-            'cvers': querystring['coursevers'],
-            'lid': item['lid']
-          };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
-            hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
-        } else if (itemKind == 3) {
-          // Test / Dugga
-          var param = {
-            'did': item['link'],
-            'courseid': querystring['courseid'],
-            'coursename': querystring['coursename'],
-            'coursevers': querystring['coursevers'],
-            'moment': item['lid'],
-            'segment': momentexists,
-            highscoremode: item['highscoremode'],
-            comment: item['comments'],
-            deadline: item['deadline'],
-            'cid': querystring['courseid']
-          };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php", hideState,
-            "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
-        } else if (itemKind == 5) {
-          // Link
-          if (item['link'].substring(0, 4) === "http") {
-            str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;",
-              item['entryname'], false, {});
-          } else {
-            var param = {
-              'exampleid': item['link'],
-              'courseid': querystring['courseid'],
-              'coursevers': querystring['coursevers'],
-              'fname': item['link']
-            };
-            str += makeanchor("showdoc.php", hideState, "cursor:pointer;margin-left:8px;",
-              item['entryname'], false, param);
-          }
-        } else if (itemKind == 6) {
-          // Group
-          str += `<a class='ellipsis nowrap' onclick='getGroups(\"${grp}\");'
-          style='cursor:pointer;'>` + item['entryname'];
-          let re = new RegExp(grptype, "g");
-          grp = grp.replace(re, "");
-          if (document.getElementById("userName").innerHTML == "Guest") {
-            str += "  &laquo;Not logged in&raquo</span></div>";
-          } else if (grp.indexOf("UNK") >= 0) {
-            str += " &laquo;Not assigned yet&raquo</span></div>";
-          } else {
-            str += grp + "</span></a>";
-          }
-        } else if (itemKind == 7) {
-          // Message
-          str += `<span style='margin-left:8px;' title='${item['entryname']}'>
-          ${item['entryname']}</span>`;
-        }
-
-        str += "</td>";
-
-        // If none of the deadlines are null or undefined we need to add it to the page
-        if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
-          // Both of them will need this html
-          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>" +
-            "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
-
-          // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
-          if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
-            deadline = convertDateToDeadline(new Date(deadline));
-            deadlineArr = deadline.split(" ");
-            str += deadlineArr[0];
-
-            // If minute and hour contains nothing but 0 we dont show it
-            if (!/^[0:]+$/.test(deadlineArr[1])) {
-              str += " " + deadlineArr[1].split(":")[0] + ":" + deadlineArr[1].split(":")[1];
-            }
-
-            // If there is only a relative deadline we display it instead
-          } else if (rDeadline !== null && rDeadline !== "undefined") {
-            str += formatRelativeDeadlineToString(rDeadline);
-          }
-          str += "</div></td>";
-        }
-
-        // Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-        if (submitted) {
-          var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
-          var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
-
-          // Create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
-          if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
-              str += `<td style='width:25px;'><img style='width:25px; padding-top:3px'
-              title='This dugga is not guaranteed to be marked due to submission after deadline.'
-              src='../Shared/icons/warningTriangle.svg'/></td>`;
-            }
-          }
-        }
-
-        // github icon for moments (itemKind 4 is moments)
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
-                  src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), getLocalStorage();'>`;
-          str += "</td>";
-        }
-
-        // github icon for code (itemKind 2 is code)
-        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
-                  src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
-          str += "</td>";
-        }
-
-        // Refresh button for moments
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='moment'>`;
-          str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
-                  id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
-          str += " onclick='refreshMoment(" + item['lid'] + ")'";
-          str += ">";
-          str += "</td>";
-        }
-
-        // Refresh button
-        /*if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
-           str += `<td style='width:32px;'>`;
-           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
-                   id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
-           str += " onclick='refreshCodeExample("+item['link']+")'"
-           str += "</td>";
-         }*/
-
-        // Userfeedback
-        if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
-          str += "<td style='width:32px;'>";
-          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
-          onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
-          str += "</td>";
-        }
-
-        // Testing implementation
-        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
-          // The string below was part of the original refresh button on each code-example that i simply moved and modified, keeping this here in case it's relevant for future issue to handle back-end.
-          // str += "onclick='refreshCodeExample("+item['link']+")'"
-          str += "onclick='console.log(\"RefreshButton Clicked!\");'"
-          str += "</td>";
-        }
-        // Tab example button
-        if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
-            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
-          str += "</td>";
-        }
-        if (itemKind != 4 && itemKind != 1 && itemKind != 0) { // dont create buttons for moments only for specific assignments
-          //Generate new tab link
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class=''
-            src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
-          str += "</td>";
-
-          // Generate Canvas Link Button
-          if (data['writeaccess'] || data['studentteacher']) {
-            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class=''
-            src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
-            str += `</div>`;
-            str += "</td>";
-          }
-        }
-
-
-        // Tab element button for heading
-        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<input style='filter: invert(1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
-            title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
-          str += "</td>";
-        }
-
-        // Cog Wheel for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-
-
-          str += "<img style='filter: invert(1);' alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(" + makeparams([item['lid'], item['entryname'],
-          item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-          item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
-
-
-          str += "</td>";
-        }
-
-        // Cog Wheel
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-
-
-          str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
-          str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(";
-          if(item['handindeadline']!=null) {
-            str +=makeparams([item['lid'], item['entryname'],
-            item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-            item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
-            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
-          }
-          else {
-            str +=makeparams([item['lid'], item['entryname'],
-            item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
-            item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
-            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
-          }
-
-
-          str += "</td>";
-        }
-
-        // Trashcan for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick='markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this);'>`;
-          str += "</td>";
-        }
-        
-        // Trashcan for items
-        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
-
-          // Will run marked items independent of lenght
-          console.log('selectedItemList: ' + selectedItemList.length);
-          if (itemKind === 1 && selectedItemList.length == 0){
-            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-            str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-            src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
-            str += "</td>";
-          }
-          else{
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
-          str += "</td>";  
-          } 
-        }
-
-        // Checkbox
-        if (data['writeaccess'] || data['studentteacher']) {
-          str += `<td style='width:25px;' class='${makeTextArray(itemKind,
-            ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += "<input type='checkbox' id='" + item['lid'] + "-checkbox" + "' title='" + item['entryname'] + " - checkbox" + "' class='checkboxIconTab' onclick='markedItems(this)'>";
-          str += "</td>";
-        }
 
         str += "</tr>";
         str += "</table></div>";
@@ -2374,6 +1925,526 @@ function returnedSection(data) {
   document.getElementById('toggleElements').addEventListener('click', toggleButtonClickHandler);
   toggleHidden();
 }
+
+
+
+// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment || 7 Message
+
+function composeHeader(data, itemKind, item, hideState, str){
+  str = helperWriteAccess(data, itemKind, item, hideState, str);
+  str = tabAlign(item, itemKind, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  // Styling for header row
+  str += `</td><td class='header item${hideState}' placeholder='${momentexists}'id='I${item['lid']}'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >=`;
+
+  str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
+  //helperSubmitted()
+
+
+  // Tab element button for heading
+  if ((data['writeaccess'] || data['studentteacher'])) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<input style='filter: invert(1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+      title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
+    str += "</td>";
+  }
+
+  // Cog Wheel for headers
+  if (data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+      ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+
+
+    str += "<img style='filter: invert(1);' alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
+    str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(" + makeparams([item['lid'], item['entryname'],
+    item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+    item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
+    item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+
+
+    str += "</td>";
+  }
+
+  // Trashcan for headers
+  if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+    src='../Shared/icons/Trashcan.svg' onclick='markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this);'>`;
+    str += "</td>";
+  }
+}
+
+function composeSection(itemKind, item, hideState, str){
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  if (isLoggedIn) {
+    // Styling for Section row
+    str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'>";
+    str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img alt='pen icon dugga' style='width: 53%;padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' src='../Shared/icons/select.png'></div>";
+  }
+  str += `<td class='section item${hideState}' placeholder='${momentexists}'id='I${item['lid']}' style='cursor:pointer;'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  
+
+  str += `<div ('arrowComp${item['lid']}')" class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center ;
+        ' title='${item['entryname']}'>`;
+  str += `<span class='ellipsis listentries-span'>${item['entryname']}</span>`;
+  str += `<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp${item['lid']}' class='arrowComp' style='display:block;'>`;
+  str += `<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight${item['lid']}' class='arrowRight' style='display:none;'></div>`;
+  str += "</td>";   
+  //helperSubmitted()
+
+  // Testing implementation
+  if (data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+      ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
+    // The string below was part of the original refresh button on each code-example that i simply moved and modified, keeping this here in case it's relevant for future issue to handle back-end.
+    // str += "onclick='refreshCodeExample("+item['link']+")'"
+    str += "onclick='console.log(\"RefreshButton Clicked!\");'"
+    str += "</td>";
+  }
+
+  
+}
+
+function composeCode(){
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  
+
+  var param = {
+    'exampleid': item['link'],
+    'courseid': querystring['courseid'],
+    'coursename': querystring['coursename'],
+    'cvers': querystring['coursevers'],
+    'lid': item['lid']
+  };
+  str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
+    hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+  str += "</td>";
+  //helperSubmitted()
+
+  // github icon for code (itemKind 2 is code)
+  if (data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github' class=''
+            src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubTemplate\", this)'>`;
+    str += "</td>";
+  }
+}
+
+function composeTest(){
+  shared34(3);
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  if (retdata['writeaccess']) {
+    str += "<td class='LightBox" + hideState + "'>";
+    str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' title='Quiz' src='../Shared/icons/PenT.svg'></div>";
+  }
+
+  if (item['highscoremode'] != 0 && itemKind == 3) {
+    str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png'
+    onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
+  }
+  str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  
+
+  var param = {
+    'did': item['link'],
+    'courseid': querystring['courseid'],
+    'coursename': querystring['coursename'],
+    'coursevers': querystring['coursevers'],
+    'moment': item['lid'],
+    'segment': momentexists,
+    highscoremode: item['highscoremode'],
+    comment: item['comments'],
+    deadline: item['deadline'],
+    'cid': querystring['courseid']
+  };
+  str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php", hideState,
+    "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+  str += "</td>";
+
+  if (((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
+    // Both of them will need this html
+    str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>" +
+      "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
+
+    // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
+    if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
+      deadline = convertDateToDeadline(new Date(deadline));
+      deadlineArr = deadline.split(" ");
+      str += deadlineArr[0];
+
+      // If minute and hour contains nothing but 0 we dont show it
+      if (!/^[0:]+$/.test(deadlineArr[1])) {
+        str += " " + deadlineArr[1].split(":")[0] + ":" + deadlineArr[1].split(":")[1];
+      }
+
+      // If there is only a relative deadline we display it instead
+    } else if (rDeadline !== null && rDeadline !== "undefined") {
+      str += formatRelativeDeadlineToString(rDeadline);
+    }
+    str += "</div></td>";
+  }
+  //helperSubmitted()
+
+  // Userfeedback
+  if (data['writeaccess'] && item['feedbackenabled'] == 1) {
+    str += "<td style='width:32px;'>";
+    str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
+    onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
+    str += "</td>";
+  }
+}
+
+function composeMoment(){
+  shared34(4);
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  str += "<td class='LightBoxFilled" + hideState + "'>";
+  str += "<div ><img alt='pen icon dugga' title='Moment' src='../Shared/icons/list_docfiles.svg'></div>";
+
+  // New moment bool equals true
+  momentexists = item['lid'];
+  str += `<td class='moment item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' style='cursor:pointer;'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  
+  var strz = makeTextArray(item['gradesys'], ["", "(U-G-VG)", "(U-G)"]);
+  str += `<div class='nowrap${hideState}' style='margin-left:8px;display:flex;align-items:center;' title='${item['entryname']}'>`;
+  str += `<span class='ellipsis listentries-span'>${item['entryname']} ${strz} </span>`;
+  str += "<img src='../Shared/icons/desc_complement.svg' alt='Hide List Content' id='arrowComp" + item['lid'] + "' class='arrowComp' style='display:block;'>";
+  str += "<img src='../Shared/icons/right_complement.svg' alt='Show List Content' id='arrowRight" + item['lid'] + "' class='arrowRight' style='display:none;'></div>";
+  str += "</div>";
+  str += "</td>";
+  //helperSubmitted()
+
+  // github icon for moments (itemKind 4 is moments)
+  if (data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
+            src='../Shared/icons/githubLink-icon.png' onclick='confirmBox(\"openGitHubBox\", this), getLidFromButton("${item['lid']}"), getLocalStorage();'>`;
+    str += "</td>";
+  }
+
+  // Refresh button for moments
+  if (data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='moment'>`;
+    str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
+            id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
+    str += " onclick='refreshMoment(" + item['lid'] + ")'>";
+    str += "</td>";
+  }
+}
+
+function composeLink(){
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  str += `<td class='example item' placeholder='${momentexists}' id='I${item['lid']}'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  
+
+  if (item['link'].substring(0, 4) === "http") {
+    str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;",
+      item['entryname'], false, {});
+  } else {
+    var param = {
+      'exampleid': item['link'],
+      'courseid': querystring['courseid'],
+      'coursevers': querystring['coursevers'],
+      'fname': item['link']
+    };
+    str += makeanchor("showdoc.php", hideState, "cursor:pointer;margin-left:8px;",
+      item['entryname'], false, param);
+  }
+  str += "</td>";
+  //helperSubmitted()
+}
+
+function composeGroup_Moment(){
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  // Alt 1
+  var grptype = item['grptype'] + "_";
+  var grp = grptype + "UNK";
+  // Check if the grpmbershp has data in the entry. 
+  if(data['grpmembershp'] != null) {
+    let grpmembershp = data['grpmembershp'].split(" ");
+    if (document.getElementById("userName").innerHTML != "Guest") {
+      for (let i = 0; i < grpmembershp.length; i++) {
+        let g = grpmembershp[i].replace(grptype, "");
+        if (g.length < grpmembershp[i].length) {
+          if (grp !== grptype + "UNK") {
+            grp += ",";
+          } else {
+            grp = "";
+          }
+          grp += grptype + g;
+        }
+      }
+    }
+  }
+
+  str += `<td style='width:32px;' onclick='getGroups(\"${grp}\");'><img src='../Shared/icons/group-iconDrk.svg'
+  style='display:block;margin-right:4.5px;max-width:32px;max-height:32px;overflow:hidden;'></td>`;
+  str += `<td class='section-message item' onclick='getGroups(\"${grp}\");
+  ' placeholder='${momentexists}' id='I${item['lid']}'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  
+  str += `<a class='ellipsis nowrap' onclick='getGroups(\"${grp}\");'
+      style='cursor:pointer;'>` + item['entryname'];
+  let re = new RegExp(grptype, "g");
+  grp = grp.replace(re, "");
+  if (document.getElementById("userName").innerHTML == "Guest") {
+    str += "  &laquo;Not logged in&raquo</span></div>";
+  } else if (grp.indexOf("UNK") >= 0) {
+    str += " &laquo;Not assigned yet&raquo</span></div>";
+  } else {
+    str += grp + "</span></a>";
+  }
+  str += "</td>";
+  //helperSubmitted()
+}
+
+function composeMessage(){
+  str = helperWriteAccess(itemKind, item, hideState, str);
+  str = tabAlign(itemKind, item, hideState, str);
+  // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
+  collectedLid.push(item['lid']);
+  if (!(item['link'] == "" || item['link'] == "---===######===---")) {
+    str += `<td style='width:32px;'><img title='Important message'
+    src='../Shared/icons/warningTriangle.svg'></td>`;
+  }
+  str += `<td class='section-message item' placeholder='${momentexists}' id='I${item['lid']}'  value='" + item['lid'] + "' onclick='duggaRowClick(this)' >`;
+  str += `<span style='margin-left:8px;' title='${item['entryname']}'>
+    ${item['entryname']}</span>`;
+  str += "</td>";
+  //helperSubmitted()
+}
+
+function shared34(itemKind){
+  // If there exists atleast one test or moment swimlanes shall be hidden
+  hasDuggs = true;
+
+  var grady = -1;
+  var status = "";
+  var marked;
+  var submitted;
+  var lastSubmit = null;
+
+  for (var jjj = 0; jjj < data['results'].length; jjj++) {
+    var lawtem = data['results'][jjj];
+    if ((lawtem['moment'] == item['lid'])) {
+      grady = lawtem['grade'];
+      status = "";
+
+      var st = lawtem['submitted'];
+      if (st !== null) submitted = new Date(st)
+      else submitted = null;
+
+      var mt = lawtem['marked'];
+      if (mt !== null) marked = new Date(mt)
+      else marked = null;
+
+      if (itemKind === 3) {
+        if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
+          status = "pending";
+        }
+        if (submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())) {
+          status = "pending";
+        }
+        if (lastSubmit === null) {
+          lastSubmit = submitted;
+        } else if (submitted !== null) {
+          if (lastSubmit.getTime() < submitted.getTime()) {
+            lastSubmit = submitted;
+          }
+        }
+      }
+
+    }
+  }  
+  
+}
+
+function helperWriteAccess(itemKind, item, hideState, str){
+  if (retdata['writeaccess']) {
+    switch (itemKind){
+      case 3:
+        if (isLoggedIn) {
+          str += "<td class='LightBox" + hideState + "'>";
+          str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div></td>";
+        }
+        break;
+      case 4:
+        if (isLoggedIn) {
+          str += "<td style='background-color: #614875;' class='LightBox" + hideState + "'  >";
+          str += "<div id='selectionDragI" + item['lid'] + "' class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div></td>";
+        }
+        break;
+      case 2:
+      case 5:
+      case 6:
+      case 7:// Draggable area with white background
+        str += "<td style'text-align: left;' class='LightBox" + hideState + "'>";
+        str += "<div class='dragbleArea'><img style='width: 53%; padding-left: 6px;padding-top: 5px;' title='Press and drag to arrange' alt='pen icon dugga' src='../Shared/icons/select.png'></div></td>";
+        break;
+      default:
+        break; //how you end up here?
+    }
+  }
+  return str;
+}
+
+// Make tabs to align each section element
+// Not for type 4
+function tabAlign(itemKind, item, hideState, str){
+  var itemGradesys = parseInt(item['gradesys']);
+  if (itemGradesys > 0 && itemGradesys < 4) {
+    for (var numSpacers = 0; numSpacers < itemGradesys; numSpacers++) {
+      str += addColorsToTabSections(itemKind, hideState, "L");
+    }
+  } else if (itemGradesys == 4) {
+    str += addColorsToTabSections(itemKind, hideState, "L");
+    str += addColorsToTabSections(itemKind, hideState, "E");
+  } else if (itemGradesys == 5) {
+    str += addColorsToTabSections(itemKind, hideState, "L");
+    str += addColorsToTabSections(itemKind, hideState, "L");
+    str += addColorsToTabSections(itemKind, hideState, "E");
+  } else if (itemGradesys == 6) {
+    str += addColorsToTabSections(itemKind, hideState, "L");
+    str += addColorsToTabSections(itemKind, hideState, "L");
+    str += addColorsToTabSections(itemKind, hideState, "L");
+    str += addColorsToTabSections(itemKind, hideState, "E");
+  } else if (itemGradesys == 7) {
+    str += addColorsToTabSections(itemKind, hideState, "E");
+  }
+  return str;
+}
+
+
+function helperSubmitted(){
+  // Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
+  if (submitted) {
+    var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
+    var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
+    var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
+
+    // Create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
+    if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+      if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
+        str += `<td style='width:25px;'><img style='width:25px; padding-top:3px'
+        title='This dugga is not guaranteed to be marked due to submission after deadline.'
+        src='../Shared/icons/warningTriangle.svg'/></td>`;
+      }
+    }
+  }
+}
+
+function composeEnd(){
+  // Tab example button
+  if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
+      title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
+    str += "</td>";
+  }
+  if (itemKind != 4 && itemKind != 1 && itemKind != 0) { // dont create buttons for moments only for specific assignments
+    //Generate new tab link
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class=''
+      src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
+    str += "</td>";
+
+    // Generate Canvas Link Button
+    if (data['writeaccess'] || data['studentteacher']) {
+      str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+        "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+      str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
+      str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class=''
+      src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+      str += `</div>`;
+      str += "</td>";
+    }
+  }
+
+  // Cog Wheel
+  if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind,
+      ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+
+
+    str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
+    str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(";
+    if(item['handindeadline']!=null) {
+      str +=makeparams([item['lid'], item['entryname'],
+      item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+      item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
+      item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+    }
+    else {
+      str +=makeparams([item['lid'], item['entryname'],
+      item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
+      item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
+      item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+    }
+
+
+    str += "</td>";
+  }
+
+  // Trashcan for items
+  if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
+
+    // Will run marked items independent of lenght
+    console.log('selectedItemList: ' + selectedItemList.length);
+    if (itemKind === 1 && selectedItemList.length == 0){
+      str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+        "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+      str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+      src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
+      str += "</td>";
+    }
+    else{
+    str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+      "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+    src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+    str += "</td>";  
+    } 
+  }
+
+  // Checkbox
+  if (data['writeaccess'] || data['studentteacher']) {
+    str += `<td style='width:25px;' class='${makeTextArray(itemKind,
+      ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+    str += "<input type='checkbox' id='" + item['lid'] + "-checkbox" + "' title='" + item['entryname'] + " - checkbox" + "' class='checkboxIconTab' onclick='markedItems(this)'>";
+    str += "</td>";
+  }
+
+  str += "</tr>";
+  str += "</table></div>";
+}
+
+
  
 function toggleHidden() { //Look for all td's that have the class "hidden"
   const hiddenTds = document.querySelectorAll('#Sectionlistc td.hidden');
