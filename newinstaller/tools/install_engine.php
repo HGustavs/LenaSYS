@@ -4,8 +4,6 @@ foreach (glob("tools/*.php") as $tools) {
 	include_once $tools;
 }
 
-require_once __DIR__ . "/../DuggaSys/microservices/endpointDirectory/setupEndpointDirectory.php";
-
 class InstallEngine {
 
 	/**
@@ -156,7 +154,11 @@ class InstallEngine {
 			$installer->execute_sql_file("SQL/init_db.sql", verbose: $verbose);
 		};
 		$operations["setup_endpoint_directory"] = function() use ($verbose) {
-			setup_endpoint_directory($verbose);
+			try {
+				setup_endpoint_directory($verbose);
+			} catch (Throwable $e) {
+				SSESender::transmit("Error in setup_endpoint_directory: " . $e->getMessage(), true);
+			}
 		};
 		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
 			$parameters = [
