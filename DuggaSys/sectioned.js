@@ -3086,21 +3086,26 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  $(".selectLabels label input").attr("disabled", true);
+  document.querySelector(".selectLabels label input").getAttribute("disabled", true);
   var cid = '';
-  $("#cid").change(function () {
-    cid = $("#cid").val();
-    if (($("#cid").val()) != '') {
-      $("#versid").prop("disabled", false);
+  document.getElementById("cid").onchange(function () {
+    cid = document.getElementById("cid").value;
+    if ((document.getElementById("cid").value) != '') {
+      document,getElementById("versid").getAttribute("disabled", false);
       $.ajax({
         url: "../Shared/retrievevers.php",
         data: { cid: cid },
         type: "POST",
         success: function (data) {
           var item = JSON.parse(data);
-          $("#versid").find('*').not(':first').remove();
+          var e = document.getElementById("versid").querySelectorAll('*');
+          e.forEach((e1, idx) => {
+            if(idx !== 0){
+              e1.classList.remove;
+            }
+          });
           $.each(item.versids, function (index, item) {
-            $("#versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
+            document.getElementById("versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
           });
 
         },
@@ -3110,16 +3115,16 @@ function retrieveCourseProfile(userid) {
       });
 
     } else {
-      $("#versid").prop("disabled", true);
+      document.getElementById("versid").getAttribute("disabled", true);
     }
 
   });
-  if (($("#versid option").length) <= 2) {
-    $("#versid").click(function () {
+  if ((document.getElementById("versid option").length) <= 2) {
+    document.getElementById("#versid").addEventListener("click", function () {
       getStudents(cid, userid);
     });
-  } else if (($("#versid option").length) > 2) {
-    $("#versid").change(function () {
+  } else if ((document.getElementById("versid option").length) > 2) {
+    document.getElementById("#versid").onchange(function () {
       getStudents(cid, userid);
     });
   }
@@ -3127,29 +3132,34 @@ function retrieveCourseProfile(userid) {
 
 function getStudents(cid, userid) {
   var versid = '';
-  versid = $("#versid").val();
-  if (($("#versid").val()) != '') {
-    $("#recipient").prop("disabled", false);
+  versid = document.getElementById("#versid").value;
+  if ((document.getElementById("versid").value) != '') {
+    document.getElementById("recipient").getAttribute("disabled", false);
     $.ajax({
       url: "../Shared/retrieveuser_course.php",
       data: { cid: cid, versid: versid, remove_student: userid },
       type: "POST",
       success: function (data) {
         var item = JSON.parse(data);
-        $("#recipient").find('*').not(':first').remove();
-        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
+        var e = document.getElementById("recipient").querySelectorAll('*');
+        e.forEach((e1, idx) => {
+          if(idx !== 0){
+            e1.classList.remove;
+          }
+        });
+        document.getElementById("recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
           "</optgroup>");
         $.each(item.finished_students, function (index, item) {
-          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname}
+          document.getElementById("finishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
-        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
+        document.getElementById("recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
           "</optgroup>");
         $.each(item.non_finished_students, function (index, item) {
-          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
+          document.getElementById("nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
           ${item.lastname}</option>`);
         });
-        $(".selectLabels label input").attr("disabled", false);
+        document.querySelector(".selectLabels label input").getAttribute("disabled", false);
         selectRecipients();
       },
       error: function () {
@@ -3157,9 +3167,10 @@ function getStudents(cid, userid) {
       }
     });
   } else {
-    $("#recipient").prop("disabled", true);
+    document.getElementById("recipient").getAttribute("disabled", true);
   }
 }
+
 
 // Validate create announcement form
 function validateCreateAnnouncementForm() {
@@ -3211,13 +3222,13 @@ function validateUpdateAnnouncementForm() {
   });
 }
 
-// Retrieve announcements
+// Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = $(location).attr('href');
+  var currentLocation = location.attributes('href');
   var url = new URL(currentLocation);
   var cid = url.searchParams.get("courseid");
   var versid = url.searchParams.get("coursevers");
-  var uname = $("#userName").html();
+  var uname = document.getElementById("userName").innerHTML;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3233,15 +3244,15 @@ function retrieveAnnouncementsCards() {
             parsed_data.retrievedAnnouncementCard;
           var unread_announcements = parsed_data.nRows;
           if (unread_announcements > 0) {
-            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>");
-            $("#announcementnotificationcount").html(parsed_data.nRows);
+            document.getElementById("announcement img").after("<span id='announcementnotificationcount'>0</span>");
+            document.getElementById("announcementnotificationcount").innerHTML = parsed_data.nRows;
           }
           accessAdminAction();
           var paragraph = "announcementMsgParagraph";
           readLessOrMore(paragraph);
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
-          $(".deleteBtn").click(function () {
+          document.querySelector(".deleteBtn").addEventListener("click", function () {
             sessionStorage.setItem('closeUpdateForm', true);
 
           });
