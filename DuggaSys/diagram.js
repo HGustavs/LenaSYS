@@ -1407,8 +1407,6 @@ function pasteClipboard(elements, elementsLines) {
     const newElements = [];
     const newLines = [];
 
-    let overlapDetected = false;
-
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
@@ -1426,11 +1424,6 @@ function pasteClipboard(elements, elementsLines) {
 
         // Check for overlap before adding
         addObjectToData(elementObj, false); // Add to data
-
-        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
-            data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
-            overlapDetected = true;
-        }
     });
 
     // Create the new lines but do not saved in stateMachine
