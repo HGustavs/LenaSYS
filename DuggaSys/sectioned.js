@@ -892,14 +892,16 @@ function markedItems(item = null, typeInput) {
         selectedItemList.splice(i, 1);
         var removed = true;
 
-        // deselection of child -> deselect parent
+        // deselection of child -> deselect parent (if parent exists)
         if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
           var parent = recieveCodeParent(active_lid);
 
-          for (var i = 0; i < tempSelectedItemListLength; i++) {
-            if (selectedItemList[i] == parent){
-              document.getElementById(parent + "-checkbox").checked = false;
-              selectedItemList.splice(i, 1);
+          if(parent != null){
+            for (var i = 0; i < tempSelectedItemListLength; i++) {
+              if (selectedItemList[i] == parent){
+                document.getElementById(parent + "-checkbox").checked = false;
+                selectedItemList.splice(i, 1);
+              }
             }
           }
         }
