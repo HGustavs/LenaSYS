@@ -140,11 +140,7 @@
 						<img src='../Shared/icons/ThemeToggle.svg' title='Toggle between dark mode' alt='an icon on a moon, which indicates dark mode and light mood'>
 					</div>
 				</td>";
-			echo "<td class='navButt' style='display:none'; id='motdNav' title='Message of the day 'onclick='showServerMessage();'>
-					<div class='motd-nav' tabindex='0'>
-						<img alt='motd icon' src='../Shared/icons/MOTD.svg'>
-					</div>
-				</td>";
+			
 				
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
@@ -169,6 +165,12 @@
 				echo "'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></td>";
 			}
+
+			echo "<td class='navButt' style='display:none;' id='motdNav' title='Message of the day 'onclick='showServerMessage();'>
+					<div class='motd-nav' tabindex='0'>
+						<img alt='motd icon' src='../Shared/icons/MOTD.svg'>
+					</div>
+				</td>";
 			// Adding buttons for courses
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
