@@ -1,30 +1,28 @@
 # Name of file/service
 changeActiveCourseVersion_courseed_ms.php
 ## Description
-*Description of what the service do and its function in the system.*
+Changes the active course version by updating the activeversion column in the course table.
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
+   - Type: string
+   - Description:
+
+- Parameter: $cid
    - Type: int
-   - Description: describe parameter
+   - Description: Course ID
 
-- Parameter: paramName
-   - Type: int
-   - Description: describe parameter
-
-
+- Parameter: $vers
+   - Type: string
+   - Description: New version ID
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
+- Output: JSON
+   - Type:
+   - Description: Updated course info from retrieveCourseedService.
 
 - Output: outputName
    - Type: String
@@ -34,7 +32,8 @@ changeActiveCourseVersion_courseed_ms.php
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+getUid_ms
+retrieveCourseedService_ms
 
 
 # Name of file/service
