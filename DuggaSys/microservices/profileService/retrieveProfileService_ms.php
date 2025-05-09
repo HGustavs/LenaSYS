@@ -1,10 +1,14 @@
 <?php
+header('Content-Type: application/json');
 
-function retrieveProfileService($debug, $success, $status){
-	$array = array(
-        "success" => $success,
-        "status" => $status,
-        "debug" => $debug
-		);
-    return $array;
-}
+$debug = $_POST['debug'] ?? '';
+$success = $_POST['success'] ?? false;
+$status = $_POST['status'] ?? '';
+
+$response = array(
+  "debug" => $debug,
+  "success" => $success,
+  "status" => $status
+);
+
+echo json_encode($response);
