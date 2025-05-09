@@ -612,81 +612,37 @@ document.addEventListener('keydown', function (e) {
     // Moving object with arrow keys.
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
         e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x, obj.y - 1)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, 0, settings.grid.gridSize / 2);
-            } else {
-                setPos(context, 0, 1);
-            }
+        if (settings.grid.snapToGrid) {
+            setPos(context, 0, settings.grid.gridSize / 2);
         } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+            setPos(context, 0, 1);
         }
     }
 
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_DOWN)) {
         e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x, obj.y + 1)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, 0, -settings.grid.gridSize / 2);
-            } else {
-                setPos(context, 0, -1);
-            }
+        if (settings.grid.snapToGrid) {
+            setPos(context, 0, -settings.grid.gridSize / 2);
         } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+            setPos(context, 0, -1);
         }
     }
 
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_LEFT)) {
         e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x - 1, obj.y)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, settings.grid.gridSize / 2, 0);
-            } else {
-                setPos(context, 1, 0);
-            }
+        if (settings.grid.snapToGrid) {
+            setPos(context, settings.grid.gridSize / 2, 0);
         } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+            setPos(context, 1, 0);
         }
     }
 
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_RIGHT)) {
         e.preventDefault();
-        let overlapDetected = false;
-        context.forEach(obj => {
-            if (entityIsOverlapping(obj.id, obj.x + 1, obj.y)) {
-                overlapDetected = true;
-                return;
-            }
-        });
-        if (!overlapDetected) {
-            if (settings.grid.snapToGrid) {
-                setPos(context, -settings.grid.gridSize / 2, 0);
-            } else {
-                setPos(context, -1, 0);
-            }
+        if (settings.grid.snapToGrid) {
+            setPos(context, -settings.grid.gridSize / 2, 0);
         } else {
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
+            setPos(context, -1, 0);
         }
     }
 
@@ -993,17 +949,6 @@ function mouseMode_onMouseUp(event) {
                 clearContextLine();
                 if (ghostElement && event.button == 0) {
                     addObjectToData(ghostElement, false);
-                    // Check if the element to create would overlap others, returns if true
-                    if (entityIsOverlapping(ghostElement.id, ghostElement.x, ghostElement.y)) {
-                        displayMessage(messageTypes.ERROR, "Error: You can't create elements that overlap eachother.");
-                        console.error("Failed to create an element as it overlaps other element(s)");
-                        // Remove added element from data as it should remain
-                        data.splice(data.length - 1, 1);
-                        makeGhost();
-                        showdata();
-                        return;
-                    }
-                    //If not overlapping
                     stateMachine.save(ghostElement.id, StateChange.ChangeTypes.ELEMENT_CREATED);
                     makeGhost();
                     showdata();
@@ -1462,8 +1407,6 @@ function pasteClipboard(elements, elementsLines) {
     const newElements = [];
     const newLines = [];
 
-    let overlapDetected = false;
-
     // For every copied element create a new one and add to data
     elements.forEach(element => {
         // Make a new id and save it in an object
@@ -1481,19 +1424,7 @@ function pasteClipboard(elements, elementsLines) {
 
         // Check for overlap before adding
         addObjectToData(elementObj, false); // Add to data
-
-        if (entityIsOverlapping(elementObj.id, elementObj.x, elementObj.y)) {
-            data.splice(data.findIndex(e => e.id === elementObj.id), 1); // Remove the just-added element
-            overlapDetected = true;
-        }
     });
-
-    // If overlap is detected, abort pasting the elements, otherwise add 
-    if (overlapDetected) {
-        displayMessage(messageTypes.ERROR, "Error: You can't paste elements on top of eachother.");
-        console.error("Failed to paste the element as it overlaps other element(s)");
-        return;
-    }
 
     // Create the new lines but do not saved in stateMachine
     // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.

@@ -71,76 +71,53 @@ function setPos(elements, x, y) {
         }
     });
 
-    if (overlappingObject) {
-        // If overlap is detected, move the overlapping object back by one step
-        const previousX = overlappingObject.x;
-        const previousY = overlappingObject.y;
+    elements.forEach(obj => {
 
-        // Move the object back one step
-        overlappingObject.x -= x / zoomfact;
-        overlappingObject.y -= y / zoomfact;
-
-        // Check again if the adjusted position still overlaps
-        if (entityIsOverlapping(overlappingObject.id, overlappingObject.x, overlappingObject.y)) {
-            // If it still overlaps, revert to the previous position
-            overlappingObject.x = previousX;
-            overlappingObject.y = previousY;
-
-            // Display error message
-            displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-        } else {
-            // If no longer overlaps after adjustment, proceed with saving the new position
-            idList.push(overlappingObject.id);
+        // Check if element is locked and immovable
+        if (obj.isLocked) {
+            return;
         }
-    } else {
-        elements.forEach(obj => {
 
-            // Check if element is locked and immovable
-            if (obj.isLocked) {
-                return;
-            }
+        // If snapToGrid is activated
+        if (settings.grid.snapToGrid && !ctrlPressed) {
 
-            // If snapToGrid is activated
-            if (settings.grid.snapToGrid && !ctrlPressed) {
-
-                // Snap logic for rectangular elements
-                // Snaps to grid lines
-                const entityKinds = [
-                    elementTypesNames.EREntity,
-                    elementTypesNames.UMLEntity,
-                    elementTypesNames.IEEntity,
-                    elementTypesNames.SDEntity,
-                    elementTypesNames.note
-                ];
-                if (entityKinds.includes(obj.kind)) {
-                    const candidateX = obj.x - (x / zoomfact);
-                    const candidateY = obj.y - (y / zoomfact);
-                    obj.x = Math.round(candidateX / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                    obj.y = Math.round(candidateY / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
-                } else {
-
-                    // Snap logic for non-rectangular elements
-                    // Snaps to center
-                    obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.width / 2;
-                    obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.height / 2;
-                }
+            // Snap logic for rectangular elements
+            // Snaps to grid lines
+            const entityKinds = [
+                elementTypesNames.EREntity,
+                elementTypesNames.UMLEntity,
+                elementTypesNames.IEEntity,
+                elementTypesNames.SDEntity,
+                elementTypesNames.note
+            ];
+            if (entityKinds.includes(obj.kind)) {
+                const candidateX = obj.x - (x / zoomfact);
+                const candidateY = obj.y - (y / zoomfact);
+                obj.x = Math.round(candidateX / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
+                obj.y = Math.round(candidateY / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2);
             } else {
 
-                // For dragging elements without snapToGrid mode active
-                obj.x -= (x / zoomfact);
-                obj.y -= (y / zoomfact);
+                // Snap logic for non-rectangular elements
+                // Snaps to center
+                obj.x = Math.round((obj.x + obj.width / 2 - x / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.width / 2;
+                obj.y = Math.round((obj.y + obj.height / 2 - y / zoomfact) / (settings.grid.gridSize / 2)) * (settings.grid.gridSize / 2) - obj.height / 2;
             }
+        } else {
 
-            // Add the object-id to the idList
-            idList.push(obj.id);
-            // Make the coordinates without decimals
-            obj.x = Math.round(obj.x);
-            obj.y = Math.round(obj.y);
-        });
-
-        if (idList.length) {
-            stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
+            // For dragging elements without snapToGrid mode active
+            obj.x -= (x / zoomfact);
+            obj.y -= (y / zoomfact);
         }
+
+        // Add the object-id to the idList
+        idList.push(obj.id);
+        // Make the coordinates without decimals
+        obj.x = Math.round(obj.x);
+        obj.y = Math.round(obj.y);
+    });
+
+    if (idList.length) {
+        stateMachine.save(idList, StateChange.ChangeTypes.ELEMENT_MOVED);
     }
 
     // Update positions
