@@ -1,14 +1,9 @@
 <?php
-
-//
-// Microservice for saveDugga that has update userAnswer, insert userAnswer and selecting data from userAnswer
-//
-
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "retrieveShowDuggaService_ms.php";
+include_once "../curlService.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
@@ -55,7 +50,6 @@ $submitted = "";
 $marked ="";
 
 $insertparam = false;
-$score = 0;
 $timeUsed;
 $stepsUsed;
 $duggafeedback = "UNK";
@@ -88,14 +82,8 @@ if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment !=
 	if((isset($_POST["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
 		isset($_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"]) && 
 		isset($_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"]))) {
-		$hash=$_POST["submission-$courseid-$coursevers-$duggaid-$moment"];
-		$hashpwd=$_POST["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-		$variant=$_POST["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
-	}
-	else{
-		$hash=$_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"];
-		$hashpwd=$_SESSION["submission-password-$courseid-$coursevers-$duggaid-$moment"];
-		$variant=$_SESSION["submission-variant-$courseid-$coursevers-$duggaid-$moment"];
+
+
 	}
 }else{
 	$debug="Could not find the requested dugga!";
@@ -104,7 +92,6 @@ if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment !=
 $log_uuid = getOP('log_uuid');
 $info="opt: ".$opt." courseid: ".$courseid." coursevers: ".$coursevers." duggaid: ".$duggaid." moment: ".$moment." segment: ".$segment." answer: ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
-
 
 if(strcmp($opt,"SAVDU")==0){
     makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
@@ -118,7 +105,7 @@ if(strcmp($opt,"SAVDU")==0){
 		unset($grade);
 
 		$query = $pdo->prepare("SELECT password,timesSubmitted,timesAccessed,grade from userAnswer WHERE hash=:hash;");
-		$query->bindParam(':hash', $hash);			
+		$query->bindParam(':hash', $hash);
 		$query->execute();
 		foreach($query->fetchAll() as $row){
 			$grade = $row['grade'];
@@ -160,34 +147,21 @@ if(strcmp($opt,"SAVDU")==0){
 		$debug="Unable to save dugga!";
 	}
 };
-echo json_encode(
-	retrieveShowDuggaService(
-		$moment, 
-		$pdo, 
-		$courseid, 
-		$hash, 
-		$hashpwd, 
-		$coursevers, 
-		$duggaid, 
-		$opt, 
-		$group, 
-		$score, 
-		$highscoremode, 
-		$grade, 
-		$submitted,
-		$duggainfo,
-		$marked,
-		$userfeedback,
-		$feedbackquestion,
-		$files,
-		$savedvariant,
-		$ishashindb,
-		$variantsize,
-		$variantvalue,
-		$password,
-		$hashvariant,
-		$isFileSubmitted,
-		$variants,
-		$active,
-		$debug
-	));
+
+
+	$response = callMicroservicePOST(
+		"showDuggaService/retrieveShowDuggaService_ms.php",
+		[
+			'moment' => $moment,
+			'courseid' => $courseid,
+			'hash' => $hash,
+			'password' => $hashpwd,
+			'coursevers' => $coursevers,
+			'duggaid' => $duggaid,
+			'opt' => $opt
+		],
+		true // get response
+	);
+
+	header("Content-Type: application/json");
+	echo $response;

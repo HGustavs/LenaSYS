@@ -1,12 +1,9 @@
 <?php
 date_default_timezone_set("Europe/Stockholm");
 
-// Include basic application services!
-//---------------------------------------
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once('./retrieveShowDuggaService_ms.php');
-
+include_once "../curlService.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
@@ -97,40 +94,25 @@ if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment !=
 	}
 }else{
 	$debug="Could not find the requested dugga!";
+
+
 }
 
-echo json_encode(
-retrieveShowDuggaService(
-	$moment, 
-	$pdo, 
-	$courseid, 
-	$hash, 
-	$hashpwd, 
-	$coursevers, 
-	$duggaid, 
-	$opt, 
-	$group, 
-	$score, 
-	$highscoremode, 
-	$grade, 
-	$submitted,
-	$duggainfo,
-	$marked,
-	$userfeedback,
-	$feedbackquestion,
-	$files,
-	$savedvariant,
-	$ishashindb,
-	$variantsize,
-	$variantvalue,
-	$password,
-	$hashvariant,
-	$isFileSubmitted,
-	$variants,
-	$active,
-	$debug
-	)
-)
+header("Content-Type: application/json");
 
+// cURL request to the microservice
+$response = callMicroservicePOST(
+	"showDuggaService/retrieveShowDuggaService_ms.php",
+	[
+		'moment' => $moment,
+		'courseid' => $courseid,
+		'hash' => $hash,
+		'password' => $hashpwd,
+		'coursevers' => $coursevers,
+		'duggaid' => $duggaid,
+		'opt' => $opt
+	],
+	true // Get response back
+);
 
-?>
+echo $response;
