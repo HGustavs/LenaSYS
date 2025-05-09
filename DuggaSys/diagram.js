@@ -969,7 +969,7 @@ function mouseMode_onMouseUp(event) {
                         // checks if a ghostline already exists and if so sets the relation recursively.
                         if (ghostLine != null) {
                             // create a line from the element to itself
-                            addLine(context[0], context[0], "Recursive");
+                            addLine(context[0], context[0], "Normal", true);
                             clearContext();
                             // Bust the ghosts
                             ghostElement = null;

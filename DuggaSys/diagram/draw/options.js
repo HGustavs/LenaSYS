@@ -290,14 +290,16 @@ function option(object, icon) {
  * @param {Array} arr An array for the different selection for the menu.
  * @return Returns a header for the radio menu and returns the radio menu with the different selection.
  */
+
 function radio(line, arr) {
-    let result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
-    arr.forEach(lineKind => {
-        let checked = (line.kind == lineKind) ? 'checked' : '';
-        result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked} onchange='changeLineProperties();'>
-                   <label for='lineRadio${lineKind}'>${lineKind}</label>
-                   <br>`
-    });    
+    let result = "";
+        result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
+        arr.forEach(lineKind => {
+            let checked = (line.kind == lineKind) ? 'checked' : '';
+            result += `<input type="radio" id="lineRadio${lineKind}" name="lineKind" value='${lineKind}' ${checked} onchange='changeLineProperties();'>
+                    <label for='lineRadio${lineKind}'>${lineKind}</label>
+                    <br>`
+        });    
     return result;
 }
 
@@ -1916,14 +1918,11 @@ function multipleColorsTest() {
  * @description Applies new changes to line attributes in the data array of lines.
  */
 function changeLineProperties() {        
-    
     // updates the line
     for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
         contextLine[0][key] = value;
     }
-
     // save all the changes
     stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
-
     showdata();
 }
