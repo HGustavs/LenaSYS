@@ -4665,18 +4665,17 @@ function fetchGitCodeExamples(courseid){
     //Foreach loop to fetch each file in the filteredFiles array
     filteredFiles.forEach(function(filename){
       var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath + '/' + filename;
-      // Ajax request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
+      // JS fetch request to fetch filecontent of current file in foreach loop. fetched file is pushed into results array.
       var promise = new Promise(function(resolveFile, rejectFile){
-        $.ajax({
-          url: apiGitUrl,
-          method: 'GET',
-          success: function(response) {
-            resolveFile({filename: filename, content: response});
-          },
-          error: function(xhr, status, error) {
-            rejectFile(error);
+        fetch(apiGitUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
           }
-        });
+        })
+        .then(response => response.text)
+        .then(data => resolveFile({filename: filename, content: data}))
+        .catch(error => rejectFile(error))
       });
       results.push(promise);
     });
@@ -4717,24 +4716,19 @@ function fetchGitCodeExamples(courseid){
       var repo = parts[4]
   
       var apiGitUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + folderPath;
-      // Ajax request to fetch all filenames in folder
-      $.ajax({
-        url: apiGitUrl,
-        method: 'GET',
-        success: function(response) {
-          // Check if response is an array or single object, then parse the response to extract file names.
-          // resolve() returns all filenames.
-          var response = response.filter(item => item.type === 'file');
-          var files = Array.isArray(response) ? response : [response];
-          var fileNames = files.map(function(file) {
-            return file.name;
-          });
-          resolve(fileNames);
-        },
-        error: function(xhr, status, error) {
-          reject(error);
+      // JS fetch request to fetch all filenames in folder
+      fetch(apiGitUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
         }
-      });
+      })
+      .then(response => response.text)
+      .then(data => data.filter(item => item.type === 'file'))
+      .then(files = Array.isArray(data) ? data : [data])
+      .then(fileNames = files.map(function(file) { return file.name; }))
+      .then(resolve(fileNames))   
+      .catch(error => reject(error))
     });
   }
 //Function to store Code Examples in directory and in database (metadata2.db)
