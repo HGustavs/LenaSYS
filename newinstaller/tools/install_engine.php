@@ -155,6 +155,9 @@ class InstallEngine {
 		$operations["init_db"] = function() use ($installer, $verbose) {
 			$installer->execute_sql_file("SQL/init_db.sql", verbose: $verbose);
 		};
+		$operations["setup_endpoint_directory"] = function() use ($verbose) {
+			setup_endpoint_directory($verbose);
+		};
 		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
 			$parameters = [
 				"DB_USER" => $settings->username,
