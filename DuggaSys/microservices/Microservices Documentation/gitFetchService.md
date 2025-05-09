@@ -104,8 +104,11 @@ Traverses a GitHub repository using a breadth-first search (BFS) approach to ret
    - Description: Options for different operations, can be: GETCOMMIT, REFRESH, DOWNLOAD
 
 ## Calling Methods
-
+- POST
 ## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: If option is GETCOMMIT the script returns a the commits SHA, otherwise no return unless an error occurs in which case an error message is echoed.
 
 ## Examples of Use
 
