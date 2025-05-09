@@ -137,7 +137,18 @@ function updateCSSForAllElements() {
                     }
                     // Update normal elements, and relations i.e default case
                 } else { 
-                    fillColor = elementDiv.children[0].children[0];
+                    if (element.kind == elementTypesNames.sequenceObject) {
+                        fillColor = elementDiv.querySelector("g > rect"); // Accessing the rectangle element
+                    }
+                    else if (element.kind == elementTypesNames.sequenceActor) {
+                        fillColor = elementDiv.querySelector("g > circle"); // Accessing the circular "head" element
+                    }
+                    else if (element.kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.UMLSuperState) {
+                        fillColor =elementDiv.children[0].children[1]; // Accessing the top left rectangle
+                    }
+                    else {
+                        fillColor = elementDiv.children[0].children[0]; // Accessing the whatever needs to be accessed
+                    }
                     fontColor = elementDiv.children[0];
                     weakKeyUnderline = elementDiv.children[0].children[2];
                     if (contextLengthCheck()) {
@@ -243,7 +254,11 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         // Set text to white if background is black or pink, else black
-        fontColor.style.fill = element.fill == color.BLACK || element.fill == color.PINK ? color.WHITE : color.BLACK;
+        if (element.fill == color.BLACK || element.fill == color.PINK) {
+            fontColor.style.fill = color.WHITE;
+        } else {
+            fontColor.style.fill = color.BLACK;
+        }
     }
     /**
      * @description Checks if multiple elements or lines are selected/highlighted

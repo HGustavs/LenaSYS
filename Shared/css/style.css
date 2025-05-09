@@ -3110,7 +3110,14 @@ input {
   padding-left: 5px;
 }
 
-
+#pad_lock {
+    bottom: -5px;
+    left: 3px;
+    display: block;
+    position: absolute;
+    background: inherit;
+    filter: invert(65%);
+}
 
 label.login-label {
   display: block;
