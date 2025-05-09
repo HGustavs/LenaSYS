@@ -4,6 +4,8 @@ foreach (glob("tools/*.php") as $tools) {
 	include_once $tools;
 }
 
+require_once __DIR__ . "/../DuggaSys/microservices/endpointDirectory/setupEndpointDirectory.php";
+
 class InstallEngine {
 
 	/**
