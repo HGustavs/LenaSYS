@@ -29,7 +29,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
-let showHidden = false;
+let showHidden = true;
 let count = 0;
 
 function initInputColorTheme() {
@@ -2412,12 +2412,12 @@ function toggleButtonClickHandler() {
 
   showHidden = !showHidden;
 
-  if (showHidden) {
+  if (!showHidden) {
     toggleButton.src = '../Shared/icons/eye_closed_icon.svg';
-    toggleButton.title = 'Hide hidden items';
+    toggleButton.title = 'Show hidden items';
   } else {
     toggleButton.src = '../Shared/icons/eye_icon.svg';
-    toggleButton.title = 'Show hidden items';
+    toggleButton.title = 'Hide hidden items';
   }
 
   toggleHidden();
