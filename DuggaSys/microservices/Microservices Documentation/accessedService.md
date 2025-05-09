@@ -1,5 +1,3 @@
-# accessedService Documentation
-
 # Name of file/service
 addClass_ms.php
 
@@ -71,6 +69,8 @@ Logs the event and performs authentication.
 ### Microservices Used
 - getUid_ms.php
 - retrieveAccessedService_ms.php
+
+---
 
 # Name of file/service
 addUser_ms.php
@@ -147,6 +147,8 @@ Checks if a user exists based on the username, creates a new user if it not and 
 - getUid_ms.php
 - retrieveAccessedService_ms.php;
 
+---
+
 # name of file/service
 getAccessedService_ms.php
 
@@ -180,6 +182,8 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
 ### Microservices Used
 - getUid_ms.php
 - retrieveAccessedService_ms.php
+
+---
 
 # name of file/service
 retrieveAccessedService_ms.php
@@ -384,7 +388,7 @@ The data is only retrieved for users who have specific access.
 ### Microservices Used
 None
 
-
+---
 
 # Name of file/service
 updateUser_ms.php
@@ -447,7 +451,7 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
 ### Microservices Used
 - retrieveAccessedService_ms.php
 
-
+---
 
 # Name of file/service
 updateUserCourse_ms.php

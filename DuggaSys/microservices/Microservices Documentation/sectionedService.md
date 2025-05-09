@@ -1,5 +1,3 @@
-# sectionedService Documentation
-
 # Name of file/service
 createListEntry_ms
 
@@ -130,6 +128,7 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
 - getUid_ms
 - retrieveSectionedService_ms
 
+---
 
 # Name of file/service
 getCourseGroupsAndMembers_ms
@@ -199,7 +198,7 @@ Only available to users who are logged in.
 - coursesyspw.php
 - retrieveSectionedService_ms.php
 
-
+---
 
 # Name of file/service
 getCourseVersions_ms
@@ -261,7 +260,7 @@ None
 ### Microservices Used
 - getUid_ms.php
 
-
+---
 
 # Name of file/service
 getListEntries_ms.php
@@ -302,7 +301,7 @@ Fetches all list entries from the database. List entries are duggas, headers, te
 - sharedMicroservices/getUid_ms.php
 - retrieveSectionedService_ms.php
 
-
+---
 
 # Name of file/service
 getUserDuggaFeedback_ms.php

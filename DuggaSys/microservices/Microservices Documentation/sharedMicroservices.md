@@ -1,5 +1,3 @@
-# sharedMicroservices Documentation
-
 # Name of file/service
 createNewCodeExample_ms.php
 
@@ -59,7 +57,7 @@ It retrieves the user ID and username, inserts a new entry into the table, gener
 - getUID_ms.php
 - retrieveUsername_ms.php
 
-
+---
 
 # Name of file/service
 createNewListEntry_ms.php
@@ -138,7 +136,7 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
 ### Microservices Used
 retrieveUsername_ms.php
 
-
+---
 
 # Name of file/service
 getUid_ms.php
@@ -195,7 +193,7 @@ Also logs events into serviceLogEntries-table.
 ### Microservices Used
 None
 
-
+---
 
 # Name of file/service
 isSuperUser_ms.php
@@ -227,6 +225,7 @@ Checks if a user is a superuser. Used to control access permission.
 ### Microservices Used
 None
 
+---
 
 # Name of file/service
 logUserEvent_ms.php
@@ -271,6 +270,7 @@ Creates a new user-event entry and adds it to the database 'log_db'. Helps maint
 ### Microservices Used
 None
 
+---
 
 # Name of file/service
 retrieveUsername_ms.php
@@ -301,6 +301,7 @@ Retrieves the username of a specific user ID. Username is only fetched if a user
 ### Microservices Used
 - getUid_ms.php
 
+---
 
 # Name of file/service
 setAsActiveCourse_ms.php
@@ -329,6 +330,7 @@ None. Only notifies if the update is successful or not.
 ### Microservices Used
 None
 
+---
 
 # Name of file/service
 updateSecurityQuestion_ms.php
@@ -380,6 +382,7 @@ Changes of security questions are not permitted for superusers or teachers.
 ### Microservices Used
 - getUid_ms.php
 
+---
 
 # Name of file/service
 updateUserPassword_ms.php
