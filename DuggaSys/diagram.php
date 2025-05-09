@@ -104,19 +104,19 @@
     <!-- The FAB-btn for the diagram.php, STARTS HERE!-->
        <div class="fixed-action-button diagram-fab">
       <ol class="fab-btn-list" style="margin-bottom: 60px; padding:0;">
-          <button id="check" class="btn-floating fab-inner diagramIcons" style="margin-bottom: 5px; display: none;" type="button">
+          <button id="check" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
           <img class="icon-fit" src="../Shared/icons/LookingGlass.svg" alt="Check"/>
           </button>  
   
-          <button id="loadlLoad" class="btn-floating fab-inner diagramIcons" style="margin-bottom: 5px; display: none;" type="button">
+          <button id="loadlLoad" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
           <img class="icon-fit" src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
           </button>  
   
-          <button id="localSaveAs" class="btn-floating fab-inner diagramIcons" style="margin-bottom: 5px; display: none;" type="button">
+          <button id="localSaveAs" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
           <img class="icon-fit" src="../Shared/icons/diagram_save_as_icon.svg" alt="Save as diagram"/>
           </button>  
   
-          <button id="localSave"  class="btn-floating fab-inner diagramIcons" style="margin-bottom: 5px; display: none;" type="button">
+          <button id="localSave"  class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
           <img class="icon-fit" src="../Shared/icons/save_button.svg" alt="Save diagram"/>
           </button>   
       </ol>
