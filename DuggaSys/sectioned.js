@@ -3505,72 +3505,25 @@ function multiSelect() {
 }
 // Start of recent feedback from the teacher
 function toggleFeedbacks() {
-  let uname = $("#userName").html();
-  let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: { uname: uname },
-    type: "GET",
-    success: function (data) {
-      parsed_uid = JSON.parse(data);
-      studentid = parsed_uid.uid;
-      $.ajax({
-        url: "../Shared/retrieveFeedbacks.php",
-        data: { studentid: studentid },
-        type: "POST",
-        async: true,
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        success: function (data) {
-          duggaFeedback = data.duggaFeedback;
-          $(".feedbackContent").html(duggaFeedback);
-          if ($(".recentFeedbacks").length == 0) {
-            $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span>" +
-              "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
-            $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>" +
-              "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
-          }
-          $(".oldFeedbacks").hide();
-          feedbackComment = 'feedbackComment';
-          readLessOrMore(feedbackComment);
-          unseen_feedbacks = data.unreadFeedbackNotification;
-          if (unseen_feedbacks > 0) {
-            $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
-            $("#feedbacknotificationcounter").html(unseen_feedbacks);
 
-          }
-        },
-        error: function () {
-          console.log("Couldn't return feedback data");
-        }
+  var uname=document.getElementById("userName").innerHTML;
+	var studentid;
+	var feedbackComment="feedbackComment";
 
-      });
+	if(document.getElementById("feedback"))
+	{
+		document.querySelector("header").insertAdjacentHTML("afterend",
+			"<div id='feedbackOverlay'><div class='feedbackContainer'>"+
+			"<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>"+
+			"<div class='feedbackContent'></div></div></div>");
+	}
 
-    }
-
-  });
-
-  if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'>" +
-      "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>" +
-      "<div class='feedbackContent'></div></div></div>");
-
-  }
-
-  $("#feedback").click(function () {
-    $("#feedbackOverlay").toggle();
-    if ($("#feedbacknotificationcounter").length > 0) {
-      var viewed = "YES";
-      $.ajax({
-        url: "../Shared/retrieveFeedbacks.php",
-        data: { studentid: studentid, viewed: viewed },
-        type: "POST",
-        success: function () {
-          $("#feedbacknotificationcounter").remove();
-        }
-      });
-    }
-  });
+	fetch("../Shared/retrieveUserid.php?uname="+encodeURIComponent(uname))
+	.then(function(response){return response.json();})
+	.then(function(parsed_uid){
+		studentid=parsed_uid.uid;
+  
+  
 }
 function viewOldFeedbacks() {
   $(".feedbackHeader h2").html("Old Feedback");
