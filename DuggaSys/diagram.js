@@ -1125,7 +1125,7 @@ function mmoving(event) {
                 const snapId = visualSnapToLifeline(moveableElementPos);
 
                 // Visualize the context snapping to lifeline (only a visual indication)
-                if (snapId) {
+                if (snapId && context[0]?.kind === elementTypesNames.sequenceActivation) {
                     const lLine = data.find(el => el.id === snapId);
                     context[0].x = lLine.x + lLine.width / 2 - context[0].width / 2;
                     startX = event.clientX;
