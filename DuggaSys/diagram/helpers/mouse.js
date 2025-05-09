@@ -320,7 +320,7 @@ function findNearestLifeline(x, y) {
             const dx = Math.abs(centerX - x);
 
             // Only snaps to the lifeline if within the lifeline's range
-            if (dx < 50 && dx < minDistance) { 
+            if (dx < 50 && dx < minDistance && y >= topY && y <= botY) { 
                 minDistance = dx;
                 closestId = el.id;
             }

@@ -312,7 +312,7 @@ function mup(event) {
 
         // If a nearby lifeline is found, snap the element to it
         if (nearestLifelineId) {
-         //   snapElementToLifeline(el, nearestLifelineId);
+            snapElementToLifeline(el, nearestLifelineId);
         }
     });
 }
