@@ -1,5 +1,3 @@
-# sectionedService Documentation
-
 # Name of file/service
 createListEntry_ms
 
