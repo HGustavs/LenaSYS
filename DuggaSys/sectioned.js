@@ -3088,88 +3088,91 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  document.querySelector(".selectLabels label input").getAttribute("disabled", true);
-  var cid = '';
-  document.getElementById("cid").onchange(function () {
-    cid = document.getElementById("cid").value;
-    if ((document.getElementById("cid").value) != '') {
-      document,getElementById("versid").getAttribute("disabled", false);
-      $.ajax({
-        url: "../Shared/retrievevers.php",
-        data: { cid: cid },
-        type: "POST",
-        success: function (data) {
-          var item = JSON.parse(data);
-          var e = document.getElementById("versid").querySelectorAll('*');
-          e.forEach((e1, idx) => {
-            if(idx !== 0){
-              e1.classList.remove;
-            }
-          });
-          $.each(item.versids, function (index, item) {
-            document.getElementById("versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
-          });
-
-        },
-        error: function () {
-          console.log("*******Error*******");
-        }
-      });
-
-    } else {
-      document.getElementById("versid").getAttribute("disabled", true);
-    }
-
+  // Disable all inputs inside .selectLabels labels
+  document.querySelectorAll(".selectLabels label input").forEach(function (input) {
+    input.disabled = true;
   });
-  if ((document.getElementById("versid option").length) <= 2) {
-    document.getElementById("#versid").addEventListener("click", function () {
+
+  var cid = '';
+  var cidSelect = document.getElementById("cid");
+  var versidSelect = document.getElementById("versid");
+
+  cidSelect.addEventListener("change", function () {
+    cid = cidSelect.value;
+    if (cid !== '') {
+      versidSelect.disabled = false;
+      // Retrieve course versions from database
+      fetch("../Shared/retrievevers.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "cid=" + encodeURIComponent(cid)
+      })
+        .then(response => response.json())
+        .then(function (item) {
+          // Remove all options except the first
+          while (versidSelect.options.length > 1) {
+            versidSelect.remove(1);
+          }
+
+          item.versids.forEach(function (v) {
+            var opt = document.createElement("option");
+            opt.value = v.versid;
+            opt.textContent = v.versid;
+            versidSelect.appendChild(opt);
+          });
+        })
+        .catch(function () {
+          console.log("*******Error*******");
+        });
+    } else {
+      versidSelect.disabled = true;
+    }
+  });
+  if (versidSelect.options.length <= 2) {
+    versidSelect.addEventListener("click", function () {
       getStudents(cid, userid);
     });
-  } else if ((document.getElementById("versid option").length) > 2) {
-    document.getElementById("#versid").onchange(function () {
+  } else {
+    versidSelect.addEventListener("change", function () {
       getStudents(cid, userid);
     });
   }
 }
 function getStudents(cid, userid) {
-  var versid = '';
-  versid = document.getElementById("#versid").value;
-  if ((document.getElementById("versid").value) != '') {
-    document.getElementById("recipient").getAttribute("disabled", false);
-    $.ajax({
-      url: "../Shared/retrieveuser_course.php",
-      data: { cid: cid, versid: versid, remove_student: userid },
-      type: "POST",
-      success: function (data) {
-        var item = JSON.parse(data);
-        var e = document.getElementById("recipient").querySelectorAll('*');
-        e.forEach((e1, idx) => {
-          if(idx !== 0){
-            e1.classList.remove;
-          }
-        });
-        document.getElementById("recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
-          "</optgroup>");
-        $.each(item.finished_students, function (index, item) {
-          document.getElementById("finishedStudents").append(`<option value=${item.uid}>${item.firstname}
-          ${item.lastname}</option>`);
-        });
-        document.getElementById("recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
-          "</optgroup>");
-        $.each(item.non_finished_students, function (index, item) {
-          document.getElementById("nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
-          ${item.lastname}</option>`);
-        });
-        document.querySelector(".selectLabels label input").getAttribute("disabled", false);
+
+  var versid = document.getElementById("versid").value;
+  if (versid !== "") {
+    var recipient = document.getElementById("recipient");
+    recipient.disabled = false;
+    fetch("../Shared/retrieveuser_course.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "cid=" + encodeURIComponent(cid) + "&versid=" + encodeURIComponent(versid) + "&remove_student=" + encodeURIComponent(userid)
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (item) {
+        var str = "<optgroup id='finishedStudents' label='Finished students'>";
+        for (var i = 0; i < item.finished_students.length; i++) {
+          var s = item.finished_students[i];
+          str += "<option value='" + s.uid + "'>" + s.firstname + " " + s.lastname + "</option>";
+        }
+        str += "</optgroup><optgroup id='nonfinishedStudents' label='Non-finished students'>";
+        for (var j = 0; j < item.non_finished_students.length; j++) {
+          var s = item.non_finished_students[j];
+          str += "<option value='" + s.uid + "'>" + s.firstname + " " + s.lastname + "</option>";
+        }
+        str += "</optgroup>";
+        while (recipient.options.length > 1) { recipient.remove(1); }
+        recipient.innerHTML += str;
+        var inputs = document.querySelectorAll(".selectLabels label input");
+        for (var k = 0; k < inputs.length; k++) inputs[k].disabled = false;
         selectRecipients();
-      },
-      error: function () {
-        console.log("*******Error user_course*******");
-      }
-    });
-  } else {
-    document.getElementById("recipient").getAttribute("disabled", true);
+      })
+      .catch(function () { console.log("*******Error user_course*******"); });
   }
+  else document.getElementById("recipient").disabled = true;
 }
 
 // Validate create announcement form
