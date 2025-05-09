@@ -3247,11 +3247,11 @@ function validateUpdateAnnouncementForm() {
 
 // Retrive announcements
 function retrieveAnnouncementsCards() {
-  var currentLocation = location.attributes('href');
-  var url = new URL(currentLocation);
-  var cid = url.searchParams.get("courseid");
-  var versid = url.searchParams.get("coursevers");
-  var uname = document.getElementById("userName").innerHTML;
+  const currentLocation = location.attributes('href');
+  const url = new URL(currentLocation);
+  const cid = url.searchParams.get("courseid");
+  const versid = url.searchParams.get("coursevers");
+  const uname = document.getElementById("userName").innerHTML;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3291,7 +3291,7 @@ function retrieveAnnouncementsCards() {
 
 // Update announcement form
 function updateannouncementForm(updateannouncementid, cid, versid, tempFuction) {
-  var xmlhttp = new XMLHttpRequest();
+  const xmlhttp = new XMLHttpRequest();
 
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -3305,9 +3305,9 @@ function updateannouncementForm(updateannouncementid, cid, versid, tempFuction) 
 }
 
 function handleResponse(xhttp, updateannouncementid, cid, versid) {
-  var parsed_data = JSON.parse(xhttp.response);
-  var title   = parsed_data.title;
-  var message = parsed_data.message;
+  const parsed_data = JSON.parse(xhttp.response);
+  const title   = parsed_data.title;
+  const message = parsed_data.message;
 
   const form = document.getElementById("announcementForm");
   if (form && form.style.display === "none") form.style.display = "";
