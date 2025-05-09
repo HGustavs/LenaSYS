@@ -119,15 +119,24 @@ function entityIsOverlapping(id, x, y, ignoreIds = []) {
 
         // No element can be placed over another of the same kind
         if (other.kind !== element.kind) {
-        if ((other.kind === "sequenceActor" || other.kind === "sequenceObject") &&
-        element.kind === "sequenceActivation") {
-        const headerHeight = getTopHeight(other);          
-        const extra        = other.kind === "sequenceActor"; 
-        const headerBottom = other.y + headerHeight + extra;
-
-        if (y < headerBottom) return true;   
-        continue;                            
-    }
+            if ((other.kind === "sequenceActor" || other.kind === "sequenceObject") &&
+            element.kind === "sequenceActivation") {
+        
+                const bodyX = other.x;
+                const bodyWidth = other.width;
+                const bodyY = other.y;
+                const bodyHeight = getTopHeight(other);
+            
+                // Block placeing on the actor/objects body
+                if (
+                    x + element.width > bodyX &&
+                    x < bodyX + bodyWidth &&
+                    y + element.height > bodyY &&
+                    y < bodyY + bodyHeight
+                ) return true;
+            
+                continue;
+            }
 
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
             else if (other.type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
