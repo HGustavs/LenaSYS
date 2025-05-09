@@ -130,7 +130,7 @@ if (isset($_GET['id'])) {
             <p><label>Calling Methods:<br><input type="text" name="calling_methods" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
             <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
             <button type="submit">Save Changes</button>
-            <a href="?id=<?php echo $editMicroservice['id']; ?>">Cancel</a>
+            <a href="?id=<?php echo $editMicroservice['id']; ?>" class="a-button">Cancel</a>
         </form>
     <?php } ?>
 
@@ -165,7 +165,7 @@ if (isset($_GET['id'])) {
                 <input type="text" name="search" placeholder="Search name/description">
                     <button type="submit">Search</button>
                 <?php if (isset($_GET['search'])): ?>
-                    <a href="?">Reset</a>
+                    <a href="?" class="a-button">Reset</a>
                 <?php endif; ?>
             </form>
 
@@ -178,7 +178,7 @@ if (isset($_GET['id'])) {
                 </select>
                 <button type="submit">Filter</button>
                 <?php if (isset($_GET['filter_method'])): ?>
-                    <a href="?">Reset</a>
+                    <a href="?" class="a-button">Reset</a>
                 <?php endif; ?>
             </form>
                 <form method="get">
@@ -266,7 +266,7 @@ if (isset($_GET['id'])) {
             </form>
         </div>
 
-        <p><a href="?">Back to list</a></p>
+        <p><a href="?" class="a-button">Back to list</a></p>
         
     <?php } else { ?>
         <table>
@@ -283,7 +283,7 @@ if (isset($_GET['id'])) {
             echo $service['description'];
         }
         echo '</td>';
-        echo '<td><a href="?id=' . $service['id'] . '">View</a></td>';
+        echo '<td><a href="?id=' . $service['id'] . '" class="a-button">View</a></td>';
         echo '</tr>';
     }
     ?>
