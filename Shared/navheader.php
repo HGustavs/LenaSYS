@@ -123,6 +123,7 @@
 					echo"</div>"; 
 				} 
 				else {
+					//Display default tools/buttons of burger dropdown menu, search(ctrl + f) for "Burger dropdown menu show dugga" 
 					echo "<td class='navBurgerIcon fa fa-bars' onclick='navBurgerChange()'></td>";
 					echo "<td class='navBurgerIcon' style='display: none;'> </td>";
 				}
@@ -416,8 +417,7 @@
 				if ($noup === 'COURSE') {
 					echo "<div id='goBackBurgerDiv'>";
 					echo "<a href='../DuggaSys/courseed.php'>";
-					echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>";
-					echo "<span>Return</span>"; 
+					echo "<img src='../Shared/icons/Up.svg' alt='Go Back'>"; 
 					echo "</a>";
 					echo "</div>";
 				} 
