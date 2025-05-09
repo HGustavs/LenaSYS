@@ -3504,59 +3504,82 @@ function multiSelect() {
   }).mousemove(function (e) { e.preventDefault() });
 }
 // Start of recent feedback from the teacher
-function toggleFeedbacks()
-{
-	var uname=document.getElementById("userName").innerHTML;
-	var studentid;
-	var feedbackComment="feedbackComment";
+function toggleFeedbacks() {
+  var uname = document.getElementById("userName").innerHTML;
+  var studentid;
+  var feedbackComment = "feedbackComment";
 
-	if(document.getElementById("feedback"))
-	{
-		document.querySelector("header").insertAdjacentHTML("afterend",
-			"<div id='feedbackOverlay'><div class='feedbackContainer'>"+
-			"<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>"+
-			"<div class='feedbackContent'></div></div></div>");
-	}
+  if (document.getElementById("feedback")) {
+    document.querySelector("header").insertAdjacentHTML("afterend",
+      "<div id='feedbackOverlay'><div class='feedbackContainer'>" +
+      "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>" +
+      "<div class='feedbackContent'></div></div></div>");
+  }
 
-	fetch("../Shared/retrieveUserid.php?uname="+encodeURIComponent(uname))
-	.then(function(response){return response.json();})
-	.then(function(parsed_uid){
-		studentid=parsed_uid.uid;
-		fetch("../Shared/retrieveFeedbacks.php",{
-			method:"POST",
-			headers:{"Content-Type":"application/x-www-form-urlencoded"},
-			body:"studentid="+encodeURIComponent(studentid)
-		})
-		.then(function(response){return response.json();})
-		.then(function(data){
-			document.querySelector(".feedbackContent").innerHTML=data.duggaFeedback;
+  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
+    .then(function (response) { return response.json(); })
+    .then(function (parsed_uid) {
+      studentid = parsed_uid.uid;
 
-			if(document.querySelectorAll(".recentFeedbacks").length===0){
-				document.querySelector(".feedbackContent").insertAdjacentHTML("beforeend",
-					"<p class='noFeedbacks'><span>There are no recent feedback to view.</span>"+
-					"<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
+      fetch("../Shared/retrieveFeedbacks.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "studentid=" + encodeURIComponent(studentid)
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          document.querySelector(".feedbackContent").innerHTML = data.duggaFeedback;
 
-				document.querySelector(".feedbackHeader").insertAdjacentHTML("beforeend",
-					"<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>"+
-					"<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
-			}
+          if (document.querySelectorAll(".recentFeedbacks").length === 0) {
+            document.querySelector(".feedbackContent").insertAdjacentHTML("beforeend",
+              "<p class='noFeedbacks'><span>There are no recent feedback to view.</span>" +
+              "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
 
-			var oldFeedbacks=document.querySelectorAll(".oldFeedbacks");
-			for(var i=0;i<oldFeedbacks.length;i++) oldFeedbacks[i].style.display="none";
+            document.querySelector(".feedbackHeader").insertAdjacentHTML("beforeend",
+              "<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>" +
+              "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+          }
 
-			readLessOrMore(feedbackComment);
+          var oldFeedbacks = document.querySelectorAll(".oldFeedbacks");
+          for (var i = 0; i < oldFeedbacks.length; i++) oldFeedbacks[i].style.display = "none";
 
-			if(data.unreadFeedbackNotification>0){
-				var feedbackIcon=document.querySelector("#feedback img");
-				if(feedbackIcon){
-					var badge=document.createElement("span");
-					badge.id="feedbacknotificationcounter";
-					badge.innerHTML=data.unreadFeedbackNotification;
-					feedbackIcon.after(badge);
-				}
-			}
-		});
-	});
+          readLessOrMore(feedbackComment);
+
+          if (data.unreadFeedbackNotification > 0) {
+            var feedbackIcon = document.querySelector("#feedback img");
+            if (feedbackIcon) {
+              var badge = document.createElement("span");
+              badge.id = "feedbacknotificationcounter";
+              badge.innerHTML = data.unreadFeedbackNotification;
+              feedbackIcon.after(badge);
+            }
+          }
+
+          var feedbackBtn = document.getElementById("feedback");
+          if (feedbackBtn) {
+            feedbackBtn.addEventListener("click", function () {
+              var overlay = document.getElementById("feedbackOverlay");
+              if (overlay) {
+                if (overlay.style.display === "none" || overlay.style.display === "") overlay.style.display = "block";
+                else overlay.style.display = "none";
+              }
+
+              if (document.getElementById("feedbacknotificationcounter")) {
+                fetch("../Shared/retrieveFeedbacks.php", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                  body: "studentid=" + encodeURIComponent(studentid) + "&viewed=YES"
+                })
+                .then(function () {
+                  var badge = document.getElementById("feedbacknotificationcounter");
+                  if (badge) badge.remove();
+                });
+              }
+            });
+          }
+        })
+        .catch(function () { console.log("Couldn't return feedback data"); });
+    });
 }
 function viewOldFeedbacks() {
   $(".feedbackHeader h2").html("Old Feedback");
