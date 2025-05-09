@@ -102,9 +102,24 @@
     </div>
 
     <!-- The FAB-btn for the diagram.php, STARTS HERE!-->
-    <div class="fixed-action-button diagram-fab">
-        <button class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
-    </div>
+       <div class="fixed-action-button diagram-fab">
+      <ol class="fab-btn-list" style="margin-bottom: 60px; padding:0;">
+          <button id="fab-check" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+          <img class="icon-fit" src="../Shared/icons/LookingGlass.svg" alt="Check"/>
+          </button>  
+          <button id="fab-localSaveAs" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+          <img class="icon-fit" src="../Shared/icons/diagram_save_as_icon.svg" alt="Save as diagram"/>
+          </button>  
+          <button id="fab-localSave"  class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+          <img class="icon-fit" src="../Shared/icons/save_button.svg" alt="Save diagram"/>
+          </button>   
+          <button id="fab-load" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+          <img class="icon-fit" src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
+          </button>  
+      </ol>
+          <button id="diagram-fab"class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
+      </div>
+
 
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar">
