@@ -3504,9 +3504,9 @@ function multiSelect() {
   }).mousemove(function (e) { e.preventDefault() });
 }
 // Start of recent feedback from the teacher
-function toggleFeedbacks() {
-
-  var uname=document.getElementById("userName").innerHTML;
+function toggleFeedbacks()
+{
+	var uname=document.getElementById("userName").innerHTML;
 	var studentid;
 	var feedbackComment="feedbackComment";
 
@@ -3522,8 +3522,41 @@ function toggleFeedbacks() {
 	.then(function(response){return response.json();})
 	.then(function(parsed_uid){
 		studentid=parsed_uid.uid;
-  
-  
+		fetch("../Shared/retrieveFeedbacks.php",{
+			method:"POST",
+			headers:{"Content-Type":"application/x-www-form-urlencoded"},
+			body:"studentid="+encodeURIComponent(studentid)
+		})
+		.then(function(response){return response.json();})
+		.then(function(data){
+			document.querySelector(".feedbackContent").innerHTML=data.duggaFeedback;
+
+			if(document.querySelectorAll(".recentFeedbacks").length===0){
+				document.querySelector(".feedbackContent").insertAdjacentHTML("beforeend",
+					"<p class='noFeedbacks'><span>There are no recent feedback to view.</span>"+
+					"<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
+
+				document.querySelector(".feedbackHeader").insertAdjacentHTML("beforeend",
+					"<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>"+
+					"<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+			}
+
+			var oldFeedbacks=document.querySelectorAll(".oldFeedbacks");
+			for(var i=0;i<oldFeedbacks.length;i++) oldFeedbacks[i].style.display="none";
+
+			readLessOrMore(feedbackComment);
+
+			if(data.unreadFeedbackNotification>0){
+				var feedbackIcon=document.querySelector("#feedback img");
+				if(feedbackIcon){
+					var badge=document.createElement("span");
+					badge.id="feedbacknotificationcounter";
+					badge.innerHTML=data.unreadFeedbackNotification;
+					feedbackIcon.after(badge);
+				}
+			}
+		});
+	});
 }
 function viewOldFeedbacks() {
   $(".feedbackHeader h2").html("Old Feedback");
