@@ -1625,7 +1625,7 @@ margin-block-end: 10px;
 }
 #courseVersionDropDown{
   vertical-align: top;
-  max-width: 60px;
+  max-width: 50px; 
 }
 
 .burgerButt {
@@ -4378,6 +4378,7 @@ span.arrow {
   width: inherit;
   white-space: nowrap;
   overflow: hidden;
+  padding-right: 15px;
   text-overflow: ellipsis;
 }
 
