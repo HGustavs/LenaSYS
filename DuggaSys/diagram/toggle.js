@@ -146,19 +146,47 @@ function toggleA4Template() {
         vRect.style.display = "none";
         a4Rect.style.display = "none";
         document.getElementById("a4OptionsDropdownContainer").style.display = "none";
-        document.getElementById("a4HorizontalButton").style.display = "none";
+        
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
         document.getElementById("a4OptionsDropdownContainer").style.display = "block";
-        document.getElementById("a4HorizontalButton").style.display = "inline-block";
+        
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
     }
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
+}
+
+function toggleA4Dropdown() {
+    const dropdown = document.getElementById("a4OptionsDropdown");
+    const load = document.getElementById("a4Load");
+    const btn = document.getElementById("a4TemplateToggle");
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        load.style.display = "block";
+        dropdown.style.display = "block";
+    } else {
+        load.style.display = "none";
+        dropdown.style.display = "none";
+    }
+
+    document.getElementById("a4TemplateToggle").classList.toggle("active");
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        btn.style.backgroundColor = "transparent";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
+        btn.style.fontWeight = "bold";
+    } else {
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
+        btn.style.fontWeight = "normal";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+    }
 }
 
 function setA4SizeFactor(e) {

@@ -1193,7 +1193,7 @@
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
                 <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Dropdown()">A4 template</button><br><br>
-                <div id="dropdownContent">
+                <div id="dropDownContent">
                     <select id="a4OptionsDropdown" onchange="applyA4Option();">
                         <option value="vertical">Vertical</option>
                         <option value="horizontal">Horizontal</option>
