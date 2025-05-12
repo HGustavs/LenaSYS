@@ -34,11 +34,24 @@ $latestCommit = bfs($url, $cid, "GETCOMMIT");
 # Name of file/service
 downloadToWebServer_ms.php
 ## Description
+Downloads a file from a given GitHub `download_url` and stores it in the appropriate directory under the course folder on the web server. Logs errors if file retrieval or writing fails.
 ## Input Parameters
+- Parameter: $cid
+  - Type: int
+  - Description: Course ID used to determine the local directory path.
+- Parameter: $item
+  - Type: array
+  - Description: Associative array containing file metadata. Expected keys: `name`, `path`, and `download_url`.
 ## Calling Methods
+-function call
 ## Output Data and Format
+No output unless error, in which case error message is logged.
 ## Examples of Use
+```php
+downloadToWebserver($cid, $item);
+```
 ### Microservices Used
+-
 
 # Name of file/service
 getGithubUrl_ms.php
@@ -87,51 +100,6 @@ $filesToIgnore = getIndexFile($url);
 -
 
 # Name of file/service
-insertToFileLink_ms.php
-## Description
-## Input Parameters
-## Calling Methods
-## Output Data and Format
-## Examples of Use
-### Microservices Used
--
-
-# Name of file/service
-insertToMetadata_ms.php
-## Description
-## Input Parameters
-## Calling Methods
-## Output Data and Format
-## Examples of Use
-### Microservices Used
--
-
-
-# Name of file/service
-downloadToWebServer_ms.php
-## Description
-Downloads a file from a given GitHub `download_url` and stores it in the appropriate directory under the course folder on the web server. Logs errors if file retrieval or writing fails.
-## Input Parameters
-- Parameter: $cid
-  - Type: int
-  - Description: Course ID used to determine the local directory path.
-- Parameter: $item
-  - Type: array
-  - Description: Associative array containing file metadata. Expected keys: `name`, `path`, and `download_url`.
-## Calling Methods
--function call
-## Output Data and Format
-No output unless error, in which case error message is logged.
-## Examples of Use
-```php
-downloadToWebserver($cid, $item);
-```
-### Microservices Used
--
-
-
-
-# Name of file/service
 insertToFileLInk_ms.php
 ## Description
 Inserts a file record into the `fileLink` database table if it doesn't already exist for the specified course. Used to register course-local files with associated metadata like name, path, and size.
@@ -152,7 +120,6 @@ insertToFileLink($cid, $item);
 ```
 ### Microservices Used
 -
-
 
 # Name of file/service
 insertToMetadata_ms.php
