@@ -29,9 +29,28 @@ try {
     <h1>Microservice Documentation Database Admin</h1>
     <?php
     if (isset($dbError)) {
-        echo $dbError;
+        echo "<p>$dbError <a href='#' id='installLink'>Install database</a></p>";
     }
     ?>
 </body>
+<script>
+    // use optional chaining in case the element doesn't exist 
+    document.getElementById('installLink')?.addEventListener('click', function (e) {
+        // prevent the links standard behaviour (so it wont navigate to new page)
+        e.preventDefault();
+        // send AJAX request to run the install script
+        fetch('installEndpointDb.php')
+            // parse response as plain text
+            .then(res => res.text())
+            .then(data => {
+                alert('Database installed!');
+                // reload the page
+                location.reload();
+            })
+            .catch(error => {
+                alert('Something went wrong: ' + error);
+            });
+    });
+</script>
 
 </html>
