@@ -224,8 +224,6 @@
 		<div id='Sectionlist'>
 
 		<div id='courseHeader' class='course' >
-
-			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
 		
 			<div class='fixed-action-button3 sectioned3 display_none' id="HIDEStatic">
   				<input id='toggleElements' type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='toggle hidden items'>

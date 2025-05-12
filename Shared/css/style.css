@@ -3220,9 +3220,6 @@ label.login-label {
 .formBox .hide  {
   display: none;
 }
-#undoButton {
-  position: absolute; padding-right:5px; margin-right:164px; display: none;
-}
 
 .loginBox td,
 .formBox td {

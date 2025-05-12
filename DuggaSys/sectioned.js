@@ -1157,7 +1157,6 @@ function deleteItem(item_lid = []) {
     item = document.getElementById("lid" + lid[i]);
     item.parentElement.style.display = "none";
     item.classList.add("deleted");
-    document.querySelector("#undoButton").style.display = "block";
   }
 
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
@@ -1181,7 +1180,6 @@ function deleteAll() {
     }, "SECTION");
   }
   document.getElementById("editSection").style.display = "none";
-  document.querySelector("#undoButton").style.display = "none";
 }
 
 // Undo the deletion
