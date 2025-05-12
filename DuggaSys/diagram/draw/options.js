@@ -389,7 +389,7 @@ function drawLineProperties(line) {
             str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>`;
             break;
     }
-    str += saveButton('changeLineProperties();');
+    str += saveButton('changeLineProperties();generateContextProperties();');
     return str;
 }
 
@@ -1926,4 +1926,5 @@ function changeLineProperties() {
     stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
 
     showdata();
+    generateContextProperties();
 }

@@ -5,6 +5,29 @@
  * @param {boolean} targetGhost Is the targeted line a ghost line
  */
 
+function getPerpendicularOffset(x1, y1, x2, y2, distance) {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.hypot(dx, dy) || 1;
+
+    let nx = (-dy / len) * distance;
+    let ny = ( dx / len) * distance;
+
+    if (Math.abs(dx) >= Math.abs(dy)) {
+        if (ny > 0) {
+            nx *= -1;
+            ny *= -1;
+        }
+    } else {
+        if (nx < 0) {
+            nx *= -1;
+            ny *= -1;
+        }
+    }
+
+    return { x: nx, y: ny };
+}
+
 function drawLine(line, targetGhost = false) {
 
     let lineStr = ""; // only the lines, polylines, arrows etc
@@ -310,8 +333,18 @@ function drawLine(line, targetGhost = false) {
         const labelPositionY = labelPosY - zoomfact;
 
         // Label positioning for regual (non-recursive) lines
-        const labelCenterX = label.centerX - (2 * zoomfact);
-        const labelCenterY = label.centerY;
+        const pad = 16 * zoomfact;
+
+        // real start / end points of this segment
+        const xStart = fx + offset.x1;
+        const yStart = fy + offset.y1;
+        const xEnd   = tx + offset.x2;
+        const yEnd   = ty + offset.y2;
+
+        const {x: offX, y: offY} = getPerpendicularOffset(xStart, yStart, xEnd,   yEnd, pad);
+
+        const labelCenterX = label.centerX + offX;
+        const labelCenterY = label.centerY + offY;
 
         // Centers the background rectangle around the text
         const rectPosX = labelCenterX - textWidth / 2 - zoomfact * 2;
