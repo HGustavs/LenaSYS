@@ -4,7 +4,7 @@
 changeActiveCourseVersion_sectioned_ms
 
 ## Description
-Updates the active version of a specific course. After the update, retrieveSectionedService_ms is called to fetch all relevent and updated data, which is then used as the output as a JSON-encoded string.
+Updates the active version of a specific course. After the update, retrieveSectionedService_ms is called to fetch all relevant and updated data, which is then used as the output as a JSON-encoded string.
 
 ## Input Parameters
 - Parameter: $courseid
@@ -38,11 +38,11 @@ Updates the active version of a specific course. After the update, retrieveSecti
 
 - Output: $duggor
    - Type: String
-   - Description: Details about quizzes. Contains id, qname, release, deadline and realtivedeadline from the 'quiz' table
+   - Description: Details about quizzes. Contains id, qname, release, deadline and relativedeadline from the 'quiz' table
 
 - Output: $releases
    - Type: String
-   - Description: Dates regarding quizzes. Contains release, deadline and realtivedeadline from the 'quiz' table
+   - Description: Dates regarding quizzes. Contains release, deadline and relativedeadline from the 'quiz' table
 
 - Output: $resulties
    - Type: String
