@@ -2130,6 +2130,14 @@ function loadDiagramFromLocalStorage(key) {
             } else {
                 activeFile = key;
                 loadDiagramFromString(obj[key]);
+
+                // The name of the loaded file is shown on screen for the user. It only appears if there is a file selected
+                const div = document.getElementById("diagramFileName");
+                const span = document.getElementById("openedFileName");
+                if (div && span) {
+                    span.textContent = key;
+                    div.style.display = "inline-block";
+                }
             }
         } else {
             // Failed to load content

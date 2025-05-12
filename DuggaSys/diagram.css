@@ -71,6 +71,17 @@
     overflow: hidden;
 }
 
+#diagramFileName {
+    position: absolute;
+    z-index: 1000;
+    margin-left: 50vw;
+    margin-top: 6vh;
+    padding: 2px;
+    background-color: #fff;
+    border: #775886 1px solid;
+    text-align: center;
+}
+
 #svgbacklayer {
     position: absolute;
     left: 0;
