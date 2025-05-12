@@ -873,18 +873,19 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
     }
     //svg for the small label in top left corner
     content += `<path 
-                    d="M ${(7 * zoomfact) + linew},${linew}
-                        h ${100 * zoomfact}
-                        v ${25 * zoomfact}
-                        l ${-12.5 * zoomfact},${12.5 * zoomfact}
-                        H ${linew}
-                        V ${linew + (7 * zoomfact)}
-                        a ${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
-                        z" 
-                    stroke-width='${linew}'
-                    stroke='${element.stroke}'
-                    fill='${element.fill}'
-                />`;
+                id="loopLabel"
+                d="M ${(7 * zoomfact) + linew},${linew}
+                    h ${100 * zoomfact}
+                    v ${25 * zoomfact}
+                    l ${-12.5 * zoomfact},${12.5 * zoomfact}
+                    H ${linew}
+                    V ${linew + (7 * zoomfact)}
+                    a ${7 * zoomfact},${7 * zoomfact} 0 0 1 ${7 * zoomfact},${(7 * zoomfact) * -1}
+                    z" 
+                stroke-width='${linew}'
+                stroke='${element.stroke}'
+                fill='${element.fill}'
+            />`;
     let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
     let textTwo = drawText(linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0] ?? '', `fill=${fontColor}`);
     return drawSvg(boxw, boxh, content + textOne + textTwo);
