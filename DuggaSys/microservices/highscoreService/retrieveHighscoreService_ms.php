@@ -1,6 +1,6 @@
 <?php
 include_once "../../../Shared/basic.php";
-include_once "../microservices/curlService.php";
+include_once "../curlService.php";
 
 // Include basic application services! Include more if needed
 date_default_timezone_set("Europe/Stockholm");

@@ -11,7 +11,7 @@ include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 //include_once "retrieveHighscoreService_ms.php";
-include_once "../microservices/curlService.php";
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
