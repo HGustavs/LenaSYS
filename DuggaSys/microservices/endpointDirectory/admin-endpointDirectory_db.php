@@ -36,13 +36,15 @@ try {
 <body>
     <h1>Microservice Documentation Database Admin</h1>
     <?php
+    if (isset($dbEmpty)) {
+        echo $dbEmpty;
+    }
     if (isset($dbError)) {
         echo $dbError . "<br>";
         echo "<a href='#' id='installLink'>Install database</a> (doesn't fill)</br>";
         echo "<a href='#' id='setupLink'>Setup database</a> (fill)";
-    }
-    if (isset($dbEmpty)) {
-        echo $dbEmpty;
+    } else {
+        echo "<br><a href='#' id='deleteLink'>Delete database</a>";
     }
     ?>
 </body>
@@ -65,22 +67,33 @@ try {
             });
     });
 
-    // use optional chaining in case the element doesn't exist 
     document.getElementById('setupLink')?.addEventListener('click', function (e) {
-        // prevent the links standard behaviour (so it wont navigate to new page)
         e.preventDefault();
-        // send AJAX request to run the install script
         fetch('setupEndpointDirectory.php')
-            // parse response as plain text
             .then(res => res.text())
             .then(data => {
                 alert('Database installed and filled!');
-                // reload the page
                 location.reload();
             })
             .catch(error => {
                 alert('Something went wrong: ' + error);
             });
+    });
+
+    document.getElementById('deleteLink')?.addEventListener('click', function (e) {
+        e.preventDefault();
+        // the user must confirm before deleting the database
+        if (confirm('Are you sure you want to delete the database? This action cannot be undone.')) {
+            fetch('deleteEndpointDb.php')
+                .then(res => res.text())
+                .then(data => {
+                    alert(data);
+                    location.reload();
+                })
+                .catch(error => {
+                    alert('Something went wrong: ' + error);
+                });
+        }
     });
 </script>
 
