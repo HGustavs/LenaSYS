@@ -883,6 +883,8 @@ function markedItems(item = null, typeInput) {
   // handles selections & deselections
   if (selectedItemList.length != 0) {
     let tempSelectedItemListLength = selectedItemList.length;
+
+    //for every item in selectionList
     for (var i = 0; i < tempSelectedItemListLength; i++) {
       var tempKind = item ? item.closest('tr').getAttribute('value'): null;
 
@@ -890,18 +892,18 @@ function markedItems(item = null, typeInput) {
       if (selectedItemList[i] === active_lid && typeInput != "trash") {        
         document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
-        var removed = true;
+        removed = true;
 
         // deselection of child -> deselect parent (if parent exists)
         if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
           var parent = recieveCodeParent(active_lid);
 
           if(parent != null){
-            for (var i = 0; i < tempSelectedItemListLength; i++) {
-              if (selectedItemList[i] == parent){
-                document.getElementById(parent + "-checkbox").checked = false;
-                selectedItemList.splice(i, 1);
-              }
+            var indexNr = checkIfInList(selectedItemList, tempSelectedItemListLength, parent);
+          
+            if(indexNr != null){
+              document.getElementById(selectedItemList[indexNr] + "-checkbox").checked = false;
+              selectedItemList.splice(indexNr, 1);
             }
           }
         }
@@ -919,16 +921,16 @@ function markedItems(item = null, typeInput) {
     
     if (removed != true) {
       let activeLidInList = false;
-      for (var k = 0; k < selectedItemList.length; k++) {
-        if(active_lid == selectedItemList[k]){
-          activeLidInList = true;
-          break;
-        }
-      } if (activeLidInList == false){
+      var indexNr = checkIfInList(selectedItemList, selectedItemList.length, active_lid);
+
+      if(indexNr != null){
+        activeLidInList = true;
+      } 
+      if (activeLidInList == false){
         selectedItemList.push(active_lid);
         document.getElementById(active_lid + "-checkbox").checked = true;
-    }
-      //handles checking within section
+      }
+      //checks everything within the section (children)
       for (var j = 0; j < subItems.length; j++) {
         selectedItemList.push(subItems[j]);
         document.getElementById(subItems[j] + "-checkbox").checked = true;
@@ -994,6 +996,15 @@ function clearHideItemList() {
   selectedItemList = [];
 }
 
+//checks if the element is in the list, returns the index of match.
+function checkIfInList (list, tempListLenght, lid){
+  for (var i = 0; i < tempListLenght; i++){
+    if (list[i] == lid){
+      return i;
+    }
+  }
+}
+
 // Finds code-duggas parent - used in markedItems() for unselection of section
 function recieveCodeParent(item){
   var itemInSection = true;
@@ -1003,7 +1014,6 @@ function recieveCodeParent(item){
   for (let i = elements.length - 1 ; i >= 0 ; i--){
     const element = elements[i];
     var tempItem = element.getAttribute('value');
-    //console.log('affected item: ' + tempItem);
 
     if (itemInSection && sectionStart) {
       var tempKind = element ? element.closest('tr').getAttribute('value'): null;
