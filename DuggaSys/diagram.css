@@ -320,8 +320,9 @@
         display: block !important;
         position: fixed;
         z-index: 10;
-        bottom: 7%;
-        left: calc(50% - 2%);
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
         transition: var(--normal-transition);
     }
 
@@ -347,11 +348,12 @@
     }
 
     #diagram-toolbar {
+        display: none !important;
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        display: flex;
+        /* display: flex; */
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
@@ -463,6 +465,7 @@
 }
 
 #diagram-toolbar {
+    display: block;
     position: absolute;
     border-right: solid black 1px;
     background-color: var(--color-primary);

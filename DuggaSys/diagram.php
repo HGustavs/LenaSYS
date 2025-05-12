@@ -24,6 +24,7 @@
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
     <link type="text/css" href="./diagram.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link type="text/css" href="../Shared/css/mobile-diagram.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <!-- To enable dark mode, these 2 files were added. -->
