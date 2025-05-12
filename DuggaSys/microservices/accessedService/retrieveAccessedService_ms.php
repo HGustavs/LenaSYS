@@ -1,8 +1,14 @@
 <?php
 
 include_once "../../../Shared/basic.php";
+include_once "../../../DuggaSys/microservices/curlService.php"; //curlService
 
 function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt="", $newusers=""){
+
+    // UID microservice
+    $data = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+    $userid = $data['uid'] ?? -1;
+
     $entries=array();
     $teachers=array();
     $classes=array();
@@ -158,20 +164,12 @@ function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt=""
     );
 
 
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
-    
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    
-    $data = json_decode($response, true);
+    // Fetch username from retrieveUsername_ms.php
+    $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
     $username = $data['username'] ?? 'unknown';
-    
-    $info = "opt: ".$opt." cid: ".$cid." uid: ".$userid." username: ".$username." newusers: ".$newusers;
 
-    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "accessedservice.php",$userid,$info);
+    $info = "opt: $opt cid: $cid uid: $userid username: $username newusers: $newusers";
+    logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "accessedservice.php", $userid, $info);
     
     return $array;
 }
