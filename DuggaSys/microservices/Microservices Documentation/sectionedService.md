@@ -399,3 +399,46 @@ Updates listentries to be visible by parameter lid
 - retrieveSectionedService_ms
 
 ---
+
+# Name of file/service
+updateActiveCourseVersion_sectioned_ms
+
+## Description
+Microservice that updates the active version of a course
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+   
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: JSON object returned from retrieveSectionedService_ms.php, along with the new active course version ID and a debug message
+
+## Examples of Use
+
+
+### Microservices Used
+- retrieveSectionedService_ms
+
+---
