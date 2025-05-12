@@ -474,7 +474,8 @@ window.addEventListener("DOMContentLoaded", () => {
 stateMachine = new StateMachine(data, lines);
 
 /**
- * @description Very first function that is called when the window is loaded. This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
+ * @description Very first function that is called when the window is loaded.
+ *  This will perform initial setup and then call the drawing functions to generate the first frame on the screen.
  */
 function getData() {
     container = document.getElementById("container");
@@ -488,7 +489,13 @@ function getData() {
     document.getElementById("container").addEventListener("mousemove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
-    
+
+    //Mobile fab buttons
+    document.getElementById("fab-check").addEventListener("click", toggleErrorCheck);
+    document.getElementById("fab-localSaveAs").addEventListener("click", showSavePopout);
+    document.getElementById("fab-localSave").addEventListener("click", quickSaveDiagram);
+    document.getElementById("fab-load").addEventListener("click", showModal);
+    //Main mobal fab button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
         document.querySelectorAll('.fab-inner').forEach(button => {
             button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
@@ -773,7 +780,6 @@ document.addEventListener('keyup', function (e) {
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM_AS)) showSavePopout();
     if (isKeybindValid(e, keybinds.RESET_DIAGRAM)) resetDiagramAlert();
     if (isKeybindValid(e, keybinds.TOGGLE_TEST_CASE)) toggleTestCase();
-
     if (isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck();
 
     if (isKeybindValid(e, keybinds.COPY)) {
