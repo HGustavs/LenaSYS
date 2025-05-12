@@ -1106,12 +1106,17 @@
         </div>
     </div>
 
+    <div id='diagramFileName'> 
+        <p>Opened file: </p><span id='openedFileName'></span>
+    </div>
+
     <!-- Message prompt -->
     <div id="diagram-message"></div>
     
     <!-- Diagram drawing system canvas. -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
     <div id="container"></div><!-- Contains all elements (items) -->
+    
      <!-- One svg layer for background stuff and one for foreground stuff -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
 
