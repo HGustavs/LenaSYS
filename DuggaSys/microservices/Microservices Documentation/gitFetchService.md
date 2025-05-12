@@ -32,3 +32,46 @@ $latestCommit = bfs($url, $cid, "GETCOMMIT");
 -
 
 # Name of file/service
+downloadToWebServer_ms.php
+## Description
+## Input Parameters
+## Calling Methods
+## Output Data and Format
+## Examples of Use
+### Microservices Used
+
+# Name of file/service
+getGithubUrl_ms.php
+## Description
+## Input Parameters
+## Calling Methods
+## Output Data and Format
+## Examples of Use
+### Microservices Used
+
+# Name of file/service
+getIndexFile_ms.php
+## Description
+## Input Parameters
+## Calling Methods
+## Output Data and Format
+## Examples of Use
+### Microservices Used
+
+# Name of file/service
+insertToFileLInk_ms.php
+## Description
+## Input Parameters
+## Calling Methods
+## Output Data and Format
+## Examples of Use
+### Microservices Used
+
+# Name of file/service
+insertToMetadata_ms.php
+## Description
+## Input Parameters
+## Calling Methods
+## Output Data and Format
+## Examples of Use
+### Microservices Used
