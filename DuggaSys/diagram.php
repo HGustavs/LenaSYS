@@ -1106,8 +1106,8 @@
         </div>
     </div>
 
-    <div id='diagramFileName'> 
-        <p>Opened file: </p><span id='openedFileName'></span>
+    <div id='diagramFileName' style='display: none;'> 
+        <p>Opened file: <span id='openedFileName'></span></p>
     </div>
 
     <!-- Message prompt -->
