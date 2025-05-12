@@ -22,7 +22,7 @@ Retrieves submission data for a given course and version and fills it with data 
 - GET
 
 ## Output Data and Format
-- Output: $JSON response
+- Output: JSON response
    - Type: JSON-string
    - Description: Sends this array $tableSubmissionInfo with the following parameters
         	'duggaName' => $duggaName,
@@ -39,11 +39,40 @@ Retrieves submission data for a given course and version and fills it with data 
 
 
 ## Examples of Use
--
+- 
 
 ### Microservices Used
 - sharedMicroservices/getUid_ms
 - retrieveResultedService_ms -------> Via POST
 
-
 ---
+
+# Name of file/service
+retrieveResultedService_ms.php
+
+## Description
+Accepts pre-assembled data and filter options and returns them in JSON  
+
+## Input Parameters
+- Parameter: $tableinfo
+   - Type: Array
+   - Description: JSON encoded array of submission objects
+
+- Parameter: $duggaFilterOptions
+   - Type: Array
+   - Description: JSON encoded array of filtering options
+   
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: HTTP response
+   - Type: JSON-object
+   - Description: tableInfo: The same array of submission objects received in POST. DuggaFilterOptions: The same array of filter option objects received in POST
+
+
+## Examples of Use
+- 
+
+### Microservices Used
+- 
