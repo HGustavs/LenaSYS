@@ -557,8 +557,11 @@ function getLineAttributes(f, t, ctype, fromElemMouseY, toElemMouseY) {
     }
     
     if(f.kind === elementTypesNames.sequenceActivation){
-        fy = fromElemMouseY ?? lastMousePos.y;
-        ty = toElemMouseY ?? lastMousePos.y;
+        f.anchorY = fromElemMouseY ?? lastMousePos.y;
+        t.anchorY = toElemMouseY ?? lastMousePos.y;
+        fy = f.anchorY;
+        ty = t.anchorY;
+        console.log(f.anchorX, ' + ',  f.anchorY);
     }
 
     return [fx, fy, tx, ty, offset];
@@ -1059,6 +1062,7 @@ function redrawArrows() {
     }
     //Going through all elements and checking for adjacent lines
     for (let i = 0; i < data.length; i++) {
+        if (data[i].kind === elementTypesNames.sequenceActivation) continue;
         checkAdjacentLines(data[i]);
     }
     // Draw each line using sorted line ends when applicable
