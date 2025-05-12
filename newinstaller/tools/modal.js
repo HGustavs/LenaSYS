@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
           Hostname: ${data.hostname} <br>
           User: ${data.username} <br>
           Password: ${data.password} <br>
-          Use distributed environment: ${data.distEnvironment} <br>
+          Use distributed environment: ${data.distributed_environment} <br>
           Verbose: ${data.Verbose} <br>
           Overwrite database: ${data.overwrite_db} <br>
           Overwrite user: ${data.overwrite_user} <br><br>
