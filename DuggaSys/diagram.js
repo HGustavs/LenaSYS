@@ -2345,4 +2345,27 @@ window.addEventListener("resize", () => {
         ruler.style.top = "0px";
     }
 });
+
+/** 
+ * Improvement suggestion: Instead of attaching event listeners to each individual element, 
+ * delegate the event by attaching a single event-listener to the parent (e.g., #mb-diagram-toolbar). 
+ * Use e.target.tagName or e.target.classList to determine if a relevant child was clicked, 
+ * and handle the action accordingly.
+ */
+
+//Select all toolbar boxes from the mobile toolbar
+const elementToolbarBoxs = document.querySelectorAll(".mb-toolbar-main:not(.non-element)");
+
+elementToolbarBoxs.forEach(elementBox=>{
+    elementBox.addEventListener("click", handleToolbarClick);
+});
+
+
+//Select all toolbar boxes inside the sub menu
+const subMenuToolbarBoxs = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
+
+subMenuToolbarBoxs.forEach(subMenuBox=>{
+    subMenuBox.addEventListener("click", changeActiveElement);
+});
+
 //#endregion =====================================================================================
