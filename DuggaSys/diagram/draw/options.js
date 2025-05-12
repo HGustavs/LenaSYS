@@ -140,7 +140,8 @@ function nameInput(element) {
             <input 
                 id='elementProperty_name' 
                 type='text' 
-                value='${safeName}' 
+                value='${safeName}'
+                maxlength='1000'
             >`;
 }
 
