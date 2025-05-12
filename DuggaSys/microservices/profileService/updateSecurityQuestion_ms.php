@@ -10,7 +10,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveProfileService_ms.php";
+require_once "../curlService.php"; // Use curlService for microservice calls
 
 // Connect to database and start session
 pdoConnect();
@@ -88,9 +88,20 @@ if (checklogin()) {
 		}
 	}
 }
+
 // Log the end event of this service query.
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, __FILE__, $userid, $info);
 
-$array = retrieveProfileService($debug,$success,$status);
+// 🔧 Use POST call to the retrieveProfileService microservice
+$dataToSend = [
+    'debug' => $debug,
+    'success' => $success,
+    'status' => $status
+];
+
+$responseJson = callMicroservicePOST("../profileService/retrieveProfileService_ms.php", $dataToSend, true);
+$array = json_decode($responseJson, true);
+
+// Return the response
 echo json_encode($array);
 return;
