@@ -1,16 +1,14 @@
 <?php
 			if (isset($_GET['embed'])){
-				echo "<header style='display:none;'>";
+				echo "<header class='navheader' style='display:none;'>";
 			}	else {
-				echo "<header>";
+				echo "<header class='navheader'>";
 			}		
 ?>
        <?php
 			$requestedService = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 			$requestedService = substr($requestedService,strrpos ( $requestedService , "/")+1);
 			
-
-			echo "<table class='navheader' id='navheader'><tr id='navbar'>";
 			include_once "../Shared/basic.php";
 			pdoConnect();
 
@@ -78,7 +76,7 @@
 				$updateTime = "No data found for the given course ID";
 			}
 
-
+			echo "<table><tr>";
 			//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 			//Always on courseed.php ($noup is none). Contains only home and darkmode icons.
 			if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid'])) || $noup=='NONE'){

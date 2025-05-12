@@ -1555,7 +1555,7 @@ header td {
 }
 
 .navheader {
-  height: 20px;
+  height: fit-content;
   margin-bottom: 10px;
   width: 100%;
   position: fixed;
