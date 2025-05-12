@@ -1106,8 +1106,9 @@
         </div>
     </div>
 
+    <!-- If a file is opened the name is displayed in this div -->
     <div id='diagramFileName' style='display: none;'> 
-        <p>Opened file: <span id='openedFileName'></span></p>
+        <p>Current file: <span id='openedFileName'></span></p>
     </div>
 
     <!-- Message prompt -->
