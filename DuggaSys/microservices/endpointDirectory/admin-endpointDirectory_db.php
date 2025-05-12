@@ -12,6 +12,14 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
 
+    // get microservices
+    $services = $db->query("SELECT * FROM microservices")->fetchAll();
+
+    // check if the table is empty
+    if (empty($services)) {
+        $dbEmpty = "Database is installed but empty.";
+    }
+
 } catch (PDOException $e) {
     $dbError = "Database is not installed.";
 }
@@ -29,7 +37,12 @@ try {
     <h1>Microservice Documentation Database Admin</h1>
     <?php
     if (isset($dbError)) {
-        echo "<p>$dbError <a href='#' id='installLink'>Install database</a></p>";
+        echo $dbError . "<br>";
+        echo "<a href='#' id='installLink'>Install database</a> (doesn't fill)</br>";
+        echo "<a href='#' id='setupLink'>Setup database</a> (fill)";
+    }
+    if (isset($dbEmpty)) {
+        echo $dbEmpty;
     }
     ?>
 </body>
@@ -44,6 +57,24 @@ try {
             .then(res => res.text())
             .then(data => {
                 alert('Database installed!');
+                // reload the page
+                location.reload();
+            })
+            .catch(error => {
+                alert('Something went wrong: ' + error);
+            });
+    });
+
+    // use optional chaining in case the element doesn't exist 
+    document.getElementById('setupLink')?.addEventListener('click', function (e) {
+        // prevent the links standard behaviour (so it wont navigate to new page)
+        e.preventDefault();
+        // send AJAX request to run the install script
+        fetch('setupEndpointDirectory.php')
+            // parse response as plain text
+            .then(res => res.text())
+            .then(data => {
+                alert('Database installed and filled!');
                 // reload the page
                 location.reload();
             })
