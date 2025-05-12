@@ -3061,7 +3061,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
 // Show the full announcement
 function showAnnouncement() {
-  document.getElementById('fullAnnnouncementOverlay').style.display = "block";
+  document.getElementById('fullAnnouncementOverlay').style.display = "block";
 }
 
 function retrieveAnnouncementAuthor() {
@@ -3199,8 +3199,6 @@ function validateCreateAnnouncementForm() {
     else if (!versid)    markError(versidEl);
     else if (!recipients) markError(recipientEl);
 
-    document.querySelectorAll(".errorCreateAnnouncement")
-            .forEach(el => (el.style.border = "1px solid red"));
   });
 }
 
@@ -3217,8 +3215,6 @@ function validateUpdateAnnouncementForm() {
       msgEl.classList.add("errorCreateAnnouncement");
       e.preventDefault();
     }
-    document.querySelectorAll(".errorCreateAnnouncement")
-            .forEach(el => (el.style.border = "1px solid red"));
   });
 }
 
@@ -3325,8 +3321,14 @@ function displayListAndGrid() {
   const listBtn = document.querySelector(".listBtn");
   const gridBtn = document.querySelector(".gridBtn");
 
-  listBtn.addEventListener("click", () => cards.forEach(c => (c.style.width = "100%")));
-  gridBtn.addEventListener("click", () => cards.forEach(c => (c.style.width = "48%")));
+  listBtn.addEventListener("click", () => {
+    cards.forEach(c => c.classList.replace('gridCard', 'listCard'));
+  });
+  
+  gridBtn.addEventListener("click", () => {
+    cards.forEach(c => c.classList.replace('listCard', 'gridCard'));
+  });
+  
 
   document.querySelectorAll("#btnContainer .btn").forEach(btn =>
     btn.addEventListener("click", function () {
@@ -3413,7 +3415,9 @@ function readLessOrMore(paragraph) {
       this.parentNode.insertBefore(document.createTextNode(more.textContent), this);
       more.remove();
       this.remove();
-      if (paragraph === "announcementMsgParagraph") cards.forEach(c => (c.style.width = "100%"));
+      if (paragraph === "announcementMsgParagraph") {
+        cards.forEach(c => c.classList.replace('gridCard', 'listCard'));
+      }
     })
   );
 }
@@ -3424,7 +3428,7 @@ function showLessOrMoreAnnouncements() {
 
   if (cards.length === 0) {
     document.getElementById("announcementCards")
-            .insertAdjacentHTML("beforeend", "<p style='color:#775886;'>No announcements yet</p>");
+            .insertAdjacentHTML("beforeend", "<p class='noAnnouncements'>No announcements yet</p>");
     return;
   }
 
