@@ -144,7 +144,7 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.querySelector("g > circle"); // Accessing the circular "head" element
                     }
                     else if (element.kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.UMLSuperState) {
-                        fillColor =elementDiv.children[0].children[1]; // Accessing the top left rectangle
+                        fillColor = elementDiv.querySelector("#loopLabel"); // Accessing the top left rectangle
                     }
                     else {
                         fillColor = elementDiv.children[0].children[0]; // Accessing the whatever needs to be accessed
