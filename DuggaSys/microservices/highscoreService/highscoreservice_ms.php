@@ -42,7 +42,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "highscoreservice.php
     'did' => $duggaid,
     'lid' => $variant
  ];
-$response = callMicroservicePOST("../highscoreService/retrieveHighscoreService_ms.php", $postData, true );
+$response = callMicroservicePOST("highscoreService/retrieveHighscoreService_ms.php", $postData, true );
 
 $data = json_decode($response, true);
 echo json_encode($data);
