@@ -1,5 +1,6 @@
 # Name of file/service
 changeActiveCourseVersion_courseed_ms.php
+
 ## Description
 Changes the active course version by updating the activeversion column in the course table.
 
@@ -314,9 +315,19 @@ deleteCourseMaterial_ms.php
 Deletes all course-related data for courses with visibility=3
 
 ## Input Parameters
+NO INPUT PARAMETERS
+
 - Parameter: $pdo
    - Type: PDO
    - Description: Database connection
+
+- Parameter: $delete
+   - Type: int
+   - Description:?
+
+- Parameter: $debug
+   - Type: string
+   - Description: Used to log error messages if any of the deletion queries fail
    
 ## Calling Methods
 - 
@@ -335,200 +346,256 @@ Deletes all course-related data for courses with visibility=3
 getCourseed_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+NO INPUT PARAMETERS
+
+- Parameter: $userid
    - Type: int
-   - Description: describe parameter
+   - Description: Retrieves the user ID of the currently logged-in user
 
-- Parameter: paramName
-   - Type: int
-   - Description: describe parameter
+- Parameter: $pdo
+   - Type: PDO
+   - Description: Database connection
 
+- Parameter: $debug
+   - Type: string
+   - Description: Used to store debugging or error messages
 
+- Parameter: $isSuperUserVar
+   - Type: ?
+   - Description: ?
+
+- Parameter: $ha
+   - Type: ?
+   - Description: ?
 
 ## Calling Methods
-- GET
-- POST
-- etc.
+- 
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: object
+   - Type: JSON
+   - Description: Returns the full course-related data from retrieveCourseedService
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
-
+- retrieveCourseedService_ms.php
+- getUid_ms.php
+- basic.php
+- sessions.php
 
 # Name of file/service
 retrieveAllCourseedServiceData_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+NO INPUT PARAMETERS
+
+- Parameter: $userid
    - Type: int
-   - Description: describe parameter
+   - Description: Retrieves the user ID of the currently logged-in user
 
-- Parameter: paramName
-   - Type: int
-   - Description: describe parameter
+- Parameter: $pdo
+   - Type: PDO
+   - Description: Database connection
 
+- Parameter: $debug
+   - Type: string
+   - Description: Used to store debugging or error messages
 
+- Parameter: $isSuperUserVar
+   - Type: bool
+   - Description: Indicates whether the logged-in user is a superuser
+
+- Parameter: $ha
+   - Type: ?
+   - Description: ?
 
 ## Calling Methods
-- GET
-- POST
-- etc.
+- 
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: object
+   - Type: JSON
+   - Description: Returns the full course-related data
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+- retrieveCourseedService_ms.php
+- getUid_ms.php
+- basic.php
+- sessions.php
 
 
 # Name of file/service
 retrieveCourseedService_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Retrieve Information, gathers and returns all course-related data. It also triggers cleanup of deleted courses via an internal cURL call
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
    - Type: int
    - Description: describe parameter
 
-- Parameter: paramName
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID.
+
+- Parameter: $coursename
+   - Type: varchar
+   - Description: Full course name
+
+- Parameter: $visibility
    - Type: int
    - Description: describe parameter
 
+- Parameter: $versid
+   - Type: int
+   - Description: describe parameter
 
+- Parameter: $courseGitURL
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $log_uuid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $LastCourseCreated
+   - Type: int
+   - Description: Passed externally to indicate if a new course was just added
+
+- Parameter: $ha
+   - Type: bool
+   - Description: Write access flag
+
+- Parameter: $isSuperUserVar 
+   - Type: bool
+   - Description: Indicates if the user is a superuser
 
 ## Calling Methods
-- GET
-- POST
-- etc.
+- 
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: object
+   - Type: JSON
+   - Description: Returns the full course-related data
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+- getUid_ms.php
+- logServiceEvent()
+- deleteCourseMaterial_ms.php
+- basic.php, sessions.php
 
 
 # Name of file/service
 specialUpdate_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+This microservice allows superusers to update the Git URL of a course in the course table.
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
    - Type: int
    - Description: describe parameter
 
-- Parameter: paramName
+- Parameter: $cid
    - Type: int
    - Description: describe parameter
 
+- Parameter: $courseGitURL
+   - Type: int
+   - Description: describe parameter
 
+- Parameter: $userid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $debug
+   - Type: int
+   - Description: describe parameter
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: object
+   - Type: JSON
+   - Description: Returns the full course-related data
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+- retrieveCourseedService_ms.php
+- getUid_ms.php
+- basic.php s
+- essions.php
 
 
 # Name of file/service
 updateActiveCourseVersion_courseed_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+The microservice changeActiveVersion_ms.php takes an existing course and changes content of the activeversion column.
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
    - Type: int
    - Description: describe parameter
 
-- Parameter: paramName
+- Parameter: $courseid
    - Type: int
    - Description: describe parameter
 
+- Parameter: $versid
+   - Type: int
+   - Description: describe parameter
 
+- Parameter: $debug
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $userid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $ha
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $isSuperUserVar
+   - Type: int
+   - Description: describe parameter
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
+- Output: object
+   - Type: JSON
    - Description: describe the output
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+- retrieveCourseedService_ms.php
+- getUid_ms.php
+- basic.php 
+- sessions.php
 
 
 # Name of file/service
