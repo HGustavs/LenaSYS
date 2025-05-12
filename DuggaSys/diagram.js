@@ -86,14 +86,19 @@ class StateMachine {
                     const currentText = (currentFields[key] ?? "").toString();
                     const lastText = (lastFields[key] ?? "").toString();
 
-                    // Check is a word boundary was typed (space or punctuation or longer than 4 symbols) and if change has happend it is logged (no change means no logging)
-                    const isWordBoundary = currentText.length > lastText.length && (/\s|[.,;!?]/.test(currentText.slice(-1)) || currentText.length - lastText.length > 3);
-                    const isNewText = currentText !== lastText;
+                    // Check if a new full word has been added (more reliable than using 4 chars or punctuation)
+                    const newWords = currentText.trim().split(/\s+/);
+                    const oldWords = lastText.trim().split(/\s+/);
 
-                    if (isNewText && isWordBoundary) {
+                    // Detect if a full word has been added or removed
+                    const isNewText = currentText !== lastText;
+                    const isNewWord = newWords.length !== oldWords.length || !newWords.every((word, i) => word === oldWords[i]);
+
+                    if (isNewText && isNewWord) {
                         hasChanged = true;
                         break;
                     }
+
                 }
 
                 if (hasChanged) {
