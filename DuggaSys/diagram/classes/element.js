@@ -31,6 +31,8 @@ class Element {
         this.id = id;
         this.x = x;
         this.y = y;
+        this.anchorX;
+        this.anchorY;
         this.width = width;
         this.height = height;
         this.minWidth = minWidth;
