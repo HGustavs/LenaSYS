@@ -1,5 +1,3 @@
-# filedServices Documentation
-
 # Name of file/service
 deleteFileLink_ms
 
