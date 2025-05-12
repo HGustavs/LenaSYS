@@ -345,3 +345,57 @@ Fetches All data from the 'userduggafeedback' table
 ## Microservices Used
 sharedMicroservices/getUid_ms.php
 retrieveSectionedService_ms.php
+
+--- 
+
+# Name of file/service
+setVisibleListEntries_ms
+
+## Description
+Updates listentries to be visible by parameter lid
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+   
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
+
+- Parameter: $sectid
+   - Type: int
+   - Description: Section ID. Stored as int(10) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+- Parameter: $visible
+   - Type: tinyint
+   - Description: Toggle visibility
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: JSON object returned from retrieveSectionedService_ms.php, augmented with the first element containing the debug message.
+
+## Examples of Use
+
+
+### Microservices Used
+- getUid_ms
+- retrieveSectionedService_ms
+
+---
