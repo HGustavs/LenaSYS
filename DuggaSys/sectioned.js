@@ -3457,7 +3457,8 @@ function showLessOrMoreAnnouncements() {
 }
 
 function updateReadStatus(announcementid, cid, versid) {
-  var uname = $("#userName").html();
+  const unameElement = document.getElementById('userName');
+  const uname   = unameElement ? unameElement.textContent : '';
   $.ajax({
     url: "../Shared/retrieveUserid.php",
     data: { uname: uname },
@@ -3527,7 +3528,8 @@ function multiSelect() {
 
 // Start of recent feedback from the teacher
 function toggleFeedbacks() {
-  let uname = $("#userName").html();
+  const unameElements = document.getElementById('userName');
+  const uname   = unameElements ? unameElements.textContent : '';
   let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
   $.ajax({
     url: "../Shared/retrieveUserid.php",
@@ -3618,8 +3620,10 @@ function viewOldFeedbacks() {
 }
 
 function hideIconButton() {
-  $("#iconButton").hide();
+  const iconBtn = document.getElementById('iconButton');
+  if (iconBtn) iconBtn.style.display = 'none';
 }
+
 // Checks if <a> link is external
 function link_is_external(link_element) {
   return (link_element.host !== window.location.host);
