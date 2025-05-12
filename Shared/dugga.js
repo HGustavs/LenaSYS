@@ -46,6 +46,38 @@ if(localStorage.getItem(localStorageItemKey)){
 	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 }
 
+/*navburger*/
+function navBurgerChange(operation = 'click') {
+  var x = document.getElementById("navBurgerBox");
+
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+
+//function to change darkmode from burger menu
+function burgerToggleDarkmode(operation = 'click') {
+  const storedTheme = localStorage.getItem('themeBlack');
+  if (storedTheme) {
+    themeStylesheet.href = storedTheme;
+  }
+  const themeToggle = document.getElementById('theme-toggle');
+  // if it's light -> go dark
+  if (themeStylesheet.href.includes('blackTheme')) {
+    themeStylesheet.href = "../Shared/css/style.css";
+    localStorage.setItem('themeBlack', themeStylesheet.href)
+    backgroundColorTheme = "#121212";
+  }
+  else if (!themeStylesheet.href.includes('blackTheme')) {
+    // if it's dark -> go light
+    themeStylesheet.href = "../Shared/css/blackTheme.css";
+    localStorage.setItem('themeBlack', themeStylesheet.href)
+    backgroundColorTheme = "#fff";
+  }
+}
+
 document.getElementById(function (){ // Used to set the position of the FAB above the cookie message
 	if(localStorage.getItem("cookieMessage")!="off")
 		document.getElementById(".fixed-action-button").style.bottom="64px";
