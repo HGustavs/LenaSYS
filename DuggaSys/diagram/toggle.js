@@ -145,14 +145,14 @@ function toggleA4Template() {
         template.style.display = "none";
         vRect.style.display = "none";
         a4Rect.style.display = "none";
-        document.getElementById("a4VerticalButton").style.display = "none";
+        document.getElementById("a4OptionsDropdownContainer").style.display = "none";
         document.getElementById("a4HorizontalButton").style.display = "none";
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
-        document.getElementById("a4VerticalButton").style.display = "inline-block";
+        document.getElementById("a4OptionsDropdownContainer").style.display = "block";
         document.getElementById("a4HorizontalButton").style.display = "inline-block";
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
@@ -187,6 +187,19 @@ function toggleA4Horizontal() {
 
     a4Rect.style.display = "none";  // Hide vertical
     vRect.style.display = "block";  // Show horizontal
+}
+
+/**
+ * @description Applies the selected A4 option: vertical or horizontal
+ */
+function applyA4Option() {
+    const selectedOption = document.getElementById("a4OptionsDropdown").value;
+
+    if (selectedOption === "vertical") {
+        toggleA4Vertical();
+    } else if (selectedOption === "horizontal") {
+        toggleA4Horizontal();
+    }
 }
 
 /**
