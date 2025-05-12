@@ -774,6 +774,7 @@
 				<input type='hidden' id='cidTrue' value='<?php echo $_GET["courseid"];?>'/>
 				<form action="" method="POST" id="repoLink">
 					<div class= 'inputwrapper'><span>Github repo link:</span><input onchange="checkGithubLinkClue('gitRepoURL')" oninput="checkGithubLink('gitRepoURL')" type="text" id="gitRepoURL" class="textinput" name="reponame" placeholder="https://github.com/username/repository"/></div>
+					<div class= 'inputwrapper'><span>Github repo key (optional):</span><input type="text" id="gitAPIKey" class="textinput" name="repokey" placeholder="12345"/></div>
 				</form>
 			</div>
 			<div class="formFooter">
