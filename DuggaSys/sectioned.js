@@ -2959,7 +2959,7 @@ document.addEventListener('click', function (e) {
 // Setup (when loaded rather than when ready)
 window.addEventListener("DOMContentLoaded", function () {
   accessAdminAction();
-  document.addEventListener("hover", function (e) {
+  document.addEventListener("mouseover", function (e) {
     const target = e.target.closest(".messagebox");
     if(target){
       document.getElementById("testbutton").style.backgroundColor="red";
@@ -2971,15 +2971,20 @@ window.addEventListener("DOMContentLoaded", function () {
       document.getElementById("testbutton").style.backgroundColor="#614875";
     }
   });
+
   document.getElementById("sectionList_arrowStatisticsOpen").addEventListener("click", function () {
     document.getElementById("sectionList_arrowStatisticsOpen").style.display="none";
     document.getElementById("sectionList_arrowStatisticsClosed").style.display="block";
-    document.getElementById("statisticsList").style.display="block";
-    document.getElementById("statistics").style.display="none";
-    document.querySelector(".statisticsContent").style.display="block";
+    if( document.getElementById("statisticsList"))
+      document.getElementById("statisticsList").style.display="block";
+    if(document.getElementById("statistics"))
+      document.getElementById("statistics").style.display="hidden";
+    if(document.querySelector(".statisticsContent"))
+      document.querySelector(".statisticsContent").style.display="block";
     document.getElementById("courseList").style.display="flex";
     document.getElementById("courseList").style.flexDirection="column";
-    document.querySelector(".statisticsContentBottom").style.display="block";
+    if(document.querySelector(".statisticsContentBottom"))
+      document.querySelector(".statisticsContentBottom").style.display="block";
     if (hasDuggs) {
       document.getElementById("swimlaneSVG").style.display="block";
       document.getElementById("statisticsSwimlanes").style.display="block";
@@ -2988,9 +2993,12 @@ window.addEventListener("DOMContentLoaded", function () {
   document.getElementById("sectionList_arrowStatisticsClosed").addEventListener("click", function () {
     document.getElementById("sectionList_arrowStatisticsOpen").style.display="block";
     document.getElementById("sectionList_arrowStatisticsClosed").style.display="none";
-    document.getElementById("statisticsList").style.display="none";
-    document.getElementById("swimlaneSVG").style.display="none";
-    document.getElementById("statisticsSwimlanes").style.display="none";
+    if(document.getElementById("statisticsList"))
+      document.getElementById("statisticsList").style.display="none";
+    if(document.getElementById("swimlaneSVG"))
+      document.getElementById("swimlaneSVG").style.display="none";
+    if(document.getElementById("statisticsSwimlanes"))
+      document.getElementById("statisticsSwimlanes").style.display="none";
 
   });
   document.addEventListener("click", function (e) {
