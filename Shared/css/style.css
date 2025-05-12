@@ -4371,8 +4371,7 @@ span.arrow {
   box-shadow: var(--standard-shadow);
   background-position: right;
   margin-top: 7px;
-  margin-left: 3px;
-  width: 90%;
+  width: 100%;
 }
 
 .course-dropdown-div select {
