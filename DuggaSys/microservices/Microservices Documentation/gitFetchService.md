@@ -43,11 +43,27 @@ downloadToWebServer_ms.php
 # Name of file/service
 getGithubUrl_ms.php
 ## Description
+Takes a normal repository github url and makes it into a url to the API of that repository.
 ## Input Parameters
+- Parameter: $url
+   - Type: string
+   - Description: Url to github repository.
+
 ## Calling Methods
+-function call
 ## Output Data and Format
+- Output
+   - Type: string
+   - Description: The translated url now pointing to the api of the repository located at the given url.
 ## Examples of Use
+
+```php
+$url = getGitHubURLCommit($url);
+$url = getGitHubURL($url);
+```
+
 ### Microservices Used
+-
 
 # Name of file/service
 getIndexFile_ms.php
@@ -57,6 +73,7 @@ getIndexFile_ms.php
 ## Output Data and Format
 ## Examples of Use
 ### Microservices Used
+-
 
 # Name of file/service
 insertToFileLInk_ms.php
@@ -66,6 +83,7 @@ insertToFileLInk_ms.php
 ## Output Data and Format
 ## Examples of Use
 ### Microservices Used
+-
 
 # Name of file/service
 insertToMetadata_ms.php
@@ -75,3 +93,4 @@ insertToMetadata_ms.php
 ## Output Data and Format
 ## Examples of Use
 ### Microservices Used
+-
