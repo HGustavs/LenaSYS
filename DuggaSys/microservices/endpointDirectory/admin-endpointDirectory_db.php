@@ -16,9 +16,9 @@ try {
     // get dependencies
     $dependencies = $db->query("SELECT * FROM microservices")->fetchAll();
 
-    // check if the table is empty
+    // check if the tables are empty
     if (empty($services) && empty($dependencies)) {
-        $dbEmpty = "Database is installed but empty.";
+        $dbEmpty = "Database is installed, but empty.";
     }
 
 } catch (PDOException $e) {
@@ -35,20 +35,24 @@ try {
 </head>
 
 <body>
-    <h1>Microservice Documentation Database Admin</h1>
+    <h1>Microservice Directory Admin</h1>
     <?php
+    if (empty($dbEmpty) && empty($dbError)) {
+        echo "<p style='color: green;'>Database is installed and filled</p>";
+    }
     if (isset($dbEmpty)) {
-        echo $dbEmpty . "<br>";
-        echo "<a href='#' id='fillLink'>Fill database</a>";
+        echo "<p>$dbEmpty</p>";
+        echo "<a href='#' id='fillLink'>Fill database</a><br>";
     }
     if (isset($dbError)) {
-        echo $dbError . "<br>";
+        echo "<p style='color: red;'>$dbError</p>";
         echo "<a href='#' id='installLink'>Install database</a> (don't fill)<br>";
-        echo "<a href='#' id='setupLink'>Setup database</a> (fill)";
+        echo "<a href='#' id='setupLink'>Setup database</a> (fill)<br>";
     } else {
         echo "<a href='#' id='deleteLink'>Delete database</a><br>";
     }
     ?>
+    <p>Go to <a href="microserviceUI.php">microserviceUI</a></p>
 </body>
 <script>
     // use optional chaining in case the element doesn't exist 
