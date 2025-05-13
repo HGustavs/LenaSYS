@@ -71,7 +71,6 @@ function generateContextProperties() {
     multipleColorsTest();
 }
 
-
 /**
  * @description Makes it show or hide the properties with class names.
  * @param {boolean} show Shows the properties if it's true, or hide if it's false.
@@ -1933,3 +1932,30 @@ function changeLineProperties() {
     stateMachine.save(contextLine[0].id, StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED);
     showdata();
 }
+
+/* Enables bringing an element to the front or sending it to the back by adjusting its z-index and redrawing the canvas */
+
+function bringToFront(id) {
+    const elem = data.find(e => e.id === id);
+    if (!elem) return;
+
+    const maxZ = Math.max(...data.map(e => e.z ?? 2));
+    elem.z = maxZ + 1;
+
+    showdata(); // Redraw everything
+}
+
+function sendToBack(id) {
+    const elem = data.find(e => e.id === id);
+    if (!elem) return;
+
+    const minZ = Math.min(...data.map(e => e.z ?? 2));
+    elem.z = minZ - 1;
+
+    showdata(); // Redraw everything
+}
+
+
+
+
+
