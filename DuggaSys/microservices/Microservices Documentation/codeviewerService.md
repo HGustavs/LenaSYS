@@ -15,7 +15,7 @@ Deletes a code example and its related data from the database if the user has th
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version. Stored as varchar(8) in the database
+   - Description: Course version. Stored as int in the database
 
 - Parameter: $boxId
    - Type: string
@@ -60,37 +60,52 @@ Deletes a code example and its related data from the database if the user has th
 editBoxTitle_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Updates a box title of a code example when a user with appropriate permissions edits it, and then retrieves all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
-   - Type: int
-   - Description: describe parameter
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
 
-- Parameter: paramName
+- Parameter: $boxId
+   - Type: string
+   - Description: Box ID. Stored as int in the database
+
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version. Stored as int in the database
+
+- Parameter: $boxTitle
+   - Type: string
+   - Description: Box Title. Stored as varchar(20) in the database
+
+- Parameter: $userid
    - Type: int
-   - Description: describe parameter
+   - Description: User ID. Stored as int in the database
 
 
 
 ## Calling Methods
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: $data
+   - Type: JSON
+   - Description: contains data of the code example related to the updated box title
 
 ## Examples of Use
-`CODE`
+‘UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;’
 
 ### Microservices Used
-*Includes and microservices used*
+- getUid_ms.php
+- retrieveCodeviewerService_ms.php
+
+---
