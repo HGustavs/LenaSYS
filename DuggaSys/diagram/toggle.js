@@ -455,13 +455,9 @@ function toggleColorMenu(buttonID) {
             }
         }
         // Menu position relative to button
-        menu.style.width = width + "px";
-        const buttonWidth = button.offsetWidth;
-        const offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
-        const offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = (offsetHeight - 50) + "px";
-        const menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
-        menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
+        menu.style.maxHeight = "600px";
+        menu.style.overflowY = "auto";
+        menu.style.overflowX = "hidden";
     } else {    // if the color menu's inner html is not empty, remove the content
         menu = button.children[0];
         menu.innerHTML = "";
