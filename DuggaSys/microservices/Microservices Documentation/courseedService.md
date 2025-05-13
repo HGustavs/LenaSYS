@@ -602,40 +602,67 @@ The microservice changeActiveVersion_ms.php takes an existing course and changes
 updateCourse_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+This microservice allows a superuser to update general course data including the name, visibility, course code, and associated Git URL 
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
+   - Type: int
+   - Description: 'UPDATE'
+
+- Parameter: $cid
    - Type: int
    - Description: describe parameter
 
-- Parameter: paramName
+- Parameter: $coursename
    - Type: int
    - Description: describe parameter
 
+- Parameter: $visibility
+   - Type: int
+   - Description: describe parameter
 
+- Parameter: $coursecode
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $courseGitURL
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $userid
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $ha
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $itsSuperUserVar
+   - Type: int
+   - Description: describe parameter
+
+- Parameter: $debug
+   - Type: int
+   - Description: describe parameter
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: object
+   - Type: JSON
+   - Description: Returns course information, list, versions, MOTD and readonly flag
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+- retrieveCourseedService_ms.php
+- getUid_ms.php
+- retrieveUsername_ms.php
+- basic.php
+- sessions.php
+- curlService.php
 
 
 # Name of file/service
@@ -645,34 +672,78 @@ updateCourseVersion_ms.php
 *Description of what the service do and its function in the system.*
 
 ## Input Parameters
-*Parameters will be described in lists*
-- Parameter: paramName
+- Parameter: $opt
+   - Type: ?
+   - Description: Specifies the operation type, 'CPYVRS' ?
+
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID used to identify which course is being used
+
+- Parameter: $courseid
+   - Type: varchar
+   - Description: The name of the course
+
+- Parameter: $versid
+   - Type: varchar
+   - Description: ID of the course version to be updated or created
+
+- Parameter: $versname
+   - Type: varchar
+   - Description: Name for the version
+
+- Parameter: $coursenamealt
+   - Type: varchar
+   - Description: An alternative name for the course
+
+- Parameter: $coursecode
+   - Type: varchar
+   - Description: The course code
+
+- Parameter: $coursename
    - Type: int
    - Description: describe parameter
 
-- Parameter: paramName
+- Parameter: $copycourse
+   - Type: ?
+   - Description: Version ID of the course to copy from
+
+- Parameter: $startdate
+   - Type: datetime
+   - Description: Start date of the course version
+
+- Parameter: $enddate
+   - Type: datetime
+   - Description: End date of the course version
+
+- Parameter: $makeactive
+   - Type: ? (int)
+   - Description: When set to 3, this activates the new version
+
+- Parameter: $motd
+   - Type: varchar
+   - Description: Message of the day displayed
+
+- Parameter: $log_uuid
    - Type: int
-   - Description: describe parameter
-
-
+   - Description: ID of currently logged-in user
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists*
-- Output: outputName
-   - Type: int
-   - Description: describe the output
-
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: object
+   - Type: JSON
+   - Description: Updated course and version data, MOTD and readonly flags
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-*Includes and microservices used*
+- retrieveCourseedService_ms.php
+- getUid_ms.php
+- retrieveUsername_ms.php
+- setAsActiveCourse_ms.php
+- basic.php
+- sessions.php
+- curlService.php
