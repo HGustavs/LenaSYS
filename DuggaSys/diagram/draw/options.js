@@ -305,12 +305,12 @@ function radio(line, arr) {
 }
 
 /**
- * @description Makes a selection menu for the element with different values.
+ * @description Creates a dropdown menu.
  * @param {String} id What id the menu should have.
- * @param {*} options The different option the selection menu should have.
- * @param {boolean} inclNone True if one of the option should have value "None".
+ * @param {*} options The different options the dropdown menu should have.
+ * @param {boolean} inclNone True if one of the options should have value "None".
  * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
- * @return Returns a select menu with de different option.
+ * @return Returns a dropdown menu with the options as selectable items.
  */
 function select(id, options, inclNone = true, inclChange = true) {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
