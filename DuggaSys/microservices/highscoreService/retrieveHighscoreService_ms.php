@@ -1,5 +1,6 @@
 <?php
 include_once "../../../Shared/basic.php";
+include_once "../curlService.php";
 
 // Include basic application services! Include more if needed
 date_default_timezone_set("Europe/Stockholm");
@@ -8,8 +9,9 @@ include_once "../../../Shared/sessions.php";
 pdoConnect();
 session_start();
 
-$duggaid = getOP('did');
-$variant = getOP('lid');
+$data = recieveMicroservicePOST(['did', 'lid']);
+$duggaid = $data['did'];
+$variant = $data['lid'];
 $debug = "";
 
 //------------------------------------------------------------------------------------------------
@@ -74,8 +76,6 @@ $array = array(
     "highscores" => $rows,
     "user" => $user
 );
-
-//echo json_encode($array);
 
 // logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "highscoreservice.php",$userid,$info);
 
