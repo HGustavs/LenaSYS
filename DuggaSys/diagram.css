@@ -337,6 +337,13 @@
         transition: var(--normal-transition);
     }
 
+    #diagram-message{
+        position: absolute !important;
+        top: 50px !important;
+        left: 50px !important;
+        width: 60% !important;
+    }
+
     .icon-wrapper.toolbar-active{
         margin-bottom: calc(var(--diagram-toolbar-height) - 2rem);
     }
