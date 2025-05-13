@@ -271,7 +271,7 @@ function drawElementProperties(element) {
 }
 
 /**
- * @description Makes a dropdown for the element with different options.
+ * @description Creates the options for selecting cardinalitie icons for a dropdown (Not the dropdown itself)
  * @param {Object} icon What type of icon the line is having, for example a ARROW at one end.
  * @param {Object} object What types of value the element have.
  * @return Returns a dropdown menu.
