@@ -6,10 +6,7 @@
 
 date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
-
-
-
-header("Content-Type: application/json");
+include_once "../../../Shared/sessions.php";
 
 // Connect to database
 pdoConnect(); 

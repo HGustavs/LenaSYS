@@ -346,6 +346,8 @@ Fetches All data from the 'userduggafeedback' table
 sharedMicroservices/getUid_ms.php
 retrieveSectionedService_ms.php
 
+---
+
 # Name of file/service
 changeActiveCourseVersion_sectioned_ms
 
@@ -454,15 +456,6 @@ createGithubCodeExample_ms
 ## Description
 Creates and/or updates code examples based on GitHub files available in the GitHub directory for a specific course and course version.
 Retrieves all updated data from the database through retrieveSectionedService_ms.php, and uses it as its output.
-
-## Input Parameters
-- Parameter: $opt
-   - Type: String
-   - Description: Operation type
-
-- Parameter: $courseid
-   - Type: int
-   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers
    - Type: String
@@ -624,6 +617,258 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
 - getUid_ms
 - createNewListEntry_ms
 - retrieveSectionedService_ms
+
+--- 
+
+# Name of file/service
+setVisibleListEntries_ms
+
+## Description
+Updates listentries to be visible by parameter lid
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+   
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
+
+- Parameter: $sectid
+   - Type: int
+   - Description: Section ID. Stored as int(10) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+- Parameter: $visible
+   - Type: tinyint
+   - Description: Toggle visibility
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: JSON object returned from retrieveSectionedService_ms.php, augmented with the first element containing the debug message.
+
+## Examples of Use
+
+
+### Microservices Used
+- getUid_ms
+- retrieveSectionedService_ms
+
+---
+
+# Name of file/service
+updateActiveCourseVersion_sectioned_ms
+
+## Description
+Microservice that updates the active version of a course
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+   
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: JSON object returned from retrieveSectionedService_ms.php, along with the new active course version ID and a debug message
+
+## Examples of Use
+
+
+### Microservices Used
+- retrieveSectionedService_ms
+
+---
+
+# Name of file/service  
+updateListEntriesTabs_ms.php
+
+## Description  
+Updates the 'tabs' value for a specific section in the 'listentries' table.  
+This service is restricted to superusers.  
+
+## Input Parameters  
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type
+
+- Parameter: $lid  
+  - Type: int  
+  - Description: ID of the list entry to be updated
+
+- Parameter: $tabs  
+  - Type: string  
+  - Description: The new tab configuration string
+
+- Parameter: $courseid  
+  - Type: int  
+  - Description: Course ID used in data retrieval
+
+- Parameter: $coursevers  
+  - Type: int  
+  - Description: Version of the course used in data retrieval
+
+- Parameter: $log_uuid  
+  - Type: string  
+  - Description: UUID used for service logging
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: array  
+  - Type: JSON  
+  - Description: Data returned by 'retrieveSectionedService_ms.php', including updated section information
+
+- Output: debug  
+  - Type: string  
+  - Description: Error message if the update fails
+
+## Examples of Use  
+'UPDATE listentries SET tabs=? WHERE lid=?;'
+
+### Microservices Used  
+- getUid_ms.php  
+- retrieveSectionedService_ms.php  
+- sessions.php  
+- basic.php  
+
+---
+
+# Name of file/service  
+updateListEntries_ms.php
+
+## Description  
+Updates a list entry in the 'listentries' table with new section information such as name, visibility, grading system, moment, kind, and feedback configuration.  
+
+## Input Parameters  
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type
+
+- Parameter: $lid  
+  - Type: int  
+  - Description: ID of the list entry to be updated
+
+- Parameter: $sectname  
+  - Type: string  
+  - Description: The updated name/title of the section
+
+- Parameter: $comments  
+  - Type: string  
+  - Description: Comment or description associated with the section
+
+- Parameter: $highscoremode  
+  - Type: int  
+  - Description: Highscore mode setting
+
+- Parameter: $feedback  
+  - Type: int  
+  - Description: Whether feedback is enabled (1) or disabled (0)
+
+- Parameter: $feedbackquestion  
+  - Type: string  
+  - Description: Feedback question shown if feedback is enabled
+
+- Parameter: $courseid  
+  - Type: int  
+  - Description: Course ID the section belongs to
+
+- Parameter: $coursevers  
+  - Type: int  
+  - Description: Course version used for filtering sectioned entries
+
+- Parameter: $link  
+  - Type: int  
+  - Description: ID of the linked code example
+
+- Parameter: $kind  
+  - Type: int  
+  - Description: Type of the entry
+
+- Parameter: $moment  
+  - Type: int or string  
+  - Description: ID of the associated moment, or "null" if none
+
+- Parameter: $visibility  
+  - Type: int  
+  - Description: Visibility status
+
+- Parameter: $grptype  
+  - Type: string  
+  - Description: Group type
+
+- Parameter: $tabs  
+  - Type: int  
+  - Description: Tab configuration value
+
+- Parameter: $gradesys  
+  - Type: int  
+  - Description: Grading system ID
+
+- Parameter: $coursename  
+  - Type: string  
+  - Description: Name of the course
+
+- Parameter: $log_uuid  
+  - Type: string  
+  - Description: UUID used for logging/debugging purposes
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: array  
+  - Type: JSON  
+  - Description: Contains updated section data as returned by retrieveSectionedService_ms.php
+
+- Output: debug  
+  - Type: string  
+  - Description: Error message if any operation fails
+
+## Examples of Use  
+'UPDATE listentries SET highscoremode=?, gradesystem=?, moment=?, entryname=?, kind=?, link=?, visible=?, comments=?, groupKind=?, feedbackenabled=?, feedbackquestion=? WHERE lid=?;'
+
+### Microservices Used  
+- getUid_ms.php  
+- retrieveSectionedService_ms.php  
+- sessions.php  
+- basic.php  
 
 ---
 
