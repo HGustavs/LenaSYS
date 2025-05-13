@@ -76,7 +76,8 @@
 				$updateTime = "No data found for the given course ID";
 			}
 
-			echo "<nav><ul>";
+			echo "<nav>";
+			echo "<ul>";
 			//Burger menu that Contains the home, back and darkmode icons when window is small; Only shown if not superuser.
 			//Always on courseed.php ($noup is none). Contains only home and darkmode icons.
 			if(checklogin() == false|| $_SESSION['uid'] == 0 || (isStudentUser($_SESSION['uid'])) || $noup=='NONE'){
@@ -158,13 +159,17 @@
 				echo "<div><a id='upIcon' class='navButt' href='../DuggaSys/courseed.php'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></div></li>";
 			}if($noup=='COURSE' && checklogin() && (isTeacher($_SESSION['uid']))){
-				echo '<li class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
+				echo '<li class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
 			}else if($noup=='SECTION'){
 				echo "<a id='upIcon' href='";
 				echo ($_SESSION['courseid'] != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$_SESSION['courseid']."&coursename=".$_SESSION['coursename']."&coursevers=".$_SESSION['coursevers'] : "../DuggaSys/courseed.php");
 				echo "'>";
 				echo "<img alt='go back icon' src='../Shared/icons/Up.svg'></a></li>";
 			}
+
+			echo "</ul>";
+			echo "</nav>";
+			echo "<ul>";
 
 			echo "<li class='navButt' style='display:none;' id='motdNav' title='Message of the day 'onclick='showServerMessage();'>
 					<div class='motd-nav' tabindex='0'>
@@ -175,7 +180,7 @@
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
-						echo '<li class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" style="width: 29px; vertical-align: middle; margin-top: 15px;" onclick=hamburgerChange()>';
+						echo '<li class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
 						echo "</li>";
 						echo "<li id='courseVersionDropDown' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
@@ -543,6 +548,10 @@
 					
 				}
 
+			echo "</ul>";
+
+			echo "<div class='auth-box'><ul>";
+
 			if($noup=='CONTRIBUTION' && (checkLogin() || git_checkLogin()))
 			{
 				if(checkLogin())
@@ -571,7 +580,8 @@
 				echo "<li id='loginbutton' class='loggedout' onclick='showLoginPopup();'><div class='loginbutton-nav' tabindex='0'>Login</div></li>";
 			}
 
-			echo "</ul></nav>";
+			echo "</ul></div>";
+
 			if(isset($codeviewer)){
 				echo "<div id='mobileNavHeading'><span id='mobileExampleSection'></span><span id='mobileExampleName'></span></div>";
 			}
