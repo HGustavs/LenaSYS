@@ -19,7 +19,7 @@ Returns updated dugga information by calling 'retrieveDuggaedService_ms.php'.
 
 - Parameter: $disabled  
   - Type: int  
-  - Description: Indicates whether the variant is disabled (0 = active, 1 = disabled)
+  - Description: Indicates whether the variant is disabled 
 
 - Parameter: $parameter  
   - Type: string  
@@ -74,7 +74,7 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 ## Input Parameters  
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation type, must be 'SAVDUGGA'
+  - Description: Operation type
 
 - Parameter: $cid  
   - Type: int  
@@ -90,7 +90,7 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 
 - Parameter: $autograde  
   - Type: int  
-  - Description: Whether the dugga should be auto-graded (1 = yes, 0 = no)
+  - Description: Whether the dugga should be auto-graded 
 
 - Parameter: $gradesys  
   - Type: int  
@@ -106,15 +106,15 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 
 - Parameter: $deadline  
   - Type: string (nullable)  
-  - Description: General deadline for the dugga (format: YYYY-MM-DD or NULL)
+  - Description: General deadline for the dugga 
 
 - Parameter: $qstart  
   - Type: string (nullable)  
-  - Description: Start time/date of the dugga (format: YYYY-MM-DD or NULL)
+  - Description: Start time/date of the dugga 
 
 - Parameter: $release  
   - Type: string (nullable)  
-  - Description: Release time/date for the dugga (format: YYYY-MM-DD or NULL)
+  - Description: Release time/date for the dugga 
 
 - Parameter: $log__uuid  
   - Type: string  
@@ -130,10 +130,10 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 
 - Output: debug  
   - Type: string  
-  - Description: Error message or debug info in case of permission or SQL errors
+  - Description: Error message or debug info 
 
 ## Examples of Use  
-'INSERT INTO quiz(cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, creator, vers, qstart, jsondeadline, `group`) VALUES (...);'
+'INSERT INTO quiz(cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, creator, vers, qstart, jsondeadline, 'group') VALUES (...);'
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -153,7 +153,7 @@ Requires the user to be logged in and have write, teacher, or superuser permissi
 ## Input Parameters  
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation type, must be 'DELVARI'
+  - Description: Operation type
 
 - Parameter: $vid  
   - Type: int  
@@ -204,7 +204,7 @@ The user must be logged in and have either write, teacher, or superuser access t
 ## Input Parameters  
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation type, must be 'DELDU'
+  - Description: Operation type
 
 - Parameter: $qid  
   - Type: int  
@@ -256,31 +256,31 @@ Returns structured data including quiz details, variant configurations, course i
 ## Input Parameters  
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation mode (not used in logic here but logged)
+  - Description: Operation mode 
 
 - Parameter: $qid  
   - Type: int  
-  - Description: ID of a specific quiz (not used in logic here but logged)
+  - Description: ID of a specific quiz 
 
 - Parameter: $vid  
   - Type: int  
-  - Description: ID of a specific variant (not used in logic here but logged)
+  - Description: ID of a specific variant 
 
 - Parameter: $parameter  
   - Type: string  
-  - Description: Variant parameter string (not used in logic here but logged)
+  - Description: Variant parameter string 
 
 - Parameter: $variantanswer  
   - Type: string  
-  - Description: Variant answer (not used in logic here but logged)
+  - Description: Variant answer
 
 - Parameter: $disabled  
   - Type: int  
-  - Description: Disabled status of variant (not used in logic here but logged)
+  - Description: Disabled status of variant
 
 - Parameter: $nme  
   - Type: string  
-  - Description: Name of the quiz (not used in logic here but logged)
+  - Description: Name of the quiz
 
 - Parameter: $cid  
   - Type: int  
@@ -296,7 +296,7 @@ Returns structured data including quiz details, variant configurations, course i
 
 - Parameter: $userid  
   - Type: int  
-  - Description: ID of the user requesting data (used for access control and logging)
+  - Description: ID of the user requesting data 
 
 ## Calling Methods  
 - Internally called via function from other microservices  
@@ -349,7 +349,7 @@ Updates an existing variant in the 'variant' table by modifying its parameter, a
 ## Input Parameters  
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation type, must be 'SAVVARI'
+  - Description: Operation type
 
 - Parameter: $vid  
   - Type: int  
@@ -365,7 +365,7 @@ Updates an existing variant in the 'variant' table by modifying its parameter, a
 
 - Parameter: $disabled  
   - Type: int  
-  - Description: Disabled status of the variant (0 = active, 1 = disabled)
+  - Description: Disabled status of the variant
 
 - Parameter: $log__uuid  
   - Type: string  
@@ -411,7 +411,7 @@ Updates an existing dugga in the 'quiz' table by modifying its metadata includin
 ## Input Parameters  
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation type, must be 'SAVDUGGA'
+  - Description: Operation type
 
 - Parameter: $qid  
   - Type: int  
@@ -419,7 +419,7 @@ Updates an existing dugga in the 'quiz' table by modifying its metadata includin
 
 - Parameter: $uid  
   - Type: int  
-  - Description: ID of the user performing the update (not used in logic)
+  - Description: ID of the user performing the update 
 
 - Parameter: $nme  
   - Type: string  
@@ -427,7 +427,7 @@ Updates an existing dugga in the 'quiz' table by modifying its metadata includin
 
 - Parameter: $autograde  
   - Type: int  
-  - Description: Whether the dugga should be auto-graded (1 = yes, 0 = no)
+  - Description: Whether the dugga should be auto-graded
 
 - Parameter: $gradesys  
   - Type: int  
@@ -435,19 +435,19 @@ Updates an existing dugga in the 'quiz' table by modifying its metadata includin
 
 - Parameter: $template  
   - Type: string  
-  - Description: Updated template filename or type (e.g., 'dugga1', 'group-assignment')
+  - Description: Updated template filename or type
 
 - Parameter: $qstart  
   - Type: string (nullable)  
-  - Description: Start date/time for the dugga (format: YYYY-MM-DD or 'UNK' for null)
+  - Description: Start date/time for the dugga
 
 - Parameter: $deadline  
   - Type: string (nullable)  
-  - Description: Deadline for the dugga (format: YYYY-MM-DD or 'UNK' for null)
+  - Description: Deadline for the dugga
 
 - Parameter: $release  
   - Type: string (nullable)  
-  - Description: Release date/time (format: YYYY-MM-DD or 'UNK' for null)
+  - Description: Release date/time
 
 - Parameter: $jsondeadline  
   - Type: string  
