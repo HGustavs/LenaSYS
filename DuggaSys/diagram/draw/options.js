@@ -433,9 +433,9 @@ function includeLabel(line) {
 }
 
 /**
- * @description Be able to add label on line that is between sequence element.
- * @param {object} line The line between sequence element.
- * @return Returns a header and with a text input from the function "lineLabel".
+ * @description Be able to add a label on the line that is between sequence elements.
+ * @param {object} line The line between the sequence elements.
+ * @return Returns a header with a text input from the function "lineLabel".
  */
 function includeSELabel(line) {
     return '<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>'
