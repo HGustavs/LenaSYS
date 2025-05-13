@@ -161,7 +161,7 @@ function saveButton(functions, id = '', value = 'Save') {
 }
 
 /**
- * @description Makes a dropdown for the element with the different selection.
+ * @description Makes a dropdown selection for a property on an element.
  * @param {String} name The header for the dropdown.
  * @param {String} def The default value for the dropdown.
  * @param {Object} object What types of value the element have.
