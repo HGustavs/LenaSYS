@@ -857,6 +857,7 @@ function drawElementSequenceActivation(element, boxw, boxh, linew) {
     let content;
     const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
 
+    // Single rounded rectangle representing the activation
     content = `<rect 
                     x='${linew}' y='${linew}' 
                     width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
@@ -875,9 +876,12 @@ function drawElementSequenceActivation(element, boxw, boxh, linew) {
  * @returns Returns a SVG for the sequence loop or alt that is going to be drawn.
  */
 function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
+    
+    // Determine label color based on theme
     let fontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
     element.altOrLoop = (element.alternatives.length > 1) ? "Alt" : "Loop";
 
+    // Outer frame
     let content = `
         <rect 
             class='text'
@@ -923,6 +927,8 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
+
+    // Draw the header text (“Alt” or “Loop”)
     let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
     let textTwo = drawText(linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0] ?? '', `fill=${fontColor}`);
     return drawSvg(boxw, boxh, content + textOne + textTwo);
@@ -947,15 +953,19 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor(availableTextWidth / avgCharWidth);
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    // Ensure at least four text lines
     const textLineCount = Math.max(4, text.length);
     const totalHeight = boxh + texth * textLineCount * lineHeight;
 
     const maxWidth = boxw - linew * 2;
     const maxHeight = totalHeight - linew * 2;
 
+    // Track this element’s height
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
+    // Note shape with folded top right corner
     let content = `
         <path class="text"
             d=" M ${maxWidth - (23 * zoomfact)},${linew}
