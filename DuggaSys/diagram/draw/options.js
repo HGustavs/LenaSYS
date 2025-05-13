@@ -374,20 +374,19 @@ function drawLineProperties(line) {
                 str += select('lineType', optSD, false);
             }
             break;
-        case entityType.SE:
-
-
-            if (line.kind === lineKind.RECURSIVE){
-                str += includeSELabel(line);
-                str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>`;
+            case entityType.SE:
+                if (line.kind === lineKind.RECURSIVE) {
+                    str += includeSELabel(line);
+                   // break; // Only show label for recursive, skip rest
+                   const hiddenIcons = iconSelection([SELineIcons], line);
+        str += `<div style="display:none;">${hiddenIcons}</div>`;
+                }
+            
+                //str += includeSELabel(line);
+                //str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+                str += iconSelection([SELineIcons], line);
                 break;
-            }
-
-            str += includeSELabel(line);
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
-            str += iconSelection([SELineIcons], line);
-            str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Label</h3>`;
-            break;
+            
     }
     str += saveButton('changeLineProperties();generateContextProperties();');
     return str;
