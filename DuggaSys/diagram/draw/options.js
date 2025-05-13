@@ -397,10 +397,10 @@ function drawLineProperties(line) {
 }
 
 /**
- * @description Makes all the different option for the selection.
- * @param {Array} arr Have all the different option for the selection menu.
- * @param {object} line The line that have the select option as properties.
- * @return Returns a label and the different selection for the line.
+ * @description Makes the options of icons to represent the cardinalites on lines
+ * @param {Array} arr Have all the different options for the selection menu.
+ * @param {object} line The line that will have the icons
+ * @return Returns a label and the different selections for the line.
  */
 function iconSelection(arr, line) {
     let sOptions = '';
