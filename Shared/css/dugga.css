@@ -386,6 +386,18 @@ svg text {
 		padding-right: 2px;
 		padding-left: 0px
 	}
+
+	.mobileNavRemover{
+		display: none;
+	}
+
+	.assignment_left{
+		display: none;
+	}
+
+	.instructions-container{
+		display: none;
+	}
 }
 
  /* --------------================################================-------------- *

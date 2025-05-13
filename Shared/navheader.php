@@ -1,8 +1,8 @@
 <?php
 			if (isset($_GET['embed'])){
-				echo "<header style='display:none;'>";
+				echo "<header id='header' style='display:none;'>";
 			}	else {
-				echo "<header>";
+				echo "<header id='header'>";
 			}		
 ?>
        <?php
@@ -538,7 +538,7 @@
 			if (isset($_GET['embed'])){
 				echo "<div style='display:none;'></div>";
 			}	else {
-				echo "<div style='height:50px;'></div>";
+				echo "<div class='mobileNavRemover' style='height:50px;'></div>";
 			}		
 ?>
 <div id="overlay" style="display: none;"></div>
