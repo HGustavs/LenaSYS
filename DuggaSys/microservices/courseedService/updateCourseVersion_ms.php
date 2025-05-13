@@ -7,9 +7,8 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
+include_once "../curlService.php";
 include_once "./retrieveCourseedService_ms.php";
-include_once "../sharedMicroservices/setAsActiveCourse_ms.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -88,24 +87,13 @@ if (!$query->execute()) {
 }
 // Check if selected course version should be set as active
 if ($makeactive == 3) {
-    header("Content-Type: application/json");
-    
-    // Construct the URL to the target microservice
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
-    $ch = curl_init($url);
-
-    //Configure cURL for POST with required data
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    $postData = [
         'cid' => $courseid,
         'versid' => $versid
-    ]));
-
-    // Execute the POST request and close cURL
-    curl_exec($ch);
-    curl_close($ch);
+    ];
+    
+    $response = callMicroservicePOST("sharedMicroservices/setAsActiveCourse_ms.php", $postData, true);
+    $link = json_decode($response, true);
 }
 
 $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);

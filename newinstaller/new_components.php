@@ -118,7 +118,7 @@
                         testInputField("mySQLUser", "MySQL user");
                         testInputFieldAccText("hostname", "Hostname", "tip","Usaually set to localhost" );
                         testInputField("mySQLUserPW", "MySQL user password");
-                        testCheckBox("distEnvironment","Use Distributed Environment");
+                        testCheckBox("distributed_environment","Use Distributed Environment");
                         testCheckBox("iniDatabaseTrans","Initialize database as transaction");
                         echo "<div class='grid-element-span'>";
                         testCheckBoxAccText("overwriteDatabase","Overwrite existing database and user names", "warning", "WARNING! Overwriting databases and users cannot be undone!");
