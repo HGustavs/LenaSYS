@@ -35,7 +35,9 @@ try {
 </head>
 
 <body>
-    <h1>Microservice Directory Admin</h1>
+    <div class="line">
+        <h1>Microservice Directory Admin</h1>
+    </div>
     <?php
     if (empty($dbEmpty) && empty($dbError)) {
         echo "<p style='color: green;'>Database is installed and filled</p>";
@@ -52,7 +54,7 @@ try {
         echo "<a href='#' id='deleteLink'>Delete database</a><br>";
     }
     ?>
-    <p>Go to <a href="microserviceUI.php">microserviceUI</a></p>
+    <a href="microserviceUI.php" class="a-button" style="margin-top: 20px;">Go to microserviceUI</a>
 </body>
 <script>
     // use optional chaining in case the element doesn't exist 
