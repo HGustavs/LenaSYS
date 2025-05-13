@@ -1346,9 +1346,10 @@
         </div>
     </div>
     </div>
-    <!-- Replay-mode -->
+    <!-- REPLAY-MODE -->
     <div id="diagram-replay-box">
         <div style="display: flex;">
+            <!-- PLAY/REPLAY/EXIT FIELD -->
             <fieldset style="display: flex; justify-content: space-between">
                 <div id="diagram-replay-switch">
                     <div class="diagramIcons" onclick="stateMachine.replay()">
@@ -1372,21 +1373,29 @@
                     </span>
                 </div>
             </fieldset>
+            <!-- PLAY/REPLAY/EXIT FIELD ENDS HERE!! -->
+
+            <!-- TIME DELAY FOR REPLAY -->
             <div id="replay-time-container">
                 <label id="replay-time-label" for="replay-time">Delay (1s)</label>
                 <input id="replay-time" onchange="setReplayDelay(this.value)" class="zoomSlider" type="range" min="1" max="9" value="5">
             </div>
 
+            <!-- MOVE THROUGH REPLAY -->
             <div>
                 <label for="replay-range">Change</label>
                 <input id="replay-range" class="zoomSlider" onchange="changeReplayState(parseInt(this.value))" type="range" min="-1" max="-1">
             </div>
         </div>
     </div>
+
+    <!-- ON-SCREEN MESSAGE DURING REPLAY-MODE -->
     <div id="diagram-replay-message">
         <h2>Replay mode</h2>
         <p>Press "ESCAPE" to exit the replay-mode.</p>
     </div>
+
+    <!-- POPUP FOR SAVING A DIAGRAM (SAVE AS) -->
     <div id="savePopoutContainer" class="loginBoxContainer" style="display:none">
         <div class="formBox">
             <div class="formBoxHeader">
@@ -1409,10 +1418,10 @@
         </div>
     </div>
 
-    <!-- Conformation Popup, use loadConfirmPopup function -->
+    <!-- CONFIRMATION POPUP, USE loadConfirmPopup FUNCTION -->
     <div id="confirmationPopup" class="loginBoxContainer" style="display:none">  
         <div class="formBox">
-           <div class="formBoxHeader">
+            <div class="formBoxHeader">
                 <h3 id="confirmPopupHeader">  </h3>
                 <div id="closeWindow" class="cursorPointer">
                     x
@@ -1426,7 +1435,7 @@
         </div>
     </div>
 
-    <!-- Mobile Version of the diagram-toolbar, STARTS HERE! -->
+    <!-- MOBILE VERSION OF THE DIAGRAM-TOOLBAR, STARTS HERE! -->
     <!-- "mb", stands for mobile -->
     <!-- "mb-toolbar-main", is the active element that is shown when the sub menu is closed/hidden -->
     <!-- "title", a static and visible tooltip on top of every tooltip box -->
@@ -1438,28 +1447,29 @@
     <nav id="mb-diagram-toolbar" aria-hidden="true" style="display: none;">
         <ul class="mb-nav-list">
 
-            <!-- Pointer -->
+            <!-- POINTER -->
             <li class="mb-nav-item" title="Pointer">
                 <div class="mb-toolbar-box mb-toolbar-main active" data-mode="Pointer" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                 </div>
             </li>
 
-            <!-- Box Selection -->
+            <!-- BOX SELECTION -->
             <li class="mb-nav-item" title="Box Selection">
                 <div class="mb-toolbar-box mb-toolbar-main" data-mode="Box-Selection" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                 </div>
             </li>
 
-            <!-- Entities (ER, UML, IE, SD)-->
+            <!-- ENTITIES (ER, UML, IE, SD)-->
             <li class="mb-nav-item has-dropdown" title="Entities">
                 <div class="mb-toolbar-box mb-toolbar-main"
                     data-mode="ER-Entity" data-elementtype="ER-E" data-imagesrc="../Shared/icons/diagram_entity.svg" data-placementtype="0" onclick='setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);'>
 
                     <img src="../Shared/icons/diagram_entity.svg" alt="ER entity" class="active-image"/>
                 </div>
-                <ul class="mb-sub-menu" aria-hidden="true"> <!-- Sub menu for entities, Starts Here-->
+                <!-- Sub menu for entities, STARTS HERE -->
+                <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
                         <div class="mb-toolbar-box" 
                             data-mode="ER-Entity" data-elementtype="ER-E" data-imagesrc="../Shared/icons/diagram_entity.svg" data-placementtype="0" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
@@ -1489,17 +1499,19 @@
                         </div>
                     </li>
                 </ul>
+                <!-- Sub-menu for entities, ENDS HERE -->
                 <div class="mb-dropdown-icon"><i class="material-icons">chevron_right</i></div>
             </li>
 
-            <!-- The different types of relations (e.g. inheritance and attributes) -->
+            <!-- THE DIFFERENT TYPES OF RELATIONS(e.g. inheritance and attributes) -->
             <li class="mb-nav-item has-dropdown" title="Relations">
                 <div class="mb-toolbar-box mb-toolbar-main"
                     data-mode="ER-Relation" data-elementtype="ER-R" data-imagesrc="../Shared/icons/diagram_relation.svg" data-placementtype="1" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                     <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation" class="active-image"/>
                 </div>
-                <ul class="mb-sub-menu" aria-hidden="true"> <!-- Sub menu for relations, Starts Here-->
+                <!-- Sub menu for relations, STARTS HERE -->
+                <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
                         <div class="mb-toolbar-box" 
                             data-mode="ER-Relation" data-elementtype="ER-R" data-imagesrc="../Shared/icons/diagram_relation.svg" data-placementtype="1" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
@@ -1529,6 +1541,7 @@
                         </div>
                     </li>
                 </ul>
+                <!-- Sub-menu for relations, ENDS HERE -->
                 <div class="mb-dropdown-icon"><i class="material-icons">chevron_right</i></div>
             </li>
 
@@ -1538,14 +1551,15 @@
                 </div>
             </li>
 
-            <!-- State Diagram Symbols -->
+            <!-- STATE DIAGRAM SYMBOLS -->
             <li class="mb-nav-item has-dropdown" title="SD Symbols">
                 <div class="mb-toolbar-box mb-toolbar-main" 
                     data-mode="UML-Initial-S" data-elementtype="UML-IS" data-imagesrc="../Shared/icons/diagram_UML_inital_state.svg" data-placementtype="9" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                     <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state" class="active-image"/>
                 </div>
-                <ul class="mb-sub-menu" aria-hidden="true"> <!-- Sub menu for State Diagram Symbols, Starts Here-->
+                <!-- Sub menu for State Diagram Symbols, STARTS HERE-->
+                <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
                         <div class="mb-toolbar-box"
                             data-mode="UML-Initial-S" data-elementtype="UML-IS" data-imagesrc="../Shared/icons/diagram_UML_initial_state.svg" data-placementtype="9" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
@@ -1568,17 +1582,19 @@
                         </div>
                     </li>
                 </ul>
+                <!-- Sub-menu for State Diagram Symbols, ENDS HERE -->
                 <div class="mb-dropdown-icon"><i class="material-icons">chevron_right</i></div>
             </li>
 
-            <!-- Sequence Diagram Symbols -->
+            <!-- SEQUENCE DIAGRAM SYMBOLS -->
             <li class="mb-nav-item has-dropdown" title="Sequence D">
                 <div class="mb-toolbar-box mb-toolbar-main"
                     data-mode="Sequence-Lifeline-A" data-elementtype="SL-A" data-imagesrc="../Shared/icons/diagram_lifeline.svg" data-placementtype="12" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline" class="active-image"/>
                 </div>
-                <ul class="mb-sub-menu" aria-hidden="true"> <!-- Sub menu for Sequence Diagram Symbols, Starts Here-->
+                <!-- Sub menu for Sequence Diagram Symbols, STARTS HERE -->
+                <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
                         <div class="mb-toolbar-box"
                             data-mode="Sequence-Lifeline-A" data-elementtype="SL-A" data-imagesrc="../Shared/icons/diagram_lifeline.svg" data-placementtype="12" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
@@ -1608,24 +1624,25 @@
                         </div>
                     </li>
                 </ul>
+                <!-- Sub-menu for Sequence Diagram Symbols, ENDS HERE -->
                 <div class="mb-dropdown-icon"><i class="material-icons">chevron_right</i></div>
             </li>
 
-            <!-- Note -->
+            <!-- NOTE -->
             <li class="mb-nav-item" title="Note">
                 <div class="mb-toolbar-box mb-toolbar-main" data-mode="Note" data-placementtype="15" onclick='setElementPlacementType(parseInt(this.dataset.placementtype)); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_note.svg"/>
                 </div>
             </li>
 
-            <!-- Camera -->
+            <!-- CAMERA -->
             <li class="mb-nav-item" title="Camera">
                 <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Camera" onclick="centerCamera(); nonElementToggle(this);">
                     <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 </div>
             </li>
 
-            <!-- History and Replay Mode -->
+            <!-- HISTORY AND REPLAY MODE -->
             <li class="mb-nav-item" title="History">
                 <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Reset-Diagram" onclick="resetDiagramAlert(); nonElementToggle(this);">
                     <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
@@ -1641,21 +1658,21 @@
                 </div>
             </li>
 
-            <!-- ER-Table -->
+            <!-- ER-TABLE -->
             <li class="mb-nav-item" title="ER-Table">
                 <div class="mb-toolbar-box mb-toolbar-main" data-mode="ER-Table" onclick="toggleErTable();">
                     <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 </div>
             </li>
             
-            <!-- Testcase -->
+            <!-- TESTCASE -->
             <li class="mb-nav-item" title="Testcase">
                 <div class="mb-toolbar-box mb-toolbar-main" data-mode="Testcase" onclick="toggleTestCase();">
                     <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 </div>
             </li>
 
-            <!-- Error Check-->
+            <!-- ERROR CHECK -->
             <!-- <li class="mb-nav-item">
                 <div id="errorCheckToggle" class="mb-toolbar-box" data-mode="Error-Check" onclick="toggleErrorCheck();">
                     <img src="../Shared/icons/diagram_errorCheck.svg" alt="Toggle error check"/>
@@ -1685,7 +1702,8 @@
         </ul> -->
     </nav>
 
-    <!-- content END -->
+    <!-- CONTENT END -->
+
     <?php
         include '../Shared/loginbox.php';
         /*
