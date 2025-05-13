@@ -286,10 +286,10 @@ function option(object, icon) {
 }
 
 /**
- * @description Makes a radio menu for the element with different selection.
+ * @description Makes a radio menu for the element with different options.
  * @param {Object} line The line between two elements.
  * @param {Array} arr An array for the different selection for the menu.
- * @return Returns a header for the radio menu and returns the radio menu with the different selection.
+ * @return Returns a header for the radio menu and returns the radio menu with the different options.
  */
 
 function radio(line, arr) {
