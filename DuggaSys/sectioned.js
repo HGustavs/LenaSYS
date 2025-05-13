@@ -29,7 +29,7 @@ var numberOfItems;
 var backgroundColorTheme;
 var isLoggedIn = false;
 var inputColorTheme;
-let showHidden = false;
+let showHidden = true;
 let count = 0;
 
 function initInputColorTheme() {
@@ -883,6 +883,8 @@ function markedItems(item = null, typeInput) {
   // handles selections & deselections
   if (selectedItemList.length != 0) {
     let tempSelectedItemListLength = selectedItemList.length;
+
+    //for every item in selectionList
     for (var i = 0; i < tempSelectedItemListLength; i++) {
       var tempKind = item ? item.closest('tr').getAttribute('value'): null;
 
@@ -890,16 +892,18 @@ function markedItems(item = null, typeInput) {
       if (selectedItemList[i] === active_lid && typeInput != "trash") {        
         document.getElementById(selectedItemList[i] + "-checkbox").checked = false;
         selectedItemList.splice(i, 1);
-        var removed = true;
+        removed = true;
 
-        // deselection of child -> deselect parent
+        // deselection of child -> deselect parent (if parent exists)
         if (tempKind != "section" && tempKind != "moment" && tempKind != "header"){ 
           var parent = recieveCodeParent(active_lid);
 
-          for (var i = 0; i < tempSelectedItemListLength; i++) {
-            if (selectedItemList[i] == parent){
-              document.getElementById(parent + "-checkbox").checked = false;
-              selectedItemList.splice(i, 1);
+          if(parent != null){
+            var indexNr = checkIfInList(selectedItemList, tempSelectedItemListLength, parent);
+          
+            if(indexNr != null){
+              document.getElementById(selectedItemList[indexNr] + "-checkbox").checked = false;
+              selectedItemList.splice(indexNr, 1);
             }
           }
         }
@@ -917,16 +921,16 @@ function markedItems(item = null, typeInput) {
     
     if (removed != true) {
       let activeLidInList = false;
-      for (var k = 0; k < selectedItemList.length; k++) {
-        if(active_lid == selectedItemList[k]){
-          activeLidInList = true;
-          break;
-        }
-      } if (activeLidInList == false){
+      var indexNr = checkIfInList(selectedItemList, selectedItemList.length, active_lid);
+
+      if(indexNr != null){
+        activeLidInList = true;
+      } 
+      if (activeLidInList == false){
         selectedItemList.push(active_lid);
         document.getElementById(active_lid + "-checkbox").checked = true;
-    }
-      //handles checking within section
+      }
+      //checks everything within the section (children)
       for (var j = 0; j < subItems.length; j++) {
         selectedItemList.push(subItems[j]);
         document.getElementById(subItems[j] + "-checkbox").checked = true;
@@ -992,6 +996,15 @@ function clearHideItemList() {
   selectedItemList = [];
 }
 
+//checks if the element is in the list, returns the index of match.
+function checkIfInList (list, tempListLenght, lid){
+  for (var i = 0; i < tempListLenght; i++){
+    if (list[i] == lid){
+      return i;
+    }
+  }
+}
+
 // Finds code-duggas parent - used in markedItems() for unselection of section
 function recieveCodeParent(item){
   var itemInSection = true;
@@ -1001,7 +1014,6 @@ function recieveCodeParent(item){
   for (let i = elements.length - 1 ; i >= 0 ; i--){
     const element = elements[i];
     var tempItem = element.getAttribute('value');
-    //console.log('affected item: ' + tempItem);
 
     if (itemInSection && sectionStart) {
       var tempKind = element ? element.closest('tr').getAttribute('value'): null;
@@ -1155,7 +1167,6 @@ function deleteItem(item_lid = []) {
     item = document.getElementById("lid" + lid[i]);
     item.parentElement.style.display = "none";
     item.classList.add("deleted");
-    document.querySelector("#undoButton").style.display = "block";
   }
 
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
@@ -1179,7 +1190,6 @@ function deleteAll() {
     }, "SECTION");
   }
   document.getElementById("editSection").style.display = "none";
-  document.querySelector("#undoButton").style.display = "none";
 }
 
 // Undo the deletion
@@ -1346,6 +1356,9 @@ function updateItem() {
 function updateDeadline() {
   var kind = document.getElementById("type").value;
   if (kind == 3) {
+    AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
+  }
+  else if(kind==2){
     AJAXService("UPDATEDEADLINE", prepareItem(), "SECTION");
   }
 }
@@ -1953,7 +1966,7 @@ function returnedSection(data) {
             "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
         } else if (itemKind == 5) {
           // Link
-          if (item['link'].substring(0, 4) === "http") {
+          if (item['link'] !== null && item['link'] !== undefined && item['link'].substring(0, 4) === "http") {
             str += makeanchor(item['link'], hideState, "cursor:pointer;margin-left:8px;",
               item['entryname'], false, {});
           } else {
@@ -2410,12 +2423,12 @@ function toggleButtonClickHandler() {
 
   showHidden = !showHidden;
 
-  if (showHidden) {
+  if (!showHidden) {
     toggleButton.src = '../Shared/icons/eye_closed_icon.svg';
-    toggleButton.title = 'Hide hidden items';
+    toggleButton.title = 'Show hidden items';
   } else {
     toggleButton.src = '../Shared/icons/eye_icon.svg';
-    toggleButton.title = 'Show hidden items';
+    toggleButton.title = 'Hide hidden items';
   }
 
   toggleHidden();
@@ -3086,89 +3099,86 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  document.querySelector(".selectLabels label input").getAttribute("disabled", true);
-  let cid = '';
-  document.getElementById("cid").onchange(function () {
-    cid = document.getElementById("cid").value;
-    if ((document.getElementById("cid").value) != '') {
-      document,getElementById("versid").getAttribute("disabled", false);
-      $.ajax({
-        url: "../Shared/retrievevers.php",
-        data: { cid: cid },
-        type: "POST",
-        success: function (data) {
-          const item = JSON.parse(data);
-          const e = document.getElementById("versid").querySelectorAll('*');
-          e.forEach((e1, idx) => {
-            if(idx !== 0){
-              e1.classList.remove;
-            }
-          });
-          $.each(item.versids, function (index, item) {
-            document.getElementById("versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
-          });
+  var cid = '';
+  var cidSelect = document.getElementById("cid");
+  var versidSelect = document.getElementById("versid");
 
+  cidSelect.addEventListener("change", function () {
+    cid = cidSelect.value;
+    if (cid !== '') {
+      versidSelect.disabled = false;
+      // Retrieve course versions from database
+      fetch("../Shared/retrievevers.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
         },
-        error: function () {
+        body: "cid=" + encodeURIComponent(cid)
+      })
+        .then(response => response.json())
+        .then(function (item) {
+          // Remove all options except the first
+          while (versidSelect.options.length > 1) {
+            versidSelect.remove(1);
+          }
+
+          item.versids.forEach(function (v) {
+            var opt = document.createElement("option");
+            opt.value = v.versid;
+            opt.textContent = v.versid;
+            versidSelect.appendChild(opt);
+          });
+        })
+        .catch(function () {
           console.log("*******Error*******");
-        }
-      });
-
+        });
     } else {
-      document.getElementById("versid").getAttribute("disabled", true);
+      versidSelect.disabled = true;
     }
-
   });
-  if ((document.getElementById("versid option").length) <= 2) {
-    document.getElementById("#versid").addEventListener("click", function () {
+  if (versidSelect.options.length <= 2) {
+    versidSelect.addEventListener("click", function () {
       getStudents(cid, userid);
     });
-  } else if ((document.getElementById("versid option").length) > 2) {
-    document.getElementById("#versid").onchange(function () {
+  } else {
+    versidSelect.addEventListener("change", function () {
       getStudents(cid, userid);
     });
   }
 }
 
 function getStudents(cid, userid) {
-  let versid = '';
-  versid = document.getElementById("#versid").value;
-  if ((document.getElementById("versid").value) != '') {
-    document.getElementById("recipient").getAttribute("disabled", false);
-    $.ajax({
-      url: "../Shared/retrieveuser_course.php",
-      data: { cid: cid, versid: versid, remove_student: userid },
-      type: "POST",
-      success: function (data) {
-        var item = JSON.parse(data);
-        var e = document.getElementById("recipient").querySelectorAll('*');
-        e.forEach((e1, idx) => {
-          if(idx !== 0){
-            e1.classList.remove;
-          }
-        });
-        document.getElementById("recipient").append("<optgroup id='finishedStudents' label='Finished students'>" +
-          "</optgroup>");
-        $.each(item.finished_students, function (index, item) {
-          document.getElementById("finishedStudents").append(`<option value=${item.uid}>${item.firstname}
-          ${item.lastname}</option>`);
-        });
-        document.getElementById("recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" +
-          "</optgroup>");
-        $.each(item.non_finished_students, function (index, item) {
-          document.getElementById("nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname}
-          ${item.lastname}</option>`);
-        });
-        document.querySelector(".selectLabels label input").getAttribute("disabled", false);
+  var versid = document.getElementById("versid").value;
+  if (versid !== "") {
+    var recipient = document.getElementById("recipient");
+    recipient.disabled = false;
+    fetch("../Shared/retrieveuser_course.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "cid=" + encodeURIComponent(cid) + "&versid=" + encodeURIComponent(versid) + "&remove_student=" + encodeURIComponent(userid)
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (item) {
+        var str = "<optgroup id='finishedStudents' label='Finished students'>";
+        for (var i = 0; i < item.finished_students.length; i++) {
+          var s = item.finished_students[i];
+          str += "<option value='" + s.uid + "'>" + s.firstname + " " + s.lastname + "</option>";
+        }
+        str += "</optgroup><optgroup id='nonfinishedStudents' label='Non-finished students'>";
+        for (var j = 0; j < item.non_finished_students.length; j++) {
+          var s = item.non_finished_students[j];
+          str += "<option value='" + s.uid + "'>" + s.firstname + " " + s.lastname + "</option>";
+        }
+        str += "</optgroup>";
+        while (recipient.options.length > 1) { recipient.remove(1); }
+        recipient.innerHTML += str;
+        var inputs = document.querySelectorAll(".selectLabels label input");
+        for (var k = 0; k < inputs.length; k++) inputs[k].disabled = false;
         selectRecipients();
-      },
-      error: function () {
-        console.log("*******Error user_course*******");
-      }
-    });
-  } else {
-    document.getElementById("recipient").getAttribute("disabled", true);
+      })
+      .catch(function () { console.log("*******Error user_course*******"); });
   }
+  else document.getElementById("recipient").disabled = true;
 }
 
 
