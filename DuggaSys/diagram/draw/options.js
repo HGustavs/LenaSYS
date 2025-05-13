@@ -97,11 +97,11 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 /**
- * @description Makes a textarea to be able for example add new classes for UML.
- * @param {String} name Name for the header for the textarea.
- * @param {String} property What type of property the textarea is.
- * @param {Object} element What element the textarea is for.
- * @return Returns the div that is the header and the textarea for the specific element.
+ * @description Makes a textarea or text input for editing the propertys of an element
+ * @param {String} name Name for the header for the textarea/input.
+ * @param {String} property What type of property the textarea/input is.
+ * @param {Object} element What element the textarea/input is for.
+ * @return Returns the div that is the header and the textarea/input for the specific element.
  */
 function textarea(name, property, element) {
     const safeText = escapeHtml(textboxFormatString(element[property]));
