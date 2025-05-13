@@ -454,7 +454,7 @@ function cardinalityLabels(line) {
 }
 
 /**
- * @description function for include button to the options panel,writes out << Include >>
+ * @description Sets the value of an element with the id "lineLabel" to "<<include>>"
  */
 function setLineLabel() {
     document.getElementById("lineLabel").value = "<<include>>";
