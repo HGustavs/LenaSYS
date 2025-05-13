@@ -443,7 +443,7 @@ function includeSELabel(line) {
 }
 
 /**
- * @description Creates two editable labels for a lines cardinalities.
+ * @description Creates two editable labels for a line's cardinalities.
  * @param {object} line A line that have an start and end cardinality as properties.
  * @return Returns a header and the text input for adding cardinalities to the line.
  */
