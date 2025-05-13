@@ -304,6 +304,10 @@ function mup(event) {
                 setPos(context, deltaX, deltaY);
                 // Loop through each selected element
                 context.forEach(el => {
+
+                // Only check for Activation elements to snap
+                if (el.kind !== elementTypesNames.sequenceActivation) return;
+
                 // Find the nearest lifeline to the element's center position
                 const nearestLifelineId = findNearestLifeline(
                 el.x + el.width / 2, // X-center of the element
