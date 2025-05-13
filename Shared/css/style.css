@@ -1575,9 +1575,7 @@ header td {
 }
 
 .navButt {
-  width: 29px;
   vertical-align: middle;
-  margin-top: 9px;
 }
 .filterButt{
   margin-top: 11px;
@@ -1627,7 +1625,6 @@ margin-block-end: 10px;
 }
 #hamburgerIcon{
   transform: scale(1.8);
-  margin-left: 10px;
   color: white;
 }
 #courseVersionDropDown{
@@ -1714,22 +1711,13 @@ div .navButt:hover {
   overflow: hidden;
 }
 
-@media screen and (max-width:480px) {
-  .loginbutton-nav {
-    height: 30px;
-    }
-  }
-
 @media screen and (max-width:400px){
     .hamburger{
         display: flex;
         flex-wrap: wrap;
         position: relative;
-
-
-        margin-top: 14px;
-
     }
+
     #GeneralStats, #CurrentlyOnline, #PasswordGuessing, #OSPercentage,#hamburgerBoxMSG{
         display:none;
     }
@@ -4374,8 +4362,6 @@ span.arrow {
   background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
   box-shadow: var(--standard-shadow);
   background-position: right;
-  margin-top: 7px;
-  margin-left: 3px;
   width: 90%;
 }
 
@@ -5888,8 +5874,8 @@ rect[class*="activitymarker"]:hover {
 /* The original state of the buttons */
 
 .navheader .menuButton {
-  margin-right: 2px;
-  width: 112px;
+  
+  width: fit-content;
   transition: 0.5s;
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
@@ -5932,8 +5918,6 @@ rect[class*="activitymarker"]:hover {
   text-align: center;
   display: inline-block;
   cursor: pointer;
-  margin-right: 0px;
-  margin-bottom: 4px;
   width: 0px;
   opacity: 0.0;
   transition: width 0.5s, opacity 0.5s, margin 0.5s;
@@ -5948,11 +5932,8 @@ rect[class*="activitymarker"]:hover {
 }
 
 .navheader div.hamburgerMenu {
-  padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
-  margin-top: 40px;
-  margin-left: 5px;
   z-index: 1;
   background-color: var(--color-background-2);
   border: 2px solid var(--color-border);
@@ -6378,7 +6359,6 @@ only screen and (max-device-width: 568px) {
     pointer-events: auto;
     width: 32px;
     opacity: 1.0;
-    margin-right: 4px;
     -webkit-transition: opacity 0.5s, width 0.5s, margin 0.5s;
     -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
     -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
