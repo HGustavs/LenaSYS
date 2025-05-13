@@ -711,7 +711,7 @@ Microservice that updates the active version of a course
    - Description: JSON object returned from retrieveSectionedService_ms.php, along with the new active course version ID and a debug message
 
 ## Examples of Use
-
+-
 
 ### Microservices Used
 - retrieveSectionedService_ms
@@ -768,8 +768,6 @@ This service is restricted to superusers.
 ### Microservices Used  
 - getUid_ms.php  
 - retrieveSectionedService_ms.php  
-- sessions.php  
-- basic.php  
 
 ---
 
@@ -1005,3 +1003,99 @@ The feedback data is then added to the $data array retrieved from retrieveSectio
 - retrieveSectionedService_ms.php
 
 ---
+
+# Name of file/service  
+getDeletedListEntries_ms
+
+## Description
+Retrieves all list entries with visibility set to 3 (i.e., marked as deleted) from the 'listentries' table. Used to show items that were previously deleted from the course structure.
+
+## Input Parameters
+
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type (used for logging/debugging).
+
+- Parameter: $courseid  
+  - Type: int(10)  
+  - Description: Course ID.
+
+- Parameter: $coursevers  
+  - Type: int(11)  
+  - Description: Course version.
+
+- Parameter: $versid  
+  - Type: int(11)  
+  - Description: Version ID (not used in logic directly).
+
+- Parameter: $log_uuid  
+  - Type: char  
+  - Description: UUID used for logging.
+
+## Calling Methods
+
+- GET (getOP)
+
+## Output Data and Format
+
+- Output  
+  - Type: JSON  
+  - Description: The full sectioned course data, including entries marked as deleted.
+
+## Examples of Use
+
+'SELECT * FROM listentries WHERE visible = '3''
+
+### Microservices Used
+
+- getUid_ms  
+- retrieveSectionedService_ms
+
+---
+
+# Name of file/service  
+getGroupValues_ms
+
+## Description
+Retrieves all available group kinds and their values from the 'groups' table. Used to display group options when interacting with group-related features in a course.
+
+## Input Parameters
+
+- Parameter: $courseid  
+  - Type: int(10)  
+  - Description: Course ID.
+
+- Parameter: $coursevers  
+  - Type: int(11)  
+  - Description: Course version.
+
+- Parameter: $versid  
+  - Type: int(11)  
+  - Description: Version ID (unused in logic).
+
+- Parameter: $log_uuid  
+  - Type: char  
+  - Description: UUID used for logging.
+
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type (used for logging/debugging).
+
+## Calling Methods
+
+- GET (getOP)
+
+## Output Data and Format
+
+- Output  
+  - Type: JSON  
+  - Description: The full sectioned course data including group values grouped by kind.
+
+## Examples of Use
+
+'SELECT groupKind, groupVal FROM groups'
+
+### Microservices Used
+
+- getUid_ms  
+- retrieveSectionedService_ms
