@@ -398,7 +398,7 @@ function drawLineProperties(line) {
 
 /**
  * @description Makes the options of icons to represent the cardinalites on lines
- * @param {Array} arr Have all the different options for the selection menu.
+ * @param {Array} arr All the different options for the selection menu.
  * @param {object} line The line that will have the icons
  * @return Returns a label and the different selections for the line.
  */
