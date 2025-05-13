@@ -1794,6 +1794,11 @@ div .navButt:hover {
   width: 50px;
   vertical-align: middle;
   text-align: center;
+
+  & #loginbuttonIcon {
+    height: 24px;
+    width: auto;
+  }
 }
 
 #div2 {
