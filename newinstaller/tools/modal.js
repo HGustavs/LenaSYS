@@ -4,11 +4,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let openModalBtn = document.getElementById("openModal");
     let dataError;
     let data;
+    let changeRootUsernameInput = document.getElementById("changeRootUsername");
+    let changeRootPasswordInput = document.getElementById("changeRootPassword");
+    let changeHostnameInput = document.getElementById("changeHostname");
 
     Window.checkTypeOfError = function(newDataError, newData) {
         
 		if (newDataError.data.includes("Connection to database could not be established.")) {
 			modal = document.getElementById("dbConnectionError");
+            
+            // Set input fields values from lenaSYS installer input fields data
+            changeRootUsernameInput.value = newData.root_username;
+            changeRootPasswordInput.value = newData.root_password;
+            changeHostnameInput.value = newData.hostname;
 
 		}else if (newDataError.data.includes("Failed on step set_permissions")) {
 			modal = document.getElementById("permissionError");
@@ -23,9 +31,49 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById("failedStep").innerHTML = newDataError.data;
         }
 
+        let summaryContents = document.getElementsByClassName("summary-content");
+
+        for (let i = 0; i < summaryContents.length; i++) {
+            summaryContents[i].innerHTML = generateSummaryHTML(newData);
+        };
+
         dataError = newDataError;
         data = newData;
         showModalButton();
+    }
+
+    function generateSummaryHTML(data) {
+        return `
+          <b>Step 1:</b> <br>
+          Operating system: ${data.operating_system} <br><br>
+          <b>Step 2:</b> <br>
+          Create new database: ${data.create_db} <br>
+          Create new user: ${data.create_db_user} <br><br>
+          <b>Step 3:</b> <br>
+          Database name: ${data.db_name} <br>
+          Hostname: ${data.hostname} <br>
+          User: ${data.username} <br>
+          Password: ${data.password} <br>
+          Use distributed environment: ${data.distributed_environment} <br>
+          Verbose: ${data.Verbose} <br>
+          Overwrite database: ${data.overwrite_db} <br>
+          Overwrite user: ${data.overwrite_user} <br><br>
+          <b>Step 4:</b> <br>
+          Root username: ${data.root_username} <br>
+          Root password: ${data.root_password} <br><br>
+          <b>Step 5:</b> <br>
+          Include test data: ${data.add_test_data} <br>
+          Include demo course: ${data.add_demo_course} <br>
+          Include test course data:: ${data.add_test_course_data} <br>
+          Include test files: ${data.add_test_files} <br><br>
+          <b>Step 6:</b> <br>
+          <details>
+            <summary>Include language support</summary>
+            <div>
+                ${data.language_support.map(lang => `${lang}`).join('<br>')} 
+            </div>
+          </details>
+        `;
     }
 
     function openModal() {
@@ -89,10 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (dataError.data.includes("Connection to database could not be established.")) {
 			navigateTo('page3');
 
-		}else if (dataError.failed_step.includes("set_permissions")) {
+		}else if (dataError.data.includes("Failed on step set_permissions")) {
 			navigateTo('page1');
 
-		}else if (dataError.failed_step.includes("create_db")) {
+		}else if (dataError.data.includes("Failed on step create_db")) {
 			navigateTo('page3');
 
 		}else if (dataError.data.includes("SQL error") || dataError.data.includes("File error.")) {
@@ -108,10 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     Window.changeDbSettings = function() {
         
-        // Get updated data settings from input fields
-        data.changeRootUsername = document.getElementById("changeRootUsername").value;
-        data.changeRootPassword = document.getElementById("changeRootPassword").value;
-        data.changeHostname = document.getElementById("changeHostname").value;
+        // Set data config values from database connection failed input fields
+        data.changeRootUsername = changeRootUsernameInput.value;
+        data.changeRootPassword = changeRootPasswordInput.value;
+        data.changeHostname = changeHostnameInput.value;
         
         // Set main data config values
         data.root_username = data.changeRootUsername;

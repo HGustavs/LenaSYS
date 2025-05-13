@@ -6,6 +6,7 @@ include_once "../curlService.php";
 pdoConnect();
 session_start();
 
+
 global $pdo;
 $requiredKeys = [
 	'cid',
