@@ -3,9 +3,9 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+
 include_once "../sharedMicroservices/getUid_ms.php";
 
-include_once "../sharedMicroservices/createNewListEntry_ms.php";
 include_once "./retrieveSectionedService_ms.php";
 include_once "../curlService.php";
 
@@ -94,8 +94,9 @@ $listEntryData = [
     'groupkind' => $grptype
 ];
 
-$debug = callMicroservicePOST("sharedMicroservices/createNewListEntry_ms.php", $ListEntryData, true);
+$debug = callMicroservicePOST("sharedMicroservices/createNewListEntry_ms.php", $listEntryData, true);
 
 $data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+
 header('Content-Type: application/json');
 echo json_encode($data);

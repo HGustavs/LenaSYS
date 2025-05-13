@@ -1,13 +1,10 @@
 <?php
 function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue = false) {
     //set url course path
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
+    $baseURL = "http://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
     $ch = curl_init($url);
     //options for curl
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, $returnValue);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $dataToSend);
@@ -17,7 +14,7 @@ function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue
         $response = json_encode(['error' => curl_error($ch)]);
     }
     curl_close($ch);
-    return $returnValue ? $response : null;
+    return $response;
 }
 
 function recieveMicroservicePOST(array $requiredKeys = []) {
@@ -27,7 +24,6 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
     foreach ($requiredKeys as $key) {
         if (!isset($_POST[$key])) {
             echo json_encode(["error" => "Missing required POST parameter: $key"]);
-            exit;
         }
         $receivedData[$key] = $_POST[$key];
     }
