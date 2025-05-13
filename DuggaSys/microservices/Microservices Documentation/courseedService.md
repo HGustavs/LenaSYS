@@ -600,7 +600,7 @@ This microservice allows a superuser to update general course data including the
 updateCourseVersion_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+This microservice is used to update information about a specific course version in the vers table of the database
 
 ## Input Parameters
 - Parameter: $opt
