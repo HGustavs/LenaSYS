@@ -11,7 +11,7 @@ function drawElement(element, ghosted = false) {
     let boxw = Math.round(element.width * zoomfact);
     let boxh = element.height ? 
     Math.round(element.height * zoomfact) : 0; // Only used for extra whitespace from resize
-    let zLevel = 2;
+    let zLevel = element.z ?? 2; /*nsures that elements without a defined z-index get a default value (2)*/
     let mouseEnter = '';
 
     canvas = document.getElementById('canvasOverlay');
@@ -350,7 +350,7 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
             headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
         }
         headSvg = drawSvg(boxw, height, headRect + headText + headStereotype);
-    }
+    }   
     else {
         height = texth * (headerLines.length + 0.5) * lineHeight;
         for (let i = 0; i < headerLines.length; i++) {
