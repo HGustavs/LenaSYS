@@ -180,7 +180,7 @@ function dropdown(name, def, object, element) {
 }
 
 /**
- * @description be able to change color for the element.
+ * @description Allows for changeing the color of an element
  * @param {Object} element Which element that is going to change color.
  * @return Returns the menu to change color.
  */
