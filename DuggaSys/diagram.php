@@ -26,8 +26,6 @@
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/mobile-diagram.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-        <!-- To enable dark mode, these 2 files were added. -->
     <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
     <script src="darkmodeToggle.js"></script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
@@ -69,7 +67,8 @@
     <script defer src="diagram.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
-<!-- instead of onload on body there is an event listener for loaded in diagram.js at the top of the INIT AND SETUP REGION -->
+
+<!-- No onload in body - eventlistener in diagram.js handles onload (top of INIT AND SETUP REGION) -->
 <body style="overflow: hidden;">
     
     <!-- loading spinner -->
@@ -78,12 +77,10 @@
         <!-- this proved to load faster meaning the user spend less time staring at nothing -->
         <svg width="200" height="200" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <mask id="spinnerMask">
-                <!-- Everything under a white pixel will be visible -->
+                <!-- Everything under a white pixel will be visible, and everything under a black pixel will be invisible -->
                 <rect x="0" y="0" width="200" height="200" fill="white" />
-                <!-- Everything under a black pixel will be invisible -->
                 <rect x="100" y="-100" width="200" height="200" fill="black" />
             </mask>
-            <!-- its just a circle with a mask -->
             <circle cx="100" cy="100" r="90" fill="none" stroke="#775886" stroke-width="10" mask="url(#spinnerMask)"/>
         </svg>
     </div>
@@ -103,29 +100,31 @@
     </div>
 
     <!-- The FAB-btn for the diagram.php, STARTS HERE!-->
-       <div class="fixed-action-button diagram-fab">
-      <ol class="fab-btn-list" style="margin-bottom: 60px; padding:0;">
-          <button id="fab-check" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
-          <img class="icon-fit" src="../Shared/icons/LookingGlass.svg" alt="Check"/>
-          </button>  
-          <button id="fab-localSaveAs" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
-          <img class="icon-fit" src="../Shared/icons/diagram_save_as_icon.svg" alt="Save as diagram"/>
-          </button>  
-          <button id="fab-localSave"  class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
-          <img class="icon-fit" src="../Shared/icons/save_button.svg" alt="Save diagram"/>
-          </button>   
-          <button id="fab-load" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
-          <img class="icon-fit" src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
-          </button>  
-      </ol>
-          <button id="diagram-fab"class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
-      </div>
+        <div class="fixed-action-button diagram-fab">
+        <ol class="fab-btn-list" style="margin-bottom: 60px; padding:0;">
+            <button id="fab-check" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <img class="icon-fit" src="../Shared/icons/LookingGlass.svg" alt="Check"/>
+            </button>  
+            <button id="fab-localSaveAs" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <img class="icon-fit" src="../Shared/icons/diagram_save_as_icon.svg" alt="Save as diagram"/>
+            </button>  
+            <button id="fab-localSave"  class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <img class="icon-fit" src="../Shared/icons/save_button.svg" alt="Save diagram"/>
+            </button>   
+            <button id="fab-load" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <img class="icon-fit" src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
+            </button>  
+        </ol>
+            <button id="diagram-fab"class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
+        </div>
+        <!-- FAB-btn ENDS HERE! -->
 
 
     <!-- Toolbar for diagram -->
     <div id="diagram-toolbar">
         <fieldset>
             <legend aria-hidden="true">Modes</legend>
+                <!-- POINTER -->
                 <div id="mouseMode0" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
@@ -133,6 +132,7 @@
                         <span id="tooltip-POINTER" class="key_tooltip">Keybinding:</span>
                     </span>
                 </div>
+                <!-- BOX SELECTION -->
                 <div id="mouseMode1" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
@@ -140,12 +140,14 @@
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
+                <!-- ER, UML, IE, STATE ELEMENTS -->
                 <div>
+                    <!-- ER-ENTITY (initial default choice) -->
                     <div id="elementPlacement0"
-                         class="ERButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(0); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(0)'><!--<-- UML functionality -->
-                         <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
+                        class="ERButton diagramIcons toolbarMode"
+                        onclick='setElementPlacementType(0); setMouseMode(2);'
+                        onmouseenter='hoverPlacementButton(0)'><!--<-- UML functionality -->
+                        <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Insert an ER entity to the diagram</p>
                             <p>Each entity represents an object which is a representation of concepts or data.</p>
@@ -156,9 +158,10 @@
                         <div id="togglePlacementTypeButton0" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
-                    </div>    
+                    </div>
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(0), hidePlacementType()'>
                         <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
+                            <!-- ER-ENTITY (fist option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
@@ -168,6 +171,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML CLASS ("change to" - second option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
@@ -177,6 +181,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE-ENTITY ("change to" - third option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
@@ -187,6 +192,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- STATE DIAGRAM STATE ("change to" - fourth option when hovering) -->
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
@@ -200,11 +206,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- If UML CLASS has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <div id="elementPlacement4"
-                         class="UMLButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(4); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(4)'>
+                    <!-- UML CLASS (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement4" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2); 'onmouseenter='hoverPlacementButton(4)'>
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
                             <p>Create a UML class to the diagram</p>
@@ -218,6 +223,7 @@
                     </div>
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(4), hidePlacementType()'>
                         <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <!-- ER-ENTITY ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
@@ -228,6 +234,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML CLASS ("Change to" - second option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>                      
@@ -236,6 +243,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE-ENTITY ("Change to" - third option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
@@ -246,6 +254,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- STATE DIAGRAM STATE ("Change to" - fourth option when hovering) -->
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
@@ -259,11 +268,10 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
+                <!-- If IE-ENTITY has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <div id="elementPlacement6"
-                         class="IEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(6); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(6)'>
+                    <!-- IE-ENTITY (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement6" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);'onmouseenter='hoverPlacementButton(6)'>
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
                             <p>Place an IE entity into the diagram</p>
@@ -278,6 +286,7 @@
                     </div>
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(6), hidePlacementType()'>
                         <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <!-- ER-ENTITY ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
@@ -288,6 +297,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML CLASS ("Change to" - second option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
@@ -297,6 +307,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE-ENTITY ("Change to" - third option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
@@ -306,6 +317,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- STATE DIAGRAM STATE ("Change to" - fourth option when hovering) -->
                             <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
@@ -319,11 +331,10 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
+                <!-- If STATE DIAGRAM STATE has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <div id="elementPlacement8" 
-                        class="SDButton diagramIcons toolbarMode" 
-                        onclick='setElementPlacementType(8); setMouseMode(2);'
-                        onmouseenter='hoverPlacementButton(8);'>
+                    <!-- STATE DIAGRAM STATE (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);'onmouseenter='hoverPlacementButton(8);'>
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add a state diagram state to the diagram</p>
@@ -339,6 +350,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(8), hidePlacementType()'>
                         <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
+                                <!-- ER-ENTITY ("Change to" - first option when hovering) -->
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Change to ER entity.</p>
@@ -348,6 +360,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML CLASS ("Change to" - second option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
@@ -357,6 +370,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE-ENTITY ("Change to" - third option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
@@ -367,6 +381,7 @@
                                     <p id="tooltip-PLACE_ENTITY" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- STATE DIAGRAM STATE ("Change to" - fourth option when hovering) -->
                             <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' > <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
@@ -380,11 +395,11 @@
                     </div>        
                 </div>
                 <!--<-- State diagram functionality end -->
+
+                <!-- RELATION, INHERITANCE, ATTRIBUTE -->
                 <div>
-                    <div id="elementPlacement1"
-                         class="ERButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(1); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(1);'> <!--<-- UML functionality -->
+                    <!-- ER RELATION (initial default choice) -->
+                    <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseenter='hoverPlacementButton(1);'> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Place an ER relation into the diagram</p>
@@ -398,6 +413,7 @@
                     </div> 
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(1), hidePlacementType()'>
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
+                            <!-- ER RELATION ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
                                 <span class="placementTypeToolTipText"><b>ER relation</b><br>
@@ -406,6 +422,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
@@ -415,6 +432,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML Inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -425,6 +443,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
@@ -439,10 +458,8 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement5"
-                         class="UMLButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(5); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(5)'>
+                    <!-- If UML INHERITANCE has been chosen, the entity-options change position in the menu -->
+                    <div id="elementPlacement5" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);' onmouseenter='hoverPlacementButton(5)'>
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Insert a UML inheritance to the diagram</p>
@@ -457,6 +474,7 @@
                     </div>  
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(5), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox5" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <!-- ER RELATION ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
@@ -466,6 +484,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
@@ -475,6 +494,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -484,6 +504,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
@@ -498,10 +519,8 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement7"
-                         class="IEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(7); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(7)'>
+                    <!-- If IE INHERITANCE has been chosen, the entity-options change position in the menu -->
+                    <div id="elementPlacement7" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(7); setMouseMode(2);' onmouseenter='hoverPlacementButton(7)'>
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
                             <p>Create an IE inheritance to the diagram</p>
@@ -516,6 +535,7 @@
                     </div>  
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(7), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <!-- ER RELATION ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
@@ -525,6 +545,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
                             <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
@@ -534,6 +555,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -544,6 +566,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
@@ -557,10 +580,8 @@
                     </div>
                 </div>
                 <div>
-                    <div id="elementPlacement2"
-                         class="ERAttribute diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(2); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(2)'>
+                    <!-- If ER ATTRIBUTE has been chosen, the entity-options change position in the menu -->
+                    <div id="elementPlacement2" class="ERAttribute diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseenter='hoverPlacementButton(2)'>
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>ER Attribute</b><br>
                             <p>Add a ER attribute to the diagram.</p>
@@ -574,6 +595,7 @@
                     </div>  
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(2), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox2" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
+                            <!-- ER RELATION ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
@@ -583,6 +605,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
                             <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
@@ -592,6 +615,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
                             <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
@@ -602,6 +626,7 @@
                                     <p id="tooltip-PLACE_RELATION" class="key_tooltip">Keybinding:</p>
                                 </span>
                             </div>
+                            <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
                             <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
@@ -615,6 +640,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- LINE -->
                 <div id="mouseMode3" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
