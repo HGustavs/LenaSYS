@@ -443,9 +443,9 @@ function includeSELabel(line) {
 }
 
 /**
- * @description Be able to draw start/end cardinality for a line.
- * @param {object} line A line that have start/end cardinality as properties.
- * @return Returns a header and the text input for add cardinality to the line.
+ * @description Creates two editable labels for a lines cardinalities.
+ * @param {object} line A line that have an start and end cardinality as properties.
+ * @return Returns a header and the text input for adding cardinalities to the line.
  */
 function cardinalityLabels(line) {
     return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
