@@ -9439,21 +9439,15 @@ textarea#filecont {
     display: none;
   }
 
-
-  .navheader {
-    height: 20px;
-    margin-bottom: 10px;
-    width: 100%;
-  }
-
-  .navheader div.menuButton{
-    margin-right: 0px;
-  }
 }
 
 #motdContent{
   background-color: rgba(254, 204, 86, 1);
   margin-left:5%;
+
+  > p {
+    text-align: center;
+  }
 }
 #motdArea{
   box-shadow: 1px 1px 6px grey;
@@ -9474,7 +9468,6 @@ textarea#filecont {
   flex-direction: column;
   width: 90%;
   justify-content: space-between; 
-
 }
 
 .motdRightContainer{
@@ -9493,8 +9486,8 @@ justify-content: center;
   justify-content: space-around;
   position: relative;
   margin-left:5%;
-
 }
+
 .motdBoxheader h3 {
   font-size: 20px;
   color: #614875;
@@ -9580,6 +9573,7 @@ justify-content: center;
   #hamburgerBox{
     display:none;
   }
+  
   #hamburgerIcon{
     display:none;
   }

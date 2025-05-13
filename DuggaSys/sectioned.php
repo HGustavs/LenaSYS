@@ -166,13 +166,13 @@
 		<!-- Scroll up END -->
 
 		<!-- MOTD dropdown -->
-		<div id="motdArea" style="display:none;">
-	<div class="motdLeftContainer">
-		<div class="motdBoxheader">
-			<h3>Message of the day</h3>
-		</div>
-		<div id="motdContent" style="text-align:center">
-			<p style="text-align:center" id="motd"><?php echo htmlspecialchars($motd ?? ''); ?></p>
+		<div id="motdArea">
+			<div class="motdLeftContainer">
+				<div class="motdBoxheader">
+					<h3>Message of the day</h3>
+				</div>
+				<div id="motdContent">
+					<p id="motd"><?php echo htmlspecialchars($motd ?? ''); ?></p>
 				</div>
 			</div>
 			<div class="motdRightContainer">
