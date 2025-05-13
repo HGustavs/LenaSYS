@@ -374,3 +374,58 @@ Shared/basic.php
 Shared/sessions.php
 sharedMicroservices/getUid_ms.php
 retrieveSectionedService_ms.php
+
+---
+
+# Name of file/service  
+updateVisibleListEntries_ms.php
+
+## Description  
+Updates the visibility status of a list entry in the 'listentries' table.  
+This microservice is restricted to superusers and is used to toggle the visibility (shown/hidden) of a section like a dugga, header, test, etc.  
+
+## Input Parameters  
+- Parameter: $lid  
+  - Type: int  
+  - Description: ID of the list entry whose visibility should be updated
+
+- Parameter: $visible  
+  - Type: int  
+  - Description: Visibility flag (1 = visible, 0 = hidden). Stored as tinyint(1) in the database
+
+- Parameter: $courseid  
+  - Type: int  
+  - Description: ID of the course containing the list entry
+
+- Parameter: $coursevers  
+  - Type: int  
+  - Description: Version of the course
+
+- Parameter: $log_uuid  
+  - Type: string  
+  - Description: UUID used for logging/debugging purposes
+
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: array  
+  - Type: JSON  
+  - Description: Contains updated sectioned course data as returned by 'retrieveSectionedService_ms.php'
+
+- Output: debug  
+  - Type: string  
+  - Description: Contains error or status message
+
+## Examples of Use  
+'UPDATE listentries SET visible = ? WHERE lid = ?;'
+
+### Microservices Used  
+- getUid_ms.php  
+- retrieveSectionedService_ms.php  
+- sessions.php  
+- basic.php  
