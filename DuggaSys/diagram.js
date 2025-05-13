@@ -1,4 +1,6 @@
-//#region ================================ CLASSES =============================================
+// #region CLASSES
+// ============================================================================================
+// ========================================= CLASSES ==========================================
 
 /**
  * @description Handles storage and retrieval of usage history allowing undoing and redoing changes. Internal data should ONLY be modified through class methods to prevent weird behaviour.
@@ -40,8 +42,8 @@ class StateMachine {
 
     /**
      * @description Stores the passed state change into the state machine. If the change is hard it will be pushed onto the history log. A soft change will modify the previously stored state IF that state allows it. The soft state will otherwise be pushed into the history log instead. StateChanges REQUIRE flags to be identified by the stepBack and stepForward methods!
-     * @param {string | string[]} id (List of) ID to be stored
-     * @param {StateChange.ChangeTypes} newChangeType Type of change made
+     * @param {string | string[]} id (List of) ID to be stored.
+     * @param {StateChange.ChangeTypes} newChangeType Type of change made.
      * @see StateChange For available flags.
      */
     save(id, newChangeType) {
@@ -50,8 +52,10 @@ class StateMachine {
         this.removeFutureStates();
 
         let lastLog = { ...this.historyLog[this.historyLog.length - 1] };
-        // the id is sometimes stored as an array so this is needed to get the actual value;            
+        // The ID is sometimes stored as an array so this is needed to get the actual value            
         if (Array.isArray(lastLog.id)) lastLog.id = getItemsFromNestedArrays(lastLog.id);
+
+        // Checks what type of change occurred and handles/stores it accordingly
         switch (newChangeType) {
             case StateChange.ChangeTypes.LINE_ATTRIBUTE_CHANGED:
                 this.pushToHistoryLog({
@@ -136,12 +140,12 @@ class StateMachine {
                 }
                 break;
             case StateChange.ChangeTypes.ELEMENT_RESIZED:
-                // if the save() call comes from the same change-motion, remove the last entry
+                // If the save() call comes from the same change-motion, remove the last entry
                 if (lastLog.changeType == newChangeType && lastLog.counter == historyHandler.inputCounter) {
                     this.historyLog.splice(this.historyLog.length - 1, 1);
                 }
 
-                // only store if the resized object isn't overlapping
+                // Only store if the resized object isn't overlapping
                 const coords = Element.GetELementPosition(id)
                 if (!entityIsOverlapping(id, coords.x, coords.y)) {
                     this.pushToHistoryLog({
@@ -205,8 +209,8 @@ class StateMachine {
     }
 
     /**
-     * @description Pushes a new entry to the historyLog array and sets to index to the last position
-     * @param {object} entry data to store in the history
+     * @description Pushes a new entry to the historyLog array and sets index to the last position.
+     * @param {object} entry Data to store in the history.
      */
     pushToHistoryLog(entry) {
         this.historyLog.push({
@@ -215,12 +219,14 @@ class StateMachine {
             counter: historyHandler.inputCounter,
             time: this.currentTime
         });
+        // Updating index to latest state push
         this.currentHistoryIndex = this.historyLog.length - 1;
 
-        // it's possible to store multple of the same entries, by using the properties save button for example, this is used to remove those
+        // It's possible to store multple of the same entries, by using the properties save button for example, this is used to remove those
         this.removeDuplicateEntries();
     }
 
+    // Function to remove duplicate entries if there are any. Returns/exits if there are fewer than two entries in the log
     removeDuplicateEntries() {
         if (this.historyLog.length < 2) return;
 
@@ -231,8 +237,8 @@ class StateMachine {
         }
     }
 
+    // Function to remove any history entries that come after the current index, determined by currentHistoryIndex 
     removeFutureStates() {
-        // Remove the history entries that are after current index
         if (this.currentHistoryIndex != this.historyLog.length - 1) {
             this.historyLog.splice(this.currentHistoryIndex + 1, (this.historyLog.length - this.currentHistoryIndex - 1));
         }
@@ -243,15 +249,16 @@ class StateMachine {
      * @see StateChange For available flags.
      */
     stepBack() {
-        // Clearing context prevents selection box drawing on removed objects.
+        // Clearing context prevents selection box drawing on removed objects
         clearContext();
         clearContextLine();
+
         // Remove ghost only if stepBack while creating edge
         if (mouseMode === mouseModes.EDGE_CREATION) clearGhosts();
 
-        // keep going back while the time attribute is the same
+        // Keep going back while the time attribute is the same
         do {
-            // If there is no history => return
+            // Return if there is no history, otherwise go back a step
             if (this.currentHistoryIndex == -1) {
                 return;
             } else {
@@ -261,6 +268,7 @@ class StateMachine {
             this.scrubHistory(this.currentHistoryIndex);
 
             var doNextState = false;
+            // Checks if the current and previous entries in the log have the same timestamp, i.e. made at the same time. If they are they are treated as one single state to undo
             if (this.historyLog[this.currentHistoryIndex + 1] && this.historyLog[this.currentHistoryIndex]) {
                 doNextState = (this.historyLog[this.currentHistoryIndex].time == this.historyLog[this.currentHistoryIndex + 1].time);
             }
@@ -271,11 +279,15 @@ class StateMachine {
         disableIfDataEmpty();
     }
 
+    /**
+     * @description Restores undone changes in the history log. Determines what should be looked for by reading the state change flags.
+     * @see StateChange For available flags.
+     */
     stepForward() {
-        // If there is not anything to restore => return
+        // Return if there isn't anything to restore
         if (this.historyLog.length == 0 || this.currentHistoryIndex == (this.historyLog.length - 1)) return;
 
-        // Go one step forward, if the next state in the history has the same time, do that too
+        // Go one step forward, if the next state in the history has the same time, redo that state as well
         do {
             this.currentHistoryIndex++;
             if (this.historyLog[this.currentHistoryIndex]) {
@@ -294,6 +306,10 @@ class StateMachine {
         displayMessage(messageTypes.SUCCESS, "Changes reverse reverted!")
     }
 
+    /**
+     * @description "Rebuilds" the history log up to a specified index.
+     * @param {HistoryIndex} endIndex End point, specifying up to what index the log should be rebuilt.
+     */
     scrubHistory(endIndex) {
         this.gotoInitialState();
 
@@ -309,8 +325,8 @@ class StateMachine {
     }
 
     /**
-     * @description Restore a given state
-     * @param {StateChange} state The state that should be restored
+     * @description Restore a given state.
+     * @param {StateChange} state The state that should be restored.
      */
     restoreState(state) {
         // Get all keys from the state.
@@ -320,10 +336,10 @@ class StateMachine {
             var elementsToRemove = [];
             var linesToRemove = [];
 
-            // If the id is not an array, make it into an array
+            // If the ID is not an array, make it into an array
             if (!Array.isArray(state.id)) state.id = [state.id];
 
-            // For every id, find the object and add to the corresponding array
+            // For every ID, find the object and add to the corresponding array
             state.id.forEach(objID => {
                 if (data[findIndex(data, objID)] != undefined) {
                     elementsToRemove.push(data[findIndex(data, objID)]);
@@ -362,7 +378,7 @@ class StateMachine {
                     });
                     data.push(temp);
 
-                } else { // Else it most be an line - apply defaults and create the line
+                } else { // Else it must be a line - apply defaults and create the line
                     Object.keys(defaultLine).forEach(key => {
                         if (!temp[key]) temp[key] = defaultLine[key];
                     });
@@ -373,10 +389,10 @@ class StateMachine {
     }
 
     /**
-     * @description Go back to the inital state in the diagram
+     * @description Go back to the inital state in the diagram.
      */
     gotoInitialState() {
-        // Set initial values to data and lines.
+        // Set initial values for data and lines
         data = [];
         lines = [];
 
@@ -397,10 +413,10 @@ class StateMachine {
 
     /**
      * @description Create a timers and go-through all states grouped by time.
-     * @param {Number} cri The starting index of timestamp-map to start on.
+     * @param {Number} cri (CurrentReplayIndex) The starting index of timestamp-map to start on.
      */
     replay(cri = parseInt(document.getElementById("replay-range").value)) {
-        // If no history exists => return
+        // Return if no history exists
         if (this.historyLog.length == 0) return;
 
         var tsIndexArr = Object.keys(settings.replay.timestamps);
@@ -413,7 +429,7 @@ class StateMachine {
         setReplayRunning(true);
         document.getElementById("replay-range").value = cri.toString();
 
-        // Go back to the beginning.
+        // Go back to the beginning
         this.scrubHistory(tsIndexArr[cri]);
 
         var self = this;
@@ -421,9 +437,11 @@ class StateMachine {
         this.replayTimer = setInterval(function replayInterval() {
 
             cri++;
+            // Defining start state
             var startStateIndex = tsIndexArr[cri];
             var stopStateIndex;
 
+            // Defining end state for the replay
             if (tsIndexArr.length - 1 == cri) {
                 stopStateIndex = self.historyLog.length - 1;
             } else if (tsIndexArr[cri + 1] - 1 == tsIndexArr[cri]) {
@@ -435,9 +453,11 @@ class StateMachine {
                 stopStateIndex = 0;
             }
 
+            // Restores all states in the replay range
             for (let i = startStateIndex; i <= stopStateIndex; i++) {
                 self.restoreState(self.historyLog[i]);
 
+                // Resets interval timer to new value if chosen interval is changed mid-replay
                 if (settings.replay.delay != startDelay) {
                     clearInterval(self.replayTimer);
                     this.replay();
@@ -452,6 +472,7 @@ class StateMachine {
 
             document.getElementById("replay-range").value = cri;
 
+            // Clear interval timer and mark replay as stopped when at end of replay range
             if (tsIndexArr.length - 1 == cri) {
                 clearInterval(self.replayTimer);
                 setReplayRunning(false);
@@ -460,20 +481,17 @@ class StateMachine {
     }
 }
 
-//#endregion ===================================================================================
-//#region ================================ INIT AND SETUP ======================================
+// #endregion
+// #region INIT AND SETUP 
+// ============================================================================================
+// ====================================== INIT AND SETUP ======================================
 
-//an event listener for when the window is loaded, this hides the loading spinner and calls start up functions
+// An event listener for when the window is loaded, this hides the loading spinner and calls start up functions
 window.addEventListener("DOMContentLoaded", () => {
     getData();
     addAlertOnUnload();
     document.getElementById("loadingSpinner").style.display = "none";
 });
-
-/**
- * @description Called from getData() when the window is loaded. This will initialize all neccessary data and create elements, setup the state machine and vise versa.
- * @see getData() For the VERY FIRST function called in the file.
- */
 
 // Global statemachine init, moved from onSetup
 stateMachine = new StateMachine(data, lines);
@@ -486,7 +504,7 @@ function getData() {
     container = document.getElementById("container");
     DiagramResponse = fetchDiagram();
 
-    //add event listeners 
+    //Add event listeners 
     document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
     document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
     document.getElementById("container").addEventListener("mousedown", mdown);
@@ -495,12 +513,13 @@ function getData() {
     document.getElementById("container").addEventListener("wheel", mwheel);
     document.getElementById("options-pane").addEventListener("mousedown", mdown);
 
-    //Mobile fab buttons
+    //Mobile FAB-buttons
     document.getElementById("fab-check").addEventListener("click", toggleErrorCheck);
     document.getElementById("fab-localSaveAs").addEventListener("click", showSavePopout);
     document.getElementById("fab-localSave").addEventListener("click", quickSaveDiagram);
     document.getElementById("fab-load").addEventListener("click", showModal);
-    //Main mobal fab button
+
+    //Main mobile FAB-button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
         document.querySelectorAll('.fab-inner').forEach(button => {
             button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
@@ -517,7 +536,6 @@ function getData() {
     drawRulerBars(scrollx, scrolly);
     setContainerStyles(mouseMode);
     generateKeybindList();
-    //setPreviewValues();
     saveDiagramBeforeUnload();
     setupTouchAsMouseSupport();
 
@@ -529,16 +547,14 @@ function getData() {
     togglePlacementType(12, 12);
 }
 
-/**
- * @description Used to determine the tools shown depending on diagram type.
- */
+// #endregion
+// #region EVENTS
+// ============================================================================================
+// ========================================== EVENTS ==========================================
 
 
-
-//#endregion ===================================================================================
-//#region ================================ EVENTS ==============================================
-
-// --------------------------------------- Window Events    --------------------------------
+// #region Window Events
+// --------------------------------------- Window Events --------------------------------
 
 // Event listeners for when one of the elementPlacement buttons are clicked, this will call the rightClickOpenSubtoolbar function with the right parameters
 // Get the elementPlacement button with the highest number and use that for a range in the for loop
@@ -556,22 +572,22 @@ document.addEventListener('contextmenu', event => {
 });
 
 
-//Adds an EventListener to the document, that listens for keys being pressed.
-//NOTE: If adding additional keyboard shortcuts, keep in mind that if the action taken happens instantaneously and is only meant to happen once per press, only call upon the function in the other EventListener below.
+// Adds an EventListener to the document, that listens for keys being pressed
+// NOTE: If adding additional keyboard shortcuts, keep in mind that if the action taken happens instantaneously and is only meant to happen once per press, only call upon the function in the other EventListener below
 document.addEventListener('keydown', function (e) {
-    //Sets variables for each special key (Ctrl, Alt, etc.) to true if they are being pressed down.
+    // Sets variables for each special key (Ctrl, Alt, etc.) to true if they are being pressed down
     if (isKeybindValid(e, keybinds.LEFT_CONTROL) && !ctrlPressed) ctrlPressed = true;
     if (isKeybindValid(e, keybinds.ALT) && !altPressed) altPressed = true;
     if (isKeybindValid(e, keybinds.META) && !ctrlPressed) ctrlPressed = true;
 
-    //Exits out of the replay mode if the escape button is pressed when replay mode is active.
+    // Exits out of the replay mode if the escape button is pressed when replay mode is active
     if (isKeybindValid(e, keybinds.ESCAPE) && !escPressed && settings.replay.active) {
         toggleReplay();
         setReplayRunning(false);
         clearInterval(stateMachine.replayTimer);
     }
 
-    //Special functionality for if the enter button is pressed when writing something in an input field.
+    // Special functionality for if the enter button is pressed when writing something in an input field
     if (isKeybindValid(e, keybinds.ENTER) && /INPUT|SELECT/.test(document.activeElement.nodeName.toUpperCase())) {
         if (document.getElementById("lineLabel")) {
             changeLineProperties();
@@ -605,8 +621,9 @@ document.addEventListener('keydown', function (e) {
         pointerState = pointerStates.DEFAULT;
         showdata();
     }
-    //Functionality for each available keyboard shortcut in the diagram. Check constants.js to see all keybinds.
-    //"e.preventDefault() prevents the browser from taking action upon a keyboard shortcut being pressed." This ensures that no keyboard shortcuts for the diagram end up clashing with commonplace browser shortcuts.
+    // Functionality for each available keyboard shortcut in the diagram. Check constants.js to see all keybinds.
+    // "e.preventDefault() prevents the browser from taking action upon a keyboard shortcut being pressed." 
+    // This ensures that no keyboard shortcuts for the diagram end up clashing with commonplace browser shortcuts.
     if (isKeybindValid(e, keybinds.ZOOM_IN)) {
         e.preventDefault();
         zoomin();
@@ -628,7 +645,7 @@ document.addEventListener('keydown', function (e) {
         e.preventDefault();
     }
 
-    // Moving object with arrow keys.
+    // Moving object with arrow keys
     if (isKeybindValid(e, keybinds.MOVING_OBJECT_UP)) {
         e.preventDefault();
         if (settings.grid.snapToGrid) {
@@ -665,7 +682,7 @@ document.addEventListener('keydown', function (e) {
         }
     }
 
-    //Saving and loading diagrams.
+    // Saving and loading diagrams
     if (isKeybindValid(e, keybinds.SAVE_DIAGRAM)) {
         e.preventDefault();
     }
@@ -685,7 +702,8 @@ document.addEventListener('keydown', function (e) {
 });
 
 
-//Adds an EventListener to the document that listens for keys being released. Only call upon functions here if the press is only meant to trigger the action once AND the action is instantaneous.
+// Adds an EventListener to the document that listens for keys being released. 
+// Only call upon functions here if the press is only meant to trigger the action once AND the action is instantaneous
 document.addEventListener('keyup', function (e) {
     const pressedKey = e.key.toLowerCase();
 
@@ -701,7 +719,7 @@ document.addEventListener('keyup', function (e) {
 
     // If the active element in DOM is an "INPUT" "SELECT" "TEXTAREA"
     if (/INPUT|SELECT|TEXTAREA/.test(document.activeElement.nodeName.toUpperCase())) {
-        //Reverts input name if not saved and closes the options panel if ESC is pressed during element renaming.
+        // Reverts input name if not saved and closes the options panel if ESC is pressed during element renaming
         if (document.activeElement.id == 'elementProperty_name' && isKeybindValid(e, keybinds.ESCAPE)) {
             if (context.length == 1) {
                 document.activeElement.value = context[0].name;
@@ -711,12 +729,16 @@ document.addEventListener('keyup', function (e) {
         }
         return;
     }
+
+    // Undo/Redo
     if (isKeybindValid(e, keybinds.HISTORY_STEPBACK)) stateMachine.stepBack();
     if (isKeybindValid(e, keybinds.HISTORY_STEPFORWARD)) stateMachine.stepForward();
+
     if (isKeybindValid(e, keybinds.ESCAPE)) {
         escPressed = false;
         closeModal();
     }
+
     if (isKeybindValid(e, keybinds.DELETE) || isKeybindValid(e, keybinds.DELETE_B)) {
         if (mouseMode == mouseModes.EDGE_CREATION && context.length != 0) return;
         if (context.length > 0) {
@@ -726,6 +748,8 @@ document.addEventListener('keyup', function (e) {
         }
         updateSelection(null);
     }
+
+    // Mouse Modes
     if (isKeybindValid(e, keybinds.POINTER)) setMouseMode(mouseModes.POINTER);
     if (isKeybindValid(e, keybinds.BOX_SELECTION)) setMouseMode(mouseModes.BOX_SELECTION);
     if (isKeybindValid(e, keybinds.EDGE_CREATION)) {
@@ -765,12 +789,13 @@ document.addEventListener('keyup', function (e) {
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
+    // Note
     if (isKeybindValid(e, keybinds.NOTE_ENTITY)) {
         setElementPlacementType(elementTypes.note);
         setMouseMode(mouseModes.PLACING_ELEMENT);
     }
 
-    //Actions which are taken if the keyboard shortcut has been pressed and released.
+    // Actions which are taken if the keyboard shortcut has been pressed and released
     if (isKeybindValid(e, keybinds.TOGGLE_A4)) toggleA4Template();
     if (isKeybindValid(e, keybinds.TOGGLE_GRID)) toggleGrid();
     if (isKeybindValid(e, keybinds.TOGGLE_RULER)) toggleRuler();
@@ -788,12 +813,12 @@ document.addEventListener('keyup', function (e) {
     if (isKeybindValid(e, keybinds.TOGGLE_ERROR_CHECK)) toggleErrorCheck();
 
     if (isKeybindValid(e, keybinds.COPY)) {
-        // Remove the preivous copy-paste data from localstorage.
+        // Remove the preivous copy-paste data from localstorage
         if (localStorage.key('copiedElements')) localStorage.removeItem('copiedElements');
         if (localStorage.key('copiedLines')) localStorage.removeItem('copiedLines');
 
         if (context.length) {
-            // Filter - keeps only the lines that are connectet to and from selected elements.
+            // Filter - keeps only the lines that are connectet to and from selected elements
             const contextConnectedLines = lines.filter(line => {
                 return (context.filter(element => {
                     return line.toID == element.id || line.fromID == element.id
@@ -815,6 +840,7 @@ document.addEventListener('keyup', function (e) {
     }
 });
 
+// Listener for resizing the window
 window.addEventListener("resize", updateRulers);
 
 window.onfocus = function () {
@@ -822,6 +848,7 @@ window.onfocus = function () {
     ctrlPressed = false;
 };
 
+// Listener for the mouse leaving the browser window
 document.addEventListener("mouseleave", function (event) {
     if (event.toElement == null && event.relatedTarget == null) {
         pointerState = pointerStates.DEFAULT;
@@ -832,13 +859,15 @@ document.addEventListener("mouseleave", function (event) {
     }
 });
 
+// Listener for the mouse leaving the bounds of any element, including the browser window
 document.addEventListener("mouseout", function (event) {
     if ((event.clientX >= window.innerWidth || event.clientY >= window.innerHeight) || event.clientY <= 0 || event.clientX <= 0) {
         mouseMode_onMouseUp();
     }
 });
 
-// --------------------------------------- Touch Events    --------------------------------
+// #region Touch Events
+// --------------------------------------- Touch Events ---------------------------------------
 
 /**
  * @description Event function triggered when touch is registered on top of the container and converts it to a mouseEvent.
@@ -919,7 +948,7 @@ function setupTouchAsMouseSupport() {
 }
 
 /**
- * @description Handels pinch-zoom gesture detection and triggers zoom-in or zoom-out actions.
+ * @description Handles pinch-zoom gesture detection and triggers zoom-in or zoom-out actions.
  * @param {TouchEvent} event The current touch event containing two active touch points.
  */
 
@@ -940,6 +969,7 @@ function handlePinchZoom(event) {
             clientY: (event.touches[0].clientY + event.touches[1].clientY) / 2
         };
 
+        // Zoom in if new distance is larger than initial, otherwise zoom out
         if (newDistance > initialPinchDistance) {
             zoomin(zoomCenter);
         } else {
@@ -952,7 +982,8 @@ function handlePinchZoom(event) {
     }
 }
 
-// --------------------------------------- Mouse Events    --------------------------------
+// #region Mouse Events
+// --------------------------------------- Mouse Events ---------------------------------------
 
 /**
  * @description Called on mouse up if no pointer state has blocked the input in the mup()-function.
@@ -961,6 +992,7 @@ function handlePinchZoom(event) {
  */
 function mouseMode_onMouseUp(event) {
     if (!hasPressedDelete) {
+        // Handling which action to take depending on what mouseMode was active on mouseUp
         switch (mouseMode) {
             case mouseModes.PLACING_ELEMENT:
                 clearContext();
@@ -974,7 +1006,7 @@ function mouseMode_onMouseUp(event) {
                 break;
             case mouseModes.EDGE_CREATION:
                 if (context.length > 1) {
-                    // TODO: Change the static variable to make it possible to create different lines.
+                    // TODO: Change the static variable to make it possible to create different lines
                     addLine(context[0], context[1], "Normal");
                     clearContext();
                     // Bust the ghosts
@@ -984,9 +1016,9 @@ function mouseMode_onMouseUp(event) {
                     updatepos();
                 } else if (context.length === 1) {
                     if (event.target.id != "container") {
-                        // checks if a ghostline already exists and if so sets the relation recursively.
+                        // Checks if a ghostline already exists and if so sets the relation recursively
                         if (ghostLine != null) {
-                            // create a line from the element to itself
+                            // Create a line from the element to itself
                             addLine(context[0], context[0], "Normal", true);
                             clearContext();
                             // Bust the ghosts
@@ -1018,7 +1050,7 @@ function mouseMode_onMouseUp(event) {
                 boxSelect_End();
                 generateContextProperties();
                 break;
-            case mouseModes.POINTER: // do nothing
+            case mouseModes.POINTER: // Do nothing
                 break;
             default:
                 console.error(`State ${mouseMode} missing implementation at switch-case in mouseMode_onMouseUp()!`);
@@ -1076,12 +1108,13 @@ function mmoving(event) {
                     x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
                     y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
                 };
-                // Moving object
+
+                // Letting the system know that an object is being moved
                 movingObject = true;
+
                 // Moving object
                 deltaX = startX - event.clientX;
                 deltaY = startY - event.clientY;
-                // We update position of connected objects
 
                 // Check coordinates of moveable element and if they are within snap threshold
                 const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
@@ -1123,7 +1156,8 @@ function mmoving(event) {
 
                 deltaX = (startNode.upRight) ? -delta : delta;
 
-                //Special resizing for IERelation elements, width needs to be double the height. Modifying height felt better during usage than modifying width.
+                // Special resizing for IERelation elements, width needs to be double the height
+                // Modifying height felt better during usage than modifying width
                 if (elementData.kind == elementTypesNames.IERelation) {
                     deltaY = (startNode.downLeft) ? -(delta * 0.5) : delta * 0.5;
                 } else {
@@ -1134,44 +1168,46 @@ function mmoving(event) {
             let xChange, yChange, widthChange, heightChange;
             if (elementData.kind == elementTypesNames.sequenceActor || elementData.kind == elementTypesNames.sequenceObject) { // Special resize for sequenceActor and sequenceObject
                 const maxRatio = 0.8;
-                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) { // Leftmost nodes while larger than minimum width
                     let tmpW = elementData.width;
                     let tmpX = elementData.x;
                     let movementY = elementData.width <= maxRatio * startHeight ? 0 : -(deltaX / zoomfact + startWidth - maxRatio * startHeight) / maxRatio;
                     let xChange = movementPosChange(elementData, startX, deltaX, true);
                     let widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
                     let heightChange = movementHeightChange(elementData, startHeight, movementY, false);
-                } else if (startNode.right && (startWidth - (deltaX / zoomfact)) > minWidth) {
+
+                } else if (startNode.right && (startWidth - (deltaX / zoomfact)) > minWidth) { // Right node while larger than minimum width
                     var movementY = elementData.width <= maxRatio * startHeight ? 0 : -(-deltaX / zoomfact + startWidth - maxRatio * startHeight) / maxRatio;
                     let widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                     let heightChange = movementHeightChange(elementData, startHeight, movementY, false);
-                } else if ((startNode.up || startNode.upLeft || startNode.upRight)
-                    && (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) {
-                    // Fetch original height// Deduct the new height, giving us the total change
+
+                } else if ((startNode.up || startNode.upLeft || startNode.upRight) && (startHeight + (deltaY / zoomfact)) > startWidth / maxRatio) { // Top nodes while within ratios
+                    // Fetch original height and deduct the new height, giving us the total change
                     let tmpH = elementData.height;
                     let tmpY = elementData.y;
                     let yChange = movementPosChange(elementData, startY, deltaY, false);
                     const heightChange = movementHeightChange(elementData, tmpH, tmpY, true);
-                } else if ((startNode.down || startNode.downLeft || startNode.downRight)
-                    && (startHeight - (deltaY / zoomfact)) > startWidth / maxRatio) {
+
+                } else if ((startNode.down || startNode.downLeft || startNode.downRight) && (startHeight - (deltaY / zoomfact)) > startWidth / maxRatio) { // Bottom nodes while within ratios
                     const heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
                 }
+
             } else { // Normal resize for the other elements
                 // Functionality Left/Right resize
-                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) {
+                if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) { // Leftmost nodes while above minWidth
                     let tmpW = elementData.width;
                     let tmpX = elementData.x;
                     xChange = movementPosChange(elementData, startX, deltaX, true);
                     widthChange = movementWidthChange(elementData, tmpW, tmpX, false);
-                } else if ((startNode.right || startNode.upRight || startNode.downRight) && (startWidth - (deltaX / zoomfact)) > minWidth) {
+                } else if ((startNode.right || startNode.upRight || startNode.downRight) && (startWidth - (deltaX / zoomfact)) > minWidth) { // Rightmost nodes while above minWidth
                     widthChange = movementWidthChange(elementData, startWidth, deltaX, true);
                 }
 
                 // Functionality Up/Down resize
-                if ((startNode.down || startNode.downLeft || startNode.downRight) && (startHeight - (deltaY / zoomfact)) > minHeight) {
+                if ((startNode.down || startNode.downLeft || startNode.downRight) && (startHeight - (deltaY / zoomfact)) > minHeight) { // Bottom nodes while above minheight
                     heightChange = movementHeightChange(elementData, startHeight, deltaY, false);
-                } else if ((startNode.up || startNode.upLeft || startNode.upRight) && (startHeight + (deltaY / zoomfact)) > minHeight) {
-                    // Fetch original height// Deduct the new height, giving us the total change
+                } else if ((startNode.up || startNode.upLeft || startNode.upRight) && (startHeight + (deltaY / zoomfact)) > minHeight) { // Top nodes while above minHeight
+                    // Fetch original height and deduct the new height, giving us the total change
                     let tmpH = elementData.height;
                     let tmpY = elementData.y;
                     yChange = movementPosChange(elementData, startY, deltaY, false);
@@ -1179,7 +1215,7 @@ function mmoving(event) {
                 }
             }
 
-            // store the changes in the history
+            // Store the changes in the history
             stateMachine.save(elementData.id, StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
@@ -1204,20 +1240,44 @@ function mmoving(event) {
     setRulerPosition(event.clientX, event.clientY);
 }
 
+/**
+ * @description Calculates the change in position of an element being moved.
+ * @param {data} element The element to move.
+ * @param {pos} start Initial position of the element before moving.
+ * @param {pos} delta The amount the element has been moved.
+ * @param {boolean} isX Determines if the object is moving horizontally or not.
+ * @returns Amount moved in the diagram, modified by zoom level.
+ */
 function movementPosChange(element, start, delta, isX) {
-    // mouse position is used causing the line to "jump" to the mous pos.
-    // The magic numebers are used to center the node middle with the mouse pointer
+    // Mouse position is used causing the line to "jump" to the mous pos
+    // The magic numbers are used to center the node middle with the mouse pointer
     property = isX ? 'x' : 'y';
     element[property] = isX ? originalX - delta / zoomfact : originalY - delta / zoomfact;
     // Deduct the new position, giving us the total change
     return - delta / zoomfact;
 }
 
+/**
+ * @description Calculates new width of an element during resizing.
+ * @param {data} element Element that is being resized.
+ * @param {pos} start Initial x-position.
+ * @param {pos} delta The change in position.
+ * @param {boolean} isR Determines if the width is being changed to the right. If false, it changes it to the left.
+ * @returns New width of element.
+ */
 function movementWidthChange(element, start, delta, isR) {
     element.width = (isR) ? start - delta / zoomfact : start + delta - element.x;
     return element.width;
 }
 
+/**
+ * @description Calculates new height of an element during resizing.
+ * @param {data} element Element that is being resized.
+ * @param {pos} start Initial y-position.
+ * @param {pos} delta The change in position.
+ * @param {boolean} isUp Determines if the height is being changed upwards. If false, it changes it downwards.
+ * @returns New height of element.
+ */
 function movementHeightChange(element, start, delta, isUp) {
     element.height = (isUp) ? start + delta - element.y : start - delta / zoomfact;
     return element.height;
@@ -1231,8 +1291,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem("diagramTheme")) stylesheet.href = localStorage.getItem("diagramTheme");
 });
 
-//#endregion ===================================================================================
-//#region ================================ ELEMENT MANIPULATION ================================
+// #endregion
+// #region ELEM. MANIPULATION
+// ======================================================================================
+// ================================ ELEMENT MANIPULATION ================================
 
 /**
  * @description Adds an object to the data array of elements.
@@ -1277,7 +1339,7 @@ function removeElements(elementArray, stateMachineShouldSave = true) {
         if (linesToRemove.length > 0) { // If there are also lines to remove
             removeLines(linesToRemove, false);
             if (stateMachineShouldSave) {
-                // only the ids should be sent to save()
+                // Only the ID:s should be sent to save()
                 stateMachine.save([...elementsToRemove.map(e => e.id), ...linesToRemove.map(e => e.id)], StateChange.ChangeTypes.ELEMENT_AND_LINE_DELETED)
             };
         } else { // Only removed elements without any lines
@@ -1303,7 +1365,7 @@ function removeElements(elementArray, stateMachineShouldSave = true) {
 function removeLines(linesArray, stateMachineShouldSave = true) {
     let anyRemoved = false;
 
-    // Removes from the two arrays that keep track of the attributes connections. 
+    // Removes from the two arrays that keep track of the attributes connections 
     for (let i = 0; i < linesArray.length; i++) {
         lines = lines.filter(function (line) {
             const shouldRemove = (line != linesArray[i]);
@@ -1328,8 +1390,11 @@ function removeLines(linesArray, stateMachineShouldSave = true) {
  * @see context For currently selected element.
  */
 function changeState() {
+    // Getting old/current state of element
     const element = context[0];
     const oldRelation = element.state;
+
+    //Get new state of element from dropdown menu in options pane, save change if the new state is different from the old one
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
     if (newRelation && oldRelation != newRelation) {
         if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
@@ -1345,64 +1410,69 @@ function changeState() {
  * @description Triggered on pressing the SAVE-button inside the options panel. This will apply all changes to the select element and will store the changes into the state machine.
  */
 function saveProperties() {
+    // Getting the fieldset and its child elements
     const propSet = document.getElementById("propertyFieldset");
     const element = context[0];
     const children = propSet.children;
     const propsChanged = {};
 
+    // Iterates through all children of the property element
     for (let i = 0; i < children.length; i++) {
         const child = children[i];
         const inputTag = child.id;
-        if (inputTag == "elementProperty_name") {
+        if (inputTag == "elementProperty_name") { // Special handling if the child is the input for the name of the element
             let value = child.value;
             element.name = value;
             propsChanged.name = value;
             continue;
         }
-        const addToLine = (name, symbol) => {
+        const addToLine = (name, symbol) => { // Function that handles other property elements, like "Property_stereotype" or "Property_functions"
             if (inputTag == `elementProperty_${name}`) {
+
+                // Splits the input on each new line, adding each line to an array
                 let lines = child.value.trim().split("\n");
-                for (let j = 0; j < lines.length; j++) {
+                for (let j = 0; j < lines.length; j++) { // Adds the symbol of the property type to the beginning of each line
                     if (lines[j] && lines[j].trim()) {
                         if (Array.from(lines[j])[0] != symbol) {
                             lines[j] = symbol + lines[j];
                         }
                     }
                 }
+                // Adds the array of lines with the symbols to the element and the list of changed properties
                 element[name] = lines;
                 propsChanged[name] = lines;
             }
         };
         // TODO: This should use elementTypeNames.note. It doesnt follow naming standard
-        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') {
+        if (element.kind == elementTypesNames.SDEntity || element.kind == 'note') { // Special call upon the addToLine function without defined symbol for SD elements and notes
             addToLine("attributes", "");
             continue;
         }
+        //Calling addToLine for each possible type of property besides name
         addToLine("primaryKey", "*");
         addToLine("attributes", "-");
         addToLine("stereotype", "");
         addToLine("functions", "+");
     }
+    // Saves the changes and updates relevant graphics
     stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();
 }
 
 /**
- * Places a copy of all elements into the data array centered around the current mouse position.
+ * @description Places a copy of all elements into the data array centered around the current mouse position.
  * @param {Array<Object>} elements List of all elements to paste into the data array.
  */
 function pasteClipboard(elements, elementsLines) {
-    // If elements is empty, display error and return null
+    // If elements list is empty, display error and return null
     if (elements.length == 0) {
         displayMessage("error", "You do not have any copied elements");
         return;
     }
 
-    /*
-    * Calculate the coordinate for the top-left pos (x1, y1)
-    * and the coordinate for the bottom-right (x2, y2)
-    * */
+
+    // Calculate the coordinate for the top-left pos (x1, y1), and the coordinate for the bottom-right (x2, y2)
     let x1, x2, y1, y2;
     elements.forEach(element => {
         if (element.x < x1 || x1 === undefined) x1 = element.x;
@@ -1427,7 +1497,7 @@ function pasteClipboard(elements, elementsLines) {
 
     // For every copied element create a new one and add to data
     elements.forEach(element => {
-        // Make a new id and save it in an object
+        // Make a new ID and save it in an object
         idMap[element.id] = makeRandomID();
 
         connectedLines.forEach(line => {
@@ -1444,7 +1514,7 @@ function pasteClipboard(elements, elementsLines) {
         addObjectToData(elementObj, false); // Add to data
     });
 
-    // Create the new lines but do not saved in stateMachine
+    // Create the new lines but don't save them to the stateMachine
     // TODO: Using addLine removes labels and arrows. Find way to save lines with all attributes.
     connectedLines.forEach(line => {
         newLines.push(
@@ -1452,7 +1522,7 @@ function pasteClipboard(elements, elementsLines) {
         );
     });
 
-    // Save the copyed elements to stateMachine
+    // Save the copied elements to the stateMachine
     stateMachine.save([newElements.map(e => e.id), newLines.map(e => e.id)], StateChange.ChangeTypes.ELEMENT_AND_LINE_CREATED);
     displayMessage(messageTypes.SUCCESS, `You have successfully pasted ${elements.length} elements and ${connectedLines.length} lines!`);
     clearContext(); // Deselect old selected elements
@@ -1462,43 +1532,45 @@ function pasteClipboard(elements, elementsLines) {
     showdata();
 }
 
-//#endregion ===================================================================================
-//#region ================================ REPLAY ================================================
+// #endregion
+// #region REPLAY
+// ======================================================================================
+// ======================================= REPLAY =======================================
 
 /**
- * @description Change the state in replay-mode with the slider
- * @param {Number} sliderValue The value of the slider
+ * @description Change the state in replay-mode with the slider.
+ * @param {Number} sliderValue The value of the slider.
  */
 function changeReplayState(sliderValue) {
     const timestampKeys = Object.keys(settings.replay.timestamps);
 
-    // If the last timestamp is selected, goto the last state in the diagram.
+    // If the last timestamp is selected, go to the last state in the diagram
     if (timestampKeys.length - 1 == sliderValue) {
         stateMachine.scrubHistory(stateMachine.historyLog.length - 1);
     } else stateMachine.scrubHistory(timestampKeys[sliderValue + 1] - 1);
 }
 
 /**
- * @description Toggles stepforward in history.
- * USED IN PHP
+ * @description Toggles stepForward in history.
+ * @NOTE USED IN PHP
  */
 function toggleStepForward() {
     stateMachine.stepForward();
 }
 
 /**
- * @description Toggles stepbackwards in history.
- * USED IN PHP
+ * @description Toggles stepBackwards in history.
+ * @NOTE USED IN PHP
  */
 function toggleStepBack() {
     stateMachine.stepBack();
 }
 
 /**
- * @description Toggles the replay-mode, shows replay-panel, hides unused elements
+ * @description Toggles the replay-mode, shows replay-panel, hides unused elements.
  */
 function toggleReplay() {
-    // If there is no history => display error and return
+    // If there is no history => Display error and return
     if (stateMachine.historyLog.length == 0) {
         displayMessage(messageTypes.ERROR, "Sorry, you need to make changes before entering the replay-mode");
         return;
@@ -1528,7 +1600,7 @@ function toggleReplay() {
         zoomContainer.style.left = "100px";
         replyMessage.style.visibility = "hidden";
     } else {
-        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamp.
+        settings.replay.timestamps = { 0: 0 }; // Clear the array with all timestamps
 
         stateMachine.historyLog.forEach(historyEntry => {
             const lastKeyIndex = Object.keys(settings.replay.timestamps).length - 1;
@@ -1545,7 +1617,7 @@ function toggleReplay() {
         clearContext();
         clearContextLine();
 
-        // Set mousemode to Pointer
+        // Set mouseMode to Pointer
         setMouseMode(0);
 
         stateMachine.scrubHistory(parseInt(document.getElementById("replay-range").value));
@@ -1562,11 +1634,11 @@ function toggleReplay() {
     }
     drawRulerBars(scrollx, scrolly);
 
-    // Change the settings boolean for replay active
+    // Change the settings-boolean for replay active
     settings.replay.active = !settings.replay.active;
 }
 
-/** @description Gives the exit button its intended functionality to exit out of replay-mode */
+/** @description Gives the exit button its intended functionality to exit out of replay-mode. */
 function exitReplayMode() {
     toggleReplay();
     setReplayRunning(false);
@@ -1574,7 +1646,7 @@ function exitReplayMode() {
 }
 
 /**
- * @description Sets the replay-delay value
+ * @description Sets the replay-delay value.
  */
 function setReplayDelay(value) {
     const replayDelayMap = {
@@ -1595,8 +1667,8 @@ function setReplayDelay(value) {
 }
 
 /**
- * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode
- * @param {boolean} state The state if the replay-mode is running
+ * @description Changes the play/pause button and locks/unlocks the sliders in replay-mode.
+ * @param {boolean} state The state if the replay-mode is running.
  */
 function setReplayRunning(state) {
     const button = document.getElementById("diagram-replay-switch");
@@ -1611,8 +1683,10 @@ function setReplayRunning(state) {
     }
 }
 
-//#endregion =====================================================================================
-//#region ================================ GUI ===================================================
+// #endregion
+// #region GUI
+// ======================================================================================
+// ======================================== GUI =========================================
 
 /**
  * @description Toggles the movement of elements ON/OFF.
@@ -1646,21 +1720,21 @@ function toggleEntityLocked() {
  * @description Changes what element will be constructed on next constructElementOfType call.
  * @param {Number} type What kind of element to place.
  * @see constructElementOfType
- * USED IN PHP
+ * @NOTE USED IN PHP
  */
 function setElementPlacementType(type = elementTypes.EREntity) {
     elementTypeSelected = type;
 }
 
 /**
- * @description Variable to hold current subtoolbar
- * USED LOCALLY
+ * @description Variable to hold current subtoolbar.
+ * @NOTE USED LOCALLY
  */
 let currentlyOpenSubmenu = null;
 
 /**
  * @description Function to open a subtoolbar when hovering over a button
- * USED IN PHP
+ * @NOTE USED IN PHP
  */
 function hoverPlacementButton(index) {
     // First, hide the old submenu if a new button is hovered
@@ -1678,8 +1752,8 @@ function hoverPlacementButton(index) {
 }
 
 /**
- * @description Function to hide submenu
- * USED IN PHP
+ * @description Function to hide submenu.
+ * @NOTE USED IN PHP
  */
 function hidePlacementType() {
     if (currentlyOpenSubmenu !== null) {
@@ -1697,8 +1771,8 @@ function holdPlacementButtonDown(num) {
 }
 
 /**
- * @description resets the mousepress.
- * USED IN PHP
+ * @description Resets the mouse press.
+ * @NOTE USED IN PHP
  */
 function holdPlacementButtonUp(num) {
     mousePressed = false;
@@ -1706,7 +1780,7 @@ function holdPlacementButtonUp(num) {
 
 /**
  * @description Generates keybind tooltips for all keybinds that are available for the diagram.
- * @see keybinds All available keybinds currently configured
+ * @see keybinds All available keybinds currently configured.
  */
 function generateToolTips() {
     const toolButtons = document.getElementsByClassName("key_tooltip");
@@ -1717,6 +1791,7 @@ function generateToolTips() {
         if (Object.getOwnPropertyNames(keybinds).includes(id)) {
             let str = "Keybinding: ";
 
+            // Manually adding special keys to the tooltip (keys that aren't single letters or numbers)
             if (keybinds[id].ctrl) str += "CTRL + ";
 
             if (keybinds[id].shift) str += "SHIFT + ";
@@ -1743,16 +1818,18 @@ async function generateKeybindList() {
     }
 }
 
-//#endregion =====================================================================================
-//#region ================================   LOAD AND EXPORTS    ==================================
+//#endregion
+//#region LOAD AND EXPORTS
+// ======================================================================================
+// ================================== LOAD AND EXPORTS ==================================
 
 /**
- * @description Create and download a file
- * @param {String} filename The name of the file that get generated
- * @param {*} dataObj The text content of the file
+ * @description Create and download a file.
+ * @param {String} filename The name of the file that get generated.
+ * @param {*} dataObj The text content of the file.
  */
 function downloadFile(filename, dataObj) {
-    // Create a "a"-element
+    // Create an "a"-element
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(dataObj)));
     element.setAttribute('download', filename + ".json");
@@ -1766,7 +1843,7 @@ function downloadFile(filename, dataObj) {
 }
 
 /**
- * @description Prepares data for file creation, retrieves history and initialState
+ * @description Prepares data for file creation, retrieves history and initialState.
  */
 function exportWithHistory() {
 
@@ -1786,8 +1863,8 @@ function exportWithHistory() {
 }
 
 /**
- * @description Stores the current diagram as JSON in localstorage
- * @param {string} key The name/key of the diagram
+ * @description Stores the current diagram as JSON in localstorage.
+ * @param {string} key The name/key of the diagram.
  */
 function storeDiagramInLocalStorage(key) {
     if (stateMachine.currentHistoryIndex == -1) {
@@ -1801,12 +1878,12 @@ function storeDiagramInLocalStorage(key) {
             initialState: stateMachine.initialState
         };
 
-        // Sets the latestChange diagram first, if it is not already set.
+        // Sets the latestChange diagram first, if it is not already set
         if (!localStorage.getItem("diagrams")) {
             let s = `{"latestChange": ${JSON.stringify(objToSave)}}`;
             localStorage.setItem("diagrams", s);
         }
-        // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'.
+        // Gets the string thats contains all the local diagram saves and updates an existing entry or creates a new entry based on the value of 'key'
         let local = localStorage.getItem("diagrams");
         local = (local[0] == "{") ? local : `{${local}}`;
 
@@ -1814,14 +1891,14 @@ function storeDiagramInLocalStorage(key) {
         objToSave.timestamp = new Date().getTime();
         localDiagrams[key] = objToSave;
         localStorage.setItem("diagrams", JSON.stringify(localDiagrams));
-        stateMachine.numberOfChanges = 0; // Reset the number of changes to 0, so that the user can save again without having to make a change first.
+        stateMachine.numberOfChanges = 0; // Reset the number of changes to 0, so that the user can save again without having to make a change first
         displayMessage(messageTypes.SUCCESS, "Diagram saved! (File saved to: " + key + ")");
         
     }
 }
 
-//Moastly the same as storeDiagramInLocalStorage
-//Uppdates the latestChange to always be in the latest state
+// Mostly the same as storeDiagramInLocalStorage
+// Uppdates the latestChange to always be in the latest state
 function updateLatestChange() {
     if (stateMachine.currentHistoryIndex === -1) {
         return;
@@ -1839,7 +1916,7 @@ function updateLatestChange() {
 }
 
 /**
- * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values
+ * @description Prepares data for file creation, retrieves data and lines, also filter unnecessary values.
  */
 function exportWithoutHistory() {
     displayMessage(messageTypes.SUCCESS, "Generating the export file..");
@@ -1854,30 +1931,30 @@ function exportWithoutHistory() {
         };
 
         Object.keys(obj).forEach(objKey => {
-            // If they key is ignore => return
+            // Return if they key is ignored
             if (keysToIgnore.includes(objKey)) return;
 
-            // Ignore defaults
+            // Adding object data to the exported file ONLY if the data differs from default values
             if (defaults[obj.kind][objKey] != obj[objKey]) {
-                // Add to filterdObj
                 filteredObj[objKey] = obj[objKey];
             }
         });
-        objToSave.data.push(filteredObj);
+        objToSave.data.push(filteredObj); // Pushing the filtered data to the objToSave structure
     });
 
     keysToIgnore = ["dx", "dy", "ctype"];
     lines.forEach(obj => {
         const filteredObj = {};
         Object.keys(obj).forEach(objKey => {
-            // If they key is ignore => return
+            // Return if the key is ignored
             if (keysToIgnore.includes(objKey)) return;
 
+            // Adding line data to the exported file ONLY if the data differs from default values
             if (defaultLine[objKey] != obj[objKey]) {
                 filteredObj[objKey] = obj[objKey];
             }
         });
-        objToSave.lines.push(filteredObj);
+        objToSave.lines.push(filteredObj); // Pushing filtered data to the structure
     });
 
 
@@ -1886,40 +1963,40 @@ function exportWithoutHistory() {
 }
 
 /**
- * @description Load one of the stored JSON files
- * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json
+ * @description Load one of the stored JSON files.
+ * @param path the path to the JSON file on the server that you want to load from, for example, JSON/IEDiagramMockup.json.
  */
 function loadMockupDiagram(path) {
     // "resetDiagram()" calls this method with "EMPTYDiagram" as parameter
 
-    // The path is not set yet if we do it from the dropdown as the function
-    // is called without a parameter.
+    // The path is not set yet if we do it from the dropdown as the function is called without a parameter
     if (!path) path = document.getElementById("diagramTypeDropdown").value;
-    //make sure its not null first
+    // Make sure path isn't null first
     if (path != null) {
-        //via fetch API, request the json file 
+        // Via fetch API, request the JSON file 
         fetch(path)
             .then((response) => {
-                //throw an error if the request is not ok
+                // Throw an error if the request is not ok
                 if (!response.ok) {
                     throw new Error(`HTTP error: ${response.status}`);
                 }
-                //fetch the response as json
+                // Fetch the response as JSON
                 return response.json();
             })
-            //after response.json() has succeded, load the diagram from this json
+            // After response.json() has succeded, load the diagram from this JSON file
             .then((json) => loadDiagram(json, false))
-            //catch any error
+            // Catch any error
             .catch((err) => console.error(`Fetch problem: ${err.message}`));
     }
 }
 
 /**
- * @description Gets the content of the file in parameter.
- * @param {File} files The file to get the content of
- * @return The content of the file
+ * @description Gets the content of a specified file.
+ * @param {File} files The file to retrieve content from.
+ * @return The file content.
  */
 function getFileContent(files) {
+    // Creates a new FileReader that returns the file contents if successful, returns an error if unsuccessful
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
@@ -1931,16 +2008,16 @@ function getFileContent(files) {
 }
 
 /**
- * @description Load the content of a file to the diagram-data. This will remove previous data
+ * @description Load the content of a file to the diagram-data. This will remove previous data.
  */
 async function loadDiagram(file = null, shouldDisplayMessage = true) {
     let temp;
     if (!file) {
         const fileInput = document.getElementById("importDiagramFile");
 
-        // If not an json-file is inputted => return
+        // Return if input file isn't a JSON-file
         if (getExtension(fileInput.value) != "json") {
-            if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Sorry, you cant load that type of file. Only json-files is allowed");
+            if (shouldDisplayMessage) displayMessage(messageTypes.ERROR, "Sorry, you can't load that type of file. Only JSON-files are allowed");
             return;
         }
 
@@ -2007,6 +2084,10 @@ async function loadDiagram(file = null, shouldDisplayMessage = true) {
     }
 }
 
+
+ /**
+  * @description Function that displays the window for loading save files. Handles showing the window as well as retrieving all available save-files.
+  */
 function showModal() {
     const modal = document.querySelector('.loadModal');
     const overlay = document.querySelector('.loadModalOverlay');
@@ -2017,7 +2098,7 @@ function showModal() {
     let local = localStorage.getItem("diagrams");
 
 
-    // Parse saved diagrams from localstorage and sort them so autosave always remains at top and all other saves are ordered by most recent timestamp to appear closest to top.
+    // Parse saved diagrams from localstorage and sort them so autosave always remains at top and all other saves are ordered by most recent timestamp to appear closest to top
     if (local) {
         local = (local[0] == "{") ? local : `{${local}}`;
         localDiagrams = JSON.parse(local);
@@ -2033,7 +2114,7 @@ function showModal() {
         container.firstElementChild.remove();
     }
 
-    // If no items were found for loading in 
+    // If no items to load in were found
     if (!diagramKeys || diagramKeys.length === 0) {
         const p = document.createElement('p');
         const pText = document.createTextNode('No saves could be found');
@@ -2071,6 +2152,9 @@ function showModal() {
     overlay.classList.remove('hiddenLoad');
 }
 
+/**
+ * @description Closes the load-save window.
+ */
 function closeModal() {
     const modal = document.querySelector('.loadModal');
     const overlay = document.querySelector('.loadModalOverlay');
@@ -2089,17 +2173,17 @@ function closeModal() {
  **/
 function loadConfirmPopup(headerText, messageText) {
 
-    if (stateMachine.numberOfChanges <= 0) { //early exit if no changes
+    if (stateMachine.numberOfChanges <= 0) { // Early exit if no changes
       return Promise.resolve();    
     }
-    //Promise to force popup to finish before code continues
+    // Promise to force popup to finish before code continues
     let promise = new Promise(resolve => {
       $("#confirmationPopup").css("display", "flex");
       $("#confirmPopupHeader").text(headerText);
       $("#confrimPopupText").text(messageText);
       $("#confirmYes, #confirmNo, #closeWindow").click(function() {
           $("#confirmationPopup").hide();
-          resolve(this.id === "confirmYes"); //resolvar if butten had id "confirmYes"
+          resolve(this.id === "confirmYes"); // Resolves if button had ID "confirmYes"
         });
     })
     return promise; 
@@ -2118,9 +2202,9 @@ function loadDiagramFromLocalStorage(key) {
     // If there are no changes, load the diagram directly
     loadConfirmPopup(popupHeader, popupMessage).then(userClickedYes => {
         stateMachine.numberOfChanges = 0;
-        if (userClickedYes) quickSaveDiagram(); //Only true if press Yes
+        if (userClickedYes) quickSaveDiagram(); // Only true if user pressed yes
 
-        //this is inside the promise .then so it will wait for the user to click before executing
+        // This is inside the promise, so it will wait for the user to click before executing
         if (localStorage.getItem("diagrams")) {
             let diagramFromLocalStorage = localStorage.getItem("diagrams");
             diagramFromLocalStorage = (diagramFromLocalStorage[0] == "{") ? diagramFromLocalStorage : `{${diagramFromLocalStorage}}`;
@@ -2147,7 +2231,9 @@ function loadDiagramFromLocalStorage(key) {
      });
 }
 
-// Save current diagram when user leaves the page
+/**
+ * @description Saves the current diagram if the user leaves the page.
+ */
 function saveDiagramBeforeUnload() {
     if (data.length) {
         window.addEventListener("beforeunload", (e) => {
@@ -2155,7 +2241,9 @@ function saveDiagramBeforeUnload() {
         })
     }
 }
-
+/**
+ * @description Disables the toolbar save-buttons if there are no entries in the history log.
+ */
 function disableIfDataEmpty() {
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         document.getElementById('localSaveField').classList.add('disabledIcon');
@@ -2166,6 +2254,9 @@ function disableIfDataEmpty() {
     }
 }
 
+/**
+ * @description Displays the save-as popout window.
+ */
 function showSavePopout() {
     if (stateMachine.currentHistoryIndex === -1 || data.length === 0) {
         displayMessage(messageTypes.ERROR, "You don't have anything to save!");
@@ -2175,31 +2266,45 @@ function showSavePopout() {
     }
 }
 
+/**
+ * @description Closes the save-as popout window.
+ */
 function hideSavePopout() {
     $("#savePopoutContainer").css("display", "none");
 }
 
+/**
+ * @description Displays the override existing save file window.
+ */
 function showOverridePopout() {
     $("#overrideContainer").css("display", "flex");
 }
 
+/**
+ * @description Closes the override existing save file window.
+ */
 function closeOverridePopout() {
     $("#overrideContainer").css("display", "none");
 }
 
-//Variable for checking if there's a file that has been saved to already. Used for quicksaving.
+// Variable for checking if there's a file that has been saved to already. Used for quicksaving
 let activeFile = null;
 
-//Get the current file name that the user wants to use for saving to local storage. Also stores that current file to the activefile variable.
+/**
+ * @description Retrieves name of the file to save to from the users input. Also saves the name to the active file for use in quicksaving.
+ * @returns The input file name.
+ */
 function getCurrentFileName() {
     let fileName = document.getElementById("saveDiagramAs");
     activeFile = fileName.value;
     return fileName.value;
 }
 
-//Function for quicksaving, checks if there's an active file
+/**
+ * @description Quicksaves to the current file if there is one. Otherwise prompts to input a name for the designated file.
+ */
 function quickSaveDiagram() {
-    if (activeFile == null) {
+    if (activeFile == null) { // Shows save-as popout if there is no current active file
         showSavePopout();
         stateMachine.numberOfChanges = 0;
     } else {
@@ -2207,10 +2312,13 @@ function quickSaveDiagram() {
     }
 }
 
-//Checks
+/**
+ * @description Saves the current diagram to a specified file.
+ * @param {*} input Name of the file to save the diagram to.
+ */
 function saveDiagramAs(input) {
 
-    //Code for getting date and time. Not used anymore but kept in in case it should be needed elsewhere.
+    // Code for getting date and time. Not used anymore but kept in in case it should be needed elsewhere.
     /*
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -2220,7 +2328,8 @@ function saveDiagramAs(input) {
     const minutes = currentDate.getMinutes() < 10 ? `0${currentDate.getMinutes()}` : currentDate.getMinutes();
     const seconds = currentDate.getSeconds() < 10 ? `0${currentDate.getSeconds()}` : currentDate.getSeconds();
     const formattedDate = year + "-" + month + "-" + day + " ";
-    const formattedTime = hours + ":" + minutes + ":" + seconds;*/
+    const formattedTime = hours + ":" + minutes + ":" + seconds;
+    */
 
     let names = [];
     let localDiagrams;
@@ -2249,6 +2358,11 @@ function saveDiagramAs(input) {
     storeDiagramInLocalStorage(input);
 }
 
+/**
+ * @description Loads diagram from a specified save-file.
+ * @param {*} temp Name of save-file to load diagram from.
+ * @param {boolean} shouldDisplayMessage Boolean that decides whether to display success/error message after loading. Defaults to true.
+ */
 function loadDiagramFromString(temp, shouldDisplayMessage = true) {
     if (temp.historyLog && temp.initialState) {
         // Set the history and initalState to the values of the file
@@ -2300,6 +2414,10 @@ function loadDiagramFromString(temp, shouldDisplayMessage = true) {
     }
 }
 
+/**
+ * @description Function that deletes a specified save-file.
+ * @param {*} item Name of save file to delete.
+ */
 function removeLocalDiagram(item) {
     let local = localStorage.getItem("diagrams");
     local = (local[0] == "{") ? local : `{${local}}`;
@@ -2307,7 +2425,7 @@ function removeLocalDiagram(item) {
 
     if (item !== 'latestChange') {
         delete localDiagrams[item];
-        //Resets activeFile to null if the item deleted was the file currently saved to.
+        // Resets activeFile to null if the item deleted was the file currently saved to
         if (item == activeFile) {
             activeFile = null;
         }
@@ -2329,7 +2447,7 @@ function removeLocalDiagram(item) {
 
 /**
  * @description Alert function to give user a warning/choice before reseting diagram data.
- * USED IN PHP
+ * @NOTE USED IN PHP
  */
 function resetDiagramAlert() {
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
@@ -2339,12 +2457,19 @@ function resetDiagramAlert() {
 }
 
 /**
- * @description Cleares the diagram.
+ * @description Clears the diagram.
  */
 function resetDiagram() {
     loadMockupDiagram("JSON/EMPTYDiagramMockup.json");
 }
 
+// #endregion
+// #region MOBILE
+// ======================================================================================
+// ======================================= MOBILE =======================================
+
+
+// EventListener to check if browser is sized for mobile screens, and adjusts ruler accordingly.
 window.addEventListener("resize", () => {
     const ruler = document.getElementById("rulerOverlay");
     if (!settings.ruler.isRulerActive) return;
@@ -2366,7 +2491,7 @@ window.addEventListener("resize", () => {
  * and handle the action accordingly.
  */
 
-//Select all toolbar boxes from the mobile toolbar
+// Select all toolbar boxes from the mobile toolbar
 const elementToolbarBoxs = document.querySelectorAll(".mb-toolbar-main:not(.non-element)");
 
 elementToolbarBoxs.forEach(elementBox=>{
@@ -2374,7 +2499,7 @@ elementToolbarBoxs.forEach(elementBox=>{
 });
 
 
-//Select all toolbar boxes inside the sub menu
+// Select all toolbar boxes inside the sub menu
 const subMenuToolbarBoxs = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
 
 subMenuToolbarBoxs.forEach(subMenuBox=>{
