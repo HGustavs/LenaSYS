@@ -786,13 +786,10 @@
                 </div><!--<-- UML functionality end -->
 
                 <!-- SEQUENCE POP-OUT START-->
-
-                <div> <!-- SEQUENCE LIFELINE ACTOR START -->
-                    <div id="elementPlacement12"
-                         class="SEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(12); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(12)'>
-                         <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                <div> 
+                    <!-- SEQUENCE LIFELINE (initial default choice, and the same as the Sequence Lifeline (Actor)) -->
+                    <div id="elementPlacement12" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseenter='hoverPlacementButton(12)'>
+                        <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram.</p>
                             <p>Represents the passage of time.</p>
@@ -805,45 +802,46 @@
                     </div>
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(12), hidePlacementType()'>
                         <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
-                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline object"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware or other subjects</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE LIFELINE (ACTOR)(First option when hovering and the same as the initial option, as seen above this) -->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline object"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>This version is used for human users, external hardware or other subjects</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>Shows events that occur to an object during the process.</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
-                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
-                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                            </span>
-                          </div>     
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
-                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
-                            <span class="placementTypeToolTipText"><b>Sequence Object</b><br>
-                                <p>Option loop or alternative.</p><br>
-                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE ACTIVATION (Third option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                                <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
+                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>  
+                            <!-- SEQUENCE OBJECT (Fourth option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > 
+                                <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                                <span class="placementTypeToolTipText"><b>Sequence Object</b><br>
+                                    <p>Option loop or alternative.</p><br>
+                                    <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>                         
                         </div>
                     </div>
                 </div> <!-- SEQUENCE LIFELINE ACTOR END -->
-                <div> <!-- SEQUENCE LIFELINE OBJECT -->
-                    <div id="elementPlacement16"
-                         class="SEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(16); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(16)'>
-                         <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
+                <div> <!-- SEQUENCE LIFELINE OBJECT (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement16" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(16); setMouseMode(2);' onmouseenter='hoverPlacementButton(16)'>
+                        <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Place an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
@@ -855,45 +853,46 @@
                     </div>    
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(16), hidePlacementType()'>
                         <div id="togglePlacementTypeBox16" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
-                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware or other subjects</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>This version is used for human users, external hardware or other subjects</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>Shows events that occur to an object during the process.</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
-                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
-                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                            </span>
-                            </div>     
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
-                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
-                            <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
-                                <p>Option loop or alternative.</p><br>
-                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE ACTIVATION (Third option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                                <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
+                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>  
+                            <!-- SEQUENCE CONDITION (Fourth option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > 
+                                <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                                <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
+                                    <p>Option loop or alternative.</p><br>
+                                    <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>                         
                         </div>
                     </div>
                 </div> <!-- SEQUENCE LIFELINE OBJECT END -->
-                <div> <!-- SEQUENCE ACTIVATION START -->
-                    <div id="elementPlacement13"
-                         class="SEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(13); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(13)'>
-                         <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                <div> <!-- SEQUENCE ACTIVATION START (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement13" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(13); setMouseMode(2);' onmouseenter='hoverPlacementButton(13)'>
+                        <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Place an activation box.</p>
                             <p>Represents that an object is active during an interaction, with the length indicating the duration.</p>
@@ -906,45 +905,46 @@
                     </div>    
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(13), hidePlacementType()'>
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
-                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware or other subjects</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE LIFELINE (First option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>This version is used for human users, external hardware or other subjects</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
+                            <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> 
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>Shows events that occur to an object during the process.</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
-                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
-                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                            </span>
-                            </div>     
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
-                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
-                            <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
-                                <p>Option loop or alternative.</p><br>
-                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE ACTIVATION (Third option when hovering) -->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                                <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
+                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>    
+                            <!-- SEQUENCE CONDITION (Fourth option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > 
+                                <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                                <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
+                                    <p>Option loop or alternative.</p><br>
+                                    <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>                         
                         </div>
                     </div>
                 </div> <!-- SEQUENCE ACTIVATION END -->
-                <div> <!-- SEQUENCE CONDITION/LOOP START -->
-                    <div id="elementPlacement14"
-                         class="SEButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(14); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(14)'>
-                         <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                <div> <!-- SEQUENCE CONDITION/LOOP START (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement14" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(14); setMouseMode(2);' onmouseenter='hoverPlacementButton(14)'>
+                        <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
                                 <p>Add an option loop or alternative.</p><br>
                                 <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
@@ -952,43 +952,48 @@
                         <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
-                    </div>    
+                    </div>   
+                    <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(14), hidePlacementType()'>
                         <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> <!-- LIFELINE ACTOR !-->
-                            <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>This version is used for human users, external hardware, or other subjects</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>This version is used for human users, external hardware, or other subjects</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> <!-- LIFELINE OBJECT !-->
-                            <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
-                            <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
-                                <p>Represents the passage of time.</p>
-                                <p>Shows events that occur to an object during the process.</p><br>
-                                <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
+                                <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
+                                    <p>Represents the passage of time.</p>
+                                    <p>Shows events that occur to an object during the process.</p><br>
+                                    <p id="tooltip-SQ_LIFELINE" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> <!-- ACTIVATION !-->
-                            <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
-                            <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
-                                <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
-                                <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
-                            </span>
-                            </div>      
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > <!-- LOOP !-->
-                            <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
-                            <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
-                                <p>Option loop or alternative.</p><br>
-                                <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
-                            </span>
+                            <!-- SEQUENCE ACIVATION (Third option when hovering) -->
+                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);'> 
+                                <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
+                                <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
+                                    <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
+                                    <p id="tooltip-STATE_SEQUENCE" class="key_tooltip">Keybinding:</p>
+                                </span>
+                            </div>  
+                            <!-- EQUENCE CONDITION (Fourth option when hovering) -->
+                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' > 
+                                <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
+                                <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
+                                    <p>Option loop or alternative.</p><br>
+                                    <p id="tooltip-SEQUENCE_OBJECT" class="key_tooltip">Keybinding:</p>
+                                </span>
                             </div>                         
                         </div>
                     </div>
-                </div> <!-- SEQUENCE CONDITION/LOOP END -->
+                </div> 
                 <!-- SEQUENCE POP-OUT END -->
+                
                 <!-- NOTE -->
                 <div id="elementPlacement15" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_note.svg"/>
