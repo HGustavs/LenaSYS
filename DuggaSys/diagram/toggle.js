@@ -456,8 +456,6 @@ function toggleColorMenu(buttonID) {
         }
         // Menu position relative to button
         menu.style.maxHeight = "600px";
-        menu.style.overflowY = "auto";
-        menu.style.overflowX = "hidden";
     } else {    // if the color menu's inner html is not empty, remove the content
         menu = button.children[0];
         menu.innerHTML = "";
