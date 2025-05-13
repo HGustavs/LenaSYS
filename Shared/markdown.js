@@ -462,8 +462,13 @@ function cursiveText() {
     updatePreview(txtarea.value);
 }
 
-function showDropdown() {
-    document.querySelector('#select-header').style.display="block";
+function showDropdown(mode) {
+    if (mode == 'show'){
+        document.querySelector('#select-header').style.display="block";
+    }
+    else{
+        document.querySelector('#select-header').style.display="none";
+    }
 }
 
 function selected() {
