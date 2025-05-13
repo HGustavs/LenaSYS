@@ -1113,6 +1113,17 @@
     display: none;
 }
 
+#a4OptionsDropdown,
+#a4Load {
+    display: none;
+    margin-bottom: 15px;
+}
+
+#a4OptionsDropdown {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 #option-import>input {
     width: 100%;
 }

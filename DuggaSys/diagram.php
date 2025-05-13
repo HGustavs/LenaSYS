@@ -1199,10 +1199,13 @@
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
                 <button id="rulerSnapToGrid" class="saveButton" onclick="toggleSnapToGrid()">Snap to grid</button><br><br>
                 <button id="rulerToggle" class="saveButton" onclick="toggleRuler()">Ruler</button><br><br>
-                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Template()">A4 template</button><br><br>
-                <div id="a4Options">
-                    <button id="a4VerticalButton" onclick="toggleA4Vertical()">Vertical</button>
-                    <button id="a4HorizontalButton" onclick="toggleA4Horizontal()">Horizontal</button>
+                <button id="a4TemplateToggle" class="saveButton" onclick="toggleA4Dropdown()">A4 template</button><br><br>
+                <div id="dropDownContent">
+                    <select id="a4OptionsDropdown" onchange="applyA4Option();">
+                        <option value="vertical">Vertical</option>
+                        <option value="horizontal">Horizontal</option>
+                    </select>
+                    <button class="saveButton" id="a4Load" onclick="toggleA4Template()">Load</button>
                 </div>
                 <button id="darkmodeToggle" class="saveButton" onclick="toggleDarkmode()">Darkmode</button><br><br>
                 <button id="diagramDropDownToggle" class="saveButton" onclick="toggleDiagramDropdown()">Example diagrams </button><br><br>
