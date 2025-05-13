@@ -1555,17 +1555,48 @@ header td {
 }
 
 .navheader {
-  height: fit-content;
+  height: 50px;
   margin-bottom: 10px;
   width: 100%;
   position: fixed;
   z-index: 8000;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  & .auth-box {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  & ul {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  & li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.1em;
+  }
+
+  & nav {
+    margin: 0 0.5em;
+  }
 
   & img {
-    height: 20px;
-    width: auto;
+    height: 32px;
+    width: 32px;
+    padding: none;
   }
 }
 
@@ -6423,14 +6454,14 @@ only screen and (max-device-width: 568px) {
   margin-bottom: 10px;
 }
 
-header td.navBurgerIcon{ 
+.navheader .navBurgerIcon {
   display: none;
-  
 }
+
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
 
-  header td.navBurgerIcon {
+  .navheader .navBurgerIcon {
     display: block;
     color:white;
     font-size:24px;
