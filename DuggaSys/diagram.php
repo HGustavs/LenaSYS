@@ -90,7 +90,7 @@
 
     </div>
 
-     <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
+    <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
@@ -120,8 +120,12 @@
         <!-- FAB-btn ENDS HERE! -->
 
 
-    <!-- Toolbar for diagram -->
+    <!-- TOOLBAR STARTS HERE!! -->
+    <!-- Holds all buttons in the left-hand toolbar of the diagram-page -->
     <div id="diagram-toolbar">
+        <!-- MODES FIELD IN TOOLBAR -->
+        <!-- Some of the modes have multiple options that show up when hovering over one of the buttons/options. -->
+        <!-- When an option has been pressed, it shows up as the "default" in the toolbar, and so the options are written multiple times to mirror this behaviour -->
         <fieldset>
             <legend aria-hidden="true">Modes</legend>
                 <!-- POINTER -->
@@ -140,13 +144,10 @@
                         <p id="tooltip-BOX_SELECTION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <!-- ER, UML, IE, STATE ELEMENTS -->
+                <!-- ER, UML, IE, AND STATE ELEMENTS -->
                 <div>
-                    <!-- ER-ENTITY (initial default choice) -->
-                    <div id="elementPlacement0"
-                        class="ERButton diagramIcons toolbarMode"
-                        onclick='setElementPlacementType(0); setMouseMode(2);'
-                        onmouseenter='hoverPlacementButton(0)'><!--<-- UML functionality -->
+                    <!-- ER-ENTITY (initial default, on pageload, choice) -->
+                    <div id="elementPlacement0" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseenter='hoverPlacementButton(0)'><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Insert an ER entity to the diagram</p>
@@ -159,6 +160,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(0), hidePlacementType()'>
                         <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <!-- ER-ENTITY (fist option when hovering) -->
@@ -208,7 +210,7 @@
                 </div>
                 <!-- If UML CLASS has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <!-- UML CLASS (When chosen, takes up the "default position in the toolbar) -->
+                    <!-- UML CLASS (When chosen, takes up the "default" position in the toolbar) -->
                     <div id="elementPlacement4" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2); 'onmouseenter='hoverPlacementButton(4)'>
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
@@ -221,6 +223,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(4), hidePlacementType()'>
                         <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- ER-ENTITY ("Change to" - first option when hovering) -->
@@ -270,7 +273,7 @@
                 </div><!--<-- UML functionality end -->
                 <!-- If IE-ENTITY has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <!-- IE-ENTITY (When chosen, takes up the "default position in the toolbar) -->
+                    <!-- IE-ENTITY (When chosen, takes up the "default" position in the toolbar) -->
                     <div id="elementPlacement6" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);'onmouseenter='hoverPlacementButton(6)'>
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
@@ -284,6 +287,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(6), hidePlacementType()'>
                         <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- ER-ENTITY ("Change to" - first option when hovering) -->
@@ -333,7 +337,7 @@
                 </div><!--<-- UML functionality end -->
                 <!-- If STATE DIAGRAM STATE has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <!-- STATE DIAGRAM STATE (When chosen, takes up the "default position in the toolbar) -->
+                    <!-- STATE DIAGRAM STATE (When chosen, takes up the "default" position in the toolbar) -->
                     <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);'onmouseenter='hoverPlacementButton(8);'>
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
@@ -347,6 +351,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(8), hidePlacementType()'>
                         <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
@@ -411,6 +416,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div> 
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(1), hidePlacementType()'>
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
@@ -457,8 +463,10 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- If UML INHERITANCE has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <!-- If UML INHERITANCE has been chosen, the entity-options change position in the menu -->
+                    <!-- UML INHERITANCE (When chosen, takes up the "default" position in the toolbar) -->
                     <div id="elementPlacement5" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);' onmouseenter='hoverPlacementButton(5)'>
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
@@ -472,6 +480,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(5), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox5" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
@@ -518,8 +527,10 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- If IE INHERITANCE has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <!-- If IE INHERITANCE has been chosen, the entity-options change position in the menu -->
+                    <!-- IE INHERITANCE (When chosen, takes up the "default" position in the toolbar) -->
                     <div id="elementPlacement7" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(7); setMouseMode(2);' onmouseenter='hoverPlacementButton(7)'>
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
@@ -533,6 +544,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(7), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
@@ -579,8 +591,10 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- If ER ATTRIBUTE has been chosen, the entity-options change position in the menu -->
                 <div>
-                    <!-- If ER ATTRIBUTE has been chosen, the entity-options change position in the menu -->
+                    <!-- ER ATTRIBUTE (When chosen, takes up the "default" position in the toolbar) -->
                     <div id="elementPlacement2" class="ERAttribute diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseenter='hoverPlacementButton(2)'>
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>ER Attribute</b><br>
@@ -593,6 +607,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>  
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(2), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox2" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
@@ -663,7 +678,8 @@
                         <div id="togglePlacementTypeButton9" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
-                    </div>    
+                    </div>  
+                    <!-- Pop-out panel for element-options -->  
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(9), hidePlacementType()'><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
@@ -709,6 +725,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(10), hidePlacementType()'>
                         <div id="togglePlacementTypeBox10" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
@@ -740,6 +757,7 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
+                <!-- If UML SUPER STATE has been chosen, the entity-options change position in the menu  -->
                 <div>
                     <!-- UML SUPER STATE (When chosen, takes up the "default position in the toolbar)-->
                     <div id="elementPlacement11" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseenter='hoverPlacementButton(11)'>
@@ -753,6 +771,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(11), hidePlacementType()'>
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
@@ -800,6 +819,7 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
+                    <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(12), hidePlacementType()'>
                         <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (ACTOR)(First option when hovering and the same as the initial option, as seen above this) -->
@@ -838,7 +858,8 @@
                             </div>                         
                         </div>
                     </div>
-                </div> <!-- SEQUENCE LIFELINE ACTOR END -->
+                </div>
+                <!-- If SEQUENCE LIFELINE OBJECT has been chosen, the the entity-options change position in the menu -->
                 <div> <!-- SEQUENCE LIFELINE OBJECT (When chosen, takes up the "default position in the toolbar) -->
                     <div id="elementPlacement16" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(16); setMouseMode(2);' onmouseenter='hoverPlacementButton(16)'>
                         <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
@@ -850,7 +871,8 @@
                         <div id="togglePlacementTypeButton16" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
-                    </div>    
+                    </div>  
+                    <!-- Pop-out panel for element-options -->  
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(16), hidePlacementType()'>
                         <div id="togglePlacementTypeBox16" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
@@ -889,7 +911,8 @@
                             </div>                         
                         </div>
                     </div>
-                </div> <!-- SEQUENCE LIFELINE OBJECT END -->
+                </div> 
+                <!-- If SEQUENCE ACTIVATION START has been chosen, the element-options change position in menu -->
                 <div> <!-- SEQUENCE ACTIVATION START (When chosen, takes up the "default position in the toolbar) -->
                     <div id="elementPlacement13" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(13); setMouseMode(2);' onmouseenter='hoverPlacementButton(13)'>
                         <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
@@ -902,7 +925,8 @@
                         <div id="togglePlacementTypeButton13" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
-                    </div>    
+                    </div>  
+                    <!-- Pop-out panel for element-options -->  
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(13), hidePlacementType()'>
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (First option when hovering) -->
@@ -941,7 +965,8 @@
                             </div>                         
                         </div>
                     </div>
-                </div> <!-- SEQUENCE ACTIVATION END -->
+                </div> 
+                <!-- If SEQUENCE CONDITION/LOOP has been chosen, the element-options change position in the menu -->
                 <div> <!-- SEQUENCE CONDITION/LOOP START (When chosen, takes up the "default position in the toolbar) -->
                     <div id="elementPlacement14" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(14); setMouseMode(2);' onmouseenter='hoverPlacementButton(14)'>
                         <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
@@ -952,10 +977,11 @@
                         <div id="togglePlacementTypeButton14" class="placementTypeIcon togglePlacementTypeButton">
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
-                    </div>   
-                    <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
+                    </div>  
+                    <!-- Pop-out panel for element-options --> 
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(14), hidePlacementType()'>
                         <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'> 
                                 <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
@@ -994,7 +1020,7 @@
                 </div> 
                 <!-- SEQUENCE POP-OUT END -->
                 
-                <!-- NOTE -->
+                <!-- NOTE ELEMENT -->
                 <div id="elementPlacement15" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_note.svg"/>
                     <span class="toolTipText"><b>Note</b><br>
@@ -1003,6 +1029,9 @@
                     </span>
                 </div>
         </fieldset>
+        <!-- MODES FIELD ENDS HERE!! -->
+
+        <!-- CAMERA FIELD IN TOOLBAR -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
             <div id="camtoOrigo" data-single="true" class="diagramIcons" onclick="centerCamera();">
@@ -1013,8 +1042,12 @@
                 </span>
             </div>
         </fieldset>
+        <!-- CAMERA FIELD IN TOOLBAR ENDS HERE!! -->
+
+        <!-- HISTORY FIELD IN TOOLBAR -->
         <fieldset>
             <legend aria-hidden="true">History</legend>
+            <!-- RESET DIAGRAM -->
             <div id="diagramReset" data-single="true" class="diagramIcons" onclick="resetDiagramAlert()">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
@@ -1022,6 +1055,7 @@
                     <p id="tooltip-RESET_DIAGRAM" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+            <!-- REDO -->
             <div id="stepForwardToggle" data-single="true" class="diagramIcons" onclick="toggleStepForward()">
                 <img src="../Shared/icons/diagram_stepforward.svg" alt="Redo"/>
                 <span class="toolTipText"><b>Redo</b><br>
@@ -1029,6 +1063,7 @@
                     <p id="tooltip-HISTORY_STEPFORWARD" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+            <!-- UNDO -->
             <div id="stepBackToggle" data-single="true" class="diagramIcons" onclick="toggleStepBack()">
                 <img src="../Shared/icons/diagram_stepback.svg" alt="Undo"/>
                 <span class="toolTipText"><b>Undo</b><br>
@@ -1036,6 +1071,7 @@
                     <p id="tooltip-HISTORY_STEPBACK" class="key_tooltip">Keybinding:</p>
                 </span>
             </div>
+            <!-- REPLAY MODE -->
             <div id="replayToggle" data-single="true" class="diagramIcons" onclick="toggleReplay()">
                 <img src="../Shared/icons/diagram_replay.svg" alt="Enter replay mode"/>
                 <span class="toolTipText"><b>Enter replay mode</b><br>
@@ -1044,6 +1080,10 @@
                 </span>
             </div>
         </fieldset>
+        <!-- HISTORY FIED IN TOOLBAR ENDS HERE!! -->
+
+        <!-- ER TABLE FIELD IN TOOLBAR -->
+        <!-- When an ER table is open, it allows user to edit properties in the options-panel -->
         <fieldset>
             <legend aria-hidden="true">ER-Table</legend>
             <div id="erTableToggle" data-single="true" class="diagramIcons toolbarMode" onclick="toggleErTable()">
@@ -1054,6 +1094,10 @@
                 </span>
             </div>
         </fieldset>
+        <!-- ER TABLE IN TOOLBAR ENDS HERE -->
+
+        <!-- TESTCASE FIELD IN TOOLBAR -->
+        <!-- Allows user to see properties for a state diagram in the options-panel -->
         <fieldset>
             <legend aria-hidden="true">Testcase</legend>
             <div id="testCaseToggle" data-single="true" class="diagramIcons toolbarMode" onclick="toggleTestCase()"> <!--add func here later-->
@@ -1064,6 +1108,10 @@
                 </span>
             </div>
         </fieldset> 
+        <!-- TESTCASE FIELD IN TOOLBAR ENDS HERE!! -->
+
+        <!-- CHECK FIELD IN TOOLBAR -->
+        <!-- Toggle error-checking on/off -->
         <fieldset id = "errorCheckField">
         <legend aria-hidden="true">Check</legend>
             <div id="errorCheckToggle" data-single="true" class="diagramIcons" onclick="toggleErrorCheck()">
@@ -1076,6 +1124,9 @@
                 </span>
             </div>
         </fieldset>
+        <!-- CHECK FIELD IN TOOLBAR ENDS HERE -->
+
+        <!-- SAVE FIELD IN TOOLBAR (SAVE CURRENT FILE) -->
         <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
             <div id="localSave" class="diagramIcons" onclick="quickSaveDiagram()">
@@ -1088,6 +1139,9 @@
                 </span>
             </div>
         </fieldset>
+        <!-- SAVE FIELD IN TOOLBAR ENDS HERE -->
+
+        <!-- SAVE AS FIELD IN TOOLBAR (SAVE CURRENT DIAGRAM TO FILE) -->
         <fieldset id="localSaveAsField" class="disabledIcon">
             <legend aria-hidden="true">Save As</legend>
             <div id="localSaveAs" class="diagramIcons" onclick="showSavePopout()">
@@ -1099,6 +1153,9 @@
                 </span>
             </div>
         </fieldset>
+        <!-- SAVE AS FIELD IN TOOLBAR ENDS HERE!! -->
+
+        <!-- LOAD FIELD IN TOOLBAR -->
         <fieldset id="localLoadField">
             <legend aria-hidden="true">Load</legend>
             <div id="localLoad" data-single="true" class="diagramIcons" onclick="showModal();">
@@ -1110,7 +1167,9 @@
                 </span>
             </div>
         </fieldset>
+        <!-- LOAD FIELD IN TOOLBAR ENDS HERE!! -->
     </div>
+    <!-- TOOLBAR ENDS HERE!! -->
     
     <div class="loadModal hiddenLoad">
         <div id="loadHeader">
