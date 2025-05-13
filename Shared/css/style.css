@@ -1562,14 +1562,14 @@ header td {
   z-index: 8000;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   & .auth-box {
     height: fit-content;
     width: fit-content;
     display: flex;
-    justify-content: flex-end;
+    margin-left: auto;
   }
 
   & ul {
