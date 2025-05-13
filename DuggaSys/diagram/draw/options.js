@@ -322,11 +322,11 @@ function select(id, options, inclNone = true, inclChange = true) {
 }
 
 /**
- * @description What label the text should have with a text input.
+ * @description Creates a text input with a placeholder and a pre determined value if there is one
  * @param {String} id What id the input should have.
  * @param {String} placeholder The placeholder if nothing is writen on the input.
- * @param {Object} value What the value should be for the text input.
- * @return Returns a text input for add/change a label for a line.
+ * @param {Object} value What the value should be for the text input. (Optional)
+ * @return Returns a text input.
  */
 function lineLabel(id, placeholder, value) {
     return `<input id="${id}" maxlength="50" type="text" placeholder="${placeholder}" value="${value ?? ''}"/>`;
