@@ -146,7 +146,7 @@ function nameInput(element) {
 }
 
 /**
- * @description Makes a button input for save the changes.
+ * @description Makes a button that calls on a function.
  * @param {*} functions What the function should be called.
  * @param {String} id What ID the input should have.
  * @param {String} value What value the input should have
