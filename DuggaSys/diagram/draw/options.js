@@ -333,9 +333,9 @@ function lineLabel(id, placeholder, value) {
 }
 
 /**
- * @description Draw the different properties for the line option.
- * @param {object} line The line that the properties is for.
- * @return Returns the different properties option.
+ * @description Creates a string of all the diffrent elements nesesary to edit the line
+ * @param {object} line The line that the properties are for.
+ * @return Returns the different property options.
  */
 function drawLineProperties(line) {
     let str = '';
