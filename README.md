@@ -72,7 +72,7 @@ NOTE: You need to keep open Docker desktop program/app and do not turn off, othe
 
 11. Before you install the LenaSYS, it is good to know that the text-input which says `Hostname`, needs to be `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when entering root user credentials, type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
 
-12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](Shared/Documentation/newinstaller/documentation.md/#installer-steps) or [old LenaSYS installer](README.md/#install-lenasys).
+12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](README.md/#new-installer-steps) or [old LenaSYS installer](README.md/#old-installer-steps).
 
 #### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
@@ -165,9 +165,83 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
   2. Under **Sharing & Permissions**, make sure to select **Read & Write** for the appropriate user (www_).
 
 # Install LenaSYS
+
+## New installer steps
+This section contains more information about what information and what options should be provided for each page in the new installer.
+
+### Step 1
+This page is used to select your operating system. This is only used to determin wether your system uses file permissions. Both Mac OS and Linux use file permissions, meaning each file has access modifiers. For the lenasys installer to work, you need to set allow the `www-data` user access to the LenaSYS directory and its parent directory. The easiest way to do this is to run the command: `sudo chmod 777 <path to lenaSYS>` where `<>` are not part of the command. 
+
+Due to the difference in permissions handling, this page is used to select wether or not the installer should check for permissions, and notify the user if it detects missing permissions.
+
+### Step 2
+If you are unsure about what this option means, you should most likely leave it default (both options checked).
+
+Unchecking `Create new MySQL DB` means that the installer will not create a new database, and will instad attempt to use an already existing database. This means that the installer will fail if there is no existing database by the name later given in [step 3](#step-3).
+
+The same principles hold true for `Create new MySQL user`. Unchecking this option means that the installer will attempt to use an existing user by the name given in [step 3](#step-3). Most of the time you do not want to disable this option. 
+
+### Step 3 
+- **Database name:** <br>
+    The database name will be used to create a new database (or use an existing database if the option to create database was not set to enabled in [step 2](#step-2)), meaning that the specific value is not important and does not matter. (Unless you want to use an existing database). But you should avoid using special characters.
+
+- **MySQL user:** <br>
+    The MySQL user value will be used to either create a new user or use an existing one (depending on the option `Create new MySQL user` in [step 2](#step-2)). If you are creating a new user, its value does not matter and can be set to anything (avoid special characters). 
+- **Hostname:** <br>
+    The hostname is very important to set correctly or the installation will not be successful. The most common value for this option is `localhost`. But depending on your configuration and local environment it may be different. For example, if your database is located on another machine. (or on another vm / container) you will need to supply the correct IP of that machine. Since this value is used by LenaSYS to locate the database. If you are using Docker, then value for this option is `db`. 
+- **MySQL user password:** <br>
+    This password will not be used by you personally. It will be used to LenaSYS to connect to the database. Meaning that the value is not important, and you do not need to remember it. Its value will be stored in `../coursesyspw.php`.
+
+- **This page also contains the options:**
+    - [Use Distributed Environment](#use-distributed-environment)
+    - [Verbose](#verbose)
+    - [Overwrite existing database and user names](#overwrite-existing-database-and-user-names)
+    
+All the supplied values from this section will be stored in the file `../coursesyspw.php` which is then used by LenaSYS to establish a db connection from every page.
+
+### Step 4
+In this step you need to supply the root credentials for your database. This information will only be used once, and will not be stored. The installer asks for this information since it will otherwise not gain sufficient access to MySQL to be able to create new users, grant permissions etc. 
+
+In most cases the default root username you should use is: `root`. And if you are using XAMPP, the default password is blank (` `), or `password` if you are using Docker.
+
+### Step 5
+This page is used to select what sample data should be included in the installation. If you are installing this as a student, you should most likely leave this default (All options enabled). This data will show up in the system when installed as various courses, users and sample files. 
+
+This page also conatins the options: 
+- [Include test-course](#include-test-course)
+- [Include demo-course](#include-demo-course)
+- [Inlude test-files](#include-test-files)
+- [Include language support](#include-test-files)
+
+## Options
+This section covers the various options available in the installer.
+
+### Use Distributed Environment
+Enabling this option will allow the created MySQL user to connect from anywhere. The default is for the created MySQL user to only be allowed to connect from the same hostname as supplied in [step 3](#step-3). This option is useful if you have your database hosted on another machine, or you are using a containerized dev environment such as docker. 
+
+### Verbose
+The verbose mode of the installer will print alot more information, such as the individual queries it runs to install the system, and all the files it copies during installation. This is useful for debugging, but should be left off in most cases. 
+
+### Overwrite existing database and user names
+If you want to reinstall the system there is already an existing user and database. Enabling this option will first remove the database and user to ensure that a new user and database can be created. 
+
+### Include test-course
+This will include a test course.
+
+### Include demo-course
+This will include a demo course containing all existing duggas. 
+
+### Include test-files
+This option will ensure that all existing sample files will be copied over from the installer to the `courses` directory so they can be used in the system.
+
+### Include language-support
+Selecting various languages here will enable keywords from the selected languages to be used for syntax highlighing in the LenaSYS code viewer.
+
+### Want to know more about how new installer works?
+This [link](Shared/Documentation/newinstaller/documentation.md) leads to information about how the new installer works.
+
+## Old installer steps
 Make sure you have a working install of apache2 and other needed packages. Look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information.
-
-
 
 To install a fresh copy of LenaSYS on your system an installer has been created called 'install.php'.
 This installer is located in the LenaSYS directory.
