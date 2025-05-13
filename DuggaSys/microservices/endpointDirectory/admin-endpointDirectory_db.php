@@ -10,13 +10,14 @@ try {
     // database connection
     $db = new PDO('sqlite:endpointDirectory_db.sqlite');
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $services = $db->query("SELECT * FROM microservices")->fetchAll();
 
     // get microservices
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
+    // get dependencies
+    $dependencies = $db->query("SELECT * FROM microservices")->fetchAll();
 
     // check if the table is empty
-    if (empty($services)) {
+    if (empty($services) && empty($dependencies)) {
         $dbEmpty = "Database is installed but empty.";
     }
 
@@ -37,14 +38,15 @@ try {
     <h1>Microservice Documentation Database Admin</h1>
     <?php
     if (isset($dbEmpty)) {
-        echo $dbEmpty;
+        echo $dbEmpty . "<br>";
+        echo "<a href='#' id='fillLink'>Fill database</a>";
     }
     if (isset($dbError)) {
         echo $dbError . "<br>";
-        echo "<a href='#' id='installLink'>Install database</a> (doesn't fill)</br>";
+        echo "<a href='#' id='installLink'>Install database</a> (don't fill)<br>";
         echo "<a href='#' id='setupLink'>Setup database</a> (fill)";
     } else {
-        echo "<br><a href='#' id='deleteLink'>Delete database</a>";
+        echo "<a href='#' id='deleteLink'>Delete database</a><br>";
     }
     ?>
 </body>
@@ -73,6 +75,24 @@ try {
             .then(res => res.text())
             .then(data => {
                 alert('Database installed and filled!');
+                location.reload();
+            })
+            .catch(error => {
+                alert('Something went wrong: ' + error);
+            });
+    });
+
+    document.getElementById('fillLink')?.addEventListener('click', function (e) {
+        e.preventDefault();
+        // send AJAX request to both fill scripts
+        fetch('fillEndpointDb.php')
+            .then(res => res.text())
+            .then(data1 => {
+                return fetch('fillDependenciesDb.php');
+            })
+            .then(res => res.text())
+            .then(data2 => {
+                alert('Database has been filled!');
                 location.reload();
             })
             .catch(error => {
