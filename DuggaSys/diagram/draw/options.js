@@ -286,9 +286,9 @@ function option(object, icon) {
 }
 
 /**
- * @description Makes a radio menu for the element with different options.
+ * @description Creates radio inputs for selecting which type of line the user wants the line to be.
  * @param {Object} line The line between two elements.
- * @param {Array} arr An array for the different selection for the menu.
+ * @param {Array} arr An array for the different options.
  * @return Returns a header for the radio menu and returns the radio menu with the different options.
  */
 
