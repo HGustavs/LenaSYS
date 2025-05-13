@@ -6,16 +6,16 @@ Changes the active course version by updating the activeversion column in the co
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
-   - Description:
+   - Type: string
+   - Description: Specifies the operation type
 
-- Parameter: $cid
+- Parameter: $courseid
    - Type: int
    - Description: Course ID
 
-- Parameter: $vers
+- Parameter: $versid
    - Type: varchar
-   - Description: New version ID
+   - Description: ID of the course version to be updated or created
 
 ## Calling Methods
 - GET
@@ -25,16 +25,16 @@ Changes the active course version by updating the activeversion column in the co
    - Type: JSON
    - Description: Updated course info from retrieveCourseedService.
 
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
 
 ### Microservices Used
-getUid_ms
-retrieveCourseedService_ms
+- getUid_ms
+- retrieveCourseedService_ms
 
 
 # Name of file/service
@@ -45,8 +45,8 @@ Copies an existing course version with all related things like, quizzes, variant
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
-   - Description: Specifies the operation type, 'CPYVRS' ?
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $cid
    - Type: int
@@ -70,10 +70,10 @@ Copies an existing course version with all related things like, quizzes, variant
 
 - Parameter: $coursecode
    - Type: varchar
-   - Description: The course code
+   - Description: Course code
 
 - Parameter: $copycourse
-   - Type: ?
+   - Type: varchar
    - Description: Version ID of the course to copy from
 
 - Parameter: $startdate
@@ -85,7 +85,7 @@ Copies an existing course version with all related things like, quizzes, variant
    - Description: End date of the course version
 
 - Parameter: $makeactive
-   - Type: ? (int)
+   - Type: int
    - Description: When set to 3, this activates the new version
 
 - Parameter: $motd
@@ -94,7 +94,7 @@ Copies an existing course version with all related things like, quizzes, variant
 
 - Parameter: $userid
    - Type: int
-   - Description: ID of currently logged-in user
+   - Description: User ID, used for authorization
 
 ## Calling Methods
 - GET
@@ -104,9 +104,9 @@ Copies an existing course version with all related things like, quizzes, variant
    - Type: JSON
    - Description: New course version data
 
-- Output: outputName
-   - Type: String
-   - Description: describe the output
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -126,12 +126,12 @@ creates a new version of an existing course by inserting a new row into the vers
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
-   - Description: Specifies the operation type, 'ADDVRS' ?
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID.
+   - Description: Course ID used to identify which course is being used
 
 - Parameter: $coursecode
    - Type: varchar
@@ -139,7 +139,7 @@ creates a new version of an existing course by inserting a new row into the vers
 
 - Parameter: $coursename
    - Type: varchar
-   - Description: Full course name
+   - Description: The name of the course
 
 - Parameter: $coursenamealt
    - Type: varchar
@@ -150,8 +150,8 @@ creates a new version of an existing course by inserting a new row into the vers
    - Description: Name for the version
 
 - Parameter: $versid
-   - Type: int
-   - Description: Unique version ID
+   - Type: varchar
+   - Description: ID of the course version to be updated or created
 
 - Parameter: $motd
    - Type: varchar
@@ -166,21 +166,9 @@ creates a new version of an existing course by inserting a new row into the vers
    - Description: End date of the course version
 
 - Parameter: $makeactive
-   - Type: ? (int)
+   - Type: int
    - Description: When set to 3, this activates the new version
 
-- Parameter: $debug
-   - Type: string
-   - Description: describe parameter
-
-- Parameter: $ha
-   - Type: ?
-   - Description: ?
-
-- Parameter: $isSuperUserVar
-   - Type: ?
-   - Description: ?
-   
 - Parameter: $userid
    - Type: int
    - Description: Retrieved via getUid(), used for authorization
@@ -192,6 +180,10 @@ creates a new version of an existing course by inserting a new row into the vers
 - Output: object
    - Type: JSON
    - Description: Debug message via retrieveCourseedService
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -208,41 +200,25 @@ createMOTD_ms.php
 This micro service is called upon when the message of the day is changed in the page associated with courseed.
 
 ## Input Parameters
-- Parameter: $pdo
-   - Type: PDO
-   - Description: Database connection
-   
 - Parameter: $opt
-   - Type: ?
-   - Description: Specifies the operation type, 'ADDVRS' ?
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $motd
    - Type: varchar
    - Description: Message of the day
 
 - Parameter: $makeactive
-   - Type: ? (int)
+   - Type: int
    - Description: When set to 3, this activates the new version
 
 - Parameter: $userid
    - Type: int
-   - Description: Retrieved via getUid(), used for authorization
-
-- Parameter: $debug
-   - Type: string
-   - Description: Used to store debugging or error messages
+   - Description: User ID, used for authorization
 
 - Parameter: $readonly
    - Type: tinyint
    - Description: Indicates if the system should be in read-only mode
-
-- Parameter: $isSuperUserVar
-   - Type: ?
-   - Description: ?
-
-- Parameter: $ha
-   - Type: ?
-   - Description: ?
    
 ## Calling Methods
 - GET
@@ -251,6 +227,10 @@ This micro service is called upon when the message of the day is changed in the 
 - Output: object
    - Type: JSON
    - Description: JSON object with updated MOTD information
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -273,23 +253,11 @@ Creates a new course in the course table and logs the event
 
 - Parameter: $coursename
    - Type: varchar
-   - Description: Full course name
-   
-- Parameter: $courseGitURL
-   - Type: int
-   - Description: describe parameter
+   - Description: The name of the course
 
-- Parameter: $debug
-   - Type: string
-   - Description: Used to store debugging or error messages
-
-- Parameter: $isSuperUserVar
-   - Type: ?
-   - Description: ?
-
-- Parameter: $ha
-   - Type: ?
-   - Description: ?
+- Parameter: $courseGitURL  
+   - Type: varchar  
+   - Description: The URL to the Git repository associated with the course
 
 ## Calling Methods
 - GET
@@ -298,6 +266,10 @@ Creates a new course in the course table and logs the event
 - Output: object
    - Type: JSON
    - Description: Including LastCourseCreated and all course data
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -320,20 +292,14 @@ NO INPUT PARAMETERS
 - Parameter: $pdo
    - Type: PDO
    - Description: Database connection
-
-- Parameter: $delete
-   - Type: int
-   - Description:?
-
-- Parameter: $debug
-   - Type: string
-   - Description: Used to log error messages if any of the deletion queries fail
    
 ## Calling Methods
 - 
 
 ## Output Data and Format
-- 
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -359,18 +325,6 @@ NO INPUT PARAMETERS
    - Type: PDO
    - Description: Database connection
 
-- Parameter: $debug
-   - Type: string
-   - Description: Used to store debugging or error messages
-
-- Parameter: $isSuperUserVar
-   - Type: ?
-   - Description: ?
-
-- Parameter: $ha
-   - Type: ?
-   - Description: ?
-
 ## Calling Methods
 - 
 
@@ -378,6 +332,10 @@ NO INPUT PARAMETERS
 - Output: object
    - Type: JSON
    - Description: Returns the full course-related data from retrieveCourseedService
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -387,6 +345,7 @@ NO INPUT PARAMETERS
 - getUid_ms.php
 - basic.php
 - sessions.php
+
 
 # Name of file/service
 retrieveAllCourseedServiceData_ms.php
@@ -405,18 +364,6 @@ NO INPUT PARAMETERS
    - Type: PDO
    - Description: Database connection
 
-- Parameter: $debug
-   - Type: string
-   - Description: Used to store debugging or error messages
-
-- Parameter: $isSuperUserVar
-   - Type: bool
-   - Description: Indicates whether the logged-in user is a superuser
-
-- Parameter: $ha
-   - Type: ?
-   - Description: ?
-
 ## Calling Methods
 - 
 
@@ -424,6 +371,10 @@ NO INPUT PARAMETERS
 - Output: object
    - Type: JSON
    - Description: Returns the full course-related data
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -443,52 +394,48 @@ Retrieve Information, gathers and returns all course-related data. It also trigg
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: int
-   - Description: describe parameter
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID.
+   - Description: Course ID used to identify which course is being used
 
 - Parameter: $coursename
    - Type: varchar
-   - Description: Full course name
+   - Description: The name of the course
 
 - Parameter: $visibility
-   - Type: int
-   - Description: describe parameter
+   - Type: tinyint
+   - Description: Visibility of the section
 
 - Parameter: $versid
-   - Type: int
-   - Description: describe parameter
+   - Type: varchar
+   - Description: ID of the course version to be updated or created
 
-- Parameter: $courseGitURL
-   - Type: int
-   - Description: describe parameter
+- Parameter: $courseGitURL  
+   - Type: varchar  
+   - Description: The URL to the Git repository associated with the course
 
 - Parameter: $log_uuid
    - Type: int
-   - Description: describe parameter
+   - Description: ID of currently logged-in user
 
 - Parameter: $LastCourseCreated
    - Type: int
    - Description: Passed externally to indicate if a new course was just added
 
-- Parameter: $ha
-   - Type: bool
-   - Description: Write access flag
-
-- Parameter: $isSuperUserVar 
-   - Type: bool
-   - Description: Indicates if the user is a superuser
-
 ## Calling Methods
-- 
+- GET
 
 ## Output Data and Format
 - Output: object
    - Type: JSON
    - Description: Returns the full course-related data
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -508,24 +455,20 @@ This microservice allows superusers to update the Git URL of a course in the cou
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: int
-   - Description: describe parameter
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $cid
    - Type: int
-   - Description: describe parameter
+   - Description: Course ID used to identify which course is being used
 
-- Parameter: $courseGitURL
-   - Type: int
-   - Description: describe parameter
+- Parameter: $courseGitURL  
+   - Type: varchar  
+   - Description: The URL to the Git repository associated with the course
 
 - Parameter: $userid
    - Type: int
-   - Description: describe parameter
-
-- Parameter: $debug
-   - Type: int
-   - Description: describe parameter
+   - Description: User ID, used for authorization
 
 ## Calling Methods
 - GET
@@ -534,6 +477,10 @@ This microservice allows superusers to update the Git URL of a course in the cou
 - Output: object
    - Type: JSON
    - Description: Returns the full course-related data
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -553,32 +500,20 @@ The microservice changeActiveVersion_ms.php takes an existing course and changes
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: int
-   - Description: describe parameter
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $courseid
    - Type: int
-   - Description: describe parameter
+   - Description: Course ID
 
 - Parameter: $versid
-   - Type: int
-   - Description: describe parameter
-
-- Parameter: $debug
-   - Type: int
-   - Description: describe parameter
+   - Type: varchar
+   - Description: ID of the course version to be updated or created
 
 - Parameter: $userid
    - Type: int
-   - Description: describe parameter
-
-- Parameter: $ha
-   - Type: int
-   - Description: describe parameter
-
-- Parameter: $isSuperUserVar
-   - Type: int
-   - Description: describe parameter
+   - Description: User ID, used for authorization
 
 ## Calling Methods
 - GET
@@ -587,6 +522,10 @@ The microservice changeActiveVersion_ms.php takes an existing course and changes
 - Output: object
    - Type: JSON
    - Description: describe the output
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -606,44 +545,32 @@ This microservice allows a superuser to update general course data including the
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: int
-   - Description: 'UPDATE'
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $cid
    - Type: int
-   - Description: describe parameter
+   - Description: Course ID used to identify which course is being used
 
 - Parameter: $coursename
-   - Type: int
-   - Description: describe parameter
+   - Type: varchar
+   - Description: The name of the course
 
 - Parameter: $visibility
-   - Type: int
-   - Description: describe parameter
+   - Type: tinyint
+   - Description: Visibility of the section
 
 - Parameter: $coursecode
-   - Type: int
-   - Description: describe parameter
+   - Type: varchar
+   - Description: Course code
 
-- Parameter: $courseGitURL
-   - Type: int
-   - Description: describe parameter
+- Parameter: $courseGitURL  
+   - Type: varchar  
+   - Description: The URL to the Git repository associated with the course
 
 - Parameter: $userid
    - Type: int
-   - Description: describe parameter
-
-- Parameter: $ha
-   - Type: int
-   - Description: describe parameter
-
-- Parameter: $itsSuperUserVar
-   - Type: int
-   - Description: describe parameter
-
-- Parameter: $debug
-   - Type: int
-   - Description: describe parameter
+   - Description: User ID, used for authorization
 
 ## Calling Methods
 - GET
@@ -652,6 +579,10 @@ This microservice allows a superuser to update general course data including the
 - Output: object
    - Type: JSON
    - Description: Returns course information, list, versions, MOTD and readonly flag
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
@@ -673,8 +604,8 @@ updateCourseVersion_ms.php
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
-   - Description: Specifies the operation type, 'CPYVRS' ?
+   - Type: string
+   - Description: Specifies the operation type
 
 - Parameter: $cid
    - Type: int
@@ -698,14 +629,14 @@ updateCourseVersion_ms.php
 
 - Parameter: $coursecode
    - Type: varchar
-   - Description: The course code
+   - Description: Course code
 
 - Parameter: $coursename
-   - Type: int
-   - Description: describe parameter
+   - Type: varchar
+   - Description: The name of the course
 
 - Parameter: $copycourse
-   - Type: ?
+   - Type: varchar
    - Description: Version ID of the course to copy from
 
 - Parameter: $startdate
@@ -717,7 +648,7 @@ updateCourseVersion_ms.php
    - Description: End date of the course version
 
 - Parameter: $makeactive
-   - Type: ? (int)
+   - Type: int
    - Description: When set to 3, this activates the new version
 
 - Parameter: $motd
@@ -735,6 +666,10 @@ updateCourseVersion_ms.php
 - Output: object
    - Type: JSON
    - Description: Updated course and version data, MOTD and readonly flags
+
+- Output: $debug
+  - Type: string
+  - Description: Error messages if operation fails
 
 ## Examples of Use
 `CODE`
