@@ -197,9 +197,9 @@ function colorSelection(element) {
 }
 
 /**
- * @description Drawing the elements properties that is on the option panel.
+ * @description Creating the editable fields for the selected element.
  * @param {Object} element What element the properties is associated with.
- * @return Returns the different properties for the element on option panel.
+ * @return Returns the editable fields for the element.
  */
 function drawElementProperties(element) {
     let str = '';
