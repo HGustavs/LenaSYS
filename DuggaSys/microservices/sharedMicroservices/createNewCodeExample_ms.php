@@ -1,40 +1,44 @@
 <?php
 include_once "./getUid_ms.php";
-
+include_once "./logUserEvent_ms.php";
+include_once "../curlService.php";
+include_once "../../../DuggaSys/microservices/curlService.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
 
 
-	$userid = getUid();
-	// Microservice call to retrieve username
-	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-	$url = $baseURL . "/LenaSYS/duggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php";
+$userid = getUid();
+// Microservice call to retrieve username
+$data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
 
-	$ch = curl_init($url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$response = curl_exec($ch);
-	curl_close($ch);
+$response = callMicroservicePOST($url, [], true);
 
-	$data = json_decode($response, true);
-	$username = $data['username'] ?? 'unknown';
+$data = json_decode($response, true);
+$username = $data['username'] ?? 'unknown';
 
-	logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
+logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
+$requiredKeys = [
+	'exampleid',
+	'courseid',
+	'coursevers',
+	'sectname',
+	'link',
+	'log_uuid',
+	'templatenumber'
+];
 
-//get values from post
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['exampleid'], $_POST['courseid'], $_POST['coursevers'], $_POST['sectname'], $_POST['link'], $_POST['log_uuid'], $_POST['templatenumber'])) {
-		$exampleid = $_POST['exampleid'];
-		$courseid = $_POST['courseid'];
-		$coursevers = $_POST['coursevers'];
-		$sectname = $_POST['sectname'];
-		$link = $_POST['link'];
-		$log_uuid  = $_POST['log_uuid'];
-		$templateNumber = $_POST['templatenumber'];
-    }
-}
+$receivedData = recieveMicroservicePOST($requiredKeys);
+
+$exampleid = $receivedData['exampleid'];
+$courseid = $receivedData['courseid'];
+$coursevers = $receivedData['coursevers'];
+$sectname = $receivedData['sectname'];
+$link = $receivedData['link'];
+$log_uuid  = $receivedData['log_uuid'];
+$templateNumber = $receivedData['templatenumber'];
 
 if (!is_null($exampleid)){
 	$sname = $sectname . ($exampleid + 1);
@@ -54,8 +58,8 @@ if (!$query2->execute()) {
 }
 $link = $pdo->lastInsertId();
 
-$userid = getUid();
-$username = retrieveUsername($pdo);
+
+
 logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
 $result = array('debug'=>$debug,'link'=>$link);

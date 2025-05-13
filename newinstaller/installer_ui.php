@@ -8,10 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php include 'tools/components.php'; ?>
 	<?php include 'tools/modal.php'; ?>
-	<script defer src="installer_ui.js"></script>
+	<script defer src="tools/modal.js"></script>
 	<script defer src="tools/components.js"></script>
 	<script defer src="tools/sse_receiver.js"></script>
-	<script defer src="tools/modal.js"></script>
+	<script defer src="installer_ui.js"></script>
 </head>
 <body>
 
@@ -100,7 +100,7 @@
 								inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"');
 								inputField("password", "MySQL user password:", "password");
 
-								checkbox("distEnvironment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
+								checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
 								checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
 								checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
 								checkbox("overwrite_user", "Overwrite existing user");
@@ -211,7 +211,7 @@
 					?>
 					<div class="inner-wrapper">
 						<div class="input-flex">
-							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer();\""); ?>
+							<?php defaultButton('Install LenaSYS', '', "\"navigateTo('installationPage'); start_installer(null);\""); ?>
 						</div>
 					</div>
 				</div>
@@ -235,8 +235,18 @@
 						bodyText("LenaSYS is being installed...");
 					?>
 					<div class="inner-wrapper">
-						<?php progressBar(); ?>
-						<div id="pageButtonContainer"></div>
+						<?php 
+							progressBar(); 
+							$modal = new Modal();
+							$modal->setDbConnectionErrorModal("dbConnectionError");
+							$modal->showFilePermissionErrorModal("permissionError");
+							$modal->showDbCreationErrorModal("dbCreationError");
+							$modal->showSqlExecutionErrorModal("SqlError");
+							$modal->showOperationErrorModal("operationError");
+						?>
+						<div id="pageButtonContainer">
+							<button class="defaultButton pageButton" id="openModal" type="button" style="display: none;">View Problem</button>
+						</div>
 					</div>
 				</div>
 			</div>

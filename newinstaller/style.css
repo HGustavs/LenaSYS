@@ -285,7 +285,7 @@ input[type=checkbox], input[type=radio] {
     background-color: transparent;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-    width: 6.25rem;
+    width: 9.3rem;
     height: 2.85rem;
     padding: .75rem;
     font-size: var(--text-large);
@@ -296,7 +296,7 @@ input[type=checkbox], input[type=radio] {
     background-color: var(--primary-color);
     color: var(--text-light);
     border: 1px solid var(--primary-color);
-    width: 6.25rem;
+    width: 9.3rem;
     height: 2.85rem;
     padding: .75rem;
     margin-left: auto; /* Correctly positions the single button used at page 1 & 6, without impacting position for rest of pages. Keep this */
@@ -397,6 +397,28 @@ input[type=checkbox], input[type=radio] {
     font-family: var(--body-font);
     font-size: var(--text-large);
     padding: 0.75rem;
+}
+
+details {
+    margin-top: 10px;
+}
+
+details,
+summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--text-dark);
+}
+
+.summary-content {
+    padding: 10px;
+    background-color: var(--page-background);
+    border: 1px solid var(--text-dark);
+    margin-top: 5px;
+    color: var(--text-dark);
 }
 
 .modal-footer {

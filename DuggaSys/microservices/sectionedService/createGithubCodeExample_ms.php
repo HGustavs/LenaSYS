@@ -16,9 +16,9 @@ $highscoremode = getOP('highscoremode');
 $pos = getOP('pos');
 $lid = getOP('lid');
 $log_uuid = getOP('log_uuid');
-$sectionname = getOP('sectionname');//Not used but needed since post sends them along
-$templateNumber = getOP('templateNumber');//Not used but needed since post sends them along
-$exampleid = getOP('exampleid');// Not used but needed since post sends them along
+$sectionname = getOP('sectionname'); //Not used but needed since post sends them along
+$templateNumber = getOP('templateNumber'); //Not used but needed since post sends them along
+$exampleid = getOP('exampleid'); // Not used but needed since post sends them along
 $debug = "NONE!";
 
 pdoConnect();
@@ -102,7 +102,7 @@ function GetCourseVers($allFiles)
 function NoCodeExampleFilesExist($exampleName, $groupedFiles)
 {
     global $pdo, $courseid, $coursevers, $kind, $link,
-    $gradesys, $highscoremode, $pos, $log_uuid;
+        $gradesys, $highscoremode, $pos, $log_uuid;
 
     //Count the number of files in the codeexample
     $fileCount = count($groupedFiles);
@@ -129,29 +129,24 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $sectionname = $exampleName;
 
     //create codeexample
-    //$link = createNewCodeExample($pdo, null, $courseid, $coursevers, $sectionname, $link, $log_uuid, $templateNumber);
 
     //set url for createNewCodeExample.php path
     header("Content-Type: application/json");
     $baseURL = "https://" . $_SERVER['HTTP_HOST'];
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
-    $ch = curl_init($url);
-    //options for curl
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'exampleid'=> $exampleid,
-        'courseid'=> $courseid,
-        'coursevers'=> $coursevers, 
-        'sectname'=> $sectionname,
-        'link'=> $link,
-        'log_uuid'=> $log_uuid, 
-        'templatenumber'=> $templateNumber
-    ]));
-       
-    $response = curl_exec($ch);
-    $link = json_decode($response, true);
 
+    $dataToSend = [
+        'exampleid' => $exampleid,
+        'courseid' => $courseid,
+        'coursevers' => $coursevers,
+        'sectname' => $sectionname,
+        'link' => $link,
+        'log_uuid' => $log_uuid,
+        'templatenumber' => $templateNumber
+    ];
+
+    $response = callMicroservicePOST($url,  $dataToSend, true);
+    $link = json_decode($response, true);
 
     //select the latest codeexample created to link boxes to this codeexample
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
@@ -228,8 +223,9 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $highscoremode = 0;
     $tabs = 0;
     $groupkind = null;
+
     //add the codeexample to listentries
-    createNewListEntry(
+    $createListData = [
         $pdo,
         $courseid,
         $coursevers,
@@ -245,7 +241,9 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
         $tabs,
         $groupkind,
         null
-    );
+    ];
+
+    callMicroservicePOST("sharedMicroservices/createNewListEntry_ms.php", $createListData, false);
 }
 
 function NoCodeExampleNoFiles($exampleName)
@@ -323,7 +321,6 @@ function NoCodeExampleNoFiles($exampleName)
                     $query->bindParam(':eid', $eid);
                     $query->bindParam(':oldBoxID', $oldBoxID);
                     $query->execute();
-
                 }
                 $boxCount--;
             }
@@ -366,7 +363,6 @@ function NoCodeExampleNoFiles($exampleName)
                 if (strcmp($boxName, $fileName) == 0) {
                     $exist = true;
                 }
-
             }
             if ($exist == false) {
                 $parts = explode('.', $fileName);
@@ -431,7 +427,6 @@ function NoCodeExampleNoFiles($exampleName)
                 $query->bindParam(":wordlistid", $wlid);
                 $query->bindParam(":fontsize", $fontsize);
                 $query->execute();
-
             }
         }
 
