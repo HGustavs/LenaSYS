@@ -556,12 +556,20 @@ function getLineAttributes(f, t, ctype, fromElemMouseY, toElemMouseY) {
         }
     }
     
-    if(f.kind === elementTypesNames.sequenceActivation){
-        f.anchorY = fromElemMouseY ?? lastMousePos.y;
-        t.anchorY = toElemMouseY ?? lastMousePos.y;
-        fy = f.anchorY;
-        ty = t.anchorY;
-        console.log(f.anchorX, ' + ',  f.anchorY);
+    if (f.kind === elementTypesNames.sequenceActivation) {
+        const fromKey = `from:${f.id}->${t.id}`;
+        const toKey = `to:${t.id}<-${f.id}`;
+    
+        if (!hasOffset(offsetMap, f.id, fromKey)) {
+            setOffset(offsetMap, f.id, fromKey, (fromElemMouseY ?? lastMousePos.y) - f.cy);
+        }
+    
+        if (!hasOffset(offsetMap, t.id, toKey)) {
+            setOffset(offsetMap, t.id, toKey, (toElemMouseY ?? lastMousePos.y) - t.cy);
+        }
+    
+        fy = f.cy + getOffset(offsetMap, f.id, fromKey) * zoomfact;
+        ty = t.cy + getOffset(offsetMap, t.id, toKey) * zoomfact;
     }
 
     return [fx, fy, tx, ty, offset];

@@ -733,7 +733,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                             m${-boxw / 4},0
                             h${boxw / 2}
                             m${-boxw / 4},0
-                            v${boxw / 3}
+                            v${boxw / 4}
                             l${boxw / 4},${boxw / 4}
                             m${-boxw / 4},${-boxw / 4}
                             l${-boxw / 4},${boxw / 4}"

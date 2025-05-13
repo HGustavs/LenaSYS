@@ -225,7 +225,7 @@ function isDarkTheme() {
  */
 function makeRandomID() {
     let str = "";
-    const characters = 'ABCDEF0123456789';
+    const characters = 'ABCDEFGIJK0123456789';
     const charactersLength = characters.length;
     while (true) {
         for (let i = 0; i < 6; i++) {
@@ -282,4 +282,41 @@ function sameObjects(obj1, obj2, ignore = []) {
 
     // JSON.stringify() is needed to compare the values
     return JSON.stringify(obj1) == JSON.stringify(obj2);
+}
+
+const offsetMap = new Map();
+
+const offsetCounters = {
+    from: new Map(), 
+    to: new Map()    
+};
+
+function getNextOffsetKey(counterMap, direction, elemId) {
+    let count = counterMap.get(elemId) ?? 0;
+    let key = `${direction}:${elemId}:${count}`;
+    counterMap.set(elemId, count + 1);
+    return key;
+}
+
+function getNextLineIndex(fId, tId, offsetMap) {
+    let i = 0;
+    while (offsetMap.has(`from:${fId}->${tId}#${i}`)) {
+        i++;
+    }
+    return i;
+}
+
+function hasOffset(map, elemId, key) {
+    return map.has(elemId) && map.get(elemId).has(key);
+}
+
+function setOffset(map, elemId, key, value) {
+    if (!map.has(elemId)) {
+        map.set(elemId, new Map());
+    }
+    map.get(elemId).set(key, value);
+}
+
+function getOffset(map, elemId, key) {
+    return map.get(elemId)?.get(key);
 }
