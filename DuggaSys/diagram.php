@@ -648,11 +648,11 @@
                         <p id="tooltip-EDGE_CREATION" class="key_tooltip">Keybinding:</p>
                     </span>
                 </div>
-                <div> <!--state elements start--><!--Initial state button-->
-                    <div id="elementPlacement9"
-                         class="SDButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(9); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(9)'><!--<-- UML functionality -->
+
+                <!-- OPTIONS FOR STATE ELEMENTS START HERE -->
+                <div> 
+                    <!-- UML INITIAL STATE (initial default choice) -->
+                    <div id="elementPlacement9" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseenter='hoverPlacementButton(9)'><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         <span class="toolTipText"><b>UML initial state</b><br>
                             <p>Insert an initial state for UML.</p>
@@ -666,13 +666,15 @@
                     </div>    
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(9), hidePlacementType()'><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
+                            <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>The initial state represents the start of a process.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div><!--Final state -->
+                            </div>
+                            <!-- FINAL STATE ("Change to" - second option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
@@ -680,7 +682,8 @@
                                     <p>The final state represents where a process ends.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div><!--Super state -->
+                            </div>
+                            <!-- UML SUPER STATE ("Change to" - third option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
@@ -692,11 +695,10 @@
                         </div>
                     </div>
                 </div>
-                <div><!--Final state button-->
-                    <div id="elementPlacement10"
-                         class="SDButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(10); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(10)'>
+                <!-- If UML FINAL STATE has been chosen, the entity-options change position in the menu-->
+                <div>
+                <!-- UML FINAL STATE (When chosen, takes up the "default position in the toolbar) -->
+                    <div id="elementPlacement10" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseenter='hoverPlacementButton(10)'>
                         <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         <span class="toolTipText"><b>UML final state</b><br>
                             <p>Place a final state for UML.</p>
@@ -707,8 +709,9 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(10), hidePlacementType()'><!--Initial state -->
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(10), hidePlacementType()'>
                         <div id="togglePlacementTypeBox10" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
+                            <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
@@ -716,14 +719,16 @@
                                     <p>The initial state represents the start of a process.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div><!--Final state -->
+                            </div>
+                            <!-- FINAL STATE("Change to" - second option when hovering) -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>The final state represents where a process ends.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div><!--Super state -->
+                            </div>
+                            <!-- SUPER STATE ("Chaange to" - third option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
@@ -735,11 +740,9 @@
                         </div>
                     </div>
                 </div><!--<-- UML functionality end -->
-                <div><!--Super state button-->
-                    <div id="elementPlacement11" 
-                         class="SDButton diagramIcons toolbarMode"
-                         onclick='setElementPlacementType(11); setMouseMode(2);'
-                         onmouseenter='hoverPlacementButton(11)'>
+                <div>
+                    <!-- UML SUPER STATE (When chosen, takes up the "default position in the toolbar)-->
+                    <div id="elementPlacement11" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseenter='hoverPlacementButton(11)'>
                         <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         <span class="toolTipText"><b>UML super state</b><br>
                             <p>Create a super state.</p>
@@ -750,8 +753,9 @@
                             <img src="../Shared/icons/diagram_toolbar_arrow.svg" alt="An arrow for expanding this menu option"/>
                         </div>
                     </div>
-                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(11), hidePlacementType()'><!--Initial state -->
+                    <div id="diagramPopOut" onmouseleave='hoverPlacementButton(11), hidePlacementType()'>
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
+                            <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
@@ -759,7 +763,8 @@
                                     <p>The initial state represents the start of a process.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>    
                                 </span>
-                            </div><!--Final state -->
+                            </div>
+                            <!-- FINAL STATE ("Change to" - second option when hovering) -->
                             <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
@@ -767,7 +772,8 @@
                                     <p>The final state represents where a process ends.</p><br>
                                     <p id="tooltip-STATE_INITIAL" class="key_tooltip">Keybinding:</p>
                                 </span>
-                            </div><!--Super state -->
+                            </div>
+                            <!-- SUPER STATE ("Change to" - third option when hovering) -->
                             <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' >
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
