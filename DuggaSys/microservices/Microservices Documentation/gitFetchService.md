@@ -31,7 +31,7 @@ $latestCommit = bfs($url, $cid, "GETCOMMIT");
 ### Microservices Used
 -
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Name of file/service
 downloadToWebServer_ms.php
@@ -57,7 +57,7 @@ downloadToWebserver($cid, $item);
 ### Microservices Used
 -
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Name of file/service
 getGithubUrl_ms.php
@@ -84,7 +84,7 @@ $url = getGitHubURL($url);
 ### Microservices Used
 -
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Name of file/service
 getIndexFile_ms.php
@@ -107,7 +107,7 @@ $filesToIgnore = getIndexFile($url);
 ### Microservices Used
 -
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Name of file/service
 insertToFileLInk_ms.php
@@ -131,7 +131,7 @@ insertToFileLink($cid, $item);
 ### Microservices Used
 -
 
----------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Name of file/service
 insertToMetadata_ms.php
