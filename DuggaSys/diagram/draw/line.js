@@ -46,7 +46,7 @@ function drawLine(line, targetGhost = false) {
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
     if (line.recursive) {
-        [fx, fy, tx, ty, offset] = getLineAttributes(felem, felem, line.ctype, fromElemMouseY, toElemMouseY);
+        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, felem, line.ctype, fromElemMouseY, toElemMouseY);
         //Setting start position for the recursive line, to originate from the top.
         fx = felem.cx;
         fy = felem.y1;
@@ -55,7 +55,7 @@ function drawLine(line, targetGhost = false) {
         tx = fx;
         ty = fy;
     } else {
-        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
+        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
     }
 
     // Follows the cursor while drawing the line
@@ -89,7 +89,7 @@ function drawLine(line, targetGhost = false) {
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
-        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
+        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
         if (line.kind == lineKind.NORMAL) {
             lineStr += `<line 
                         id='${line.id}' 
@@ -452,7 +452,7 @@ function recursiveERRelation(felem, telem, line, fromElemMouseY, toElemMouseY) {
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
 
-function getLineAttributes(f, t, ctype, fromElemMouseY, toElemMouseY) {
+function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     let px = -1; // Don't touch
 
     let fWidth = f.width;
@@ -556,18 +556,19 @@ function getLineAttributes(f, t, ctype, fromElemMouseY, toElemMouseY) {
         }
     }
     
+    // Special case to handle sequence activation lines
     if (f.kind === elementTypesNames.sequenceActivation) {
-        const fromKey = `from:${f.id}->${t.id}`;
-        const toKey = `to:${t.id}<-${f.id}`;
+        const fromKey = `from:${line.id}`;
+        const toKey = `to:${line.id}`;
     
         if (!hasOffset(offsetMap, f.id, fromKey)) {
             setOffset(offsetMap, f.id, fromKey, (fromElemMouseY ?? lastMousePos.y) - f.cy);
         }
-    
+
         if (!hasOffset(offsetMap, t.id, toKey)) {
             setOffset(offsetMap, t.id, toKey, (toElemMouseY ?? lastMousePos.y) - t.cy);
         }
-    
+
         fy = f.cy + getOffset(offsetMap, f.id, fromKey) * zoomfact;
         ty = t.cy + getOffset(offsetMap, t.id, toKey) * zoomfact;
     }

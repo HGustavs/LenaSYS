@@ -44,22 +44,49 @@ class StateChange {
         return values;
     }
 
-    /**
+   /**
      * @description Keeps the appropriate values for when a line is added.
-     * @param {Object} line New line that has been created.
+     * @param {Object} id ID of the newly created line.
      * @returns {object} A new object with the needed values.
      */
     static LineAdded(id) {
         const line = lines.find(line => line.id == id);
         const values = {};
-        // Get the keys of the values that is unique from default
+
+        // Get the keys of the values that are unique from the default
         const uniqueKeysArr = Object.keys(line).filter(key => {
-            return (Object.keys(defaultLine).filter(value => defaultLine[value] == line[key]).length == 0);
+            return defaultLine[key] !== line[key];
         });
-        // For every unique value set it into the change
+
+        // Store those unique values in the result
         uniqueKeysArr.forEach(key => {
             values[key] = line[key];
         });
+
+        // Optionally include offset(s) related to this line
+        const fromId = line.from;
+        const toId = line.to;
+        if (offsetMap.has(fromId)) {
+            const fromOffsets = offsetMap.get(fromId);
+            for (let [key, val] of fromOffsets.entries()) {
+                if (key.includes(`${fromId}->${toId}`)) {
+                    if (!values.offsets) values.offsets = {};
+                    values.offsets[fromId] = values.offsets[fromId] || {};
+                    values.offsets[fromId][key] = val;
+                }
+            }
+        }
+        if (offsetMap.has(toId)) {
+            const toOffsets = offsetMap.get(toId);
+            for (let [key, val] of toOffsets.entries()) {
+                if (key.includes(`${toId}<-${fromId}`)) {
+                    if (!values.offsets) values.offsets = {};
+                    values.offsets[toId] = values.offsets[toId] || {};
+                    values.offsets[toId][key] = val;
+                }
+            }
+        }
+
         return values;
     }
 

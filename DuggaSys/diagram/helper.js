@@ -284,32 +284,29 @@ function sameObjects(obj1, obj2, ignore = []) {
     return JSON.stringify(obj1) == JSON.stringify(obj2);
 }
 
+// Map<elementId, Map<connectionKey, offsetValue>>
 const offsetMap = new Map();
 
-const offsetCounters = {
-    from: new Map(), 
-    to: new Map()    
-};
-
-function getNextOffsetKey(counterMap, direction, elemId) {
-    let count = counterMap.get(elemId) ?? 0;
-    let key = `${direction}:${elemId}:${count}`;
-    counterMap.set(elemId, count + 1);
-    return key;
+// Generate an ID for a line
+function generateLineKey(fId, tId, index) {
+    return `from:${fId}->${tId}#${index}`;
 }
 
-function getNextLineIndex(fId, tId, offsetMap) {
+// Increment the map index position
+function getNextLineIndex(fId, tId, map) {
     let i = 0;
-    while (offsetMap.has(`from:${fId}->${tId}#${i}`)) {
+    while (map.has(generateLineKey(fId, tId, i))) {
         i++;
     }
     return i;
 }
 
+// Return offset key for a specified element
 function hasOffset(map, elemId, key) {
     return map.has(elemId) && map.get(elemId).has(key);
 }
 
+// Set the offset (value) for a specific key
 function setOffset(map, elemId, key, value) {
     if (!map.has(elemId)) {
         map.set(elemId, new Map());
@@ -317,6 +314,19 @@ function setOffset(map, elemId, key, value) {
     map.get(elemId).set(key, value);
 }
 
+// Retrieve the offset for a specific key
 function getOffset(map, elemId, key) {
-    return map.get(elemId)?.get(key);
+    return map.get(elemId)?.get(key) ?? null;
 }
+
+// Remove the offset for a specific key, and if map is empty remove that too.
+function removeOffset(map, elemId, key) {
+    if (map.has(elemId)) {
+        const innerMap = map.get(elemId);
+        innerMap.delete(key);
+        if (innerMap.size === 0) {
+            map.delete(elemId); 
+        }
+    }
+}
+
