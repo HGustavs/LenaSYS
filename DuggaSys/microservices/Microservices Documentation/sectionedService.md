@@ -346,6 +346,8 @@ Fetches All data from the 'userduggafeedback' table
 sharedMicroservices/getUid_ms.php
 retrieveSectionedService_ms.php
 
+---
+
 # Name of file/service
 changeActiveCourseVersion_sectioned_ms
 
@@ -454,15 +456,6 @@ createGithubCodeExample_ms
 ## Description
 Creates and/or updates code examples based on GitHub files available in the GitHub directory for a specific course and course version.
 Retrieves all updated data from the database through retrieveSectionedService_ms.php, and uses it as its output.
-
-## Input Parameters
-- Parameter: $opt
-   - Type: String
-   - Description: Operation type
-
-- Parameter: $courseid
-   - Type: int
-   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers
    - Type: String
@@ -624,3 +617,101 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
 - getUid_ms
 - createNewListEntry_ms
 - retrieveSectionedService_ms
+
+--- 
+
+# Name of file/service
+setVisibleListEntries_ms
+
+## Description
+Updates listentries to be visible by parameter lid
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+   
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
+
+- Parameter: $sectid
+   - Type: int
+   - Description: Section ID. Stored as int(10) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+- Parameter: $visible
+   - Type: tinyint
+   - Description: Toggle visibility
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: JSON object returned from retrieveSectionedService_ms.php, augmented with the first element containing the debug message.
+
+## Examples of Use
+
+
+### Microservices Used
+- getUid_ms
+- retrieveSectionedService_ms
+
+---
+
+# Name of file/service
+updateActiveCourseVersion_sectioned_ms
+
+## Description
+Microservice that updates the active version of a course
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+   
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as int(11) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output
+   - Type: JSON
+   - Description: JSON object returned from retrieveSectionedService_ms.php, along with the new active course version ID and a debug message
+
+## Examples of Use
+
+
+### Microservices Used
+- retrieveSectionedService_ms
+
+---
