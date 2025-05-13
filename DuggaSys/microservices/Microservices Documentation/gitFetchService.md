@@ -19,7 +19,7 @@ Traverses a GitHub repository using a breadth-first search (BFS) approach to ret
 ## Calling Methods
 - POST
 ## Output Data and Format
-- Output
+- Output: $response, $json['sha']
    - Type: JSON
    - Description: If option is GETCOMMIT the script returns a the commits SHA, otherwise no return unless an error occurs in which case an error message is echoed.
 
@@ -30,6 +30,8 @@ $latestCommit = bfs($url, $cid, "GETCOMMIT");
 ```
 ### Microservices Used
 -
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Name of file/service
 downloadToWebServer_ms.php
@@ -45,13 +47,17 @@ Downloads a file from a given GitHub `download_url` and stores it in the appropr
 ## Calling Methods
 -function call
 ## Output Data and Format
-No output unless error, in which case error message is logged.
+- Output: None, error
+   - Type: log
+   - Description: No output unless error, in which case error message is logged.
 ## Examples of Use
 ```php
 downloadToWebserver($cid, $item);
 ```
 ### Microservices Used
 -
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Name of file/service
 getGithubUrl_ms.php
@@ -65,7 +71,7 @@ Takes a normal repository github url and makes it into a url to the API of that 
 ## Calling Methods
 -function call
 ## Output Data and Format
-- Output
+- Output: $translatedURL
    - Type: string
    - Description: The translated url now pointing to the api of the repository located at the given url.
 ## Examples of Use
@@ -78,6 +84,8 @@ $url = getGitHubURL($url);
 ### Microservices Used
 -
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Name of file/service
 getIndexFile_ms.php
 ## Description
@@ -89,7 +97,7 @@ Fetches and returns the contents of an index.txt file from a given GitHub reposi
 ## Calling Methods
 -function call
 ## Output Data and Format
-- Output
+- Output: explode("\n", file_get_contents($response->download_url)), false
    - Type: string array on success, false on failure
    - Description: returns the contents of the file as a string array with each entry in the array being a line in the file.
 ## Examples of Use
@@ -98,6 +106,8 @@ $filesToIgnore = getIndexFile($url);
 ```
 ### Microservices Used
 -
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Name of file/service
 insertToFileLInk_ms.php
@@ -121,11 +131,12 @@ insertToFileLink($cid, $item);
 ### Microservices Used
 -
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
 # Name of file/service
 insertToMetadata_ms.php
 ## Description
 Inserts file metadata into the `gitFiles` table of the `metadata2.db` SQLite database. Stores information such as file name, type, path, and GitHub URLs.
-## Input Parameters
 ## Input Parameters
 - Parameter: $cid
   - Type: int
