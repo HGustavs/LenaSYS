@@ -592,6 +592,8 @@ body {
 .oddScheduleColumn{
     fill:#242729;
 }
+
+
 /* Course schedule styling END */
 
 .DateColorInDarkMode{
@@ -1103,6 +1105,13 @@ input.submit-button-newitem:hover {
 
 .arrowComp, .arrowRight,#sectionList_arrowStatisticsClosed, #sectionList_arrowStatisticsOpen {
     filter: brightness(0) saturate(100%) invert(99%) sepia(24%) saturate(91%) hue-rotate(298deg) brightness(112%) contrast(83%);
+}
+
+#Sectionlistc{
+    .courseRow:hover {
+    background-color: var(--color-primary-hover);
+    cursor: pointer;
+  }
 }
 
 /*/ Diagram.html style /*/
