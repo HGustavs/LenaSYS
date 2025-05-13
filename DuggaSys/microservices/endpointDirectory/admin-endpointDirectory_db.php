@@ -40,16 +40,16 @@ try {
     </div>
     <?php
     if (empty($dbEmpty) && empty($dbError)) {
-        echo "<p style='color: green;'>Database is installed and filled</p>";
+        echo "<p style='color: green;'>Database is installed and filled with data</p>";
     }
     if (isset($dbEmpty)) {
         echo "<p>$dbEmpty</p>";
-        echo "<a href='#' id='fillLink'>Fill database</a><br>";
+        echo "<a href='#' id='fillLink'>Fill database with data</a><br>";
     }
     if (isset($dbError)) {
         echo "<p style='color: red;'>$dbError</p>";
-        echo "<a href='#' id='installLink'>Install database</a> (don't fill)<br>";
-        echo "<a href='#' id='setupLink'>Setup database</a> (fill)<br>";
+        echo "<a href='#' id='installLink'>Install database</a> (without data)<br>";
+        echo "<a href='#' id='setupLink'>Setup database</a> (with data)<br>";
     } else {
         echo "<a href='#' id='deleteLink'>Delete database</a><br>";
     }
@@ -80,7 +80,7 @@ try {
         fetch('setupEndpointDirectory.php')
             .then(res => res.text())
             .then(data => {
-                alert('Database installed and filled!');
+                alert('Database installed and filled with data!');
                 location.reload();
             })
             .catch(error => {
