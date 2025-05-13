@@ -36,7 +36,7 @@ Changes the active course version by updating the activeversion column in the co
 - getUid_ms
 - retrieveCourseedService_ms
 
-
+---
 # Name of file/service
 copyCourseVersion_ms.php
 
@@ -118,6 +118,7 @@ Copies an existing course version with all related things like, quizzes, variant
 - createNewListEntry_ms
 - createNewCodeExample_ms
 
+---
 # Name of file/service
 createCourseVersion_ms.php
 
@@ -192,7 +193,7 @@ creates a new version of an existing course by inserting a new row into the vers
 - getUid_ms
 - retrieveCourseedService_ms
 
-
+---
 # Name of file/service
 createMOTD_ms.php
 
@@ -207,10 +208,6 @@ This micro service is called upon when the message of the day is changed in the 
 - Parameter: $motd
    - Type: varchar
    - Description: Message of the day
-
-- Parameter: $makeactive
-   - Type: int
-   - Description: When set to 3, this activates the new version
 
 - Parameter: $userid
    - Type: int
@@ -239,7 +236,7 @@ This micro service is called upon when the message of the day is changed in the 
 - getUid_ms
 - retrieveCourseedService_ms
 
-
+---
 # Name of file/service
 createNewCourse_ms.php
 
@@ -258,6 +255,10 @@ Creates a new course in the course table and logs the event
 - Parameter: $courseGitURL  
    - Type: varchar  
    - Description: The URL to the Git repository associated with the course
+
+- Parameter: $userid
+   - Type: int
+   - Description: User ID, used for authorization
 
 ## Calling Methods
 - GET
@@ -279,7 +280,7 @@ Creates a new course in the course table and logs the event
 - retrieveUsername_ms
 - retrieveCourseedService_ms
 
-
+---
 # Name of file/service
 deleteCourseMaterial_ms.php
 
@@ -287,7 +288,6 @@ deleteCourseMaterial_ms.php
 Deletes all course-related data for courses with visibility=3
 
 ## Input Parameters
-NO INPUT PARAMETERS
 
 - Parameter: $pdo
    - Type: PDO
@@ -307,7 +307,7 @@ NO INPUT PARAMETERS
 ### Microservices Used
 - 
 
-
+---
 # Name of file/service
 getCourseed_ms.php
 
@@ -315,7 +315,6 @@ getCourseed_ms.php
 This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
 
 ## Input Parameters
-NO INPUT PARAMETERS
 
 - Parameter: $userid
    - Type: int
@@ -343,10 +342,8 @@ NO INPUT PARAMETERS
 ### Microservices Used
 - retrieveCourseedService_ms.php
 - getUid_ms.php
-- basic.php
-- sessions.php
 
-
+---
 # Name of file/service
 retrieveAllCourseedServiceData_ms.php
 
@@ -354,7 +351,6 @@ retrieveAllCourseedServiceData_ms.php
 This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
 
 ## Input Parameters
-NO INPUT PARAMETERS
 
 - Parameter: $userid
    - Type: int
@@ -382,10 +378,8 @@ NO INPUT PARAMETERS
 ### Microservices Used
 - retrieveCourseedService_ms.php
 - getUid_ms.php
-- basic.php
-- sessions.php
 
-
+---
 # Name of file/service
 retrieveCourseedService_ms.php
 
@@ -425,6 +419,10 @@ Retrieve Information, gathers and returns all course-related data. It also trigg
    - Type: int
    - Description: Passed externally to indicate if a new course was just added
 
+- Parameter: $userid
+   - Type: int
+   - Description: User ID, used for authorization
+
 ## Calling Methods
 - GET
 
@@ -442,11 +440,9 @@ Retrieve Information, gathers and returns all course-related data. It also trigg
 
 ### Microservices Used
 - getUid_ms.php
-- logServiceEvent()
 - deleteCourseMaterial_ms.php
-- basic.php, sessions.php
 
-
+---
 # Name of file/service
 specialUpdate_ms.php
 
@@ -488,10 +484,9 @@ This microservice allows superusers to update the Git URL of a course in the cou
 ### Microservices Used
 - retrieveCourseedService_ms.php
 - getUid_ms.php
-- basic.php s
-- essions.php
 
 
+---
 # Name of file/service
 updateActiveCourseVersion_courseed_ms.php
 
@@ -533,10 +528,8 @@ The microservice changeActiveVersion_ms.php takes an existing course and changes
 ### Microservices Used
 - retrieveCourseedService_ms.php
 - getUid_ms.php
-- basic.php 
-- sessions.php
 
-
+---
 # Name of file/service
 updateCourse_ms.php
 
@@ -591,11 +584,9 @@ This microservice allows a superuser to update general course data including the
 - retrieveCourseedService_ms.php
 - getUid_ms.php
 - retrieveUsername_ms.php
-- basic.php
-- sessions.php
 - curlService.php
 
-
+---
 # Name of file/service
 updateCourseVersion_ms.php
 
@@ -679,6 +670,4 @@ This microservice is used to update information about a specific course version 
 - getUid_ms.php
 - retrieveUsername_ms.php
 - setAsActiveCourse_ms.php
-- basic.php
-- sessions.php
 - curlService.php
