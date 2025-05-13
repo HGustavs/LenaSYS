@@ -1800,7 +1800,7 @@ function generateStateDiagramInfo() {
 
 /**
  * @description Formats a list of strong/normal entities and their attributes.
- * @param {Array} ERDATA A list of all entities and it's attributes
+ * @param {Array} ERDATA A list of all entities and their attributes
  * @returns A formated list of all strong/normal entities and their attributes. Keys for every entity are stored in [entityRow][1].
  */
 function formatERStrongEntities(ERData) {
@@ -1809,7 +1809,7 @@ function formatERStrongEntities(ERData) {
     for (let i = 0; i < ERData.length; i++) {
         if (ERData[i][0].state == 'normal') {
             const row = []; // The formated row
-            row.push(ERData[i][0]); // Pushing in the current entity in row so it it's always position zero
+            row.push(ERData[i][0]); // Pushing in the current entity in row so it is always position zero
             const keys = []; // The key attributes (primary, candidate and weakKey)
             // Pushing in weak keys last to ensure that the first key in a strong/normal entity isn't weak
             for (let j = 1; j < ERData[i].length; j++) {
