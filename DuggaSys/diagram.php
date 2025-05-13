@@ -1171,6 +1171,7 @@
     </div>
     <!-- TOOLBAR ENDS HERE!! -->
     
+    <!-- POPUP FOR LOADINNG A FILE - NO SAVES FOUND -->
     <div class="loadModal hiddenLoad">
         <div id="loadHeader">
             <p id="loadTitle">Select a load:</p>
@@ -1181,6 +1182,7 @@
     </div>
     <div class="loadModalOverlay hiddenLoad"></div>
 
+    <!-- POPUP FOR SAVING A FILE - FILENAME ALREADY EXISTS (OVERRIDEING FILE)  -->
     <div id="overrideContainer" class="loginBoxContainer" style="display:none">
         <div class="formBox">
             <div class="formBoxHeader">
@@ -1203,23 +1205,23 @@
         </div>
     </div>
 
-    <!-- If a file is opened the name is displayed in this div -->
+    <!-- DISPLAYS THE NAME OF AN OPENED FILE -->
     <div id='diagramFileName' style='display: none;'> 
         <p>Current file: <span id='openedFileName'></span></p>
     </div>
 
-    <!-- Message prompt -->
+    <!-- MESSAGE PROMPT -->
     <div id="diagram-message"></div>
     
-    <!-- Diagram drawing system canvas. -->
+    <!-- DIAGRAM DRAWING CANVAS -->
     <svg id="svgoverlay" preserveAspectRatio="none"></svg>
     <div id="container"></div><!-- Contains all elements (items) -->
     
-     <!-- One svg layer for background stuff and one for foreground stuff -->
+    <!-- ONE SVG LAYER FOR BACKGROUND, ONE FOR FOREGROUND -->
     <svg id="svgbacklayer" preserveAspectRatio="none"></svg>
 
 	<canvas id='canvasOverlay'></canvas> 
-    <!-- Diagram rules -->
+    <!-- DIAGRAM RULERS -->
     <div id="rulerOverlay">
         <div id="rulerCorner"></div>
         <svg id="ruler-x-svg"></svg>
@@ -1228,7 +1230,7 @@
         <div id="ruler-y"></div>
     </div>
     
-    <!-- Diagram grid -->
+    <!-- DIAGRAM GRID -->
     <div id="svggrid">
         <svg id="svgbacklayer" class="svgbacklayer-background">
             <defs>
@@ -1241,19 +1243,22 @@
             <line id="origoY" x1="100" y1="0%" x2="100" y2="100%" />
         </svg>  
     </div>
-    <!-- A4 template -->
+    <!-- A4 TEMPLATE -->
     <div id="a4Template">
         <svg id="svgA4Template">
             <rect id="a4Rect" x="100" y="100"/>
             <rect id="vRect" x="100" y="100"/>
             <text id="a4Text" x="880" y="90">A4</text>
         </svg>  
-    </div>  
+    </div> 
+    <!-- ZOOMING CONTAINER -->
     <div id="zoom-container">
         <div id="zoom-message-box">
             <img src="../Shared/icons/zoom-message-icon.svg"/> 
+            <!-- DISPLAYS CURRENT ZOOM-RATIO -->
             <text id ="zoom-message">1x</text>
         </div>
+        <!-- ZOOM IN BUTTON -->
         <div class="diagramZoomIcons" onclick='zoomin();'>
             <img src="../Shared/icons/diagram_zoomin.svg"/>
             <span class="zoomToolTipText">
@@ -1262,6 +1267,7 @@
                 <p id="tooltip-ZOOM_IN" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
+        <!-- ZOOM OUT BUTTON -->
         <div class="diagramZoomIcons" onclick='zoomout();'>
             <img src="../Shared/icons/diagram_zoomout.svg"/>
             <span class="zoomToolTipText">
@@ -1270,6 +1276,7 @@
                 <p id="tooltip-ZOOM_OUT" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
+        <!-- RESET ZOOM BUTTON -->
         <div class="diagramZoomIcons" onclick="zoomreset()">
             <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
             <span class="zoomToolTipText">
@@ -1279,7 +1286,10 @@
             </span>
         </div>
     </div>
-    <div id="options-pane" class="hide-options-pane"> <!-- Yellow menu on right side of screen -->
+
+    <!-- OPTIONS PANE -->
+    <!-- Yellow panel on the right side of the screen -->
+    <div id="options-pane" class="hide-options-pane"> 
         <div id="options-pane-button" onclick="toggleOptionsPane();">
             <span id='optmarker'>&#9660;Options</span>
             <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
@@ -1287,9 +1297,12 @@
                 <p id="tooltip-OPTIONS" class="key_tooltip">Keybinding:</p>
             </span>
         </div>
+
+        <!-- FIELD FOR SMALLER FIELDS CONTAING THE OPTIONS -->
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'></fieldset>
 
+            <!-- TOGGLE FIELD IN OPTIONS -->
             <fieldset class='options-fieldset options-section'>
                 <legend>Toggle</legend>
                 <button id="gridToggle" class="saveButton" onclick="toggleGrid();">Grid</button><br><br>
@@ -1313,16 +1326,23 @@
                     <button class="saveButton" id="diagramLoad" onclick="loadMockupDiagram();">Load</button>
                 </div>
             </fieldset>
+            <!-- TOGGLE FIELD ENDS HERE!! -->
+
+            <!-- EXPORT FIELD IN OPTIONS -->
             <fieldset class='options-fieldset options-section'>
                 <legend>Export</legend>
                 <button class="saveButton" onclick="exportWithHistory();">With history</button><br><br>
                 <button class="saveButton" onclick="exportWithoutHistory();">Without history</button>
             </fieldset>
+            <!-- EXPORT FIELD ENDS HERE!! -->
+            
+            <!-- IMPORT FIELD IN OPTIONS -->
             <fieldset id="option-import" class='options-fieldset options-section'>
                 <legend>Import</legend>
                 <input id="importDiagramFile" type="file"><br><br>
                 <button class="saveButton" onclick="loadDiagram();">Load</button>
             </fieldset>
+            <!-- IMPORT FIELD ENDS HERE!! -->
         </div>
     </div>
     </div>
