@@ -72,34 +72,14 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 
     	array_push($tableInfo, $tableSubmissionInfo);
 	}
-	/*
-    // Set up POST call to retrieveResultedService_ms.php
-    header("Content-Type: application/json");
-    $baseURL = "http://" . $_SERVER['HTTP_HOST'];  // use http when testing locally
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/resultedService/retrieveResultedService_ms.php";
 
-    $ch = curl_init($url);
-
-    // cURL options
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'tableInfo' => json_encode($tableInfo),
-        'duggaFilterOptions' => json_encode($duggaFilterOptions)
-    ]));
-
-    // Execute and get response
-    $response = curl_exec($ch);
-    curl_close($ch);
-	*/
 	//Use curlService to make HTTP POST call
 	 $postData = [
     'tableInfo' => json_encode($tableInfo),
     'duggaFilterOptions' => json_encode($duggaFilterOptions)
  	];
 	$response = callMicroservicePOST("resultedService/retrieveResultedService_ms.php", $postData, true );
-	$data = json_decode($response, true);
-
+	header("Content-Type: application/json");
     // Send the data to frontend
-    echo $data;
+    echo $response;
 }
