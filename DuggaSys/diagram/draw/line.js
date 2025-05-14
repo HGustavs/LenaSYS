@@ -136,6 +136,7 @@ function drawLine(line, targetGhost = false) {
         if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
 
+            // Tweak offset of end-points if line direction is UP
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             // UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
             if (telem.kind === elementTypesNames.UMLFinalState) {
@@ -148,6 +149,7 @@ function drawLine(line, targetGhost = false) {
             } else { offset.y2 = 0; } // Aligning line with mouse coordinate before telem has been set
             offset.y1 = 15;
 
+            // Tweak offset of end-points if line direction is DOWN
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
             if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.y2 = 3;
@@ -157,7 +159,7 @@ function drawLine(line, targetGhost = false) {
             } else { offset.y2 = 0; }
             offset.y1 = -15;
 
-
+            // Tweak offset of end-points if line direction is LEFT
         } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
             if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.x2 = 1 / zoomfact;
@@ -167,7 +169,7 @@ function drawLine(line, targetGhost = false) {
             } else { offset.x2 = 0; }
             offset.x1 = 15;
 
-
+            // Tweak offset of end-points if line direction is RIGHT
         } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
             if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.x2 = 1 / zoomfact;
@@ -618,15 +620,15 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
 
 
 /**
- * @description Draw the label for the line.
- * @param {Object} line The line object for the label to be drawn.
- * @param {object} label How long the label's text is.
- * @param {Object} lineColor The color for the label.
- * @param {String} labelStr The id for the label.
- * @param {Number} x The X coodinates on the line for draw the label.
- * @param {Number} y The Y coodinates on the line for draw the label.
- * @param {boolean} isStart Where the start and end label should be.
- * @param {Object} felem The element object that is drawn, for recursive.
+ * @description Draw the label for the line
+ * @param {Object} line The line object for the label to be drawn
+ * @param {object} label How long the label's text is
+ * @param {Object} lineColor The color for the label
+ * @param {String} labelStr The id for the label
+ * @param {Number} x The X coodinates on the line for draw the label
+ * @param {Number} y The Y coodinates on the line for draw the label
+ * @param {boolean} isStart Where the start and end label should be
+ * @param {Object} felem The element object that is drawn, for recursive
  * @returns Returns the label for the line
  */
 function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
@@ -637,12 +639,13 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
 
 
     if(line.recursive){
-        //Calculatin the cardinality possition based on element size, so it follows when resized.
+        // Calculating the cardinality's position based on element size, so it follows when resized
         const lift   = 55 * zoomfact; 
         const {length, elementLength, startX, startY } = recursiveParam(felem);
         x = startX
         y = startY - lift;
 
+        // Positioning based on if label is beside start element or end element
         if(labelStr == "startLabel"){
             x -= 10;
             y -= 0;
@@ -650,7 +653,8 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
             x += length +10;
             y -= 0;
         } 
-    }else {
+    } else {
+        // Positioning based on which direction the labeled line is coming from
         if (line.ctype == lineDirection.UP) {
             x -= offsetOnLine / 2;
             y += (isStart) ? -offsetOnLine : offsetOnLine;
@@ -666,6 +670,7 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
         }
     }
 
+    // Returns correctly positioned label for line
     return `<rect 
                 class='text cardinalityLabel' 
                 id='${line.id + labelStr}' 
@@ -684,21 +689,21 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
 }
 
 /**
- * @description Draw a recursive line for the elements.
- * @param {Number} offset It's a offset for the coodinate when draw a recursive line. 
- * @param {Object} line The line object that is drawn.
- * @param {Object} lineColor Where the start and end label should be.  
- * @param {Number} strokewidth The width of the line.
- * @param {Number} strokeDash A number for patterns of dashes and gaps.
- * @param {Object} felem The element object that is drawn.
- * @returns Returns the different lines for the recursive line and the Array on the line.
+ * @description Draw a recursive line for the elements
+ * @param {Number} offset It's an offset for the coordinate when drawing a recursive line
+ * @param {Object} line The line object that is drawn
+ * @param {Object} lineColor Where the start and end label should be
+ * @param {Number} strokewidth The width of the line
+ * @param {Number} strokeDash A number for patterns of dashes and gaps
+ * @param {Object} felem The element object that is drawn
+ * @returns Returns the different lines for the recursive line and the Array on the line
  */
 function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) {
     let str = '';
     let points= "";
 
-    //Draw the recursive line top right of the element.
-    //Using the elemtns length to dynamicly change when re-sized.
+    // Draw the recursive line on the top right of the element
+    // Using the element's length to dynamically change when re-sized
     const lineHeight = 60 * zoomfact; 
     const lift   = 55 * zoomfact; 
     const SEconst = 15 * zoomfact;
@@ -710,6 +715,7 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
     startX += offset.x1 * zoomfact;
     startY += offset.y1 - lift;
 
+    // Specified calculations for a recursive line depending on entity type
     if(line.type === entityType.IE) {
         points =
             `${startX},${startY + lineHeight } ` +
@@ -729,6 +735,7 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
             `${startX - SEconst + lift + lineHeight},${startY + lineLength + lineHeight } ` +
             `${startX - SEconst + lift},${startY + lineLength + lineHeight }`;
         
+        // Draws the arrow at the end of the recursive line
         const endX = startX - SEconst + lift;
         const endY = startY + lineLength + lineHeight;
 
@@ -749,6 +756,7 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
             `${startX + lineLength},${startY} ` +
             `${startX + lineLength},${startY+lineHeight  }`;
     }
+    // Connects the corners of the line
     str += `
             <polyline
               id="${line.id}"
@@ -763,8 +771,9 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
 }
 
 
-/** Localization the basic parameters for the recursive lines.    
- * @param {Object} felem the element the arrows originates from.
+/** 
+ * @description Localizes the basic parameters for the recursive lines    
+ * @param {Object} felem The element the arrows originate from
  */
 
 function recursiveParam(felem){
@@ -777,21 +786,21 @@ function recursiveParam(felem){
 }
 
 /**
- * @description Draw the cardinalities label for the line.
- * @param {Object} line The line object for the cardinality to be drawn to.
- * @param {Object} lineColor Where the start and end label should be.
- * @param {Number} fx The felem x coordinate.
- * @param {Number} fy The felem y coordinate.
- * @param {Number} tx The telem x coordinate.
- * @param {Number} ty The telem y coordinate.
- * @param {Object} f It's for the object felem and it's stands for "from element".
- * @param {Object} t It's for the object telem and it's stands for "to element".
- * @returns Returns the cardinality label for the line.
+ * @description Draw the cardinalities label for the line
+ * @param {Object} line The line object for the cardinality to be drawn to
+ * @param {Object} lineColor Where the start and end label should be
+ * @param {Number} fx The felem x coordinate
+ * @param {Number} fy The felem y coordinate
+ * @param {Number} tx The telem x coordinate
+ * @param {Number} ty The telem y coordinate
+ * @param {Object} f It's for the object felem and it stands for "from element"
+ * @param {Object} t It's for the object telem and it stands for "to element"
+ * @returns Returns the cardinality label for the line
  */
 
 function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
     let posX, posY;
-    // Used to tweak the cardinality position when the line gets very short.
+    // Used to tweak the cardinality's position when the line gets very short
     const tweakOffset = 0.30;
     const offsetOnLine = 20 * zoomfact;
 
