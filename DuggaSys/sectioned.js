@@ -1177,7 +1177,6 @@ function deleteItem(item_lid = []) {
     item = document.getElementById("lid" + lid[i]);
     item.style.opacity = "0.5";
     item.classList.add("deleted");
-    document.querySelector("#undoButton").style.display = "block";
   }
 
   toast("undo", "Undo deletion?", 15, "cancelDelete();");
@@ -1194,6 +1193,7 @@ function deleteAll() {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = deletedElements.length ; (i > 0) ; i--) {
     var lid = deletedElements[i-1].id.match(/\d+/)[0];
+    document.querySelector(".deleted").parentElement.style.display = "none"; //This line is needed because refresh is broken. (2025-05-14). Should be possible to be removed after Group 2 solves the issue. 
     deletedElements[i-1].classList.remove("deleted");
 
     AJAXService("DEL", {
