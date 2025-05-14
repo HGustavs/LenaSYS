@@ -3612,7 +3612,7 @@ input.submit-button-newitem:hover {
 
 /* override to customize only loadDuggaButton */
 #loadDuggaButton {
-  float: left;
+  float: right;
   width: auto;
   min-width: 80px;
   height: 25px;

@@ -28,12 +28,14 @@ var response;
 
 function setup()
 {
+	//Iterates through all bit buttons and adds eventlisteners
 	document.querySelectorAll('.bit').forEach(bit => {
 		bit.addEventListener("click", function(){
 			bitClick(bit.id);
 		});
 	});
 
+	////Iterates through all hexa buttons (dropdowns) and adds eventlisteners
 	document.querySelectorAll('.hexo').forEach(hexa => {
 		hexa.addEventListener("click", function(){
 			hexClick(hexa.id);
@@ -117,15 +119,14 @@ function returnedDugga(data)
 					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
 				} 		
 				fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;		
+				document.getElementById('feedbackTable').innerHTML = fb;
 				document.getElementById('feedbackBox').style.display = "block";
 				document.getElementById("showFeedbackButton").style.display="block";
 		}
 		document.getElementById("content").append(document.getElementById("submitButtonTable"));
 		if(document.getElementById("lockedDuggaInfo")){
 			document.getElementById("content")
-			.insertBefore(document.getElementById("lockedDuggaInfo"),
-			document.getElementById("content"));
+			.insertBefore(document.getElementById("lockedDuggaInfo"), document.getElementById("content"));
 		}
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -236,7 +237,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			
 		} else {
 			document.getElementById("B"+(8-i)).style.background="red";
-			document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];					
+			document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];
 		}
 	}
 	
@@ -284,7 +285,8 @@ function bitClick(divid)
 
 	var div = document.getElementById(divid);
 
-	if(div.innerHTML=="1"){
+	//Changes bit buttons from 1 to 0 and vice versa
+	if(div.innerHTML==="1"){
 			div.innerHTML="0";
 			div.classList.remove("ett");
 			div.classList.add("noll");
@@ -300,9 +302,11 @@ function hexClick(divid)
 {
 	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
+	//Get position of clicked button
 	dw=window.innerWidth;
 	var element=document.getElementById(divid);
 	var dpos=element.getBoundingClientRect();
+
 	dwid=document.getElementById(divid).Width;
 	dhei=document.getElementById(divid).Height;
 	bw=Math.round(dwid)*1.10;
@@ -320,6 +324,7 @@ function hexClick(divid)
 	if(hh<200) hh=200;
 	hh+="px";
 	
+	//Style on dropdown
 	document.getElementById("pop").style.top=(dpos.dhei+10) + "px";
 	document.getElementById("pop").style.left=lpos + "px";
 	document.getElementById("pop").style.width=bw + "px";
