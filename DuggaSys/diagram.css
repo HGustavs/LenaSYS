@@ -1126,6 +1126,13 @@
     width: 100%;
 }
 
+button.saveButton {
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top:10px;
+  padding-left: 5px;
+}
+
 /*****************
    Confirm buttons
 *****************/
