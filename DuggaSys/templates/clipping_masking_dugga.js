@@ -379,38 +379,60 @@ function startDuggaHighScore(){
 	}
 }
 
-function newbutton()
-{
-	ClickCounter.onClick();
-	var newOp = $('#ops > optgroup > option:selected').text();
-	var newOpCode = $("#ops").val();
+function newbutton() {
+    ClickCounter.onClick();
 
-	if($("#operationList").find("tr").hasClass("selectedOp")){
-			$(".selectedOp").each(function(){
-				$(this).find("*[id^=op_]").html(newOp);
-				$(this).find("*[id^=opCode_]").html(newOpCode);
-				toggleSelectOperation(this);
-			});
-      render();
-	} else {
-		var i = 0;
-		$('#operationList tr').each(function (){
-				var tmp = this.id.replace("v","");
-				if (tmp > i) i=tmp;
-		});
-		i++;
-		var newTableBody = "<tr id='v" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-		newTableBody += '<td><span style="width:100%; padding:0; margin:0 10px; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
-		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
-		newTableBody += "</tr>";
+    const ops = document.getElementById("ops");
+    const newOp = ops.options[ops.selectedIndex].text;
+    const newOpCode = ops.value;
 
-		$("#operationList").append(newTableBody);
-		refreshOpNum();
-	}
+    const operationList = document.getElementById("operationList");
+    const selectedRows = operationList.querySelectorAll("tr.selectedOp");
+
+    if (selectedRows.length > 0) {
+        selectedRows.forEach(function (row) {
+            const opElem = row.querySelector("[id^='op_']");
+            const opCodeElem = row.querySelector("[id^='opCode_']");
+            if (opElem) opElem.innerHTML = newOp;
+            if (opCodeElem) opCodeElem.innerHTML = newOpCode;
+            toggleSelectOperation(opElem); 
+        });
+        render();
+    } else {
+        let i = 0;
+        const rows = operationList.querySelectorAll("tr");
+        rows.forEach(function (row) {
+            const tmp = parseInt(row.id.replace("v", ""), 10);
+            if (tmp > i) i = tmp;
+        });
+        i++;
+
+        const newRow = document.createElement("tr");
+        newRow.id = "v" + i;
+
+        newRow.innerHTML = `
+            <td style="font-size:11px; text-align: center;" id="opNum${i}">${i + 1}</td>
+            <td>
+                <span style="width:100%; padding:0; margin:0 10px; box-sizing: border-box;" 
+                      id="op_${i}" onclick="toggleSelectOperation(this);">${newOp}</span>
+                <span id="opCode_${i}" style="display:none">${newOpCode}</span>
+            </td>
+            <td style="text-align:center">
+                <button onclick="this.closest('tr').previousElementSibling?.before(this.closest('tr'));refreshOpNum();">&uarr;</button>
+            </td>
+            <td style="text-align:center">
+                <button onclick="this.closest('tr').nextElementSibling?.after(this.closest('tr'));refreshOpNum();">&darr;</button>
+            </td>
+            <td style="text-align:center">
+                <button onclick="this.closest('tr').remove();refreshOpNum();">X</button>
+            </td>
+        `;
+
+        operationList.appendChild(newRow);
+        refreshOpNum();
+    }
 }
+
 
 function goMofo(txt)
 {
