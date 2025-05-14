@@ -364,7 +364,7 @@ function resetBitstring(){
 //----------------------------------------------------------------------------------
 function toggleInstructions()
 {
-	if(document.querySelector(".instructions-content").style.display="block"){
+	if(document.querySelector(".instructions-content").style.display==="block"){
 		document.querySelector(".instructions-content").style.display="none";
 	}
 	else{
@@ -374,7 +374,7 @@ function toggleInstructions()
 
 function toggleFeedback()
 {
-	if(document.querySelector(".feedback-content").style.display="block"){
+	if(document.querySelector(".feedback-content").style.display==="block"){
 		document.querySelector(".feedback-content").style.display="none";
 	}
 	else{
