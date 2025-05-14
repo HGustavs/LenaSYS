@@ -1,6 +1,5 @@
-# sharedMicroservices Documentation
-
-# createNewCodeExample_ms.php
+# Name of file/service
+createNewCodeExample_ms.php
 
 ## Description
 Creates a new code example in the ‘codeexample’ table and logs the event of creating a new code example. 
@@ -12,32 +11,32 @@ It retrieves the user ID and username, inserts a new entry into the table, gener
    - Description: Database connection 
 
 - Parameter: $exampleid
-   - Type: mediumint
-   - Description: Example ID (optional), used to name the example section incrementally
+   - Type: int
+   - Description: Example ID (optional), used to name the example section incrementally. Stored as mediumint(8) in the database
 
 - Parameter: $courseid
    - Type: int
-   - Description: Course ID that the example belongs to
+   - Description: Course ID that the example belongs to. Stored as int(10) in the database
 
 - Parameter: $coursevers
-   - Type: int
-   - Description: Course version
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $sectname
-   - Type: varchar
-   - Description: Name of section that the code example will belong to
+   - Type: String
+   - Description: Name of section that the code example will belong to. Stored as varchar(64) in the database
 
 - Parameter: $link
-   - Type: varchar
-   - Description: Reference link, updated later with the new example ID. Used to store the ID of the new code example
+   - Type: String
+   - Description: Reference link, updated later with the new example ID. Used to store the ID of the new code example. Stored as varchar(256) in the database
 
 - Parameter: $log_uuid
-   - Type: int
+   - Type: String
    - Description: Logs the event
 
 - Parameter: $templateNumber
    - Type: int
-   - Description: Template number/ID for the code example, defaults to 0
+   - Description: Template number/ID for the code example, defaults to 0. Stored as int(10) in the database
 
 ## Calling Methods
 -
@@ -58,8 +57,10 @@ It retrieves the user ID and username, inserts a new entry into the table, gener
 - getUID_ms.php
 - retrieveUsername_ms.php
 
+---
 
-# createNewListEntry_ms.php
+# Name of file/service
+createNewListEntry_ms.php
 
 ## Description
 Inserts a new entry into the ‘listentries’ table in the database, fetches the username of the user who created the entry of the current user and logs the event. Actions and events logged in the system need to be associated with a user.
@@ -71,55 +72,55 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID to which the list entry belongs to
+   - Description: Course ID to which the list entry belongs to. Stored as int(10) in the database
 
 - Parameter: $coursesvers
-   - Type: varchar
-   - Description: Course version
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID of who created the entry
+   - Description: User ID of who created the entry. Stored as int(10) in the database
 
 - Parameter: $entryname
-   - Type: varchar
-   - Description: Name of the entry
+   - Type: String
+   - Description: Name of the entry. Stored as varchar(64) in the database
 
 - Parameter: $link
-   - Type: varchar
-   - Description: URL associated with the list entry (?)
+   - Type: String
+   - Description: URL associated with the list entry. Stored as varchar(200) in the database
 
 - Parameter: $kind
    - Type: int
-   - Description: Type/kind of list entry
+   - Description: Type/kind of list entry. Stored as int(10) in the database
 
 - Parameter: $comment
-   - Type: varchar
-   - Description: Comment about list entry
+   - Type: String
+   - Description: Comment about list entry. Stored as varchar(512) in the database
 
 - Parameter: $visible
-   - Type: tinyint
-   - Description: Visibility
+   - Type: int
+   - Description: Visibility. Stored as tinyint(1) in the database
 
 - Parameter: $highscoremode
    - Type: int
-   - Description: Highscore mode
+   - Description: Highscore mode. Stored as int(1) in the database
 
 - Parameter: $pos
    - Type: int
-   - Description: Position, moves one increment up each time an entry is created to make space for new entries
+   - Description: Position, moves one increment up each time an entry is created to make space for new entries. Stored as int(11) in the database
 
 - Parameter: $gradesys
    - Type: int
-   - Description: Grading system. Used for entries with kind 4.
+   - Description: Grading system. Used for entries with kind 4. Stored as tinyint(1) in the database
 
 - Parameter: $tabs
-   - Type: tinyiny
-   - Description: Tabs setting. Used for all entry-types, except for kind 4.
+   - Type: int
+   - Description: Tabs setting. Used for all entry-types, except for kind 4. Stored as tinyint(4) in the database
 
 - Parameter: $grptype
-   - Type: varchar
-   - Description: Group kind/type for the entry. If it is UNK/grptype is not used, username of the user who created the entry is logged instead.
+   - Type: String
+   - Description: Group kind/type for the entry. If it is UNK/grptype is not used, username of the user who created the entry is logged instead. Stored as varchar(4) in the database
 
 ## Calling Methods
 -
@@ -133,9 +134,12 @@ Inserts a new entry into the ‘listentries’ table in the database, fetches th
 -
 
 ### Microservices Used
-- retrieveUsername_ms.php
+retrieveUsername_ms.php
 
-# getUid_ms.php
+---
+
+# Name of file/service
+getUid_ms.php
 
 ## Description
 Retrieves the user's UID (user ID) from the session. If a user is not logged in, guest ID is returned instead.
@@ -144,44 +148,44 @@ Also logs events into serviceLogEntries-table.
 ## Input Parameters
 
 - Parameter: $opt
-   - Type: ?
+   - Type: String
    - Description: Operation type
 
 - Parameter: $courseId
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $courseVersion
-   - Type: varchar
-   - Description: Course version
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $exampleName
-   - Type: varchar
-   - Description: Name of the accessed example
+   - Type: String
+   - Description: Name of the accessed example. Stored as varchar(64) in the database
 
 - Parameter: $sectionName
-   - Type: varchar
-   - Description: Name of the section within the course
+   - Type: String
+   - Description: Name of the section within the course. Stored as varchar(64) in the database
 
 - Parameter: $exampleId
    - Type: int
-   - Description: Unique ID for the example
+   - Description: Unique ID for the example. Stored as mediumint(8) in the database
 
 - Parameter: $log_uuid
-   - Type: char
+   - Type: String
    - Description: Unique identifier for logging the event
 
 - Parameter: $log_timestamp
-   - Type: int
+   - Type: String
    - Description: Timestamp for when the log event occured
 
 ## Calling Methods
-- POST (from getOP-function in basic.php)
+- POST
 
 ## Output Data and Format
 - Output: $userId
    - Type: int
-   - Description: Returns the user's ID from the session, or guest ID if not logged in
+   - Description: Returns the user's ID from the session, or guest ID if not logged in. Stored as int(10) in the database
 
 ## Examples of Use
 -
@@ -189,7 +193,10 @@ Also logs events into serviceLogEntries-table.
 ### Microservices Used
 None
 
-# isSuperUser_ms.php
+---
+
+# Name of file/service
+isSuperUser_ms.php
 
 ## Description
 Checks if a user is a superuser. Used to control access permission.
@@ -202,7 +209,7 @@ Checks if a user is a superuser. Used to control access permission.
 
 - Parameter: $userId
    - Type: int
-   - Description: The user ID, to check if it is a superuser
+   - Description: The user ID, to check if it is a superuser. Stored as int(10) in the database
 
 ## Calling Methods
 -
@@ -218,7 +225,10 @@ Checks if a user is a superuser. Used to control access permission.
 ### Microservices Used
 None
 
-# logUserEvent_ms.php
+---
+
+# Name of file/service
+logUserEvent_ms.php
 
 ## Description
 Creates a new user-event entry and adds it to the database 'log_db'. Helps maintain records of user action, for logging purposes.
@@ -226,26 +236,26 @@ Creates a new user-event entry and adds it to the database 'log_db'. Helps maint
 ## Input Parameters
 - Parameter: $uid
    - Type: int
-   - Description: Unique user ID of the user who triggered an event
+   - Description: Unique user ID of the user who triggered an event. Stored as int(10) in the database
 
 - Parameter: $username
-   - Type: varchar
-   - Description: Username associated with the uid (user ID)
+   - Type: String
+   - Description: Username associated with the uid (user ID). Stored as varchar(80) in the database
 
 - Parameter: $eventType
    - Type: int
    - Description: The type of event triggered by the user
 
 - Parameter: $description
-   - Type: varchar
+   - Type: String
    - Description: Text explaining the event
 
 - Parameter: $userAgent
-   - Type: text
+   - Type: String
    - Description: Not an input parameter. The device and browser used by the user, retrieved automatically.
 
 - Parameter: $remoteAddress
-   - Type: varchar
+   - Type: String
    - Description: Not an input parameter. The IP address of the user's device, retrieved automatically.
 
 ## Calling Methods
@@ -260,7 +270,10 @@ Creates a new user-event entry and adds it to the database 'log_db'. Helps maint
 ### Microservices Used
 None
 
-# retrieveUsername_ms.php
+---
+
+# Name of file/service
+retrieveUsername_ms.php
 
 ## Description
 Retrieves the username of a specific user ID. Username is only fetched if a user is logged in.
@@ -272,15 +285,15 @@ Retrieves the username of a specific user ID. Username is only fetched if a user
 
 - Parameter: $userid
    - Type: int
-   - Description: Username associated with the uid (user ID)
+   - Description: Username associated with the uid (user ID). Stored as int(10) in the database
 
 ## Calling Methods
 -
 
 ## Output Data and Format
 - Output: $username
-   - Type: varchar
-   - Description: 
+   - Type: String
+   - Description: Username. Stored as varchar(80) in the database
 
 ## Examples of Use
 -
@@ -288,7 +301,10 @@ Retrieves the username of a specific user ID. Username is only fetched if a user
 ### Microservices Used
 - getUid_ms.php
 
-# setAsActiveCourse_ms.php
+---
+
+# Name of file/service
+setAsActiveCourse_ms.php
 
 ## Description
 Used to set a specific version of a course as the active version, by updating the 'course' table. 
@@ -296,11 +312,11 @@ Used to set a specific version of a course as the active version, by updating th
 ## Input Parameters
 - Parameter: $cid
    - Type: int
-   - Description: Unique course ID, to specify which course should be set as active.
+   - Description: Unique course ID, to specify which course should be set as active. Stored as int(10) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: The version ID that should be set as the active course version.
+   - Type: String
+   - Description: The version ID that should be set as the active course version. Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
@@ -314,7 +330,10 @@ None. Only notifies if the update is successful or not.
 ### Microservices Used
 None
 
-# updateSecurityQuestion_ms.php
+---
+
+# Name of file/service
+updateSecurityQuestion_ms.php
 
 ## Description
 Handles password changes, as well as challenge questions and answers. Only permitted if the current password is entered correctly.
@@ -322,24 +341,24 @@ Changes of security questions are not permitted for superusers or teachers.
 
 ## Input Parameters
 - Parameter: $password
-   - Type: varchar
-   - Description: The current password of the user. Used for verification purposes.
+   - Type: String
+   - Description: The current password of the user. Used for verification purposes. Stored as varchar(225) in the database
 
 - Parameter: $question
-   - Type: varchar
-   - Description: The new security challenge question to be set.
+   - Type: String
+   - Description: The new security challenge question to be set. Stored as varchar(256) in the database
 
 - Parameter: $answer
-   - Type: varchar
-   - Description: The answer to the new security challenge question. Stored in hashed form.
+   - Type: String
+   - Description: The answer to the new security challenge question. Stored in hashed form. Stored as varchar(256) in the database
 
 - Parameter: $action
    - Type: ?
-   - Description: Which type of action to be performed. In this case, it is "challenge".
+   - Description: Which type of action to be performed. In this case, it is "challenge"
 
 - Parameter: $log_uuid
-   - Type: char
-   - Description: Unique identifier, used to log the event.
+   - Type: String
+   - Description: Unique identifier, used to log the event
 
 ## Calling Methods
 - POST
@@ -363,7 +382,10 @@ Changes of security questions are not permitted for superusers or teachers.
 ### Microservices Used
 - getUid_ms.php
 
-# updateUserPassword_ms.php
+---
+
+# Name of file/service
+updateUserPassword_ms.php
 
 ## Description
 Handles changes to passwords for users who are logged in. Password is changed by verifying the current password. If it is entered correctly, the user is allowed to change the password, which is then updated in the 'user' table.
@@ -371,19 +393,19 @@ Teachers and superusers are not allowed to change passwords.
 
 ## Input Parameters
 - Parameter: $password
-   - Type: varchar
-   - Description: The user's current password, entered to verify the user
+   - Type: String
+   - Description: The user's current password, entered to verify the user. Stored as varchar(225) in the database
 
 - Parameter: $action
    - Type: ?
-   - Description: Specifies the action. Here it is "password", for changing the password.
+   - Description: Specifies the action. Here it is "password", for changing the password
 
 - Parameter: $newPassword
-   - Type: tinyint
-   - Description: The new password the user wants to change to
+   - Type: int
+   - Description: The new password the user wants to change to. Stored as tinyint(1) in the database
 
 - Parameter: $log_uuid
-   - Type: char
+   - Type: String
    - Description: Unique identifier, used to log the event
 
 ## Calling Methods
@@ -395,7 +417,7 @@ Teachers and superusers are not allowed to change passwords.
    - Description: Informs whether the operation was successful or not
 
 - Output: $status
-   - Type: ?
+   - Type: String
    - Description: Describes to result status. Either "teacher", "wrong password" or empty
 
 - Output: $debug
