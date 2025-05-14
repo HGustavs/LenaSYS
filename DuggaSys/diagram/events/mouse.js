@@ -304,6 +304,10 @@ function mup(event) {
                 setPos(context, deltaX, deltaY);
                 // Loop through each selected element
                 context.forEach(el => {
+
+                // Only check for Activation elements to snap
+                if (el.kind !== elementTypesNames.sequenceActivation) return;
+
                 // Find the nearest lifeline to the element's center position
                 const nearestLifelineId = findNearestLifeline(
                 el.x + el.width / 2, // X-center of the element
@@ -321,23 +325,6 @@ function mup(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
-            if (resizeOverlapping) {
-                // Reset to original state if overlapping is detected
-                const element = data[findIndex(data, context[0].id)];
-                element.width = originalWidth;
-                element.height = originalHeight;
-                element.x = originalX;
-                element.y = originalY;
-                // Update DOM with the original properties
-                const elementDOM = document.getElementById(element.id);
-                elementDOM.style.width = originalWidth + 'px';
-                elementDOM.style.height = originalHeight + 'px';
-                elementDOM.style.left = originalX + 'px';
-                elementDOM.style.top = originalY + 'px';
-                showdata();
-                displayMessage(messageTypes.ERROR, "Error: You can't place elements too close together.");
-                resizeOverlapping = false;
-            }
             break;
         default:
             console.error(`State ${mouseMode} missing implementation at switch-case in mup()!`);

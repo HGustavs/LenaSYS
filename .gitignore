@@ -20,3 +20,4 @@ gitErrorLog.txt
 *branch*.txt
 log/gitErrorLog.txt
 DuggaSys/microservices/endpointDirectory/endpointDirectory_db.sqlite
+DuggaSys/microservices/endpointDirectory/newMDStructureTest.md

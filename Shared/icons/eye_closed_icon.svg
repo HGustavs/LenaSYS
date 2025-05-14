@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<svg viewBox="-2 -6 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Layer_1" transform="translate(-2, -6)" style="enable-background:new 0 0 32 32">
+    <g id="VisibilityOff">
+      <path d="M6, 8L8.4, 10.4C4.5, 12.7 2, 16 2, 16C2, 16 8, 24 16, 24C17.8, 24 19.4, 23.6 21, 23L24, 26L26, 24L8, 6L6, 8zM10.9, 12.9L12.4, 14.4C12.1, 14.9 12, 15.4 12, 16C12, 18.2 13.8, 20 16, 20C16.6, 20 17.1, 19.9 17.6, 19.6L19.1, 21.1C18.2, 21.7 17.1, 22 16, 22C12.7, 22 10, 19.3 10, 16C10, 14.9 10.3, 13.8 10.9, 12.9z" fill="#727272" class="Black" />
+    </g>
+  </g>
+  <g id="Layer_1" transform="translate(-2.00000095367432, -6.00000047683716)" style="enable-background:new 0 0 32 32">
+    <g id="VisibilityOff">
+      <path d="M16, 12L20, 16C20, 13.8 18.2, 12 16, 12z" fill="#727272" class="Black" />
+    </g>
+  </g>
+  <g id="Layer_1" transform="translate(-2.00000095367432, -6)" style="enable-background:new 0 0 32 32">
+    <g id="VisibilityOff">
+      <path d="M16, 8C14.8, 8 13.6, 8.2 12.5, 8.5L14.2, 10.2C14.8, 10 15.3, 9.9 15.9, 9.9C19.2, 9.9 21.9, 12.6 21.9, 15.9C21.9, 16.5 21.8, 17.1 21.6, 17.6L24.7, 20.7C28, 18.6 30, 16 30, 16C30, 16 24, 8 16, 8z" fill="#727272" class="Black" />
+    </g>
+  </g>
+</svg>

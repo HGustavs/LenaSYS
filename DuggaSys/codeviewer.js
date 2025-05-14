@@ -1455,13 +1455,19 @@ function execSkip() {
 window.addEventListener("load", function () {
 	var windowHeight = window.innerHeight;
 	var textHeight = windowHeight - 50;
-	document.getElementById("table-scroll").style.height = textHeight + "px";
+	var tableScrollContainer = document.getElementById("table-scroll");
+	if (tableScrollContainer) {
+		tableScrollContainer.style.height = textHeight + "px";
+	}
 });
 
 window.addEventListener("resize", function () {
 	var windowHeight = window.innerHeight;
 	var textHeight = windowHeight - 50;
-	document.getElementById("table-scroll").style.height = textHeight + "px";
+	var tableScrollContainer = document.getElementById("table-scroll");
+	if (tableScrollContainer) {
+		tableScrollContainer.style.height = textHeight + "px";
+	}
 	closeBurgerMenu(); // close burgerMenu when window resize
 });
 

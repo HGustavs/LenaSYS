@@ -7,7 +7,7 @@ body {
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
 table {
@@ -28,11 +28,11 @@ th {
 }
 
 tr:nth-child(odd) {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 tr:hover {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
 form {
@@ -55,36 +55,36 @@ form {
   margin-bottom: 20px;
 }
 
-.button-container{
-    display: flex; 
-    gap: 10px;
+.button-container {
+  display: flex;
+  gap: 10px;
 }
 
 input {
-    border: 1px solid black;
-    border-radius: 18px;
-    height: 25px;
-    padding: 5px;
+  border: 1px solid black;
+  border-radius: 18px;
+  height: 25px;
+  padding: 5px;
 }
 
 button,
-a {
-    border: 2px solid black;
-    background-color: black;
-    color: white;
-    padding: 10px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.5s;
+.a-button {
+  border: 2px solid black;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.5s;
 }
 
 button:hover,
-a:hover {
-    background-color: white;
-    color: black;
+.a-button:hover {
+  background-color: white;
+  color: black;
 }
 
 a {
-    text-decoration: none;    
-    display: inline-block;
+  text-decoration: none;
+  display: inline-block;
 }
