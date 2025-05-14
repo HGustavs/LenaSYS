@@ -128,7 +128,7 @@ if (isset($_GET['id'])) {
                     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
                     <input type="hidden" name="updateID" value="<?php echo $editMicroservice['id']; ?>">
                     <p><b><label>Microservice name:<br><input type="text" name="ms_name" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
-                    <p><label>Description:<br><textarea name="description" rows="5" cols="40"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
+                    <p><label>Description:<br><textarea name="description" rows="5" cols="40" style="max-width: 90%;"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
                     <p><label>Calling Methods:<br><input type="text" name="calling_methods" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
                     <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
                     <button type="submit">Save Changes</button>
