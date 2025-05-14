@@ -1,3 +1,6 @@
+/**
+ * This is an object of object that is used to store information about the element in the tooltips.
+ */
 const tooltips = {
     "Pointer":{
         header: "Pointer",
@@ -79,7 +82,7 @@ const tooltips = {
         header: "Reset View",
         description: "Reset view to show all elements."
     },
-    "History":{
+    "Reset":{
         header: "Reset Diagram",
         description: "Reset diagram to default state."
     },
