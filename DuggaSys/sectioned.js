@@ -1603,6 +1603,8 @@ function returnedSection(data) {
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
 
+  let burgerItems = "";
+
   var numberOfParts = 0;
   for (var i = 0; i < retdata['entries'].length; i++) {
     var item = retdata['entries'][i];
@@ -2112,6 +2114,15 @@ function returnedSection(data) {
           str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
+
+          burgerItems += `
+            <div class="burgerItem show-on-mobile">
+              <input type='button' value='&#8633' title='Tab example button'
+                onclick='confirmBox("openTabConfirmBox",this);'
+                style='filter: invert(1); border:none; background:transparent;'>
+              <span>Tab example</span>
+            </div>`;
+
         }
         if (itemKind != 4 && itemKind != 1 && itemKind != 0) { // dont create buttons for moments only for specific assignments
           //Generate new tab link
@@ -2120,6 +2131,15 @@ function returnedSection(data) {
           str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class=''
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
           str += "</td>";
+
+          burgerItems += `
+            <div class="burgerItem show-on-mobile">
+              <img src='../Shared/icons/link-icon.svg' style='width:16px;'
+                title='Open link in new tab'
+                onclick='openCanvasLink(this);'>
+              <span>Link</span>
+            </div>`;
+
 
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
@@ -2130,6 +2150,14 @@ function returnedSection(data) {
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
             str += `</div>`;
             str += "</td>";
+
+            burgerItems += `
+              <div class="burgerItem show-on-mobile">
+                <img src='../Shared/icons/canvasduggalink.svg' style='width:16px;'
+                  title='Get Canvas Link'
+                  onclick='showCanvasLinkBox("open", this);'>
+                <span> Canvas link</span>
+              </div>`;
           }
         }
 
@@ -2142,6 +2170,22 @@ function returnedSection(data) {
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
         }
+
+        if (itemKind === 3 && (data['writeaccess'] || data['studentteacher'])) {
+          str += `<td class="show-on-mobile">`;
+          str += `
+            <div class="burgerWrapper">
+              <img src='../Shared/icons/hamburger_menu_google_fonts.svg' 
+                class="burgerIcon"
+                onclick="toggleBurgerBoxDugga('bBox${item['lid']}')">
+              <div id="bBox${item['lid']}" class="burgerBox" style="display: none;">
+                ${burgerItems}
+              </div>
+            </div>`;
+          str += `</td>`;
+        }
+
+
 
         // Cog Wheel for headers
         if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
