@@ -1550,6 +1550,14 @@ header td {
   display: none;
 }
 
+@media (max-width: 414px){
+  #header {
+    display: none; /* Hides the header */
+    height: 0; /* Ensures no space is taken */
+    visibility: hidden; /* Optional: additional hide */
+  }
+}
+
 .navheader {
   height: 20px;
   margin-bottom: 10px;
