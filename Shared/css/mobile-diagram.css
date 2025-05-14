@@ -14,6 +14,28 @@
         transition: var(--normal-transition);
     }
 
+
+        /* hidden by default: moved 100% of its own width off the right edge */
+    #mb-diagram-toolbar-2 {
+        position: fixed;
+        display: flex;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 30px;                   /* adjust to your “open” width */
+        background-color: var(--color-primary);
+
+        transform: translateX(100%);
+        transition: var(--normal-transition);
+        z-index: 21;
+        flex-direction: column;
+    }
+
+    /* when this class is toggled, it slides into view */
+    #mb-diagram-toolbar-2.open {
+        transform: translateX(-33px);
+    }
+
     #mb-diagram-toolbar.active {
         transform: translateY(0px);
     }

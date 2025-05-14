@@ -94,6 +94,10 @@
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
+    <div class="icon-wrapper-2" onclick="secondToolbarToggle()">
+        <i class="material-icons toggle-chevron-2">keyboard_arrow_up</i>
+    </div>
+
     <!-- The chevron/arrows used for toggling the diagram-toolbar-->
     <div class="icon-wrapper" onclick="toggleToolbar();">
         <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
@@ -1437,6 +1441,11 @@
             </div>
         </div>
     </div>
+
+
+    <nav id="mb-diagram-toolbar-2">
+        
+    </nav>
 
     <!-- MOBILE VERSION OF THE DIAGRAM-TOOLBAR, STARTS HERE! -->
     <!-- "mb", stands for mobile -->

@@ -326,6 +326,7 @@
     }
 }
 
+
 @media (max-width: 414px){
     .icon-wrapper{
         display: block !important;
@@ -337,6 +338,20 @@
         transition: var(--normal-transition);
     }
 
+     .icon-wrapper-2{
+        display: block !important;
+        position: fixed;
+        z-index: 10;
+        right: 10%;
+        top: 50%;
+        transform: translateX(-50%);
+        transition: var(--normal-transition);
+    }
+
+    .icon-wrapper-2.toolbar-active{
+        margin-right: 20px;
+    }
+    
     #diagram-message{
         position: absolute !important;
         top: 50px !important;
@@ -1186,6 +1201,15 @@
 }
 
 .toggle-chevron{
+    font-size: 1.4rem;
+    background-color: var(--color-background-2);
+    padding: .3rem;
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+}
+
+.toggle-chevron-2{
+    rotate: 270deg;
     font-size: 1.4rem;
     background-color: var(--color-background-2);
     padding: .3rem;

@@ -594,6 +594,29 @@ function toggleToolbar() {
     }
 }
 
+function secondToolbarToggle() { 
+     let toggleBtn = document.querySelector(".icon-wrapper-2");
+     let chevronIcon = document.querySelector(".toggle-chevron-2");
+     let toolbar   = document.getElementById('mb-diagram-toolbar-2');
+     let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
+
+       if (ChevronActive /*&& toolbarActive*/) {
+        chevronIcon.style.transform = `rotate(180deg)`;
+        //toolbar.setAttribute("aria-hidden", "false")
+    }
+    else {
+        chevronIcon.style.transform = `rotate(0deg)`;
+        //toolbar.setAttribute("aria-hidden", "true")
+    }
+
+    toolbar.classList.toggle('open');
+    toggleBtn.classList.toggle('open');
+
+
+
+}
+    
+
 /**
  * @description Function that toggles the active state of the toolbar modes and opening sub menus if they exist.
  * @param {*} e event-object that is used for finding the current elements next element sibling
