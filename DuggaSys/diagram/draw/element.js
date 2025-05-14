@@ -5,15 +5,22 @@
  * @returns Returns a string containing the elements that should be drawn.
  */
 function drawElement(element, ghosted = false) {
+    // The size is scaled up or down depending on how far in or out is zoomed
     let divContent, style, cssClass;
-    let texth = Math.round(zoomfact * textheight);
-    let linew = Math.round(strokewidth * zoomfact);
-    let boxw = Math.round(element.width * zoomfact);
+    let texth = Math.round(zoomfact * textheight);   // Font size (px)
+    let linew = Math.round(strokewidth * zoomfact);  // Stroke width
+    let boxw = Math.round(element.width * zoomfact); // Scaled width
     let boxh = element.height ? 
+
     Math.round(element.height * zoomfact) : 0; // Only used for extra whitespace from resize
-    let zLevel = element.z ?? 2; /*nsures that elements without a defined z-index get a default value (2)*/
+    let zLevel = element.z ?? 2; /*Ensures that elements without a defined z-index get a default value (2)*/
     let mouseEnter = '';
 
+
+    let zLevel = 2;        // Default stacking order
+    let mouseEnter = '';  // Mouse enter handler
+
+    //Measure the name’s pixel width
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -22,14 +29,15 @@ function drawElement(element, ghosted = false) {
     canvasContext.font = `${texth}px ${canvasContext.font.split('px')[1]}`;
     let textWidth = canvasContext.measureText(element.name).width;
 
+    //Highlight elements involved in validation errors
     if (errorActive) {
-        // Checking for errors regarding ER Entities
-        checkElementError(element);
-        // Checks if element is involved with an error and outlines them in red
+        checkElementError(element);  // Gather error
         for (let i = 0; i < errorData.length; i++) {
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
     }
+
+    //Delegate drawing to the correct helper
     switch (element.kind) {
         case elementTypesNames.EREntity:
             divContent = drawElementEREntity(element, boxw, boxh, linew, texth);
@@ -59,10 +67,13 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.IERelation:
             divContent = drawElementIERelation(element, boxw, boxh, linew);
             cssClass = 'ie-element';
+            // Inheritance relations sit behind other IE elements
             style = element.name == "Inheritance" ?
              `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:;` :
              `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
             break;
+
+            //UML state‑diagram nodes
         case elementTypesNames.UMLInitialState:
             let initVec = `
                 <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
@@ -98,8 +109,10 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
             cssClass = 'uml-Super';
-            zLevel = 1;
+            zLevel = 1;    // Background layer for composite states
             break;
+
+            //UML sequence‑diagram widgets
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             mouseEnter = 'mouseEnterSeq(event);';
@@ -112,18 +125,23 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
-            zLevel = 3;
+            zLevel = 3;    // Always on top of actor/object boxes
             break;
         case elementTypesNames.sequenceLoopOrAlt:
+            // Expand for each alternative block rendered below the header
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
             divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
-            zLevel = 0;
+            zLevel = 0;   // Below messages and activations
             break;
-        case 'note': // TODO: Find why this doesnt follow elementTypesNames naming convention
+
+        //Legacy sticky note
+        case 'note': 
             divContent = drawElementNote(element, boxw, boxh, linew, texth);
             cssClass = 'uml-element';
             break;
     }
+
+    // Conditional pad-lock icon
     let lock = '';
     if (element.isLocked) {
         lock = `<img 
@@ -134,6 +152,8 @@ function drawElement(element, ghosted = false) {
                      alt='Padlock' 
                  />`;
     }
+
+    // Compose final wrapper div
     style = style ?? `left:0; top:0; width:auto; height:auto; font-size:${texth}px; z-index:${zLevel};`;
     let ghostPreview = ghostLine ? 0 : 0.4;
     let ghostStr = (ghosted) ? ` pointer-events:none; opacity:${ghostPreview};` : '';
@@ -154,6 +174,7 @@ function drawElement(element, ghosted = false) {
  * @returns Returns the string s if s is smaller or equals to max.
  * @returns Returns a string that adds one string to a another string.
  */
+// Chop the string into pieces up to `max` characters long.
 function splitLengthyLine(s, max) {
     if (s.length <= max) return s;
     return [s.substring(0, max)].concat(splitLengthyLine(s.substring(max), max));
@@ -165,6 +186,7 @@ function splitLengthyLine(s, max) {
  * @param {Number} max A max number.
  * @returns Returns the object that contains all the text.
  */
+// Apply `splitLengthyLine` to each line in an array and flatten the result.
 function splitFull(e, max) {
     return e.map(line => splitLengthyLine(line, max)).flat()
 }
@@ -175,16 +197,14 @@ function splitFull(e, max) {
  * @param {Object} element The object that change the height.
  * @param {Number} height The height of the entity.
  */
+// Track the rendered height of an element in `arr`, replacing any old entry.
 function updateElementHeight(arr, element, height) {
     // Removes the previouse value in IEHeight for the element
     for (let i = 0; i < arr.length; i++) {
         if (element.id == arr[i].id) arr.splice(i, 1);
     }
     // Calculate and store the IEEntity's real height
-    arr.push({
-        id: element.id,
-        height: height
-    });
+    arr.push({ id: element.id, height: height });
 }
 
 /**
@@ -233,6 +253,7 @@ function drawRect(w, h, l, e, extra = e.fill ? `fill='${e.fill}'` : `fill=#fffff
  * @param {String} str String to be escaped.
  * @returns Returns a html-free string.
  */
+// Replace special HTML characters with safe entities.
 function escapeHtml(str) {
     if (typeof str !== 'string') return '';
     return str
@@ -251,6 +272,7 @@ function escapeHtml(str) {
  * @param {String} extra Extra attributes to be added to the text tag.
  * @returns Returns a string containing a svg text for the element that is drawn.
  */
+// Create an SVG `<text>` element string with escaped content.
 function drawText(x, y, a, t, extra = '') {
     const safeText = escapeHtml(t);
     return `<text
@@ -273,7 +295,7 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.5);
     const lineHeight = 1.5;
     
-    //check if element height and minHeight is 0, if so set both to 50
+    //Check if element height and minHeight is 0, if so set both to 50
     if (element.height == 0 && element.minHeight == 0) {
         element.minHeight = 50;
         element.height = element.minHeight;
@@ -305,6 +327,7 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
                 />`;
     }
     let rect = drawRect(boxw, contentHeight, linew, element);
+    // Center each line vertically
     let text = "";
     for (let i = 0; i < nameLines.length; i++) {
         const y = (contentHeight / 2) - (nameLines.length / 2 - i - 0.5) * texth * lineHeight;
@@ -322,14 +345,18 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
  * @param {Number} texth The text height for the element.
  * @returns Returns the different parts of the UML entity.
  */
+// This function Draws the UML class/entity box (header, attributes, 
+// methods, stereotype) with automatic line-wrapping.
 function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let str = "";
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.75);
     const lineHeight = 1.5;
 
+    // Split attributes and functions into lines that fit in the box
     const aText = splitFull(element.attributes, maxCharactersPerLine);
     const fText = splitFull(element.functions, maxCharactersPerLine);
 
+    // Calculate total height and update diagram metadata
     let aHeight = texth * (aText.length + 1) * lineHeight;
     let fHeight = texth * (fText.length + 1) * lineHeight;
     let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
@@ -343,6 +370,7 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     let headStereotype = "";
     let headSvg = "";
 
+    // Conditionally display stereotype above name if one is set
     if (element.stereotype != "" && element.stereotype != null) {
         headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', `«${element.stereotype}»`);
         for (let i = 0; i < headerLines.length; i++) {
@@ -376,6 +404,7 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
         return drawDiv(css, style, contentSvg);
     };
 
+    // Render attributes and functions
     str += textBox(aText, 'uml-content');
     str += textBox(fText, 'uml-footer');
     return str;
@@ -400,6 +429,7 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
     const newPrimaryKeys = splitFull(primaryKeys, maxCharactersPerLine - 3);
     if (primaryKeys) text.unshift(...newPrimaryKeys);
 
+    // Calculate height and register with diagram context
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight = tHeight - linew * 2 + texth * 2;
     updateElementHeight(IEHeight, element, totalHeight + boxh);
@@ -458,6 +488,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
 
+     // Split attributes and calculate box height
     let tHeight = texth * (text.length + 1) * lineHeight;
     let totalHeight = tHeight - linew * 2 + texth * 2;
     updateElementHeight(SDHeight, element, totalHeight + boxh);
@@ -488,7 +519,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
     let headSvg = drawSvg(boxw, height, headPath + headText);
     str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px;`, headSvg);
 
-    // Content / Attributes
+    // Attributes box with lower rounded corners
     const drawBox = (s, css) => {
         let height = texth * (s.length + 1) * lineHeight + boxh;
         let text = "";
@@ -532,7 +563,7 @@ function drawElementERRelation(element, boxw, boxh, linew) {
     let hboxw = boxw / 2;
     let hboxh = boxh / 2;
     const multioffs = 3;
-
+    
     if (element.state == "weak") {
         weak = `<polygon 
                     points="${linew * multioffs * 1.5},${hboxh} ${hboxw},${linew * multioffs * 1.5} ${boxw - (linew * multioffs * 1.5)},${hboxh} ${hboxw},${boxh - (linew * multioffs * 1.5)}"  
@@ -568,6 +599,7 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
     let content = '';
     let hboxw = boxw / 2;
     let hboxh = boxh / 2;
+    // Helper to draw the main oval path, with optional dash or extra attrs
     const drawPath = (l, extra = '') => {
         return `<path 
                     d="M${l},${hboxh} 
@@ -585,6 +617,7 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
         content += drawPath(linew, dash);
     }
     let extra = '';
+    // Additional decorations for multi-valued or weak-key
     switch (element.state) {
         case "multiple":
             content += drawPath(linew * 3);
@@ -603,6 +636,7 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
             extra = `class='underline'`;
             break;
     }
+     // Default text label centered
     content += `<text 
                     x='${boxw / 2}' y='${hboxh}' ${extra} 
                     dominant-baseline='middle' text-anchor='middle'
@@ -619,6 +653,7 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
  * @returns Returns a SVG for the UML relation that is going to be drawn.
  */
 function drawElementUMLRelation(element, boxw, boxh, linew) {
+    // Fill black when overlapping, otherwise white
     let fill = (element.state == 'overlapping') ? 'black' : 'white';
     let strokeColor = (fill === 'black') ? 'white' : 'black';
     let poly = `
@@ -643,6 +678,7 @@ function drawElementIERelation(element, boxw, boxh, linew) {
                 <line x1="${boxw / 2}" y1="${linew / 2}" x2="${(boxw / 2) + (boxw / 2.08)}" y2="${linew / 2}" stroke='black' />
                 <line x1="${(boxw / 2) + 1}" y1="${linew / 2}" x2="${(boxw / 2) - (boxw / 2.08) + 1}" y2="${linew / 2}" stroke='black' />`;
 
+    // Add inheritance arrows if not overlapping
     if (element.state != inheritanceStateIE.OVERLAPPING) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`;
@@ -660,6 +696,7 @@ function drawElementIERelation(element, boxw, boxh, linew) {
  */
 function drawElementState(element, vectorGraphic) {
     const theme = document.getElementById("themeBlack");
+    // Invert fill if theme background differs
     if (element.fill == color.BLACK && theme.href.includes('blackTheme')) {
         element.fill = color.WHITE;
     } else if (element.fill == color.WHITE && theme.href.includes('style')) {
@@ -684,16 +721,18 @@ function drawElementState(element, vectorGraphic) {
  * @returns Returns a SVG for the UML super state that is going to be drawn.
  */
 function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
+    // Limit name length and append ellipsis if too long
     const MAX_TEXT_LENGTH = 30;
     element.stroke = (isDarkTheme()) ? color.WHITE : color.BLACK;
 
     let displayText = element.name.length > MAX_TEXT_LENGTH ? element.name.substring(0, MAX_TEXT_LENGTH) + '...' : element.name;
 
-    // Beräkna rektangeln för texten och se till att den inte överstiger elementets bredd
+    // Header width, text width and padding, but no wider than boxw - 10px
     let rectTwoWidth = Math.min(textWidth + 80 * zoomfact, boxw - 10);
 
     let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='5'`);
     let rectTwo = drawRect(rectTwoWidth, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    // State name text inside header
     let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', displayText, `font-size='${20 * zoomfact}px'`);
     
     return drawSvg(boxw, boxh, rectOne + rectTwo + text);
@@ -710,6 +749,7 @@ function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
  * @returns Returns a SVG for the sequence actor that is going to be drawn.
  */
 function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) {
+    // Dashed lifeline path, head circle and body stick-figure
     let content;
     content = `<path 
                     class="text" 
@@ -725,7 +765,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
                         cy="${(boxw / 8) + linew}" 
                         r="${boxw / 8}px" 
                         fill='${element.fill}' stroke='${element.stroke}' stroke-width='${linew}'
-                    />
+                    /> 
                     <path 
                         class="text"
                         d="M${(boxw / 2)},${(boxw / 4) + linew}
@@ -773,6 +813,7 @@ function drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth) 
 function drawElementSequenceObject(element, boxw, boxh, linew) {
     let str = "";
     let content;
+    // Dashed vertical lifeline and Object box with rounded corners
     const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
 
     content = `<path 
@@ -820,6 +861,7 @@ function drawElementSequenceActivation(element, boxw, boxh, linew) {
     let content;
     const sequenceCornerRadius = Math.round((element.width / 15) * zoomfact); //determines the corner radius for sequence objects.
 
+    // Single rounded rectangle representing the activation
     content = `<rect 
                     x='${linew}' y='${linew}' 
                     width='${boxw - linew * 2}' height='${boxh - linew * 2}' 
@@ -838,9 +880,12 @@ function drawElementSequenceActivation(element, boxw, boxh, linew) {
  * @returns Returns a SVG for the sequence loop or alt that is going to be drawn.
  */
 function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
+    
+    // Determine label color based on theme
     let fontColor = (isDarkTheme()) ? color.WHITE : color.GREY;
     element.altOrLoop = (element.alternatives.length > 1) ? "Alt" : "Loop";
 
+    // Outer frame
     let content = `
         <rect 
             class='text'
@@ -854,7 +899,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
             rx='${7 * zoomfact}'
             fill-opacity="0"
         />`;
-    //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+    // If it has alternatives, iterate and draw them out one by one, evenly spaced out.
     if (element.alternatives.length) {
         for (let i = 1; i < element.alternatives.length; i++) {
             content += `<path class="text"
@@ -871,7 +916,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
             );
         }
     }
-    //svg for the small label in top left corner
+    // SVG for the small label in top left corner
     content += `<path 
                 id="loopLabel"
                 d="M ${(7 * zoomfact) + linew},${linew}
@@ -886,6 +931,8 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
                 stroke='${element.stroke}'
                 fill='${element.fill}'
             />`;
+
+    // Draw the header text (“Alt” or “Loop”)
     let textOne = drawText(50 * zoomfact + linew, 18.75 * zoomfact + linew, 'middle', element.altOrLoop);
     let textTwo = drawText(linew * 2, 37.5 * zoomfact + linew * 3 + texth / 1.5, 'auto', element.alternatives[0] ?? '', `fill=${fontColor}`);
     return drawSvg(boxw, boxh, content + textOne + textTwo);
@@ -910,15 +957,19 @@ function drawElementNote(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor(availableTextWidth / avgCharWidth);
 
     const text = splitFull(element.attributes, maxCharactersPerLine);
+
+    // Ensure at least four text lines
     const textLineCount = Math.max(4, text.length);
     const totalHeight = boxh + texth * textLineCount * lineHeight;
 
     const maxWidth = boxw - linew * 2;
     const maxHeight = totalHeight - linew * 2;
 
+    // Track this element’s height
     updateElementHeight(NOTEHeight, element, totalHeight);
     element.stroke = (element.fill == color.BLACK) ? color.WHITE : color.BLACK;
 
+    // Note shape with folded top right corner
     let content = `
         <path class="text"
             d=" M ${maxWidth - (23 * zoomfact)},${linew}
