@@ -1,24 +1,28 @@
 ﻿
 /**
- * @description Constructs a string containing the svg line-elements of the inputted line object in parameter.
- * @param {Object} line The line object that is drawn.
- * @param {boolean} targetGhost Is the targeted line a ghost line
+ * @description Constructs a string containing the svg line-elements of the inputted line object in parameter
+ * @param {Object} line The line object that is drawn
+ * @param {boolean} targetGhost Is the targeted line, a ghost line
  */
 
 function drawLine(line, targetGhost = false) {
 
-    let lineStr = ""; // only the lines, polylines, arrows etc
-    let labelStr = ""; // labels and label backgrounds
+    let lineStr = ""; // Only the lines, polylines, arrows etc.
+    let labelStr = ""; // Labels and label backgrounds
     let fromElemMouseY;
     let toElemMouseY;
 
-    // Element line is drawn from/to
+    // Element line is drawn from element(felem)/to element(telem)
+    // Determines staring element based on ID
     let felem = data[findIndex(data, line.fromID)];
+
     if (!line.fromY) {
         line.fromY = lastMousePos.y;
     }
     fromElemMouseY = line.fromY;
 
+    // Line preview as a ghost follows mouse
+    // Otherwise set line target by ID
     let telem;
     if (targetGhost) {
         telem = ghostElement;
@@ -35,19 +39,24 @@ function drawLine(line, targetGhost = false) {
         toElemMouseY = line.toY;
     }
 
+    // If failure was encountered return empty
     if (!felem || !telem) return { lineStr: "", labelStr: "" };
+    
+    // Sets different types of styling for the line
     line.type = (telem.type == entityType.note) ? telem.type : felem.type;
     let strokeDash = (line.kind == lineKind.DASHED || line.type == entityType.note) ? "10" : "0";
     let lineColor = isDarkTheme() ? color.WHITE : color.BLACK;
     let isSelected = contextLine.includes(line);
     if (isSelected) lineColor = color.SELECTED;
+    
     let fx, fy, tx, ty, offset;
 
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
     if (line.recursive) {
         [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, felem, line.ctype, fromElemMouseY, toElemMouseY);
-        //Setting start position for the recursive line, to originate from the top.
+        
+        // Setting start position for the recursive line, to originate from the top
         fx = felem.cx;
         fy = felem.y1;
         offset.x1 = 0;
@@ -65,11 +74,11 @@ function drawLine(line, targetGhost = false) {
     }
 
 
-    const lineSpacing = 30 * zoomfact; //Controlls spacing between lines
+    const lineSpacing = 30 * zoomfact; // Controls spacing between lines
 
-    //Checks if a line have gotten any properties from the checkAdjacentLines function 
-    //fromOffsetIncrease, fromNumberOfLInes, toOffsetIncrease and toNumberOfLines
-    //Different offset for the side they go to and come from
+    // Checks if a line has gotten any properties from the checkAdjacentLines function 
+    // fromOffsetIncrease, fromNumberOfLines, toOffsetIncrease and toNumberOfLines
+    // Different offset for the side they go to and come from
     if ("fromOffsetIndex" in line && "fromNumberOfLines" in line) {
         const fromOffsetIncrease = (line.fromOffsetIndex - (line.fromNumberOfLines - 1) / 2) * lineSpacing;
         if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
@@ -87,7 +96,10 @@ function drawLine(line, targetGhost = false) {
         }
     }
 
+    // Always use arrow for SD ghost lines
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
+
+    // Drawings and offsets for ER line types
     if (line.type == entityType.ER) {
         [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
         if (line.kind == lineKind.NORMAL) {
@@ -118,19 +130,22 @@ function drawLine(line, targetGhost = false) {
             lineStr += double(1, 1);
             lineStr += double(-1, 2);
         }
+
+        // Drawings and offsets for SD (state/activity diagram) line types
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
         if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
 
         } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
-            //UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
+            // UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
             if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.y2 = -4 + 3 / zoomfact;
                 offset.x2 = 0;
-                //Special offset for SD entity telem, since it can be both felem and telem. UMLInitialState can only be felem and doesn't utilize x2 or y2
+                // Special offset for SD entity telem, since it can be both felem and telem
+                // UMLInitialState can only be felem and doesn't utilize x2 or y2
             } else if (telem.kind === elementTypesNames.SDEntity) {
                 offset.y2 = -15;
-            } else { offset.y2 = 0; } //Aligning line with mouse coordinate before telem has been set
+            } else { offset.y2 = 0; } // Aligning line with mouse coordinate before telem has been set
             offset.y1 = 15;
 
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
@@ -172,7 +187,9 @@ function drawLine(line, targetGhost = false) {
                     y2='${ty + offset.y2 * zoomfact}' 
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}'
                 />`;
-    } else { // UML, IE or SD
+    } else {
+        
+        // Some drawing options for the remainder of line types (UML, IE or Sequence)
         if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
         }
@@ -182,17 +199,17 @@ function drawLine(line, targetGhost = false) {
 
     }
 
-    //Drawing Arrow and other line icons for UML abnd IE lines
+    // Drawing Arrow and other line icons for UML and IE lines
     if (line.recursive) {
-        //Arrow/icon location dependant on element length, so its always in the top right corner of the element.
+        // Arrow/icon location dependant on element length, so it's always in the top right corner of the element
         const length = 40 * zoomfact;
         const elementLength = felem.x2 - felem.x1;
         let startX = felem.x1 + elementLength - length;
         let startY = felem.y1;
         
-        //Same values for UML and IE as they use the same icons, just different element values.
+        // Same values for UML and IE as they use the same icons, just different element values
         if(line.type !== entityType.SD || line.type !== entityType.SE){
-            line.ctype = lineDirection.UP;  //So arrows point down
+            line.ctype = lineDirection.UP;  // Makes arrows point down
             lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY, lineColor, line);
             lineStr += drawLineIcon(line.endIcon, line.ctype, (startX + length), startY, lineColor, line);
         }
@@ -201,8 +218,8 @@ function drawLine(line, targetGhost = false) {
         lineStr += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
     }
     // Always allow arrowheads to render if icon is ARROW
-    // If the line is SEGMENTED (has 90-degree bends), draw a fixed arrowhead with iconPoly.
-    // Otherwise, draw a rotated arrowhead using drawArrowPoint based on the line direction.
+    // If the line is Segmented (has 90-degree bends), draw a fixed arrowhead with iconPoly
+    // Otherwise, draw a rotated arrowhead using drawArrowPoint based on the line direction
     if (line.type == entityType.SD || line.type == entityType.SE) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
@@ -211,7 +228,7 @@ function drawLine(line, targetGhost = false) {
         startX += offset.x1 * zoomfact;
         startY += offset.y1 * zoomfact; 
 
-    //Draws the Segmented version for arrow and not straight line
+    // Draws the Segmented version for arrow and not straight line
     if(line.recursive){
 
         if(line.startIcon === SDLineIcons.ARROW){
@@ -239,7 +256,7 @@ function drawLine(line, targetGhost = false) {
         
     }
 
-    // Draws the cardinality labels for the line for UML
+    // Draws the cardinality start and end labels for the line for UML
     if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
             const fxCardinality = fx + offset.x1;
@@ -252,11 +269,13 @@ function drawLine(line, targetGhost = false) {
             labelStr += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem);
         }
     } else {
+        // Draws cardinality for ER
         if (line.cardinality) {
             labelStr += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
 
+    // When line is targeted outlines it with a visible and editable box
     if (isSelected) {
         labelStr += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
@@ -266,8 +285,9 @@ function drawLine(line, targetGhost = false) {
                     style='fill:${lineColor}' stroke='${lineColor}' stroke-width="3"
                 />`;
     }
+    // If line has text label attached (and isn't IE) allow text to be dynamically positioned along line
     if (line.label && line.type !== entityType.IE) {
-        //Get width of label's text through canvas
+        // Get width of label's text through canvas
         const height = Math.round(zoomfact * textheight);
         const canvas = document.getElementById('canvasOverlay');
         const canvasContext = canvas.getContext('2d');
@@ -297,6 +317,9 @@ function drawLine(line, targetGhost = false) {
             lineGroup: 0,
             labelMoved: false
         };
+
+        // Stores label coordinate data and checks if it was previously stored
+        // If label was stored it is replaced by the coordinates of the relocated one
         let rememberTargetLabelID = (targetLabel) ? targetLabel.id : undefined;
         if (lineLabelList[findIndex(lineLabelList, label.id)]) {
             label.labelMovedX = lineLabelList[findIndex(lineLabelList, label.id)].labelMovedX;
@@ -325,7 +348,7 @@ function drawLine(line, targetGhost = false) {
         const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
         const labelPositionY = labelPosY - zoomfact;
 
-        // Label positioning for regual (non-recursive) lines
+        // Label positioning for regular (non-recursive) lines
         const labelCenterX = label.centerX - (2 * zoomfact);
         const labelCenterY = label.centerY;
 
@@ -333,15 +356,14 @@ function drawLine(line, targetGhost = false) {
         const rectPosX = labelCenterX - textWidth / 2 - zoomfact * 2;
         const rectPosY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
 
-        //Add label with styling based on selection.
-
+        // Add label with styling based on selection
         if (line.recursive) {
-            //Calculatin the lable possition based on element size, so it follows when resized.
-
+            
+            // Calculating the label position based on element size, so it follows when resized
             let length = 20 * zoomfact;
             let lift   = 80 * zoomfact;
                     
-                    // Calculations only for SE
+            // Calculations only for SE
             if (line.type === entityType.SE) {
                 length = 70 * zoomfact; 
                 lift = 20 * zoomfact;   
@@ -392,7 +414,7 @@ function drawLine(line, targetGhost = false) {
     return { lineStr, labelStr };
 }
 
-// Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed.
+// Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed
 function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth = 0, targetHeight = 0) {
     const dx = tx - fx;
     const dy = ty - fy;
@@ -439,10 +461,10 @@ function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
 }
 
 /**
- * @description Check and calculate the offset for recursive ER relations.
- * @param {Element} felem Element the line is being dragged from.
- * @param {Element} telem Element the line is being dragged to.
- * @param {object} line The line being dragged.
+ * @description Check and calculate the offset for recursive ER relations
+ * @param {Element} felem Element the line is being dragged from
+ * @param {Element} telem Element the line is being dragged to
+ * @param {object} line The line being dragged
  * @returns {number[]} Returns the new coordinates
  */
 function recursiveERRelation(felem, telem, line, fromElemMouseY, toElemMouseY) {
@@ -459,6 +481,16 @@ function recursiveERRelation(felem, telem, line, fromElemMouseY, toElemMouseY) {
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
 
+/**
+ * @description Calculate start and end coordinates (and offset) needed to draw a line between two elements
+ * @param {Object} line The line object being drawn
+ * @param {Element} f The from-element
+ * @param {Element} t The to-element
+ * @param {String} ctype The connection direction
+ * @param {number} fromElemMouseY Mouse Y-coordinate when the line drag began on the from-element
+ * @param {number} toElemMouseY Mouse Y-coordinate when the line drag began on the to-element
+ * @returns {number[]} Returns coordinates and offset
+ */
 function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     let px = -1; // Don't touch
 
@@ -549,7 +581,7 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
         } 
     } 
     
-    // Special case if line is connected to or from a ER realation
+    // Special case if line is connected to or from an ERRelation
     if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation ||
         f.kind === elementTypesNames.EREntity || t.kind === elementTypesNames.EREntity) {
         const shrink = 8 * zoomfact; 
