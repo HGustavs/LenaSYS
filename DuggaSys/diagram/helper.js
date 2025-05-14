@@ -264,17 +264,17 @@ function calculateDeltaExceeded() {
 }
 
 /**
- * @description compare if 2 objects contain the same values. Allows for certain keys to be ignored
- * @param {object} obj1 first object
- * @param {object} obj2 second object
- * @param {string[]} ignore array of keys to ingore
+ * @description Compare if 2 objects contain the same values. Allows for certain keys to be ignored.
+ * @param {object} obj1 First object.
+ * @param {object} obj2 Second object.
+ * @param {string[]} ignore Array of keys to ignore.
  * @returns {boolean}
  */
 function sameObjects(obj1, obj2, ignore = []) {
-    // removes the reference to the sent in objects just in case the sending function didn't do it
+    // Removes the reference to the sent in objects just in case the sending function didn't do it
     obj1 = { ...obj1 };
     obj2 = { ...obj2 };
-    // remove the values in the "ignore" array
+    // Remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];
         if (obj2[item]) delete obj2[item];
