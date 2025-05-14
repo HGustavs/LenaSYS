@@ -42,10 +42,11 @@ function setup()
 		if (canvas) {
 				context = canvas.getContext("2d");
 				fitToContainer();
-				$( window ).resize(function() {
-						fitToContainer();
-						render();
-				});
+				    window.addEventListener('resize', function() {
+                     fitToContainer();
+                        render();
+                    });
+
 				context.clearRect(0, 0, canvas.width, canvas.height);
 
 				if(requiresParams){
@@ -81,7 +82,7 @@ function show(){
                 newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
                 newTableBody += "</tr>";
 
-                $("#operationList").append(newTableBody);
+                document.getElementById("operationList").insertAdjacentHTML("beforeend", newTableBody);
             }
         }
         render();
@@ -118,7 +119,7 @@ function show(){
       document.getElementById('duggaTotalTime').innerHTML=userStats[1];
       document.getElementById('duggaClicks').innerHTML=userStats[2];
       document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-      $("#duggaStats").css("display","block");
+      document.getElementById("duggaStats").style.display = "block";
     }
 
 }
