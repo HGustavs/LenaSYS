@@ -151,7 +151,7 @@ Returns the data as an array, containing information about the dugga and its sub
 
 - Parameter: $highscoremode
    - Type: int
-   - Description: Highscore mode for a dugga (quiz). Stored as int(11) in the database
+   - Description: Highscore mode for a dugga. Stored as int(11) in the database
 
 - Parameter: $grade
    - Type: int
@@ -342,3 +342,102 @@ Returns the data as an array, containing information about the dugga and its sub
 
 ---
 
+# Name of file/service
+getShowDugga_ms.php
+
+## Description
+Calls retrieveShowDuggaService_ms.php to fetch and return specific dugga-data from the database, serving as a direct link between client requests and the database. 
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $duggaid
+   - Type: int
+   - Description: Dugga ID. Stored as int(11) in the database
+
+- Parameter: $moment
+   - Type: int
+   - Description: Submission segment/moment. Stored as int(11) in the database
+
+- Parameter: $segment
+   - Type: int
+   - Description: Submission segment/moment. Stored as int(11) in the database
+
+- Parameter: $answer
+   - Type: String
+   - Description: Answer for a dugga. Stored as text in the database
+
+- Parameter: $highscoremode
+   - Type: int
+   - Description: Highscore mode for a dugga (quiz). Stored as int(11) in the database
+
+- Parameter: $setanswer
+   - Type: String
+   - Description: Chosen answer for a dugga. Stored as text in the database
+
+- Parameter: $showall
+   - Type: boolean
+   - Description: Whether a submission should be shown or not. True or false. True by default
+
+- Parameter: $contactable
+   - Type: ?
+   - Description: ?
+
+- Parameter: $rating
+   - Type: int
+   - Description: Dugga score. Stored as int(10) in the database
+
+- Parameter: $entryname
+   - Type: String
+   - Description: List entry name. Stored as varchar(64) in the database
+
+- Parameter: $hash
+   - Type: int
+   - Description: Identifier. Stored as varchar(8) in the database
+
+- Parameter: $hashpwd
+   - Type: String
+   - Description: Hash identifier password. Stored as varchar(8) in the database
+
+- Parameter: $password
+   - Type: String
+   - Description: Password. Stored as varchar(255) in the database
+
+- Parameter: $AUtoken
+   - Type: ?
+   - Description: Authentication token
+
+- Parameter: $variantvalue
+   - Type: ?
+   - Description: ?
+
+- Parameter: $duggatitle
+   - Type: String
+   - Description: List entry name. Stored as varchar(64) in the database
+
+## Calling Methods
+- GET
+- POST
+
+## Output Data and Format
+- Output: $array
+   - Type: JSON
+   - Description: The return array from retrieveShowDuggaService_ms, through calling the function retrieveShowDuggaService. Values for parameters are inserted in getShowDugga_ms and passed to the function.
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveShowDuggaService_ms.php
+
+---
