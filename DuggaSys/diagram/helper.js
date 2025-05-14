@@ -119,15 +119,24 @@ function entityIsOverlapping(id, x, y, ignoreIds = []) {
 
         // No element can be placed over another of the same kind
         if (other.kind !== element.kind) {
-        if ((other.kind === "sequenceActor" || other.kind === "sequenceObject") &&
-        element.kind === "sequenceActivation") {
-        const headerHeight = getTopHeight(other);          
-        const extra        = other.kind === "sequenceActor"; 
-        const headerBottom = other.y + headerHeight + extra;
-
-        if (y < headerBottom) return true;   
-        continue;                            
-    }
+            if ((other.kind === "sequenceActor" || other.kind === "sequenceObject") &&
+            element.kind === "sequenceActivation") {
+        
+                const bodyX = other.x;
+                const bodyWidth = other.width;
+                const bodyY = other.y;
+                const bodyHeight = getTopHeight(other);
+            
+                // Block placeing on the actor/objects body
+                if (
+                    x + element.width > bodyX &&
+                    x < bodyX + bodyWidth &&
+                    y + element.height > bodyY &&
+                    y < bodyY + bodyHeight
+                ) return true;
+            
+                continue;
+            }
 
             // All sequence elements can be placed over loops, alternatives and activations and vice versa
             else if (other.type === "SE" && (element.kind === "sequenceLoopOrAlt" || element.kind === "sequenceActivation")) continue;
@@ -216,7 +225,7 @@ function isDarkTheme() {
  */
 function makeRandomID() {
     let str = "";
-    const characters = 'ABCDEF0123456789';
+    const characters = 'ABCDEFGIJK0123456789';
     const charactersLength = characters.length;
     while (true) {
         for (let i = 0; i < 6; i++) {
@@ -255,17 +264,17 @@ function calculateDeltaExceeded() {
 }
 
 /**
- * @description compare if 2 objects contain the same values. Allows for certain keys to be ignored
- * @param {object} obj1 first object
- * @param {object} obj2 second object
- * @param {string[]} ignore array of keys to ingore
+ * @description Compare if 2 objects contain the same values. Allows for certain keys to be ignored.
+ * @param {object} obj1 First object.
+ * @param {object} obj2 Second object.
+ * @param {string[]} ignore Array of keys to ignore.
  * @returns {boolean}
  */
 function sameObjects(obj1, obj2, ignore = []) {
-    // removes the reference to the sent in objects just in case the sending function didn't do it
+    // Removes the reference to the sent in objects just in case the sending function didn't do it
     obj1 = { ...obj1 };
     obj2 = { ...obj2 };
-    // remove the values in the "ignore" array
+    // Remove the values in the "ignore" array
     for (let item of ignore) {
         if (obj1[item]) delete obj1[item];
         if (obj2[item]) delete obj2[item];
@@ -274,3 +283,50 @@ function sameObjects(obj1, obj2, ignore = []) {
     // JSON.stringify() is needed to compare the values
     return JSON.stringify(obj1) == JSON.stringify(obj2);
 }
+
+// Map<elementId, Map<connectionKey, offsetValue>>
+const offsetMap = new Map();
+
+// Generate an ID for a line
+function generateLineKey(fId, tId, index) {
+    return `from:${fId}->${tId}#${index}`;
+}
+
+// Increment the map index position
+function getNextLineIndex(fId, tId, map) {
+    let i = 0;
+    while (map.has(generateLineKey(fId, tId, i))) {
+        i++;
+    }
+    return i;
+}
+
+// Return offset key for a specified element
+function hasOffset(map, elemId, key) {
+    return map.has(elemId) && map.get(elemId).has(key);
+}
+
+// Set the offset (value) for a specific key
+function setOffset(map, elemId, key, value) {
+    if (!map.has(elemId)) {
+        map.set(elemId, new Map());
+    }
+    map.get(elemId).set(key, value);
+}
+
+// Retrieve the offset for a specific key
+function getOffset(map, elemId, key) {
+    return map.get(elemId)?.get(key) ?? null;
+}
+
+// Remove the offset for a specific key, and if map is empty remove that too.
+function removeOffset(map, elemId, key) {
+    if (map.has(elemId)) {
+        const innerMap = map.get(elemId);
+        innerMap.delete(key);
+        if (innerMap.size === 0) {
+            map.delete(elemId); 
+        }
+    }
+}
+
