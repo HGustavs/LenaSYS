@@ -450,6 +450,8 @@ Updates the active version of a specific course. After the update, retrieveSecti
 ### Microservices Used
 - retrieveSectionedService_ms
 
+---
+
 # Name of file/service
 createGithubCodeExample_ms
 
@@ -708,7 +710,7 @@ Microservice that updates the active version of a course
    - Description: JSON object returned from retrieveSectionedService_ms.php, along with the new active course version ID and a debug message
 
 ## Examples of Use
-
+-
 
 ### Microservices Used
 - retrieveSectionedService_ms
@@ -765,8 +767,6 @@ This service is restricted to superusers.
 ### Microservices Used  
 - getUid_ms.php  
 - retrieveSectionedService_ms.php  
-- sessions.php  
-- basic.php  
 
 ---
 
@@ -867,8 +867,237 @@ Updates a list entry in the 'listentries' table with new section information suc
 ### Microservices Used  
 - getUid_ms.php  
 - retrieveSectionedService_ms.php  
-- sessions.php  
-- basic.php  
+
+---
+
+# Name of file/service
+readGroupValues_ms.php
+
+## Description
+Retrieves group values and related data from a specific course when a group is clicked on in the UI. Organizes the data and returns it in a structured format.
+The group and course data is then added to the $data array retrieved from retrieveSectionedService_ms.php.
+
+## Input Parameters
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier, for logging purposes
+
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $groups
+   - Type: array
+   - Description: Array containing groupKind and groupVal. Along with structured data from the function retrieveSectionedService in retrieveSectionedService_ms.php
+
+- Output: $groupKind
+   - Type: String
+   - Description: Group kind. Stored as varchar(4) in the database
+
+- Output: $groupVal
+   - Type: String
+   - Description: Group value. Stored as varchar(8) in the database
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+- getUid_ms.php
+
+---
+
+# Name of file/service
+readUserDuggaFeedback_ms.php
+
+## Description
+Fetches user feedback for a specific dugga (quiz) moment within a specific course, and calculates the average feedback score. 
+The feedback data is then added to the $data array retrieved from retrieveSectionedService_ms.php.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $moment
+   - Type: int
+   - Description: Describe parameter. Stored as int(10) in the database
+
+- Parameter: $vers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier, for logging purposes
+
+- Parameter: $coursevers
+   - Type: int
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: userfeedback
+   - Type: array
+   - Description: Array containing individual user feedback. Contains $ufid, $username, $cid, $lid, $score and $entryname, from 'userduggafeedback' table
+
+- Output: $ufid
+   - Type: int
+   - Description: User feedback ID. Stored as int(10) in the database
+
+- Output: $username
+   - Type: String
+   - Description: User's username. Stored as varchar(80) in the database
+
+- Output: $cid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Output: $lid
+   - Type: int
+   - Description: List entry ID. Stored as int(10) in the database
+
+- Output: $score
+   - Type: int
+   - Description: Feedback score. Stored as int(11) in the database
+
+- Output: $entryname
+   - Type: String
+   - Description: Entry name. Stored as varchar(68) in the database
+
+- Output: feedbackquestion
+   - Type: String
+   - Description: Feedback question for users to answer. Stored as varchar(512) in the database
+
+- Output: avgfeedbackscore
+   - Type: int
+   - Description: Avarage feedback score for a specific dugga and course, calculated through SQL AVG()
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+
+---
+
+# Name of file/service  
+getDeletedListEntries_ms
+
+## Description
+Retrieves all list entries with visibility set to 3 (i.e., marked as deleted) from the 'listentries' table. Used to show items that were previously deleted from the course structure.
+
+## Input Parameters
+
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type (used for logging/debugging).
+
+- Parameter: $courseid  
+  - Type: int(10)  
+  - Description: Course ID.
+
+- Parameter: $coursevers  
+  - Type: int(11)  
+  - Description: Course version.
+
+- Parameter: $versid  
+  - Type: int(11)  
+  - Description: Version ID (not used in logic directly).
+
+- Parameter: $log_uuid  
+  - Type: char  
+  - Description: UUID used for logging.
+
+## Calling Methods
+
+- GET (getOP)
+
+## Output Data and Format
+
+- Output  
+  - Type: JSON  
+  - Description: The full sectioned course data, including entries marked as deleted.
+
+## Examples of Use
+
+'SELECT * FROM listentries WHERE visible = '3''
+
+### Microservices Used
+
+- getUid_ms  
+- retrieveSectionedService_ms
+
+---
+
+# Name of file/service  
+getGroupValues_ms
+
+## Description
+Retrieves all available group kinds and their values from the 'groups' table. Used to display group options when interacting with group-related features in a course.
+
+## Input Parameters
+
+- Parameter: $courseid  
+  - Type: int(10)  
+  - Description: Course ID.
+
+- Parameter: $coursevers  
+  - Type: int(11)  
+  - Description: Course version.
+
+- Parameter: $versid  
+  - Type: int(11)  
+  - Description: Version ID (unused in logic).
+
+- Parameter: $log_uuid  
+  - Type: char  
+  - Description: UUID used for logging.
+
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type (used for logging/debugging).
+
+## Calling Methods
+
+- GET (getOP)
+
+## Output Data and Format
+
+- Output  
+  - Type: JSON  
+  - Description: The full sectioned course data including group values grouped by kind.
+
+## Examples of Use
+
+'SELECT groupKind, groupVal FROM groups'
+
+### Microservices Used
+
+- getUid_ms  
+- retrieveSectionedService_ms
 
 ---
 
