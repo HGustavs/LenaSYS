@@ -34,13 +34,13 @@ function setup()
 		});
 	});
 
-	document.querySelectorAll('.hexo').forEach(hexo => {
-		hexo.addEventListener("click", function(){
-			hexClick(hexo.id);
+	document.querySelectorAll('.hexo').forEach(hexa => {
+		hexa.addEventListener("click", function(){
+			hexClick(hexa.id);
 		});
 	})
 
-		AJAXService("GETPARAM",{ },"PDUGGA");
+	AJAXService("GETPARAM",{ },"PDUGGA");
 }
 
 //----------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		//document.getElementById('submission-receipt').innerHTML=`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		//showReceiptPopup();
 	}
 
@@ -137,8 +137,8 @@ function returnedDugga(data)
 
 function saveClick()
 {
-	//$('#submission-receipt').html(`${response['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${response['link']}\n\nHash\n${response['hash']}\n\nHash password\n${response['hashpwd']}`);
-		showReceiptPopup();
+	//document.getElementById('submission-receipt').innerHTML=`${response['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${response['link']}\n\nHash\n${response['hash']}\n\nHash password\n${response['hashpwd']}`);
+	showReceiptPopup();
 	Timer.stopTimer();
 
 	timeUsed = Timer.score;
@@ -298,18 +298,15 @@ function bitClick(divid)
 
 function hexClick(divid)
 {
-	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
+	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
-	dw=window.width;
+	dw=window.innerWidth;
 	var element=document.getElementById(divid);
-	var dpos={
-		top: element.offsetTop,
-		left: element.offsetLeft,
-	};
-	dwid=document.getElementById(divid).width;
-	dhei=document.getElementById(divid).height;
+	var dpos=element.getBoundingClientRect();
+	dwid=document.getElementById(divid).Width;
+	dhei=document.getElementById(divid).Height;
 	bw=Math.round(dwid)*1.10;
-	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
+	if(bw<200) bw=200;	// Ensure minimum width of the HEX-box
 	
 	lpos=dpos.left;
 	
@@ -320,10 +317,13 @@ function hexClick(divid)
 	}
 	 
 	var hh=(dhei*2);
-	if(hh<160) hh=160;
+	if(hh<200) hh=200;
 	hh+="px";
 	
-	document.getElementById("pop").style='top: (dpos.dhei+10); left:lpos; width:bw,height:hh';
+	document.getElementById("pop").style.top=(dpos.dhei+10) + "px";
+	document.getElementById("pop").style.left=lpos + "px";
+	document.getElementById("pop").style.width=bw + "px";
+	document.getElementById("pop").styleheight=hh + "px";
 	document.getElementById("pop").classList.remove("arrow-topr");
 	document.getElementById("pop").classList.remove("arrow-top");
 	document.getElementById("pop").classList.add(popclass);
