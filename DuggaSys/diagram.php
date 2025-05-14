@@ -1444,7 +1444,45 @@
 
 
     <nav id="mb-diagram-toolbar-2">
-        
+        <ul class="mb-nav-list">
+             <li class="mb-nav-item"  title="Log in">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <img src="../Shared/icons/login_button.svg" />
+                </div>
+            </li>
+
+             <li class="mb-nav-item" title="Home">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <img src="../Shared/icons/Home.svg"/>
+                </div>
+            </li>
+              <li class="mb-nav-item" title="Undo">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                     <img src="../Shared/icons/diagram_stepback.svg"/>
+                </div>
+            </li>
+              <li class="mb-nav-item" title="Save Dugga">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <img src="../Shared/icons/save_button.svg"> 
+                </div>
+            </li>
+            <li class="mb-nav-item" title="Load Dugga">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <img src="../Shared/icons/Document.svg"> 
+                </div>
+            </li>
+            <li class="mb-nav-item" title="Restart Dugga">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <img src="../Shared/icons/diagram_Refresh_Button.svg"> 
+                </div>
+            </li>
+            <li class="mb-nav-item" title="Toggle Dark Mode">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <img src="../Shared/icons/ThemeToggle.svg"> 
+                </div>
+            </li>
+
+        </ul>
     </nav>
 
     <!-- MOBILE VERSION OF THE DIAGRAM-TOOLBAR, STARTS HERE! -->

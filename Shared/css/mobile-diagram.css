@@ -14,31 +14,40 @@
         transition: var(--normal-transition);
     }
 
-
-        /* hidden by default: moved 100% of its own width off the right edge */
     #mb-diagram-toolbar-2 {
         position: fixed;
         display: flex;
         top: 0;
         right: 0;
         height: 100%;
-        width: 30px;                   /* adjust to your “open” width */
+        width: 50px;                
         background-color: var(--color-primary);
-
         transform: translateX(100%);
         transition: var(--normal-transition);
         z-index: 21;
         flex-direction: column;
     }
 
-    /* when this class is toggled, it slides into view */
     #mb-diagram-toolbar-2.open {
         transform: translateX(-33px);
     }
-
     #mb-diagram-toolbar.active {
         transform: translateY(0px);
     }
+
+    #mb-diagram-toolbar-2 img {
+        width: 40px;
+        aspect-ratio: 1;
+        padding: .2rem;
+    }
+    #mb-diagram-toolbar-2 ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0;
+    }
+
 
     #mb-diagram-toolbar img {
         width: 40px;
