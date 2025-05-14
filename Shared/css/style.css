@@ -872,7 +872,7 @@ p {
 }
 
 .dropdown-content {
-  display: none;
+  display: flex;
   position: absolute;
   z-index: 1;
   flex-direction: column;
@@ -8691,6 +8691,20 @@ textarea#mrkdwntxt {
 
 .show-dropdown-content {
   display: block;
+}
+
+.dropdown-content {
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transition-delay: 0s, 0.1s; 
+}
+
+.dropdown-content.dropdown-content-show {
+  transform: scaleY(1);
+  opacity: 1;
+  transition-delay: 0s, 0s; 
 }
 
 #select-header {
