@@ -324,7 +324,16 @@ $js = array(
                                 <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
                                 <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
                                 <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
-                                <span class="markdown-icons headerType" id="headerIcon" title="Header" onmouseover="console.log('testing'); showDropdown('show');" onmouseout="showDropdown('hide');">aA&#9663;
+                                <span class="markdown-icons headerType" id="headerIcon" title="Header" onmouseover="console.log('testing'); 
+                                showDropdown('show');" onmouseleave="showDropdown('hide');">aA&#9663;
+                                    <div class="selectHeader" id="select-header" style="display: none;">
+                                        <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                                        <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                                        <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                                        <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
+                                        <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
+                                        <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+                                    </div> 
                                 </span>
 
                                 <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
@@ -355,14 +364,6 @@ $js = array(
                                     }
                                 ?>
                                 </select>
-                                <div class="selectHeader" id="select-header" style="display: none;">
-                                    <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
-                                    <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
-                                    <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
-                                    <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
-                                    <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
-                                    <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
-                                </div> 
                             </div>
 
                             <div class="markText" style="flex-grow:1;">
