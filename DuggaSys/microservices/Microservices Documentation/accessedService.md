@@ -8,58 +8,58 @@ Logs the event and performs authentication.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
+   - Type: String
    - Description: Operation type, must be 'ADDCLASS' here
 
 - Parameter: $newclass
-   - Type: JSON-array?
-   - Description: Represents the new class to be added (contains class, responsible, classname, regcode, classcode, hp, tempo, hpProgress)
+   - Type: JSON-array
+   - Description: Array that epresents the new class to be added (contains class, responsible, classname, regcode, classcode, hp, tempo, hpProgress)
 
 - Parameter: $class
-   - Type: varchar
-   - Description: Unique name of the class
+   - Type: String
+   - Description: Unique name of the class. Stored as varchar(10) in the database
 
 - Parameter: $responsible
    - Type: int
-   - Description: -
+   - Description: Stored as int(10) in the database
 
 - Parameter: $classname
-   - Type: varchar
-   - Description: Classname
+   - Type: String
+   - Description: Classname. Stored as varchar(100) in the database
 
 - Parameter: $regcode
    - Type: int
-   - Description: Registration code for the class 
+   - Description: Registration code for the class. Stored as int(8) in the database 
 
 - Parameter: $classcode
-   - Type: varchar
-   - Description: Classcode
+   - Type: String
+   - Description: Classcode. Stored as varchar(8) in the database
 
 - Parameter: $hp
-   - Type: decimal
-   - Description: HP - högskolepoäng
+   - Type: String
+   - Description: HP - högskolepoäng. Stored as decimal(10, 1) in the database
 
 - Parameter: $tempo
    - Type: int
-   - Description: Tempo of the course as percentage
+   - Description: Tempo of the course as percentage. Stored as int(3) in the database
 
 - Parameter: $hpProgress
-   - Type: decimal
-   - Description: HP (högskolepoäng) progress
+   - Type: String
+   - Description: HP (högskolepoäng) progress. Stored as decimal(3, 1) in the database
 
 - Parameter: $log_uuid
-   - Type: int
+   - Type: String
    - Description: Unique identifier for logging purposes
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- Output: array
-   - Type: JSON
+- Output: $array
+   - Type: JSON-array
    - Description: Contains information about the result of the operation
 
-- Output: debug
+- Output: $debug
    - Type: String
    - Description: Error message if the user is not a superuser, the $opt is not 'ADDCLASS' or not able to create the class/course
 
@@ -70,6 +70,7 @@ Logs the event and performs authentication.
 - getUid_ms.php
 - retrieveAccessedService_ms.php
 
+---
 
 # Name of file/service
 addUser_ms.php
@@ -80,62 +81,62 @@ Checks if a user exists based on the username, creates a new user if it not and 
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: ?
+   - Type: String
    - Description: Operation type, must be 'ADDUSR' (add user) here
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID for the course to add the student to
+   - Description: Course ID for the course to add the student to. Stored as int(10) in the database
 
 - Parameter: $newusers
    - Type: JSON-array
    - Description: Represents the new user to be added (contains username, saveemail, firstname, lastname, ssn, rnd, classname)
 
 - Parameter: $username
-   - Type: varchar
-   - Description: Username, derived from the user's email address
+   - Type: String
+   - Description: Username, derived from the user's email address. Stored as varchar(80) in the database
 
 - Parameter: $saveemail
-   - Type: varchar
-   - Description: User's email address, index 3 in $newusers array ($user[3])
+   - Type: String
+   - Description: User's email address, index 3 in $newusers array ($user[3]). Stored as varchar(256) in the database
 
 - Parameter: $firstname
-   - Type: varchar
-   - Description: User's firstname, index 1 in $newusers array ($user[1])
+   - Type: String
+   - Description: User's firstname, index 1 in $newusers array ($user[1]). Stored as varchar(50) in the database
 
 - Parameter: $lastname
-   - Type: varchar
-   - Description: User's lastname, index 2 in $newusers array ($user[2])
+   - Type: String
+   - Description: User's lastname, index 2 in $newusers array ($user[2]). Stored as varchar(50) in the database
 
 - Parameter: $ssn
-   - Type: varchar
-   - Description: User's social security number, index 0 in $newusers array ($user[0])
+   - Type: String
+   - Description: User's social security number, index 0 in $newusers array ($user[0]). Stored as varchar(20) in the database
 
 - Parameter: $rnd
-   - Type: varchar
-   - Description: Randomly generated password
+   - Type: String
+   - Description: Randomly generated password. Stored as varchar(225) in the database
 
 - Parameter: $classname
-   - Type: varchar
-   - Description: Name of class, index 4 in $newusers array ($user[4])
+   - Type: String
+   - Description: Name of class, index 4 in $newusers array ($user[4]). Stored as varchar(100) in the database
 
 - Parameter: $coursevers
-   - Type: varchar
-   - Description: Course version
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: int
+   - Type: String
    - Description: Unique identifier for logging purposes
 
 ## Calling Methods
 - GET
 
 ## Output Data and Format
-- Output: array
-   - Type: JSON
+- Output: $array
+   - Type: JSON-array
    - Description: Contains information about the result of the operation
 
-- Output: debug
+- Output: $debug
    - Type: String
    - Description: Message is displayed if an error occurs
 
@@ -145,9 +146,10 @@ Checks if a user exists based on the username, creates a new user if it not and 
 ### Microservices Used
 - getUid_ms.php
 - retrieveAccessedService_ms.php;
-- 
 
-# Name of file/service
+---
+
+# name of file/service
 getAccessedService_ms.php
 
 ## Description
@@ -160,18 +162,18 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
 
 - Parameter: $courseid
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: varchar
+   - Type: String
    - Description: Unique identifier for logging purposes
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- Output: array
-   - Type: JSON
+- Output: $array
+   - Type: JSON-array
    - Description: String containing data for a user in a specific course, along with logging information
 
 ## Examples of Use
@@ -181,8 +183,9 @@ Calls retrieveAccessedService_ms.php to fetch and return data.
 - getUid_ms.php
 - retrieveAccessedService_ms.php
 
+---
 
-# Name of file/service
+# name of file/service
 retrieveAccessedService_ms.php
 
 ## Description
@@ -192,7 +195,7 @@ The data is only retrieved for users who have specific access.
 
 ## Input Parameters
 - Parameter: $pdo
-   - Type: PDO
+   - Type: String
    - Description: Database connection
 
 - Parameter: $debug
@@ -201,14 +204,14 @@ The data is only retrieved for users who have specific access.
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID
+   - Description: User ID. Stored as int(10) in the database
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: varchar
+   - Type: String
    - Description: Unique identifier for logging purposes
 
 - Parameter: $opt
@@ -264,120 +267,120 @@ The data is only retrieved for users who have specific access.
    - Description: Whether a user has access or not to view the course data
 
 - Output: $username
-   - Type: varchar
-   - Description: Username
+   - Type: String
+   - Description: Username. Stored as varchar(80) in the database
 
 - Output: $ssn
-   - Type: varchar
-   - Description: Social security number
+   - Type: String
+   - Description: Social security number. Stored as varchar(20) in the database
 
 - Output: $firstname
-   - Type: varchar
-   - Description: User's firstname
+   - Type: String
+   - Description: User's firstname. Stored as varchar(50) in the database
 
 - Output: $lastname
-   - Type: varchar
-   - Description: User's lastname
+   - Type: String
+   - Description: User's lastname. Stored as varchar(50) in the database
 
 - Output: $class
-   - Type: varchar
-   - Description: Class (program)
+   - Type: String
+   - Description: Class (program). Stored as varchar(10) in the database
 
 - Output: $modified
-   - Type: timestamp
-   - Description: Last modified
+   - Type: String
+   - Description: Last modified. Stored as timestamp in the database
 
 - Output: $examiner
    - Type: int
-   - Description: Specific courseexaminor
+   - Description: Specific courseexaminor. Stored as int(11) in the database
 
 - Output: $access
-   - Type: varchar
-   - Description: Access to change/view data or not
+   - Type: String
+   - Description: Access to change/view data or not. Stored as varchar(10) in the database
 
 - Output: $groups
-   - Type: varchar
-   - Description: Group
+   - Type: String
+   - Description: Group. Stored as varchar(256) in the database
 
 - Output: $requestedpasswordchange
-   - Type: tinyint
-   - Description: ?
+   - Type: int
+   - Description: Stored as tinyint(1) in the database
 
 - Output: $uid
-   - Type: varchar
-   - Description: User ID
+   - Type: int
+   - Description: User ID. Stored as int(10) in the database
 
 - Output: $responsible
    - Type: int
-   - Description: Who is responsible of the class
+   - Description: Who is responsible of the class. Stored as int(10) in the database
 
 - Output: $classname
-   - Type: varchar
-   - Description: Class' name
+   - Type: String
+   - Description: Class' name. Stored as varchar(100) in the database
 
 - Output: $regcode
    - Type: int
-   - Description: Registration number
+   - Description: Registration number. Stored as int(8) in the database
 
 - Output: $classcode
-   - Type: varchar
-   - Description: Class (program) code
+   - Type: String
+   - Description: Class (program) code. Stored as varchar(8) in the database
 
 - Output: $hp
-   - Type: decimal
-   - Description: HP (högskolepoäng)
+   - Type: String
+   - Description: HP (högskolepoäng). Stored as decimal(10, 1) in the database
 
 - Output: $tempo
    - Type: int
-   - Description: Class tempo/speed 
+   - Description: Class tempo/speed. Stored as int(3) in the database
 
 - Output: $hpProgress
-   - Type: decimal
-   - Description: HP (högskolepoäng) progress
+   - Type: String
+   - Description: HP (högskolepoäng) progress. Stored as decimal(3, 1) in the database
 
 - Output: $cid
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Output: $coursecode
-   - Type: varchar
-   - Description: Course code
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Output: $vers
-   - Type: varchar
-   - Description: Course version
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Output: $versname
-   - Type: int
-   - Description: Course version name
+   - Type: String
+   - Description: Course version name. Stored as varchar(45) in the database
 
 - Output: $coursename
-   - Type: varchar
-   - Description: Course name
+   - Type: String
+   - Description: Course name. Stored as varchar(80) in the database
 
 - Output: $coursenamealt
-   - Type: varchar
-   - Description: Course name alternative
+   - Type: String
+   - Description: Course name alternative. Stored as varchar(45) in the database
 
 - Output: $startdate
-   - Type: datetime
-   - Description: Course's start date
+   - Type: String
+   - Description: Course's start date. Stored as datetime in the database
 
 - Output: $enddate
-   - Type: datetime
-   - Description: Course's end date
+   - Type: String
+   - Description: Course's end date. Course's start date. Stored as datetime in the database
 
 - Output: $groupval
-   - Type: varchar
-   - Description: ?
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 - Output: $groupkind
-   - Type: datetime
-   - Description: Group kind/type
+   - Type: String
+   - Description: Stored as varchar(4) in the database
 
 - Output: $groupint
    - Type: int
-   - Description: ?
+   - Description: Stored as int(11) in the database
 
 ## Examples of Use
 -
@@ -385,6 +388,7 @@ The data is only retrieved for users who have specific access.
 ### Microservices Used
 None
 
+---
 
 # Name of file/service
 updateUser_ms.php
@@ -394,35 +398,35 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
 
 - Parameter: $prop
    - Type: String
-   - Description: Property to update
+   - Description: Which property to update
 
 - Parameter: $courseid
    - Type: String
-   - Description: describe parameter
+   - Description: Course id. Stored as int(10) in the database
 
 - Parameter: $uid
    - Type: int
-   - Description: User ID
+   - Description: User ID. Stored as int(10) in the database
 
 - Parameter: $firstname
    - Type: String
-   - Description: Firstname
+   - Description: Firstname. Stored as varchar(50) in the database
 
 - Parameter: $lastname
    - Type: String
-   - Description: Lastname
+   - Description: Lastname. Stored as varchar(50) in the database
 
 - Parameter: $ssn
    - Type: String
-   - Description: Social security number
+   - Description: Social security number. Stored as varchar(20) in the database
 
 - Parameter: $user_name
    - Type: String
-   - Description: Username
+   - Description: Username. Stored as varchar(80) in the database
 
 - Parameter: $classname
    - Type: String
-   - Description: Class (program) name
+   - Description: Class (program) name. Stored as varchar(10) in the database
 
 - Parameter: $log_uuid
    - Type: String
@@ -447,6 +451,8 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
 ### Microservices Used
 - retrieveAccessedService_ms.php
 
+---
+
 # Name of file/service
 updateUserCourse_ms.php
 
@@ -454,25 +460,25 @@ updateUserCourse_ms.php
 Updates properties for a specific user in the 'user_course' table. Can only be done by superusers or users with specific access.
 
 ## Input Parameters
-- Parameter: $courseid
+- Parameter: $cid
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $prop
    - Type: String
-   - Description: Property to update
+   - Description: Which roperty to update
 
-- Parameter: $group
+- Parameter: $groups
    - Type: String
-   - Description: Group
+   - Description: Group a user is part of. Stored as varchar(256) in the database
 
 - Parameter: $vers
    - Type: String
-   - Description: Course version
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $access
    - Type: String
-   - Description: Level of access a user has
+   - Description: Level of access a user has. Stored as varchar(10) in the database
 
 ## Calling Methods
 - POST
