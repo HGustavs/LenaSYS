@@ -121,8 +121,12 @@ function returnedDugga(data)
 				document.getElementById('feedbackBox').style.display = "block";
 				document.getElementById("showFeedbackButton").style.display="block";
 		}
-		document.getElementById("submitButtonTable").insertAdjacentElement("content");
-		document.getElementById("lockedDuggaInfo").insertBefore("content");
+		document.getElementById("content").append(document.getElementById("submitButtonTable"));
+		if(document.getElementById("lockedDuggaInfo")){
+			document.getElementById("content")
+			.insertBefore(document.getElementById("lockedDuggaInfo"),
+			document.getElementById("content"));
+		}
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
