@@ -92,7 +92,7 @@ function returnedDugga(data)
             // getting the diagram types allowed and calling a function in diagram.js where the values are now set <-- UML functionality start
             document.getElementById("diagram-iframe").contentWindow.diagramType = param.diagram_type;
             // getting the error checker allowed or not
-            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(param.errorActive);
+            document.getElementById("diagram-iframe").contentWindow.showErrorCheck(param.errorActive);
             // Getting the instructions to the side of the dugga -currently using filelink which is wrong
              if(param.filelink != undefined)
             {
@@ -106,7 +106,7 @@ function returnedDugga(data)
         else{
             var diagramType={ER:true,UML:true,IE:true};
             document.getElementById("diagram-iframe").contentWindow.diagramType = diagramType;
-            document.getElementById("diagram-iframe").contentWindow.hideErrorCheck(true);
+            document.getElementById("diagram-iframe").contentWindow.showErrorCheck(true);
         }
         document.getElementById("diagram-iframe").contentWindow.showDiagramTypes();//<-- UML functionality end
     }
