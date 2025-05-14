@@ -60,7 +60,14 @@ function retrieveShowDuggaService(
 			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
 			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php?" . http_build_query([
 				'hash' => $hash,
-				'moment' => $moment
+				'moment' => $moment,
+    			'courseid' => $courseid,
+    			'hashpwd' => $hashpwd,
+    			'coursevers' => $coursevers,
+    			'duggaid' => $duggaid,
+    			'opt' => $opt,
+   				'group' => $group,
+    			'score' => $score
 			]);
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

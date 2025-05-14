@@ -20,6 +20,13 @@ if(isset($_SESSION['uid'])){
 
 $hash=getOP('hash');
 $moment=getOP('moment');
+$courseid   = getOP('courseid');
+$hashpwd    = getOP('hashpwd');
+$coursevers = getOP('coursevers');
+$duggaid    = getOP('duggaid');
+$opt        = getOP('opt');
+$group      = getOP('group');
+$score      = getOP('score');
 
 $variant = array();
 $answer = array();
