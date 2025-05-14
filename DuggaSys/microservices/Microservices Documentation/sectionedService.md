@@ -688,7 +688,6 @@ Microservice that updates the active version of a course
 - Parameter: $courseid
    - Type: int
    - Description: Course ID. Stored as int(10) in the database
-
    
 - Parameter: $coursevers
    - Type: int
@@ -1099,3 +1098,122 @@ Retrieves all available group kinds and their values from the 'groups' table. Us
 
 - getUid_ms  
 - retrieveSectionedService_ms
+
+---
+
+# Name of file/service
+updateCourseVersion_sectioned_ms.php
+
+## Description
+Used for editing, updating and activating course versions. Can only be done by users with access and superusers.
+Retrieves all updated data from the database through retrieveCourseedService_ms.php as the output for the microservice.
+Logs the operations.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursecode
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
+
+- (Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database. UNUSED)
+
+- Parameter: $versid
+   - Type: int
+   - Description: Course version ID. Stored as varchar(8) in the database
+
+- Parameter: $motd
+   - Type: String
+   - Description: Message of the day for the course version. Stored as varchar(50) in the database
+
+- Parameter: $versname
+   - Type: String
+   - Description: Name of course version. Stored as varchar(45) in the database
+
+- Parameter: $startdate
+   - Type: String
+   - Description: Start date of the course version. Stored as datetime in the database
+
+- Parameter: $enddate
+   - Type: String
+   - Description: End date of the course version. Stored as datetime in the database
+
+- Parameter: $makeactive
+   - Type: String
+   - Description: Activating the course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $retrieveArray
+   - Type: array
+   - Description: Array of data retrieved from retrieveSectionedService_ms.php. Includes detailed information about the courses
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+- getUid_ms.php
+- curlService.php
+- setAsActiveCourse_ms.php
+
+---
+
+# Name of file/service
+updateListEntriesGradesystem_ms.php
+
+## Description
+Updates the grading system for a list entry/course section. Can only be done by superusers. 
+Logs the operation.
+
+## Input Parameters
+- Parameter: $sectid
+   - Type: int
+   - Description: List entry ID. Stored as int(10) in the database
+
+- Parameter: $gradesys
+   - Type: int
+   - Description: Grading system. Stored as tinyint(1) in the database
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: Unique identifier, for logging purposes
+
+- Parameter: $opt
+   - Type: String
+   - Description: Operation type
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $data
+   - Type: array
+   - Description: Array of data retrieved from retrieveSectionedService_ms.php. Includes detailed information about the courses
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
+- retrieveSectionedService_ms.php
+
+---
