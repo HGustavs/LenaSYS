@@ -1,4 +1,107 @@
 # Name of file/service
+processDuggaFile_ms.php
+
+## Description
+Retrieves and processes all submission files from the 'submission' table (i.e. submitted PDF, ZIP files) related to a specific dugga for a given course and version.
+
+## Input Parameters
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $duggaid
+   - Type: int
+   - Description: Dugga ID. Stored as int(11) in the database
+
+- Parameter: $duggainfo
+   - Type: String
+   - Description: Dugga release date and time. Stored as datetime in the database
+
+- Parameter: $moment
+   - Type: int
+   - Description: Submission segment/moment. Stored as int(11) in the database
+
+## Calling Methods
+- PHP function call
+
+## Output Data and Format
+- Output: $subid
+   - Type: int
+   - Description: Submission ID. Stored as mediumint(8) in the database
+
+- Output: $vers
+   - Type: String
+   - Description: Submission version. Stored as varchar(8) in the database
+
+- Output: $did
+   - Type: int
+   - Description: Dugga ID. Stored as int(11) in the database
+
+- Output: $fieldnme
+   - Type: String
+   - Description: Field name. Stored as varchar(64) in the database
+
+- Output: $filename
+   - Type: String
+   - Description: Submitted file name. Stored as varchar(128) in the database
+
+- Output: $filepath
+   - Type: String
+   - Description: Path to submitted file. Stored as varchar(256) in the database
+
+- Output: $extension
+   - Type: String
+   - Description: Submitted file extension/type (ZIP, PDF, etc.). Stored as varchar(32) in the database
+
+- Output: $mime
+   - Type: String
+   - Description: Submitted file's MIME type. Stored as varchar(64) in the database
+
+- Output: $updtime
+   - Type: String
+   - Description: Time the submission was last updated. Stored as timestamp in the database
+
+- Output: $kind
+   - Type: int
+   - Description: Kind/type of file. Stored as int(11) in the database
+
+- Output: $seq
+   - Type: int
+   - Description: Sequence number. Stored as int(11) in the database
+
+- Output: $segment
+   - Type: int
+   - Description: File segment. Stored as int(11) in the database
+
+- Output: $content
+   - Type: ?
+   - Description: File content. Will either be unknown, contain the file content (if kind = 3) or the file URL (if kind = 2)
+
+- Output: $feedback
+   - Type: ?
+   - Description: Feedback for a specific file
+
+- Output: $username
+   - Type: String
+   - Description: Username. Stored as varchar(80) in the database
+
+- Output: $zipdr
+   - Type: ?
+   - Description: List of file names
+
+## Examples of Use
+-
+
+### Microservices Used
+None
+
+---
+
+# Name of file/service
 retrieveShowDuggaService_ms.php
 
 ## Description
