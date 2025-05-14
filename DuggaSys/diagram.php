@@ -133,7 +133,7 @@
         <fieldset>
             <legend aria-hidden="true">Modes</legend>
                 <!-- POINTER -->
-                <div id="mouseMode0" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode active" onclick='setMouseMode(0);' data-toolmode="Pointer" data-toolid="0">
+                <div id="mouseMode0" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode active tooltip-target" onclick='setMouseMode(0);' data-toolmode="Pointer" data-toolid="0">
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                     <span class="toolTipText" id="highestToolTip"><b>Pointer</b><br>
                         <span>Allows you to select and move different elements as well as navigate the workspace</span><br><br>
@@ -141,7 +141,7 @@
                     </span>
                 </div>
                 <!-- BOX SELECTION -->
-                <div id="mouseMode1" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setMouseMode(1); ' data-toolmode="Box_Selection" data-toolid="1">
+                <div id="mouseMode1" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode tooltip-target" onclick='setMouseMode(1); ' data-toolmode="Box_Selection" data-toolid="1">
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                     <span class="toolTipText"><b>Box Selection</b><br>
                         <p>Click and drag to select multiple elements within the selected area.</p><br>
@@ -151,7 +151,7 @@
                 <!-- ER, UML, IE, AND STATE ELEMENTS -->
                 <div>
                     <!-- ER-ENTITY (initial default, on pageload, choice) -->
-                    <div id="elementPlacement0" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseenter='hoverPlacementButton(0)' data-toolmode="ER_Entity" data-toolid="2"><!--<-- UML functionality -->
+                    <div id="elementPlacement0" class="ERButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(0); setMouseMode(2);' onmouseenter='hoverPlacementButton(0)' data-toolmode="ER_Entity" data-toolid="2"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         <span class="toolTipText"><b>ER entity</b><br>
                             <p>Insert an ER entity to the diagram</p>
@@ -168,7 +168,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(0), hidePlacementType()'>
                         <div id="togglePlacementTypeBox0" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <!-- ER-ENTITY (fist option when hovering) -->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);' data-toolmode="ER_Entity" data-toolid="2">
+                            <div class="ERButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);' data-toolmode="ER_Entity" data-toolid="2">
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Each entity represents an object which is a representation of concepts or data.</p>
@@ -178,7 +178,7 @@
                                 </span>
                             </div>
                             <!-- UML CLASS ("change to" - second option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
+                            <div class="UMLButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class.</p>
@@ -188,7 +188,7 @@
                                 </span>
                             </div>
                             <!-- IE-ENTITY ("change to" - third option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
+                            <div class="IEButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                     <p>Change to IE entity.</p>
@@ -199,7 +199,7 @@
                                 </span>
                             </div>
                             <!-- STATE DIAGRAM STATE ("change to" - fourth option when hovering) -->
-                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
+                            <div class="SDButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state.</p>
@@ -215,7 +215,7 @@
                 <!-- If UML CLASS has been chosen, the entity-options change position in the menu -->
                 <div>
                     <!-- UML CLASS (When chosen, takes up the "default" position in the toolbar) -->
-                    <div id="elementPlacement4" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(4); setMouseMode(2); 'onmouseenter='hoverPlacementButton(4)' data-toolmode="UML_Class" data-toolid="2">
+                    <div id="elementPlacement4" class="UMLButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(4); setMouseMode(2); 'onmouseenter='hoverPlacementButton(4)' data-toolmode="UML_Class" data-toolid="2">
                         <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         <span class="toolTipText"><b>UML class</b><br>
                             <p>Create a UML class to the diagram</p>
@@ -229,7 +229,7 @@
                     </div>
                     <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(4), hidePlacementType()'>
-                        <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity" data-toolmode="ER_Entity" data-toolid="2">
+                        <div id="togglePlacementTypeBox4" class="togglePlacementTypeBox togglePlacementTypeBoxEntity tooltip-target" data-toolmode="ER_Entity" data-toolid="2">
                             <!-- ER-ENTITY ("Change to" - first option when hovering) -->
                             <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);'>
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
@@ -242,7 +242,7 @@
                                 </span>
                             </div>
                             <!-- UML CLASS ("Change to" - second option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
+                            <div class="UMLButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>                      
                                     <p>Each class entity represents its own class along with the attributes and operations held within the class.</p>
@@ -251,7 +251,7 @@
                                 </span>
                             </div>
                             <!-- IE-ENTITY ("Change to" - third option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
+                            <div class="IEButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                     <p>Change to IE entity.</p>
@@ -262,7 +262,7 @@
                                 </span>
                             </div>
                             <!-- STATE DIAGRAM STATE ("Change to" - fourth option when hovering) -->
-                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
+                            <div class="SDButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state.</p>
@@ -278,7 +278,7 @@
                 <!-- If IE-ENTITY has been chosen, the entity-options change position in the menu -->
                 <div>
                     <!-- IE-ENTITY (When chosen, takes up the "default" position in the toolbar) -->
-                    <div id="elementPlacement6" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(6); setMouseMode(2);'onmouseenter='hoverPlacementButton(6)' data-toolmode="IE_Entity" data-toolid="2">
+                    <div id="elementPlacement6" class="IEButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(6); setMouseMode(2);'onmouseenter='hoverPlacementButton(6)' data-toolmode="IE_Entity" data-toolid="2">
                         <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         <span class="toolTipText"><b>IE entity</b><br>
                             <p>Place an IE entity into the diagram</p>
@@ -295,7 +295,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(6), hidePlacementType()'>
                         <div id="togglePlacementTypeBox6" class="togglePlacementTypeBox togglePlacementTypeBoxEntity" >
                             <!-- ER-ENTITY ("Change to" - first option when hovering) -->
-                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);' data-toolmode="ER_Entity" data-toolid="2">
+                            <div class="ERButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);' data-toolmode="ER_Entity" data-toolid="2">
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
                                     <p>Change to ER entity.</p>
@@ -306,7 +306,7 @@
                                 </span>
                             </div>
                             <!-- UML CLASS ("Change to" - second option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
+                            <div class="UMLButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class.</p>
@@ -316,7 +316,7 @@
                                 </span>
                             </div>
                             <!-- IE-ENTITY ("Change to" - third option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
+                            <div class="IEButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                     <p>Each entity represents an object along with its attributes.</p>
@@ -326,7 +326,7 @@
                                 </span>
                             </div>
                             <!-- STATE DIAGRAM STATE ("Change to" - fourth option when hovering) -->
-                            <div class="SDButton placementTypeBoxIcons" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_STATE" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
+                            <div class="SDButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
                                 <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>Change to state diagram state.</p>
@@ -342,7 +342,7 @@
                 <!-- If STATE DIAGRAM STATE has been chosen, the entity-options change position in the menu -->
                 <div>
                     <!-- STATE DIAGRAM STATE (When chosen, takes up the "default" position in the toolbar) -->
-                    <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(8); setMouseMode(2);'onmouseenter='hoverPlacementButton(8);' data-toolmode="SD_STATE" data-toolid="2">
+                    <div id="elementPlacement8" class="SDButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(8); setMouseMode(2);'onmouseenter='hoverPlacementButton(8);' data-toolmode="SD_STATE" data-toolid="2">
                         <img src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         <span class="toolTipText"><b>State diagram state</b><br>
                             <p>Add a state diagram state to the diagram</p>
@@ -358,7 +358,7 @@
                     <!-- Pop-out panel for element-options -->
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(8), hidePlacementType()'>
                         <div id="togglePlacementTypeBox8" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
-                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);' data-toolmode="ER_Entity" data-toolid="2">
+                            <div class="ERButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(0,0); setElementPlacementType(0); setMouseMode(2);' data-toolmode="ER_Entity" data-toolid="2">
                                 <!-- ER-ENTITY ("Change to" - first option when hovering) -->
                                 <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                                 <span class="placementTypeToolTipText"><b>ER entity</b><br>
@@ -370,7 +370,7 @@
                                 </span>
                             </div>
                             <!-- UML CLASS ("Change to" - second option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
+                            <div class="UMLButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(4,0); setElementPlacementType(4); setMouseMode(2);' data-toolmode="UML_Class" data-toolid="2">
                                 <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                                 <span class="placementTypeToolTipText"><b>UML class</b><br>
                                     <p>Change to UML class.</p>
@@ -380,7 +380,7 @@
                                 </span>
                             </div>
                             <!-- IE-ENTITY ("Change to" - third option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
+                            <div class="IEButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(6,0); setElementPlacementType(6); setMouseMode(2);' data-toolmode="IE_Entity" data-toolid="2">
                                 <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                                 <span class="placementTypeToolTipText"><b>IE entity</b><br>
                                     <p>Change to IE entity.</p>
@@ -391,7 +391,7 @@
                                 </span>
                             </div>
                             <!-- STATE DIAGRAM STATE ("Change to" - fourth option when hovering) -->
-                            <div class="SDButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
+                            <div class="SDButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(8,0); setElementPlacementType(8); setMouseMode(2);' data-toolmode="SD_State" data-toolid="2"> <!-- Dummy button, functions like IE-button -->
                                 <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="Statediagram state"/>
                                 <span class="placementTypeToolTipText"><b>State diagram state</b><br>
                                     <p>A state diagram state is a representation of a status a process can have.</p>
@@ -408,7 +408,7 @@
                 <!-- RELATION, INHERITANCE, ATTRIBUTE -->
                 <div>
                     <!-- ER RELATION (initial default choice) -->
-                    <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseenter='hoverPlacementButton(1);' data-toolmode="ER_Relation" data-toolid="3"> <!--<-- UML functionality -->
+                    <div id="elementPlacement1" class="ERButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(1); setMouseMode(2);' onmouseenter='hoverPlacementButton(1);' data-toolmode="ER_Relation" data-toolid="3"> <!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         <span class="toolTipText"><b>ER relation</b><br>
                             <p>Place an ER relation into the diagram</p>
@@ -424,7 +424,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(1), hidePlacementType()'>
                         <div id="togglePlacementTypeBox1" class="togglePlacementTypeBox togglePlacementTypeBoxRI"><!--<-- UML functionality start-->
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
-                            <div class="ERButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
+                            <div class="ERButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER relation"/>
                                 <span class="placementTypeToolTipText"><b>ER relation</b><br>
                                     <p>Represents how entities are associated with each other.</p>
@@ -433,7 +433,7 @@
                                 </span>
                             </div>
                             <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
+                            <div class="ERAttribute placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
                                     <p>Change to ER attribute</p>
@@ -443,7 +443,7 @@
                                 </span>
                             </div>
                             <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
+                            <div class="UMLButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML Inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>Change to UML inheritance.</p>
@@ -454,7 +454,7 @@
                                 </span>
                             </div>
                             <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
+                            <div class="IEButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance.</p>
@@ -471,7 +471,7 @@
                 <!-- If UML INHERITANCE has been chosen, the entity-options change position in the menu -->
                 <div>
                     <!-- UML INHERITANCE (When chosen, takes up the "default" position in the toolbar) -->
-                    <div id="elementPlacement5" class="UMLButton diagramIcons toolbarMode" onclick='setElementPlacementType(5); setMouseMode(2);' onmouseenter='hoverPlacementButton(5)' data-toolmode="UML_Inheritance" data-toolid="3">
+                    <div id="elementPlacement5" class="UMLButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(5); setMouseMode(2);' onmouseenter='hoverPlacementButton(5)' data-toolmode="UML_Inheritance" data-toolid="3">
                         <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                         <span class="toolTipText"><b>UML inheritance</b><br>
                             <p>Insert a UML inheritance to the diagram</p>
@@ -488,7 +488,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(5), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox5" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
-                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
+                            <div class="ERButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation.</p>
@@ -498,7 +498,7 @@
                                 </span>
                             </div>
                             <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
+                            <div class="ERAttribute placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
                                     <p>Change to ER attribute</p>
@@ -508,7 +508,7 @@
                                 </span>
                             </div>
                             <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
+                            <div class="UMLButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>A relation between a superclass and subclasses.</p>
@@ -518,7 +518,7 @@
                                 </span>
                             </div>
                             <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
+                            <div class="IEButton placementTypeBoxIcons tooltip-target " onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance.</p>
@@ -535,7 +535,7 @@
                 <!-- If IE INHERITANCE has been chosen, the entity-options change position in the menu -->
                 <div>
                     <!-- IE INHERITANCE (When chosen, takes up the "default" position in the toolbar) -->
-                    <div id="elementPlacement7" class="IEButton diagramIcons toolbarMode" onclick='setElementPlacementType(7); setMouseMode(2);' onmouseenter='hoverPlacementButton(7)' data-toolmode="IE_Inheritance" data-toolid="3">
+                    <div id="elementPlacement7" class="IEButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(7); setMouseMode(2);' onmouseenter='hoverPlacementButton(7)' data-toolmode="IE_Inheritance" data-toolid="3">
                         <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         <span class="toolTipText"><b>IE inheritance</b><br>
                             <p>Create an IE inheritance to the diagram</p>
@@ -552,7 +552,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(7), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox7" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
-                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
+                            <div class="ERButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation.</p>
@@ -562,7 +562,7 @@
                                 </span>
                             </div>
                             <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
-                            <div class="ERAttribute placementTypeBoxIcons" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
+                            <div class="ERAttribute placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
                                     <p>Change to ER attribute</p>
@@ -572,7 +572,7 @@
                                 </span>
                             </div>
                             <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
+                            <div class="UMLButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>Change to UML inheritance.</p>
@@ -583,7 +583,7 @@
                                 </span>
                             </div>
                             <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
+                            <div class="IEButton placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>A relation between two or more entities.</p>
@@ -599,7 +599,7 @@
                 <!-- If ER ATTRIBUTE has been chosen, the entity-options change position in the menu -->
                 <div>
                     <!-- ER ATTRIBUTE (When chosen, takes up the "default" position in the toolbar) -->
-                    <div id="elementPlacement2" class="ERAttribute diagramIcons toolbarMode" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseenter='hoverPlacementButton(2)' data-toolmode="ER_Attribute" data-toolid="3">
+                    <div id="elementPlacement2" class="ERAttribute diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(2); setMouseMode(2);' onmouseenter='hoverPlacementButton(2)' data-toolmode="ER_Attribute" data-toolid="3">
                         <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         <span class="toolTipText"><b>ER Attribute</b><br>
                             <p>Add a ER attribute to the diagram.</p>
@@ -615,7 +615,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(2), hidePlacementType()'>  
                         <div id="togglePlacementTypeBox2" class="togglePlacementTypeBox togglePlacementTypeBoxRI">
                             <!-- ER RELATION ("Change to" - first option when hovering) -->
-                            <div class="ERButton placementTypeBoxIcons" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
+                            <div class="ERButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(1,1); setElementPlacementType(1); setMouseMode(2);' data-toolmode="ER_Relation" data-toolid="3">
                                 <img src="../Shared/icons/diagram_relation.svg" alt="ER Relation"/>
                                 <span class="placementTypeToolTipText"><b>ER Relation</b><br>
                                     <p>Change to ER relation.</p>
@@ -625,7 +625,7 @@
                                 </span>
                             </div>
                             <!-- ER ATTRIBUTE ("Change to" - second option when hovering) -->
-                            <div class="ERAttribute placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
+                            <div class="ERAttribute placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(2,1);setElementPlacementType(2); setMouseMode(2);' data-toolmode="ER_Attribute" data-toolid="3">
                                 <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                                 <span class="placementTypeToolTipText"><b>ER Attribute</b><br>
                                     <p>Add a ER attribute to the diagram.</p>
@@ -635,7 +635,7 @@
                                 </span>
                             </div>
                             <!-- UML INHERITANCE ("Change to" - third option when hovering) -->
-                            <div class="UMLButton placementTypeBoxIcons" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
+                            <div class="UMLButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(5,1); setElementPlacementType(5); setMouseMode(2);' data-toolmode="UML_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_inheritance.svg" alt="UML inheritance"/>
                                 <span class="placementTypeToolTipText"><b>UML Inheritance</b><br>
                                     <p>Change to UML inheritance.</p>
@@ -646,7 +646,7 @@
                                 </span>
                             </div>
                             <!-- IE INHERITANCE ("Change to" - fourth option when hovering) -->
-                            <div class="IEButton placementTypeBoxIcons" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
+                            <div class="IEButton placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(7,1); setElementPlacementType(7); setMouseMode(2);' data-toolmode="IE_Inheritance" data-toolid="3">
                                 <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                                 <span class="placementTypeToolTipText"><b>IE Inheritance</b><br>
                                     <p>Change to IE inheritance</p>
@@ -660,7 +660,7 @@
                     </div>
                 </div>
                 <!-- LINE -->
-                <div id="mouseMode3" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='clearContext(); setMouseMode(3);' data-toolmode="Line" data-toolid="4">
+                <div id="mouseMode3" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode tooltip-target" onclick='clearContext(); setMouseMode(3);' data-toolmode="Line" data-toolid="4">
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                     <span class="toolTipText"><b>Line</b><br>
                         <p>Make a line between elements.</p><br>
@@ -671,7 +671,7 @@
                 <!-- OPTIONS FOR STATE ELEMENTS START HERE -->
                 <div> 
                     <!-- UML INITIAL STATE (initial default choice) -->
-                    <div id="elementPlacement9" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseenter='hoverPlacementButton(9)' data-toolmode="UML_Initial_State" data-toolid="5"><!--<-- UML functionality -->
+                    <div id="elementPlacement9" class="SDButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(9); setMouseMode(2);' onmouseenter='hoverPlacementButton(9)' data-toolmode="UML_Initial_State" data-toolid="5"><!--<-- UML functionality -->
                         <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         <span class="toolTipText"><b>UML initial state</b><br>
                             <p>Insert an initial state for UML.</p>
@@ -687,7 +687,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(9), hidePlacementType()'><!--Initial state -->
                         <div id="togglePlacementTypeBox9" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);' data-toolmode="UML_Initial_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);' data-toolmode="UML_Initial_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>The initial state represents the start of a process.</p><br>
@@ -695,7 +695,7 @@
                                 </span>
                             </div>
                             <!-- FINAL STATE ("Change to" - second option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);' data-toolmode="UML_Final_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);' data-toolmode="UML_Final_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Change to UML final state</p>
@@ -704,7 +704,7 @@
                                 </span>
                             </div>
                             <!-- UML SUPER STATE ("Change to" - third option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' data-toolmode="UML_Super_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' data-toolmode="UML_Super_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Change to UML super state</p>
@@ -718,7 +718,7 @@
                 <!-- If UML FINAL STATE has been chosen, the entity-options change position in the menu-->
                 <div>
                 <!-- UML FINAL STATE (When chosen, takes up the "default position in the toolbar) -->
-                    <div id="elementPlacement10" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseenter='hoverPlacementButton(10)' data-toolmode="UML_Final_State" data-toolid="5">
+                    <div id="elementPlacement10" class="SDButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(10); setMouseMode(2);' onmouseenter='hoverPlacementButton(10)' data-toolmode="UML_Final_State" data-toolid="5">
                         <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         <span class="toolTipText"><b>UML final state</b><br>
                             <p>Place a final state for UML.</p>
@@ -733,7 +733,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(10), hidePlacementType()'>
                         <div id="togglePlacementTypeBox10" class="togglePlacementTypeBox togglePlacementTypeBoxEntity"><!--<-- UML functionality start-->
                             <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);' data-toolmode="UML_Initial_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);' data-toolmode="UML_Initial_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Change to UML initial state</p>
@@ -742,7 +742,7 @@
                                 </span>
                             </div>
                             <!-- FINAL STATE("Change to" - second option when hovering) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);' data-toolmode="UML_Final_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);' data-toolmode="UML_Final_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>The final state represents where a process ends.</p><br>
@@ -750,7 +750,7 @@
                                 </span>
                             </div>
                             <!-- SUPER STATE ("Chaange to" - third option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' data-toolmode="UML_Super_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' data-toolmode="UML_Super_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>Change to UML super state</p>
@@ -764,7 +764,7 @@
                 <!-- If UML SUPER STATE has been chosen, the entity-options change position in the menu  -->
                 <div>
                     <!-- UML SUPER STATE (When chosen, takes up the "default position in the toolbar)-->
-                    <div id="elementPlacement11" class="SDButton diagramIcons toolbarMode" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseenter='hoverPlacementButton(11)' data-toolmode="UML_Super_State" data-toolid="5">
+                    <div id="elementPlacement11" class="SDButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(11); setMouseMode(2);' onmouseenter='hoverPlacementButton(11)' data-toolmode="UML_Super_State" data-toolid="5">
                         <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         <span class="toolTipText"><b>UML super state</b><br>
                             <p>Create a super state.</p>
@@ -779,7 +779,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(11), hidePlacementType()'>
                         <div id="togglePlacementTypeBox11" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- UML INITIAL STATE ("Change to" - first option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);' data-toolmode="UML_Initial_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(9,9); setElementPlacementType(9); setMouseMode(2);' data-toolmode="UML_Initial_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                                 <span class="placementTypeToolTipText"><b>UML initial state</b><br>
                                     <p>Change to UML initial state</p>
@@ -788,7 +788,7 @@
                                 </span>
                             </div>
                             <!-- FINAL STATE ("Change to" - second option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);' data-toolmode="UML_Final_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(10,9); setElementPlacementType(10); setMouseMode(2);' data-toolmode="UML_Final_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                                 <span class="placementTypeToolTipText"><b>UML final state</b><br>
                                     <p>Change to UML final state</p>
@@ -797,7 +797,7 @@
                                 </span>
                             </div>
                             <!-- SUPER STATE ("Change to" - third option when hovering) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' data-toolmode="UML_Super_State" data-toolid="5">
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(11,9); setElementPlacementType(11); setMouseMode(2);' data-toolmode="UML_Super_State" data-toolid="5">
                                 <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                                 <span class="placementTypeToolTipText"><b>UML super state</b><br>
                                     <p>A state that can contain substates.</p><br>
@@ -811,7 +811,7 @@
                 <!-- SEQUENCE POP-OUT START-->
                 <div> 
                     <!-- SEQUENCE LIFELINE (initial default choice, and the same as the Sequence Lifeline (Actor)) -->
-                    <div id="elementPlacement12" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseenter='hoverPlacementButton(12)' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6">
+                    <div id="elementPlacement12" class="SEButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(12); setMouseMode(2);' onmouseenter='hoverPlacementButton(12)' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6">
                         <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         <span class="toolTipText"><b>Sequence lifeline</b><br>
                             <p>Creates a lifeline for a sequnece diagram.</p>
@@ -827,7 +827,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(12), hidePlacementType()'>
                         <div id="togglePlacementTypeBox12" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (ACTOR)(First option when hovering and the same as the initial option, as seen above this) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);'data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline object"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -836,7 +836,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -845,7 +845,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE ACTIVATION (Third option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
                                     <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
@@ -853,7 +853,7 @@
                                 </span>
                             </div>  
                             <!-- SEQUENCE OBJECT (Fourth option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
                                 <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                                 <span class="placementTypeToolTipText"><b>Sequence Object</b><br>
                                     <p>Option loop or alternative.</p><br>
@@ -865,7 +865,7 @@
                 </div>
                 <!-- If SEQUENCE LIFELINE OBJECT has been chosen, the the entity-options change position in the menu -->
                 <div> <!-- SEQUENCE LIFELINE OBJECT (When chosen, takes up the "default position in the toolbar) -->
-                    <div id="elementPlacement16" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(16); setMouseMode(2);' onmouseenter='hoverPlacementButton(16)' data-toolmode="Sequence_Lifeline_Object" data-toolid="6">
+                    <div id="elementPlacement16" class="SEButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(16); setMouseMode(2);' onmouseenter='hoverPlacementButton(16)' data-toolmode="Sequence_Lifeline_Object" data-toolid="6">
                         <img src="../Shared/icons/diagram_sequence_object.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Place an activation box.</p>
@@ -880,7 +880,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(16), hidePlacementType()'>
                         <div id="togglePlacementTypeBox16" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -889,7 +889,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -898,7 +898,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE ACTIVATION (Third option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
                                     <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
@@ -906,7 +906,7 @@
                                 </span>
                             </div>  
                             <!-- SEQUENCE CONDITION (Fourth option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
                                 <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                                 <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
                                     <p>Option loop or alternative.</p><br>
@@ -918,7 +918,7 @@
                 </div> 
                 <!-- If SEQUENCE ACTIVATION START has been chosen, the element-options change position in menu -->
                 <div> <!-- SEQUENCE ACTIVATION START (When chosen, takes up the "default position in the toolbar) -->
-                    <div id="elementPlacement13" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(13); setMouseMode(2);' onmouseenter='hoverPlacementButton(13)' data-toolmode="Sequence_Activation" data-toolid="7">
+                    <div id="elementPlacement13" class="SEButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(13); setMouseMode(2);' onmouseenter='hoverPlacementButton(13)' data-toolmode="Sequence_Activation" data-toolid="7">
                         <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                         <span class="toolTipText"><b>Sequence activation</b><br>
                             <p>Place an activation box.</p>
@@ -934,7 +934,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(13), hidePlacementType()'>
                         <div id="togglePlacementTypeBox13" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (First option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -943,7 +943,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -952,7 +952,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE ACTIVATION (Third option when hovering) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
                                     <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
@@ -960,7 +960,7 @@
                                 </span>
                             </div>    
                             <!-- SEQUENCE CONDITION (Fourth option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
                                 <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                                 <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
                                     <p>Option loop or alternative.</p><br>
@@ -972,7 +972,7 @@
                 </div> 
                 <!-- If SEQUENCE CONDITION/LOOP has been chosen, the element-options change position in the menu -->
                 <div> <!-- SEQUENCE CONDITION/LOOP START (When chosen, takes up the "default position in the toolbar) -->
-                    <div id="elementPlacement14" class="SEButton diagramIcons toolbarMode" onclick='setElementPlacementType(14); setMouseMode(2); ' onmouseenter='hoverPlacementButton(14)' data-toolmode="Sequence_Condition" data-toolid="8">
+                    <div id="elementPlacement14" class="SEButton diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(14); setMouseMode(2); ' onmouseenter='hoverPlacementButton(14)' data-toolmode="Sequence_Condition" data-toolid="8">
                         <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                             <span class="toolTipText"><b>Sequence Condition</b><br>
                                 <p>Add an option loop or alternative.</p><br>
@@ -986,7 +986,7 @@
                     <div id="diagramPopOut" onmouseleave='hoverPlacementButton(14), hidePlacementType()'>
                         <div id="togglePlacementTypeBox14" class="togglePlacementTypeBox togglePlacementTypeBoxEntity">
                             <!-- SEQUENCE LIFELINE (ACTOR) (First option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(12,12); setElementPlacementType(12); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Actor" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (actor)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -995,7 +995,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE LIFELINE (OBJECT) (Second option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(16,12); setElementPlacementType(16); setMouseMode(2);' data-toolmode="Sequence_Lifeline_Object" data-toolid="6"> 
                                 <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                                 <span class="placementTypeToolTipText"><b>Sequence lifeline (object)</b><br>
                                     <p>Represents the passage of time.</p>
@@ -1004,7 +1004,7 @@
                                 </span>
                             </div>
                             <!-- SEQUENCE ACIVATION (Third option when hovering) -->
-                            <div class="placementTypeBoxIcons" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
+                            <div class="placementTypeBoxIcons tooltip-target" onclick='togglePlacementType(13,12); setElementPlacementType(13); setMouseMode(2);' data-toolmode="Sequence_Activation" data-toolid="7"> 
                                 <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                                 <span class="placementTypeToolTipText"><b>Sequence activation</b><br>
                                     <p>Represents that an object is active during an interaction, with the length indicating the duration.</p><br>
@@ -1012,7 +1012,7 @@
                                 </span>
                             </div>  
                             <!-- EQUENCE CONDITION (Fourth option when hovering) -->
-                            <div class="placementTypeBoxIcons activePlacementType" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
+                            <div class="placementTypeBoxIcons activePlacementType tooltip-target" onclick='togglePlacementType(14,12); setElementPlacementType(14); setMouseMode(2);' data-toolmode="Sequence_Condition" data-toolid="8"> 
                                 <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                                 <span class="placementTypeToolTipText"><b>Sequence Condition</b><br>
                                     <p>Option loop or alternative.</p><br>
@@ -1025,7 +1025,7 @@
                 <!-- SEQUENCE POP-OUT END -->
                 
                 <!-- NOTE ELEMENT -->
-                <div id="elementPlacement15" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode" onclick='setElementPlacementType(15); setMouseMode(2);' data-toolmode="Note" data-toolid="9">
+                <div id="elementPlacement15" onmouseenter='hidePlacementType()' data-single="true" class="diagramIcons toolbarMode tooltip-target" onclick='setElementPlacementType(15); setMouseMode(2);' data-toolmode="Note" data-toolid="9">
                     <img src="../Shared/icons/diagram_note.svg"/>
                     <span class="toolTipText"><b>Note</b><br>
                         <p>Creates a note.</p><br>
@@ -1038,7 +1038,7 @@
         <!-- CAMERA FIELD IN TOOLBAR -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
-            <div id="camtoOrigo" data-single="true" class="diagramIcons" onclick="centerCamera();" data-toolmode="Camera" data-toolid="10">
+            <div id="camtoOrigo" data-single="true" class="diagramIcons tooltip-target" onclick="centerCamera();" data-toolmode="Camera" data-toolid="10">
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 <span class="toolTipText"><b>Reset view</b><br>
                     <p>Reset view to show all elements.</p><br>
@@ -1052,7 +1052,7 @@
         <fieldset>
             <legend aria-hidden="true">History</legend>
             <!-- RESET DIAGRAM -->
-            <div id="diagramReset" data-single="true" class="diagramIcons" onclick="resetDiagramAlert()" data-toolmode="Reset" data-toolid="11">
+            <div id="diagramReset" data-single="true" class="diagramIcons tooltip-target" onclick="resetDiagramAlert()" data-toolmode="Reset" data-toolid="11">
                 <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 <span class="toolTipText"><b>Reset diagram</b><br>
                     <p>Reset diagram to default state.</p><br>
@@ -1060,7 +1060,7 @@
                 </span>
             </div>
             <!-- REDO -->
-            <div id="stepForwardToggle" data-single="true" class="diagramIcons" onclick="toggleStepForward()" data-toolmode="Redo" data-toolid="12">
+            <div id="stepForwardToggle" data-single="true" class="diagramIcons tooltip-target" onclick="toggleStepForward()" data-toolmode="Redo" data-toolid="12">
                 <img src="../Shared/icons/diagram_stepforward.svg" alt="Redo"/>
                 <span class="toolTipText"><b>Redo</b><br>
                     <p>Redo last change.</p><br>
@@ -1068,7 +1068,7 @@
                 </span>
             </div>
             <!-- UNDO -->
-            <div id="stepBackToggle" data-single="true" class="diagramIcons" onclick="toggleStepBack()" data-toolmode="Undo" data-toolid="13">
+            <div id="stepBackToggle" data-single="true" class="diagramIcons tooltip-target" onclick="toggleStepBack()" data-toolmode="Undo" data-toolid="13">
                 <img src="../Shared/icons/diagram_stepback.svg" alt="Undo"/>
                 <span class="toolTipText"><b>Undo</b><br>
                     <p>Undo last change.</p><br>
@@ -1076,7 +1076,7 @@
                 </span>
             </div>
             <!-- REPLAY MODE -->
-            <div id="replayToggle" data-single="true" class="diagramIcons" onclick="toggleReplay()" data-toolmode="Replay_Mode" data-toolid="14">
+            <div id="replayToggle" data-single="true" class="diagramIcons tooltip-target" onclick="toggleReplay()" data-toolmode="Replay_Mode" data-toolid="14">
                 <img src="../Shared/icons/diagram_replay.svg" alt="Enter replay mode"/>
                 <span class="toolTipText"><b>Enter replay mode</b><br>
                     <p>View history of changes made.</p><br>
@@ -1090,7 +1090,7 @@
         <!-- When an ER table is open, it allows user to edit properties in the options-panel -->
         <fieldset>
             <legend aria-hidden="true">ER-Table</legend>
-            <div id="erTableToggle" data-single="true" class="diagramIcons toolbarMode" onclick="toggleErTable()" data-toolmode="ER_Table" data-toolid="15">
+            <div id="erTableToggle" data-single="true" class="diagramIcons toolbarMode tooltip-target" onclick="toggleErTable()" data-toolmode="ER_Table" data-toolid="15">
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 <span class="toolTipText"><b>Toggle ER-Table</b><br>
                     <p>Click to toggle ER-Table in options.</p><br>
@@ -1104,7 +1104,7 @@
         <!-- Allows user to see properties for a state diagram in the options-panel -->
         <fieldset>
             <legend aria-hidden="true">Testcase</legend>
-            <div id="testCaseToggle" data-single="true" class="diagramIcons toolbarMode" onclick="toggleTestCase()" data-toolmode="Testcase" data-toolid="16"> <!--add func here later-->
+            <div id="testCaseToggle" data-single="true" class="diagramIcons toolbarMode tooltip-target" onclick="toggleTestCase()" data-toolmode="Testcase" data-toolid="16"> <!--add func here later-->
                 <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 <span class="toolTipText"><b>Toggle test-cases</b><br>
                     <p>Click to toggle test-cases in options.</p><br>
@@ -1118,7 +1118,7 @@
         <!-- Toggle error-checking on/off -->
         <fieldset id = "errorCheckField">
         <legend aria-hidden="true">Check</legend>
-            <div id="errorCheckToggle" data-single="true" class="diagramIcons" onclick="toggleErrorCheck()" data-toolmode="Error_Check" data-toolid="17">
+            <div id="errorCheckToggle" data-single="true" class="diagramIcons tooltip-target" onclick="toggleErrorCheck()" data-toolmode="Error_Check" data-toolid="17">
                 <img src="../Shared/icons/diagram_errorCheck.svg" alt="Toggle error check"/>
                 <span class="toolTipText"><b>Toggle error check</b><br>
                     <p>Click to toggle error checking on/off.</p>
@@ -1133,7 +1133,7 @@
         <!-- SAVE FIELD IN TOOLBAR (SAVE CURRENT FILE) -->
         <fieldset id="localSaveField" class="disabledIcon">
             <legend aria-hidden="true">Save</legend>
-            <div id="localSave" class="diagramIcons" onclick="quickSaveDiagram()" data-toolmode="Save" data-toolid="18">
+            <div id="localSave" class="diagramIcons tooltip-target" onclick="quickSaveDiagram()" data-toolmode="Save" data-toolid="18">
                 <img src="../Shared/icons/diagram_save_icon.svg" alt="Save diagram"/>
                 <span class="toolTipText"><b>Save current diagram</b><br>
                     <p>Click to save current diagram.</p>
@@ -1148,7 +1148,7 @@
         <!-- SAVE AS FIELD IN TOOLBAR (SAVE CURRENT DIAGRAM TO FILE) -->
         <fieldset id="localSaveAsField" class="disabledIcon">
             <legend aria-hidden="true">Save As</legend>
-            <div id="localSaveAs" class="diagramIcons" onclick="showSavePopout()" data-toolmode="Save_As" data-toolid="19">
+            <div id="localSaveAs" class="diagramIcons tooltip-target" onclick="showSavePopout()" data-toolmode="Save_As" data-toolid="19">
                 <img src="../Shared/icons/diagram_save_as_icon.svg" alt="Save diagram as"/>
                 <span class="toolTipText"><b>Save current diagram to file</b><br>
                     <p>Click to save current diagram <br> to a specific file.</p>
@@ -1162,7 +1162,7 @@
         <!-- LOAD FIELD IN TOOLBAR -->
         <fieldset id="localLoadField">
             <legend aria-hidden="true">Load</legend>
-            <div id="localLoad" data-single="true" class="diagramIcons" onclick="showModal();" data-toolmode="Load" data-toolid="20">
+            <div id="localLoad" data-single="true" class="diagramIcons tooltip-target" onclick="showModal();" data-toolmode="Load" data-toolid="20">
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
                 <span class="toolTipText"><b>Load diagram</b><br>
                     <p>Click to load a diagram.</p>
@@ -1263,7 +1263,7 @@
             <text id ="zoom-message">1x</text>
         </div>
         <!-- ZOOM IN BUTTON -->
-        <div class="diagramZoomIcons" onclick='zoomin();' data-toolmode="Zoom_In" data-toolid="21">
+        <div class="diagramZoomIcons tooltip-target" onclick='zoomin();' data-toolmode="Zoom_In" data-toolid="21">
             <img src="../Shared/icons/diagram_zoomin.svg"/>
             <span class="zoomToolTipText">
                 <b>Zoom IN</b><br>
@@ -1272,7 +1272,7 @@
             </span>
         </div>
         <!-- ZOOM OUT BUTTON -->
-        <div class="diagramZoomIcons" onclick='zoomout();' data-toolmode="Zoom_Out" data-toolid="22">
+        <div class="diagramZoomIcons tooltip-target" onclick='zoomout();' data-toolmode="Zoom_Out" data-toolid="22">
             <img src="../Shared/icons/diagram_zoomout.svg"/>
             <span class="zoomToolTipText">
                 <b>Zoom OUT</b><br>
@@ -1281,7 +1281,7 @@
             </span>
         </div>
         <!-- RESET ZOOM BUTTON -->
-        <div class="diagramZoomIcons" onclick="zoomreset()" data-toolmode="Zoom_Reset" data-toolid="23">
+        <div class="diagramZoomIcons tooltip-target" onclick="zoomreset()" data-toolmode="Zoom_Reset" data-toolid="23">
             <img src="../Shared/icons/diagram_zoomratio1to1.svg"/>
             <span class="zoomToolTipText">
                 <b>Zoom RESET</b><br>
@@ -1294,7 +1294,7 @@
     <!-- OPTIONS PANE -->
     <!-- Yellow panel on the right side of the screen -->
     <div id="options-pane" class="hide-options-pane"> 
-        <div id="options-pane-button" onclick="toggleOptionsPane();" data-toolmode="Option_Panel" data-toolid="24">
+        <div id="options-pane-button" class="tooltip-target" onclick="toggleOptionsPane();" data-toolmode="Option_Panel" data-toolid="24">
             <span id='optmarker'>&#9660;Options</span>
             <span id="tooltip-OPTIONS" class="toolTipText"><b>Show Option Panel</b><br>
                 <p>Enable/disable the Option Panel</p><br>
@@ -1359,20 +1359,20 @@
             <!-- PLAY/REPLAY/EXIT FIELD -->
             <fieldset style="display: flex; justify-content: space-between">
                 <div id="diagram-replay-switch">
-                    <div class="diagramIcons" onclick="stateMachine.replay()" data-toolmode="Replay_Play">
+                    <div class="diagramIcons tooltip-target" onclick="stateMachine.replay()" data-toolmode="Replay_Play">
                         <img src="../Shared/icons/Play.svg" alt="Play">
                         <span class="toolTipText" style="top: -80px"><b>Play</b><br>
                             <p>Play history of changes made to the diagram</p><br>
                         </span>
                     </div>
                 </div>
-                <div class="diagramIcons" onclick="stateMachine.replay(-1)" data-toolmode="Replay">
+                <div class="diagramIcons tooltip-target" onclick="stateMachine.replay(-1)" data-toolmode="Replay">
                     <img src="../Shared/icons/replay.svg" alt="Replay">
                     <span class="toolTipText" style="top: -80px"><b>Replay</b><br>
                         <p>Replay history of changes made to the diagram</p><br>
                     </span>
                 </div>
-                <div class="diagramIcons" onclick="exitReplayMode()" data-toolmode="Replay_Exit" data-toolid="25">
+                <div class="diagramIcons tooltip-target" onclick="exitReplayMode()" data-toolmode="Replay_Exit" data-toolid="25">
                     <img src="../Shared/icons/exit.svg" alt="Exit">
                     <span class="toolTipText" style="top: -95px"><b>Exit</b><br>
                         <p>Exit the replay-mode</p><br>

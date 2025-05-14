@@ -1204,6 +1204,9 @@
     background-color: #060606cb;
     z-index: 5000;
     text-align: center;
-    line-height: 1.6;
-    margin-block: .5rem;
+    line-height: 1.5;
+
+    >*{
+        margin: 0;
+    }
 }

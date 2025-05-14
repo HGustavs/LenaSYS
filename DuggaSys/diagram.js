@@ -2506,4 +2506,128 @@ subMenuToolbarBoxs.forEach(subMenuBox=>{
     subMenuBox.addEventListener("click", changeActiveElement);
 });
 
+//Selects every element that has an tooltip
+const tooltipTargets = document.querySelectorAll(".tooltip-target");
+let timer = null;
+let currentTooltipElement = null;
+
+tooltipTargets.forEach((element)=>{
+    element.addEventListener("mouseenter", (e)=>{
+        if(e.target!==e.currentTarget) return;
+        const targetElement = e.currentTarget;
+
+        clearTimeout(timer);
+        timer = setTimeout(()=>{
+            showTooltip(targetElement);
+            currentTooltipElement = targetElement;
+        }, 400);
+    });
+
+    element.addEventListener("mouseleave", (e)=>{
+        if(!e.relatedTarget && !e.relatedTarget.closest("#diagramPopOut")) return;
+        clearTimeout(timer);
+        hideTooltip();
+        currentTooltipElement = null;
+    });
+});
+
+function showTooltip(element){
+    let tooltipContainer = document.querySelector(".diagram-tooltip");
+    let tooltipMode = element.dataset.toolmode;
+    let toolID = parseInt(element.dataset.toolid);
+    let tooltipInfo = tooltips[tooltipMode];
+
+    if(!tooltipInfo) return; 
+
+    tooltipContainer.innerHTML = `
+        <h3>${tooltipInfo.header}</h3>
+        <p>${tooltipInfo.description}</p>
+        <p id='tooltip-${tooltipID[toolID]}' class='key_tooltip'></p>
+    `;
+
+    const position = tooltipPosition(element);
+    if(!position) return;
+    
+    tooltipContainer.style.top = position.top;
+    tooltipContainer.style.left = position.left;
+    tooltipContainer.style.display = 'block';
+
+    updateKeybindSpan(toolID);
+}
+function hideTooltip(){
+    let tooltipContainer = document.querySelector(".diagram-tooltip");
+    tooltipContainer.style.display = 'none';
+    tooltipContainer.innerHTML = '';
+}
+function updateKeybindSpan(id){
+    const toolID = tooltipID[id];
+
+    const element = document.getElementById(`tooltip-${toolID}`);
+    console.log(element);
+    if(!element || !keybinds[toolID]) return;
+
+    let str = 'Keybinding: ';
+
+    if (keybinds[toolID].ctrl) str += "CTRL + ";
+    if (keybinds[toolID].shift) str += "SHIFT + ";
+    if (keybinds[toolID].alt) str += "ALT + ";
+
+    str += `"${keybinds[toolID].key.toUpperCase()}"`;
+
+    element.innerHTML = str;
+}
+function tooltipPosition(element){
+    let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
+    const isActive = submenu && submenu.classList.contains("activeTogglePlacementTypeBox");
+
+    if(element.closest("#diagramPopOut") && isActive){
+        const dropdownBox = element.closest(".togglePlacementTypeBox");
+
+        if(!dropdownBox) return;
+        let dropdownPosition = dropdownBox.getBoundingClientRect();
+
+        return{
+            top: `${dropdownPosition.top - dropdownPosition.height/2}px`,
+            left: `${dropdownPosition.left + dropdownPosition.right - 30}px`
+        };
+    }
+    else if(element.closest("#options-pane")){
+        let optionPanelPosition = document.getElementById("options-pane").getBoundingClientRect();
+
+        return {
+            top: `${optionPanelPosition.top}px`,
+            left: `${optionPanelPosition.left + optionPanelPosition.width + 100}px`
+        };
+    }
+    else if(element.closest("#zoom-container")){
+        let zoomContainerPosition = document.getElementById("zoom-container").getBoundingClientRect();
+
+        return{
+            top: `${zoomContainerPosition.top - 100}px`,
+            left: `${zoomContainerPosition.left}px`
+        };
+    }
+    else if(element.closest("#diagram-replay-box")){
+        let replayBoxPosition = document.getElementById("diagram-replay-box").getBoundingClientRect();
+
+        return {
+            top: `${replayBoxPosition.top - replayBoxPosition.height}px`,
+            left: `${replayBoxPosition.right/10 + 35}px`
+        };
+    }
+    else if(element.closest("#diagram-toolbar") && !element.closest("#diagramPopOut")){
+        let elementPosition = element.getBoundingClientRect();
+
+        return {
+            top: `${elementPosition.top - elementPosition.height/2}px`,
+            left: `${elementPosition.right + elementPosition.width/2+5}px`
+        };
+    }
+
+    return{
+        top: null,
+        left: null
+    };
+}
+
 //#endregion =====================================================================================
