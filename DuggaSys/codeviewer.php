@@ -42,6 +42,10 @@
 		<link rel="shortcut icon" href="../Shared/icons/favicon.ico"/>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
+		<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+		<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
 
