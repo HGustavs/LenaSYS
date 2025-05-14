@@ -12,11 +12,12 @@ class ConfigurationManager {
 	 * @param string $callback the function to call when printing information
 	 * @param bool $verbose If verbose it prints more information than normal
 	 */
-	public function __construct(string $save_file, string $callback = null, bool $verbose = false) {
+	public function __construct(string $save_file, ?string $callback = null, bool $verbose = false) {
 		$this->save_file = $save_file;
 		$this->callback = $callback;
 		$this->verbose = $verbose;
 		$this->parameters = [];
+		$this->write_config(); // Write or create config
 		$this->read_config(); // Load existing config
 	}
 
