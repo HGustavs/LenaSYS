@@ -62,6 +62,15 @@ function navBurgerChange(operation = 'click') {
   } else {
     x.style.display = "block";
   }
+}
+
+function toggleBurgerBoxDugga(id) {
+  const box = document.getElementById(id);
+  if (box.style.display === "none" || box.style.display === "") {
+    box.style.display = "block";
+  } else {
+    box.style.display = "none";
+  }
 
 }
 
@@ -1856,15 +1865,15 @@ function returnedSection(data) {
 
         } else if (itemKind === 3) {
           if (retdata['writeaccess']) {
-            str += "<td class='LightBox" + hideState + "'>";
+            str += "<td class='LightBox " + hideState + " hide-on-mobile'>";
             str += "<div ><img class='iconColorInDarkMode' alt='pen icon dugga' title='Quiz' src='../Shared/icons/PenT.svg'></div>";
           }
 
           if (item['highscoremode'] != 0 && itemKind == 3) {
-            str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png'
+            str += `<td class='hide-on-mobile' style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png'
             onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
-          str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
+            str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
 
         } else if (itemKind === 4) {
@@ -2003,7 +2012,7 @@ function returnedSection(data) {
         // If none of the deadlines are null or undefined we need to add it to the page
         if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
           // Both of them will need this html
-          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>" +
+          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;'>" +
             "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
 
           // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
@@ -2099,7 +2108,7 @@ function returnedSection(data) {
         // Tab example button
         if ((itemKind !== 4) && (itemKind !== 0) && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+              "code", "test", "moment", "link", "group", "message"])} ${hideState} hide-on-mobile'>`;
           str += `<input style='filter: invert (1); border:none; background:transparent;' type='button' style='border:none; background:transparent;' value='&#8633' id='tabElement'
             title='Tab example button' onclick='confirmBox("openTabConfirmBox",this);'>`
           str += "</td>";
@@ -2107,7 +2116,7 @@ function returnedSection(data) {
         if (itemKind != 4 && itemKind != 1 && itemKind != 0) { // dont create buttons for moments only for specific assignments
           //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+              "code", "test", "moment", "link", "group", "message"])} ${hideState} hide-on-mobile'>`;
           str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class=''
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
           str += "</td>";
@@ -2115,7 +2124,7 @@ function returnedSection(data) {
           // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+                "code", "test", "moment", "link", "group", "message"])} ${hideState} hide-on-mobile'>`;
             str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
             str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class=''
             src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;

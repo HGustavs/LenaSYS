@@ -923,7 +923,7 @@ p {
 
 @media screen and (max-width : 570px) {
 
-  & .view-label {
+  .view-label {
     display: none;
   }
   
@@ -937,12 +937,11 @@ p {
 
   .dateSize {
     width: 25%;
-    font-size: 10pt;
-    display: none;
+    font-size: 6pt;
   }
-	.internal-link {
-        font-size: 10pt;
-    }
+  .internal-link {
+    font-size: 10pt;
+  }
 }
 
 #Sectionlist .section {
@@ -10175,6 +10174,12 @@ border: none !important;
   -webkit-filter: invert(0%);
 }
 
+@media screen and (max-width : 570px){
+  .DateColorInDarkMode {
+   font-size: 10pt
+  }
+}
+
 .changeColorInDarkModeTable:nth-of-type(odd) {
   background: #ccc;
 }
@@ -10822,6 +10827,41 @@ button:disabled {
 
 .displayBlock {
   display: block;
+}
+
+@media (max-width: 600px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+.show-on-mobile {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .show-on-mobile {
+    display: inline-block !important;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.burgerWrapper {
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+}
+
+.burgerBox {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+  background-color: var(--color-primary-2);
 }
 
 /* END */
