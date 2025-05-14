@@ -338,8 +338,15 @@ function drawLine(line, targetGhost = false) {
         if (line.recursive) {
             //Calculatin the lable possition based on element size, so it follows when resized.
 
-            const length = 20 * zoomfact;
-            const lift   = 80 * zoomfact; 
+            let length = 20 * zoomfact;
+            let lift   = 80 * zoomfact;
+                    
+                    // Calculations only for SE
+            if (line.type === entityType.SE) {
+                length = 70 * zoomfact; 
+                lift = 20 * zoomfact;   
+            }
+
             let {lineLength, elementLength, startX, startY } = recursiveParam(felem);
             startY -= lift;
             startX += length;
