@@ -104,6 +104,24 @@
 	<script type="text/babel" src="../Shared/components/Dropdown.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
+
+	<script>
+	// Override dugga.js functions for sectioned.php
+	function hideServerMessage() {
+		const motdArea = document.querySelector("#motdArea");
+		const motdIcon = document.querySelector("#motdNav");
+		if (motdArea) motdArea.style.display = "none";
+		if (motdIcon) motdIcon.style.display = "table-cell";
+	}
+
+	function showServerMessage() {
+		const motdArea = document.querySelector("#motdArea");
+		const motdIcon = document.querySelector("#motdNav");
+		if (motdArea) motdArea.style.display = "flex";
+		if (motdIcon) motdIcon.style.display = "none";
+	}
+</script>
+
 	<script src="sectioned.js"></script>
 	<script src="backToTop.js"></script>	
 </head>
@@ -148,23 +166,20 @@
 		<!-- Scroll up END -->
 
 		<!-- MOTD dropdown -->
-		<div id='motdArea'>
-			<?php
-				echo "<tr>";
-				echo "<div class=motdLeftContainer>";
-				echo "	<div class='motdBoxheader' >";
-				echo "		<h3>Message of the day</h3>";
-				echo "	</div>";
-				echo "  <div id='motdContent' style='text-align:center'>";
-				echo "		<p style='text-align:center' id='motd'></p>";
-				echo" 	</div>";
-				echo" 	</div>";
-				echo"<div class ='motdRightContainer'>";
-				echo "		<input type='button' id='MOTDbutton' value='Close' class='submit-button' onclick='closeMOTD()'/>";
-				echo" 	</div>";
-				echo "</tr>";
-			?>
+		<div id="motdArea" style="display:none;">
+	<div class="motdLeftContainer">
+		<div class="motdBoxheader">
+			<h3>Message of the day</h3>
 		</div>
+		<div id="motdContent" style="text-align:center">
+			<p style="text-align:center" id="motd"><?php echo htmlspecialchars($motd ?? ''); ?></p>
+				</div>
+			</div>
+			<div class="motdRightContainer">
+				<input type="button" id="MOTDbutton" value="Close" class="submit-button" onclick="hideServerMessage()" />
+			</div>
+		</div>
+
 		<!-- MOTD dropdown END -->
 
 		<!-- Announcement box -->
@@ -209,8 +224,6 @@
 		<div id='Sectionlist'>
 
 		<div id='courseHeader' class='course' >
-			
-			<input id="undoButton" value="&#9851;" type="button" class='submit-button-newitem' title="Undo deleted example" style="position: absolute; padding-right:5px; margin-right:165px; display: none;" onclick="cancelDelete();">
 		
 			<div class='fixed-action-button3 sectioned3 display_none' id="HIDEStatic">
   				<input id='toggleElements' type='image' src='../Shared/icons/eye_icon.svg' class='submit-button-newitem' title='toggle hidden items'>
@@ -324,8 +337,7 @@
 
 	<?php
 		include '../Shared/loginbox.php';
-	?>			
-
+	?>
 		<!-- Edit Section Dialog START -->
 
 
@@ -825,7 +837,7 @@
                         
 					</table>
 				</div>
-				
+
 		</div>
 		<!-- Set JS variable based on if logged in or not -->
 		<?php
@@ -915,7 +927,7 @@
 				}, 100); // Give the page time to load. 
 			});
 		</script>
-		
+
 		</body>
 		
 		</html>
