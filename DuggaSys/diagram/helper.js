@@ -225,7 +225,7 @@ function isDarkTheme() {
  */
 function makeRandomID() {
     let str = "";
-    const characters = 'ABCDEF0123456789';
+    const characters = 'ABCDEFGIJK0123456789';
     const charactersLength = characters.length;
     while (true) {
         for (let i = 0; i < 6; i++) {
@@ -283,3 +283,50 @@ function sameObjects(obj1, obj2, ignore = []) {
     // JSON.stringify() is needed to compare the values
     return JSON.stringify(obj1) == JSON.stringify(obj2);
 }
+
+// Map<elementId, Map<connectionKey, offsetValue>>
+const offsetMap = new Map();
+
+// Generate an ID for a line
+function generateLineKey(fId, tId, index) {
+    return `from:${fId}->${tId}#${index}`;
+}
+
+// Increment the map index position
+function getNextLineIndex(fId, tId, map) {
+    let i = 0;
+    while (map.has(generateLineKey(fId, tId, i))) {
+        i++;
+    }
+    return i;
+}
+
+// Return offset key for a specified element
+function hasOffset(map, elemId, key) {
+    return map.has(elemId) && map.get(elemId).has(key);
+}
+
+// Set the offset (value) for a specific key
+function setOffset(map, elemId, key, value) {
+    if (!map.has(elemId)) {
+        map.set(elemId, new Map());
+    }
+    map.get(elemId).set(key, value);
+}
+
+// Retrieve the offset for a specific key
+function getOffset(map, elemId, key) {
+    return map.get(elemId)?.get(key) ?? null;
+}
+
+// Remove the offset for a specific key, and if map is empty remove that too.
+function removeOffset(map, elemId, key) {
+    if (map.has(elemId)) {
+        const innerMap = map.get(elemId);
+        innerMap.delete(key);
+        if (innerMap.size === 0) {
+            map.delete(elemId); 
+        }
+    }
+}
+
