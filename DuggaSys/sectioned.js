@@ -1193,7 +1193,8 @@ function deleteAll() {
   var deletedElements = document.querySelectorAll(".deleted")
   for (i = deletedElements.length ; (i > 0) ; i--) {
     var lid = deletedElements[i-1].id.match(/\d+/)[0];
-    deletedElements[i-1].parentElement.style.display = "none"; //This line is needed because refresh is broken. (2025-05-14). Should be possible to be removed after Group 2 solves the issue.
+    const row = deletedElements[i-1].closest(".courseRow"); //These lines are needed because refresh is broken. (2025-05-14). 
+    if (row) row.remove();                                  //Should be possible to be removed after Group 2 solves the issue.
     deletedElements[i-1].classList.remove("deleted");
 
     AJAXService("DEL", {
