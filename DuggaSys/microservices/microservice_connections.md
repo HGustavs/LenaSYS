@@ -167,37 +167,29 @@ function removeUserFromCourse() {
 - AJAXService()
 
 ---
-
-
 # Name of file/service
-
 accessed.js
-
 Function: loadUsersToDropdown
 
 ## Description
-*Description of what the service do and its function in the system.*
-
-This function populates a dropdown list with users fetched from the databas.
-It sends a POST request to accessedservice.php with the action USERS, receives user data.
+This function retrieves all users from the backend and populates a dropdown field with usernames. It is used when showing user-related popup modals such as “Add User” or “Remove User”.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+- Parameter: opt
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| Parameter | Type | Description |
-
-| :opt | :string | :Retrive users |
-| :action | :string | :Return all users |
+- Parameter: action
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
-
-| Output | Type | Description |
-
-| :Users | :Array | :Array with usernames |
+- Output: users
+   - Type: JSON-arrayS
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use
 ``` 
@@ -231,87 +223,46 @@ function loadUsersToDropdown(id) {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
-
-accessedservice.php
-
-opt- RETRIEVE, action- USERS
-
-
-# Name of file/service
-accessed.js
-Function: loadUsersToDropdown
-
-## Description
-This function retrieves all users from the backend and populates a dropdown field with usernames. It is used when showing user-related popup modals such as “Add User” or “Remove User”.
-
-## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: paramName
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
-
-## Calling Methods
-- GET
-- POST
-- etc.
-
-## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-`CODE`
-
-### Microservices Used
-- *Includes and microservices used*
+- accessedservice.php
 
 ---
-
-*Add the dashes above between each documentation.*
----------------------------------------------------------------------------------------------------------
 # Name of file/service
-
 courseed.js
 Function updateCourse()
 
 ## Description
-*Description of what the service do and its function in the system.*
-
-Updating course settings such as course name, course code and GitHub repository.
+Updates course information in the system, such as course name, visibility, code, and GitHub URL. If a GitHub URL is provided, it attempts to validate it and save the updated state.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+- Parameter: cid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| Parameter | Type | Description |
+- Parameter: coursename
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :coursename | :string | :New course name |
+- Parameter: coursecode
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :cid | :string | :Course ID |
+- Parameter: courseGitURL
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :coursecode | :string | :Course code |
+- Parameter: visib
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :courseGitURL | :string | :Git URL linked to the course |
+- Parameter: token
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database   
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
-
-| Output | Type | Description |
-
-| :success | :bool | :DataCheck |
+- 
 
 ## Examples of Use
 ``` 
@@ -394,43 +345,28 @@ function updateCourse() {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- gitcommitService.php
 
-gitcommitService.php
-
-Updates GitHub token and repository information
-action- directInsert
-
-----------------------------------------------------------------------------------------
-
+---
 # Name of file/service
-
 courseed.js
-Function FetchGitHubRepo
+Function FetchGitHubRepo()
 
 ## Description
-*Description of what the service do and its function in the system.*
-
 Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
-
-| Parameter | Type | Description |
-
-| :githubURL | :string | :GitHub URL |
-| :action | :string | :Type of fetch |
+- Parameter: gitHubURL
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
-
-| Output | Type | Description |
-
-| :Success | :bool | :success/failure bool |
-| :Message | :string | :Erro rmessage passed back from PHP |
+- Output: boolean
+   - Type: true/false
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use
 ``` 
@@ -468,48 +404,29 @@ function fetchGitHubRepo(gitHubURL) {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- gitfetchService.php
 
-gitfetchService.php
-
-Uses: action- getNewCourseGitHub
-
----------------------------------------------------------------------
+---
 # Name of file/service
-
 courseed.js
-
-Function fetchLatestCommit
+Function fetchLatestCommit()
 
 ## Description
-*Description of what the service do and its function in the system.*
-
 This function sends a GitHub repository URL of the latest commit from the GitHub repository.
 The latest commit is then stored in the database.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
-
-| Parameter | Type | Description |
-
-| :gitHubURL | :string | :URL of the GitHub repository to fetch commits from |
-
-| :action | :string | :getCourseID identifies type of action |
+- Parameter: gitHubURL
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
-
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
-
-| Output | Type | Description |
-
-| :status code | :int | :HTTP status,determine the result |
-
-| :message | :string | :Error message |
-
-| :success | :bool | :success=true, Error=false |
+- Output: boolean
+   - Type: true/false
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
 ``` 
@@ -545,11 +462,9 @@ function fetchLatestCommit(gitHubURL) {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- gitcommitService.php
 
-gitcommitService.php
-
-action- getCourseID
+---
 
 ----------------------------------------------------------------------------------------
 # Name of file/service
