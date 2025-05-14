@@ -441,3 +441,58 @@ Calls retrieveShowDuggaService_ms.php to fetch and return specific dugga-data fr
 - retrieveShowDuggaService_ms.php
 
 ---
+
+# Name of file/service
+loadDugga_ms.php
+
+## Description
+Retrieves submitted user responses from a dugga, based on specific identifiers such as a hash value or moment identifier.
+
+## Input Parameters
+- Parameter: $hash
+   - Type: String
+   - Description: Unique user answer identifier. Stored as varchar(8) in the database
+
+- Parameter: $moment
+   - Type: int
+   - Description: Unique user answer identifier for a specific moment. Stored as int(10) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $variant
+   - Type: int
+   - Description: Variant ID. Stored as int(11) in the database
+
+- Output: $answer
+   - Type: String
+   - Description: User's dugga answer. Stored as varchar(30) in the database
+
+- Output: $variantanswer
+   - Type: int
+   - Description: DUgga variant answer, decoded. Stored as varchar(8126) in the database
+
+- Output: $param
+   - Type: String
+   - Description: Parameter/question associated with the dugga variant. Stored as varchar(8126) in the database
+
+- Output: $newcourseid
+   - Type: int
+   - Description: Course ID associated with the dugga. Stored as int(10) in the database
+
+- Output: $newcoursevers
+   - Type: String
+   - Description: Course version associated with the dugga. Stored as varchar(8) in the database
+
+- Output: $newduggaid
+   - Type: int
+   - Description: Unique identifier for the dugga. Stored as int(11) in the database
+
+## Examples of Use
+-
+
+### Microservices Used
+- retrieveShowDuggaService_ms.php
+---
+
