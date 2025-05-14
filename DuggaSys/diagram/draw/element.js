@@ -16,10 +16,6 @@ function drawElement(element, ghosted = false) {
     let zLevel = element.z ?? 2; /*Ensures that elements without a defined z-index get a default value (2)*/
     let mouseEnter = '';
 
-
-    let zLevel = 2;        // Default stacking order
-    let mouseEnter = '';  // Mouse enter handler
-
     //Measure the name’s pixel width
     canvas = document.getElementById('canvasOverlay');
     canvas.width = window.innerWidth;
