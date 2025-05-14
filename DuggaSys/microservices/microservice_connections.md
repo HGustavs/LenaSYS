@@ -1,72 +1,11 @@
 In this file the connection between javascript and PHP is docummented.
 
-# Name of file/service 
- accessed.js
- Function addUserToCourse().
-
-## Description 
- Function - addUserToCourse
- Adds user to a user to a course. Looks up UID based on their username.
-
-## Input Parameters 
-| Parameter | Type | Description |
-
-| :Username | :POST | :Retrieve User | 
- 
-
-## Calling Methods 
-- POST 
-
-## Output Data and Format 
-
-| :User | :Array | :Array of userdata from databas | 
-| :UID | :string | :Identifier username | 
- 
-
-## Examples of Use 
-``` 
-function addUserToCourse() {
-	let input = document.getElementById('addUsername2').value;
-	let term = $("#addTerm2").val();
-	if(input && term) {
-		$.ajax({
-			type: 'POST',
-			url: 'accessedservice.php',
-			data: {
-				opt: 'RETRIEVE',
-				action: 'USER',
-				username: input
-			},
-			success: function(response) {
-				userJson = response.substring(0, response.indexOf('{"entries":'));
-				let responseData = JSON.parse(userJson);
-				let uid = responseData.user[0].uid;
-				AJAXService("USERTOTABLE", {
-					courseid: querystring['courseid'],
-					uid: uid,
-					term: term,
-					coursevers: querystring['coursevers'],
-					action: 'COURSE'
-				}, "ACCESS");
-			},
-			error: function(xhr, status, error) {
-				console.error("Error", error);
-			}
-		});
-		updateCourseUsers(hideAddUserPopup); // Sending function as parameter
-	}
-} 
-```
-
-### Microservices Used 
-Accessedservice.php
-
 # Name of file/service
 accessed.js
 Function addUserToCourse()
 
 ## Description
-Manages user access to courses within the system. It enables displaying and administrating user information, including editing access levels, assigning groups, managing course versions, and handling user creation/removal.
+This function adds a user to a course. It performs two main operations, retrieves the user’s UID by querying accessedservice.php using their username and assigns the user to a course version and term using the AJAXService.
 
 ## Input Parameters
 - Parameter: opt
@@ -89,30 +28,26 @@ Manages user access to courses within the system. It enables displaying and admi
    - Type: string
    - Description:
   
-- Parameter: courseverse
-   - Type: string
-   - Description:
-
-- Parameter: newusers
-   - Type: string
-   - Description:
-  
-  - Parameter: newclass
+- Parameter: coursevers
    - Type: string
    - Description:
 
 ## Calling Methods
-- GET
 - POST
 
 ## Output Data and Format
 *Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-- Output: outputName
+- Output: user
+   - Type: JSON-array
+   - Description: 
+
+- Output: success/error
    - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+
+- Output: courses/groups/teachers/classes/submissions
+   - Type: JSON-object
    - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
@@ -151,39 +86,49 @@ function addUserToCourse() {
 ```
 
 ### Microservices Used
-- AJAXService
+- AJAXService()
 - Accessedservice.php
 
 ---
-
-*Add the dashes above between each documentation.*
 # Name of file/service
-
 accessed.js
-
 Function removeUserFromCourse.
 
 ## Description
-*Description of what the service do and its function in the system.*
-
-Retrives UID with ajax POST, then deletes user with opt DELETE.
+This function removes a user from a course. It retrieves the user's UID based on their username using accessedservice.php, then sends a DELETE request using AJAXService to remove the user from the course.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+- Parameter: opt
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| Parameter | Type | Description |
+- Parameter: action
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :Username | :POST | :Username of the user that should be removed |
+- Parameter: username
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
+
+- Parameter: courseid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
+
+- Parameter: uid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
+- Output: user
+   - Type: JSON-array
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| Output | Type | Description |
-
-| :User | :Array | :Array of objects, UID. |
+- Output: success/error
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
 ``` 
@@ -218,14 +163,11 @@ function removeUserFromCourse() {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- accessedservice.php
+- AJAXService()
 
-accessedservice.php
+---
 
-opt- RETRIEVE, action- USER
-opt- DELETE, action- COURSE
-
----------------------------------------------------------------------------------------------------------------------------
 
 # Name of file/service
 
@@ -295,6 +237,48 @@ accessedservice.php
 
 opt- RETRIEVE, action- USERS
 
+
+# Name of file/service
+accessed.js
+Function: loadUsersToDropdown
+
+## Description
+This function retrieves all users from the backend and populates a dropdown field with usernames. It is used when showing user-related popup modals such as “Add User” or “Remove User”.
+
+## Input Parameters
+*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
+- Parameter: paramName
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: paramName
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
+
+## Calling Methods
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
+- Output: outputName
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
+
+- Output: outputName
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+- *Includes and microservices used*
+
+---
+
+*Add the dashes above between each documentation.*
 ---------------------------------------------------------------------------------------------------------
 # Name of file/service
 
