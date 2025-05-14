@@ -6,6 +6,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
 
 // Connect to database and start session
@@ -71,7 +72,7 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 
     	array_push($tableInfo, $tableSubmissionInfo);
 	}
-
+	/*
     // Set up POST call to retrieveResultedService_ms.php
     header("Content-Type: application/json");
     $baseURL = "http://" . $_SERVER['HTTP_HOST'];  // use http when testing locally
@@ -90,7 +91,15 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
     // Execute and get response
     $response = curl_exec($ch);
     curl_close($ch);
+	*/
+	//Use curlService to make HTTP POST call
+	 $postData = [
+    'tableInfo' => json_encode($tableInfo),
+    'duggaFilterOptions' => json_encode($duggaFilterOptions)
+ 	];
+	$response = callMicroservicePOST("resultedService/retrieveResultedService_ms.php", $postData, true );
+	$data = json_decode($response, true);
 
-    // Send the response to frontend
-    echo $response;
+    // Send the data to frontend
+    echo $data;
 }
