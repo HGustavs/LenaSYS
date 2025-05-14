@@ -2171,6 +2171,7 @@ function returnedSection(data) {
           str += "</td>";
         }
 
+        //Burger menu for icons - mobile-view
         if (itemKind === 3 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td class="show-on-mobile">`;
           str += `
