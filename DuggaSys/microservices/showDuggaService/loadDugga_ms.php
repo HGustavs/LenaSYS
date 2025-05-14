@@ -57,3 +57,18 @@ if($hash!="UNK"){
     }
 
 }
+
+$result = retrieveShowDuggaService(
+    $moment,
+    $pdo,
+    $courseid,
+    $hash,
+    $hashpwd,
+    $coursevers,
+    $duggaid,
+    $opt,
+    $group,
+    $score
+);
+echo json_encode($result);
+exit;

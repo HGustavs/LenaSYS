@@ -57,8 +57,25 @@ function retrieveShowDuggaService(
 	unset($param);
 	if (isSuperUser($userid)){
 		if($hash!="UNK"){
-			include_once("loadDugga_ms.php");
+			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+			$url = $baseURL . "/LenaSYS/duggaSys/microservices/showDuggaService/loadDugga_ms.php?" . http_build_query([
+				'hash' => $hash,
+				'moment' => $moment
+			]);
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($ch);
+			curl_close($ch);
 
+			$data = json_decode($response, true);
+			$variant = $data['variant'];
+			$answer = $data['answer'];
+			$variantanswer = $data['variantanswer'];
+			$param = $data['param'];
+			$newcourseid = $data['newcourseid'];
+			$newcoursevers = $data['newcoursevers'];
+			$newduggaid = $data['newduggaid'];
+			
 			$sql="SELECT entryname FROM listentries WHERE lid=:moment";
 			$query = $pdo->prepare($sql);
 			$query->bindParam(':moment', $moment);
