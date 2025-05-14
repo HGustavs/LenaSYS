@@ -324,9 +324,8 @@ $js = array(
                                 <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
                                 <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
                                 <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
-                                <span class="markdown-icons headerType" id="headerIcon" title="Header" onmouseover="console.log('testing'); 
-                                showDropdown('show');" onmouseleave="showDropdown('hide');">aA&#9663;
-                                    <div class="selectHeader" id="select-header" style="display: none;">
+                                <span class="markdown-icons headerType" id="headerIcon" title="Header" onclick="showDropdown('show');" onmouseleave="showDropdown('hide');">aA&#9663;
+                                    <div class="selectHeader" id="select-header">
                                         <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                                         <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                                         <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>

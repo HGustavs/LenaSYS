@@ -13,6 +13,7 @@
 // GLOBALS
 var tableAlignmentConf = [];
 var openedSublists = [];
+let displayed = false;
 
 //Functions for gif image
 //Fetches the picture and sets its properties
@@ -463,11 +464,16 @@ function cursiveText() {
 }
 
 function showDropdown(mode) {
-    if (mode == 'show'){
+    if (mode == 'show' && displayed == false){
         document.querySelector('#select-header').style.display="block";
+        displayed = true;
+    }
+    else if (displayed == true){
+        document.querySelector('#select-header').style.display="none";
+        displayed = false;
     }
     else{
-        document.querySelector('#select-header').style.display="none";
+    document.querySelector('#select-header').style.display="none";
     }
 }
 

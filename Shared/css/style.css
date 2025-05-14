@@ -8694,6 +8694,7 @@ textarea#mrkdwntxt {
 }
 
 #select-header {
+  display: none;
   max-width: 63px;
   position: absolute;
   z-index: 2000;
