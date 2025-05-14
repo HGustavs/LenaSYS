@@ -158,25 +158,19 @@ Handles updates of code examples, and then retrieving all updated data from the 
    - Description: User ID. Stored as int in the database                        
 
 ## Calling Methods
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Output: $data
+   - Type: JSON
+   - Description: Contains data associated with the updated code example
 
 ## Examples of Use
-`CODE`
+`UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;`
 
 ### Microservices Used
-- *Includes and microservices used*
+- retrieveCodeviewerService_ms.php
+- getUid_ms.php
 
 ---
 
