@@ -145,20 +145,48 @@ function toggleA4Template() {
         template.style.display = "none";
         vRect.style.display = "none";
         a4Rect.style.display = "none";
-        document.getElementById("a4VerticalButton").style.display = "none";
-        document.getElementById("a4HorizontalButton").style.display = "none";
+        document.getElementById("a4OptionsDropdownContainer").style.display = "none";
+        
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
-        document.getElementById("a4VerticalButton").style.display = "inline-block";
-        document.getElementById("a4HorizontalButton").style.display = "inline-block";
+        document.getElementById("a4OptionsDropdownContainer").style.display = "block";
+        
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
     }
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
+}
+
+function toggleA4Dropdown() {
+    const dropdown = document.getElementById("a4OptionsDropdown");
+    const load = document.getElementById("a4Load");
+    const btn = document.getElementById("a4TemplateToggle");
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        load.style.display = "block";
+        dropdown.style.display = "block";
+    } else {
+        load.style.display = "none";
+        dropdown.style.display = "none";
+    }
+
+    document.getElementById("a4TemplateToggle").classList.toggle("active");
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        btn.style.backgroundColor = "transparent";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
+        btn.style.fontWeight = "bold";
+    } else {
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
+        btn.style.fontWeight = "normal";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+    }
 }
 
 function setA4SizeFactor(e) {
@@ -187,6 +215,19 @@ function toggleA4Horizontal() {
 
     a4Rect.style.display = "none";  // Hide vertical
     vRect.style.display = "block";  // Show horizontal
+}
+
+/**
+ * @description Applies the selected A4 option: vertical or horizontal
+ */
+function applyA4Option() {
+    const selectedOption = document.getElementById("a4OptionsDropdown").value;
+
+    if (selectedOption === "vertical") {
+        toggleA4Vertical();
+    } else if (selectedOption === "horizontal") {
+        toggleA4Horizontal();
+    }
 }
 
 /**
@@ -455,13 +496,7 @@ function toggleColorMenu(buttonID) {
             }
         }
         // Menu position relative to button
-        menu.style.width = width + "px";
-        const buttonWidth = button.offsetWidth;
-        const offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
-        const offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = (offsetHeight - 50) + "px";
-        const menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
-        menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
+        menu.style.maxHeight = "600px";
     } else {    // if the color menu's inner html is not empty, remove the content
         menu = button.children[0];
         menu.innerHTML = "";

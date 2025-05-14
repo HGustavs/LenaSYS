@@ -337,6 +337,13 @@
         transition: var(--normal-transition);
     }
 
+    #diagram-message{
+        position: absolute !important;
+        top: 50px !important;
+        left: 50px !important;
+        width: 60% !important;
+    }
+
     .icon-wrapper.toolbar-active{
         margin-bottom: calc(var(--diagram-toolbar-height) - 2rem);
     }
@@ -585,9 +592,7 @@
     border-radius: 5px;
     position: absolute;
     left: 0;
-    top: 0;
-    width: 230px;
-    height: 50px;
+    height: 110px;
     z-index: 5;
     float: left;
 }
@@ -773,7 +778,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 30%;
+    width: 70%;
     z-index: 999;
     background-color: white;
     color: black;
@@ -1104,6 +1109,17 @@
 
 #a4HorizontalButton {
     display: none;
+}
+
+#a4OptionsDropdown,
+#a4Load {
+    display: none;
+    margin-bottom: 15px;
+}
+
+#a4OptionsDropdown {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 #option-import>input {

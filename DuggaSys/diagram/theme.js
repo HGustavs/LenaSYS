@@ -74,7 +74,8 @@ function updateCSSForAllElements() {
             var disjointLine1Color;
             var disjointLine2Color;
 
-            if (data[i].isLocked) useDelta = false;
+            //Element won't update its position relative to the cursor if useDelta is false. 
+            if (data[i].isLocked || pointerState == pointerStates.CLICKED_CONTAINER || boxSelectionInUse) useDelta = false;
             updateElementDivCSS(element, elementDiv, useDelta);
 
             // Apply visual highlights and colors if not in Edge creation mode

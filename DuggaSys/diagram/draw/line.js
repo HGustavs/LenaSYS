@@ -9,17 +9,32 @@ function drawLine(line, targetGhost = false) {
 
     let lineStr = ""; // only the lines, polylines, arrows etc
     let labelStr = ""; // labels and label backgrounds
+    let fromElemMouseY;
+    let toElemMouseY;
 
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
+    if (!line.fromY) {
+        line.fromY = lastMousePos.y;
+    }
+    fromElemMouseY = line.fromY;
+
     let telem;
     if (targetGhost) {
         telem = ghostElement;
+        toElemMouseY = lastMousePos.y;
         isCurrentlyDrawing = true;
     } else {
         telem = data[findIndex(data, line.toID)];
         isCurrentlyDrawing = false;
+
+        // Cache toY only if not already set
+        if (!line.toY) {
+            line.toY = lastMousePos.y;
+        }
+        toElemMouseY = line.toY;
     }
+
     if (!felem || !telem) return { lineStr: "", labelStr: "" };
     line.type = (telem.type == entityType.note) ? telem.type : felem.type;
     let strokeDash = (line.kind == lineKind.DASHED || line.type == entityType.note) ? "10" : "0";
@@ -31,7 +46,7 @@ function drawLine(line, targetGhost = false) {
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
     if (line.recursive) {
-        [fx, fy, tx, ty, offset] = getLineAttributes(felem, felem, line.ctype);
+        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, felem, line.ctype, fromElemMouseY, toElemMouseY);
         //Setting start position for the recursive line, to originate from the top.
         fx = felem.cx;
         fy = felem.y1;
@@ -40,7 +55,7 @@ function drawLine(line, targetGhost = false) {
         tx = fx;
         ty = fy;
     } else {
-        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype);
+        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
     }
 
     // Follows the cursor while drawing the line
@@ -74,7 +89,7 @@ function drawLine(line, targetGhost = false) {
 
     if (targetGhost && line.type == entityType.SD) line.endIcon = SDLineIcons.ARROW;
     if (line.type == entityType.ER) {
-        [fx, fy, tx, ty, offset] = getLineAttributes(felem, telem, line.ctype);
+        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
         if (line.kind == lineKind.NORMAL) {
             lineStr += `<line 
                         id='${line.id}' 
@@ -241,7 +256,7 @@ function drawLine(line, targetGhost = false) {
             labelStr += drawLineCardinality(line, lineColor, fx, fy, tx, ty, felem, telem);
         }
     }
-        
+
     if (isSelected) {
         labelStr += `<rect 
                     x='${((fx + tx) / 2) - (2 * zoomfact)}' 
@@ -323,8 +338,15 @@ function drawLine(line, targetGhost = false) {
         if (line.recursive) {
             //Calculatin the lable possition based on element size, so it follows when resized.
 
-            const length = 20 * zoomfact;
-            const lift   = 80 * zoomfact; 
+            let length = 20 * zoomfact;
+            let lift   = 80 * zoomfact;
+                    
+                    // Calculations only for SE
+            if (line.type === entityType.SE) {
+                length = 70 * zoomfact; 
+                lift = 20 * zoomfact;   
+            }
+
             let {lineLength, elementLength, startX, startY } = recursiveParam(felem);
             startY -= lift;
             startX += length;
@@ -423,7 +445,7 @@ function recursiveERCalc(ax, ay, bx, by, elem, isFirst, line) {
  * @param {object} line The line being dragged.
  * @returns {number[]} Returns the new coordinates
  */
-function recursiveERRelation(felem, telem, line) {
+function recursiveERRelation(felem, telem, line, fromElemMouseY, toElemMouseY) {
     const connections = felem.neighbours[telem.id].length;
     let fx = felem.cx, fy = felem.cy, tx = telem.cx, ty = telem.cy;
     if (connections != 2) return [fx, fy, tx, ty];
@@ -437,7 +459,7 @@ function recursiveERRelation(felem, telem, line) {
     return [fx, fy, tx ?? telem.cx, ty ?? telem.cy];
 }
 
-function getLineAttributes(f, t, ctype) {
+function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     let px = -1; // Don't touch
 
     let fWidth = f.width;
@@ -539,6 +561,23 @@ function getLineAttributes(f, t, ctype) {
             offset.y1 += (ctype === lineDirection.UP ? shrink : -shrink);
             offset.y2 += (ctype === lineDirection.UP ? -shrink : shrink);
         }
+    }
+    
+    // Special case to handle sequence activation lines
+    if (f.kind === elementTypesNames.sequenceActivation) {
+        const fromKey = `from:${line.id}`;
+        const toKey = `to:${line.id}`;
+    
+        if (!hasOffset(offsetMap, f.id, fromKey)) {
+            setOffset(offsetMap, f.id, fromKey, (fromElemMouseY ?? lastMousePos.y) - f.cy);
+        }
+
+        if (!hasOffset(offsetMap, t.id, toKey)) {
+            setOffset(offsetMap, t.id, toKey, (toElemMouseY ?? lastMousePos.y) - t.cy);
+        }
+
+        fy = f.cy + getOffset(offsetMap, f.id, fromKey) * zoomfact;
+        ty = t.cy + getOffset(offsetMap, t.id, toKey) * zoomfact;
     }
 
     return [fx, fy, tx, ty, offset];
@@ -1039,6 +1078,7 @@ function redrawArrows() {
     }
     //Going through all elements and checking for adjacent lines
     for (let i = 0; i < data.length; i++) {
+        if (data[i].kind === elementTypesNames.sequenceActivation) continue;
         checkAdjacentLines(data[i]);
     }
     // Draw each line using sorted line ends when applicable
