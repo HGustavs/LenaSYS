@@ -13,12 +13,12 @@ function drawElement(element, ghosted = false) {
     let boxh = element.height ? 
 
     Math.round(element.height * zoomfact) : 0; // Only used for extra whitespace from resize
-    let zLevel = element.z ?? 2; /*nsures that elements without a defined z-index get a default value (2)*/
+    let zLevel = element.z ?? 2; /*Ensures that elements without a defined z-index get a default value (2)*/
     let mouseEnter = '';
 
 
     let zLevel = 2;        // Default stacking order
-    let mouseEnter = '';  // mouse enter handler
+    let mouseEnter = '';  // Mouse enter handler
 
     //Measure the name’s pixel width
     canvas = document.getElementById('canvasOverlay');
@@ -31,7 +31,7 @@ function drawElement(element, ghosted = false) {
 
     //Highlight elements involved in validation errors
     if (errorActive) {
-        checkElementError(element);  // gather error
+        checkElementError(element);  // Gather error
         for (let i = 0; i < errorData.length; i++) {
             if (element.id == errorData[i].id) element.stroke = 'red';
         }
@@ -131,7 +131,7 @@ function drawElement(element, ghosted = false) {
             // Expand for each alternative block rendered below the header
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
             divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
-            zLevel = 0;   // below messages and activations
+            zLevel = 0;   // Below messages and activations
             break;
 
         //Legacy sticky note
@@ -295,7 +295,7 @@ function drawElementEREntity(element, boxw, boxh, linew, texth) {
     const maxCharactersPerLine = Math.floor((boxw / texth) * 1.5);
     const lineHeight = 1.5;
     
-    //check if element height and minHeight is 0, if so set both to 50
+    //Check if element height and minHeight is 0, if so set both to 50
     if (element.height == 0 && element.minHeight == 0) {
         element.minHeight = 50;
         element.height = element.minHeight;
@@ -899,7 +899,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
             rx='${7 * zoomfact}'
             fill-opacity="0"
         />`;
-    //if it has alternatives, iterate and draw them out one by one, evenly spaced out.
+    // If it has alternatives, iterate and draw them out one by one, evenly spaced out.
     if (element.alternatives.length) {
         for (let i = 1; i < element.alternatives.length; i++) {
             content += `<path class="text"
@@ -916,7 +916,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
             );
         }
     }
-    //svg for the small label in top left corner
+    // SVG for the small label in top left corner
     content += `<path 
                 id="loopLabel"
                 d="M ${(7 * zoomfact) + linew},${linew}
