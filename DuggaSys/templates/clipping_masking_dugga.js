@@ -110,8 +110,14 @@ function show(){
     if(hasFacit){
 
     }else{
-        $("#submitButtonTable").appendTo("#content");
-    		$("#lockedDuggaInfo").appendTo("#content");
+    document.getElementById("content").appendChild(
+    document.getElementById("submitButtonTable")
+    );
+
+    document.getElementById("content").appendChild(
+    document.getElementById("lockedDuggaInfo")
+    );
+
     }
 
     if (hasUserStats){
@@ -149,14 +155,16 @@ function returnedDugga(data)
     if(data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
         hasFeedback=true;
         feedback=data["feedback"];
-        $("#showFeedbackButton").css("display","block");
+        document.getElementById("showFeedbackButton").style.display = "block";
     }
     if(data["answer"] !== null && data["answer"] !== "UNK") {
         hasSavedAnswer=true;
         savedAnswer=data['answer'];
     }
     displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
-    $(".submit-button").removeClass("btn-disable");
+    document.querySelectorAll(".submit-button").forEach(function(elem) {
+    elem.classList.remove("btn-disable");
+    });
     show();
 }
 
@@ -203,9 +211,10 @@ function saveClick()
 
   	// Loop through all the added operations
   	bitstr = ",";
-  	$("*[id*=opCode_]").each(function (){
-  			bitstr+=this.innerHTML + ",";
-  	});
+    document.querySelectorAll("[id*='opCode_']").forEach(function(elem) {
+    bitstr += elem.innerHTML + ",";
+    });
+
   	bitstr += "T " + elapsedTime;
   	bitstr += " " + window.screen.width;
   	bitstr += " " + window.screen.height;
@@ -229,9 +238,10 @@ function saveClick()
 
     // Loop through all the added operations
     bitstr = ",";
-    $("*[id*=opCode_]").each(function (){
-            bitstr+=this.innerHTML + ",";
+    document.querySelectorAll("[id*='opCode_']").forEach(function(elem) {
+    bitstr += elem.innerHTML + ",";
     });
+
     bitstr += "T " + elapsedTime;
     bitstr += " " + window.screen.width;
     bitstr += " " + window.screen.height;
@@ -308,20 +318,31 @@ function fitToContainer()
 }
 
 
-function toggleSelectOperation(e){
-		if ($(e).closest("tr").hasClass("selectedOp")){
-				$(e).closest("tr").removeClass("selectedOp");
-				document.getElementById("addOpButton").value = "Add Op.";
-				$("#operationList").find("tr:odd").css('background-color', '#dad8db');
-		} else {
-				$(e).closest("tr").addClass("selectedOp");
-				document.getElementById("addOpButton").value = "Change Op.";
-				// Unselect any previous selected row
-				$("#operationList").find("tr").each(function (){
-						if (this.id != $(e).closest("tr").attr('id')) $(this).removeClass("selectedOp");
-				});
-		}
+function toggleSelectOperation(e) {
+    const row = e.closest("tr");
+
+    if (row.classList.contains("selectedOp")) {
+        row.classList.remove("selectedOp");
+        document.getElementById("addOpButton").value = "Add Op.";
+
+        const oddRows = document.querySelectorAll("#operationList tr:nth-child(odd)");
+        oddRows.forEach(function (r) {
+            r.style.backgroundColor = "#dad8db";
+        });
+
+    } else {
+        row.classList.add("selectedOp");
+        document.getElementById("addOpButton").value = "Change Op.";
+
+        const allRows = document.querySelectorAll("#operationList tr");
+        allRows.forEach(function (r) {
+            if (r.id !== row.id) {
+                r.classList.remove("selectedOp");
+            }
+        });
+    }
 }
+
 
 
 
