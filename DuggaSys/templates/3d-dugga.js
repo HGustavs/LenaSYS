@@ -121,8 +121,7 @@ function returnedDugga(data)
 	}else{
 		animate();
 	}
-
-		$(".submit-button").removeClass("btn-disable");
+		document.querySelectorAll(".submit-button").forEach(el => el.classList.remove("btn-disable"));
 	}
   // Teacher feedback
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
@@ -137,85 +136,30 @@ function returnedDugga(data)
       fb += "</tbody></table>";
       document.getElementById('feedbackTable').innerHTML = fb;		
 	  document.getElementById('feedback').style.display = "block";
-	  $("#showFeedbackButton").css("display","block");
+	  document.getElementById("showFeedbackButton").style.display = "block";
   }
-  $("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").prependTo("#content");
+  	document.getElementById("content").appendChild(document.getElementById("submitButtonTable"));
+
+  	const content = document.getElementById("content");
+	const lockedDuggaInfo = document.getElementById("lockedDuggaInfo");
+	content.insertBefore(lockedDuggaInfo, content.firstChild);
+
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
-		$("#duggaInfoBox").css("display","none");
+		document.getElementById("duggaInfoBox").style.display = "none";
 		document.getElementById('duggaTime').innerHTML=userStats[0];
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 	createTextures();
 
 	ans = JSON.parse(danswer);
-	//console.log(ans.vertex);
-	//console.log(ans.triangle);
-
-  // Setup code
-  /*
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
-	.done( function( script, textStatus ) {
-		acanvas = document.getElementById('container');
-		renderer = new THREE.WebGLRenderer();
-		acanvas.addEventListener('click', toggleRotate, false);
-
-		// Parse student answer and dugga answer
-		var studentPreviousAnswer = "";
-		var p = jQuery.parseJSON(param);
-		if (uanswer !== null && uanswer !== "UNK"){
-			var previous = uanswer.split(' ');
-			var prevRaw = previous[3];
-			prevRaw = prevRaw.replace(/&quot;/g, '"');
-			var prev = prevRaw.split('|');
-			vertexL = JSON.parse(prev[0]);
-			triangleL = JSON.parse(prev[1]);
-			renderVertexTable();
-			renderTriangleTable();
-		}
-
-    if (renderId != undefined){
-        cancelAnimationFrame(renderId);
-        renderId=undefined;
-    }
-    
-  	init();
-		goalObject = param;
-		createGoalObject(goalObject);    
-		updateGeometry();
-		animate();
-
-		//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
-		if (vertexL.length === ans.vertex) {
-			document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-			document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
-		} else {
-			document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-			document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
-		}
-		if (triangleL.length === ans.triangle) {
-			document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-			document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
-		} else {
-			document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-			document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
-		}
-
-	})
-	.fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);	    
-	});
-*/
 acanvas = document.getElementById('container');
 renderer = new THREE.WebGLRenderer();
 if(acanvas.getAttribute('has-toggle-rotate') !== 'true'){
@@ -293,25 +237,36 @@ function closeFacit(){
 
 function changePane(e) 
 {
-  // get pane-body to hide
-  updateVerticeDropdown();
-  
-  $(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
-  $(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
-  $(e).addClass("pane-active");
-  
-  var clsArr = e.className.split(" ");
-  var paneToShow = 0;
-  for(i=0;i<clsArr.length;i++){
-    var idx = clsArr[i].indexOf("pane-id-");
-    if(idx != -1){
-        paneToShow = clsArr[i].substring(idx+8);
-    }
-  }
-  
-  $(e).closest(".pane-container").find(".pane-body").children().css("display","none");
-  $(e).closest(".pane-container").find(".pane-body").find(".pane-id-"+paneToShow).css("display","block");
+    updateVerticeDropdown();
 
+    let header = e.closest(".pane-header");
+    if (header) {
+        header.querySelectorAll(".pane-active").forEach(el => el.classList.remove("pane-active"));
+    }
+
+    e.classList.add("pane-active");
+
+    var clsArr = e.className.split(" ");
+    var paneToShow = 0;
+    for (var i = 0; i < clsArr.length; i++) {
+        var idx = clsArr[i].indexOf("pane-id-");
+        if (idx != -1) {
+            paneToShow = clsArr[i].substring(idx + 8);
+        }
+    }
+
+    let container = e.closest(".pane-container");
+    if (container) {
+        let paneBody = container.querySelector(".pane-body");
+        if (paneBody) {
+            Array.from(paneBody.children).forEach(child => child.style.display = "none");
+
+            let showPane = paneBody.querySelector(".pane-id-" + paneToShow);
+            if (showPane) {
+                showPane.style.display = "block";
+            }
+        }
+    }
 }
 
 
@@ -335,8 +290,8 @@ function saveClick()
 	answerString+=" "+screen.width;
 	answerString+=" "+screen.height;
 	
-	answerString+=" "+$(window).width();
-	answerString+=" "+$(window).height();
+	answerString+=" "+ window.innerWidth;
+	answerString+=" "+ window.innerHeight;
 	//console.log(answerString);
 	saveDuggaResult(answerString);
 }
@@ -631,7 +586,7 @@ function toggleWireframeMode()
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	divw = $("#content").width();
+	let divw = document.getElementById("content").clientWidth;
 	if (divw > 500){ divw -= 248; }
 	if (divw < window.innerHeight) {
 		rendererDOMElement.width = divw;
@@ -642,8 +597,8 @@ function fitToContainer()
 	}
 	renderer.setSize(rendererDOMElement.width, rendererDOMElement.height);
   
-  $("#triangleListTable").css("maxHeight",(rendererDOMElement.height-100)+"px");
-  $("#verticeListTable").css("maxHeight",(rendererDOMElement.height-100)+"px");
+  	document.getElementById("triangleListTable").style.maxHeight = (rendererDOMElement.height - 100) + "px";
+  	document.getElementById("verticeListTable").style.maxHeight = (rendererDOMElement.height - 100) + "px";
 }
 
 function init() 
@@ -653,8 +608,11 @@ function init()
 	document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
 
 	rendererDOMElement = renderer.domElement;
-	rendererDOMElement.width = $("#content").width() - 250;
-	rendererDOMElement.height = $("#content").width() - 250;
+
+	rendererDOMElement.width = document.getElementById("content").style.clientWidth - 250;
+	rendererDOMElement.height = document.getElementById("content").style.clientWidth - 250;
+
+
 	fitToContainer();
 	acanvas.appendChild(rendererDOMElement);
 	camera = new THREE.PerspectiveCamera(fov, rendererDOMElement.width / rendererDOMElement.height, 1, 10000);
@@ -906,6 +864,12 @@ function startDuggaHighScore(){
 
 function toggleFeedback()
 {
-    $(".feedback-content").slideToggle("slow");
+    document.querySelectorAll(".feedback-content").forEach(el => {
+        if (el.style.display === "none" || el.style.display === "") {
+            el.style.display = "block";
+        } else {
+            el.style.display = "none";
+        }
+    });
 }
 
