@@ -3,7 +3,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
 include_once "../sharedMicroservices/getUid_ms.php";
-//include_once "./retrieveCodeviewerService_ms.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../curlService.php";

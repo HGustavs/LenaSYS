@@ -3,7 +3,7 @@
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-//include_once "./retrieveCodeviewerService_ms.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
