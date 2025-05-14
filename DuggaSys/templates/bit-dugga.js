@@ -28,13 +28,17 @@ var response;
 
 function setup()
 {
-		$('.bit').click(function(){
-				bitClick(this.id);
+	document.querySelectorAll('.bit').forEach(bit => {
+		bit.addEventListener("click", function(){
+			bitClick(bit.id);
 		});
+	});
 
-		$('.hexo').click(function(){
-				hexClick(this.id);
+	document.querySelectorAll('.hexo').forEach(hexo => {
+		hexo.addEventListener("click", function(){
+			hexClick(hexo.id);
 		});
+	})
 
 		AJAXService("GETPARAM",{ },"PDUGGA");
 }
@@ -76,8 +80,8 @@ function returnedDugga(data)
 		}else{		
 			console.log("data", data)
 			console.log("parameteras", data['param'])
-			retdata=jQuery.parseJSON(data['param']);
-			$("#talet").html(retdata['tal']);
+			retdata=JSON.parse(data['param']);
+			document.getElementById("talet").innerHTML=retdata['tal'];
 			// Add our previous answer
 			console.log(data['answer']);
 			if(data['answer'] != null && data['answer'] != "UNK"){
@@ -115,10 +119,10 @@ function returnedDugga(data)
 				fb += "</tbody></table>";
 				document.getElementById('feedbackTable').innerHTML = fb;		
 				document.getElementById('feedbackBox').style.display = "block";
-				$("#showFeedbackButton").css("display","block");
+				document.getElementById("showFeedbackButton").style.display="block";
 		}
-		$("#submitButtonTable").appendTo("#content");
-		$("#lockedDuggaInfo").prependTo("#content");
+		document.getElementById("submitButtonTable").insertAdjacentElement("content");
+		document.getElementById("lockedDuggaInfo").insertBefore("content");
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
@@ -144,18 +148,18 @@ function saveClick()
 
 	// Loop through all bits
 	bitstr="";
-	$(".bit").each(function( index ) {
-			bitstr=bitstr+this.innerHTML;
+	document.querySelectorAll(".bit").forEach(function(bit){
+		bitstr=bitstr+bit.innerHTML;
 	});
 	
-	bitstr+=" "+$("#H0").html();
-	bitstr+=" "+$("#H1").html();
+	bitstr+=" "+document.getElementById("H0").innerHTML;
+	bitstr+=" "+document.getElementById("H1").innerHTML;
 	
 	bitstr+=" "+screen.width;
 	bitstr+=" "+screen.height;
 	
-	bitstr+=" "+$(window).width();
-	bitstr+=" "+$(window).height();
+	bitstr+=" "+window.width;
+	bitstr+=" "+window.height;
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -184,7 +188,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display="block";
 	}
 	var p = jQuery.parseJSON(param);
 	var daJSON = jQuery.parseJSON(danswer);
@@ -192,7 +196,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	var da = daJSON['danswer'];
 	var danswer = da.split(' ');
 	
-	$("#talet").html(p['tal']);
+	document.getElementById("talet").innerHTML=p['tal'];
 	
 	// Add student answer
 	if (uanswer === "UNK"){
@@ -222,12 +226,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			document.getElementById("B"+(8-i)).style.border = "4px dotted black";
 		}								 
 
-		if (danswer[0][i-1] == $("#B"+(8-i)).html()){
-			$("#B"+(8-i)).css("background","green");
+		if (danswer[0][i-1] == document.getElementById("B"+(8-i)).innerHTML){
+			document.getElementById("B"+(8-i)).style.background="green";
 			document.getElementById('B'+(8-i)).innerHTML+= " == " + danswer[0][i-1];
 			
 		} else {
-			$("#B"+(8-i)).css("background","red");
+			document.getElementById("B"+(8-i)).style.background="red";
 			document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];					
 		}
 	}
@@ -272,28 +276,34 @@ function closeFacit(){
 
 function bitClick(divid)
 {
-	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
+	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
-	if($("#"+divid).html()=="1"){
-			$("#"+divid).html("0");
-			$("#"+divid).removeClass("ett");
-			$("#"+divid).addClass("noll" );
+	var div = document.getElementById(divid);
+
+	if(div.innerHTML=="1"){
+			div.innerHTML="0";
+			div.classList.remove("ett");
+			div.classList.add("noll");
 	}else{
-			$("#"+divid).html("1");
-			$("#"+divid).addClass("ett" );
-			$("#"+divid).removeClass("noll");
+			div.innerHTML="1";
+			div.classList.add("ett");
+			div.classList.remove("noll");
 	}
-	$(".submit-button").removeClass("btn-disable");
+	document.querySelector(".submit-button").classList.remove("btn-disable");
 }
 
 function hexClick(divid)
 {
 	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
-	dw=$(window).width();
-	dpos=$("#"+divid).position();
-	dwid=$("#"+divid).width();
-	dhei=$("#"+divid).height();
+	dw=window.width;
+	var element=document.getElementById(divid);
+	var dpos={
+		top: element.offsetTop,
+		left: element.offsetLeft,
+	};
+	dwid=document.getElementById(divid).width;
+	dhei=document.getElementById(divid).height;
 	bw=Math.round(dwid)*1.10;
 	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
 	
@@ -309,21 +319,21 @@ function hexClick(divid)
 	if(hh<160) hh=160;
 	hh+="px";
 	
-	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh})
-	$("#pop").removeClass("arrow-topr");
-	$("#pop").removeClass("arrow-top");
-	$("#pop").addClass(popclass);
+	document.getElementById("pop").style='top: (dpos.dhei+10); left:lpos; width:bw,height:hh';
+	document.getElementById("pop").classList.remove("arrow-topr");
+	document.getElementById("pop").classList.remove("arrow-top");
+	document.getElementById("pop").classList.add(popclass);
 	
 	hc=divid;
-	$(".submit-button").removeClass("btn-disable");
+	document.querySelector(".submit-button").classList.remove("btn-disable");
 }
 
 function setval(sval)
 {
 		if(hc!=null){
-				$("#"+hc).html(sval);		
+				document.getElementById(hc).innerHTML=sval;
 		}
-		$("#pop").css({display:"none"})
+		document.getElementById("pop").style.display="none";
 }
 
 //functionality for opening and closing hexcode input boxes
@@ -354,10 +364,20 @@ function resetBitstring(){
 //----------------------------------------------------------------------------------
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
+	if(document.querySelector(".instructions-content").style.display="block"){
+		document.querySelector(".instructions-content").style.display="none";
+	}
+	else{
+		document.querySelector(".instructions-content").style.display="block"
+	}
 }
 
 function toggleFeedback()
 {
-    $(".feedback-content").slideToggle("slow");
+	if(document.querySelector(".feedback-content").style.display="block"){
+		document.querySelector(".feedback-content").style.display="none";
+	}
+	else{
+		document.querySelector(".feedback-content").style.display="block"
+	}
 }
