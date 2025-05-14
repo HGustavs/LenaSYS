@@ -1447,26 +1447,26 @@
         <ul class="mb-nav-list">
              <li class="mb-nav-item"  title="Log in">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/login_button.svg" />
+                    <img src="../Shared/icons/login_button.svg" onclick="showLoginPopup();" />
                 </div>
             </li>
 
              <li class="mb-nav-item" title="Home">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/Home.svg"/>
+                    <img src="../Shared/icons/Home.svg" onclick="window.location.assign('/DuggaSys/courseed.php')">
                 </div>
             </li>
               <li class="mb-nav-item" title="Undo">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                     <img src="../Shared/icons/diagram_stepback.svg"/>
+                     <img src="../Shared/icons/Up.svg" onclick="window.history.back()"/>
                 </div>
             </li>
-              <li class="mb-nav-item" title="Save Dugga">
+              <li class="mb-nav-item" title="Save Dugga" >
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/save_button.svg"> 
+                    <img src="../Shared/icons/save_button.svg"  onclick='uploadFile(); showReceiptPopup();'  > 
                 </div>
             </li>
-            <li class="mb-nav-item" title="Load Dugga">
+            <li class="mb-nav-item" title="Load Dugga"> 
                 <div class="mb-toolbar-box mb-toolbar-main active">
                     <img src="../Shared/icons/Document.svg"> 
                 </div>
@@ -1476,9 +1476,9 @@
                     <img src="../Shared/icons/diagram_Refresh_Button.svg"> 
                 </div>
             </li>
-            <li class="mb-nav-item" title="Toggle Dark Mode">
+            <li class="mb-nav-item" title="Toggle Dark Mode" >
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/ThemeToggle.svg"> 
+                    <img src="../Shared/icons/ThemeToggle.svg" onclick = 'burgerToggleDarkmode()'> 
                 </div>
             </li>
 

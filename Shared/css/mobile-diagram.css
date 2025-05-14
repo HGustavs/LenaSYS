@@ -1,3 +1,8 @@
+    @media screen and (min-width: 415px) {
+    #mb-diagram-toolbar-2 {
+    display: none !important;
+  }
+}
 @media screen and (max-width: 414px) {
     #mb-diagram-toolbar {
         display: block !important;
@@ -34,6 +39,7 @@
     #mb-diagram-toolbar.active {
         transform: translateY(0px);
     }
+
 
     #mb-diagram-toolbar-2 img {
         width: 40px;
