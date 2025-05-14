@@ -5,7 +5,7 @@
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, successMessage = true, cardinal) {
+function addLine(fromElement, toElement, kind, isRecursive = false, stateMachineShouldSave = true, successMessage = true, cardinal) {
     let result;
 
     if (lineAlwaysFrom.includes(toElement.kind) ||
@@ -47,7 +47,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: kind
+            kind: kind,
+            recursive: isRecursive  
         };
 
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
@@ -66,7 +67,8 @@ function addLine(fromElement, toElement, kind, stateMachineShouldSave = true, su
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: kind
+            kind: kind,
+            recursive: isRecursive  
         };
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
         if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {

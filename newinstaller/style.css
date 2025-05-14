@@ -399,6 +399,28 @@ input[type=checkbox], input[type=radio] {
     padding: 0.75rem;
 }
 
+details {
+    margin-top: 10px;
+}
+
+details,
+summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border: 1px solid var(--text-dark);
+}
+
+.summary-content {
+    padding: 10px;
+    background-color: var(--page-background);
+    border: 1px solid var(--text-dark);
+    margin-top: 5px;
+    color: var(--text-dark);
+}
+
 .modal-footer {
     display: flex;
     align-items: center;

@@ -71,6 +71,17 @@
     overflow: hidden;
 }
 
+#diagramFileName {
+    position: absolute;
+    z-index: 1000;
+    margin-left: 50vw;
+    margin-top: 6vh;
+    padding: 2px;
+    background-color: #fff;
+    border: #775886 1px solid;
+    text-align: center;
+}
+
 #svgbacklayer {
     position: absolute;
     left: 0;
@@ -320,9 +331,17 @@
         display: block !important;
         position: fixed;
         z-index: 10;
-        bottom: 7%;
-        left: calc(50% - 2%);
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
         transition: var(--normal-transition);
+    }
+
+    #diagram-message{
+        position: absolute !important;
+        top: 50px !important;
+        left: 50px !important;
+        width: 60% !important;
     }
 
     .icon-wrapper.toolbar-active{
@@ -347,11 +366,12 @@
     }
 
     #diagram-toolbar {
+        display: none !important;
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        display: flex;
+        /* display: flex; */
         align-items: center;
         justify-content: space-between;
         flex-wrap: nowrap;
@@ -463,6 +483,7 @@
 }
 
 #diagram-toolbar {
+    display: block;
     position: absolute;
     border-right: solid black 1px;
     background-color: var(--color-primary);
@@ -550,7 +571,13 @@
     top: -43px;
 }
 
-.diagramIcons[data-single="true"]:hover .toolTipText {
+
+.diagramIcons:hover .toolTipText {
+    visibility: visible;
+    transition-delay: 700ms;
+}
+
+.disabledIcon:hover .toolTipText {
     visibility: visible;
     transition-delay: 700ms;
 }
@@ -565,9 +592,7 @@
     border-radius: 5px;
     position: absolute;
     left: 0;
-    top: 0;
-    width: 230px;
-    height: 50px;
+    height: 110px;
     z-index: 5;
     float: left;
 }
@@ -753,7 +778,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 30%;
+    width: 70%;
     z-index: 999;
     background-color: white;
     color: black;
@@ -1069,6 +1094,9 @@
     background-color: #8d68ab;
 }
 
+    .disabledIcon:hover .toolTipText {
+        visibility: visible;
+    }
 #a4options {
     display: flex;
 }
@@ -1081,6 +1109,17 @@
 
 #a4HorizontalButton {
     display: none;
+}
+
+#a4OptionsDropdown,
+#a4Load {
+    display: none;
+    margin-bottom: 15px;
+}
+
+#a4OptionsDropdown {
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 #option-import>input {
@@ -1115,6 +1154,29 @@
 #replay-time-container {
     width: 250px;
 }
+
+
+/**********
+*Fab mobile
+***********/
+.fab-inner{ 
+    width: 40px;
+    height: 40px;
+    background-color: #815e9d;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+.fab-inner:active{
+    transform: translateY(4px);
+}
+
+ .icon-fit{
+    display: block;           
+    width: 80%;              
+    height: 80%;            
+    object-fit: contain; 
+ }
 
 /****************
     Chevron-icons

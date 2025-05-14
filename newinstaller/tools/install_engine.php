@@ -153,6 +153,13 @@ class InstallEngine {
 		$operations["init_db"] = function() use ($installer, $verbose) {
 			$installer->execute_sql_file("SQL/init_db.sql", verbose: $verbose);
 		};
+		$operations["setup_endpoint_directory"] = function() use ($verbose) {
+			try {
+				setup_endpoint_directory($verbose);
+			} catch (Throwable $e) {
+				SSESender::transmit("Error in setup_endpoint_directory: " . $e->getMessage(), true);
+			}
+		};
 		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
 			$parameters = [
 				"DB_USER" => $settings->username,

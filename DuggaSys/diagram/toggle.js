@@ -145,20 +145,48 @@ function toggleA4Template() {
         template.style.display = "none";
         vRect.style.display = "none";
         a4Rect.style.display = "none";
-        document.getElementById("a4VerticalButton").style.display = "none";
-        document.getElementById("a4HorizontalButton").style.display = "none";
+        document.getElementById("a4OptionsDropdownContainer").style.display = "none";
+        
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
-        document.getElementById("a4VerticalButton").style.display = "inline-block";
-        document.getElementById("a4HorizontalButton").style.display = "inline-block";
+        document.getElementById("a4OptionsDropdownContainer").style.display = "block";
+        
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
     }
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
+}
+
+function toggleA4Dropdown() {
+    const dropdown = document.getElementById("a4OptionsDropdown");
+    const load = document.getElementById("a4Load");
+    const btn = document.getElementById("a4TemplateToggle");
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        load.style.display = "block";
+        dropdown.style.display = "block";
+    } else {
+        load.style.display = "none";
+        dropdown.style.display = "none";
+    }
+
+    document.getElementById("a4TemplateToggle").classList.toggle("active");
+
+    if (window.getComputedStyle(dropdown).display === "none") {
+        btn.style.backgroundColor = "transparent";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+        btn.style.color = color.PURPLE;
+        btn.style.fontWeight = "bold";
+    } else {
+        btn.style.backgroundColor = color.PURPLE;
+        btn.style.color = color.WHITE;
+        btn.style.fontWeight = "normal";
+        btn.style.border = `3px solid ${color.PURPLE}`;
+    }
 }
 
 function setA4SizeFactor(e) {
@@ -187,6 +215,19 @@ function toggleA4Horizontal() {
 
     a4Rect.style.display = "none";  // Hide vertical
     vRect.style.display = "block";  // Show horizontal
+}
+
+/**
+ * @description Applies the selected A4 option: vertical or horizontal
+ */
+function applyA4Option() {
+    const selectedOption = document.getElementById("a4OptionsDropdown").value;
+
+    if (selectedOption === "vertical") {
+        toggleA4Vertical();
+    } else if (selectedOption === "horizontal") {
+        toggleA4Horizontal();
+    }
 }
 
 /**
@@ -455,13 +496,7 @@ function toggleColorMenu(buttonID) {
             }
         }
         // Menu position relative to button
-        menu.style.width = width + "px";
-        const buttonWidth = button.offsetWidth;
-        const offsetWidth = window.innerWidth - button.getBoundingClientRect().x - (buttonWidth);
-        const offsetHeight = button.getBoundingClientRect().y;
-        menu.style.top = (offsetHeight - 50) + "px";
-        const menuOffset = window.innerWidth - menu.getBoundingClientRect().x - (width);
-        menu.style.left = (menu.style.left + menuOffset) - (offsetWidth + buttonWidth) + "px";
+        menu.style.maxHeight = "600px";
     } else {    // if the color menu's inner html is not empty, remove the content
         menu = button.children[0];
         menu.innerHTML = "";
@@ -523,17 +558,13 @@ function toggleErrorCheck() {
 }
 
 /**
- * @description hides the error check button when not allowed
+ * @description Function that toggles the visibility of the error check button in the diagram toolbar depending on input.
+ * @param {boolean} show Boolean which defines visibility. "true" enables it, and "false" disables it.
  */
-function hideErrorCheck(show) {
+//Previously named "hideErrorCheck", functionality is the same - but showing the check while "hideErrorCheck(true)" was a bit confusing and misleading.
+function showErrorCheck(show) {
     if (show) {
         document.getElementById("errorCheckField").style.display = "flex";
-        // Enables error check by pressing 'h', only when error check button is visible
-        document.addEventListener("keyup", event => {
-            if (event.key === 'h') {
-                toggleErrorCheck();
-            }
-        });
     } else {
         document.getElementById("errorCheckField").style.display = "none";
     }
@@ -544,19 +575,128 @@ function hideErrorCheck(show) {
 
 function toggleToolbar() {
     let toggleBtn = document.querySelector(".icon-wrapper");
-    let toolbar = document.getElementById("diagram-toolbar");
+    let toolbar = document.getElementById("mb-diagram-toolbar");
     let chevronIcon = document.querySelector(".toggle-chevron");
 
     let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
-    let toolbarActive = toolbar.classList.toggle("toolbar-active");
+    let toolbarActive = toolbar.classList.toggle("active");
 
     /*
     * Determines wether to rotate the chevron icon if the toolbar and * toggleBtn is in a active state
     */
     if (ChevronActive && toolbarActive) {
         chevronIcon.style.transform = `rotate(180deg)`;
+        toolbar.setAttribute("aria-hidden", "false")
     }
     else {
         chevronIcon.style.transform = `rotate(0deg)`;
+        toolbar.setAttribute("aria-hidden", "true")
     }
+}
+
+/**
+ * @description Function that toggles the active state of the toolbar modes and opening sub menus if they exist.
+ * @param {*} e event-object that is used for finding the current elements next element sibling
+ */
+function handleToolbarClick(e){
+    e.stopPropagation(); //Stops event bubbling
+    const clickedElement = e.currentTarget;
+    let nextSibling = clickedElement.nextElementSibling;
+    let activeElement = document.querySelector(".mb-toolbar-main.active");
+    let dropIcon = clickedElement.parentNode.querySelector(".mb-dropdown-icon i");
+
+    //Does not close sub menus if the clicked element is a sub menu element
+    if(clickedElement.closest(".mb-sub-menu")) return;
+
+    //Does not change the active state of the if the clicked element already is the active element in the toolbar
+    if(!clickedElement || clickedElement===activeElement) return;
+
+    //acts a falsy check which means if the activeElement exists then it executes the if-statement
+    if(activeElement){
+        activeElement.classList.remove("active");
+    }
+    clickedElement.classList.add("active");
+
+    //Closes every sub menu except the one that is being opened (nextSibling)
+    document.querySelectorAll(".mb-sub-menu.show").forEach(subMenu=>{
+        if(subMenu!==nextSibling){
+            subMenu.setAttribute("aria-hidden", "true"); //For screen readers, basically says that the sub menu is closed/hidden
+            subMenu.classList.remove("show");
+            let dropIcon = subMenu.parentNode.querySelector(".mb-dropdown-icon i");
+            if(dropIcon) dropIcon.classList.remove("rotation");
+        }
+    });
+
+    if(dropIcon) dropIcon.classList.add("rotation");
+
+    //Only opens a sub menu if the sibling of clicked element exist and is a sub menu
+    if(nextSibling && nextSibling.classList.contains("mb-sub-menu")){
+        nextSibling.classList.add("show");
+        nextSibling.setAttribute("aria-hidden", "false");
+        activeSubMenuElement(e.currentTarget);
+    }
+}
+
+/**
+ * @description Function that marks which element that is being active in the sub menu
+ * @param {*} element event-object that contains information about the clicked element
+ */
+function activeSubMenuElement(element){
+    let dropdownItems = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
+    let elementType = element.dataset.elementtype;
+
+    /*Loops through all the sub menu elements, and checks if the active element and the sub menu have the same elementtype (e.g. ER-E === ER-E). */
+    dropdownItems.forEach(item=>{
+        item.classList.remove("active");
+        let itemType = item.dataset.elementtype;
+        if(itemType===elementType){
+            item.classList.add("active");
+        }
+    });
+}
+
+/**
+ * @description Function that changes which element that is active after choosing a sub menu element
+ * @param {*} e event-object that contains information about the clicked element
+ */
+function changeActiveElement(e){
+    //Finds the closest parent to the clicked element 
+    //Used to only update the active element in the same parent
+    let dropdownList = e.currentTarget.closest(".has-dropdown");
+    if(!dropdownList) return;
+
+    //Always chooses the first element of the parent, which is always the active element
+    let firstActiveElement = dropdownList.querySelector(".mb-toolbar-box");
+    if(!firstActiveElement) return;
+
+    // Finds the image inside the firstActiveElement
+    let activeImage = firstActiveElement.querySelector(".active-image");
+    if(!activeImage) return;
+
+    //Fetches all the information necessary from the clicked sub menu element in the form of datasets
+    let imageSrc = e.currentTarget.dataset.imagesrc;
+    let placementType = e.currentTarget.dataset.placementtype;
+    let elementType = e.currentTarget.dataset.elementtype;
+    let elementMode = e.currentTarget.dataset.mode;
+    
+    //Switches the active elements datasets with the sub menus datasets
+    activeImage.src = imageSrc;
+    firstActiveElement.dataset.mode = elementMode;
+    firstActiveElement.dataset.elementtype = elementType;
+    firstActiveElement.dataset.placementtype = placementType;
+    firstActiveElement.dataset.imagesrc = imageSrc;
+    activeSubMenuElement(e.currentTarget);
+}
+
+/**
+ * @description Function that lets the user know that the item was clicked but is not being focused. 
+ * @param {*} el it references to the element that was clicked
+ */
+function nonElementToggle(el){
+    el.classList.add("active");
+
+    //Removes the class after 1500ms/1.5s
+    setTimeout(()=>{
+        el.classList.remove("active");
+    }, 1500);
 }
