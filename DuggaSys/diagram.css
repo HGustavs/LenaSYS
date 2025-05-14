@@ -592,9 +592,7 @@
     border-radius: 5px;
     position: absolute;
     left: 0;
-    top: 0;
-    width: 230px;
-    height: 50px;
+    height: 110px;
     z-index: 5;
     float: left;
 }
