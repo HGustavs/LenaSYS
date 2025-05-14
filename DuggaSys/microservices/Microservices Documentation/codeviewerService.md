@@ -111,20 +111,51 @@ Updates a box title of a code example when a user with appropriate permissions e
 ---
 
 # Name of file/service
-example_ms (replace this line with the name of the microservice)
+editCodeExample_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Handles updates of code examples, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
 
 ## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
 
-- Parameter: paramName
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version associated with the code example. Stored as int in the database
+
+- Parameter: $playlink
+   - Type: string
+   - Description: Play link for opening demo in code example. Stored as varchar(256) in the database
+
+- Parameter: $exampleName
+   - Type: string
+   - Description: Name of the code example. Stored as varchar(64) in the database
+
+- Parameter: $sectionName
+   - Type: string
+   - Description: Name of the section of the code example. Stored as varchar(64) in the database
+
+- Parameter: $beforeId
+   - Type: string
+   - Description: Before ID. Stored as int in the database
+
+- Parameter: $afterId
+   - Type: string
+   - Description: After ID. Stored as int in the database
+
+- Parameter: $userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: User ID. Stored as int in the database                        
 
 ## Calling Methods
 - GET
