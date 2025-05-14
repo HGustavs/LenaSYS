@@ -1,21 +1,14 @@
 In this file the connection between javascript and PHP is docummented.
 
 # Name of file/service 
-
  accessed.js
  Function addUserToCourse().
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
  Function - addUserToCourse
  Adds user to a user to a course. Looks up UID based on their username.
 
 ## Input Parameters 
-
-*Parameters will be described in tables for easier readability* 
-
 | Parameter | Type | Description |
 
 | :Username | :POST | :Retrieve User | 
@@ -26,16 +19,11 @@ In this file the connection between javascript and PHP is docummented.
 
 ## Output Data and Format 
 
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
 | :User | :Array | :Array of userdata from databas | 
 | :UID | :string | :Identifier username | 
  
 
 ## Examples of Use 
-
 ``` 
 function addUserToCourse() {
 	let input = document.getElementById('addUsername2').value;
@@ -71,13 +59,104 @@ function addUserToCourse() {
 ```
 
 ### Microservices Used 
-
-*Includes and microservices used* 
-
 Accessedservice.php
-opt- RETRIVE, action- USER
 
-----------------------------------------------------------------------------------------------------------------------------
+# Name of file/service
+accessed.js
+Function addUserToCourse()
+
+## Description
+Manages user access to courses within the system. It enables displaying and administrating user information, including editing access levels, assigning groups, managing course versions, and handling user creation/removal.
+
+## Input Parameters
+- Parameter: opt
+   - Type: String
+   - Description: 
+
+- Parameter: action
+   - Type: string
+   - Description: 
+
+- Parameter: username
+   - Type: string
+   - Description: 
+
+- Parameter: uid
+   - Type: string
+   - Description: 
+
+- Parameter: courseid
+   - Type: string
+   - Description:
+  
+- Parameter: courseverse
+   - Type: string
+   - Description:
+
+- Parameter: newusers
+   - Type: string
+   - Description:
+  
+  - Parameter: newclass
+   - Type: string
+   - Description:
+
+## Calling Methods
+- GET
+- POST
+
+## Output Data and Format
+*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
+- Output: outputName
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
+
+- Output: outputName
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+
+## Examples of Use
+``` 
+function addUserToCourse() {
+	let input = document.getElementById('addUsername2').value;
+	let term = $("#addTerm2").val();
+	if(input && term) {
+		$.ajax({
+			type: 'POST',
+			url: 'accessedservice.php',
+			data: {
+				opt: 'RETRIEVE',
+				action: 'USER',
+				username: input
+			},
+			success: function(response) {
+				userJson = response.substring(0, response.indexOf('{"entries":'));
+				let responseData = JSON.parse(userJson);
+				let uid = responseData.user[0].uid;
+				AJAXService("USERTOTABLE", {
+					courseid: querystring['courseid'],
+					uid: uid,
+					term: term,
+					coursevers: querystring['coursevers'],
+					action: 'COURSE'
+				}, "ACCESS");
+			},
+			error: function(xhr, status, error) {
+				console.error("Error", error);
+			}
+		});
+		updateCourseUsers(hideAddUserPopup); // Sending function as parameter
+	}
+} 
+```
+
+### Microservices Used
+- AJAXService
+- Accessedservice.php
+
+---
+
+*Add the dashes above between each documentation.*
 # Name of file/service
 
 accessed.js
@@ -3781,5 +3860,3 @@ Used to log or confirm that the notification was received by the user.
  
 
 -------------------------------------------------------------------------------------- 
-
- 
