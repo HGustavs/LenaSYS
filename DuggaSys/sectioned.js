@@ -1190,9 +1190,9 @@ function deleteItem(item_lid = []) {
 
 // Permanently delete elements.
 function deleteAll() {
-  var deletedElements = document.querySelectorAll(".deleted")
-  for (i = deletedElements.length ; (i > 0) ; i--) {
-    var lid = deletedElements[i-1].id.match(/\d+/)[0];
+  let deletedElements = Array.from(document.querySelectorAll(".deleted"));
+  for (let i = deletedElements.length ; (i > 0) ; i--) {
+    let lid = deletedElements[i-1].id.match(/\d+/)[0];
     const row = deletedElements[i-1].closest(".courseRow"); //These lines are needed because refresh is broken. (2025-05-14). 
     if (row) row.remove();                                  //Should be possible to be removed after Group 2 solves the issue.
     deletedElements[i-1].classList.remove("deleted");
