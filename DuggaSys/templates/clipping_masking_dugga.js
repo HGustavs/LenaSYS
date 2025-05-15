@@ -737,13 +737,14 @@ function goMofo(txt)
     {
         context.restore();
     }
-    function render(){
-        canvas.width = canvas.width;
-        // context.scale(canvas.width/600,canvas.height/700);
-        $("*[id*=opCode_]").each(function (){
-            goMofo(this.innerHTML);
-        });
-    }
+function render() {
+    canvas.width = canvas.width;
+    const opCodeElements = document.querySelectorAll("[id*='opCode_']");
+    opCodeElements.forEach(function(elem) {
+        goMofo(elem.innerHTML);
+    });
+}
+
 
     function toggleFeedback()
 {
