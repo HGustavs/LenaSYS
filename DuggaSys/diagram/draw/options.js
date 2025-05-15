@@ -282,7 +282,7 @@ function drawElementProperties(element) {
  * @param {Object} object What types of value the element have.
  * @return Returns a dropdown menu.
  */
-function option(object, icon) {
+function lineOption(object, icon) {
     let result = '';
     Object.values(object).forEach(i => {
         let selected = (i == icon) ? 'selected' : '';
@@ -371,13 +371,13 @@ function drawLineProperties(line) {
             break;
         case entityType.SD:
             if (!connectedToInitialOrFinal) {
-                let optSD = option(SDLineType, line.innerType);
+                let optSD = lineOption(SDLineType, line.innerType);
                 str += includeLabel(line);
                 str += iconSelection([SDLineIcons], line);
                 str += `<label style="display: block;">Line Type:</label>`;
                 str += selectLineIcons('lineType', optSD, false);
             } else {
-                let optSD = option(SDLineType, line.innerType);
+                let optSD = lineOption(SDLineType, line.innerType);
                 str += includeLabel(line);
                 str += `<label style="display: block;">Line Type:</label>`;
                 str += selectLineIcons('lineType', optSD, false);
@@ -411,10 +411,10 @@ function iconSelection(arr, line) {
     let sOptions = '';
     let eOptions = '';
     arr.forEach(object => {
-        sOptions += option(object, line.startIcon)
+        sOptions += lineOption(object, line.startIcon)
     });
     arr.forEach(object => {
-        eOptions += option(object, line.endIcon)
+        eOptions += lineOption(object, line.endIcon)
     });
     return `<label style="display: block;">Icons:</label>`
         + selectLineIcons('lineStartIcon', sOptions)
