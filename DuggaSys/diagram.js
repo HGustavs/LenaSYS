@@ -526,34 +526,14 @@ function getData() {
           });
     });
 
-    /*Mobile side navbar buttons
-    Getting functions used in a separate file, to they can be used in the side navBar 
-    async function loadDiagram() {
-        const { uploadFile, reset } = await import('./templates/diagram_dugga.js');
-        document.getElementById("mb-saveDuggaButton").addEventListener("click", () => {
-            uploadFile();
-            showReceiptPopup();
-        });
-        document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
-   
-    loadDiagram(); 
-
-    */
-
-    document.getElementById("mb-saveDuggaButton").addEventListener("click", () => {
-        uploadFile();
-        showReceiptPopup();
-    });
-    document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
-
+    //Side navbar buttons. (save, load and reset are inside diagram_dugga)
     document.getElementById("mb-darkModeButton").addEventListener("click", burgerToggleDarkmode);
-    document.getElementById("mb-loadDuggaButton").addEventListener("click", showLoadDuggaPopup);
     document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it
         window.location.assign('/DuggaSys/courseed.php');
     });
     document.getElementById("mb-loginButton").addEventListener("click", showLoginPopup);
 
-     
+     //Back button missing
 
     
 

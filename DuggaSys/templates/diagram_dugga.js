@@ -30,6 +30,19 @@ function setup()
     if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != ""){
         document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
     }
+
+    
+    //Adding eventlisteners to buttons inside the iframe for functions in thise file, outside the iframe
+    const childFrame = document.getElementById("diagram-iframe");
+    const mobileSaveButton = childFrame.contentWindow.document.getElementById("mb-saveDuggaButton"); 
+    mobileSaveButton.addEventListener("click", () => {
+        uploadFile();
+        showReceiptPopup();
+    });    
+    childFrame.contentWindow.document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
+    childFrame.contentWindow.document.getElementById("mb-loadDuggaButton").addEventListener("click", showLoadDuggaPopup);
+
+
 }
 
 /**

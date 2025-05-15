@@ -65,7 +65,6 @@
     <script src="./diagram/helpers/mouseMode.js"></script>
     <script src="./diagram/events/mouse.js"></script>
     <script defer src="diagram.js"></script>
-    <script src="templates/diagram_dugga.js"></script>
     <script src="./assets/js/fetchDiagramInfo.js"></script>
 </head>
 
