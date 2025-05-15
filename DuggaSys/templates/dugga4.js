@@ -463,13 +463,16 @@ function toggleSelectOperation(e){
 		if (e.closest("tr").classList.contains("selectedOp")){
 				e.closest("tr").classList.remove("selectedOp");
 				document.getElementById("addOpButton").value = "Add Op.";
-				document.getElementById("operationList").querySelectorAll("tr:odd").style.backgroundColor='#dad8db';
+				const list = document.getElementById("operationList").querySelectorAll("tr:nth-child(odd)");
+				list.forEach(function(sel){
+					sel.style.backgroundColor="#dad8db";
+				})
 		} else {
 				e.closest("tr").classList.add("selectedOp");
 				document.getElementById("addOpButton").value = "Change Op.";
 				// Unselect any previous selected row
-				document.getElementById("operationList").querySelectorAll("tr").forEach(function (){
-						if (this.id != e.closest("tr").setAttribute('id')) this.classList.remove("selectedOp");
+				document.getElementById("operationList").querySelectorAll("tr").forEach(function (sel){
+						if (sel.id != e.closest("tr").getAttribute('id')) sel.classList.remove("selectedOp");
 				});
 		}		
 }
@@ -477,13 +480,15 @@ function toggleSelectOperation(e){
 function newbutton() 
 {
 	ClickCounter.onClick();
-	var newOp = document.getElementById('function').textContent;
+	var select = document.getElementById('function');
+	var selectOption = select.options[select.options.selectedIndex];
+	var newOp = selectOption.text;
 	var newOpCode = document.getElementById("function").value;
 
 	if(document.getElementById("operationList").classList.contains("selectedOp")){
 			document.querySelectorAll(".selectedOp").forEach(function(sel){
-				sel.querySelectorAll("*[id^=op_]").innerHTML=newOp;
-				sel.querySelectorAll("*[id^=opCode_]").innerHTML=newOpCode;
+				sel.querySelector("*[id^=op_]").innerHTML=newOp;
+				sel.querySelector("*[id^=opCode_]").innerHTML=newOpCode;
 				toggleSelectOperation(this);
 			});
 	} else {
@@ -513,13 +518,15 @@ function refreshOpNum(){
 			op.innerHTML = idx++;
 	});
 	const odd = document.getElementById("operationList").querySelectorAll("tr:nth-child(odd)");
-	odd.forEach(eodd => {
-		eodd.classList.add("OperationListTableOdd");
+	odd.forEach(element => {
+		element.classList.add("OperationListTableOdd");
+		element.classList.remove("OperationListTableEven");
 	});
 
 	const even = document.getElementById("operationList").querySelectorAll("tr:nth-child(even)");
-	even.forEach(eeven => {
-		eeven.classList.add("OperationListTableEven");
+	even.forEach(element => {
+		element.classList.add("OperationListTableEven");
+		element.classList.remove("OperationListTableOdd");
 	});
 }
 
