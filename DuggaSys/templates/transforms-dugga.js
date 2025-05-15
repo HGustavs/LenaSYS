@@ -178,8 +178,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth();
+	bitstr += " " + window.innerHeight();
 
 	console.log(bitstr);
 
@@ -435,7 +435,6 @@ function toggleSelectOperation(e){
 		// turns the odd rows to their correct color
 		for (i = 0; i < allOperations.length; i++){
 			if (allOperations[i].className == "OperationListTableOdd"){
-				console.log("test");
 				allOperations[i].style.backgroundColor = "#dad8db";
 			}
 		}
@@ -456,14 +455,31 @@ function newbutton()
 {
 	ClickCounter.onClick();
 	var newOp = $('#function > optgroup > option:selected').text();
-	var newOpCode = $("#function").val();
+	var newOpCode = document.getElementById("function").value;
 
-	if($("#operationList").find("tr").hasClass("selectedOp")){
-			$(".selectedOp").each(function(){
-				$(this).find("*[id^=op_]").html(newOp);
-				$(this).find("*[id^=opCode_]").html(newOpCode);
-				toggleSelectOperation(this);
-			});
+	var now = 0;
+	var test = document.getElementById("operationList");
+	var test2 = test.querySelectorAll("tr");
+
+	for (i = 0; i < test2.length; i++){
+		
+		console.log(test2[i]);
+		
+		if (test2[i].className == "OperationListTableOdd selectedOp" || test2[i].className == "OperationListTableEven selectedOp"){
+			now = 1;
+		}
+	}
+
+	if(now == 1){
+		console.log("test");
+		var selectOP = document.getElementsByClassName("selectedOp")
+		for (i = 0; i < selectOP.length; i++){
+			console.log(selectOP[i]);
+
+			selectOP[i].querySelector("[id^=op_]").innerHTML = newOp;
+			selectOP[i].querySelector("[id^=opCode_]").innerHTML = newOpCode;
+			toggleSelectOperation(selectOP[i]);
+		}
 	} else {
 		var i = 0;
 		$('#operationList tr').each(function (){
