@@ -12,29 +12,16 @@ No explanation for deprecated services means they have been removed entirely (on
 
 ## fileedService
 - fileedService/getFileedService_ms.php (replaced)
-- fileedService/updateFileLink_ms.php (unused?)
-- fileedService/deleteFileLink_ms.php (unused?)
 
 ## sectionedService
 - sectionedService/updateQuizDeadline_ms.php (replaced)
 - sectionedService/getListEntries_ms.php (replaced)
-- sectionedService/removeListEntries_ms.php (unused)
-- sectionedService/deleteListEntries_ms.php (unused?)
-- sectionedService/createListEntry_ms.php (unused?)
-- sectionedService/updateListEntryOrder_ms.php (unused?)
-- sectionedService/updateListEntries_ms.php (unused?)
-- sectionedService/updateListEntriesTabs_ms.php (unused?)
-- sectionedService/updateVisibleListEntries_ms.php (unused?)
-- sectionedService/createGithubCodeExample_ms.php (unused)
-- sectionedService/readCourseGroupsAndMembers_ms.php (unused?)
-- sectionedService/updateActiveCourseVersion_sectioned_ms.php (unused?)
 - sectionedService/getCourseGroupsAndMembers_ms.php
 - sectionedService/changeActiveCourseVersion_sectioned_ms.php (unused?)
 - sectionedService/getDeletedListEntries_ms.php (replaced)
 - sectionedService/getGroupValues_ms.php (unused)
 - sectionedService/readGroupValues_ms.php (unused?)
 - sectionedService/getUserDuggaFeedback_ms.php
-- sectionedService/readUserDuggaFeedback_ms.php (unused?)
 - sectionedService/reorderListEntries_ms.php
 - sectionedService/retrieveAllCourseVersions_ms.php
 - sectionedService/setVisibleListentries_ms.php (unused?)
@@ -54,16 +41,8 @@ No explanation for deprecated services means they have been removed entirely (on
 - courseedService/specialUpdate_ms.php (replaced)
 - courseedService/createNewCourse_ms.php (replaced)
 - courseedService/createCourseVersion_ms.php (replaced)
-- courseedService/updateCourseVersion_ms.php (unused?)
 - courseedService/retrieveAllCourseedServiceData_ms.php (unused?)
 - courseedService/changeActiveCourseVersion_courseed_ms.php (unused?)
-
-## showDuggaService
-- showDuggaService/getShowDugga_ms.php (unused)
-- showDuggaService/saveDugga_ms.php (unused)
-- showDuggaService/updateActiveUsers_ms.php (unused?)
-
-
 
 ## accessedService
 - accessedService/addClass_ms.php (unused?)
