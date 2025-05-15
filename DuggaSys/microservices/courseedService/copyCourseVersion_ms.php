@@ -40,7 +40,7 @@ $studentTeacher = hasAccess($userid, $cid, 'st');
 $hasAccess = $haswrite || $isSuperUserVar;
 
 $dataToSend = [
-	'hasAccess' => $hasAccess,
+	'ha' => $hasAccess,
 	'debug' => $debug,
 	'lastCourseCreated' => null,
 	'isSuperUserVar' => $isSuperUserVar
@@ -399,7 +399,7 @@ try {
 
 // update data
 $dataToSend = [
-	'hasAccess' => $hasAccess,
+	'ha' => $hasAccess,
 	'debug' => $debug,
 	'lastCourseCreated' => null,
 	'isSuperUserVar' => $isSuperUserVar
