@@ -109,3 +109,143 @@ Updates a box title of a code example when a user with appropriate permissions e
 - retrieveCodeviewerService_ms.php
 
 ---
+
+# Name of file/service
+editCodeExample_ms.php
+
+## Description
+Handles updates of code examples, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version associated with the code example. Stored as int in the database
+
+- Parameter: $playlink
+   - Type: string
+   - Description: Play link for opening demo in code example. Stored as varchar(256) in the database
+
+- Parameter: $exampleName
+   - Type: string
+   - Description: Name of the code example. Stored as varchar(64) in the database
+
+- Parameter: $sectionName
+   - Type: string
+   - Description: Name of the section of the code example. Stored as varchar(64) in the database
+
+- Parameter: $beforeId
+   - Type: string
+   - Description: Before ID. Stored as int in the database
+
+- Parameter: $afterId
+   - Type: string
+   - Description: After ID. Stored as int in the database
+
+- Parameter: $userid
+   - Type: int
+   - Description: User ID. Stored as int in the database                        
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $data
+   - Type: JSON
+   - Description: Contains data associated with the updated code example
+
+## Examples of Use
+`UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;`
+
+### Microservices Used
+- retrieveCodeviewerService_ms.php
+- getUid_ms.php
+
+---
+
+# Name of file/service
+editContentOfExample_ms.php
+
+## Description
+Updates the content of a box associated with a certain code example, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version associated with the code example. Stored as int in the database
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $boxId
+   - Type: string
+   - Description: Box ID. Stored as int in the database
+
+- Parameter: $boxTitle
+   - Type: string
+   - Description: Box Title. Stored as varchar(20) in the database
+
+- Parameter: $boxContent
+   - Type: string
+   - Description: Box content. Stored as varchar(64) in the database
+
+- Parameter: $wordlist
+   - Type: string
+   - Description: Word list. Stored as mediumint in the database
+
+- Parameter: $filename
+   - Type: string
+   - Description: Name of the file related to the code example. Stored as varchar(256) in the database
+
+- Parameter: $fontsize
+   - Type: string
+   - Description: Font size of the code example. Stored as int in the database
+
+- Parameter: $addedRows
+   - Type: string
+   - Description: The rows added to the content of code example. Stored in several fields in the improw table in the database
+
+- Parameter: $removedRows
+   - Type: string
+   - Description: The rows removed from the content of code example. Stored in several fields in the improw table in the database
+
+- Parameter: $userid
+   - Type: int
+   - Description: User ID. Stored as int in the database                                 
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $data
+   - Type: JSON
+   - Description: Contains data associated with the updated content of a code example
+
+## Examples of Use
+` UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid; `
+
+### Microservices Used
+- getUid_ms.php
+- retrieveCodeviewerService_ms.php
+
+---
