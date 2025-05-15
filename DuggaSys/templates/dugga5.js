@@ -135,7 +135,7 @@ function returnedDugga(data)
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
-		$("#duggaInfoBox").css("display","none");
+		document.getElementById("duggaInfoBox").style.display = "none";
 		document.getElementById('duggaTime').innerHTML=userStats[0];
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
@@ -260,8 +260,8 @@ function saveClick()
 	answerString+=" "+screen.width;
 	answerString+=" "+screen.height;
 	
-	answerString+=" "+$(window).width();
-	answerString+=" "+$(window).height();
+	answerString += " " + window.innerWidth;
+	answerString += " " + window.innerHeight;
 	//console.log(answerString);
 	saveDuggaResult(answerString);
 }
@@ -556,7 +556,7 @@ function toggleWireframeMode()
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	divw = $("#content").width();
+	divw = document.getElementById("content").offsetWidth;
 	if (divw > 500){ divw -= 248; }
 	if (divw < window.innerHeight) {
 		rendererDOMElement.width = divw;
@@ -575,8 +575,9 @@ function init()
 	document.getElementById("vertexMsg").innerHTML = "För få hörn för att skapa trianglar.";
 
 	rendererDOMElement = renderer.domElement;
-	rendererDOMElement.width = $("#content").width() - 250;
-	rendererDOMElement.height = $("#content").width() - 250;
+	var contentWidth = document.getElementById("content").offsetWidth;
+	rendererDOMElement.width = contentWidth - 250;
+	rendererDOMElement.height = contentWidth - 250;
 	fitToContainer();
 	acanvas.appendChild(rendererDOMElement);
 
