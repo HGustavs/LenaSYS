@@ -1362,12 +1362,15 @@ function calculateLabelDisplacement(labelObject) {
 
 /**
  * @description Calculate a procentual distance of how the label should be displaced
+ * Converting raw pixel offsets to percentage
  * @param {Object} objectLabel It's the label for the line
  */
 function calculateProcentualDistance(objectLabel) {
-    // Math to calculate procentuall distance from/to centerpoint
+    // Compute total horizontal/vertical span of the line
     const diffrenceX = objectLabel.highX - objectLabel.lowX;
     const diffrenceY = objectLabel.highY - objectLabel.lowY;
+
+    // Stick labelMoved so it never moves beyond the line’s endpoints
     if (objectLabel.labelMovedX > objectLabel.highX - objectLabel.lowX) {
         objectLabel.labelMovedX = objectLabel.highX - objectLabel.lowX;
     } else if (objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX) {
@@ -1378,42 +1381,49 @@ function calculateProcentualDistance(objectLabel) {
     } else if (objectLabel.labelMovedX < objectLabel.lowX - objectLabel.highX) {
         objectLabel.labelMovedX = objectLabel.lowX - objectLabel.highX
     }
+
+    // Compute distance from line start to the new label position
     const distanceToX1 = objectLabel.centerX + objectLabel.labelMovedX - objectLabel.fromX;
     const distanceToY1 = objectLabel.centerY + objectLabel.labelMovedY - objectLabel.fromY;
     const lenghtToNewPos = Math.abs(Math.sqrt(distanceToX1 * distanceToX1 + distanceToY1 * distanceToY1));
     const entireLinelenght = Math.abs(Math.sqrt(diffrenceX * diffrenceX + diffrenceY * diffrenceY));
     objectLabel.percentOfLine = lenghtToNewPos / entireLinelenght;
-    // Making sure the procent is less than 0.5 to be able to use them from the centerpoint of the line as well as ensuring the direction is correct
+    
+    // Convert percent so that 0 means at center, negative/positive shifts indicate side
     if (objectLabel.percentOfLine < 0.5) {
         objectLabel.percentOfLine = 1 - objectLabel.percentOfLine;
         objectLabel.percentOfLine -= 0.5;
     } else if (objectLabel.percentOfLine > 0.5) {
         objectLabel.percentOfLine = -(objectLabel.percentOfLine - 0.5);
     }
+    // If label hasn’t been moved, force it back to the exact center
     if (!objectLabel.labelMoved) {
         objectLabel.percentOfLine = 0;
     }
-    //changing the direction depending on how the line is drawn
-    if (objectLabel.fromX < objectLabel.centerX) { //left to right
+    // Changing the direction depending on how the line is drawn
+    if (objectLabel.fromX < objectLabel.centerX) { // Left to right
         objectLabel.labelMovedX = -objectLabel.percentOfLine * diffrenceX;
-    } else if (objectLabel.fromX > objectLabel.centerX) {//right to left
+    } else if (objectLabel.fromX > objectLabel.centerX) { // Right to left
         objectLabel.labelMovedX = objectLabel.percentOfLine * diffrenceX;
     }
 
-    if (objectLabel.fromY < objectLabel.centerY) { //down to up
+    if (objectLabel.fromY < objectLabel.centerY) { // Down to up
         objectLabel.labelMovedY = -objectLabel.percentOfLine * diffrenceY;
-    } else if (objectLabel.fromY > objectLabel.centerY) { //up to down
+    } else if (objectLabel.fromY > objectLabel.centerY) { // Up to down
         objectLabel.labelMovedY = objectLabel.percentOfLine * diffrenceY;
     }
 }
 
 /**
- * @description Updates the Label position on the line.
- * @param {number} newPosX The position the mouse is at in the X-axis.
- * @param {number} newPosY The position the mouse is at in the Y-axis.
+ * @description Updates the Label position on the line
+ * @param {number} newPosX The position the mouse is at on the X-axis
+ * @param {number} newPosY The position the mouse is at on the Y-axis
  */
 function updateLabelPos(newPosX, newPosY) {
+    // Mark that the label has been moved
     targetLabel.labelMoved = true;
+
+    // Horizontal clamping
     if (newPosX + targetLabel.width < targetLabel.highX && newPosX - targetLabel.width > targetLabel.lowX) {
         targetLabel.labelMovedX = (newPosX - targetLabel.centerX);
     } else if (newPosX - targetLabel.width < targetLabel.lowX) {
@@ -1421,6 +1431,8 @@ function updateLabelPos(newPosX, newPosY) {
     } else if (newPosX + targetLabel.width > targetLabel.highX) {
         targetLabel.labelMovedX = (targetLabel.highX - targetLabel.width - (targetLabel.centerX));
     }
+
+    // Vertical clamping
     if (newPosY + targetLabel.height < targetLabel.highY && newPosY - targetLabel.height > targetLabel.lowY) {
         targetLabel.labelMovedY = (newPosY - (targetLabel.centerY));
     } else if (newPosY - targetLabel.height < targetLabel.lowY) {
@@ -1428,19 +1440,23 @@ function updateLabelPos(newPosX, newPosY) {
     } else if (newPosY + targetLabel.height > targetLabel.highY) {
         targetLabel.labelMovedY = (targetLabel.highY - targetLabel.height - (targetLabel.centerY));
     }
+
+    // Recompute the normalized percent along the line based on new offsets
     calculateProcentualDistance(targetLabel);
+    // Convert that percent into a true pixel displacement vector
     calculateLabelDisplacement(targetLabel);
+    // Determine on which side of the line the label should sit
     displaceFromLine(newPosX, newPosY);
 }
 
 /**
- * @description Sorts all lines connected to an element on each side.
- * @param {String} currentElementID Hexadecimal id for the element at current test index for sorting.
- * @param {String} compareElementID Hexadecimal id for the element were comparing to.
- * @param {Array<Object>} ends Array of all lines connected on this side.
- * @param {String} elementid Hexadecimal id for element to perform sorting on.
- * @param {Number} axis
- * @returns {Number} 1 or -1 depending in the resulting calculation.
+ * @description Sorts all lines connected to an element on each side
+ * @param {String} currentElementID Hexadecimal id for the element at current test index for sorting
+ * @param {String} compareElementID Hexadecimal id for the element were comparing to
+ * @param {Array<Object>} ends Array of all lines connected on this side
+ * @param {String} elementid Hexadecimal id for element to perform sorting on
+ * @param {Number} axis Side index: 0=left, 1=right, 2=top, 3=bottom
+ * @returns {Number} 1 or -1 depending in the resulting calculation
  */
 function sortvectors(currentElementID, compareElementID, ends, elementid, axis) {
     let ax, ay, bx, by, toElementA, toElementB, sortval, parentx, parenty;
@@ -1449,7 +1465,7 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis) 
     const compareElementLine = (ghostLine && compareElementID === ghostLine.id) ? ghostLine : lines[findIndex(lines, compareElementID)];
     const parent = data[findIndex(data, elementid)];
     sortval = (navigator.userAgent.indexOf("Chrome") !== -1) ? 1 : -1;
-    // Retrieve opposite element - assume element center (for now)
+    // Determine the other element (to-element) each line connects to
     if (currentElementLine.fromID == elementid) {
         toElementA = (currentElementLine == ghostLine) ? ghostElement : data[findIndex(data, currentElementLine.toID)];
     } else {
@@ -1461,25 +1477,30 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis) 
         toElementB = data[findIndex(data, compareElementLine.fromID)];
     }
 
+    // If both lines go to the same element, keep their current order
     if (toElementA.id === toElementB.id) {
         return 0;
     }
-    // If lines cross swap otherwise keep as is
+
+    // For left/right sides, compare intersections at computed Y offsets
     if (axis == 0 || axis == 1) {
-        // Left side
         ay = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
         by = parent.y1 + (((parent.y2 - parent.y1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
         parentx = (axis == 0) ? parent.x1 : parent.x2;
+        // If the two hypothetical lines cross, swap their draw order
         let test = linetest(toElementA.cx, toElementA.cy, parentx, ay, toElementB.cx, toElementB.cy, parentx, by);
         if (!test) return sortval;
+
+        // For top/bottom sides, compare intersections at computed X offsets
     } else if (axis == 2 || axis == 3) {
-        // Top / Bottom side
         ax = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(currentElementID) + 1));
         bx = parent.x1 + (((parent.x2 - parent.x1) / (ends.length + 1)) * (ends.indexOf(compareElementID) + 1));
         parenty = (axis == 2) ? parent.y1 : parent.y2;
+        // If the two hypothetical lines cross, swap their draw order
         let test = linetest(toElementA.cx, toElementA.cy, ax, parenty, toElementB.cx, toElementB.cy, bx, parenty);
         if (!test) return sortval;
     }
+    // Otherwise keep the default ordering
     return -sortval;
 }
 
@@ -1493,31 +1514,37 @@ function sortvectors(currentElementID, compareElementID, ends, elementid, axis) 
  * @param {Number} y3 Position 3
  * @param {Number} x4 Position 4
  * @param {Number} y4 Position 4
- * @returns False if the lines don't intersect or if the intersection points are within edges, otherwise True.
+ * @returns False if the lines don't intersect or if the intersection points are within edges (otherwise True)
  */
 function linetest(x1, y1, x2, y2, x3, y3, x4, y4) {
     const determinant = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+
     // Values are NaN if the lines don't intersect and prepares values for checking if the possible intersection point is within edges
     const x = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / determinant;
     const y = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / determinant;
-    //Check if lines don't intersect
+
+    // Check if lines don't intersect
     if (isNaN(x) || isNaN(y)) return false;
-    //Check if intersection point is within edges
+
+    // Check if intersection point is within edges
     if (x1 >= x2) {
         if (!(x2 <= x && x <= x1)) return false;
     } else {
         if (!(x1 <= x && x <= x2)) return false;
     }
+
     if (y1 >= y2) {
         if (!(y2 <= y && y <= y1)) return false;
     } else {
         if (!(y1 <= y && y <= y2)) return false;
     }
+
     if (x3 >= x4) {
         if (!(x4 <= x && x <= x3)) return false;
     } else {
         if (!(x3 <= x && x <= x4)) return false;
     }
+
     if (y3 >= y4) {
         if (!(y4 <= y && y <= y3)) return false;
     } else {
@@ -1527,15 +1554,16 @@ function linetest(x1, y1, x2, y2, x3, y3, x4, y4) {
 }
 
 /**
- * @description checks if the label should be detached.
- * @param {Number} newX The position the mouse is at in the X-axis.
- * @param {Number} newY The position the mouse is at in the Y-axis.
+ * @description Checks if the label should be detached
+ * @param {Number} newX The position the mouse is at on the X-axis
+ * @param {Number} newY The position the mouse is at on the Y-axis
  */
 function displaceFromLine(newX, newY) {
-    //calculates which side of the line the point is.
+    // Calculates on which side of the line the point is
     const y1 = targetLabel.fromY, y2 = targetLabel.toY, x1 = targetLabel.fromX, x2 = targetLabel.toX;
     const distance = ((newX - x1) * (y2 - y1)) - ((newY - y1) * (x2 - x1));
-    //deciding which side of the line the label should be
+
+    // Decides on which side of the line the label should be
     if (distance > 6000) {
         targetLabel.labelGroup = 1;
     } else if (distance < -6000) {
