@@ -748,9 +748,25 @@ function render() {
 
     function toggleFeedback()
 {
-    $(".feedback-content").slideToggle("slow");
+    document.querySelectorAll(".feedback-content").forEach(function(elem) {
+    if (elem.style.maxHeight) {
+        elem.style.maxHeight = null;
+        elem.style.overflow = "hidden";
+    } else {
+        elem.style.maxHeight = elem.scrollHeight + "px";
+        elem.style.overflow = "hidden";
+    }
+    });
 }
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
+    document.querySelectorAll(".instructions-content").forEach(function(elem) {
+    if (elem.style.maxHeight) {
+        elem.style.maxHeight = null;
+        elem.style.overflow = "hidden";
+    } else {
+        elem.style.maxHeight = elem.scrollHeight + "px";
+        elem.style.overflow = "hidden";
+    }
+});
 }
