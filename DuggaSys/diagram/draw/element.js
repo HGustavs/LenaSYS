@@ -748,7 +748,7 @@ function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
     let rectTwoWidth = Math.min(textWidth + 80 * zoomfact, boxw - 10);
 
     let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='5'`);
-    let rectTwo = drawRect(rectTwoWidth, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let rectTwo = drawRect(rectTwoWidth, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1" id="cornerLabel"`);
     // State name text inside header
     let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', displayText, `font-size='${20 * zoomfact}px'`);
     
@@ -935,7 +935,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
     }
     // SVG for the small label in top left corner
     content += `<path 
-                id="loopLabel"
+                id="cornerLabel"
                 d="M ${(7 * zoomfact) + linew},${linew}
                     h ${100 * zoomfact}
                     v ${25 * zoomfact}
