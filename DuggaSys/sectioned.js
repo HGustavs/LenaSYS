@@ -1193,6 +1193,7 @@ function deleteAll() {
   let deletedElements = document.querySelectorAll(".deleted");
   for (let i = deletedElements.length ; (i > 0) ; i--) {
     let lid = deletedElements[i-1].id.match(/\d+/)[0];
+    deletedElements[i-1].closest(".courseRow").style.display = "none"; //This line is needed because refresh is broken. (2025-05-15). Should be possible to be removed after Group 2 solves the issue.
     deletedElements[i-1].classList.remove("deleted");
 
     AJAXService("DEL", {
