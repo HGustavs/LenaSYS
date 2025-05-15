@@ -3,7 +3,7 @@
 include_once "../../../Shared/basic.php";
 include_once "processDuggaFile_ms.php";
 
-function retrieveShowDuggaService(
+/*function retrieveShowDuggaService(
 	$moment, 
 	$pdo, 
 	$courseid, 
@@ -32,7 +32,39 @@ function retrieveShowDuggaService(
 	$variants,
 	$active,
 	$debug
-	){
+	){*/
+pdoConnect();
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $moment = $_POST['moment'] ?? null;
+    $courseid = $_POST['courseid'] ?? null;
+    $hash = $_POST['hash'] ?? null;
+    $hashpwd = $_POST['hashpwd'] ?? null;
+    $coursevers = $_POST['coursevers'] ?? null;
+    $duggaid = $_POST['duggaid'] ?? null;
+    $opt = $_POST['opt'] ?? null;
+    $group = $_POST['group'] ?? null;
+    $score = $_POST['score'] ?? null;
+    $highscoremode = $_POST['highscoremode'] ?? null;
+    $grade = $_POST['grade'] ?? null;
+    $submitted = $_POST['submitted'] ?? null;
+	$duggainfo = $_POST['duggainfo'] ?? [];       
+	$marked = $_POST['marked'] ?? false;    
+	$userfeedback = $_POST['userfeedback'] ?? '';
+	$feedbackquestion = $_POST['feedbackquestion'] ?? '';
+	$files = $_POST['files'] ?? [];
+	$savedvariant = $_POST['savedvariant'] ?? 'UNK';
+	$ishashindb = $_POST['ishashindb'] ?? false;
+	$variantsize = $_POST['variantsize'] ?? 'UNK';
+	$variantvalue = $_POST['variantvalue'] ?? 'UNK';
+	$password = $_POST['password'] ?? $_POST['hashpwd'] ?? null;
+	$hashvariant = $_POST['hashvariant'] ?? 'UNK';
+	$isFileSubmitted = $_POST['isFileSubmitted'] ?? false;
+	$variants = $_POST['variants'] ?? [];
+	$active = $_POST['active'] ?? 0;
+	$debug = $_POST['debug'] ?? 'NONE!';
+}
 
 	if(checklogin()){
 		if(isset($_SESSION['uid'])){
@@ -284,9 +316,8 @@ $array = array(
 	);
 	if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
+
 	header('Content-Type: application/json');
-		
-	return $array;
-}
+	echo json_encode($array);
 
 ?>
