@@ -1581,87 +1581,37 @@ function retrieveCourseProfile(userid) {
 - retrievevers.php 
 
 ---
-Example of template for the documentation:
+# Name of file/service 
+sectioned.js 
+Function: getStudents()
 
-# Name of file/service
-example_ms (replace this line with the name of the microservice)
-
-## Description
-*Description of what the service do and its function in the system.*
-
-## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
+## Description 
+This function retrieves student.
+ 
+## Input Parameters 
+- Parameter: cid
    - Type: String
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-- Parameter: paramName
+- Parameter: userid
    - Type: int
    - Description: Describe parameter. Stored as *int(11)* in the database
 
-## Calling Methods
-- GET
-- POST
-- etc.
-
-## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-`CODE`
-
-### Microservices Used
-- *Includes and microservices used*
-
----
-
-*Add the dashes above between each documentation.*
----------------------------------------------------------------------------------------------- 
-
-# Name of file/service 
-
-sectioned.js 
-
-Function getStudents 
-
-## Description 
-
-*Description of what the service do and its function in the system.* 
-
-This function retrieves student  
- 
-## Input Parameters 
-
-*Parameters will be described in tables for easier readability* 
-
-| Parameter | Type | Description | 
-
-| :cid | :string | :Course ID used to identify the current course | 
-
-| :userid | :string | :User ID of the currently logged-in user | 
-
 ## Calling Methods 
-
 - POST 
 
-## Output Data and Format 
+## Output Data and Format  
+- Output: finished_students
+   - Type: array
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
+- Output: non_finished_students
+   - Type: array
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| Output | Type | Description |  
-
-| :finished_students | :array | :List of studens who have completed the course | 
-
-| :non_finished_students | :array | :List of students who have not yet completed the course | 
-
-| :Error | :string | :If request fails, error is logged to the console | 
+- Output: error
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
@@ -1703,52 +1653,45 @@ function getStudents(cid, userid) {
 ``` 
 
 ### Microservices Used 
+- retrieveuser_course.php 
 
-*Includes and microservices used* 
-
-retrieveuser_course.php 
-
----------------------------------------------------------------------------------------------- 
+---
 
 # Name of file/service 
-
 sectioned.js 
-
-Function: retrieveAnnouncementsCards 
+Function: retrieveAnnouncementsCards() 
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
 This function retrives and displays announcements relevant to a user for a given course and version. 
 
 ## Input Parameters 
+- Parameter: cid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: uname
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| Parameter | Type | Description | 
-
-| :uname | :string | :The username retreived from the HTML element | 
-
-| :cid | :string | :Course ID from the URL | 
-
-| :versid | :string | :Course version from the URL | 
+- Parameter: versid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
 - GET 
 
 ## Output Data and Format 
+- Output: retrivedAnnouncementCard
+   - Type: HTML
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability*  
+- Output: nRows
+   - Type: number
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| Output | Type | Description | 
-
-| :retrivedAnnouncementCard | :HTML | :HTML for announcement cads | 
-
-| :nRows | :number | :Number of unread announcements | 
-
-| :uid | :string | :User ID retrieved from first request | 
+- Output: uid
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
@@ -1795,1775 +1738,888 @@ function retrieveAnnouncementsCards() {
 ```
 
 ### Microservices Used 
+- retrieveUserid.php 
+- retrieveAnnouncements.php 
 
-*Includes and microservices used* 
-
-retrieveUserid.php 
-
-Used to get the user ID based on a username. 
-
-retrieveAnnouncements.php 
-
-Fetches announcements for a given user in a specific course version. 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
-Sectioned.js 
-
-Function: updateReadStatus 
+sectioned.js 
+Function: updateReadStatus()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
 This function updates the read status of an announcement for a user. It fetches the user's ID based on username. 
 
 ## Input Parameters 
+- Parameter: announcementid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: cid
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| Parameter | Type | Description | 
-
-| :announcementid | :string | :ID of announcement to be marked read | 
-
-| :cid | :string | :Course ID | 
-
-| :versid | :string | :Course verion ID | 
- 
+- Parameter: versid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
 - GET (retrieveUserid.php) 
-
 - POST (updateviewedAnnouncementCards.php) 
 
 ## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :uid | :int | :Retrieved from GET request based on username | 
+- Output: uid
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 function updateReadStatus(announcementid, cid, versid) { 
-
   var uname = $("#userName").html(); 
-
   $.ajax({ 
-
     url: "../Shared/retrieveUserid.php", 
-
     data: { uname: uname }, 
-
     type: "GET", 
-
     success: function (data) { 
-
       var parsed_data = JSON.parse(data); 
-
       var uid = parsed_data.uid; 
-
       $.ajax({ 
-
         url: "../Shared/updateviewedAnnouncementCards.php", 
-
         data: { announcementid: announcementid, uid: uid, cid: cid, versid: versid }, 
-
         type: "POST", 
-
         success: function (data) { 
-
         } 
-
       }); 
-
     } 
-
   }); 
-
 }
 ```
  
 ### Microservices Used 
+- retrieveUserid.php
+- updateviewedAnnouncementCards.php 
 
-*Includes and microservices used* 
-
-retrieveUserid.php
-
-Retrieves the users ID based on their username (GET). 
-
-updateviewedAnnouncementCards.php 
-
-Updates the database to mark the announcement as viewed by the user (POST).  
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
-Sectioned.js 
-
-Function: toggleFeedbacks 
+sectioned.js 
+Function: toggleFeedbacks()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
 The function retrieves and displays recent feedback for the logged-in student. 
 
 ## Input Parameters 
+- Parameter: uname
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
-
-| Parameter | Type | Description | 
-
-| :uname | :string | :Retrieved from inner HTML | 
-
-| :studentid | :int | :Fetched GET request using uname | 
+- Parameter: studentid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
- 
-- GET (../Shared/retrieveUserid.php)  
-
-- POST (../Shared/retrieveFeedbacks.php) 
-
- 
+- GET (retrieveUserid.php)  
+- POST (retrieveFeedbacks.php)
 
 ## Output Data and Format 
+- Output: duggaFeedback
+   - Type: HTML
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
-| :duggaFeedback | :HTML | :Content of feedback | 
-
-| :unreadFeedbackNotification | :int | :Number of unseen feedback notifications | 
-
- 
+- Output: unreadFeedbackNotification
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
-
 ```
 function toggleFeedbacks() { 
-
   let uname = $("#userName").html(); 
-
   let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks; 
-
   $.ajax({ 
-
     url: "../Shared/retrieveUserid.php", 
-
     data: { uname: uname }, 
-
     type: "GET", 
-
     success: function (data) { 
-
       parsed_uid = JSON.parse(data); 
-
       studentid = parsed_uid.uid; 
-
       $.ajax({ 
-
         url: "../Shared/retrieveFeedbacks.php", 
-
         data: { studentid: studentid }, 
-
         type: "POST", 
-
         async: true, 
-
         dataType: 'json', 
-
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8', 
-
         success: function (data) { 
-
           duggaFeedback = data.duggaFeedback; 
-
           $(".feedbackContent").html(duggaFeedback); 
-
           if ($(".recentFeedbacks").length == 0) { 
-
             $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span>" + 
-
               "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>"); 
-
             $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>" + 
-
               "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>"); 
-
           } 
-
           $(".oldFeedbacks").hide(); 
-
           feedbackComment = 'feedbackComment'; 
-
           readLessOrMore(feedbackComment); 
-
           unseen_feedbacks = data.unreadFeedbackNotification; 
-
           if (unseen_feedbacks > 0) { 
-
             $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>"); 
-
             $("#feedbacknotificationcounter").html(unseen_feedbacks); 
-
- 
-
           } 
-
         }, 
-
         error: function () { 
-
           console.log("Couldn't return feedback data"); 
-
         } 
-
- 
-
-      }); 
-
- 
-
+      });
     } 
-
- 
-
   }); 
-
- 
 
   if ($("#feedback").length > 0) { 
-
     $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'>" + 
-
       "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>" + 
-
       "<div class='feedbackContent'></div></div></div>"); 
-
- 
-
   } 
 
- 
-
   $("#feedback").click(function () { 
-
     $("#feedbackOverlay").toggle(); 
-
     if ($("#feedbacknotificationcounter").length > 0) { 
-
       var viewed = "YES"; 
-
       $.ajax({ 
-
         url: "../Shared/retrieveFeedbacks.php", 
-
         data: { studentid: studentid, viewed: viewed }, 
-
         type: "POST", 
-
         success: function () { 
-
           $("#feedbacknotificationcounter").remove(); 
-
         } 
-
       }); 
-
     } 
-
   }); 
-
 }  
 ```
 
- 
-
 ### Microservices Used 
+- retrieveUserid.php 
+- retrieveFeedbacks.php 
 
-*Includes and microservices used* 
-
- 
-
-retrieveUserid.php 
-
-Retrieves user ID using the provided username. 
-
-retrieveFeedbacks.php 
-
-Returns recent feedbacks for a student (duggaFeedback) and count of unseen items. 
-
- 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
-Sectioned.js 
-
-Function: createExamples 
+sectioned.js 
+Function: createExamples()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
 This function fetches code examples for a specific lecture identified by momentID. 
 
 ## Input Parameters 
+- Parameter: momentID
+   - Type: int
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
-
-| Parameter | Type | Description | 
-
-| :momentID | :int | :The ID of the lecture to fetch code examples for | 
-
-| :isManual | :boolean | :Optional flag if the call is manual | 
+- Parameter: isManual
+   - Type: bool
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
-
 - POST 
 
- 
-
 ## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
+- Output: response
+   - Type: JSON
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
  
-
-| Output | Type | Description | 
-
- 
-
-| :response | :JSON | :JSON object containing code examples | 
-
-Resolves the AJAX result as a JSON object. 
-
- 
-
 ## Examples of Use 
 ``` 
 function createExamples(momentID, isManual) { 
-
   lid = momentID; 
 
- 
-
   //wrapped ajax in promise in order to return promise to the function that called it. see setInterval 
-
   return new Promise((resolve, reject) => { 
-
     $.ajax({ 
-
       url: "sectionedservice.php", 
-
       type: "POST", 
-
       data: { 'lid': lid, 'opt': 'CREGITEX' }, 
-
       dataType: "json", 
-
       success: function (response) { 
-
         console.log("AJAX request succeeded. Response:", response); 
-
         lastUpdatedCodeExampes = Date.now(); 
-
         if (isManual) { 
-
           console.log("Code examples have been manually updated successfully!"); 
-
         } 
-
         resolve(response); 
-
       }, 
-
       error: function (xhr, status, error) { 
-
         console.error("AJAX request failed. Status:", status); 
-
         console.error("Error:", error); 
-
         console.log("Failed to manually update code examples!"); 
-
       } 
-
     }); 
-
   }); 
-
 }  
 ```
 
 ### Microservices Used 
+- sectionedservice.php 
 
-*Includes and microservices used* 
-
-sectionedservice.php 
-
-This service is called to retrieve code examples associated with a lecture. 
-
- 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
-Sectioned.js 
-
-Function: storeCodeExamples 
+sectioned.js 
+Function: storeCodeExamples()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
-
 This function is responsible for storing code examples from GitHub repository into both a directory and database, then sends the data as a JSON object to PHP service (sectionedservice.php) 
- 
 
 ## Input Parameters 
+- Parameter: cid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: codeExamplesContent
+   - Type: array
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| Parameter | Type | Description | 
+- Parameter: githubURL
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| :cid | :string | :Course ID used to map examples with specific course | 
-
-| :codeExamplesContent | :array | :Array of content from GitHub API | 
-
-| :githubURL | :string | :GitHub repository URL for reference | 
-
-| :fileName | :string | :Name that code examples should be stored under | 
+- Parameter: filename
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
  
-
 ## Calling Methods 
-
 - POST 
 
 ## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-|:response | :string | :Response string from backend (logged in console) | 
+- Output: response
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
-
 ```
 function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){ 
-
     var templateNo = updateTemplate(); 
-
     var decodedContent=[], shaKeys=[], fileNames=[], fileURL=[], downloadURL=[], filePath=[], fileType=[], fileSize=[]; 
 
     //Push all file data into separate arrays and add them into one single array. 
-
     codeExamplesContent.map(function(item) { 
-
        decodedContent.push(atob(item.content.content)); 
-
        shaKeys.push(item.content.sha); 
-
        fileNames.push(item.filename); 
-
        fileURL.push(item.content.url); 
-
        downloadURL.push(item.content.download_url); 
-
        filePath.push(item.content.path); 
-
        fileType.push(item.content.type); 
-
        fileSize.push(item.content.size); 
-
     });
- 
+
     var AllJsonData = { 
-
       codeExamplesContent: decodedContent, 
-
       SHA: shaKeys, 
-
       fileNames: fileNames, 
-
       filePaths: filePath, 
-
       fileURLS: fileURL, 
-
       downloadURLS: downloadURL, 
-
       fileTypes: fileType, 
-
       codeExamplesLinkParam: CeHiddenParameters, 
-
       templateid: templateNo, 
-
       fileSizes: fileSize 
-
     } 
 
     //Send data to sectioned.php through POST 
-
     $.ajax({ 
-
        url: 'sectionedservice.php', 
-
        type: 'POST', 
-
        data: { 
-
         courseid: cid, 
-
         githubURL: githubURL, 
-
         codeExampleName: fileName, 
-
         opt: 'GITCODEEXAMPLE', 
-
         codeExampleData: AllJsonData 
-
        }, 
-
        success: function(response) { 
-
           console.log(response); 
-
        }, 
-
        error: function(xhr, status, error) { 
-
         console.error('AJAX Error:', status, error); 
-
       } 
-
     });    
-
     confirmBox('closeConfirmBox'); 
-
     location.replace(location.href); 
-
 }  
 ```
 
- 
-
 ### Microservices Used 
+- sectionedservice.php 
 
-*Includes and microservices used* 
- 
-
-sectionedservice.php 
-
-Opt- GITCODEEXAMPLE 
-
-This backend service handles storage of code example data received from GitHub. Data includes content, filenames, paths, SHA keys, download URLs, and file size/type. 
-
- 
-
--------------------------------------------------------------------------------------- 
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
-Codeviewer.js 
-
-Function: showIframe 
-
- 
+codeviewer.js 
+Function: showIframe()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 The function loads and displays a preview window for file editing. It replaces the existing preview window on the page with the one fetched from fileed.php, it also sets up the save button to reload the page upon saving and triggers the loading of a previewed file using loadPreview() from fileed.js. 
 
- 
-
 ## Input Parameters 
+- Parameter: path
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: name
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :path | :string | :Path to the file that should be loaded in preview | 
-
-| :name | :string | :Filenamne to be displayed or edited | 
-
-| :kind | :string | :Type of content being loaded (text, code, etc.) | 
-
- 
+- Parameter: kind
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
- 
-
-- GET (fetch() and $.getScript()) 
-
- 
+- GET
 
 ## Output Data and Format 
+- Output: previewWindow
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :previewWidow | :DOM | :The preview from fileed.php injected into the page | 
-
-| :Errors | :warning | :Warning if fileed.php fails to load | 
-
- 
+- Output: errors
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
-
 ```
 function showIframe(path, name, kind) { 
 
-
     // Fetch HTML text from fileed.php 
-
     fetch('fileed.php').then(function (response) { 
 
         // The API call was successful! 
-
         return response.text(); 
-
     }).then(function (html) { 
 
         // Parse HTML test to DOM 
-
         var parser = new DOMParser(); 
-
         var fileedDocument = parser.parseFromString(html, 'text/html'); 
 
- 
-
         // Replace the preview window from codeviewer.php with the preview window from fileed.php in DOM 
-
         var previewWindow = document.querySelector(".previewWindow") 
-
         var fileedPreviewWindow = fileedDocument.querySelector(".previewWindow"); 
-
         document.querySelector(".previewWindowContainer").replaceChild(fileedPreviewWindow, previewWindow) 
 
-         
-
         // Display the preview window and append hideIframe() to the close window button  
-
         previewWindow = document.querySelector(".previewWindow"); 
-
         previewWindow.classList.add("formBox"); 
-
         previewWindow.style.display = "block"; 
-
         document.querySelector(".editFilePart").style.display = "none"; 
 
- 
-
         // Clicking the save button will reload the example to display the new changes 
-
         previewWindow.querySelector(".save-button-md").addEventListener("click", function(){ 
-
             location.reload(); 
-
         }); 
-
-         
 
         // Load the right file in to the preview window 
-
         $.getScript("fileed.js", function(){ 
-
             loadPreview(path, name, kind); 
-
         }); 
-
     }).catch(function (err) { 
 
         // Display potential errors as a warning 
-
         console.warn('Something went wrong.', err); 
-
     }); 
-
 } 
 ```
 
- 
-
 ### Microservices Used 
+- fileed.php 
 
-*Includes and microservices used* 
-
- 
-
-fileed.php 
-
-Serves the file editing interface content to be displayed. 
-
-fileed.js 
-
-Provides loadPreview() used to load the actual file content in the preview window. 
-
- 
-
- 
-
--------------------------------------------------------------------------------------- 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
-
 Diagram_IOHandler.js 
-
- 
+Function: saveToServer()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 This function sends a diagram from diagram editor to the backend for saving. It uses an AJAX POST request to submit the diagram data along with a generated hash value. 
 
- 
-
 ## Input Parameters 
+- Parameter: dia
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
-
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :dia | :string | :Diagram data | 
-
-| :Hash | :string | :A unique hash value generated | 
-
- 
+- Parameter: hash
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
-
 ## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-No return value is handled 
-
- 
+-
 
 ## Examples of Use 
-
 ```
 function saveToServer(dia) 
-
 { 
-
     $.ajax({ 
-
         url: 'diagramservice.php', 
-
         type: 'POST', 
-
         data: { StringDiagram: dia, Hash: hashFunction() } 
-
     }); 
-
 }
 ```
 
- 
-
 ### Microservices Used 
+- diagramservice.php 
 
-*Includes and microservices used* 
-
- 
-
-diagramservice.php 
-
-Receives diagram data under StringDiagram, stores it on the server. 
-
- 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
- 
-
 Diagram_IOHandler.js 
-
-Function: Redirect 
-
- 
+Function: Redirect()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 This function handles redirection to a newly created project folder. It first sends a POST request to diagram_IOHandler.php with a folder name (GetID) and then redirects the user to diagramservice.php, appending the folder name as a URL parameter. The purpose of the AJAX call may be to initialize or register the folder on the server. 
 
- 
-
 ## Input Parameters 
+- Parameter: doc
+   - Type: object
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
-
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :doc | :object | :HTML input element with a value used as folder name | 
-
-| :GetID | :string | :The value from doc sent as a POST parameter | 
-
- 
+- Parameter: getID
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
-
 - POST 
 
 ## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
-
-| Output | Type | Description | 
-
- 
-
-| :Redirect | :URL | :Navigates to diagramservice.php?id=0&folder={value} | 
-
- 
+- Output: redirect
+   - Type: URL
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 function redirect(doc) 
-
 { 
-
     var a = doc.value; 
 
- 
-
     $.ajax({ 
-
         type: "POST", 
-
         url: "diagram_IOHandler.php", 
-
         data: { 'GetID': a }, 
 
- 
-
         success: function (data) 
-
         { // <-- note the parameter here, not in your code 
-
             return false; 
-
         } 
-
     }); 
-
  
-
     location.href = "diagramservice.php?id=" + 0 + "&folder=" + a; 
-
 }
 ```
- 
 
 ### Microservices Used 
-
-*Includes and microservices used* 
-
 diagram_IOHandler.php 
-
-Receives a folder name via POST as GetID. 
-
- 
-
 diagramservice.php 
 
-The user is redirected here. 
-
- 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
- 
-
 Fileed.js 
-
-Function: loadFile 
-
- 
+Function: loadFile()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 This function is used to load and display a specific file (Markdown, plain text, or other content types) within the preview window. It updates the UI and sends a POST request to showdoc.php to fetch the file contents for preview. 
 
- 
-
 ## Input Parameters 
+- Parameter: fileUrl
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: fileNamez
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :fileUrl | :string | :Path to the file to be loaded | 
-
-| :fileNamez | :string | :The file name to be loaded | 
-
-| :fileKind | :string | :The type or category of the file (md, txt) | 
-
- 
+- Parameter: fileKind
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
+## Output Data and Format
+- Output: HTML
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :HTML | :string | :Contents of the file rendered into the preview area | 
-
-| :returnFile | :function | :Callback used to inject response into the UI | 
-
- 
+- Output: returnFile
+   - Type: ?
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 function loadFile(fileUrl, fileNamez, fileKind) { 
-
     filename = fileNamez; 
-
     filepath = fileUrl; 
-
     filekind = fileKind; 
 
-     
-
     $("#fileName").val(fileNamez); 
-
     $("#fileKind").val(fileKind); 
-
  
-
     $(".previewWindow").show(); 
-
     $(".previewWindowContainer").css("display", "block"); 
-
     $(".markdownPart").hide(); 
-
     $(".editFilePart").show(); 
-
      
-
     $.ajax({ 
-
         url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileNamez + "&read=yes", 
-
         type: 'post', 
-
         dataType: 'html', 
-
         success: returnFile 
-
     }); 
-
 }
 ```
 
- 
-
 ### Microservices Used 
+- showdoc.php
 
-*Includes and microservices used* 
-
- 
-
-showdoc.php 
-
-Fetches the content of a file. 
-
- 
-
---------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
- 
-
-Fileed.js 
-
-Function: load Preview 
-
- 
+fileed.js 
+Function: loadPreview() 
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 The function is responsible for previewing a file's content in a read-only format. It sets up the preview UI for the selected file, displays the preview window, and makes a POST request to showdoc.php to retrieve the file's content. This function is intended for viewing only, not editing. 
 
- 
-
 ## Input Parameters 
+- Parameter: fileUrl
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: fileName
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :fileUrl | :string | :The path to the file | 
-
-| :fileName | :string | :Name of the file to be previewed | 
-
-| :fileKind | :string | :Type or category of the file (markdown, text) | 
-
- 
+- Parameter: fileKind
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
-
 ## Output Data and Format 
+- Output: HTML
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :HTML | :string | :The file content for preview | 
-
-| :returnedPreview | :function | :Callback function used to render the returned content | 
-
- 
+- Output: returnedPreview
+   - Type: ?
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 function loadPreview(fileUrl, fileName, fileKind) { 
-
- 
-
     filename = fileName; 
-
     filepath = fileUrl; 
-
     filekind = fileKind; 
 
- 
-
     $("#fileName").val(fileName); 
-
     $("#fileKind").val(fileKind); 
-
     $(".previewWindow").show(); 
-
     $(".previewWindowContainer").css("display", "block"); 
-
     $(".markdownPart").show(); 
-
     $(".editFilePart").hide(); 
 
- 
-
     //$.ajax({url: fileUrl, type: 'get', dataType: 'html', success: returnedPreview}); 
-
     $.ajax({ 
-
         url: "showdoc.php?courseid=" + querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "&fname=" + fileName + "&read=yes", 
-
         type: 'post', 
-
         dataType: 'html', 
-
         success: returnedPreview 
-
     }); 
-
 }
 ```
 
- 
-
 ### Microservices Used 
-
-*Includes and microservices used* 
-
+- showdoc.php
  
-
-showdoc.php 
-
-Receives file name, course ID and course version, returns the files contents for preview. 
-
- 
-
--------------------------------------------------------------------------------------- 
-
+--- 
 # Name of file/service 
-
- 
-
-Profile.js 
-
-Function: processChallenge 
-
- 
+profile.js 
+Function: processChallenge()
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 This function handles the updating of a users security challenge question and answer. It sends a POST request to profileservice.php with the users password, selected question and answer. 
 
- 
+ ## Input Parameters 
+- Parameter: password
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-## Input Parameters 
+- Parameter: question
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-*Parameters will be described in tables for easier readability* 
-
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :password | :string | :The current password of the user | 
-
-| :question | :string | :The security question selected by the user | 
-
-| :answer | :string | :The users answer to the security question | 
-
- 
+- Parameter: answer
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
-
 ## Output Data and Format 
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :success | :boolean | :True if update was successful | 
-
-| :status | :string | :Additional status info | 
-
- 
+- Output: status
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 function processChallenge(password, question, answer){ 
-
     var message = $("#challengeMessage"); 
-
     var curPassword = $("#currentPassword"); 
-
     var secQuestion = $("#securityQuestion"); 
-
     var chaAnswer = $("#challengeAnswer"); 
 
-     
-
     $.ajax({ 
-
         type: "POST", 
-
         url: "profileservice.php", 
-
         data: { 
-
             password: password, 
-
             question:question, 
-
             answer: answer, 
-
             action: "challenge" 
-
         }, 
-
         dataType: "json", 
-
         success:function(data) { 
-
             if (data.success) { 
-
                 message.html("Challenge has been updated!!"); 
-
                 clearField(curPassword); 
-
                 clearField(secQuestion); 
-
                 clearField(chaAnswer); 
-
             } else { 
-
                 if(data.status == "teacher") { 
-
                     message.html("Teachers are not allowed to change challenge question!"); 
-
                     updateField(curPassword); 
-
                     updateField(secQuestion); 
-
                     updateField(chaAnswer); 
-
                 } else if (data.status == "wrongpassword") { 
-
                     message.html("Incorrect password!"); 
-
                     clearField(secQuestion); 
-
                     clearField(chaAnswer); 
-
                     updateField(curPassword); 
-
                 } else { 
-
                     message.html("Unknown error."); 
-
                     clearField(curPassword); 
-
                     updateField(secQuestion); 
-
                     updateField(chaAnswer); 
-
                 } 
-
             } 
-
         }, 
-
         error:function() { 
-
             message.html("Error: Could not communicate with server"); 
-
         } 
-
     }); 
-
 }
 ``` 
 
- 
-
 ### Microservices Used 
+- profileservice.php 
 
-*Includes and microservices used* 
-
- 
-
-profileservice.php 
-
-Validates the users identity and updates their security challenge question. 
-
- 
-
---------------------------------------------------------------------------------------- 
-
+--- 
 # Name of file/service 
-
- 
-
 Profile.js 
-
-Function: changePassword 
-
- 
+Function: changePassword() 
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 This function handles the password change process for a user. It collects the current and new password from a form and sends a POST request to profileservice.php.  
 
- 
-
 ## Input Parameters 
+- Parameter: password
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Parameter: newPassword
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :password | :string | :The users current password | 
-
-| :newPassword | :string | :The new password | 
-
-| :action | :string | :Set to “password” to indicate operation | 
-
- 
+- Parameter: action
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
-
 ## Output Data and Format 
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :success | :boolean | :True if password was successfully changed | 
-
-| :status | :string | : "teacher" if teacher accounts are restricted, "wrongpassword" if current password is incorrect | 
-
- 
+- Output: status
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 function changePassword(){ 
 
     //Form inputs 
-
     var currentField = $("#currentPassword2"); 
-
     var newField = $("#newPassword"); 
-
     var confirmField = $("#newPassword2"); 
-
     var message = $("#passwordMessage"); 
 
     //Value of form inputs 
-
     var password = currentField.val(); 
-
     var newPassword = newField.val(); 
 
-     
-
     $.ajax({ 
-
         type: "POST", 
-
         url: "profileservice.php", 
-
         data: { 
-
             password: password, 
-
             newPassword: newPassword, 
-
             action: "password" 
-
         }, 
-
         dataType: "json", 
-
         success:function(data){ 
-
             if(data.success){ 
 
                 //Resets form 
-
                 clearField(currentField); 
-
                 clearField(newField); 
-
                 clearField(confirmField); 
-
                 $("#passwordForm").trigger("reset"); 
-
                 message.html("Password successfully updated!"); 
-
             } else { 
-
                 if (data.status == "teacher") { 
-
                     message.html("Teachers can't change password."); 
-
                     updateField(currentField); 
-
                     updateField(newField); 
-
                     updateField(confirmField); 
-
                 } else if (data.status == "wrongpassword") { 
-
                     message.html("Current password is not correct."); 
-
                     updateField(currentField); 
-
                 } else { 
-
                     message.html("Unknown error.") 
-
                 } 
-
             } 
-
         }, 
-
         error:function() { 
-
             message.html("Error: Could not communicate with server"); 
-
         } 
-
     }); 
-
 }
 ``` 
 
- 
-
 ### Microservices Used 
+- profileservice.php 
 
-*Includes and microservices used* 
-
- 
-
-profileservice.php 
-
-Accepts password, newPassword, validates the current password and updates the users password if allowed. 
-
- 
-
--------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
- 
-
-Pushnotifications.js 
-
- 
+pushnotifications.js 
 
 ## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
 This module manages push notification subscriptions in the browser. It registers service workers, subscribes/unsubscribes users to push notifications using the browsers Push API and communicates with the server via pushnotifications.php. 
-
- 
 
 ## Input Parameters 
 
 *Parameters will be described in tables for easier readability* 
 
- 
-
 | Parameter | Type | Description | 
-
- 
 
 | :--- | :--- | :--- | 
 
 | :--- | :--- | :---  
 
- 
-
- 
-
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
-
 ## Output Data and Format 
+- Output: text
+   - Type: String
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :text | :string | :The server returns simple text responses | 
-
-| :UI updates | :HTML | :The DOM is updated to reflect subscription state | 
-
- 
+- Output: UI updates
+   - Type: HTML
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 $(function() { 
-
- 
-
     let sendPushRegistrationToServer = function(subscription, deregister) { 
 
         $.ajax({ 
-
             url: "pushnotifications.php", 
-
             type: "POST", 
-
             data: {action: (deregister == true ? 'deregister' : 'register'), subscription: subscription.toJSON()}, 
-
             dataType: "text", 
-
             success: function() { 
-
                 window.setTimeout(function() { 
-
                     updateTextAndButton((deregister != true)); 
-
                 }, 1000); 
-
             } 
-
         }); 
-
     }; 
-
- 
-
 .... 
 ```
 
- 
-
 ### Microservices Used 
+- pushnotifications.php 
 
-*Includes and microservices used* 
-
-pushnotifications.php 
-
-Receives subscription object to store or remove push subscription in server database. 
-
- 
-
---------------------------------------------------------------------------------------- 
-
+---
 # Name of file/service 
-
- 
-
 pushnotificationsserviceworker.js 
 
- 
-
-## Description 
-
-*Description of what the service do and its function in the system.* 
-
- 
-
+ ## Description 
 This service handles browser push notifications for LenaSYS. It handles push events, displays a notification with the message content and confirms delivery to the server. 
 
- 
+ ## Input Parameters 
+- Parameter: event.data.text()
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-## Input Parameters 
-
-*Parameters will be described in tables for easier readability* 
-
- 
-
-| Parameter | Type | Description | 
-
- 
-
-| :event.data.text() | :string | :The puch message sent from backend | 
-
-| :subscription.endpoint | :string | :The URL endpoint identifying the users push subscription | 
-
- 
+- Parameter: subscription.endpoint 
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
-
- 
-
 - POST 
 
- 
-
 ## Output Data and Format 
+- Output: notification
+   - Type: object
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Output Data will be described in tables for easier readability* 
-
- 
-
-| Output | Type | Description | 
-
- 
-
-| :Notification | :object | :Browser notifications with title, icon and body text | 
-
-| :Server POST | :text | :POST request to pushnotifications.php to log delivery success | 
-
- 
+- Output: server POST
+   - Type: text
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
 ## Examples of Use 
 ```
 'use strict'; 
-
- 
-
 self.addEventListener('push', function(event) { 
-
     var notificationText = event.data.text(); 
-
     event.waitUntil( 
-
         self.registration.showNotification("LenaSYS Notification", { 
-
             body: notificationText, 
-
             badge: '../Shared/icons/Pen.png', 
-
             icon: '../Shared/icons/LenasysIcon.png' 
-
         }) 
-
     ); 
-
     self.registration.pushManager.getSubscription().then(function(subscription) { 
-
         if (subscription) { 
-
             fetch('pushnotifications.php', { 
-
                 method: 'POST', 
-
                 headers: { 
-
                     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' 
-
                 }, 
-
                 body: 'action=pushsuccess&endpoint=' + encodeURIComponent(subscription.endpoint) 
-
             }); 
-
         } 
-
     }); 
-
 }); 
-
  
-
 self.addEventListener('notificationclick', function(event) { 
-
     event.notification.close(); 
-
- 
-
     clients.openWindow("courseed.php"); 
 
 });
 ```
 
- 
-
 ### Microservices Used 
-
-*Includes and microservices used* 
-
-
-pushnotifications.php 
-
-Used to log or confirm that the notification was received by the user. 
-
- 
-
--------------------------------------------------------------------------------------- 
+- pushnotifications.php
