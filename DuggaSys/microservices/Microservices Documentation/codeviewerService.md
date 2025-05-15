@@ -175,20 +175,63 @@ Handles updates of code examples, and then retrieving all updated data from the 
 ---
 
 # Name of file/service
-example_ms (replace this line with the name of the microservice)
+editContentOfExample_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Updates the content of a box associated with a certain code example, and then retrieving all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
 
 ## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
 
-- Parameter: paramName
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version associated with the code example. Stored as int in the database
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $boxId
+   - Type: string
+   - Description: Box ID. Stored as int in the database
+
+- Parameter: $boxTitle
+   - Type: string
+   - Description: Box Title. Stored as varchar(20) in the database
+
+- Parameter: $boxContent
+   - Type: string
+   - Description: Box content. Stored as varchar(64) in the database
+
+- Parameter: $wordlist
+   - Type: string
+   - Description: Word list. Stored as mediumint in the database
+
+- Parameter: $filename
+   - Type: string
+   - Description: Name of the file related to the code example. Stored as varchar(256) in the database
+
+- Parameter: $fontsize
+   - Type: string
+   - Description: Font size of the code example. Stored as int in the database
+
+- Parameter: $addedRows
+   - Type: string
+   - Description: The rows added to the content of code example. Stored in several fields in the improw table in the database
+
+- Parameter: $removedRows
+   - Type: string
+   - Description: The rows removed from the content of code example. Stored in several fields in the improw table in the database
+
+- Parameter: $userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: User ID. Stored as int in the database                                 
 
 ## Calling Methods
 - GET
