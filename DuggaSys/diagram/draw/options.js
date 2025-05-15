@@ -298,7 +298,7 @@ function option(object, icon) {
  * @return Returns a header for the radio menu and returns the radio menu with the different options.
  */
 
-function radio(line, arr) {
+function lineMode(line, arr) {
     let result = "";
         result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
         arr.forEach(lineKind => {
@@ -349,7 +349,7 @@ function drawLineProperties(line) {
 
     switch (line.type) {
         case entityType.ER:
-            str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DOUBLE]);
             str += `<label style="display: block;">Cardinality:`;
             let optER;
             Object.keys(lineCardinalitys).forEach(cardinality => {
@@ -360,13 +360,13 @@ function drawLineProperties(line) {
             str += `</label>`;
             break;
         case entityType.UML:
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += includeLabel(line);
             str += cardinalityLabels(line);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.IE:
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
@@ -393,7 +393,7 @@ function drawLineProperties(line) {
             }
 
             str += includeSELabel(line);
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);
             break;
     }
