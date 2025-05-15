@@ -89,7 +89,7 @@ if($active == null){
 header("Content-Type: application/json");
 //set url for setAsActiveCourse.php path
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/retrieveShowDuggaService_ms.php";
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
 $ch = curl_init($url);
     //options for curl
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

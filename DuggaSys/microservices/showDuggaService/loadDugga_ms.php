@@ -80,7 +80,7 @@ if($hash!="UNK"){
 header("Content-Type: application/json");
 //set url for setAsActiveCourse.php path
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/retrieveShowDuggaService_ms.php";
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
 $ch = curl_init($url);
     //options for curl
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -114,5 +114,13 @@ $result = json_decode($response, true);
     $group,
     $score
 );*/
-echo json_encode($result);
+echo json_encode([
+  'variant'       => $variant,
+  'answer'        => $answer,
+  'variantanswer' => $variantanswer,
+  'param'         => $param,
+  'newcourseid'   => $newcourseid,
+  'newcoursevers' => $newcoursevers,
+  'newduggaid'    => $newduggaid
+]);
 exit;

@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isSuperUser($userid)){
 		if($hash!="UNK"){
 			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-			$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/loadDugga_ms.php";
+			$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/loadDugga_ms.php";
 			$ch  = curl_init($url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_POST,        true);
