@@ -465,46 +465,43 @@ function fetchLatestCommit(gitHubURL) {
 - gitcommitService.php
 
 ---
-
-----------------------------------------------------------------------------------------
 # Name of file/service
-
 courseed.js
-
-Function updateGithubRepo
+Function updateGithubRepo()
 
 ## Description
-*Description of what the service do and its function in the system.*
-
 This function is used to update the GitHub repository and its associated course ID. 
 It sends a POST request to gitcommitService.php fetches and stores the latest commit in the database. 
 Returns true on success or false on failure. 
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+- Parameter: gitHubURL
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| Parameter | Type | Description |
+- Parameter: cid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :githubURL | :string | :GitHub repository URL |
-
-| :cid | :string | :Course ID that is linked to the repository |
-
-| :action | :string | :updateGithubRepo, type of task |
+- Parameter: action
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
-
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
+- Output: status
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| Output | Type | Description |
+- Output: message
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| :status | :int | :HTTP status for error handling |
-
-| :message | :string | :Error description |
-
-| :sucess | :bool | :Success=true, Fail=false |
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
 ``` 
@@ -540,48 +537,42 @@ function updateGithubRepo(githubURL, cid) {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- gitcommitService.php
 
-gitcommitService.php
+---
+Example of template for the documentation:
 
-action- updateGithubRepo
-
------------------------------------------------------------------------------------------------------------------------------------
 # Name of file/service
-
 sectioned.js
-
 Function refreshGithubRepo
 
 ## Description
-*Description of what the service do and its function in the system.*
-
- It sends a POST request to gitcommitService.php with the course ID and user to retrieve the latest Git data. 
- Returns true on success, false on failure.
+It sends a POST request to gitcommitService.php with the course ID and user to retrieve the latest Git data. Returns true on success, false on failure.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+- Parameter: courseid
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| Parameter | Type | Description |
-
-| :courseid | :string | :ID of the course whose GitHub data is refreshed |
-
-| :user | :string | :The current user triggering refresh |
+- Parameter: user
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
-
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
+- Output: data
+   - Type: string
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| Output | Type | Description |
-
-| :data | :string | :"No repo" triggers popup |
-
-| :status | :int | :Used for error handling |
-
-| :success | :bool | :Returns true or false via dataCheck |
+- Output: status
+   - Type: int
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+  
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
 ``` 
@@ -623,50 +614,44 @@ function refreshGithubRepo(courseid, user) {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- gitcommitService.php
 
-gitcommitService.php
-
-action- refreshGithubRepo
-
--------------------------------------------------------------------------------
-
+---
 # Name of file/service
-
 sectioned.js
-
-Function updateGithubRepo
+Function updateGithubRepo()
 
 ## Description
-*Description of what the service do and its function in the system.*
-
-Sends an updated GitHub repository URL and course ID to database in order to save it. returns true if successful or false if an error occurs. 
+Sends an updated GitHub repository URL and course ID to database in order to save it. returns true if successful or false if an error occurs.
 
 ## Input Parameters
-*Parameters will be described in tables for easier readability*
+- Parameter: githubURL
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-| Parameter | Type | Description |
+- Parameter: cid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :githubURL | :string | :GitHub repository URL |
-
-| :cid | :string | :Course ID of the repository |
-
-| :githubKey | :string | :GitHub token used for authentication |
+- Parameter: githubKey
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
-
 - POST
 
 ## Output Data and Format
-*Output Data will be described in tables for easier readability*
+- Output: status code
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| Output | Type | Description |
+- Output: message
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| :status code | :int | :Used for error handling |
-
-| :message | :string | :Error message shown |
-
-| :success | :bool | :True= successful, False= otherwise |
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
 ``` 
@@ -703,11 +688,9 @@ function updateGithubRepo(githubURL, cid, githubKey) {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*
+- gitcommitService.php
 
-gitcommitService.php
-
-action- directInsert
+---
 
 ---------------------------------------------------------------------------------------------
 
