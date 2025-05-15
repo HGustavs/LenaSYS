@@ -8,8 +8,14 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
-function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuperUserVar){ 
+// Connect to database and start session
+pdoConnect();
+session_start();
+
+$data = recieveMicroservicePOST(['ha', 'debug', 'lastCourseCreated', 'isSuperUserVar']);
+
 
     $opt = getOP('opt');
     $cid = getOP('cid');
@@ -30,7 +36,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
 
     if(!$queryreg->execute()) {
         $error=$queryreg->errorInfo();
-        $debug="Error reading courses\n".$error[2];
+        $data['debug'] = "Error reading courses\n".$error[2];
     }
 
     $userRegCourses = array();
@@ -43,7 +49,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
 
     if(!$queryz->execute()) {
         $error=$queryz->errorInfo();
-        $debug="Error reading courses\n".$error[2];
+        $data['debug'] = "Error reading courses\n".$error[2];
     }
 
     $userCourse = array();
@@ -77,7 +83,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
 
     if(!$query->execute()) {
         $error=$query->errorInfo();
-        $debug="Error reading courses\n".$error[2];
+        $data['debug'] = "Error reading courses\n".$error[2];
     }else{
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
             $writeAccess = false;
@@ -87,7 +93,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
                 }
             }
 
-            if ($isSuperUserVar || $row['visibility']==1 || ($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) || ($row['visibility']==0 && $writeAccess)) {
+            if ($data['isSuperUserVar'] || $row['visibility']==1 || ($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) || ($row['visibility']==0 && $writeAccess)) {
                 $isRegisteredToCourse = false;
             }
             foreach($userRegCourses as $userRegCourse){
@@ -117,7 +123,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
 
     if(!$query->execute()) {
         $error=$query->errorInfo();
-        $debug="Error reading courses\n".$error[2];
+        $data['debug'] = "Error reading courses\n".$error[2];
     } else{
         foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
             array_push(
@@ -138,7 +144,7 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
 
     if(!$query->execute()) {
         $error=$query->errorInfo();
-        $debug="Error reading settings\n".$error[2];
+        $data['debug'] = "Error reading settings\n".$error[2];
     } else{
         $motd="UNK";
         $readonly=0;
@@ -149,16 +155,16 @@ function retrieveCourseedService($pdo, $ha, $debug, $LastCourseCreated, $isSuper
     }
 
     $array = array(
-        'LastCourseCreated' => $LastCourseCreated,
+        'LastCourseCreated' => $data['lastCourseCreated'],
         'entries' => $entries,
         'versions' => $versions,
-        "debug" => $debug,
-        'writeaccess' => $ha,
+        "debug" => $data['debug'],
+        'writeaccess' => $data['ha'],
         'motd' => $motd,
         'readonly' => $readonly
     );
 
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveCourseedService_ms.php",$userid,$info);
 
-    return $array;
-}
+    header('Content-Type: application/json');
+    echo json_encode($array);
