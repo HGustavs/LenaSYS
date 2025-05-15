@@ -5,7 +5,6 @@ date_default_timezone_set("Europe/Stockholm");
 //---------------------------------------
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-//include_once('./retrieveShowDuggaService_ms.php');
 
 
 pdoConnect(); // Connect to database and start session
@@ -144,38 +143,6 @@ curl_close($ch);
 $result = json_decode($response, true);
 echo json_encode($result);
 exit;
-/*echo json_encode(
-retrieveShowDuggaService(
-	$moment, 
-	$pdo, 
-	$courseid, 
-	$hash, 
-	$hashpwd, 
-	$coursevers, 
-	$duggaid, 
-	$opt, 
-	$group, 
-	$score, 
-	$highscoremode, 
-	$grade, 
-	$submitted,
-	$duggainfo,
-	$marked,
-	$userfeedback,
-	$feedbackquestion,
-	$files,
-	$savedvariant,
-	$ishashindb,
-	$variantsize,
-	$variantvalue,
-	$password,
-	$hashvariant,
-	$isFileSubmitted,
-	$variants,
-	$active,
-	$debug
-	)
-)*/
 
 
 ?>

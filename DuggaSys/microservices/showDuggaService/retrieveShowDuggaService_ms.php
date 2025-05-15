@@ -3,36 +3,6 @@
 include_once "../../../Shared/basic.php";
 include_once "processDuggaFile_ms.php";
 
-/*function retrieveShowDuggaService(
-	$moment, 
-	$pdo, 
-	$courseid, 
-	$hash, 
-	$hashpwd, 
-	$coursevers, 
-	$duggaid, 
-	$opt, 
-	$group, 
-	$score, 
-	$highscoremode, 
-	$grade, 
-	$submitted,
-	$duggainfo,
-	$marked,
-	$userfeedback,
-	$feedbackquestion,
-	$files,
-	$savedvariant,
-	$ishashindb,
-	$variantsize,
-	$variantvalue,
-	$password,
-	$hashvariant,
-	$isFileSubmitted,
-	$variants,
-	$active,
-	$debug
-	){*/
 pdoConnect();
 session_start();
 

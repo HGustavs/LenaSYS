@@ -3,7 +3,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-//include_once "retrieveShowDuggaService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -29,17 +28,7 @@ if(isset($_SESSION['uid'])){
 }else{
 	$userid="student";		
 } 	
-/*
-$hash=getOP('hash');
-$moment=getOP('moment');
-$courseid   = getOP('courseid');
-$hashpwd    = getOP('hashpwd');
-$coursevers = getOP('coursevers');
-$duggaid    = getOP('duggaid');
-$opt        = getOP('opt');
-$group      = getOP('group');
-$score      = getOP('score');
-*/
+
 $variant = array();
 $answer = array();
 $variantanswer = null;
@@ -102,18 +91,6 @@ curl_close($ch);
 
 $result = json_decode($response, true);
 
-/*$result = retrieveShowDuggaService(
-    $moment,
-    $pdo,
-    $courseid,
-    $hash,
-    $hashpwd,
-    $coursevers,
-    $duggaid,
-    $opt,
-    $group,
-    $score
-);*/
 echo json_encode([
   'variant'       => $variant,
   'answer'        => $answer,
