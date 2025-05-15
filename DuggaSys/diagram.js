@@ -527,7 +527,7 @@ function getData() {
     });
 
     /*Mobile side navbar buttons
-    Getting functions used in a separate file, to they can be used in the side navBar */
+    Getting functions used in a separate file, to they can be used in the side navBar 
     async function loadDiagram() {
         const { uploadFile, reset } = await import('./templates/diagram_dugga.js');
         document.getElementById("mb-saveDuggaButton").addEventListener("click", () => {
@@ -535,12 +535,20 @@ function getData() {
             showReceiptPopup();
         });
         document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
-    }
+   
     loadDiagram(); 
+
+    */
+
+    document.getElementById("mb-saveDuggaButton").addEventListener("click", () => {
+        uploadFile();
+        showReceiptPopup();
+    });
+    document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
 
     document.getElementById("mb-darkModeButton").addEventListener("click", burgerToggleDarkmode);
     document.getElementById("mb-loadDuggaButton").addEventListener("click", showLoadDuggaPopup);
-    document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it called home before the event listener was added
+    document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it
         window.location.assign('/DuggaSys/courseed.php');
     });
     document.getElementById("mb-loginButton").addEventListener("click", showLoginPopup);
