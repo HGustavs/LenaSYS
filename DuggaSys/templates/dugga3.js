@@ -535,11 +535,11 @@ function handler_mousedown(ev)
 {
 	clickstate = 1;
 	// Figure out if we clicked in an object
-	$("#operations > option").each(function() {
-		var opArr = this.value.split(" ");
+	document.querySelectorAll("#operations > option").forEach(function(el) {
+		var opArr = el.value.split(" ");
 		for (var i = 1; i < opArr.length; i += 2) {
 			if (opArr[i] == gridx && opArr[i + 1] == gridy) {
-				selectedObjId = this.id;
+				selectedObjId = el.id;
 				selectedPoint = Math.round(i / 2);
 			}
 
