@@ -9,8 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveCourseedService_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
+include_once "../curlService.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -21,7 +20,13 @@ $cid=getOP('cid');
 // Permission check, same as in copyCourseVersion
 if (strcmp($opt, "ADDVRS") !== 0) {
     $debug = "OPT does not match.";
-    echo json_encode(retrieveCourseedService($pdo, false, $debug, null, $isSuperUserVar));
+	$dataToSend = [
+		'ha' => false,
+		'debug' => $debug,
+		'lastCourseCreated' => null,
+		'isSuperUserVar' => $isSuperUserVar
+	];
+    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
     return;
 }
 $coursecode=getOP('coursecode');
@@ -94,5 +99,13 @@ if($ha) {
 
 }
 
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
+// update data
+$dataToSend = [
+	'ha' => $ha,
+	'debug' => $debug,
+	'lastCourseCreated' => null,
+	'isSuperUserVar' => $isSuperUserVar
+];
+
+echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
 
