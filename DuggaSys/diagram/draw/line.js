@@ -814,10 +814,11 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
                 height='${(textheight - 4) * zoomfact + zoomfact * 3}'
             /> 
             <text 
-                class='text cardinalityLabelText' 
+                class='cardinalityLabelText' 
                 dominant-baseline='middle' 
                 text-anchor='middle' 
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)};' 
+                fill='${lineColor}' 
+                font-size='${Math.round(zoomfact * textheight)}' 
                 x='${posX}' 
                 y='${posY}'
             > ${lineCardinalitys[line.cardinality]} </text>`;
