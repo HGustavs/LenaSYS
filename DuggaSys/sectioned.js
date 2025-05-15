@@ -864,11 +864,6 @@ function markedItems(item = null, typeInput) {
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
         var tempKind = element ? element.closest('tr').getAttribute('value'): null;
-
-        console.log(getComputedStyle(element.parentElement).display == 'none');
-        /*console.log('element display: ' + element.style.display);
-        console.log('tempDisplay: ' + tempDisplay);
-        console.log('tempkind: ' + tempKind);*/
         
         // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
@@ -925,7 +920,6 @@ function markedItems(item = null, typeInput) {
     } 
     
     if (removed != true) {
-      //console.log('not removed');
       let activeLidInList = false;
       var indexNr = checkIfInList(selectedItemList, selectedItemList.length, active_lid);
 
@@ -938,9 +932,7 @@ function markedItems(item = null, typeInput) {
       }
       //checks everything within the section (children)
       for (var j = 0; j < subItems.length; j++) {
-        //console.log('subItems: ' + subItems);
         selectedItemList.push(subItems[j]);
-        //console.log('subitem: ' + subItems[j] + 'is added to selected items');
         document.getElementById(subItems[j] + "-checkbox").checked = true;
       }
     }
@@ -949,9 +941,7 @@ function markedItems(item = null, typeInput) {
   // adds everything under section to selectedItems
   else {
     selectedItemList.push(active_lid);
-    console.log('hmm' + active_lid);
     for (var j = 0; j < subItems.length; j++) {
-      console.log(subItems[j]);
       selectedItemList.push(subItems[j]);
     }
     for (i = 0; i < selectedItemList.length; i++) {
