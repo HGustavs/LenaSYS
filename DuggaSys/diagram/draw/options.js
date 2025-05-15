@@ -117,11 +117,12 @@ function textarea(name, property, element) {
     if (shownProperty === null){
         shownProperty = "";
     }
+    // Limit stereotype input to 50 characters to prevent SVG overflow and UI breakage
     if (property == "stereotype"){
         return `<div style='color:${color.WHITE};'>${name}</div>
             <input 
                 id='elementProperty_${property}' 
-                maxlength='10'
+                maxlength='50'
                 value='${shownProperty}'
             >${safeName}</input>`;
     }
