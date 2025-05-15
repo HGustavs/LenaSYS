@@ -89,7 +89,8 @@ a {
   display: inline-block;
 }
 
-.edit_modal {
+.edit_modal,
+.add_modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -102,7 +103,8 @@ a {
   z-index: 9999;
 }
 
-.edit_modal_content {
+.edit_modal_content,
+.add_modal_content {
   background-color: white;
   border: 1px solid black;
   border-radius: 8px;
