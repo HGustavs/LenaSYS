@@ -2593,10 +2593,12 @@ function tooltipPosition(element){
     }
     else if(element.closest("#options-pane")){
         let optionPanelPosition = document.getElementById("options-pane").getBoundingClientRect();
+        console.log(optionPanelPosition);
+        console.log("Options Panel");
 
         return {
-            top: `${optionPanelPosition.top}px`,
-            left: `${optionPanelPosition.left + optionPanelPosition.width + 100}px`
+            top: `${optionPanelPosition.top + 50}px`,
+            left: `${optionPanelPosition.left - optionPanelPosition.width + 50}px`
         };
     }
     else if(element.closest("#zoom-container")){
