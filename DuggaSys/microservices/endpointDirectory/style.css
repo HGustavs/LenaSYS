@@ -115,3 +115,13 @@ a {
   position: relative;
   overflow: scroll;
 }
+
+.add_modal_content {
+  width: 600px;
+}
+
+.add_modal_content textarea,
+.add_modal_content input {
+  width: 100%;
+  max-width: 100%;
+}
