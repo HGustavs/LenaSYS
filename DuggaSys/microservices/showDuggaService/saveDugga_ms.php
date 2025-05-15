@@ -8,7 +8,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "retrieveShowDuggaService_ms.php";
+//include_once "retrieveShowDuggaService_ms.php";
 
 pdoConnect(); // Connect to database and start session
 session_start();
@@ -164,7 +164,7 @@ if(strcmp($opt,"SAVDU")==0){
 header("Content-Type: application/json");
 //set url for setAsActiveCourse.php path
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/retrieveShowDuggaService_ms.php";
 $ch = curl_init($url);
     //options for curl
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
