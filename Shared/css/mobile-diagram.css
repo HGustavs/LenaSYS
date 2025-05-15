@@ -41,10 +41,12 @@
     }
 
 
-    #mb-diagram-toolbar-2 img {
+    #mb-diagram-toolbar-2 button {
         width: 40px;
         aspect-ratio: 1;
         padding: .2rem;
+        background-color: var(--color-primary);
+        border: none;
     }
     #mb-diagram-toolbar-2 ul {
         list-style: none;

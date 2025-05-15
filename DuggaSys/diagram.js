@@ -1,10 +1,10 @@
 // #region CLASSES
 // ============================================================================================
 // ========================================= CLASSES ==========================================
-
 /**
  * @description Handles storage and retrieval of usage history allowing undoing and redoing changes. Internal data should ONLY be modified through class methods to prevent weird behaviour.
  */
+
 class StateMachine {
     /**
      * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
@@ -525,7 +525,30 @@ function getData() {
             button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
           });
     });
-   
+
+    /*Mobile side navbar buttons
+    Getting functions used in a separate file, to they can be used in the side navBar */
+    async function loadDiagram() {
+        const { uploadFile, reset } = await import('./templates/diagram_dugga.js');
+        document.getElementById("mb-saveDuggaButton").addEventListener("click", () => {
+            uploadFile();
+            showReceiptPopup();
+        });
+        document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
+    }
+    loadDiagram(); 
+
+    document.getElementById("mb-darkModeButton").addEventListener("click", burgerToggleDarkmode);
+    document.getElementById("mb-loadDuggaButton").addEventListener("click", showLoadDuggaPopup);
+    document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it called home before the event listener was added
+        window.location.assign('/DuggaSys/courseed.php');
+    });
+    document.getElementById("mb-loginButton").addEventListener("click", showLoginPopup);
+
+     
+
+    
+
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();

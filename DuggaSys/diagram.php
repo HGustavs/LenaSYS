@@ -1447,38 +1447,52 @@
         <ul class="mb-nav-list">
              <li class="mb-nav-item"  title="Log in">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/login_button.svg" onclick="showLoginPopup();" />
+                    <button id="mb-loginButton">
+                        <img src="../Shared/icons/login_button.svg" />
+                    </button>
                 </div>
             </li>
 
              <li class="mb-nav-item" title="Home">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/Home.svg" onclick="window.location.assign('/DuggaSys/courseed.php')">
+                    <button id="mb-Home">
+                        <img src="../Shared/icons/Home.svg">
+                    </button>
                 </div>
             </li>
-              <li class="mb-nav-item" title="Undo">
+              <li class="mb-nav-item" title="stepBack">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                     <img src="../Shared/icons/Up.svg" onclick="window.history.back()"/>
+                    <button id="mb-stepBackButton">
+                        <img src="../Shared/icons/Up.svg"/>
+                    </button>
                 </div>
             </li>
               <li class="mb-nav-item" title="Save Dugga" >
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/save_button.svg"  onclick='uploadFile(); showReceiptPopup();'  > 
+                    <button id="mb-saveDuggaButton">
+                        <img src="../Shared/icons/save_button.svg"  > 
+                    </button>
                 </div>
             </li>
             <li class="mb-nav-item" title="Load Dugga"> 
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/Document.svg"> 
+                    <button id="mb-loadDuggaButton">
+                        <img src="../Shared/icons/Document.svg"> 
+                    </button>
                 </div>
             </li>
             <li class="mb-nav-item" title="Restart Dugga">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/diagram_Refresh_Button.svg"> 
+                    <button id="mb-resetDuggaButton">
+                        <img src="../Shared/icons/diagram_Refresh_Button.svg"> 
+                    </button>
                 </div>
             </li>
             <li class="mb-nav-item" title="Toggle Dark Mode" >
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <img src="../Shared/icons/ThemeToggle.svg" onclick = 'burgerToggleDarkmode()'> 
+                    <button id="mb-darkModeButton"> 
+                        <img src="../Shared/icons/ThemeToggle.svg" > 
+                    </button>
                 </div>
             </li>
 

@@ -50,7 +50,7 @@ function getDiagramData()
  * @description Makes an ajax-call to filereceive_dugga.php to generate the file on the server,
  * depending on the data in the diagram-editor.
  * */
-function uploadFile()
+export function uploadFile()
 {
     $.ajax({
         method: "POST",
@@ -133,7 +133,7 @@ function returnedDugga(data)
  * @description Resets the diagram iframe to the state the user made changes,
  * this can be to the point of an import for previous submit or the initial state of the assigment.
  * */
-function reset()
+export function reset()
 {
     let refreshConfirm = confirm("Are you sure you want to reset to default state? All changes made to diagram will be lost");
     if(refreshConfirm){
