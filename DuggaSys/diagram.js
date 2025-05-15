@@ -2508,36 +2508,50 @@ subMenuToolbarBoxs.forEach(subMenuBox=>{
 
 //Selects every element that has an tooltip
 const tooltipTargets = document.querySelectorAll(".tooltip-target");
+
+//Holds the timeout reference, this allows us to delay the display and cancel it 
 let timer = null;
+
+//Keeps track of the element hovered with a tooltip shown
+//used to consistently show/hide tooltips 
 let currentTooltipElement = null;
 
 tooltipTargets.forEach((element)=>{
     element.addEventListener("mouseenter", (e)=>{
-        if(e.target!==e.currentTarget) return;
-        const targetElement = e.currentTarget;
+        if(e.target!==e.currentTarget) return; //Checks to see that the correct element is hovered and not its children
+        const targetElement = e.currentTarget; //Saves the reference of the hovered element
 
+        //Each tooltip has its own delay time
+        //Used to prevent inteference or overlapping, preventing also the risk of showing the wrong tooltip
         clearTimeout(timer);
         timer = setTimeout(()=>{
             showTooltip(targetElement);
-            currentTooltipElement = targetElement;
-        }, 400);
+            currentTooltipElement = targetElement; //Saves the reference of the hovered element
+        }, 400); //Shows the tooltip after a 400ms delay
     });
 
     element.addEventListener("mouseleave", (e)=>{
-        if(!e.relatedTarget && !e.relatedTarget.closest("#diagramPopOut")) return;
+        //Checks to see where mouse is going
+        //if mouse is not moving into to the dropdown then hide the tooltip
+        //This allows for dropdown tooltips to stay visible
+        if(!e.relatedTarget && !e.relatedTarget.closest("#diagramPopOut")) return; 
         clearTimeout(timer);
-        hideTooltip();
-        currentTooltipElement = null;
+        hideTooltip(); 
+        currentTooltipElement = null; //Updated to say that no element is being hovered
     });
 });
 
+/**
+ * @description Function that fills the tooltip container with correct information and is responsible for showing the tooltip
+ * @param {*} element it is the element that the user hovers on with its mouse
+ */
 function showTooltip(element){
     let tooltipContainer = document.querySelector(".diagram-tooltip");
     let tooltipMode = element.dataset.toolmode;
-    let toolID = parseInt(element.dataset.toolid);
-    let tooltipInfo = tooltips[tooltipMode];
+    let toolID = parseInt(element.dataset.toolid); //Need to parse it because the data-attributes are originally strings (e.g. 0,1,2 ...)
+    let tooltipInfo = tooltips[tooltipMode]; //Access the correct information on the element being hovered 
 
-    if(!tooltipInfo) return; 
+    if(!tooltipInfo) return;
 
     tooltipContainer.innerHTML = `
         <h3>${tooltipInfo.header}</h3>
@@ -2545,62 +2559,86 @@ function showTooltip(element){
         <p id='tooltip-${tooltipID[toolID]}' class='key_tooltip'></p>
     `;
 
-    const position = tooltipPosition(element);
+    updateKeybindSpan(toolID); //Sends the id that the element being hovered has 
+    const position = tooltipPosition(element); //Sends the element to calculate the position for the tooltip
     if(!position) return;
     
+    //Styles the top and left position based on the calculated position from `tooltipPosition(...)`
     tooltipContainer.style.top = position.top;
     tooltipContainer.style.left = position.left;
     tooltipContainer.style.display = 'block';
 
-    updateKeybindSpan(toolID);
 }
+
+/**
+ * @description Function that empties the tooltip container information and hides the tooltip from the user
+ */
 function hideTooltip(){
     let tooltipContainer = document.querySelector(".diagram-tooltip");
     tooltipContainer.style.display = 'none';
     tooltipContainer.innerHTML = '';
 }
+/**
+ * @description Function that fills the correct and corresponding keybind to the element that is being hovered
+ * @param {*} id it is an index used to access the correct element in the global array tooltipID 
+ */
 function updateKeybindSpan(id){
     const toolID = tooltipID[id];
 
-    const element = document.getElementById(`tooltip-${toolID}`);
-    console.log(element);
-    if(!element || !keybinds[toolID]) return;
+    const element = document.getElementById(`tooltip-${toolID}`); //Selects the element with the corresponding ID (e.g.tooltip-POINTER)
+    if(!element || !keybinds[toolID]) return; //Returns nothing if the element does not exist or if the keybinds does not exist
 
     let str = 'Keybinding: ';
 
+    //Checks to see if the necessary keybinds starts with ctrl, shift or alt, or is a combination of them
     if (keybinds[toolID].ctrl) str += "CTRL + ";
     if (keybinds[toolID].shift) str += "SHIFT + ";
     if (keybinds[toolID].alt) str += "ALT + ";
 
-    str += `"${keybinds[toolID].key.toUpperCase()}"`;
+    str += `"${keybinds[toolID].key.toUpperCase()}"`; //Transforms them to all capital letters (e.g. "ESCAPE")
 
     element.innerHTML = str;
 }
+
+/**
+ * @description Function that calculates the appropiate top and left position for the tooltips based on where the user has hovered on
+ * @param {*} element it is the element where the user has 
+ * @returns the top and left position that the tooltip should have, also returns them as a object
+ * 
+ * This function uses `getBoundingClientRect()` to get the layout information of an element, it contains information such as the top, rigth, bottom and left positions, and the width and height of the element. 
+ */
 function tooltipPosition(element){
     let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
+
+    //statement to check if an submenu exists and if it is active by seeing if it contains the active class for it
     const isActive = submenu && submenu.classList.contains("activeTogglePlacementTypeBox");
 
+    /*Checks if the element is inside the #diagramPopOut and if it is active to get the correct layout information such as width and positions*/
+    //These tooltips are meant for the elements that are inside the dropdown/sidebar (e.g. ER-entity)
     if(element.closest("#diagramPopOut") && isActive){
-        const dropdownBox = element.closest(".togglePlacementTypeBox");
+        /* Selects the element with the class 'togglePlacementTypeBox' that the element is inside of, this is because every dropdown shares this class, and so this will work for every dropdown and not only the first one*/
+        const dropdownBox = element.closest(".togglePlacementTypeBox"); 
 
         if(!dropdownBox) return;
-        let dropdownPosition = dropdownBox.getBoundingClientRect();
+        let dropdownPosition = dropdownBox.getBoundingClientRect(); 
 
         return{
             top: `${dropdownPosition.top - dropdownPosition.height/2}px`,
             left: `${dropdownPosition.left + dropdownPosition.right - 30}px`
         };
     }
+
+    //Check if the element is inside the options panel 
     else if(element.closest("#options-pane")){
         let optionPanelPosition = document.getElementById("options-pane").getBoundingClientRect();
-        console.log(optionPanelPosition);
-        console.log("Options Panel");
 
         return {
             top: `${optionPanelPosition.top + 50}px`,
             left: `${optionPanelPosition.left - optionPanelPosition.width + 50}px`
         };
     }
+
+    //Checks if the element is inside the zoom-container
     else if(element.closest("#zoom-container")){
         let zoomContainerPosition = document.getElementById("zoom-container").getBoundingClientRect();
 
@@ -2609,6 +2647,8 @@ function tooltipPosition(element){
             left: `${zoomContainerPosition.left}px`
         };
     }
+
+    //Checks if the element is inside the replay box
     else if(element.closest("#diagram-replay-box")){
         let replayBoxPosition = document.getElementById("diagram-replay-box").getBoundingClientRect();
 
@@ -2617,6 +2657,8 @@ function tooltipPosition(element){
             left: `${replayBoxPosition.right/10 + 35}px`
         };
     }
+
+    //Checks if the element is the toolbar modes that are visible on the toolbar and not elements that are inside dropdowns/sidebar
     else if(element.closest("#diagram-toolbar") && !element.closest("#diagramPopOut")){
         let elementPosition = element.getBoundingClientRect();
 
@@ -2626,6 +2668,7 @@ function tooltipPosition(element){
         };
     }
 
+    //Default return, could be changed to something like 50% just to have the tooltips appear
     return{
         top: null,
         left: null

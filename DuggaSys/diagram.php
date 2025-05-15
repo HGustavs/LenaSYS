@@ -90,6 +90,8 @@
     <div id="markdownKeybinds" style="display: none">
 
     </div>
+    
+    <!-- The tooltip container that pops up with information based on where the user hovers -->
     <div class="diagram-tooltip" style="display:none;"></div>
 
     <!-- Used for calculating pixels per millimeter using offsetWidth. Note that in offsetWidth system scaling is not included
