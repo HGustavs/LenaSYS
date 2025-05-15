@@ -65,7 +65,6 @@ function returnedDugga(data)
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -93,12 +92,12 @@ function returnedDugga(data)
 									var newTableBody = "<tr id='v" + i +"'>";
 									newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 									newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-									newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-									newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-									newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+									newTableBody += '<td><button onclick="this.closest(\'tr\').previousElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
+									newTableBody += '<td><button onclick="this.closest(\'tr\').nextElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+									newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 									newTableBody += "</tr>";
 										
-									$("#operationList").append(newTableBody);						
+									document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);						
 							}
 					}
 			}
@@ -123,10 +122,10 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById("showFeedbackButton").style.display="block";
 	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").appendTo("#content");
+	document.getElementById("content").append(document.getElementById("submitButtonTable"));
+	document.getElementById("content").append(document.getElementById("lockedDuggaInfo"));
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
@@ -169,16 +168,16 @@ function saveClick()
 	// Loop through all operations
 	bitstr = ",";
 	
-	$("*[id*=opCode_]").each(function (){
-			bitstr+=this.innerHTML + ",";
+	document.querySelectorAll("*[id*=opCode_]").forEach(function (code){
+			bitstr+=code.innerHTML + ",";
 	});
 	bitstr += "T " + elapsedTime;
 
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.width;
+	bitstr += " " + window.height;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -198,16 +197,16 @@ function saveClick()
 	// Loop through all operations
 	bitstr = ",";
 	
-	$("*[id*=opCode_]").each(function (){
-			bitstr+=this.innerHTML + ",";
+	document.querySelectorAll("*[id*=opCode_]").forEach(function (code){
+			bitstr+=code.innerHTML + ",";
 	});
 	bitstr += "T " + elapsedTime;
 
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.width;
+	bitstr += " " + window.height;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -223,7 +222,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display="block";
 	}
 	/* reset */
 	sf = 2.0;
@@ -264,12 +263,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 						var newTableBody = "<tr id='v" + i +"'>";
 						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-						newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().after($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-						newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-						newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+						newTableBody += '<td><button onclick="this.closest(\'tr\').previousElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+						newTableBody += '<td><button onclick="this.closest(\'tr\').nextElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+						newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 						newTableBody += "</tr>";
 							
-						$("#operationList").append(newTableBody);						
+						document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);
 				}
 		}
 	}
@@ -310,7 +309,7 @@ function closeFacit()
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	divw = $("#content").width();
+	divw = document.getElementById("content").offsetWidth;
 	if (divw > 500){ divw -= 248; }
 	if (divw < window.innerHeight) {
 		canvas.width = divw;
@@ -461,16 +460,16 @@ function drawCross(cx, cy, col, size)
 }
 
 function toggleSelectOperation(e){
-		if ($(e).closest("tr").hasClass("selectedOp")){
-				$(e).closest("tr").removeClass("selectedOp");
+		if (e.closest("tr").classList.contains("selectedOp")){
+				e.closest("tr").classList.remove("selectedOp");
 				document.getElementById("addOpButton").value = "Add Op.";
-				$("#operationList").find("tr:odd").css('background-color', '#dad8db');
+				document.getElementById("operationList").querySelectorAll("tr:odd").style.backgroundColor='#dad8db';
 		} else {
-				$(e).closest("tr").addClass("selectedOp");
+				e.closest("tr").classList.add("selectedOp");
 				document.getElementById("addOpButton").value = "Change Op.";
 				// Unselect any previous selected row
-				$("#operationList").find("tr").each(function (){
-						if (this.id != $(e).closest("tr").attr('id')) $(this).removeClass("selectedOp");
+				document.getElementById("operationList").querySelectorAll("tr").forEach(function (){
+						if (this.id != e.closest("tr").setAttribute('id')) this.classList.remove("selectedOp");
 				});
 		}		
 }
@@ -478,31 +477,31 @@ function toggleSelectOperation(e){
 function newbutton() 
 {
 	ClickCounter.onClick();
-	var newOp = $('#function > optgroup > option:selected').text();
-	var newOpCode = $("#function").val();
+	var newOp = document.getElementById('function').textContent;
+	var newOpCode = document.getElementById("function").value;
 
-	if($("#operationList").find("tr").hasClass("selectedOp")){
-			$(".selectedOp").each(function(){
-				$(this).find("*[id^=op_]").html(newOp);
-				$(this).find("*[id^=opCode_]").html(newOpCode);
+	if(document.getElementById("operationList").classList.contains("selectedOp")){
+			document.querySelectorAll(".selectedOp").forEach(function(sel){
+				sel.querySelectorAll("*[id^=op_]").innerHTML=newOp;
+				sel.querySelectorAll("*[id^=opCode_]").innerHTML=newOpCode;
 				toggleSelectOperation(this);
 			});
 	} else {
 		var i = 0;
-		$('#operationList tr').each(function (){
-				var tmp = this.id.replace("v","");
+		document.querySelectorAll('#operationList tr').forEach(function (op){
+				var tmp = op.id.replace("v","");
 				if (tmp > i) i=tmp;
 		});
 		i++;
 		var newTableBody = "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+		newTableBody += '<td><button onclick="this.closest(\'tr\').previousElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+		newTableBody += '<td><button onclick="this.closest(\'tr\').nextElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+		newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 		newTableBody += "</tr>";
 			
-		$("#operationList").append(newTableBody);
+		document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);
 		refreshOpNum();
 	}
 
@@ -510,11 +509,18 @@ function newbutton()
 
 function refreshOpNum(){
 	var idx = 1;
-	$("*[id^=opNum]").each(function (){
-			this.innerHTML = idx++;
+	document.querySelectorAll("*[id^=opNum]").forEach(function (op){
+			op.innerHTML = idx++;
 	});
-	$("#operationList").find("tr:odd").addClass("OperationListTableOdd");
-	$("#operationList").find("tr:even").addClass("OperationListTableEven");
+	const odd = document.getElementById("operationList").querySelectorAll("tr:nth-child(odd)");
+	odd.forEach(eodd => {
+		eodd.classList.add("OperationListTableOdd");
+	});
+
+	const even = document.getElementById("operationList").querySelectorAll("tr:nth-child(even)");
+	even.forEach(eeven => {
+		eeven.classList.add("OperationListTableEven");
+	});
 }
 
 function drawCommand(cstr) 
@@ -650,8 +656,8 @@ function foo()
 
 	context.globalAlpha = 1.0;
 
-	$("*[id*=opCode_]").each(function (){
-			drawCommand(this.innerHTML);
+	document.querySelectorAll("*[id*=opCode_]").forEach(function (code){
+			drawCommand(code.innerHTML);
 	});
 
 	drawCross(0, 0, "#f64", 8);
@@ -697,5 +703,9 @@ function startDuggaHighScore(){
 
 function toggleFeedback()
 {
-    $(".feedback-content").slideToggle("slow");
+	if(document.querySelector(".feedback-content").style.display==="block")
+    	document.querySelector(".feedback-content").style.display="none";
+	else{
+		document.querySelector(".feedback-content").style.display="block";
+	}
 }
