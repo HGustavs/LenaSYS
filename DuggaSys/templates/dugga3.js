@@ -744,7 +744,7 @@ function init(quizGoal, studentPreviousAnswer)
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	divw = $("#content").width();
+	divw = document.getElementById("content").clientWidth;
 	if (divw > 500)
 		divw -= 248;
 	if (divw < window.innerHeight) {
@@ -798,10 +798,9 @@ function drawPath()
 	sy = starty;
 
 	// Draw students objects
-	
-	$("#operations > option").each(function() {
-		var opArr = this.value.split(" ");
-		if (this.id == selectedObjId) {
+	document.querySelectorAll("#operations > option").forEach(function(el) {
+		var opArr = el.value.split(" ");
+		if (el.id == selectedObjId) {
 				opArr[selectedPoint * 2 - 1] = gridx;
 				opArr[selectedPoint * 2] = gridy;
 				drawOp(sx, sy, opArr, studentLineColor, true, true);	
