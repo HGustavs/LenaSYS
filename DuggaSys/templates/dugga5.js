@@ -86,7 +86,6 @@ function returnedDugga(data)
 	if (data['debug'] != "NONE!") {alert(data['debug']);}
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -128,7 +127,7 @@ function returnedDugga(data)
       fb += "</tbody></table>";
       document.getElementById('feedbackTable').innerHTML = fb;		
 	  document.getElementById('feedbackBox').style.display = "block";
-	  $("#showFeedbackButton").css("display","block");
+	  document.getElementById("showFeedbackButton").style.display = "block";
   }
   displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -141,7 +140,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 	createTextures();
 
