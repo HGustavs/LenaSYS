@@ -67,6 +67,17 @@ input {
   padding: 5px;
 }
 
+select {
+  border: 2px solid black;
+  background-color: black;
+  color: white;
+  height: 40px;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  padding-right: 30px;
+}
+
 button,
 .a-button {
   border: 2px solid black;
@@ -79,7 +90,8 @@ button,
 }
 
 button:hover,
-.a-button:hover {
+.a-button:hover,
+select:hover {
   background-color: white;
   color: black;
 }
