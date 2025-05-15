@@ -168,27 +168,27 @@ if (isset($_GET['id'])) {
             <h1>Microservice Directory</h1>
         </div>
         <div class="search-container">
-
-            <form method="GET">
-                <input type="text" name="search" placeholder="Search name/description">
-                    <button type="submit">Search</button>
-                <?php if (isset($_GET['search'])): ?>
-                    <a href="?" class="a-button">Reset</a>
-                <?php endif; ?>
-            </form>
-
+            <div>
+                <form method="GET">
+                    <input type="text" name="search" placeholder="Search name/description">
+                        <button type="submit">Search</button>
+                    <?php if (isset($_GET['search'])): ?>
+                        <a href="?" class="a-button">Reset</a>
+                    <?php endif; ?>
+                </form>
+                <form method="GET">
+                    <select name="filter_method">
+                        <option value="">-Select Method-</option>
+                        <option value="GET" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'GET') echo 'selected'; ?>>GET</option>
+                        <option value="POST" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'POST') echo 'selected'; ?>>POST</option>
+                    </select>
+                    <button type="submit">Filter</button>
+                    <?php if (isset($_GET['filter_method'])): ?>
+                        <a href="?" class="a-button">Reset</a>
+                    <?php endif; ?>
+                </form>
+            </div>
             <div class="button-container">
-            <form method="GET">
-                <select name="filter_method">
-                    <option value="">-Select Method-</option>
-                    <option value="GET" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'GET') echo 'selected'; ?>>GET</option>
-                    <option value="POST" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'POST') echo 'selected'; ?>>POST</option>
-                </select>
-                <button type="submit">Filter</button>
-                <?php if (isset($_GET['filter_method'])): ?>
-                    <a href="?" class="a-button">Reset</a>
-                <?php endif; ?>
-            </form>
                 <form method="get">
                     <input type="hidden" name="add" value="1">
                     <button type="submit">Add Microservice</button>
