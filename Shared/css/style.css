@@ -10808,4 +10808,14 @@ button:disabled {
   display: block;
 }
 
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: inline-block;
+  line-height: 11px;
+}
+
+
 /* END */

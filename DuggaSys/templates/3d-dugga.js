@@ -1,12 +1,12 @@
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
-var score = -1;
-var dataV;
-var timer=0;
-var DEFAULT_CAMERA_POSITION_Z = 1000;
-var	DEFAULT_CAMERA_POSITION_X = 500;
-var	DEFAULT_CAMERA_POSITION_Y = 200;
+let score = -1;
+let dataV;
+let timer=0;
+const DEFAULT_CAMERA_POSITION_Z = 1000;
+const	DEFAULT_CAMERA_POSITION_X = 500;
+const	DEFAULT_CAMERA_POSITION_Y = 200;
 
 // Help function 
 function isInteger(id) {
@@ -25,19 +25,19 @@ Vertex.prototype.toString= function() {
     return '('+this.x+', '+this.y+', '+this.z+')';
 };
 
-var vertexL = [];
-var triangleL = [];
-var textureArray = [];
+let vertexL = [];
+let triangleL = [];
+let textureArray = [];
 
-var camera, scene, renderer, rendererDOMElement,fov=30;
-var object, lineR, lineG, lineB;
-var light, light1;
-var highlightCubes = [];
-var acanvas = document.getElementById("container");
-var material, goalMaterial;
-var rotateObjects = true;
-var backsideCulling = false;
-var highlightVerticies = true; // Used to highlight vertices in the geometry
+let camera, scene, renderer, rendererDOMElement,fov=30;
+let object, lineR, lineG, lineB;
+let light, light1;
+let highlightCubes = [];
+let acanvas = document.getElementById("container");
+let material, goalMaterial;
+let rotateObjects = true;
+let backsideCulling = false;
+let highlightVerticies = true; // Used to highlight vertices in the geometry
 let needInit=true;
 
 // lvl 1
@@ -46,10 +46,10 @@ let needInit=true;
 // {"vertice":[{"x":"200","y":"-300","z":"0"},{"x":"-100","y":"-300","z":"0"},{"x":"-200","y":"100","z":"0"},{"x":"300","y":"0","z":"0"},{"x":"100","y":"400","z":"0"}],"triangles":["0,1,2","0,2,3","3,2,4"]}
 // lvl 3
 // {"vertice":[{"x":"0","y":"-400","z":"0"},{"x":"-400","y":"0","z":"0"},{"x":"0","y":"400","z":"0"},{"x":"400","y":"0","z":"0"},{"x":"0","y":"0","z":"400"}],"triangles":["0,1,4","1,2,4","2,3,4","3,0,4"]}
-var startString = '{"vertice":[],"triangles":[]}';
+let startString = '{"vertice":[],"triangles":[]}';
 //var goal = '{"vertice":[{"x":"400","y":"0","z":"0"},{"x":"-400","y":"0","z":"0"},{"x":"400","y":"0","z":"0"},{"x":"400","y":"0","z":"-800"}],"triangles":["0,1,2","1,2,3"]}';
 
-var goalObject;
+let goalObject;
 
 //----------------------------------------------------------------------------------
 // Setup
@@ -88,7 +88,7 @@ function returnedDugga(data)
 	} else {
 
 		//	showDuggaInfoPopup();
-		var studentPreviousAnswer = "";
+		let studentPreviousAnswer = "";
 		if (data['answer'] !== null && data['answer'] !== "UNK"){
 			var previous = data['answer'].split(' ');
 			var prevRaw = previous[3];
@@ -129,14 +129,14 @@ function returnedDugga(data)
   } else {
       var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
       var feedbackArr = data["feedback"].split("||");
-      for (var k=feedbackArr.length-1;k>=0;k--){
+      for (let k=feedbackArr.length-1;k>=0;k--){
         var fb_tmp = feedbackArr[k].split("%%");
         fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
       } 
       fb += "</tbody></table>";
       document.getElementById('feedbackTable').innerHTML = fb;		
-	  document.getElementById('feedback').style.display = "block";
-	  document.getElementById("showFeedbackButton").style.display = "block";
+	  document.getElementById('feedback').classList.add("show")
+	  document.getElementById("showFeedbackButton").classList.add("show")
   }
   	document.getElementById("content").appendChild(document.getElementById("submitButtonTable"));
 
@@ -150,12 +150,12 @@ function returnedDugga(data)
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
-		document.getElementById("duggaInfoBox").style.display = "none";
+		document.getElementById("duggaInfoBox").classList.add("hidden");
 		document.getElementById('duggaTime').innerHTML=userStats[0];
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		document.getElementById("duggaStats").style.display = "block";
+		document.getElementById("duggaStats").classList.add("show");
 	}
 	createTextures();
 
@@ -167,7 +167,7 @@ if(acanvas.getAttribute('has-toggle-rotate') !== 'true'){
 }
 
 // Parse student answer and dugga answer
-var studentPreviousAnswer = "";
+let studentPreviousAnswer = "";
 var params = jQuery.parseJSON(param);
 if (uanswer !== null && uanswer !== "UNK"){
   var previous = uanswer.split(' ');
@@ -201,25 +201,38 @@ animate();
 
 //document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
 if (vertexL.length === ans.vertex) {
-  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-  document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
+    const vertexPane = document.getElementById("vertexPaneNumber");
+    vertexPane.classList.add("visible");
+    vertexPane.classList.remove("hidden");
+    vertexPane.style.backgroundColor = "green";
+    vertexPane.innerHTML += " = " + ans.vertex;
 } else {
-  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-  document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
+    const vertexPane = document.getElementById("vertexPaneNumber");
+    vertexPane.classList.add("visible");
+    vertexPane.classList.remove("hidden");
+    vertexPane.style.backgroundColor = "red";
+    vertexPane.innerHTML += " != " + ans.vertex;
 }
+
 if (triangleL.length === ans.triangle) {
-  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
-  document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
+    const trianglePane = document.getElementById("trianglePaneNumber");
+    trianglePane.classList.add("visible");
+    trianglePane.classList.remove("hidden");
+    trianglePane.style.backgroundColor = "green";
+    trianglePane.innerHTML += " = " + ans.triangle;
 } else {
-  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
-  document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
+    const trianglePane = document.getElementById("trianglePaneNumber");
+    trianglePane.classList.add("visible");
+    trianglePane.classList.remove("hidden");
+    trianglePane.style.backgroundColor = "red";
+    trianglePane.innerHTML += " != " + ans.triangle;
 }
 
   // Teacher feedback
 	var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
 	if (feedback !== undefined){
 		var feedbackArr = feedback.split("||");
-		for (var k=feedbackArr.length-1;k>=0;k--){
+		for (let k=feedbackArr.length-1;k>=0;k--){
 			var fb_tmp = feedbackArr[k].split("%%");
 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
 		} 		
@@ -248,7 +261,7 @@ function changePane(e)
 
     var clsArr = e.className.split(" ");
     var paneToShow = 0;
-    for (var i = 0; i < clsArr.length; i++) {
+    for (let i = 0; i < clsArr.length; i++) {
         var idx = clsArr[i].indexOf("pane-id-");
         if (idx != -1) {
             paneToShow = clsArr[i].substring(idx + 8);
@@ -322,7 +335,7 @@ function updateVerticeDropdown()
 	var options2 = '<select id="tv2" style="width:100%;" onchange="checkTriangleInput();">';
 	var options3 = '<select id="tv3" style="width:100%;" onchange="checkTriangleInput();">';
 
-	for (var i=0; i < vertexL.length; i++){
+	for (let i=0; i < vertexL.length; i++){
 		if (i === 0){
 			options1 += '<option selected value="'+ i +'">' + i + '</option>';
 			options2 += '<option selected value="'+ i +'">' + i + '</option>';
@@ -446,7 +459,7 @@ function renderVertexTable()
 {
 	// Render table
 	var newTableBody = "<tbody>";
-	for (var i=0; i<vertexL.length;i++){
+	for (let i=0; i<vertexL.length;i++){
 		newTableBody += "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: right;">v'+i+'</td>';
 		newTableBody += '<td><input style="text-align: center;width:100%; padding:0; margin:0; box-sizing: border-box;" id="v_'+i+'_x" type="text" maxlength="4" size="4" value="' + vertexL[i].x + '" onchange="vertexUpdate('+i+');" /></td>';
@@ -473,9 +486,11 @@ function renderVertexTable()
 	document.getElementById('verticeList').innerHTML = newTableBody;	
 	document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
 	if (vertexL.length > 0) {
-		document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;";
+	document.getElementById("vertexPaneNumber").classList.add("visible");
+    document.getElementById("vertexPaneNumber").classList.remove("hidden");
 	} else {
-		document.getElementById("vertexPaneNumber").style="display:none; line-height: 11px;";
+    document.getElementById("vertexPaneNumber").classList.add("hidden");
+    document.getElementById("vertexPaneNumber").classList.remove("visible");
 	}
 
 }
@@ -484,7 +499,7 @@ function renderTriangleTable()
 {
 	// Render table
 	var newTableBody = "<tbody>";
-	for (var i=0; i<triangleL.length;i++){
+	for (let i=0; i<triangleL.length;i++){
 		newTableBody += "<tr id='tri" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: right;">triangel '+i+'</td>';
 		newTableBody += '<td><p style="margin:0;">(v'+triangleL[i][0]+',v'+triangleL[i][1]+',v'+triangleL[i][2]+')</p></td>';
@@ -506,9 +521,11 @@ function renderTriangleTable()
 
 	document.getElementById("trianglePaneNumber").innerHTML=triangleL.length;
 	if (triangleL.length > 0) {
-		document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;";
+		document.getElementById("trianglePaneNumber").classList.add("visible");
+		document.getElementById("trianglePaneNumber").classList.remove("hidden");
 	} else {
-		document.getElementById("trianglePaneNumber").style="display:none; line-height: 11px;";
+		document.getElementById("trianglePaneNumber").classList.add("hidden");
+		document.getElementById("trianglePaneNumber").classList.remove("visible");
 	}
 
 }
@@ -517,7 +534,7 @@ function renderTriangleTable()
 function activeVertex(index)
 {
 	var active = false;
-	for (var i = 0; i < triangleL.length; i++) {
+	for (let i = 0; i < triangleL.length; i++) {
 		if (triangleL[i][0] == index || triangleL[i][1] == index || triangleL[i][2] == index) {active = true;}
 	}
 	return active;
@@ -692,15 +709,15 @@ function init()
 
 function createGoalObject(goalObjectData) {
 	var geom = new THREE.Geometry();
-	for (var i = 0; i < goalObjectData.vertice.length; i++) {
+	for (let i = 0; i < goalObjectData.vertice.length; i++) {
 		geom.vertices.push(new THREE.Vector3(goalObjectData.vertice[i].x, goalObjectData.vertice[i].y, goalObjectData.vertice[i].z));
 	}
 	for (i = 0; i < goalObjectData.triangles.length; i++) {
-		var vertices = goalObjectData.triangles[i].split(',');
+		const vertices = goalObjectData.triangles[i].split(',');
 		geom.faces.push(new THREE.Face3(vertices[0], vertices[1], vertices[2]));
 	}
 	for (i = 0; i < geom.faces.length; i++) {
-		var face = geom.faces[i];
+		const face = geom.faces[i];
 		//face.color.setHex( Math.random() * 0xffffff );
 		face.color.setHex(0x777777);
 	}
@@ -716,7 +733,7 @@ function updateGeometry() {
 		document.getElementById("trianglePane").disabled = false;
 		var geom = new THREE.Geometry();
 
-		for (var i = 0; i < vertexL.length; i++) {
+		for (let i = 0; i < vertexL.length; i++) {
 			geom.vertices.push(new THREE.Vector3(vertexL[i].x, vertexL[i].y, vertexL[i].z));
 		}
 
@@ -746,8 +763,8 @@ function updateGeometry() {
 function addColorsToGeometry(geom) {
 	var colors = [0xC0C0C0, 0x808080, 0xFF0000, 0x800000, 0xFFFF00, 0x808000, 0x00FF00,0x008000,0x00FFFF,0x008080,0x0000FF,0x000080,0xFF00FF,0x800080];
 	var colorIndex = 0;
-	for (var i = 0; i < geom.faces.length; i++) {
-		var face = geom.faces[i];
+	for (let i = 0; i < geom.faces.length; i++) {
+		const face = geom.faces[i];
 		face.color.setHex(colors[colorIndex]);
 		colorIndex++;
 		if (colorIndex >= colors.length) { colorIndex = 0; }
@@ -775,11 +792,11 @@ function resetRotationForAllObjects() {
 }
 
 function createTextures(){
-    for (var i=0;i<20;i++){
-        var text = i;
-        var padding = 2;
-        var canvas = document.createElement("canvas");
-        var context = canvas.getContext("2d");
+    for (let i=0;i<20;i++){
+        const text = i;
+        const padding = 2;
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
         canvas.width = 32;
         canvas.height = 32;
         context.font = "24px Verdana";
@@ -799,17 +816,17 @@ function createTextures(){
 
 
 function highlightVertices(){	
-	for (var i = 0; i < vertexL.length; i++) {
+	for (let i = 0; i < vertexL.length; i++) {
 				
-		var cubeGeometry = new THREE.BoxGeometry(25, 25, 25);
+		const cubeGeometry = new THREE.BoxGeometry(25, 25, 25);
 
-		var xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(textureArray[i]), transparent: false });
+		const xm = new THREE.MeshBasicMaterial({ map: new THREE.Texture(textureArray[i]), transparent: false });
 		xm.map.needsUpdate = true;
 
 
-		var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
-		var cube = new THREE.Mesh(cubeGeometry, xm);
-		var sphere = new THREE.Mesh(new THREE.SphereGeometry(25, 25, 25), new THREE.MeshNormalMaterial());
+		const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x1ec876 });
+		const cube = new THREE.Mesh(cubeGeometry, xm);
+		const sphere = new THREE.Mesh(new THREE.SphereGeometry(25, 25, 25), new THREE.MeshNormalMaterial());
 		
 		cube.position.x = vertexL[i].x;
 		cube.position.y = vertexL[i].y;
