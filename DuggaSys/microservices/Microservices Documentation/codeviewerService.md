@@ -234,24 +234,18 @@ Updates the content of a box associated with a certain code example, and then re
    - Description: User ID. Stored as int in the database                                 
 
 ## Calling Methods
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Output: $data
+   - Type: JSON
+   - Description: Contains data associated with the updated content of a code example
 
 ## Examples of Use
-`CODE`
+` UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid; `
 
 ### Microservices Used
-- *Includes and microservices used*
+- getUid_ms.php
+- retrieveCodeviewerService_ms.php
 
 ---
