@@ -8,7 +8,7 @@ include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../../../DuggaSys/microservices/curlService.php";
-include_once "./retrieveCourseedService_ms.php";
+include_once "../curlService.php";
 
 // Connect to the database and start the session
 pdoConnect();
@@ -39,23 +39,30 @@ $isSuperUserVar = isSuperUser($userid);
 $studentTeacher = hasAccess($userid, $cid, 'st');
 $hasAccess = $haswrite || $isSuperUserVar;
 
+$dataToSend = [
+	'hasAccess' => $hasAccess,
+	'debug' => $debug,
+	'lastCourseCreated' => null,
+	'isSuperUserVar' => $isSuperUserVar
+];
+
 if (!checklogin()){
-    $debug = "User not logged in";
-    $retrieveArray = retrieveCourseedService($pdo,$hasAccess,$debug, null, $isSuperUserVar);
+	$dataToSend['debug'] = "User not logged in";
+    $retrieveArray = callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     echo json_encode($retrieveArray);
     return;
 }
 
 if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
-    $debug = "Access not granted";
-    $retrieveArray = retrieveCourseedService($pdo, $hasAccess,$debug, null, $isSuperUserVar);
+    $dataToSend['debug'] = "Access not granted";
+    $retrieveArray = callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     echo json_encode($retrieveArray);
     return;
 }
 
 if (strcmp($opt, "CPYVRS") !== 0) {
-    $debug = "OPT does not match.";
-    $retrieveArray = retrieveCourseedService($pdo, $hasAccess,$debug, null, $isSuperUserVar);
+    $dataToSend['debug'] = "OPT does not match.";
+    $retrieveArray = callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     echo json_encode($retrieveArray);
     return;
 }
@@ -390,5 +397,13 @@ try {
 	$debug = "Error duplicate course name\n" . $error[2];
 }
 
-echo json_encode(retrieveCourseedService($pdo, $hasAccess, $debug, null, $isSuperUserVar));
+// update data
+$dataToSend = [
+	'hasAccess' => $hasAccess,
+	'debug' => $debug,
+	'lastCourseCreated' => null,
+	'isSuperUserVar' => $isSuperUserVar
+];
+
+echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
 
