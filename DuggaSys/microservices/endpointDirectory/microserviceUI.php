@@ -127,10 +127,10 @@ if (isset($_GET['id'])) {
                 <form method="post">
                     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
                     <input type="hidden" name="updateID" value="<?php echo $editMicroservice['id']; ?>">
-                    <p><b><label>Microservice name:<br><input type="text" name="ms_name" style="width: 100%;" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
-                    <p><label>Description:<br><textarea name="description" rows="5" cols="40" style="max-width: 100%;"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
-                    <p><label>Calling Methods:<br><input type="text" name="calling_methods" style="width: 100%;" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
-                    <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" style="width: 100%;" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
+                    <p><b><label>Microservice name:<br><input type="text" name="ms_name" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
+                    <p><label>Description:<br><textarea name="description" rows="5" cols="40"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
+                    <p><label>Calling Methods:<br><input type="text" name="calling_methods" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
+                    <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
                     <button type="submit">Save Changes</button>
                     <a href="?id=<?php echo $editMicroservice['id']; ?>" class="a-button">Cancel</a>
                 </form>

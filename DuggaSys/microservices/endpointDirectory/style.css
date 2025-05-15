@@ -121,7 +121,9 @@ a {
 }
 
 .add_modal_content textarea,
-.add_modal_content input {
+.add_modal_content input,
+.edit_modal_content textarea,
+.edit_modal_content input {
   width: 100%;
   max-width: 100%;
 }
