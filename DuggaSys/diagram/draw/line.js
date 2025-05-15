@@ -391,8 +391,16 @@ function drawLine(line, targetGhost = false) {
     }
     return { lineStr, labelStr };
 }
-
-// Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed.
+/** 
+ * @description Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed.
+ * @param {integer} fx X-coordinate from the first element
+ * @param {integer} fy Y-coordinate from the first element
+ * @param {integer} tx X-coordinate from the target element
+ * @param {integer} ty Y-coordinate from the target element
+ * @param {string} position If it is the start or end position
+ * @param {string} lineType At the moment no idea
+ * @returns {number[]} Returns the coordinates for the icons position
+ */
 function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth = 0, targetHeight = 0) {
     const dx = tx - fx;
     const dy = ty - fy;
