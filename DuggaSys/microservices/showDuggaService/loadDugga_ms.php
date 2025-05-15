@@ -65,7 +65,32 @@ if($hash!="UNK"){
 
 }
 
-$result = retrieveShowDuggaService(
+header("Content-Type: application/json");
+//set url for setAsActiveCourse.php path
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php";
+$ch = curl_init($url);
+    //options for curl
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'moment' => $moment, 
+    'courseid' => $courseid, 
+    'hash' => $hash, 
+    'hashpwd' => $hashpwd, 
+    'coursevers' => $coursevers,
+    'duggaid' =>  $duggaid,
+    'opt' =>  $opt,
+    'group' =>  $group,
+    'score' => $score
+]));
+
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true);
+
+/*$result = retrieveShowDuggaService(
     $moment,
     $pdo,
     $courseid,
@@ -76,6 +101,6 @@ $result = retrieveShowDuggaService(
     $opt,
     $group,
     $score
-);
+);*/
 echo json_encode($result);
 exit;
