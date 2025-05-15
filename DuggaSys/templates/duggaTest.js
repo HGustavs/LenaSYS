@@ -47,10 +47,13 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n
+			${data['link']}\n\nHash\n
+			${data['hash']}\n\nHash password\n
+			${data['hashpwd']}`
+		);
 		showReceiptPopup();
 	}
-
 
 	Timer.startTimer();
 	ClickCounter.initialize();
@@ -66,52 +69,49 @@ function returnedDugga(data)
 		}
 		ClickCounter.showClicker();
 	}
-
-	
-
-		if(data['param']=="UNK"){
-				alert("UNKNOWN DUGGA!");
-		}else{		
-			retdata=jQuery.parseJSON(data['param']);
-			$("#talet").html(retdata['tal']);
-			// Add our previous answer
-			if(data['answer'] != null && data['answer'] != "UNK"){
-				resetBitstring();
-				var previous = data['answer'].split(' ');
-				if (previous.length >= 4){
-					var bitstring = previous[3];
-					var hexvalue1 = previous[4];
-					var hexvalue2 = previous[5]; 
-				}			
-				// NB: LSB is now on the highest string index
-				for (var i=bitstring.length;i>=0;i--){
-					if (bitstring[i]==1){
-						bitClick("B"+(7-i));
-						//console.log("B"+(7-i)+":"+bitstring[i]);
-					}				
-				}
-				document.getElementById('H0').innerHTML=hexvalue1;
-				document.getElementById('H1').innerHTML=hexvalue2;
+	if(data['param']=="UNK"){
+			alert("UNKNOWN DUGGA!");
+	}else{		
+		retdata=jQuery.parseJSON(data['param']);
+		$("#talet").html(retdata['tal']);
+		// Add our previous answer
+		if(data['answer'] != null && data['answer'] != "UNK"){
+			resetBitstring();
+			var previous = data['answer'].split(' ');
+			if (previous.length >= 4){
+				var bitstring = previous[3];
+				var hexvalue1 = previous[4];
+				var hexvalue2 = previous[5]; 
+			}			
+			// NB: LSB is now on the highest string index
+			for (var i=bitstring.length;i>=0;i--){
+				if (bitstring[i]==1){
+					bitClick("B"+(7-i));
+					//console.log("B"+(7-i)+":"+bitstring[i]);
+				}				
 			}
-		}		
-		// Teacher feedback
-		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-				// No feedback
-		} else {
-				var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-				var feedbackArr = data["feedback"].split("||");
-				for (var k=feedbackArr.length-1;k>=0;k--){
-					var fb_tmp = feedbackArr[k].split("%%");
-					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-				} 		
-				fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;		
-				document.getElementById('feedbackBox').style.display = "block";
-				$("#showFeedbackButton").css("display","block");
+			document.getElementById('H0').innerHTML=hexvalue1;
+			document.getElementById('H1').innerHTML=hexvalue2;
 		}
-		$("#submitButtonTable").appendTo("#content");
-		$("#lockedDuggaInfo").prependTo("#content");
-		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+	}		
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+			$("#showFeedbackButton").css("display","block");
+	}
+	$("#submitButtonTable").appendTo("#content");
+	$("#lockedDuggaInfo").prependTo("#content");
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
 //--------------------================############================--------------------
@@ -135,7 +135,7 @@ function saveClick()
 	// Loop through all bits
 	bitstr="";
 	$(".bit").each(function( index ) {
-			bitstr=bitstr+this.innerHTML;
+		bitstr=bitstr+this.innerHTML;
 	});
 	
 	bitstr+=" "+$("#H0").html();
@@ -262,7 +262,7 @@ function closeFacit(){
 
 function bitClick(divid)
 {
-	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
+	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
 	if($("#"+divid).html()=="1"){
 			$("#"+divid).html("0");
@@ -278,7 +278,7 @@ function bitClick(divid)
 
 function hexClick(divid)
 {
-	 if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
+	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
 	dw=$(window).width();
 	dpos=$("#"+divid).position();
@@ -291,8 +291,8 @@ function hexClick(divid)
 	
 	popclass="arrow-top";
 	if((lpos+bw)>dw){
-			popclass="arrow-topr";
-			lpos=lpos-bw+dwid;
+		popclass="arrow-topr";
+		lpos=lpos-bw+dwid;
 	}
 	 
 	var hh=(dhei*2);
@@ -310,10 +310,10 @@ function hexClick(divid)
 
 function setval(sval)
 {
-		if(hc!=null){
-				$("#"+hc).html(sval);		
-		}
-		$("#pop").css({display:"none"})
+	if(hc!=null){
+		$("#"+hc).html(sval);		
+	}
+	$("#pop").css({display:"none"})
 }
 
 //functionality for opening and closing hexcode input boxes
