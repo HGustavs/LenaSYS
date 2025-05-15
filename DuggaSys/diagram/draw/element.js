@@ -632,11 +632,32 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
             extra = `class='underline'`;
             break;
     }
+
+        const maxTextWidth = boxw - 10; // leave some margin
+        let displayName = element.name;
+        let estimatedTextWidth = displayName.length * 8;
+
+        let x;
+        let textAnchor;
+
+        if (estimatedTextWidth <= maxTextWidth) {
+            // Text fits – center it
+            x = boxw / 2;
+            textAnchor = "middle";
+        } else {
+            // Text is too long – show first part of text
+            x = 4;
+            textAnchor = "start";
+        }
+
      // Default text label centered
-    content += `<text 
-                    x='${boxw / 2}' y='${hboxh}' ${extra} 
-                    dominant-baseline='middle' text-anchor='middle'
-                > ${element.name} </text>`;
+        content += `<text 
+        x='${x}' 
+        y='${hboxh}' ${extra}
+        dominant-baseline='middle' 
+        text-anchor='${textAnchor}'
+        >${displayName}</text>`;
+    
     return drawSvg(boxw, boxh, content);
 }
 
