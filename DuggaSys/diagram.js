@@ -532,10 +532,11 @@ function getData() {
         window.location.assign('/DuggaSys/courseed.php');
     });
     document.getElementById("mb-loginButton").addEventListener("click", showLoginPopup);
+    document.getElementById("mb-backButton").addEventListener("click", () => {
+        history.back();
+    });
 
-     //Back button missing
-
-    
+ 
 
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();

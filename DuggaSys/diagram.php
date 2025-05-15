@@ -1460,9 +1460,9 @@
                     </button>
                 </div>
             </li>
-              <li class="mb-nav-item" title="stepBack">
+              <li class="mb-nav-item" title="Back">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <button id="mb-stepBackButton">
+                    <button id="mb-backButton">
                         <img src="../Shared/icons/Up.svg"/>
                     </button>
                 </div>
@@ -1481,14 +1481,14 @@
                     </button>
                 </div>
             </li>
-            <li class="mb-nav-item" title="Restart Dugga">
+            <li class="mb-nav-item" title="Reset Dugga">
                 <div class="mb-toolbar-box mb-toolbar-main active">
                     <button id="mb-resetDuggaButton">
                         <img src="../Shared/icons/diagram_Refresh_Button.svg"> 
                     </button>
                 </div>
             </li>
-            <li class="mb-nav-item" title="Toggle Dark Mode" >
+            <li class="mb-nav-item" title="Dark Mode" >
                 <div class="mb-toolbar-box mb-toolbar-main active">
                     <button id="mb-darkModeButton"> 
                         <img src="../Shared/icons/ThemeToggle.svg" > 

@@ -22,10 +22,9 @@
     #mb-diagram-toolbar-2 {
         position: fixed;
         display: flex;
-        top: 0;
+        top: 180px;
         right: 0;
-        height: 100%;
-        width: 50px;                
+        width: 66px;                
         background-color: var(--color-primary);
         transform: translateX(100%);
         transition: var(--normal-transition);
@@ -42,11 +41,14 @@
 
 
     #mb-diagram-toolbar-2 button {
-        width: 40px;
+        width: 100%;
         aspect-ratio: 1;
         padding: .2rem;
         background-color: var(--color-primary);
         border: none;
+    }
+    #mb-diagram-toolbar-2 img {
+        width: 45px;
     }
     #mb-diagram-toolbar-2 ul {
         list-style: none;
@@ -65,7 +67,7 @@
     }
 
     .mb-toolbar-box {
-        width: 50px;
+        width: 100%;
         aspect-ratio: 1;
         display: grid;
         place-items: center;
