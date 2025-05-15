@@ -62,10 +62,15 @@ function generateContextProperties() {
         str += saveButton('toggleEntityLocked();', 'lockbtn', locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
-    var inputs = propSet.querySelectorAll('input, textarea');
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('input', function() {
-            saveProperties();
+    
+
+    // Add a blur event to handle undo/redo when the user finishes editing (i.e clicks away or presses Enter) for better undo/redo functionality.
+
+    const nameInput = propSet.querySelector('#elementProperty_name');
+    if (nameInput) {
+        nameInput.addEventListener('blur', () => {
+            const element = context[0];
+            stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         });
     }
     multipleColorsTest();
