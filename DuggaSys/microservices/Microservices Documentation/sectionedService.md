@@ -494,7 +494,6 @@ readCourseVersions_ms.php
 
 ## Description  
 Fetches all course versions from the 'vers' table.  
-Used to populate version selectors or to retrieve metadata for courses.
 
 ## Input Parameters  
 None
