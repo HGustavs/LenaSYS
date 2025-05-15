@@ -1065,14 +1065,14 @@ function retrieveAnnouncementsCards() {
 
 ---
 # Name of file/service
-example_ms (replace this line with the name of the microservice)
+accessed.js 
+Function addUserToCourse()
 
 ## Description
-*Description of what the service do and its function in the system.*
+Adds user to a user to a course. Looks up UID based on their username.
 
 ## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
+- Parameter: username
    - Type: String
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
@@ -1081,65 +1081,18 @@ example_ms (replace this line with the name of the microservice)
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods
-- GET
 - POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
+- Output: user
+   - Type: array
    - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-- Output: outputName
+- Output: UID
    - Type: String
    - Description: Describe the output. Stored as *varchar(30)* in the database
 
 ## Examples of Use
-`CODE`
-
-### Microservices Used
-- *Includes and microservices used*
-
----
-
-*Add the dashes above between each documentation.*
---------------------------------------------------------------------------------------------------------------------------
-
-# Name of file/service  
-
- accessed.js 
-
- Function addUserToCourse. 
-
-## Description  
-*Description of what the service do and its function in the system.*  
-
- Function - addUserToCourse 
-
- Adds user to a user to a course. Looks up UID based on their username. 
-
-## Input Parameters
-*Parameters will be described in tables for easier readability*  
-
-| Parameter | Type | Description | 
-
-| :Username | :POST | :Retrieve User |  
-
-## Calling Methods  
-
-- POST  
-
-## Output Data and Format  
-*Output Data will be described in tables for easier readability*  
-
-| Output | Type | Description |  
-
-| :User | :Array | :Array of userdata from databas |  
-
-| :UID | :string | :Identifier username |  
-
-## Examples of Use  
 ``` 
 function addUserToCourse() { 
   let input = document.getElementById('addUsername2').value; 
@@ -1175,45 +1128,34 @@ function addUserToCourse() {
 ``` 
 
 ### Microservices Used
-*Includes and microservices used*  
+- accessedservice.php 
 
-Accessedservice.php 
-
-opt- RETRIVE, action- USER 
-
----------------------------------------------------------------------------------------------------------------------------- 
-
-# Name of file/service 
-
+---
+# Name of file/service
 accessed.js
+Function removeUserFromCourse()
 
-Function removeUserFromCourse. 
+## Description
+Retrives UID with ajax POST, then deletes user with opt DELETE.
 
-## Description 
-*Description of what the service do and its function in the system.* 
+## Input Parameters
+- Parameter: username
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-Retrives UID with ajax POST, then deletes user with opt DELETE. 
+- Parameter: paramName
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-## Input Parameters 
-*Parameters will be described in tables for easier readability* 
+## Calling Methods
+- POST
 
-| Parameter | Type | Description | 
+## Output Data and Format
+- Output: user
+   - Type: array
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| :Username | :POST | :Username of the user that should be removed | 
-
-## Calling Methods 
-
-- POST 
-
- 
-## Output Data and Format 
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :User | :Array | :Array of objects, UID. | 
-
-## Examples of Use 
+## Examples of Use
 ``` 
 function removeUserFromCourse() { 
   let input = document.getElementById('addUsername3').value; 
@@ -1245,52 +1187,35 @@ function removeUserFromCourse() {
 }
 ``` 
 
-### Microservices Used 
+### Microservices Used
+- accessedservice.php 
 
-*Includes and microservices used* 
-
-accessedservice.php 
-
-opt- RETRIEVE, action- USER 
-
-opt- DELETE, action- COURSE 
-
---------------------------------------------------------------------------------------------------------------------------- 
-
-# Name of file/service 
-
+---
+# Name of file/service
 accessed.js 
+Function loadUsersToDropdown()
 
-Function loadUsersToDropdown
+## Description
+This function populates a dropdown list with users fetched from the database. It sends a POST request to accessedservice.php with the action USERS, receives user data. 
 
-## Description 
-*Description of what the service do and its function in the system.* 
+## Input Parameters
+- Parameter: opt
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-This function populates a dropdown list with users fetched from the database. 
-It sends a POST request to accessedservice.php with the action USERS, receives user data. 
+- Parameter: action
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
+## Calling Methods
+- POST
 
-## Input Parameters 
-*Parameters will be described in tables for easier readability* 
+## Output Data and Format
+- Output: user
+   - Type: array
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| Parameter | Type | Description | 
-
-| :opt | :string | :Retrive users |
-
-| :action | :string | :Return all users | 
-
-## Calling Methods 
-
-- POST 
-
-## Output Data and Format 
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :Users | :Array | :Array with usernames | 
-
-## Examples of Use 
+## Examples of Use
 ``` 
 function loadUsersToDropdown(id) { 
   $.ajax({ 
@@ -1320,51 +1245,43 @@ function loadUsersToDropdown(id) {
 }
 ``` 
 
-### Microservices Used 
-*Includes and microservices used* 
+### Microservices Used
+- accessedservice.php 
 
-accessedservice.php 
-
-opt- RETRIEVE, action- USERS 
-
---------------------------------------------------------------------------------------------------------- 
-
-# Name of file/service 
-
+---
+# Name of file/service
 courseed.js 
+Function updateCourse()
 
-Function updateCourse
+## Description
+Updating course settings such as course name, course code and GitHub repository.
 
-## Description 
-*Description of what the service do and its function in the system.* 
+## Input Parameters
+- Parameter: coursename
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-Updating course settings such as course name, course code and GitHub repository. 
+- Parameter: cid
+   - Type: string
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-## Input Parameters 
-*Parameters will be described in tables for easier readability* 
+- Parameter: coursecode
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| Parameter | Type | Description | 
+- Parameter: courseGitURL
+   - Type: string
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-| :coursename | :string | :New course name | 
+## Calling Methods
+- POST
 
-| :cid | :string | :Course ID | 
+## Output Data and Format
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| :coursecode | :string | :Course code |
-
-| :courseGitURL | :string | :Git URL linked to the course | 
-
-## Calling Methods 
-
-- POST 
-
-## Output Data and Format 
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :success | :bool | :DataCheck | 
-
-## Examples of Use 
+## Examples of Use
 ``` 
 function updateCourse() { 
   var coursename = $("#coursename").val(); 
@@ -1447,53 +1364,39 @@ function updateCourse() {
 }
 ``` 
 
-### Microservices Used 
-*Includes and microservices used* 
+### Microservices Used
+- gitcommitService.php 
 
-gitcommitService.php 
-
-Updates GitHub token and repository information 
-
-action- directInsert 
-
----------------------------------------------------------------------------------------- 
-# Name of file/service 
-
+---
+# Name of file/service
 courseed.js 
+Function FetchGitHubRepo()
 
-Function FetchGitHubRepo 
+## Description
+Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false.
 
-## Description 
+## Input Parameters
+- Parameter: githubURL
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Description of what the service do and its function in the system.* 
+- Parameter: action
+   - Type: String
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false. 
+## Calling Methods
+- POST
 
-## Input Parameters 
+## Output Data and Format
+- Output: success
+   - Type: bool
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Output: message
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| Parameter | Type | Description | 
-
-| :githubURL | :string | :GitHub URL | 
-
-| :action | :string | :Type of fetch | 
-
-## Calling Methods 
-
-- POST 
-
-## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :Success | :bool | :success/failure bool | 
-
-| :Message | :string | :Erro rmessage passed back from PHP | 
-
-## Examples of Use 
+## Examples of Use
 ``` 
 function fetchGitHubRepo(gitHubURL) { 
   //Remove .git, if it exists 
@@ -1527,53 +1430,40 @@ function fetchGitHubRepo(gitHubURL) {
   return dataCheck; 
 }
 ``` 
-### Microservices Used 
 
-*Includes and microservices used* 
+### Microservices Used
+- gitfetchService.php
 
-gitfetchService.php
-
-Uses: action- getNewCourseGitHub 
-
------------------------------------------------------------------------------------------------ 
-
-# Name of file/service 
-
+---
+# Name of file/service
 sectioned.js 
+Function: updateSelectDir()
 
-Function: updateSelectDir 
+## Description
+The function updates the selected directory for a course.
 
-## Description 
+## Input Parameters
+- Parameter: selectedDir
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-*Description of what the service do and its function in the system.* 
+- Parameter: cid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-The function updates the selected directory for a course.  
+## Calling Methods
+- POST
 
-## Input Parameters 
+## Output Data and Format
+- Output: status
+   - Type: string
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-*Parameters will be described in tables for easier readability* 
+- Output: message
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-| Parameter | Type | Description | 
-
-| :selectedDir | :string | :The directory selected by the user | 
-
-| :cid | :string | :The course ID provided from server | 
-
-## Calling Methods 
-
-- POST 
-
-## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :status | :string | :success if update went well, else, error message | 
-
-| :message | :string | :optional error message | 
-
-## Examples of Use 
+## Examples of Use
 ```
 function updateSelectedDir() { 
   var selectedDir = $('#selectDir').val(); 
@@ -1615,50 +1505,35 @@ function updateSelectedDir() {
 }
 ``` 
 
-### Microservices Used 
-*Includes and microservices used* 
+### Microservices Used
+- sectioned.php 
 
-sectioned.php 
-
-action- updateSelectedDir 
-
---------------------------------------------------------------------------------------------- 
-
-# Name of file/service 
-
+---
+# Name of file/service
 sectioned.js 
+Function: retrieveCourseProfile()
 
-Function: retrieveCourseProfile 
-
-## Description 
-
-*Description of what the service do and its function in the system.* 
-
+## Description
 This function retrives available course versions based on a selected course ID, it sends POST request to fetch course version and dropdown with reults.  
 
-## Input Parameters 
+## Input Parameters
+- Parameter: userid
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
 
-*Parameters will be described in tables for easier readability* 
+## Calling Methods
+- POST
 
-| Parameter | Type | Description | 
+## Output Data and Format
+- Output: versids
+   - Type: array
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
 
-| :userid | :string | :ID of the user making request | 
+- Output: error
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
 
-## Calling Methods 
-
-- POST 
-
-## Output Data and Format 
-
-*Output Data will be described in tables for easier readability* 
-
-| Output | Type | Description | 
-
-| :versids | :array | :List of course version IDs to populate drapdown | 
-
-| :error | :string | :Error message if AJAX fails | 
-
-## Examples of Use 
+## Examples of Use
 ```
 function retrieveCourseProfile(userid) { 
 
@@ -1702,14 +1577,52 @@ function retrieveCourseProfile(userid) {
 }
 ```
 
-### Microservices Used 
+### Microservices Used
+- retrievevers.php 
 
-*Includes and microservices used* 
+---
+Example of template for the documentation:
 
-retrievevers.php 
+# Name of file/service
+example_ms (replace this line with the name of the microservice)
 
-Returns a list of course version IDs based on the provided cid 
+## Description
+*Description of what the service do and its function in the system.*
 
+## Input Parameters
+*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
+- Parameter: paramName
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: paramName
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
+
+## Calling Methods
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
+- Output: outputName
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
+
+- Output: outputName
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+- *Includes and microservices used*
+
+---
+
+*Add the dashes above between each documentation.*
 ---------------------------------------------------------------------------------------------- 
 
 # Name of file/service 
