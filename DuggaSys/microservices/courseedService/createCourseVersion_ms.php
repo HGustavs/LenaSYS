@@ -18,7 +18,7 @@ session_start();
 $opt=getOP('opt');
 $cid=getOP('cid');
 // Permission check, same as in copyCourseVersion
-if (strcmp($opt, "ADDVRS") !== 0) {
+if (strcmp($opt, "NEWVRS") !== 0) {
     $debug = "OPT does not match.";
 	$dataToSend = [
 		'ha' => false,
