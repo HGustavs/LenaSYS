@@ -12,7 +12,10 @@ session_start();
 // Receive data from POST
 $tableInfo = [];
 $duggaFilterOptions = [];
-
+$data = recieveMicroservicePOST(['tableInfo', 'duggaFilterOptions']);
+$tableInfo = json_decode($data['tableInfo']);
+$duggaFilterOptions = json_decode($data['duggaFilterOptions']);
+/*
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['tableInfo'])) {
         $tableInfo = json_decode($_POST['tableInfo'], true);
@@ -21,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $duggaFilterOptions = json_decode($_POST['duggaFilterOptions'], true);
     }
 }
-
+*/
 // Prepare return array
 $returnArray = array(
     'tableInfo' => $tableInfo,
