@@ -318,7 +318,7 @@ function lineMode(line, arr) {
  * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
  * @return Returns a dropdown menu with the options as selectable items.
  */
-function select(id, options, inclNone = true, inclChange = true) {
+function selectLineIcons(id, options, inclNone = true, inclChange = true) {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
     let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
     return `<select id='${id}' ${change}>
@@ -356,7 +356,7 @@ function drawLineProperties(line) {
                 let selected = (line.cardinality == cardinality) ? 'selected' : '';
                 optER += `<option value='${cardinality}' ${selected}>${lineCardinalitys[cardinality]}</option>`;
             });
-            str += select('propertyCardinality', optER, true, false);
+            str += selectLineIcons('propertyCardinality', optER, true, false);
             str += `</label>`;
             break;
         case entityType.UML:
@@ -375,12 +375,12 @@ function drawLineProperties(line) {
                 str += includeLabel(line);
                 str += iconSelection([SDLineIcons], line);
                 str += `<label style="display: block;">Line Type:</label>`;
-                str += select('lineType', optSD, false);
+                str += selectLineIcons('lineType', optSD, false);
             } else {
                 let optSD = option(SDLineType, line.innerType);
                 str += includeLabel(line);
                 str += `<label style="display: block;">Line Type:</label>`;
-                str += select('lineType', optSD, false);
+                str += selectLineIcons('lineType', optSD, false);
             }
             break;
         case entityType.SE:
@@ -417,8 +417,8 @@ function iconSelection(arr, line) {
         eOptions += option(object, line.endIcon)
     });
     return `<label style="display: block;">Icons:</label>`
-        + select('lineStartIcon', sOptions)
-        + select('lineEndIcon', eOptions);
+        + selectLineIcons('lineStartIcon', sOptions)
+        + selectLineIcons('lineEndIcon', eOptions);
 }
 
 /**
