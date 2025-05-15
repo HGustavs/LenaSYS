@@ -4,8 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "./retrieveCourseedService_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
+include_once "../curlService.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 
 
@@ -69,4 +68,11 @@ if ($ha) {
 
 }
 
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
+$dataToSend = [
+	'ha' => $ha,
+	'debug' => $debug,
+	'lastCourseCreated' => null,
+	'isSuperUserVar' => $isSuperUserVar
+];
+
+echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
