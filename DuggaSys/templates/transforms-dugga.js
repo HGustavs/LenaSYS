@@ -458,20 +458,16 @@ function newbutton()
 	var newOpCode = document.getElementById("function").value;
 
 	var now = 0;
-	var test = document.getElementById("operationList");
-	var test2 = test.querySelectorAll("tr");
+	var allOperations = document.getElementById("operationList").querySelectorAll("tr");
 
-	for (i = 0; i < test2.length; i++){
+	for (i = 0; i < allOperations.length; i++){
 		
-		console.log(test2[i]);
-		
-		if (test2[i].className == "OperationListTableOdd selectedOp" || test2[i].className == "OperationListTableEven selectedOp"){
+		if (allOperations[i].className == "OperationListTableOdd selectedOp" || allOperations[i].className == "OperationListTableEven selectedOp"){
 			now = 1;
 		}
 	}
 
 	if(now == 1){
-		console.log("test");
 		var selectOP = document.getElementsByClassName("selectedOp")
 		for (i = 0; i < selectOP.length; i++){
 			console.log(selectOP[i]);
@@ -481,21 +477,27 @@ function newbutton()
 			toggleSelectOperation(selectOP[i]);
 		}
 	} else {
-		var i = 0;
-		$('#operationList tr').each(function (){
-				var tmp = this.id.replace("v","");
-				if (tmp > i) i=tmp;
-		});
-		i++;
-		var newTableBody = "<tr id='v" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-		newTableBody += "</tr>";
+		var x = 0;
+		for (i = 0; i < allOperations.length; i++){
+			var tmp = allOperations[i].id.replace("v","");
+			if (tmp > x) x=tmp;
+			x++;
+		}
+				
+		//var newTableBody = "<tr id='v" + x +"'>";
+		var newTableBody = document.createElement("tr");
+		newTableBody.id = ("v" + x);
+		newTableBody.innerHTML = 
+		`
+		<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>
+		<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>
+		<td><button onclick="this.closest(\'tr\').prev().insertAfter(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>
+		<td><button onclick="this.closest(\'tr\').next().after(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>
+		<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>
+		`;
 			
-		$("#operationList").append(newTableBody);
+		//$("#operationList").append(newTableBody);
+		document.getElementById("operationList").append(newTableBody);
 		refreshOpNum();
 	}
 
