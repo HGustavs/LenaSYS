@@ -27,12 +27,16 @@ var activehex;
 
 function setup()
 {
-		$('.bit').click(function(){
+		document.querySelectorAll('.bit').forEach(function(bitNode) {
+			bitNode.addEventListener('click', function() {
 				bitClick(this.id);
+			});
 		});
 
-		$('.hexo').click(function(){
+		document.querySelectorAll('.hexo').forEach(function(hexoNode){
+			hexoNode.addEventListener('click', function(){
 				hexClick(this.id);
+			});
 		});
 
 		AJAXService("GETPARAM",{ },"PDUGGA");
@@ -47,11 +51,11 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n
+		document.getElementById('submission-receipt').innerHTML =`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n
 			${data['link']}\n\nHash\n
 			${data['hash']}\n\nHash password\n
 			${data['hashpwd']}`
-		);
+		;
 		showReceiptPopup();
 	}
 
@@ -73,7 +77,7 @@ function returnedDugga(data)
 			alert("UNKNOWN DUGGA!");
 	}else{		
 		retdata=jQuery.parseJSON(data['param']);
-		$("#talet").html(retdata['tal']);
+		document.getElementById('talet').innerHTML=retdata['tal'];
 		// Add our previous answer
 		if(data['answer'] != null && data['answer'] != "UNK"){
 			resetBitstring();
@@ -107,10 +111,11 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById('showFeedbackButton').style.display='none';
 	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").prependTo("#content");
+	document.querySelector("#content").appendChild(document.querySelector("#submitButtonTable"));
+	document.querySelector("#content").appendChild(document.querySelector("#lockedDuggaInfo"));
+
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
@@ -134,18 +139,18 @@ function saveClick()
 
 	// Loop through all bits
 	bitstr="";
-	$(".bit").each(function( index ) {
-		bitstr=bitstr+this.innerHTML;
+	document.querySelectorAll(".bit").forEach(function(bitEl){
+		bitstr=bitstr+bitEl.innerHTML;
 	});
-	
-	bitstr+=" "+$("#H0").html();
-	bitstr+=" "+$("#H1").html();
-	
+
+	bitstr+=" "+document.getElementById("H0").innerHTML;
+	bitstr+=" "+document.getElementById("H1").innerHTML;
+
 	bitstr+=" "+screen.width;
 	bitstr+=" "+screen.height;
-	
-	bitstr+=" "+$(window).width();
-	bitstr+=" "+$(window).height();
+
+	bitstr+=" "+window.innerWidth;
+	bitstr+=" "+window.innerHeight;
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -174,7 +179,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById('duggaStats').style.display="block";
 	}
 	var p = jQuery.parseJSON(param);
 	var daJSON = jQuery.parseJSON(danswer);
@@ -182,7 +187,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	var da = daJSON['danswer'];
 	var danswer = da.split(' ');
 	
-	$("#talet").html(p['tal']);
+	document.getElementById('talet').innerHTML=p['tal'];
 	
 	// Add student answer
 	if (uanswer === "UNK"){
@@ -212,12 +217,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			document.getElementById("B"+(8-i)).style.border = "4px dotted black";
 		}								 
 
-		if (danswer[0][i-1] == $("#B"+(8-i)).html()){
-			$("#B"+(8-i)).css("background","green");
+		if(danswer[0][i-1] == document.getElementById('B' +(8-i)).innerHTML){
+			document.getElementById('B'+(8-i)).style.background="green";
 			document.getElementById('B'+(8-i)).innerHTML+= " == " + danswer[0][i-1];
 			
 		} else {
-			$("#B"+(8-i)).css("background","red");
+			document.getElementById('B'+(8-i)).style.background="red";
 			document.getElementById('B'+(8-i)).innerHTML+= " != " + danswer[0][i-1];					
 		}
 	}
@@ -263,27 +268,27 @@ function closeFacit(){
 function bitClick(divid)
 {
 	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
-
-	if($("#"+divid).html()=="1"){
-			$("#"+divid).html("0");
-			$("#"+divid).removeClass("ett");
-			$("#"+divid).addClass("noll" );
+	if(document.getElementById(divid).innerHTML){
+		document.getElementById(divid).innerHTML = "0";
+		document.getElementById(divid).classList.remove("ett");
+		document.getElementById(divid).classList.add("noll");
 	}else{
-			$("#"+divid).html("1");
-			$("#"+divid).addClass("ett" );
-			$("#"+divid).removeClass("noll");
+		document.getElementById(divid).innerHTML = "1";
+		document.getElementById(divid).classList.add("ett");
+		document.getElementById(divid).classList.remove("noll");
 	}
-	$(".submit-button").removeClass("btn-disable");
+	document.querySelector(".submit-button").classList.remove("btn-disable");
 }
 
 function hexClick(divid)
 {
 	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
-	dw=$(window).width();
 	dpos=$("#"+divid).position();
-	dwid=$("#"+divid).width();
-	dhei=$("#"+divid).height();
+	dw=document.getElementById(window).innerWidth;
+	dwid=document.getElementById(divid).innerWidth;
+	dhei=document.getElementById(divid).innerHeight;
+
 	bw=Math.round(dwid)*1.10;
 	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
 	
@@ -300,20 +305,21 @@ function hexClick(divid)
 	hh+="px";
 	
 	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh})
-	$("#pop").removeClass("arrow-topr");
-	$("#pop").removeClass("arrow-top");
-	$("#pop").addClass(popclass);
-	
+
+	document.getElementById("pop").classList.remove("arrow-topr");
+	document.getElementById("pop").classList.remove("arrow-top");
+	document.getElementById("pop").classList.add(popclass);
+
 	hc=divid;
-	$(".submit-button").removeClass("btn-disable");
+	document.querySelector(".submit-button").classList.remove("btn-disable");
 }
 
 function setval(sval)
 {
-	if(hc!=null){
-		$("#"+hc).html(sval);		
+	if(hc!=null){	
+		document.getElementById(hc).innerHTML=sval;	
 	}
-	$("#pop").css({display:"none"})
+	document.getElementById('pop').style.display="none";
 }
 
 //functionality for opening and closing hexcode input boxes
@@ -345,6 +351,7 @@ function resetBitstring(){
 function toggleInstructions()
 {
     $(".instructions-content").slideToggle("slow");
+
 }
 
 function toggleFeedback()
