@@ -700,7 +700,7 @@ function drawElementIERelation(element, boxw, boxh, linew) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`;
     }
-    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew}; display: block;'`);
 }
 
 /**
