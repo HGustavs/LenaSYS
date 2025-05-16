@@ -254,16 +254,44 @@ Updates the content of a box associated with a certain code example, and then re
 retrieveCodeviewerService_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Retrieves updated data from the database and stores it in an array. The file outputs information about a specific code example in a course, including details, related examples, important lines, words, file directories, and user access levels. It makes sure only authorized users can view and change this information. It also logs the service event.
 
 ## Input Parameters
-- Parameter: paramName
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: paramName
+- Parameter: $userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: User ID. Stored as int in the database
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version. Stored as int in the database
+
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $sectionName
+   - Type: string
+   - Description: Name of the section of the code example. Stored as varchar(64) in the database
+
+- Parameter: $exampleName
+   - Type: string
+   - Description: Name of the code example. Stored as varchar(64) in the database
+
+- Parameter: $playlink
+   - Type: string
+   - Description: Play link for opening demo in code example. Stored as varchar(256) in the database
+
+- Parameter: $log_uuid
+   - Type: string
+   - Description: Logs UUID for the event                     
 
 ## Calling Methods
 - GET
