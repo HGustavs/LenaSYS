@@ -249,3 +249,75 @@ Updates the content of a box associated with a certain code example, and then re
 - retrieveCodeviewerService_ms.php
 
 ---
+
+# Name of file/service
+retrieveCodeviewerService_ms.php
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+- Parameter: paramName
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: paramName
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
+
+## Calling Methods
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+- Output: outputName
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
+
+- Output: outputName
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+- *Includes and microservices used*
+
+---
+
+# Name of file/service
+updateCodeExampleTemplate_ms.php
+
+## Description
+*Description of what the service do and its function in the system.*
+
+## Input Parameters
+- Parameter: paramName
+   - Type: String
+   - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: paramName
+   - Type: int
+   - Description: Describe parameter. Stored as *int(11)* in the database
+
+## Calling Methods
+- GET
+- POST
+- etc.
+
+## Output Data and Format
+- Output: outputName
+   - Type: int
+   - Description: Describe the output. Stored as *tinyint(2)* in the database
+
+- Output: outputName
+   - Type: String
+   - Description: Describe the output. Stored as *varchar(30)* in the database
+
+## Examples of Use
+`CODE`
+
+### Microservices Used
+- *Includes and microservices used*
