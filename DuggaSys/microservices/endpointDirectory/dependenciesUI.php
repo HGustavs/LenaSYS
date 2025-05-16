@@ -65,12 +65,23 @@ if (isset($_GET['ms_name'])) {
             <input type="submit" value="Submit">
         </form>
         <?php
-        if ($id) { 
-            echo $id;
+        if (isset($id)) { 
+            if (!empty($dependentServices)) { 
+                echo "<h3>" . $ms_name . " is depending on:</h3>";
+                echo "<table>";
+                    echo "<tr><th>Microservice</th><th>Path</th></tr>";
+                    foreach ($dependentServices as $row) {
+                        echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['ms_name']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['path']) . "</td>";
+                        echo "</tr>";
+                    }
+                echo "</table>";
+            } 
         } else {
             echo "No results found";
         }
-    }
+        }
     ?>
 </body>
 </html>
