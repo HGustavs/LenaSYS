@@ -472,10 +472,8 @@ function toggleSelectOperation(e){
 				document.getElementById("addOpButton").value = "Change Op.";
 				// Unselect any previous selected row
 				document.getElementById("operationList").querySelectorAll("tr").forEach(function (sel){
-					console.log("selected id: " + sel.id);
-						if (sel.id !== e.closest("tr").id){
+						if (sel.id !== e.closest("tr").id && sel.classList.contains("selectedOp")){
 							sel.classList.remove("selectedOp");
-							console.log("Unselected old OP");
 						}
 				});
 		}		
@@ -484,24 +482,27 @@ function toggleSelectOperation(e){
 function newbutton() 
 {
 	ClickCounter.onClick();
+	var changed = false;
 	var select = document.getElementById('function');
 	var selectOp = select.options[select.options.selectedIndex];
 	var newOp = selectOp.text;
 	var newOpCode = document.getElementById("function").value;
-
-	if(document.getElementById("operationList").classList.contains("selectedOp")){
-		console.log("adding op")
+	var rowOp = document.getElementById("operationList").querySelectorAll("tr");
+	rowOp.forEach(function(sel){
+		if(sel.classList.contains("selectedOp")){
 			document.querySelectorAll(".selectedOp").forEach(function(sel){
 				sel.querySelector("*[id^=op_]").innerHTML=newOp;
 				sel.querySelector("*[id^=opCode_]").innerHTML=newOpCode;
-				toggleSelectOperation(this);
+				changed = true;
+				toggleSelectOperation(sel);
 			});
-	} else {
-		console.log("adding op")
+		}
+	});
+	if(!document.getElementById("operationList").classList.contains("selectedOp") && changed === false) {
 		var i = 0;
 		document.getElementById('operationList').querySelectorAll('tr').forEach(function (op){
-				var tmp = op.id.replace("v","");
-				if (tmp > i) i=tmp;
+			var tmp = op.id.replace("v","");
+			if (tmp > i) i=tmp;
 		});
 		i++;
 		var newTableBody = "<tr id='v" + i +"'>";
@@ -515,7 +516,7 @@ function newbutton()
 		document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);
 		refreshOpNum();
 	}
-
+	changed = false;
 }
 
 function refreshOpNum(){
