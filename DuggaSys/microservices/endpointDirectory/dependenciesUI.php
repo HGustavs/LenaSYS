@@ -78,6 +78,18 @@ if (isset($_GET['ms_name'])) {
                     }
                 echo "</table>";
             } 
+            if (!empty($dependingServices)) { 
+                echo "<h3>Microservices that are depending on " . $ms_name . ":</h3>";
+                echo "<table>";
+                    echo "<tr><th>Microservice</th><th>Path</th></tr>";
+                    foreach ($dependingServices as $row) {
+                        echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['depends_on']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['path']) . "</td>";
+                        echo "</tr>";
+                    }
+                echo "</table>";
+            } 
         } else {
             echo "No results found";
         }
