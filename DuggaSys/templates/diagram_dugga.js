@@ -31,7 +31,9 @@ function setup()
         document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
     }
 
-    //Adding eventlisteners to buttons inside the iframe for functions in thise file, outside the iframe
+
+    //Adding eventlisteners to buttons in the mobile sidebar
+    //as they are inside a iframe and these functions are done outside, then the listeners are added here
     const diagramIframe = document.getElementById("diagram-iframe");
     const mobileSaveButton = diagramIframe.contentWindow.document.getElementById("mb-saveDuggaButton"); 
     mobileSaveButton.addEventListener("click", () => {

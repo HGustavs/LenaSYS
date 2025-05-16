@@ -594,26 +594,22 @@ function toggleToolbar() {
     }
 }
 
+//Toggles for Mobile sidebar 
 function secondToolbarToggle() { 
-     let toggleBtn = document.querySelector(".icon-wrapper-2");
-     let chevronIcon = document.querySelector(".toggle-chevron-2");
-     let toolbar   = document.getElementById('mb-diagram-toolbar-2');
+     let toggleBtn = document.querySelector(".icon-wrapper-sidebar");
+     let chevronIcon = document.querySelector(".toggle-chevron-sidebar");
+     let toolbar   = document.getElementById('mb-diagram-sidebar');
      let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
 
-       if (ChevronActive /*&& toolbarActive*/) {
+       if (ChevronActive) {
         chevronIcon.style.transform = `rotate(180deg)`;
-        //toolbar.setAttribute("aria-hidden", "false")
     }
     else {
         chevronIcon.style.transform = `rotate(0deg)`;
-        //toolbar.setAttribute("aria-hidden", "true")
     }
 
     toolbar.classList.toggle('open');
     toggleBtn.classList.toggle('open');
-
-
-
 }
     
 

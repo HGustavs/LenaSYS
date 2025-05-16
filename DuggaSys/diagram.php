@@ -94,8 +94,8 @@
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
-    <div class="icon-wrapper-2" onclick="secondToolbarToggle()">
-        <i class="material-icons toggle-chevron-2">keyboard_arrow_up</i>
+    <div class="icon-wrapper-sidebar" onclick="secondToolbarToggle()">
+        <i class="material-icons toggle-chevron-sidebar">keyboard_arrow_up</i>
     </div>
 
     <!-- The chevron/arrows used for toggling the diagram-toolbar-->
@@ -1443,28 +1443,28 @@
     </div>
 
 
-    <nav id="mb-diagram-toolbar-2">
+    <!--Mobile sidebar-->
+    <nav id="mb-diagram-sidebar">
         <ul class="mb-nav-list">
-
         <?php
             if (checklogin()) {
                 echo '
-                <li id="logout" class="mb-nav-item" title="Log out">
-                <div class="mb-toolbar-box mb-toolbar-main active">
-                    <button id="mb-logoutButton">
-                    <img src="../Shared/icons/logout_button.svg" />
-                    </button>
-                </div>
+                <li  class="mb-nav-item" title="Log out">
+                    <div class="mb-toolbar-box mb-toolbar-main active">
+                        <button id="mb-logoutButton">
+                            <img src="../Shared/icons/logout_button.svg" />
+                        </button>
+                    </div>
                 </li>
                 ';
             } else {
                 echo '
-                <li id="login" class="mb-nav-item" title="Log in">
-                <div class="mb-toolbar-box mb-toolbar-main active">
-                    <button id="mb-loginButton">
-                    <img src="../Shared/icons/login_button.svg" />
-                    </button>
-                </div>
+                <li  class="mb-nav-item" title="Log in">
+                    <div class="mb-toolbar-box mb-toolbar-main active">
+                        <button id="mb-loginButton">
+                            <img src="../Shared/icons/login_button.svg" />
+                        </button>
+                    </div>
                 </li>
                 ';
             }

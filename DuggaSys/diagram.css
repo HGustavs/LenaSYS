@@ -338,7 +338,7 @@
         transition: var(--normal-transition);
     }
 
-     .icon-wrapper-2{
+     .icon-wrapper-sidebar{
         display: block !important;
         position: fixed;
         z-index: 10;
@@ -348,7 +348,7 @@
         transition: var(--normal-transition);
     }
 
-    .icon-wrapper-2.toolbar-active{
+    .icon-wrapper-sidebar.toolbar-active{
         margin-right: 50px;
     }
     
@@ -1200,7 +1200,7 @@
     display: none;
 }
 
-.toggle-chevron{
+.toggle-chevron, .toggle-chevron-sidebar{
     font-size: 1.4rem;
     background-color: var(--color-background-2);
     padding: .3rem;
@@ -1208,11 +1208,6 @@
     color: var(--color-text-secondary);
 }
 
-.toggle-chevron-2{
+.toggle-chevron-sidebar{
     rotate: 270deg;
-    font-size: 1.4rem;
-    background-color: var(--color-background-2);
-    padding: .3rem;
-    border-radius: 50%;
-    color: var(--color-text-secondary);
 }

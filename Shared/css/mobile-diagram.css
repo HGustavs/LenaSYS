@@ -1,9 +1,48 @@
     @media screen and (min-width: 415px) {
-    #mb-diagram-toolbar-2 {
+    #mb-diagram-sidebar {
     display: none !important;
   }
 }
 @media screen and (max-width: 414px) {
+
+    /* Mobile sidebar */
+    #mb-diagram-sidebar {
+        position: fixed;
+        display: flex;
+        top: 17%;
+        right: 0;
+        width: 66px;                
+        background-color: var(--color-primary);
+        transform: translateX(100%);
+        transition: var(--normal-transition);
+        z-index: 21;
+        flex-direction: column;
+    }
+    #mb-diagram-sidebar.open {
+        transform: translateX(-33px);
+    }
+    #mb-diagram-toolbar.active {
+        transform: translateY(0px);
+    }
+    #mb-diagram-sidebar button {
+        width: 100%;
+        aspect-ratio: 1;
+        padding: .2rem;
+        background-color: var(--color-primary);
+        border: none;
+    }
+    #mb-diagram-sidebar img {
+        width: 45px;
+    }
+    #mb-diagram-sidebar ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 0;
+    }
+
+    /* Mobile bottom toolbar*/
     #mb-diagram-toolbar {
         display: block !important;
         position: fixed;
@@ -18,46 +57,6 @@
         transform: translateY(200px);
         transition: var(--normal-transition);
     }
-
-    #mb-diagram-toolbar-2 {
-        position: fixed;
-        display: flex;
-        top: 180px;
-        right: 0;
-        width: 66px;                
-        background-color: var(--color-primary);
-        transform: translateX(100%);
-        transition: var(--normal-transition);
-        z-index: 21;
-        flex-direction: column;
-    }
-
-    #mb-diagram-toolbar-2.open {
-        transform: translateX(-33px);
-    }
-    #mb-diagram-toolbar.active {
-        transform: translateY(0px);
-    }
-
-
-    #mb-diagram-toolbar-2 button {
-        width: 100%;
-        aspect-ratio: 1;
-        padding: .2rem;
-        background-color: var(--color-primary);
-        border: none;
-    }
-    #mb-diagram-toolbar-2 img {
-        width: 45px;
-    }
-    #mb-diagram-toolbar-2 ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding: 0;
-    }
-
 
     #mb-diagram-toolbar img {
         width: 40px;
