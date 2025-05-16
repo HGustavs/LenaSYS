@@ -23,6 +23,19 @@ if (isset($_GET['ms_name'])) {
 
     if ($result) {
         $id = $result['id'];
+
+        $dependingServices = [];
+        $dependentServices = [];
+    
+        // query to get dependencies towards the searched microservice
+        $stmt1 = $db->prepare("SELECT depends_on, path FROM dependencies WHERE microservice_id = ?");
+        $stmt1->execute([$id]);
+        $dependingServices = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+    
+        // query to get what microservices the searched microservice is depending on
+        $stmt2 = $db->prepare("SELECT ms_name, path FROM dependencies WHERE depends_on_id = ?");
+        $stmt2->execute([$id]);
+        $dependentServices = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     } 
 }
 
