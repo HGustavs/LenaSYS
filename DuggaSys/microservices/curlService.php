@@ -74,7 +74,8 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
 //Supposed to be used instead of includes
 
 function callMicroserviceGET(string $path){
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    $baseURL = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
   
     $ch = curl_init($url);
