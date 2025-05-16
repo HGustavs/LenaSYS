@@ -151,6 +151,22 @@
     z-index: 5001;
 }
 
+#fab-options {
+    position: fixed;
+    top: 10vh;
+    right: 7vw;
+    width: 56px;
+    height: 56px;
+    font-size: 36px;
+    line-height: 80px;
+    text-align: center;
+    border-radius: 40px;
+    background-color: #eb4;
+    user-select: none;
+    cursor: pointer;
+    z-index: 5000;
+}
+
 #options-pane {
     position: fixed;
     top: 0px;
@@ -165,6 +181,12 @@
     padding: 10px;
     transition: right .3s ease-in-out;
     user-select: none;
+}
+
+#options-fab {
+    display: grid;
+    align-items: center;
+    font-size: 40px;
 }
 
 #options-pane-button {
@@ -395,6 +417,14 @@
     }
 
     #zoom-container{
+        visibility: hidden !important;
+    }
+
+    .hide-options-pane {
+        right: -500px;
+    }
+    
+    #options-pane-button {
         visibility: hidden !important;
     }
 }
