@@ -585,8 +585,10 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     
     // Special case if line is connected to or from an ERRelation
     if (f.kind === elementTypesNames.ERRelation || t.kind === elementTypesNames.ERRelation ||
-        f.kind === elementTypesNames.EREntity || t.kind === elementTypesNames.EREntity) {
-        const shrink = 8 * zoomfact; 
+        f.kind === elementTypesNames.EREntity || t.kind === elementTypesNames.EREntity ||
+        f.kind === elementTypesNames.ERAttr || t.kind === elementTypesNames.ERAttr) {
+
+        const shrink = 8 * zoomfact;
 
         if (ctype === lineDirection.LEFT || ctype === lineDirection.RIGHT) {
             offset.x1 += (ctype === lineDirection.LEFT ? shrink : -shrink);
