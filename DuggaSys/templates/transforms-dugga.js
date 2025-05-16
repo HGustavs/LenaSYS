@@ -97,15 +97,15 @@ function returnedDugga(data)
 					// Add previous handed in dugga
 					for (var i = 0; i < previous.length; i++) {
 							if (previous[i] !== ""){
-									var newTableBody = "<tr id='v" + i +"'>";
-									newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-									newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-									newTableBody += '<td><button onclick="this.closest(\'tr\').prev().insertAfter(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-									newTableBody += '<td><button onclick="this.closest(\'tr\').next().after(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-									newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-									newTableBody += "</tr>";
-										
-									//document.getElementById("operationList").append(newTableBody);			
+								var newTableBody = document.createElement("tr");
+								newTableBody.id = ("v" + x);
+								newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>';
+								newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>';
+								newTableBody.innerHTML += '<td><button onclick="moveOperationUp(this);refreshOpNum();">&uarr;</button></td>';
+								newTableBody.innerHTML += '<td><button onclick="moveOperationDown(this);refreshOpNum();">&darr;</button></td>';
+								newTableBody.innerHTML += '<td><button onclick="removeOperations(this);refreshOpNum();">X</button></td>';
+									
+								document.getElementById("operationList").append(newTableBody);			
 							}
 					}
 			}
@@ -232,15 +232,15 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		// Add previous handed in dugga
 		for (var i = 0; i < previous.length; i++) {
 				if (previous[i] !== ""){
-						var newTableBody = "<tr id='v" + i +"'>";
-						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-						newTableBody += '<td><button onclick="this.closest(\'tr\').prev().after(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-						newTableBody += '<td><button onclick="this.closest(\'tr\').next().after(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-						newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-						newTableBody += "</tr>";
-							
-						document.getElementById("operationList").append(newTableBody);							
+					var newTableBody = document.createElement("tr");
+					newTableBody.id = ("v" + x);
+					newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>';
+					newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>';
+					newTableBody.innerHTML += '<td><button onclick="moveOperationUp(this);refreshOpNum();">&uarr;</button></td>';
+					newTableBody.innerHTML += '<td><button onclick="moveOperationDown(this);refreshOpNum();">&darr;</button></td>';
+					newTableBody.innerHTML += '<td><button onclick="removeOperations(this);refreshOpNum();">X</button></td>';
+						
+					document.getElementById("operationList").append(newTableBody);						
 			}
 		}
 	}
@@ -427,21 +427,15 @@ function drawCross(cx, cy, col, size)
 }
 
 function toggleSelectOperation(e){
-	var allOperations = document.getElementById("operationList").children;
+	var allOperations = document.getElementById("operationList").querySelectorAll("tr");
 	if (e.closest("tr").classList.contains("selectedOp")){
 		// Unselect the selected row
 		e.closest("tr").classList.remove("selectedOp");
 		document.getElementById("addOpButton").value = "Add Op.";
-		// turns the odd rows to their correct color
-		for (i = 0; i < allOperations.length; i++){
-			if (allOperations[i].className == "OperationListTableOdd"){
-				allOperations[i].style.backgroundColor = "#dad8db";
-			}
-		}
 	} else {
 		// Unselect any previous selected row
 		for (i = 0; i < allOperations.length; i++){
-			if (allOperations[i].className == "OperationListTableOdd selectedOp" || allOperations[i].className == "OperationListTableEven selectedOp"){
+			if (allOperations[i].className == "OperationListTableOdd selectedOp" || allOperations[i].className == "OperationListTableEven selectedOp" || allOperations[i].className == "selectedOp OperationListTableOdd" || allOperations[i].className == "selectedOp OperationListTableEven"){
 				allOperations[i].classList.remove("selectedOp");
 			}
 		}
@@ -457,17 +451,17 @@ function newbutton()
 	var newOp = $('#function > optgroup > option:selected').text();
 	var newOpCode = document.getElementById("function").value;
 
-	var now = 0;
+	var update = 0;
 	var allOperations = document.getElementById("operationList").querySelectorAll("tr");
 
 	for (i = 0; i < allOperations.length; i++){
 		
 		if (allOperations[i].className == "OperationListTableOdd selectedOp" || allOperations[i].className == "OperationListTableEven selectedOp"){
-			now = 1;
+			update = 1;
 		}
 	}
 
-	if(now == 1){
+	if(update == 1){	//switches a element
 		var selectOP = document.getElementsByClassName("selectedOp")
 		for (i = 0; i < selectOP.length; i++){
 			console.log(selectOP[i]);
@@ -476,7 +470,7 @@ function newbutton()
 			selectOP[i].querySelector("[id^=opCode_]").innerHTML = newOpCode;
 			toggleSelectOperation(selectOP[i]);
 		}
-	} else {
+	} else {	//creates new element
 		var x = 0;
 		for (i = 0; i < allOperations.length; i++){
 			var tmp = allOperations[i].id.replace("v","");
@@ -484,23 +478,52 @@ function newbutton()
 			x++;
 		}
 				
-		//var newTableBody = "<tr id='v" + x +"'>";
 		var newTableBody = document.createElement("tr");
 		newTableBody.id = ("v" + x);
-		newTableBody.innerHTML = 
-		`
-		<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>
-		<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>
-		<td><button onclick="this.closest(\'tr\').prev().insertAfter(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>
-		<td><button onclick="this.closest(\'tr\').next().after(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>
-		<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>
-		`;
+		newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>';
+		newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>';
+		newTableBody.innerHTML += '<td><button onclick="moveOperationUp(this);refreshOpNum();">&uarr;</button></td>';
+		newTableBody.innerHTML += '<td><button onclick="moveOperationDown(this);refreshOpNum();">&darr;</button></td>';
+		newTableBody.innerHTML += '<td><button onclick="removeOperations(this);refreshOpNum();">X</button></td>';
 			
-		//$("#operationList").append(newTableBody);
 		document.getElementById("operationList").append(newTableBody);
 		refreshOpNum();
 	}
 
+}
+// removes a operations
+function removeOperations(e){
+	e.closest("tr").remove();
+}
+
+// gets rid of the old position classes before moving
+function removeOperationsPosition(e){
+	if (e.closest("tr").className == "OperationListTableOdd" || e.className == "OperationListTableOdd selectedOp"){
+		e.classList.remove("OperationListTableOdd");
+	}
+	else if (e.closest("tr").className == "OperationListTableEven" || e.className == "OperationListTableEven selectedOp"){
+		e.classList.remove("OperationListTableEven");
+	}
+}
+
+// moves a operations down
+function moveOperationDown(e){
+	var nextOperation = e.closest("tr").nextSibling;
+	if (nextOperation != null){
+		removeOperationsPosition(e.closest("tr"));
+		removeOperationsPosition(nextOperation);
+		nextOperation.after(e.closest("tr"));
+	}
+}
+
+// moves a operations up
+function moveOperationUp(e){
+	var previousOperation = e.closest("tr").previousSibling;
+	if (previousOperation != null){
+		removeOperationsPosition(e.closest("tr"));
+		removeOperationsPosition(previousOperation);
+		e.closest("tr").after(previousOperation);
+	}
 }
 
 function refreshOpNum(){
@@ -508,8 +531,18 @@ function refreshOpNum(){
 	$("*[id^=opNum]").each(function (){
 			this.innerHTML = idx++;
 	});
-	$("#operationList").find("tr:odd").addClass("OperationListTableOdd");
-	$("#operationList").find("tr:even").addClass("OperationListTableEven");
+	var allOperations = document.getElementById("operationList").querySelectorAll("tr");
+	for (i = 0; i < allOperations.length; i++){
+		//console.log(allOperations[i]);
+		if (i+1 & 1 == 1){
+			allOperations[i].classList.add("OperationListTableOdd");
+		}
+		else{
+			allOperations[i].classList.add("OperationListTableEven");
+		}
+		
+	}
+
 }
 
 function drawCommand(cstr) 
