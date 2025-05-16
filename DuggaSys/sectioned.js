@@ -1951,7 +1951,8 @@ function returnedSection(data) {
 
         // Close Information
         str += " value='" + item['lid'] + "' onclick='duggaRowClick(this)' >";
-        // Content of Section Item
+
+        //=====CONTENT OF SECTION ITEM=====
         if (itemKind == 0) {
           // Header
           str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
@@ -1998,6 +1999,11 @@ function returnedSection(data) {
 
           str += `<div class='ellipsis nowrap hide-on-mobile'><span>${makeanchor("showDugga.php", hideState,
             "", item['entryname'], false, param)}</span></div>`;
+
+          if (!(data['writeaccess'] || data['studentteacher'])) {
+            str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("showDugga.php", hideState,
+              "", item['entryname'], false, param)}</span></div>`;
+          }
         } else if (itemKind == 5) {
           // Link
           if (item['link'] !== null && item['link'] !== undefined && item['link'].substring(0, 4) === "http") {
