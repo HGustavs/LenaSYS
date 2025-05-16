@@ -125,7 +125,8 @@ function returnedDugga(data)
 			document.getElementById("showFeedbackButton").style.display="block";
 	}
 	document.getElementById("content").append(document.getElementById("submitButtonTable"));
-	document.getElementById("content").append(document.getElementById("lockedDuggaInfo"));
+	if(document.getElementById("lockedDuggaInfo"))
+		document.getElementById("content").append(document.getElementById("lockedDuggaInfo"));
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
