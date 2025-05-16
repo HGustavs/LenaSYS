@@ -1593,8 +1593,7 @@ function returnedSection(data) {
   var now = new Date();
   var startdate = new Date(retdata['startdate']);
   var enddate = new Date(retdata['enddate']);
-  let iconSize = window.innerWidth < 600 ? "18px" : "18px";
-  
+
   var numberOfParts = 0;
   for (var i = 0; i < retdata['entries'].length; i++) {
     var item = retdata['entries'][i];
