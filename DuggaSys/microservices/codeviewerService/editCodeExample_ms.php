@@ -3,7 +3,7 @@
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-//include_once "./retrieveCodeviewerService_ms.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
@@ -123,22 +123,14 @@ if (strcmp('EDITEXAMPLE', $opt) === 0) {
 }
 
 //Re-engineer
-$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-$url = $baseURL . "/DuggaSys/microservices/codeviewerService/retrieveCodeviewerService_ms.php";
-
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+$postData = [
     'opt' => $opt,
     'exampleid' => $exampleId,
     'courseid' => $courseId,
     'cvers' => $courseVersion
-]));
+];
 
-$response = curl_exec($ch);
-curl_close($ch);
-
-$data = json_decode($response, true);
-echo json_encode($data);
+$response = callMicroservicePOST("codeviewerService/retrieveCodeviewerService_ms.php", $postData, true);
+$link = json_decode($response, true);
+echo json_encode($link);
 return;
