@@ -105,7 +105,6 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
             cssClass = 'uml-Super';
-            zLevel = 1;    // Background layer for composite states
             break;
 
             //UML sequence‑diagram widgets
