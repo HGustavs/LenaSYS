@@ -27,6 +27,7 @@
     <link type="text/css" href="../Shared/css/mobile-diagram.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link id="themeBlack" type="text/css" href="../Shared/css/blackTheme.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=design_services" />
     <script src="darkmodeToggle.js"></script>
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -122,7 +123,14 @@
             <button id="diagram-fab"class="fab-btn-lg btn-floating diagram-btn-fab">+</button>
         </div>
         <!-- FAB-btn ENDS HERE! -->
-
+        <!-- The FAB-btn for the optionmenu, STARTS HERE!-->
+        <div class="fixed-option-button tooltip-fab">
+                
+            <button id="fab-options"class="fab-btn-lg btn-floating option-btn-fab"><span id="options-fab" class="material-symbols-outlined">
+                design_services</span>
+            </button>
+        </div>
+        <!-- FAB-btn for optionmenu ENDS HERE! -->
 
     <!-- TOOLBAR STARTS HERE!! -->
     <!-- Holds all buttons in the left-hand toolbar of the diagram-page -->
