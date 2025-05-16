@@ -324,15 +324,15 @@ $js = array(
                                 <button class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</button>
                                 <button class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></button>
                                 <button class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></button>
-                                <div onmouseleave="showDropdown('hide');"> 
-                                    <button class="markdown-icons headerType" id="headerIcon" title="Header" onclick="showDropdown('show');">aA&#9663; </button>
+                                <div class="markdown-icons header-dropdown-div" onmouseleave="showDropdown('hide');"> 
+                                    <button id="headerIcon" title="Header" onclick="showDropdown('show');">aA&#9663; </button>
                                     <div class="selectHeader" id="select-header">
-                                        <button id="headerType1" onclick="selected();headerVal1();" value="H1">Header 1</button>
-                                        <button id="headerType2" onclick="selected();headerVal2();" value="H2">Header 2</button>
-                                        <button id="headerType3" onclick="selected();headerVal3();" value="H3">Header 3</button>
-                                        <button id="headerType4" onclick="selected();headerVal4();" value="H4">Header 4</button>
-                                        <button id="headerType5" onclick="selected();headerVal5();" value="H5">Header 5</button>
-                                        <button id="headerType6" onclick="selected();headerVal6();" value="H6">Header 6</button>
+                                        <button id="headerType1" onclick="selected(); headerVal1();" value="H1">Header 1</button>
+                                        <button id="headerType2" onclick="selected(); headerVal2();" value="H2">Header 2</button>
+                                        <button id="headerType3" onclick="selected(); headerVal3();" value="H3">Header 3</button>
+                                        <button id="headerType4" onclick="selected(); headerVal4();" value="H4">Header 4</button>
+                                        <button id="headerType5" onclick="selected(); headerVal5();" value="H5">Header 5</button>
+                                        <button id="headerType6" onclick="selected(); headerVal6();" value="H6">Header 6</button>
                                     </div> 
                                 </div>
 

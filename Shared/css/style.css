@@ -8644,59 +8644,69 @@ textarea#mrkdwntxt {
   transition: 0.2s;
 }
 
-.selectHeader>span {
+.selectHeader>button {
   display: block;
   cursor: pointer;
+  border: none;
   /*color: var(--color-text-list);*/
   background-color: var(--color-background);
 }
 
-.selectHeader>span:hover {
+.selectHeader>button:hover {
+  border: none;
   background-color: var(--color-background-4);
 }
 
-#headerType1 {
-  font-size: 13px;
-  padding: 5px 7px 0px 3px;
-}
-
-#headerType2 {
-  font-size: 12px;
-  padding: 5px 11px 5px 3px;
-}
-
-#headerType2:hover {
-  background-color: var(--color-background-4);
-}
-
-#headerType3 {
-  font-size: 11px;
-  padding: 5px 15px 5px 3px;
-}
-
-#headerType4 {
-  font-size: 10px;
-  padding: 5px 19px 5px 3px;
-}
-
-#headerType5 {
-  font-size: 9px;
-  padding: 5px 23px 5px 3px;
-}
-
-#headerType6 {
-  font-size: 8px;
-  padding: 5px 27px 6px 3px;
+.header-dropdown-div{
+  position: relative;
 }
 
 .show-dropdown-content {
   display: block;
 }
 
+#headerType1 {
+  font-size: 13px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType2 {
+  font-size: 12px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType3 {
+  font-size: 11px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType4 {
+  font-size: 10px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType5 {
+  font-size: 9px;
+  height:25px;
+  width: inherit;
+}
+
+#headerType6 {
+  font-size: 8px;  
+  height:25px;
+  width: inherit;
+}
+
 #select-header {
   display: none;
-  width: 63px;
+  width: 70px;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2000;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
@@ -9041,13 +9051,18 @@ div > div > .shortcut-keys:hover {
   filter: invert(100%);
 }
 
-#imgIcon,
-#headerIcon {
-  position:relative;
+#imgIcon {
   margin-left: 2px;
-  margin-right: 10px;
 }
 
+#headerIcon {
+  margin-top: 2px;
+  margin-left: 4px;
+  margin-right: 6px;
+  background: none;
+  border: none;
+  font: inherit;
+}
 
 .editFileWindow {
   height: 80%;
