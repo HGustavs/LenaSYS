@@ -59,32 +59,27 @@ function quiz(parameters) {
 			}
 		}
 		
-		$("#output").html(app);
-	}
-	else {
+		document.getElementById("output").innerHTML = app;
+	} else {
 		historyBack();
 		setTimeout(function(){
 			dangerBox('Problem loading quiz', 'This quiz has no parameters in order to show it.</br>Contact quiz author or admin.');
 		}, 500);
 	}
-
-	
 }
 
 //----------------------------------------------------------------------------------
 // Setup - writes out the questions
 //----------------------------------------------------------------------------------
 
-function setup()
-{
+function setup() {
 		AJAXService("GETPARAM",{ },"PDUGGA");
 }
 //----------------------------------------------------------------------------------
 // returnedDugga: callback from ajax call in setup, data is json
 //----------------------------------------------------------------------------------
 
-function returnedDugga(data)
-{	
+function returnedDugga(data) {	
 	variant = data['variant'];
 	if(querystring['highscoremode'] == 1) {
 		Timer.startTimer();
@@ -100,8 +95,10 @@ function returnedDugga(data)
 		quiz(data['param']);
 		//Add onclick event 
 		if(querystring['highscoremode'] == 2 ||querystring['highscoremode'] == 1) {
-			$("input:radio").click(function(){
-				ClickCounter.onClick();
+			document.querySelectorAll("input[type='radio']").forEach(function (radio) {
+				radio.addEventListener("click", function () {
+					ClickCounter.onClick();
+				});
 			});
 		}
 	}		
@@ -129,29 +126,25 @@ function setChecked(id) {
 //----------------------------------------------------------------------------------
 // getCheckedBoxes: checks if all questions are answered and alerts each of them
 //----------------------------------------------------------------------------------
-function getCheckedBoxes(){
+function getCheckedBoxes() {
+	const answers = Array.from(document.querySelectorAll(`input[type='radio'][name='answers${idunique}']:checked`)).map(checked => checked.value);
+	return answers; // returnerar de värden på de checkboxes som är i-bockade.
 
-		var answers = $.map($("input:radio[name='answers"+idunique+"']:checked"), function(checked, i) {
-			return checked.value;
-		});
-		return answers; // returnerar de värden på de checkboxes som är i-bockade.
+}
 
+function reset() {
+	Timer.stopTimer();
+	Timer.score=0;
+	Timer.startTimer();
+	ClickCounter.initialize();
+
+	var answers = document.getElementsByName("answers"+idunique);
+	for(i = 0; i < answers.length; i++){
+		answers[i].checked = false;
 	}
+}
 
-	function reset(){
-		Timer.stopTimer();
-		Timer.score=0;
-		Timer.startTimer();
-		ClickCounter.initialize();
-
-		var answers = document.getElementsByName("answers"+idunique);
-		for(i = 0; i < answers.length; i++){
-			answers[i].checked = false;
-		}
-	}
-
-function saveClick()
-{
+function saveClick() {
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
@@ -212,21 +205,19 @@ function saveClick()
 //----------------------------------------------------------------------------------
 var allanswers = "";
 var theanswers ="";
-function showFacit(param, uanswer, danswer)
-{
+function showFacit(param, uanswer, danswer) {
 	quiz(param);
 	AJAXService("GETVARIANTANSWER",{ setanswer:uanswer},"VARIANTPDUGGA");
 	var splited = uanswer.split(" ");
 	allanswers =  splited[4];
 }
 
-function returnedanswersDugga(data){
-theanswers= data['param'];
-var checkifcorrect ="Answered: ";
+function returnedanswersDugga(data) {
+	theanswers= data['param'];
+	var checkifcorrect ="Answered: ";
 
-
-var theanswerSplit = theanswers.split(" ");
-var answeredSplit = allanswers.split(",");
+	var theanswerSplit = theanswers.split(" ");
+	var answeredSplit = allanswers.split(",");
 
 	for(var i = 0;i < answeredSplit.length;i++){
 		if(theanswerSplit[i] == answeredSplit[i]){
@@ -237,18 +228,25 @@ var answeredSplit = allanswers.split(",");
 		}
 	}
 
-var yoloswag = "Answered: " + theanswers;
-$("#output").append(checkifcorrect+"</br>"+yoloswag);
+	var yoloswag = "Answered: " + theanswers;
+	document.getElementById("output").innerHTML += checkifcorrect + "</br>" + yoloswag;
 }
-function closeFacit(){
+
+function closeFacit() {
 
 }
 
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
-function toggleInstructions()
-{
-	$(".instructions-content").slideToggle("slow");
+function toggleInstructions() {
+	const element = document.querySelector(".instructions-content");
+
+	if (getComputedStyle(element).display === "none") {
+		element.style.display = "block";
+	} else {
+		element.style.display = "none";
+	}
+
 }
 
