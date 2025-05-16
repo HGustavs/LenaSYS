@@ -81,3 +81,6 @@ No explanation for deprecated services means they can't be found in any related 
 ## profileService
 - profileService/updateSecurityQuestion_ms.php (unused?)
 - profileService/updateUserPassword_ms.php (unused?)
+
+## resultedService
+- resultedService/getUserAnswer_ms.php (unused?)
