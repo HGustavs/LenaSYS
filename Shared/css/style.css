@@ -8074,7 +8074,7 @@ only screen and (max-device-width: 568px) {
 *********************************/
 .diagram-fab{
   bottom: 10vh;
-  right: 15vw;
+  right: 7vw;
   display: none;
 }
 .diagram-btn-fab{
