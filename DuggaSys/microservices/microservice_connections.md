@@ -18,35 +18,36 @@ This function adds a user to a course. It performs two main operations, retrieve
 
 - Parameter: username
    - Type: String
-   - Description: Stored as varchar(80) in the database 
+   - Description: Login name that uniquely identifies the user you are about to add. Stored as varchar(80) in the database 
 
 - Parameter: uid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: The user’s internal ID. Stored as int(10) in the database
 
 - Parameter: courseid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course ID. Stored as int(10) in the database
   
 - Parameter: coursevers
    - Type: String
-   - Description: Stored as varchar(8) in the database
+   - Description: Specific course version. Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- Output: user
-   - Type: JSON-array
-   - Description: 
+– Output: user  
+   – Type: JSON-array  
+   – Description: One-element list containing the looked-up user record
 
 - Output: success/error
    - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Success means the lookup is completed,
+error is returned with an explanatory message field if something failed
 
 - Output: courses/groups/teachers/classes/submissions
    - Type: JSON-object
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: A bundle of fresh lists so the page can redraw
 
 ## Examples of Use
 ``` 
@@ -84,8 +85,7 @@ function addUserToCourse() {
 ```
 
 ### Microservices Used
-- AJAXService()
-- Accessedservice.php
+- accessedservice.php
 
 ---
 # Name of file/service
@@ -106,15 +106,15 @@ This function removes a user from a course. It retrieves the user's UID based on
 
 - Parameter: username
    - Type: String
-   - Description: Stored as varchar(80) in the database 
+   - Description: Name of the user. Stored as varchar(80) in the database 
 
 - Parameter: courseid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Which course to affect. Stored as int(10) in the database
 
 - Parameter: uid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Which user to remove. Stored as int(10) in the database
 
 ## Calling Methods
 - POST
@@ -122,11 +122,16 @@ This function removes a user from a course. It retrieves the user's UID based on
 ## Output Data and Format
 - Output: user
    - Type: JSON-array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description:  One-item list that contains the full user record
 
 - Output: success/error
    - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Success means the lookup is completed,
+error is returned with an explanatory message field if something failed
+
+- Output: courses/groups/teachers/classes/submissions
+   - Type: JSON-object
+   - Description: A bundle of fresh lists so the page can redraw
 
 ## Examples of Use
 ``` 
@@ -162,7 +167,6 @@ function removeUserFromCourse() {
 
 ### Microservices Used
 - accessedservice.php
-- AJAXService()
 
 ---
 # Name of file/service
@@ -186,8 +190,12 @@ This function retrieves all users from the backend and populates a dropdown fiel
 
 ## Output Data and Format
 - Output: users
-   - Type: JSON-arrayS
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Type: JSON-array
+   - Description: List of user objects (uid, username, firstname, lastname…)
+
+- Output: success / error
+   - Type: String
+   - Description: Success if the list was fetched, error otherwise.
 
 ## Examples of Use
 ``` 
@@ -234,7 +242,7 @@ Updates course information in the system, such as course name, visibility, code,
 ## Input Parameters
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: coursename
    - Type: String
@@ -244,23 +252,33 @@ Updates course information in the system, such as course name, visibility, code,
    - Type: varchar
    - Description: Course code. Stored as varchar(45) in the database
 
-- Parameter: courseGitURL
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
-
-- Parameter: visib
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+- Parameter: visibility
+   - Type: int
+   - Description: Visibility of the section. Stored as tinyint(1) in the database
 
 - Parameter: action
    - Type: ?
    - Description: Specifies the action  
 
+- Parameter: githubURL
+   - Type: varchar
+   - Description: FUll repo URL. Stored as varchar(256) in the database
+
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- 
+- Output: success/error
+   - Type: String
+   - Description:
+
+- Output: message
+   - Type: String
+   - Description: Success if the list was fetched, error otherwise.
+
+- Output: course/versions
+   - Type: JSON object
+   - Description: Success if the list was fetched, error otherwise.
 
 ## Examples of Use
 ``` 
@@ -366,9 +384,13 @@ Used to fetch and validate data from GitHub repository. If successful it return 
 - POST
 
 ## Output Data and Format
+- Output: message
+   - Type: String
+   - Description: Present on 422/503, forwarded to the toast
+
 - Output: boolean
    - Type: true/false
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: true if HTTP 200, otherwise false
 
 ## Examples of Use
 ``` 
@@ -1338,6 +1360,10 @@ Updating course settings such as course name, course code and GitHub repository.
 - Parameter: courseid
    - Type: int
    - Description: Stored as int(10) in the database
+
+- Parameter: visibility
+   - Type: int
+   - Description: Visibility of the section. Stored as tinyint(1) in the database
 
 ## Calling Methods
 - POST
