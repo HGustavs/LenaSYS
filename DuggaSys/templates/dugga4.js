@@ -472,7 +472,11 @@ function toggleSelectOperation(e){
 				document.getElementById("addOpButton").value = "Change Op.";
 				// Unselect any previous selected row
 				document.getElementById("operationList").querySelectorAll("tr").forEach(function (sel){
-						if (sel.id != e.closest("tr").getAttribute('id')) sel.classList.remove("selectedOp");
+					console.log("selected id: " + sel.id);
+						if (sel.id !== e.closest("tr").id){
+							sel.classList.remove("selectedOp");
+							console.log("Unselected old OP");
+						}
 				});
 		}		
 }
@@ -481,19 +485,21 @@ function newbutton()
 {
 	ClickCounter.onClick();
 	var select = document.getElementById('function');
-	var selectOption = select.options[select.options.selectedIndex];
-	var newOp = selectOption.text;
+	var selectOp = select.options[select.options.selectedIndex];
+	var newOp = selectOp.text;
 	var newOpCode = document.getElementById("function").value;
 
 	if(document.getElementById("operationList").classList.contains("selectedOp")){
+		console.log("adding op")
 			document.querySelectorAll(".selectedOp").forEach(function(sel){
 				sel.querySelector("*[id^=op_]").innerHTML=newOp;
 				sel.querySelector("*[id^=opCode_]").innerHTML=newOpCode;
 				toggleSelectOperation(this);
 			});
 	} else {
+		console.log("adding op")
 		var i = 0;
-		document.querySelectorAll('#operationList tr').forEach(function (op){
+		document.getElementById('operationList').querySelectorAll('tr').forEach(function (op){
 				var tmp = op.id.replace("v","");
 				if (tmp > i) i=tmp;
 		});
