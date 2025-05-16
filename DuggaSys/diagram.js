@@ -2127,14 +2127,16 @@ function showModal() {
             const btn = document.createElement('button');
             let btnText;
 
+            // Special button text formatting for mobile so that the load and delete buttons fit within the modal
             if(isMobile){
+                // Limit the text content for the button to 12 characters (15 with the dots)
                 if(diagramKeys[i].length > 12) {
                     btnText = document.createTextNode(diagramKeys[i].slice(0, 12) + "...");
                 } else {
                     btnText = document.createTextNode(diagramKeys[i]);
                 }
             } else {
-                btnText = document.createTextNode(diagramKeys[i]);
+                btnText = document.createTextNode(diagramKeys[i]); // Regular formatting for bigger browsers
             }
 
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
