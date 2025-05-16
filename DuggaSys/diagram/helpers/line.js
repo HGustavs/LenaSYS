@@ -13,13 +13,6 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
     ) {
         [toElement, fromElement] = [fromElement, toElement];
     }
-    //If line is comming to ERRelation from weak entity it adds double line, else it will be single
-    if (toElement.kind == elementTypesNames.ERRelation) {
-        if (fromElement.state == entityState.WEAK) {
-            kind = lineKind.DOUBLE;
-        }
-        [toElement, fromElement] = [fromElement, toElement];
-    }
     let errorMessage = checkConnectionErrors(fromElement, toElement);
     if (errorMessage) {
         displayMessage(messageTypes.ERROR, errorMessage);
