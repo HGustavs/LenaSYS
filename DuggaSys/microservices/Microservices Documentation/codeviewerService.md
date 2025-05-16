@@ -294,24 +294,20 @@ Retrieves updated data from the database and stores it in an array. The file out
    - Description: Logs UUID for the event                     
 
 ## Calling Methods
-- GET
-- POST
-- etc.
+-
+
+
 
 ## Output Data and Format
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Output: $array
+   - Type: JSON
+   - Description: Contains data associated with a code example
 
 ## Examples of Use
-`CODE`
+`SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;`
 
 ### Microservices Used
-- *Includes and microservices used*
+- 
 
 ---
 
