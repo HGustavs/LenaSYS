@@ -2,10 +2,33 @@
 //---------------------------------------------------------------------------------------------------------------
 // processDuggafile_ms.php - Retreive all submissions Uses service selectFromTableSubmission to get information it requires from submission.
 //---------------------------------------------------------------------------------------------------------------
-function processDuggaFiles($courseid,$coursevers,$duggaid,$duggainfo, $moment)
-{
-	pdoConnect();
-	global $pdo;
+
+
+date_default_timezone_set("Europe/Stockholm");
+include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+
+// Connect to database
+pdoConnect(); 
+
+$courseid;
+$coursevers;
+$duggaid;
+$duggainfo;
+$moment;
+
+
+// Handle incoming POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['courseid'], $_POST['coursevers'])) {
+        $courseid = $_POST['courseid'];
+        $coursevers = $_POST['coursevers'];
+		$duggaid = $_POST['duggaid'];
+		$duggainfo = $_POST['duggainfo'];
+		$moment = $_POST['moment'];
+	}
+}
+
 	$files= array();
 
 	if(	isset($_SESSION["submission-$courseid-$coursevers-$duggaid-$moment"]) && 
@@ -30,7 +53,6 @@ function processDuggaFiles($courseid,$coursevers,$duggaid,$duggainfo, $moment)
 	$today = date("Y-m-d H:i:s");
 	
 	foreach($rows as $row) {
-			
 			$content = "UNK";
 			$feedback = "UNK";
 			$zipdir = "";
@@ -100,7 +122,7 @@ function processDuggaFiles($courseid,$coursevers,$duggaid,$duggainfo, $moment)
 				'username' => $tmphash,
 				'zipdir' => $zipdir
 			);
-			
+			file_put_contents('example.txt', print_r($entry, true), FILE_APPEND);
 			// If the filednme key isn't set, create it now
 			 if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 	
@@ -109,6 +131,5 @@ function processDuggaFiles($courseid,$coursevers,$duggaid,$duggainfo, $moment)
 
 	}
 	if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
+    echo json_encode([$files]);
 
-    return $files;
-}
