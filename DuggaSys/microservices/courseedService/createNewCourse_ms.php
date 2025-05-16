@@ -76,7 +76,7 @@ if($ha) {
 $dataToSend = [
 	'ha' => $ha,
 	'debug' => $debug,
-	'lastCourseCreated' => $LastCourseCreated,
+	'LastCourseCreated' => $LastCourseCreated,
 	'isSuperUserVar' => $isSuperUserVar
 ];
 

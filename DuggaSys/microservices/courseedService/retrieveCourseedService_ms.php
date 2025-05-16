@@ -14,7 +14,7 @@ include_once "../curlService.php";
 pdoConnect();
 session_start();
 
-$data = recieveMicroservicePOST(['ha', 'debug', 'lastCourseCreated', 'isSuperUserVar']);
+$data = recieveMicroservicePOST(['ha', 'debug', 'LastCourseCreated', 'isSuperUserVar']);
 
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -154,7 +154,7 @@ if(!$query->execute()) {
 }
 
 $array = array(
-    'LastCourseCreated' => $data['lastCourseCreated'],
+    'LastCourseCreated' => $data['LastCourseCreated'],
     'entries' => $entries,
     'versions' => $versions,
     "debug" => $data['debug'],

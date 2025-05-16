@@ -23,7 +23,7 @@ if (strcmp($opt, "NEWVRS") !== 0) {
 	$dataToSend = [
 		'ha' => false,
 		'debug' => $debug,
-		'lastCourseCreated' => null,
+		'LastCourseCreated' => null,
 		'isSuperUserVar' => $isSuperUserVar
 	];
     echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
@@ -103,7 +103,7 @@ if($ha) {
 $dataToSend = [
 	'ha' => $ha,
 	'debug' => $debug,
-	'lastCourseCreated' => null,
+	'LastCourseCreated' => null,
 	'isSuperUserVar' => $isSuperUserVar
 ];
 

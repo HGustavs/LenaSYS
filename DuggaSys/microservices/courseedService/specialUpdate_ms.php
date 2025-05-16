@@ -28,7 +28,7 @@ $studentTeacher = hasAccess($userid, $cid, 'st');
 $dataToSend = [
 	'ha' => $studentTeacher,
 	'debug' => $debug,
-	'lastCourseCreated' => null,
+	'LastCourseCreated' => null,
 	'isSuperUserVar' => $isSuperUserVar
 ];
 

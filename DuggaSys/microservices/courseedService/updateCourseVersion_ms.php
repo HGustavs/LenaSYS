@@ -45,7 +45,7 @@ $hasAccess = $haswrite || $isSuperUserVar;
 $dataToSend = [
 	'ha' => $hasAccess,
 	'debug' => $debug,
-	'lastCourseCreated' => null,
+	'LastCourseCreated' => null,
 	'isSuperUserVar' => $isSuperUserVar
 ];
 
