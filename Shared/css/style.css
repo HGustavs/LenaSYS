@@ -10829,7 +10829,7 @@ button:disabled {
     display: none !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
     .hide-on-mobile {
         display: block !important;
     }
@@ -10840,7 +10840,7 @@ button:disabled {
     display: none !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 800px) {
     .show-on-mobile {
         display: block !important;
     }
