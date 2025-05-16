@@ -294,7 +294,7 @@ Retrieves updated data from the database and stores it in an array. The file out
    - Description: Logs UUID for the event                     
 
 ## Calling Methods
--
+- function call
 
 
 
@@ -315,16 +315,32 @@ Retrieves updated data from the database and stores it in an array. The file out
 updateCodeExampleTemplate_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Used when you create a new code example for a course and choose a template to display that code. The microservice selects the selected template and retrieves a CSS-file containing the template to display on the page.
 
 ## Input Parameters
-- Parameter: paramName
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: paramName
+- Parameter: $userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: User ID. Stored as int in the database
+
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $templateNumber
+   - Type: string
+   - Description: Template ID. Stored as int in the database
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $courseId
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version. Stored as int in the database            
 
 ## Calling Methods
 - GET
