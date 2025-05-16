@@ -1396,14 +1396,19 @@ function changeState() {
 
     //Get new state of element from dropdown menu in options pane, save change if the new state is different from the old one
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
-    if (newRelation && oldRelation != newRelation) {
-        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
-            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
-                stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
-            }
+
+    if (!newRelation | oldRelation === newRelation) return;
+
+    element.state = newRelation;
+
+    if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+        if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+            stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            displayMessage(messageTypes.SUCCESS, "Successfully saved");
         }
     }
+    // Re-draw the canvas
+    showdata();
 }
 
 /**
