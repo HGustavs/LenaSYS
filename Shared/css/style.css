@@ -9021,11 +9021,14 @@ div > div > .shortcut-keys:hover {
  * --------------================################================-------------- */
 .markdown-icons {
   cursor: pointer;
-  width: 100%;
+  width: 20%;
   height: 24px;
   text-align: center;
   line-height: 24px;
   vertical-align: middle;
+  background: none;
+  border: none;
+  font: inherit;
 }
 
 .markdown-icon-div {

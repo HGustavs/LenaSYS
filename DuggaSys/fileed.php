@@ -316,15 +316,15 @@ $js = array(
                         <legend>Markdown</legend>
                         <div id='markdownEditor'>
                             <div class="markdown-icon-div">
-                                <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
-                                <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
-                                <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                                <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
-                                <span class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></span>
-                                <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
-                                <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
-                                <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
-                                <span class="markdown-icons headerType" id="headerIcon" title="Header" onclick="showDropdown('show');" onmouseleave="showDropdown('hide');">aA&#9663;
+                                <button class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></button>
+                                <button class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></button>
+                                <button class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</button>
+                                <button class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></button>
+                                <button class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></button>
+                                <button class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</button>
+                                <button class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></button>
+                                <button class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></button>
+                                <button class="markdown-icons headerType" id="headerIcon" title="Header" onclick="showDropdown('show');" onmouseleave="showDropdown('hide');">aA&#9663;
                                     <div class="selectHeader" id="select-header">
                                         <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                                         <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
@@ -333,7 +333,7 @@ $js = array(
                                         <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
                                         <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
                                     </div> 
-                                </span>
+                                </button>
 
                                 <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
                                 <option value='defaultOption'>Choose file</option>
