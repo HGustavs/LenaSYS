@@ -97,10 +97,11 @@ function returnedDugga(data)
 					// Add previous handed in dugga
 					for (var i = 0; i < previous.length; i++) {
 							if (previous[i] !== ""){
+
 								var newTableBody = document.createElement("tr");
-								newTableBody.id = ("v" + x);
-								newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>';
-								newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>';
+								newTableBody.id = ("v" + i);
+								newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+								newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
 								newTableBody.innerHTML += '<td><button onclick="moveOperationUp(this);refreshOpNum();">&uarr;</button></td>';
 								newTableBody.innerHTML += '<td><button onclick="moveOperationDown(this);refreshOpNum();">&darr;</button></td>';
 								newTableBody.innerHTML += '<td><button onclick="removeOperations(this);refreshOpNum();">X</button></td>';
@@ -170,16 +171,16 @@ function saveClick()
 	// Loop through all operations
 	bitstr = ",";
 	
-	document.querySelectorAll("[id*=opCode_]").forEach(function (){
-		bitstr+=this.innerHTML + ",";
+	document.querySelectorAll("[id*=opCode_]").forEach(function (e){
+		bitstr+=e.innerHTML + ",";
 	});
 	bitstr += "T " + elapsedTime;
 
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + window.innerWidth();
-	bitstr += " " + window.innerHeight();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -230,10 +231,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		// Add previous handed in dugga
 		for (var i = 0; i < previous.length; i++) {
 				if (previous[i] !== ""){
+
 					var newTableBody = document.createElement("tr");
-					newTableBody.id = ("v" + x);
-					newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+x+'">'+(x+1)+'</td>';
-					newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+x+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+x+'" style="display:none">'+newOpCode+'</span></td>';
+					newTableBody.id = ("v" + i);
+					newTableBody.innerHTML = '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+					newTableBody.innerHTML += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
 					newTableBody.innerHTML += '<td><button onclick="moveOperationUp(this);refreshOpNum();">&uarr;</button></td>';
 					newTableBody.innerHTML += '<td><button onclick="moveOperationDown(this);refreshOpNum();">&darr;</button></td>';
 					newTableBody.innerHTML += '<td><button onclick="removeOperations(this);refreshOpNum();">X</button></td>';
@@ -462,7 +464,6 @@ function newbutton()
 	if(update == 1){	//switches a element
 		var selectOP = document.getElementsByClassName("selectedOp")
 		for (i = 0; i < selectOP.length; i++){
-			console.log(selectOP[i]);
 
 			selectOP[i].querySelector("[id^=op_]").innerHTML = newOp;
 			selectOP[i].querySelector("[id^=opCode_]").innerHTML = newOpCode;
@@ -523,8 +524,8 @@ function moveOperationUp(e){
 // refreses the operations positions
 function refreshOpNum(){
 	var idx = 1;
-	document.querySelectorAll("[id^=opNum]").forEach(function (){
-		this.innerHTML = idx++;
+	document.querySelectorAll("[id^=opNum]").forEach(function (e){
+		e.innerHTML = idx++;
 	});
 	var allOperations = document.getElementById("operationList").querySelectorAll("tr");
 	for (i = 0; i < allOperations.length; i++){
