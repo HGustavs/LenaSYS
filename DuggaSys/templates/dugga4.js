@@ -92,8 +92,8 @@ function returnedDugga(data)
 									var newTableBody = "<tr id='v" + i +"'>";
 									newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 									newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-									newTableBody += '<td><button onclick="this.closest(\'tr\').previousElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-									newTableBody += '<td><button onclick="this.closest(\'tr\').nextElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+									newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
+									newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';	
 									newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 									newTableBody += "</tr>";
 										
@@ -263,9 +263,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 						var newTableBody = "<tr id='v" + i +"'>";
 						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-						newTableBody += '<td><button onclick="this.closest(\'tr\').previousElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-						newTableBody += '<td><button onclick="this.closest(\'tr\').nextElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-						newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+						newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
+						newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
+						newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';
 						newTableBody += "</tr>";
 							
 						document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);
@@ -508,8 +508,8 @@ function newbutton()
 		var newTableBody = "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td><button onclick="this.closest(\'tr\').previousElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-		newTableBody += '<td><button onclick="this.closest(\'tr\').nextElementSibling.append(this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+		newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
+		newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
 		newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 		newTableBody += "</tr>";
 			
