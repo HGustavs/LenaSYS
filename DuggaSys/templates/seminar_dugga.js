@@ -17,8 +17,9 @@ function setup()
 function returnedDugga(data) 
 {	
 
-	$("#content").css({"position":"relative","top":"50px"});
-
+	document.getElementById("content").style.position = "relative";
+	document.getElementById("content").style.top = "50px";
+	
 	dataV = data;
 	
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
@@ -26,7 +27,7 @@ function returnedDugga(data)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = jQuery.parseJSON(data['param']);
+		duggaParams = JSON.parse(data['param']);
 		duggaFiles = data['files'];
 
 		if (duggaFiles.length > 0){
@@ -92,10 +93,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 
-	$("#content").css({"position":"relative","top":"50px"});
+	document.getElementById("content").style.position = "relative";
+	document.getElementById("content").style.top = "50px";
 
 	dataV = data;
 	
@@ -104,7 +106,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = jQuery.parseJSON(param);
+		duggaParams = JSON.parse(param);
 		duggaFiles = data['files'];
 
 		if (duggaFiles.length > 0){
