@@ -1216,7 +1216,7 @@ function mmoving(event) {
             }
 
             // Store the changes in the history
-            stateMachine.save(elementData.id, StateChange.ChangeTypes.ELEMENT_RESIZED);
+            if (!this.lastTypedTextMap) this.lastTypedTextMap = {}; (elementData.id, StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
