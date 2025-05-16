@@ -119,7 +119,6 @@ function drawElement(element, ghosted = false) {
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
-            zLevel = 3;    // Always on top of actor/object boxes
             break;
         case elementTypesNames.sequenceLoopOrAlt:
             // Expand for each alternative block rendered below the header
