@@ -389,7 +389,8 @@ function drawLine(line, targetGhost = false) {
                         text-anchor='middle'
                         x='${((startX))}'
                         y='${((startY)) + ((textheight / 4))}'
-                        style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)}px;'>
+                        fill='${lineColor}' 
+                        font-size='${Math.round(zoomfact * textheight)}'>
                         ${labelValue}
                     </text>`;
         } else {
@@ -406,7 +407,8 @@ function drawLine(line, targetGhost = false) {
                         class='cardinalityLabelText'
                         dominant-baseline='middle'
                         text-anchor='middle'
-                        style='font-size:${Math.round(zoomfact * textheight)}px;'
+                        fill='${lineColor}' 
+                        font-size='${Math.round(zoomfact * textheight)}'
                         x='${labelCenterX}'
                         y='${labelCenterY}'>
                         ${labelValue}
@@ -682,7 +684,8 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
                 class='text cardinalityLabelText' 
                 dominant-baseline='middle' 
                 text-anchor='middle' 
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)};' 
+                fill='${lineColor}' 
+                font-size='${Math.round(zoomfact * textheight)}' 
                 x='${x}' 
                 y='${y}'
             > ${label} </text>`;
@@ -865,10 +868,11 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
                 height='${(textheight - 4) * zoomfact + zoomfact * 3}'
             /> 
             <text 
-                class='text cardinalityLabelText' 
+                class='cardinalityLabelText' 
                 dominant-baseline='middle' 
                 text-anchor='middle' 
-                style='fill:${lineColor}; font-size:${Math.round(zoomfact * textheight)};' 
+                fill='${lineColor}' 
+                font-size='${Math.round(zoomfact * textheight)}' 
                 x='${posX}' 
                 y='${posY}'
             > ${lineCardinalitys[line.cardinality]} </text>`;
