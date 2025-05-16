@@ -1810,8 +1810,9 @@ function returnedSection(data) {
              comment: item['comments'],
              deadline: item['deadline'],
              'cid': querystring['courseid']
-          };
-          str += `<div style='display: flex; flex-direction: row; align-items: left; justify-content: space-between; width: 97%; margin-left: 5px;'>`;
+            };
+
+          str += `<div class='flex-row-container'>`;
 
           str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("showDugga.php", hideState,
             "", item['entryname'], false, param)}</span></div>`;
