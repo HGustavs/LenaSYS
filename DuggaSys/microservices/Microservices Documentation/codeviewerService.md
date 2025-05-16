@@ -297,7 +297,6 @@ Retrieves updated data from the database and stores it in an array. The file out
 - function call
 
 
-
 ## Output Data and Format
 - Output: $array
    - Type: JSON
@@ -343,21 +342,13 @@ Used when you create a new code example for a course and choose a template to di
    - Description: Course version. Stored as int in the database            
 
 ## Calling Methods
-- GET
-- POST
-- etc.
+- function call
 
 ## Output Data and Format
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- 
 
 ## Examples of Use
-`CODE`
+`UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;`
 
 ### Microservices Used
-- *Includes and microservices used*
+- getUid_ms.php
