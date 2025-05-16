@@ -29,8 +29,9 @@
 //----------------------------------------------------------------------------------
 
 function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue = false) {
-    // Build the full URL for the microservice endpoint
-    $baseURL = "http://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
+    // Detect if HTTPS is available, fallback to HTTP if not
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    $baseURL = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
 
     // Initialize cURL session
@@ -73,7 +74,8 @@ function recieveMicroservicePOST(array $requiredKeys = []) {
 //Supposed to be used instead of includes
 
 function callMicroserviceGET(string $path){
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+    $baseURL = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/LenaSYS/DuggaSys/microservices/";
     $url = $baseURL . $path;
   
     $ch = curl_init($url);
