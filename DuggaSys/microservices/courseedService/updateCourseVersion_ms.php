@@ -42,6 +42,8 @@ $isSuperUserVar = isSuperUser($userid);
 $studentTeacher = hasAccess($userid, $cid, 'st');
 $hasAccess = $haswrite || $isSuperUserVar;
 
+header('Content-Type: application/json');
+
 $dataToSend = [
 	'ha' => $hasAccess,
 	'debug' => $debug,
@@ -51,19 +53,19 @@ $dataToSend = [
 
 if (!checklogin()){
     $dataToSend['debug'] = "User not logged in";
-    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
 if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
     $dataToSend['debug'] = "Access not granted";
-    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
 if (strcmp($opt, "UPDATEVRS") !== 0) {
     $dataToSend['debug'] = "OPT does not match.";
-    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
@@ -99,4 +101,4 @@ if ($makeactive == 3) {
     $link = json_decode($response, true);
 }
 
-echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);

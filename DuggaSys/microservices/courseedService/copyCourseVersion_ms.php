@@ -39,6 +39,8 @@ $isSuperUserVar = isSuperUser($userid);
 $studentTeacher = hasAccess($userid, $cid, 'st');
 $hasAccess = $haswrite || $isSuperUserVar;
 
+header('Content-Type: application/json');
+
 $dataToSend = [
 	'ha' => $hasAccess,
 	'debug' => $debug,
@@ -48,22 +50,19 @@ $dataToSend = [
 
 if (!checklogin()){
 	$dataToSend['debug'] = "User not logged in";
-    $retrieveArray = callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
-    echo json_encode($retrieveArray);
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
 if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
     $dataToSend['debug'] = "Access not granted";
-    $retrieveArray = callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
-    echo json_encode($retrieveArray);
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
 if (strcmp($opt, "CPYVRS") !== 0) {
     $dataToSend['debug'] = "OPT does not match.";
-    $retrieveArray = callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
-    echo json_encode($retrieveArray);
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
@@ -405,5 +404,5 @@ $dataToSend = [
 	'isSuperUserVar' => $isSuperUserVar
 ];
 
-echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
 

@@ -17,6 +17,9 @@ session_start();
 
 $opt=getOP('opt');
 $cid=getOP('cid');
+
+header('Content-Type: application/json');
+
 // Permission check, same as in copyCourseVersion
 if (strcmp($opt, "NEWVRS") !== 0) {
     $debug = "OPT does not match.";
@@ -26,7 +29,7 @@ if (strcmp($opt, "NEWVRS") !== 0) {
 		'LastCourseCreated' => null,
 		'isSuperUserVar' => $isSuperUserVar
 	];
-    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 $coursecode=getOP('coursecode');
@@ -107,5 +110,5 @@ $dataToSend = [
 	'isSuperUserVar' => $isSuperUserVar
 ];
 
-echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
 

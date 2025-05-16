@@ -37,5 +37,6 @@ $dataToSend = [
 	'isSuperUserVar' => $isSuperUserVar
 ];
 
-echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+header('Content-Type: application/json');
+echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
 

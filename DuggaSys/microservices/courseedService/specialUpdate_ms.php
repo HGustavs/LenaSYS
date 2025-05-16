@@ -25,6 +25,8 @@ $haswrite = hasAccess($userid, $cid, 'w');
 $isSuperUserVar = isSuperUser($userid);
 $studentTeacher = hasAccess($userid, $cid, 'st');
 
+header('Content-Type: application/json');
+
 $dataToSend = [
 	'ha' => $studentTeacher,
 	'debug' => $debug,
@@ -35,14 +37,14 @@ $dataToSend = [
 // checks that the user is a superuser and logged in
 if(!(checklogin() && $isSuperUserVar)) {
     $dataToSend['debug'] = "Access not granted";
-    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
 
 if (strcmp($opt, "SPECIALUPDATE") !== 0) {
     $dataToSend['debug'] = "Incorrect opt provided";
-    echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
     return;
 }
 
@@ -82,5 +84,5 @@ if (!$query->execute()) {
 
 }
 
-echo json_encode(callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true));
+echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
 ?>
