@@ -2722,6 +2722,24 @@ Float
   height: 18px;
 }
 
+/* Announcement cards layout */
+
+.noAnnouncements {
+  color:#775886;
+}
+
+.gridCard {
+  width:48%;
+}
+
+.listCard {
+  width:100%;
+}
+
+.errorCreateAnnouncements {
+  border:1px solid red; 
+}
+
 /*---===#===---*
 Generic functions END 
 *---====#===---*/
