@@ -3106,11 +3106,6 @@ function retrieveAnnouncementAuthor() {
 
 // Retrieve course profile
 function retrieveCourseProfile(userid) {
-  // Disable all inputs inside .selectLabels labels
-  document.querySelectorAll(".selectLabels label input").forEach(function (input) {
-    input.disabled = true;
-  });
-
   var cid = '';
   var cidSelect = document.getElementById("cid");
   var versidSelect = document.getElementById("versid");
@@ -3160,7 +3155,6 @@ function retrieveCourseProfile(userid) {
 }
 
 function getStudents(cid, userid) {
-
   var versid = document.getElementById("versid").value;
   if (versid !== "") {
     var recipient = document.getElementById("recipient");
