@@ -1445,14 +1445,30 @@
 
     <nav id="mb-diagram-toolbar-2">
         <ul class="mb-nav-list">
-             <li class="mb-nav-item"  title="Log in">
+
+        <?php
+            if (checklogin()) {
+                echo '
+                <li id="logout" class="mb-nav-item" title="Log out">
                 <div class="mb-toolbar-box mb-toolbar-main active">
-                    <button id="mb-loginButton">
-                        <img src="../Shared/icons/login_button.svg" />
+                    <button id="mb-logoutButton">
+                    <img src="../Shared/icons/logout_button.svg" />
                     </button>
                 </div>
-            </li>
-
+                </li>
+                ';
+            } else {
+                echo '
+                <li id="login" class="mb-nav-item" title="Log in">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-loginButton">
+                    <img src="../Shared/icons/login_button.svg" />
+                    </button>
+                </div>
+                </li>
+                ';
+            }
+        ?>
              <li class="mb-nav-item" title="Home">
                 <div class="mb-toolbar-box mb-toolbar-main active">
                     <button id="mb-Home">

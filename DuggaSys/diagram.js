@@ -531,12 +531,25 @@ function getData() {
     document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it
         window.location.assign('/DuggaSys/courseed.php');
     });
-    document.getElementById("mb-loginButton").addEventListener("click", showLoginPopup);
+
+    const loginButton = document.getElementById("mb-loginButton");
+    if (loginButton) {
+        loginButton.addEventListener("click", showLoginPopup);
+    }
+
+    const logoutButton = document.getElementById("mb-logoutButton");
+    if (logoutButton) {   
+        logoutButton.addEventListener("click", () => {
+            window.showLogoutPopup();
+            console.log("clicked logout");
+            console.log("is a function: " + typeof LogoutBoxWrapper === "function");
+      });
+    }   
+
     document.getElementById("mb-backButton").addEventListener("click", () => {
         history.back();
     });
-
- 
+    
 
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
