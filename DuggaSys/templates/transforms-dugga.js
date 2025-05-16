@@ -448,7 +448,7 @@ function toggleSelectOperation(e){
 function newbutton() 
 {
 	ClickCounter.onClick();
-	var newOp = $('#function > optgroup > option:selected').text();
+	var newOp = document.querySelector("#function > optgroup > option:checked").textContent;
 	var newOpCode = document.getElementById("function").value;
 
 	var update = 0;
@@ -456,7 +456,7 @@ function newbutton()
 
 	for (i = 0; i < allOperations.length; i++){
 		
-		if (allOperations[i].className == "OperationListTableOdd selectedOp" || allOperations[i].className == "OperationListTableEven selectedOp"){
+		if (allOperations[i].className == "OperationListTableOdd selectedOp" || allOperations[i].className == "OperationListTableEven selectedOp" || allOperations[i].className == "selectedOp OperationListTableOdd" || allOperations[i].className == "selectedOp OperationListTableEven"){
 			update = 1;
 		}
 	}
@@ -498,10 +498,10 @@ function removeOperations(e){
 
 // gets rid of the old position classes before moving
 function removeOperationsPosition(e){
-	if (e.closest("tr").className == "OperationListTableOdd" || e.className == "OperationListTableOdd selectedOp"){
+	if (e.closest("tr").className == "OperationListTableOdd" || e.className == "OperationListTableOdd selectedOp" || e.className == "selectedOp OperationListTableOdd"){
 		e.classList.remove("OperationListTableOdd");
 	}
-	else if (e.closest("tr").className == "OperationListTableEven" || e.className == "OperationListTableEven selectedOp"){
+	else if (e.closest("tr").className == "OperationListTableEven" || e.className == "OperationListTableEven selectedOp" || e.className == "selectedOp OperationListTableEven"){
 		e.classList.remove("OperationListTableEven");
 	}
 }
@@ -510,8 +510,6 @@ function removeOperationsPosition(e){
 function moveOperationDown(e){
 	var nextOperation = e.closest("tr").nextSibling;
 	if (nextOperation != null){
-		removeOperationsPosition(e.closest("tr"));
-		removeOperationsPosition(nextOperation);
 		nextOperation.after(e.closest("tr"));
 	}
 }
@@ -520,29 +518,26 @@ function moveOperationDown(e){
 function moveOperationUp(e){
 	var previousOperation = e.closest("tr").previousSibling;
 	if (previousOperation != null){
-		removeOperationsPosition(e.closest("tr"));
-		removeOperationsPosition(previousOperation);
 		e.closest("tr").after(previousOperation);
 	}
 }
 
+// refreses the operations positions
 function refreshOpNum(){
 	var idx = 1;
-	$("*[id^=opNum]").each(function (){
-			this.innerHTML = idx++;
+	document.querySelectorAll("[id^=opNum]").forEach(function (){
+		this.innerHTML = idx++;
 	});
 	var allOperations = document.getElementById("operationList").querySelectorAll("tr");
 	for (i = 0; i < allOperations.length; i++){
-		//console.log(allOperations[i]);
+		removeOperationsPosition(allOperations[i]);
 		if (i+1 & 1 == 1){
 			allOperations[i].classList.add("OperationListTableOdd");
 		}
 		else{
 			allOperations[i].classList.add("OperationListTableEven");
-		}
-		
+		}	
 	}
-
 }
 
 function drawCommand(cstr) 
@@ -676,8 +671,8 @@ function foo()
 
 	context.globalAlpha = 1.0;
 
-	$("*[id*=opCode_]").each(function (){
-			drawCommand(this.innerHTML);
+	document.querySelectorAll("[id*=opCode_]").forEach(function (e){
+		drawCommand(e.innerHTML);
 	});
 
 	drawCross(0, 0, "#f64", 8);
@@ -719,9 +714,4 @@ function startDuggaHighScore(){
 		}
 		ClickCounter.showClicker();
 	}
-}
-
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
 }
