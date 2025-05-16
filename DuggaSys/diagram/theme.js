@@ -167,7 +167,6 @@ function updateCSSForAllElements() {
                             fontColor.style.fill = color.WHITE;
                         } else {
                             fillColor.style.fill = color.WHITE;
-                            weakKeyUnderline.style.stroke = color.BLACK;
                         }
                     } else {
                         fillColor.style.fill = `${element.fill}`;
