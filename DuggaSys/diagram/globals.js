@@ -96,6 +96,13 @@ var ghostLine = null;
  */
 var UMLHeight = [], IEHeight = [], SDHeight = [], NOTEHeight = [];
 
+
+/**
+ * @description Global variable that checks if the browser window is sized for mobile screens (414px and less).
+ * @type {boolean}
+ */
+var isMobile = false;
+
 //#endregion
 //#region MOUSE
 
