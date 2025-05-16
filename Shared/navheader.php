@@ -313,8 +313,7 @@
 
 							//Dropdown Menu For Teachers
 							echo "<div id='hamburgerBox'>";
-							echo "<div id='announcementBurger'><img alt='announcement icon'  class='burgerButt' src='../Shared/icons/new_announcement_iconShadow.svg'><p class='burgerHover'>Announcements</p></div>";
-
+							
 							echo "<div id='versionCogBurger' onclick=showEditVersion();><img alt='settings icon'  class='burgerButt' title='Edit the selected version'  src='../Shared/icons/CogwheelWhite.svg'><p  class='burgerHover'>Edit selected version</p></div>";
 
 							echo "<div id='versionPlusBurger' onclick='showCreateVersion();'><img alt='plus sign icon' value='New version' class='burgerButt' title='Create a new version of this course'  src='../Shared/icons/PlusS.svg'><p  class='burgerHover'>Create new courseversion</p></div>";
