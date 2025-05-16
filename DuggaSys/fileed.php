@@ -324,16 +324,17 @@ $js = array(
                                 <button class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</button>
                                 <button class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></button>
                                 <button class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></button>
-                                <button class="markdown-icons headerType" id="headerIcon" title="Header" onclick="showDropdown('show');" onmouseleave="showDropdown('hide');">aA&#9663;
+                                <div onmouseleave="showDropdown('hide');"> 
+                                    <button class="markdown-icons headerType" id="headerIcon" title="Header" onclick="showDropdown('show');">aA&#9663; </button>
                                     <div class="selectHeader" id="select-header">
-                                        <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
-                                        <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
-                                        <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
-                                        <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
-                                        <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
-                                        <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+                                        <button id="headerType1" onclick="selected();headerVal1();" value="H1">Header 1</button>
+                                        <button id="headerType2" onclick="selected();headerVal2();" value="H2">Header 2</button>
+                                        <button id="headerType3" onclick="selected();headerVal3();" value="H3">Header 3</button>
+                                        <button id="headerType4" onclick="selected();headerVal4();" value="H4">Header 4</button>
+                                        <button id="headerType5" onclick="selected();headerVal5();" value="H5">Header 5</button>
+                                        <button id="headerType6" onclick="selected();headerVal6();" value="H6">Header 6</button>
                                     </div> 
-                                </button>
+                                </div>
 
                                 <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
                                 <option value='defaultOption'>Choose file</option>
