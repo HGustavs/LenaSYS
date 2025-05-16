@@ -10,34 +10,32 @@ This function adds a user to a course. It performs two main operations, retrieve
 ## Input Parameters
 - Parameter: opt
    - Type: String
-   - Description: 
+   - Description: Operation type
 
 - Parameter: action
-   - Type: string
-   - Description: 
+   - Type: ?
+   - Description: Specifies the action
 
 - Parameter: username
-   - Type: string
-   - Description: 
+   - Type: String
+   - Description: Stored as varchar(80) in the database 
 
 - Parameter: uid
-   - Type: string
-   - Description: 
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: courseid
-   - Type: string
-   - Description:
+   - Type: int
+   - Description: Stored as int(10) in the database
   
 - Parameter: coursevers
-   - Type: string
-   - Description:
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-
 - Output: user
    - Type: JSON-array
    - Description: 
@@ -100,23 +98,23 @@ This function removes a user from a course. It retrieves the user's UID based on
 ## Input Parameters
 - Parameter: opt
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Operation type
 
 - Parameter: action
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: ?
+   - Description: Specifies the action
 
 - Parameter: username
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: String
+   - Description: Stored as varchar(80) in the database 
 
 - Parameter: courseid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as int(10) in the database
 
 - Parameter: uid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as int(10) in the database
 
 ## Calling Methods
 - POST
@@ -177,11 +175,11 @@ This function retrieves all users from the backend and populates a dropdown fiel
 ## Input Parameters
 - Parameter: opt
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Operation type
 
 - Parameter: action
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -235,28 +233,28 @@ Updates course information in the system, such as course name, visibility, code,
 
 ## Input Parameters
 - Parameter: cid
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: coursename
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: String
+   - Description: Course name. Stored as varchar(80) in the database
 
 - Parameter: coursecode
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: varchar
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: courseGitURL
-   - Type: int
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 - Parameter: visib
-   - Type: int
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
-- Parameter: token
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database   
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action  
 
 ## Calling Methods
 - POST
@@ -350,15 +348,19 @@ function updateCourse() {
 ---
 # Name of file/service
 courseed.js
-Function FetchGitHubRepo()
+Function: FetchGitHubRepo()
 
 ## Description
 Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false.
 
 ## Input Parameters
 - Parameter: gitHubURL
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -420,6 +422,10 @@ The latest commit is then stored in the database.
    - Type: int
    - Description: Describe parameter. Stored as *int(11)* in the database
 
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
+
 ## Calling Methods
 - POST
 
@@ -476,16 +482,16 @@ Returns true on success or false on failure.
 
 ## Input Parameters
 - Parameter: gitHubURL
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-- Parameter: cid
+-- Parameter: cid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as int(10) in the database
 
 - Parameter: action
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -548,13 +554,21 @@ Function refreshGithubRepo
 It sends a POST request to gitcommitService.php with the course ID and user to retrieve the latest Git data. Returns true on success, false on failure.
 
 ## Input Parameters
+- Parameter: cid
+   - Type: int
+   - Description: Stored as int(10) in the database
+
 - Parameter: courseid
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: user
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
+  
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -624,16 +638,20 @@ Sends an updated GitHub repository URL and course ID to database in order to sav
 
 ## Input Parameters
 - Parameter: githubURL
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: cid
    - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: token
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
-- Parameter: githubKey
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -698,8 +716,12 @@ Fetch contents of the GitHub repo by using action getNewCourseGitHub, returns tr
 
 ## Input Parameters
 - Parameter: githudURL
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -763,13 +785,17 @@ Function: updateSelectDir
 The function updates the selected directory for a course.
 
 ## Input Parameters
-- Parameter: selectedDir
-   - Type: String
+- Parameter: selectDir
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: cid
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -840,16 +866,24 @@ This function retrives available course versions based on a selected course ID, 
 
 ## Input Parameters
 - Parameter: userid
+   - Type: int
+   - Description: ID of the user. Stored as int(10) in the database
+
+- Parameter: cid
+   - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: versid
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
 - Output: versid
-   - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 - Output: error
    - Type: String
@@ -911,12 +945,20 @@ This function retrieves student.
 
 ## Input Parameters
 - Parameter: cid
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: ID of the user. Stored as int(10) in the database
+
+- Parameter: uid
+   - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: versid
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
@@ -985,17 +1027,25 @@ Function: retrieveAnnouncementsCards()
 This function retrives and displays announcements relevant to a user for a given course and version.
 
 ## Input Parameters
-- Parameter: uname
+- Parameter: username
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(80) in the database 
 
-- Parameter: cid
+- Parameter: uid
+   - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: coursevers
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as varchar(8) in the database
+
+- Parameter: courseid
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: versid
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods
 - GET
@@ -1009,9 +1059,9 @@ This function retrives and displays announcements relevant to a user for a given
    - Type: String
    - Description: Describe the output. Stored as *varchar(30)* in the database
 
-- Output: uid
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Parameter: uid
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 ## Examples of Use
 ``` 
@@ -1072,13 +1122,17 @@ Function addUserToCourse()
 Adds user to a user to a course. Looks up UID based on their username.
 
 ## Input Parameters
+- Parameter: opt
+   - Type: String
+   - Description: Operation type
+
 - Parameter: username
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(80) in the database 
 
-- Parameter: paramName
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -1139,13 +1193,17 @@ Function removeUserFromCourse()
 Retrives UID with ajax POST, then deletes user with opt DELETE.
 
 ## Input Parameters
+- Parameter: opt
+   - Type: String
+   - Description: Operation type
+
 - Parameter: username
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(80) in the database 
 
-- Parameter: paramName
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -1201,11 +1259,11 @@ This function populates a dropdown list with users fetched from the database. It
 ## Input Parameters
 - Parameter: opt
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Operation type
 
 - Parameter: action
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -1259,19 +1317,27 @@ Updating course settings such as course name, course code and GitHub repository.
 ## Input Parameters
 - Parameter: coursename
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Course name. Stored as varchar(80) in the database
 
 - Parameter: cid
-   - Type: string
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: coursecode
-   - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: varchar
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: courseGitURL
-   - Type: string
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
+
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
+
+- Parameter: courseid
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 ## Calling Methods
 - POST
@@ -1377,12 +1443,12 @@ Used to fetch and validate data from GitHub repository. If successful it return 
 
 ## Input Parameters
 - Parameter: githubURL
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: action
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -1444,12 +1510,16 @@ The function updates the selected directory for a course.
 
 ## Input Parameters
 - Parameter: selectedDir
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: cid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as int(10) in the database
+
+  - Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods
 - POST
@@ -1519,7 +1589,15 @@ This function retrives available course versions based on a selected course ID, 
 ## Input Parameters
 - Parameter: userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: ID of the user. Stored as int(10) in the database
+
+- Parameter: cid
+   - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: versid
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
@@ -1590,12 +1668,12 @@ This function retrieves student.
  
 ## Input Parameters 
 - Parameter: cid
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: userid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: ID of the user. Stored as int(10) in the database
 
 ## Calling Methods 
 - POST 
@@ -1666,16 +1744,20 @@ This function retrives and displays announcements relevant to a user for a given
 
 ## Input Parameters 
 - Parameter: cid
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: uname
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Stored as int(10) in the database
 
-- Parameter: versid
+- Parameter: coursevers
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(8) in the database
+
+- Parameter: courseid
+   - Type: int
+   - Description: Stored as int(10) in the database
+
+- Parameter: username
+   - Type: String
+   - Description: Stored as varchar(80) in the database 
 
 ## Calling Methods 
 - GET 
@@ -1690,8 +1772,8 @@ This function retrives and displays announcements relevant to a user for a given
    - Description: Describe the output. Stored as *varchar(30)* in the database
 
 - Output: uid
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 ## Examples of Use 
 ```
@@ -1751,25 +1833,29 @@ This function updates the read status of an announcement for a user. It fetches 
 
 ## Input Parameters 
 - Parameter: announcementid
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: cid
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: versid
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(8) in the database
+
+- Parameter: username
+   - Type: String
+   - Description: Stored as varchar(80) in the database 
 
 ## Calling Methods 
 - GET (retrieveUserid.php) 
 - POST (updateviewedAnnouncementCards.php) 
 
 ## Output Data and Format 
-- Output: uid
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+- Parameter: uid
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 ## Examples of Use 
 ```
@@ -1807,12 +1893,12 @@ Function: toggleFeedbacks()
 The function retrieves and displays recent feedback for the logged-in student. 
 
 ## Input Parameters 
-- Parameter: uname
+- Parameter: username
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Stored as varchar(80) in the database 
 
 - Parameter: studentid
-   - Type: int
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
@@ -1907,14 +1993,14 @@ Function: createExamples()
 ## Description 
 This function fetches code examples for a specific lecture identified by momentID. 
 
-## Input Parameters 
-- Parameter: momentID
-   - Type: int
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+## Input Parameters
+- Parameter: opt
+   - Type: String
+   - Description: Operation type
 
-- Parameter: isManual
-   - Type: bool
-   - Description: Describe parameter. Stored as *int(11)* in the database
+- Parameter: lid
+   - Type: int
+   - Description: Listentry ID. Stored as int(10) in the database
 
 ## Calling Methods 
 - POST 
@@ -1965,22 +2051,30 @@ Function: storeCodeExamples()
 ## Description 
 This function is responsible for storing code examples from GitHub repository into both a directory and database, then sends the data as a JSON object to PHP service (sectionedservice.php) 
 
-## Input Parameters 
-- Parameter: cid
+## Input Parameters
+- Parameter: opt
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Operation type
+
+- Parameter: cid
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 - Parameter: codeExamplesContent
-   - Type: array
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 - Parameter: githubURL
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-- Parameter: filename
+- Parameter: fileName
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: File name. Stored as varchar(256) in the database
+
+- Parameter: courseid
+   - Type: int
+   - Description: Stored as int(10) in the database
  
 ## Calling Methods 
 - POST 
@@ -2057,16 +2151,16 @@ The function loads and displays a preview window for file editing. It replaces t
 
 ## Input Parameters 
 - Parameter: path
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: name
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 - Parameter: kind
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: int
+   - Description: Stored as int(10) in the database
 
 ## Calling Methods 
 - GET
@@ -2136,11 +2230,11 @@ This function sends a diagram from diagram editor to the backend for saving. It 
 
 ## Input Parameters 
 - Parameter: dia
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: hash
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
@@ -2174,11 +2268,11 @@ This function handles redirection to a newly created project folder. It first se
 
 ## Input Parameters 
 - Parameter: doc
-   - Type: object
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: getID
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
@@ -2223,17 +2317,21 @@ Function: loadFile()
 This function is used to load and display a specific file (Markdown, plain text, or other content types) within the preview window. It updates the UI and sends a POST request to showdoc.php to fetch the file contents for preview. 
 
 ## Input Parameters 
-- Parameter: fileUrl
-   - Type: String
+- Parameter: filepath
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
-- Parameter: fileNamez
+- Parameter: fileName
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: File name. Stored as varchar(256) in the database
 
 - Parameter: fileKind
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: coursevers
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods 
 - POST 
@@ -2283,17 +2381,21 @@ Function: loadPreview()
 The function is responsible for previewing a file's content in a read-only format. It sets up the preview UI for the selected file, displays the preview window, and makes a POST request to showdoc.php to retrieve the file's content. This function is intended for viewing only, not editing. 
 
 ## Input Parameters 
-- Parameter: fileUrl
-   - Type: String
+- Parameter: filepath
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: fileName
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: File name. Stored as varchar(256) in the database
 
 - Parameter: fileKind
-   - Type: String
+   - Type: ?
    - Description: Describe parameter. Stored as *varchar(256)* in the database
+
+- Parameter: coursevers
+   - Type: String
+   - Description: Stored as varchar(8) in the database
 
 ## Calling Methods 
 - POST 
@@ -2345,15 +2447,19 @@ This function handles the updating of a users security challenge question and an
  ## Input Parameters 
 - Parameter: password
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: The current password of the user. Stored as varchar(225) in the database
 
 - Parameter: question
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Security challenge question. Stored as varchar(256) in the database
 
-- Parameter: answer
+- Parameter: $answer
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: The answer to the security challenge question. Stored as varchar(256) in the database
+
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods 
 - POST 
@@ -2431,15 +2537,15 @@ This function handles the password change process for a user. It collects the cu
 ## Input Parameters 
 - Parameter: password
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: The current password of the user. Stored as varchar(225) in the database
 
-- Parameter: newPassword
-   - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+- Parameter: $newPassword
+   - Type: int
+   - Description: The new password the user wants to change to. Stored as tinyint(1) in the database
 
 - Parameter: action
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods 
 - POST 
@@ -2517,14 +2623,9 @@ pushnotifications.js
 This module manages push notification subscriptions in the browser. It registers service workers, subscribes/unsubscribes users to push notifications using the browsers Push API and communicates with the server via pushnotifications.php. 
 
 ## Input Parameters 
-
-*Parameters will be described in tables for easier readability* 
-
-| Parameter | Type | Description | 
-
-| :--- | :--- | :--- | 
-
-| :--- | :--- | :---  
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods 
 - POST 
@@ -2576,6 +2677,10 @@ This service handles browser push notifications for LenaSYS. It handles push eve
 - Parameter: subscription.endpoint 
    - Type: String
    - Description: Describe parameter. Stored as *int(11)* in the database
+
+- Parameter: action
+   - Type: ?
+   - Description: Specifies the action
 
 ## Calling Methods 
 - POST 
