@@ -124,7 +124,6 @@ function drawElement(element, ghosted = false) {
             // Expand for each alternative block rendered below the header
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
             divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
-            zLevel = 0;   // Below messages and activations
             break;
 
         //Legacy sticky note
