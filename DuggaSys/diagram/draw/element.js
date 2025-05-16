@@ -65,8 +65,8 @@ function drawElement(element, ghosted = false) {
             cssClass = 'ie-element';
             // Inheritance relations sit behind other IE elements
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:;` :
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:${zLevel};`:
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
 
             //UML state‑diagram nodes
@@ -77,7 +77,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, initVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
         case elementTypesNames.UMLFinalState:
             let finalVec = `
@@ -100,7 +100,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, finalVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
