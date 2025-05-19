@@ -1,4 +1,4 @@
-In this file the connection between javascript and PHP is docummented.
+In this file the connection between JavaScript and PHP is documented.
 
 # Name of file/service
 accessed.js
@@ -22,7 +22,7 @@ This function adds a user to a course. It performs two main operations, retrieve
 
 - Parameter: uid
    - Type: int
-   - Description: The user’s internal ID. Stored as int(10) in the database
+   - Description: The user ID. Stored as int(10) in the database
 
 - Parameter: courseid
    - Type: int
@@ -31,6 +31,10 @@ This function adds a user to a course. It performs two main operations, retrieve
 - Parameter: coursevers
    - Type: String
    - Description: Specific course version. Stored as varchar(8) in the database
+
+- Parameter: term
+   - Type: varchar
+   - Description: Representing the term. Stored as varchar(10) in the database
 
 ## Calling Methods
 - POST
@@ -93,7 +97,7 @@ accessed.js
 Function removeUserFromCourse()
 
 ## Description
-Removes a user from the current course-version, retrives UID with ajax POST, then deletes user with opt DELETE.
+Removes a user from the current course-version, retrieves UID with ajax POST, then deletes user with opt DELETE.
 
 ## Input Parameters
 - Parameter: opt
@@ -255,9 +259,9 @@ Updates course information in the system, such as course name, visibility, code,
    - Type: String
    - Description: Specifies the action  
 
-- Parameter: githubURL
+- Parameter: courseGitURL
    - Type: varchar
-   - Description: FUll repo URL
+   - Description: Full repo URL. Stored as varchar(1024) in the database
 
 ## Calling Methods
 - POST
@@ -367,9 +371,9 @@ Function: FetchGitHubRepo()
 Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false.
 
 ## Input Parameters
-- Parameter: gitHubURL
-   - Type: ?
-   - Description: Full repo URL, Describe parameter. Stored as *varchar(256)* in the database
+- Parameter: courseGitURL
+   - Type: varchar
+   - Description: Full repo URL. Stored as varchar(1024) in the database
 
 - Parameter: action
    - Type: String
@@ -439,9 +443,9 @@ This function sends a GitHub repository URL of the latest commit from the GitHub
 The latest commit is then stored in the database.
 
 ## Input Parameters
-- Parameter: gitHubURL
-   - Type: int
-   - Description: Full repo URL. Describe parameter. Stored as *int(11)* in the database
+- Parameter: courseGitURL
+   - Type: varchar
+   - Description: Full repo URL. Stored as varchar(1024) in the database
 
 - Parameter: action
    - Type: String
@@ -510,9 +514,9 @@ It sends a POST request to gitcommitService.php fetches and stores the latest co
 Returns true on success or false on failure. 
 
 ## Input Parameters
-- Parameter: gitHubURL
-   - Type: ?
-   - Description: New repository URL for the course. Stored as *varchar(256)* in the database
+- Parameter: courseGitURL
+   - Type: varchar
+   - Description: Full repo URL. Stored as varchar(1024) in the database
 
 -- Parameter: cid
    - Type: int
@@ -587,9 +591,9 @@ It sends a POST request to gitcommitService.php with the course ID and user to r
    - Type: int
    - Description: Course ID whose repo should be refreshed. Stored as int(10) in the database
 
-- Parameter: user
-   - Type: ?
-   - Description: Logged-in user ID. Stored as *int(11)* in the database
+- Parameter: uid
+   - Type: int
+   - Description: The user ID. Stored as int(10) in the database
   
 - Parameter: action
    - Type: String
@@ -662,16 +666,16 @@ Function updateGithubRepo()
 Sends an updated GitHub repository URL and course ID to database in order to save it. returns true if successful or false if an error occurs.
 
 ## Input Parameters
-- Parameter: githubURL
-   - Type: ?
-   - Description: Repo root URL. Stored as *varchar(256)* in the database
+- Parameter: courseGitURL
+   - Type: varchar
+   - Description: Full repo URL. Stored as varchar(1024) in the database
 
 - Parameter: cid
    - Type: int
    - Description: Course-id whose repo entry should be replaced. Stored as int(10) in the database
 
 - Parameter: token
-   - Type: varchar ?
+   - Type: varchar
    - Description: Personal access-token to use for authenticated requests. Stored as varchar(40) in the database
 
 - Parameter: action
@@ -740,9 +744,9 @@ Function: updateSelectedDir()
 The function updates the selected directory for a course.
 
 ## Input Parameters
-- Parameter: selectDir
-   - Type: ?
-   - Description: Relative path to the directory inside the repo. Stored as *varchar(256)* in the database
+- Parameter: githubDir
+   - Type: varchar
+   - Description: This is used to update the selected directory in the GitHub import workflow. Stored as varchar(255) in the database
 
 - Parameter: cid
    - Type: int
@@ -762,7 +766,7 @@ The function updates the selected directory for a course.
 
 - Output: message
    - Type: String
-   - Description: Explenation status
+   - Description: Explanation status
 ## Examples of Use
 ``` 
 function updateSelectedDir() {
@@ -813,77 +817,6 @@ function updateSelectedDir() {
 ---
 # Name of file/service
 sectioned.js
-Function: retrieveCourseProfile()
-
-## Description
-This function retrives available course versions based on a selected course ID, it sends POST request to fetch course version and display dropdown with reults. 
-
-## Input Parameters
-- Parameter: cid
-   - Type: int
-   - Description: Course-id currently selected in the UI. Stored as int(10) in the database
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: versids
-   - Type: array
-   - Description: Every object contains a versid string. Stored as varchar(8) in the database
-
-- Output: error
-   - Type: String
-   - Description: Error description if the query failed
-
-## Examples of Use
-``` 
-function retrieveCourseProfile(userid) {
-  $(".selectLabels label input").attr("disabled", true);
-  var cid = '';
-  $("#cid").change(function () {
-    cid = $("#cid").val();
-    if (($("#cid").val()) != '') {
-      $("#versid").prop("disabled", false);
-      $.ajax({
-        url: "../Shared/retrievevers.php",
-        data: { cid: cid },
-        type: "POST",
-        success: function (data) {
-          var item = JSON.parse(data);
-          $("#versid").find('*').not(':first').remove();
-          $.each(item.versids, function (index, item) {
-            $("#versid").append("<option value=" + item.versid + ">" + item.versid + "</option>");
-          });
-
-        },
-        error: function () {
-          console.log("*******Error*******");
-        }
-      });
-
-    } else {
-      $("#versid").prop("disabled", true);
-    }
-
-  });
-  if (($("#versid option").length) <= 2) {
-    $("#versid").click(function () {
-      getStudents(cid, userid);
-    });
-  } else if (($("#versid option").length) > 2) {
-    $("#versid").change(function () {
-      getStudents(cid, userid);
-    });
-  }
-}
-``` 
-
-### Microservices Used
-- retrievevers.php
-
----
-# Name of file/service
-sectioned.js
 Function getStudents()
 
 ## Description
@@ -894,9 +827,9 @@ This function retrieves student, split into “Finished” and “Non-finished�
    - Type: int
    - Description: Course-ID chosen. Stored as int(10) in the database
 
-- Parameter: remove_student
-   - Type: ?
-   - Description: The author’s own userid so she doesn’t appear in the list. Stored as ? in the database
+- Parameter: uid
+   - Type: int
+   - Description: The user ID. Stored as int(10) in the database
 
 - Parameter: versid
    - Type: String
@@ -966,7 +899,7 @@ sectioned.js
 Function: retrieveAnnouncementsCards()
 
 ## Description
-This function retrives and displays announcements relevant to a user for a given course and version.
+This function retrieves and displays announcements relevant to a user for a given course and version.
 
 ## Input Parameters
 - Parameter: username
@@ -985,7 +918,7 @@ This function retrives and displays announcements relevant to a user for a given
 - GET
 
 ## Output Data and Format
-- Output: retriveAnnouncementCard
+- Output: retrieveAnnouncementCard
    - Type: HTML
    - Description: Fully rendered markup
 
@@ -1057,8 +990,8 @@ This function updates the read status of an announcement for a user. It fetches 
 
 ## Input Parameters 
 - Parameter: announcementid
-   - Type: ?
-   - Description: ID of the announcement card you’re marking as read, tells the server exactly which announcement to update. Stored as ? in the database
+   - Type: int
+   - Description: ID of the announcement card you’re marking as read, tells the server exactly which announcement to update. Stored as int(10) in the database
 
 - Parameter: cid
    - Type: int
@@ -1120,8 +1053,8 @@ The function retrieves and displays recent feedback for the logged-in student.
    - Description: Sent to retrieveUserid.php so the server can translate it into an internal uid. Stored as varchar(80) in the database 
 
 - Parameter: studentid (uid)
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: int
+   - Description: Describe parameter. Stored as int (10) in the database
 
 ## Calling Methods 
 - GET (retrieveUserid.php)  
@@ -1284,11 +1217,11 @@ This function is responsible for storing code examples from GitHub repository in
 
 - Parameter: codeExamplesContent
    - Type: Array
-   - Description: Array returned by the GitHub API, each element contains fields such as, sha, path, size.. Stored as *int(11)* in the database
+   - Description: Array returned by the GitHub API, each element contains fields such as, sha, path, size.. 
 
-- Parameter: githubURL
-   - Type: ?
-   - Description: Root URL of the repo. Stored as ? in the database
+- Parameter: courseGitURL
+   - Type: varchar
+   - Description: Full repo URL. Stored as varchar(1024) in the database
 
 - Parameter: fileName
    - Type: String
@@ -1369,11 +1302,11 @@ The function loads and displays a preview window for file editing. It replaces t
 ## Input Parameters 
 - Parameter: path
    - Type: String
-   - Description: Relative/absolute path to the file that should be edited. Stored as ? in the database
+   - Description: Relative/absolute path to the file that should be edited. Stored as varchar(128) in the database
 
-- Parameter: name
-   - Type: ?
-   - Description: File name shown in the editor header. Stored as ? in the database
+- Parameter: fileName
+   - Type: String
+   - Description: Filename. Stored as varchar(256) in the database
 
 - Parameter: kind
    - Type: int
@@ -1441,8 +1374,12 @@ This function sends a diagram from diagram editor to the backend for saving. It 
 
 ## Input Parameters 
 - Parameter: dia
-   - Type: ?
-   - Description: Data to save. Stored as ? in the database
+   - Type: javascript
+   - Description: Data to save
+
+- Parameter: hash
+   - Type: varchar
+   - Description: Data to save. Stored as varchar(8) in the database
 
 ## Calling Methods 
 - POST 
@@ -1478,10 +1415,6 @@ folder’s fresh project page.
 - Parameter: doc
    - Type: HTMLElement
    - Description: A control whose value contains the folder name the user chose.
-
-- Parameter: getID
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
 
 ## Calling Methods 
 - POST 
@@ -1523,17 +1456,17 @@ Function: loadFile()
 This function is used to load and display a specific file (Markdown, plain text, or other content types) within the preview window. It updates the UI and sends a POST request to showdoc.php to fetch the file contents for preview. 
 
 ## Input Parameters 
-- Parameter: fileUrl
-   - Type: ?
-   - Description: Full/relative path to the file. Stored as *varchar(256)* in the database
+- Parameter: filepath
+   - Type: varchar
+   - Description: Full/relative path to the file. Stored as varchar(256) in the database
 
 - Parameter: fileName
    - Type: String
    - Description: Filename. Stored as varchar(256) in the database
 
-- Parameter: fileKind
-   - Type: Tinyint ?
-   - Description: Storage class, 1 = Link, 2 = Global, 3 = Course local, 4 = Local. Stored as ? in the database
+- Parameter: Kind
+   - Type: int
+   - Description: Storage class, 1 = Link, 2 = Global, 3 = Course local, 4 = Local. Stored as int(10) in the database
 
 - Parameter: coursevers
    - Type: String
@@ -1581,17 +1514,17 @@ Function: loadPreview()
 The function is responsible for previewing a file's content in a read-only format. It sets up the preview UI for the selected file, displays the preview window, and makes a POST request to showdoc.php to retrieve the file's content. This function is intended for viewing only, not editing. 
 
 ## Input Parameters 
-- Parameter: fileUrl
-   - Type: ?
-   - Description: Full/relative path to the file. Stored as *varchar(256)* in the database
+- Parameter: filepath
+   - Type: varchar
+   - Description: Full/relative path to the file. Stored as varchar(256) in the database
 
 - Parameter: fileName
    - Type: String
    - Description: Filename. Stored as varchar(256) in the database
 
-- Parameter: fileKind
-   - Type: Tinyint ?
-   - Description: Storage class, 1 = Link, 2 = Global, 3 = Course local, 4 = Local. Stored as ? in the database
+- Parameter: Kind
+   - Type: int
+   - Description: Storage class, 1 = Link, 2 = Global, 3 = Course local, 4 = Local. Stored as int(10) in the database
 
 - Parameter: coursevers
    - Type: String
@@ -1735,9 +1668,9 @@ This function handles the password change process for a user. It collects the cu
    - Type: String
    - Description: The current password of the user. Stored as varchar(225) in the database
 
-- Parameter: $newPassword
-   - Type: int
-   - Description: The new password the user wants to change to. Stored as varchar(225) in the database
+- Parameter: newPassword
+   - Type: varchar
+   - Description: The new password the user wants to change to. Stored as tinyint(1) in the database
 
 - Parameter: action
    - Type: String
@@ -1866,9 +1799,9 @@ pushnotificationsserviceworker.js
 This service handles browser push notifications, push events, displays a notification with confirmation message. 
 
  ## Input Parameters 
-- Parameter: subscription.endpoint 
+- Parameter: endpoint 
    - Type: String
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Describe parameter. Stored as varchar(500) in the database
 
 - Parameter: action
    - Type: String
