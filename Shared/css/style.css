@@ -8426,7 +8426,7 @@ only screen and (max-device-width: 568px) {
 .markdownPrev {
   border: solid var(--color-border-4);
   flex-grow:1;
-  max-width: 50%;
+  max-width: 44%;
   /*
   width: 56%;
   height: 80%;
@@ -9058,8 +9058,6 @@ div > div > .shortcut-keys:hover {
 
 #headerIcon {
   margin-top: 2px;
-  margin-left: 4px;
-  margin-right: 6px;
   background: none;
   border: none;
   font: inherit;
@@ -9075,6 +9073,7 @@ div > div > .shortcut-keys:hover {
   right: 0;
   top: 10%;
   position: fixed;
+  padding: 0%;
 }
 
 .editFileCode {
