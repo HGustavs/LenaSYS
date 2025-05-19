@@ -163,7 +163,6 @@ function drawLine(line, targetGhost = false) {
             offset.x1 = -15;
 
         }
-
         lineStr += `<line 
                     id='${line.id}' 
                     x1='${fx + offset.x1 * zoomfact}' 
@@ -225,15 +224,22 @@ function drawLine(line, targetGhost = false) {
     }else{
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
+            let felem, telem;
+            felem = data[findIndex(data, line.fromID)];
+            telem = data[findIndex(data, line.toID)];
+            angleDeg = findRotation(felem,telem,line);
             const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
-            lineStr += iconPoly(SD_ARROW[line.ctype], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK);
+            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,angleDeg);
         }
 
         // Handle end arrow
         if (line.endIcon === SDLineIcons.ARROW) {
+            let felem, telem;
+            felem = data[findIndex(data, line.fromID)];
+            telem = data[findIndex(data, line.toID)];
+            let angleDeg = findRotation(felem,telem,line);
             const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
-            const reverseCtype = line.ctype.split('').reverse().join('');
-            lineStr += iconPoly(SD_ARROW[reverseCtype], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK);
+            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,angleDeg);
         }
     }    
         
@@ -414,6 +420,29 @@ function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth 
     } else if (position === "end") {
         return { x: tx - offsetX, y: ty - offsetY };
     }
+}
+
+function findRotation(felem,telem,line){
+    let angleRad;
+    switch(line.ctype){
+        case "RL":
+            angleRad = Math.atan2((telem.y - (felem.height/2)) - (felem.y - (felem.height/2)), telem.x - felem.x - felem.width); // in radians     
+            break;
+        case "LR":
+            angleRad = Math.atan2((telem.y - (felem.height/2)) - (felem.y - (felem.height/2)), telem.x + telem.width - felem.x); // in radians
+            break;
+        case "TB":
+            angleRad = Math.atan2(telem.y - felem.y-felem.height, (telem.x - (felem.width/2)) - (felem.x - (felem.width/2))); // in radians     
+            break;
+        case "BT":
+            angleRad = Math.atan2(telem.y-telem.height - felem.y, (telem.x - (felem.width/2)) - (felem.x - (felem.width/2))); // in radians
+            break;
+        default: 
+            angleRad = 0;
+            break;
+    }
+        
+    return angleRad * (180 / Math.PI);   // convert to degrees
 }
 
 /**
@@ -970,7 +999,7 @@ function iconCircle([a, b, c], x, y, lineColor,) {
  * @param {Object} fill Its the color to fill the icons.
  * @returns Returns the icons for the polyline.
  */
-function iconPoly(arr, x, y, lineColor, fill) {
+function iconPoly(arr, x, y, lineColor, fill, rotation = 0) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
         const [a, b] = arr[i];
@@ -978,7 +1007,7 @@ function iconPoly(arr, x, y, lineColor, fill) {
     }
     return `<polyline 
                 points='${s}' 
-                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}' transform='rotate(${rotation}, ${x},${y})'
             />`;
 }
 
