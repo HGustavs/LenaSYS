@@ -237,14 +237,14 @@ const updateCourseUsers = function(removePopup) {
 
 function addSingleUser() {
 
-	var newUser = new Array();
-	newUser.push(document.querySelector("#addSsn").value);	
+	const newUser = new Array();
+	//newUser.push(document.querySelector("#addSsn").value);
 	newUser.push(document.querySelector("#addFirstname").value);
 	newUser.push(document.querySelector("#addLastname").value);
 	newUser.push(document.querySelector("#addEmail").value);
-	newUser.push(document.querySelector("#addCid").value);
+	//newUser.push(document.querySelector("#addCid").value);
 	newUser.push(document.querySelector("#addTerm").value);
-	newUser.push(document.querySelector("#addPid").value);
+	//newUser.push(document.querySelector("#addPid").value);
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
@@ -263,25 +263,25 @@ function verifyUserInputForm(input) {
 	var verifyString = '';
 
 	// Verify first name
-	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
+	if(verifyString = validateName(input[0])) {		// Returns null if there is no error
 		toast("error",verifyString, 7);
 		return false;
 	}
 
 	// Verify last name
-	if(verifyString = validateName(input[2])) {		// Returns null if there is no error
+	if(verifyString = validateName(input[1])) {		// Returns null if there is no error
 		toast("error",verifyString, 7);
 		return false;
 	}
 
 	// Verify email
-	if(verifyString = validateEmail(input[3])) {	// Returns null if there is no error
+	if(verifyString = validateEmail(input[2])) {	// Returns null if there is no error
 		toast("error",verifyString, 7);
 		return false;
 	}
 
 	// Verify term
-	if(verifyString = validateTerm(input[5])) {	// Returns null if there is no error
+	if(verifyString = validateTerm(input[3])) {	// Returns null if there is no error
 		toast("error",verifyString, 7);
 		return false;
 	}
@@ -383,7 +383,7 @@ function tooltipEmail() {
 //---------------------------------------------------------------------------------------------------
 
 function validateTerm(term) {
-	if(term.match(/^(HT-|VT-)\d{2}$/gm) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
+	if(term.match(/^(HT-|VT-)\d{2}$/) == null ) return 'The term must be in format "VT-10" '; //must follow "HT/VT-XX" format
 	return null; //the provided term is correct
 }
 
