@@ -55,7 +55,7 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
 
     //separe statement when more than 2 lines are created
     //Moastly the same from above but with a check for 3 lines
-    } else if(numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4)){
+    } else if(fromElement.kind != elementTypesNames.sequenceActivation && numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4)){
         let newLine = {
             id: makeRandomID(),
             fromID: fromElement.id,
@@ -101,7 +101,7 @@ function checkConnectionErrors(to, from) {
 }
 
 function sequenceDrawError(from, to) {
-    if (from.kind === elementTypesNames.sequenceObject)
+    if (from.kind === elementTypesNames.sequenceActivation)
     {
         const fromTop = from.y;
         const fromBottom = from.y + from.height;
