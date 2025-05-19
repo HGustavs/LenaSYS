@@ -3084,19 +3084,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
   });
   document.addEventListener("click", function (e) {
-    const target = e.target.closest("#announcementBurger");
-    if(target){
-      sessionStorage.removeItem("closeUpdateForm");
-      if(document.getElementById("announcementBoxOverlay").style.display==="none" ||
-      window.getComputedStyle(document.getElementById("announcementBoxOverlay")).display === "none"){
-        document.getElementById("announcementBoxOverlay").style.display="block";
-      }
-      else{
-        document.getElementById("announcementBoxOverlay").style.display="none";
-      }
-    }
-  });
-  document.addEventListener("click", function (e) {
     const target = e.target.closest(".createBtn");
     if(target){
       sessionStorage.setItem('closeUpdateForm', true);
