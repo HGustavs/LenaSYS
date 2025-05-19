@@ -218,7 +218,7 @@
 			</div>
 		</div>
 
-		<!-- + button --->
+		<!-- + button -->
 
 
 		<div id='Sectionlist'>
