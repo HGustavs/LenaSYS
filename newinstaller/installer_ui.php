@@ -8,6 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<?php include 'tools/components.php'; ?>
 	<?php include 'tools/modal.php'; ?>
+	<?php include 'tools/configuration_manager.php'; ?>
+	<?php include 'tools/permissions.php'; ?>
 	<script defer src="tools/modal.js"></script>
 	<script defer src="tools/components.js"></script>
 	<script defer src="tools/sse_receiver.js"></script>
@@ -95,12 +97,20 @@
 					<div class="inner-wrapper">
 						<div class="input-grid">
 							<?php
-								inputField("db_name", "Database name:", "text");
-								inputField("username", "MySQL user:", "text");
-								inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"');
-								inputField("password", "MySQL user password:", "password");
+								$ConfigurationManager = new ConfigurationManager("../../coursesyspw.php");
+								$parameters = $ConfigurationManager->read_parameters();
 
-								checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
+								inputField("db_name", "Database name:", "text", $parameters["DB_NAME"]);
+								inputField("username", "MySQL user:", "text", $parameters["DB_USER"]);
+								inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"', $parameters["DB_HOST"]);
+								inputField("password", "MySQL user password:", "password", $parameters["DB_PASSWORD"]);
+								
+								if (!empty($parameters["DB_USING_DOCKER"])) {
+									checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment", $parameters["DB_USING_DOCKER"]);
+								} else {
+									checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
+								}
+
 								checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
 								checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
 								checkbox("overwrite_user", "Overwrite existing user");
