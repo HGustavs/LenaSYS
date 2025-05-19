@@ -106,7 +106,7 @@ function returnedDugga(data) {
 		if (canvas) {
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "UNK";
-			retdata = jQuery.parseJSON(data['param']);
+			retdata = JSON.parse(data['param']);
 			if (data["answer"] !== null && data["answer"] !== "UNK") {
 				var previous = data['answer'].split(',');
 				previous.shift();
@@ -165,7 +165,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block"
+
 	}
 	running = true;
 	canvas = document.getElementById('a');
@@ -176,7 +177,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			renderId=undefined;
 	}
 	var studentPreviousAnswer = "UNK";
-	var p = jQuery.parseJSON(param);
+	var p = JSON.parse(param);
 	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
