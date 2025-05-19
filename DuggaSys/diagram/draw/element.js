@@ -65,8 +65,8 @@ function drawElement(element, ghosted = false) {
             cssClass = 'ie-element';
             // Inheritance relations sit behind other IE elements
             style = element.name == "Inheritance" ?
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:;` :
-             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:1;`;
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:${zLevel};`:
+             `left:0; top:0; width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
 
             //UML state‑diagram nodes
@@ -77,7 +77,7 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, initVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
         case elementTypesNames.UMLFinalState:
             let finalVec = `
@@ -100,34 +100,29 @@ function drawElement(element, ghosted = false) {
                 </g>`;
             divContent = drawElementState(element, finalVec);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:2;`;
+            style = `width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
         case elementTypesNames.UMLSuperState:
             divContent = drawElementSuperState(element, textWidth, boxw, boxh, linew);
             cssClass = 'uml-Super';
-            zLevel = 1;    // Background layer for composite states
             break;
 
             //UML sequence‑diagram widgets
         case elementTypesNames.sequenceActor:
             divContent = drawElementSequenceActor(element, textWidth, boxw, boxh, linew, texth);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 2;
             break;
         case elementTypesNames.sequenceObject:
             divContent = drawElementSequenceObject(element, boxw, boxh, linew);
             mouseEnter = 'mouseEnterSeq(event);';
-            zLevel = 2;
             break;
         case elementTypesNames.sequenceActivation:
             divContent = drawElementSequenceActivation(element, boxw, boxh, linew);
-            zLevel = 3;    // Always on top of actor/object boxes
             break;
         case elementTypesNames.sequenceLoopOrAlt:
             // Expand for each alternative block rendered below the header
             let height = boxh + (element.alternatives.length ?? 0) * zoomfact * 125;
             divContent = drawElementSequenceLoopOrAlt(element, boxw, height, linew, texth);
-            zLevel = 0;   // Below messages and activations
             break;
 
         //Legacy sticky note
