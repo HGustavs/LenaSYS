@@ -55,6 +55,27 @@ if (isset($_GET['ms_name'])) {
         <h1>Microservice Directory</h1>
     </div>
     <a href="microserviceUI.php" class="a-button">Back to microserviceUI</a>
+    <div id="add_container">
+        <h3>Add dependency</h3>
+        <form method="POST" action="">
+            <label for="microservice_id">Microservice:</label>
+            <select name="microservice_id" required>
+                <?php foreach ($services as $service): ?>
+                    <option value="<?= $service['id'] ?>"><?= htmlspecialchars($service['ms_name']) ?></option>
+                <?php endforeach; ?>
+            </select><br><br>
+
+            <label for="depends_on_id">Depends on:</label>
+            <select name="depends_on_id" required>
+                <?php foreach ($services as $service): ?>
+                    <option value="<?= $service['id'] ?>"><?= htmlspecialchars($service['ms_name']) ?></option>
+                <?php endforeach; ?>
+            </select><br><br>
+            <label for="path">Path:</label>
+            <input type="text" name="path" required><br><br>
+            <input type="submit" name="add_dependency" value="Add Dependency">
+        </form>
+    </div>
     <?php    
     if (isset($dbError)) {
         echo "<p class='error_message'>" . $dbError . "</p>";
