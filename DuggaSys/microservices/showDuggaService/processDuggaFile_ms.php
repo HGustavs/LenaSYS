@@ -3,31 +3,22 @@
 // processDuggafile_ms.php - Retreive all submissions Uses service selectFromTableSubmission to get information it requires from submission.
 //---------------------------------------------------------------------------------------------------------------
 
-
+// All services to include
 date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
+include_once "../curlService.php";
 
 // Connect to database
 pdoConnect();
 
-$courseid;
-$coursevers;
-$duggaid;
-$duggainfo;
-$moment;
-
-
-// Handle incoming POST request
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	if (isset($_POST['courseid'], $_POST['coursevers'])) {
-		$courseid = $_POST['courseid'];
-		$coursevers = $_POST['coursevers'];
-		$duggaid = $_POST['duggaid'];
-		$duggainfo = $_POST['duggainfo'];
-		$moment = $_POST['moment'];
-	}
-}
+// Uses curlService.php to verify the receiving data
+$data = recieveMicroservicePOST(['courseid', 'coursevers', 'duggaid', 'duggainfo', 'moment']);
+$courseid = $data['courseid'];
+$coursevers = $data['coursevers'];
+$duggaid = $data['duggaid'];
+$duggainfo = $data['duggainfo'];
+$moment = $data['moment'];
 
 $files = array();
 
