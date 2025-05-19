@@ -365,7 +365,6 @@ createListEntry_ms.php
 ##### sharedMicroservices
 - sharedMicroservices/createNewCodeExample_ms.php
 - sharedMicroservices/updateSecurityQuestion_ms.php
-- sharedMicroservices/updateSecurityQuestion_ms.php
 - sharedMicroservices/updateUserPassword_ms.php
 - sharedMicroservices/retrieveUsername_ms.php
 
@@ -413,7 +412,7 @@ createListEntry_ms.php
 - duggaedService/createDuggaVariant_ms.php
 - duggaedService/updateDuggaVariant_ms.php
 
-###### courseedService
+##### courseedService
 - courseedService/changeActiveCourseVersion_courseed_ms.php
 - courseedService/copyCourseVersion_ms.php
 - courseedService/createCourseVersion_ms.php
@@ -433,6 +432,7 @@ createListEntry_ms.php
 - codeviewerService/editCodeExample_ms.php
 - codeviewerService/editContentOfExample_ms.php
 - codeviewerService/updateCodeExampleTemplate_ms.php
+- codeviewerService/retrieveCodeviewerService_ms.php
 
 ##### accessedService
 
