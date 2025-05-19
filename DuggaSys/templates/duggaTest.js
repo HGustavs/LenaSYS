@@ -348,13 +348,12 @@ function resetBitstring(){
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
-function toggleInstructions()
-{
-    $(".instructions-content").slideToggle("slow");
-
+function toggleInstructions(){
+	const toggleInstruct = document.querySelector(".instructions-content");	
+	toggleInstruct.classList.toggle("hidden");
 }
 
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
+function toggleFeedback(){
+	const toggleFeed = document.querySelector(".feedback.content");
+	toggleFeed.classList.toggle("hidden");
 }
