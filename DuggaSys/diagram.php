@@ -98,6 +98,10 @@
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
+    <div class="icon-wrapper-sidebar" onclick="secondToolbarToggle()">
+        <i class="material-icons toggle-chevron-sidebar">keyboard_arrow_up</i>
+    </div>
+
     <!-- The chevron/arrows used for toggling the diagram-toolbar-->
     <div class="icon-wrapper" onclick="toggleToolbar();">
         <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
@@ -939,6 +943,79 @@
             </div>
         </div>
     </div>
+
+
+    <!--Mobile sidebar-->
+    <nav id="mb-diagram-sidebar">
+        <ul class="mb-nav-list">
+        <?php
+            if (checklogin()) {
+                echo '
+                <li  class="mb-nav-item" title="Log out">
+                    <div class="mb-toolbar-box mb-toolbar-main active">
+                        <button id="mb-logoutButton">
+                            <img src="../Shared/icons/logout_button.svg" />
+                        </button>
+                    </div>
+                </li>
+                ';
+            } else {
+                echo '
+                <li  class="mb-nav-item" title="Log in">
+                    <div class="mb-toolbar-box mb-toolbar-main active">
+                        <button id="mb-loginButton">
+                            <img src="../Shared/icons/login_button.svg" />
+                        </button>
+                    </div>
+                </li>
+                ';
+            }
+        ?>
+             <li class="mb-nav-item" title="Home">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-Home">
+                        <img src="../Shared/icons/Home.svg">
+                    </button>
+                </div>
+            </li>
+              <li class="mb-nav-item" title="Back">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-backButton">
+                        <img src="../Shared/icons/Up.svg"/>
+                    </button>
+                </div>
+            </li>
+              <li class="mb-nav-item" title="Save Dugga" >
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-saveDuggaButton">
+                        <img src="../Shared/icons/save_button.svg"  > 
+                    </button>
+                </div>
+            </li>
+            <li class="mb-nav-item" title="Load Dugga"> 
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-loadDuggaButton">
+                        <img src="../Shared/icons/Document.svg"> 
+                    </button>
+                </div>
+            </li>
+            <li class="mb-nav-item" title="Reset Dugga">
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-resetDuggaButton">
+                        <img src="../Shared/icons/diagram_Refresh_Button.svg"> 
+                    </button>
+                </div>
+            </li>
+            <li class="mb-nav-item" title="Dark Mode" >
+                <div class="mb-toolbar-box mb-toolbar-main active">
+                    <button id="mb-darkModeButton"> 
+                        <img src="../Shared/icons/ThemeToggle.svg" > 
+                    </button>
+                </div>
+            </li>
+
+        </ul>
+    </nav>
 
     <!-- MOBILE VERSION OF THE DIAGRAM-TOOLBAR, STARTS HERE! -->
     <!-- "mb", stands for mobile -->

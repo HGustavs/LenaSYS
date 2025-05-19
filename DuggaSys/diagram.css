@@ -326,6 +326,7 @@
     }
 }
 
+
 @media (max-width: 414px){
     .icon-wrapper{
         display: block !important;
@@ -337,6 +338,20 @@
         transition: var(--normal-transition);
     }
 
+     .icon-wrapper-sidebar{
+        display: block !important;
+        position: fixed;
+        z-index: 10;
+        right: 10%;
+        top: 50%;
+        transform: translateX(-50%);
+        transition: var(--normal-transition);
+    }
+
+    .icon-wrapper-sidebar.toolbar-active{
+        margin-right: 50px;
+    }
+    
     #diagram-message{
         position: absolute !important;
         top: 50px !important;
@@ -1192,12 +1207,16 @@ button.saveButton {
     display: none;
 }
 
-.toggle-chevron{
+.toggle-chevron, .toggle-chevron-sidebar{
     font-size: 1.4rem;
     background-color: var(--color-background-2);
     padding: .3rem;
     border-radius: 50%;
     color: var(--color-text-secondary);
+}
+
+.toggle-chevron-sidebar{
+    rotate: 270deg;
 }
 
 .diagram-tooltip{
@@ -1217,3 +1236,4 @@ button.saveButton {
         margin: 0;
     }
 }
+

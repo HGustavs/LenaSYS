@@ -1,10 +1,10 @@
 // #region CLASSES
 // ============================================================================================
 // ========================================= CLASSES ==========================================
-
 /**
  * @description Handles storage and retrieval of usage history allowing undoing and redoing changes. Internal data should ONLY be modified through class methods to prevent weird behaviour.
  */
+
 class StateMachine {
     /**
      * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
@@ -525,7 +525,32 @@ function getData() {
             button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
           });
     });
-   
+
+    //Side navbar buttons. (save, load and reset are inside diagram_dugga)
+    document.getElementById("mb-darkModeButton").addEventListener("click", burgerToggleDarkmode);
+    document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it
+        window.location.assign('../DuggaSys/courseed.php');
+    });
+
+    const loginButton = document.getElementById("mb-loginButton");
+    if (loginButton) {
+        loginButton.addEventListener("click", showLoginPopup);
+    }
+
+    const logoutButton = document.getElementById("mb-logoutButton");
+    if (logoutButton) {   
+        logoutButton.addEventListener("click", () => {
+            window.showLogoutPopup();
+            console.log("clicked logout");
+            console.log("is a function: " + typeof LogoutBoxWrapper === "function");
+      });
+    }   
+
+    document.getElementById("mb-backButton").addEventListener("click", () => {
+        history.back();
+    });
+    
+
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
