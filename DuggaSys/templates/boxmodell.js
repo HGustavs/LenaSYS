@@ -84,7 +84,6 @@ function returnedDugga(data)
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -151,7 +150,7 @@ function returnedDugga(data)
 		for (var k=feedbackArr.length-1;k>=0;k--){
 			var fb_tmp = feedbackArr[k].split("%%");
 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById("showFeedbackButton").style.display = "block";
 		} 		
 		fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
@@ -201,8 +200,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth();
+	bitstr += " " + window.innerHeight();
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -215,7 +214,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext('2d');

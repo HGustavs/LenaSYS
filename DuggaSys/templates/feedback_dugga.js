@@ -34,130 +34,132 @@ function returnedDugga(data)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = jQuery.parseJSON(data['param']);
-		$("#submitButtonTable").hide();
-		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px;' type='application/pdf'>";
-		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
-        		// Placeholder code
-				var pl = duggaParams.placeholders;
-				if (pl !== undefined) {
-					for (var m=0;m<pl.length;m++){
-						for (placeholderId in pl[m]) {
-							if (document.getElementById("placeholder-"+placeholderId) !== null){
-								for (placeholderDataKey in pl[m][placeholderId]) {
-									if (pl[m][placeholderId][placeholderDataKey] !== ""){
-										document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
-									} else {
-										document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
+		duggaParams = JSON.parse(data['param']);
+		
+		// Hide the submit button table
+		var submitButtonTable = document.getElementById("submitButtonTable");
+		if (submitButtonTable) {
+			submitButtonTable.style.display = "none";
+		}
+
+		if (duggaParams["type"] === "pdf") {
+			document.getElementById("snus").innerHTML = "<embed src='showdoc.php?cid=" + inParams["cid"] + "&fname=" + duggaParams["filelink"] + "' width='100%' height='800px;' type='application/pdf'>";
+		} else if (duggaParams["type"] === "md" || duggaParams["type"] === "html") {
+			// jQuery AJAX left as-is
+			$.ajax({
+				url: "showdoc.php?cid=" + inParams["cid"] + "&fname=" + duggaParams["filelink"] + "&headers=none",
+				success: function(result) {
+					document.getElementById("snus").innerHTML = result;
+
+					var pl = duggaParams.placeholders;
+					if (pl !== undefined) {
+						for (var m = 0; m < pl.length; m++) {
+							for (var placeholderId in pl[m]) {
+								if (document.getElementById("placeholder-" + placeholderId) !== null) {
+									for (var placeholderDataKey in pl[m][placeholderId]) {
+										if (pl[m][placeholderId][placeholderDataKey] !== "") {
+											document.getElementById("placeholder-" + placeholderId).innerHTML = '<a href="' + pl[m][placeholderId][placeholderDataKey] + '" target="_blank">' + placeholderDataKey + '</a>';
+										} else {
+											document.getElementById("placeholder-" + placeholderId).innerHTML = placeholderDataKey;
+										}
 									}
 								}
 							}
 						}
-					}					
+					}
 				}
-    		}});
-		}else if(duggaParams["type"]==="link"){
-			var filename=duggaParams["filelink"];
-			if(window.location.protocol === "https:"){
-					filename=filename.replace("http://", "https://");
-			}else{
-					filename=filename.replace("https://", "http://");				
+			});
+		} else if (duggaParams["type"] === "link") {
+			var filename = duggaParams["filelink"];
+			if (window.location.protocol === "https:") {
+				filename = filename.replace("http://", "https://");
+			} else {
+				filename = filename.replace("https://", "http://");
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='800px' type='application/pdf'></iframe>"; 
-		}else {
-			// UNK 
+			document.getElementById("snus").innerHTML = "<iframe src='" + filename + "' width='100%' height='800px' type='application/pdf'></iframe>"; 
 		}
 
-		var linkeddugga=duggaParams["linkeddugga"];
+		var linkeddugga = duggaParams["linkeddugga"];
 		for (var duggas in data["files"]) {
-		    // skip loop if the property is from prototype
-		    if (!data["files"].hasOwnProperty(duggas)) continue;
-		
-				if (duggas == parseInt(linkeddugga)){
-					
-					for (var i=0;i<data["files"][duggas].length;i++){
-						//alert(data["files"][duggas][i]);
-						var obj = data["files"][duggas][i];
-						if (obj["fieldnme"]==duggaParams["reportField"]){
-							//alert(obj["filepath"]+obj["filename"]+obj["seq"]+"."+obj["extension"]);
-							var filepath=obj["filepath"];
-							var filename=obj["filename"];
-							var fileseq=obj["seq"];
-							var fileext=obj["extension"];
-							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" style=\"min-height:800px;\"/>" );
-							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
-							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
-						}
-					}					
+			if (!data["files"].hasOwnProperty(duggas)) continue;
+
+			if (duggas == parseInt(linkeddugga)) {
+				for (var i = 0; i < data["files"][duggas].length; i++) {
+					var obj = data["files"][duggas][i];
+					if (obj["fieldnme"] == duggaParams["reportField"]) {
+						var filepath = obj["filepath"];
+						var filename = obj["filename"];
+						var fileseq = obj["seq"];
+						var fileext = obj["extension"];
+						document.getElementById("linkedreport").innerHTML = "<embed src=\"" + filepath + filename + fileseq + "." + fileext + "\" width=\"100%\" height=\"100%\" type=\"application/pdf\" style=\"min-height:800px;\"/>";
+						document.getElementById("feedback-header").innerHTML = "Feedback on " + filename + " submitted: " + obj["updtime"];
+						document.getElementById("report-header").innerHTML = filename + " submitted: " + obj["updtime"];
+					}
 				}
+			}
 		}
-
-
-    /*
-    for (){
-			if (duggaParams["reportField"]===)
-    $("#linkedreport").html(<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" /> ) 
-    }
-		*/
-		//alert(linkeddugga);
 
 		var duggaFiles = data["files"][inParams["moment"]];
 
 		createFileUploadArea(duggaParams["submissions"]);
-		for (var k=0; k < duggaParams["submissions"].length; k++){
-			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
-    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
-					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
-			}
 
+		for (var k = 0; k < duggaParams["submissions"].length; k++) {
+			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname, duggaParams["submissions"][k].type, 0);
+			if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname) {
+				var instrElem = document.getElementById(duggaParams["submissions"][k].fieldname + "Instruction");
+				if (instrElem) {
+					instrElem.innerHTML = duggaParams["submissions"][k].instruction;
+				}
+			}
 		}
-		if (typeof duggaFiles !== "undefined"){
-			for (var version=0; version < duggaFiles.length;version++){				
-				if (duggaFiles[version].kind == "3"){
-					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+
+		if (typeof duggaFiles !== "undefined") {
+			for (var version = 0; version < duggaFiles.length; version++) {
+				if (duggaFiles[version].kind == "3") {
+					var textElem = document.getElementById(duggaFiles[version].fieldnme + "Text");
+					if (textElem !== null) {
+						textElem.innerHTML = duggaFiles[version].content;
 					}
 				}
-			}							
+			}
 		}
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
-
 			// We have previous answer
-
 		}
+
 		// Teacher feedback
 		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-				// No feedback
+			// No feedback
 		} else {
-      	var feedbackArr = data["feedback"].split("||");
-        var fb="";
-        if (feedbackArr.length > 1){
-            fb="<table style='width:100%;border:1px solid #000;table-layout:fixed'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
-    				for (var k=feedbackArr.length-1;k>=0;k--){
-      					var fb_tmp = feedbackArr[k].split("%%");
-      					if (k==feedbackArr.length-1){						
-      						fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"+fb;
-      					} else {
-      						fb+="<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>"+fb_tmp[1]+"</pre></td></tr>";						
-      					}
-    				} 
-    				fb += "</tbody></table>";          
-        } else if (feedbackArr.length == 1){
-            var fb_tmp = feedbackArr[0].split("%%");
-            fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"
-        }
-				document.getElementById('tomten').innerHTML = fb;
-				$("#showFeedbackButton").css("display","block");					
+			var feedbackArr = data["feedback"].split("||");
+			var fb = "";
+			if (feedbackArr.length > 1) {
+				fb = "<table style='width:100%;border:1px solid #000;table-layout:fixed'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
+				for (var k = feedbackArr.length - 1; k >= 0; k--) {
+					var fb_tmp = feedbackArr[k].split("%%");
+					if (k == feedbackArr.length - 1) {
+						fb = "<pre style='width:98%;padding:2px;white-space:pre-wrap'>" + fb_tmp[1] + "</pre>" + fb;
+					} else {
+						fb += "<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>" + fb_tmp[1] + "</pre></td></tr>";
+					}
+				}
+				fb += "</tbody></table>";
+			} else if (feedbackArr.length == 1) {
+				var fb_tmp = feedbackArr[0].split("%%");
+				fb = "<pre style='width:98%;padding:2px;white-space:pre-wrap'>" + fb_tmp[1] + "</pre>";
+			}
+			document.getElementById('tomten').innerHTML = fb;
+
+			var showFeedbackButton = document.getElementById("showFeedbackButton");
+			if (showFeedbackButton) {
+				showFeedbackButton.style.display = "block";
+			}
 		}
-
-
 	}
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
+	displayDuggaStatus(data["answer"], data["grade"], data["submitted"], data["marked"], data["duggaTitle"]);
 }
+
 
 function reset()
 {
@@ -169,12 +171,9 @@ function reset()
     } else {
         
     } 
-
-
 }
 
-function saveClick() 
-{
+function saveClick() {
 	Timer.stopTimer();
 
 	timeUsed = Timer.score;
@@ -189,23 +188,24 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }
 
+
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	if (userStats != null && userStats!==undefined && userStats !== ""){
-      if (userStats[1] != 0 && userStats[3] != 0){
-          document.getElementById('duggaTime').innerHTML=userStats[0];
-      		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-      		document.getElementById('duggaClicks').innerHTML=userStats[2];
-      		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
-      		$("#duggaStats").css("display","block");	      
-      }
+	if (userStats != null && userStats !== undefined && userStats !== "") {
+		if (userStats[1] != 0 && userStats[3] != 0) {
+			document.getElementById('duggaTime').innerHTML = userStats[0];
+			document.getElementById('duggaTotalTime').innerHTML = userStats[1];
+			document.getElementById('duggaClicks').innerHTML = userStats[2];
+			document.getElementById('duggaTotalClicks').innerHTML = userStats[3];
+			document.getElementById("duggaStats").style.display = "block";
+		}
 	}
 
 	inParams = parseGet();
@@ -213,112 +213,101 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	if (param == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = jQuery.parseJSON(param);
-		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
-        		// Placeholder code
-				var pl = duggaParams.placeholders;
-				if (pl !== undefined) {
-					for (var m=0;m<pl.length;m++){
-						for (placeholderId in pl[m]) {
-							if (document.getElementById("placeholder-"+placeholderId) !== null){
-								for (placeholderDataKey in pl[m][placeholderId]) {
-									if (pl[m][placeholderId][placeholderDataKey] !== ""){
-										document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
-									} else {
-										document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
+		duggaParams = jQuery.parseJSON(param); // leave this as is unless you want a native alternative
+
+		if (duggaParams["type"] === "pdf") {
+			document.getElementById("snus").innerHTML = "<embed src='showdoc.php?cid=" + inParams["cid"] + "&fname=" + duggaParams["filelink"] + "' width='100%' height='800px' type='application/pdf'>";
+		} else if (duggaParams["type"] === "md" || duggaParams["type"] === "html") {
+			// AJAX part not converted per instruction
+			$.ajax({
+				url: "showdoc.php?cid=" + inParams["cid"] + "&fname=" + duggaParams["filelink"] + "&headers=none",
+				success: function (result) {
+					document.getElementById("snus").innerHTML = result;
+
+					var pl = duggaParams.placeholders;
+					if (pl !== undefined) {
+						for (var m = 0; m < pl.length; m++) {
+							for (var placeholderId in pl[m]) {
+								if (document.getElementById("placeholder-" + placeholderId) !== null) {
+									for (var placeholderDataKey in pl[m][placeholderId]) {
+										if (pl[m][placeholderId][placeholderDataKey] !== "") {
+											document.getElementById("placeholder-" + placeholderId).innerHTML =
+												'<a href="' + pl[m][placeholderId][placeholderDataKey] + '" target="_blank">' + placeholderDataKey + '</a>';
+										} else {
+											document.getElementById("placeholder-" + placeholderId).innerHTML = placeholderDataKey;
+										}
 									}
 								}
 							}
 						}
-					}					
+					}
 				}
-    		}});
-		}else if(duggaParams["type"]==="link"){
-			var filename=duggaParams["filelink"];
-			if(window.location.protocol === "https:"){
-					filename=filename.replace("http://", "https://");
-			}else{
-					filename=filename.replace("https://", "http://");				
+			});
+		} else if (duggaParams["type"] === "link") {
+			var filename = duggaParams["filelink"];
+			if (window.location.protocol === "https:") {
+				filename = filename.replace("http://", "https://");
+			} else {
+				filename = filename.replace("https://", "http://");
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' min-height='800px' type='application/pdf'></iframe>"; 
-		}else {
-			// UNK 
+			document.getElementById("snus").innerHTML = "<iframe src='" + filename + "' width='100%' min-height='800px' type='application/pdf'></iframe>";
+		} else {
+			// UNK
 		}
-		$("#snus").parent().find(".instructions-content").slideToggle("slow");
+
+		// Converted jQuery slideToggle to simple display toggle (no animation)
+		let instructionsContent = document.getElementById("snus").parentNode.querySelector(".instructions-content");
+		if (instructionsContent) {
+			if (instructionsContent.style.display === "none" || instructionsContent.style.display === "") {
+				instructionsContent.style.display = "block";
+			} else {
+				instructionsContent.style.display = "none";
+			}
+		}
 
 		var duggaFiles = [];
 		if (moment != null) {
 			duggaFiles = files[moment];
-		} 
-		var linkeddugga=duggaParams["linkeddugga"];
+		}
+		var linkeddugga = duggaParams["linkeddugga"];
 		for (var duggas in files) {
-		    // skip loop if the property is from prototype
-		    if (!files.hasOwnProperty(duggas)) continue;
-		
-				if (duggas == parseInt(linkeddugga)){
-					
-					for (var i=0;i<files[duggas].length;i++){
-						var obj = files[duggas][i];
-						if (obj["fieldnme"]==duggaParams["reportField"]){
-							//alert(obj["filepath"]+obj["filename"]+obj["seq"]+"."+obj["extension"]);
-							var filepath=obj["filepath"];
-							var filename=obj["filename"];
-							var fileseq=obj["seq"];
-							var fileext=obj["extension"];
-							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"800px\" type=\"application/pdf\" />" );
-							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
-							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
-						}
-					}					
-				}
-		}
-/*
-		createFileUploadArea(duggaParams["submissions"]);
-		for (var k=0; k < duggaParams["submissions"].length; k++){
-			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 1);
-    		if (duggaParams['uploadInstruction'] !== null){
-				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
-			}
+			if (!files.hasOwnProperty(duggas)) continue;
 
-		}
-*/
-		// ----------------========#############========----------------
-		// This is in show facit marking view NOT official running version!
-		// ----------------========#############========----------------
-/*
-		for (var version=0; version < duggaFiles.length;version++){				
-				if (duggaFiles[version].kind == "3"){
-					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+			if (duggas == parseInt(linkeddugga)) {
+				for (var i = 0; i < files[duggas].length; i++) {
+					var obj = files[duggas][i];
+					if (obj["fieldnme"] == duggaParams["reportField"]) {
+						var filepath = obj["filepath"];
+						var filename = obj["filename"];
+						var fileseq = obj["seq"];
+						var fileext = obj["extension"];
+						document.getElementById("linkedreport").innerHTML =
+							"<embed src=\"" + filepath + filename + fileseq + "." + fileext + "\" width=\"100%\" height=\"800px\" type=\"application/pdf\" />";
+						document.getElementById("feedback-header").innerHTML = "Feedback on " + filename + " submitted: " + obj["updtime"];
+						document.getElementById("report-header").innerHTML = filename + " submitted: " + obj["updtime"];
 					}
 				}
-		}			
-*/
-		// Bring up the feedback tools
+			}
+		}
+
+		// Feedback section
 		document.getElementById('markMenuPlaceholder').style.display = "block";
-//		document.getElementById('markSaveButton').style.display = "block";
-// Teacher feedback
 
-var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
-	var feedbackArr = feedback.split("||");
-	for (var k=feedbackArr.length-1;k>=0;k--){
-		var fb_tmp = feedbackArr[k].split("%%");
-		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre style='white-space:pre-wrap;'>"+fb_tmp[1]+"</pre></td></tr>";
-	} 		
-}
-fb += "</tbody></table>";
-if (document.getElementById('tomten')){
-		document.getElementById('tomten').innerHTML = fb;
-}
-
-	
+		var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		if (feedback !== undefined && feedback !== "UNK" && feedback !== "") {
+			var feedbackArr = feedback.split("||");
+			for (var k = feedbackArr.length - 1; k >= 0; k--) {
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb += "<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>" + fb_tmp[0] + "</td><td><pre style='white-space:pre-wrap;'>" + fb_tmp[1] + "</pre></td></tr>";
+			}
+		}
+		fb += "</tbody></table>";
+		if (document.getElementById('tomten')) {
+			document.getElementById('tomten').innerHTML = fb;
+		}
 	}
 }
+
 
 function closeFacit() 
 {
