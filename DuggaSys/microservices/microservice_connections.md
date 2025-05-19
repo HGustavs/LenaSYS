@@ -262,23 +262,23 @@ Updates course information in the system, such as course name, visibility, code,
 
 - Parameter: githubURL
    - Type: varchar
-   - Description: FUll repo URL. Stored as varchar(256) in the database
+   - Description: FUll repo URL
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- Output: success/error
-   - Type: String
-   - Description:
+- Output: true/false
+   - Type: bool
+   - Description: True if status 200
 
 - Output: message
    - Type: String
-   - Description: Success if the list was fetched, error otherwise.
+   - Description: Returned with 422/503
 
-- Output: course/versions
-   - Type: JSON object
-   - Description: Success if the list was fetched, error otherwise.
+- Output: status
+   - Type: int
+   - Description: Switch/case, 200/422/503
 
 ## Examples of Use
 ``` 
@@ -374,7 +374,7 @@ Used to fetch and validate data from GitHub repository. If successful it return 
 ## Input Parameters
 - Parameter: gitHubURL
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Full repo URL, Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: action
    - Type: ?
@@ -388,9 +388,13 @@ Used to fetch and validate data from GitHub repository. If successful it return 
    - Type: String
    - Description: Present on 422/503, forwarded to the toast
 
-- Output: boolean
-   - Type: true/false
+- Output: true/false
+   - Type: bool
    - Description: true if HTTP 200, otherwise false
+
+- Output: status
+   - Type: int
+   - Description: Switch/case, 200/422/503
 
 ## Examples of Use
 ``` 
@@ -442,7 +446,7 @@ The latest commit is then stored in the database.
 ## Input Parameters
 - Parameter: gitHubURL
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Full repo URL. Describe parameter. Stored as *int(11)* in the database
 
 - Parameter: action
    - Type: ?
@@ -452,9 +456,17 @@ The latest commit is then stored in the database.
 - POST
 
 ## Output Data and Format
-- Output: boolean
-   - Type: true/false
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Output: message
+   - Type: String
+   - Description: Present on 422/503, forwarded to the toast
+
+- Output: true/false
+   - Type: bool 
+   - Description: true if HTTP 200, otherwise false
+
+- Output: status
+   - Type: int
+   - Description: Switch/case, 200/422/503
 
 ## Examples of Use
 ``` 
@@ -505,11 +517,11 @@ Returns true on success or false on failure.
 ## Input Parameters
 - Parameter: gitHubURL
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: New repository URL for the course. Stored as *varchar(256)* in the database
 
 -- Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: action
    - Type: ?
@@ -519,17 +531,17 @@ Returns true on success or false on failure.
 - POST
 
 ## Output Data and Format
-- Output: status
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
 - Output: message
    - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Present on 422/503, forwarded to the toast
 
-- Output: success
+- Output: true/false
    - Type: bool
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: true if HTTP 200, otherwise false
+
+- Output: status
+   - Type: int
+   - Description: Switch/case, 200/422/503
 
 ## Examples of Use
 ``` 
@@ -578,15 +590,11 @@ It sends a POST request to gitcommitService.php with the course ID and user to r
 ## Input Parameters
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: courseid
-   - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course ID whose repo should be refreshed. Stored as int(10) in the database
 
 - Parameter: user
    - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Logged-in user ID. Stored as *int(11)* in the database
   
 - Parameter: action
    - Type: ?
@@ -596,17 +604,17 @@ It sends a POST request to gitcommitService.php with the course ID and user to r
 - POST
 
 ## Output Data and Format
-- Output: data
-   - Type: string
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+- Output: message
+   - Type: String
+   - Description: No repo triggers a success message that is forwarded to toast
 
+- Output: true/false
+   - Type: bool
+   - Description: True if status 200, else false
+  
 - Output: status
    - Type: int
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-  
-- Output: success
-   - Type: bool
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Switch/case, 200 success, 403/422 validation, 503 error
 
 ## Examples of Use
 ``` 
@@ -661,15 +669,15 @@ Sends an updated GitHub repository URL and course ID to database in order to sav
 ## Input Parameters
 - Parameter: githubURL
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Repo root URL. Stored as *varchar(256)* in the database
 
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course-id whose repo entry should be replaced. Stored as int(10) in the database
 
 - Parameter: token
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: varchar ?
+   - Description: Personal access-token to use for authenticated requests. Stored as varchar(40) in the database
 
 - Parameter: action
    - Type: ?
@@ -679,17 +687,17 @@ Sends an updated GitHub repository URL and course ID to database in order to sav
 - POST
 
 ## Output Data and Format
-- Output: status code
+- Output: status
    - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: 200 success, 403 forbidden (bad token), 422 validation, 503 GitHub failure
 
 - Output: message
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Type: JSON
+   - Description: On error, data.responseJSON.message for the toast
 
-- Output: success
+- Output: True/false
    - Type: bool
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: True if status 200, else false
 
 ## Examples of Use
 ``` 
