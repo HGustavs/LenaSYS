@@ -31,8 +31,11 @@ function setup()
 {
 	// Add eventhandler for click to all
 	// buttons that have the class 'hexo'
-	$('.hexo').click(function(){
-		hexClick(this.id);
+	
+	document.querySelectorAll('.hexo').forEach(function(element) {
+		element.addEventListener('click', function() {
+			hexClick(this.id);
+		});
 	});
 
 	AJAXService("GETPARAM",{ },"PDUGGA");
@@ -70,12 +73,12 @@ function returnedDugga(data)
 			alert("UNKNOWN DUGGA!");
 	}else{
 		retdata=jQuery.parseJSON(data['param']);
-    $("#fargnamn").html(retdata['colorname']);
-    if(typeof(retdata['color-url'])==="string"){
-        $("#fargen").attr("src", retdata['color-url']);
-    }else{
-        $("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
-    }
+    document.getElementById('fargnamn').innerHTML = retdata['colorname'];
+	if(typeof(retdata['color-url'])==="string"){
+		document.getElementById('fargen').setAttribute("src", retdata['color-url']);
+	}else{
+		document.getElementById('fargen').setAttribute("src", "templates/color_"+retdata['color']+".png");
+	}
 		// Add our previous answer
 		if (data['answer'] != null){
 			var previous = data['answer'].split(' ');
@@ -132,18 +135,18 @@ function saveClick()
 	// Loop through all bits
 	bitstr="";
 	
-	bitstr+=" "+$("#H0").html();
-	bitstr+=" "+$("#H1").html();
-	bitstr+=" "+$("#H2").html();
-	bitstr+=" "+$("#H3").html();
-	bitstr+=" "+$("#H4").html();
-	bitstr+=" "+$("#H5").html();
+	bitstr+=" "+document.getElementById('H0').innerHTML;
+	bitstr+=" "+document.getElementById('H1').innerHTML;
+	bitstr+=" "+document.getElementById('H2').innerHTML;
+	bitstr+=" "+document.getElementById('H3').innerHTML;
+	bitstr+=" "+document.getElementById('H4').innerHTML;
+	bitstr+=" "+document.getElementById('H5').innerHTML;
 	
-	bitstr+=" "+window.screen.width;
-	bitstr+=" "+window.screen.height;
+	bitstr+=" "+window.innerWidth;
+	bitstr+=" "+window.innerHeight;
 	
-	bitstr+=" "+$(window).width();
-	bitstr+=" "+$(window).height();
+	bitstr+=" "+window.innerWidth;
+	bitstr+=" "+window.innerHeight;
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -175,16 +178,18 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById('duggaStats').style.display = "block";
+
+
 	}
-	$("#feedbackBox").css("display","none");
-	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-  $("#fargnamn").html(p['colorname']);
-  if(typeof(p['color-url'])==="string"){
-      $("#fargen").attr("src", p['color-url']);
-  }else{
-      $("#fargen").attr("src", "templates/color_"+p['color']+".png");
-  }
+	document.getElementById('feedbackBox').style.display = "none";
+	var p = JSON.parse(param.replace(/\*/g, '"'));
+	document.getElementById('fargnamn').innerHTML = p['colorname'];
+	if(typeof(p['color-url'])==="string"){
+		document.getElementById('fargen').setAttribute("src", p['color-url']);
+	}else{
+		document.getElementById('fargen').setAttribute("src", "templates/color_"+p['color']+".png");
+	}
 
 	//$("#fargen").attr("src", p['color']);
 	
@@ -215,8 +220,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	// 		document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	// }
 	
-	$('.fouter').css("background","#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8]);
-		
+document.querySelectorAll('.fouter').forEach(function(element) {
+    element.style.background = "#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8];
+});		
 }
 
 //--------------------================############================--------------------
@@ -231,11 +237,11 @@ function hexClick(divid)
 {
 	ClickCounter.onClick();
 
-	dw=$(window).width();
-	dpos=$("#"+divid).position();
-	dwid=$("#"+divid).width();
-	dhei=$("#"+divid).height();
-	bw=Math.round(dwid)*1.50;
+	dw=window.innerWidth;
+	var element = document.getElementById(divid);
+	dpos = element.getBoundingClientRect();
+	dwid = element.offsetWidth;
+	dhei = element.offsetHeight;
 	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
 	
 	lpos=dpos.left;
@@ -250,14 +256,19 @@ function hexClick(divid)
 	if(hh<160) hh=160;
 	hh+="px";
 	
-	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh})
-	$("#pop").removeClass("arrow-topr");
-	$("#pop").removeClass("arrow-top");
-	$("#pop").addClass(popclass);
+	var popElement = document.getElementById('pop');
+	popElement.style.top = (dpos.dhei+10) + "px";
+	popElement.style.left = lpos + "px";
+	popElement.style.width = bw + "px";
+	popElement.style.height = hh;
+	popElement.classList.remove("arrow-topr");
+	popElement.classList.remove("arrow-top");
+	popElement.classList.add(popclass);
 	
 	hc=divid;
-	$(".submit-button").removeClass("btn-disable");
-}
+	document.querySelectorAll(".submit-button").forEach(function(button) {
+		button.classList.remove("btn-disable");
+	});}
 
 //----------------------------------------------------------------------------------
 // hexClick: Set the actual selected HEX-value
@@ -266,9 +277,9 @@ function hexClick(divid)
 function setval(sval)
 {
 	if(hc!=null){
-		$("#"+hc).html(sval);		
+		document.getElementById(hc).innerHTML = sval;		
 	}
-	$("#pop").css({display:"none"})
+	document.getElementById('pop').style.display = "none";
 }
 
 //----------------------------------------------------------------------------------
@@ -295,10 +306,10 @@ document.addEventListener('click', function(e){
 //----------------------------------------------------------------------------------
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
-}
-
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
+    var element = document.querySelector('.instructions-content');
+    if (element.style.display === "none" || element.style.display === "") {
+        element.style.display = "block";
+    } else {
+        element.style.display = "none";
+    }
 }
