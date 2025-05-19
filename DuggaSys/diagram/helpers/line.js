@@ -54,8 +54,10 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
         result = newLine;
 
     //separe statement when more than 2 lines are created
-    //Moastly the same from above but with a check for 3 lines
-    } else if(fromElement.kind != elementTypesNames.sequenceActivation && numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4)){
+    //Mostly the same from above but with a check for 3 lines
+    } 
+    
+    else if(fromElement.kind === elementTypesNames.sequenceActivation || (numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4))){
         let newLine = {
             id: makeRandomID(),
             fromID: fromElement.id,
@@ -94,23 +96,24 @@ function checkConnectionErrors(to, from) {
     if (sequenceTypeError(from, to)) {
         return `Lines in sequence diagram can only be drawn between sequence activations`;
     }
-    if (sequenceDrawError(from,to)) {
+    // Uses to as from elements since the implementation of activation lines is done this way
+    if (sequenceDrawError(to)) {
         return `Drawn line out of bounds`;
     }
     return '';
 }
 
-function sequenceDrawError(from, to) {
-    if (from.kind === elementTypesNames.sequenceActivation)
-    {
-        const fromTop = from.y;
-        const fromBottom = from.y + from.height;
-        const toTop = to.y;
-        const toBottom = to.y + to.height;
+function sequenceDrawError(from) {
     
-        // Check if the ranges are completely separate
-        return fromBottom < toTop || toBottom < fromTop;
+    if (from.kind === elementTypesNames.sequenceActivation) {
+        const mouseY = lastMousePos.y - from.height;
+        const elementTop = from.y;
+        const elementBottom = from.y + from.height;
+        console.log(mouseY, elementTop, elementBottom, from.height);
+        // Return true if the mouse is outside the element's Y bounds
+        return mouseY < elementTop || mouseY > elementBottom;
     }
+    return false;
 }
 
 function sequenceTypeError(from,to){
