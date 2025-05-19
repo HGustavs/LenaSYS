@@ -62,10 +62,15 @@ function generateContextProperties() {
         str += saveButton('toggleEntityLocked();', 'lockbtn', locked ? "Unlock" : "Lock");
     }
     propSet.innerHTML = str;
-    var inputs = propSet.querySelectorAll('input, textarea');
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('input', function() {
-            saveProperties();
+    
+
+    // Add a blur event to handle undo/redo when the user finishes editing (i.e clicks away or presses Enter) for better undo/redo functionality.
+
+    const nameInput = propSet.querySelector('#elementProperty_name');
+    if (nameInput) {
+        nameInput.addEventListener('blur', () => {
+            const element = context[0];
+            stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
         });
     }
     multipleColorsTest();
@@ -282,7 +287,7 @@ function drawElementProperties(element) {
  * @param {Object} object What types of value the element have.
  * @return Returns a dropdown menu.
  */
-function option(object, icon) {
+function lineOption(object, icon) {
     let result = '';
     Object.values(object).forEach(i => {
         let selected = (i == icon) ? 'selected' : '';
@@ -298,7 +303,7 @@ function option(object, icon) {
  * @return Returns a header for the radio menu and returns the radio menu with the different options.
  */
 
-function radio(line, arr) {
+function lineMode(line, arr) {
     let result = "";
         result = `<h3 style="margin-bottom: 0; margin-top: 5px;">Kinds</h3>`;
         arr.forEach(lineKind => {
@@ -318,7 +323,7 @@ function radio(line, arr) {
  * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
  * @return Returns a dropdown menu with the options as selectable items.
  */
-function select(id, options, inclNone = true, inclChange = true) {
+function selectLineIcons(id, options, inclNone = true, inclChange = true) {
     let none = (inclNone) ? `<option value=''>None</option>` : '';
     let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
     return `<select id='${id}' ${change}>
@@ -349,38 +354,38 @@ function drawLineProperties(line) {
 
     switch (line.type) {
         case entityType.ER:
-            str += radio(line, [lineKind.NORMAL, lineKind.DOUBLE]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DOUBLE]);
             str += `<label style="display: block;">Cardinality:`;
             let optER;
             Object.keys(lineCardinalitys).forEach(cardinality => {
                 let selected = (line.cardinality == cardinality) ? 'selected' : '';
                 optER += `<option value='${cardinality}' ${selected}>${lineCardinalitys[cardinality]}</option>`;
             });
-            str += select('propertyCardinality', optER, true, false);
+            str += selectLineIcons('propertyCardinality', optER, true, false);
             str += `</label>`;
             break;
         case entityType.UML:
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += includeLabel(line);
             str += cardinalityLabels(line);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.IE:
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([UMLLineIcons, IELineIcons], line);
             break;
         case entityType.SD:
             if (!connectedToInitialOrFinal) {
-                let optSD = option(SDLineType, line.innerType);
+                let optSD = lineOption(SDLineType, line.innerType);
                 str += includeLabel(line);
                 str += iconSelection([SDLineIcons], line);
                 str += `<label style="display: block;">Line Type:</label>`;
-                str += select('lineType', optSD, false);
+                str += selectLineIcons('lineType', optSD, false);
             } else {
-                let optSD = option(SDLineType, line.innerType);
+                let optSD = lineOption(SDLineType, line.innerType);
                 str += includeLabel(line);
                 str += `<label style="display: block;">Line Type:</label>`;
-                str += select('lineType', optSD, false);
+                str += selectLineIcons('lineType', optSD, false);
             }
             break;
         case entityType.SE:
@@ -393,7 +398,7 @@ function drawLineProperties(line) {
             }
 
             str += includeSELabel(line);
-            str += radio(line, [lineKind.NORMAL, lineKind.DASHED]);
+            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
             str += iconSelection([SELineIcons], line);
             break;
     }
@@ -411,14 +416,14 @@ function iconSelection(arr, line) {
     let sOptions = '';
     let eOptions = '';
     arr.forEach(object => {
-        sOptions += option(object, line.startIcon)
+        sOptions += lineOption(object, line.startIcon)
     });
     arr.forEach(object => {
-        eOptions += option(object, line.endIcon)
+        eOptions += lineOption(object, line.endIcon)
     });
     return `<label style="display: block;">Icons:</label>`
-        + select('lineStartIcon', sOptions)
-        + select('lineEndIcon', eOptions);
+        + selectLineIcons('lineStartIcon', sOptions)
+        + selectLineIcons('lineEndIcon', eOptions);
 }
 
 /**

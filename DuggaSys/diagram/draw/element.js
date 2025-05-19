@@ -632,11 +632,32 @@ function drawElementERAttr(element, textWidth, boxw, boxh, linew, texth) {
             extra = `class='underline'`;
             break;
     }
+
+        const maxTextWidth = boxw - 10; // leave some margin
+        let displayName = element.name;
+        let estimatedTextWidth = displayName.length * 8;
+
+        let x;
+        let textAnchor;
+
+        if (estimatedTextWidth <= maxTextWidth) {
+            // Text fits – center it
+            x = boxw / 2;
+            textAnchor = "middle";
+        } else {
+            // Text is too long – show first part of text
+            x = 4;
+            textAnchor = "start";
+        }
+
      // Default text label centered
-    content += `<text 
-                    x='${boxw / 2}' y='${hboxh}' ${extra} 
-                    dominant-baseline='middle' text-anchor='middle'
-                > ${element.name} </text>`;
+        content += `<text 
+        x='${x}' 
+        y='${hboxh}' ${extra}
+        dominant-baseline='middle' 
+        text-anchor='${textAnchor}'
+        >${displayName}</text>`;
+    
     return drawSvg(boxw, boxh, content);
 }
 
@@ -679,7 +700,7 @@ function drawElementIERelation(element, boxw, boxh, linew) {
         content += `<line x1="${boxw / 1.6}" y1="${boxw / 2.9}" x2="${boxw / 2.6}" y2="${boxw / 12.7}" stroke='black' />
                     <line x1="${boxw / 2.6}" y1="${boxw / 2.87}" x2="${boxw / 1.6}" y2="${boxw / 12.7}" stroke='black' />`;
     }
-    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew};'`);
+    return drawSvg(boxw, boxh, content, `style='transform:rotate(180deg); stroke-width:${linew}; display: block;'`);
 }
 
 /**
@@ -727,7 +748,7 @@ function drawElementSuperState(element, textWidth, boxw, boxh, linew) {
     let rectTwoWidth = Math.min(textWidth + 80 * zoomfact, boxw - 10);
 
     let rectOne = drawRect(boxw, boxh, linew, element, `fill='none' fill-opacity='0' rx='5'`);
-    let rectTwo = drawRect(rectTwoWidth, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1"`);
+    let rectTwo = drawRect(rectTwoWidth, 50 * zoomfact, linew, element, `fill='${element.fill}' fill-opacity="1" id="cornerLabel"`);
     // State name text inside header
     let text = drawText(20 * zoomfact, 30 * zoomfact, 'start', displayText, `font-size='${20 * zoomfact}px'`);
     
@@ -914,7 +935,7 @@ function drawElementSequenceLoopOrAlt(element, boxw, boxh, linew, texth) {
     }
     // SVG for the small label in top left corner
     content += `<path 
-                id="loopLabel"
+                id="cornerLabel"
                 d="M ${(7 * zoomfact) + linew},${linew}
                     h ${100 * zoomfact}
                     v ${25 * zoomfact}

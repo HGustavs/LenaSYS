@@ -457,3 +457,36 @@ const backgroundElement = [
  * @type {number}
  */
 const maxDeltaBeforeExceeded = 2;
+
+/**
+ * Array that contains the necessary ID:s that is going to be used when you want to create the text for which keybind is used for that element in the tooltip (e.g. tooltip-"POINTER"). 
+ * "data-toolid", stores these indexes 
+ */
+const tooltipID = [
+    "POINTER", //0
+    "BOX_SELECTION", //1
+    "PLACE_ENTITY", //2
+    "PLACE_RELATION", //3
+    "EDGE_CREATION", //4
+    "STATE_INITIAL", //5
+    "SQ_LIFELINE", //6
+    "STATE_SEQUENCE", //7
+    "SEQUENCE_OBJECT", //8
+    "NOTE_ENTITY", //9
+    "CENTER_CAMERA", //10
+    "RESET_DIAGRAM", //11
+    "HISTORY_STEPFORWARD", //12
+    "HISTORY_STEPBACK", //13
+    "TOGGLE_REPLAY_MODE", //14
+    "TOGGLE_ER_TABLE", //15
+    "TOGGLE_TEST_CASE", //16
+    "TOGGLE_ERROR_CHECK", //17
+    "SAVE_DIAGRAM", //18
+    "SAVE_DIAGRAM_AS", //19
+    "LOAD_DIAGRAM", //20
+    "ZOOM_IN", //21
+    "ZOOM_OUT", //22
+    "ZOOM_RESET", //23
+    "OPTIONS", //24
+    "ESCAPE" //25
+];

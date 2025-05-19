@@ -1141,6 +1141,13 @@
     width: 100%;
 }
 
+button.saveButton {
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top:10px;
+  padding-left: 5px;
+}
+
 /*****************
    Confirm buttons
 *****************/
@@ -1211,3 +1218,22 @@
 .toggle-chevron-sidebar{
     rotate: 270deg;
 }
+
+.diagram-tooltip{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    padding: .3rem;
+    border-radius: 10px;
+    color: #f3f3f3;
+    background-color: #060606cb;
+    z-index: 5000;
+    text-align: center;
+    line-height: 1.5;
+
+    >*{
+        margin: 0;
+    }
+}
+
