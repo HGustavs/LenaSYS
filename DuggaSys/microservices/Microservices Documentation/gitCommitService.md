@@ -85,3 +85,45 @@ None
 
 ---
 
+# Name of file/service
+insertIntoSQLite_ms.php
+
+## Description
+Updates the SQLite database with the latest details about a GitHub repository for a specific course, including the most recent commit and token. It makes sure the database record is either updated or inserted and refreshes the repository information if needed.
+
+## Input Parameters
+- Parameter: $githubURL
+   - Type: String
+   - Description: GitHub URL. Stored as varchar(1024) in the database
+
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $token
+   - Type: ?
+   - Description: GitToken
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: $lastCommit
+   - Type: 
+   - Description: The most recent commit hash, received through the 'bfs()' function in 'bfs_ms.php' microservice
+
+- Output: $error
+   - Type: String
+   - Description: Error message if operation fails
+
+- Output: bfs($url, $cid, "REFRESH")
+   - Type:
+   - Description: Updates the database with the latest details, through the 'bfs()' function in 'bfs_ms.php' microservice
+
+## Examples of Use
+-
+
+### Microservices Used
+None
+
+---
