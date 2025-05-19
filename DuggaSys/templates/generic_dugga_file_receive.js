@@ -28,7 +28,7 @@ function setup()
 
 function returnedDugga(data)
 {
-	toggleLoadVariant(false);	//A submission doesn't have any variants. The Next variant button should be disabled.
+	toggleLoadVariant(false); //A submission doesn't have any variants. The Next variant button should be disabled.
 	if(data['isTeacher']==1){
 		isTeacher=1;
 		noUploadForTeacher();
@@ -39,24 +39,23 @@ function returnedDugga(data)
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		$(".submit-button").removeClass("btn-disable");
-		duggaParams = jQuery.parseJSON(data['param']);
+		document.querySelectorAll('.submit-button').forEach(el=>el.classList.remove('btn-disable'));
+		duggaParams = JSON.parse(data['param']);
 		console.log(duggaParams); //for git testing person
 
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
-        		// Placeholder code
-				var pl = duggaParams.placeholders;
+        		document.getElementById("snus").innerHTML=result;
+				// Placeholder code
+	        	var pl = duggaParams.placeholders;
 				if (pl !== undefined) {
 					for (var m=0;m<pl.length;m++){
 						for (placeholderId in pl[m]) {
@@ -86,21 +85,20 @@ function returnedDugga(data)
 		}
 
 		var duggaFiles = data["files"][inParams["moment"]];
-		if($("#submitButtonTable").length != 0) {
+		if(document.getElementById("submitButtonTable")!==null) {
 			createFileUploadArea(duggaParams["submissions"]);
 			for (var k=0; k < duggaParams["submissions"].length; k++){
 				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0);
-	    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
-						console.log(duggaParams["submissions"][k].fieldname+"Instruction")//for git testing person
+    			if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
+					console.log(duggaParams["submissions"][k].fieldname+"Instruction")//for git testing person
 						document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 					}
-
 			}
 			if (typeof duggaFiles !== "undefined"){
 				for (var version=0; version < duggaFiles.length;version++){
 					if (duggaFiles[version].kind == "3"){
 						if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-						 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
+					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
 						}
 					}
 				}
@@ -117,11 +115,8 @@ function returnedDugga(data)
 			// No files uploaded.
 		}
 
-
 		if (data["answer"] == null || data["answer"] !== "UNK") {
-
 			// We have previous answer
-
 		}
 
 
@@ -186,8 +181,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -203,7 +198,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById('duggaStats').style.display="block";
 	}
 
 	inParams = parseGet();
@@ -211,15 +206,15 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 	if (param == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		duggaParams = jQuery.parseJSON(param);
+		duggaParams = JSON.parse(param);
 
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
-        		// Placeholder code
-				var pl = duggaParams.placeholders;
+        		document.getElementById("snus").innerHTML=result;
+				// Placeholder code
+	        	var pl = duggaParams.placeholders;
 				if (pl !== undefined) {
 					for (var m=0;m<pl.length;m++){
 						for (placeholderId in pl[m]) {
@@ -248,7 +243,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 			// UNK
 		}
 
-		$("#snus").parent().find(".instructions-content").slideToggle("slow");
+		var parentEl=document.getElementById("snus").parentElement;
+		if(parentEl){parentEl.querySelectorAll('.instructions-content').forEach(el=>{el.style.display=(el.style.display==='none'||el.style.display==='')?'block':'none';});}
 
 		var duggaFiles = [];
 		if (moment != null) {
