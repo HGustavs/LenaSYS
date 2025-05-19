@@ -92,8 +92,11 @@ function returnedDugga(data)
 									var newTableBody = "<tr id='v" + i +"'>";
 									newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 									newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+									//Arrow up
 									newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
-									newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';	
+									//Arrow down
+									newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
+									//Remove
 									newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 									newTableBody += "</tr>";
 										
@@ -264,8 +267,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 						var newTableBody = "<tr id='v" + i +"'>";
 						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+						//Arrow up
 						newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
+						//Arrow down
 						newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
+						//Remove
 						newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';
 						newTableBody += "</tr>";
 							
@@ -461,6 +467,7 @@ function drawCross(cx, cy, col, size)
 }
 
 function toggleSelectOperation(e){
+	//Select & unselect operations
 		if (e.closest("tr").classList.contains("selectedOp")){
 				e.closest("tr").classList.remove("selectedOp");
 				document.getElementById("addOpButton").value = "Add Op.";
@@ -477,11 +484,12 @@ function toggleSelectOperation(e){
 							sel.classList.remove("selectedOp");
 						}
 				});
-		}		
+		}
 }
 
 function newbutton() 
 {
+	//Check if operation should be added or modified
 	ClickCounter.onClick();
 	var changed = false;
 	var select = document.getElementById('function');
@@ -491,14 +499,15 @@ function newbutton()
 	var rowOp = document.getElementById("operationList").querySelectorAll("tr");
 	rowOp.forEach(function(sel){
 		if(sel.classList.contains("selectedOp")){
+			changed = true;
 			document.querySelectorAll(".selectedOp").forEach(function(sel){
 				sel.querySelector("*[id^=op_]").innerHTML=newOp;
 				sel.querySelector("*[id^=opCode_]").innerHTML=newOpCode;
-				changed = true;
 				toggleSelectOperation(sel);
 			});
 		}
 	});
+	
 	if(!document.getElementById("operationList").classList.contains("selectedOp") && changed === false) {
 		var i = 0;
 		document.getElementById('operationList').querySelectorAll('tr').forEach(function (op){
@@ -509,8 +518,11 @@ function newbutton()
 		var newTableBody = "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
+		//Arrow up
 		newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
+		//Arrow down
 		newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
+		//Remove
 		newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 		newTableBody += "</tr>";
 			
@@ -525,17 +537,34 @@ function refreshOpNum(){
 	document.querySelectorAll("*[id^=opNum]").forEach(function (op){
 			op.innerHTML = idx++;
 	});
+
+	//Odd elements in list
 	const odd = document.getElementById("operationList").querySelectorAll("tr:nth-child(odd)");
 	odd.forEach(element => {
 		element.classList.add("OperationListTableOdd");
 		element.classList.remove("OperationListTableEven");
 	});
 
+	//Even elements in list
 	const even = document.getElementById("operationList").querySelectorAll("tr:nth-child(even)");
 	even.forEach(element => {
 		element.classList.add("OperationListTableEven");
 		element.classList.remove("OperationListTableOdd");
 	});
+
+	//Change text on button if selected element is removed
+	const opList = document.getElementById("operationList");
+	const config = {childList : true, subtree : false};
+	const observer = new MutationObserver(function(nodes){
+		nodes.forEach(function(removal){
+			removal.removedNodes.forEach(element => {
+				if(element.classList.contains("selectedOp") && element.nodeType === 1){
+					document.getElementById("addOpButton").value = "Add Op.";
+				}
+			});
+		});
+	});
+	observer.observe(opList, config);
 }
 
 function drawCommand(cstr) 
