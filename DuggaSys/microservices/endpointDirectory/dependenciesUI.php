@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_dependency'])) {
         }
 
     } else {
-        echo "<p style='color:red;'>A microservice cannot depend on itself!</p>";
+        header("Location: " . $_SERVER['PHP_SELF'] . "?itself=1");
+        exit();
     }
 }
 
@@ -95,7 +96,7 @@ if (isset($_GET['ms_name'])) {
         <h1>Microservice Directory</h1>
     </div>
     <a href="microserviceUI.php" class="a-button">Back to microserviceUI</a>
-    <div id="add_container">
+    <div id="add_container" style="border: 1px solid black; margin-top: 10px; padding: 5px;">
         <h3>Add dependency</h3>
         <form method="POST" action="">
             <label for="microservice_id">Microservice:</label>
@@ -112,7 +113,7 @@ if (isset($_GET['ms_name'])) {
                 <?php endforeach; ?>
             </select><br><br>
             <label for="path">Path:</label>
-            <input type="text" name="path"><br><br>
+            <input type="text" name="path" placeholder="optional"><br><br>
             <input type="submit" name="add_dependency" value="Add Dependency">
         </form>
     </div>
@@ -121,11 +122,19 @@ if (isset($_GET['ms_name'])) {
         echo "<p class='error_message'>" . $dbError . "</p>";
     } else { ?>
         <form method="GET" action="">
-            <label for="ms_name">Enter microservice name</label>
-            <input type="text" id="ms_name" name="ms_name">
+            <label for="ms_name">Search for dependencies</label>
+            <input type="text" id="ms_name" name="ms_name" placeholder="microservice name">
             <input type="submit" value="Submit">
         </form>
         <?php
+        if (isset($_GET['success'])) {
+            echo "<p style='color:green;'>Dependency added successfully!</p>";
+        }
+        if (isset($_GET['exists'])) {
+            echo "<p style='color:red;'>Dependency already exists.</p>";
+        } if (isset($_GET['itself'])) {
+            echo "<p style='color:red;'>A microservice cannot depend on itself!.</p>";
+        }
         if (isset($id)) { 
             if (!empty($dependentServices)) { 
                 echo "<h3>" . $ms_name . " is depending on:</h3>";
