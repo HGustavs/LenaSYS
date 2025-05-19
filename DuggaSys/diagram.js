@@ -2155,7 +2155,19 @@ function showModal() {
         for (let i = 0; i < diagramKeys.length; i++) {
             let wrapper = document.createElement('div');
             const btn = document.createElement('button');
-            const btnText = document.createTextNode(diagramKeys[i]);
+            let btnText;
+
+            // Special button text formatting for mobile so that the load and delete buttons fit within the modal
+            if(isMobile){
+                // Limit the text content for the button to 12 characters (15 with the dots)
+                if(diagramKeys[i].length > 12) {
+                    btnText = document.createTextNode(diagramKeys[i].slice(0, 12) + "...");
+                } else {
+                    btnText = document.createTextNode(diagramKeys[i]);
+                }
+            } else {
+                btnText = document.createTextNode(diagramKeys[i]); // Regular formatting for bigger browsers
+            }
 
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
@@ -2505,10 +2517,12 @@ window.addEventListener("resize", () => {
     if (!settings.ruler.isRulerActive) return;
 
     if (window.innerWidth > 414) {
+        isMobile = false;
         ruler.style.left = "50px";
         ruler.style.top = "0px";
     }
     else {
+        isMobile = true;
         ruler.style.left = "0px";
         ruler.style.top = "0px";
     }
