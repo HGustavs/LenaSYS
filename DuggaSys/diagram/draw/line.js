@@ -601,6 +601,13 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     
     // Special case to handle sequence activation lines
     if (f.kind === elementTypesNames.sequenceActivation) {
+        //console.log(f.y, f.height, t.y);
+        
+        if (f.y > t.y || f.y + f.height < t.y){
+            console.log("utanför");
+            
+        }
+
         const fromKey = `from:${line.id}`;
         const toKey = `to:${line.id}`;
     

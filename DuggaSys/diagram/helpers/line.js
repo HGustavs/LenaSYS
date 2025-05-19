@@ -94,7 +94,23 @@ function checkConnectionErrors(to, from) {
     if (sequenceTypeError(from, to)) {
         return `Lines in sequence diagram can only be drawn between sequence activations`;
     }
+    if (sequenceDrawError(from,to)) {
+        return `Drawn line out of bounds`;
+    }
     return '';
+}
+
+function sequenceDrawError(from, to) {
+    if (from.kind === elementTypesNames.sequenceObject)
+    {
+        const fromTop = from.y;
+        const fromBottom = from.y + from.height;
+        const toTop = to.y;
+        const toBottom = to.y + to.height;
+    
+        // Check if the ranges are completely separate
+        return fromBottom < toTop || toBottom < fromTop;
+    }
 }
 
 function sequenceTypeError(from,to){
