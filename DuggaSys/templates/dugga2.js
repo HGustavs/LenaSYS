@@ -30,8 +30,11 @@ function setup()
 {
 	// Add eventhandler for click to all
 	// buttons that have the class 'hexo'
-	$('.hexo').click(function(){
-		hexClick(this.id);
+	const hexoButtons = document.querySelectorAll('.hexo');
+	hexoButtons.forEach(button => {
+		button.addEventListener('click', function () {
+			hexClick(this.id);
+		});
 	});
 
 	AJAXService("GETPARAM",{ },"PDUGGA");
@@ -53,7 +56,6 @@ function returnedDugga(data)
 		ClickCounter.initialize();
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
-			//console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}
@@ -61,7 +63,6 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`Direct link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 	
@@ -69,8 +70,8 @@ function returnedDugga(data)
 			alert("UNKNOWN DUGGA!");
 	}else{
 		retdata=jQuery.parseJSON(data['param']);
-		$("#fargnamn").html(retdata['colorname']);
-		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+		document.getElementById("fargnamn").innerHTML = retdata['colorname'];
+		document.getElementById("fargen").setAttribute("src", "templates/color_" + retdata['color'] + ".png");
 		// Add our previous answer
 		if (data['answer'] != null){
 			var previous = data['answer'].split(' ');
@@ -97,7 +98,7 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById('showFeedbackButton').style.display = "block";
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -130,18 +131,18 @@ function saveClick()
 	// Loop through all bits
 	bitstr="";
 	
-	bitstr+=" "+$("#H0").html();
-	bitstr+=" "+$("#H1").html();
-	bitstr+=" "+$("#H2").html();
-	bitstr+=" "+$("#H3").html();
-	bitstr+=" "+$("#H4").html();
-	bitstr+=" "+$("#H5").html();
+	bitstr += " " + document.getElementById("H0").innerHTML;
+	bitstr += " " + document.getElementById("H1").innerHTML;
+	bitstr += " " + document.getElementById("H2").innerHTML;
+	bitstr += " " + document.getElementById("H3").innerHTML;
+	bitstr += " " + document.getElementById("H4").innerHTML;
+	bitstr += " " + document.getElementById("H5").innerHTML;
 	
 	bitstr+=" "+window.screen.width;
 	bitstr+=" "+window.screen.height;
 	
-	bitstr+=" "+$(window).width();
-	bitstr+=" "+$(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -160,18 +161,18 @@ function saveClick()
 	// Loop through all bits
 	bitstr="";
 	
-	bitstr+=" "+$("#H0").html();
-	bitstr+=" "+$("#H1").html();
-	bitstr+=" "+$("#H2").html();
-	bitstr+=" "+$("#H3").html();
-	bitstr+=" "+$("#H4").html();
-	bitstr+=" "+$("#H5").html();
+	bitstr += " " + document.getElementById("H0").innerHTML;
+	bitstr += " " + document.getElementById("H1").innerHTML;
+	bitstr += " " + document.getElementById("H2").innerHTML;
+	bitstr += " " + document.getElementById("H3").innerHTML;
+	bitstr += " " + document.getElementById("H4").innerHTML;
+	bitstr += " " + document.getElementById("H5").innerHTML;
 	
 	bitstr+=" "+window.screen.width;
 	bitstr+=" "+window.screen.height;
 	
-	bitstr+=" "+$(window).width();
-	bitstr+=" "+$(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -179,6 +180,7 @@ function saveClick()
 		}
 	});
 }
+
 function reset()
 {
 	if(confirm("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.")){
@@ -205,12 +207,13 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById('duggaStats').style.display = "block";
 	}
-	$("#feedbackBox").css("display","none");
+	document.getElementById('feedbackBox').style.display = "none";
+
 	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-	$("#fargnamn").html(p['colorname']);
-	$("#fargen").attr("src", "templates/color_"+p['color']+".png");
+	document.getElementById('fargnamn').innerHTML = p['colorname'];
+	document.getElementById('fargen').setAttribute("src", "templates/color_" + p['color'] + ".png");
 	
 	// Add our previous answer
 	if (uanswer != null){
@@ -239,8 +242,13 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	}
 	
-	$('.fouter').css("background","#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8]);
-		
+if (previous.length >= 9) {
+		const color = "#" + previous[4] + previous[5] + previous[6] + previous[7] + previous[8] + previous[8];
+		const fouterElems = document.getElementsByClassName('fouter');
+		for (let i = 0; i < fouterElems.length; i++) {
+			fouterElems[i].style.background = color;
+		}
+	}		
 }
 
 //--------------------================############================--------------------
@@ -255,10 +263,12 @@ function hexClick(divid)
 {
 	ClickCounter.onClick();
 
-	dw=$(window).width();
-	dpos=$("#"+divid).position();
-	dwid=$("#"+divid).width();
-	dhei=$("#"+divid).height();
+	const dw = window.innerWidth;
+
+	const elem = document.getElementById(divid);
+	const dpos = elem.getBoundingClientRect(); 
+	const dwid = elem.offsetWidth;
+	const dhei = elem.offsetHeight;
 	bw=Math.round(dwid)*1.50;
 	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
 	
@@ -274,10 +284,15 @@ function hexClick(divid)
 	if(hh<160) hh=160;
 	hh+="px";
 	
-	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh})
-	$("#pop").removeClass("arrow-topr");
-	$("#pop").removeClass("arrow-top");
-	$("#pop").addClass(popclass);
+	const pop = document.getElementById("pop");
+	pop.style.top = (dpos.top + window.scrollY + 10) + "px"; 
+	pop.style.left = lpos + "px";
+	pop.style.width = bw + "px";
+	pop.style.height = hh;
+
+	pop.classList.remove("arrow-topr");
+	pop.classList.remove("arrow-top");
+	pop.classList.add(popclass);
 	
 	hc=divid;
 }
@@ -289,10 +304,16 @@ function hexClick(divid)
 function setval(sval)
 {
 	if(hc!=null){
-		$("#"+hc).html(sval);		
+		const target = document.getElementById(hc);
+		if (target) {
+			target.innerHTML = sval;
+		}	
 	}
-	$("#pop").css({display:"none"})
-}
+
+	const pop = document.getElementById("pop");
+	if (pop) {
+		pop.style.display = "none";
+	}}
 
 
 //----------------------------------------------------------------------------------
@@ -317,12 +338,5 @@ document.addEventListener('click', function(e){
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
-function toggleInstructions()
-{
-    $(".instructions-content").slideToggle("slow");
-}
 
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
-}
+
