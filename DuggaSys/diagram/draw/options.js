@@ -1954,11 +1954,18 @@ function sendToBack(id) {
     const elem = data.find(e => e.id === id);
     if (!elem) return;
 
-    const minZ = Math.min(...data.map(e => e.z ?? 2));
-    elem.z = minZ - 1;
+    const sortedZ = data.map(e => e.z ?? 2).sort((a, b) => a - b);
+    const uniqueZ = [...new Set(sortedZ)];
+
+    // Only set to the current minimum minus one if it's not already at bottom
+    if ((elem.z ?? 2) <= uniqueZ[0]) return;
+
+    elem.z = uniqueZ[0] - 1;
 
     showdata(); // Redraw everything
 }
+
+
 
 
 
