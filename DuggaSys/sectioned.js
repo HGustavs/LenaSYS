@@ -3257,46 +3257,46 @@ function validateUpdateAnnouncementForm() {
 
 // Retrive announcements
 function retrieveAnnouncementsCards() {
-  const currentLocation = location.attributes('href');
-  const url = new URL(currentLocation);
-  const cid = url.searchParams.get("courseid");
-  const versid = url.searchParams.get("coursevers");
-  const uname = document.getElementById("userName").innerHTML;
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: { uname: uname },
-    type: "GET",
-    success: function (data) {
-      var parsed_data = JSON.parse(data);
+  var currentLocation = location.href;
+  var url = new URL(currentLocation);
+  var cid = url.searchParams.get("courseid");
+  var versid = url.searchParams.get("coursevers");
+  var uname = document.getElementById("userName").innerHTML;
+
+  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
+    .then(function (response) { return response.json(); })
+    .then(function (parsed_data) {
       var uid = parsed_data.uid;
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          var parsed_data = JSON.parse(this.response);
-          document.getElementById("announcementCards").innerHTML =
-            parsed_data.retrievedAnnouncementCard;
-          var unread_announcements = parsed_data.nRows;
-          if (unread_announcements > 0) {
-            document.getElementById("announcement img").after("<span id='announcementnotificationcount'>0</span>");
-            document.getElementById("announcementnotificationcount").innerHTML = parsed_data.nRows;
+      fetch("../Shared/retrieveAnnouncements.php?cid=" + encodeURIComponent(cid) +
+        "&versid=" + encodeURIComponent(versid) +
+        "&recipient=" + encodeURIComponent(uid))
+        .then(function (response) { return response.json(); })
+        .then(function (parsed_data) {
+          document.getElementById("announcementCards").innerHTML = parsed_data.retrievedAnnouncementCard;
+
+          if (parsed_data.nRows > 0) {
+            var img = document.getElementById("announcement").querySelector("img");
+            if (img) {
+              var span = document.createElement("span");
+              span.id = "announcementnotificationcount";
+              span.innerHTML = parsed_data.nRows;
+              img.after(span);
+            }
           }
+
           accessAdminAction();
-          var paragraph = "announcementMsgParagraph";
-          readLessOrMore(paragraph);
+          readLessOrMore("announcementMsgParagraph");
           showLessOrMoreAnnouncements();
           scrollToTheAnnnouncementForm();
-          document.querySelector(".deleteBtn").addEventListener("click", function () {
-            sessionStorage.setItem('closeUpdateForm', true);
 
-          });
-
-        }
-      };
-      xmlhttp.open("GET", "../Shared/retrieveAnnouncements.php?cid=" + cid +
-        "&versid=" + versid + "&recipient=" + uid, true);
-      xmlhttp.send();
-    }
-  });
+          var btn = document.querySelector(".deleteBtn");
+          if (btn) {
+            btn.addEventListener("click", function () {
+              sessionStorage.setItem("closeUpdateForm", true);
+            });
+          }
+        });
+    });
 }
 
 // Update announcement form
@@ -3494,26 +3494,22 @@ function showLessOrMoreAnnouncements() {
 }
 
 function updateReadStatus(announcementid, cid, versid) {
-  const unameElement = document.getElementById('userName');
-  const uname   = unameElement ? unameElement.textContent : '';
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: { uname: uname },
-    type: "GET",
-    success: function (data) {
-      var parsed_data = JSON.parse(data);
+  var uname = document.getElementById("userName").innerHTML;
+  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
+    .then(function (response) { return response.json(); })
+    .then(function (parsed_data) {
       var uid = parsed_data.uid;
-      $.ajax({
-        url: "../Shared/updateviewedAnnouncementCards.php",
-        data: { announcementid: announcementid, uid: uid, cid: cid, versid: versid },
-        type: "POST",
-        success: function (data) {
-        }
+      fetch("../Shared/updateviewedAnnouncementCards.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "announcementid=" + encodeURIComponent(announcementid) +
+          "&uid=" + encodeURIComponent(uid) +
+          "&cid=" + encodeURIComponent(cid) +
+          "&versid=" + encodeURIComponent(versid)
       });
-    }
-  });
-
+    });
 }
+
 function selectRecipients() {
   const allInp    = document.querySelector(".selectAll input");
   const finInp    = document.querySelector(".selectFinished input");
@@ -3565,73 +3561,81 @@ function multiSelect() {
 
 // Start of recent feedback from the teacher
 function toggleFeedbacks() {
-  const unameElements = document.getElementById('userName');
-  const uname   = unameElements ? unameElements.textContent : '';
-  let studentid, parsed_data, parsed_uid, duggaFeedback, feedbackComment, unseen_feedbacks;
-  $.ajax({
-    url: "../Shared/retrieveUserid.php",
-    data: { uname: uname },
-    type: "GET",
-    success: function (data) {
-      parsed_uid = JSON.parse(data);
-      studentid = parsed_uid.uid;
-      $.ajax({
-        url: "../Shared/retrieveFeedbacks.php",
-        data: { studentid: studentid },
-        type: "POST",
-        async: true,
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        success: function (data) {
-          duggaFeedback = data.duggaFeedback;
-          $(".feedbackContent").html(duggaFeedback);
-          if ($(".recentFeedbacks").length == 0) {
-            $(".feedbackContent").append("<p class='noFeedbacks'><span>There are no recent feedback to view.</span>" +
-              "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
-            $(".feedbackHeader").append("<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>" +
-              "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
-          }
-          $(".oldFeedbacks").hide();
-          feedbackComment = 'feedbackComment';
-          readLessOrMore(feedbackComment);
-          unseen_feedbacks = data.unreadFeedbackNotification;
-          if (unseen_feedbacks > 0) {
-            $("#feedback img").after("<span id='feedbacknotificationcounter'>0</span>");
-            $("#feedbacknotificationcounter").html(unseen_feedbacks);
+  var uname = document.getElementById("userName").innerHTML;
+  var studentid;
+  var feedbackComment = "feedbackComment";
 
-          }
-        },
-        error: function () {
-          console.log("Couldn't return feedback data");
-        }
-
-      });
-
-    }
-
-  });
-
-  if ($("#feedback").length > 0) {
-    $("header").after("<div id='feedbackOverlay'><div class='feedbackContainer'>" +
+  if (document.getElementById("feedback")) {
+    document.querySelector("header").insertAdjacentHTML("afterend",
+      "<div id='feedbackOverlay'><div class='feedbackContainer'>" +
       "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>" +
       "<div class='feedbackContent'></div></div></div>");
-
   }
 
-  $("#feedback").click(function () {
-    $("#feedbackOverlay").toggle();
-    if ($("#feedbacknotificationcounter").length > 0) {
-      var viewed = "YES";
-      $.ajax({
-        url: "../Shared/retrieveFeedbacks.php",
-        data: { studentid: studentid, viewed: viewed },
-        type: "POST",
-        success: function () {
-          $("#feedbacknotificationcounter").remove();
-        }
-      });
-    }
-  });
+  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
+    .then(function (response) { return response.json(); })
+    .then(function (parsed_uid) {
+      studentid = parsed_uid.uid;
+
+      fetch("../Shared/retrieveFeedbacks.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "studentid=" + encodeURIComponent(studentid)
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          document.querySelector(".feedbackContent").innerHTML = data.duggaFeedback;
+
+          if (document.querySelectorAll(".recentFeedbacks").length === 0) {
+            document.querySelector(".feedbackContent").insertAdjacentHTML("beforeend",
+              "<p class='noFeedbacks'><span>There are no recent feedback to view.</span>" +
+              "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
+
+            document.querySelector(".feedbackHeader").insertAdjacentHTML("beforeend",
+              "<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>" +
+              "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
+          }
+
+          var oldFeedbacks = document.querySelectorAll(".oldFeedbacks");
+          for (var i = 0; i < oldFeedbacks.length; i++) oldFeedbacks[i].style.display = "none";
+
+          readLessOrMore(feedbackComment);
+
+          if (data.unreadFeedbackNotification > 0) {
+            var feedbackIcon = document.querySelector("#feedback img");
+            if (feedbackIcon) {
+              var badge = document.createElement("span");
+              badge.id = "feedbacknotificationcounter";
+              badge.innerHTML = data.unreadFeedbackNotification;
+              feedbackIcon.after(badge);
+            }
+          }
+
+          var feedbackBtn = document.getElementById("feedback");
+          if (feedbackBtn) {
+            feedbackBtn.addEventListener("click", function () {
+              var overlay = document.getElementById("feedbackOverlay");
+              if (overlay) {
+                if (overlay.style.display === "none" || overlay.style.display === "") overlay.style.display = "block";
+                else overlay.style.display = "none";
+              }
+
+              if (document.getElementById("feedbacknotificationcounter")) {
+                fetch("../Shared/retrieveFeedbacks.php", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                  body: "studentid=" + encodeURIComponent(studentid) + "&viewed=YES"
+                })
+                .then(function () {
+                  var badge = document.getElementById("feedbacknotificationcounter");
+                  if (badge) badge.remove();
+                });
+              }
+            });
+          }
+        })
+        .catch(function () { console.log("Couldn't return feedback data"); });
+    });
 }
 
 function viewOldFeedbacks() {
