@@ -864,7 +864,7 @@ function markedItems(item = null, typeInput) {
       if (itemInSection && sectionStart) {
         var tempDisplay = document.getElementById("lid" + tempItem).style.display;
         var tempKind = element ? element.closest('tr').getAttribute('value'): null;
-
+        
         // if not part of current section, stop looking.
         if (tempDisplay != "none" && (tempKind == "section" || tempKind == "moment" || tempKind == "header")) {
           itemInSection = false;
@@ -1165,7 +1165,7 @@ function deleteItem(item_lid = []) {
   for (var i = 0; i < item_lid.length; i++) {
     const lid = item_lid ? item_lid : [document.getElementById("lid").value] //plain JS - still can take in empty array
     item = document.getElementById("lid" + lid[i]);
-    item.parentElement.style.display = "none";
+    item.style.opacity = "0.5";
     item.classList.add("deleted");
   }
 
@@ -1180,9 +1180,10 @@ function deleteItem(item_lid = []) {
 
 // Permanently delete elements.
 function deleteAll() {
-  var deletedElements = document.querySelectorAll(".deleted")
-  for (i = deletedElements.length ; (i > 0) ; i--) {
-    var lid = deletedElements[i-1].id.match(/\d+/)[0];
+  let deletedElements = document.querySelectorAll(".deleted");
+  for (let i = deletedElements.length ; (i > 0) ; i--) {
+    let lid = deletedElements[i-1].id.match(/\d+/)[0];
+    deletedElements[i-1].closest(".courseRow").style.display = "none"; //This line is needed because refresh is broken. (2025-05-15). Should be possible to be removed after Group 2 solves the issue.
     deletedElements[i-1].classList.remove("deleted");
 
     AJAXService("DEL", {

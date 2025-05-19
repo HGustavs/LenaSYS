@@ -1425,8 +1425,9 @@ p {
   }
 
   & .courseRow {
-    background-color: var(--color-sectioned-table-hi);
     height: var(--rowHeight);
+    background-color: var(--color-sectioned-table-hi);
+    display: block;
     
     & td {
       font-size: 1.5rem;
