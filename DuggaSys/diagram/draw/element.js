@@ -352,63 +352,76 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
     const aText = splitFull(element.attributes, maxCharactersPerLine);
     const fText = splitFull(element.functions, maxCharactersPerLine);
 
-    // Calculate total height and update diagram metadata
+    // Calculate total height 
     let aHeight = texth * (aText.length + 1) * lineHeight;
     let fHeight = texth * (fText.length + 1) * lineHeight;
-    let totalHeight = aHeight + fHeight - linew * 2 + texth * 2;
-    updateElementHeight(UMLHeight, element, totalHeight + boxh);
+    updateElementHeight(UMLHeight, element, aHeight + fHeight - linew * 2 + texth * 2 + boxh);
 
     // Header
     const headerLines = splitFull([element.name], maxCharactersPerLine);
+ 
+    if (element.stereotype) {
+        const raw = String(element.stereotype).split(/\r?\n/);
+        let stereoLines = [];
+        raw.forEach(line =>
+            stereoLines = stereoLines.concat(splitFull([line], maxCharactersPerLine))
+        );
 
-if (element.stereotype != "" && element.stereotype != null) {
-    // Split on newlines, wrap each, flatten
-    const raw = String(element.stereotype).split(/\r?\n/);
-    let stLines = [];
-    raw.forEach(l => stLines = stLines.concat(splitFull([l], maxCharactersPerLine)));
+       const totalHeaderLines = stereoLines.length + headerLines.length + 0.5;
+       const headerHeight     = texth * totalHeaderLines * lineHeight;
 
-    // total lines = 1 padding + stereotype lines + name lines
-    const totalLines = 1 + stLines.length + headerLines.length;
-    const headerHeight = texth * totalLines * lineHeight;
+        let svgContent = drawRect(boxw, headerHeight, linew, element);
 
-    let svgContent = drawRect(boxw, headerHeight, linew, element);
+        stereoLines.forEach((line, i) => {
+            let text = line;
+            if (i === 0)                      text = `«${text}`;
+            if (i === stereoLines.length-1)  text = `${text}»`;
+            const y = texth * (i + 1) * lineHeight;
+            svgContent += drawText(boxw/2, y, 'middle', text);
+        });
 
-    // draw stereotype lines
-    stLines.forEach((line, i) => {
-        const y = texth * (0.8 + i) * lineHeight;
-        svgContent += drawText(boxw/2, y, 'middle', `«${line}»`);
-    });
+        headerLines.forEach((line, i) => {
+            const y = texth * (stereoLines.length + i + 1) * lineHeight;
+            svgContent += drawText(boxw/2, y, 'middle', line);
+        });
 
-    // draw name lines below stereotype
-    headerLines.forEach((line, i) => {
-        const y = texth * (stLines.length + i + 1.5) * lineHeight;
-        svgContent += drawText(boxw/2, y, 'middle', line);
-    });
-
-    const headSvg = drawSvg(boxw, headerHeight, svgContent);
-    str += drawDiv('uml-header', `width: ${boxw}; height: ${headerHeight - linew * 2}px`, headSvg);
-} else {
-    let height = texth * (headerLines.length + 0.5) * lineHeight;
-    let headRect = drawRect(boxw, height, linew, element);
-    let headText = "";
-    for (let i = 0; i < headerLines.length; i++) {
-        const y = texth * (i + 1) * lineHeight;
-        headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
+        const headSvg = drawSvg(boxw, headerHeight, svgContent);
+        str += drawDiv(
+            'uml-header',
+            `width:${boxw}px;height:${headerHeight - linew*2}px`,
+            headSvg
+        );
     }
-    const headSvg = drawSvg(boxw, height, headRect + headText);
-    str += drawDiv('uml-header', `width: ${boxw}; height: ${height - linew * 2}px`, headSvg);}
+    
+    else {
+        const headerHeight = texth * (headerLines.length + 0.5) * lineHeight;
+        let headRect = drawRect(boxw, headerHeight, linew, element);
+        let headText = "";
+        headerLines.forEach((line, i) => {
+            const y = texth * (i + 1) * lineHeight;
+            headText += drawText(boxw/2, y, 'middle', line);
+        });
+        const headSvg = drawSvg(boxw, headerHeight, headRect + headText);
+        str += drawDiv(
+            'uml-header',
+            `width:${boxw}px;height:${headerHeight - linew*2}px`,
+            headSvg
+        );
+    }
 
-    // Content, Attributes
-    const textBox = (s, css) => {
-        let height = texth * (s.length + 1) * lineHeight + boxh / 2;
-        let text = "";
-        for (let i = 0; i < s.length; i++) {
-            text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
-        }
-        let rect = drawRect(boxw, height, linew, element);
-        let contentSvg = drawSvg(boxw, height, rect + text);
-        let style = (css == 'uml-footer') ? `height:${height}px` : `height:${height - linew * 2}px`;
-        return drawDiv(css, style, contentSvg);
+    // --- ATTRIBUTES & METHODS BOXES ---
+    const textBox = (lines, cssClass) => {
+        const height = texth * (lines.length + 1) * lineHeight + boxh/2;
+        let txt = "";
+        lines.forEach((l, i) => {
+            txt += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', l);
+        });
+        const rect = drawRect(boxw, height, linew, element);
+        const contentSvg = drawSvg(boxw, height, rect + txt);
+        const style = (cssClass === 'uml-footer')
+          ? `height:${height}px`
+          : `height:${height - linew*2}px`;
+        return drawDiv(cssClass, style, contentSvg);
     };
 
     // Render attributes and functions
