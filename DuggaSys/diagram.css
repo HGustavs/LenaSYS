@@ -423,10 +423,6 @@
     .hide-options-pane {
         right: -500px;
     }
-    
-    #options-pane-button {
-        visibility: hidden !important;
-    }
 }
 
 .diagramIcons:hover,

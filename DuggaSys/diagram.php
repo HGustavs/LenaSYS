@@ -818,6 +818,8 @@
             <span id='optmarker'>&#9660;Options</span>
         </div>
 
+        <span class="close-btn" onclick="toggleOptionsPane();">&times;</span>
+
         <!-- FIELD FOR SMALLER FIELDS CONTAING THE OPTIONS -->
         <div id ="fieldsetBox">
             <fieldset id='propertyFieldset' class='options-fieldset options-fieldset-hidden'></fieldset>
