@@ -1300,3 +1300,50 @@ SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, en
 - getUid_ms.php  
 - sessions.php  
 - basic.php
+
+---
+
+# Name of file/service  
+removeListEntries_ms.php
+
+## Description
+This microservice sets a list entry in the 'listentries' table as "removed" by updating its 'visible' value to 3. After the update, the function "retrieveSectionedService_ms" is called to return updated data relevant to the current course and user.
+
+## Input Parameters
+- Parameter: $courseid  
+   - Type: int  
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers  
+   - Type: int  
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid  
+   - Type: String  
+   - Description: Used for logging.
+
+- Parameter: $opt  
+   - Type: String  
+   - Description: Operation type
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $debug  
+   - Type: String  
+   - Description: Contains debug information/error messages
+
+- Output: $data
+   - Type: JSON  
+   - Description: Result from "retrieveSectionedService_ms"
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
+- retrieveSectionedService_ms.php
+
+---
+
