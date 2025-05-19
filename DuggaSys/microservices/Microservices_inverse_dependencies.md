@@ -410,6 +410,8 @@ createListEntry_ms.php
 - duggaedService/deleteDugga_ms.php
 - duggaedService/deleteDuggaVariant_ms.php
 - duggaedService/updateDugga_ms.php
+- duggaedService/createDuggaVariant_ms.php
+- duggaedService/updateDuggaVariant_ms.php
 
 ###### courseedService
 - courseedService/changeActiveCourseVersion_courseed_ms.php
@@ -422,6 +424,8 @@ createListEntry_ms.php
 - courseedService/retrieveCourseedService_ms.php
 - courseedService/updateCourse_ms.php
 - courseedService/updateCourseVersion_ms.php
+- courseedService/specialUpdate_ms.php
+- courseedService/updateActiveCourseVersion_courseed_ms.php
 
 ##### codeviewerService
 - codeviewerService/deleteCodeExample_ms.php
@@ -437,6 +441,7 @@ createListEntry_ms.php
 - accessedService/getAccessedService_ms.php
 - accessedService/updateUser_ms.php
 - accessedService/updateUserCourse_ms.php
+- accessedService/retrieveAccessedService_ms.php
 
 ### isSuperUser
 None
