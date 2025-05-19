@@ -165,6 +165,8 @@
     padding: 10px;
     transition: right .3s ease-in-out;
     user-select: none;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #options-pane-button {
@@ -182,6 +184,17 @@
     vertical-align: top;
     display: inline-block;
 }
+
+ /* Hide scrollbar for Chrome, Safari and Opera */
+#options-pane::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#options-pane {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+} 
 
 .show-options-pane {
     right: 0px;
