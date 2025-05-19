@@ -67,6 +67,7 @@
 	background-color: var(--color-background);
 }
 
+
 #picktemplate{
 	position: absolute;
 	top: 0px;
@@ -437,6 +438,10 @@
 	font-family: Arial, Sans-Serif !important;
 	cursor:default !important;
 	color: var(--color-text-light) !important;
+}
+
+#hamburgerBox{
+    background-color: var(--color-primary);
 }
 
 /* ========================
