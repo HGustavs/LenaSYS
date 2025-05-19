@@ -98,7 +98,7 @@ function checkConnectionErrors(to, from) {
     }
     // Uses to as from elements since the implementation of activation lines is done this way
     if (sequenceDrawError(to)) {
-        return `Drawn line out of bounds`;
+        return `Drawn line is out of bounds`;
     }
     return '';
 }
