@@ -28,12 +28,12 @@ if (isset($_GET['ms_name'])) {
         $dependentServices = [];
     
         // query to get dependencies towards the searched microservice
-        $stmt1 = $db->prepare("SELECT depends_on, path FROM dependencies WHERE microservice_id = ?");
+        $stmt1 = $db->prepare("SELECT depends_on, depends_on_id, path FROM dependencies WHERE microservice_id = ?");
         $stmt1->execute([$id]);
         $dependingServices = $stmt1->fetchAll(PDO::FETCH_ASSOC);
     
         // query to get what microservices the searched microservice is depending on
-        $stmt2 = $db->prepare("SELECT ms_name, path FROM dependencies WHERE depends_on_id = ?");
+        $stmt2 = $db->prepare("SELECT ms_name, microservice_id, path FROM dependencies WHERE depends_on_id = ?");
         $stmt2->execute([$id]);
         $dependentServices = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     } 
@@ -69,9 +69,10 @@ if (isset($_GET['ms_name'])) {
             if (!empty($dependentServices)) { 
                 echo "<h3>" . $ms_name . " is depending on:</h3>";
                 echo "<table>";
-                    echo "<tr><th>Microservice</th><th>Path</th></tr>";
+                    echo "<tr><th>ID</th><th>Microservice</th><th>Path</th></tr>";
                     foreach ($dependentServices as $row) {
                         echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['microservice_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['ms_name']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['path']) . "</td>";
                         echo "</tr>";
@@ -81,19 +82,20 @@ if (isset($_GET['ms_name'])) {
             if (!empty($dependingServices)) { 
                 echo "<h3>Microservices that are depending on " . $ms_name . ":</h3>";
                 echo "<table>";
-                    echo "<tr><th>Microservice</th><th>Path</th></tr>";
+                    echo "<tr><th>ID</th><th>Microservice</th><th>Path</th></tr>";
                     foreach ($dependingServices as $row) {
                         echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['depends_on_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['depends_on']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['path']) . "</td>";
                         echo "</tr>";
                     }
                 echo "</table>";
             } 
-        } else {
+        } else if (isset($_GET['ms_name'])) {
             echo "No results found";
         }
-        }
+    }
     ?>
 </body>
 </html>
