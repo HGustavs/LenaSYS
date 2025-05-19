@@ -74,12 +74,18 @@
 #diagramFileName {
     position: absolute;
     z-index: 1000;
-    margin-left: 50vw;
-    margin-top: 6vh;
+    inset: 6vh 0 auto 0; /*Shorthand, top right bottom left*/
+    max-width: 245px;
+    margin-inline: auto; /*Centers the box*/
     padding: 2px;
     background-color: #fff;
     border: #775886 1px solid;
     text-align: center;
+
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #svgbacklayer {
