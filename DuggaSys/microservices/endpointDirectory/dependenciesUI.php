@@ -12,6 +12,46 @@ $db = new PDO('sqlite:endpointDirectory_db.sqlite');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $services = $db->query("SELECT * FROM microservices")->fetchAll();
 
+// add dependency if POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_dependency'])) {
+    $depends_on_id = $_POST['microservice_id'];
+    $microservice_id = $_POST['depends_on_id'];
+    $path = $_POST['path'];
+
+    if ($microservice_id !== $depends_on_id) {
+        // get names
+        $stmt = $db->prepare("SELECT ms_name FROM microservices WHERE id = ?");
+        $stmt->execute([$microservice_id]);
+        $ms_name = $stmt->fetchColumn();
+
+        $stmt = $db->prepare("SELECT ms_name FROM microservices WHERE id = ?");
+        $stmt->execute([$depends_on_id]);
+        $depends_on = $stmt->fetchColumn();
+
+        // check if entry already exists
+        $check = $db->prepare("SELECT COUNT(*) FROM dependencies WHERE microservice_id = ? AND depends_on_id = ?");
+        $check->execute([$microservice_id, $depends_on_id]);
+        $alreadyExists = $check->fetchColumn();
+
+        if ($alreadyExists > 0) {
+            // redirect to the same page to avoid repost on refresh
+            header("Location: " . $_SERVER['PHP_SELF'] . "?exists=1");
+            exit();
+        } else {
+            // insert into database
+            $stmt = $db->prepare("INSERT INTO dependencies (microservice_id, depends_on_id, ms_name, depends_on, path)
+                                  VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$microservice_id, $depends_on_id, $ms_name, $depends_on, $path]);
+            // success – redirect to same page to avoid repost on refresh
+            header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
+            exit();
+        }
+
+    } else {
+        echo "<p style='color:red;'>A microservice cannot depend on itself!</p>";
+    }
+}
+
 // get the id of the searched microservice
 if (isset($_GET['ms_name'])) {
     $ms_name = $_GET['ms_name'];
@@ -72,7 +112,7 @@ if (isset($_GET['ms_name'])) {
                 <?php endforeach; ?>
             </select><br><br>
             <label for="path">Path:</label>
-            <input type="text" name="path" required><br><br>
+            <input type="text" name="path"><br><br>
             <input type="submit" name="add_dependency" value="Add Dependency">
         </form>
     </div>
