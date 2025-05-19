@@ -287,7 +287,7 @@ Retrieves updated data from the database and stores it in an array. The file out
 
 - Parameter: $playlink
    - Type: string
-   - Description: Play link for opening demo in code example. Stored as varchar(256) in the database
+   - Description: Runlink for opening demo in code example. Stored as varchar(256) in the database
 
 - Parameter: $log_uuid
    - Type: string
