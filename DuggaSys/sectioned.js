@@ -1798,6 +1798,39 @@ function returnedSection(data) {
             str += "</td>";
           }
         }
+          //Mobile view of title and date for dugga/test items
+        if (itemKind === 3 && (data['writeaccess'] || data['studentteacher'])) {             
+          var param = {
+            'did': item['link'],
+            'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
+            'coursevers': querystring['coursevers'],
+            'moment': item['lid'],
+            'segment': momentexists,
+             highscoremode: item['highscoremode'],
+             comment: item['comments'],
+             deadline: item['deadline'],
+             'cid': querystring['courseid']
+            };
+
+          str += `<div class='flex-row-container'>`;
+
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("showDugga.php", hideState,
+            "", item['entryname'], false, param)}</span></div>`;
+           
+          if ((deadline !== null && deadline !== "undefined") && retdata['startdate'] !== null) {
+            let formattedDeadline = convertDateToDeadline(new Date(deadline));
+            let deadlineArr = formattedDeadline.split(" ");
+            let deadlineText = deadlineArr[0];
+            if (!/^[0:]+$/.test(deadlineArr[1])) {
+              deadlineText += " " + deadlineArr[1].split(":")[0] + ":" + deadlineArr[1].split(":")[1];
+            }
+            str += `<div class='DateColorInDarkMode show-on-mobile' style='font-size: 0.8em; color: gray;'>${deadlineText}</div>`;
+          } else if (rDeadline !== null && rDeadline !== "undefined") {
+            str += `<div class='DateColorInDarkMode  show-on-mobile' style='font-size: 0.8em; color: gray;'>${formatRelativeDeadlineToString(rDeadline)}</div>`;
+          }
+          str += `</div>`;
+        }
 
         if (retdata['writeaccess']) {
           if (itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7) { // Draggable area with white background
@@ -1829,8 +1862,8 @@ function returnedSection(data) {
             str += addColorsToTabSections(itemKind, hideState, "E");
           } else if (itemGradesys == 7) {
             str += addColorsToTabSections(itemKind, hideState, "E");
-          }
         }
+          }
         // Collecting all the id:s from the different duggas on the page so that we can use the highest value to see the newest entry.
         collectedLid.push(item['lid']);
         // kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
@@ -1863,7 +1896,7 @@ function returnedSection(data) {
 
           if (item['highscoremode'] != 0 && itemKind == 3) {
             str += `<td style='width:20px;'><img class='iconColorInDarkMode' style=';' title='Highscore' src='../Shared/icons/top10.png'
-            onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
+              onclick='showHighscore(\"${item['link']}\",\"${item['lid']}\")'/></td>`;
           }
           str += `<td class='example item${hideState}' placeholder='${momentexists}' id='I${item['lid']}' `;
           kk++;
@@ -1919,7 +1952,8 @@ function returnedSection(data) {
 
         // Close Information
         str += " value='" + item['lid'] + "' onclick='duggaRowClick(this)' >";
-        // Content of Section Item
+
+        //=====CONTENT OF SECTION ITEM=====
         if (itemKind == 0) {
           // Header
           str += `<span style='margin-left:8px;' title='${item['entryname']}'>${item['entryname']}</span>`;
@@ -1963,8 +1997,14 @@ function returnedSection(data) {
             deadline: item['deadline'],
             'cid': querystring['courseid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("showDugga.php", hideState,
-            "cursor:pointer;margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+
+          str += `<div class='ellipsis nowrap hide-on-mobile'><span>${makeanchor("showDugga.php", hideState,
+            "", item['entryname'], false, param)}</span></div>`;
+
+          if (!(data['writeaccess'] || data['studentteacher'])) {
+            str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("showDugga.php", hideState,
+              "", item['entryname'], false, param)}</span></div>`;
+          }
         } else if (itemKind == 5) {
           // Link
           if (item['link'] !== null && item['link'] !== undefined && item['link'].substring(0, 4) === "http") {
@@ -2004,7 +2044,7 @@ function returnedSection(data) {
         // If none of the deadlines are null or undefined we need to add it to the page
         if ((itemKind === 3) && ((deadline !== null || deadline !== "undefined") || (rDeadline !== null || rDeadline !== "undefined"))) {
           // Both of them will need this html
-          str += "<td onclick='duggaRowClick(this)' class='dateSize' style='text-align:right;overflow:hidden;'>" +
+          str += "<td onclick='duggaRowClick(this)' class='dateSize hide-on-mobile' style='text-align:right;overflow:hidden;'>" +
             "<div class='DateColorInDarkMode' style='white-space:nowrap;'>";
 
           // We prioritize absolute deadline and we dont want absolute deadlines if there's no startdate for course
@@ -2081,10 +2121,9 @@ function returnedSection(data) {
 
         // Userfeedback
         if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
-          str += "<td style='width:32px;'>";
-          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback'
-          onclick='showUserFeedBack(\"${item['lid']}\",\"${item['feedbackquestion']}\");'>`;
-          str += "</td>";
+          str += `<td style='width:32px;'>`;
+          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack("${item['lid']}","${item['feedbackquestion']}");'>`;
+          str += `</td>`;
         }
 
         // Testing implementation
@@ -2106,25 +2145,23 @@ function returnedSection(data) {
           str += "</td>";
         }
         if (itemKind != 4 && itemKind != 1 && itemKind != 0) { // dont create buttons for moments only for specific assignments
-          //Generate new tab link
+              //Generate new tab link
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px;' class="newTabCanvasLink" tabIndex="0" alt='canvasLink icon' id='NewTabLink' title='Open link in new tab' class=''
             src='../Shared/icons/link-icon.svg' onclick='openCanvasLink(this);'>`;
           str += "</td>";
 
-          // Generate Canvas Link Button
+            // Generate Canvas Link Button
           if (data['writeaccess'] || data['studentteacher']) {
             str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
               "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
             str += `<div class="showCanvasLinkBoxTab" tabIndex="0">`;
-            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class=''
-            src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox(\"open\",this);'>`;
+            str += `<img style='width:16px;' alt='canvasLink icon' id='dorf' title='Get Canvas Link' class='' src='../Shared/icons/canvasduggalink.svg' onclick='showCanvasLinkBox("open",this);'>`;
             str += `</div>`;
             str += "</td>";
           }
         }
-
 
         // Tab element button for heading
         if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
@@ -2152,10 +2189,9 @@ function returnedSection(data) {
         }
 
         // Cog Wheel
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) { 
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-
 
           str += "<img alt='settings icon'  tabIndex='0' id='dorf' title='Settings' class='settingIconTab' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(";
@@ -2164,15 +2200,12 @@ function returnedSection(data) {
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
             item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
-          }
-          else {
+          } else {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
             item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
           }
-
-
           str += "</td>";
         }
 
@@ -2196,13 +2229,12 @@ function returnedSection(data) {
             str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
             src='../Shared/icons/Trashcan.svg' onclick='; if(selectedItemList.length == 0){markedItems(this, "trash")}; confirmBox(\"openConfirmBox\", this); '>`;
             str += "</td>";
-          }
-          else{
-          str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
-            "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
-          str += `<img style='class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
-          src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
-          str += "</td>";  
+          } else {
+            str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
+              "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
+            str += `<img class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
+              src='../Shared/icons/Trashcan.svg' onclick=' markedItems(this, "trash"); confirmBox(\"openConfirmBox\", this); '>`;
+            str += "</td>";  
           } 
         }
 
