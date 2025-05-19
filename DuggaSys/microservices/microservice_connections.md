@@ -90,83 +90,78 @@ function addUserToCourse() {
 ---
 # Name of file/service
 accessed.js
-Function removeUserFromCourse.
+Function removeUserFromCourse()
 
 ## Description
-This function removes a user from a course. It retrieves the user's UID based on their username using accessedservice.php, then sends a DELETE request using AJAXService to remove the user from the course.
+Removes a user from the current course-version, retrives UID with ajax POST, then deletes user with opt DELETE.
 
 ## Input Parameters
 - Parameter: opt
    - Type: String
    - Description: Operation type
 
+- Parameter: username
+   - Type: String
+   - Description: Username to translate into uid. Stored as varchar(80) in the database 
+
 - Parameter: action
    - Type: ?
    - Description: Specifies the action
 
-- Parameter: username
-   - Type: String
-   - Description: Name of the user. Stored as varchar(80) in the database 
-
 - Parameter: courseid
    - Type: int
-   - Description: Which course to affect. Stored as int(10) in the database
+   - Description: Current course ID. Stored as int(10) in the database 
 
 - Parameter: uid
    - Type: int
-   - Description: Which user to remove. Stored as int(10) in the database
+   - Description: User-ID returned from username. Stored as int(10) in the database 
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
 - Output: user
-   - Type: JSON-array
-   - Description:  One-item list that contains the full user record
+   - Type: array
+   - Description: Contains elements such as uid, firstname, lastname, …
 
-- Output: success/error
+- Output: error
    - Type: String
-   - Description: Success means the lookup is completed,
-error is returned with an explanatory message field if something failed
-
-- Output: courses/groups/teachers/classes/submissions
-   - Type: JSON-object
-   - Description: A bundle of fresh lists so the page can redraw
+   - Description: Error text if user not found
 
 ## Examples of Use
 ``` 
-function removeUserFromCourse() {
-	let input = document.getElementById('addUsername3').value;
-	if(input) {
-		$.ajax({
-			type: 'POST',
-			url: 'accessedservice.php',
-			data: {
-				opt: 'RETRIEVE',
-				action: 'USER',
-				username: input
-			},
-			success: function(response) {
-				userJson = response.substring(0, response.indexOf('{"entries":'));
-				let responseData = JSON.parse(userJson);
-				let uid = responseData.user[0].uid;
-				AJAXService("DELETE", {
-					courseid: querystring['courseid'],
-					uid: uid,
-					action: 'COURSE'
-				}, "ACCESS");
-			},
-			error: function(xhr, status, error) {
-				console.error("Error", error);
-			}
-		});
-		updateCourseUsers(hideRemoveUserPopup); // Sending function as parameter
-	}
+function removeUserFromCourse() { 
+  let input = document.getElementById('addUsername3').value; 
+  if(input) { 
+    $.ajax({ 
+      type: 'POST', 
+      url: 'accessedservice.php', 
+      data: { 
+        opt: 'RETRIEVE', 
+        action: 'USER', 
+        username: input 
+      }, 
+      success: function(response) { 
+        userJson = response.substring(0, response.indexOf('{"entries":')); 
+        let responseData = JSON.parse(userJson); 
+        let uid = responseData.user[0].uid; 
+        AJAXService("DELETE", { 
+          courseid: querystring['courseid'], 
+          uid: uid, 
+          action: 'COURSE' 
+        }, "ACCESS"); 
+      }, 
+      error: function(xhr, status, error) { 
+        console.error("Error", error); 
+      } 
+    }); 
+    updateCourseUsers(hideRemoveUserPopup); // Sending function as parameter 
+  } 
 }
 ``` 
 
 ### Microservices Used
-- accessedservice.php
+- accessedservice.php 
 
 ---
 # Name of file/service
@@ -739,77 +734,7 @@ function updateGithubRepo(githubURL, cid, githubKey) {
 ---
 # Name of file/service
 sectioned.js
-Function: fetchGitHubRepo()
-
-## Description
-Fetch contents of the GitHub repo by using action getNewCourseGitHub, returns true if request successful, false if otherwise.
-
-## Input Parameters
-- Parameter: githudURL
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: status code
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: message
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-- Output: success
-   - Type: bool
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-``` 
-function fetchGitHubRepo(gitHubURL) {
-  //Remove .git, if it exists
-  regexURL = gitHubURL.replace(/.git$/, "");
-  //Used to return success(true) or error(false) to the calling function
-  var dataCheck;
-  $.ajax({
-    async: false,
-    url: "gitfetchService.php",
-    type: "POST",
-    data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' },
-    success: function () {
-      //Returns true if the data and JSON is correct
-      dataCheck = true;
-    },
-    error: function (data) {
-      //Check FetchGithubRepo for the meaning of the error code.
-      switch (data.status) {
-        case 422:
-        case 503:
-          toast("error",data.responseJSON.message + "\nDid not update course, double check github link?",7);
-          break;
-        default:
-          toast("error","Something went wrong...",7);
-      }
-      dataCheck = false;
-    }
-  });
-  return dataCheck;
-}
-``` 
-
-### Microservices Used
-- gitfetchService.php
-
----
-
-# Name of file/service
-sectioned.js
-Function: updateSelectDir
+Function: updateSelectedDir()
 
 ## Description
 The function updates the selected directory for a course.
@@ -817,11 +742,11 @@ The function updates the selected directory for a course.
 ## Input Parameters
 - Parameter: selectDir
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Relative path to the directory inside the repo. Stored as *varchar(256)* in the database
 
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course-id that owns the repo, stored as int(10) in the database
 
 - Parameter: action
    - Type: ?
@@ -833,12 +758,11 @@ The function updates the selected directory for a course.
 ## Output Data and Format
 - Output: status
    - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Success or error
 
 - Output: message
    - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
+   - Description: Explenation status
 ## Examples of Use
 ``` 
 function updateSelectedDir() {
@@ -892,32 +816,24 @@ sectioned.js
 Function: retrieveCourseProfile()
 
 ## Description
-This function retrives available course versions based on a selected course ID, it sends POST request to fetch course version and dropdown with reults. 
+This function retrives available course versions based on a selected course ID, it sends POST request to fetch course version and display dropdown with reults. 
 
 ## Input Parameters
-- Parameter: userid
-   - Type: int
-   - Description: ID of the user. Stored as int(10) in the database
-
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: versid
-   - Type: String
-   - Description: Stored as varchar(8) in the database
+   - Description: Course-id currently selected in the UI. Stored as int(10) in the database
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- Output: versid
-   - Type: String
-   - Description: Stored as varchar(8) in the database
+- Output: versids
+   - Type: array
+   - Description: Every object contains a versid string. Stored as varchar(8) in the database
 
 - Output: error
    - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Error description if the query failed
 
 ## Examples of Use
 ``` 
@@ -971,24 +887,20 @@ sectioned.js
 Function getStudents()
 
 ## Description
-This function retrieves student.
+This function retrieves student, split into “Finished” and “Non-finished” group-lists.
 
 ## Input Parameters
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Course-ID chosen. Stored as int(10) in the database
 
-- Parameter: userid
-   - Type: int
-   - Description: ID of the user. Stored as int(10) in the database
-
-- Parameter: uid
-   - Type: int
-   - Description: Stored as int(10) in the database
+- Parameter: remove_student
+   - Type: ?
+   - Description: The author’s own userid so she doesn’t appear in the list. Stored as ? in the database
 
 - Parameter: versid
    - Type: String
-   - Description: Stored as varchar(8) in the database
+   - Description: Version code. Stored as varchar(8) in the database
 
 ## Calling Methods
 - POST
@@ -996,15 +908,15 @@ This function retrieves student.
 ## Output Data and Format
 - Output: finished_students
    - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Students that have completed the version
 
 - Output: non_finished_students
    - Type: array
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Students still active
 
 - Output: error
    - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Description: Error description on failure
 
 ## Examples of Use
 ``` 
@@ -1061,15 +973,7 @@ This function retrives and displays announcements relevant to a user for a given
    - Type: String
    - Description: Stored as varchar(80) in the database 
 
-- Parameter: uid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: coursevers
-   - Type: String
-   - Description: Stored as varchar(8) in the database
-
-- Parameter: courseid
+- Parameter: cid
    - Type: int
    - Description: Stored as int(10) in the database
 
@@ -1083,15 +987,15 @@ This function retrives and displays announcements relevant to a user for a given
 ## Output Data and Format
 - Output: retriveAnnouncementCard
    - Type: HTML
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Fully rendered markup
 
 - Output: nRows
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+   - Type: Number
+   - Description: Count of unread announcements for the user
 
-- Parameter: uid
-   - Type: int
-   - Description: Stored as int(10) in the database
+- Parameter: error
+   - Type: String
+   - Description: Error message
 
 ## Examples of Use
 ``` 
@@ -1142,720 +1046,6 @@ function retrieveAnnouncementsCards() {
 ### Microservices Used
 - retrieveUserid.php
 - retrieveAnnouncements.php
-
----
-# Name of file/service
-accessed.js 
-Function addUserToCourse()
-
-## Description
-Adds user to a user to a course. Looks up UID based on their username.
-
-## Input Parameters
-- Parameter: opt
-   - Type: String
-   - Description: Operation type
-
-- Parameter: username
-   - Type: String
-   - Description: Stored as varchar(80) in the database 
-
-- Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: user
-   - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: UID
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-``` 
-function addUserToCourse() { 
-  let input = document.getElementById('addUsername2').value; 
-  let term = $("#addTerm2").val(); 
-  if(input && term) { 
-    $.ajax({ 
-      type: 'POST', 
-      url: 'accessedservice.php', 
-      data: { 
-        opt: 'RETRIEVE', 
-        action: 'USER', 
-        username: input 
-      }, 
-      success: function(response) { 
-        userJson = response.substring(0, response.indexOf('{"entries":')); 
-        let responseData = JSON.parse(userJson); 
-        let uid = responseData.user[0].uid; 
-        AJAXService("USERTOTABLE", { 
-          courseid: querystring['courseid'], 
-          uid: uid, 
-          term: term, 
-          coursevers: querystring['coursevers'], 
-          action: 'COURSE' 
-        }, "ACCESS"); 
-      }, 
-      error: function(xhr, status, error) { 
-        console.error("Error", error); 
-      } 
-    }); 
-    updateCourseUsers(hideAddUserPopup); // Sending function as parameter 
-  } 
-}  
-``` 
-
-### Microservices Used
-- accessedservice.php 
-
----
-# Name of file/service
-accessed.js
-Function removeUserFromCourse()
-
-## Description
-Retrives UID with ajax POST, then deletes user with opt DELETE.
-
-## Input Parameters
-- Parameter: opt
-   - Type: String
-   - Description: Operation type
-
-- Parameter: username
-   - Type: String
-   - Description: Stored as varchar(80) in the database 
-
-- Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: user
-   - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-## Examples of Use
-``` 
-function removeUserFromCourse() { 
-  let input = document.getElementById('addUsername3').value; 
-  if(input) { 
-    $.ajax({ 
-      type: 'POST', 
-      url: 'accessedservice.php', 
-      data: { 
-        opt: 'RETRIEVE', 
-        action: 'USER', 
-        username: input 
-      }, 
-      success: function(response) { 
-        userJson = response.substring(0, response.indexOf('{"entries":')); 
-        let responseData = JSON.parse(userJson); 
-        let uid = responseData.user[0].uid; 
-        AJAXService("DELETE", { 
-          courseid: querystring['courseid'], 
-          uid: uid, 
-          action: 'COURSE' 
-        }, "ACCESS"); 
-      }, 
-      error: function(xhr, status, error) { 
-        console.error("Error", error); 
-      } 
-    }); 
-    updateCourseUsers(hideRemoveUserPopup); // Sending function as parameter 
-  } 
-}
-``` 
-
-### Microservices Used
-- accessedservice.php 
-
----
-# Name of file/service
-accessed.js 
-Function loadUsersToDropdown()
-
-## Description
-This function populates a dropdown list with users fetched from the database. It sends a POST request to accessedservice.php with the action USERS, receives user data. 
-
-## Input Parameters
-- Parameter: opt
-   - Type: String
-   - Description: Operation type
-
-- Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: user
-   - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-## Examples of Use
-``` 
-function loadUsersToDropdown(id) { 
-  $.ajax({ 
-    url: 'accessedservice.php', 
-    type: 'POST', 
-    data: { opt: 'RETRIEVE', action: 'USERS'}, 
-    success: function(response) { 
-      usersJson = response.substring(0, response.indexOf('{"entries":')); 
-      let responseData = JSON.parse(usersJson); 
-      let filteredUsers = []; 
-      let length = responseData.users.length; 
-      for (let i = 0; i < length; i++) { 
-        let user = responseData.users[i]; 
-        filteredUsers.push(user); 
-      } 
-      let dropdownList = document.getElementById(id); 
-      filteredUsers.forEach(user => { 
-        let option = document.createElement("option"); 
-        option.value = user.username; 
-        dropdownList.appendChild(option); 
-      }); 
-    }, 
-    error: function(xhr, status, error) { 
-      console.error(error); 
-    } 
-  }); 
-}
-``` 
-
-### Microservices Used
-- accessedservice.php 
-
----
-# Name of file/service
-courseed.js 
-Function updateCourse()
-
-## Description
-Updating course settings such as course name, course code and GitHub repository.
-
-## Input Parameters
-- Parameter: coursename
-   - Type: String
-   - Description: Course name. Stored as varchar(80) in the database
-
-- Parameter: cid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: coursecode
-   - Type: varchar
-   - Description: Course code. Stored as varchar(45) in the database
-
-- Parameter: courseGitURL
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
-
-- Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-- Parameter: courseid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: visibility
-   - Type: int
-   - Description: Visibility of the section. Stored as tinyint(1) in the database
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: success
-   - Type: bool
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-``` 
-function updateCourse() { 
-  var coursename = $("#coursename").val(); 
-  var cid = $("#cid").val(); 
-  var coursecode = $("#coursecode").val(); 
-  var courseGitURL = $("#editcoursegit-url").val(); 
-  var visib = $("#visib").val(); 
-  var courseid = "C" + cid; 
-
-  var token = document.getElementById("githubToken").value; 
-
-  //Send information about the git url and possible git token for a course 
-  $.ajax({ 
-    async: false, 
-    url: "../DuggaSys/gitcommitService.php", 
-    type: "POST", 
-    data: { 'githubURL': courseGitURL, 'cid': cid, 'token': token || undefined, 'action': 'directInsert' }, 
-    success: function () { 
-      //Returns true if the data and JSON is correct 
-      dataCheck = true; 
-    }, 
-
-    error: function (data) { 
-      //Check FetchGithubRepo for the meaning of the error code. 
-      switch (data.status) { 
-        case 403: 
-          toast("error", data.status + " Error \nplease insert valid git key", 7); 
-          break; 
-        case 422: 
-          toast("error", data.responseJSON.message + "\nDid not create/update token", 7); 
-          break; 
-        case 503: 
-          toast("error", data.responseJSON.message + "\nDid not create/update token", 7); 
-          break; 
-        default: 
-          toast("error", "Something went wrong with updating git token and git URL...", 7); 
-      } 
-      dataCheck = false; 
-    } 
-
-  }); 
-  if (dataCheck) { 
-    // Show dialog 
-    $("#editCourse").css("display", "none"); 
-
-    // Updates the course (except the course GitHub repo.  
-    // Course GitHub repo is updated in the next block of code) 
-    $("#overlay").css("display", "none"); 
-
-    AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE"); 
-    localStorage.setItem('courseid', courseid); 
-    localStorage.setItem('updateCourseName', true); 
-
-    const cookieValue = `; ${document.cookie}`; 
-    const parts = cookieValue.split(`; ${"missingToken"}=`); 
-
-    if (dataCheck && parts[1] != 1) { 
-      //Check if courseGitURL has a value 
-      if (courseGitURL) { 
-        //Check if fetchGitHubRepo returns true 
-        if (fetchGitHubRepo(courseGitURL)) { 
-          localStorage.setItem('courseGitHubRepo', courseGitURL); 
-          //If courseGitURL has a value, display a message stating the update (with github-link) worked 
-          toast("success", "Course " + coursename + " updated with new GitHub-link!", 5); 
-          updateGithubRepo(courseGitURL, cid); 
-
-        } 
-
-        //Else: get error message from the fetchGitHubRepo function. 
-      } else { 
-        localStorage.setItem('courseGitHubRepo', " "); 
-        //If courseGitURL has no value, display an update message 
-        toast("success", "Course " + coursename + " updated!", 5); 
-      } 
-    } 
-    else { 
-      toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7); 
-    } 
-  } 
-}
-``` 
-
-### Microservices Used
-- gitcommitService.php 
-
----
-# Name of file/service
-courseed.js 
-Function FetchGitHubRepo()
-
-## Description
-Used to fetch and validate data from GitHub repository. If successful it return true, otherwise false.
-
-## Input Parameters
-- Parameter: githubURL
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: success
-   - Type: bool
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: message
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-``` 
-function fetchGitHubRepo(gitHubURL) { 
-  //Remove .git, if it exists 
-  regexURL = gitHubURL.replace(/.git$/, ""); 
-  //Used to return success(true) or error(false) to the calling function 
-  var dataCheck; 
-  $.ajax({ 
-    async: false, 
-    url: "gitfetchService.php", 
-    type: "POST", 
-    data: { 'githubURL': regexURL, 'action': 'getNewCourseGitHub' }, 
-    success: function () { 
-      //Returns true if the data and JSON is correct 
-      dataCheck = true; 
-    }, 
-    error: function (data) { 
-      //Check FetchGithubRepo for the meaning of the error code. 
-      switch (data.status) { 
-        case 422: 
-          toast("error", data.responseJSON.message + "\nDid not create/update course", 7); 
-          break; 
-        case 503: 
-          toast("error", data.responseJSON.message + "\nDid not create/update course", 7); 
-          break; 
-        default: 
-          toast("error", "Something went wrong...", 7); 
-      } 
-      dataCheck = false; 
-    } 
-  }); 
-  return dataCheck; 
-}
-``` 
-
-### Microservices Used
-- gitfetchService.php
-
----
-# Name of file/service
-sectioned.js 
-Function: updateSelectDir()
-
-## Description
-The function updates the selected directory for a course.
-
-## Input Parameters
-- Parameter: selectedDir
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: cid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-  - Parameter: action
-   - Type: ?
-   - Description: Specifies the action
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: status
-   - Type: string
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: message
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-```
-function updateSelectedDir() { 
-  var selectedDir = $('#selectDir').val(); 
-  $.ajax({ 
-    url: "./sectioned.php", 
-    type: "POST", 
-    data: { 
-      action: "updateSelectedDir", 
-      selectedDir: selectedDir, 
-      cid: cidFromServer 
-    }, 
-    success: function (data) { 
-      console.log('POST-request call successful'); 
-      console.log("Response: ", data); 
-      toast("success",'Directory has been updated succesfully',5) 
-      // Parse the JSON response 
-      var response; 
-      try { 
-        response = JSON.parse(data); 
-      } catch (e) { 
-        console.error('Failed to parse JSON:', e); 
-        return; 
-      } 
-      // Handle the response 
-      //TODO:: Server is sending html response instead of JSON 
-      if (response.status === "success") { 
-        console.log('Update successful'); 
-      } else { 
-        console.error('Update failed:', response.message); 
-      } 
-    }, 
-    error: function (xhr, status, error) { 
-      console.error('Update failed:', error); 
-      console.log("Status: ", status); 
-      console.log("Error: ", error); 
-      toast("error",'Directory update failed',7) 
-    } 
-  }); 
-}
-``` 
-
-### Microservices Used
-- sectioned.php 
-
----
-# Name of file/service
-sectioned.js 
-Function: retrieveCourseProfile()
-
-## Description
-This function retrives available course versions based on a selected course ID, it sends POST request to fetch course version and dropdown with reults.  
-
-## Input Parameters
-- Parameter: userid
-   - Type: int
-   - Description: ID of the user. Stored as int(10) in the database
-
-- Parameter: cid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: versid
-   - Type: String
-   - Description: Stored as varchar(8) in the database
-
-## Calling Methods
-- POST
-
-## Output Data and Format
-- Output: versids
-   - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: error
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-## Examples of Use
-```
-function retrieveCourseProfile(userid) { 
-
-  $(".selectLabels label input").attr("disabled", true); 
-
-  var cid = ''; 
-
-  $("#cid").change(function () { 
-    cid = $("#cid").val(); 
-    if (($("#cid").val()) != '') { 
-      $("#versid").prop("disabled", false); 
-      $.ajax({ 
-        url: "../Shared/retrievevers.php", 
-        data: { cid: cid }, 
-        type: "POST", 
-        success: function (data) { 
-          var item = JSON.parse(data); 
-          $("#versid").find('*').not(':first').remove(); 
-          $.each(item.versids, function (index, item) { 
-            $("#versid").append("<option value=" + item.versid + ">" + item.versid + "</option>"); 
-          }); 
-        }, 
-        error: function () { 
-          console.log("*******Error*******"); 
-        } 
-      }); 
-    } else { 
-      $("#versid").prop("disabled", true); 
-    } 
-  }); 
-
-  if (($("#versid option").length) <= 2) { 
-    $("#versid").click(function () { 
-      getStudents(cid, userid); 
-    }); 
-  } else if (($("#versid option").length) > 2) { 
-    $("#versid").change(function () { 
-      getStudents(cid, userid); 
-    }); 
-  } 
-}
-```
-
-### Microservices Used
-- retrievevers.php 
-
----
-# Name of file/service 
-sectioned.js 
-Function: getStudents()
-
-## Description 
-This function retrieves student.
- 
-## Input Parameters 
-- Parameter: cid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: userid
-   - Type: int
-   - Description: ID of the user. Stored as int(10) in the database
-
-## Calling Methods 
-- POST 
-
-## Output Data and Format  
-- Output: finished_students
-   - Type: array
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: non_finished_students
-   - Type: array
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-- Output: error
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-## Examples of Use 
-```
-function getStudents(cid, userid) { 
-  var versid = ''; 
-  versid = $("#versid").val(); 
-  if (($("#versid").val()) != '') { 
-    $("#recipient").prop("disabled", false); 
-    $.ajax({ 
-      url: "../Shared/retrieveuser_course.php", 
-      data: { cid: cid, versid: versid, remove_student: userid }, 
-      type: "POST", 
-      success: function (data) { 
-        var item = JSON.parse(data); 
-        $("#recipient").find('*').not(':first').remove(); 
-        $("#recipient").append("<optgroup id='finishedStudents' label='Finished students'>" + 
-          "</optgroup>"); 
-        $.each(item.finished_students, function (index, item) { 
-          $("#finishedStudents").append(`<option value=${item.uid}>${item.firstname} 
-          ${item.lastname}</option>`); 
-        }); 
-        $("#recipient").append("<optgroup id='nonfinishedStudents' label='Non-finished students'>" + 
-          "</optgroup>"); 
-        $.each(item.non_finished_students, function (index, item) { 
-          $("#nonfinishedStudents").append(`<option value=${item.uid}>${item.firstname} 
-          ${item.lastname}</option>`); 
-        }); 
-        $(".selectLabels label input").attr("disabled", false); 
-        selectRecipients(); 
-      }
-      error: function () { 
-        console.log("*******Error user_course*******"); 
-      } 
-    }); 
-  } else { 
-    $("#recipient").prop("disabled", true); 
-  } 
-}
-``` 
-
-### Microservices Used 
-- retrieveuser_course.php 
-
----
-
-# Name of file/service 
-sectioned.js 
-Function: retrieveAnnouncementsCards() 
-
-## Description 
-This function retrives and displays announcements relevant to a user for a given course and version. 
-
-## Input Parameters 
-- Parameter: cid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: coursevers
-   - Type: String
-   - Description: Stored as varchar(8) in the database
-
-- Parameter: courseid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-- Parameter: username
-   - Type: String
-   - Description: Stored as varchar(80) in the database 
-
-## Calling Methods 
-- GET 
-
-## Output Data and Format 
-- Output: retrivedAnnouncementCard
-   - Type: HTML
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: nRows
-   - Type: number
-   - Description: Describe the output. Stored as *varchar(30)* in the database
-
-- Output: uid
-   - Type: int
-   - Description: Stored as int(10) in the database
-
-## Examples of Use 
-```
-function retrieveAnnouncementsCards() { 
-  var currentLocation = $(location).attr('href'); 
-  var url = new URL(currentLocation); 
-  var cid = url.searchParams.get("courseid"); 
-  var versid = url.searchParams.get("coursevers"); 
-  var uname = $("#userName").html(); 
-  $.ajax({ 
-    url: "../Shared/retrieveUserid.php", 
-    data: { uname: uname }, 
-    type: "GET", 
-    success: function (data) { 
-      var parsed_data = JSON.parse(data); 
-      var uid = parsed_data.uid; 
-      var xmlhttp = new XMLHttpRequest(); 
-      xmlhttp.onreadystatechange = function () { 
-        if (this.readyState == 4 && this.status == 200) { 
-          var parsed_data = JSON.parse(this.response); 
-          document.getElementById("announcementCards").innerHTML = 
-            parsed_data.retrievedAnnouncementCard; 
-          var unread_announcements = parsed_data.nRows; 
-          if (unread_announcements > 0) { 
-            $("#announcement img").after("<span id='announcementnotificationcount'>0</span>"); 
-            $("#announcementnotificationcount").html(parsed_data.nRows); 
-          } 
-          accessAdminAction(); 
-          var paragraph = "announcementMsgParagraph"; 
-          readLessOrMore(paragraph); 
-          showLessOrMoreAnnouncements(); 
-          scrollToTheAnnnouncementForm(); 
-          $(".deleteBtn").click(function () { 
-            sessionStorage.setItem('closeUpdateForm', true); 
-          }); 
-        } 
-      }; 
-      xmlhttp.open("GET", "../Shared/retrieveAnnouncements.php?cid=" + cid + 
-        "&versid=" + versid + "&recipient=" + uid, true); 
-      xmlhttp.send(); 
-    } 
-  }); 
-}
-```
-
-### Microservices Used 
-- retrieveUserid.php 
-- retrieveAnnouncements.php 
 
 ---
 # Name of file/service 
