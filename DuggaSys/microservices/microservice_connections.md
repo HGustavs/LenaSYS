@@ -1053,33 +1053,31 @@ sectioned.js
 Function: updateReadStatus()
 
 ## Description 
-This function updates the read status of an announcement for a user. It fetches the user's ID based on username. 
+This function updates the read status of an announcement for a user. It fetches the user's ID based on username. Retrieve the user’s numeric uid with retrieveUserid.php - GET. Post announcementid, uid, cid, and versid to updateviewedAnnouncementCards.php - POST, so the read state is stored in the database
 
 ## Input Parameters 
 - Parameter: announcementid
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: ID of the announcement card you’re marking as read, tells the server exactly which announcement to update. Stored as ? in the database
 
 - Parameter: cid
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: The course ID,	lets the service know which course the announcement belongs to. Stored as int(10) in the database
 
 - Parameter: versid
    - Type: String
-   - Description: Stored as varchar(8) in the database
+   - Description: The course-version code. Stored as varchar(8) in the database
 
 - Parameter: username
    - Type: String
-   - Description: Stored as varchar(80) in the database 
+   - Description: The user’s login name, taken from the page. Stored as varchar(80) in the database 
 
 ## Calling Methods 
 - GET (retrieveUserid.php) 
 - POST (updateviewedAnnouncementCards.php) 
 
 ## Output Data and Format 
-- Parameter: uid
-   - Type: int
-   - Description: Stored as int(10) in the database
+- 
 
 ## Examples of Use 
 ```
@@ -1119,9 +1117,9 @@ The function retrieves and displays recent feedback for the logged-in student.
 ## Input Parameters 
 - Parameter: username
    - Type: String
-   - Description: Stored as varchar(80) in the database 
+   - Description: Sent to retrieveUserid.php so the server can translate it into an internal uid. Stored as varchar(80) in the database 
 
-- Parameter: studentid
+- Parameter: studentid (uid)
    - Type: ?
    - Description: Describe parameter. Stored as *int(11)* in the database
 
@@ -1224,7 +1222,11 @@ This function fetches code examples for a specific lecture identified by momentI
 
 - Parameter: lid
    - Type: int
-   - Description: Listentry ID. Stored as int(10) in the database
+   - Description: Listentry ID - momentIS. Stored as int(10) in the database
+
+- Parameter: isManual
+   - Type: bool
+   - Description: True if the call was triggered by the user, false when executed by the automatic timer.  Only used for a console log line. Stored as int(10) in the database
 
 ## Calling Methods 
 - POST 
@@ -1232,7 +1234,7 @@ This function fetches code examples for a specific lecture identified by momentI
 ## Output Data and Format 
 - Output: response
    - Type: JSON
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Sends back one JSON object that says whether the update worked, how many code-example files were refreshed, their basic info, and (if something went wrong) an error message.
  
 ## Examples of Use 
 ``` 
@@ -1276,37 +1278,29 @@ Function: storeCodeExamples()
 This function is responsible for storing code examples from GitHub repository into both a directory and database, then sends the data as a JSON object to PHP service (sectionedservice.php) 
 
 ## Input Parameters
-- Parameter: opt
-   - Type: String
-   - Description: Operation type
-
 - Parameter: cid
    - Type: int
    - Description: Stored as int(10) in the database
 
 - Parameter: codeExamplesContent
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Type: Array
+   - Description: Array returned by the GitHub API, each element contains fields such as, sha, path, size.. Stored as *int(11)* in the database
 
 - Parameter: githubURL
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Root URL of the repo. Stored as ? in the database
 
 - Parameter: fileName
    - Type: String
    - Description: File name. Stored as varchar(256) in the database
 
-- Parameter: courseid
-   - Type: int
-   - Description: Stored as int(10) in the database
- 
 ## Calling Methods 
 - POST 
 
 ## Output Data and Format 
 - Output: response
    - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Logs whatever sectionedservice.php echoes back. Reply is a plain-text string 
 
 ## Examples of Use 
 ```
@@ -1371,32 +1365,25 @@ codeviewer.js
 Function: showIframe()
 
 ## Description 
-The function loads and displays a preview window for file editing. It replaces the existing preview window on the page with the one fetched from fileed.php, it also sets up the save button to reload the page upon saving and triggers the loading of a previewed file using loadPreview() from fileed.js. 
-
+The function loads and displays a preview window for file editing. It replaces the existing preview window on the page with the one fetched from fileed.php.
 ## Input Parameters 
 - Parameter: path
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: String
+   - Description: Relative/absolute path to the file that should be edited. Stored as ? in the database
 
 - Parameter: name
    - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: File name shown in the editor header. Stored as ? in the database
 
 - Parameter: kind
    - Type: int
-   - Description: Stored as int(10) in the database
+   - Description: Code that tells the PHP service what sort of file is being handled. Stored as int(10) in the database
 
 ## Calling Methods 
 - GET
 
 ## Output Data and Format 
-- Output: previewWindow
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: errors
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+- 
 
 ## Examples of Use 
 ```
@@ -1455,11 +1442,7 @@ This function sends a diagram from diagram editor to the backend for saving. It 
 ## Input Parameters 
 - Parameter: dia
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
-- Parameter: hash
-   - Type: ?
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Data to save. Stored as ? in the database
 
 ## Calling Methods 
 - POST 
@@ -1488,12 +1471,13 @@ Diagram_IOHandler.js
 Function: Redirect()
 
 ## Description 
-This function handles redirection to a newly created project folder. It first sends a POST request to diagram_IOHandler.php with a folder name (GetID) and then redirects the user to diagramservice.php, appending the folder name as a URL parameter. The purpose of the AJAX call may be to initialize or register the folder on the server. 
+Creates (or registers) a new *folder* on the server, then navigates the browser to that
+folder’s fresh project page.
 
 ## Input Parameters 
 - Parameter: doc
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: HTMLElement
+   - Description: A control whose value contains the folder name the user chose.
 
 - Parameter: getID
    - Type: ?
@@ -1503,9 +1487,7 @@ This function handles redirection to a newly created project folder. It first se
 - POST 
 
 ## Output Data and Format 
-- Output: redirect
-   - Type: URL
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+- 
 
 ## Examples of Use 
 ```
