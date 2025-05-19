@@ -1217,3 +1217,86 @@ Logs the operation.
 - retrieveSectionedService_ms.php
 
 ---
+
+# Name of file/service  
+readCourseGroupsAndMembers_ms.php
+
+## Description  
+Returns a list of group members related to a specific course ID and course version.  
+Only users with read, write, or student-teacher access to the course can retrieve this data.  
+If a user does not have an email address in the database, a default one is generated based on their username.
+
+## Input Parameters  
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type
+
+- Parameter: $courseid  
+  - Type: int  
+  - Description: Course ID used to filter results
+
+- Parameter: $coursevers  
+  - Type: int  
+  - Description: Course version used to filter results
+
+- Parameter: $log_uuid  
+  - Type: string  
+  - Description: UUID used for service logging
+
+- Parameter: $showgrp  
+  - Type: string  
+  - Description: Two-letter group prefix to filter specific group members
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: grplst  
+  - Type: array  
+  - Description: List of group members (group name, first name, last name, email)
+
+- Output: grpmembershp  
+  - Type: string  
+  - Description: Group name of the logged-in user
+
+- Output: debug  
+  - Type: string  
+  - Description: Error message if query fails
+
+## Examples of Use  
+SELECT user.uid, user.firstname, user.lastname, user.email, user_course.groups  
+FROM user, user_course  
+WHERE user.uid=user_course.uid AND user_course.cid=? AND user_course.vers=?;
+
+### Microservices Used  
+- retrieveSectionedService_ms.php  
+- sessions.php  
+- basic.php
+
+---
+
+# Name of file/service  
+readCourseVersions_ms.php
+
+## Description  
+Fetches all course versions from the 'vers' table.  
+Used to populate version selectors or to retrieve metadata for courses.
+
+## Input Parameters  
+None
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: versions  
+  - Type: array  
+  - Description: Array of course versions including course ID, code, version number, version name, course name(s), start/end date, and MOTD
+
+## Examples of Use  
+SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
+
+### Microservices Used  
+- getUid_ms.php  
+- sessions.php  
+- basic.php
