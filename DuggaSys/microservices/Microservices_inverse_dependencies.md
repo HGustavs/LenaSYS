@@ -364,9 +364,10 @@ createListEntry_ms.php
 
 ##### sharedMicroservices
 - sharedMicroservices/createNewCodeExample_ms.php
-- sharedMicroservices/micupdateSecurityQuestion_ms.php
+- sharedMicroservices/updateSecurityQuestion_ms.php
 - sharedMicroservices/updateSecurityQuestion_ms.php
 - sharedMicroservices/updateUserPassword_ms.php
+- sharedMicroservices/retrieveUsername_ms.php
 
 ##### sectionedService
 - sectionedService/createGithubCodeExample_ms.php
@@ -385,6 +386,8 @@ createListEntry_ms.php
 - sectionedService/updateListEntriesTabs_ms.php
 - sectionedService/updateListEntryOrder_ms.php
 - sectionedService/updateVisibleListEntries_ms.php
+- sectionedService/readGroupValues_ms.php
+- sectionedService/removeListEntries_ms.php
 
 ##### resultedService
 - resultedService/getUserAnswer_ms.php
@@ -400,6 +403,7 @@ createListEntry_ms.php
 - fileedService/deleteFileLink_ms.php
 - fileedService/getFileedService_ms.php
 - fileedService/updateFileLink_ms.php
+- fileedService/retrieveFileedService_ms.php
 
 ##### duggaedService
 - duggaedService/createDugga_ms.php
