@@ -249,3 +249,106 @@ Updates the content of a box associated with a certain code example, and then re
 - retrieveCodeviewerService_ms.php
 
 ---
+
+# Name of file/service
+retrieveCodeviewerService_ms.php
+
+## Description
+Retrieves updated data from the database and stores it in an array. The file outputs information about a specific code example in a course, including details, related examples, important lines, words, file directories, and user access levels. It makes sure only authorized users can view and change this information. It also logs the service event.
+
+## Input Parameters
+- Parameter: $userid
+   - Type: int
+   - Description: User ID. Stored as int in the database
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $courseId
+   - Type: string
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version. Stored as int in the database
+
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $sectionName
+   - Type: string
+   - Description: Name of the section of the code example. Stored as varchar(64) in the database
+
+- Parameter: $exampleName
+   - Type: string
+   - Description: Name of the code example. Stored as varchar(64) in the database
+
+- Parameter: $playlink
+   - Type: string
+   - Description: Runlink for opening demo in code example. Stored as varchar(256) in the database
+
+- Parameter: $log_uuid
+   - Type: string
+   - Description: Logs UUID for the event                     
+
+## Calling Methods
+- function call
+
+
+## Output Data and Format
+- Output: $array
+   - Type: JSON
+   - Description: Contains data associated with a code example
+
+## Examples of Use
+`SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;`
+
+### Microservices Used
+- 
+
+---
+
+# Name of file/service
+updateCodeExampleTemplate_ms.php
+
+## Description
+Used when you create a new code example for a course and choose a template to display that code. The microservice selects the selected template and retrieves a CSS-file containing the template to display on the page.
+
+## Input Parameters
+- Parameter: $userid
+   - Type: int
+   - Description: User ID. Stored as int in the database
+
+- Parameter: $opt
+   - Type: string
+   - Description: Operation type
+
+- Parameter: $templateNumber
+   - Type: string
+   - Description: Template ID. Stored as int in the database
+
+- Parameter: $exampleId
+   - Type: string
+   - Description: Example ID. Stored as mediumint in the database
+
+- Parameter: $courseId
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int in the database
+
+- Parameter: $courseVersion
+   - Type: string
+   - Description: Course version. Stored as int in the database            
+
+## Calling Methods
+- function call
+
+## Output Data and Format
+- 
+
+## Examples of Use
+`UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;`
+
+### Microservices Used
+- getUid_ms.php
