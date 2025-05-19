@@ -103,15 +103,15 @@ function checkConnectionErrors(to, from) {
     return '';
 }
 
+
+// Checks that the lines are within bounds between two sequence activation elements
 function sequenceDrawError(from) {
     
     if (from.kind === elementTypesNames.sequenceActivation) {
-        const mouseY = lastMousePos.y - from.height;
+        const mouseY = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y).y;
         const elementTop = from.y;
         const elementBottom = from.y + from.height;
-        console.log(mouseY, elementTop, elementBottom, from.height);
-        // Return true if the mouse is outside the element's Y bounds
-        return mouseY < elementTop || mouseY > elementBottom;
+        return elementTop > mouseY|| elementBottom < mouseY;
     }
     return false;
 }

@@ -190,10 +190,14 @@ function drawLine(line, targetGhost = false) {
                     fill='none' stroke='${lineColor}' stroke-width='${strokewidth * zoomfact}' stroke-dasharray='${strokeDash}'
                 />`;
     } else {
-        
+
         // Some drawing options for the remainder of line types (UML, IE or Sequence)
         if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
+        }
+        else if (line.type === entityType.SE){
+            
+            lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
@@ -601,12 +605,6 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     
     // Special case to handle sequence activation lines
     if (f.kind === elementTypesNames.sequenceActivation) {
-        //console.log(f.y, f.height, t.y);
-        
-        if (f.y > t.y || f.y + f.height < t.y){
-            console.log("utanför");
-            
-        }
 
         const fromKey = `from:${line.id}`;
         const toKey = `to:${line.id}`;
@@ -909,6 +907,34 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
 
 }
 
+/**
+ * @description Draws the line between two sequence activation elements, or the mouse
+ * @param {Number} fx The felem x coordinate
+ * @param {Number} fy The felem y coordinate, not used here
+ * @param {Number} tx The telem x coordinate
+ * @param {Number} ty The telem y coordinate
+ * @param {Object} offset Offset for the X and Y coordinate
+ * @param {Object} line The line object that is drawn
+ * @param {Object} lineColor Where the start and end label should be
+ * @param {Number} strokeDash A number for patterns of dashes and gaps
+ * @returns Returns the line as segmented
+ */
+function drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash){
+    // Calculate the horizontal start and end points
+    const startX = Math.min(fx + offset.x1, tx + offset.x2);
+    const endX = Math.max(fx + offset.x1, tx + offset.x2);
+    const yPosition = ty + offset.y2;
+
+    // Create a horizontal polyline
+    return `<polyline 
+                id='${line.id}' 
+                points='${startX},${yPosition} ${endX},${yPosition}' 
+                fill='none' 
+                stroke='${lineColor}' 
+                stroke-width='${strokewidth * zoomfact}' 
+                stroke-dasharray='${strokeDash}' 
+            />`;
+}
 /**
  * @description Draw a segmented recursive loop
  * @param {Number} fx The felem x coordinate
