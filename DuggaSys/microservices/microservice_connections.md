@@ -13,7 +13,7 @@ This function adds a user to a course. It performs two main operations, retrieve
    - Description: Operation type
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 - Parameter: username
@@ -105,7 +105,7 @@ Removes a user from the current course-version, retrives UID with ajax POST, the
    - Description: Username to translate into uid. Stored as varchar(80) in the database 
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 - Parameter: courseid
@@ -177,7 +177,7 @@ This function retrieves all users from the backend and populates a dropdown fiel
    - Description: Operation type
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -252,7 +252,7 @@ Updates course information in the system, such as course name, visibility, code,
    - Description: Visibility of the section. Stored as tinyint(1) in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action  
 
 - Parameter: githubURL
@@ -372,7 +372,7 @@ Used to fetch and validate data from GitHub repository. If successful it return 
    - Description: Full repo URL, Describe parameter. Stored as *varchar(256)* in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -444,7 +444,7 @@ The latest commit is then stored in the database.
    - Description: Full repo URL. Describe parameter. Stored as *int(11)* in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -519,7 +519,7 @@ Returns true on success or false on failure.
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -592,7 +592,7 @@ It sends a POST request to gitcommitService.php with the course ID and user to r
    - Description: Logged-in user ID. Stored as *int(11)* in the database
   
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -675,7 +675,7 @@ Sends an updated GitHub repository URL and course ID to database in order to sav
    - Description: Personal access-token to use for authenticated requests. Stored as varchar(40) in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -749,7 +749,7 @@ The function updates the selected directory for a course.
    - Description: Course-id that owns the repo, stored as int(10) in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods
@@ -1523,33 +1523,27 @@ Function: loadFile()
 This function is used to load and display a specific file (Markdown, plain text, or other content types) within the preview window. It updates the UI and sends a POST request to showdoc.php to fetch the file contents for preview. 
 
 ## Input Parameters 
-- Parameter: filepath
+- Parameter: fileUrl
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Full/relative path to the file. Stored as *varchar(256)* in the database
 
 - Parameter: fileName
    - Type: String
-   - Description: File name. Stored as varchar(256) in the database
+   - Description: Filename. Stored as varchar(256) in the database
 
 - Parameter: fileKind
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: Tinyint ?
+   - Description: Storage class, 1 = Link, 2 = Global, 3 = Course local, 4 = Local. Stored as ? in the database
 
 - Parameter: coursevers
    - Type: String
-   - Description: Stored as varchar(8) in the database
+   - Description: Course version. Stored as varchar(8) in the database
 
 ## Calling Methods 
 - POST 
 
 ## Output Data and Format
-- Output: HTML
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: returnFile
-   - Type: ?
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+- 
 
 ## Examples of Use 
 ```
@@ -1587,33 +1581,29 @@ Function: loadPreview()
 The function is responsible for previewing a file's content in a read-only format. It sets up the preview UI for the selected file, displays the preview window, and makes a POST request to showdoc.php to retrieve the file's content. This function is intended for viewing only, not editing. 
 
 ## Input Parameters 
-- Parameter: filepath
+- Parameter: fileUrl
    - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Full/relative path to the file. Stored as *varchar(256)* in the database
 
 - Parameter: fileName
    - Type: String
-   - Description: File name. Stored as varchar(256) in the database
+   - Description: Filename. Stored as varchar(256) in the database
 
 - Parameter: fileKind
-   - Type: ?
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Type: Tinyint ?
+   - Description: Storage class, 1 = Link, 2 = Global, 3 = Course local, 4 = Local. Stored as ? in the database
 
 - Parameter: coursevers
    - Type: String
-   - Description: Stored as varchar(8) in the database
+   - Description: Course version. Stored as varchar(8) in the database
 
 ## Calling Methods 
 - POST 
 
 ## Output Data and Format 
-- Output: HTML
-   - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
 - Output: returnedPreview
-   - Type: ?
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Type: HTML
+   - Description: returnedPreview() injects rendered HTML
 
 ## Examples of Use 
 ```
@@ -1664,7 +1654,7 @@ This function handles the updating of a users security challenge question and an
    - Description: The answer to the security challenge question. Stored as varchar(256) in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods 
@@ -1673,11 +1663,11 @@ This function handles the updating of a users security challenge question and an
 ## Output Data and Format 
 - Output: success
    - Type: bool
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: True, the server has accepted the password, stored the new question and answer. False, the update failed for one of the reasons spelled out in status
 
 - Output: status
    - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Describes the error, only when success is false
 
 ## Examples of Use 
 ```
@@ -1747,10 +1737,10 @@ This function handles the password change process for a user. It collects the cu
 
 - Parameter: $newPassword
    - Type: int
-   - Description: The new password the user wants to change to. Stored as tinyint(1) in the database
+   - Description: The new password the user wants to change to. Stored as varchar(225) in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods 
@@ -1759,11 +1749,11 @@ This function handles the password change process for a user. It collects the cu
 ## Output Data and Format 
 - Output: success
    - Type: bool
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: True, password updated. False, update refused
 
 - Output: status
    - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Describes the error, only when success is false
 
 ## Examples of Use 
 ```
@@ -1830,20 +1820,20 @@ This module manages push notification subscriptions in the browser. It registers
 
 ## Input Parameters 
 - Parameter: action
-   - Type: ?
+   - Type: String
+   - Description: Specifies the action
+
+- Parameter: subscription
+   - Type: JSON
    - Description: Specifies the action
 
 ## Calling Methods 
 - POST 
 
 ## Output Data and Format 
-- Output: text
+- Output: response
    - Type: String
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: UI updates
-   - Type: HTML
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+   - Description: Describes the outcome in text
 
 ## Examples of Use 
 ```
@@ -1873,32 +1863,24 @@ $(function() {
 pushnotificationsserviceworker.js 
 
  ## Description 
-This service handles browser push notifications for LenaSYS. It handles push events, displays a notification with the message content and confirms delivery to the server. 
+This service handles browser push notifications, push events, displays a notification with confirmation message. 
 
  ## Input Parameters 
-- Parameter: event.data.text()
-   - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
-
 - Parameter: subscription.endpoint 
    - Type: String
    - Description: Describe parameter. Stored as *int(11)* in the database
 
 - Parameter: action
-   - Type: ?
+   - Type: String
    - Description: Specifies the action
 
 ## Calling Methods 
 - POST 
 
 ## Output Data and Format 
-- Output: notification
-   - Type: object
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: server POST
-   - Type: text
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
+- Output: response
+   - Type: String
+   - Description: Describes the outcome in text
 
 ## Examples of Use 
 ```
