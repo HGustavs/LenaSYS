@@ -59,3 +59,29 @@ None
 None
 
 ---
+
+# Name of file/service
+getCourseID_ms.php
+
+## Description
+Responsible for retrieving the course ID from a database based on a given GitHub URL. Looks up a course ID in a database based on the given GitHub URL, formats the URL for the query, retrieves the course ID if available, and adds the information to the SQLite database if a match is found, through insertIntoSQLite_ms.php.
+
+## Input Parameters
+- Parameter: $githubURL
+   - Type: String
+   - Description: GitHub URL. Stored as varchar(1024) in the database
+
+## Calling Methods
+None
+
+## Output Data and Format
+None
+
+## Examples of Use
+-
+
+### Microservices Used
+None
+
+---
+
