@@ -810,7 +810,7 @@
     <!-- OPTIONS PANE -->
     <!-- Yellow panel on the right side of the screen -->
     <div id="options-pane" class="hide-options-pane"> 
-        <div id="options-pane-button" class="tooltip-target" onclick="toggleOptionsPane();" data-toolmode="Option_Panel" data-toolid="24">
+        <div id="options-pane-button" class="tooltip-target" onclick="toggleOptionsPane(true);" data-toolmode="Option_Panel" data-toolid="24">
             <span id='optmarker'>&#9660;Options</span>
         </div>
 
