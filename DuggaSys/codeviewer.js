@@ -317,7 +317,7 @@ function returned(data)
 
 			// Render code
 			rendercode(boxcontent, boxid, boxwordlist, boxfilename);
-
+			console.log("Rendering boxcontent for boxid=" + boxid + ":\n" + boxcontent);
 			// set font size
 			document.getElementById("box" + boxid).style.fontSize = retData['box'][boxid - 1][6] + "px";
 
@@ -1146,8 +1146,8 @@ function addTemplatebox(id) {
 	str += "<div id='" + id + "' class='box'></div>";
 	str += "</div>";
 
-	str = str + document.getElementById("div2").innerHTML;
-	document.getElementById("div2").innerHTML = str;
+	document.getElementById("div2").innerHTML += str;
+
 }
 
 //----------------------------------------------------------------------------------
@@ -2194,136 +2194,6 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 	// Print out rendered code and border with numbers
 	printout.innerHTML = createCodeborder(lineno, improws) + str;
 
-	//css part
-	pid = "";
-	var iwcounter = 0;
-	for (i = 0; i < tokens.length; i++) {
-		tokenvalue = String(tokens[i].val);
-		// Make white space characters
-		tokenvalue = tokenvalue.replace(/ /g, '&nbsp;');
-		tokenvalue = tokenvalue.replace(/\\t/g, '&nbsp;&nbsp;');
-
-		if (tokens[i].kind == "rowcomment") {
-			cont += "<span class='comment'>" + tokenvalue + "</span>";
-		} else if (tokens[i].kind == "blockcomment") {
-			cont += "<span class='comment'>" + tokenvalue + "</span>";
-		} else if (tokens[i].kind == "string") {
-			cont += "<span class='string' >" + tokenvalue + "</span>";
-		} else if (tokens[i].kind == "number") {
-			cont += "<span class='number'>" + tokenvalue + "</span>";
-		} else if (tokens[i].kind == "name") {
-			var foundkey = 0;
-			//If tokenvalue exists in the array for important words
-			if (important.indexOf(tokenvalue) != -1) {
-				foundkey = 2;
-				//Uses smart indexing to find if token value exists in array, if tokenvalue == length the statement is true
-			} else if (keywords[tokenvalue] != null) {
-				foundkey = 1;
-			}
-
-			if (foundkey == 1) {
-				cont += "<span class='keyword" + keywords[tokenvalue] + "'>" + tokenvalue + "</span>";
-			} else if (foundkey == 2) {
-				iwcounter++;
-				cont += "<span id='IW" + iwcounter + "' class='impword' onclick='popupDocumentation(this.id, \"multi\");' onmouseover='highlightKeyword(\"" + tokenvalue + "\")' onmouseout='highlightKeyword(\"" + tokenvalue + "\")'>" + tokenvalue + "</span>";
-			} else {
-				cont += tokenvalue;
-			}
-
-		} else if (tokens[i].kind == "operator") {
-			if (tokenvalue == "{") {
-				pid = "CBR" + cbcount + boxid;
-				cbcount++;
-				cbracket.push(pid);
-				cont += "<span id='" + pid + "' class='oper' onmouseover='highlightop(\"P" + pid + "\",\"" + pid + "\");' onmouseout='highlightop(\"P" + pid + "\",\"" + pid + "\");'>" + tokenvalue + "</span>";
-			} else if (tokenvalue == "}") {
-				pid = cbracket.pop();
-				cont += "<span id='P" + pid + "' class='oper' onmouseover='highlightop(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightop(\"" + pid + "\",\"P" + pid + "\");'>" + tokenvalue + "</span>";
-			} else if (tokenvalue == "<") {
-				// This statement checks the character after < to make sure it is a valid tag.
-
-				tokenvalue = "&lt;";
-				if (isNumber(tokens[i + 1].val) == false && tokens[i + 1].val != "/" && tokens[i + 1].val != "!" && tokens[i + 1].val != "?") {
-					if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) > -1) {
-						var k = 2;
-						var foundEnd = false;
-
-						//If a > has been found on the same line as an < and the token to the left of < is in htmlArray then it classes it as an html-tag
-						while (i + k < tokens.length) {
-							if (tokens[i + k].val == ">") {
-								foundEnd = true;
-								break;
-							}
-							k++;
-						}
-
-						if (foundEnd) {
-							pid = "css" + cssTagCount + boxid;
-							cssTagCount++;
-							if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
-								cssTag.push(pid);
-							}
-							cont += "&lt" + "<span style='color: "+fontcolor+"'  id='" + pid + "' class='oper' onmouseover='highlightCss(\"P" + pid + "\",\"" + pid + "\");' onmouseout='deHighlightCss(\"P" + pid + "\",\"" + pid + "\");'>" + tokens[i + 1].val;
-							cont += "</span>";
-							i = i + 1;
-						} else {
-							cont += "<span class='oper'>" + tokenvalue + "</span>";
-						}
-					} else {
-						cont += "<span class='oper'>" + tokenvalue + "</span>";
-					}
-				} else if (tokens[i + 1].val == "/") {
-					if (cssArray.indexOf(tokens[i + 2].val.toLowerCase()) > -1) {
-						if (cssArray.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
-							pid = cssTag.pop();
-						} else {
-							cssTagCount++;
-							pid = "css" + cssTagCount + boxid;
-						}
-						if (htmlArrayNoSlash.indexOf(tokens[i + 1].val.toLowerCase()) == -1) {
-							cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper' onmouseover='highlightHtml(\"" + pid + "\",\"P" + pid + "\");' onmouseout='highlightHtml(\"" + pid + "\",\"P" + pid + "\");'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
-						} else {
-							cont += "&lt" + tokens[i + 1].val + "<span style='color: "+fontcolor+"' id='P" + pid + "' class='oper'>" + tokens[i + 2].val + "</span>" + tokens[i + 3].val;
-						}
-						i = i + 3;
-					} else {
-						cont += "<span class='oper'>" + tokenvalue + "</span>";
-					}
-				} else {
-					cont += "<span class='oper'>" + tokenvalue + "</span>";
-				}
-			} else {
-				cont += "<span class='oper'>" + tokenvalue + "</span>";
-			}
-		} else {
-			cont += tokenvalue;
-		}
-		// tokens.length-1 so the last line will be printed out
-		if (tokens[i].kind == "newline" || i == tokens.length - 1) {
-			// Help empty lines to be printed out
-			if (cont == "") cont = "&nbsp;";
-			// Count how many linenumbers that'll be needed
-			lineno++;
-			// Print out normal rows if no important exists
-			if (improws.length == 0) {
-				str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
-			} else {
-				// Print out important lines
-				for (var kp = 0; kp < improws.length; kp++) {
-					if (lineno >= parseInt(improws[kp][1]) && lineno <= parseInt(improws[kp][2])) {
-						str += "<div id='" + boxfilename + "-line" + lineno + "' class='impo' style='line-height:21px'><span class='blockBtnSlot'></span>" + cont + "</div>";
-						break;
-					} else {
-						if (kp == (improws.length - 1)) {
-							str += `<div id='${boxfilename}-line${lineno}' class='normtext' style='line-height:21px'><span class='blockBtnSlot'></span>${cont}</div>`;
-						}
-					}
-				}
-			}
-			cont = "";
-		}
-	}
-	str += "</div>";
 
 	// Print out rendered code and border with numbers
 	printout.innerHTML = createCodeborder(lineno, improws) + str;
