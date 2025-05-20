@@ -310,9 +310,10 @@
 
 .diagramIcons {
     position: relative;
+    transition: background-color 0.3s;
     margin: auto;
-    width: 3.7vh;
-    height: 3.7vh;
+    width: 3.2vh;
+    height: 3.2vh;
     cursor: pointer;
     border: solid 1px var(--color-primary);
     margin-top: 3px;
