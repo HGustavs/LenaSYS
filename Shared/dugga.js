@@ -2527,11 +2527,23 @@ function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
 		}
 
 		str+="</div>";
-		document.getElementById("#duggaStatus").remove();
-		document.querySelectorAll("<td id='duggaStatus' align='center'>"+str+"</td>").after("#menuHook");
-		document.getElementById("#menuHook").style.display="none";
-		// Adds dugga title next to the text "Instructions"
-		document.querySelector('h3:contains("Instructions")').innerHTML=duggaTitle + " - Instructions";
+		var duggaStatusEl = document.getElementById("duggaStatus");
+		if (duggaStatusEl) duggaStatusEl.remove();
+
+		var menuHook = document.getElementById("menuHook");
+		if (menuHook) {
+			var td = document.createElement("td");
+			td.id = "duggaStatus";
+			td.setAttribute("align", "center");
+			td.innerHTML = str;
+			menuHook.parentNode.insertBefore(td, menuHook.nextSibling);
+			menuHook.style.display = "none";
+		}
+
+		var heading = document.querySelector("h3");
+		if (heading && heading.textContent.includes("Instructions")) {
+			heading.innerHTML = duggaTitle + " - Instructions";
+		}
 }
 
 
