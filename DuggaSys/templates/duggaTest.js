@@ -280,14 +280,14 @@ function bitClick(divid)
 	document.querySelector(".submit-button").classList.remove("btn-disable");
 }
 
-function hexClick(divid)
-{
+function hexClick(divid){
 	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
-	dpos=$("#"+divid).position();
-	dw=document.getElementById(window).innerWidth;
-	dwid=document.getElementById(divid).innerWidth;
-	dhei=document.getElementById(divid).innerHeight;
+	dw=window.innerWidth;
+	var element=document.getElementById(divid);
+	var dpos=element.getBoundingClientRect();
+	dwid=document.getElementById(divid).Width;
+	dhei=document.getElementById(divid).Height;
 
 	bw=Math.round(dwid)*1.10;
 	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
@@ -304,8 +304,11 @@ function hexClick(divid)
 	if(hh<160) hh=160;
 	hh+="px";
 	
-	$("#pop").css({top: (dpos.dhei+10), left:lpos, width:bw,height:hh})
-
+//Style on dropdown
+	document.getElementById("pop").style.top=(dpos.dhei+10) + "px";
+	document.getElementById("pop").style.left=lpos + "px";
+	document.getElementById("pop").style.width=bw + "px";
+	document.getElementById("pop").styleheight=hh + "px";
 	document.getElementById("pop").classList.remove("arrow-topr");
 	document.getElementById("pop").classList.remove("arrow-top");
 	document.getElementById("pop").classList.add(popclass);
