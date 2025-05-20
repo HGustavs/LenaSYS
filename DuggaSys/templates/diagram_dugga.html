@@ -55,6 +55,67 @@
         #diagram-iframe{
             height: inherit;
         }
+        .close-icon{
+            display: none;
+        }
+        .button-wrapper{
+            display: none;
+        }
+
+        @media screen and (max-width: 414px) {
+            .close-icon{
+                display: block;
+                padding: .3rem;
+                border-radius: 50%;
+            }
+            .button-wrapper{
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                padding: .5rem;
+                column-gap: .4rem;
+            }
+            .dugga-btn{
+                background-color: var(--color-primary);
+                color: #f4f4f4;
+                border: none;
+                padding: .5rem;
+                font-size: 1.1rem;
+                font-weight: 500;
+                border-radius: .4rem;
+            }
+            .instructions-button,
+            .container-header{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .assignment_left,
+            .instructions-container{
+                position: fixed;
+                inset: 0;
+                z-index: 10;
+                background-color: #fff;
+                width: 100%;
+                height: 100%;
+                display: none;
+            }
+            header{ /*Hides the header on mobile version*/
+                display: none;
+            }
+
+            /*Hides the div adding unnecessary 50px height*/
+            .diagram-hide{
+                display: none;
+            }
+
+            /*Hides the reset, load and save buttons*/
+            #submitButtonTable{
+                display: none;
+            }
+            #content{
+                margin: 0;
+            }
+        }
 
     </style>
     <script>
@@ -123,6 +184,12 @@
                 <p style="margin-left: 4px;" id="assigment-instructions"></p> -->
             </div>
         </div>
+
+        <!-- The buttons wrapped where the user can toggle between general information and instructions -->
+        <div class="button-wrapper">
+            <button id="generalInfoBtn" class="dugga-btn">General Information</button>
+            <button id="instructionsBtn" class="dugga-btn">Instructions</button>
+        </div>
         <div class="container">
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
@@ -163,12 +230,6 @@
 
             </div>
             <div id="nextVariantBtn"></div>
-        </div>
-
-        <!-- The buttons wrapped where the user can toggle between general information and instructions -->
-        <div class="button-wrapper">
-            <button id="generalInfoBtn" class="dugga-btn">General Information</button>
-            <button id="instructionsBtn" class="dugga-btn">Instructions</button>
         </div>
     </div>
 </body>
