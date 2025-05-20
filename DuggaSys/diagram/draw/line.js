@@ -1244,13 +1244,18 @@ function determineLine(line, targetGhost = false) {
     if (felem.y1 > telem.y2 || felem.y2 < telem.y1) overlapY = false;
     let overlapX = true;
     if (felem.x1 > telem.x2 || felem.x2 < telem.x1) overlapX = false;
-    let majorX = true;
-    if (Math.abs(line.dy) > Math.abs(line.dx)) majorX = false;
+
+    if (Math.abs(line.dy) > Math.abs(line.dx * 1.5)) line.majorX = false; // Top/Bottom if middle point between the two elements crosses the border closer to x = 0
+    else if (Math.abs(line.dy) < Math.abs(line.dx / 3)) line.majorX = true; // Left/Right if middle point crosses the border closer to y = 0
+
+    if (line.majorX === undefined) line.majorX = true; // For when initially creating the line, so as to not cause any problems in the code
+
     // Determine connection type (top to bottom / left to right or reverse) - no top to side possible
-    if (overlapY || ((majorX) && (!overlapX))) {
+    // A deadzone exists that lets the current connection type remain as long as the middle point between the two elements doesnt cross the opposing border
+    if (overlapY || ((line.majorX) && (!overlapX))) {
         if (line.dx > 0) line.ctype = lineDirection.LEFT;
         else line.ctype = lineDirection.RIGHT;
-    } else {
+    } else if (overlapX || ((!line.majorX) && (!overlapY))){
         if (line.dy > 0) line.ctype = lineDirection.UP;
         else line.ctype = lineDirection.DOWN;
     }
