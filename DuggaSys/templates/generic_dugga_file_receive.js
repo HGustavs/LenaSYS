@@ -212,7 +212,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		document.getElementById("snus").innerHTML=result;
+        		$("#snus").html(result);
 				// Placeholder code
 	        	var pl = duggaParams.placeholders;
 				if (pl !== undefined) {
