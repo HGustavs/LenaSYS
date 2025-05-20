@@ -1,9 +1,9 @@
 //----------------------------------------------------------------------------------
-// Globals
+// Globals (declared elsewhere so must be vars)
 //----------------------------------------------------------------------------------
-let score = -1;
-let dataV;
-let timer=0;
+var score = -1;
+var dataV;
+var timer=0;
 const DEFAULT_CAMERA_POSITION_Z = 1000;
 const	DEFAULT_CAMERA_POSITION_X = 500;
 const	DEFAULT_CAMERA_POSITION_Y = 200;
@@ -140,9 +140,11 @@ function returnedDugga(data)
   }
   	document.getElementById("content").appendChild(document.getElementById("submitButtonTable"));
 
-  	const content = document.getElementById("content");
-	const lockedDuggaInfo = document.getElementById("lockedDuggaInfo");
-	content.insertBefore(lockedDuggaInfo, content.firstChild);
+	if(document.getElementById("lockedDuggaInfo")){
+		const content = document.getElementById("content");
+		const lockedDuggaInfo = document.getElementById("lockedDuggaInfo");
+		content.insertBefore(lockedDuggaInfo, content.firstChild);
+	}
 
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -591,7 +593,6 @@ function moveTriangleDown(index)
 
 function toggleRotate(e) 
 {
-	e.target.setAttribute('has-toggle-rotate', 'true');
 	if (rotateObjects) { rotateObjects = false; } else { rotateObjects = true; }
 }
 
