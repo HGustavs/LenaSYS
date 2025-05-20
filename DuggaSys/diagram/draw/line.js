@@ -1280,13 +1280,14 @@ function checkAdjacentLines(element) {
                 if (lineIdIndex === -1) { // Check if the line exists in the line's array
                     return false;
                 }
-                    const lineObject = lines[lineIdIndex];
-                if (lineObject.ghostLine || lineObject.targetGhost) { // To keep ghostlines active
-                    return lineObject.kind === lineKind.NORMAL;
+                
+                const lineObject = lines[lineIdIndex];
+                if (lineObject.ghostLine || lineObject.targetGhost) {
+                    return !lineObject.recursive;
                 }
-                    return lineObject.kind !== lineKind.RECURSIVE;
+                return !lineObject.recursive;
             });
-
+            
             if (filteredLines.length > 1) {
                 filteredLines.forEach((lineID, index) => {
                     const lineIndex = findIndex(lines, lineID);
