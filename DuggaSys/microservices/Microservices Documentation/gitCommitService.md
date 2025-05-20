@@ -161,3 +161,35 @@ None
 
 ---
 
+# Name of file/service
+refreshCheck_ms.php
+
+## Description
+Checks if enough time has passed since the last update of a course to allow a new Git repository fetch, by comparing the current timestamp with the last stored update time.
+Cooldown time is based on user permissions. Short deadline is used for superusers, and long deadline is used for other users.
+
+## Input Parameters
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $user
+   - Type: int
+   - Description: Whether a user is a superuser or not. 1 = superuser. Stored as tinyint(1) in the database
+
+## Calling Methods
+- Function call
+
+## Output Data and Format
+- Output: boolean
+   - Type: boolean
+   - Description: True if a user is a superuser, false if a user is not a superuser. Prints "Too soon since last update, please wait." if the cooldown time has not passed
+
+## Examples of Use
+-
+
+### Microservices Used
+- newUpdateTime_ms.php
+
+---
+
