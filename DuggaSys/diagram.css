@@ -331,7 +331,7 @@
     .icon-wrapper{
         display: block !important;
         position: fixed;
-        z-index: 10;
+        z-index: 5000;
         bottom: 5%;
         left: 50%;
         transform: translateX(-50%);
@@ -341,7 +341,7 @@
      .icon-wrapper-sidebar{
         display: block !important;
         position: fixed;
-        z-index: 10;
+        z-index: 5000;
         right: 10%;
         top: 50%;
         transform: translateX(-50%);
