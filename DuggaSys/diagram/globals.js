@@ -373,6 +373,13 @@ var lastMousePosCoords = new Point(0, 0);
 //#region OPTIONS
 
 /**
+ * @description Flag indicating how options panel was opened.
+ * @see toggleOptionsPane
+ * @type {boolean}
+ */
+let userToggled = false;
+
+/**
  * @description If the ER table should be shown over the the options pane.
  * @see toggleErTable
  * @see generateContextProperties
