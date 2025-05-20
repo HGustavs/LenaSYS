@@ -240,22 +240,16 @@ function drawLine(line, targetGhost = false) {
         
 
     }else{
+        const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
+                    const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
-            let felem, telem;
-            felem = data[findIndex(data, line.fromID)];
-            telem = data[findIndex(data, line.toID)];
-            const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
-            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(felem,telem));
+            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowStartPos.x,arrowStartPos.y,arrowEndPos.x,arrowEndPos.y));
         }
 
         // Handle end arrow
         if (line.endIcon === SDLineIcons.ARROW) {
-            let felem, telem;
-            felem = data[findIndex(data, line.fromID)];
-            telem = data[findIndex(data, line.toID)];
-            const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
-            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(felem,telem));
+            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
         }
     }    
         
@@ -438,8 +432,8 @@ function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth 
     }
 }
 
-function findRotation(felem,telem){
-    let angleRad = Math.atan2(telem.y - felem.y, telem.x - felem.x); // in radians     
+function findRotation(x1,y1,x2,y2){
+    let angleRad = Math.atan2(y1 - y2, x1 - x2); // in radians     
     return angleRad * (180 / Math.PI);   // convert to degrees
 }
 
