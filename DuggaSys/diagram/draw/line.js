@@ -241,10 +241,11 @@ function drawLine(line, targetGhost = false) {
 
     }else{
         const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
-                    const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
+        const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
-            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowStartPos.x,arrowStartPos.y,arrowEndPos.x,arrowEndPos.y));
+            console.log("heyo");
+            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
         }
 
         // Handle end arrow
