@@ -54,8 +54,10 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
         result = newLine;
 
     //separe statement when more than 2 lines are created
-    //Moastly the same from above but with a check for 3 lines
-    } else if(numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4)){
+    //Mostly the same from above but with a check for 3 lines
+    } 
+    
+    else if(fromElement.kind === elementTypesNames.sequenceActivation || (numOfExistingLines < 3 || (specialCase && numOfExistingLines < 4))){
         let newLine = {
             id: makeRandomID(),
             fromID: fromElement.id,
@@ -94,7 +96,24 @@ function checkConnectionErrors(to, from) {
     if (sequenceTypeError(from, to)) {
         return `Lines in sequence diagram can only be drawn between sequence activations`;
     }
+    // Uses to as from elements since the implementation of activation lines is done this way
+    if (sequenceDrawError(to)) {
+        return `Drawn line is out of bounds`;
+    }
     return '';
+}
+
+
+// Checks that the lines are within bounds between two sequence activation elements
+function sequenceDrawError(from) {
+    
+    if (from.kind === elementTypesNames.sequenceActivation) {
+        const mouseY = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y).y;
+        const elementTop = from.y;
+        const elementBottom = from.y + from.height;
+        return elementTop > mouseY|| elementBottom < mouseY;
+    }
+    return false;
 }
 
 function sequenceTypeError(from,to){
