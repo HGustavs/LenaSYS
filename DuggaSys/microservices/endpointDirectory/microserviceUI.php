@@ -103,6 +103,12 @@ if (isset($_GET['id'])) {
         $stmt->execute([$_GET['id']]);
         $dependencies = $stmt->fetchAll();
     }
+
+    if ($microservice) {
+        $stmt = $db->prepare("SELECT * FROM dependencies WHERE depends_on_id = ?");
+        $stmt->execute([$_GET['id']]);
+        $depending_on = $stmt->fetchAll();
+    }
 }
 
 } catch (PDOException $e) {
@@ -246,9 +252,9 @@ if (isset($_GET['id'])) {
         <?php } ?>
         <?php 
         echo "<h3>Dependencies</h3>";
+        echo "Inverse dependencies - A list of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
         if (!empty($dependencies)) {
             echo "<table>";
-            echo "List of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
             echo "<tr><th>Microservice</th><th>Path</th></tr>";
             foreach ($dependencies as $dependency) {
                 echo '<tr>';
@@ -256,6 +262,22 @@ if (isset($_GET['id'])) {
                 echo '<td>' . $dependency['path'] . '</td>';
                 echo '</tr>';
             }
+            echo "</table>";
+        } else {
+            echo "<p>No inverse dependencies</p>";
+        }
+
+        echo "Dependencies - A list of microservices that <b>'"  . $microservice['ms_name'] . "</b>' depends on";
+        if (!empty($depending_on)) {
+            echo "<table>";
+            echo "<tr><th>Microservice</th><th>Path</th></tr>";
+            foreach ($depending_on as $depends) {
+                echo '<tr>';
+                echo '<td>' . "<a href=?id=" . $depends['microservice_id'] . ">" . $depends['ms_name'] . '</td>';
+                echo '<td>' . $depends['path'] . '</td>';
+                echo '</tr>';
+            }
+            echo "</table>";
         } else {
             echo "<p>No dependencies</p>";
         }
