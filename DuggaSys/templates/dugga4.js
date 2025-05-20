@@ -147,74 +147,72 @@ function reset()
 
 }
 
-function saveClick() 
-{
+function saveClick() {
 	$.ajax({									//Ajax call to see if the new hash have a match with any hash in the database.
 		url: "showDuggaservice.php",
 		type: "POST",
-		data: "&hash="+hash, 					//This ajax call is only to refresh the userAnswer database query.
+		data: "&hash=" + hash, 					//This ajax call is only to refresh the userAnswer database query.
 		dataType: "json",
-		success: function(data) {
+		success: function (data) {
 			ishashindb = data['ishashindb'];	//Ajax call return - ishashindb == true: not unique hash, ishashindb == false: unique hash.
-			if(ishashindb==true && blockhashgen ==true || ishashindb==true && blockhashgen ==false && ishashinurl==true || ishashindb==true && locallystoredhash != "null"){				//If the hash already exist in database.
+			if (ishashindb == true && blockhashgen == true || ishashindb == true && blockhashgen == false && ishashinurl == true || ishashindb == true && locallystoredhash != "null") {				//If the hash already exist in database.
 				if (confirm("You already have a saved version!")) {
-	Timer.stopTimer();
+					Timer.stopTimer();
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+					timeUsed = Timer.score;
+					stepsUsed = ClickCounter.score;
 
-	if (querystring['highscoremode'] == 1) {	
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+					if (querystring['highscoremode'] == 1) {
+						score = Timer.score;
+					} else if (querystring['highscoremode'] == 2) {
+						score = ClickCounter.score;
+					}
 
-	// Loop through all operations
-	bitstr = ",";
-	
-	document.querySelectorAll("*[id*=opCode_]").forEach(function (code){
-			bitstr+=code.innerHTML + ",";
-	});
-	bitstr += "T " + elapsedTime;
+					// Loop through all operations
+					bitstr = ",";
 
-	bitstr += " " + window.screen.width;
-	bitstr += " " + window.screen.height;
+					document.querySelectorAll("*[id*=opCode_]").forEach(function (code) {
+						bitstr += code.innerHTML + ",";
+					});
+					bitstr += "T " + elapsedTime;
 
-	bitstr += " " + window.width;
-	bitstr += " " + window.height;
+					bitstr += " " + window.screen.width;
+					bitstr += " " + window.screen.height;
 
-	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-	saveDuggaResult(bitstr);
-}
-} else {
-	Timer.stopTimer();
+					bitstr += " " + window.width;
+					bitstr += " " + window.height;
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+					// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+					saveDuggaResult(bitstr);
+				}
+			} else {
+				Timer.stopTimer();
 
-	if (querystring['highscoremode'] == 1) {	
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+				timeUsed = Timer.score;
+				stepsUsed = ClickCounter.score;
 
-	// Loop through all operations
-	bitstr = ",";
-	
-	document.querySelectorAll("*[id*=opCode_]").forEach(function (code){
-			bitstr+=code.innerHTML + ",";
-	});
-	bitstr += "T " + elapsedTime;
+				if (querystring['highscoremode'] == 1) {
+					score = Timer.score;
+				} else if (querystring['highscoremode'] == 2) {
+					score = ClickCounter.score;
+				}
 
-	bitstr += " " + window.screen.width;
-	bitstr += " " + window.screen.height;
+				// Loop through all operations
+				bitstr = ",";
 
-	bitstr += " " + window.width;
-	bitstr += " " + window.height;
+				document.querySelectorAll("*[id*=opCode_]").forEach(function (code) {
+					bitstr += code.innerHTML + ",";
+				});
+				bitstr += "T " + elapsedTime;
 
-	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-	saveDuggaResult(bitstr);
+				bitstr += " " + window.screen.width;
+				bitstr += " " + window.screen.height;
 
+				bitstr += " " + window.width;
+				bitstr += " " + window.height;
+
+				// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+				saveDuggaResult(bitstr);
 			}
 		}
 	});
@@ -264,19 +262,19 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		// Add previous handed in dugga
 		for (var i = 0; i < previous.length; i++) {
 				if (previous[i] !== ""){
-						var newTableBody = "<tr id='v" + i +"'>";
-						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-						//Arrow up
-						newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
-						//Arrow down
-						newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
-						//Remove
-						newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';
-						newTableBody += "</tr>";
+				var newTableBody = "<tr id='v" + i +"'>";
+				newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+				newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+				//Arrow up
+				newTableBody += '<td><button onclick="if(this.closest(\'tr\').previousElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\'), this.closest(\'tr\').previousElementSibling);refreshOpNum();">&uarr;</button></td>';
+				//Arrow down
+				newTableBody += '<td><button onclick="if(this.closest(\'tr\').nextElementSibling) this.closest(\'tr\').parentNode.insertBefore(this.closest(\'tr\').nextElementSibling, this.closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
+				//Remove
+				newTableBody += '<td><button onclick="this.closest(\'tr\').remove();refreshOpNum();">X</button></td>';
+				newTableBody += "</tr>";
 							
-						document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);
-				}
+				document.getElementById("operationList").insertAdjacentHTML('beforeend', newTableBody);
+			}
 		}
 	}
 
