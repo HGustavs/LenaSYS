@@ -507,7 +507,7 @@ function newbutton()
 			});
 		}
 	});
-	
+
 	if(!document.getElementById("operationList").classList.contains("selectedOp") && changed === false) {
 		var i = 0;
 		document.getElementById('operationList').querySelectorAll('tr').forEach(function (op){
@@ -559,7 +559,9 @@ function refreshOpNum(){
 		nodes.forEach(function(removal){
 			removal.removedNodes.forEach(element => {
 				if(element.classList.contains("selectedOp") && element.nodeType === 1){
-					document.getElementById("addOpButton").value = "Add Op.";
+					if(opList.querySelectorAll(".selectedOp").length === 0){
+						document.getElementById("addOpButton").value = "Add Op.";
+					}
 				}
 			});
 		});
