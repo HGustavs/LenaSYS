@@ -898,8 +898,8 @@ option:checked{
 /* END */
 
 select{
-    background-color: var(--color-background-light-surface);
-    color: var(--color-text-list);
+    
+    color: var(--color-text-light);
     border-radius: 5px;
 }
 
