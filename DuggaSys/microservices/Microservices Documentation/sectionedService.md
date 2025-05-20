@@ -1315,7 +1315,7 @@ This microservice sets a list entry in the 'listentries' table as "removed" by u
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-   - Type: int  
+   - Type: String  
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid  
@@ -1330,9 +1330,6 @@ This microservice sets a list entry in the 'listentries' table as "removed" by u
 - GET
 
 ## Output Data and Format
-- Output: $debug  
-   - Type: String  
-   - Description: Contains debug information/error messages
 
 - Output: $data
    - Type: JSON  
@@ -1359,7 +1356,7 @@ This microservice reorders entries in the 'listentries' table by updating their 
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-   - Type: int  
+   - Type: String  
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $pos
@@ -1390,9 +1387,6 @@ This microservice reorders entries in the 'listentries' table by updating their 
 - GET
 
 ## Output Data and Format
-- Output: $debug  
-   - Type: String  
-   - Description: Contains debug information/error messages
 
 - Output: $data
    - Type: JSON  
