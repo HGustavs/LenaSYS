@@ -77,16 +77,18 @@ function returnedDugga(data)
 
 		var duggaFiles = data["files"][inParams["moment"]];
 		if (duggaFiles) duggaFiles.sort((a,b) => (a.updtime > b.updtime) ? 1 : -1);
-		if($("#submitButtonTable").length != 0) {
+		if (document.getElementById("submitButtonTable") !== null) {
 			createFileUploadArea(duggaParams["submissions"]);
-			for (var k=0; k < duggaParams["submissions"].length; k++){
-				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 0, 1);
-	    		if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname){
-					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
+			for (var k = 0; k < duggaParams["submissions"].length; k++) {
+				findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname, duggaParams["submissions"][k].type, 0, 1);
+				if (duggaParams["submissions"][k].instruction && duggaParams["submissions"][k].fieldname) {
+					var instructionElement = document.getElementById(duggaParams["submissions"][k].fieldname + "Instruction");
+					if (instructionElement !== null) {
+						instructionElement.innerHTML = duggaParams["submissions"][k].instruction;
+					}
 				}
-
 			}
-		} 
+		}
 
 		if (duggaFiles && duggaFiles.length > 0){
 			for (var l=0; l<data["files"].length; l++){
@@ -138,8 +140,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -152,7 +154,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 
 	inParams = parseGet();
@@ -197,8 +199,18 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 			// UNK
 		}
 
-		$("#snus").parent().find(".instructions-content").slideToggle("slow");
-
+		let snusElem = document.getElementById("snus");
+				if (snusElem && snusElem.parentElement) {
+					let instructionsContent = snusElem.parentElement.querySelector(".instructions-content");
+					if (instructionsContent) {
+						if (instructionsContent.style.display === "none" || instructionsContent.style.display === "") {
+							instructionsContent.style.display = "block";
+							instructionsContent.style.transition = "all 0.5s ease";
+						} else {
+							instructionsContent.style.display = "none";
+						}
+					}
+				}
 		var duggaFiles = [];
 		if (moment != null) {
 			duggaFiles = files[moment];
