@@ -12,6 +12,9 @@ function drawLine(line, targetGhost = false) {
     let fromElemMouseY;
     let toElemMouseY;
 
+    //For straight SD lines only
+    let iconXModifier, iconYModifier;
+
     // Element line is drawn from/to
     let felem = data[findIndex(data, line.fromID)];
     if (!line.fromY) {
@@ -134,6 +137,8 @@ function drawLine(line, targetGhost = false) {
             offset.y1 = 15;
             fy -= 15*zoomfact;
             ty += 15*zoomfact;
+            iconXModifier = 0;
+            iconYModifier = 15;
 
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
             if (telem.kind === elementTypesNames.UMLFinalState) {
@@ -145,6 +150,8 @@ function drawLine(line, targetGhost = false) {
             offset.y1 = -15;
             fy += 15*zoomfact;
             ty -= 15*zoomfact;
+            iconXModifier = 0;
+            iconYModifier = -15;
 
 
         } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
@@ -157,6 +164,8 @@ function drawLine(line, targetGhost = false) {
             offset.x1 = 15;
             fx -= 15*zoomfact;
             tx += 15*zoomfact;
+            iconXModifier = 15;
+            iconYModifier = 0;
 
 
         } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
@@ -169,6 +178,8 @@ function drawLine(line, targetGhost = false) {
             offset.x1 = -15;
             fx += 15*zoomfact;
             tx -= 15*zoomfact;
+            iconXModifier = -15;
+            iconYModifier = 0;
         }
         lineStr += `<line 
                     id='${line.id}' 
@@ -234,7 +245,7 @@ function drawLine(line, targetGhost = false) {
             let felem, telem;
             felem = data[findIndex(data, line.fromID)];
             telem = data[findIndex(data, line.toID)];
-            const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
+            const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
             lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(felem,telem,line.ctype));
         }
 
@@ -243,7 +254,7 @@ function drawLine(line, targetGhost = false) {
             let felem, telem;
             felem = data[findIndex(data, line.fromID)];
             telem = data[findIndex(data, line.toID)];
-            const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
+            const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
             lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(felem,telem,line.ctype));
         }
     }    
