@@ -246,7 +246,7 @@ function drawLine(line, targetGhost = false) {
             felem = data[findIndex(data, line.fromID)];
             telem = data[findIndex(data, line.toID)];
             const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
-            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(felem,telem,line.ctype));
+            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(felem,telem));
         }
 
         // Handle end arrow
@@ -255,7 +255,7 @@ function drawLine(line, targetGhost = false) {
             felem = data[findIndex(data, line.fromID)];
             telem = data[findIndex(data, line.toID)];
             const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
-            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(felem,telem,line.ctype));
+            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(felem,telem));
         }
     }    
         
@@ -438,25 +438,8 @@ function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth 
     }
 }
 
-function findRotation(felem,telem,ctype){
-    let angleRad;
-    switch(ctype){
-        case "RL":
-            angleRad = Math.atan2((telem.y - (felem.height/2)) - (felem.y - (felem.height/2)), telem.x - felem.x - felem.width); // in radians     
-            break;
-        case "LR":
-            angleRad = Math.atan2((telem.y - (felem.height/2)) - (felem.y - (felem.height/2)), telem.x + telem.width - felem.x); // in radians
-            break;
-        case "TB":
-            angleRad = Math.atan2(telem.y - felem.y-felem.height, (telem.x - (felem.width/2)) - (felem.x - (felem.width/2))); // in radians     
-            break;
-        case "BT":
-            angleRad = Math.atan2(telem.y-telem.height - felem.y, (telem.x - (felem.width/2)) - (felem.x - (felem.width/2))); // in radians
-            break;
-        default: 
-            angleRad = 0;
-            break;
-    }
+function findRotation(felem,telem){
+    let angleRad = Math.atan2(telem.y - felem.y, telem.x - felem.x); // in radians     
     return angleRad * (180 / Math.PI);   // convert to degrees
 }
 
