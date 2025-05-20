@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         .container {
             display: flex;
@@ -111,6 +112,7 @@
         <div class='instructions-container'>
             <div class='instructions-button' onclick='toggleInstructions(this)'>
                 <h3>General information</h3>
+                <i class="material-icons-round close-icon">close</i>
             </div>
             <div class="instructions-content" id="diagram_instructions">
                 <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.
@@ -124,7 +126,10 @@
         <div class="container">
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
-                <div id="container_header"><h3>Instructions</h3></div>
+                <div id="container_header">
+                    <h3>Instructions</h3>
+                    <i class="material-icons-round close-icon">close</i>
+                </div>
                 <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0">
                     <h2 style="margin-left: 14px;">Modellering</h2>
                     <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
@@ -158,6 +163,11 @@
 
             </div>
             <div id="nextVariantBtn"></div>
+        </div>
+        <!-- The buttons wrapped where the user can toggle between general information and instructions -->
+        <div class="button-wrapper">
+            <button id="generalInfoBtn" class="dugga-btn">General Information</button>
+            <button id="instructionsBtn" class="dugga-btn">Instructions</button>
         </div>
     </div>
 </body>
