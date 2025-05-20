@@ -230,3 +230,29 @@ Refreshes the metadata from a GitHub repository for a course when there's a new 
 
 ---
 
+# Name of file/service
+retrieveGitCommitService_ms.php
+
+## Description
+Retrieves and displays a list of Git commits from the repository on the server.
+It first checks if the shell_exec function is available to execute system commands. If available, it runs a Git command to retrieve the commit hash and message, sanitizes the output, and then displays the commit information.
+Primarily used for debugging or displaying Git commit history without using the Git client.
+
+## Input Parameters
+None
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: $sanitizedOutput
+   - Type: String
+   - Description: Displays a list of Git commit hashes and messages
+
+## Examples of Use
+-
+
+### Microservices Used
+None
+
+---
