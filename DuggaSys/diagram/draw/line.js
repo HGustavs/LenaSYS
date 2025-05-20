@@ -236,15 +236,24 @@ function drawLine(line, targetGhost = false) {
         if(line.endIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
         }
+    }else if(line.innerType == SDLineType.SEGMENT){
+        const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
+        const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
+        const reverseCtype = line.ctype.split('').reverse().join('');
+        if (line.startIcon === SDLineIcons.ARROW) {
+            lineStr += iconPoly(SD_ARROW[line.ctype], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK);
+        }
+        // Handle end arrow
+        if (line.endIcon === SDLineIcons.ARROW) {
+            lineStr += iconPoly(SD_ARROW[reverseCtype], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK);
+        }
     }else{
         const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
         const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
         // Handle start arrow
         if (line.startIcon === SDLineIcons.ARROW) {
-            console.log("heyo");
             lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
         }
-
         // Handle end arrow
         if (line.endIcon === SDLineIcons.ARROW) {
             lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
@@ -1003,6 +1012,13 @@ function iconPoly(arr, x, y, lineColor, fill, rotation = 0) {
         const [a, b] = arr[i];
         s += `${x + a * zoomfact} ${y + b * zoomfact} `;
     }
+    if(rotation === 0){
+        return `<polyline 
+                points='${s}' 
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
+    }
+    console.log("test");
     return `<polyline 
                 points='${s}' 
                 fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}' transform='rotate(${rotation}, ${x},${y})'
