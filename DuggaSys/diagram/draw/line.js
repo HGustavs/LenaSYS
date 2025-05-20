@@ -836,8 +836,32 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
  * @returns Returns the line as segmented.
  */
 function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) {
+    // Compute half‐distance offsets for the bend based on vertical or horizontal orientation
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
+
+    let x1 = fx + offset.x1;
+    let y1 = fy + offset.y1;
+    let x2 = tx + offset.x2;
+    let y2 = ty + offset.y2;
+    const isVerticallyAligned = Math.abs(x1 - x2) < 10;
+    const isHorizontallyAligned = Math.abs(y1 - y2) < 10;
+    if (isVerticallyAligned || isHorizontallyAligned) {
+        if (isVerticallyAligned) {
+            x2 = x1;
+        } else {
+            y2 = y1;
+        }
+
+        return `<polyline
+            id='${line.id}'
+            points='${x1},${y1} ${x1},${y1} ${x2},${y2} ${x2},${y2}'
+            fill='none'
+            stroke='${lineColor}'
+            stroke-width='${strokewidth * zoomfact}'
+            stroke-dasharray='${strokeDash}' />`;
+    }
+
     return `<polyline 
                 id='${line.id}' 
                 points='${fx + offset.x1},${fy + offset.y1} ${fx + offset.x1 - dx},${fy + offset.y1 - dy} ${tx + offset.x2 + dx},${ty + offset.y2 + dy} ${tx + offset.x2},${ty + offset.y2}' 
