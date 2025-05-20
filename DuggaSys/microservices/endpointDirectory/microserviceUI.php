@@ -254,12 +254,26 @@ if (isset($_GET['id'])) {
         echo "<h3>Dependencies</h3>";
         if (!empty($dependencies)) {
             echo "<table>";
-            echo "List of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
+            echo "Inverse dependencies - A list of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
             echo "<tr><th>Microservice</th><th>Path</th></tr>";
             foreach ($dependencies as $dependency) {
                 echo '<tr>';
                 echo '<td>' . "<a href=?id=" . $dependency['depends_on_id'] . ">" . $dependency['depends_on'] . '</td>';
                 echo '<td>' . $dependency['path'] . '</td>';
+                echo '</tr>';
+            }
+        } else {
+            echo "<p>No inverse dependencies</p>";
+        }
+
+        if (!empty($depending_on)) {
+            echo "<table>";
+            echo "Dependencies - A list of microservices that <b>'"  . $microservice['ms_name'] . "</b>' depends on";
+            echo "<tr><th>Microservice</th><th>Path</th></tr>";
+            foreach ($depending_on as $depends) {
+                echo '<tr>';
+                echo '<td>' . "<a href=?id=" . $depends['depends_on_id'] . ">" . $depends['depends_on'] . '</td>';
+                echo '<td>' . $depends['path'] . '</td>';
                 echo '</tr>';
             }
         } else {
