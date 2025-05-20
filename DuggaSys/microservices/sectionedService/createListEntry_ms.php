@@ -34,9 +34,6 @@ $templateNumber = getOP('templateNumber');
 $exampleid = getOP('exampleid');
 $debug = "NONE!";
 
-global $pdo;
-
-
 // Insert a new code example and update variables accordingly.
 if ($link == -1) {
     $queryz2 = $pdo->prepare("SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1");
@@ -49,9 +46,7 @@ if ($link == -1) {
     }
 
     //set url for createNewCodeExample.php path
-    header("Content-Type: application/json");
-    $baseURL = "https://" . $_SERVER['HTTP_HOST'];
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
+    $url = "sharedMicroservices/createNewCodeExample_ms.php";
 
     $dataToSend = [
         'exampleid' => $exampleid,
