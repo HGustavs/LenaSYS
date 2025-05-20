@@ -197,7 +197,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
 	'active' => $active,
 	'debug' => $debug
 ]));
-
+curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
 $response = curl_exec($ch);
 curl_close($ch);
 

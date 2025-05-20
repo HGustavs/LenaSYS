@@ -75,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     			'group'     => $group,
     			'score'     => $score
 			]));
+			curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
 			$response = curl_exec($ch);
 			curl_close($ch);
 			$data     = json_decode($response, true);
