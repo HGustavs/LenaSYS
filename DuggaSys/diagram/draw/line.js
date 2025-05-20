@@ -230,15 +230,12 @@ function drawLine(line, targetGhost = false) {
 
     //Draws the Segmented version for arrow and not straight line
     if(line.recursive){
-
         if(line.startIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
         }
         if(line.endIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
         }
-        
-
     }else{
         const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
         const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
@@ -433,6 +430,14 @@ function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth 
     }
 }
 
+/**
+ * @description By inputting the location of two points on the diagram into an atan2 formula (a formula i dont fully understand) we get the way degrees the two point would be tilted towards if they had a line between them in radians. Then we turn the radians to degrees
+ * @param {integer} x1 The x cordinate of the first point
+ * @param {integer} y1 The y cordinate of the first point
+ * @param {integer} x2 The x cordinate of the second point
+ * @param {integer} y2 The y cordinate of the second point
+ * @returns The angle the two point would point towards in degrees
+ */
 function findRotation(x1,y1,x2,y2){
     let angleRad = Math.atan2(y1 - y2, x1 - x2); // in radians     
     return angleRad * (180 / Math.PI);   // convert to degrees
