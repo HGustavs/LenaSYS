@@ -2094,12 +2094,12 @@ function showSecurityPopup()
    //document.getElementById("#overlay").style.display="block";
 }
 
-function showDuggaInfoPopup()
-{
+function showDuggaInfoPopup() {
+	var receiptBox = document.getElementById("receiptBox");
+	var duggaInfoBox = document.getElementById("duggaInfoBox");
 
-	if (document.getElementById("#receiptBox").style.display!="flex"){
-		document.getElementById("#duggaInfoBox").style.display="flex";
-		//document.getElementById("#overlay").style.display="block";
+	if (receiptBox && duggaInfoBox && receiptBox.style.display != "flex") {
+		duggaInfoBox.style.display = "flex";
 	}
 }
 
