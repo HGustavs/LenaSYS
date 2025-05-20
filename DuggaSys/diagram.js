@@ -518,6 +518,7 @@ function getData() {
     document.getElementById("fab-localSaveAs").addEventListener("click", showSavePopout);
     document.getElementById("fab-localSave").addEventListener("click", quickSaveDiagram);
     document.getElementById("fab-load").addEventListener("click", showModal);
+    document.getElementById("fab-options").addEventListener("click", toggleOptionsPane);
 
     //Main mobile FAB-button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
