@@ -269,12 +269,12 @@ function hexClick(divid)
 	const dpos = elem.getBoundingClientRect(); 
 	const dwid = elem.offsetWidth;
 	const dhei = elem.offsetHeight;
-	bw=Math.round(dwid)*1.50;
-	if(bw<180) bw=180;	// Ensure minimum width of the HEX-box
+	bw=Math.round(dwid*1.50);
+	if(bw<180) bw=180;	
 	
 	lpos=dpos.left;
-	
 	popclass="arrow-top";
+
 	if((lpos+bw)>dw){
 			popclass="arrow-topr";
 			lpos=lpos-bw+dwid;
@@ -285,7 +285,12 @@ function hexClick(divid)
 	hh+="px";
 	
 	const pop = document.getElementById("pop");
-	pop.style.top = (dpos.top + window.scrollY + 10) + "px"; 
+
+	pop.style.display =  "block";
+	
+	const topOffset = elem.offsetTop + elem.offsetHeight -50;
+
+	pop.style.top = topOffset + "px";
 	pop.style.left = lpos + "px";
 	pop.style.width = bw + "px";
 	pop.style.height = hh;
@@ -293,6 +298,7 @@ function hexClick(divid)
 	pop.classList.remove("arrow-topr");
 	pop.classList.remove("arrow-top");
 	pop.classList.add(popclass);
+
 	
 	hc=divid;
 }
