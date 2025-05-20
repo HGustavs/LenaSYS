@@ -105,7 +105,7 @@ if (isset($_GET['id'])) {
     }
 
     if ($microservice) {
-        $stmt = $db->prepare("SELECT * FROM dependencies WHERE dependency_id = ?");
+        $stmt = $db->prepare("SELECT * FROM dependencies WHERE depends_on_id = ?");
         $stmt->execute([$_GET['id']]);
         $depending_on = $stmt->fetchAll();
     }
@@ -272,7 +272,7 @@ if (isset($_GET['id'])) {
             echo "<tr><th>Microservice</th><th>Path</th></tr>";
             foreach ($depending_on as $depends) {
                 echo '<tr>';
-                echo '<td>' . "<a href=?id=" . $depends['depends_on_id'] . ">" . $depends['depends_on'] . '</td>';
+                echo '<td>' . "<a href=?id=" . $depends['microservice_id'] . ">" . $depends['ms_name'] . '</td>';
                 echo '<td>' . $depends['path'] . '</td>';
                 echo '</tr>';
             }
