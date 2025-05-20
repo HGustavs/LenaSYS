@@ -520,12 +520,12 @@
 }
 
 .saveButton:hover {
-    background: #815e9d;
-    color: #FFF;
+    background-color: #815e9d !important;
+    color: #FFF !important;
 }
 
 .saveButton:active {
-    background: #614875;
+    background-color: #614875;
     transition: 0.1s;
     color: #FFF;
 }
