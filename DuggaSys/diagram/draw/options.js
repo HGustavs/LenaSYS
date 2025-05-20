@@ -475,13 +475,13 @@ function setLineLabel() {
  */
 function toggleOptionsPane() {
     if (!optionsToggled){
-        optionsToggled = true;
-        userLock = true;
+        optionsToggled = !optionsToggled;
+        userLock = !userLock;
         showOptionsPane();
     }
     else if (optionsToggled) {
-        optionsToggled = false;
-        userLock = false;
+        optionsToggled = !optionsToggled;
+        userLock = !userLock;
         hideOptionsPane();
     } 
 }
