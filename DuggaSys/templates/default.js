@@ -20,24 +20,16 @@ function loadQuestion(alternativ, question){
 	app += "<br>";
 	app += "<section class='bottom'><button class='submit' onclick='checkAnswer();'>Submit</button></section>";
 
-	$("#content").append(app);
+    document.getElementById("content").insertAdjacentHTML("beforeend", app);
 
 }
 
-function getCheckedBoxes(){
-    
-	// $.map() loopar igenom objekt (checkboxes i vårt fall) och gör funktioner utav de. Nu returnerar vi värdet(value) på varje checkbox som är i-bockad.
-	var answers = $.map($('input:checkbox:checked'), function(checked, i) {
-		return +checked.value;
-	});
-	
-	return answers; // returnerar de värden på de checkboxes som är i-bockade.
-
+function getCheckedBoxes() {
+    var checked = document.querySelectorAll('input[type="checkbox"]:checked');   
+	return Array.from(checked, el => +el.value); // gör om string till tal
 }
-// Visar upp de svaren som är i-bockade
+
 function displayCheckedBoxes() {
-
     var answers = getCheckedBoxes();
-    $('#displayAnswers').text('You choose answer(s): ' + answers);
-	
+    document.getElementById("displayAnswers").textContent = "You choose answer(s): " + answers;
 }
