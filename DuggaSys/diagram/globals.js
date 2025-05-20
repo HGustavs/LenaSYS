@@ -373,11 +373,18 @@ var lastMousePosCoords = new Point(0, 0);
 //#region OPTIONS
 
 /**
- * @description Flag indicating how options panel was opened.
+ * @description Flag indicating opened/closed options panel.
  * @see toggleOptionsPane
  * @type {boolean}
  */
-let userToggled = false;
+let optionsToggled = false;
+
+/**
+ * @description Flag indicating a locked options panel, (user opened).
+ * @see toggleOptionsPane
+ * @type {boolean}
+ */
+let userLock = false;
 
 /**
  * @description If the ER table should be shown over the the options pane.

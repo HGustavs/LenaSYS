@@ -474,16 +474,26 @@ function setLineLabel() {
  * @description Toggles the option menu being open or closed.
  */
 function toggleOptionsPane() {
-    if (document.getElementById("options-pane").className == "show-options-pane") {
-        document.getElementById('optmarker').innerHTML = "&#9660;Options";
-        if (document.getElementById("BGColorMenu") != null) {
-            document.getElementById("BGColorMenu").style.visibility = "hidden";
-        }
-        document.getElementById("options-pane").className = "hide-options-pane";
-    } else {
-        document.getElementById('optmarker').innerHTML = "&#9650;Options";
-        document.getElementById("options-pane").className = "show-options-pane";
+    if (!optionsToggled){
+        optionsToggled = true;
+        userLock = true;
+        showOptionsPane();
     }
+    else if (optionsToggled) {
+        optionsToggled = false;
+        userLock = false;
+        hideOptionsPane();
+    } 
+}
+
+function showOptionsPane(){
+    document.getElementById('optmarker').innerHTML = "&#9650;Options";
+    document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
+}
+
+function hideOptionsPane(){
+    document.getElementById('optmarker').innerHTML = "&#9660;Options";
+    document.getElementById("options-pane").className = "hide-options-pane";
 }
 
 /**
