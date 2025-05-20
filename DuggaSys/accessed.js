@@ -237,14 +237,17 @@ const updateCourseUsers = function(removePopup) {
 
 function addSingleUser() {
 
-	var newUser = new Array();
-	newUser.push(document.querySelector("#addSsn").value);	
+	const newUser = new Array();
+	//newUser.push(document.querySelector("#addSsn").value);	
+	newUser.push("");
 	newUser.push(document.querySelector("#addFirstname").value);
 	newUser.push(document.querySelector("#addLastname").value);
 	newUser.push(document.querySelector("#addEmail").value);
-	newUser.push(document.querySelector("#addCid").value);
+	//newUser.push(document.querySelector("#addCid").value);
+	newUser.push("");
 	newUser.push(document.querySelector("#addTerm").value);
-	newUser.push(document.querySelector("#addPid").value);
+	//newUser.push(document.querySelector("#addPid").value);
+	newUser.push("");
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
