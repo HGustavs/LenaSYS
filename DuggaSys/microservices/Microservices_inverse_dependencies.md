@@ -315,6 +315,8 @@ None
 - \sectionedService\updateListEntryOrder_ms.php
 - \sectionedService\updateQuizDeadline_ms.php
 - \sectionedService\updateVisibleListEntries_ms.php
+- \sectionedService\createGithubCodeExample_ms.php
+- \sectionedService\createListEntry_ms.php
 
 ### setVisibleListentries
 None
