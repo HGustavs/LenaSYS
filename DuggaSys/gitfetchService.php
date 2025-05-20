@@ -289,4 +289,18 @@ function bfs($url, $cid, $opt)
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $cid = $_POST['cid'] ?? null;
+    $url = $_POST['githubURL'] ?? null;
+
+    if ($cid && $url) {
+        // Call bfs to download files from GitHub
+        bfs($url, $cid, "DOWNLOAD");
+        echo json_encode(["status" => "ok", "message" => "GitHub repo downloaded."]);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Missing 'cid' or 'githubURL'."]);
+    }
+}
+
 ?>
+
