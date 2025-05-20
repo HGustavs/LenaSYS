@@ -127,3 +127,37 @@ Updates the SQLite database with the latest details about a GitHub repository fo
 None
 
 ---
+
+# Name of file/service
+newUpdateTime_ms.php
+
+## Description
+Updates the MySQL database to save the latest update time
+
+## Input Parameters
+- Parameter: $pdo
+   - Type: PDO
+   - Description: Database connection
+
+- Parameter: $currentTime
+   - Type: String
+   - Description: UNIX timestamp of the latest update, converted into datetime. Originally stored as timestamp in the database
+
+- Parameter: $cid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+## Calling Methods
+- Function call
+
+## Output Data and Format
+None
+
+## Examples of Use
+-
+
+### Microservices Used
+None
+
+---
+
