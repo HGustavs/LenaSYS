@@ -303,10 +303,13 @@
 }
 
 .diagramIcons {
-    width: 3.8vh;
-    height: 3.8vh;
-    box-sizing: border-box;
-    transition: background-color 0.3s;
+        position: relative;
+    margin: auto;
+    width: 3.2vh;
+    height: 3.2vh;
+    cursor: pointer; 
+    border: solid 1px var(--color-primary);
+    margin-top: 3px;
 }
 
 @media (max-height: 650px) {
