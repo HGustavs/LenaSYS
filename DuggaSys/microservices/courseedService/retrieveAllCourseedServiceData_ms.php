@@ -1,13 +1,13 @@
 <?php
 
-// This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
+// This microservice can be called to simply get the contents return by curlService.php
 
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "./retrieveCourseedService_ms.php";
+include_once "../curlService.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 
 
@@ -25,5 +25,13 @@ if (checklogin()) {
 	$ha = $isSuperUserVar;
 }
 
-echo json_encode(retrieveCourseedService($pdo, $ha, $debug, null, $isSuperUserVar));
+$dataToSend = [
+	'ha' => $ha,
+	'debug' => $debug,
+	'LastCourseCreated' => null,
+	'isSuperUserVar' => $isSuperUserVar
+];
+
+header('Content-Type: application/json');
+echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
 

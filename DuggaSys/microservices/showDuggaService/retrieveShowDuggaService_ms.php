@@ -1,7 +1,8 @@
 <?php
 
 include_once "../../../Shared/basic.php";
-include_once "processDuggaFile_ms.php";
+include_once "../../../Shared/sessions.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
@@ -102,14 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 				$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
-				processDuggaFiles(
-					$pdo,
-					$courseid,
-					$coursevers,
-					$duggaid,
-					$duggainfo,
-					$moment
-				);
+
+				retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 			}else{
 				$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
 				$variant="UNK";
@@ -145,12 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 				$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
-				processDuggaFiles($pdo,
-				$courseid,
-				$coursevers,
-				$duggaid,
-				$duggainfo,
-				$moment);
+
+				retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
+
 			}else{
 				$debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
 				$variant="UNK";
@@ -184,12 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				}
 		
 				if(isset($param)){
-					processDuggaFiles($pdo,
-					$courseid,
-					$coursevers,
-					$duggaid,
-					$duggainfo,
-					$moment);
+					retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 				}else{
 					$debug="[Guest] Missing hash/password/variant! Not found in db.";
 					$variant="UNK";
@@ -225,12 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					}
 			
 					if(isset($param)){
-						processDuggaFiles($pdo,
-						$courseid,
-						$coursevers,
-						$duggaid,
-						$duggainfo,
-						$moment);
+						retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 					}else{
 						$debug="[Guest] Missing hash/password/variant! Not found in db.";
 						$variant="UNK";
@@ -292,7 +274,21 @@ $array = array(
 
 
 	header('Content-Type: application/json');
+
 	echo json_encode($array);
 	exit;
+
+function retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment){
+	$postData = [
+        'courseid' => $courseid,
+        'coursevers' => $coursevers,
+		'duggaid' => $duggaid,
+        'duggainfo' => $duggainfo,
+		'moment' => $moment
+    ];
+	
+	$response = callMicroservicePOST("showDuggaService/processDuggaFile_ms.php", $postData, true);
+}
+
 
 ?>
