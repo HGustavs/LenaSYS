@@ -132,8 +132,8 @@ function drawLine(line, targetGhost = false) {
                 offset.y2 = -15;
             } else { offset.y2 = 0; } //Aligning line with mouse coordinate before telem has been set
             offset.y1 = 15;
-            fy -= 15;
-            ty += 15;
+            fy -= 15*zoomfact;
+            ty += 15*zoomfact;
 
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
             if (telem.kind === elementTypesNames.UMLFinalState) {
@@ -143,8 +143,8 @@ function drawLine(line, targetGhost = false) {
                 offset.y2 = 15;
             } else { offset.y2 = 0; }
             offset.y1 = -15;
-            fy += 15;
-            ty -= 15;
+            fy += 15*zoomfact;
+            ty -= 15*zoomfact;
 
 
         } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
@@ -155,8 +155,8 @@ function drawLine(line, targetGhost = false) {
                 offset.x2 = -15;
             } else { offset.x2 = 0; }
             offset.x1 = 15;
-            fx -= 15;
-            tx += 15;
+            fx -= 15*zoomfact;
+            tx += 15*zoomfact;
 
 
         } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
@@ -167,8 +167,8 @@ function drawLine(line, targetGhost = false) {
                 offset.x2 = 15;
             } else { offset.x2 = 0; }
             offset.x1 = -15;
-            fx += 15;
-            tx -= 15;
+            fx += 15*zoomfact;
+            tx -= 15*zoomfact;
         }
         lineStr += `<line 
                     id='${line.id}' 
