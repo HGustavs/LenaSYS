@@ -3664,6 +3664,7 @@ input.submit-button-newitem {
   text-align: center;
   transition: 1s background-color;
   -webkit-appearance: none; 
+  float: left;
 }
 
 input.submit-button-newitem:hover {
@@ -3681,6 +3682,11 @@ input.submit-button-newitem:hover {
   padding: 0px;
   margin: 2px 10px 2px 0;
     
+}
+
+.courseHeaderDropdown{
+  position: relative;
+  display: inline-block;
 }
 
 input.diagram-sidebar-buttons {
