@@ -5,8 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
-function getUid()
-{
+
     checklogin();
 
     // Checks user id, if user has none a guest id is set
@@ -29,5 +28,6 @@ function getUid()
     $info = "opt: " . $opt . " courseId: " . $courseId . " courseVersion: " . $courseVersion . " exampleName: " . $exampleName . " sectionName: " . $sectionName . " exampleId: " . $exampleId;
     logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php", $userid, $info, $log_timestamp); //logging information into serviceLogEntries-table through logServiceEvent-function);
 
-    return $userid;
-}
+    header('Content-Type: application/json');
+    echo json_encode($userid);
+
