@@ -881,14 +881,14 @@
             <!-- PLAY/REPLAY/EXIT FIELD -->
             <fieldset style="display: flex; justify-content: space-between">
                 <div id="diagram-replay-switch">
-                    <div class="diagramIcons tooltip-target" onclick="stateMachine.replay()" data-toolmode="Replay_Play">
+                    <div class="diagramIcons tooltip-target mb-tooltip" onclick="stateMachine.replay()" data-toolmode="Replay_Play">
                         <img src="../Shared/icons/Play.svg" alt="Play">
                     </div>
                 </div>
-                <div class="diagramIcons tooltip-target" onclick="stateMachine.replay(-1)" data-toolmode="Replay">
+                <div class="diagramIcons tooltip-target mb-tooltip" onclick="stateMachine.replay(-1)" data-toolmode="Replay">
                     <img src="../Shared/icons/replay.svg" alt="Replay">
                 </div>
-                <div class="diagramIcons tooltip-target" onclick="exitReplayMode()" data-toolmode="Replay_Exit" data-toolid="25">
+                <div class="diagramIcons tooltip-target mb-tooltip" onclick="exitReplayMode()" data-toolmode="Replay_Exit" data-toolid="25">
                     <img src="../Shared/icons/exit.svg" alt="Exit">
                 </div>
             </fieldset>
@@ -1031,7 +1031,7 @@
     <!-- "mb", stands for mobile -->
     <!-- "mb-toolbar-main", is the active element that is shown when the sub menu is closed/hidden -->
     <!-- "title", a static and visible tooltip on top of every tooltip box -->
-    <!-- "data-mode", is used for receiving the correct tooltip -->
+    <!-- "data-toolmode", is used for receiving the correct tooltip -->
     <!-- "data-elementtype", is used to match the active element with the element in the sub menu (see "activeSubMenuElement(...)") -->
     <!-- "data-placementtype", stores the elements' placementtype used for "setElementPlacementType(...) "-->
     <!-- "data-imagesrc", stores the image of the toolbar box -->
@@ -1041,51 +1041,51 @@
 
             <!-- POINTER -->
             <li class="mb-nav-item" title="Pointer">
-                <div class="mb-toolbar-box mb-toolbar-main active" data-mode="Pointer" onclick='setMouseMode(0);'>
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip active" data-toolmode="Pointer" onclick='setMouseMode(0);'>
                     <img src="../Shared/icons/diagram_pointer_white.svg" alt="Pointer"/>
                 </div>
             </li>
 
             <!-- BOX SELECTION -->
             <li class="mb-nav-item" title="Box Selection">
-                <div class="mb-toolbar-box mb-toolbar-main" data-mode="Box-Selection" onclick='setMouseMode(1);'>
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip" data-toolmode="Box_Selection" onclick='setMouseMode(1);'>
                     <img src="../Shared/icons/diagram_box_selection2.svg" alt="Box Selection"/>
                 </div>
             </li>
 
             <!-- ENTITIES (ER, UML, IE, SD)-->
             <li class="mb-nav-item has-dropdown" title="Entities">
-                <div class="mb-toolbar-box mb-toolbar-main"
-                    data-mode="ER-Entity" data-elementtype="ER-E" data-imagesrc="../Shared/icons/diagram_entity.svg" data-placementtype="0" onclick='setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);'>
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip"
+                    data-toolmode="ER_Entity" data-elementtype="ER-E" data-imagesrc="../Shared/icons/diagram_entity.svg" data-placementtype="0" onclick='setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);'>
 
                     <img src="../Shared/icons/diagram_entity.svg" alt="ER entity" class="active-image"/>
                 </div>
                 <!-- Sub menu for entities, STARTS HERE -->
                 <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
-                        <div class="mb-toolbar-box" 
-                            data-mode="ER-Entity" data-elementtype="ER-E" data-imagesrc="../Shared/icons/diagram_entity.svg" data-placementtype="0" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip" 
+                            data-toolmode="ER_Entity" data-elementtype="ER-E" data-imagesrc="../Shared/icons/diagram_entity.svg" data-placementtype="0" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_entity.svg" alt="ER entity"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box" 
-                            data-mode="UML-Class" data-elementtype="UML-C" data-imagesrc="../Shared/icons/diagram_UML_entity.svg" data-placementtype="4" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip" 
+                            data-toolmode="UML_Class" data-elementtype="UML-C" data-imagesrc="../Shared/icons/diagram_UML_entity.svg" data-placementtype="4" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_UML_entity.svg" alt="UML class"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="IE-Entity" data-elementtype="IE-E" data-imagesrc="../Shared/icons/diagram_IE_entity.svg" data-placementtype="6" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="IE_Entity" data-elementtype="IE-E" data-imagesrc="../Shared/icons/diagram_IE_entity.svg" data-placementtype="6" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_IE_entity.svg" alt="IE entity"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="State-Diagram" data-elementtype="SD" data-imagesrc="../Shared/icons/diagram_state.svg" data-placementtype="8" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="SD_State" data-elementtype="SD" data-imagesrc="../Shared/icons/diagram_state.svg" data-placementtype="8" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img class="SDState-rounded" src="../Shared/icons/diagram_state.svg" alt="State diagram state"/>
                         </div>
@@ -1097,37 +1097,37 @@
 
             <!-- THE DIFFERENT TYPES OF RELATIONS(e.g. inheritance and attributes) -->
             <li class="mb-nav-item has-dropdown" title="Relations">
-                <div class="mb-toolbar-box mb-toolbar-main"
-                    data-mode="ER-Relation" data-elementtype="ER-R" data-imagesrc="../Shared/icons/diagram_relation.svg" data-placementtype="1" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip"
+                    data-toolmode="ER_Relation" data-elementtype="ER-R" data-imagesrc="../Shared/icons/diagram_relation.svg" data-placementtype="1" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                     <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation" class="active-image"/>
                 </div>
                 <!-- Sub menu for relations, STARTS HERE -->
                 <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
-                        <div class="mb-toolbar-box" 
-                            data-mode="ER-Relation" data-elementtype="ER-R" data-imagesrc="../Shared/icons/diagram_relation.svg" data-placementtype="1" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip" 
+                            data-toolmode="ER_Relation" data-elementtype="ER-R" data-imagesrc="../Shared/icons/diagram_relation.svg" data-placementtype="1" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_relation.svg"  alt="ER relation"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="ER-Attribute" data-elementtype="ER-A" data-imagesrc="../Shared/icons/diagram_attribute.svg" data-placementtype="2" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="ER_Attribute" data-elementtype="ER-A" data-imagesrc="../Shared/icons/diagram_attribute.svg" data-placementtype="2" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_attribute.svg" alt="ER Attribute"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box" 
-                            data-mode="UML-Inheritance" data-elementtype="UML-I" data-imagesrc="../Shared/icons/diagram_inheritance.svg" data-placementtype="5" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip" 
+                            data-toolmode="UML_Inheritance" data-elementtype="UML-I" data-imagesrc="../Shared/icons/diagram_inheritance.svg" data-placementtype="5" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_inheritance.svg" alt="UML Inheritance"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box" 
-                            data-mode="IE-Inheritance" data-elementtype="IE-I" data-imagesrc="../Shared/icons/diagram_IE_inheritance.svg" data-placementtype="7" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip" 
+                            data-toolmode="IE_Inheritance" data-elementtype="IE-I" data-imagesrc="../Shared/icons/diagram_IE_inheritance.svg" data-placementtype="7" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_IE_inheritance.svg" alt="IE inheritance"/>
                         </div>
@@ -1138,37 +1138,37 @@
             </li>
 
             <li class="mb-nav-item" title="Line">
-                <div class="mb-toolbar-box mb-toolbar-main" data-mode="Line" onclick='clearContext(); setMouseMode(3);'>
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip" data-toolmode="Line" onclick='clearContext(); setMouseMode(3);'>
                     <img src="../Shared/icons/diagram_line.svg" alt="Line"/>
                 </div>
             </li>
 
             <!-- STATE DIAGRAM SYMBOLS -->
             <li class="mb-nav-item has-dropdown" title="SD Symbols">
-                <div class="mb-toolbar-box mb-toolbar-main" 
-                    data-mode="UML-Initial-S" data-elementtype="UML-IS" data-imagesrc="../Shared/icons/diagram_UML_inital_state.svg" data-placementtype="9" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip" 
+                    data-toolmode="UML_Initial_State" data-elementtype="UML-IS" data-imagesrc="../Shared/icons/diagram_UML_inital_state.svg" data-placementtype="9" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                     <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state" class="active-image"/>
                 </div>
                 <!-- Sub menu for State Diagram Symbols, STARTS HERE-->
                 <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="UML-Initial-S" data-elementtype="UML-IS" data-imagesrc="../Shared/icons/diagram_UML_initial_state.svg" data-placementtype="9" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="UML_Initial_State" data-elementtype="UML-IS" data-imagesrc="../Shared/icons/diagram_UML_initial_state.svg" data-placementtype="9" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="UML initial state"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="UML-Final-S" data-elementtype="UML-FS" data-imagesrc="../Shared/icons/diagram_UML_final_state.svg" data-placementtype="10" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="UML_Final_State" data-elementtype="UML-FS" data-imagesrc="../Shared/icons/diagram_UML_final_state.svg" data-placementtype="10" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_UML_final_state.svg" alt="UML final state"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="UML-Super-S" data-elementtype="UML-SS" data-imagesrc="../Shared/icons/diagram_super_state.svg" data-placementtype="11" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="UML_Super_State" data-elementtype="UML-SS" data-imagesrc="../Shared/icons/diagram_super_state.svg" data-placementtype="11" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_super_state.svg" alt="UML super state"/>
                         </div>
@@ -1180,37 +1180,37 @@
 
             <!-- SEQUENCE DIAGRAM SYMBOLS -->
             <li class="mb-nav-item has-dropdown" title="Sequence D">
-                <div class="mb-toolbar-box mb-toolbar-main"
-                    data-mode="Sequence-Lifeline-A" data-elementtype="SL-A" data-imagesrc="../Shared/icons/diagram_lifeline.svg" data-placementtype="12" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip"
+                    data-toolmode="Sequence_Lifeline_Actor" data-elementtype="SL-A" data-imagesrc="../Shared/icons/diagram_lifeline.svg" data-placementtype="12" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                     <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline" class="active-image"/>
                 </div>
                 <!-- Sub menu for Sequence Diagram Symbols, STARTS HERE -->
                 <ul class="mb-sub-menu" aria-hidden="true"> 
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="Sequence-Lifeline-A" data-elementtype="SL-A" data-imagesrc="../Shared/icons/diagram_lifeline.svg" data-placementtype="12" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="Sequence_Lifeline_Actor" data-elementtype="SL-A" data-imagesrc="../Shared/icons/diagram_lifeline.svg" data-placementtype="12" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_lifeline.svg" alt="sequnece diagram lifeline"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="Sequence-Lifeline-O" data-elementtype="SL-O" data-imagesrc="../Shared/icons/diagram_sequence_object.svg" data-placementtype="16" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="Sequence_Lifeline_Object" data-elementtype="SL-O" data-imagesrc="../Shared/icons/diagram_sequence_object.svg" data-placementtype="16" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_sequence_object.svg" alt="sequnece diagram lifeline"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="Sequence-Activation" data-elementtype="SA" data-imagesrc="../Shared/icons/diagram_activation.svg" data-placementtype="13" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="Sequence_Activation" data-elementtype="SA" data-imagesrc="../Shared/icons/diagram_activation.svg" data-placementtype="13" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_activation.svg" alt="Sequence activation"/>
                         </div>
                     </li>
                     <li>
-                        <div class="mb-toolbar-box"
-                            data-mode="Sequence-Loop" data-elementtype="SL" data-imagesrc="../Shared/icons/diagram_optionLoop.svg" data-placementtype="14" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
+                        <div class="mb-toolbar-box mb-tooltip"
+                            data-toolmode="Sequence_Condition" data-elementtype="SL" data-imagesrc="../Shared/icons/diagram_optionLoop.svg" data-placementtype="14" onclick="setElementPlacementType(parseInt(this.dataset.placementtype));setMouseMode(2);">
 
                             <img src="../Shared/icons/diagram_optionLoop.svg" alt="Option loop"/>
                         </div>
@@ -1222,44 +1222,44 @@
 
             <!-- NOTE -->
             <li class="mb-nav-item" title="Note">
-                <div class="mb-toolbar-box mb-toolbar-main" data-mode="Note" data-placementtype="15" onclick='setElementPlacementType(parseInt(this.dataset.placementtype)); setMouseMode(2);'>
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip" data-toolmode="Note" data-placementtype="15" onclick='setElementPlacementType(parseInt(this.dataset.placementtype)); setMouseMode(2);'>
                     <img src="../Shared/icons/diagram_note.svg"/>
                 </div>
             </li>
 
             <!-- CAMERA -->
             <li class="mb-nav-item" title="Camera">
-                <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Camera" onclick="centerCamera(); nonElementToggle(this);">
+                <div class="mb-toolbar-box mb-toolbar-main non-element mb-tooltip" data-toolmode="Camera" onclick="centerCamera(); nonElementToggle(this);">
                     <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
                 </div>
             </li>
 
             <!-- HISTORY AND REPLAY MODE -->
             <li class="mb-nav-item" title="History">
-                <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Reset-Diagram" onclick="resetDiagramAlert(); nonElementToggle(this);">
+                <div class="mb-toolbar-box mb-toolbar-main non-element mb-tooltip" data-toolmode="Reset" onclick="resetDiagramAlert(); nonElementToggle(this);">
                     <img src="../Shared/icons/diagram_Refresh_Button.svg" alt="Reset diagram"/>
                 </div>
-                <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Redo" onclick="toggleStepForward(); nonElementToggle(this);">
+                <div class="mb-toolbar-box mb-toolbar-main non-element mb-tooltip" data-toolmode="Redo" onclick="toggleStepForward(); nonElementToggle(this);">
                     <img src="../Shared/icons/diagram_stepforward.svg" alt="Redo"/>
                 </div>
-                <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Undo" onclick="toggleStepBack(); nonElementToggle(this);">
+                <div class="mb-toolbar-box mb-toolbar-main non-element mb-tooltip" data-toolmode="Undo" onclick="toggleStepBack(); nonElementToggle(this);">
                     <img src="../Shared/icons/diagram_stepback.svg" alt="Undo"/>
                 </div>
-                <div class="mb-toolbar-box mb-toolbar-main non-element" data-mode="Replay-Mode" onclick="toggleReplay(); nonElementToggle(this);">
+                <div class="mb-toolbar-box mb-toolbar-main non-element mb-tooltip" data-toolmode="Replay_Mode" onclick="toggleReplay(); nonElementToggle(this);">
                     <img src="../Shared/icons/diagram_replay.svg" alt="Enter replay mode"/>
                 </div>
             </li>
 
             <!-- ER-TABLE -->
             <li class="mb-nav-item" title="ER-Table">
-                <div class="mb-toolbar-box mb-toolbar-main" data-mode="ER-Table" onclick="toggleErTable();">
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip" data-toolmode="ER_Table" onclick="toggleErTable();">
                     <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle ER-Table"/>
                 </div>
             </li>
             
             <!-- TESTCASE -->
             <li class="mb-nav-item" title="Testcase">
-                <div class="mb-toolbar-box mb-toolbar-main" data-mode="Testcase" onclick="toggleTestCase();">
+                <div class="mb-toolbar-box mb-toolbar-main mb-tooltip" data-toolmode="Testcase" onclick="toggleTestCase();">
                     <img src="../Shared/icons/diagram_ER_table_info.svg" alt="Toggle test-cases"/>
                 </div>
             </li>
