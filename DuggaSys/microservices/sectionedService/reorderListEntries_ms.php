@@ -3,7 +3,7 @@
 
   include_once "../../../Shared/sessions.php";
   include_once "../../../Shared/basic.php";
-  include_once "../sharedMicroservices/getUid_ms.php";
+  include_once "../curlService.php";
   include_once "./retrieveSectionedService_ms.php";
 
   pdoConnect();
@@ -17,7 +17,10 @@
   $order = getOP('order');
   $lid = getOP('lid');
   $opt = getOP('opt');
-  $uid = getUid();
+
+  $userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+  $uid = $userData['uid'] ?? 'guest';
+  
   $log_uuid=getOP('log_uuid');
   $debug='NONE!';
 
