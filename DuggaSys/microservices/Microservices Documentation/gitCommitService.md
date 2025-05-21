@@ -116,10 +116,6 @@ Updates the SQLite database with the latest details about a GitHub repository fo
    - Type: String
    - Description: Error message if operation fails
 
-- Output: bfs($url, $cid, "REFRESH")
-   - Type:
-   - Description: Updates the database with the latest details, through the 'bfs()' function in 'bfs_ms.php' microservice
-
 ## Examples of Use
 -
 
@@ -148,7 +144,7 @@ Updates the MySQL database to save the latest update time
    - Description: Course ID. Stored as int(10) in the database
 
 ## Calling Methods
-- Function call
+None
 
 ## Output Data and Format
 None
@@ -178,7 +174,7 @@ Cooldown time is based on user permissions. Short deadline (300 seconds) is used
    - Description: Whether a user is a superuser or not. 1 = superuser, 0 = regular user. Stored as tinyint(1) in the database
 
 ## Calling Methods
-- Function call
+None
 
 ## Output Data and Format
 - Output: boolean
@@ -221,7 +217,7 @@ Refreshes the metadata from a GitHub repository for a course when there's a new 
    - Description: Messages that display the outcome of the refresh
 
 ## Examples of Use
-`CODE`
+-
 
 ### Microservices Used
 - gitfetchService.php
