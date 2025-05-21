@@ -11,11 +11,11 @@ Changes the active course version by updating the activeversion column in the co
 
 - Parameter: $courseid
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: ID of the course version to be updated or created
+   - Type: String
+   - Description: ID of the course version to be updated or created. Stored as varchar(8) in the database
 
 ## Calling Methods
 - GET
@@ -30,7 +30,7 @@ Changes the active course version by updating the activeversion column in the co
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid"); ```
 
 ### Microservices Used
 - getUid_ms
@@ -50,51 +50,51 @@ Copies an existing course version with all related things like, quizzes, variant
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID used to identify which course is being used
+   - Description: Course ID used to identify which course is being used. Stored as int(10) in the database
 
 - Parameter: $coursename
-   - Type: varchar
-   - Description: The name of the course
+   - Type: String
+   - Description: The name of the course. Stored as varchar(80) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: ID of the course version to be updated or created
+   - Type: String
+   - Description: ID of the course version to be updated or created. Stored as varchar(8) in the database
 
 - Parameter: $versname
-   - Type: varchar
-   - Description: Name for the version
+   - Type: String
+   - Description: Name for the version. Stored as varchar(45) in the database
 
 - Parameter: $coursenamealt
-   - Type: varchar
-   - Description: An alternative name for the course
+   - Type: String
+   - Description: An alternative name for the course. Stored as varchar(45) in the database
 
 - Parameter: $coursecode
-   - Type: varchar
-   - Description: Course code
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: $copycourse
-   - Type: varchar
+   - Type: String
    - Description: Version ID of the course to copy from
 
 - Parameter: $startdate
-   - Type: datetime
+   - Type: String
    - Description: Start date of the course version
 
 - Parameter: $enddate
-   - Type: datetime
+   - Type: String
    - Description: End date of the course version
 
 - Parameter: $makeactive
    - Type: int
-   - Description: When set to 3, this activates the new version
+   - Description: When set to 3, this activates the new version. Stored as varchar(8) in the database
 
 - Parameter: $motd
-   - Type: varchar
-   - Description: Message of the day displayed
+   - Type: String
+   - Description: Message of the day displayed. Stored as varchar(50) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -109,7 +109,7 @@ Copies an existing course version with all related things like, quizzes, variant
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("INSERT INTO vers (...) SELECT ... FROM vers WHERE cid=:cid AND vers=:copycourse;"); ```
 
 ### Microservices Used
 - getUid_ms 
@@ -123,7 +123,7 @@ Copies an existing course version with all related things like, quizzes, variant
 createCourseVersion_ms.php
 
 ## Description
-creates a new version of an existing course by inserting a new row into the vers table.
+Creates a new version of an existing course by inserting a new row into the vers table.
 
 ## Input Parameters
 - Parameter: $opt
@@ -132,47 +132,47 @@ creates a new version of an existing course by inserting a new row into the vers
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID used to identify which course is being used
+   - Description: Course ID used to identify which course is being used. Stored as int(10) in the database
 
 - Parameter: $coursecode
-   - Type: varchar
-   - Description: Course code
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: $coursename
-   - Type: varchar
-   - Description: The name of the course
+   - Type: String
+   - Description: The name of the course. Stored as varchar(80) in the database
 
 - Parameter: $coursenamealt
-   - Type: varchar
-   - Description: An alternative name for the course
+   - Type: String
+   - Description: An alternative name for the course. Stored as varchar(45) in the database
 
 - Parameter: $versname
-   - Type: varchar
-   - Description: Name for the version
+   - Type: String
+   - Description: Name for the version. Stored as varchar(45) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: ID of the course version to be updated or created
+   - Type: String
+   - Description: ID of the course version to be updated or created. Stored as varchar(8) in the database
 
 - Parameter: $motd
-   - Type: varchar
-   - Description: Message of the day
+   - Type: String
+   - Description: Message of the day. Stored as varchar(50) in the database
 
 - Parameter: $startdate
-   - Type: datetime
-   - Description: Start date of the course version
+   - Type: String
+   - Description: Start date of the course version. Stored as datetime in the database
 
 - Parameter: $enddate
-   - Type: datetime
-   - Description: End date of the course version
+   - Type: String
+   - Description: End date of the course version. Stored as datetime in the database
 
 - Parameter: $makeactive
    - Type: int
-   - Description: When set to 3, this activates the new version
+   - Description: When set to 3, this activates the new version. Stored as varchar(8) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: Retrieved via getUid(), used for authorization
+   - Description: Retrieved via getUid(), used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -187,7 +187,7 @@ creates a new version of an existing course by inserting a new row into the vers
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);"); ```
 
 ### Microservices Used
 - getUid_ms
@@ -202,20 +202,20 @@ This micro service is called upon when the message of the day is changed in the 
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: string
+   - Type: String
    - Description: Specifies the operation type
 
 - Parameter: $motd
-   - Type: varchar
-   - Description: Message of the day
+   - Type: String
+   - Description: Message of the day. Stored as varchar(50) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 - Parameter: $readonly
-   - Type: tinyint
-   - Description: Indicates if the system should be in read-only mode
+   - Type: int
+   - Description: Indicates if the system should be in read-only mode, read-only flag
    
 ## Calling Methods
 - GET
@@ -230,7 +230,7 @@ This micro service is called upon when the message of the day is changed in the 
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);"); ```
 
 ### Microservices Used
 - getUid_ms
@@ -245,20 +245,20 @@ Creates a new course in the course table and logs the event
 
 ## Input Parameters
 - Parameter: $coursecode
-   - Type: varchar
-   - Description: Course code
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: $coursename
-   - Type: varchar
-   - Description: The name of the course
+   - Type: String
+   - Description: The name of the course. Stored as varchar(80) in the database
 
 - Parameter: $courseGitURL  
-   - Type: varchar  
-   - Description: The URL to the Git repository associated with the course
+   - Type: String
+   - Description: The URL to the Git repository associated with the course. Stored as varchar(1024) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -273,7 +273,7 @@ Creates a new course in the course table and logs the event
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp, courseGitURL) VALUES(:coursecode,:coursename,0,:usrid, 7.5, :courseGitURL)"); ```
 
 ### Microservices Used
 - getUid_ms
@@ -288,7 +288,6 @@ deleteCourseMaterial_ms.php
 Deletes all course-related data for courses with visibility=3
 
 ## Input Parameters
-
 - Parameter: $pdo
    - Type: PDO
    - Description: Database connection
@@ -302,7 +301,7 @@ Deletes all course-related data for courses with visibility=3
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("DELETE vers FROM course,vers WHERE course.visibility=:deleted AND vers.cid = course.cid;"); ```
 
 ### Microservices Used
 - 
@@ -315,14 +314,9 @@ getCourseed_ms.php
 This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
 
 ## Input Parameters
-
 - Parameter: $userid
    - Type: int
-   - Description: Retrieves the user ID of the currently logged-in user
-
-- Parameter: $pdo
-   - Type: PDO
-   - Description: Database connection
+   - Description: Retrieves the user ID of the currently logged-in user. Stored as int(10) in the database
 
 ## Calling Methods
 - 
@@ -337,7 +331,7 @@ This microservice can be called to simply get the contents return by retrieveCou
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true); ```
 
 ### Microservices Used
 - retrieveCourseedService_ms.php
@@ -351,10 +345,9 @@ retrieveAllCourseedServiceData_ms.php
 This microservice can be called to simply get the contents return by retrieveCourseedService_ms.php
 
 ## Input Parameters
-
 - Parameter: $userid
    - Type: int
-   - Description: Retrieves the user ID of the currently logged-in user
+   - Description: Retrieves the user ID of the currently logged-in user. Stored as int(10) in the database
 
 - Parameter: $pdo
    - Type: PDO
@@ -373,7 +366,7 @@ This microservice can be called to simply get the contents return by retrieveCou
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true); ```
 
 ### Microservices Used
 - retrieveCourseedService_ms.php
@@ -393,23 +386,23 @@ Retrieve Information, gathers and returns all course-related data. It also trigg
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID used to identify which course is being used
+   - Description: Course ID used to identify which course is being used. Stored as int(10) in the database
 
 - Parameter: $coursename
-   - Type: varchar
-   - Description: The name of the course
+   - Type: String
+   - Description: The name of the course. Stored as varchar(80) in the database
 
 - Parameter: $visibility
-   - Type: tinyint
-   - Description: Visibility of the section
+   - Type: int
+   - Description: Visibility of the section. Stored as tinyint(1) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: ID of the course version to be updated or created
+   - Type: String
+   - Description: ID of the course version to be updated or created. Stored as varchar(8) in the database
 
 - Parameter: $courseGitURL  
-   - Type: varchar  
-   - Description: The URL to the Git repository associated with the course
+   - Type: String  
+   - Description: The URL to the Git repository associated with the course. Stored as varchar(1024) in the database
 
 - Parameter: $log_uuid
    - Type: int
@@ -421,7 +414,7 @@ Retrieve Information, gathers and returns all course-related data. It also trigg
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -436,7 +429,7 @@ Retrieve Information, gathers and returns all course-related data. It also trigg
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $curl = curl_init($actual_path . "../Shared/deleteCourseMaterial_ms.php"); ```
 
 ### Microservices Used
 - getUid_ms.php
@@ -456,15 +449,15 @@ This microservice allows superusers to update the Git URL of a course in the cou
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID used to identify which course is being used
+   - Description: Course ID used to identify which course is being used. Stored as int(10) in the database
 
 - Parameter: $courseGitURL  
-   - Type: varchar  
-   - Description: The URL to the Git repository associated with the course
+   - Type: String
+   - Description: The URL to the Git repository associated with the course. Stored as varchar(1024) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -479,12 +472,11 @@ This microservice allows superusers to update the Git URL of a course in the cou
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;"); ```
 
 ### Microservices Used
 - retrieveCourseedService_ms.php
 - getUid_ms.php
-
 
 ---
 # Name of file/service
@@ -500,15 +492,15 @@ The microservice changeActiveVersion_ms.php takes an existing course and changes
 
 - Parameter: $courseid
    - Type: int
-   - Description: Course ID
+   - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: ID of the course version to be updated or created
+   - Type: String
+   - Description: ID of the course version to be updated or created. Stored as varchar(8) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -523,7 +515,7 @@ The microservice changeActiveVersion_ms.php takes an existing course and changes
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid"); ```
 
 ### Microservices Used
 - retrieveCourseedService_ms.php
@@ -543,27 +535,27 @@ This microservice allows a superuser to update general course data including the
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID used to identify which course is being used
+   - Description: Course ID used to identify which course is being used. Stored as int(10) in the database
 
 - Parameter: $coursename
-   - Type: varchar
-   - Description: The name of the course
+   - Type: String
+   - Description: The name of the course. Stored as varchar(80) in the database
 
 - Parameter: $visibility
-   - Type: tinyint
-   - Description: Visibility of the section
+   - Type: int
+   - Description: Visibility of the section. Stored as tinyint(1) in the database
 
 - Parameter: $coursecode
-   - Type: varchar
-   - Description: Course code
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: $courseGitURL  
-   - Type: varchar  
-   - Description: The URL to the Git repository associated with the course
+   - Type: String
+   - Description: The URL to the Git repository associated with the course. Stored as varchar(1024) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID, used for authorization
+   - Description: User ID, used for authorization. Stored as int(10) in the database
 
 ## Calling Methods
 - GET
@@ -578,7 +570,7 @@ This microservice allows a superuser to update general course data including the
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode, courseGitURL=:courseGitURL WHERE cid=:cid;"); ```
 
 ### Microservices Used
 - retrieveCourseedService_ms.php
@@ -600,51 +592,51 @@ This microservice is used to update information about a specific course version 
 
 - Parameter: $cid
    - Type: int
-   - Description: Course ID used to identify which course is being used
+   - Description: Course ID used to identify which course is being used. Stored as int(10) in the database
 
 - Parameter: $courseid
-   - Type: varchar
-   - Description: The name of the course
+   - Type: int
+   - Description: The name of the course. Stored as int(10) in the database
 
 - Parameter: $versid
-   - Type: varchar
-   - Description: ID of the course version to be updated or created
+   - Type: String
+   - Description: ID of the course version to be updated or created. Stored as varchar(8) in the database
 
 - Parameter: $versname
-   - Type: varchar
-   - Description: Name for the version
+   - Type: String
+   - Description: Name for the version. Stored as varchar(45) in the database
 
 - Parameter: $coursenamealt
-   - Type: varchar
-   - Description: An alternative name for the course
+   - Type: String
+   - Description: An alternative name for the course. Stored as varchar(45) in the database
 
 - Parameter: $coursecode
-   - Type: varchar
-   - Description: Course code
+   - Type: String
+   - Description: Course code. Stored as varchar(45) in the database
 
 - Parameter: $coursename
-   - Type: varchar
-   - Description: The name of the course
+   - Type: String
+   - Description: The name of the course. Stored as varchar(80) in the database
 
 - Parameter: $copycourse
-   - Type: varchar
+   - Type: String
    - Description: Version ID of the course to copy from
 
 - Parameter: $startdate
-   - Type: datetime
-   - Description: Start date of the course version
+   - Type: String
+   - Description: Start date of the course version. Stored as datetime in the database
 
 - Parameter: $enddate
-   - Type: datetime
-   - Description: End date of the course version
+   - Type: String
+   - Description: End date of the course version. Stored as datetime in the database
 
 - Parameter: $makeactive
    - Type: int
-   - Description: When set to 3, this activates the new version
+   - Description: When set to 3, this activates the new version. Stored as varchar(8) in the database
 
 - Parameter: $motd
-   - Type: varchar
-   - Description: Message of the day displayed
+   - Type: String
+   - Description: Message of the day displayed. Stored as varchar(50) in the database
 
 - Parameter: $log_uuid
    - Type: int
@@ -663,7 +655,7 @@ This microservice is used to update information about a specific course version 
   - Description: Error messages if operation fails
 
 ## Examples of Use
-`CODE`
+``` $query = $pdo->prepare("UPDATE vers SET motd=:motd,versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;"); ```
 
 ### Microservices Used
 - retrieveCourseedService_ms.php

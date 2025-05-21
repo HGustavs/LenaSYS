@@ -103,6 +103,12 @@ if (isset($_GET['id'])) {
         $stmt->execute([$_GET['id']]);
         $dependencies = $stmt->fetchAll();
     }
+
+    if ($microservice) {
+        $stmt = $db->prepare("SELECT * FROM dependencies WHERE depends_on_id = ?");
+        $stmt->execute([$_GET['id']]);
+        $depending_on = $stmt->fetchAll();
+    }
 }
 
 } catch (PDOException $e) {
@@ -119,35 +125,43 @@ if (isset($_GET['id'])) {
 <body>
 
     <?php if (isset($editMicroservice)) { ?>
-        <div class="line">
-            <h1>Edit Microservice</h1>
+        <div class="edit_modal">
+            <div class="edit_modal_content">
+                <div class="line">
+                    <h1>Edit Microservice</h1>
+                </div>
+                <form method="post">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+                    <input type="hidden" name="updateID" value="<?php echo $editMicroservice['id']; ?>">
+                    <p><b><label>Microservice name:<br><input type="text" name="ms_name" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
+                    <p><label>Description:<br><textarea name="description" rows="5" cols="40"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
+                    <p><label>Calling Methods:<br><input type="text" name="calling_methods" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
+                    <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
+                    <button type="submit">Save Changes</button>
+                    <a href="?id=<?php echo $editMicroservice['id']; ?>" class="a-button">Cancel</a>
+                </form>
+            </div>
         </div>
-        <form method="post">
-            <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-            <input type="hidden" name="updateID" value="<?php echo $editMicroservice['id']; ?>">
-            <p><b><label>Microservice name:<br><input type="text" name="ms_name" value="<?php echo htmlspecialchars($editMicroservice['ms_name']); ?>" required></label></p>
-            <p><label>Description:<br><textarea name="description" rows="5" cols="40"><?php echo htmlspecialchars($editMicroservice['description']); ?></textarea></label></p>
-            <p><label>Calling Methods:<br><input type="text" name="calling_methods" required value="<?php echo htmlspecialchars($editMicroservice['calling_methods']); ?>"></label></p>
-            <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" value="<?php echo htmlspecialchars($editMicroservice['microservices_used']); ?>" required></label></p>
-            <button type="submit">Save Changes</button>
-            <a href="?id=<?php echo $editMicroservice['id']; ?>" class="a-button">Cancel</a>
-        </form>
     <?php } ?>
 
     <?php if (isset($addingNew)) { ?>
-        <div class="line">
-            <h1>Add New Microservice</h1>
+        <div class="add_modal">
+            <div class="add_modal_content">
+                <div class="line">
+                    <h1>Add New Microservice</h1>
+                </div>
+                <form method="post">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+                    <input type="hidden" name="addMicroservice" value="1">
+                    <p><b><label>Microservice name:<br><input type="text" name="ms_name" required placeholder="Enter name" ></label></p>
+                    <p><label>Description:<br><textarea name="description" rows="5" cols="40" placeholder="Enter description..."></textarea></label></p>
+                    <p><label>Calling Methods:<br><input type="text" name="calling_methods" required placeholder="Enter method"></label></p>
+                    <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" required placeholder="Enter microservices"></label></p>
+                    <button type="submit">Add Microservice</button>
+                    <a href="?">Cancel</a>
+                </form>
+            </div>
         </div>
-        <form method="post">
-            <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
-            <input type="hidden" name="addMicroservice" value="1">
-            <p><b><label>Microservice name:<br><input type="text" name="ms_name" required placeholder="Enter name" ></label></p>
-            <p><label>Description:<br><textarea name="description" rows="5" cols="40" placeholder="Enter description..."></textarea></label></p>
-            <p><label>Calling Methods:<br><input type="text" name="calling_methods" required placeholder="Enter method"></label></p>
-            <p><label>Microservices Used:<br></b><input type="text" name="microservices_used" required placeholder="Enter microservices"></label></p>
-            <button type="submit">Add Microservice</button>
-            <a href="?">Cancel</a>
-        </form>
     <?php } ?>
     
     <?php    
@@ -160,27 +174,27 @@ if (isset($_GET['id'])) {
             <h1>Microservice Directory</h1>
         </div>
         <div class="search-container">
-
-            <form method="GET">
-                <input type="text" name="search" placeholder="Search name/description">
-                    <button type="submit">Search</button>
-                <?php if (isset($_GET['search'])): ?>
-                    <a href="?" class="a-button">Reset</a>
-                <?php endif; ?>
-            </form>
-
+            <div>
+                <form method="GET">
+                    <input type="text" name="search" placeholder="Search name/description">
+                        <button type="submit">Search</button>
+                    <?php if (isset($_GET['search'])): ?>
+                        <a href="?" class="a-button">Reset</a>
+                    <?php endif; ?>
+                </form>
+                <form method="GET">
+                    <select name="filter_method">
+                        <option value="">-Select Method-</option>
+                        <option value="GET" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'GET') echo 'selected'; ?>>GET</option>
+                        <option value="POST" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'POST') echo 'selected'; ?>>POST</option>
+                    </select>
+                    <button type="submit">Filter</button>
+                    <?php if (isset($_GET['filter_method'])): ?>
+                        <a href="?" class="a-button">Reset</a>
+                    <?php endif; ?>
+                </form>
+            </div>
             <div class="button-container">
-            <form method="GET">
-                <select name="filter_method">
-                    <option value="">-Select Method-</option>
-                    <option value="GET" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'GET') echo 'selected'; ?>>GET</option>
-                    <option value="POST" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'POST') echo 'selected'; ?>>POST</option>
-                </select>
-                <button type="submit">Filter</button>
-                <?php if (isset($_GET['filter_method'])): ?>
-                    <a href="?" class="a-button">Reset</a>
-                <?php endif; ?>
-            </form>
                 <form method="get">
                     <input type="hidden" name="add" value="1">
                     <button type="submit">Add Microservice</button>
@@ -238,9 +252,9 @@ if (isset($_GET['id'])) {
         <?php } ?>
         <?php 
         echo "<h3>Dependencies</h3>";
+        echo "Inverse dependencies - A list of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
         if (!empty($dependencies)) {
             echo "<table>";
-            echo "List of microservices that depends on '<b>" . $microservice['ms_name'] . "</b>'";
             echo "<tr><th>Microservice</th><th>Path</th></tr>";
             foreach ($dependencies as $dependency) {
                 echo '<tr>';
@@ -248,6 +262,22 @@ if (isset($_GET['id'])) {
                 echo '<td>' . $dependency['path'] . '</td>';
                 echo '</tr>';
             }
+            echo "</table>";
+        } else {
+            echo "<p>No inverse dependencies</p>";
+        }
+
+        echo "Dependencies - A list of microservices that <b>'"  . $microservice['ms_name'] . "</b>' depends on";
+        if (!empty($depending_on)) {
+            echo "<table>";
+            echo "<tr><th>Microservice</th><th>Path</th></tr>";
+            foreach ($depending_on as $depends) {
+                echo '<tr>';
+                echo '<td>' . "<a href=?id=" . $depends['microservice_id'] . ">" . $depends['ms_name'] . '</td>';
+                echo '<td>' . $depends['path'] . '</td>';
+                echo '</tr>';
+            }
+            echo "</table>";
         } else {
             echo "<p>No dependencies</p>";
         }
