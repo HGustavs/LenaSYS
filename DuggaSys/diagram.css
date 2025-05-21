@@ -19,6 +19,11 @@
     }
 }
 
+@media (min-width: 415px) and (max-width: 767px){
+    .icon-wrapper-sidebar{
+        display: none;
+    }
+}
 
 @media screen and (min-width: 768px) {
     #diagram-toolbar {
@@ -31,6 +36,7 @@
         z-index: 1000;
     }
 }
+
 @media screen and (min-height: 1199px) {
     #diagram-toolbar {
         width: 50px;

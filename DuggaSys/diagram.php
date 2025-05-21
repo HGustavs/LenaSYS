@@ -99,6 +99,7 @@
     and window.devicePixelRatio have to be included -->
     <div id="pixellength" style="width:1000mm;;padding:0px;visibility:hidden;"></div>
 
+    <!-- The chevron/arrows used for toggling the diagram-toolbar on the right of the mobile version-->
     <div class="icon-wrapper-sidebar" onclick="secondToolbarToggle()">
         <i class="material-icons toggle-chevron-sidebar">keyboard_arrow_up</i>
     </div>
