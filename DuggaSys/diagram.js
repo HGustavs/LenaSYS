@@ -2554,6 +2554,7 @@ elementToolbarBoxs.forEach(elementBox=>{
     elementBox.addEventListener("click", handleToolbarClick);
 });
 
+const allToolbarBox = document.querySelectorAll(".mb-tooltip");
 
 // Select all toolbar boxes inside the sub menu
 const subMenuToolbarBoxs = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
@@ -2571,6 +2572,23 @@ let timer = null;
 //Keeps track of the element hovered with a tooltip shown
 //used to consistently show/hide tooltips 
 let currentTooltipElement = null;
+
+allToolbarBox.forEach(toolbarBox=>{
+    toolbarBox.addEventListener("touchstart", (e)=>{
+        let targetElement = e.currentTarget;
+        clearTimeout(timer);
+        timer = setTimeout(()=>{
+            showTooltip(targetElement);
+            currentTooltipElement = targetElement;
+        }, 400);
+    });
+
+    toolbarBox.addEventListener("touchend", ()=>{
+        clearTimeout(timer);
+        hideTooltip();
+        currentTooltipElement = null;
+    });
+});
 
 tooltipTargets.forEach((element)=>{
     element.addEventListener("mouseenter", (e)=>{
@@ -2705,7 +2723,7 @@ function tooltipPosition(element){
     }
 
     //Checks if the element is inside the replay box
-    else if(element.closest("#diagram-replay-box")){
+    else if(element.closest("#diagram-replay-box") && !element.classList.contains("mb-tooltip")){
         let replayBoxPosition = document.getElementById("diagram-replay-box").getBoundingClientRect();
 
         return {
@@ -2724,11 +2742,30 @@ function tooltipPosition(element){
         };
     }
 
+    //Checks if the element is part of the mobile diagram toolbar
+    if(element.closest("#mb-diagram-toolbar") && !element.closest("#diagram-toolbar")){
+
+        return { //These are numbers that can changeable in the future
+            top: `1vh`,
+            left: `1vw`
+        };
+    }
+
+    //Checks that the element is part of the replay box, and 
+    //has a specific class meant for mobile version
+    if(element.closest("#diagram-replay-box") && element.classList.contains("mb-tooltip")){
+
+        return{
+            top: `1vh`,
+            left: `1vw`
+        };
+    }
+
     //Default return, could be changed to something like 50% just to have the tooltips appear
     return{
         top: null,
         left: null
     };
 }
-
+console.log(allToolbarBox);
 //#endregion =====================================================================================
