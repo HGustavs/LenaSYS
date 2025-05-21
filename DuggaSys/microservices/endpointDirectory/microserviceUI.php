@@ -183,6 +183,13 @@ if (isset($_GET['id'])) {
                     <?php endif; ?>
                 </form>
                 <form method="GET">
+                    <input type="text" name="param-search" placeholder="Search parameter">
+                    <button type="submit">Search</button>
+                    <?php if (isset($_GET['param-search'])): ?>
+                        <a href="?" class="a-button">Reset</a>
+                    <?php endif; ?>
+                </form>
+                <form method="GET">
                     <select name="filter_method">
                         <option value="">-Select Method-</option>
                         <option value="GET" <?php if (isset($_GET['filter_method']) && $_GET['filter_method'] == 'GET') echo 'selected'; ?>>GET</option>
