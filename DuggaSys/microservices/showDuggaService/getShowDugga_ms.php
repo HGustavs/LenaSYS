@@ -5,7 +5,6 @@ date_default_timezone_set("Europe/Stockholm");
 //---------------------------------------
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once('./retrieveShowDuggaService_ms.php');
 
 
 pdoConnect(); // Connect to database and start session
@@ -99,38 +98,51 @@ if($courseid != "UNK" && $coursevers != "UNK" && $duggaid != "UNK" && $moment !=
 	$debug="Could not find the requested dugga!";
 }
 
-echo json_encode(
-retrieveShowDuggaService(
-	$moment, 
-	$pdo, 
-	$courseid, 
-	$hash, 
-	$hashpwd, 
-	$coursevers, 
-	$duggaid, 
-	$opt, 
-	$group, 
-	$score, 
-	$highscoremode, 
-	$grade, 
-	$submitted,
-	$duggainfo,
-	$marked,
-	$userfeedback,
-	$feedbackquestion,
-	$files,
-	$savedvariant,
-	$ishashindb,
-	$variantsize,
-	$variantvalue,
-	$password,
-	$hashvariant,
-	$isFileSubmitted,
-	$variants,
-	$active,
-	$debug
-	)
-)
+
+header("Content-Type: application/json");
+//set url for setAsActiveCourse.php path
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
+$ch = curl_init($url);
+    //options for curl
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'moment' => $moment, 
+    'courseid' => $courseid, 
+    'hash' => $hash, 
+    'hashpwd' => $hashpwd, 
+    'coursevers' => $coursevers,
+    'duggaid' =>  $duggaid,
+    'opt' =>  $opt,
+    'group' =>  $group,
+    'score' => $score,
+	'highscoremode' => $highscoremode,
+	'grade' => $grade,
+	'submitted' => $submitted,
+	'duggainfo' => $duggainfo,
+	'marked' => $marked,
+	'userfeedback' => $userfeedback,
+	'feedbackquestion' => $feedbackquestion,
+	'files' => $files,
+	'savedvariant' => $savedvariant,
+	'ishashindb' => $ishashindb,
+	'variantsize' => $variantsize,
+	'variantvalue' => $variantvalue,
+	'password' => $password,
+	'hashvariant' => $hashvariant,
+	'isFileSubmitted' => $isFileSubmitted,
+	'variants' => $variants,
+	'active' => $active,
+	'debug' => $debug
+]));
+curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true);
+echo json_encode($result);
+exit;
 
 
 ?>

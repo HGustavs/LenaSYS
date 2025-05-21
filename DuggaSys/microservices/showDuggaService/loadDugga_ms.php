@@ -3,11 +3,22 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "retrieveShowDuggaService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $moment = $_POST['moment'] ?? null;
+    $courseid = $_POST['courseid'] ?? null;
+    $hash = $_POST['hash'] ?? null;
+    $hashpwd = $_POST['hashpwd'] ?? null;
+    $coursevers = $_POST['coursevers'] ?? null;
+    $duggaid = $_POST['duggaid'] ?? null;
+    $opt = $_POST['opt'] ?? null;
+    $group = $_POST['group'] ?? null;
+    $score = $_POST['score'] ?? null;
+}
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -17,9 +28,6 @@ if(isset($_SESSION['uid'])){
 }else{
 	$userid="student";		
 } 	
-
-$hash=getOP('hash');
-$moment=getOP('moment');
 
 $variant = array();
 $answer = array();
@@ -57,3 +65,39 @@ if($hash!="UNK"){
     }
 
 }
+
+header("Content-Type: application/json");
+//set url for setAsActiveCourse.php path
+$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
+$ch = curl_init($url);
+    //options for curl
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'moment' => $moment, 
+    'courseid' => $courseid, 
+    'hash' => $hash, 
+    'hashpwd' => $hashpwd, 
+    'coursevers' => $coursevers,
+    'duggaid' =>  $duggaid,
+    'opt' =>  $opt,
+    'group' =>  $group,
+    'score' => $score
+]));
+curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true);
+
+echo json_encode([
+  'variant'       => $variant,
+  'answer'        => $answer,
+  'variantanswer' => $variantanswer,
+  'param'         => $param,
+  'newcourseid'   => $newcourseid,
+  'newcoursevers' => $newcoursevers,
+  'newduggaid'    => $newduggaid
+]);
+exit;
