@@ -87,7 +87,6 @@ function returnedDugga(data) {
 		//	showDuggaInfoPopup();
 		let studentPreviousAnswer = "";
 		if (data['answer'] !== null && data['answer'] !== "UNK") {
-			console.log(typeof data["answer"]);
 			var previous = data['answer'].split(' ');
 			var prevRaw = previous[3];
 			prevRaw = prevRaw.replace(/&quot;/g, '"');
