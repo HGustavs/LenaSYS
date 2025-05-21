@@ -66,7 +66,6 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -75,7 +74,7 @@ function returnedDugga(data)
 		alert("UNKNOWN DUGGA!");
 	}else{		
 		dta=jQuery.parseJSON(data['param']);
-		$(".submit-button").removeClass("btn-disable");
+		document.querySelector(".submit-button").classList.remove("btn-disable");
 		if (data["answer"] !== null && data["answer"] !== "UNK") {			
 			var previousAnswer = data['answer'].split(' ');
 			bitarray=previousAnswer[3].split(',');
@@ -96,10 +95,10 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById("showFeedbackButton").style.display = 'block';
 	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").prependTo("#content");
+	document.querySelector("#content").appendChild(document.querySelector("#submitButtonTable"));
+	document.querySelector("#content").appendChild(document.querySelector("#lockedDuggaInfo"));
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 	if (running) {
 		renderId = requestAnimationFrame(redrawgfx);
@@ -155,7 +154,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display='block';
 	}
 	var canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
@@ -214,7 +213,7 @@ function fitToContainer()
 {
 	// Make it visually fill the positioned parent
 	
-	divw = $("#content").width();
+	let divw = document.getElementById("content").clientWidth;
 	if (divw < window.innerHeight) {
 		ctx.width = divw;
 		ctx.height = divw;
@@ -308,12 +307,12 @@ function redrawgfx()
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
-function toggleInstructions()
-{
-	$(".instructions-content").slideToggle("slow");
+function toggleInstructions(){
+	const toggleInstruct = document.querySelector(".instructions-content");	
+	toggleInstruct.classList.toggle("hidden");
 }
 
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
+function toggleFeedback(){
+	const toggleFeed = document.querySelector(".feedback.content");
+	toggleFeed.classList.toggle("hidden");
 }
