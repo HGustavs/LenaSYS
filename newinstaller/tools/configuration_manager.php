@@ -17,8 +17,10 @@ class ConfigurationManager {
 		$this->callback = $callback;
 		$this->verbose = $verbose;
 		$this->parameters = [];
-		$this->write_config(); // Write or create config
-		$this->read_config(); // Load existing config
+		$read = $this->read_config(); // Load existing config
+		if($read["success"]) {
+			$this->write_config(); // Write or create config
+		}
 	}
 
 	/**

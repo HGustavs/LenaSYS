@@ -21,3 +21,7 @@ gitErrorLog.txt
 log/gitErrorLog.txt
 DuggaSys/microservices/endpointDirectory/endpointDirectory_db.sqlite
 DuggaSys/microservices/endpointDirectory/newMDStructureTest.md
+
+*.key
+*.crt
+DuggaSys/microservices/endpointDirectory/dependenciesList.php
