@@ -6,6 +6,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
 
 // Connect to database and start session
@@ -72,25 +73,13 @@ if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
     	array_push($tableInfo, $tableSubmissionInfo);
 	}
 
-    // Set up POST call to retrieveResultedService_ms.php
-    header("Content-Type: application/json");
-    $baseURL = "http://" . $_SERVER['HTTP_HOST'];  // use http when testing locally
-    $url = $baseURL . "/LenaSYS/DuggaSys/microservices/resultedService/retrieveResultedService_ms.php";
-
-    $ch = curl_init($url);
-
-    // cURL options
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'tableInfo' => json_encode($tableInfo),
-        'duggaFilterOptions' => json_encode($duggaFilterOptions)
-    ]));
-
-    // Execute and get response
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    // Send the response to frontend
+	//Use curlService to make HTTP POST call
+	 $postData = [
+    'tableInfo' => json_encode($tableInfo),
+    'duggaFilterOptions' => json_encode($duggaFilterOptions)
+ 	];
+	$response = callMicroservicePOST("resultedService/retrieveResultedService_ms.php", $postData, true );
+	header("Content-Type: application/json");
+    // Send the data to frontend
     echo $response;
 }

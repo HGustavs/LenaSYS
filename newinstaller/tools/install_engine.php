@@ -4,14 +4,18 @@ foreach (glob("tools/*.php") as $tools) {
 	include_once $tools;
 }
 
-class InstallEngine {
+include_once "ssl/ssl_generator.php";
+
+class InstallEngine
+{
 
 	/**
 	 * function run
 	 * Run all the necessary steps for installing the system.
 	 * $installation_data json string containing installation settings. 
 	 */
-	public static function run(string $installation_data) {
+	public static function run(string $installation_data)
+	{
 		SSESender::start();
 		$settings = json_decode($installation_data);
 		$verbose = $settings->verbose === 'true' ? true : false;
@@ -29,7 +33,8 @@ class InstallEngine {
 		// Initialize pdo
 		$pdo = self::init_pdo($settings->root_username, $settings->root_password, $settings->hostname);
 
-		function callback($message) {
+		function callback($message)
+		{
 			SSESender::transmit($message);
 		}
 
@@ -46,7 +51,6 @@ class InstallEngine {
 				}
 				SSESender::transmit($temp);
 			}
-
 		} catch (Exception $e) {
 			SSESender::transmit(data: "Encountered error while constructing installation queue: {$e}", is_error: true);
 		} catch (TypeError $e) {
@@ -60,7 +64,7 @@ class InstallEngine {
 			$start_flag = isset($settings->starting_step) && $settings->starting_step != ""; // when true continue without running install step
 			foreach ($operations as $operationKey => $operation) {
 				// Calculate completion, limit it from being above 99 since it tries to be ahead of actual progress
-				$completion = round((($i+2) / ($totalOperations)) * 100, 0);
+				$completion = round((($i + 2) / ($totalOperations)) * 100, 0);
 				$completion = $completion > 99 ? 99 : $completion;
 				SSESender::transmit_event("updateProgress", data: $completion);
 				$i++;
@@ -89,19 +93,20 @@ class InstallEngine {
 		SSESender::stop();
 	}
 
-	private static function init_pdo($root_user, $root_password, $hostname): PDO {
+	private static function init_pdo($root_user, $root_password, $hostname): PDO
+	{
 		try {
 			$db_hostname = $hostname;
 			$username = $root_user;
 			$password = $root_password;
-			
+
 			$dsn = "mysql:host=$db_hostname;charset=utf8mb4";
 			$pdo = new PDO($dsn, $username, $password);
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			
+
 			SSESender::transmit("Connected to database successfully.");
 		} catch (PDOException $e) {
-			SSESender::transmit("Connection to database could not be established. ". $e->getMessage(), true);
+			SSESender::transmit("Connection to database could not be established. " . $e->getMessage(), true);
 		}
 
 		return $pdo;
@@ -113,7 +118,8 @@ class InstallEngine {
 	 * Each index contains a key: name of current step
 	 * and a value, callback function for installation step. 
 	 */
-	private static function construct_installation_queue(DBSetup $installer, ConfigurationManager $cm, TestdataSetup $testdataSetup, $settings): array { 
+	private static function construct_installation_queue(DBSetup $installer, ConfigurationManager $cm, TestdataSetup $testdataSetup, $settings): array
+	{
 		// Read settings
 		$create_db = $settings->create_db === 'true' ? true : false;
 		$create_db_user = $settings->create_db_user === 'true' ? true : false;
@@ -125,7 +131,10 @@ class InstallEngine {
 		$add_test_course_data = $settings->add_test_course_data === 'true' ? true : false;
 		$add_test_files = $settings->add_test_files === 'true' ? true : false;
 		$distributed_environment = $settings->distributed_environment === 'true' ? true : false;
-		
+		$generate_SSL = $settings->generate_SSL === 'true' ? true : false;
+		error_log("SSL: " . $generate_SSL . "\n");
+
+
 		if (!isset($settings->username) && !isset($settings->password) && !isset($settings->hostname) && !isset($settings->db_name)) {
 			throw new Exception("Not all required settings were sent to the installer.");
 		}
@@ -133,34 +142,34 @@ class InstallEngine {
 		$operations = [];
 
 		if ($create_db) {
-			$operations["create_db"] = function() use ($installer, $overwrite_db) {
+			$operations["create_db"] = function () use ($installer, $overwrite_db) {
 				$installer->create_db(force: $overwrite_db);
 			};
 		}
 		if ($create_db_user) {
-			$operations["create_user"] = function() use ($installer, $overwrite_user, $distributed_environment) {
+			$operations["create_user"] = function () use ($installer, $overwrite_user, $distributed_environment) {
 				if ($distributed_environment) {
 					$installer->set_hostname('%');
 				}
 				$installer->create_user(force: $overwrite_user);
 			};
 		}
-		
+
 		// Add mandatory installer operations
-		$operations["set_permissions"] = function() use ($installer) {
+		$operations["set_permissions"] = function () use ($installer) {
 			$installer->set_permissions();
 		};
-		$operations["init_db"] = function() use ($installer, $verbose) {
+		$operations["init_db"] = function () use ($installer, $verbose) {
 			$installer->execute_sql_file("SQL/init_db.sql", verbose: $verbose);
 		};
-		$operations["setup_endpoint_directory"] = function() use ($verbose) {
+		$operations["setup_endpoint_directory"] = function () use ($verbose) {
 			try {
 				setup_endpoint_directory($verbose);
 			} catch (Throwable $e) {
 				SSESender::transmit("Error in setup_endpoint_directory: " . $e->getMessage(), true);
 			}
 		};
-		$operations["save_credentials"] = function() use ($cm, $settings, $distributed_environment) {
+		$operations["save_credentials"] = function () use ($cm, $settings, $distributed_environment) {
 			$parameters = [
 				"DB_USER" => $settings->username,
 				"DB_PASSWORD" => $settings->password,
@@ -170,6 +179,10 @@ class InstallEngine {
 			];
 
 			$cm->set_parameters($parameters);
+		};
+
+		$operations["generate_SSL"] = function () {
+			generateSSL();
 		};
 
 		// Add selected language support
@@ -182,30 +195,30 @@ class InstallEngine {
 
 		// Add optional test files
 		if ($add_test_files) {
-			$operations['copy_test_file_1'] = function() use ($testdataSetup, $verbose) {
+			$operations['copy_test_file_1'] = function () use ($testdataSetup, $verbose) {
 				$testdataSetup->copy_course("1", $verbose);
 			};
-			$operations['copy_test_file_2'] = function() use ($testdataSetup, $verbose) {
+			$operations['copy_test_file_2'] = function () use ($testdataSetup, $verbose) {
 				$testdataSetup->copy_course("2", $verbose);
 			};
-			$operations['copy_test_file_global'] = function() use ($testdataSetup, $verbose) {
+			$operations['copy_test_file_global'] = function () use ($testdataSetup, $verbose) {
 				$testdataSetup->copy_course("global", $verbose);
 			};
 		}
 
 		// Add optional modules to install queue
 		if ($add_test_data) {
-			$operations['add_test_data'] = function() use ($installer, $verbose) {
+			$operations['add_test_data'] = function () use ($installer, $verbose) {
 				$installer->execute_sql_file("SQL/testdata.sql", verbose: $verbose);
 			};
 		}
 		if ($add_demo_course) {
-			$operations['add_demo_course'] = function() use ($installer, $verbose) {
+			$operations['add_demo_course'] = function () use ($installer, $verbose) {
 				$installer->execute_sql_file("SQL/demoCourseData.sql", verbose: $verbose);
 			};
 		}
 		if ($add_test_course_data) {
-			$operations['add_test_course_data'] = function() use ($installer, $verbose) {
+			$operations['add_test_course_data'] = function () use ($installer, $verbose) {
 				$installer->execute_sql_file("SQL/testingCourseData.sql", verbose: $verbose);
 			};
 		}
@@ -213,9 +226,11 @@ class InstallEngine {
 		return $operations;
 	}
 
-	private static function createLanguageOperation($installer, $language) {
-		return function() use ($installer, $language) {
+	private static function createLanguageOperation($installer, $language)
+	{
+		return function () use ($installer, $language) {
 			$installer->execute_sql_file("SQL/keywords_{$language}.sql", verbose: false);
 		};
 	}
 }
+

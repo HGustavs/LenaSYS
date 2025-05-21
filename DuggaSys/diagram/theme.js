@@ -145,17 +145,18 @@ function updateCSSForAllElements() {
                         fillColor = elementDiv.querySelector("g > circle"); // Accessing the circular "head" element
                     }
                     else if (element.kind == elementTypesNames.sequenceLoopOrAlt || element.kind == elementTypesNames.UMLSuperState) {
-                        fillColor = elementDiv.querySelector("#loopLabel"); // Accessing the top left rectangle
+                        fillColor = elementDiv.querySelector("#cornerLabel"); // Accessing the top left rectangle
                     }
                     else {
                         fillColor = elementDiv.children[0].children[0]; // Accessing the whatever needs to be accessed
                     }
                     fontColor = elementDiv.children[0];
-                    weakKeyUnderline = elementDiv.children[0].children[2];
+                    weakKeyUnderline = elementDiv.querySelector("line");
                     if (contextLengthCheck()) {
                         fillColor.style.fill = color.LIGHT_PURPLE;
                         fontColor.style.fill = color.WHITE;
-                        // If its a weakKey attribute, update underline color
+                        
+                        // If the weakKey attribute is selected, update underline color
                         if (element.state == "weakKey") {
                             weakKeyUnderline.style.stroke = color.WHITE;
                         }
@@ -171,8 +172,10 @@ function updateCSSForAllElements() {
                         fillColor.style.fill = `${element.fill}`;
                         fontContrast();
                         if (element.state == "weakKey") {
-                            if (element.fill == color.BLACK) {
+                            if (element.fill == color.BLACK || element.fill == color.PINK || element.fill == color.BLUE) { // If the weakKey attribute is set to the color black, pink or blue, update underline color
                                 weakKeyUnderline.style.stroke = color.WHITE;
+                            } else {
+                                weakKeyUnderline.style.stroke = color.BLACK;
                             }
                         }
                     }
@@ -255,7 +258,7 @@ function updateCSSForAllElements() {
 
     function fontContrast() {
         // Set text to white if background is black or pink, else black
-        if (element.fill == color.BLACK || element.fill == color.PINK) {
+        if (element.fill == color.BLACK || element.fill == color.PINK || element.fill == color.BLUE) {
             fontColor.style.fill = color.WHITE;
         } else {
             fontColor.style.fill = color.BLACK;
@@ -269,8 +272,6 @@ function updateCSSForAllElements() {
         
         return inContext && context.length > 0 || inContext && context.length > 0 && contextLine.length > 0;
     }
-
-
     toggleBorderOfElements();
 }
 
