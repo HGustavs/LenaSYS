@@ -6,7 +6,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 include_once "./retrieveSectionedService_ms.php";
 
 
@@ -21,7 +21,10 @@ $visible = getOP('visible');
 $courseid = getOP('courseid');
 $coursevers = getOP('coursevers');
 $versid = getOP('vers');
-$uid = getUid();
+
+$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+$uid = $userData['uid'] ?? 'guest';
+
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');
 $debug='NONE!';

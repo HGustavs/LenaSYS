@@ -25,7 +25,7 @@ $log_uuid=getOP('log_uuid');
 $debug='NONE!';
 
 $userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$userid = $userData['uid'] ?? 'guest';
+$uid = $userData['uid'] ?? 'guest';
 
 $results = array();
 

@@ -3,7 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 include_once "./retrieveSectionedService_ms.php";
 
 // Connect to database and start session.
@@ -17,7 +17,9 @@ $courseid = getOP('courseid');
 $coursevers = getOP('coursevers');
 $log_uuid = getOP('log_uuid');
 $debug = "NONE!";
-$userid = getUid();
+
+$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+$userid = $userData['uid'] ?? 'guest';
 
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
     if (isSuperUser($userid)) {
