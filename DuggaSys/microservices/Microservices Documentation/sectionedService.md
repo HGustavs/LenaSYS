@@ -1275,8 +1275,176 @@ WHERE user.uid=user_course.uid AND user_course.cid=? AND user_course.vers=?;
 
 ---
 
-# Name of file/service  
-readCourseVersions_ms.php
+# Name of file/service  ---
+
+# removeListEntries_ms.php
+
+## Description
+Soft deletes (hides) list entries by setting their visibility to '3'. This microservice is used to remove entries from the course list while maintaining database integrity.
+
+## Input Parameters
+- Parameter: lid
+   - Type: int
+   - Description: List entry ID to remove. Stored as *int(11)* in the database
+   - Example: 123
+
+- Parameter: courseid
+   - Type: int
+   - Description: Course ID. Stored as *int(11)* in the database
+   - Example: 456
+
+- Parameter: coursevers
+   - Type: String
+   - Description: Course version. Stored as *varchar(256)* in the database
+   - Example: "2023-01"
+
+- Parameter: log_uuid
+   - Type: String
+   - Description: Log UUID for tracking. Stored as *varchar(36)* in the database
+   - Example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+
+- Parameter: opt
+   - Type: String
+   - Description: Operation type option
+   - Example: "remove"
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: data
+   - Type: JSON
+   - Description: Returns updated course information after removal
+   - Example:
+     ```json
+     {
+       "debug": "",
+       "entries": [...],
+       "coursename": "Programming 101",
+       "coursevers": "2023-01"
+     }
+     ```
+
+## Examples of Use
+```php
+// Example call
+$courseid = 123;
+$coursevers = "2023-01";
+$lid = 456;
+$log_uuid = "a1b2c3d4-e5f6-7890-1234-567890abcdef";
+$opt = "remove";
+
+// Make POST request with these parameters
+$result = removeListEntries_ms($courseid, $coursevers, $lid, $log_uuid, $opt);
+```
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+- sessions.php
+- basic.php
+- getUid_ms.php
+
+---
+
+# reorderListEntries_ms.php
+
+## Description
+Reorders list entries in a course by updating their position and moment values. This microservice is used to rearrange the order of course entries.
+
+## Input Parameters
+- Parameter: courseid
+   - Type: int
+   - Description: Course ID. Stored as *int(11)* in the database
+   - Example: 123
+
+- Parameter: coursevers
+   - Type: String
+   - Description: Course version. Stored as *varchar(256)* in the database
+   - Example: "2023-01"
+
+- Parameter: pos
+   - Type: int
+   - Description: New position of the entry
+   - Example: 1
+
+- Parameter: moment
+   - Type: int
+   - Description: Moment number of the entry
+   - Example: 1
+
+- Parameter: order
+   - Type: String
+   - Description: Comma-separated list of entries to reorder in format "posXXlidXXmoment"
+   - Example: "1XX123XX1,2XX456XX2"
+
+- Parameter: lid
+   - Type: int
+   - Description: List entry ID to reorder. Stored as *int(11)* in the database
+   - Example: 123
+
+- Parameter: opt
+   - Type: String
+   - Description: Operation type option (should be "REORDER")
+   - Example: "REORDER"
+
+- Parameter: log_uuid
+   - Type: String
+   - Description: Log UUID for tracking. Stored as *varchar(36)* in the database
+   - Example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+
+## Calling Methods
+- POST
+
+## Output Data and Format
+- Output: data
+   - Type: JSON
+   - Description: Returns updated course information after reordering
+   - Example:
+     ```json
+     {
+       "debug": "",
+       "entries": [
+         {
+           "lid": 123,
+           "pos": 1,
+           "moment": 1,
+           "entryname": "Introduction"
+         },
+         {
+           "lid": 456,
+           "pos": 2,
+           "moment": 1,
+           "entryname": "Basics"
+         }
+       ]
+     }
+     ```
+
+## Examples of Use
+```php
+// Example call
+$courseid = 123;
+$coursevers = "2023-01";
+$pos = 1;
+$moment = 1;
+$order = "1XX123XX1,2XX456XX2";
+$lid = 123;
+$opt = "REORDER";
+$log_uuid = "a1b2c3d4-e5f6-7890-1234-567890abcdef";
+
+// Make POST request with these parameters
+$result = reorderListEntries_ms($courseid, $coursevers, $pos, $moment, $order, $lid, $opt, $log_uuid);
+```
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+- sessions.php
+- basic.php
+- getUid_ms.php
+
+---
+
+# readCourseVersions_ms.php
 
 ## Description  
 Fetches all course versions from the 'vers' table.  
