@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         .container {
             display: flex;
@@ -54,6 +55,103 @@
         #diagram-iframe{
             height: inherit;
         }
+         .close-icon{
+            display: none;
+        }
+        .button-wrapper{
+            display: none;
+        }
+
+        @media screen and (max-width: 414px) {
+            .close-icon{
+                display: block;
+                padding: .3rem;
+                border-radius: 50%;
+            }
+            .button-wrapper{
+                position: fixed;
+                top: 17vh;
+                right: 5vw;
+                padding: .5rem;
+                display: flex;
+                flex-flow: column;
+                row-gap: .5rem;
+                z-index: 1;
+            }
+            .dugga-btn{
+                background-color: var(--color-accent);
+                color: var(--color-primary);
+                border: none;
+                padding: .7rem;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                border: 2px solid;
+                filter: drop-shadow(0rem 0rem .7rem rgba(0,0,0,.2));
+
+                >i{
+                    font-size: 2rem;
+                }
+            }
+            .instructions-button,
+            #container_header{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .assignment_left,
+            .instructions-container{
+                position: fixed;
+                inset: 0;
+                z-index: 10;
+                background-color: #fff;
+                width: 100% !important;
+                height: 100%;
+                display: none;
+            }
+            header{ /*Hides the header on mobile version*/
+                display: none;
+            }
+
+            /*Hides the div adding unnecessary 50px height*/
+            .diagram-hide{
+                display: none;
+            }
+
+            /*Hides the reset, load and save buttons*/
+            #submitButtonTable{
+                display: none;
+            }
+            #content{
+                margin: 0;
+            }
+
+            .assignment_left.show{
+                display: block;
+            }
+            .instructions-container.show{
+                display: block;
+            }
+            #close_open_border{
+                display: none;
+            }
+            #assignment_discrb{
+                padding: 25px;
+                
+                >h2{
+                    margin-left: 0 !important;
+                }
+
+                >p{
+                    margin-left: 0 !important;
+                }
+
+                >ol{
+                    padding: 0 0 0 .9rem;
+                }
+            }
+        }
+
 
     </style>
     <script>
@@ -111,6 +209,7 @@
         <div class='instructions-container'>
             <div class='instructions-button' onclick='toggleInstructions(this)'>
                 <h3>General information</h3>
+                <i class="material-icons-round close-icon">close</i>
             </div>
             <div class="instructions-content" id="diagram_instructions">
                 <p style="margin-left: 4px;">Diagram-duggan går ut på att producera det diagrammet som beskrivs i beskrivningen.
@@ -124,7 +223,10 @@
         <div class="container">
             <input type="hidden" id="pvalue" value="0" />
             <div class="assignment_left" id="container__left" style="overflow: auto;">
-                <div id="container_header"><h3>Instructions</h3></div>
+                <div id="container_header">
+                    <h3>Instructions</h3>
+                    <i class="material-icons-round close-icon">close</i>
+                </div>
                 <div class="assignment_discrb" id="assignment_discrb" cellpadding="0" cellspacing="0">
                     <h2 style="margin-left: 14px;">Modellering</h2>
                     <p style="margin-left: 14px;">Modellera nedanstående uppgifter i notationerna ER och UML.</p>
@@ -159,7 +261,53 @@
             </div>
             <div id="nextVariantBtn"></div>
         </div>
+        <!-- The buttons wrapped where the user can toggle between general information and instructions -->
+        <div class="button-wrapper">
+            <button id="generalInfoBtn" class="dugga-btn">
+                <i class="material-icons-round">info</i>
+            </button>
+            <button id="instructionsBtn" class="dugga-btn">
+                <i class="material-icons-round">assignment</i>
+            </button>
+        </div>
     </div>
+
+        <script>
+        const infoBtns = document.querySelectorAll(".dugga-btn");
+
+        infoBtns.forEach(infoBtn=>{
+            infoBtn.addEventListener("click", toggleInfo);
+        });
+
+        //Function that displays the info container
+        function toggleInfo(e){
+            let instructionInfo = document.querySelector(".assignment_left");
+            let generalInfo = document.querySelector(".instructions-container");
+            if(e.currentTarget.id === 'generalInfoBtn'){
+                generalInfo.classList.add("show");
+            }
+            else{
+                instructionInfo.classList.add("show");
+            }
+        }
+
+        //Selects all close icons with the specified class
+        const closeBtns = document.querySelectorAll(".close-icon");
+
+        closeBtns.forEach(closeBtn=>{
+            closeBtn.addEventListener("click", closeInfo);
+        });
+
+        //Function that closes the active info container (hides it)
+        function closeInfo(e){
+            e.stopPropagation(); //Prevents event bubbling
+            //Selects either instructions-container or assignment_left
+            //Based on which close-icon is part of
+            let infoContainer = e.currentTarget.parentNode.parentNode;
+            if(!infoContainer) return; //Null check
+            infoContainer.classList.remove("show");
+        }
+    </script>
 </body>
 
 </html>
