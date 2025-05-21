@@ -319,6 +319,13 @@ if (isset($_GET['id'])) {
         <table>
     <tr><th>ID</th><th>Name</th><th>Description</th><th>View</th></tr>
     <?php 
+    if (isset($_GET['search'])) {
+        echo "Showing results for (name/description): " . $_GET['search'];
+    } else if (isset($_GET['param-search'])) {
+        echo "Showing results for (parameter): " . $_GET['param-search'];
+    } else if (isset($_GET['filter_method'])) {
+        echo "Showing results with Calling Method: " . $_GET['filter_method'];
+    }
     foreach ($services as $service) {
         echo '<tr>';
         echo '<td>' . $service['id'] . '</td>';
