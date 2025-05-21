@@ -12,6 +12,9 @@ function drawLine(line, targetGhost = false) {
     let fromElemMouseY;
     let toElemMouseY;
 
+    //For straight SD lines only
+    let iconXModifier, iconYModifier;
+
     // Element line is drawn from element(felem)/to element(telem)
     // Determines staring element based on ID
     let felem = data[findIndex(data, line.fromID)];
@@ -150,6 +153,10 @@ function drawLine(line, targetGhost = false) {
                 offset.y2 = -15;
             } else { offset.y2 = 0; } // Aligning line with mouse coordinate before telem has been set
             offset.y1 = 15;
+            fy -= 15*zoomfact;
+            ty += 15*zoomfact;
+            iconXModifier = 0;
+            iconYModifier = 15;
 
             // Tweak offset of end-points if line direction is DOWN
         } else if ((fy < ty) && (line.ctype == lineDirection.DOWN)) {
@@ -160,6 +167,10 @@ function drawLine(line, targetGhost = false) {
                 offset.y2 = 15;
             } else { offset.y2 = 0; }
             offset.y1 = -15;
+            fy += 15*zoomfact;
+            ty -= 15*zoomfact;
+            iconXModifier = 0;
+            iconYModifier = -15;
 
             // Tweak offset of end-points if line direction is LEFT
         } else if ((fx > tx) && (line.ctype == lineDirection.LEFT)) {
@@ -170,6 +181,10 @@ function drawLine(line, targetGhost = false) {
                 offset.x2 = -15;
             } else { offset.x2 = 0; }
             offset.x1 = 15;
+            fx -= 15*zoomfact;
+            tx += 15*zoomfact;
+            iconXModifier = 15;
+            iconYModifier = 0;
 
             // Tweak offset of end-points if line direction is RIGHT
         } else if ((fx < tx) && (line.ctype == lineDirection.RIGHT)) {
@@ -180,9 +195,11 @@ function drawLine(line, targetGhost = false) {
                 offset.x2 = 15;
             } else { offset.x2 = 0; }
             offset.x1 = -15;
-
+            fx += 15*zoomfact;
+            tx -= 15*zoomfact;
+            iconXModifier = -15;
+            iconYModifier = 0;
         }
-
         lineStr += `<line 
                     id='${line.id}' 
                     x1='${fx + offset.x1 * zoomfact}' 
@@ -238,27 +255,33 @@ function drawLine(line, targetGhost = false) {
 
     // Draws the Segmented version for arrow and not straight line
     if(line.recursive){
-
         if(line.startIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
         }
         if(line.endIcon === SDLineIcons.ARROW){
             lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
         }
-        
-
-    }else{
-        // Handle start arrow
+    }else if(line.innerType == SDLineType.SEGMENT){
+        const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
+        const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
+        const reverseCtype = line.ctype.split('').reverse().join('');
         if (line.startIcon === SDLineIcons.ARROW) {
-            const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
             lineStr += iconPoly(SD_ARROW[line.ctype], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK);
         }
-
         // Handle end arrow
         if (line.endIcon === SDLineIcons.ARROW) {
-            const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
-            const reverseCtype = line.ctype.split('').reverse().join('');
             lineStr += iconPoly(SD_ARROW[reverseCtype], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK);
+        }
+    }else{
+        const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
+        const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
+        // Handle start arrow
+        if (line.startIcon === SDLineIcons.ARROW) {
+            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
+        }
+        // Handle end arrow
+        if (line.endIcon === SDLineIcons.ARROW) {
+            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
         }
     }    
         
@@ -424,7 +447,16 @@ function drawLine(line, targetGhost = false) {
     return { lineStr, labelStr };
 }
 
-// Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed
+/** 
+ * @description Calculates the arrowhead position at the start or end of a line, adjusting for target size if needed.
+ * @param {integer} fx X-coordinate from the first element
+ * @param {integer} fy Y-coordinate from the first element
+ * @param {integer} tx X-coordinate from the target element
+ * @param {integer} ty Y-coordinate from the target element
+ * @param {string} position If it is the start or end position
+ * @param {string} lineType At the moment no idea
+ * @returns {number[]} Returns the coordinates for the icons position
+ */
 function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth = 0, targetHeight = 0) {
     const dx = tx - fx;
     const dy = ty - fy;
@@ -438,6 +470,19 @@ function calculateArrowPosition(fx, fy, tx, ty, position, lineType, targetWidth 
     } else if (position === "end") {
         return { x: tx - offsetX, y: ty - offsetY };
     }
+}
+
+/**
+ * @description By inputting the location of two points on the diagram into an atan2 formula (a formula i dont fully understand) we get the way degrees the two point would be tilted towards if they had a line between them in radians. Then we turn the radians to degrees
+ * @param {integer} x1 The x cordinate of the first point
+ * @param {integer} y1 The y cordinate of the first point
+ * @param {integer} x2 The x cordinate of the second point
+ * @param {integer} y2 The y cordinate of the second point
+ * @returns The angle the two point would point towards in degrees
+ */
+function findRotation(x1,y1,x2,y2){
+    let angleRad = Math.atan2(y1 - y2, x1 - x2); // in radians     
+    return angleRad * (180 / Math.PI);   // convert to degrees
 }
 
 /**
@@ -1098,15 +1143,22 @@ function iconCircle([a, b, c], x, y, lineColor,) {
  * @param {Object} fill It's the color to fill the icons
  * @returns Returns the icons for the polyline
  */
-function iconPoly(arr, x, y, lineColor, fill) {
+function iconPoly(arr, x, y, lineColor, fill, rotation = 0) {
     let s = "";
     for (let i = 0; i < arr.length; i++) {
         const [a, b] = arr[i];
         s += `${x + a * zoomfact} ${y + b * zoomfact} `;
     }
-    return `<polyline 
+    if(rotation === 0){
+        return `<polyline 
                 points='${s}' 
                 fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
+            />`;
+    }
+    console.log("test");
+    return `<polyline 
+                points='${s}' 
+                fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}' transform='rotate(${rotation}, ${x},${y})'
             />`;
 }
 
