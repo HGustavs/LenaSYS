@@ -530,7 +530,7 @@ function getData() {
     //Side navbar buttons. (save, load and reset are inside diagram_dugga)
     document.getElementById("mb-darkModeButton").addEventListener("click", burgerToggleDarkmode);
     document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it
-        window.location.assign('../DuggaSys/courseed.php');
+        window.top.location.assign('../DuggaSys/courseed.php');
     });
 
     const loginButton = document.getElementById("mb-loginButton");
