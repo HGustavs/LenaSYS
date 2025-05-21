@@ -9952,8 +9952,8 @@ span[id$="examples"]:hover{
 }
 
 .comment {
-  color: #50a750;
-  font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+    color: #3f8539;
+    font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .oper {

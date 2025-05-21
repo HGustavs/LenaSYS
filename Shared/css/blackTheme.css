@@ -55,6 +55,8 @@
 
         --color-fileLink-table-1: #2d3133;
         --color-fileLink-table-2: #242729;
+
+        --color-codeviewer-tag: #CE9178;
     }
 
     #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
@@ -258,11 +260,15 @@
 }
 
 .comment {
-    color: #888;
+    color: #51a64a;
+}
+
+.normtext .keywordfunction {
+    color: #D7BA7D;
 }
 
 .normtext .oper {
-    color: var(--color-text-light);
+    color: #D4D4D4;
     font-weight: bold;
     line-height: 15px;
 }
@@ -273,7 +279,7 @@
 }
 
 .normtext .string {
-    color: var(--color-text-light);
+    color: var( --color-codeviewer-tag);
     font-weight: bold;
 }
 
@@ -283,7 +289,7 @@
 }
 
 .normtext .number {
-    color: var(--color-text-light);
+    color: #B5CEA8;
     font-weight: bold;
 }
 

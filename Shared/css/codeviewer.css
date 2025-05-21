@@ -407,7 +407,7 @@
 }
 
 .normtext .string {
-    color: #03b !important;
+    color: #03b;
 }
 
 .normtext .html, .hi {
@@ -463,8 +463,8 @@
 }
 
 .comment {
-    color: #50a750;
-	font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+    color: #51a64a;
+    font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 /* TEXTWRAPPER STOP */
