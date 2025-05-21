@@ -7873,6 +7873,7 @@ only screen and (max-device-width: 568px) {
     text-align: center;
     flex-wrap: wrap; /* Allow wrapping of elements */
     height: auto;
+  }
 }
 
 .fixed-action-button {
@@ -8017,30 +8018,6 @@ only screen and (max-device-width: 568px) {
   z-index:2;
 }
 
-@media only screen and (max-width: 430px) {
-  .fab-btn-list2 {
-    left: 3.4rem;
-  }
-}
-
-@media screen and (max-height: 600px) {
-  .fab-btn-list2{
-    top: 30px;
-    left: 45px;
-    transform: rotate(90deg);
-    transform-origin: top left;
-  }
-  
-
-  .fab-btn-list2 li {
-    transform: rotate(225deg);
-  }
-
-  [data-tooltip]:before {
-    right: 55%;
-    top: 10px;
-  }
-}
 
 .fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;
@@ -8056,15 +8033,8 @@ only screen and (max-device-width: 568px) {
 }
 
 @media screen and (max-height: 600px) {
-  .fab-btn-list {
-    transform-origin: 0% bottom;
-    transform: rotate(270deg);
-  }
-  .fab-btn-sm {
-    transform: rotate(375deg);
-  }
-  [data-tooltip]:before {
-    bottom: 90%;
+  .fab-btn-list2 {
+    padding: 3rem 3rem 0rem 1rem;
   }
 }
 
