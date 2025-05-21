@@ -136,6 +136,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $url = $baseURL . "/LenaSYS/DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php";
 
     $dataToSend = [
+        'exampleid' => $exampleid,
         'courseid' => $courseid,
         'coursevers' => $coursevers,
         'sectname' => $sectionname,
