@@ -214,9 +214,12 @@ function drawLine(line, targetGhost = false) {
         if (line.recursive) {
             lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
         }
-        else if (line.type === entityType.SE){
-            
+        else if (line.type === entityType.SE){   
             lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+        }else if (telem.kind === elementTypesNames.SelfCall) {
+            console.log("things happend")
+            lineStr += selfcallthing(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+            
         }
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
@@ -597,8 +600,7 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
     }
 
     // Special case if line is connected to or from IERelation
-    if (f.kind === elementTypesNames.IERelation || t.kind === elementTypesNames.IERelation) {
-
+    if (f.kind === elementTypesNames.IERelation || t.kind === elementTypesNames.IERelation) {      
         tWidth = t.width * 0.3 * zoomfact;
         tHeight = t.height * 0 * zoomfact;
         fWidth *= zoomfact;
@@ -671,8 +673,59 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
         ty = t.cy + getOffset(offsetMap, t.id, toKey) * zoomfact;
     }
 
+
     return [fx, fy, tx, ty, offset];
 }
+
+
+function selfcallthing(fx, fy, tx, ty, offset,  line, lineColor, strokeDash) {
+
+    const startX = fx + offset.x1;
+    const startY = fy;
+
+    const targetX = tx + offset.x1;
+    const targetY = ty;
+
+    const horizontalOffset = 30;
+
+    // Determine if SelfCall is to the left or right
+    const bendDir = targetX >= startX ? 1 : -1;
+
+    const bendX = targetX + horizontalOffset * bendDir;
+    const exitX = startX + horizontalOffset * bendDir;
+    let points = []
+   
+    if(line.ctype == "LR" || line.ctype == "RL"){
+        points = [
+            `${startX},${startY}`,   // Down from Class
+            `${targetX},${targetY}`, // Down to SelfCall height
+            `${bendX},${targetY}`,   // Bend left or right
+            `${exitX},${startY}`     // Back up and out
+         ].join(" ");
+
+    } else if(line.ctype == "BT" || line.ctype == "TB"){
+        points = [
+            `${startX},${startY}`,   // Down from Class
+            `${targetX},${targetY}`, // Down to SelfCall height
+            `${bendX},${targetY}`,   // Bend left or right
+            `${exitX},${startY}`     // Back up and out
+        ].join(" ");
+    }
+ 
+
+    return `
+        <polyline 
+            id="${line.id}" 
+            points="${points}" 
+            fill="none" 
+            stroke="${lineColor}" 
+            stroke-width="${(line.width || 1) * zoomfact}" 
+            stroke-dasharray="${strokeDash}" 
+        />
+    `;
+}
+
+
 
 
 
@@ -1393,7 +1446,7 @@ function checkAdjacentLines(element) {
     try {
         ['top', 'bottom', 'right', 'left'].forEach(side => {
             const linesOfTargetSide = element[side];
-
+                    
             // Don't want to affect recursive lines, so they are sorted out of the offset calculation
             const filteredLines = linesOfTargetSide.filter(lineID => {
                 const lineIdIndex = findIndex(lines, lineID);
@@ -1401,7 +1454,7 @@ function checkAdjacentLines(element) {
                     return false;
                 }
                 
-                const lineObject = lines[lineIdIndex];
+                const lineObject = lines[lineIdIndex];    
                 if (lineObject.ghostLine || lineObject.targetGhost) {
                     return !lineObject.recursive;
                 }
