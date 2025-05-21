@@ -1,7 +1,8 @@
 <?php
 
 include_once "../../../Shared/basic.php";
-include_once "processDuggaFile_ms.php";
+include_once "../../../Shared/sessions.php";
+include_once "../curlService.php";
 
 function retrieveShowDuggaService(
 	$moment, 
@@ -73,7 +74,7 @@ function retrieveShowDuggaService(
 				$_SESSION["submission-password-$courseid-$newcoursevers-$newduggaid"]=$hashpwd;
 				$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
-				retrieveProcessDuggaFiles();
+				retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 			}else{
 				$debug="[Superuser] Could not load dugga! no userAnswer entries with moment: $moment \nline 338 showDuggaservice.php";
 				$variant="UNK";
@@ -110,7 +111,7 @@ function retrieveShowDuggaService(
 				$_SESSION["submission-variant-$courseid-$newcoursevers-$newduggaid"]=$variant;
 				$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "https") . "://$_SERVER[HTTP_HOST]/sh/?s=$hash";
 
-				retrieveProcessDuggaFiles();
+				retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 			}else{
 				$debug="[Guest] Could not load dugga! Incorrect hash/password submitted! $hash/$hashpwd";
 				$variant="UNK";
@@ -143,7 +144,7 @@ function retrieveShowDuggaService(
 					$param=html_entity_decode($row['param']);
 				}
 				if(isset($param)){
-					retrieveProcessDuggaFiles();
+					retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 
 				}else{
 					$debug="[Guest] Missing hash/password/variant! Not found in db.";
@@ -180,7 +181,7 @@ function retrieveShowDuggaService(
 					}
 			
 					if(isset($param)){
-						retrieveProcessDuggaFiles();
+						retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
 					}else{
 						$debug="[Guest] Missing hash/password/variant! Not found in db.";
 						$variant="UNK";
@@ -243,8 +244,16 @@ $array = array(
 		
 	return $array;
 }
-function retrieveProcessDuggaFiles(){
-	processDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment);
+function retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment){
+	$postData = [
+        'courseid' => $courseid,
+        'coursevers' => $coursevers,
+		'duggaid' => $duggaid,
+        'duggainfo' => $duggainfo,
+		'moment' => $moment
+    ];
+	
+	$response = callMicroservicePOST("showDuggaService/processDuggaFile_ms.php", $postData, true);
 }
 
 ?>
