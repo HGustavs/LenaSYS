@@ -307,6 +307,35 @@
             if(!infoContainer) return; //Null check
             infoContainer.classList.remove("show");
         }
+
+        const iframe = document.getElementById("diagram-iframe");
+        //Waits for the whole iframe to load in
+        iframe.onload = ()=>{
+
+            //Returns the document object by the iframe element
+            //Enables you to access elements that belongs to the iframe
+            /*You can only access and manipulate the document elements in the iframe if the iframe and the parent (this page) are on the same domain and port, and other security reasons*/
+            const iframeDOM = iframe.contentDocument || iframe.contentWindow.document;
+
+            //Instead of using document, you use iframeDOM if you want to access elements from the iframe
+            let sidebarToggleIcon = iframeDOM.querySelector(".icon-wrapper-sidebar");
+            let diagramSidebar = iframeDOM.getElementById("mb-diagram-sidebar");
+            let buttonWrapper = document.querySelector(".button-wrapper");
+            let timer = null;
+
+            //Whenever the icon is clicked it hides and displays the buttons based on if the sidebar is open or not
+            sidebarToggleIcon.addEventListener("click", ()=>{
+                if(diagramSidebar.classList.contains("open")){
+                    buttonWrapper.style.display = 'none';
+                }
+                else{
+                    clearTimeout(timer);
+                    timer = setTimeout(()=>{
+                        buttonWrapper.style.display = 'flex';
+                    }, 150); //Displays it only after a delay to make it more smoothly
+                }
+            });
+        }
     </script>
 </body>
 
