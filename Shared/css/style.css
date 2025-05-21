@@ -10912,4 +10912,14 @@ button:disabled {
   padding-left: 5px;
 }
 
+.feedback-content {
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  max-height: 0;
+}
+
+.feedback-content.slide-visible {
+  max-height: 500px; /* Justera efter behov */
+}
+
 /* END */
