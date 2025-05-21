@@ -439,6 +439,10 @@
 	color: var(--color-text-light) !important;
 }
 
+#hamburgerBox{
+    background-color: var(--color-background);
+}
+
 /* ========================
 	COLOR SCHEME FOR TABLES
 	======================*/
