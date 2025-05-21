@@ -1798,6 +1798,22 @@ function returnedSection(data) {
             str += "</td>";
           }
         }
+
+        //Mobile view for code examples
+        if (itemKind === 2 && (data['writeaccess'] || data['studentteacher'])){
+           var param = {
+            'exampleid': item['link'],
+            'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
+            'cvers': querystring['coursevers'],
+            'lid': item['lid']
+          };
+          str += `<div class='flex-row-container'>`;
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("codeviewer.php",
+            hideState, "", item['entryname'], false, param)}</span></div>`;
+          str += '</div>'
+        }
+
           //Mobile view of title and date for dugga/test items
         if (itemKind === 3 && (data['writeaccess'] || data['studentteacher'])) {             
           var param = {
@@ -1981,8 +1997,12 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
-            hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          str += `<div class='ellipsis nowrap hide-on-mobile'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          if (!data['writeaccess'] || data['studentteacher']){
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          }
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {
