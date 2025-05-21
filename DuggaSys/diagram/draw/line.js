@@ -64,6 +64,7 @@ function drawLine(line, targetGhost = false) {
         ty = event.clientY;
     }
 
+    [tx, ty] = isAligned(fx, fy, tx, ty, offset, 10);
 
     const lineSpacing = 30 * zoomfact; //Controlls spacing between lines
 
@@ -824,6 +825,35 @@ function drawLineCardinality(line, lineColor, fx, fy, tx, ty, f, t) {
 }
 
 /**
+ * @description Makes the lines straight when two elements are within some break point value distance of each other.
+ * @param {Number} fx The felem x coordinate.
+ * @param {Number} fy The felem y coordinate.
+ * @param {Number} tx The telem x coordinate.
+ * @param {Number} ty The telem y coordinate.
+ * @param {Object} offset Offset for the X and Y coordinate.
+ * @param {Number} alignValue The chosen break point for alignment.
+ * @returns Returns tx and ty in an array.
+ */
+
+function isAligned(fx, fy, tx, ty, offset, alignValue){
+    let x1 = fx + offset.x1;
+    let y1 = fy + offset.y1;
+    let x2 = tx + offset.x2;
+    let y2 = ty + offset.y2;
+    const isVerticallyAligned = Math.abs(x1 - x2) < alignValue;
+    const isHorizontallyAligned = Math.abs(y1 - y2) < alignValue;
+
+    if(isVerticallyAligned){
+        tx = fx;
+    }
+    else if(isHorizontallyAligned){
+        ty = fy;
+    }
+
+    return ([tx, ty]);
+}
+
+/**
  * @description Draw the line segmented.
  * @param {Number} fx The felem x coordinate.
  * @param {Number} fy The felem y coordinate.
@@ -839,28 +869,6 @@ function drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash) 
     // Compute half‐distance offsets for the bend based on vertical or horizontal orientation
     let dy = (line.ctype == lineDirection.UP || line.ctype == lineDirection.DOWN) ? (((fy + offset.y1) - (ty + offset.y2)) / 2) : 0;
     let dx = (line.ctype == lineDirection.LEFT || line.ctype == lineDirection.RIGHT) ? (((fx + offset.x1) - (tx + offset.x2)) / 2) : 0;
-
-    let x1 = fx + offset.x1;
-    let y1 = fy + offset.y1;
-    let x2 = tx + offset.x2;
-    let y2 = ty + offset.y2;
-    const isVerticallyAligned = Math.abs(x1 - x2) < 10;
-    const isHorizontallyAligned = Math.abs(y1 - y2) < 10;
-    if (isVerticallyAligned || isHorizontallyAligned) {
-        if (isVerticallyAligned) {
-            x2 = x1;
-        } else {
-            y2 = y1;
-        }
-
-        return `<polyline
-            id='${line.id}'
-            points='${x1},${y1} ${x1},${y1} ${x2},${y2} ${x2},${y2}'
-            fill='none'
-            stroke='${lineColor}'
-            stroke-width='${strokewidth * zoomfact}'
-            stroke-dasharray='${strokeDash}' />`;
-    }
 
     return `<polyline 
                 id='${line.id}' 
