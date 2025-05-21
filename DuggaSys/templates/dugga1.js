@@ -265,16 +265,16 @@ function closeFacit(){
 function bitClick(divid) {
 	if (typeof ClickCounter != 'undefined') ClickCounter.onClick();
 
-	const divid = document.getElementById(divid);
+	const el = document.getElementById(divid);
 
-	if (divid.innerHTML === "1") {
-		divid.innerHTML = "0";
-		divid.classList.remove("ett");
-		divid.classList.add("noll");
+	if (el.innerHTML === "1") {
+		el.innerHTML = "0";
+		el.classList.remove("ett");
+		el.classList.add("noll");
 	} else {
-		divid.innerHTML = "1";
-		divid.classList.add("ett");
-		divid.classList.remove("noll");
+		el.innerHTML = "1";
+		el.classList.add("ett");
+		el.classList.remove("noll");
 	}
 
 	document.querySelectorAll('.submit-button').forEach(function (button) {
