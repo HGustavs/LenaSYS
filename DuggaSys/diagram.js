@@ -1144,14 +1144,25 @@ function mmoving(event) {
 
                 // Check coordinates of moveable element and if they are within snap threshold
                 const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
+                // Lifeline coordinates to visualize snap for selected activation elements
                 const snapId = visualSnapToLifeline(moveableElementPos);
-
-                // Visualize the context snapping to lifeline (only a visual indication)
-                if (snapId && context[0]?.kind === elementTypesNames.sequenceActivation) {
+                
+                // Visualized snap to lifeline
+                if (snapId) {
                     const lLine = data.find(el => el.id === snapId);
-                    context[0].x = lLine.x + lLine.width / 2 - context[0].width / 2;
-                    startX = event.clientX;
-                    deltaX = 0;
+                    let anySnapped = false;
+
+                    context.forEach(el => {
+                        if (el.kind === elementTypesNames.sequenceActivation) {
+                            el.x = lLine.x + (lLine.width / 2) - (el.width / 2);
+                            anySnapped = true;
+                        }
+                    });
+
+                    if (anySnapped) {
+                        startX = event.clientX;
+                        deltaX = 0;
+                    }
                 }
                 updatepos();
                 calculateDeltaExceeded();
