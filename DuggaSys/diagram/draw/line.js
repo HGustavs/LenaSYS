@@ -64,7 +64,8 @@ function drawLine(line, targetGhost = false) {
         ty = event.clientY;
     }
 
-    [tx, ty] = isAligned(fx, fy, tx, ty, offset, 10);
+    // Checks if the lines are "basically" aligned, and modifies tx and ty so the line is straight 
+    [tx, ty] = isAligned(fx, fy, tx, ty, offset, 10); 
 
     const lineSpacing = 30 * zoomfact; //Controlls spacing between lines
 
