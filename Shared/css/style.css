@@ -3646,6 +3646,7 @@ div.submit-button.new-user:hover {
 }
 
 input.submit-button-newitem {
+  position: relative;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   background-color: var(--color-accent);
@@ -3663,7 +3664,6 @@ input.submit-button-newitem {
   text-align: center;
   transition: 1s background-color;
   -webkit-appearance: none; 
-  float: left;
 }
 
 input.submit-button-newitem:hover {
@@ -7789,8 +7789,8 @@ only screen and (max-device-width: 568px) {
 
 .fixed-action-button2 {
   position: absolute;
-  top: auto;
-  right: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   touch-action: none;
 }
@@ -8001,8 +8001,7 @@ only screen and (max-device-width: 568px) {
 
 .fab-btn-list2 {
   position: absolute;
-  padding: 5rem 3.5rem 0rem 0rem;
-  margin: -2rem;
+  padding: 0;
   width: 100%;
   list-style: none;
   text-align: center;
