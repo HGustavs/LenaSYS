@@ -662,11 +662,11 @@ function changeActiveElement(e){
     let imageSrc = e.currentTarget.dataset.imagesrc;
     let placementType = e.currentTarget.dataset.placementtype;
     let elementType = e.currentTarget.dataset.elementtype;
-    let elementMode = e.currentTarget.dataset.mode;
+    let elementMode = e.currentTarget.dataset.toolmode;
     
     //Switches the active elements datasets with the sub menus datasets
     activeImage.src = imageSrc;
-    firstActiveElement.dataset.mode = elementMode;
+    firstActiveElement.dataset.toolmode = elementMode;
     firstActiveElement.dataset.elementtype = elementType;
     firstActiveElement.dataset.placementtype = placementType;
     firstActiveElement.dataset.imagesrc = imageSrc;
