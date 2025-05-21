@@ -69,7 +69,7 @@ function setup()
 function returnedDugga(data)
 {
 
-	$("#content").css({"position":"relative"});
+	document.getElementById("content").style.position = "relative";
 
 	dataV = data;
 
@@ -99,10 +99,12 @@ function returnedDugga(data)
 			refreshdUrl();
 		}
 
+		const duggaCols = document.querySelectorAll('.dugga-col');
 		var max = 0;
-		$('.dugga-col').each(function() {
-		    max = Math.max($(this).height(), max);
-		}).height(max);
+		duggaCols.forEach(col => {
+			max = Math.max(col.height, max);
+			col.style.height = max + 'px';
+		});
 
 	}
 	// Teacher feedback
@@ -118,7 +120,7 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById("showFeedbackButton").style.display = "block";
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -227,7 +229,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 	document.getElementById('feedbackBox').style.display = "none";
 	/* reset */
@@ -271,9 +273,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
           userUrl=userUrl.replace("https://", "http://");
       }
 
-			var markWindowHeight = $("#MarkCont").height();
+			var markWindowHeight = document.getElementById("MarkCont").height;
 
-			$("#MarkCont").css({"overflow":"hidden"});
+			document.getElementById("MarkCont").style.overflow = "hidden";
 
 			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
 			document.getElementById("content-window").value = userCode;
@@ -287,8 +289,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 			document.getElementById("code-preview-label").style.display = "none";
 			document.getElementById("code-preview-window-wrapper").style.display = "none";
-			var iframeX = $("#preview-col").width();
-			var iframeY = $("#preview-col").height();
+			var iframeX = document.getElementById("preview-col").width;
+			var iframeY = document.getElementById("preview-col").height;
 
 			document.getElementById("url-preview-label").innerHTML = '<div id="url-preview-label" style=""><h2 class="formBoxHeader" style="padding:5px; padding-bottom:10px; margin-top:0; color:#FFF;overflow:hidden; text-align:center;">Förhandsgranskning av publicerad kod</h2></div>';
 			document.getElementById("url-preview-window").innerHTML= '<iframe style="pointer-events: none; width: '+800+'px; height:'+768+'px; border: 1px solid black; overflow:scroll; transform:scale('+iframeX/800+'); transform-origin:0 0; box-sizing:border-box;" src="'+userUrl+'"></iframe>';
@@ -300,7 +302,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 
 
-			$( "#MarkCont" ).append( '<img id="facit-target-window-img" class="facitPreview" src="'+document.getElementById("target-window-img").src+'" onmouseenter="togglePopover();" onclick="togglePreview();"/>' );
+			document.getElementById("MarkCont" ).append( '<img id="facit-target-window-img" class="facitPreview" src="'+document.getElementById("target-window-img").src+'" onmouseenter="togglePopover();" onclick="togglePreview();"/>' );
 
 
 	}
@@ -408,13 +410,15 @@ function processpreview()
 }
 
 function togglePreview (){
-	$("#facit-target-window-img").removeClass("facitPopover").addClass("facitPreview");}
-
-function togglePopover (){
-	$("#facit-target-window-img").removeClass("facitPreview").addClass("facitPopover");
+	document.getElementById("facit-target-window-img").classList.remove("facitPopover");
+	document.getElementById("facit-target-window-img").classList.add("facitPreview");
 }
 
-function toggleFeedback()
-{
+function togglePopover (){
+	document.getElementById("facit-target-window-img").classList.remove("facitPreview");
+	document.getElementById("facit-target-window-img").classList.add("facitPopover");
+}
+
+function toggleFeedback(){  //leaving since it is about to be smited by someone else
     $(".feedback-content").slideToggle("slow");
 }
