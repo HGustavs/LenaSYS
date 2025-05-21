@@ -592,7 +592,7 @@
 			if (isset($_GET['embed'])){
 				echo "<div style='display:none;'></div>";
 			}	else {
-				echo "<div style='height:50px;'></div>";
+				echo "<div class='diagram-hide' style='height:50px;'></div>";
 			}		
 ?>
 <div id="overlay" style="display: none;"></div>

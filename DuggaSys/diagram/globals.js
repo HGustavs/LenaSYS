@@ -96,6 +96,13 @@ var ghostLine = null;
  */
 var UMLHeight = [], IEHeight = [], SDHeight = [], NOTEHeight = [];
 
+
+/**
+ * @description Global variable that checks if the browser window is sized for mobile screens (414px and less).
+ * @type {boolean}
+ */
+var isMobile = false;
+
 //#endregion
 //#region MOUSE
 
@@ -364,6 +371,20 @@ var lastMousePosCoords = new Point(0, 0);
 
 //#endregion
 //#region OPTIONS
+
+/**
+ * @description Flag indicating opened/closed options panel.
+ * @see toggleOptionsPane
+ * @type {boolean}
+ */
+let optionsToggled = false;
+
+/**
+ * @description Flag indicating a locked options panel, (user opened).
+ * @see toggleOptionsPane
+ * @type {boolean}
+ */
+let userLock = false;
 
 /**
  * @description If the ER table should be shown over the the options pane.

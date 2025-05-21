@@ -73,10 +73,10 @@
 			</div>";
 	}
 
-	function inputFieldWithTip($inputId, $inputLabel, $tipText) {
+	function inputFieldWithTip($inputId, $inputLabel, $tipText, $inputValue='') {
 		echo "<div class='input-field'>
 					<label for='$inputId'>$inputLabel</label>
-					<input id='$inputId' type='text'>
+					<input id='$inputId' type='text' value='". htmlspecialchars($inputValue) ."'>
 					<p class='tip'>$tipText</p>
 			</div>";
 	}
@@ -101,9 +101,17 @@
 		echo "</div>";
 	}
 
-	function checkbox($checkboxId, $checkboxText, $helpLink = null) {
+	function checkbox($checkboxId, $checkboxText, $helpLink = null, $inputValue = '') {
+		// Check if the value is "on" or “1”. If true, then the checkbox will be checked, otherwise it will not be checked. 
+		// Note: "on" is used for the old coursesyspw, while "1" is used for the new coursesyspw.
+		if (strtolower($inputValue) === 'on' || $inputValue === '1') {
+			$checked = 'checked';
+		} else {
+			$checked = '';
+		}
+	
 		echo "<div class='checkbox'>";
-		echo "    <input id='$checkboxId' type='checkbox' value='$checkboxId'>";
+		echo "    <input id='$checkboxId' type='checkbox' value='$checkboxId' $checked>";
 		echo "    <label for='$checkboxId'>$checkboxText";
 	
 		if (isset($helpLink)) {
