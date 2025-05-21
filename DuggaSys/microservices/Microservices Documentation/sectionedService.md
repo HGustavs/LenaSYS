@@ -1217,3 +1217,186 @@ Logs the operation.
 - retrieveSectionedService_ms.php
 
 ---
+
+# Name of file/service  
+readCourseGroupsAndMembers_ms.php
+
+## Description  
+Returns a list of group members related to a specific course ID and course version.  
+Only users with read, write, or student-teacher access to the course can retrieve this data.  
+If a user does not have an email address in the database, a default one is generated based on their username.
+
+## Input Parameters  
+- Parameter: $opt  
+  - Type: string  
+  - Description: Operation type
+
+- Parameter: $courseid  
+  - Type: int  
+  - Description: Course ID used to filter results
+
+- Parameter: $coursevers  
+  - Type: int  
+  - Description: Course version used to filter results
+
+- Parameter: $log_uuid  
+  - Type: string  
+  - Description: UUID used for service logging
+
+- Parameter: $showgrp  
+  - Type: string  
+  - Description: Two-letter group prefix to filter specific group members
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: grplst  
+  - Type: array  
+  - Description: List of group members (group name, first name, last name, email)
+
+- Output: grpmembershp  
+  - Type: string  
+  - Description: Group name of the logged-in user
+
+- Output: debug  
+  - Type: string  
+  - Description: Error message if query fails
+
+## Examples of Use  
+SELECT user.uid, user.firstname, user.lastname, user.email, user_course.groups  
+FROM user, user_course  
+WHERE user.uid=user_course.uid AND user_course.cid=? AND user_course.vers=?;
+
+### Microservices Used  
+- retrieveSectionedService_ms.php  
+- sessions.php  
+- basic.php
+
+---
+
+# Name of file/service  
+readCourseVersions_ms.php
+
+## Description  
+Fetches all course versions from the 'vers' table.  
+Used to populate version selectors or to retrieve metadata for courses.
+
+## Input Parameters  
+None
+
+## Calling Methods  
+- GET
+
+## Output Data and Format  
+- Output: versions  
+  - Type: array  
+  - Description: Array of course versions including course ID, code, version number, version name, course name(s), start/end date, and MOTD
+
+## Examples of Use  
+SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
+
+### Microservices Used  
+- getUid_ms.php  
+- sessions.php  
+- basic.php
+
+---
+
+# Name of file/service  
+removeListEntries_ms.php
+
+## Description
+This microservice sets a list entry in the 'listentries' table as "removed" by updating its 'visible' value to 3. After the update, the function "retrieveSectionedService_ms" is called to return updated data relevant to the current course and user.
+
+## Input Parameters
+- Parameter: $courseid  
+   - Type: int  
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers  
+   - Type: String  
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid  
+   - Type: String  
+   - Description: Used for logging.
+
+- Parameter: $opt  
+   - Type: String  
+   - Description: Operation type
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+
+- Output: $data
+   - Type: JSON  
+   - Description: Result from "retrieveSectionedService_ms"
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php
+- retrieveSectionedService_ms.php
+
+---
+
+# Name of file/service  
+reorderListEntries_ms.php
+
+## Description
+This microservice reorders entries in the 'listentries' table by updating their "pos" and "moment" values based on the order data received.
+
+## Input Parameters
+- Parameter: $courseid  
+   - Type: int  
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers  
+   - Type: String  
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $pos
+   - Type: int
+   - Description: Listentry position. Stored as int(11) in the database
+
+- Parameter: $moment  
+   - Type: int  
+   - Description: moment ID for the listentry. Stored as int(10) in the database
+
+- Parameter: $order  
+   - Type: String  
+   - Description: String representing new order of entries
+
+- Parameter: $lid  
+   - Type: int  
+   - Description: Listentry ID. Stored as int(10) in the database
+
+- Parameter: $opt  
+   - Type: String  
+   - Description: Operation type, must be "REORDER" to trigger update logic
+
+- Parameter: $log_uuid  
+   - Type: String  
+   - Description: Used for logging.
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+
+- Output: $data
+   - Type: JSON  
+   - Description: Result from "retrieveSectionedService_ms"
+
+## Examples of Use
+-
+
+### Microservices Used
+- getUid_ms.php  
+- retrieveSectionedService_ms.php
+
+---

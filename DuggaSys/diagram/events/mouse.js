@@ -24,6 +24,13 @@ function mwheel(event) {
 function mdown(event) {
     mouseButtonDown = true;
 
+    //If anything but an element was clicked, toggle options panel.
+    if (event.target.id == "container" && optionsToggled && !userLock) {
+        console.log(event.target.id);
+        optionsToggled = false;
+        hideOptionsPane();
+    }
+
     // Mouse pressed over delete button for multiple elements
     if (event.button == 0) {
         if (context.length > 0 || contextLine.length > 0) {
@@ -100,7 +107,6 @@ function mdown(event) {
                             containerStyle.cursor = "grabbing";
                             if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
                                 wasDblClicked = true;
-                                document.getElementById("options-pane").className = "hide-options-pane";
                             }
                         }
                         break;
@@ -175,6 +181,13 @@ function mdown(event) {
  * @param {MouseEvent} event Triggered mouse event.
  */
 function ddown(event) {
+    
+    //If element was clicked, open options panel.
+    if (!optionsToggled && !userLock) {
+        optionsToggled = true;
+        showOptionsPane();
+    }
+    
     // Mouse pressed over delete button for a single line over a element
     if (event.button == 0 && (contextLine.length > 0 || context.length > 0)) {
         canPressDeleteBtn = true;
@@ -193,8 +206,6 @@ function ddown(event) {
                 input.focus();
                 input.setSelectionRange(0, input.value.length); // Select the whole text.
             }
-            document.getElementById('optmarker').innerHTML = "&#9650;Options";
-            document.getElementById("options-pane").className = "show-options-pane"; // Toggle optionspanel.
         }
     }
 
@@ -352,6 +363,10 @@ function tup() {
     mouseButtonDown = false;
     pointerState = pointerStates.DEFAULT;
     deltaExceeded = false;
+    if (optionsToggled && !userLock) {
+        optionsToggled = false;
+        hideOptionsPane();
+    }
 }
 
 /**
