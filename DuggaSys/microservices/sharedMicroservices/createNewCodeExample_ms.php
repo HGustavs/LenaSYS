@@ -8,7 +8,7 @@ pdoConnect();
 session_start();
 
 
-$userData = callMicroserviceGET("./getUid_ms.php");
+$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $userid = $userData['uid'] ?? 'guest';
 // Microservice call to retrieve username
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
