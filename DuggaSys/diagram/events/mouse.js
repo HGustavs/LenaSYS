@@ -110,7 +110,16 @@ function mdown(event) {
                             }
                         }
                         break;
-                    } 
+                    } else {
+                        pointerState = pointerStates.CLICKED_CONTAINER;
+                        containerStyle.cursor = "grabbing";
+
+                        if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                            wasDblClicked = true;
+                            toggleOptionsPane();
+                        }
+                        break;
+                    }
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if (context.length > 0) {
