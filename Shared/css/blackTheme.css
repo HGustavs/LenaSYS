@@ -9,6 +9,7 @@
         --color-text-label: #000;
         --color-text-dark: #000;
         --color-text-light: #fff;
+        --color-text-unset: #aaaaaa;
       
         --color-logo1: #775886;
         --color-logo2: #573866;
@@ -907,6 +908,10 @@ select{
     border-radius: 5px;
 }
 
+select.selectDarkModeText{
+    color: var(--color-text-light);
+}
+
 input{
     border-radius: 2px;
     border: 2px solid var(--color-border-2);
@@ -1299,6 +1304,11 @@ border-left: 14px solid var(--color-sectioned-table-hi);
   
  .textinput {
     color:white;
+    background-color: var(--color-background);
+}
+
+ .textinput::placeholder {
+    color: var(--color-text-unset);
     background-color: var(--color-background);
 }
 
