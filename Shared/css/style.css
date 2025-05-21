@@ -7727,7 +7727,7 @@ only screen and (max-device-width: 568px) {
   position: fixed;
   bottom: 64px;
   right: 24px;
-  z-index: 1;
+  z-index: 5000;
   touch-action: none;
 }
 
