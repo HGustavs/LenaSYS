@@ -97,6 +97,7 @@ function returnedDugga(data) {
 		alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
+		//$('#submission-receipt').html(`Direct link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 	
@@ -106,7 +107,7 @@ function returnedDugga(data) {
 		if (canvas) {
 			showDuggaInfoPopup();
 			var studentPreviousAnswer = "UNK";
-			retdata = JSON.parse(data['param']);
+			retdata = jQuery.parseJSON(data['param']);
 			if (data["answer"] !== null && data["answer"] !== "UNK") {
 				var previous = data['answer'].split(',');
 				previous.shift();
@@ -165,8 +166,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		document.getElementById("duggaStats").style.display = "block"
-
+		$("#duggaStats").css("display","block");
 	}
 	running = true;
 	canvas = document.getElementById('a');
@@ -177,7 +177,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			renderId=undefined;
 	}
 	var studentPreviousAnswer = "UNK";
-	var p = JSON.parse(param);
+	var p = jQuery.parseJSON(param);
 	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
@@ -535,11 +535,11 @@ function handler_mousedown(ev)
 {
 	clickstate = 1;
 	// Figure out if we clicked in an object
-	document.querySelectorAll("#operations > option").forEach(function(el) {
-		var opArr = el.value.split(" ");
+	$("#operations > option").each(function() {
+		var opArr = this.value.split(" ");
 		for (var i = 1; i < opArr.length; i += 2) {
 			if (opArr[i] == gridx && opArr[i + 1] == gridy) {
-				selectedObjId = el.id;
+				selectedObjId = this.id;
 				selectedPoint = Math.round(i / 2);
 			}
 
@@ -744,7 +744,7 @@ function init(quizGoal, studentPreviousAnswer)
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	divw = document.getElementById("content").clientWidth;
+	divw = $("#content").width();
 	if (divw > 500)
 		divw -= 248;
 	if (divw < window.innerHeight) {
@@ -798,9 +798,10 @@ function drawPath()
 	sy = starty;
 
 	// Draw students objects
-	document.querySelectorAll("#operations > option").forEach(function(el) {
-		var opArr = el.value.split(" ");
-		if (el.id == selectedObjId) {
+	
+	$("#operations > option").each(function() {
+		var opArr = this.value.split(" ");
+		if (this.id == selectedObjId) {
 				opArr[selectedPoint * 2 - 1] = gridx;
 				opArr[selectedPoint * 2] = gridy;
 				drawOp(sx, sy, opArr, studentLineColor, true, true);	

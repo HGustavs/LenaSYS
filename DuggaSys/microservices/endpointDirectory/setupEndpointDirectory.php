@@ -8,7 +8,8 @@ $dbFile = __DIR__ . '/endpointDirectory_db.sqlite';
 
 // remove old database if it exists
 if (file_exists($dbFile)) {
-    require_once __DIR__ . '/deleteEndpointDb.php';
+    unlink($dbFile);
+    echo "Old database removed.<br>";
 }
 
 // create a new database

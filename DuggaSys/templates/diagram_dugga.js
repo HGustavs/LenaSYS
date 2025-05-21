@@ -30,19 +30,6 @@ function setup()
     if(localStorage.getItem("CurrentlyActiveDiagram") != null && localStorage.getItem("CurrentlyActiveDiagram") != ""){
         document.getElementById("diagram-iframe").contentWindow.loadDiagramFromString(JSON.parse(localStorage.getItem("CurrentlyActiveDiagram")));
     }
-
-
-    //Adding eventlisteners to buttons in the mobile sidebar
-    //as they are inside a iframe and these functions are done outside, then the listeners are added here
-    const diagramIframe = document.getElementById("diagram-iframe");
-    const mobileSaveButton = diagramIframe.contentWindow.document.getElementById("mb-saveDuggaButton"); 
-    mobileSaveButton.addEventListener("click", () => {
-        uploadFile();
-        showReceiptPopup();
-    });    
-    diagramIframe.contentWindow.document.getElementById("mb-resetDuggaButton").addEventListener("click", reset);
-    diagramIframe.contentWindow.document.getElementById("mb-loadDuggaButton").addEventListener("click", showLoadDuggaPopup);
-
 }
 
 /**

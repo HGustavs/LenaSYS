@@ -315,8 +315,6 @@ None
 - \sectionedService\updateListEntryOrder_ms.php
 - \sectionedService\updateQuizDeadline_ms.php
 - \sectionedService\updateVisibleListEntries_ms.php
-- \sectionedService\createGithubCodeExample_ms.php
-- \sectionedService\createListEntry_ms.php
 
 ### setVisibleListentries
 None
@@ -366,9 +364,9 @@ createListEntry_ms.php
 
 ##### sharedMicroservices
 - sharedMicroservices/createNewCodeExample_ms.php
+- sharedMicroservices/micupdateSecurityQuestion_ms.php
 - sharedMicroservices/updateSecurityQuestion_ms.php
 - sharedMicroservices/updateUserPassword_ms.php
-- sharedMicroservices/retrieveUsername_ms.php
 
 ##### sectionedService
 - sectionedService/createGithubCodeExample_ms.php
@@ -387,8 +385,6 @@ createListEntry_ms.php
 - sectionedService/updateListEntriesTabs_ms.php
 - sectionedService/updateListEntryOrder_ms.php
 - sectionedService/updateVisibleListEntries_ms.php
-- sectionedService/readGroupValues_ms.php
-- sectionedService/removeListEntries_ms.php
 
 ##### resultedService
 - resultedService/getUserAnswer_ms.php
@@ -404,17 +400,14 @@ createListEntry_ms.php
 - fileedService/deleteFileLink_ms.php
 - fileedService/getFileedService_ms.php
 - fileedService/updateFileLink_ms.php
-- fileedService/retrieveFileedService_ms.php
 
 ##### duggaedService
 - duggaedService/createDugga_ms.php
 - duggaedService/deleteDugga_ms.php
 - duggaedService/deleteDuggaVariant_ms.php
 - duggaedService/updateDugga_ms.php
-- duggaedService/createDuggaVariant_ms.php
-- duggaedService/updateDuggaVariant_ms.php
 
-##### courseedService
+###### courseedService
 - courseedService/changeActiveCourseVersion_courseed_ms.php
 - courseedService/copyCourseVersion_ms.php
 - courseedService/createCourseVersion_ms.php
@@ -425,8 +418,6 @@ createListEntry_ms.php
 - courseedService/retrieveCourseedService_ms.php
 - courseedService/updateCourse_ms.php
 - courseedService/updateCourseVersion_ms.php
-- courseedService/specialUpdate_ms.php
-- courseedService/updateActiveCourseVersion_courseed_ms.php
 
 ##### codeviewerService
 - codeviewerService/deleteCodeExample_ms.php
@@ -434,7 +425,6 @@ createListEntry_ms.php
 - codeviewerService/editCodeExample_ms.php
 - codeviewerService/editContentOfExample_ms.php
 - codeviewerService/updateCodeExampleTemplate_ms.php
-- codeviewerService/retrieveCodeviewerService_ms.php
 
 ##### accessedService
 
@@ -443,7 +433,6 @@ createListEntry_ms.php
 - accessedService/getAccessedService_ms.php
 - accessedService/updateUser_ms.php
 - accessedService/updateUserCourse_ms.php
-- accessedService/retrieveAccessedService_ms.php
 
 ### isSuperUser
 None

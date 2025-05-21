@@ -7,7 +7,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../curlService.php";
+include_once "./retrieveCourseedService_ms.php";
 
 
 // Connect to database and start session
@@ -25,26 +25,17 @@ $haswrite = hasAccess($userid, $cid, 'w');
 $isSuperUserVar = isSuperUser($userid);
 $studentTeacher = hasAccess($userid, $cid, 'st');
 
-header('Content-Type: application/json');
-
-$dataToSend = [
-	'ha' => $studentTeacher,
-	'debug' => $debug,
-	'LastCourseCreated' => null,
-	'isSuperUserVar' => $isSuperUserVar
-];
-
-// checks that the user is a superuser and logged in
+    // checks that the user is a superuser and logged in
 if(!(checklogin() && $isSuperUserVar)) {
-    $dataToSend['debug'] = "Access not granted";
-    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
+    $debug = "Access not granted";
+    echo json_encode(retrieveCourseedService($pdo, $studentTeacher, $debug, null, $isSuperUserVar));
     return;
 }
 
 
 if (strcmp($opt, "SPECIALUPDATE") !== 0) {
-    $dataToSend['debug'] = "Incorrect opt provided";
-    echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
+    $debug = "Incorrect opt provided";
+    echo json_encode(retrieveCourseedService($pdo, $studentTeacher, $debug, null, $isSuperUserVar));
     return;
 }
 
@@ -84,5 +75,6 @@ if (!$query->execute()) {
 
 }
 
-echo callMicroservicePOST("courseedService/retrieveCourseedService_ms.php", $dataToSend, true);
+echo json_encode(retrieveCourseedService($pdo, $studentTeacher, $debug, null, $isSuperUserVar));
+
 ?>

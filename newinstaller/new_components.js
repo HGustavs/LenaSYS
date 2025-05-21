@@ -10,8 +10,8 @@ function breadCrumbActive() {
 
 function breadCrumbInc() {
     stepSelected += 1;
-    if(stepSelected>=7) {
-        stepSelected = 7;
+    if(stepSelected>=6) {
+        stepSelected = 6;
     }
 }
 function breadCrumbDecr() {

@@ -4,20 +4,24 @@
 // setAsActiveCourse_ms.php - Used to update which course version should be active
 //----------------------------------------------------------------------------------
 
-// All services to include
 date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../curlService.php";
 
 // Connect to database
 pdoConnect(); 
 
-// Uses curlService.php to verify the receiving data
-$data = recieveMicroservicePOST(['cid', 'versid']);
-$cid = $data['cid'];
-$versid = $data['versid'];
+$cid;
+$versid;
 
+
+// Handle incoming POST request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['cid'], $_POST['versid'])) {
+        $cid = $_POST['cid'];
+        $versid = $_POST['versid'];
+	}
+}
 
 // Prepare the SQL update
 $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");

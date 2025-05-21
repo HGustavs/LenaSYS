@@ -77,7 +77,6 @@ try {
 
     document.getElementById('setupLink')?.addEventListener('click', function (e) {
         e.preventDefault();
-        alert('Begin the process of installing the database and filling data to the database. Please wait until this process finishes.');
         fetch('setupEndpointDirectory.php')
             .then(res => res.text())
             .then(data => {
@@ -91,7 +90,6 @@ try {
 
     document.getElementById('fillLink')?.addEventListener('click', function (e) {
         e.preventDefault();
-        alert('Please wait until the process of filling data to the database finishes.');
         // send AJAX request to both fill scripts
         fetch('fillEndpointDb.php')
             .then(res => res.text())

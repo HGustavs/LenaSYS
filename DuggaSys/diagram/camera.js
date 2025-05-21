@@ -24,31 +24,11 @@ function centerCamera() {
             y: window.innerHeight / 2
         };
 
-        if (emptyDiagram == true){
-            elementHeights = []; // Special array for height of elements since not all elements have a default height assigned to them
-
-            // Get smallest/largest x-value in the diagram (leftmost point and rightmost point), as well as smallest y-value
+        if(emptyDiagram == true){
             const minX = Math.min.apply(null, data.map(i => i.x));
-            const maxX = Math.max.apply(null, data.map(i => i.x + i.width)); // Get rightmost point by taking the largest sum of x-position + element width
+            const maxX = Math.max.apply(null, data.map(i => i.x + i.width));
             const minY = Math.min.apply(null, data.map(i => i.y));
-
-            // Look through each element in the diagram and retrieve the sum of y-position and element height for all of them
-            data.forEach(element => {
-                if (element.kind == elementTypesNames.UMLEntity){ // UML Entities don't have a default height assigned to them, meaning that it needs to be retrieved from the UMLHeight array instead
-                    let temp = UMLHeight.find(item => item.id === element.id);
-                    elementHeights.push(element.y + temp.height);
-
-                } else if (element.kind == elementTypesNames.SDEntity) { // Same for SD Entities, but from SDHeight instead 
-                    let temp = SDHeight.find(item => item.id === element.id);
-                    elementHeights.push(element.y + temp.height);
-
-                } else { // Other elements get the height directly from the element
-                    elementHeights.push(element.y + element.height);
-                }
-            });
-
-            const maxY = Math.max.apply(null, elementHeights); // Get largest y-value from the predefined array
-
+            const maxY = Math.max.apply(null, data.map(i => i.y + i.height));
             determineZoomfact(maxX, maxY, minX, minY);
 
             // Center of diagram in coordinates

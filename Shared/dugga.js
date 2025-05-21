@@ -1053,7 +1053,8 @@ function AJAXService(opt,apara,kind)
 		switch (opt) {
 			case "NEW":
 				$.ajax({
-					url: "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
+					//url: "../DuggaSys/microservices/courseedService/createNewCourse_ms.php",
+					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",
@@ -1062,7 +1063,8 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "NEWVRS":
 				$.ajax({
-					url: "../DuggaSys/microservices/courseedService/createCourseVersion_ms.php",
+					//url: "../DuggaSys/microservices/courseedService/createCourseVersion_ms.php",
+					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",
@@ -1073,6 +1075,7 @@ function AJAXService(opt,apara,kind)
 			case "UPDATEVRS":
 				$.ajax({
 					url: "../DuggaSys/microservices/courseedService/updateCourseVersion_ms.php",
+					//url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",
@@ -1082,7 +1085,8 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "CPYVRS":
 				$.ajax({
-					url: "../DuggaSys/microservices/courseedService/copyCourseVersion_ms.php",
+					//url: "../DuggaSys/microservices/courseedService/copyCourseVersion_ms.php",
+					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",
@@ -1092,7 +1096,8 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "UPDATE":
 				$.ajax({
-					url: "../DuggaSys/microservices/courseedService/updateCourse_ms.php",
+					//url: "../DuggaSys/microservices/courseedService/updateCourse_ms.php",
+					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",
@@ -1101,7 +1106,8 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "SETTINGS":
 				$.ajax({
-					url: "../DuggaSys/microservices/courseedService/createMOTD_ms.php",
+					//url: "../DuggaSys/microservices/courseedService/createMOTD_ms.php",
+					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",
@@ -1110,7 +1116,8 @@ function AJAXService(opt,apara,kind)
 				break;
 			case "SPECIALUPDATE":
 				$.ajax({
-					url: "../DuggaSys/microservices/courseedService/specialUpdate_ms.php",
+					//url: "../DuggaSys/microservices/courseedService/specialUpdate_ms.php",
+					url: "courseedservice.php",
 					type: "POST",
 					data: "opt=" + opt + para,
 					dataType: "json",

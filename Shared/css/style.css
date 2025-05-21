@@ -7779,7 +7779,7 @@ only screen and (max-device-width: 568px) {
   position: fixed;
   bottom: 64px;
   right: 24px;
-  z-index: 5000;
+  z-index: 1;
   touch-action: none;
 }
 
@@ -8127,7 +8127,7 @@ only screen and (max-device-width: 568px) {
 *********************************/
 .diagram-fab{
   bottom: 10vh;
-  right: 7vw;
+  right: 15vw;
   display: none;
 }
 .diagram-btn-fab{
@@ -8140,32 +8140,7 @@ only screen and (max-device-width: 568px) {
   .diagram-fab{
     display: block;
   }
-
-  #options-pane-button {
-    visibility: hidden !important;
-  }
-
-  .close-btn {
-    color: black;
-    cursor: pointer;
-    display: block;
-    position: absolute;
-    right: 10px;
-    top: -12px;
-    font-size: 60px;
-  }
 }
-
-@media (min-width: 415px){
-  .close-btn {
-    visibility: hidden;
-  }
-  
-  #fab-options {
-    visibility: hidden;
-  }
-}
-
 /*===============================*/
 
 /* FAB action buttons background */
