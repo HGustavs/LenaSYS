@@ -2,7 +2,7 @@
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../curlService.php";
+include_once "showDuggaServiceHelper.php";
 
 pdoConnect();
 session_start();
@@ -281,16 +281,24 @@ $array = array(
 	echo json_encode($array);
 	exit;
 
-	function retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment){
-	$postData = [
-        'courseid' => $courseid,
-        'coursevers' => $coursevers,
-		'duggaid' => $duggaid,
-        'duggainfo' => $duggainfo,
-		'moment' => $moment
-    ];
-	
-	$response = callMicroservicePOST("showDuggaService/processDuggaFile_ms.php", $postData, true);
+function retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment){
+	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
+	$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/processDuggaFile_ms.php";
+	$ch  = curl_init($url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POST,        true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query([
+   		'courseid' => $courseid,
+   		'coursevers'=> $coursevers,
+   		'duggaid' => $duggaid,
+		'duggainfo' => $duggainfo,
+   		'moment' => $moment,
+	]));
+	curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
+	$response = curl_exec($ch);
+	curl_close($ch);
+	$data = json_decode($response, true);
+	$files = $data['files'];
 }
 
 

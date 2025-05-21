@@ -7,18 +7,19 @@
 date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../curlService.php";
+
 
 // Connect to database
+session_start();
 pdoConnect();
 
-// Uses curlService.php to verify the receiving data
-$data = recieveMicroservicePOST(['courseid', 'coursevers', 'duggaid', 'duggainfo', 'moment']);
-$courseid = $data['courseid'];
-$coursevers = $data['coursevers'];
-$duggaid = $data['duggaid'];
-$duggainfo = $data['duggainfo'];
-$moment = $data['moment'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $courseid = $_POST['courseid'] ?? null;
+    $coursevers = $_POST['coursevers'] ?? null;
+    $duggaid = $_POST['duggaid'] ?? null;
+	$duggainfo = $_POST['duggainfo'] ?? null;
+   	$moment = $_POST['moment'] ?? null;
+}
 
 $files = array();
 
@@ -124,4 +125,8 @@ if (
 if (sizeof($files) === 0) {
 	$files = (object)array();
 } // Force data type to be object
-echo json_encode([$files]);
+
+header('Content-Type: application/json');
+
+echo json_encode(['files' => [$files]]);
+exit;
