@@ -3,7 +3,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "./retrieveSectionedService_ms.php";
 include_once "../curlService.php";
 
@@ -23,7 +22,9 @@ $comments = getOP('comments');
 $grptype = getOP('grptype');
 $pos = getOP('pos');
 $tabs = getOP('tabs');
-$userid = getUid();
+
+$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+$userid = $userData['uid'] ?? 'guest';
 
 // Microservice for retrieveUsername
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
