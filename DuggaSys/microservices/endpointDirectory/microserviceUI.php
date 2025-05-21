@@ -76,6 +76,16 @@ if (isset($_GET['search'])) {
     $stmt = $db->prepare("SELECT * FROM microservices WHERE calling_methods = ?");
     $stmt->execute([$method]);
     $services = $stmt->fetchAll();
+} elseif (isset($_GET['param-search'])) {
+    $searchTerm = "%".$_GET['param-search']."%";
+    $stmt = $db->prepare("
+        SELECT DISTINCT m.* 
+        FROM microservices m
+        JOIN parameters p ON m.id = p.microservice_id
+        WHERE p.parameter_name LIKE ?
+    ");
+    $stmt->execute([$searchTerm]);
+    $services = $stmt->fetchAll();
 } else {
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
 }
