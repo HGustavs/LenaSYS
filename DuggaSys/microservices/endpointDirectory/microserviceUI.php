@@ -326,6 +326,9 @@ if (isset($_GET['id'])) {
     } else if (isset($_GET['filter_method'])) {
         echo "Showing results with Calling Method: " . $_GET['filter_method'];
     }
+    if (empty($services)) {
+        echo "<p style='color: red;'>No results found.</p>";
+    }
     foreach ($services as $service) {
         echo '<tr>';
         echo '<td>' . $service['id'] . '</td>';
