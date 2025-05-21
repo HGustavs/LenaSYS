@@ -1405,38 +1405,38 @@ This microservice reorders entries in the 'listentries' table by updating their 
 retrieveAllCourseVersions_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Delivers course-page JSON for one course and version.
+It also counts all course versions to work out totalGroups = 24 × versions for internal debugging only—this value isn’t sent to the client.
 
 ## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
+- Parameter: $opt
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Specifies the operation type
 
-- Parameter: paramName
+- Parameter: $courseid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Output: object/array
+   - Type: JSON
+   - Description: Echoes the JSON array returned by retrieveSectionedService_ms.php (keys include entries, coursename, versions, results, access flags, etc.).
 
 ## Examples of Use
-`CODE`
+``` fetch("sectionedService/retrieveAllCourseVersions_ms.php?courseid=37&coursevers=30000&opt=READ")
+  .then(r => r.json())
+  .then(data => console.log(data.entries));
+ ```
 
 ### Microservices Used
-- *Includes and microservices used*
+- retrieveSectionedService_ms.php
 
 ---
 
@@ -1444,37 +1444,45 @@ retrieveAllCourseVersions_ms.php
 retrieveSectionedService_ms.php
 
 ## Description
-*Description of what the service do and its function in the system.*
+Core read service for the “sectioned” aka “course-page”view. Given a course and a version, it collects everything the user needs to render the page.
 
 ## Input Parameters
-*Parameters will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/int in the example below, with the correct type.*
-- Parameter: paramName
+- Parameter: $opt
    - Type: String
-   - Description: Describe parameter. Stored as *varchar(256)* in the database
+   - Description: Specifies the operation type
 
-- Parameter: paramName
+- Parameter: $courseid
    - Type: int
-   - Description: Describe parameter. Stored as *int(11)* in the database
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
 
 ## Calling Methods
 - GET
-- POST
-- etc.
 
 ## Output Data and Format
-*Output Data will be described in lists. "Type" is either String or int, but add the specific type in "Description". The specific types can be found in the tables in the database (http://localhost/phpmyadmin/). Switch out varchar/tinyint in the example below, with the correct type.*
-- Output: outputName
-   - Type: int
-   - Description: Describe the output. Stored as *tinyint(2)* in the database
-
-- Output: outputName
-   - Type: String
-   - Description: Describe the output. Stored as *varchar(30)* in the database
+- Output: object/array 
+  - Type: JSON  
+  - Description: Full data package for the course-page view (keys include entries, coursename, versions, results, access flags, etc.).
 
 ## Examples of Use
-`CODE`
+``` async function loadCourse(cid, vers) {
+  const res = await fetch(
+    `sectionedService/retrieveSectionedService_ms.php?courseid=${cid}&coursevers=${vers}&opt=READ`
+  );
+  const data = await res.json();
+  renderListEntries(data.entries);
+  fillVersionSelector(data.versions, data.coursevers);
+}
+ ```
 
 ### Microservices Used
-- *Includes and microservices used*
+- readCourseVersions_ms.php
 
 ---
