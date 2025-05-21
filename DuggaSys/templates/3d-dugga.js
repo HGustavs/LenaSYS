@@ -166,7 +166,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback) 
 
 	// Parse student answer and dugga answer
 	let studentPreviousAnswer = "";
-	var params = jQuery.parseJSON(param);
+	var params = JSON.parse(param);
 	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(' ');
 		var prevRaw = previous[3];
