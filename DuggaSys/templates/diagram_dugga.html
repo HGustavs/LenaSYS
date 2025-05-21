@@ -7,7 +7,7 @@
     <style>
         .container {
             display: flex;
-            height: 50.1rem;
+            height: 100dvh;
             width: 100%;
             justify-content: space-between;
             position: relative;
@@ -28,7 +28,7 @@
         .assignment_left {
             background-color: #fffcfc;
             width: 300px;
-            height: 800px;
+            height: inherit;
             overflow: auto;
             margin-left: 0px;
             border: 1px solid #ccc;
@@ -40,12 +40,19 @@
             display: flex;
             justify-content: space-around;
             margin-left:0px;
+            height: inherit;
         }
         
         #assignment_discrb {
             visibility: visible;
             padding: 5px;
             padding-left: 25px;
+        }
+        #close_open_border{
+            height: 100dvh;
+        }
+        #diagram-iframe{
+            height: inherit;
         }
 
     </style>

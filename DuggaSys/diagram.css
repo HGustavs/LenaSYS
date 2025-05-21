@@ -74,12 +74,18 @@
 #diagramFileName {
     position: absolute;
     z-index: 1000;
-    margin-left: 50vw;
-    margin-top: 6vh;
+    inset: 6vh 0 auto 0; /*Shorthand, top right bottom left*/
+    max-width: 245px;
+    margin-inline: auto; /*Centers the box*/
     padding: 2px;
     background-color: #fff;
     border: #775886 1px solid;
     text-align: center;
+
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #svgbacklayer {
@@ -151,6 +157,22 @@
     z-index: 5001;
 }
 
+#fab-options {
+    position: fixed;
+    top: 10vh;
+    right: 7vw;
+    width: 56px;
+    height: 56px;
+    font-size: 36px;
+    line-height: 80px;
+    text-align: center;
+    border-radius: 40px;
+    background-color: #eb4;
+    user-select: none;
+    cursor: pointer;
+    z-index: 5000;
+}
+
 #options-pane {
     position: fixed;
     top: 0px;
@@ -175,6 +197,12 @@
     cursor: pointer;
     width: 780px;
     padding: 6px;
+}
+
+#options-fab {
+    display: grid;
+    align-items: center;
+    font-size: 40px;
 }
 
 #options-pane-content {
@@ -304,9 +332,10 @@
 
 .diagramIcons {
     position: relative;
+    transition: background-color 0.3s;
     margin: auto;
-    width: 3.7vh;
-    height: 3.7vh;
+    width: 3.2vh;
+    height: 3.2vh;
     cursor: pointer;
     border: solid 1px var(--color-primary);
     margin-top: 3px;
@@ -326,6 +355,7 @@
     }
 }
 
+
 @media (max-width: 414px){
     .icon-wrapper{
         display: block !important;
@@ -337,6 +367,20 @@
         transition: var(--normal-transition);
     }
 
+     .icon-wrapper-sidebar{
+        display: block !important;
+        position: fixed;
+        z-index: 10;
+        right: 10%;
+        top: 50%;
+        transform: translateX(-50%);
+        transition: var(--normal-transition);
+    }
+
+    .icon-wrapper-sidebar.toolbar-active{
+        margin-right: 50px;
+    }
+    
     #diagram-message{
         position: absolute !important;
         top: 50px !important;
@@ -396,6 +440,10 @@
 
     #zoom-container{
         visibility: hidden !important;
+    }
+
+    .hide-options-pane {
+        right: -500px;
     }
 }
 
@@ -1192,10 +1240,33 @@ button.saveButton {
     display: none;
 }
 
-.toggle-chevron{
+.toggle-chevron, .toggle-chevron-sidebar{
     font-size: 1.4rem;
     background-color: var(--color-background-2);
     padding: .3rem;
     border-radius: 50%;
     color: var(--color-text-secondary);
 }
+
+.toggle-chevron-sidebar{
+    rotate: 270deg;
+}
+
+.diagram-tooltip{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    padding: .3rem;
+    border-radius: 10px;
+    color: #f3f3f3;
+    background-color: #060606cb;
+    z-index: 5000;
+    text-align: center;
+    line-height: 1.5;
+
+    >*{
+        margin: 0;
+    }
+}
+

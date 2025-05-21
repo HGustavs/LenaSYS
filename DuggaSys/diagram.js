@@ -1,10 +1,10 @@
 // #region CLASSES
 // ============================================================================================
 // ========================================= CLASSES ==========================================
-
 /**
  * @description Handles storage and retrieval of usage history allowing undoing and redoing changes. Internal data should ONLY be modified through class methods to prevent weird behaviour.
  */
+
 class StateMachine {
     /**
      * @description Instanciate a new StateMachine. Constructor arguments will determine the "initial state", only changes AFTER this will be logged.
@@ -518,6 +518,7 @@ function getData() {
     document.getElementById("fab-localSaveAs").addEventListener("click", showSavePopout);
     document.getElementById("fab-localSave").addEventListener("click", quickSaveDiagram);
     document.getElementById("fab-load").addEventListener("click", showModal);
+    document.getElementById("fab-options").addEventListener("click", toggleOptionsPane);
 
     //Main mobile FAB-button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
@@ -525,7 +526,32 @@ function getData() {
             button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
           });
     });
-   
+
+    //Side navbar buttons. (save, load and reset are inside diagram_dugga)
+    document.getElementById("mb-darkModeButton").addEventListener("click", burgerToggleDarkmode);
+    document.getElementById("mb-Home").addEventListener("click", () => { //had to be in a function or it
+        window.location.assign('../DuggaSys/courseed.php');
+    });
+
+    const loginButton = document.getElementById("mb-loginButton");
+    if (loginButton) {
+        loginButton.addEventListener("click", showLoginPopup);
+    }
+
+    const logoutButton = document.getElementById("mb-logoutButton");
+    if (logoutButton) {   
+        logoutButton.addEventListener("click", () => {
+            window.showLogoutPopup();
+            console.log("clicked logout");
+            console.log("is a function: " + typeof LogoutBoxWrapper === "function");
+      });
+    }   
+
+    document.getElementById("mb-backButton").addEventListener("click", () => {
+        history.back();
+    });
+    
+
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
     toggleGrid();
@@ -1216,7 +1242,7 @@ function mmoving(event) {
             }
 
             // Store the changes in the history
-            stateMachine.save(elementData.id, StateChange.ChangeTypes.ELEMENT_RESIZED);
+            if (!this.lastTypedTextMap) this.lastTypedTextMap = {}; (elementData.id, StateChange.ChangeTypes.ELEMENT_RESIZED);
 
             document.getElementById(context[0].id).remove();
             document.getElementById("container").innerHTML += drawElement(data[index]);
@@ -1396,14 +1422,19 @@ function changeState() {
 
     //Get new state of element from dropdown menu in options pane, save change if the new state is different from the old one
     const newRelation = document.getElementById("propertySelect")?.value || undefined;
-    if (newRelation && oldRelation != newRelation) {
-        if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
-            if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
-                stateMachine.save(context[0].id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
-                displayMessage(messageTypes.SUCCESS, "Sucessfully saved");
-            }
+
+    if (!newRelation | oldRelation === newRelation) return;
+
+    element.state = newRelation;
+
+    if (element.type == entityType.ER || element.type == entityType.UML || element.type == entityType.IE) {
+        if (element.kind != elementTypesNames.UMLEntity && element.kind != elementTypesNames.IERelation) {
+            stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
+            displayMessage(messageTypes.SUCCESS, "Successfully saved");
         }
     }
+    // Re-draw the canvas
+    showdata();
 }
 
 /**
@@ -2125,7 +2156,19 @@ function showModal() {
         for (let i = 0; i < diagramKeys.length; i++) {
             let wrapper = document.createElement('div');
             const btn = document.createElement('button');
-            const btnText = document.createTextNode(diagramKeys[i]);
+            let btnText;
+
+            // Special button text formatting for mobile so that the load and delete buttons fit within the modal
+            if(isMobile){
+                // Limit the text content for the button to 12 characters (15 with the dots)
+                if(diagramKeys[i].length > 12) {
+                    btnText = document.createTextNode(diagramKeys[i].slice(0, 12) + "...");
+                } else {
+                    btnText = document.createTextNode(diagramKeys[i]);
+                }
+            } else {
+                btnText = document.createTextNode(diagramKeys[i]); // Regular formatting for bigger browsers
+            }
 
             btn.setAttribute("onclick", `loadDiagramFromLocalStorage('${diagramKeys[i]}');closeModal();`);
             btn.appendChild(btnText);
@@ -2475,10 +2518,12 @@ window.addEventListener("resize", () => {
     if (!settings.ruler.isRulerActive) return;
 
     if (window.innerWidth > 414) {
+        isMobile = false;
         ruler.style.left = "50px";
         ruler.style.top = "0px";
     }
     else {
+        isMobile = true;
         ruler.style.left = "0px";
         ruler.style.top = "0px";
     }
@@ -2505,5 +2550,174 @@ const subMenuToolbarBoxs = document.querySelectorAll(".mb-sub-menu .mb-toolbar-b
 subMenuToolbarBoxs.forEach(subMenuBox=>{
     subMenuBox.addEventListener("click", changeActiveElement);
 });
+
+//Selects every element that has an tooltip
+const tooltipTargets = document.querySelectorAll(".tooltip-target");
+
+//Holds the timeout reference, this allows us to delay the display and cancel it 
+let timer = null;
+
+//Keeps track of the element hovered with a tooltip shown
+//used to consistently show/hide tooltips 
+let currentTooltipElement = null;
+
+tooltipTargets.forEach((element)=>{
+    element.addEventListener("mouseenter", (e)=>{
+        if(e.target!==e.currentTarget) return; //Checks to see that the correct element is hovered and not its children
+        const targetElement = e.currentTarget; //Saves the reference of the hovered element
+
+        //Each tooltip has its own delay time
+        //Used to prevent inteference or overlapping, preventing also the risk of showing the wrong tooltip
+        clearTimeout(timer);
+        timer = setTimeout(()=>{
+            showTooltip(targetElement);
+            currentTooltipElement = targetElement; //Saves the reference of the hovered element
+        }, 400); //Shows the tooltip after a 400ms delay
+    });
+
+    element.addEventListener("mouseleave", (e)=>{
+        //Checks to see where mouse is going
+        //if mouse is not moving into to the dropdown then hide the tooltip
+        //This allows for dropdown tooltips to stay visible
+        if(!e.relatedTarget && !e.relatedTarget.closest("#diagramPopOut")) return; 
+        clearTimeout(timer);
+        hideTooltip(); 
+        currentTooltipElement = null; //Updated to say that no element is being hovered
+    });
+});
+
+/**
+ * @description Function that fills the tooltip container with correct information and is responsible for showing the tooltip
+ * @param {*} element it is the element that the user hovers on with its mouse
+ */
+function showTooltip(element){
+    let tooltipContainer = document.querySelector(".diagram-tooltip");
+    let tooltipMode = element.dataset.toolmode;
+    let toolID = parseInt(element.dataset.toolid); //Need to parse it because the data-attributes are originally strings (e.g. 0,1,2 ...)
+    let tooltipInfo = tooltips[tooltipMode]; //Access the correct information on the element being hovered 
+
+    if(!tooltipInfo) return;
+
+    tooltipContainer.innerHTML = `
+        <h3>${tooltipInfo.header}</h3>
+        <p>${tooltipInfo.description}</p>
+        <p id='tooltip-${tooltipID[toolID]}' class='key_tooltip'></p>
+    `;
+
+    updateKeybindSpan(toolID); //Sends the id that the element being hovered has 
+    const position = tooltipPosition(element); //Sends the element to calculate the position for the tooltip
+    if(!position) return;
+    
+    //Styles the top and left position based on the calculated position from `tooltipPosition(...)`
+    tooltipContainer.style.top = position.top;
+    tooltipContainer.style.left = position.left;
+    tooltipContainer.style.display = 'block';
+
+}
+
+/**
+ * @description Function that empties the tooltip container information and hides the tooltip from the user
+ */
+function hideTooltip(){
+    let tooltipContainer = document.querySelector(".diagram-tooltip");
+    tooltipContainer.style.display = 'none';
+    tooltipContainer.innerHTML = '';
+}
+/**
+ * @description Function that fills the correct and corresponding keybind to the element that is being hovered
+ * @param {*} id it is an index used to access the correct element in the global array tooltipID 
+ */
+function updateKeybindSpan(id){
+    const toolID = tooltipID[id];
+
+    const element = document.getElementById(`tooltip-${toolID}`); //Selects the element with the corresponding ID (e.g.tooltip-POINTER)
+    if(!element || !keybinds[toolID]) return; //Returns nothing if the element does not exist or if the keybinds does not exist
+
+    let str = 'Keybinding: ';
+
+    //Checks to see if the necessary keybinds starts with ctrl, shift or alt, or is a combination of them
+    if (keybinds[toolID].ctrl) str += "CTRL + ";
+    if (keybinds[toolID].shift) str += "SHIFT + ";
+    if (keybinds[toolID].alt) str += "ALT + ";
+
+    str += `"${keybinds[toolID].key.toUpperCase()}"`; //Transforms them to all capital letters (e.g. "ESCAPE")
+
+    element.innerHTML = str;
+}
+
+/**
+ * @description Function that calculates the appropiate top and left position for the tooltips based on where the user has hovered on
+ * @param {*} element it is the element where the user has 
+ * @returns the top and left position that the tooltip should have, also returns them as a object
+ * 
+ * This function uses `getBoundingClientRect()` to get the layout information of an element, it contains information such as the top, rigth, bottom and left positions, and the width and height of the element. 
+ */
+function tooltipPosition(element){
+    let submenu = document.getElementById(`togglePlacementTypeBox${currentlyOpenSubmenu}`);
+
+    //statement to check if an submenu exists and if it is active by seeing if it contains the active class for it
+    const isActive = submenu && submenu.classList.contains("activeTogglePlacementTypeBox");
+
+    /*Checks if the element is inside the #diagramPopOut and if it is active to get the correct layout information such as width and positions*/
+    //These tooltips are meant for the elements that are inside the dropdown/sidebar (e.g. ER-entity)
+    if(element.closest("#diagramPopOut") && isActive){
+        /* Selects the element with the class 'togglePlacementTypeBox' that the element is inside of, this is because every dropdown shares this class, and so this will work for every dropdown and not only the first one*/
+        const dropdownBox = element.closest(".togglePlacementTypeBox"); 
+
+        if(!dropdownBox) return;
+        let dropdownPosition = dropdownBox.getBoundingClientRect(); 
+
+        return{
+            top: `${dropdownPosition.top - dropdownPosition.height/2}px`,
+            left: `${dropdownPosition.left + dropdownPosition.right - 30}px`
+        };
+    }
+
+    //Check if the element is inside the options panel 
+    else if(element.closest("#options-pane")){
+        let optionPanelPosition = document.getElementById("options-pane").getBoundingClientRect();
+
+        return {
+            top: `${optionPanelPosition.top + 50}px`,
+            left: `${optionPanelPosition.left - optionPanelPosition.width + 50}px`
+        };
+    }
+
+    //Checks if the element is inside the zoom-container
+    else if(element.closest("#zoom-container")){
+        let zoomContainerPosition = document.getElementById("zoom-container").getBoundingClientRect();
+
+        return{
+            top: `${zoomContainerPosition.top - 100}px`,
+            left: `${zoomContainerPosition.left}px`
+        };
+    }
+
+    //Checks if the element is inside the replay box
+    else if(element.closest("#diagram-replay-box")){
+        let replayBoxPosition = document.getElementById("diagram-replay-box").getBoundingClientRect();
+
+        return {
+            top: `${replayBoxPosition.top - replayBoxPosition.height}px`,
+            left: `${replayBoxPosition.right/10 + 35}px`
+        };
+    }
+
+    //Checks if the element is the toolbar modes that are visible on the toolbar and not elements that are inside dropdowns/sidebar
+    else if(element.closest("#diagram-toolbar") && !element.closest("#diagramPopOut")){
+        let elementPosition = element.getBoundingClientRect();
+
+        return {
+            top: `${elementPosition.top - elementPosition.height/2}px`,
+            left: `${elementPosition.right + elementPosition.width/2+5}px`
+        };
+    }
+
+    //Default return, could be changed to something like 50% just to have the tooltips appear
+    return{
+        top: null,
+        left: null
+    };
+}
 
 //#endregion =====================================================================================
