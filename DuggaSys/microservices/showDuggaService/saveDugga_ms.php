@@ -161,7 +161,6 @@ if(strcmp($opt,"SAVDU")==0){
 };
 
 header("Content-Type: application/json");
-//set url for setAsActiveCourse.php path
 $baseURL = "https://" . $_SERVER['HTTP_HOST'];
 $url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php";
 $ch = curl_init($url);
