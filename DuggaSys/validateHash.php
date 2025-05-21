@@ -69,8 +69,6 @@
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/markdown.js"></script>
 	<script>var querystring=parseGet();</script>
-
-
 </head>
 <body>	
 <?php
