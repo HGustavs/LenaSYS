@@ -50,8 +50,7 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 <img src="Shared/Documentation/docker_images/terminal3.png" width="512">
 
-5. Here you need to build a few images and containers, and to do that run the command for Windows: `.\setup.bat`
-or macOS/Linux: `./setup.sh`.
+5. Here you need to build a few images and containers, and to do that run the command for Windows: `.\setup.bat`. On macOS/Linux: make sure to change the file permissions first [here](README.md/#using-linux-or-mac), then run: `./setup.sh`.
 NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
