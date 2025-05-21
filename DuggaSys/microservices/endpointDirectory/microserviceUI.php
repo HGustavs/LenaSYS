@@ -316,8 +316,7 @@ if (isset($_GET['id'])) {
         <p><a href="?" class="a-button">Back to list</a></p>
         
     <?php } else { ?>
-        <table>
-    <tr><th>ID</th><th>Name</th><th>Description</th><th>View</th></tr>
+
     <?php 
     if (isset($_GET['search'])) {
         echo "Showing results for (name/description): " . $_GET['search'];
@@ -328,20 +327,23 @@ if (isset($_GET['id'])) {
     }
     if (empty($services)) {
         echo "<p style='color: red;'>No results found.</p>";
-    }
-    foreach ($services as $service) {
-        echo '<tr>';
-        echo '<td>' . $service['id'] . '</td>';
-        echo '<td>' . $service['ms_name'] . '</td>';
-        echo '<td>';
-        if (strlen($service['description']) > 50) {
-            echo substr($service['description'], 0, 50) . '...';
-        } else {
-            echo $service['description'];
+    } else {
+            echo "<table>";
+            echo "<tr><th>ID</th><th>Name</th><th>Description</th><th>View</th></tr>";
+        foreach ($services as $service) {
+            echo '<tr>';
+            echo '<td>' . $service['id'] . '</td>';
+            echo '<td>' . $service['ms_name'] . '</td>';
+            echo '<td>';
+            if (strlen($service['description']) > 50) {
+                echo substr($service['description'], 0, 50) . '...';
+            } else {
+                echo $service['description'];
+            }
+            echo '</td>';
+            echo '<td><a href="?id=' . $service['id'] . '" class="a-button">View</a></td>';
+            echo '</tr>';
         }
-        echo '</td>';
-        echo '<td><a href="?id=' . $service['id'] . '" class="a-button">View</a></td>';
-        echo '</tr>';
     }
     ?>
 </table>
