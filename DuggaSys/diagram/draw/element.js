@@ -53,6 +53,9 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.ERRelation:
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
+        case elementTypesNames.SelfCall:
+            divContent = drawElementSelfCall(element, boxw, boxh, linew);
+            break;
         case elementTypesNames.ERAttr:
             divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
             break;
@@ -674,6 +677,23 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
             style='fill:${fill}; stroke:${strokeColor}; stroke-width:${linew};'
         />`;
     return drawSvg(boxw, boxh, poly);
+}
+
+//In progress 
+function drawElementSelfCall(element, boxw, boxh, linew) {
+    const strokeColor = "black";
+    const x1 = linew;
+    const x2 = boxw - linew;
+    const y = boxh / 2; 
+
+    const line = `
+        <line 
+            x1="${x1}" y1="${y}" 
+            x2="${x2}" y2="${y}" 
+            style="stroke:${strokeColor}; stroke-width:${linew};" 
+        />
+    `;
+    return drawSvg(boxw, boxh, line);
 }
 
 /**

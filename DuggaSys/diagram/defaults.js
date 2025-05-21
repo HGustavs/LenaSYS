@@ -54,6 +54,15 @@ const defaults = {
         minWidth: 60,
         minHeight: 60,
     },
+    SelfCall: {
+        name: "Self Call",
+        type: entityType.UML,
+        kind: elementTypesNames.SelfCall,
+        width: 50,
+        height: 10,
+        minWidth: 50,
+        maxHeight: 10,
+    },
     IEEntity: {
         name: "IE Entity",
         type: entityType.IE,
