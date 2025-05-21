@@ -63,9 +63,15 @@ function generateContextProperties() {
     }
     propSet.innerHTML = str;
     
+    // Real-time typing
+    var inputs = propSet.querySelectorAll('input, textarea');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', function() {
+            saveProperties();
+        });
+    }
 
     // Add a blur event to handle undo/redo when the user finishes editing (i.e clicks away or presses Enter) for better undo/redo functionality.
-
     const nameInput = propSet.querySelector('#elementProperty_name');
     if (nameInput) {
         nameInput.addEventListener('blur', () => {
