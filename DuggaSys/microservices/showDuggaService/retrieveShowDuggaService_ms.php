@@ -2,7 +2,7 @@
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "showDuggaServiceHelper.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
@@ -288,10 +288,7 @@ $array = array(
 	);
 	if (strcmp($opt, "GRPDUGGA")==0) $array["group"] = $group;
 
-	header('Content-Type: application/json');
-
 	echo json_encode($array);
-	exit;
 
 function retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment){
 	$postData = [
