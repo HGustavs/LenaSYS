@@ -2,13 +2,21 @@
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-
-function retrieveDuggaedService($pdo, $debug = "NONE!", $userid, $cid, $coursevers, $log_uuid)
-{
+    date_default_timezone_set("Europe/Stockholm");
     include_once "../../../Shared/basic.php";
     include_once "../../../Shared/sessions.php";
+    include_once "../curlService.php";
 
-    date_default_timezone_set("Europe/Stockholm");
+    // Connect to database and start session
+    pdoConnect();
+    session_start();
+
+    $data = recieveMicroservicePOST(['debug', 'userid', 'cid', 'coursevers', 'log_uuid']);
+    $debug = $data['debug'];
+    $userid = $data['userid'];
+    $cid = $data['cid'];
+    $coursevers = $data['coursevers'];
+    $log_uuid = $data['log_uuid'];
 
     $opt = getOP('opt');
     $qid = getOP('qid');
@@ -134,5 +142,5 @@ function retrieveDuggaedService($pdo, $debug = "NONE!", $userid, $cid, $courseve
 
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveDuggaedService_ms.php", $userid, $info);
 
-    return $array;
-}
+    header('Content-Type: application/json');
+    echo json_encode($array);
