@@ -216,6 +216,20 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 		
 		?>
 	</div>
+
+	<script>
+		// Hides the navheader if the chosen dugga is the diagram dugga since it has its own "header"
+		const hideNavIfDiagramMobile = () => {
+			const temp = '<?php echo $duggafile; ?>';
+			let nav = document.getElementsByClassName("navheader")[0];
+
+			if (window.innerWidth < 414 && temp === 'diagram_dugga') nav.style.display = "none";
+			else nav.style.display = "flex"; // Mainly if the window is resized after having loaded in to get the bar back
+		}
+
+		window.addEventListener("DOMContentLoaded", hideNavIfDiagramMobile); // Activates when all content has loaded
+		window.addEventListener("resize", hideNavIfDiagramMobile); // Activates if the user actively resizes the window (mainly for developers testing mobile view)
+	</script>
 	
 	<!-- formBox (receipt&Feedback-box ) Start! -->
 	<div id='receiptBox' class="loginBoxContainer" style="display:none">
