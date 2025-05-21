@@ -7,43 +7,63 @@ include_once "showDuggaServiceHelper.php";
 pdoConnect();
 session_start();
 
+$data = recieveMicroservicePOST([
+    'moment',
+    'courseid',
+    'hash',
+    'hashpwd',
+    'coursevers',
+    'duggaid',
+    'opt',
+    'group',
+    'score',
+    'highscoremode',
+    'grade',
+    'submitted',
+    'duggainfo',
+    'marked',
+    'userfeedback',
+    'feedbackquestion',
+    'savedvariant',
+    'ishashindb',
+    'variantsize',
+    'variantvalue',
+    'password',
+    'hashvariant',
+    'isFileSubmitted',
+    'variants',
+    'active',
+    'debug',
+]);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $moment = $_POST['moment'] ?? null;
-    $courseid = $_POST['courseid'] ?? null;
-    $hash = $_POST['hash'] ?? null;
-    $hashpwd = $_POST['hashpwd'] ?? null;
-    $coursevers = $_POST['coursevers'] ?? null;
-    $duggaid = $_POST['duggaid'] ?? null;
-    $opt = $_POST['opt'] ?? null;
-    $group = $_POST['group'] ?? null;
-    $score = $_POST['score'] ?? null;
-    $highscoremode = $_POST['highscoremode'] ?? null;
-    $grade = $_POST['grade'] ?? null;
-    $submitted = $_POST['submitted'] ?? null;
-	$duggainfo = $_POST['duggainfo'] ?? [];       
-	$marked = $_POST['marked'] ?? false;    
-	$userfeedback = $_POST['userfeedback'] ?? '';
-	$feedbackquestion = $_POST['feedbackquestion'] ?? '';
-	$savedvariant = $_POST['savedvariant'] ?? 'UNK';
-	$ishashindb = $_POST['ishashindb'] ?? false;
-	$variantsize = $_POST['variantsize'] ?? 'UNK';
-	$variantvalue = $_POST['variantvalue'] ?? 'UNK';
-	$password = $_POST['password'] ?? $_POST['hashpwd'] ?? null;
-	$hashvariant = $_POST['hashvariant'] ?? 'UNK';
-	$isFileSubmitted = $_POST['isFileSubmitted'] ?? false;
-	$variants = $_POST['variants'] ?? [];
-	$active = $_POST['active'] ?? 0;
-	$debug = $_POST['debug'] ?? 'NONE!';
-	$files = retrieveProcessDuggaFiles(
-    	$courseid,
-      	$coursevers,
-      	$duggaid,
-      	$duggainfo,
-     	 $moment
-    );
-	$array['files'] = $files;
-}
+
+$moment = $data['moment'] ?? null;
+$courseid= $data['courseid'] ?? null;
+$hash = $data['hash'] ?? null;
+$hashpwd = $data['hashpwd'] ?? null;
+$coursevers = $data['coursevers'] ?? null;
+$duggaid = $data['duggaid'] ?? null;
+$opt = $data['opt'] ?? null;
+$group = $data['group'] ?? null;
+$score = $data['score'] ?? null;
+$highscoremode = $data['highscoremode'] ?? null;
+$grade = $data['grade'] ?? null;
+$submitted = $data['submitted'] ?? null;
+$duggainfo = $data['duggainfo'] ?? [];
+$marked = $data['marked'] ?? false;
+$userfeedback = $data['userfeedback'] ?? '';
+$feedbackquestion = $data['feedbackquestion'] ?? '';
+$savedvariant = $data['savedvariant'] ?? 'UNK';
+$ishashindb = $data['ishashindb'] ?? false;
+$variantsize = $data['variantsize'] ?? 'UNK';
+$variantvalue = $data['variantvalue'] ?? 'UNK';
+$password = $data['password'] ?? ($data['hashpwd'] ?? null);
+$hashvariant = $data['hashvariant'] ?? 'UNK';
+$isFileSubmitted = $data['isFileSubmitted']  ?? false;
+$variants = $data['variants'] ?? [];
+$active = $data['active'] ?? 0;
+$debug = $data['debug'] ?? 'NONE!';
+
 
 	if(checklogin()){
 		if(isset($_SESSION['uid'])){
@@ -68,12 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	unset($param);
 	if (isSuperUser($userid)){
 		if($hash!="UNK"){
-			$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-			$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/loadDugga_ms.php";
-			$ch  = curl_init($url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POST,        true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query([
+			$postData = [
     			'hash'      => $hash,
     			'moment'    => $moment,
     			'courseid'  => $courseid,
@@ -83,12 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     			'opt'       => $opt,
     			'group'     => $group,
     			'score'     => $score
-			]));
-			curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
-			$response = curl_exec($ch);
-			curl_close($ch);
-			//$data     = json_decode($response, true);
-
+    		];
+			$response = callMicroservicePOST("showDuggaService/processDuggaFile_ms.php", $postData, true);
+			
 			$data = json_decode($response, true);
 			$variant = $data['variant'];
 			$answer = $data['answer'];
@@ -282,23 +294,15 @@ $array = array(
 	exit;
 
 function retrieveProcessDuggaFiles($courseid, $coursevers, $duggaid, $duggainfo, $moment){
-	$baseURL = "https://" . $_SERVER['HTTP_HOST'];
-	$url = $baseURL . "/LenaSYS/DuggaSys/microservices/showDuggaService/processDuggaFile_ms.php";
-	$ch  = curl_init($url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_POST,        true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query([
-   		'courseid' => $courseid,
-   		'coursevers'=> $coursevers,
-   		'duggaid' => $duggaid,
-		'duggainfo' => $duggainfo,
-   		'moment' => $moment,
-	]));
-	curl_setopt($ch, CURLOPT_COOKIE, session_name() . '=' . session_id());
-	$response = curl_exec($ch);
-	curl_close($ch);
-	$data = json_decode($response, true);
-	$files = $data['files'];
+	$postData = [
+        'courseid' => $courseid,
+        'coursevers' => $coursevers,
+		'duggaid' => $duggaid,
+        'duggainfo' => $duggainfo,
+		'moment' => $moment
+    ];
+	
+	$response = callMicroservicePOST("showDuggaService/processDuggaFile_ms.php", $postData, true);
 }
 
 
