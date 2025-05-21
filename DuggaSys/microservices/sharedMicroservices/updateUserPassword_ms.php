@@ -15,7 +15,8 @@ include_once "../curlService.php";
 pdoConnect();
 session_start();
 
-$userid = callMicroserviceGET("./getUid_ms.php");
+$userData = callMicroserviceGET("./getUid_ms.php");
+$userid = $userData['uid'] ?? 'guest';
 
 $password= getOP('password');
 $action = getOP('action');
