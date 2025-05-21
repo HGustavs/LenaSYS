@@ -24,7 +24,7 @@ function setup()
 	inParams = parseGet();
 
 	window.addEventListener('resize', () => {
-		var windowWidth = $(window).innerWidth();
+		var windowWidth = window.innerWidth;
 		var tomten = document.getElementById('tomten');
 		if(windowWidth > 850){
 			if (tomten.firstChild.lastChild.firstChild.id === 'tsSmallForm') {
@@ -36,9 +36,11 @@ function setup()
 				createSmallerViewportForm(duggaParams["submissions"]);
 			}		
 		}
-	})
-	AJAXService("GETPARAM", { }, "PDUGGA");
+	});
+
+	AJAXService("GETPARAM", {}, "PDUGGA");
 }
+
 
 function newRow() {
 	var tsTableBody = document.getElementById("tsTableBody");
