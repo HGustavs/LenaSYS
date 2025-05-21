@@ -238,16 +238,13 @@ const updateCourseUsers = function(removePopup) {
 function addSingleUser() {
 
 	const newUser = new Array();
-	//newUser.push(document.querySelector("#addSsn").value);	
-	newUser.push("");
-	newUser.push(document.querySelector("#addFirstname").value);
-	newUser.push(document.querySelector("#addLastname").value);
-	newUser.push(document.querySelector("#addEmail").value);
-	//newUser.push(document.querySelector("#addCid").value);
-	newUser.push("");
-	newUser.push(document.querySelector("#addTerm").value);
-	//newUser.push(document.querySelector("#addPid").value);
-	newUser.push("");
+	newUser.push($("#addSsn").val());
+	newUser.push($("#addFirstname").val());
+	newUser.push($("#addLastname").val());
+	newUser.push($("#addEmail").val());
+	newUser.push($("#addCid").val());
+	newUser.push($("#addTerm").val());
+	newUser.push($("#addPid").val());
 
 	if (!verifyUserInputForm(newUser)) return;
 	var outerArr = new Array();
