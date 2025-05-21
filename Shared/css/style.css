@@ -10802,6 +10802,15 @@ margin:2px;
 
 /* END */
 
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: inline-block;
+  line-height: 11px;
+}
+
 /* Styling for button loader / loadingButton.js */
 
 .loader {
