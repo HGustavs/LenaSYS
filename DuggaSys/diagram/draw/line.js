@@ -216,11 +216,17 @@ function drawLine(line, targetGhost = false) {
         }
         else if (line.type === entityType.SE){   
             lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
-        }else if (telem.kind === elementTypesNames.SelfCall) {
-            console.log("things happend")
-            lineStr += selfcallthing(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
-            
         }
+        else if (telem.kind === elementTypesNames.SelfCall) {
+            lineStr += selfcallthing(fx, fy, tx, ty, offset.x1, offset.y1, line, lineColor, strokeDash);
+            const box = document.querySelector('.selfcall');
+            box.classList.add("selfcallBox");
+        }
+        else if (felem.kind === elementTypesNames.SelfCall) {
+            lineStr += selfcallthing(tx, ty, fx, fy, offset.x2, offset.y2, line, lineColor, strokeDash);
+            const box = document.querySelector('.selfcall');
+            box.classList.add("selfcallBox");
+        } 
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
@@ -678,42 +684,41 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
 }
 
 
-function selfcallthing(fx, fy, tx, ty, offset,  line, lineColor, strokeDash) {
+function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, strokeDash) {
 
-    const startX = fx + offset.x1;
-    const startY = fy;
-
-    const targetX = tx + offset.x1;
+    const startX = fx + offsetX1;
+    const startY = fy + offsetY1;
+    const targetX = tx ;
     const targetY = ty;
+    const lineWidth = 30;   
 
-    const horizontalOffset = 30;
+    console.log(line);
 
-    // Determine if SelfCall is to the left or right
-    const bendDir = targetX >= startX ? 1 : -1;
-
-    const bendX = targetX + horizontalOffset * bendDir;
-    const exitX = startX + horizontalOffset * bendDir;
+    const bendX = targetX + lineWidth 
+    const bendY = targetY + lineWidth 
+    const exitX = startX  + lineWidth 
+    const exitY = startY  + lineWidth 
     let points = []
    
-    if(line.ctype == "LR" || line.ctype == "RL"){
+    if(line.ctype === "LR" || line.ctype === "RL"){
         points = [
-            `${startX},${startY}`,   // Down from Class
-            `${targetX},${targetY}`, // Down to SelfCall height
-            `${bendX},${targetY}`,   // Bend left or right
-            `${exitX},${startY}`     // Back up and out
-         ].join(" ");
+            `${startX},${startY}`,   
+            `${targetX},${targetY - 15}`, 
+            `${targetX},${bendY - 15}`,   
+            `${startX},${exitY}`, 
+        ].join(" ");
 
-    } else if(line.ctype == "BT" || line.ctype == "TB"){
+    } else if(line.ctype === "BT" || line.ctype === "TB"){
         points = [
-            `${startX},${startY}`,   // Down from Class
-            `${targetX},${targetY}`, // Down to SelfCall height
-            `${bendX},${targetY}`,   // Bend left or right
-            `${exitX},${startY}`     // Back up and out
+            `${startX},${startY}`,   
+            `${targetX - 15},${targetY}`, 
+            `${bendX - 15},${targetY}`,   
+            `${exitX},${startY}`     
         ].join(" ");
     }
- 
 
     return `
+
         <polyline 
             id="${line.id}" 
             points="${points}" 
