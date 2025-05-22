@@ -67,6 +67,17 @@ input {
   padding: 5px;
 }
 
+select {
+  border: 2px solid black;
+  background-color: black;
+  color: white;
+  height: 40px;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  padding-right: 30px;
+}
+
 button,
 .a-button {
   border: 2px solid black;
@@ -79,7 +90,8 @@ button,
 }
 
 button:hover,
-.a-button:hover {
+.a-button:hover,
+select:hover {
   background-color: white;
   color: black;
 }
@@ -87,4 +99,43 @@ button:hover,
 a {
   text-decoration: none;
   display: inline-block;
+}
+
+.edit_modal,
+.add_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.edit_modal_content,
+.add_modal_content {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: scroll;
+}
+
+.add_modal_content {
+  width: 600px;
+}
+
+.add_modal_content textarea,
+.add_modal_content input,
+.edit_modal_content textarea,
+.edit_modal_content input {
+  width: 100%;
+  max-width: 100%;
 }
