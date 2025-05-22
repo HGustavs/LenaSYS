@@ -699,9 +699,11 @@ function returnedCourse(data) {
 	if (data['entries'].length > 0) {
 		for (i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
-			// Do not show courses the user does not have access to.
-			if (!data['writeaccess'] && !item['registered'] && uname != "Guest" && uname)
-				continue;
+			// Do not show courses the user does not have access to, unless they are Demo-Course or Testing-Course.
+			if(item['coursecode'] !== "G420" && item['coursecode'] !== "G1337"){
+				if (!data['writeaccess'] && !item['registered'] && uname != "Guest" && uname)
+					continue;
+			}
 
 			str += `<div class='bigg item nowrap' style='display: flex; align-items: center; justify-content: center;' id='C${item['cid']}' data-code='${item['coursecode']}'>`;
 
