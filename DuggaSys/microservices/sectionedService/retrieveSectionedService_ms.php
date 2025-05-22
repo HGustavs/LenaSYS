@@ -3,16 +3,27 @@
 
 // Include basic application services
 include_once "../../../Shared/basic.php";
+include_once "../../../Shared/sessions.php";
+include_once "../curlService.php";
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 
-function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid)
-{
-    date_default_timezone_set("Europe/Stockholm");
-    include_once "../../../Shared/sessions.php";
     pdoConnect();
+    session_start();
+
+    $data = recieveMicroservicePOST(['debug', 'opt', 'uid', 'cid', 'vers', 'log_uuid']);
+    $debug = $data['debug'];
+    $opt = $data['opt'];
+    $userid = $data['uid'];
+    $courseid = $data['cid'];
+    $coursevers = $data['vers'];
+    $log_uuid = $data['log_uuid'];
+    
+
+    date_default_timezone_set("Europe/Stockholm");
+    
     $today = date("Y-m-d H:i:s");
     $hasread = hasAccess($userid, $courseid, 'r');
     $studentTeacher = hasAccess($userid, $courseid, 'st');
@@ -336,5 +347,6 @@ function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $cours
 
     $info = "opt: " . $opt . " courseid: " . $courseid . " coursevers: " . $coursevers . " coursename: " . $coursename;
     logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "retrieveSectionedService_ms.php", $userid, $info);
-    return $array;
-}
+    header('Content-Type: application/json');
+    echo json_encode($array);
+
