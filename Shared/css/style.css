@@ -282,7 +282,6 @@ p {
 
 #content {
   background: var(--color-background);
-  margin: 5px 0px 15px 0px;
 }
 
 #accessedcontent {
@@ -1520,14 +1519,12 @@ header {
   /*overflow: hidden;*/
   color: var(--color-text-header);
   height: 50px;
-  width: 100%;
   background: var(--color-primary);
   position: fixed;
   z-index: 5000;
   top: 0px;
   left: 0px;
   box-shadow: var(--standard-shadow);
-
 }
 
 header td {
@@ -2013,7 +2010,6 @@ div .navButt:hover {
 @media screen and (max-width: 600px) {
   .navheader {
     float: none;
-    width: 100%;
   }
   .logoutBox{
     width: 300px;
@@ -7898,7 +7894,7 @@ only screen and (max-device-width: 568px) {
     bottom: 100px; /* Nudges the FAB 10px up from the bottom */
   }
 }
-}
+
 @media screen and (max-width: 350px) {
 
   input.submit-button-newitem {
