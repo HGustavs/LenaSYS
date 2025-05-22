@@ -584,7 +584,7 @@
 /* Diagram Messages */
 #diagram-message {
     width: 300px;
-    left: 100px;
+    left: 85px;
     bottom: 20px;
     position: absolute;
     z-index: 100;
@@ -604,7 +604,7 @@
 
 #diagram-message>div {
     pointer-events: auto;
-    margin: 5px;
+    margin: 20px;
     display: block;
     padding: 10px;
     box-shadow: 6px 6px 10px #888;
