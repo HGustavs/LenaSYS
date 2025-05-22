@@ -3684,9 +3684,16 @@ input.submit-button-newitem:hover {
     
 }
 
-.courseHeaderDropdown{
+.courseHeaderFabDropdown{
   position: relative;
   display: inline-block;
+}
+
+.CourseFabDropdownDiv{
+  position: relative;
+  margin-top: 50%;
+  height:fit-content;
+  width: 50px;
 }
 
 input.diagram-sidebar-buttons {

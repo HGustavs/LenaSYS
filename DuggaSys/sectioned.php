@@ -231,9 +231,9 @@
   				<input id='hideElement'  type='image' src='../Shared/icons/ghost_icon.svg' style="display:None"  class='submit-button-newitem' title='Hide marked items' onclick='confirmBox("openHideConfirmBox");'>
   				<input id="loadDuggaButton" type="button" class="submit-button-newitem" value="Load Dugga" title="Load a dugga by hash" onclick="showLoadDuggaPopup();"style="margin‑left:8px;" >
 				
-				<div class="courseHeaderDropdown">
+				<div class="courseHeaderFabDropdown">
 					<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item' >
-					<div class='fixed-action-button2 sectioned2 display_none' id="FABStatic2">
+					<div class='fixed-action-button2 sectioned2 display_none CourseFabDropdownDiv' id="FABStatic2">
 						<ol class='fab-btn-list2 ' reversed id='fabBtnList2'>
 								<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Heading' onclick='createFABItem("0","New Heading","TOP");'><img alt='heading format icon' class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
 								<li><a class='btn-floating fab-btn-sm2 scale-transition scale-out' tabindex='0' data-tooltip='Section' onclick='createFABItem("1","New Section","TOP");'><img alt='section format icon' class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
