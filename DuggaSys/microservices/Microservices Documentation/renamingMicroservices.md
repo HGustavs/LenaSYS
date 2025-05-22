@@ -341,3 +341,18 @@ Used in, where the microservice/file name also needs to be changed:
 - backend-models/microservices/duggaSys services/Microservices.md
 
 ---
+
+## highscoreService
+Microservices to be renamed in the highscoreService folder.
+
+### highscoreservice_ms.php
+New name: <ins>readHighscore_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/deprecated_microservices.md
+- Shared/dugga.js
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
