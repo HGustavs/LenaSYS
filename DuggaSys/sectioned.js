@@ -1585,7 +1585,6 @@ function toggleButtonClickHandler() {
 var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
-  if (data['debug'] != "NONE!") alert(data['debug']);
 
   // Data variable is put in localStorage which is then used in Codeviewer
   // To get the right order when going backward and forward in code examples
