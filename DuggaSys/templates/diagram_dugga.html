@@ -320,22 +320,37 @@
             //Instead of using document, you use iframeDOM if you want to access elements from the iframe
             let sidebarToggleIcon = iframeDOM.querySelector(".icon-wrapper-sidebar");
             let diagramSidebar = iframeDOM.getElementById("mb-diagram-sidebar");
+            let optionPanel = iframeDOM.getElementById("options-pane");
+            let fabOption = iframeDOM.getElementById("fab-options");
             let buttonWrapper = document.querySelector(".button-wrapper");
+            let closeBtn = iframeDOM.querySelector(".close-btn");
             let timer = null;
 
             //Whenever the icon is clicked it hides and displays the buttons based on if the sidebar is open or not
-            sidebarToggleIcon.addEventListener("click", ()=>{
-                if(diagramSidebar.classList.contains("open")){
+            //The same goes for the fab for the option panel
+            sidebarToggleIcon.addEventListener("click", toggleButtonWrapper);
+            fabOption.addEventListener("click", toggleButtonWrapper);
+            closeBtn.addEventListener("click", toggleButtonWrapper);
+
+            //Function that hides and displays the buttons by checking if the sidebar or the option panel is currently active (meaning open)
+            function toggleButtonWrapper(){
+                let sidebarOpen = diagramSidebar.classList.contains("open");
+                let optionPanelOpen = optionPanel.classList.contains("show-options-pane");
+
+                if(sidebarOpen || optionPanelOpen){
                     buttonWrapper.style.display = 'none';
                 }
                 else{
+                    console.log("Display!");
                     clearTimeout(timer);
                     timer = setTimeout(()=>{
                         buttonWrapper.style.display = 'flex';
+                        console.log("display");
                     }, 150); //Displays it only after a delay to make it more smoothly
                 }
-            });
+            }
         }
+
     </script>
 </body>
 
