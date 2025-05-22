@@ -2568,13 +2568,13 @@ function FABMouseOut(e) {
 		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	/*
+	
 	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
 	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
 		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list2').style.display="none";
 	} 
-	*/
+	
 	
 }
 //----------------------------------------------------------------------------------
@@ -2582,19 +2582,31 @@ function FABMouseOut(e) {
 //----------------------------------------------------------------------------------
 function FABDown(e)
 {
-	if (e.target.id === "fabBtn") {
+	console.log('this is e id: ' + e.target.id);
+
+	/*
+	console.log('this is e: ' + e);
+	if(document.querySelector('.fab-btn-list2').checkVisibility() == true && e === "activeDropwdown"){
+		console.log("peekaboo");
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list2').style.display="none";
+	}*/
+	if (e.target.id == "fabBtn") {
 		var eL=document.querySelector('.fab-btn-list');
 		var e1=document.querySelectorAll('.fab-btn-sm');
-
+		console.log("big fabbutton activated?");
+		
 		e1.forEach(element => {
 			if(element.classList.contains('scale-out')){
 				eL.style.display="block";
 				element.classList.toggle('scale-out');
 			}
 		});
-	} else if (e.target.id === "addElement") {
+	} 
+	else if (e.target.id == "addElement") {
 		var e2=document.querySelectorAll('.fab-btn-sm2');
 		var eL2=document.querySelector('.fab-btn-list2');
+		console.log("small fabbutton activated?");
 
 		e2.forEach(element2 => {
 			if(element2.classList.contains('scale-out')){
@@ -2602,17 +2614,10 @@ function FABDown(e)
 				element2.classList.toggle('scale-out');
 			}
 		});
-		
-		document.querySelector('#addElement').classList.add('spin');
-
-		
-		setTimeout(function() {
-			document.querySelector('#addElement').classList.remove('spin');
-		}, 1000); 
 	}
-	else if(window.getComputedStyle(document.querySelector('.fab-btn-list2')).display === 'block'){
-			document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
-			document.querySelector('.fab-btn-list2').style.display="none";
+	else if (e.target.id != "fabDropdownElement"){
+		console.log('jackpot');
+		closeFabDropdown();
 	}
 	//Unused at the moment but might be useful in the future to handle pressing down with mouse on FAB
 }
