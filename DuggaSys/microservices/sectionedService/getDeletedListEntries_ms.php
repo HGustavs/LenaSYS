@@ -46,6 +46,5 @@ $postData = [
 ];
 
 header("Content-Type: application/json");
-$response = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
-$data = json_decode($response, true);
-echo json_encode($data);
+$data = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+echo $data;

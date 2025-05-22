@@ -80,12 +80,11 @@ $postData = [
     'log_uuid' => $log_uuid
 ];
 
+header("Content-Type: application/json");
 $response = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
 $data = json_decode($response, true);
 $data['grplst'] = $grplst;
 $data['grpmembershp'] = $grpmembershp;
-header("Content-Type: application/json");
 echo json_encode($data);
 return;
-
 ?>
