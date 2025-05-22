@@ -76,6 +76,16 @@ if (isset($_GET['search'])) {
     $stmt = $db->prepare("SELECT * FROM microservices WHERE calling_methods = ?");
     $stmt->execute([$method]);
     $services = $stmt->fetchAll();
+} elseif (isset($_GET['param-search'])) {
+    $searchTerm = "%".$_GET['param-search']."%";
+    $stmt = $db->prepare("
+        SELECT DISTINCT m.* 
+        FROM microservices m
+        JOIN parameters p ON m.id = p.microservice_id
+        WHERE p.parameter_name LIKE ?
+    ");
+    $stmt->execute([$searchTerm]);
+    $services = $stmt->fetchAll();
 } else {
     $services = $db->query("SELECT * FROM microservices")->fetchAll();
 }
@@ -179,6 +189,13 @@ if (isset($_GET['id'])) {
                     <input type="text" name="search" placeholder="Search name/description">
                         <button type="submit">Search</button>
                     <?php if (isset($_GET['search'])): ?>
+                        <a href="?" class="a-button">Reset</a>
+                    <?php endif; ?>
+                </form>
+                <form method="GET">
+                    <input type="text" name="param-search" placeholder="Search parameter">
+                    <button type="submit">Search</button>
+                    <?php if (isset($_GET['param-search'])): ?>
                         <a href="?" class="a-button">Reset</a>
                     <?php endif; ?>
                 </form>
@@ -299,22 +316,34 @@ if (isset($_GET['id'])) {
         <p><a href="?" class="a-button">Back to list</a></p>
         
     <?php } else { ?>
-        <table>
-    <tr><th>ID</th><th>Name</th><th>Description</th><th>View</th></tr>
+
     <?php 
-    foreach ($services as $service) {
-        echo '<tr>';
-        echo '<td>' . $service['id'] . '</td>';
-        echo '<td>' . $service['ms_name'] . '</td>';
-        echo '<td>';
-        if (strlen($service['description']) > 50) {
-            echo substr($service['description'], 0, 50) . '...';
-        } else {
-            echo $service['description'];
+    if (isset($_GET['search'])) {
+        echo "Showing results for (name/description): " . $_GET['search'];
+    } else if (isset($_GET['param-search'])) {
+        echo "Showing results for (parameter): " . $_GET['param-search'];
+    } else if (isset($_GET['filter_method'])) {
+        echo "Showing results with Calling Method: " . $_GET['filter_method'];
+    }
+    if (empty($services)) {
+        echo "<p style='color: red;'>No results found.</p>";
+    } else {
+            echo "<table>";
+            echo "<tr><th>ID</th><th>Name</th><th>Description</th><th>View</th></tr>";
+        foreach ($services as $service) {
+            echo '<tr>';
+            echo '<td>' . $service['id'] . '</td>';
+            echo '<td>' . $service['ms_name'] . '</td>';
+            echo '<td>';
+            if (strlen($service['description']) > 50) {
+                echo substr($service['description'], 0, 50) . '...';
+            } else {
+                echo $service['description'];
+            }
+            echo '</td>';
+            echo '<td><a href="?id=' . $service['id'] . '" class="a-button">View</a></td>';
+            echo '</tr>';
         }
-        echo '</td>';
-        echo '<td><a href="?id=' . $service['id'] . '" class="a-button">View</a></td>';
-        echo '</tr>';
     }
     ?>
 </table>
