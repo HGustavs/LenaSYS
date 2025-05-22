@@ -47,7 +47,7 @@ if(checklogin()){
 $postData = [
     'debug' => $debug,
     'opt' => $opt,
-    'uid' => $userid,
+    'uid' => $uid,
     'cid' => $courseid,
     'vers' => $coursevers,
     'log_uuid' => $log_uuid

@@ -5,7 +5,6 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "./retrieveSectionedService_ms.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
@@ -39,15 +38,33 @@ $studentTeacher = hasAccess($userid, $courseid, 'st');
 
 if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
     $debug = "Access not granted";
-    $retrieveArray = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, null, null);
-    echo json_encode($retrieveArray);
+    $postData = [
+        'debug' => $debug,
+        'opt' => $opt,
+        'uid' => $userid,
+        'cid' => $courseid,
+        'vers' => null,
+        'log_uuid' => null
+    ];
+    header("Content-Type: application/json");
+    $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+    echo $retrieveArray;
     return;
 }
 
 if (strcmp($opt, "UPDATEVRS") !== 0) {
     $debug = "OPT does not match.";
-    $retrieveArray = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, null, null);
-    echo json_encode($retrieveArray);
+    $postData = [
+        'debug' => $debug,
+        'opt' => $opt,
+        'uid' => $userid,
+        'cid' => $courseid,
+        'vers' => null,
+        'log_uuid' => null
+    ];
+    header("Content-Type: application/json");
+    $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+    echo $retrieveArray;
     return;
 }
 
@@ -88,5 +105,14 @@ if ($makeactive == 3) {
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);
 
-$retrieveArray = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, null, null);
-echo json_encode($retrieveArray);
+    $postData = [
+        'debug' => $debug,
+        'opt' => $opt,
+        'uid' => $userid,
+        'cid' => $courseid,
+        'vers' => null,
+        'log_uuid' => null
+    ];
+    header("Content-Type: application/json");
+    $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+    echo $retrieveArray;
