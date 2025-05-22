@@ -70,7 +70,8 @@ function setup()
 function returnedDugga(data) 
 {	
 
-	$("#content").css({"position":"relative","top":"50px"});
+	document.getElementById("content").style.position = "relative";
+	document.getElementById("content").style.top = "50px";
 
 	dataV = data;
 	
@@ -87,7 +88,7 @@ function returnedDugga(data)
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
+        		document.getElementById("snus").innerHTML = result;
         		// Placeholder code
 				var pl = duggaParams.placeholders;
 				if (pl !== undefined) {
@@ -121,11 +122,13 @@ function returnedDugga(data)
 			processpreview();
 			refreshdUrl();
 		}
-
+		
+		const duggaCols = document.querySelectorAll('.dugga-col');
 		var max = 0;    
-		$('.dugga-col').each(function() {
-		    max = Math.max($(this).height(), max);
-		}).height(max);
+		duggaCols.forEach(col => {
+			max = Math.max(col.height, max);
+			col.style.height = max + 'px';
+		});
 
 	}
 	// Teacher feedback
@@ -141,7 +144,7 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;		
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById("showFeedbackButton").style.display = "block";
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -202,7 +205,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 
 	/* reset */
@@ -222,7 +225,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 	}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 		$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-    		$("#snus").html(result);
+    		document.getElementById("snus").innerHTML = result;
     		// Placeholder code
 			var pl = duggaParams.placeholders;
 			if (pl !== undefined) {
@@ -251,9 +254,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 			userCode =  reverseHtmlEntities(userCode);
 
-			var markWindowHeight = $("#MarkCont").height();
+			const markWindowHeight = document.getElementById("MarkCont").height;
 			
-			$("#MarkCont").css({"overflow":"hidden"});
+			document.getElementById("MarkCont").style.overflow = "hidden";
 
 			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
 			document.getElementById("content-window").value = userCode;
@@ -264,8 +267,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 			document.getElementById("code-preview-label").style.display = "none";
 			document.getElementById("code-preview-window-wrapper").style.display = "none";
-			var iframeX = $("#preview-col").width();
-			var iframeY = $("#preview-col").height();
+			var iframeX = document.getElementById("preview-col").width;
+			var iframeY = document.getElementById("preview-col").height;
 
 			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";
 
