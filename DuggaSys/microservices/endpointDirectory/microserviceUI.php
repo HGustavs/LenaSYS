@@ -216,6 +216,7 @@ if (isset($_GET['id'])) {
                     <input type="hidden" name="add" value="1">
                     <button type="submit">Add Microservice</button>
                 </form>
+                <a class="a-button" style="margin: 20px 0 20px 0" href="dependenciesUI.php">dependenciesUI</a>
                 <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
             </div>
         </div>
