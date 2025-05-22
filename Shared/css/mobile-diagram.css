@@ -19,7 +19,7 @@
         flex-direction: column;
     }
     #mb-diagram-sidebar.open {
-        transform: translateX(-33px);
+        transform: translateX(-1px);
     }
     #mb-diagram-toolbar.active {
         transform: translateY(0px);
