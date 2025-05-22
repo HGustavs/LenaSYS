@@ -8444,7 +8444,7 @@ only screen and (max-device-width: 568px) {
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
   flex-grow:1;
-  max-width: 50%;
+  max-width: 55%;
   /*
   width: 38%;
   height: 80%;
@@ -8460,6 +8460,7 @@ only screen and (max-device-width: 568px) {
   */
   height: 100%;
   width: 100%;
+  padding-bottom: 15px;
   box-sizing: border-box;
 }
 
@@ -8475,7 +8476,7 @@ only screen and (max-device-width: 568px) {
 .markdownPrev {
   border: solid var(--color-border-4);
   flex-grow:1;
-  max-width: 50%;
+  max-width: 44%;
   /*
   width: 56%;
   height: 80%;
@@ -8556,7 +8557,7 @@ legend {
 
 .prevSpan {
   max-width: 100%;
-  padding: 10px;
+  padding: 10px 0px 0px;
   /*height: 85%;*/
   height: 100%;
   box-sizing: border-box;
@@ -8694,65 +8695,73 @@ textarea#mrkdwntxt {
   transition: 0.2s;
 }
 
-.selectHeader>span {
+.selectHeader>button {
   display: block;
   cursor: pointer;
+  border: none;
   /*color: var(--color-text-list);*/
   background-color: var(--color-background);
 }
 
-.selectHeader>span:hover {
+.selectHeader>button:hover {
+  border: none;
   background-color: var(--color-background-4);
 }
 
-#headerType1 {
-  font-size: 13px;
-  padding: 5px 7px 0px 3px;
-}
-
-#headerType2 {
-  font-size: 12px;
-  padding: 5px 11px 5px 3px;
-}
-
-#headerType2:hover {
-  background-color: var(--color-background-4);
-}
-
-#headerType3 {
-  font-size: 11px;
-  padding: 5px 15px 5px 3px;
-}
-
-#headerType4 {
-  font-size: 10px;
-  padding: 5px 19px 5px 3px;
-}
-
-#headerType5 {
-  font-size: 9px;
-  padding: 5px 23px 5px 3px;
-}
-
-#headerType6 {
-  font-size: 8px;
-  padding: 5px 27px 6px 3px;
+.header-dropdown-div{
+  position: relative;
 }
 
 .show-dropdown-content {
   display: block;
 }
 
+#headerType1 {
+  font-size: 13px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType2 {
+  font-size: 12px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType3 {
+  font-size: 11px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType4 {
+  font-size: 10px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType5 {
+  font-size: 9px;
+  height:25px;
+  width: inherit;
+}
+
+#headerType6 {
+  font-size: 8px;  
+  height:25px;
+  width: inherit;
+}
+
 #select-header {
-  top: 82px;
-  left: 30%;
-  max-width: 63px;
+  display: none;
+  width: 70px;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2000;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
-
 
 /* --------------===============################================-------------- *
  *                                    courseed                                 *
@@ -9076,6 +9085,9 @@ div > div > .shortcut-keys:hover {
   text-align: center;
   line-height: 24px;
   vertical-align: middle;
+  background: none;
+  border: none;
+  font: inherit;
 }
 
 .markdown-icon-div {
@@ -9090,12 +9102,16 @@ div > div > .shortcut-keys:hover {
   filter: invert(100%);
 }
 
-#imgIcon,
-#headerIcon {
+#imgIcon {
   margin-left: 2px;
-  margin-right: 10px;
 }
 
+#headerIcon {
+  margin-top: 2px;
+  background: none;
+  border: none;
+  font: inherit;
+}
 
 .editFileWindow {
   height: 80%;
@@ -9107,6 +9123,7 @@ div > div > .shortcut-keys:hover {
   right: 0;
   top: 10%;
   position: fixed;
+  padding: 0%;
 }
 
 .editFileCode {
