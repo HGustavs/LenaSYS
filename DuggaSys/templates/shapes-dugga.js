@@ -73,7 +73,7 @@ function returnedDugga(data)
 	if(data['param']=="UNK"){
 		alert("UNKNOWN DUGGA!");
 	}else{		
-		dta=jQuery.parseJSON(data['param']);
+		dta=JSON.parse(data['param']);
 		document.querySelector(".submit-button").classList.remove("btn-disable");
 		if (data["answer"] !== null && data["answer"] !== "UNK") {			
 			var previousAnswer = data['answer'].split(' ');
