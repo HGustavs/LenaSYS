@@ -1587,7 +1587,7 @@ header td {
   & ul {
     display: flex;
     flex-direction: row;
-    margin: 0;
+    margin: 0.5em;
     padding: 0;
     list-style: none;
     align-items: center;
@@ -1619,10 +1619,6 @@ header td {
 
 .navButt {
   vertical-align: middle;
-}
-.filterButt{
-  margin-top: 11px;
-  margin-block-end: 7px;
 }
 
 /*Needed because navButt applies a clicking effect on the element*/
@@ -5733,7 +5729,6 @@ rect[class*="activitymarker"]:hover {
 }
 #searchbar button#searchbutton,
 #searchbar button#searchbuttonicon{
-  padding: 8px 20px 5px 20px;
   background:#76578e;
   border-left: none;
   cursor: pointer;
@@ -5793,16 +5788,11 @@ rect[class*="activitymarker"]:hover {
 #searchbutton,
 #searchbuttonMobile {
   position: relative;
-  width: 26px;
-  height: 25px;
   margin: 0;
-  padding: 4px;
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   box-shadow: none !important;
-  margin-bottom: 5px;
-  margin-right: 2px;
 }
 
 
@@ -5810,12 +5800,6 @@ rect[class*="activitymarker"]:hover {
 #searchBar img,
 #testSearchContainer img {
   margin: 0px;
-}
-
-#lookingGlassSVG {
-  top: 3px;
-  left: 3px;
-  transform: scale(1.5);
 }
 
 /* styling for fileed switching table button*/
@@ -5826,8 +5810,6 @@ rect[class*="activitymarker"]:hover {
   text-align: center;
   background-color: var(--color-primary);
   color: var(--color-primary);
-  padding: 6px;
-  margin: 1px;
   border-radius: 2px;
   border: 0px;
   cursor: pointer;
