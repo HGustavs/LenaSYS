@@ -26,6 +26,9 @@
 }
 
 @media screen and (min-width: 768px) {
+    /*
+    Make toolbar scrollable when content exceeds screen height.
+    */
     #diagram-toolbar {
         position: fixed;
         top: 0;
@@ -34,6 +37,11 @@
         width: 50px; 
         height: 100vh; 
         z-index: 1000;
+        overflow-y: auto; /* Scrollbar appears only when needed */
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 
