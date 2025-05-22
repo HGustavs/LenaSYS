@@ -3,7 +3,7 @@ Several microservice files need to be renamed to follow a naming convention base
 Since the microservices are included in multiple other microservices, renaming them will affect all files that reference them.
 
 When the microservice/file name has been changed, mark it here, as well as in LenaSYS/DuggaSys/microservices
-/Microservices.md, that the renameing is completed.
+/Microservices.md and backend-models/microservices/duggaSys services/Microservices.md, that the renameing is completed.
 
 RENAME THE ACTUAL MICROSERVICEFILE, THE TESTFILE RELATED TO THE MICROSERVICE, AS WELL AS ALL THE PLACES THE MICROSERVICEFILE NAME IS USED.
 
@@ -200,4 +200,94 @@ Used in, where the microservice/file name also needs to be changed:
 - Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
+
+---
+
+## gitCommitService
+Microservices to be renamed in the gitCommitService folder.
+
+### clearGitFiles_ms.php
+New name: <ins>readCourseID_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/clearGitFiles_ms.php
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- DuggaSys/microservices/gitCommitService/refreshGithubRepo_ms.php
+- DuggaSys/microservices/Microservices.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### fetchOldToken_ms.php
+New name: <ins>readGitToken_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/fetchOldToken_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### getCourseID_ms.php
+New name: <ins>readCourseID_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/getCourseID_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+
+---
+
+### insertIntoSQLite_ms.php
+New name: <ins>syncGitRepoMetadata_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/insertIntoSQLite_ms.php
+- DuggaSys/microservices/gitCommitService/getCourseID_ms.php
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- DuggaSys/microservices/Microservices.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### newUpdateTime_ms.php
+New name: <ins>updateTime_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/newUpdateTime_ms.php
+- DuggaSys/microservices/gitCommitService/refreshCheck_ms.php
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- DuggaSys/microservices/Microservices.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/tests/newUpdateTime_test.php
+
+---
+
+### refreshCheck_ms.php
+New name: <ins>updateThrottle_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/refreshCheck_ms.php
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- DuggaSys/microservices/gitCommitService/refreshGithubRepo_ms.php
+- DuggaSys/microservices/Microservices.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### refreshGithubRepo_ms.php
+New name: <ins>updateGithubRepo_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitCommitService/refreshGithubRepo_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
 
