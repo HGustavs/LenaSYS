@@ -565,7 +565,9 @@ body {
 
 .loginBox,
 .logoutBox,
-.formBox{
+.formBox,
+.markdown,
+#mrkdwntxt{
   background-color: var(--color-background);
   color: var(--color-text-light);
   border: 2px solid var(--color-border);
