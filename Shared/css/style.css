@@ -71,6 +71,7 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
 
   --color-fileLink-table-1: #ccc;
   --color-fileLink-table-2: #eae8eb;
+  --color-comment: #3f8539;
 }
 
 /* --------------================################================-------------- *
@@ -9952,7 +9953,7 @@ span[id$="examples"]:hover{
 }
 
 .comment {
-    color: #3f8539;
+    color: var( --color-comment);
     font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
