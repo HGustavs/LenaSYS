@@ -43,6 +43,8 @@ RUN echo '<Directory /var/www/html>' > /etc/apache2/conf-available/custom-direct
     && echo '</Directory>' >> /etc/apache2/conf-available/custom-directory-listing.conf \
     && a2enconf custom-directory-listing
 
+RUN chown -R www-data:www-data /var/www/html/
+
 # Copy the initialization script
 COPY ./init.sh /usr/local/bin/init.sh
 
