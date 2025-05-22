@@ -2828,24 +2828,28 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
+/*
 document.addEventListener("mousedown", function (e) {
   // showFabList(e);
+  console.log("mouse down 1");
    FABMouseOver(e); 
-});
+}); */
 
 document.addEventListener("mouseout", function (e) {
+  console.log("mouse out");
   FABMouseOut(e);
 });
 
 document.addEventListener("mousedown", function (e) {
   mouseDown(e);
-
+  console.log("mouse down 2");
   if (e.button == 0) {
     FABDown(e);
   }
 });
 
 document.addEventListener("mouseup", function (e) {
+  console.log("mouse up");
   mouseUp(e);
 });
 
@@ -2985,6 +2989,9 @@ window.addEventListener("keyup", function (event) {
 document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
     localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
+    
+    //closes fab-element-dropdown if scrolling
+    FABDown(e);
   }
 });
 

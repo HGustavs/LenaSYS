@@ -8013,7 +8013,6 @@ only screen and (max-device-width: 568px) {
 }
 
 .fab-btn-list2 {
-  position: absolute;
   padding: 0;
   width: 100%;
   list-style: none;
