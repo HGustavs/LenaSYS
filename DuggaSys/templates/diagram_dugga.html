@@ -341,11 +341,9 @@
                     buttonWrapper.style.display = 'none';
                 }
                 else{
-                    console.log("Display!");
                     clearTimeout(timer);
                     timer = setTimeout(()=>{
                         buttonWrapper.style.display = 'flex';
-                        console.log("display");
                     }, 150); //Displays it only after a delay to make it more smoothly
                 }
             }
