@@ -632,6 +632,7 @@ body {
 
 .instructions-content{
     border: 1px solid  var(--color-sectioned-table-lo);
+    column-count: 1 !important;
 } 
 
 .feedback-button:hover:after, .instructions-button:hover:after {
