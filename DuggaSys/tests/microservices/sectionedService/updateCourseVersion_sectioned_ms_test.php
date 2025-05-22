@@ -7,9 +7,9 @@ $testsData = array(
 
     'query-before-test-1' => "
       INSERT INTO vers 
-        (cid, coursecode, vers, versname, startdate, enddate, motd) 
+        (cid, coursecode, vers, versname, startdate, enddate, motd, coursename, coursenamealt) 
       VALUES 
-        (1885, 'G1337', 420, 'updateCourseVersionSectionedTest', '2025-01-01', '2025-01-30', 'Test')
+        (1885, 'G1337', 420, 'updateCourseVersionSectionedTest', '2025-01-01', '2025-01-30', 'Test', 'Testing-Course', 'Test123')
     ",
 
     'expected-output' => '{"debug":"NONE!"}',
