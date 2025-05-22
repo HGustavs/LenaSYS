@@ -178,3 +178,26 @@ Used in, where the microservice/file name also needs to be changed:
 
 ---
 
+## duggaedService
+No microservicefiles are supposed to be renamed.
+
+---
+
+## endpointDirectory
+Does not contain microservices. No files are supposed to be renamed.
+
+---
+
+## fileedService
+Microservices to be renamed in the fileedService folder.
+
+### getFileedService_ms.php
+New name: <ins>"retrieveAllFileedServiceData_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/fileedService/getFileedService_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- Shared/dugga.js
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+
