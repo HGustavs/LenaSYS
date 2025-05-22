@@ -217,8 +217,7 @@ function drawLine(line, targetGhost = false) {
         else if (line.type === entityType.SE){   
             lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }else if (telem.kind === elementTypesNames.SelfCall) {
-            console.log("things happend")
-            lineStr += selfcallthing(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
+            lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
             
         }
         else {

@@ -351,7 +351,7 @@ function lineLabel(id, placeholder, value) {
 function drawLineProperties(line) {
     let str = '';
     const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
-
+    console.log(line.kind);
     switch (line.type) {
         case entityType.ER:
             str += lineMode(line, [lineKind.NORMAL, lineKind.DOUBLE]);
@@ -365,10 +365,16 @@ function drawLineProperties(line) {
             str += `</label>`;
             break;
         case entityType.UML:
-            str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
-            str += includeLabel(line);
-            str += cardinalityLabels(line);
-            str += iconSelection([UMLLineIcons, IELineIcons], line);
+            if (line.kind === "recursive1" || line.kind === "recursive2"){
+                str += cardinalityLabels(line);
+            }
+            else{
+                str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
+                str += includeLabel(line);
+                str += cardinalityLabels(line);
+                str += iconSelection([UMLLineIcons, IELineIcons], line);
+            }
+            
             break;
         case entityType.IE:
             str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
@@ -458,6 +464,14 @@ function includeSELabel(line) {
  * @return Returns a header and the text input for adding cardinalities to the line.
  */
 function cardinalityLabels(line) {
+    if (line.kind === "recursive1"){
+        return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
+        + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel);
+    }
+    else if ((line.kind === "recursive2")){
+        return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
+        + lineLabel('lineEndLabel', 'End cardinality', line.endLabel);
+    }
     return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
         + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
         + lineLabel('lineEndLabel', 'End cardinality', line.endLabel);

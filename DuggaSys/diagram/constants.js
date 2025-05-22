@@ -446,6 +446,7 @@ const lineAlwaysFrom = [
 ];
 const lineAlwaysTo = [
     elementTypesNames.UMLFinalState,
+    elementTypesNames.SelfCall,
 ];
 
 const backgroundElement = [

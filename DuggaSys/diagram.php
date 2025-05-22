@@ -714,7 +714,7 @@
         <div class="UMLButton placementTypeBoxIcons"
      id="elementPlacement17"
      onclick="togglePlacementType(17); setElementPlacementType(17); setMouseMode(mouseModes.PLACING_ELEMENT);">
-  <img src="../Shared/icons/self_call_icon.svg" alt="Self Call" />
+  <img src="../Shared/icons/diagram_UML_initial_state.svg" alt="Self Call" />
   <span class="placementTypeToolTipText">
     <b>Self Call</b><br>
     <p>Draws a self-call element with a loopback arrow.</p>

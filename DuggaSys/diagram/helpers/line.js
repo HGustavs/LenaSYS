@@ -18,6 +18,9 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
         displayMessage(messageTypes.ERROR, errorMessage);
         return;
     }
+
+    let usedKind = kind;
+
     // Filter the existing lines and gets the number of existing lines
     let numOfExistingLines = lines.filter(function (line) {
         return (
@@ -26,7 +29,21 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
             fromElement.id === line.toID &&
             toElement.id === line.fromID)
     }).length;
-
+    console.log(usedKind);
+    if (toElement.kind === elementTypesNames.SelfCall){
+        console.log(toElement);
+        if (numOfExistingLines === 0)
+            {
+                usedKind = "recursive1";
+                console.log("first");
+            }
+        else if (numOfExistingLines === 1){
+                console.log("second");
+                usedKind = "recursive2";
+        }
+        
+    }
+    console.log(usedKind);
     // Define a boolean for special case that relation and entity can have 2 lines
     let specialCase = (
         fromElement.kind === elementTypesNames.ERRelation &&
@@ -40,7 +57,7 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: kind,
+            kind: usedKind,
             recursive: isRecursive  
         };
 
@@ -62,7 +79,7 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: kind,
+            kind: usedKind,
             recursive: isRecursive  
         };
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
@@ -78,7 +95,7 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
     }
     return result;
 }
-function checkConnectionErrors(to, from) {
+function checkConnectionErrors(from, to) {
     if (from.id == to.id &&
         (to.kind != elementTypesNames.SDEntity && to.kind != elementTypesNames.UMLEntity && to.kind != elementTypesNames.IEEntity && to.kind != "sequenceActivation")
     ) {
@@ -97,12 +114,31 @@ function checkConnectionErrors(to, from) {
         return `Lines in sequence diagram can only be drawn between sequence activations`;
     }
     // Uses to as from elements since the implementation of activation lines is done this way
-    if (sequenceDrawError(to)) {
+    if (sequenceDrawError(from)) {
         return `Drawn line is out of bounds`;
+    } 
+    if (selfCallError(from, to)){
+        return `Max two lines per self call element`;
     }
     return '';
 }
 
+function selfCallError(fromElement, toElement){
+
+    let numOfExistingLines = lines.filter(function (line) {
+        return (
+            fromElement.id === line.fromID &&
+            toElement.id === line.toID ||
+            fromElement.id === line.toID &&
+            toElement.id === line.fromID)
+    }).length;
+    console.log(numOfExistingLines, toElement.name);
+    if (numOfExistingLines > 1 && toElement.kind === elementTypesNames.SelfCall)
+    {
+        return true;
+    }
+
+}
 
 // Checks that the lines are within bounds between two sequence activation elements
 function sequenceDrawError(from) {

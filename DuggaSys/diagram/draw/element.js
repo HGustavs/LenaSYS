@@ -54,7 +54,13 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
         case elementTypesNames.SelfCall:
-            divContent = drawElementSelfCall(element, boxw, boxh, linew);
+            let initVec2 = `
+                <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+                    <circle cx="16.5" cy="12.5" r="10.5" />
+                </g>`;
+            divContent = drawElementState(element, initVec2);
+            cssClass = 'uml-state';
+            style = `width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
             break;
         case elementTypesNames.ERAttr:
             divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
@@ -687,12 +693,10 @@ function drawElementSelfCall(element, boxw, boxh, linew) {
     const y = boxh / 2; 
 
     const line = `
-        <line 
-            x1="${x1}" y1="${y}" 
-            x2="${x2}" y2="${y}" 
-            style="stroke:${strokeColor}; stroke-width:${linew};" 
-        />
-    `;
+        <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+                    <circle cx="16.5" cy="12.5" r="10.5" />
+                </g>`
+    ;
     return drawSvg(boxw, boxh, line);
 }
 
