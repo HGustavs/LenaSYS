@@ -108,7 +108,7 @@ function returnedDugga(data)
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
+			document.getElementById("snus").innerHTML = result;
         		// Placeholder code
 				var pl = duggaParams.placeholders;
 				if (pl !== undefined) {
@@ -139,9 +139,9 @@ function returnedDugga(data)
 			// UNK
 		}
 
-		var windowWidth = $(window).innerWidth();
+		var windowWidth = window.innerWidth;
 		var duggaFiles = data["files"][inParams["moment"]];
-		if($("#submitButtonTable").length != 0) {
+		if (document.getElementById("submitButtonTable") !== null) {
 			if(windowWidth > 850){
 				createFileUploadArea(duggaParams["submissions"]);		
 			} 
@@ -201,8 +201,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
