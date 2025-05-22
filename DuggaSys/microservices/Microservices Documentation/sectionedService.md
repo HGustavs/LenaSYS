@@ -1406,7 +1406,7 @@ retrieveAllCourseVersions_ms.php
 
 ## Description
 Delivers course-page JSON for one course and version.
-It also counts all course versions to work out totalGroups = 24 × versions for internal debugging only—this value isn’t sent to the client.
+It also counts all course versions to work out totalGroups = 24 × versions for internal debugging only—this value isn’t sent to the user.
 
 ## Input Parameters
 - Parameter: $opt
@@ -1451,6 +1451,10 @@ Core read service for the “sectioned” aka “course-page”view. Given a cou
    - Type: String
    - Description: Specifies the operation type
 
+- Parameter: $userid
+   - Type: int
+   - Description: User ID. Stored as int(10) in the database
+
 - Parameter: $courseid
    - Type: int
    - Description: Course ID. Stored as int(10) in the database
@@ -1483,6 +1487,6 @@ Core read service for the “sectioned” aka “course-page”view. Given a cou
  ```
 
 ### Microservices Used
-- readCourseVersions_ms.php
+- 
 
 ---
