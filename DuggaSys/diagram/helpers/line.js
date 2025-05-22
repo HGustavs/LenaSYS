@@ -87,7 +87,7 @@ function checkConnectionErrors(to, from) {
     if (sameTypeError(from, to, sameConnectionForbidden)) {
         return `Not possible to draw a line between: ${from.name}- and ${to.name}-element`;
     }
-    if (diffrerentTypeError(from, to)) {
+    if (diffrerentTypeError(from, to) && (from.kind != elementTypesNames.SelfCall && to.kind != elementTypesNames.SelfCall)) {
         return `Not possible to draw lines between: ${from.type}- and ${to.type}-elements`;
     }
     if (limitEREntitiesToAttriutes(from, to)) {

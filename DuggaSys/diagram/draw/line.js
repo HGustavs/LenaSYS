@@ -692,7 +692,6 @@ function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, str
     const targetY = ty;
     const lineWidth = 30;   
 
-    console.log(line);
 
     const bendX = targetX + lineWidth 
     const bendY = targetY + lineWidth 
@@ -724,7 +723,7 @@ function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, str
             points="${points}" 
             fill="none" 
             stroke="${lineColor}" 
-            stroke-width="${(line.width || 1) * zoomfact}" 
+            stroke-width="${(strokewidth) * zoomfact}" 
             stroke-dasharray="${strokeDash}" 
         />
     `;
@@ -1213,7 +1212,6 @@ function iconPoly(arr, x, y, lineColor, fill, rotation = 0) {
                 fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}'
             />`;
     }
-    console.log("test");
     return `<polyline 
                 points='${s}' 
                 fill='${fill}' stroke='${lineColor}' stroke-width='${strokewidth}' transform='rotate(${rotation}, ${x},${y})'
