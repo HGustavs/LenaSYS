@@ -126,7 +126,7 @@ function textarea(name, property, element) {
         return `<div style='color:${color.WHITE};'>${name}</div>
             <input 
                 id='elementProperty_${property}' 
-                maxlength='10'
+                maxlength='30'
                 value='${shownProperty}'
             >${safeName}</input>`;
     }
