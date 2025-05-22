@@ -291,3 +291,53 @@ Used in, where the microservice/file name also needs to be changed:
 
 ---
 
+## gitFetchService
+Microservices to be renamed in the gitFetchService folder.
+
+### getGitHubURL_ms.php
+New name: <ins>getGitHubAPIUrl_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitFetchService/getGithubURL_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/gitFetchService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### getIndexFile_ms.php
+New name: <ins>readIndexFile_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitFetchService/getIndexFile_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/gitFetchService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### insertToFileLink_ms.php
+New name: <ins>createFileLinkEntry_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitFetchService/insertToFileLink_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/gitFetchService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### insertToMetaData_ms.php
+New name: <ins>createGitFilesMetadata_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/gitFetchService/insertToMetadata_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/gitFetchService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
