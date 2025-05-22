@@ -5,7 +5,7 @@
  * @param {String} kind The kind of line that should be added.
  * @param {boolean} stateMachineShouldSave Should this line be added to the stateMachine.
  */
-function addLine(fromElement, toElement, kind, isRecursive = false, stateMachineShouldSave = true, successMessage = true, cardinal) {
+function addLine(fromElement, toElement, kind, isRecursive = false, stateMachineShouldSave = true, successMessage = true, cardinal, recursiveLine) {
     let result;
 
     if (lineAlwaysFrom.includes(toElement.kind) ||
@@ -19,7 +19,6 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
         return;
     }
 
-    let usedKind = kind;
 
     // Filter the existing lines and gets the number of existing lines
     let numOfExistingLines = lines.filter(function (line) {
@@ -29,21 +28,18 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
             fromElement.id === line.toID &&
             toElement.id === line.fromID)
     }).length;
-    console.log(usedKind);
+
     if (toElement.kind === elementTypesNames.SelfCall){
-        console.log(toElement);
         if (numOfExistingLines === 0)
             {
-                usedKind = "recursive1";
-                console.log("first");
+                recursiveLine = "recursive1";
             }
         else if (numOfExistingLines === 1){
-                console.log("second");
-                usedKind = "recursive2";
+            recursiveLine = "recursive2";
         }
         
     }
-    console.log(usedKind);
+
     // Define a boolean for special case that relation and entity can have 2 lines
     let specialCase = (
         fromElement.kind === elementTypesNames.ERRelation &&
@@ -57,8 +53,9 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: usedKind,
-            recursive: isRecursive  
+            kind: kind,
+            recursive: isRecursive,
+            recursiveLine: recursiveLine  
         };
 
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
@@ -79,8 +76,9 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
             id: makeRandomID(),
             fromID: fromElement.id,
             toID: toElement.id,
-            kind: usedKind,
-            recursive: isRecursive  
+            kind: kind,
+            recursive: isRecursive,
+            recursiveLine: recursiveLine  
         };
         // If the new line has an entity FROM or TO, add a cardinality ONLY if it's passed as a parameter.
         if (isLineConnectedTo(newLine, elementTypesNames.EREntity)) {
@@ -132,7 +130,6 @@ function selfCallError(fromElement, toElement){
             fromElement.id === line.toID &&
             toElement.id === line.fromID)
     }).length;
-    console.log(numOfExistingLines, toElement.name);
     if (numOfExistingLines > 1 && toElement.kind === elementTypesNames.SelfCall)
     {
         return true;

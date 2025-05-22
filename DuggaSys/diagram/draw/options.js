@@ -323,9 +323,19 @@ function lineMode(line, arr) {
  * @param {boolean} inclChange True if the function "changeLineProperties" should be called.
  * @return Returns a dropdown menu with the options as selectable items.
  */
-function selectLineIcons(id, options, inclNone = true, inclChange = true) {
+function selectLineIcons(id, options, inclNone = true, inclChange = true, hidden) {
+    
     let none = (inclNone) ? `<option value=''>None</option>` : '';
     let change = (inclChange) ? `onChange="changeLineProperties();"` : '';
+    if (hidden){
+        console.log("hej");
+        return `<select id='${id}' ${change} style="display:none;">
+                    ${inclNone ? `<option value=''>None</option>` : ''}
+                    ${options}
+                </select>`;
+    }
+    
+    
     return `<select id='${id}' ${change}>
                 ${none}
                 ${options}
@@ -339,7 +349,11 @@ function selectLineIcons(id, options, inclNone = true, inclChange = true) {
  * @param {Object} value What the value should be for the text input. (Optional)
  * @return Returns a text input.
  */
-function lineLabel(id, placeholder, value) {
+function lineLabel(id, placeholder, value, hidden) {
+    if (hidden){
+        return `<input id="${id}" maxlength="50" type="hidden" placeholder="${placeholder}" value="${value ?? ''}"/>`;
+
+    }
     return `<input id="${id}" maxlength="50" type="text" placeholder="${placeholder}" value="${value ?? ''}"/>`;
 }
 
@@ -351,7 +365,7 @@ function lineLabel(id, placeholder, value) {
 function drawLineProperties(line) {
     let str = '';
     const connectedToInitialOrFinal = isConnectedToInitialOrFinalState(line);
-    console.log(line.kind);
+    console.log("recursive line: ",line.recursiveLine);
     switch (line.type) {
         case entityType.ER:
             str += lineMode(line, [lineKind.NORMAL, lineKind.DOUBLE]);
@@ -365,15 +379,28 @@ function drawLineProperties(line) {
             str += `</label>`;
             break;
         case entityType.UML:
-            if (line.kind === "recursive1" || line.kind === "recursive2"){
-                str += cardinalityLabels(line);
+
+            if (line.recursiveLine === "recursive1"){
+                str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
+                + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
+                + lineLabel('lineEndLabel', 'End cardinality', "", true);
+                str += iconSelection([UMLLineIcons, IELineIcons], line);
             }
+            else if (line.recursiveLine === "recursive2")
+                {
+                    str += `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
+                    + lineLabel('lineStartLabel', 'End cardinality', line.startLabel)
+                    + lineLabel('lineEndLabel', 'End cardinality', "", true);
+                    str += iconSelection([UMLLineIcons, IELineIcons], line);
+                }
             else{
                 str += lineMode(line, [lineKind.NORMAL, lineKind.DASHED]);
                 str += includeLabel(line);
                 str += cardinalityLabels(line);
                 str += iconSelection([UMLLineIcons, IELineIcons], line);
             }
+                
+       
             
             break;
         case entityType.IE:
@@ -427,6 +454,11 @@ function iconSelection(arr, line) {
     arr.forEach(object => {
         eOptions += lineOption(object, line.endIcon)
     });
+    if (line.recursiveLine === "recursive1" || line.recursiveLine === "recursive2"){
+        return `<label style="display: block;">Icons:</label>`
+        + selectLineIcons('lineStartIcon', sOptions)
+        + selectLineIcons('lineEndIcon', eOptions, true, true, true);
+    }
     return `<label style="display: block;">Icons:</label>`
         + selectLineIcons('lineStartIcon', sOptions)
         + selectLineIcons('lineEndIcon', eOptions);
@@ -464,14 +496,6 @@ function includeSELabel(line) {
  * @return Returns a header and the text input for adding cardinalities to the line.
  */
 function cardinalityLabels(line) {
-    if (line.kind === "recursive1"){
-        return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
-        + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel);
-    }
-    else if ((line.kind === "recursive2")){
-        return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
-        + lineLabel('lineEndLabel', 'End cardinality', line.endLabel);
-    }
     return `<h3 style="margin-bottom: 0; margin-top: 5px;">Cardinalities</h3>`
         + lineLabel('lineStartLabel', 'Start cardinality', line.startLabel)
         + lineLabel('lineEndLabel', 'End cardinality', line.endLabel);
@@ -1955,6 +1979,7 @@ function multipleColorsTest() {
 function changeLineProperties() {        
     // updates the line
     for (const [key, value] of Object.entries(StateChange.GetLineProperties())) {
+        console.log(value);
         contextLine[0][key] = value;
     }
     // save all the changes

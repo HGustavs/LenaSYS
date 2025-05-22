@@ -56,19 +56,9 @@ function drawLine(line, targetGhost = false) {
 
     // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
     // if the line is recursive
-    if (line.recursive) {
-        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, felem, line.ctype, fromElemMouseY, toElemMouseY);
-        
-        // Setting start position for the recursive line, to originate from the top
-        fx = felem.cx;
-        fy = felem.y1;
-        offset.x1 = 0;
-        offset.y1 = 0;
-        tx = fx;
-        ty = fy;
-    } else {
+
         [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
-    }
+
 
     // Follows the cursor while drawing the line
     if (isCurrentlyDrawing) {
@@ -212,7 +202,7 @@ function drawLine(line, targetGhost = false) {
 
         // Some drawing options for the remainder of line types (UML, IE or Sequence)
         if (line.recursive) {
-            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
+            lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
         else if (line.type === entityType.SE){   
             lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);

@@ -54,13 +54,39 @@ function drawElement(element, ghosted = false) {
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
         case elementTypesNames.SelfCall:
+            // const mousepos = screenToDiagramCoordinates(lastMousePos.x, lastMousePos.y);
+            // if(element.bottom != undefined){
+            //     if (element.bottom.length + element.left.length + element.top.length + element.right.length === 2){
+            //         style = `width:${1}px; height:${1}px; z-index:${zLevel};`;
+            //         initVec2 = `
+            //             <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+            //                 <circle cx="16.5" cy="12.5" r="2.5" />
+            //             </g>`
+            //         console.log(mousepos, element);
+            //         if(mousepos.x >= element.x &&
+            //             mousepos.x <= element.x + element.width &&
+            //             mousepos.y >= element.y &&
+            //             mousepos.y <= element.y + element.height
+            //         ){
+            //             console.log("hej");
+            //             initVec2 = `
+            //             <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
+            //                 <circle cx="16.5" cy="12.5" r="10.5" />
+            //             </g>`
+            //             style = `width:${50}px; height:${50}px; z-index:${zLevel};`;
+            //         }
+            //     }
+            // }
             let initVec2 = `
                 <g transform="matrix(1.14286,0,0,1.14286,-6.85714,-2.28571)" >
                     <circle cx="16.5" cy="12.5" r="10.5" />
                 </g>`;
+
+            
+            style = `width:${50}px; height:${50}px; z-index:${zLevel};`;
             divContent = drawElementState(element, initVec2);
             cssClass = 'uml-state';
-            style = `width:${boxw}px; height:${boxh}px; z-index:${zLevel};`;
+            
             break;
         case elementTypesNames.ERAttr:
             divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
