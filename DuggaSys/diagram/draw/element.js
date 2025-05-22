@@ -681,19 +681,25 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
 
 //In progress 
 function drawElementSelfCall(element, boxw, boxh, linew) {
-    const strokeColor = "black";
-    const x1 = linew;
-    const x2 = boxw - linew;
-    const y = boxh / 2; 
+  const strokeColor = "black";
+  const fillColor   = "none";
+    console.log("hello from draw")
+  // Determine square size so it fits with a linew-wide margin
+  const size = Math.min(boxw, boxh) - 2 * linew;
+  // Center it
+  const x = (boxw  - size) / 2;
+  const y = (boxh  - size) / 2;
 
-    const line = `
-        <line 
-            x1="${x1}" y1="${y}" 
-            x2="${x2}" y2="${y}" 
-            style="stroke:${strokeColor}; stroke-width:${linew};" 
-        />
-    `;
-    return drawSvg(boxw, boxh, line);
+  const square = `
+    <rect 
+      class="selfcall"
+      x="${x}" y="${y}" 
+      width="${size}" height="${size}" 
+      style="fill:${fillColor}; stroke:${strokeColor}; stroke-width:${linew};" 
+    />
+  `;
+
+  return drawSvg(boxw, boxh, square);
 }
 
 /**
