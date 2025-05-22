@@ -8,3 +8,6 @@ function retrieveProfileService($debug, $success, $status){
 		);
     return $array;
 }
+
+header("Content-Type: application/json");
+echo json_encode($array);
