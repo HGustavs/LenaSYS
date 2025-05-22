@@ -1400,3 +1400,128 @@ This microservice reorders entries in the 'listentries' table by updating their 
 - retrieveSectionedService_ms.php
 
 ---
+
+# retrieveAllCourseVersions_ms.php
+
+## Description
+This microservice retrieves all course versions for a particular course and calculates the total number of groups. It works in conjunction with retrieveSectionedService_ms.php to provide comprehensive course version information.
+
+## Input Parameters
+- Parameter: opt
+   - Type: String
+   - Description: Operation parameter for the service
+
+- Parameter: courseid
+   - Type: String
+   - Description: The unique identifier of the course
+
+- Parameter: coursevers
+   - Type: String
+   - Description: The course version identifier. If "null", no versions will be retrieved
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+The service returns a JSON object containing:
+- Array of course versions
+- Total number of groups (calculated as 24 * number of versions)
+- Additional data from retrieveSectionedService including:
+  - Course information
+  - Quiz entries
+  - User access information
+  - Group membership
+  - Results and grades
+
+## Examples of Use
+```php
+// Example API call
+GET /retrieveAllCourseVersions_ms.php?opt=getVersions&courseid=CS101&coursevers=2023
+```
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+
+---
+
+# retrieveSectionedService_ms.php
+
+## Description
+A core microservice that retrieves comprehensive course section information including quizzes, entries, user access rights, and results. It handles visibility rules, deadlines, and group information for course sections.
+
+## Input Parameters
+- Parameter: debug
+   - Type: String
+   - Description: Debug information string
+
+- Parameter: opt
+   - Type: String
+   - Description: Operation parameter for the service
+
+- Parameter: userid
+   - Type: String
+   - Description: The unique identifier of the user
+
+- Parameter: courseid
+   - Type: String
+   - Description: The unique identifier of the course
+
+- Parameter: coursevers
+   - Type: String
+   - Description: The course version identifier
+
+- Parameter: log_uuid
+   - Type: String
+   - Description: Unique identifier for logging purposes
+
+## Calling Methods
+- GET
+- POST
+
+## Output Data and Format
+The service returns a JSON object containing:
+- Course Information:
+  - coursename (String)
+  - coursecode (String)
+  - visibility (Boolean)
+- Quiz Entries:
+  - id (int)
+  - qname (String)
+  - release (DateTime)
+  - deadline (DateTime)
+  - relativedeadline (DateTime)
+- User Results:
+  - moment (String)
+  - grade (int)
+  - submitted (DateTime)
+  - marked (DateTime)
+  - useranswer (String)
+- Course Entries:
+  - entryname (String)
+  - lid (int)
+  - pos (int)
+  - kind (String)
+  - visible (Boolean)
+  - highscoremode (Boolean)
+  - gradesys (String)
+  - deadline (DateTime)
+  - relativedeadline (DateTime)
+  - qrelease (DateTime)
+  - comments (String)
+  - qstart (DateTime)
+  - grptype (String)
+  - tabs (String)
+  - feedbackenabled (Boolean)
+  - feedbackquestion (String)
+  - ts (DateTime)
+
+## Examples of Use
+```php
+// Example function call
+$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+```
+
+### Microservices Used
+- readCourseVersions_ms.php (via callMicroserviceGET)
+
+---
