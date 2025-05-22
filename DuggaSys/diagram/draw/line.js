@@ -12,8 +12,9 @@ function drawLine(line, targetGhost = false) {
     let fromElemMouseY;
     let toElemMouseY;
 
-    //For straight SD lines only
-    let iconXModifier, iconYModifier;
+    // For straight SD and SE lines only
+    let iconXModifier = 0, 
+        iconYModifier = 0;
 
     // Element line is drawn from element(felem)/to element(telem)
     // Determines staring element based on ID
@@ -249,42 +250,41 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
-        let {length, elementLength, startX, startY} = recursiveParam(felem);
+        let { length, elementLength, startX, startY } = recursiveParam(felem);
         startX += offset.x1 * zoomfact;
-        startY += offset.y1 * zoomfact; 
+        startY += offset.y1 * zoomfact;
 
-    // Draws the Segmented version for arrow and not straight line
-    if(line.recursive){
-        if(line.startIcon === SDLineIcons.ARROW){
-            lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
+        // Draws the Segmented version for arrow and not straight line
+        if (line.recursive) {
+            if (line.startIcon === SDLineIcons.ARROW) {
+                lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
+            }
+            if (line.endIcon === SDLineIcons.ARROW) {
+                lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY + (10 * zoomfact), lineColor, color.BLACK);
+            }
+        } else if (line.innerType == SDLineType.SEGMENT) {
+            const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
+            const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
+            const reverseCtype = line.ctype.split('').reverse().join('');
+            if (line.startIcon === SDLineIcons.ARROW) {
+                lineStr += iconPoly(SD_ARROW[line.ctype], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK);
+            }
+            // Handle end arrow
+            if (line.endIcon === SDLineIcons.ARROW) {
+                lineStr += iconPoly(SD_ARROW[reverseCtype], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK);
+            }
+        } else {
+            const arrowStartPos = calculateArrowPosition(fx + (iconXModifier * zoomfact), fy + (iconYModifier * zoomfact), tx + (iconXModifier * zoomfact), ty + (iconYModifier * zoomfact), "start", line.innerType);
+            const arrowEndPos = calculateArrowPosition(fx - (iconXModifier * zoomfact), fy - (iconYModifier * zoomfact), tx - (iconXModifier * zoomfact), ty - (iconYModifier * zoomfact), "end", line.innerType);
+            // Handle start arrow
+            if (line.startIcon === SDLineIcons.ARROW || line.startIcon === SELineIcons.ARROW) {
+                lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK, findRotation(arrowEndPos.x, arrowEndPos.y, arrowStartPos.x, arrowStartPos.y));
+            }
+            // Handle end arrow
+            if (line.endIcon === SDLineIcons.ARROW || line.endIcon === SELineIcons.ARROW) {
+                lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK, findRotation(arrowEndPos.x, arrowEndPos.y, arrowStartPos.x, arrowStartPos.y));
+            }
         }
-        if(line.endIcon === SDLineIcons.ARROW){
-            lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
-        }
-    }else if(line.innerType == SDLineType.SEGMENT){
-        const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
-        const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
-        const reverseCtype = line.ctype.split('').reverse().join('');
-        if (line.startIcon === SDLineIcons.ARROW) {
-            lineStr += iconPoly(SD_ARROW[line.ctype], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK);
-        }
-        // Handle end arrow
-        if (line.endIcon === SDLineIcons.ARROW) {
-            lineStr += iconPoly(SD_ARROW[reverseCtype], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK);
-        }
-    }else{
-        const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
-        const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
-        // Handle start arrow
-        if (line.startIcon === SDLineIcons.ARROW) {
-            lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
-        }
-        // Handle end arrow
-        if (line.endIcon === SDLineIcons.ARROW) {
-            lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
-        }
-    }    
-        
     }
 
     // Draws the cardinality start and end labels for the line for UML
