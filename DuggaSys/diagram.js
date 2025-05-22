@@ -2698,7 +2698,7 @@ function tooltipPosition(element){
 
         return{
             top: `${dropdownPosition.top - dropdownPosition.height/2}px`,
-            left: `${dropdownPosition.left + dropdownPosition.right - 30}px`
+            left: `${dropdownPosition.left + dropdownPosition.right - 44}px`
         };
     }
 
@@ -2736,10 +2736,19 @@ function tooltipPosition(element){
     else if(element.closest("#diagram-toolbar") && !element.closest("#diagramPopOut")){
         let elementPosition = element.getBoundingClientRect();
 
-        return {
-            top: `${elementPosition.top - elementPosition.height/2}px`,
-            left: `${elementPosition.right + elementPosition.width/2+5}px`
-        };
+        if (submenu && submenu.classList.contains("activeTogglePlacementTypeBox")) {
+            const submenuBox = submenu.getBoundingClientRect();
+            return  {
+                top: `${submenuBox.top - submenuBox.height/2}px`,
+                left: `${submenuBox.left + submenuBox.right - 44}px`
+            };
+        } 
+        else {
+            return {
+                top: `${elementPosition.top - elementPosition.height/2}px`,
+                left: `${elementPosition.right + elementPosition.width/2+5}px`
+            };
+        }
     }
 
     //Checks if the element is part of the mobile diagram toolbar
