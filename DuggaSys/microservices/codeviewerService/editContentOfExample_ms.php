@@ -2,7 +2,7 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 //include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
@@ -21,7 +21,7 @@ $fontsize = getOP('fontsize');
 $addedRows = getOP('addedRows');
 $removedRows = getOP('removedRows');
 $debug = "NONE!";
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 if (strcmp('EDITCONTENT', $opt) === 0) {
     $query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;");

@@ -10,12 +10,12 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
 
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 // Checks and sets user rights
 if(checklogin() && (hasAccess($userid, $courseId, 'w') || hasAccess($userid, $courseId, 'st'))){

@@ -1,7 +1,7 @@
 <?php
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 include_once "retrieveAccessedService_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
@@ -13,7 +13,7 @@ session_start();
 // Global variables
 $opt = getOP('opt');
 $newclass = getOP('newclass');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $log_uuid=getOP('log_uuid');
 $debug = "NONE!";
 

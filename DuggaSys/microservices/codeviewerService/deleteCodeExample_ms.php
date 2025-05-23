@@ -2,7 +2,7 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 //include_once "./retrieveCodeviewerService_ms.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
@@ -18,7 +18,7 @@ $courseVersion = getOP('cvers');
 $boxId = getOP('boxid');
 $opt = getOP('opt');
 $debug = "NONE!";
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 
 $query1 = $pdo->prepare("DELETE FROM improw WHERE exampleid=:exampleid;");

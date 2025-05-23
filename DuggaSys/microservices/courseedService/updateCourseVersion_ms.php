@@ -6,7 +6,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
 // Connect to database and start session.
@@ -28,7 +27,7 @@ $enddate=getOP('enddate');
 $motd=getOP('motd');
 $log_uuid=getOP('log_uuid');
 
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 // Microservice for retrieveUsername
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");

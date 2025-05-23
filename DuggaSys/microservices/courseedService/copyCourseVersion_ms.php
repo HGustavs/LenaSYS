@@ -6,8 +6,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Include necessary files
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
 include_once "../curlService.php";
 
 // Connect to the database and start the session
@@ -26,7 +24,7 @@ $startdate = getOP('startdate');
 $enddate = getOP('enddate');
 $makeactive = getOP('makeactive');
 $motd = getOP('motd');
-$userid=getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
 $username = $data['username'] ?? 'unknown';

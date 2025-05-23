@@ -2,7 +2,7 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 //include_once "./retrieveCodeviewerService_ms.php";
 
 pdoConnect();
@@ -18,7 +18,7 @@ $sectionName = getOP('sectionname');
 $beforeId = getOP('beforeid');
 $afterId = getOP('afterid');
 $debug = "NONE!";
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $query = $pdo->prepare("SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
 $query->bindParam(':exampleid', $exampleId);

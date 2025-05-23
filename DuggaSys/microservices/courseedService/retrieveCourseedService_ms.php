@@ -7,7 +7,6 @@
 date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
 // Connect to database and start session
@@ -23,7 +22,7 @@ $visibility = getOP('visib');
 $versid = getOP('versid');
 $courseGitURL = getOP('courseGitURL');
 $log_uuid = getOP('log_uuid');
-$userid=getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $info = "opt: " . $opt . " cid: " . $cid . " coursename: " . $coursename . " versid: " . $versid . " visibility: " . $visibility . " courseGitUrl: " . $courseGitURL;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "retrieveCourseedService_ms.php", $userid, $info);

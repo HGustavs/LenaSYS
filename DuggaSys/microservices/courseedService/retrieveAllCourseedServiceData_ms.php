@@ -8,14 +8,13 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../curlService.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 
 
 // Connect to database and start session
 pdoConnect();
 session_start();
 
-$userid=getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $ha = null;
 $isSuperUserVar=false;
 $debug = "NONE!";

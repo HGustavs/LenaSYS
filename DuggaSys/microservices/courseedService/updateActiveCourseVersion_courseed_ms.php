@@ -11,7 +11,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Basic includes for this ms to work
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
 // Connect to database and start session.
@@ -23,7 +22,7 @@ $opt=getOP('opt');
 $courseid=getOP('cid');
 $versid=getOP('vers');
 $debug="NONE!";
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $ha = null;
 $isSuperUserVar = false;

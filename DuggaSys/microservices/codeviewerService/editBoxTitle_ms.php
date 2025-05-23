@@ -2,7 +2,7 @@
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 //include_once "./retrieveCodeviewerService_ms.php";
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
@@ -19,7 +19,7 @@ $courseId = getOP('courseid');
 $courseVersion = getOP('cvers');
 $boxTitle = getOP('boxtitle');
 $debug = "NONE!";
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $exampleCount = 0;
 

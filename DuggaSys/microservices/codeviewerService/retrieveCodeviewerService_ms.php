@@ -9,6 +9,7 @@ include_once "../../../Shared/basic.php";
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
 include_once "../../../Shared/sessions.php";
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -16,7 +17,7 @@ session_start();
 
 $debug = "";
 
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 // Global variables
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

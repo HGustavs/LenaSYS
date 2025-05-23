@@ -7,7 +7,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
 // Connect to database and start session.
@@ -21,7 +20,7 @@ $courseGitURL = getOP('courseGitURL');
 $debug = "NONE!";
 $ha = null;
 $isSuperUserVar = false;
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $LastCourseCreated = array();
 

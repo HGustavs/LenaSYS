@@ -6,7 +6,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
 
@@ -17,7 +16,7 @@ session_start();
 $opt = getOP('opt');
 $cid = getOP('cid');
 $courseGitURL = getOP('courseGitURL');
-$userid = getUid();  
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php"); 
 $debug="NONE!";
 
 // Permission checks

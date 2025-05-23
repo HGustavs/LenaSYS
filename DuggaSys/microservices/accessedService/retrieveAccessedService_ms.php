@@ -1,13 +1,12 @@
 <?php
 
 include_once "../../../Shared/basic.php";
-include_once "../../../DuggaSys/microservices/curlService.php"; //curlService
+include_once "../curlService.php";
 
 function retrieveAccessedService($pdo, $debug, $userid, $cid, $log_uuid, $opt="", $newusers=""){
 
     // UID microservice
-    $data = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-    $userid = $data['uid'] ?? -1;
+    $userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
     $entries=array();
     $teachers=array();
