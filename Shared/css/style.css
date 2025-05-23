@@ -1668,7 +1668,6 @@ margin-block-end: 10px;
 }
 #courseVersionDropDown{
   vertical-align: top;
-  max-width: 50px; 
 }
 
 .burgerButt {
@@ -4430,7 +4429,6 @@ span.arrow {
   background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
   box-shadow: var(--standard-shadow);
   background-position: right;
-  width: 100%;
 }
 
 .course-dropdown-div select {
