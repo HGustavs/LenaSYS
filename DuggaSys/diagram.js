@@ -505,13 +505,13 @@ function getData() {
     DiagramResponse = fetchDiagram();
 
     //Add event listeners 
-    document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
-    document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
-    document.getElementById("container").addEventListener("mousedown", mdown);
-    document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", mmoving);
+    document.getElementById("diagram-toolbar").addEventListener("pointerdown", mdown);
+    document.getElementById("diagram-toolbar").addEventListener("pointerup", tup);
+    document.getElementById("container").addEventListener("pointerdown", mdown);
+    document.getElementById("container").addEventListener("pointerup", mup);
+    document.getElementById("container").addEventListener("pointermove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    document.getElementById("options-pane").addEventListener("mousedown", mdown);
+    document.getElementById("options-pane").addEventListener("pointerdown", mdown);
 
     //Mobile FAB-buttons
     document.getElementById("fab-check").addEventListener("click", toggleErrorCheck);

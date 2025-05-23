@@ -114,9 +114,12 @@ function mdown(event) {
                         pointerState = pointerStates.CLICKED_CONTAINER;
                         containerStyle.cursor = "grabbing";
 
-                        if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                            wasDblClicked = true;
-                            toggleOptionsPane();
+                        // Only react to mouse pointer double click
+                        if (event.pointerType === "mouse") {
+                            if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                                wasDblClicked = true;
+                                toggleOptionsPane();
+                            }
                         }
                         break;
                     }
