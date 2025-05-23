@@ -70,6 +70,8 @@ INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activev
 INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (312,"IT326G","Distribuerade system",NOW(),1,0,12312,7.5);
 INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (319,"DV736A","Examensarbete i datavetenskap",NOW(),1,0,12319,30);
 INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (324,"IT108G","Webbutveckling - webbplatsdesign",NOW(),1,0,12324,7.5);
+INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1894,'G420','Demo-Course',NOW(),1,1,'52432','1');
+INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,'G1337','Testing-Course',NOW(),1,1,'1337','1');
 
 /* Insert versions of courses (The column vers should be the same as "anmälningskod", number with 5 digts) */
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (1,'DV12G','Webbprogrammering','UNK','45656','HT15','2014-12-29 00:00:00','2015-03-08 00:00:00','Webbprogrammering - HT15');
@@ -464,6 +466,8 @@ INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,3,0,
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,2,0,'W',1,'HT15',97732);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,1,0,'W',1,'HT15',45656);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,4,0,'W',1,'HT15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,1894,0,'W',1,'HT15',52432);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (22,1885,0,'W',1,'HT15',1337);
 -- Teachers END --
 
 -- StudentTeachers --
@@ -471,6 +475,8 @@ INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,3,0,
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,2,0,'ST',1,'HT15',97732);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,1,0,'ST',1,'HT15',45656);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,4,0,'ST',1,'HT15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,1894,0,'ST',1,'HT15',52432);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (20,1885,0,'ST',1,'HT15',1337);
 -- StudentTeachers END --
 
 -- Supervisor --
@@ -478,6 +484,8 @@ INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (24,3,0,
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (24,2,0,'ST',1,'HT15',97732);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (24,1,0,'ST',1,'HT15',45656);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (24,4,0,'ST',1,'HT15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (24,1894,0,'ST',1,'HT15',52432);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (24,1885,0,'ST',1,'HT15',1337);
 -- Supervisor END --
 
 -- Student --
@@ -485,6 +493,8 @@ INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,3,0,
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,2,0,'R',1,'HT15',97732);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,1,0,'R',1,'HT15',45656);
 INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,4,0,'R',1,'HT15',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,1894,0,'R',1,'HT15',52432);
+INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (21,1885,0,'R',1,'HT15',1337);
 -- Student END --
 
 -- Old users --
