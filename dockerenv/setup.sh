@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Exit this script if an error ocuur
+set -e
+
+# Make sure metadata folder exists
 mkdir -p ./githubMetadata
 
 # Make sure that coursesyspw.php exists before Docker mounts it
@@ -8,10 +12,10 @@ if [ ! -f ./coursesyspw.php ]; then
   cp ./coursesyspw.php.template ./coursesyspw.php
 fi
 
-# Add user and group if not exists
-if ! id "www-data" &>/dev/null; then
-  sudo groupadd -g 33 www-data
-  sudo useradd -u 33 -g www-data -s /bin/false www-data
+# Add this user to www-data group if not exists
+if ! id -nG "$USER" | grep -qw "www-data"; then
+  echo "Beginning to add $USER to www-data group (you may need to logout/login)..."
+  sudo usermod -aG www-data "$USER"
 fi
 
 # Set appropriate user rights
