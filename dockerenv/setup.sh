@@ -29,5 +29,10 @@ sudo chmod -R 777 ../../LenaSYS/
 # Prevent Git from showing the file permission changes
 git config core.fileMode false
 
-# start building Docker
-docker compose up --build
+# Start building Docker
+echo "Beginning to build and start containers..."
+docker compose build \
+  --build-arg USER_ID=$(id -u) \
+  --build-arg USER_NAME=$USER
+
+docker compose up
