@@ -18,8 +18,7 @@ $coursevers = getOP('coursevers');
 $log_uuid = getOP('log_uuid');
 $debug = "NONE!";
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$userid = $userData['uid'] ?? 'guest';
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 if (checklogin()) { //This entire checklogin should be working by using the getUid instead, but for the time being it doesn't.
     if (isSuperUser($userid)) {

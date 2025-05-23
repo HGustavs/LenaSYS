@@ -16,8 +16,7 @@ pdoConnect();
 session_start();
 
 // Global variables
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$uid = $userData['uid'] ?? 'guest';
+$uid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $opt = getOP('opt');
 $courseid = getOP('courseid');

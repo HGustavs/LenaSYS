@@ -13,8 +13,7 @@ header('Content-Type: application/json'); // Viktigt för JSON-standard
 
 date_default_timezone_set("Europe/Stockholm");
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$userid = $userData['uid'] ?? 'guest';  // Hämtar inloggad användares UID (från session eller token)
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $username = "unknown";
 

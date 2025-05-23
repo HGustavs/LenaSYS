@@ -1,15 +1,14 @@
 <?php
 include_once "./logUserEvent_ms.php";
 include_once "../curlService.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
 
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$userid = $userData['uid'] ?? 'guest';
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+
 // Microservice call to retrieve username
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
 

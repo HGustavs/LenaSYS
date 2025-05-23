@@ -22,8 +22,7 @@ $courseid = getOP('courseid');
 $coursevers = getOP('coursevers');
 $versid = getOP('vers');
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$uid = $userData['uid'] ?? 'guest';
+$uid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $log_uuid=getOP('log_uuid');
 $opt=getOP('opt');

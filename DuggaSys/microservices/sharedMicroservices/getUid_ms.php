@@ -29,5 +29,5 @@ include_once "../../../Shared/basic.php";
     logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "getUid_ms.php", $userid, $info, $log_timestamp); //logging information into serviceLogEntries-table through logServiceEvent-function);
 
     header('Content-Type: application/json');
-    echo json_encode(['uid' => $userid]);
+    echo json_encode( $userid);
 

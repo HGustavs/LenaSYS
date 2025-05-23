@@ -18,8 +18,7 @@
   $lid = getOP('lid');
   $opt = getOP('opt');
 
-  $userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-  $uid = $userData['uid'] ?? 'guest';
+  $uid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
   
   $log_uuid=getOP('log_uuid');
   $debug='NONE!';

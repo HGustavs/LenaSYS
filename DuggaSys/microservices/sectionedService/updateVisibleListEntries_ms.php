@@ -20,8 +20,7 @@ $log_uuid = getOP('log_uuid');
 $opt = getOP('opt');
 $debug = "NONE!";
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$userid = $userData['uid'] ?? 'guest';
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 // Permissions Check
 

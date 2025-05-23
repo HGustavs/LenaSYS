@@ -3,7 +3,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 include_once "./retrieveSectionedService_ms.php";
 
 pdoConnect();
@@ -21,8 +21,8 @@ if (checklogin()) { //This entire checklogin should be working by using the getU
 	} else {
 		$userid = "UNK";
 	}
-
-	if(isSuperUser(getUid())) {
+    $userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
+	if(isSuperUser($userid)) {
         $sectid=getOP('lid');
 
         $query = $pdo->prepare("UPDATE listentries SET visible = '3' WHERE lid=:lid");

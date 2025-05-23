@@ -23,8 +23,7 @@ $grptype = getOP('grptype');
 $pos = getOP('pos');
 $tabs = getOP('tabs');
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$userid = $userData['uid'] ?? 'guest';
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 // Microservice for retrieveUsername
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");

@@ -20,8 +20,7 @@ include_once "../curlService.php";
 pdoConnect();
 session_start();
 
-$userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-$uid = $userData['uid'] ?? 'guest';
+$uid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 $courseid = getOP('courseid');
 $versid = getOP('vers');

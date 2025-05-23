@@ -20,8 +20,7 @@
   $log_uuid=getOP('log_uuid');
   $debug='NONE!';
 
-  $userData = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
-  $uid = $userData['uid'] ?? 'guest';
+  $uid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
   //Call the updateTableListentries service to update the pos & moment columns
 
