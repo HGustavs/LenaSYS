@@ -1,6 +1,5 @@
 <?php
 
-
 // Include basic application services
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
@@ -9,7 +8,7 @@ include_once "../curlService.php";
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-
+    date_default_timezone_set("Europe/Stockholm");
     pdoConnect();
     session_start();
 
@@ -20,9 +19,6 @@ include_once "../curlService.php";
     $courseid = $data['cid'];
     $coursevers = $data['vers'];
     $log_uuid = $data['log_uuid'];
-    
-
-    date_default_timezone_set("Europe/Stockholm");
     
     $today = date("Y-m-d H:i:s");
     $hasread = hasAccess($userid, $courseid, 'r');

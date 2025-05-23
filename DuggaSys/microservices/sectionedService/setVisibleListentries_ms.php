@@ -1,6 +1,5 @@
 <?php
 
-
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
@@ -9,11 +8,9 @@ include_once "../../../Shared/sessions.php";
 include "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
-
 // Connect to database and start session
 pdoConnect();
 session_start();
-
 
 // Retrieve parameters from the request 
 $lid = getOP('lid');
@@ -27,7 +24,6 @@ $opt=getOP('opt');
 $debug='NONE!';
 
 // Permissions Check
-
 if (checklogin() && isSuperUser($uid)){
 
     // prepare SQL query
@@ -51,7 +47,7 @@ if (checklogin() && isSuperUser($uid)){
     $debug = "insufficient permissions.";
 }
 
-  $postData = [
+$postData = [
     'debug' => $debug,
     'opt' => $opt,
     'uid' => $uid,

@@ -28,7 +28,6 @@ $log_uuid=getOP('log_uuid');
 $coursevers=getOP('coursevers');
 $debug='NONE!';
 
-
 $userfeedback=array();
 $avgfeedbackscore=array();
 

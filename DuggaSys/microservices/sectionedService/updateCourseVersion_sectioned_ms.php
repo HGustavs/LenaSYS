@@ -90,7 +90,6 @@ if (!$query->execute()) {
     $debug = "Error updating entries " . $error[2];
 }
 
-
 // Check if selected course version should be set as active
 if ($makeactive == 3) {
     $postData = [
@@ -105,14 +104,15 @@ if ($makeactive == 3) {
 $description = "Course: " . $courseid . ". Version: " . $versid . ".";
 logUserEvent($userid, $username, EventTypes::EditCourseVers, $description);
 
-    $postData = [
-        'debug' => $debug,
-        'opt' => $opt,
-        'uid' => $userid,
-        'cid' => $courseid,
-        'vers' => null,
-        'log_uuid' => null
-    ];
-    header("Content-Type: application/json");
-    $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
-    echo $retrieveArray;
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $userid,
+    'cid' => $courseid,
+    'vers' => null,
+    'log_uuid' => null
+];
+
+header("Content-Type: application/json");
+$retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+echo $retrieveArray;
