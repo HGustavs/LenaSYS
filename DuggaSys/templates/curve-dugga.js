@@ -516,10 +516,10 @@ function handler_mousedown(ev) {
 	clickstate = 1;
 	// Figure out if we clicked in an object
 	document.querySelectorAll("#operations > option").forEach(function (option) {
-		var opArr = this.value.split(" ");
+		var opArr = option.value.split(" ");
 		for (var i = 1; i < opArr.length; i += 2) {
 			if (opArr[i] == gridx && opArr[i + 1] == gridy) {
-				selectedObjId = this.id;
+				selectedObjId = option.id;
 				selectedPoint = Math.round(i / 2);
 			}
 		}
@@ -791,8 +791,8 @@ function drawPath()
 	// Draw students objects
 	
 	document.querySelectorAll("#operations > option").forEach(function (option) {
-		var opArr = this.value.split(" ");
-		if (this.id == selectedObjId) {
+		var opArr = option.value.split(" ");
+		if (option.id == selectedObjId) {
 				opArr[selectedPoint * 2 - 1] = gridx;
 				opArr[selectedPoint * 2] = gridy;
 				drawOp(sx, sy, opArr, studentLineColor, true, true,studentStrokeWidth);	
