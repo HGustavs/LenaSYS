@@ -904,6 +904,19 @@ function startDuggaHighScore(){
 	}
 }
 
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    if(document.querySelector(".instructions-content").style.display==="block"){
+        document.querySelector(".instructions-content").style.display="none";
+    }
+    else{
+        document.querySelector(".instructions-content").style.display="block"
+    }
+}
+
 function toggleFeedback()
 {
     $(".feedback-content").slideToggle("slow");
