@@ -2585,6 +2585,12 @@ function FABDown(e)
 {
 	console.log('this is e id: ' + e.target.id);
 	console.log('this is e class: ' + e.target.className);
+
+	var eL=document.querySelector('.fab-btn-list');
+	var eL2=document.querySelector('.fab-btn-list2');
+
+	console.log('el classlist contains: ' + e.target.classList.contains('btn-floating'));
+	console.log('el2 classlist contains: ' + e.target.classList.contains('btn-floating'));
 	
 	if (e.target.id == "fabBtn") {
 		var eL=document.querySelector('.fab-btn-list');
@@ -2610,8 +2616,8 @@ function FABDown(e)
 			}
 		});
 	}
-	else if (e.target.id != "fabDropdownElement"){
-		console.log('jackpot');
+	else if (e!= undefined && !e.target.classList.contains('btn-floating')){
+		console.log('jackpot - it does NOT contain the btn-floating class!');
 		closeFabDropdown();
 	}
 }

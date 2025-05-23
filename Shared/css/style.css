@@ -8012,10 +8012,6 @@ only screen and (max-device-width: 568px) {
   bottom: 0px;
 }
 
-#fabDropdownElement{
- /* will add handling here */
-}
-
 .fab-btn-list2 {
   padding: 0;
   width: 100%;
