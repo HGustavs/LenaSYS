@@ -219,34 +219,59 @@ function drawLine(line, targetGhost = false) {
         }
         else if (telem.kind === elementTypesNames.SelfCall) {
             lineStr += selfcallthing(fx, fy, tx, ty, offset.x1, offset.y1, line, lineColor, strokeDash);
-            const box = document.querySelector('.selfcall');
-            box.classList.add("selfcallBox");
+            /* const box = document.querySelector('.selfcall');
+            box.classList.add("selfcallBox");*/
         }
         else if (felem.kind === elementTypesNames.SelfCall) {
             lineStr += selfcallthing(tx, ty, fx, fy, offset.x2, offset.y2, line, lineColor, strokeDash);
-            const box = document.querySelector('.selfcall');
-            box.classList.add("selfcallBox");
+           /* const box = document.querySelector('.selfcall');
+            box.classList.add("selfcallBox"); */
         } 
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
 
     }
+        //Line icon for SeflCall
+        if (felem.name === "Self Call" || telem.name === "Self Call") {
+            const isFrom = felem.name === "Self Call";
+            let startX = isFrom ? tx : fx; //Different values dependant on line direction
+            let startY = isFrom ? ty : fy;
+            const element = document.getElementById(isFrom ? felem.id : telem.id );
 
-    // Drawing Arrow and other line icons for UML and IE lines
-    if (line.recursive) {
-        // Arrow/icon location dependant on element length, so it's always in the top right corner of the element
-        const length = 40 * zoomfact;
-        const elementLength = felem.x2 - felem.x1;
-        let startX = felem.x1 + elementLength - length;
-        let startY = felem.y1;
+            if(isFrom){  //if the line is from the source element reverse icon
+                line.ctype = line.ctype.split('').reverse().join('');
+            }
+
+            const dx = 2 * (isFrom ? offset.x2 : offset.x1); //keeping track of which offset to use
+            const dy = 2 * (isFrom ? offset.y2 : offset.y1);
+            const length = 30 * zoomfact;
+            
+            if (line.ctype === lineDirection.UP) {
+                const currentValue = element.offsetLeft;  
+                element.style.left = (currentValue + dx) + "px"; //Givingthe div element the offset aswell, to follow the line
+                lineStr += drawLineIcon(line.startIcon, line.ctype, startX + dx, startY, lineColor, line);
+                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX + dx + length, startY, lineColor, line);
+
+            } else if (line.ctype === lineDirection.DOWN) {
+                const currentValue = element.offsetLeft;
+                element.style.left = (currentValue + dx) + "px";
+                lineStr += drawLineIcon(line.startIcon, line.ctype, startX +dx, startY, lineColor, line);
+                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX +dx + length, startY, lineColor, line);
+
+            } else if (line.ctype === lineDirection.LEFT) {
+                const currentValue = element.offsetTop;
+                element.style.top = (currentValue + dy) + "px";
+                lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY + dy, lineColor, line);
+                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX, startY + dy + length, lineColor, line);
+
+            } else if (line.ctype === lineDirection.RIGHT) {
+                const currentValue = element.offsetTop;
+                element.style.top = (currentValue + dy) + "px";
+                lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY + dy, lineColor, line);
+                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX, startY + dy + length, lineColor, line);
+            }
         
-        // Same values for UML and IE as they use the same icons, just different element values
-        if(line.type !== entityType.SD || line.type !== entityType.SE){
-            line.ctype = lineDirection.UP;  // Makes arrows point down
-            lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY, lineColor, line);
-            lineStr += drawLineIcon(line.endIcon, line.ctype, (startX + length), startY, lineColor, line);
-        }
     }else {
         lineStr += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
         lineStr += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
@@ -296,17 +321,39 @@ function drawLine(line, targetGhost = false) {
         
     }
 
+    // Draws the cardinality start and end labels for Self Call
+    if (felem.name === "Self Call" || telem.name === "Self Call") {
+        if(felem.name === "Self Call"){
+             fx = tx + offset.x2 * 2; //If line is from self we want it to work same as if its the otwer way around
+             fy = ty + offset.y2 * 2;
+        }
+         if (line.startLabel && line.startLabel != '') {
+            let fxCardinality = fx + (2* offset.x1);
+            let fyCardinality = fy + (2* offset.y1);
+            let txCardinality = fx + (2* offset.x1);
+            let tyCardinality = fy + (2* offset.y1);
+            if (line.ctype === lineDirection.UP  || line.ctype === lineDirection.DOWN ) { 
+                txCardinality += 40;
+            }
+            else if (line.ctype === lineDirection.LEFT  || line.ctype === lineDirection.RIGHT ) { 
+                tyCardinality += 40;
+            }
+
+            labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem, telem);
+            labelStr += drawLineLabel(line, line.endLabel, lineColor, 'startLabel', txCardinality, tyCardinality, true, felem, telem);
+    }
+    }
     // Draws the cardinality start and end labels for the line for UML
-    if (felem.type != entityType.ER || telem.type != entityType.ER) {
+    else if (felem.type != entityType.ER || telem.type != entityType.ER) {
         if (line.startLabel && line.startLabel != '') {
             const fxCardinality = fx + offset.x1;
             const fyCardinality = fy + offset.y1;
-            labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem);
+            labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem, telem);
         }
         if (line.endLabel && line.endLabel != '') {
             const txCardinality = tx + offset.x1;
             const tyCardinality = ty + offset.y2;
-            labelStr += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem);
+            labelStr += drawLineLabel(line, line.endLabel, lineColor, 'endLabel', txCardinality, tyCardinality, false, felem, telem);
         }
     } else {
         // Draws cardinality for ER
@@ -688,10 +735,9 @@ function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, str
 
     const startX = fx + offsetX1;
     const startY = fy + offsetY1;
-    const targetX = tx ;
-    const targetY = ty;
+    const targetX = tx + offsetX1;
+    const targetY = ty + offsetY1;
     const lineWidth = 30;   
-
 
     const bendX = targetX + lineWidth 
     const bendY = targetY + lineWidth 
@@ -701,18 +747,18 @@ function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, str
    
     if(line.ctype === "LR" || line.ctype === "RL"){
         points = [
-            `${startX},${startY}`,   
-            `${targetX},${targetY - 15}`, 
-            `${targetX},${bendY - 15}`,   
-            `${startX},${exitY}`, 
+            `${startX},${startY + offsetY1}`,   
+            `${targetX},${targetY - 15 + offsetY1}`, 
+            `${targetX},${bendY - 15 + offsetY1}`,   
+            `${startX},${exitY + offsetY1}`, 
         ].join(" ");
 
     } else if(line.ctype === "BT" || line.ctype === "TB"){
         points = [
-            `${startX},${startY}`,   
-            `${targetX - 15},${targetY}`, 
-            `${bendX - 15},${targetY}`,   
-            `${exitX},${startY}`     
+            `${startX+ offsetX1},${startY}`,   
+            `${(targetX - 15) +offsetX1},${targetY}`, 
+            `${bendX - 15 + offsetX1},${targetY}`,   
+            `${exitX + offsetX1 },${startY }`     
         ].join(" ");
     }
 
@@ -745,29 +791,13 @@ function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, str
  * @param {Object} felem The element object that is drawn, for recursive
  * @returns Returns the label for the line
  */
-function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
+function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem, telem) {
     const offsetOnLine = 20 * zoomfact;
     let canvas = document.getElementById('canvasOverlay');
     let canvasContext = canvas.getContext('2d');
     let textWidth = canvasContext.measureText(label).width;
 
 
-    if(line.recursive){
-        // Calculating the cardinality's position based on element size, so it follows when resized
-        const lift   = 55 * zoomfact; 
-        const {length, elementLength, startX, startY } = recursiveParam(felem);
-        x = startX
-        y = startY - lift;
-
-        // Positioning based on if label is beside start element or end element
-        if(labelStr == "startLabel"){
-            x -= 10;
-            y -= 0;
-        }else if(labelStr == "endLabel"){
-            x += length +10;
-            y -= 0;
-        } 
-    } else {
         // Positioning based on which direction the labeled line is coming from
         if (line.ctype == lineDirection.UP) {
             x -= offsetOnLine / 2;
@@ -782,8 +812,7 @@ function drawLineLabel(line, label, lineColor, labelStr, x, y, isStart, felem) {
             x += (isStart) ? offsetOnLine : -offsetOnLine;
             y -= offsetOnLine / 2;
         }
-    }
-
+    
     // Returns correctly positioned label for line
     return `<rect 
                 class='text cardinalityLabel' 
