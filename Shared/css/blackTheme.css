@@ -1096,16 +1096,20 @@ input{
 	background-color: #212121;
 }
 
+.alertmsg{
+    background-color: var(--color-border);
+}
+
 #motdArea {
-    background-color: var(--color-accent);
+    background-color: var(--color-border);
 }
 
 #motdArea #motdContent {
-    background-color: var(--color-accent);
+    background-color: var(--color-border);
 }
 
 #motdArea .motdBoxheader {
-    background-color: var(--color-accent);
+    background-color: var(--color-border);
 }
 
 .arrow {
@@ -1348,8 +1352,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 #motd {
-  background-color: #000!important;
-  color: #fff;
+  background-color: --color-border !important;
+  color: #614875;
 }
 
 #darkmodeToggle {
