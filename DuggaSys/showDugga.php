@@ -167,9 +167,9 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
 
-					if(isSuperUser($userid)){
+					if(checklogin() && (isSuperUser($_SESSION['uid']))) {
 						#a teacher may not submit any duggas
-						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "<table id='submitButtonTable'>";
 						echo "<tr>";
 						echo "<td align='rigth'>";
 						echo "<input class='submit-button large-button' onclick='editDuggaInstruction()' type='button' value='Edit instructions'/>";	
@@ -178,7 +178,7 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "</table>";
 						
 					}else if ($duggafile !== 'contribution') {						
-						echo "<table id='submitButtonTable' class='navheader'>";
+						echo "<table id='submitButtonTable'>";
 						echo "<tr>";
 						echo "<td align='left'>";
 						echo "<input id='saveDuggaButton' class='btn-disable submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
