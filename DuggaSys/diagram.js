@@ -522,9 +522,8 @@ function getData() {
 
     //Main mobile FAB-button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
-        document.querySelectorAll('.fab-inner').forEach(button => {
-            button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
-          });
+        let fabList = document.querySelector(".fab-btn-list");
+        fabList.style.display = fabList.style.display === 'none' ? 'block' : 'none';
     });
 
     //Side navbar buttons. (save, load and reset are inside diagram_dugga)
@@ -550,7 +549,6 @@ function getData() {
     document.getElementById("mb-backButton").addEventListener("click", () => {
         history.back();
     });
-    
 
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
