@@ -445,7 +445,6 @@
         position: absolute !important;
         top: 50px !important;
         left: 50px !important;
-        width: 60% !important;
         z-index: 5000 !important;
     }
 
@@ -642,14 +641,35 @@
 
 #diagram-message .error {
     background-color: #FFD2D2;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #diagram-message .success {
     background-color: #DFF2BF;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #diagram-message .warning {
     background-color: #FEEFB3;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 /*tooltip*/
