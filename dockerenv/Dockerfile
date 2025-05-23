@@ -55,7 +55,15 @@ USER root
 # Set the script as the entrypoint
 ENTRYPOINT [ "/usr/local/bin/init.sh" ]
 
-USER www-data
+# Build arguments defines variables for the userID and username
+ARG USER_ID
+ARG USER_NAME
+
+# Create the user home, userID and login shell of the new account
+RUN useradd -m -u $USER_ID -s /bin/bash $USER_NAME || true
+
+# Set the user for running container
+USER $USER_NAME
 
 # Default command
 CMD [ "apache2-foreground" ]
