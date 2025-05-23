@@ -24,4 +24,6 @@ try {
 } catch (PDOException $e) {
     error_log("Error reading versions: " . $e->getMessage());
 }
+
 echo json_encode($versions);
+exit;

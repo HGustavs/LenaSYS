@@ -193,7 +193,9 @@ function retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $cours
     $links = array();
 
     // Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
-    $versions = callMicroserviceGET("sectionedService/readCourseVersions_ms.php");
+    $versions = callMicroservicePOST("sectionedService/readCourseVersions_ms.php",[],true);
+    $versions = json_decode($versions);
+
 
     $codeexamples = array();
 
