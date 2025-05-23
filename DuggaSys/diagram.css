@@ -658,11 +658,6 @@
     transition-delay: 700ms;
 }
 
-.disabledIcon:hover .toolTipText {
-    visibility: visible;
-    transition-delay: 700ms;
-}
-
 #tooltip-OPTIONS {
     left: 9.5%;
 }
@@ -1173,11 +1168,23 @@
 
 .disabledIcon {
     background-color: #8d68ab;
+    opacity: 0.5;
 }
 
-    .disabledIcon:hover .toolTipText {
-        visibility: visible;
-    }
+.disabledIcon .diagramIcons {
+    pointer-events: none;
+    border: none;
+    cursor: default;
+}
+
+.disabledIcon .diagramIcons:hover {
+    border: none;
+}
+
+.disabledIcon .diagramIcons:hover .toolTipText {
+    visibility: hidden;
+}
+
 #a4options {
     display: flex;
 }
