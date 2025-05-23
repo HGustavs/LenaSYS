@@ -613,7 +613,7 @@
 
 /* Diagram Messages */
 #diagram-message {
-    width: 300px;
+    min-width: 300px;
     left: 85px;
     bottom: 20px;
     position: absolute;
