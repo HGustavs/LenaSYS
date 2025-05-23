@@ -3,7 +3,6 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "retrieveShowDuggaService_ms.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -18,16 +17,18 @@ if(isset($_SESSION['uid'])){
 	$userid="student";		
 } 	
 
-$hash=getOP('hash');
-$moment=getOP('moment');
+$hash = $_POST['hash'] ?? "UNK";
+$moment = $_POST['moment'] ?? null;
 
-$variant = array();
-$answer = array();
-$variantanswer = null;
-$param = null;
-$newcourseid=array();
-$newcoursevers=array();
-$newduggaid=array();
+$response = [
+    'variant' => 'UNK',
+    'answer' => 'UNK',
+    'variantanswer' => 'UNK',
+    'param' => '{}',
+    'cid' => null,
+    'vers' => null,
+    'quiz' => null
+];
 
 if($hash!="UNK"){
     $sql="SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash";
@@ -57,3 +58,6 @@ if($hash!="UNK"){
     }
 
 }
+
+header('Content-Type: application/json');
+echo json_encode($response);
