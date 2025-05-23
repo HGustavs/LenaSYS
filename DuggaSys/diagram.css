@@ -26,11 +26,37 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 50px; 
+        width: 60px; 
         height: 100vh; 
         z-index: 1000;
+          overflow-y: auto;
+    overflow-x: hidden;
     }
 }
+
+#diagram-toolbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+/*  Options-scrollbar track */
+#diagram-toolbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px grey;
+}
+
+/*  Options-scrollbar handle */
+#diagram-toolbar::-webkit-scrollbar-thumb {
+    background: #eb4;
+    border-radius: 10px;
+}
+
+/*  Options-scrollbar handle on hover */
+#diagram-toolbar::-webkit-scrollbar-thumb:hover {
+    background: #eb4;
+    border-radius: 10px;
+}
+
 @media screen and (min-height: 1199px) {
     #diagram-toolbar {
         width: 50px;
