@@ -1,3 +1,4 @@
+/* Course is created in testdata.sql */
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (1894,'G420','Demo-Course','Chaos Theory - Conspiracy 64k Demo','52432','ST20','2020-05-01 00:00:00','2020-06:30 00:00:00','Demo Course 2020 - All current duggas');
 
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (13,1894,1,2,'3D Dugga','3d-dugga','2020-05-01 00:00:00','2020-06:30 00:00:00',NOW(),1894, "52432");
