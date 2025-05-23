@@ -12,8 +12,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
+include_once "../curlService.php";
 //include_once "./retrieveFileedService_ms.php";
 
 // Connect to database and start session
@@ -27,7 +26,7 @@ $coursevers = getOP('coursevers');
 $filename = getOP('filename');
 $kind = getOP('kind');
 $contents = getOP('contents');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 // Microservice for retrieveUsername
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");

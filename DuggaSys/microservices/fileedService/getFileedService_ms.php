@@ -7,9 +7,8 @@ header('Content-Type: application/json');
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 //include_once "./retrieveFileedService_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
+include_once "../curlService.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -21,7 +20,7 @@ $courseid = getOP('courseid');
 $coursevers = getOP('coursevers');
 $fid = getOP('fid');
 $log_uuid = getOP('log_uuid');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $debug = "NONE!";
 
 $kind = getOP('kind');

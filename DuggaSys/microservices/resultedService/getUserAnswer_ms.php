@@ -5,7 +5,6 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
 
@@ -20,7 +19,7 @@ $tableInfo = array();
 $duggaFilterOptions = array();
 $duggaName = "UNK";
 $subCourse = "UNK";
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 if(isSuperUser($userid) || hasAccess($userid, $cid, 'w')){
 	// Get data to display in table rows

@@ -9,9 +9,8 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
 //include_once "./retrieveFileedService_ms.php";
-include_once "../../../DuggaSys/microservices/curlService.php";
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -24,7 +23,7 @@ $cid = getOP('cid');
 $kind = getOP('kind');
 $filename = getOP('filename');
 $coursevers = getOP('coursevers');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $debug = "NONE!";
 $log_uuid = getOP('log_uuid');
 

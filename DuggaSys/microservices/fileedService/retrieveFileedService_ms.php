@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
 
 pdoConnect();
@@ -15,7 +15,7 @@ $coursevers = getOP('coursevers');
 $fid = getOP('fid');
 $kind = getOP('kind');
 $log_uuid = getOP('log_uuid');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $debug = "NONE!";
 
 $entries = array();
