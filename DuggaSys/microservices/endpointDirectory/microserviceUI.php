@@ -185,6 +185,7 @@ if (isset($_GET['id'])) {
         </div>
         <div class="search-container">
             <div class="button-container">
+                <button onclick="openFilterModal()">Filter</button>
                 <form method="get">
                     <input type="hidden" name="add" value="1">
                     <button type="submit">Add Microservice</button>
@@ -193,7 +194,7 @@ if (isset($_GET['id'])) {
                 <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
             </div>
         </div>
-        <div class='filter_modal'>
+        <div class='filter_modal' style="display: none;">
             <div class='filter_modal_content'>
                 <form method="GET">
                     <input type="text" name="search" placeholder="Search name/description">
@@ -352,5 +353,10 @@ if (isset($_GET['id'])) {
 </table>
     <?php } 
     }   ?>
+<script>
+    function openFilterModal() {
+        document.querySelector('.filter_modal').style.display = 'flex';
+    }
+</script>
 </body>
 </html>
