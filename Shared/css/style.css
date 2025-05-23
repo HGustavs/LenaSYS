@@ -3867,10 +3867,9 @@ div.submit-button:disabled {
   width: 100%;
 }
 
-#submitButtonTable{
-  position: relative;
-  z-index:500;
-  margin-top: 20px;
+.submitButtonTable-center{
+  display: flex;
+  justify-content: center;
 }
 
 #submitButtonTable input.large-button {
