@@ -179,12 +179,12 @@ Used in, where the microservice/file name also needs to be changed:
 ---
 
 ## duggaedService
-No microservicefiles are supposed to be renamed.
+No microservices to be renamed in the duggaedService folder.
 
 ---
 
 ## endpointDirectory
-Does not contain microservices. No files are supposed to be renamed.
+Does not contain microservices. No files to be renamed.
 
 ---
 
@@ -354,5 +354,28 @@ Used in, where the microservice/file name also needs to be changed:
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+## profileService
+No microservices to be renamed in the profileService folder.
+
+---
+
+## resultedService
+Microservices to be renamed in the resultedService folder.
+
+### getUserAnswer_ms.php
+New name: <ins>readUserAnswer_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/resultedService/getUserAnswer_ms.php
+- DuggaSys/microservices/Microservices Documentation/resultedService.md
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/tests/microservices/resultedService/getUserAnswer_ms_test.php
+- DuggaSys/tests/microservices/resultedService/Microservices_docuementation.md
 
 ---
