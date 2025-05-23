@@ -2062,14 +2062,14 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 				switch(coloringcode) {
 					case "<html>":
 					case "</html":
-						fontcolor = "red";
+						fontcolor = "#fc2d2d";
 						break;
 					case "<link ":
 						fontcolor = "blue";
 						break;
 					case "<h1>":
 					case "</h1":
-						fontcolor = "darkorchid";
+						fontcolor = "#4f5aff";
 						break;
 					case "<title>":
 					case "</title":
@@ -2077,7 +2077,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						break;
 					case "<body>":
 					case "</body":
-						fontcolor = "#941535";
+						fontcolor = "#bf1d46";
 						break;
 					case "<p>":
 					case "</p":
@@ -2092,7 +2092,7 @@ function rendercode(codestring, boxid, wordlistid, boxfilename) {
 						fontcolor = "#FF1493";
 						break;
 					default: 
-						fontcolor = "#00ff";
+						fontcolor = "#4f5aff";
 						break;
 				}
 

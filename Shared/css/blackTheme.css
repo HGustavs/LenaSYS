@@ -57,19 +57,26 @@
         --color-fileLink-table-1: #2d3133;
         --color-fileLink-table-2: #242729;
 
-        .checkbox-dugga:nth-child(odd)  {
-            background: var(--color-sectioned-table-hi); 
-        }
-        .checkbox-dugga:nth-child(even) {
-            background: var(--color-sectioned-table-lo); 
-        }
+        --color-normtext-string: #CE9178;
+        --color-normtext-keywordfunction: #D7BA7D;
+        --color-normtext-oper: #D4D4D4;
+        --color-comment: #51a64a;
+        --color-normtext-number: #B5CEA8;
     }
 
-    #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
-        cursor: pointer;
-        filter: invert(80%);
-        -webkit-filter: invert(80%);
-    }
+.checkbox-dugga:nth-child(odd)  {
+    background: var(--color-sectioned-table-hi); 
+}
+
+.checkbox-dugga:nth-child(even) {
+    background: var(--color-sectioned-table-lo); 
+}
+
+#dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
+    cursor: pointer;
+    filter: invert(80%);
+    -webkit-filter: invert(80%);
+}
 
 #div2{
 	background-color: var(--color-background);
@@ -266,11 +273,15 @@
 }
 
 .comment {
-    color: #888;
+    color: var(--color-comment);
+}
+
+.normtext .keywordfunction {
+    color: var(--color-normtext-keywordfunction);
 }
 
 .normtext .oper {
-    color: var(--color-text-light);
+    color: var(--color-normtext-oper);
     font-weight: bold;
     line-height: 15px;
 }
@@ -281,7 +292,7 @@
 }
 
 .normtext .string {
-    color: var(--color-text-light);
+    color: var( --color-normtext-string);
     font-weight: bold;
 }
 
@@ -291,7 +302,7 @@
 }
 
 .normtext .number {
-    color: var(--color-text-light);
+    color: var(--color-normtext-number);
     font-weight: bold;
 }
 
