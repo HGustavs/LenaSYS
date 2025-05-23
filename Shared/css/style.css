@@ -7880,7 +7880,7 @@ only screen and (max-device-width: 568px) {
     bottom: 100px; /* Nudges the FAB 10px up from the bottom */
   }
 }
-}
+
 @media screen and (max-width: 350px) {
 
   input.submit-button-newitem {
