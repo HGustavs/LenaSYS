@@ -226,7 +226,7 @@
 					<div class="inner-wrapper">
 						<div class="input-flex">
 							<?php
-							checkbox("generate_SSL", "generate local SSL certificate");
+							checkbox("generate_SSL", "Generate local SSL certificate");
 							?>
 						</div>
 					</div>
