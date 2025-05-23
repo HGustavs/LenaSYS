@@ -1169,6 +1169,7 @@ function mmoving(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
+            console.log("hello");
             const index = findIndex(data, context[0].id);
             const elementData = data[index];
 
@@ -1231,6 +1232,8 @@ function mmoving(event) {
 
             } else { // Normal resize for the other elements
                 // Functionality Left/Right resize
+
+                //if (elementData.kind == elementTypesNames.UMLEntity) console.log(elementData.width, elementData.height, elementData.x, elementData.y);
                 if ((startNode.left || startNode.upLeft || startNode.downLeft) && (startWidth + (deltaX / zoomfact)) > minWidth) { // Leftmost nodes while above minWidth
                     let tmpW = elementData.width;
                     let tmpX = elementData.x;
