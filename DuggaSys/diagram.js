@@ -1497,7 +1497,6 @@ function saveProperties() {
         addToLine("functions", "+");
     }
     // Saves the changes and updates relevant graphics
-    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();
 }
