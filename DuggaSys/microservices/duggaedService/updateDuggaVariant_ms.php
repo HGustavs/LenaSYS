@@ -4,6 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
+include_once "../curlService.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -29,11 +30,11 @@ if(strcmp($opt,"SAVVARI")===0){
 }
 
 include_once("retrieveDuggaedService_ms.php");
-include_once "../sharedMicroservices/getUid_ms.php";
+
 $log_uuid=getOP('log__uuid');
 $cid = getOP('cid');
 $coursevers = getOP('coursevers');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
 echo json_encode($retrievedData);
 

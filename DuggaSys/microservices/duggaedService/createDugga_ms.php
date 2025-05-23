@@ -5,7 +5,7 @@
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 include_once "./retrieveDuggaedService_ms.php";
 
 date_default_timezone_set("Europe/Stockholm");
@@ -25,7 +25,7 @@ $deadline = getOP('deadline');
 $qstart = getOP('qstart');
 $release = getOP('release');
 $log_uuid = getOP('log__uuid');
-$userid = getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 $debug = "NONE!";
 
 if (!(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')))) {

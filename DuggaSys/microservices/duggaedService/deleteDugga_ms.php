@@ -2,7 +2,7 @@
 
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
-include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -14,7 +14,7 @@ $opt=getOP('opt');
 $qid=getOP('qid');
 $cid=getOP('cid');
 $debug = "NONE!";
-$userid=getUid();
+$userid = callMicroserviceGET("sharedMicroservices/getUid_ms.php");
 
 if(!(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')))){
 	$debug = "The current user do not have permission to perform this action";
