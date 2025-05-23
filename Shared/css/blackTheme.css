@@ -6,7 +6,7 @@
         --color-text-header: #fff;
         --color-text-list: #000;
         --color-text-logo: #fff;
-        --color-text-label: #000;
+        --color-text-label: #fff;
         --color-text-dark: #000;
         --color-text-light: #fff;
         --color-text-unset: #aaaaaa;
@@ -56,6 +56,13 @@
 
         --color-fileLink-table-1: #2d3133;
         --color-fileLink-table-2: #242729;
+
+        .checkbox-dugga:nth-child(odd)  {
+            background: var(--color-sectioned-table-hi); 
+        }
+        .checkbox-dugga:nth-child(even) {
+            background: var(--color-sectioned-table-lo); 
+        }
     }
 
     #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
