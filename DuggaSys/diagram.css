@@ -569,6 +569,8 @@
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
+    height: 100vh;
+    min-height: 100vh;
 }
 
 #diagram-toolbar>fieldset {
