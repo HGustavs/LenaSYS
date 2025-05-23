@@ -18,12 +18,15 @@ if ! id -nG "$USER" | grep -qw "www-data"; then
   sudo usermod -aG www-data "$USER"
 fi
 
-# Set appropriate user rights
-sudo chown -R www-data:www-data ./githubMetadata
-sudo chown www-data:www-data ./coursesyspw.php
+# Add LenaSYS folder to username and www-data group recursively
+echo "Beginning to add LenaSYS to your username and www-data group..."
+sudo chown -R "$USER":www-data ../../LenaSYS
+
+# Change permissions of LenaSYS to 777
+echo "Beginning to change permissions of LenaSYS to 777..."
 sudo chmod -R 777 ../../LenaSYS/
 
-# Prevent showing changing the file permissions recursively
+# Prevent Git from showing the file permission changes
 git config core.fileMode false
 
 # start building Docker
