@@ -95,7 +95,13 @@ class Modal {
             $id,
             'File Permission Error',
             '
-                Failed to copy course files. Please run the following command: <code>chmod -R 755 /LenaSys/install/courses</code>
+                Failed to copy course files. Please run the following command to fix file permissions:
+                <code>chmod -R 755 /path/to/your/LenaSYS/newinstaller/courses</code>
+                Make sure to replace <code>/path/to/your/LenaSYS</code> with the actual path where LenaSYS is located.
+
+                For example (macOS example):
+                <pre><code>chmod -R 755 /Applications/XAMPP/xamppfiles/htdocs/LenaSYS/newinstaller/courses</code></pre>
+
                 Press the retry-button if you want to return to the installer at the step where it failed.
             ',
             [
