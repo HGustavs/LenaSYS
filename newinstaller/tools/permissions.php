@@ -161,6 +161,14 @@ class Permissions {
         }
     }
 
+    public static function change_chmod(string $path, $mode) {
+        try {
+            chmod($path, $mode);
+        } catch(Exception $e) {
+            return self::handle_exception($e, "Could not change file permission");
+        }
+    }
+
     private static function handle_success(string $action, $data) {
         return [
             "success"=> true,
