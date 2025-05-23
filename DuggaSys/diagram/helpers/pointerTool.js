@@ -9,7 +9,7 @@ function pointerTool_Start(mouseX, mouseY) {
     deltaX = 0;
     deltaY = 0;
 
-    if (AudioContext.length > 0) {
+    if (context.length > 0) {
         const elId = context [0]?.id;
         if (!elId) {
             return;
