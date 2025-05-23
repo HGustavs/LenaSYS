@@ -1074,16 +1074,30 @@ async function createFABItem(kind, itemtitle, comment) {
     }
     // console.log(numberOfItems + " " + itemtitle + "(s) created");  
     closeFabDropdown();
-    console.log('createFabBUtton pressed');
     numberOfItems = 1; // Reset number of items to create
   } 
-  console.log('createFABItem has been run');
 }
 
+// handles closing of the dropdown menus called via fab-buttons
 function closeFabDropdown(){
-  if(document.querySelector('.fab-btn-list2').checkVisibility() == true){
+
+  headerDropdownListVisible = document.querySelector('.fab-btn-list2').checkVisibility();
+  floatingDropdownListVisible = document.querySelector('.fab-btn-list').checkVisibility();
+
+  if(headerDropdownListVisible && floatingDropdownListVisible){
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+    document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+
+		document.querySelector('.fab-btn-list2').style.display="none";
+		document.querySelector('.fab-btn-list').style.display="none";
+	}
+  else if(headerDropdownListVisible){
 		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list2').style.display="none";
+	}
+  else if(floatingDropdownListVisible){
+		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list').style.display="none";
 	}
 }
 
@@ -2846,20 +2860,17 @@ document.addEventListener("mousedown", function (e) {
 }); */
 
 document.addEventListener("mouseout", function (e) {
-  console.log("mouse out");
   FABMouseOut(e);
 });
 
 document.addEventListener("mousedown", function (e) {
   mouseDown(e);
-  console.log("mouse down 2");
   if (e.button == 0) {
     FABDown(e);
   }
 });
 
 document.addEventListener("mouseup", function (e) {
-  console.log("mouse up");
   mouseUp(e);
 });
 
@@ -3001,7 +3012,7 @@ document.addEventListener("scroll", function (e) {
     localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
     
     //closes fab-element-dropdown if scrolling
-    FABDown(e);
+    closeFabDropdown();
   }
 });
 

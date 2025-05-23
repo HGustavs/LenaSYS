@@ -2583,19 +2583,10 @@ function FABMouseOut(e) {
 //----------------------------------------------------------------------------------
 function FABDown(e)
 {
-	console.log('this is e id: ' + e.target.id);
-	console.log('this is e class: ' + e.target.className);
-
-	var eL=document.querySelector('.fab-btn-list');
-	var eL2=document.querySelector('.fab-btn-list2');
-
-	console.log('el classlist contains: ' + e.target.classList.contains('btn-floating'));
-	console.log('el2 classlist contains: ' + e.target.classList.contains('btn-floating'));
-	
+	// Handling: floating fab-button
 	if (e.target.id == "fabBtn") {
 		var eL=document.querySelector('.fab-btn-list');
 		var e1=document.querySelectorAll('.fab-btn-sm');
-		console.log("big fabbutton activated?");
 		
 		e1.forEach(element => {
 			if(element.classList.contains('scale-out')){
@@ -2604,10 +2595,10 @@ function FABDown(e)
 			}
 		});
 	} 
+	// Handling: header fab-button
 	else if (e.target.id == "addElement") {
 		var e2=document.querySelectorAll('.fab-btn-sm2');
 		var eL2=document.querySelector('.fab-btn-list2');
-		console.log("small fabbutton activated?");
 
 		e2.forEach(element2 => {
 			if(element2.classList.contains('scale-out')){
@@ -2616,9 +2607,11 @@ function FABDown(e)
 			}
 		});
 	}
-	else if (e!= undefined && !e.target.classList.contains('btn-floating')){
-		console.log('jackpot - it does NOT contain the btn-floating class!');
-		closeFabDropdown();
+	// if click on fab-dropdown-element, it's handled by its connected "onclick" function.
+	else if(document.querySelector('.fab-btn-list2')){
+		if (!e.target.classList.contains('btn-floating')){
+			closeFabDropdown();
+		}
 	}
 }
 
