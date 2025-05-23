@@ -546,6 +546,7 @@ function toggleToolbar() {
 
     let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
     let toolbarActive = toolbar.classList.toggle("active");
+    closeMenu("mobileToolbar");
 
     /*
     * Determines wether to rotate the chevron icon if the toolbar and * toggleBtn is in a active state
@@ -562,12 +563,12 @@ function toggleToolbar() {
 
 //Toggles for Mobile sidebar 
 function secondToolbarToggle() { 
-     let toggleBtn = document.querySelector(".icon-wrapper-sidebar");
-     let chevronIcon = document.querySelector(".toggle-chevron-sidebar");
-     let toolbar   = document.getElementById('mb-diagram-sidebar');
-     let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
+    let toggleBtn = document.querySelector(".icon-wrapper-sidebar");
+    let chevronIcon = document.querySelector(".toggle-chevron-sidebar");
+    let toolbar   = document.getElementById('mb-diagram-sidebar');
+    let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
 
-       if (ChevronActive) {
+    if (ChevronActive) {
         chevronIcon.style.transform = `rotate(180deg)`;
     }
     else {
@@ -576,6 +577,7 @@ function secondToolbarToggle() {
 
     toolbar.classList.toggle('open');
     toggleBtn.classList.toggle('open');
+    closeMenu("sidebar");
 }
     
 
@@ -684,4 +686,30 @@ function nonElementToggle(el){
     setTimeout(()=>{
         el.classList.remove("active");
     }, 1500);
+}
+
+/**
+ * @description Function that autocloses menus depening on which menu that is currently open
+ * @param {*} dir describes which menu that is currently open 
+ */
+function closeMenu(dir){
+    let toggleBtnToolbar = document.querySelector(".icon-wrapper");
+    let chevronIconToolbar = document.querySelector(".toggle-chevron");
+    let toggleBtnSidebar = document.querySelector(".icon-wrapper-sidebar");
+    let chevronIconSidebar = document.querySelector(".toggle-chevron-sidebar");
+
+    // Closes the FAB-menu and toolbar when sidebar is opened
+    if(dir === 'sidebar'){
+        document.getElementById("mb-diagram-toolbar").classList.remove("active");
+        toggleBtnToolbar.classList.remove("toolbar-active");
+        chevronIconToolbar.style.transform = `rotate(0deg)`;
+        document.querySelector(".fab-btn-list").style.display = `none`;
+    }
+
+    // Closes only the sidebar when the toolbar is opened
+    else if(dir === 'mobileToolbar'){
+        document.getElementById("mb-diagram-sidebar").classList.remove("open");
+        toggleBtnSidebar.classList.remove("toolbar-active");
+        chevronIconSidebar.style.transform = `rotate(0deg)`;
+    }
 }
