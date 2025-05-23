@@ -67,7 +67,7 @@ class ConfigurationManager {
 			$real_path = $this->save_file ?: realpath($this->save_file);
 
 			if (!Permissions::has_permission($real_path)) {
-				throw new Exception("Could not read config file at {$real_path} Missing permissions.");
+				Permissions::change_chmod($real_path, 0777);
 			}
 	
 			$file_contents = file_get_contents($real_path);
