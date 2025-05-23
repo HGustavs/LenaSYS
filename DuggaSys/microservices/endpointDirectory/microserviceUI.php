@@ -221,6 +221,7 @@ if (isset($_GET['id'])) {
                         <a href="?" class="a-button">Reset</a>
                     <?php endif; ?>
                 </form>
+                <button onclick="closeFilterModal()" class="a-button" style="float:right;">Close</button>
             </div>
         </div>
     <?php } ?>
@@ -356,6 +357,9 @@ if (isset($_GET['id'])) {
 <script>
     function openFilterModal() {
         document.querySelector('.filter_modal').style.display = 'flex';
+    }
+    function closeFilterModal() {
+        document.querySelector('.filter_modal').style.display = 'none';
     }
 </script>
 </body>
