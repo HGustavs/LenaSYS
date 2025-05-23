@@ -4,6 +4,7 @@
 if [ ! -f ./coursesyspw.php ]; then
   echo "Creating coursesyspw.php from template"
   cp ./coursesyspw.php.template ./coursesyspw.php
+  chmod 777 ./coursesyspw.php
 fi
 
 # start building Docker
