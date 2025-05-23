@@ -174,11 +174,11 @@ if(!isset($_SESSION["submission-$cid-$vers-$duggaid-$moment"])){
 						echo "</div>";
 						
 					}else if ($duggafile !== 'contribution') {						
-						echo "<div id='submitButtonTable'>";
-						echo "<input id='saveDuggaButton' class='btn-disable submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
+						echo "<div id='submitButtonTable' class='submitButtonTable-center'>";
+						echo "<input class='btn-disable submit-button large-button' type='button' value='Save' onclick='uploadFile(); showReceiptPopup();' />";
 						if ($duggafile !== 'generic_dugga_file_receive') {
 							echo "<input class='btn-disable submit-button large-button' type='button' value='Reset' onclick='reset();' />";
-							echo "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
+							echo "<input class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />";
 						}
 						echo "</div>";
 					}
