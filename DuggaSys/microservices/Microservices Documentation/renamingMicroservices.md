@@ -379,3 +379,147 @@ Used in, where the microservice/file name also needs to be changed:
 - DuggaSys/tests/microservices/resultedService/Microservices_docuementation.md
 
 ---
+
+## sectionedService
+Microservices to be renamed in the sectionedService folder.
+
+### changeActiveCourseVersion_sectioned_ms.php
+New name: <ins>updateActiveCourseVersion_sectioned_ms.php</ins>
+A new file with the new name has already been created. It is an exact copy of the old one, so that file should just be removed along with the related test-file. Keep only <ins>updateActiveCourseVersion_sectioned_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/tests/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms_test.php
+
+---
+
+### getCourseGroupsAndMembers_ms.php
+New name: <ins>readCourseGroupsAndMembers_ms.php</ins>.
+A new file with the new name has already been created and is in use. It is an exact copy of the old one, so that file should just be removed. Keep only <ins>readCourseGroupsAndMembers_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### getCourseVersions_ms.php
+New name: <ins>readCourseVersions_ms.php</ins>.
+A new file with the new name has already been created and is in use. The new microservice is similar to the old one with some changes, but they work the same way - the old file should just be removed. Keep only <ins>readCourseVersions_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/getCourseVersions_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### getDeletedListEntries_ms.php
+New name: <ins>readRemovedListentries_ms.php</ins>.
+Is not documented in DuggaSys/microservices/Microservices.md, only in backend-models/microservices/duggaSys services/Microservices.md, but should be renamed to follow the same nameconvention as the other files.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/getDeletedListEntries_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/sectioned.js
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+
+---
+
+### getGroupValues_ms.php
+New name: <ins>readGroupValues_ms.php</ins>.
+A new file with the new name has already been created and is in use. The new microservice is the exact same, but with an array added in the new one - the old file should just be removed. Keep only <ins>readGroupValues_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/getGroupValues_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### getListEntries_ms.php
+New name: <ins>retrieveAllSectionedServiceData_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/getListEntries_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- Shared/dugga.js
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- DuggaSys/tests/microservices/sectionedService/getListEntries_ms_test.php
+- DuggaSys/tests/microservices/sectionedService/retrieveSectionedService_ms_test.php
+- DuggaSys/tests/microservices/sectionedService/readCourseVersions_ms_test.php
+- DuggaSys/tests/microservices/sectionedService/Microservices_test_documentation.md
+
+---
+
+### getUserDuggaFeedback_ms.php
+New name: <ins>readUserDuggaFeedback_ms.php</ins>.
+A new file with the new name has already been created and is in use. The new microservice is very similar, it just includes more data as output. The old file should just be removed. Keep only <ins>readUserDuggaFeedback_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### reorderListEntries_ms.php
+New name: <ins>updateListEntryOrder_ms.php</ins>.
+A new file with the new name has already been created and is in use. It is an exact copy of the old one, so that file should just be removed. Keep only <ins>updateListEntryOrder_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/reorderListEntries_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
+
+### retrieveAllCourseVersions_ms.php
+New name: <ins>readAllCourseVersions_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/retrieveAllCourseVersions_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+
+---
+
+### setVisibleListentries_ms.php
+New name: <ins>updateVisibleListEntries_ms.php</ins>.
+A new file with the new name has already been created and is in use. It is very similar to the old one but works the same way, so the old file should just be removed along with the related test-file. Keep only <ins>updateVisibleListEntries_ms.php</ins>.
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php
+- DuggaSys/microservices/deprecated_microservices.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/tests/microservices/sectionedService/setVisibleListentries_ms_test.php
+
+---
