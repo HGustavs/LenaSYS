@@ -853,6 +853,19 @@ function startDuggaHighScore() {
 	}
 }
 
+//----------------------------------------------------------------------------------
+// show/hide dugga instructions
+//----------------------------------------------------------------------------------
+function toggleInstructions()
+{
+    if(document.querySelector(".instructions-content").style.display==="block"){
+        document.querySelector(".instructions-content").style.display="none";
+    }
+    else{
+        document.querySelector(".instructions-content").style.display="block"
+    }
+}
+
 function toggleFeedback() {
 	document.querySelectorAll(".feedback-content").forEach(el => {
 		if (el.style.display === "none" || el.style.display === "") {
