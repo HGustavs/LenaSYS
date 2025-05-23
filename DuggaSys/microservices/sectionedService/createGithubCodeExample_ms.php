@@ -2,7 +2,7 @@
 
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../sharedMicroservices/createNewListEntry_ms.php";
-include_once "./retrieveSectionedService_ms.php";
+include_once "../curlService.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 
@@ -454,6 +454,15 @@ function NoCodeExampleNoFiles($exampleName)
     }
 }
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-header('Content-Type: application/json');
-echo json_encode($data);
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $userid,
+    'cid' => $courseid,
+    'vers' => $coursevers,
+    'log_uuid' => $log_uuid
+];
+
+header("Content-Type: application/json");
+$data = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+echo $data;

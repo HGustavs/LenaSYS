@@ -4,7 +4,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveSectionedService_ms.php";
+include_once "../curlService.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -119,6 +119,16 @@ if(strcmp($opt,"UPDATE")===0) {
     }
 }
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
-echo json_encode($data);
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $userid,
+    'cid' => $courseid,
+    'vers' => $coursevers,
+    'log_uuid' => $log_uuid
+];
+
+header("Content-Type: application/json");
+$data = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+echo $data;
 return;

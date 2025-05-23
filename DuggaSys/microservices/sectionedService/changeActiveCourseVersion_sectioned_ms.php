@@ -9,7 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "./retrieveSectionedService_ms.php";
+include_once "../curlService.php";
 
 pdoConnect();
 session_start();
@@ -42,7 +42,18 @@ if($ha || $studentTeacher) {
     }
 }
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $userid,
+    'cid' => $courseid,
+    'vers' => $coursevers,
+    'log_uuid' => $log_uuid
+];
+
+header("Content-Type: application/json");
+$response = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+$data = json_decode($response, true);
 $data['coursevers'] = $versid;
 echo json_encode($data);
 return;

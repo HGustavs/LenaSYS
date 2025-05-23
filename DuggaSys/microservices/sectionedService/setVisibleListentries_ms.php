@@ -1,19 +1,16 @@
 <?php
 
-
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveSectionedService_ms.php";
-
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
 session_start();
-
 
 // Retrieve parameters from the request 
 $lid = getOP('lid');
@@ -27,7 +24,6 @@ $opt=getOP('opt');
 $debug='NONE!';
 
 // Permissions Check
-
 if (checklogin() && isSuperUser($uid)){
 
     // prepare SQL query
@@ -50,6 +46,17 @@ if (checklogin() && isSuperUser($uid)){
 } else {
     $debug = "insufficient permissions.";
 }
-$data = retrieveSectionedService($debug, $opt, $pdo, $uid, $courseid, $versid, $log_uuid);
-echo json_encode($data);
+
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $uid,
+    'cid' => $courseid,
+    'vers' => $versid,
+    'log_uuid' => $log_uuid
+];
+
+header("Content-Type: application/json");
+$data = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+echo $data;
 return;

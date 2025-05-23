@@ -9,7 +9,7 @@ date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
-include_once "./retrieveSectionedService_ms.php";
+include_once "../curlService.php";
 
 // Connect to database and start session
 pdoConnect();
@@ -70,8 +70,18 @@ if(checklogin()){
 	} 	
 }
 
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $userid,
+    'cid' => $courseid,
+    'vers' => $coursevers,
+    'log_uuid' => $log_uuid
+];
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+header("Content-Type: application/json");
+$response = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+$data = json_decode($response, true);
 $data['grplst'] = $grplst;
 $data['grpmembershp'] = $grpmembershp;
 echo json_encode($data);
