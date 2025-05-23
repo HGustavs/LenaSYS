@@ -2569,13 +2569,14 @@ function FABMouseOut(e) {
 		document.querySelector('.fab-btn-list').style.display="none";
 	}
 	
+	/*	Handling for mouse-over for the small fab button.
+
 	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
 	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
 		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list2').style.display="none";
-	} 
-	
-	
+	} */
+
 }
 //----------------------------------------------------------------------------------
 // FABDown : FAB Mouse Down
@@ -2583,14 +2584,8 @@ function FABMouseOut(e) {
 function FABDown(e)
 {
 	console.log('this is e id: ' + e.target.id);
-
-	/*
-	console.log('this is e: ' + e);
-	if(document.querySelector('.fab-btn-list2').checkVisibility() == true && e === "activeDropwdown"){
-		console.log("peekaboo");
-		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
-		document.querySelector('.fab-btn-list2').style.display="none";
-	}*/
+	console.log('this is e class: ' + e.target.className);
+	
 	if (e.target.id == "fabBtn") {
 		var eL=document.querySelector('.fab-btn-list');
 		var e1=document.querySelectorAll('.fab-btn-sm');
@@ -2619,7 +2614,6 @@ function FABDown(e)
 		console.log('jackpot');
 		closeFabDropdown();
 	}
-	//Unused at the moment but might be useful in the future to handle pressing down with mouse on FAB
 }
 
 //----------------------------------------------------------------------------------

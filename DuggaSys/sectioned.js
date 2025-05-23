@@ -1073,7 +1073,7 @@ async function createFABItem(kind, itemtitle, comment) {
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
     // console.log(numberOfItems + " " + itemtitle + "(s) created");  
-    //closeFabDropdown();
+    closeFabDropdown();
     console.log('createFabBUtton pressed');
     numberOfItems = 1; // Reset number of items to create
   } 
@@ -1082,7 +1082,6 @@ async function createFABItem(kind, itemtitle, comment) {
 
 function closeFabDropdown(){
   if(document.querySelector('.fab-btn-list2').checkVisibility() == true){
-		console.log("peekaboo");
 		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list2').style.display="none";
 	}
@@ -2848,7 +2847,7 @@ document.addEventListener("mousedown", function (e) {
 
 document.addEventListener("mouseout", function (e) {
   console.log("mouse out");
-  //FABMouseOut(e);
+  FABMouseOut(e);
 });
 
 document.addEventListener("mousedown", function (e) {

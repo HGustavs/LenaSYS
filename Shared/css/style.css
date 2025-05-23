@@ -8068,6 +8068,7 @@ only screen and (max-device-width: 568px) {
   width: 24px;
   height: 24px;
   padding-top: 8px;
+  pointer-events: none;
 }
 
 @media screen and (max-height: 600px) {
