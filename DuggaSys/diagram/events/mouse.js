@@ -92,34 +92,12 @@ function mdown(event) {
         if (event.target.id == "container") {
             switch (mouseMode) {
                 case mouseModes.POINTER:
-                    sscrollx = scrollx;
-                    sscrolly = scrolly;
-                    startX = event.clientX;
-                    startY = event.clientY;
-
-                    // If pressed down in selection box
-                    if (context.length > 0) {
-                        if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
-                            pointerState = pointerStates.CLICKED_ELEMENT;
-                            targetElement = context[0];
-                        } else {
-                            pointerState = pointerStates.CLICKED_CONTAINER;
-                            containerStyle.cursor = "grabbing";
-                            if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                                wasDblClicked = true;
-                            }
-                        }
-                        break;
-                    } else {
-                        pointerState = pointerStates.CLICKED_CONTAINER;
-                        containerStyle.cursor = "grabbing";
-
-                        if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                            wasDblClicked = true;
-                            toggleOptionsPane();
-                        }
-                        break;
+                    pointerTool_Start(event.clientX, event.clientY);
+                    containerStyle.cursor = "grabbing"; 
+                    if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                        wasDblClicked = true;
                     }
+                    break;
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if (context.length > 0) {
