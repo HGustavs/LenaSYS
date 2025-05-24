@@ -65,14 +65,13 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
 	if(data['param']=="UNK"){
 			alert("UNKNOWN DUGGA!");
 	}else{
-		retdata=jQuery.parseJSON(data['param']);
+			retdata=JSON.parse(data['param']);
     document.getElementById('fargnamn').innerHTML = retdata['colorname'];
 	if(typeof(retdata['color-url'])==="string"){
 		document.getElementById('fargen').setAttribute("src", retdata['color-url']);
@@ -92,23 +91,7 @@ function returnedDugga(data)
 			}
 		}			
 	}	  
-	// Teacher feedback
-	// if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-	// 		// No feedback
-	// } else {
-	// 		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-	// 		var feedbackArr = data["feedback"].split("||");
-	// 		for (var k=feedbackArr.length-1;k>=0;k--){
-	// 			var fb_tmp = feedbackArr[k].split("%%");
-	// 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-	// 		} 		
-	// 		fb += "</tbody></table>";
-	// 		document.getElementById('feedbackTable').innerHTML = fb;		
-	// 		document.getElementById('feedbackBox').style.display = "block";
-	// 		$("#showFeedbackButton").css("display","block");
-	// }
-	// $("#submitButtonTable").appendTo("#content");
-	// $("#lockedDuggaInfo").prependTo("#content");
+
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 
 	if(response.danswer!="UNK"){
@@ -190,8 +173,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	}else{
 		document.getElementById('fargen').setAttribute("src", "templates/color_"+p['color']+".png");
 	}
-
-	//$("#fargen").attr("src", p['color']);
 	
 	// Add our previous answer
 	if (uanswer != null){
@@ -205,25 +186,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			document.getElementById('H5').innerHTML=previous[9];
 		}
 	}			
-	
-	// Teacher feedback
-	// var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-	// if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
-	// 	var feedbackArr = feedback.split("||");
-	// 	for (var k=feedbackArr.length-1;k>=0;k--){
-	// 		var fb_tmp = feedbackArr[k].split("%%");
-	// 		fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-	// 	} 		
-	// }
-	// fb += "</tbody></table>";
-	// if (feedback !== undefined){
-	// 		document.getElementById('teacherFeedbackTable').innerHTML = fb;
-	// }
-	
-document.querySelectorAll('.fouter').forEach(function(element) {
-    element.style.background = "#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8];
-});		
-}
+		
+	document.querySelectorAll('.fouter').forEach(function(element) {
+		element.style.background = "#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8];
+	});		
+	}
 
 //--------------------================############================--------------------
 //                                  Local Functions
