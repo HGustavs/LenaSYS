@@ -109,7 +109,7 @@
         <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
     </div>
 
-    <!-- The FAB-btn for the diagram.php, STARTS HERE!" -->
+    <!-- The FAB-btn for the diagram.php, STARTS HERE! -->
         <div class="fixed-action-button diagram-fab">
         <ol class="fab-btn-list" style="margin-bottom: 60px; padding: 0; display: none;">
             <button id="fab-check" class="btn-floating fab-inner diagramIcons" type="button">
