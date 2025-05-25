@@ -145,21 +145,24 @@ function toggleA4Template() {
         template.style.display = "none";
         vRect.style.display = "none";
         a4Rect.style.display = "none";
-        document.getElementById("a4OptionsDropdownContainer").style.display = "none";
-        
+
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
-        document.getElementById("a4OptionsDropdownContainer").style.display = "block";
-        
+
+        // Apply the selected layout immediately
+        applyA4Option();
+
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
     }
+
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
 }
+
 
 function toggleA4Dropdown() {
     const dropdown = document.getElementById("a4OptionsDropdown");
@@ -202,8 +205,13 @@ function toggleA4Vertical() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
 
-    vRect.style.display = "none";  // Hide horizontal
-    a4Rect.style.display = "block";  // Show vertical
+    vRect.style.display = "none";
+    a4Rect.style.display = "block";
+
+
+    // Set position to origin
+    a4Rect.style.left = "0px";
+    a4Rect.style.top = "0px";
 }
 
 /**
@@ -213,8 +221,12 @@ function toggleA4Horizontal() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
 
-    a4Rect.style.display = "none";  // Hide vertical
-    vRect.style.display = "block";  // Show horizontal
+    a4Rect.style.display = "none";
+    vRect.style.display = "block";
+
+    // Set position to origin
+    vRect.style.left = "0px";
+    vRect.style.top = "0px";
 }
 
 /**
@@ -223,12 +235,29 @@ function toggleA4Horizontal() {
 function applyA4Option() {
     const selectedOption = document.getElementById("a4OptionsDropdown").value;
 
+    // Always show the A4 template layer itself
+    const template = document.getElementById("a4Template");
+    template.style.display = "block";
+
+    const vRect = document.getElementById("vRect");
+    const a4Rect = document.getElementById("a4Rect");
+
+    // Reset both rectangles
+    vRect.style.display = "none";
+    a4Rect.style.display = "none";
+
+    // Apply the selected template shape
     if (selectedOption === "vertical") {
-        toggleA4Vertical();
+        a4Rect.style.display = "block";
+        a4Rect.style.left = "0px";
+        a4Rect.style.top = "0px";
     } else if (selectedOption === "horizontal") {
-        toggleA4Horizontal();
+        vRect.style.display = "block";
+        vRect.style.left = "0px";
+        vRect.style.top = "0px";
     }
 }
+
 
 /**
  * @description Toggles weither the snap-to-grid logic should be active or not. The GUI button will also be flipped.
