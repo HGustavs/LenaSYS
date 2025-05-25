@@ -2529,7 +2529,7 @@ window.addEventListener("resize", () => {
 
     if (window.innerWidth > 414) {
         isMobile = false;
-        ruler.style.left = "50px";
+        ruler.style.left = "60px";
         ruler.style.top = "0px";
     }
     else {
