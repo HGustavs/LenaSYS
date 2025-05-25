@@ -10492,17 +10492,7 @@ margin:2px;
   background-color: var(--color-background);
 }
 
-@media screen and (min-height: 1199px) {
-  #rulerOverlay {
-      left:50px;
-  }
-}
 
-@media screen and (min-height: 1200px) {
-  #rulerOverlay {
-      left:70px;
-  }
-}
 
 #rulerOverlay {
   display: none;

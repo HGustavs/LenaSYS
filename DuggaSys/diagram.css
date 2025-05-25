@@ -65,26 +65,6 @@
     border-radius: 10px;
 }
 
-@media screen and (min-height: 1199px) {
-    #diagram-toolbar {
-        width: 50px;
-    }
-
-    #svggrid {
-        left: 0px;
-    }
-}
-
-@media screen and (min-height: 1200px) {
-    #diagram-toolbar {
-        width: 70px;
-    }
-
-    #svggrid {
-        left: 20px;
-    }
-}
-
 #loadingSpinner {
     width: 100vw;
     height: 100vh;
