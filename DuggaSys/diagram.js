@@ -1031,13 +1031,12 @@ function mouseMode_onMouseUp(event) {
                     
                     // Only affects mobile view (Closes the submenu after placing an element)
                     let dropdownItems = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
-                    /*Loops through all the sub menu elements, and checks if the active element and the sub menu have the same elementtype (e.g. ER-E === ER-E). */
-                    dropdownItems.forEach(item=>{
+                        dropdownItems.forEach(item=>{
                         item.classList.remove("active");
                     });
 
                     document.querySelectorAll(".mb-sub-menu.show").forEach(subMenu=>{
-                        subMenu.setAttribute("aria-hidden", "true"); //For screen readers, basically says that the sub menu is closed/hidden
+                        subMenu.setAttribute("aria-hidden", "true");
                         subMenu.classList.remove("show");
                         let dropIcon = subMenu.parentNode.querySelector(".mb-dropdown-icon i");
                         if(dropIcon) dropIcon.classList.remove("rotation");
