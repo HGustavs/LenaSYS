@@ -263,7 +263,8 @@ const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
  * @description Available options of icons to display at the end of lines connecting two SE elements.
  */
 const SELineIcons = {//TODO: Replace with actual icons for the dropdown
-    ARROW: "ARROW"
+    ARROW: "Small_Triangle",
+    Arrow: "Arrow"
 };
 
 /**

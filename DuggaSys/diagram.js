@@ -505,13 +505,13 @@ function getData() {
     DiagramResponse = fetchDiagram();
 
     //Add event listeners 
-    document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
-    document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
-    document.getElementById("container").addEventListener("mousedown", mdown);
-    document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", mmoving);
+    document.getElementById("diagram-toolbar").addEventListener("pointerdown", mdown);
+    document.getElementById("diagram-toolbar").addEventListener("pointerup", tup);
+    document.getElementById("container").addEventListener("pointerdown", mdown);
+    document.getElementById("container").addEventListener("pointerup", mup);
+    document.getElementById("container").addEventListener("pointermove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    document.getElementById("options-pane").addEventListener("mousedown", mdown);
+    document.getElementById("options-pane").addEventListener("pointerdown", mdown);
 
     //Mobile FAB-buttons
     document.getElementById("fab-check").addEventListener("click", toggleErrorCheck);
@@ -522,9 +522,8 @@ function getData() {
 
     //Main mobile FAB-button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
-        document.querySelectorAll('.fab-inner').forEach(button => {
-            button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
-          });
+        let fabList = document.querySelector(".fab-btn-list");
+        fabList.style.display = fabList.style.display === 'none' ? 'block' : 'none';
     });
 
     //Side navbar buttons. (save, load and reset are inside diagram_dugga)
@@ -550,7 +549,6 @@ function getData() {
     document.getElementById("mb-backButton").addEventListener("click", () => {
         history.back();
     });
-    
 
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -1150,56 +1148,31 @@ function mmoving(event) {
             updateLabelPos(event.clientX, event.clientY);
             updatepos();
             break;
-        case pointerStates.CLICKED_ELEMENT:
-            if (mouseMode != mouseModes.EDGE_CREATION) {
-                const prevTargetPos = {
-                    x: data[findIndex(data, targetElement.id)].x,
-                    y: data[findIndex(data, targetElement.id)].y
-                };
-                let targetElementDiv = document.getElementById(targetElement.id);
-                let targetPos = {
-                    x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
-                    y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
-                };
-                targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
-                targetDelta = {
-                    x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
-                    y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-                };
+      case pointerStates.CLICKED_ELEMENT:
+            if (mouseMode !== mouseModes.EDGE_CREATION && targetElement && !targetElement.isLocked) {
+                const coords = screenToDiagramCoordinates(event.clientX, event.clientY); // Convert mouse position to diagram coordinates
 
-                // Letting the system know that an object is being moved
-                movingObject = true;
+                const snapId = visualSnapToLifeline(coords); // Identifying a lifeline nearby for snapping
 
-                // Moving object
-                deltaX = startX - event.clientX;
-                deltaY = startY - event.clientY;
-
-                // Check coordinates of moveable element and if they are within snap threshold
-                const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
-                // Lifeline coordinates to visualize snap for selected activation elements
-                const snapId = visualSnapToLifeline(moveableElementPos);
-                
-                // Visualized snap to lifeline
-                if (snapId) {
-                    const lLine = data.find(el => el.id === snapId);
-                    let anySnapped = false;
-
-                    context.forEach(el => {
-                        if (el.kind === elementTypesNames.sequenceActivation) {
-                            el.x = lLine.x + (lLine.width / 2) - (el.width / 2);
-                            anySnapped = true;
-                        }
-                    });
-
-                    if (anySnapped) {
-                        startX = event.clientX;
-                        deltaX = 0;
+                context.forEach(el => {
+                    if (el.kind === elementTypesNames.sequenceActivation && snapId) {
+                        const lLine = data.find(line => line.id === snapId);
+                        el.x = lLine.x + (lLine.width / 2) - (el.width / 2); // Snap horizontally to lifeline cenetr 
+                    } else {
+                        el.x = coords.x - (el.width / 2); //  Follow mouse normally (centered)
                     }
-                }
+
+                    el.y = coords.y - (el.height / 2); // Update vertical position to center under mouse
+                });
+
+                //Flag as moving and update the diagram
+                movingObject = true;
                 updatepos();
-                calculateDeltaExceeded();
+                showdata();
             }
-            break;
+    break;
+
+
         case pointerStates.CLICKED_NODE:
             const index = findIndex(data, context[0].id);
             const elementData = data[index];
@@ -1529,7 +1502,6 @@ function saveProperties() {
         addToLine("functions", "+");
     }
     // Saves the changes and updates relevant graphics
-    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();
 }
@@ -2562,7 +2534,13 @@ window.addEventListener("resize", () => {
 
     if (window.innerWidth > 414) {
         isMobile = false;
-        ruler.style.left = "50px";
+        if(window.innerHeight > 1199){
+            ruler.style.left = "70px";
+        }
+        else{
+            ruler.style.left = "60px";
+        }
+        
         ruler.style.top = "0px";
     }
     else {
@@ -2586,6 +2564,7 @@ elementToolbarBoxs.forEach(elementBox=>{
     elementBox.addEventListener("click", handleToolbarClick);
 });
 
+const allToolbarBox = document.querySelectorAll(".mb-tooltip");
 
 // Select all toolbar boxes inside the sub menu
 const subMenuToolbarBoxs = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
@@ -2603,6 +2582,23 @@ let timer = null;
 //Keeps track of the element hovered with a tooltip shown
 //used to consistently show/hide tooltips 
 let currentTooltipElement = null;
+
+allToolbarBox.forEach(toolbarBox=>{
+    toolbarBox.addEventListener("touchstart", (e)=>{
+        let targetElement = e.currentTarget;
+        clearTimeout(timer);
+        timer = setTimeout(()=>{
+            showTooltip(targetElement);
+            currentTooltipElement = targetElement;
+        }, 400);
+    });
+
+    toolbarBox.addEventListener("touchend", ()=>{
+        clearTimeout(timer);
+        hideTooltip();
+        currentTooltipElement = null;
+    });
+});
 
 tooltipTargets.forEach((element)=>{
     element.addEventListener("mouseenter", (e)=>{
@@ -2712,7 +2708,7 @@ function tooltipPosition(element){
 
         return{
             top: `${dropdownPosition.top - dropdownPosition.height/2}px`,
-            left: `${dropdownPosition.left + dropdownPosition.right - 30}px`
+            left: `${dropdownPosition.left + dropdownPosition.right - 44}px`
         };
     }
 
@@ -2737,7 +2733,7 @@ function tooltipPosition(element){
     }
 
     //Checks if the element is inside the replay box
-    else if(element.closest("#diagram-replay-box")){
+    else if(element.closest("#diagram-replay-box") && !element.classList.contains("mb-tooltip")){
         let replayBoxPosition = document.getElementById("diagram-replay-box").getBoundingClientRect();
 
         return {
@@ -2750,9 +2746,37 @@ function tooltipPosition(element){
     else if(element.closest("#diagram-toolbar") && !element.closest("#diagramPopOut")){
         let elementPosition = element.getBoundingClientRect();
 
-        return {
-            top: `${elementPosition.top - elementPosition.height/2}px`,
-            left: `${elementPosition.right + elementPosition.width/2+5}px`
+        if (submenu && submenu.classList.contains("activeTogglePlacementTypeBox")) {
+            const submenuBox = submenu.getBoundingClientRect();
+            return  {
+                top: `${submenuBox.top - submenuBox.height/2}px`,
+                left: `${submenuBox.left + submenuBox.right - 44}px`
+            };
+        } 
+        else {
+            return {
+                top: `${elementPosition.top - elementPosition.height/2}px`,
+                left: `${elementPosition.right + elementPosition.width/2+5}px`
+            };
+        }
+    }
+
+    //Checks if the element is part of the mobile diagram toolbar
+    if(element.closest("#mb-diagram-toolbar") && !element.closest("#diagram-toolbar")){
+
+        return { //These are numbers that can changeable in the future
+            top: `1vh`,
+            left: `1vw`
+        };
+    }
+
+    //Checks that the element is part of the replay box, and 
+    //has a specific class meant for mobile version
+    if(element.closest("#diagram-replay-box") && element.classList.contains("mb-tooltip")){
+
+        return{
+            top: `1vh`,
+            left: `1vw`
         };
     }
 
@@ -2762,5 +2786,5 @@ function tooltipPosition(element){
         left: null
     };
 }
-
+console.log(allToolbarBox);
 //#endregion =====================================================================================
