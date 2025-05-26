@@ -65,6 +65,18 @@
     border-radius: 10px;
 }
 
+@media screen and (min-height: 1200px) {
+    #diagram-toolbar {
+        width: 70px;
+    }
+    #svggrid {
+        left: 20px;
+    }
+    #rulerOverlay {
+        left: 70px !important;
+    }
+}
+
 #loadingSpinner {
     width: 100vw;
     height: 100vh;
