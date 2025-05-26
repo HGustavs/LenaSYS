@@ -218,14 +218,10 @@ function drawLine(line, targetGhost = false) {
             lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
         else if (telem.kind === elementTypesNames.SelfCall) {
-            lineStr += selfcallthing(fx, fy, tx, ty, offset.x1, offset.y1, line, lineColor, strokeDash);
-            /* const box = document.querySelector('.selfcall');
-            box.classList.add("selfcallBox");*/
+            lineStr += selfCall(fx, fy, tx, ty, offset.x1, offset.y1, line, lineColor, strokeDash);
         }
         else if (felem.kind === elementTypesNames.SelfCall) {
-            lineStr += selfcallthing(tx, ty, fx, fy, offset.x2, offset.y2, line, lineColor, strokeDash);
-           /* const box = document.querySelector('.selfcall');
-            box.classList.add("selfcallBox"); */
+            lineStr += selfCall(tx, ty, fx, fy, offset.x2, offset.y2, line, lineColor, strokeDash);
         } 
         else {
             lineStr += drawLineSegmented(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
@@ -234,44 +230,25 @@ function drawLine(line, targetGhost = false) {
     }
         //Line icon for SeflCall
         if (felem.name === "Self Call" || telem.name === "Self Call") {
-            const isFrom = felem.name === "Self Call";
+            const isFrom = felem.name === "Self Call"; //used to know if line is felem or telem 
             let startX = isFrom ? tx : fx; //Different values dependant on line direction
             let startY = isFrom ? ty : fy;
-            const element = document.getElementById(isFrom ? felem.id : telem.id );
+            const selectOffsetX = (isFrom ? offset.x2 : offset.x1); //keeping track of which offset to use
+            const selectOffsetY = (isFrom ? offset.y2 : offset.y1);
+            const length = 30 * zoomfact; 
 
-            if(isFrom){  //if the line is from the source element reverse icon
+            if(isFrom){  //if the line is from the source element reverse icons
                 line.ctype = line.ctype.split('').reverse().join('');
             }
-
-            const dx = 2 * (isFrom ? offset.x2 : offset.x1); //keeping track of which offset to use
-            const dy = 2 * (isFrom ? offset.y2 : offset.y1);
-            const length = 30 * zoomfact;
             
-            if (line.ctype === lineDirection.UP) {
-                const currentValue = element.offsetLeft;  
-                element.style.left = (currentValue + dx) + "px"; //Givingthe div element the offset aswell, to follow the line
-                lineStr += drawLineIcon(line.startIcon, line.ctype, startX + dx, startY, lineColor, line);
-                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX + dx + length, startY, lineColor, line);
+            if (line.ctype === lineDirection.UP || line.ctype === lineDirection.DOWN) {
+                lineStr += drawLineIcon(line.startIcon, line.ctype, startX + selectOffsetX, startY, lineColor, line);
+                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX + selectOffsetX + length, startY, lineColor, line);
+            } else if (line.ctype === lineDirection.LEFT || line.ctype === lineDirection.RIGHT) {
+                lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY + selectOffsetY, lineColor, line);
+                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX, startY + selectOffsetY + length, lineColor, line);
+            } 
 
-            } else if (line.ctype === lineDirection.DOWN) {
-                const currentValue = element.offsetLeft;
-                element.style.left = (currentValue + dx) + "px";
-                lineStr += drawLineIcon(line.startIcon, line.ctype, startX +dx, startY, lineColor, line);
-                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX +dx + length, startY, lineColor, line);
-
-            } else if (line.ctype === lineDirection.LEFT) {
-                const currentValue = element.offsetTop;
-                element.style.top = (currentValue + dy) + "px";
-                lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY + dy, lineColor, line);
-                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX, startY + dy + length, lineColor, line);
-
-            } else if (line.ctype === lineDirection.RIGHT) {
-                const currentValue = element.offsetTop;
-                element.style.top = (currentValue + dy) + "px";
-                lineStr += drawLineIcon(line.startIcon, line.ctype, startX, startY + dy, lineColor, line);
-                lineStr += drawLineIcon(line.endIcon,   line.ctype, startX, startY + dy + length, lineColor, line);
-            }
-        
     }else {
         lineStr += drawLineIcon(line.startIcon, line.ctype, fx + offset.x1, fy + offset.y1, lineColor, line);
         lineStr += drawLineIcon(line.endIcon, line.ctype.split('').reverse().join(''), tx + offset.x2, ty + offset.y2, lineColor, line);
@@ -324,14 +301,15 @@ function drawLine(line, targetGhost = false) {
     // Draws the cardinality start and end labels for Self Call
     if (felem.name === "Self Call" || telem.name === "Self Call") {
         if(felem.name === "Self Call"){
-             fx = tx + offset.x2 * 2; //If line is from self we want it to work same as if its the otwer way around
-             fy = ty + offset.y2 * 2;
+            fx = tx + offset.x2; //If line is from self we want it to work same as if its the otwer way around
+            fy = ty + offset.y2;
         }
-         if (line.startLabel && line.startLabel != '') {
-            let fxCardinality = fx + (2* offset.x1);
-            let fyCardinality = fy + (2* offset.y1);
-            let txCardinality = fx + (2* offset.x1);
-            let tyCardinality = fy + (2* offset.y1);
+        if (line.startLabel && line.startLabel != '') {
+            let fxCardinality = fx + offset.x1;
+            let fyCardinality = fy + offset.y1;
+            let txCardinality = fx + offset.x1;
+            let tyCardinality = fy + offset.y1;
+            
             if (line.ctype === lineDirection.UP  || line.ctype === lineDirection.DOWN ) { 
                 txCardinality += 40;
             }
@@ -339,8 +317,8 @@ function drawLine(line, targetGhost = false) {
                 tyCardinality += 40;
             }
 
-            labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem, telem);
-            labelStr += drawLineLabel(line, line.endLabel, lineColor, 'startLabel', txCardinality, tyCardinality, true, felem, telem);
+        labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem, telem);
+        labelStr += drawLineLabel(line, line.endLabel, lineColor, 'startLabel', txCardinality, tyCardinality, true, felem, telem);
     }
     }
     // Draws the cardinality start and end labels for the line for UML
@@ -731,39 +709,49 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
 }
 
 
-function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, strokeDash) {
-
+/**
+ * @description Draw a line that returns to the main element, representing a self association
+ * @param {Number} fx The X coordinate of the From element
+ * @param {Number} fy The Y coordinate of the From element
+ * @param {Number} tx The X coordinate of the To element
+ * @param {Number} ty The Y coordinate of the To element
+ * @param {Number} offsetX1 The X offset for the first point
+ * @param {Number} offsetY1 The Y offset for the first point
+ * @param {Object} line The line object
+ * @param {String} lineColor The color of the line
+ * @param {Number} strokeDash if its dashed or not
+ * @returns Returns the SVG polyline for the self call line
+ **/
+function selfCall(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, strokeDash) {
     const startX = fx + offsetX1;
     const startY = fy + offsetY1;
-    const targetX = tx + offsetX1;
-    const targetY = ty + offsetY1;
+    const targetX = tx
+    const targetY = ty 
     const lineWidth = 30;   
 
-    const bendX = targetX + lineWidth 
-    const bendY = targetY + lineWidth 
-    const exitX = startX  + lineWidth 
-    const exitY = startY  + lineWidth 
+    const bendX = targetX + lineWidth //Making the line curv and bend back
+    const bendY = targetY + lineWidth //different bend dependant on Left/Right or Top/Bottom
+    const endX = startX  + lineWidth 
+    const endY = startY  + lineWidth 
     let points = []
    
-    if(line.ctype === "LR" || line.ctype === "RL"){
+    if(line.ctype === "LR" || line.ctype === "RL"){ // Left/Right
         points = [
             `${startX},${startY + offsetY1}`,   
-            `${targetX},${targetY - 15 + offsetY1}`, 
-            `${targetX},${bendY - 15 + offsetY1}`,   
-            `${startX},${exitY + offsetY1}`, 
+            `${targetX},${targetY - 15 }`, 
+            `${targetX},${bendY - 15}`,   
+            `${startX},${endY + offsetY1}`,
         ].join(" ");
-
-    } else if(line.ctype === "BT" || line.ctype === "TB"){
+    } else if(line.ctype === "BT" || line.ctype === "TB"){ // Top/Bottom
         points = [
-            `${startX+ offsetX1},${startY}`,   
-            `${(targetX - 15) +offsetX1},${targetY}`, 
-            `${bendX - 15 + offsetX1},${targetY}`,   
-            `${exitX + offsetX1 },${startY }`     
+            `${startX + offsetX1},${startY}`,   
+            `${(targetX - 15)},${targetY}`, 
+            `${bendX - 15 },${targetY}`,   
+            `${endX + offsetX1 },${startY }`
         ].join(" ");
     }
 
     return `
-
         <polyline 
             id="${line.id}" 
             points="${points}" 
@@ -774,9 +762,6 @@ function selfcallthing(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, str
         />
     `;
 }
-
-
-
 
 
 /**
