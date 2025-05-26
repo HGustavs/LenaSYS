@@ -3,6 +3,15 @@
 # Exit this script if an error ocuur
 set -e
 
+# Check what type of the OS 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+  GROUP_CMD=(sudo dseditgroup -o edit -a "$USER" -t user _www)
+else
+  # Linux  
+  GROUP_CMD=(sudo usermod -aG www-data "$USER")
+fi
+
 # Make sure metadata folder exists
 mkdir -p ./githubMetadata
 
@@ -14,8 +23,8 @@ fi
 
 # Add this user to www-data group if not exists
 if ! id -nG "$USER" | grep -qw "www-data"; then
-  echo "Beginning to add $USER to www-data group (you may need to logout/login)..."
-  sudo usermod -aG www-data "$USER"
+  echo "Beginning to add $USER to www-data or _www for macOS group (you may need to logout/login)..."
+  "${GROUP_CMD[@]}"
 fi
 
 # Add LenaSYS folder to username and www-data group recursively
