@@ -1664,7 +1664,6 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
       // remove course-label margin
-      document.getElementById("course-label").style.marginRight = "10px";
     }
 
     // Hide som elements if to narrow
