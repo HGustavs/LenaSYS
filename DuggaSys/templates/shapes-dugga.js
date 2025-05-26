@@ -159,7 +159,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	var canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
-	dta = jQuery.parseJSON(param);
+	dta = JSON.parse(param);
   document.getElementById('helptxt').innerHTML=dta[0].Text;
 	if (uanswer !== "UNK") {
 		var previousAnswer = uanswer.split(' ');
