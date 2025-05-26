@@ -4851,25 +4851,31 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     }
 
     //Send data to sectioned.php through POST
-    $.ajax({
-       url: 'sectionedservice.php',
-       type: 'POST',
-       data: {
+    fetch('sectionedservice.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
         courseid: cid,
         githubURL: githubURL,
         codeExampleName: fileName,
         opt: 'GITCODEEXAMPLE',
         codeExampleData: AllJsonData
-       },
-       success: function(response) {
-          console.log(response);
-       },
-       error: function(xhr, status, error) {
-        console.error('AJAX Error:', status, error);
-      }
-    });   
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      location.replace(location.href);
+    })
+    .catch(error => {
+      console.error('Fetch Error:', error);
+    });
+    
     confirmBox('closeConfirmBox');
-    location.replace(location.href);
+        
+
 }
 function updateTemplate() {
   templateNo = document.getElementById("templateno").value;
