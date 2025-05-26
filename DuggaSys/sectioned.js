@@ -1683,10 +1683,54 @@ function returnedSection(data) {
 
 
 
-    str += "<div id='statisticsSwimlanes'>";
+    str += "<div id='statisticsSwimlanes'";
+    /*if (displaySwimlanes !== null){//extremely cursed but prevents "autoopening" of swimlanes on refresh
+      if (displaySwimlanes == "block")
+        str += " style= 'display: block'";
+      else if (displaySwimlanes == "none")
+        str += " style= 'display: none'";
+    }*/
+    str += ">";
+
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
     /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
+
+      
+      
+    //because of this cursed way this file works i had to use an observer to add the style "effects" after the element has actually been added
+    //biggest reason for not simpler solution is that the swimlanes sizes seem to be calculated between here and render and if i added display none here it would not work when uncollapsed
+    //if you are a poor lad that was tasked with altering this. May God have mercy upon you
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {  //watch all mutations     such inefficiencies
+        if (document.getElementById("statisticsSwimlanes")) {// FINALLY THE ONE THING I BEEN WAITING FOR
+
+          let displaySwimlanes = sessionStorage.getItem("displaySwimlanes");//this checks wether swimlanes were collapsed before page reload 
+          if (displaySwimlanes !== null){
+            if (displaySwimlanes == "block"){
+              document.getElementById("sectionList_arrowStatisticsOpen").style.display="none";//apperantly there is two different arrows
+              document.getElementById("sectionList_arrowStatisticsClosed").style.display="block";
+              if (hasDuggs) {
+                document.getElementById("swimlaneSVG").style.display="block";
+                document.getElementById("statisticsSwimlanes").style.display="block";
+              }
+            }
+            else if (displaySwimlanes == "none"){
+              document.getElementById("sectionList_arrowStatisticsOpen").style.display="block";
+              document.getElementById("sectionList_arrowStatisticsClosed").style.display="none";
+              if(document.getElementById("statisticsSwimlanes"))
+                document.getElementById("statisticsSwimlanes").style.display="none";
+            }
+     
+          }
+          observer.disconnect();
+        }
+      });
+    });
+      
+    // Start observing the document body for changes since the cursed swimlanes calculations is being done and im not gonna search it up
+    observer.observe(document.body, { childList: true, subtree: true }); 
+
 
     str += "<div id='Sectionlistc'>";
     // For now we only have two kinds of sections
@@ -3070,6 +3114,8 @@ window.addEventListener("DOMContentLoaded", function () {
       document.getElementById("swimlaneSVG").style.display="block";
       document.getElementById("statisticsSwimlanes").style.display="block";
     }
+    sessionStorage.setItem("displaySwimlanes", "block");
+    //location.reload();
   });
   document.getElementById("sectionList_arrowStatisticsClosed").addEventListener("click", function () {
     document.getElementById("sectionList_arrowStatisticsOpen").style.display="block";
@@ -3080,7 +3126,8 @@ window.addEventListener("DOMContentLoaded", function () {
       document.getElementById("swimlaneSVG").style.display="none";
     if(document.getElementById("statisticsSwimlanes"))
       document.getElementById("statisticsSwimlanes").style.display="none";
-
+      
+    sessionStorage.setItem("displaySwimlanes", "none");
   });
   document.addEventListener("click", function (e) {
     const target = e.target.closest("#announcement");
