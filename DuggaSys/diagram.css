@@ -953,6 +953,8 @@
     background-color: #815e9d;
     color: white;
     padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #loadContainer button:hover {
@@ -1269,6 +1271,7 @@ button.saveButton {
   font-size: 16px;
   margin-top:10px;
   padding-left: 5px;
+  width: 70px;
 }
 
 /*****************
