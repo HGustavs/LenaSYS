@@ -301,20 +301,20 @@ function drawLine(line, targetGhost = false) {
     // Draws the cardinality start and end labels for Self Call
     if (felem.name === "Self Call" || telem.name === "Self Call") {
         if(felem.name === "Self Call"){
-                fx = tx + offset.x2 * 2; //If line is from self we want it to work same as if its the otwer way around
-                 fy = ty + offset.y2 * 2;
+                fx = tx + (offset.x2 * 2) * zoomfact ; //If line is from self we want it to work same as if its the otwer way around
+                fy = ty + (offset.y2 * 2) * zoomfact;
         }
          if (line.startLabel && line.startLabel != '') {
-            let fxCardinality = fx + (2* offset.x1);
-            let fyCardinality = fy + (2* offset.y1);
-            let txCardinality = fx + (2* offset.x1);
-            let tyCardinality = fy + (2* offset.y1);
+            let fxCardinality = fx + (2* offset.x1) * zoomfact;
+            let fyCardinality = fy + (2* offset.y1) * zoomfact;
+            let txCardinality = fx + (2* offset.x1) * zoomfact;
+            let tyCardinality = fy + (2* offset.y1) * zoomfact;
             
             if (line.ctype === lineDirection.UP  || line.ctype === lineDirection.DOWN ) { 
-                txCardinality += 40;
+                txCardinality += 40 * zoomfact;
             }
             else if (line.ctype === lineDirection.LEFT  || line.ctype === lineDirection.RIGHT ) { 
-                tyCardinality += 40;
+                tyCardinality += 40 * zoomfact;
             }
 
         labelStr += drawLineLabel(line, line.startLabel, lineColor, 'startLabel', fxCardinality, fyCardinality, true, felem, telem);
@@ -725,32 +725,33 @@ function getLineAttributes(line, f, t, ctype, fromElemMouseY, toElemMouseY) {
 function selfCall(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, strokeDash) {
     const startX = fx + offsetX1;
     const startY = fy + offsetY1;
-    const targetX = tx
-    const targetY = ty 
-    const lineWidth = 30;   
+    const targetX = tx;
+    const targetY = ty;
+    const lineWidth = 30 * zoomfact;   
+    console.log(" tx: "  + tx  + " ty: " + ty  + " fx: " + fx + " fy: " + fy)
 
     const bendX = targetX + lineWidth //Making the line curv and bend back
     const bendY = targetY + lineWidth //different bend dependant on Left/Right or Top/Bottom
     const endX = startX  + lineWidth 
-    const endY = startY  + lineWidth 
+    const endY = startY  + lineWidth
     let points = []
    
     if(line.ctype === "LR" || line.ctype === "RL"){ // Left/Right
         points = [
             `${startX},${startY + offsetY1}`,   
-            `${targetX},${targetY - 15 }`, 
-            `${targetX},${bendY - 15}`,   
+            `${targetX},${targetY - 15 * zoomfact}`, 
+            `${targetX},${bendY - 15 * zoomfact}`,   
             `${startX},${endY + offsetY1}`,
         ].join(" ");
     } else if(line.ctype === "BT" || line.ctype === "TB"){ // Top/Bottom
         points = [
             `${startX + offsetX1},${startY}`,   
-            `${(targetX - 15)},${targetY}`, 
-            `${bendX - 15 },${targetY}`,   
+            `${targetX - 15 * zoomfact},${targetY}`, 
+            `${bendX - 15 * zoomfact},${targetY}`,   
             `${endX + offsetX1 },${startY }`
         ].join(" ");
     }
-
+ 
     return `
         <polyline 
             id="${line.id}" 
