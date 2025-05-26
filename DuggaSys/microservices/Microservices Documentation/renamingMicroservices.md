@@ -523,3 +523,122 @@ Used in, where the microservice/file name also needs to be changed:
 - DuggaSys/tests/microservices/sectionedService/setVisibleListentries_ms_test.php
 
 ---
+
+## sharedMicroservices
+Microservices to be renamed in the sectionedService folder.
+
+### getUid_ms.php
+New name: <ins>readUid_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sharedMicroservices/getUid_ms.php
+- DuggaSys/microservices/curlService.php
+- DuggaSys/microservices/Microservices Documentation/fileedService.md
+- DuggaSys/microservices/Microservices Documentation/resultedService.md
+- DuggaSys/microservices/courseedService/createMOTD_ms.php
+- DuggaSys/microservices/courseedService/updateCourse_ms.php
+- DuggaSys/microservices/sectionedService/reorderListEntries_ms.php
+- DuggaSys/microservices/sectionedService/getListEntries_ms.php
+- DuggaSys/microservices/sectionedService/updateListEntriesGradesystem_ms.php
+- DuggaSys/microservices/courseedService/createNewCourse_ms.php
+- DuggaSys/microservices/accessedService/updateUser_ms.php
+- DuggaSys/microservices/sectionedService/getDeletedListEntries_ms.php
+- DuggaSys/microservices/accessedService/addClass_ms.php
+- DuggaSys/microservices/duggaedService/updateDugga_ms.php
+- DuggaSys/microservices/codeviewerService/updateCodeExampleTemplate_ms.php
+- DuggaSys/microservices/sectionedService/readCourseVersions_ms.php
+- DuggaSys/microservices/resultedService/getUserAnswer_ms.php
+- DuggaSys/microservices/Microservices Documentation/codeviewerService.md
+- DuggaSys/microservices/courseedService/retrieveCourseedService_ms.php
+- DuggaSys/microservices/duggaedService/createDugga_ms.php
+- DuggaSys/microservices/sectionedService/getCourseVersions_ms.php
+- DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php
+- DuggaSys/microservices/codeviewerService/editCodeExample_ms.php
+- DuggaSys/microservices/profileService/updateUserPassword_ms.php
+- DuggaSys/microservices/duggaedService/deleteDugga_ms.php
+- DuggaSys/microservices/sharedMicroservices/updateUserPassword_ms.php
+- DuggaSys/microservices/courseedService/specialUpdate_ms.php
+- DuggaSys/microservices/courseedService/getCourseed_ms.php
+- DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/courseedService/changeActiveCourseVersion_courseed_ms.php
+- DuggaSys/microservices/Microservices Documentation/accessedService.md
+- DuggaSys/microservices/duggaedService/createDuggaVariant_ms.php
+- DuggaSys/microservices/sectionedService/deleteListEntries_ms.php
+- DuggaSys/microservices/duggaedService/deleteDuggaVariant_ms.php
+- DuggaSys/microservices/sectionedService/updateVisibleListEntries_ms.php
+- DuggaSys/microservices/accessedService/updateUserCourse_ms.php
+- DuggaSys/microservices/highscoreService/highscoreservice_ms.php
+- DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php
+- DuggaSys/microservices/fileedService/updateFileLink_ms.php
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/microservices/accessedService/retrieveAccessedService_ms.php
+- DuggaSys/microservices/profileService/updateSecurityQuestion_ms.php
+- DuggaSys/microservices/courseedService/copyCourseVersion_ms.php
+- DuggaSys/microservices/codeviewerService/deleteCodeExample_ms.php
+- DuggaSys/microservices/duggaedService/updateDuggaVariant_ms.php
+- DuggaSys/microservices/sectionedService/removeListEntries_ms.php
+- DuggaSys/microservices/Microservices Documentation/courseedService.md
+- DuggaSys/microservices/sectionedService/getGroupValues_ms.php
+- DuggaSys/microservices/courseedService/updateActiveCourseVersion_courseed_ms.php
+- DuggaSys/microservices/sharedMicroservices/updateSecurityQuestion_ms.php
+- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+- DuggaSys/microservices/fileedService/retrieveFileedService_ms.php
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- DuggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php
+- DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php
+- DuggaSys/microservices/codeviewerService/editContentOfExample_ms.php
+- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
+- DuggaSys/microservices/fileedService/deleteFileLink_ms.php
+- DuggaSys/microservices/fileedService/getFileedService_ms.php
+- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
+- DuggaSys/microservices/courseedService/createCourseVersion_ms.php
+- DuggaSys/microservices/Microservices Documentation/duggaedService.md
+- DuggaSys/microservices/accessedService/getAccessedService_ms.php
+- DuggaSys/microservices/accessedService/addUser_ms.php
+- DuggaSys/microservices/sectionedService/readGroupValues_ms.php
+- DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php
+- DuggaSys/microservices/sectionedService/createListEntry_ms.php
+- DuggaSys/microservices/sectionedService/updateListEntries_ms.php
+- DuggaSys/microservices/courseedService/retrieveAllCourseedServiceData_ms.php
+- DuggaSys/microservices/monolithic-to-microservices.md
+
+### retrieveUsername_ms.php
+New name: <ins>readUsername_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php
+- DuggaSys/microservices/courseedService/updateCourse_ms.php
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/sectionedService/createListEntry_ms.php
+- DuggaSys/microservices/courseedService/createNewCourse_ms.php
+- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
+- DuggaSys/microservices/accessedService/retrieveAccessedService_ms.php
+- DuggaSys/microservices/courseedService/copyCourseVersion_ms.php
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/microservices/fileedService/updateFileLink_ms.php
+- DuggaSys/microservices/courseedService/createCourseVersion_ms.php
+- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+- DuggaSys/microservices/Microservices Documentation/courseedService.md
+- DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php
+- DuggaSys/microservices/sharedMicroservices/createNewListEntry_ms.php
+
+### setAsActiveCourse_ms.php
+New name: <ins>updateActiveCourse_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php
+- DuggaSys/microservices/curlService.php
+- DuggaSys/microservices/Microservices Documentation/microserviceCodingStandard.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
+- DuggaSys/microservices/Microservices Documentation/microserviceRefactorPOSTnoAnswer.md
+- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- DuggaSys/microservices/Microservices Documentation/microserviceRefactorPOSTWithAnswer.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/courseedService.md
+- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+
