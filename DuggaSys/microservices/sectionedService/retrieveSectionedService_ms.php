@@ -3,6 +3,7 @@
 
 // Include basic application services
 include_once "../../../Shared/basic.php";
+include_once "../curlService.php";
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
