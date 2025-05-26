@@ -2867,6 +2867,10 @@ document.addEventListener("mouseup", function (e) {
   mouseUp(e);
 });
 
+document.addEventListener("mouseover", function (e) {
+  FABMouseOver(e);
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   fabBtn.addEventListener("touchstart", function (e) {
     if (e.target.closest(".fixed-action-button") &&

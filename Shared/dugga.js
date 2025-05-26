@@ -2539,24 +2539,7 @@ function FABMouseOver(e) {
 				element.classList.toggle('scale-out');
 			}
 		});
-	} else if (e.target.id === "addElement") {
-		var e2=document.querySelectorAll('.fab-btn-sm2');
-		var eL2=document.querySelector('.fab-btn-list2');
-
-		e2.forEach(element2 => {
-			if(element2.classList.contains('scale-out')){
-				eL2.style.display="block";
-				element2.classList.toggle('scale-out');
-			}
-		});
-		
-		document.querySelector('#addElement').classList.add('spin');
-
-		
-		setTimeout(function() {
-			document.querySelector('#addElement').classList.remove('spin');
-		}, 1000); 
-	}
+	} 
 }
 
 //----------------------------------------------------------------------------------
