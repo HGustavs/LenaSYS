@@ -28,7 +28,9 @@ $testsData = array(
 
     'filter-output' => serialize(array('debug')),
 
-    
+    'query-after-test-1' => "
+      DELETE FROM listentries WHERE lid = 9999;
+    ",
   )
 
 );
