@@ -8,6 +8,8 @@ include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
 include_once "../curlService.php";
 
+header("Content-Type: application/json");
+
 date_default_timezone_set("Europe/Stockholm");
 
 pdoConnect();
@@ -46,7 +48,6 @@ if (!($haswrite || $isSuperUserVar || $studentTeacher)) {
         'vers' => null,
         'log_uuid' => null
     ];
-    header("Content-Type: application/json");
     $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
     echo $retrieveArray;
     return;
@@ -62,7 +63,6 @@ if (strcmp($opt, "UPDATEVRS") !== 0) {
         'vers' => null,
         'log_uuid' => null
     ];
-    header("Content-Type: application/json");
     $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
     echo $retrieveArray;
     return;
@@ -113,6 +113,5 @@ $postData = [
     'log_uuid' => null
 ];
 
-header("Content-Type: application/json");
 $retrieveArray = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
 echo $retrieveArray;
