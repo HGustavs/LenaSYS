@@ -69,7 +69,7 @@ function setup()
 function returnedDugga(data)
 {
 
-	$("#content").css({"position":"relative"});
+	document.getElementById("content").style.position = "relative";
 
 	dataV = data;
 
@@ -100,9 +100,12 @@ function returnedDugga(data)
 		}
 
 		var max = 0;
-		$('.dugga-col').each(function() {
-		    max = Math.max($(this).height(), max);
-		}).height(max);
+		document.querySelectorAll('.dugga-col').forEach(el => {
+			max = Math.max(el.offsetHeight, max);
+		});
+		document.querySelectorAll('.dugga-col').forEach(el => {
+			el.style.height = max + "px";
+		});
 
 	}
 	// Teacher feedback
@@ -118,7 +121,7 @@ function returnedDugga(data)
 			fb += "</tbody></table>";
 			document.getElementById('feedbackTable').innerHTML = fb;
 			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+			document.getElementById("showFeedbackButton").style.display = "block";
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
@@ -227,7 +230,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
+
 	}
 	document.getElementById('feedbackBox').style.display = "none";
 	/* reset */
@@ -271,9 +275,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
           userUrl=userUrl.replace("https://", "http://");
       }
 
-			var markWindowHeight = $("#MarkCont").height();
-
-			$("#MarkCont").css({"overflow":"hidden"});
+	  		const markCont = document.getElementById("MarkCont");
+	  		const markWindowHeight = markCont.offsetHeight;
+	  		markCont.style.overflow = "hidden";
 
 			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
 			document.getElementById("content-window").value = userCode;
@@ -300,8 +304,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 
 
-			$( "#MarkCont" ).append( '<img id="facit-target-window-img" class="facitPreview" src="'+document.getElementById("target-window-img").src+'" onmouseenter="togglePopover();" onclick="togglePreview();"/>' );
-
+			document.getElementById("MarkCont").insertAdjacentHTML("beforeend",
+				'<img id="facit-target-window-img" class="facitPreview" src="' +
+				document.getElementById("target-window-img").src + '" ' +
+				'onmouseenter="togglePopover();" onclick="togglePreview();" />'
+			);
+			  
 
 	}
 	// Teacher feedback
@@ -408,13 +416,23 @@ function processpreview()
 }
 
 function togglePreview (){
-	$("#facit-target-window-img").removeClass("facitPopover").addClass("facitPreview");}
+	const facitImg = document.getElementById("facit-target-window-img");
+	facitImg.classList.remove("facitPopover");
+	facitImg.classList.add("facitPreview");
+}
 
 function togglePopover (){
-	$("#facit-target-window-img").removeClass("facitPreview").addClass("facitPopover");
+	const facitImg = document.getElementById("facit-target-window-img");
+	facitImg.classList.remove("facitPreview");
+	facitImg.classList.add("facitPopover");
 }
 
 function toggleFeedback()
 {
-    $(".feedback-content").slideToggle("slow");
+	const content = document.querySelector(".feedback-content");
+	if (content.style.maxHeight) {
+	  content.style.maxHeight = null;
+	} else {
+	  content.style.maxHeight = content.scrollHeight + "px";
+	}
 }

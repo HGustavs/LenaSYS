@@ -1585,7 +1585,6 @@ function toggleButtonClickHandler() {
 var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
-  if (data['debug'] != "NONE!") alert(data['debug']);
 
   // Data variable is put in localStorage which is then used in Codeviewer
   // To get the right order when going backward and forward in code examples
@@ -1665,7 +1664,6 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
       // remove course-label margin
-      document.getElementById("course-label").style.marginRight = "10px";
     }
 
     // Hide som elements if to narrow
@@ -1798,6 +1796,22 @@ function returnedSection(data) {
             str += "</td>";
           }
         }
+
+        //Mobile view for code examples
+        if (itemKind === 2 && (data['writeaccess'] || data['studentteacher'])){
+           var param = {
+            'exampleid': item['link'],
+            'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
+            'cvers': querystring['coursevers'],
+            'lid': item['lid']
+          };
+          str += `<div class='flex-row-container'>`;
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("codeviewer.php",
+            hideState, "", item['entryname'], false, param)}</span></div>`;
+          str += '</div>'
+        }
+
           //Mobile view of title and date for dugga/test items
         if (itemKind === 3 && (data['writeaccess'] || data['studentteacher'])) {             
           var param = {
@@ -1981,8 +1995,12 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
-            hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          str += `<div class='ellipsis nowrap hide-on-mobile'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          if (!data['writeaccess'] || data['studentteacher']){
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          }
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {

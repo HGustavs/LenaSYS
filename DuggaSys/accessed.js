@@ -66,14 +66,14 @@ function setup() {
 
 //displays dropdown when hovering search bar
 function hoverSearch() {
-	$('#dropdownSearch').css({display:'block'});
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'none');
+	document.querySelector('#dropdownSearch').style.display = 'block';
+	document.querySelector('#dropdowns').style.display = 'none';
+	document.querySelector('#dropdownc').style.display = 'none';
 }
 
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
-	$('#dropdownSearch').css({display:'none'});
+
 }
 
 // displays dropdown for the filter-button
@@ -90,75 +90,77 @@ function pressFilter() {
 function leaveFilter() {
 	if (buttonPressed == true){
 		buttonPressed = false;
-		document.getElementById("dropdownc").style.display="none";}
+			document.getElementById("dropdownc").style.display="none";
+	}
+	document.querySelector('#dropdownSearch').style.display = 'none';
 }
 
 function hoverc() {
-	$('#dropdowns').css('display', 'none');
-	$('#dropdownc').css('display', 'block');
-}
-
-function leavec() {
-	$('#dropdownc').css('display', 'none');
+	document.querySelector('#dropdowns').style.display = 'none';
+	document.querySelector('#dropdownc').style.display = 'block';
 }
 
 function hovers() {
-	$('#dropdowns').css('display', 'block');
-	$('#dropdownc').css('display', 'none');
+	document.querySelector('#dropdowns').style.display = 'block';
+	document.querySelector('#dropdownc').style.display = 'none';
+}
+
+function leavec() {
+	document.querySelector('#dropdownc').style.display = 'none';
 }
 
 function leaves() {
-	$('#dropdowns').css('display', 'none');
+		document.querySelector('#dropdowns').style.display = 'none';
 }
 
 function showEditUserPopup(id) {
-	$("#editUser").css("display", "flex");
+	document.querySelector('#editUser').style.display = 'flex';
 }
 
 function showCreateUserPopup() {
-	$("#createUser").css("display", "flex");
+	document.querySelector('#createUser').style.display = 'flex';
 }
 
 function showAddUserPopup(id) {
-	$("#addUser").css("display", "flex");
+	document.querySelector('#addUser').style.display = 'flex';
 	loadUsersToDropdown(id);
 }
 
 function showRemoveUserPopup(id) {
-	$("#removeUser").css("display", "flex");
+	document.querySelector('#removeUser').style.display = 'flex';
 	loadUsersToDropdown(id);
 }
 
 function showCreateClassPopup() {
-	$("#createClass").css("display", "flex");
+	document.querySelector('#createClass').style.display = 'flex';
 }
 
 function showCreateUserPopup() {
-	$("#createUser").css("display", "flex");
+	document.querySelector('#createUser').style.display = 'flex';
 }
 
 function showCreateClassPopup() {
-	$("#createClass").css("display", "flex");
+	document.querySelector('#createClass').style.display = 'flex';
 }
 
 function hideCreateUserPopup() {
-	$("#createUser").css("display", "none");
+	document.querySelector('#createUser').style.display = 'none';
 }
 
 function hideCreateClassPopup() {
-	$("#createClass").css("display", "none");
+	document.querySelector('#createClass').style.display = 'none';
 }
 
 function hideEditUserPopup(id) {
-	$("#editUser").css("display", "none");
+	document.querySelector('#editUser').style.display = 'none';
 }
 
 function hideAddUserPopup() {
-	$("#addUser").css("display", "none");
+	document.querySelector('#addUser').style.display = 'none';
 }
 
 function hideRemoveUserPopup() {
-	$("#removeUser").css("display", "none");
+	document.querySelector('#removeUser').style.display = 'none';
 }
 
 //----------------------------------------------------------------------------
@@ -166,7 +168,7 @@ function hideRemoveUserPopup() {
 //----------------------------------------------------------------------------
 function addUserToCourse() {
 	let input = document.getElementById('addUsername2').value;
-	let term = $("#addTerm2").val();
+	let term = document.querySelector("#addTerm2").value;
 	if(input && term) {
 		$.ajax({
 			type: 'POST',
@@ -235,7 +237,7 @@ const updateCourseUsers = function(removePopup) {
 
 function addSingleUser() {
 
-	var newUser = new Array();
+	const newUser = new Array();
 	newUser.push($("#addSsn").val());
 	newUser.push($("#addFirstname").val());
 	newUser.push($("#addLastname").val());
@@ -309,12 +311,12 @@ function tooltipFirst() {
 	let fname = document.getElementById('addFirstname').value;
 	let error = validateName(fname);
 
-	if(error && fname.length > 0) {		// Error, fade in tooltip
+	if(error && fname.length > 0) {		// Error, show tooltip
 		document.getElementById('tooltipFirst').innerHTML = error;
-		$('#tooltipFirst').fadeIn();
+		document.getElementById('tooltipFirst').style.display = 'block';
 		fnameInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
-		$('#tooltipFirst').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipFirst').style.display = 'none';
 		fnameInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -325,12 +327,12 @@ function tooltipLast() {
 	let lname = document.getElementById('addLastname').value;
 	let error = validateName(lname);
 
-	if(error && lname.length > 0) {		// Error, fade in tooltip
+	if(error && lname.length > 0) {		// Error, show tooltip
 		document.getElementById('tooltipLast').innerHTML = error;
-		$('#tooltipLast').fadeIn();
+		document.getElementById('tooltipLast').style.display = 'block';
 		lnameInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
-		$('#tooltipLast').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipLast').style.display = 'none';
 		lnameInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -365,12 +367,12 @@ function tooltipEmail() {
 	let email = document.getElementById('addEmail').value;
 	let error = validateEmail(email);
 
-	if(error && email.length > 0) {	// Error, fade in tooltip
+	if(error && email.length > 0) {		// Error, show tooltip
 		document.getElementById('tooltipEmail').innerHTML = error;
-		$('#tooltipEmail').fadeIn();
+		document.getElementById('tooltipEmail').style.display = 'block';
 		emailInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {															// No error, fade out tooltip
-		$('#tooltipEmail').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipEmail').style.display = 'none';
 		emailInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -390,12 +392,12 @@ function tooltipTerm(element) {
 	let termInputBox = element;
 	let term = element.value;
 
-	if(error && term.length > 0) {	// Error, fade in tooltip
+	if(error && term.length > 0) {	// Error, show tooltip
 		document.getElementById('tooltipTerm').innerHTML = error;
-		$('#tooltipTerm').fadeIn();
+		document.getElementById('tooltipTerm').style.display = 'block';
 		termInputBox.style.backgroundColor = 'var(--color-red)';
-	} else {	// No error, fade out tooltip
-		$('#tooltipTerm').fadeOut();
+	} else {	// No error, hide tooltip
+		document.getElementById('tooltipTerm').style.display = 'none';
 		termInputBox.style.backgroundColor = 'var(--color-background)';
 	}
 }
@@ -406,14 +408,14 @@ function addClass() {
 	inputVerified = true;
 	document.getElementById("classErrorText").innerHTML = "";
 	var newClass = new Array();
-	newClass.push(verifyClassInput($("#addClass"), null, ""));
-	newClass.push(verifyClassInput($("#addResponsible"), null, ""));
-	newClass.push(verifyClassInput($("#addClassname"), null, ""));
-	newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
-	newClass.push(verifyClassInput($("#addClasscode"), null, ""));
-	newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
-	newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
-	newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
+	newClass.push(verifyClassInput(document.getElementById("addClass"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addResponsible"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addClassname"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addRegcode"), /^[0-9]*$/, "number"));
+	newClass.push(verifyClassInput(document.getElementById("addClasscode"), null, ""));
+	newClass.push(verifyClassInput(document.getElementById("addHp"), /^[0-9.]*$/, "(decimal) number"));
+	newClass.push(verifyClassInput(document.getElementById("addTempo"), /^[0-9]*$/, "number"));
+	newClass.push(verifyClassInput(document.getElementById("addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
 
 	if (inputVerified) {
 		var outerArr = new Array();
@@ -713,7 +715,6 @@ function displayCellEdit(celldata, rowno, rowelement, cellelement, column, colno
 	return str;
 }
 
-
 function renderColumnFilter(col, status, colname) {
     str = "";
     if (colname == "User")
@@ -800,7 +801,6 @@ function rowFilter(row) {
 	return false;
 }
 
-
 //----------------------------------------------------------------------------
 //-------------==========########## Renderer ##########==========-------------
 //----------------------------------------------------------------------------
@@ -854,13 +854,15 @@ function returnedAccess(data) {
 
 //excuted onclick button for quick searching in table
 function keyUpSearch() {
-	$('#searchinput').keyup(function () {
-		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-		$('#accesstable_body tr').show().filter(function () {
-			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-			return !~text.indexOf(val);
-		}).hide();
-	});
+		document.getElementById('searchinput').addEventListener('keyup',function(){
+		var val = this.value.trim().replace(/ +/g, ' ').toLowerCase();
+
+		document.querySelectorAll('#accesstable_body tr').forEach(function(row) {
+			var text = row.textContent.replace(/\s+/g, ' ').toLowerCase();
+			row.style.display = !~text.indexOf(val) ? 'none' : '';
+		});
+
+	}); 
 }
 
 // onclick for group dropdown
@@ -932,43 +934,40 @@ function updateDropdownInTable(element, obj) {
 	myTable.updateDropdownValue(rowno, colname, celldata)
 }
 
-$(document).mouseover(function (e) {
+document.addEventListener('mouseover',function(e){
 	FABMouseOver(e);
 });
 
-$(document).mouseout(function (e) {
+document.addEventListener('mouseout',function(e){
 	FABMouseOut(e);
 });
 
-$(document).mousedown(function (e) {
+document.addEventListener('mousedown',function(e){
 	mouseDown(e);
-
 	if (e.button == 0) {
 		FABDown(e);
 	}
 });
 
-$(document).mouseup(function (e) {
+document.addEventListener('mouseup', function(e) {
 	mouseUp(e);
-
 	if (e.button == 0) {
 		FABUp(e);
 	}
 });
 
-$(document).on("touchstart", function (e) {
-	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
-		e.preventDefault();
-	}
-
+document.addEventListener('touchstart',function(e){
+	if (e.target.closest(".fixed-action-button") !== null && e.target.closest(".fab-btn-list") === null) {
+        e.preventDefault();
+    }
 	mouseDown(e);
 	TouchFABDown(e);
 });
 
-$(document).on("touchend", function (e) {
-	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
-		e.preventDefault();
-	}
+document.addEventListener('touchend',function(e){
+	if (e.target.closest(".fixed-action-button") !== null && e.target.closest(".fab-btn-list") === null) {
+        e.preventDefault();
+    }
 	mouseUp(e);
 	TouchFABUp(e);
 });
@@ -1186,21 +1185,18 @@ function compare(a, b) {
 }
 
 function openArrow(element){
-	var child = $(element).children(".access-dropdown");
-	var arrow = $(child).children("img");
-	$(arrow).css({
-		"-webkit-transform": "rotate(180deg)",
-		"-moz-transform": "rotate(180deg)",
-		"transform": "rotate(180deg)"
-	});
+	var child =  element.querySelector(".access-dropdown");
+	var arrow = child.querySelector("img");
+
+	arrow.style.transform ="rotate(180deg)";
+	arrow.style.webkitTransform = "rotate(180deg)";
+	arrow.style.mozTransform = "rotate(180deg)";
 }
 
 function closeArrow(arrowElement){
-	$(arrowElement).css({
-		"-webkit-transform": "rotate(0deg)",
-		"-moz-transform": "rotate(0deg)",
-		"transform": "rotate(0deg)"
-	});
+	arrowElement.style.transform ="rotate(0deg)";
+	arrowElement.style.webkitTransform = "rotate(0deg)";
+	arrowElement.style.mozTransform = "rotate(0deg)";
 }
 function loadUsersToDropdown(id) {
 	$.ajax({
@@ -1242,7 +1238,7 @@ function checkIfPopupIsOpen() {
 		return true;
 	}
 	for (let popup of allPopups) {
-		if ($(popup).css("display") !== "none") {
+		if (popup.style.display !== "none") {
 			return true;
 		}
 	}

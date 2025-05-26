@@ -94,23 +94,23 @@ function setup() {
 function returnedDugga(data) {
 	dataV = data;
 	
-	if (data['debug'] != "NONE!")
+	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
+	}
 
-
-	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
+	if(data['opt']=="SAVDU") {
 		showReceiptPopup();
 	}
-	
 
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		$(".submit-button").removeClass("btn-disable");
+		document.querySelectorAll(".submit-button").forEach(el => {
+			el.classList.remove("btn-disable");
+		});
 		if (canvas) {
 			var studentPreviousAnswer = "UNK";
-			retdata = jQuery.parseJSON(data['param']);
+			retdata = JSON.parse(data['param']);
 			if (data["answer"] !== null && data["answer"] !== "UNK") {
 				var previous = data['answer'].split(',');
 				previous.shift();
@@ -123,26 +123,31 @@ function returnedDugga(data) {
 			}
 
 			init(retdata["linje"], studentPreviousAnswer);
-
 		}
 	}
 	// Teacher feedback
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-			// No feedback
+	// No feedback
 	} else {
-			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-			var feedbackArr = data["feedback"].split("||");
-			for (var k=feedbackArr.length-1;k>=0;k--){
-				var fb_tmp = feedbackArr[k].split("%%");
-				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 		
-			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
-			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		var feedbackArr = data["feedback"].split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+		fb += "</tbody></table>";
+		document.getElementById('feedbackTable').innerHTML = fb;		
+		document.getElementById('feedbackBox').style.display = "block";
+		document.getElementById("showFeedbackButton").style.display = "block";
+
 	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").prependTo("#content");
+
+	document.getElementById("content").appendChild(document.getElementById("submitButtonTable"));
+	document.getElementById("content").insertBefore(
+		document.getElementById("lockedDuggaInfo"),
+		document.getElementById("content").firstChild
+	);
+
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 }
 
@@ -169,7 +174,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display = "block";
 	}
 	running = true;
 	canvas = document.getElementById('a');
@@ -180,7 +185,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			renderId=undefined;
 	}
 	var studentPreviousAnswer = "UNK";
-	var p = jQuery.parseJSON(param);
+	var p = JSON.parse(param);
 	if (uanswer !== null && uanswer !== "UNK") {
 		var previous = uanswer.split(',');
 		previous.shift();
@@ -208,7 +213,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	if (feedback !== undefined){
 			document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	}
-
 }
 
 function closeFacit(){
@@ -378,8 +382,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.innerWidth;
+	bitstr += " " + window.innerHeight;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -508,18 +512,16 @@ function handler_mouseup(ev)
 
 }
 
-function handler_mousedown(ev) 
-{
+function handler_mousedown(ev) {
 	clickstate = 1;
 	// Figure out if we clicked in an object
-	$("#operations > option").each(function() {
-		var opArr = this.value.split(" ");
+	document.querySelectorAll("#operations > option").forEach(function (option) {
+		var opArr = option.value.split(" ");
 		for (var i = 1; i < opArr.length; i += 2) {
 			if (opArr[i] == gridx && opArr[i + 1] == gridy) {
-				selectedObjId = this.id;
+				selectedObjId = option.id;
 				selectedPoint = Math.round(i / 2);
 			}
-
 		}
 	});
 }
@@ -734,7 +736,6 @@ function init(quizGoal, studentPreviousAnswer)
 function fitToContainer() 
 {
 	// Make it visually fill the positioned parent
-	// divw = $("#content").width();
 	// if (divw > 500){ divw -= 248; }
 	// if (divw < window.innerHeight) {
 	// 	canvas.width = divw;
@@ -789,9 +790,9 @@ function drawPath()
 
 	// Draw students objects
 	
-	$("#operations > option").each(function() {
-		var opArr = this.value.split(" ");
-		if (this.id == selectedObjId) {
+	document.querySelectorAll("#operations > option").forEach(function (option) {
+		var opArr = option.value.split(" ");
+		if (option.id == selectedObjId) {
 				opArr[selectedPoint * 2 - 1] = gridx;
 				opArr[selectedPoint * 2] = gridy;
 				drawOp(sx, sy, opArr, studentLineColor, true, true,studentStrokeWidth);	
@@ -802,7 +803,6 @@ function drawPath()
 		sx = currentx = parseInt(opArr[opArr.length - 2]);
 		sy = currenty= parseInt(opArr[opArr.length - 1]);
 	});
-
 }
 
 function render() 
