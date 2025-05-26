@@ -580,7 +580,14 @@ body {
   border: 2px solid var(--color-border);
 }
 
-.iconColorInDarkMode{
+.markdown-icons,
+#listIcon,
+#imgIcon,
+#headerIcon {
+    filter: brightness(0) invert(1); 
+}
+
+.iconColorInDarkMode {
     cursor: pointer;
     filter: invert(80%);
     -webkit-filter: invert(80%);
