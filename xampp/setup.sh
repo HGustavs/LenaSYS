@@ -5,10 +5,12 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
     HTDOCS_DIR="/Applications/XAMPP/xamppfiles/htdocs"
     LENASYS_DIR="/Applications/XAMPP/xamppfiles/htdocs/LenaSYS"
+    GROUP_CMD=(sudo dseditgroup -o edit -a "$USER" -t user daemon)
 else
     # Linux
     HTDOCS_DIR="/opt/lampp/htdocs"
     LENASYS_DIR="/opt/lampp/htdocs/LenaSYS"
+    GROUP_CMD=(sudo usermod -aG daemon "$USER")
 fi
 
 # If htdocs directory is null, then print error message, otherwise change the owner and permissions
@@ -27,7 +29,7 @@ fi
 # Add this user to daemon group if not exists
 if ! id -nG "$USER" | grep -qw "daemon"; then
     echo "Beginning to add $USER to daemon group (you may need to logout/login)..."
-    sudo usermod -aG daemon "$USER"
+    "${GROUP_CMD[@]}"
 fi    
 
 # If LenaSYS directory is null, then print error message, otherwise change the owner, permissions and prevent file permission changes
