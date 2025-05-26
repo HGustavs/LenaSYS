@@ -59,6 +59,7 @@
     <script src="./diagram/helpers/context.js"></script>
     <script src="./diagram/helpers/element.js"></script>
     <script src="./diagram/helpers/boxSelect.js"></script>
+    <script src="./diagram/helpers/pointerTool.js"></script>
     <script src="./diagram/zoom.js"></script>
     <script src="./diagram/camera.js"></script>
     <script src="./diagram/tooltip_information.js"></script>

@@ -936,6 +936,27 @@ function setupTouchAsMouseSupport() {
     // Handle touchstart: either simulates mousedown or prepare for pinch-zoom
     container.addEventListener("touchstart", function (event) {
         if (event.touches.length === 1) {
+            const touch = event.touches[0];
+
+            // If the Pointer-tool is used, a selection can be done on one element, and movement is possible
+            if (mouseMode === mouseModes.POINTER) {
+                let touchedElement = document.elementFromPoint (touch.clientX, touch.clientY);
+
+                while (touchedElement && !touchedElement.classList.contains("element")) {
+                    touchedElement = touchedElement.parentElement;
+                }
+
+                if (touchedElement && touchedElement.classList.contains ("element")) {
+                    const elementId = touchedElement.id;
+                    const elData = data.find(el => el.id === elementId); 
+                    // Updates element based on movement
+                    if (elData) {
+                        updateSelection(elData);
+                    }
+                }
+                pointerTool_Start(touch.clientX, touch.clientY);
+            }
+
             // Single touch, simulates a mouse down event
             const mouseEvent = convertTouchToMouse(event, "mousedown");
             container.dispatchEvent(mouseEvent);
@@ -951,6 +972,12 @@ function setupTouchAsMouseSupport() {
     container.addEventListener("touchmove", function (event) {
         event.preventDefault();
         if (event.touches.length === 1) {
+            const touch = event.touches[0];
+
+            if (mouseMode === mouseModes.POINTER && pointerState === pointerStates.CLICKED_ELEMENT) {
+                pointerTool_Update(touch.clientX, touch.clientY);
+            }
+
             // Singel touch, simulate mouse move event
             const mouseEvent = convertTouchToMouse(event, "mousemove");
             container.dispatchEvent(mouseEvent);
@@ -966,6 +993,7 @@ function setupTouchAsMouseSupport() {
             // No touches left, simulate mouse up event
             const mouseEvent = convertTouchToMouse(event, "mouseup");
             container.dispatchEvent(mouseEvent);
+            pointerTool_End();
             initialPinchDistance = null;
         }
     }, { passive: false });
@@ -1090,6 +1118,10 @@ function mouseMode_onMouseUp(event) {
  */
 function mmoving(event) {
     lastMousePos = new Point(event.clientX, event.clientY);
+
+    if (pointerState === pointerStates.CLICKED_ELEMENT && mouseMode === mouseModes.POINTER && 'ontouchstart' in window) {
+        return;
+    }
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
