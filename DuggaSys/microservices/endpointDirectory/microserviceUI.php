@@ -184,7 +184,18 @@ if (isset($_GET['id'])) {
             <h1>Microservice Directory</h1>
         </div>
         <div class="search-container">
-            <div>
+            <div class="button-container">
+                <button onclick="openFilterModal()">Filter</button>
+                <form method="get">
+                    <input type="hidden" name="add" value="1">
+                    <button type="submit">Add Microservice</button>
+                </form>
+                <button type="button" class="a-button" onclick="location.href='dependenciesUI.php'">dependenciesUI</button>
+                <button onclick="document.location='downloadDb.php'">Download Database</button>
+            </div>
+        </div>
+        <div class='filter_modal' style="display: none;">
+            <div class='filter_modal_content'>
                 <form method="GET">
                     <input type="text" name="search" placeholder="Search name/description">
                         <button type="submit">Search</button>
@@ -210,13 +221,7 @@ if (isset($_GET['id'])) {
                         <a href="?" class="a-button">Reset</a>
                     <?php endif; ?>
                 </form>
-            </div>
-            <div class="button-container">
-                <form method="get">
-                    <input type="hidden" name="add" value="1">
-                    <button type="submit">Add Microservice</button>
-                </form>
-                <button style="margin: 20px 0;" onclick="document.location='downloadDb.php'">Download Database</button>
+                <button onclick="closeFilterModal()" class="a-button" style="float:right;">Close</button>
             </div>
         </div>
     <?php } ?>
@@ -349,5 +354,13 @@ if (isset($_GET['id'])) {
 </table>
     <?php } 
     }   ?>
+<script>
+    function openFilterModal() {
+        document.querySelector('.filter_modal').style.display = 'flex';
+    }
+    function closeFilterModal() {
+        document.querySelector('.filter_modal').style.display = 'none';
+    }
+</script>
 </body>
 </html>
