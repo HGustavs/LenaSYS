@@ -3,7 +3,7 @@
 ## !IMPORTANT!
 this is only relevant if your XAMPP installation does not come with an SSL-ready config.
 
-to check, try to access [](https://localhost)
+to check, try to access __`https://localhost`__
 If you get __Warning: Potential Security Risk Ahead__, you have SSL configured and you can use LenaSYS with HTTPS. (you get a warning because it is a self-signed certificate, it is fine to continue).
 
 ## Prerequisites
@@ -50,7 +50,7 @@ Listen 443
 
 ## Final step: Restart Apache
 
-restart apache and try to visit [](https://localhost)
+restart apache and try to visit __`https://localhost`__
 if it does not work, double check that all relevant lines are present and that the correct path to the .crt and .key is given.
 
 
