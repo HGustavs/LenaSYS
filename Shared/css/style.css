@@ -71,11 +71,12 @@ PLZ see "Handling and usage of Style.css" in the wiki before use
 
   --color-fileLink-table-1: #ccc;
   --color-fileLink-table-2: #eae8eb;
+
   --button-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --button-size: 14px;
   --button-height: 30px;
+  --color-comment: #3f8539;
 
-  
 }
 
 /* --------------================################================-------------- *
@@ -287,7 +288,6 @@ p {
 
 #content {
   background: var(--color-background);
-  margin: 5px 0px 15px 0px;
 }
 
 #accessedcontent {
@@ -1525,14 +1525,12 @@ header {
   /*overflow: hidden;*/
   color: var(--color-text-header);
   height: 50px;
-  width: 100%;
   background: var(--color-primary);
   position: fixed;
   z-index: 5000;
   top: 0px;
   left: 0px;
   box-shadow: var(--standard-shadow);
-
 }
 
 header td {
@@ -1592,7 +1590,7 @@ header td {
   & ul {
     display: flex;
     flex-direction: row;
-    margin: 0;
+    margin: 0.5em;
     padding: 0;
     list-style: none;
     align-items: center;
@@ -1624,10 +1622,6 @@ header td {
 
 .navButt {
   vertical-align: middle;
-}
-.filterButt{
-  margin-top: 11px;
-  margin-block-end: 7px;
 }
 
 /*Needed because navButt applies a clicking effect on the element*/
@@ -1677,7 +1671,6 @@ margin-block-end: 10px;
 }
 #courseVersionDropDown{
   vertical-align: top;
-  max-width: 50px; 
 }
 
 .burgerButt {
@@ -2018,7 +2011,6 @@ div .navButt:hover {
 @media screen and (max-width: 600px) {
   .navheader {
     float: none;
-    width: 100%;
   }
   .logoutBox{
     width: 300px;
@@ -2821,7 +2813,6 @@ resulted.php END
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  width: 100%;
  }
 
  #course-newitem {
@@ -3875,10 +3866,9 @@ div.submit-button:disabled {
   width: 100%;
 }
 
-#submitButtonTable{
-  position: relative;
-  z-index:500;
-  margin-top: 20px;
+.submitButtonTable-center{
+  display: flex;
+  justify-content: center;
 }
 
 #submitButtonTable input.large-button {
@@ -4439,7 +4429,6 @@ span.arrow {
   background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
   box-shadow: var(--standard-shadow);
   background-position: right;
-  width: 100%;
 }
 
 .course-dropdown-div select {
@@ -5736,7 +5725,6 @@ rect[class*="activitymarker"]:hover {
 }
 #searchbar button#searchbutton,
 #searchbar button#searchbuttonicon{
-  padding: 8px 20px 5px 20px;
   background:#76578e;
   border-left: none;
   cursor: pointer;
@@ -5796,16 +5784,11 @@ rect[class*="activitymarker"]:hover {
 #searchbutton,
 #searchbuttonMobile {
   position: relative;
-  width: 26px;
-  height: 25px;
   margin: 0;
-  padding: 4px;
   border-radius: 0;
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   box-shadow: none !important;
-  margin-bottom: 5px;
-  margin-right: 2px;
 }
 
 
@@ -5813,12 +5796,6 @@ rect[class*="activitymarker"]:hover {
 #searchBar img,
 #testSearchContainer img {
   margin: 0px;
-}
-
-#lookingGlassSVG {
-  top: 3px;
-  left: 3px;
-  transform: scale(1.5);
 }
 
 /* styling for fileed switching table button*/
@@ -5829,8 +5806,6 @@ rect[class*="activitymarker"]:hover {
   text-align: center;
   background-color: var(--color-primary);
   color: var(--color-primary);
-  padding: 6px;
-  margin: 1px;
   border-radius: 2px;
   border: 0px;
   cursor: pointer;
@@ -7875,6 +7850,7 @@ only screen and (max-device-width: 568px) {
     text-align: center;
     flex-wrap: wrap; /* Allow wrapping of elements */
     height: auto;
+  }
 }
 
 .fixed-action-button {
@@ -7900,7 +7876,7 @@ only screen and (max-device-width: 568px) {
     bottom: 100px; /* Nudges the FAB 10px up from the bottom */
   }
 }
-}
+
 @media screen and (max-width: 350px) {
 
   input.submit-button-newitem {
@@ -8019,30 +7995,6 @@ only screen and (max-device-width: 568px) {
   z-index:2;
 }
 
-@media only screen and (max-width: 430px) {
-  .fab-btn-list2 {
-    left: 3.4rem;
-  }
-}
-
-@media screen and (max-height: 600px) {
-  .fab-btn-list2{
-    top: 30px;
-    left: 45px;
-    transform: rotate(90deg);
-    transform-origin: top left;
-  }
-  
-
-  .fab-btn-list2 li {
-    transform: rotate(225deg);
-  }
-
-  [data-tooltip]:before {
-    right: 55%;
-    top: 10px;
-  }
-}
 
 .fab-btn-list li, .fab-btn-list2 li  {
   display: inline-block;
@@ -8058,15 +8010,8 @@ only screen and (max-device-width: 568px) {
 }
 
 @media screen and (max-height: 600px) {
-  .fab-btn-list {
-    transform-origin: 0% bottom;
-    transform: rotate(270deg);
-  }
-  .fab-btn-sm {
-    transform: rotate(375deg);
-  }
-  [data-tooltip]:before {
-    bottom: 90%;
+  .fab-btn-list2 {
+    padding: 3rem 3rem 0rem 1rem;
   }
 }
 
@@ -8477,7 +8422,7 @@ only screen and (max-device-width: 568px) {
   border: solid var(--color-border-4);
   background-color: var(--color-background-4);
   flex-grow:1;
-  max-width: 50%;
+  max-width: 55%;
   /*
   width: 38%;
   height: 80%;
@@ -8493,6 +8438,7 @@ only screen and (max-device-width: 568px) {
   */
   height: 100%;
   width: 100%;
+  padding-bottom: 15px;
   box-sizing: border-box;
 }
 
@@ -8508,7 +8454,7 @@ only screen and (max-device-width: 568px) {
 .markdownPrev {
   border: solid var(--color-border-4);
   flex-grow:1;
-  max-width: 50%;
+  max-width: 44%;
   /*
   width: 56%;
   height: 80%;
@@ -8589,7 +8535,7 @@ legend {
 
 .prevSpan {
   max-width: 100%;
-  padding: 10px;
+  padding: 10px 0px 0px;
   /*height: 85%;*/
   height: 100%;
   box-sizing: border-box;
@@ -8727,65 +8673,73 @@ textarea#mrkdwntxt {
   transition: 0.2s;
 }
 
-.selectHeader>span {
+.selectHeader>button {
   display: block;
   cursor: pointer;
+  border: none;
   /*color: var(--color-text-list);*/
   background-color: var(--color-background);
 }
 
-.selectHeader>span:hover {
+.selectHeader>button:hover {
+  border: none;
   background-color: var(--color-background-4);
 }
 
-#headerType1 {
-  font-size: 13px;
-  padding: 5px 7px 0px 3px;
-}
-
-#headerType2 {
-  font-size: 12px;
-  padding: 5px 11px 5px 3px;
-}
-
-#headerType2:hover {
-  background-color: var(--color-background-4);
-}
-
-#headerType3 {
-  font-size: 11px;
-  padding: 5px 15px 5px 3px;
-}
-
-#headerType4 {
-  font-size: 10px;
-  padding: 5px 19px 5px 3px;
-}
-
-#headerType5 {
-  font-size: 9px;
-  padding: 5px 23px 5px 3px;
-}
-
-#headerType6 {
-  font-size: 8px;
-  padding: 5px 27px 6px 3px;
+.header-dropdown-div{
+  position: relative;
 }
 
 .show-dropdown-content {
   display: block;
 }
 
+#headerType1 {
+  font-size: 13px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType2 {
+  font-size: 12px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType3 {
+  font-size: 11px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType4 {
+  font-size: 10px;
+  height: 25px;
+  width: inherit;
+}
+
+#headerType5 {
+  font-size: 9px;
+  height:25px;
+  width: inherit;
+}
+
+#headerType6 {
+  font-size: 8px;  
+  height:25px;
+  width: inherit;
+}
+
 #select-header {
-  top: 82px;
-  left: 30%;
-  max-width: 63px;
+  display: none;
+  width: 70px;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2000;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
-
 
 /* --------------===============################================-------------- *
  *                                    courseed                                 *
@@ -9109,6 +9063,9 @@ div > div > .shortcut-keys:hover {
   text-align: center;
   line-height: 24px;
   vertical-align: middle;
+  background: none;
+  border: none;
+  font: inherit;
 }
 
 .markdown-icon-div {
@@ -9123,12 +9080,16 @@ div > div > .shortcut-keys:hover {
   filter: invert(100%);
 }
 
-#imgIcon,
-#headerIcon {
+#imgIcon {
   margin-left: 2px;
-  margin-right: 10px;
 }
 
+#headerIcon {
+  margin-top: 2px;
+  background: none;
+  border: none;
+  font: inherit;
+}
 
 .editFileWindow {
   height: 80%;
@@ -9140,6 +9101,7 @@ div > div > .shortcut-keys:hover {
   right: 0;
   top: 10%;
   position: fixed;
+  padding: 0%;
 }
 
 .editFileCode {
@@ -9954,8 +9916,8 @@ span[id$="examples"]:hover{
 }
 
 .comment {
-  color: #50a750;
-  font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
+    color: var( --color-comment);
+    font-family: Hack,'Ubuntu Mono', "Andale Mono", AndaleMono, monospace;
 }
 
 .normtext .oper {
@@ -10912,6 +10874,16 @@ button:disabled {
   justify-content: space-between;
   width: 97%;
   padding-left: 5px;
+}
+
+.feedback-content {
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  max-height: 0;
+}
+
+.feedback-content.slide-visible {
+  max-height: 500px; /* Justera efter behov */
 }
 
 /* END */

@@ -316,15 +316,25 @@ $js = array(
                         <legend>Markdown</legend>
                         <div id='markdownEditor'>
                             <div class="markdown-icon-div">
-                                <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
-                                <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
-                                <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                                <span class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></span>
-                                <span class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></span>
-                                <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
-                                <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></span>
-                                <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></span>
-                                <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
+                                <button class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></button>
+                                <button class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></button>
+                                <button class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</button>
+                                <button class="markdown-icons" id="listIcon" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></button>
+                                <button class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></button>
+                                <button class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</button>
+                                <button class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></button>
+                                <button class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img src="../Shared/icons/insert-photo.svg"></button>
+                                <div class="markdown-icons header-dropdown-div" onmouseleave="showDropdown('hide');"> 
+                                    <button id="headerIcon" title="Header" onclick="showDropdown('show');">aA&#9663; </button>
+                                    <div class="selectHeader" id="select-header">
+                                        <button id="headerType1" onclick="selected(); headerVal1();" value="H1">Header 1</button>
+                                        <button id="headerType2" onclick="selected(); headerVal2();" value="H2">Header 2</button>
+                                        <button id="headerType3" onclick="selected(); headerVal3();" value="H3">Header 3</button>
+                                        <button id="headerType4" onclick="selected(); headerVal4();" value="H4">Header 4</button>
+                                        <button id="headerType5" onclick="selected(); headerVal5();" value="H5">Header 5</button>
+                                        <button id="headerType6" onclick="selected(); headerVal6();" value="H6">Header 6</button>
+                                    </div> 
+                                </div>
 
                                 <select name=";" onchange="chooseFile(this.options[this.selectedIndex].value);" >
                                 <option value='defaultOption'>Choose file</option>
@@ -354,14 +364,6 @@ $js = array(
                                     }
                                 ?>
                                 </select>
-                                <div class="selectHeader" id="select-header">
-                                    <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
-                                    <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
-                                    <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
-                                    <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
-                                    <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
-                                    <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
-                                </div>
                             </div>
 
                             <div class="markText" style="flex-grow:1;">

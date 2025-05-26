@@ -76,7 +76,7 @@ function returnedDugga(data)
 			//showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 
-			retdata = jQuery.parseJSON(data['param']);
+			retdata = JSON.parse(data['param']);
 			variant = retdata["variant"];
 
 			if (data["answer"] !== null && data["answer"] !== "UNK") {
@@ -248,7 +248,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 
-	retdata = jQuery.parseJSON(param);
+	retdata = JSON.parse(param);
 	variant = retdata["variant"];
 
 	if (uanswer !== null || uanswer !== "UNK") {
