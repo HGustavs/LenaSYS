@@ -3916,8 +3916,8 @@ function setShowPane(id) {
 		if(!wrapper) continue;
 		if(i == id){
 			wrapper.style.display = "inline";
-			wrapper.style.gridColumn = "a/b";
-			wrapper.style.gridRow = "a/1";
+			wrapper.style.gridColumn = "1/5";
+			wrapper.style.gridRow = "1/7";
 		}
 		else{
 			wrapper.style.display = "none";
