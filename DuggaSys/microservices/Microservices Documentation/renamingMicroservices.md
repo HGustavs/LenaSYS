@@ -525,7 +525,7 @@ Used in, where the microservice/file name also needs to be changed:
 ---
 
 ## sharedMicroservices
-Microservices to be renamed in the sectionedService folder.
+Microservices to be renamed in the sharedMicroservices folder.
 
 ### getUid_ms.php
 New name: <ins>readUid_ms.php</ins>
@@ -641,4 +641,40 @@ Used in, where the microservice/file name also needs to be changed:
 - backend-models/microservices/duggaSys services/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/courseedService.md
 - DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+
+## showDuggaService
+Microservices to be renamed in the showDuggaService folder.
+
+### getShowDugga_ms.php
+New name: <ins>retrieveAllShowDuggaServiceData_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/showDuggaService/getShowDugga_ms.php
+- Shared/dugga.js
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/showDuggaService.md
+
+### loadDugga_ms.php
+New name: <ins>readSubmittedDugga_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/showDuggaService/loadDugga_ms.php
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/showDuggaService.md
+- DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/tests/microservices/showDuggaService/loadDugga_ms_test.php
+
+### processDuggaFile_ms.php
+New name: <ins>processSubmittedDugga_ms.php</ins>
+
+Used in, where the microservice/file name also needs to be changed:
+- DuggaSys/microservices/showDuggaService/processDuggaFile_ms.php
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/showDuggaService.md
+- DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/tests/microservices/processDuggaFile_test.php
 
