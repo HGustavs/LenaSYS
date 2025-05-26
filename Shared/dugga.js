@@ -2568,15 +2568,6 @@ function FABMouseOut(e) {
 		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	
-	/*	Handling for mouse-over for the small fab button.
-
-	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
-	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
-		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
-		document.querySelector('.fab-btn-list2').style.display="none";
-	} */
-
 }
 //----------------------------------------------------------------------------------
 // FABDown : FAB Mouse Down
@@ -2607,7 +2598,7 @@ function FABDown(e)
 			}
 		});
 	}
-	// ignore click if on fab-icon, handling done within onclick function
+	// ignore if on fab-icon, handling done within onclick function
 	else if(document.querySelector('.fab-btn-list2')){
 		if (!e.target.classList.contains('btn-floating')){
 			closeFabDropdown();

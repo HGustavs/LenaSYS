@@ -2852,13 +2852,6 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
-/*
-document.addEventListener("mousedown", function (e) {
-  // showFabList(e);
-  console.log("mouse down 1");
-   FABMouseOver(e); 
-}); */
-
 document.addEventListener("mouseout", function (e) {
   FABMouseOut(e);
 });
