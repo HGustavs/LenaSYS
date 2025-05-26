@@ -1169,7 +1169,6 @@ function mmoving(event) {
             }
             break;
         case pointerStates.CLICKED_NODE:
-            console.log("hello");
             const index = findIndex(data, context[0].id);
             const elementData = data[index];
 

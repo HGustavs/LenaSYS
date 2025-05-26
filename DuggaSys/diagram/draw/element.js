@@ -397,7 +397,7 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
 
     // Content, Attributes
     const textBox = (s, css) => {
-        let height = texth * s.length * lineHeight + texth * 1;
+        let height = (texth * s.length * lineHeight) + boxh / 2 + texth;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
@@ -451,7 +451,7 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
 
     // Content, Attributes
     const textBox = (s, css) => {
-        let height = texth * s.length * lineHeight + texth * 1;
+        let height = (texth * s.length * lineHeight) + boxh + texth;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             if (i < newPrimaryKeys.length) {
@@ -525,7 +525,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
 
     // Attributes box with lower rounded corners
     const drawBox = (s, css) => {
-        let height = texth * s.length * lineHeight + texth * 1;
+        let height = (texth * s.length * lineHeight) + boxh + texth;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
