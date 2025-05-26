@@ -940,7 +940,22 @@ function setupTouchAsMouseSupport() {
         if (event.touches.length === 1) {
             const touch = event.touches[0];
 
+            // If the Pointer-tool is used, a selection can be done on one element, and movement is possible
             if (mouseMode === mouseModes.POINTER) {
+                let touchedElement = document.elementFromPoint (touch.clientX, touch.clientY);
+
+                while (touchedElement && !touchedElement.classList.contains("element")) {
+                    touchedElement = touchedElement.parentElement;
+                }
+
+                if (touchedElement && touchedElement.classList.contains ("element")) {
+                    const elementId = touchedElement.id;
+                    const elData = data.find(el => el.id === elementId); 
+                    // Updates element based on movement
+                    if (elData) {
+                        updateSelection(elData);
+                    }
+                }
                 pointerTool_Start(touch.clientX, touch.clientY);
             }
 
