@@ -1521,14 +1521,12 @@ header {
   /*overflow: hidden;*/
   color: var(--color-text-header);
   height: 50px;
-  width: 100%;
   background: var(--color-primary);
   position: fixed;
   z-index: 5000;
   top: 0px;
   left: 0px;
   box-shadow: var(--standard-shadow);
-
 }
 
 header td {
@@ -1669,7 +1667,6 @@ margin-block-end: 10px;
 }
 #courseVersionDropDown{
   vertical-align: top;
-  max-width: 50px; 
 }
 
 .burgerButt {
@@ -2010,7 +2007,6 @@ div .navButt:hover {
 @media screen and (max-width: 600px) {
   .navheader {
     float: none;
-    width: 100%;
   }
   .logoutBox{
     width: 300px;
@@ -4431,7 +4427,6 @@ span.arrow {
   background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
   box-shadow: var(--standard-shadow);
   background-position: right;
-  width: 100%;
 }
 
 .course-dropdown-div select {
