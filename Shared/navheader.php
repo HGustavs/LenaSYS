@@ -180,8 +180,8 @@
 			if($noup=='COURSE'){
 					// Course specific navbar buttons moved from "static" to navheader
 					if(checklogin() && (isSuperUser($_SESSION['uid']) || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'st') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'w') || hasAccess($_SESSION['uid'], $_SESSION['courseid'], 'sv'))) {
-						echo '<li class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
-						echo "</li>";
+						echo '<button class="hamburger fa fa-bars hamburgerMenu" id="hamburgerIcon" onclick=hamburgerChange()>';
+						echo "</button>";
 						echo "<li id='courseVersionDropDown' title='Choose course version'>";
 							echo "    <div class='course-dropdown-div'>";
 							echo "      <select id='courseDropdownTop' class='course-dropdown' onchange='goToVersion(this)' ></select>";

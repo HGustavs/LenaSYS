@@ -5964,6 +5964,8 @@ rect[class*="activitymarker"]:hover {
 /* Hamburger menu, hidden as default state */
 
 .navheader .hamburger {
+  background: none;
+  border: none;
   pointer-events: none;
   text-align: center;
   display: inline-block;
