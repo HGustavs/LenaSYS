@@ -1116,56 +1116,31 @@ function mmoving(event) {
             updateLabelPos(event.clientX, event.clientY);
             updatepos();
             break;
-        case pointerStates.CLICKED_ELEMENT:
-            if (mouseMode != mouseModes.EDGE_CREATION) {
-                const prevTargetPos = {
-                    x: data[findIndex(data, targetElement.id)].x,
-                    y: data[findIndex(data, targetElement.id)].y
-                };
-                let targetElementDiv = document.getElementById(targetElement.id);
-                let targetPos = {
-                    x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
-                    y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
-                };
-                targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
-                targetDelta = {
-                    x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
-                    y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-                };
+      case pointerStates.CLICKED_ELEMENT:
+            if (mouseMode !== mouseModes.EDGE_CREATION && targetElement && !targetElement.isLocked) {
+                const coords = screenToDiagramCoordinates(event.clientX, event.clientY); // Convert mouse position to diagram coordinates
 
-                // Letting the system know that an object is being moved
-                movingObject = true;
+                const snapId = visualSnapToLifeline(coords); // Identifying a lifeline nearby for snapping
 
-                // Moving object
-                deltaX = startX - event.clientX;
-                deltaY = startY - event.clientY;
-
-                // Check coordinates of moveable element and if they are within snap threshold
-                const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
-                // Lifeline coordinates to visualize snap for selected activation elements
-                const snapId = visualSnapToLifeline(moveableElementPos);
-                
-                // Visualized snap to lifeline
-                if (snapId) {
-                    const lLine = data.find(el => el.id === snapId);
-                    let anySnapped = false;
-
-                    context.forEach(el => {
-                        if (el.kind === elementTypesNames.sequenceActivation) {
-                            el.x = lLine.x + (lLine.width / 2) - (el.width / 2);
-                            anySnapped = true;
-                        }
-                    });
-
-                    if (anySnapped) {
-                        startX = event.clientX;
-                        deltaX = 0;
+                context.forEach(el => {
+                    if (el.kind === elementTypesNames.sequenceActivation && snapId) {
+                        const lLine = data.find(line => line.id === snapId);
+                        el.x = lLine.x + (lLine.width / 2) - (el.width / 2); // Snap horizontally to lifeline cenetr 
+                    } else {
+                        el.x = coords.x - (el.width / 2); //  Follow mouse normally (centered)
                     }
-                }
+
+                    el.y = coords.y - (el.height / 2); // Update vertical position to center under mouse
+                });
+
+                //Flag as moving and update the diagram
+                movingObject = true;
                 updatepos();
-                calculateDeltaExceeded();
+                showdata();
             }
-            break;
+    break;
+
+
         case pointerStates.CLICKED_NODE:
             const index = findIndex(data, context[0].id);
             const elementData = data[index];
