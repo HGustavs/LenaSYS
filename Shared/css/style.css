@@ -191,10 +191,17 @@ h3 {
 }
 
 h4 {
+  margin: 2px 0px 10px 0px;
+  padding: 0px;
+}
+
+h5 {
+  margin: 2px 0px 10px 0px;
   padding: 0px;
 }
 
 h6 {
+  margin: 2px 0px 10px 0px;
   padding: 0px;
 }
 
