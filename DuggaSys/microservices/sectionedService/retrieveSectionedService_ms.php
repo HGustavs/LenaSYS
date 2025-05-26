@@ -200,7 +200,8 @@ if ($query->execute()) {
 $links = array();
 
 // Retrieve Course Versions from microservice 'readCourseVersions_ms.php'
-$versions = callMicroserviceGET("sectionedService/readCourseVersions_ms.php");
+$versions = callMicroservicePOST("sectionedService/readCourseVersions_ms.php",[],true);
+$versions = json_decode($versions);
 
 $codeexamples = array();
 
@@ -230,6 +231,7 @@ if ($ha || $studentTeacher) {
         $error = $query->errorInfo();
         $debug = "Error reading entries" . $error[2];
     }
+
     $oldkind = -1;
     foreach ($query->fetchAll() as $row) {
         if ($row['kind'] != $oldkind) {
@@ -238,6 +240,7 @@ if ($ha || $studentTeacher) {
         $oldkind = $row['kind'];
         array_push($links, array('fileid' => $row['fileid'], 'filename' => $row['filename']));
     }
+
 
     $codeexamples = array();
 

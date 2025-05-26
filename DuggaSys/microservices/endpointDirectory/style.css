@@ -60,6 +60,21 @@ form {
   gap: 10px;
 }
 
+.button-container form {
+  margin: 0;
+}
+
+.button-container button {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
 input {
   border: 1px solid black;
   border-radius: 18px;
@@ -102,7 +117,8 @@ a {
 }
 
 .edit_modal,
-.add_modal {
+.add_modal,
+.filter_modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -116,7 +132,8 @@ a {
 }
 
 .edit_modal_content,
-.add_modal_content {
+.add_modal_content,
+.filter_modal_content {
   background-color: white;
   border: 1px solid black;
   border-radius: 8px;

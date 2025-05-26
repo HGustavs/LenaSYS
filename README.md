@@ -50,8 +50,7 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 <img src="Shared/Documentation/docker_images/terminal3.png" width="512">
 
-5. Here you need to build a few images and containers, and to do that run the command for Windows: `docker-compose up --build`
-or macOS: `docker compose up --build`.
+5. Here you need to build a few images and containers, and to do that run the command for Windows: `.\setup.bat`. On macOS/Linux: make sure to change the file permissions first [here](README.md/#using-linux-or-mac), then run: `./setup.sh`.
 NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
@@ -90,7 +89,7 @@ After changing the file permissions recursively over the repository, all the fil
 
 1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
 
-2. After that run the command: `docker-compose down` in the terminal.
+2. After that run the command: `docker compose down` in the terminal.
 <img src="Shared/Documentation/docker_images/terminal7.png" width="512">
 
 3. Now your terminal says removed which means containers are removed.
