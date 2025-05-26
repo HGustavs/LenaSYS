@@ -3758,24 +3758,28 @@ function createExamples(momentID, isManual) {
 
   //wrapped ajax in promise in order to return promise to the function that called it. see setInterval
   return new Promise((resolve, reject) => {
-    $.ajax({
-      url: "sectionedservice.php",
-      type: "POST",
-      data: { 'lid': lid, 'opt': 'CREGITEX' },
-      dataType: "json",
-      success: function (response) {
-        console.log("AJAX request succeeded. Response:", response);
-        lastUpdatedCodeExampes = Date.now();
-        if (isManual) {
-          console.log("Code examples have been manually updated successfully!");
-        }
-        resolve(response);
+    fetch("sectionedservice.php", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      error: function (xhr, status, error) {
-        console.error("AJAX request failed. Status:", status);
-        console.error("Error:", error);
-        console.log("Failed to manually update code examples!");
+      body: new URLSearchParams({
+        'lid': lid,
+        'opt': 'CREGITEX'
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log("Fetch request succeeded. Response:", response);
+      lastUpdatedCodeExampes = Date.now();
+      if (isManual) {
+        console.log("Code examples have been manually updated successfully!");
       }
+      resolve(response);
+    })
+    .catch(error => {
+      console.error("Fetch request failed. Error:", error);
+      console.log("Failed to manually update code examples!");
     });
   });
 }
