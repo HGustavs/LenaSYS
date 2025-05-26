@@ -37,11 +37,11 @@
     }
 }
 
-#options-pane button {
+#diagram-toolbar button {
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid #5f4c7a; 
-  background-color: #7c5896;
+  background-color: var(--color-primary);
+   border: 1px solid var(--color-primary-hover); 
   box-shadow: none;
   outline: none;
   background-clip: padding-box;
