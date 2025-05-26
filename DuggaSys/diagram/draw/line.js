@@ -233,8 +233,8 @@ function drawLine(line, targetGhost = false) {
             const isFrom = felem.name === "Self Call"; //used to know if line is felem or telem 
             let startX = isFrom ? tx : fx; //Different values dependant on line direction
             let startY = isFrom ? ty : fy;
-            const selectOffsetX = (isFrom ? offset.x2 : offset.x1); //keeping track of which offset to use
-            const selectOffsetY = (isFrom ? offset.y2 : offset.y1);
+            const selectOffsetX =  2 * (isFrom ? offset.x2 : offset.x1); //keeping track of which offset to use
+            const selectOffsetY =  2 * (isFrom ? offset.y2 : offset.y1);
             const length = 30 * zoomfact; 
 
             if(isFrom){  //if the line is from the source element reverse icons
@@ -301,14 +301,14 @@ function drawLine(line, targetGhost = false) {
     // Draws the cardinality start and end labels for Self Call
     if (felem.name === "Self Call" || telem.name === "Self Call") {
         if(felem.name === "Self Call"){
-            fx = tx + offset.x2; //If line is from self we want it to work same as if its the otwer way around
-            fy = ty + offset.y2;
+                fx = tx + offset.x2 * 2; //If line is from self we want it to work same as if its the otwer way around
+                 fy = ty + offset.y2 * 2;
         }
-        if (line.startLabel && line.startLabel != '') {
-            let fxCardinality = fx + offset.x1;
-            let fyCardinality = fy + offset.y1;
-            let txCardinality = fx + offset.x1;
-            let tyCardinality = fy + offset.y1;
+         if (line.startLabel && line.startLabel != '') {
+            let fxCardinality = fx + (2* offset.x1);
+            let fyCardinality = fy + (2* offset.y1);
+            let txCardinality = fx + (2* offset.x1);
+            let tyCardinality = fy + (2* offset.y1);
             
             if (line.ctype === lineDirection.UP  || line.ctype === lineDirection.DOWN ) { 
                 txCardinality += 40;
