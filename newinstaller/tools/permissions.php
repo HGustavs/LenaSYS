@@ -161,6 +161,26 @@ class Permissions {
         }
     }
 
+    /**
+     * function change_file_permissions
+     * change the file permissions file.
+     */
+    public static function change_file_permissions(string $path, $mode) {
+        try {
+            if (!file_exists($path)) {
+                throw new Exception("File does not exist");
+            }
+
+            if (!chmod($path, $mode)) {
+                throw new Exception("Failed to change file permission with chmod");
+            }
+
+            return self::handle_success("Successfully changed file permissions", (is_readable($path) && is_writable($path) && is_executable($path)));
+        } catch(Exception $e) {
+            return self::handle_exception($e, "Could not change file permission");
+        }
+    }
+
     private static function handle_success(string $action, $data) {
         return [
             "success"=> true,
