@@ -167,8 +167,18 @@ This page also conatins the options:
 # Options
 This section covers the various options available in the installer.
 
+## Step 6 - SSL
+
+To enable https on your system you need SSL on the apache server you are hosting lenasys with. If the installation was successful you should have two files in the following path:
+- LenaSYS/newinstaller/tools/ssl/__localhost.crt__
+- LenaSYS/newinstaller/tools/ssl/__localhost.key__
+
+### Tutorials
+If you are using [XAMPP](ssl-xampp.md)
+
 ## Use Distributed Environment
-Enabling this option will allow the created MySQL user to connect from anywhere. The default is for the created MySQL user to only be allowed to connect from the same hostname as supplied in [step 3](#step-3). This option is useful if you have your database hosted on another machine, or you are using a containerized dev environment such as docker. 
+Enabling this option will allow the created MySQL user to connect from anywhere. The default is for the created MySQL user t
+o only be allowed to connect from the same hostname as supplied in [step 3](#step-3). This option is useful if you have your database hosted on another machine, or you are using a containerized dev environment such as docker. 
 
 ## Verbose
 The verbose mode of the installer will print alot more information, such as the individual queries it runs to install the system, and all the files it copies during installation. This is useful for debugging, but should be left off in most cases. 
