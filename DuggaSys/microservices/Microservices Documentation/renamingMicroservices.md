@@ -16,15 +16,19 @@ Microservices to be renamed in the accessedService folder.
 New name: <ins>createClass_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+accessedService folder:
 - DuggaSys/microservices/accessedService/addClass_ms.php
+- DuggaSys/tests/microservices/accessedService/addClass_ms_test.php
 - includeInstructions.md
+
+Other folders/files:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/endpointDirectory/fillDependenciesDb.php
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/accessedService.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/accessedService/addClass_ms_test.php
 
 ---
 
@@ -32,7 +36,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>createUser_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+accessedService folder:
 - DuggaSys/microservices/accessedService/addUser_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/accessedService.md
@@ -46,7 +54,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>retrieveAllAcessedServiceData_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+accessedService folder:
 - DuggaSys/microservices/accessedService/getAccessedService_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/accessedService.md
@@ -61,7 +73,15 @@ Microservices to be renamed in the codeviewerService folder.
 New name: <ins>updateBoxTitle_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+codeviewerService folder:
 - DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/codeviewerService/editBoxTitle_ms_test.php
+- DuggaSys/tests/microservices/codeviewerService/codeviewerService_documentation.md
+
+Other files/folders:
 - DuggaSys/microservices/monolithic-to-microservices.md
 - DuggaSys/microservices/deprecated_microservices.md
 - Shared/dugga.js
@@ -69,8 +89,6 @@ Used in, where the microservice/file name also needs to be changed:
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/codeviewerService.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/codeviewerService/editBoxTitle_ms_test.php
-- DuggaSys/tests/microservices/codeviewerService/codeviewerService_documentation.md
 
 ---
 
@@ -78,7 +96,20 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>updateCodeExample_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+codeviewerService folder:
+- DuggaSys/microservices/codeviewerService/editCodeExample_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/codeviewerService/editCodeExample_ms_test.php
+- DuggaSys/tests/microservices/codeviewerService/codeviewerService_documentation.md
+
+Other files/folders:
+- DuggaSys/microservices/deprecated_microservices.md
+- Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- DuggaSys/microservices/Microservices Documentation/codeviewerService.md
 - backend-models/microservices/duggaSys services/Microservices.md
 
 ---
@@ -87,15 +118,20 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>updateContentOfExample_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+codeviewerService folder:
 - DuggaSys/microservices/codeviewerService/editContentOfExample_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/codeviewerService/editContentOfExample_ms_test.php
+- DuggaSys/tests/microservices/codeviewerService/codeviewerService_documentation.md
+
 - DuggaSys/microservices/deprecated_microservices.md
 - Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/codeviewerService.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/codeviewerService/editContentOfExample_ms_test.php
-- DuggaSys/tests/microservices/codeviewerService/codeviewerService_documentation.md
 
 ---
 
@@ -112,11 +148,17 @@ Be careful and check where <ins>changeActiveCourseVersion_courseed_ms.php</ins> 
 Since both files still exist, a more exact documentation of where both of these microservices are referenced is therefore made.
 
 Used in, where the microservice/file name also needs to be changed:
+
+courseedService folder:
 - DuggaSys/microservices/courseedService/changeActiveCourseVersion_courseed_ms.php (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
-- DuggaSys/tests/microservices/courseedService/changeActiveCourseVersion_courseed_ms_test.php (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
-- DuggaSys/microservices/deprecated_microservices.md (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
 - DuggaSys/microservices/courseedService/updateActiveCourseVersion_courseed_ms.php (ONLY updateActiveCourseVersion_courseed_ms.php is used)
+
+tests folder:
 - DuggaSys/tests/microservices/courseedService/updateActiveCourseVersion_courseed_ms_test.php (ONLY updateActiveCourseVersion_courseed_ms.php is used)
+- DuggaSys/tests/microservices/courseedService/changeActiveCourseVersion_courseed_ms_test.php (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
+
+Other files/folders:
+- DuggaSys/microservices/deprecated_microservices.md (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
 - DuggaSys/microservices/Microservices.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices_inverse_dependencies.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices Documentation/courseedService.md (BOTH ARE USED)
@@ -129,11 +171,17 @@ Supposed to REPLACE <ins>changeActiveCourseVersion_courseed_ms.php</ins>, but th
 Since both files still exist, a more exact documentation of where both of these microservices are referenced is therefore made.
 
 Used in, where the microservice/file name also needs to be changed:
+
+courseedService folder:
 - DuggaSys/microservices/courseedService/changeActiveCourseVersion_courseed_ms.php (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
-- DuggaSys/tests/microservices/courseedService/changeActiveCourseVersion_courseed_ms_test.php (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
-- DuggaSys/microservices/deprecated_microservices.md (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
 - DuggaSys/microservices/courseedService/updateActiveCourseVersion_courseed_ms.php (ONLY updateActiveCourseVersion_courseed_ms.php is used)
+
+tests folder:
+- DuggaSys/tests/microservices/courseedService/changeActiveCourseVersion_courseed_ms_test.php (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
 - DuggaSys/tests/microservices/courseedService/updateActiveCourseVersion_courseed_ms_test.php (ONLY updateActiveCourseVersion_courseed_ms.php is used)
+
+Other files/folders:
+- DuggaSys/microservices/deprecated_microservices.md (ONLY changeActiveCourseVersion_courseed_ms.php IS USED)
 - DuggaSys/microservices/Microservices.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices_inverse_dependencies.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices Documentation/courseedService.md (BOTH ARE USED)
@@ -151,14 +199,20 @@ Be careful and check where <ins>getCourseed_ms.php</ins> is used, and remove it 
 Since both files still exist, a more exact documentation of where both of these microservices are referenced is therefore made.
 
 Used in, where the microservice/file name also needs to be changed:
+
+courseedService folder:
 - DuggaSys/microservices/courseedService/retrieveAllCourseedServiceData_ms.php (ONLY retrieveAllCourseedServiceData_ms.php IS USED)
-- DuggaSys/tests/microservices/courseedService/retrieveCourseedService_ms_test.php (ONLY retrieveAllCourseedServiceData_ms.php IS USED)
 - DuggaSys/microservices/courseedService/getCourseed_ms.php (ONLY getCourseed_ms.php)
+
+tests folder:
+- DuggaSys/tests/microservices/courseedService/retrieveCourseedService_ms_test.php (ONLY retrieveAllCourseedServiceData_ms.php IS USED)
+- DuggaSys/tests/microservices/courseedService/deleteCourseMaterial_ms_test.php (BOTH ARE USED)
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices Documentation/courseedService.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices_inverse_dependencies.md (BOTH ARE USED)
-- DuggaSys/tests/microservices/courseedService/deleteCourseMaterial_ms_test.php (BOTH ARE USED)
 
 ---
 
@@ -167,14 +221,20 @@ Supposed to REPLACE <ins>getCourseed_ms.php</ins>, but that file still exists. S
 Since both files still exist, a more exact documentation of where both of these microservices are referenced is therefore made.
 
 Used in, where the microservice/file name also needs to be changed:
+
+courseedService folder:
 - DuggaSys/microservices/courseedService/retrieveAllCourseedServiceData_ms.php (ONLY retrieveAllCourseedServiceData_ms.php IS USED)
-- DuggaSys/tests/microservices/courseedService/retrieveCourseedService_ms_test.php (ONLY retrieveAllCourseedServiceData_ms.php IS USED)
 - DuggaSys/microservices/courseedService/getCourseed_ms.php (ONLY getCourseed_ms.php)
+
+tests folder:
+- DuggaSys/tests/microservices/courseedService/retrieveCourseedService_ms_test.php (ONLY retrieveAllCourseedServiceData_ms.php IS USED)
+- DuggaSys/tests/microservices/courseedService/deleteCourseMaterial_ms_test.php (BOTH ARE USED)
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices Documentation/courseedService.md (BOTH ARE USED)
 - DuggaSys/microservices/Microservices_inverse_dependencies.md (BOTH ARE USED)
-- DuggaSys/tests/microservices/courseedService/deleteCourseMaterial_ms_test.php (BOTH ARE USED)
 
 ---
 
@@ -195,7 +255,11 @@ Microservices to be renamed in the fileedService folder.
 New name: <ins>"retrieveAllFileedServiceData_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+fileedService folder:
 - DuggaSys/microservices/fileedService/getFileedService_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
@@ -210,9 +274,13 @@ Microservices to be renamed in the gitCommitService folder.
 New name: <ins>readCourseID_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/clearGitFiles_ms.php
-- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/gitCommitService/refreshGithubRepo_ms.php
+
+Other files/folders:
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/Microservices.md
 - backend-models/microservices/duggaSys services/Microservices.md
 
@@ -222,7 +290,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>readGitToken_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/fetchOldToken_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/gitCommitService.md
@@ -234,7 +306,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>readCourseID_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/getCourseID_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -245,8 +321,12 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>syncGitRepoMetadata_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/insertIntoSQLite_ms.php
 - DuggaSys/microservices/gitCommitService/getCourseID_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/Microservices.md
 - backend-models/microservices/duggaSys services/Microservices.md
@@ -257,12 +337,18 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>updateTime_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/newUpdateTime_ms.php
 - DuggaSys/microservices/gitCommitService/refreshCheck_ms.php
+
+tests folder:
+- DuggaSys/tests/newUpdateTime_test.php
+
+Other files/folders:
 - DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/Microservices.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/newUpdateTime_test.php
 
 ---
 
@@ -270,9 +356,13 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>updateThrottle_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/refreshCheck_ms.php
-- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/gitCommitService/refreshGithubRepo_ms.php
+
+Other files/folders:
+- DuggaSys/microservices/Microservices Documentation/gitCommitService.md
 - DuggaSys/microservices/Microservices.md
 - backend-models/microservices/duggaSys services/Microservices.md
 
@@ -282,7 +372,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>updateGithubRepo_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitCommitService folder:
 - DuggaSys/microservices/gitCommitService/refreshGithubRepo_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -298,7 +392,11 @@ Microservices to be renamed in the gitFetchService folder.
 New name: <ins>getGitHubAPIUrl_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitFetchService folder:
 - DuggaSys/microservices/gitFetchService/getGithubURL_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/gitFetchService.md
@@ -310,7 +408,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>readIndexFile_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitFetchService folder:
 - DuggaSys/microservices/gitFetchService/getIndexFile_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/gitFetchService.md
@@ -322,7 +424,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>createFileLinkEntry_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitFetchService folder:
 - DuggaSys/microservices/gitFetchService/insertToFileLink_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/gitFetchService.md
@@ -334,7 +440,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>createGitFilesMetadata_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+gitFetchService folder:
 - DuggaSys/microservices/gitFetchService/insertToMetadata_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/gitFetchService.md
@@ -349,6 +459,12 @@ Microservices to be renamed in the highscoreService folder.
 New name: <ins>readHighscore_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+highscoreService folder:
+- DuggaSys/microservices/highscoreService/highscoreservice_ms.php
+- DuggaSys/microservices/highscoreService/retrieveHighscoreService_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
@@ -369,14 +485,20 @@ Microservices to be renamed in the resultedService folder.
 New name: <ins>readUserAnswer_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+resultedService folder:
 - DuggaSys/microservices/resultedService/getUserAnswer_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/resultedService/getUserAnswer_ms_test.php
+- DuggaSys/tests/microservices/resultedService/Microservices_docuementation.md
+
+Other files/folders:
 - DuggaSys/microservices/Microservices Documentation/resultedService.md
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/resultedService/getUserAnswer_ms_test.php
-- DuggaSys/tests/microservices/resultedService/Microservices_docuementation.md
 
 ---
 
@@ -388,13 +510,19 @@ New name: <ins>updateActiveCourseVersion_sectioned_ms.php</ins>
 A new file with the new name has already been created. It is an exact copy of the old one, so that file should just be removed along with the related test-file. Keep only <ins>updateActiveCourseVersion_sectioned_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms_test.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/sectionedService.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/sectionedService/changeActiveCourseVersion_sectioned_ms_test.php
 
 ---
 
@@ -403,7 +531,11 @@ New name: <ins>readCourseGroupsAndMembers_ms.php</ins>.
 A new file with the new name has already been created and is in use. It is an exact copy of the old one, so that file should just be removed. Keep only <ins>readCourseGroupsAndMembers_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/getCourseGroupsAndMembers_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -417,7 +549,11 @@ New name: <ins>readCourseVersions_ms.php</ins>.
 A new file with the new name has already been created and is in use. The new microservice is similar to the old one with some changes, but they work the same way - the old file should just be removed. Keep only <ins>readCourseVersions_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/getCourseVersions_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -430,7 +566,11 @@ New name: <ins>readRemovedListentries_ms.php</ins>.
 Is not documented in DuggaSys/microservices/Microservices.md, only in backend-models/microservices/duggaSys services/Microservices.md, but should be renamed to follow the same nameconvention as the other files.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/getDeletedListEntries_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/sectioned.js
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -444,7 +584,11 @@ New name: <ins>readGroupValues_ms.php</ins>.
 A new file with the new name has already been created and is in use. The new microservice is the exact same, but with an array added in the new one - the old file should just be removed. Keep only <ins>readGroupValues_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/getGroupValues_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -457,16 +601,22 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>retrieveAllSectionedServiceData_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/getListEntries_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/sectionedService/getListEntries_ms_test.php
+- DuggaSys/tests/microservices/sectionedService/retrieveSectionedService_ms_test.php
+- DuggaSys/tests/microservices/sectionedService/readCourseVersions_ms_test.php
+- DuggaSys/tests/microservices/sectionedService/Microservices_test_documentation.md
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/sectionedService.md
-- DuggaSys/tests/microservices/sectionedService/getListEntries_ms_test.php
-- DuggaSys/tests/microservices/sectionedService/retrieveSectionedService_ms_test.php
-- DuggaSys/tests/microservices/sectionedService/readCourseVersions_ms_test.php
-- DuggaSys/tests/microservices/sectionedService/Microservices_test_documentation.md
 
 ---
 
@@ -475,7 +625,11 @@ New name: <ins>readUserDuggaFeedback_ms.php</ins>.
 A new file with the new name has already been created and is in use. The new microservice is very similar, it just includes more data as output. The old file should just be removed. Keep only <ins>readUserDuggaFeedback_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/getUserDuggaFeedback_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -489,7 +643,11 @@ New name: <ins>updateListEntryOrder_ms.php</ins>.
 A new file with the new name has already been created and is in use. It is an exact copy of the old one, so that file should just be removed. Keep only <ins>updateListEntryOrder_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/reorderListEntries_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/sectionedService.md
@@ -502,7 +660,11 @@ Used in, where the microservice/file name also needs to be changed:
 New name: <ins>readAllCourseVersions_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/retrieveAllCourseVersions_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
@@ -514,13 +676,19 @@ New name: <ins>updateVisibleListEntries_ms.php</ins>.
 A new file with the new name has already been created and is in use. It is very similar to the old one but works the same way, so the old file should just be removed along with the related test-file. Keep only <ins>updateVisibleListEntries_ms.php</ins>.
 
 Used in, where the microservice/file name also needs to be changed:
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/sectionedService/setVisibleListentries_ms_test.php
+
+Other files/folders:
 - DuggaSys/microservices/deprecated_microservices.md
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/sectionedService.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/sectionedService/setVisibleListentries_ms_test.php
 
 ---
 
@@ -531,116 +699,164 @@ Microservices to be renamed in the sharedMicroservices folder.
 New name: <ins>readUid_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+sharedMicroservices folder:
 - DuggaSys/microservices/sharedMicroservices/getUid_ms.php
-- DuggaSys/microservices/curlService.php
-- DuggaSys/microservices/Microservices Documentation/fileedService.md
-- DuggaSys/microservices/Microservices Documentation/resultedService.md
+- DuggaSys/microservices/sharedMicroservices/updateUserPassword_ms.php
+- DuggaSys/microservices/sharedMicroservices/updateSecurityQuestion_ms.php
+- DuggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php
+- DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php
+
+courseedService folder:
 - DuggaSys/microservices/courseedService/createMOTD_ms.php
 - DuggaSys/microservices/courseedService/updateCourse_ms.php
+- DuggaSys/microservices/courseedService/createNewCourse_ms.php
+- DuggaSys/microservices/courseedService/retrieveCourseedService_ms.php
+- DuggaSys/microservices/courseedService/specialUpdate_ms.php
+- DuggaSys/microservices/courseedService/getCourseed_ms.php
+- DuggaSys/microservices/courseedService/changeActiveCourseVersion_courseed_ms.php
+- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
+- DuggaSys/microservices/courseedService/createCourseVersion_ms.php
+- DuggaSys/microservices/courseedService/updateActiveCourseVersion_courseed_ms.php
+- DuggaSys/microservices/courseedService/copyCourseVersion_ms.php
+- DuggaSys/microservices/courseedService/retrieveAllCourseedServiceData_ms.php
+
+sectionedService folder:
 - DuggaSys/microservices/sectionedService/reorderListEntries_ms.php
 - DuggaSys/microservices/sectionedService/getListEntries_ms.php
 - DuggaSys/microservices/sectionedService/updateListEntriesGradesystem_ms.php
-- DuggaSys/microservices/courseedService/createNewCourse_ms.php
-- DuggaSys/microservices/accessedService/updateUser_ms.php
 - DuggaSys/microservices/sectionedService/getDeletedListEntries_ms.php
-- DuggaSys/microservices/accessedService/addClass_ms.php
-- DuggaSys/microservices/duggaedService/updateDugga_ms.php
-- DuggaSys/microservices/codeviewerService/updateCodeExampleTemplate_ms.php
 - DuggaSys/microservices/sectionedService/readCourseVersions_ms.php
-- DuggaSys/microservices/resultedService/getUserAnswer_ms.php
-- DuggaSys/microservices/Microservices Documentation/codeviewerService.md
-- DuggaSys/microservices/courseedService/retrieveCourseedService_ms.php
-- DuggaSys/microservices/duggaedService/createDugga_ms.php
 - DuggaSys/microservices/sectionedService/getCourseVersions_ms.php
 - DuggaSys/microservices/sectionedService/updateListEntriesTabs_ms.php
-- DuggaSys/microservices/codeviewerService/editCodeExample_ms.php
-- DuggaSys/microservices/profileService/updateUserPassword_ms.php
-- DuggaSys/microservices/duggaedService/deleteDugga_ms.php
-- DuggaSys/microservices/sharedMicroservices/updateUserPassword_ms.php
-- DuggaSys/microservices/courseedService/specialUpdate_ms.php
-- DuggaSys/microservices/courseedService/getCourseed_ms.php
-- DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php
-- DuggaSys/microservices/Microservices.md
-- DuggaSys/microservices/courseedService/changeActiveCourseVersion_courseed_ms.php
-- DuggaSys/microservices/Microservices Documentation/accessedService.md
-- DuggaSys/microservices/duggaedService/createDuggaVariant_ms.php
 - DuggaSys/microservices/sectionedService/deleteListEntries_ms.php
-- DuggaSys/microservices/duggaedService/deleteDuggaVariant_ms.php
 - DuggaSys/microservices/sectionedService/updateVisibleListEntries_ms.php
-- DuggaSys/microservices/accessedService/updateUserCourse_ms.php
-- DuggaSys/microservices/highscoreService/highscoreservice_ms.php
 - DuggaSys/microservices/sectionedService/setVisibleListentries_ms.php
-- DuggaSys/microservices/fileedService/updateFileLink_ms.php
-- backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/microservices/accessedService/retrieveAccessedService_ms.php
-- DuggaSys/microservices/profileService/updateSecurityQuestion_ms.php
-- DuggaSys/microservices/courseedService/copyCourseVersion_ms.php
-- DuggaSys/microservices/codeviewerService/deleteCodeExample_ms.php
-- DuggaSys/microservices/duggaedService/updateDuggaVariant_ms.php
 - DuggaSys/microservices/sectionedService/removeListEntries_ms.php
-- DuggaSys/microservices/Microservices Documentation/courseedService.md
 - DuggaSys/microservices/sectionedService/getGroupValues_ms.php
-- DuggaSys/microservices/courseedService/updateActiveCourseVersion_courseed_ms.php
-- DuggaSys/microservices/sharedMicroservices/updateSecurityQuestion_ms.php
 - DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
-- DuggaSys/microservices/fileedService/retrieveFileedService_ms.php
-- DuggaSys/microservices/Microservices Documentation/sectionedService.md
-- DuggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php
-- DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php
-- DuggaSys/microservices/codeviewerService/editContentOfExample_ms.php
-- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
-- DuggaSys/microservices/fileedService/deleteFileLink_ms.php
-- DuggaSys/microservices/fileedService/getFileedService_ms.php
-- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
-- DuggaSys/microservices/courseedService/createCourseVersion_ms.php
-- DuggaSys/microservices/Microservices Documentation/duggaedService.md
-- DuggaSys/microservices/accessedService/getAccessedService_ms.php
-- DuggaSys/microservices/accessedService/addUser_ms.php
 - DuggaSys/microservices/sectionedService/readGroupValues_ms.php
-- DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php
 - DuggaSys/microservices/sectionedService/createListEntry_ms.php
 - DuggaSys/microservices/sectionedService/updateListEntries_ms.php
-- DuggaSys/microservices/courseedService/retrieveAllCourseedServiceData_ms.php
+- DuggaSys/microservices/sectionedService/createGithubCodeExample_ms.php
+
+accessedService folder:
+- DuggaSys/microservices/accessedService/updateUser_ms.php
+- DuggaSys/microservices/accessedService/addClass_ms.php
+- DuggaSys/microservices/accessedService/updateUserCourse_ms.php
+- DuggaSys/microservices/accessedService/retrieveAccessedService_ms.php
+- DuggaSys/microservices/accessedService/getAccessedService_ms.php
+- DuggaSys/microservices/accessedService/addUser_ms.php
+
+duggaedService folder:
+- DuggaSys/microservices/duggaedService/updateDugga_ms.php
+- DuggaSys/microservices/duggaedService/createDugga_ms.php
+- DuggaSys/microservices/duggaedService/deleteDugga_ms.php
+- DuggaSys/microservices/duggaedService/createDuggaVariant_ms.php
+- DuggaSys/microservices/duggaedService/deleteDuggaVariant_ms.php
+- DuggaSys/microservices/duggaedService/updateDuggaVariant_ms.php
+
+codeviewerService folder:
+- DuggaSys/microservices/codeviewerService/updateCodeExampleTemplate_ms.php
+- DuggaSys/microservices/codeviewerService/editCodeExample_ms.php
+- DuggaSys/microservices/codeviewerService/editBoxTitle_ms.php
+- DuggaSys/microservices/codeviewerService/deleteCodeExample_ms.php
+- DuggaSys/microservices/codeviewerService/editContentOfExample_ms.php
+
+resultedService folder:
+- DuggaSys/microservices/resultedService/getUserAnswer_ms.php
+
+profileService folder:
+- DuggaSys/microservices/profileService/updateUserPassword_ms.php
+- DuggaSys/microservices/profileService/updateSecurityQuestion_ms.php
+
+highscoreService folder:
+- DuggaSys/microservices/highscoreService/highscoreservice_ms.php
+
+fileedService folder:
+- DuggaSys/microservices/fileedService/updateFileLink_ms.php
+- DuggaSys/microservices/fileedService/retrieveFileedService_ms.php
+- DuggaSys/microservices/fileedService/deleteFileLink_ms.php
+- DuggaSys/microservices/fileedService/getFileedService_ms.php
+
+Other files/folders:
+- DuggaSys/microservices/curlService.php
+- DuggaSys/microservices/Microservices Documentation/fileedService.md
+- DuggaSys/microservices/Microservices Documentation/resultedService.md
+- DuggaSys/microservices/Microservices Documentation/codeviewerService.md
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/accessedService.md
+- DuggaSys/microservices/Microservices Documentation/courseedService.md
+- DuggaSys/microservices/Microservices Documentation/sectionedService.md
+- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
+- DuggaSys/microservices/Microservices Documentation/duggaedService.md
 - DuggaSys/microservices/monolithic-to-microservices.md
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
 
 ### retrieveUsername_ms.php
 New name: <ins>readUsername_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+sharedMicroservices folder:
 - DuggaSys/microservices/sharedMicroservices/retrieveUsername_ms.php
-- DuggaSys/microservices/courseedService/updateCourse_ms.php
-- DuggaSys/microservices/Microservices.md
-- DuggaSys/microservices/sectionedService/createListEntry_ms.php
-- DuggaSys/microservices/courseedService/createNewCourse_ms.php
-- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
-- DuggaSys/microservices/Microservices_inverse_dependencies.md
-- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
-- DuggaSys/microservices/accessedService/retrieveAccessedService_ms.php
-- DuggaSys/microservices/courseedService/copyCourseVersion_ms.php
-- backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/microservices/fileedService/updateFileLink_ms.php
-- DuggaSys/microservices/courseedService/createCourseVersion_ms.php
-- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
-- DuggaSys/microservices/Microservices Documentation/courseedService.md
 - DuggaSys/microservices/sharedMicroservices/createNewCodeExample_ms.php
 - DuggaSys/microservices/sharedMicroservices/createNewListEntry_ms.php
+
+courseedService folder:
+- DuggaSys/microservices/courseedService/updateCourse_ms.php
+- DuggaSys/microservices/courseedService/createCourseVersion_ms.php
+- DuggaSys/microservices/courseedService/createNewCourse_ms.php
+- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
+- DuggaSys/microservices/courseedService/copyCourseVersion_ms.php
+
+sectionedService folder:
+- DuggaSys/microservices/sectionedService/createListEntry_ms.php
+- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+
+accessedService folder:
+- DuggaSys/microservices/accessedService/retrieveAccessedService_ms.php
+
+fileedService folder:
+- DuggaSys/microservices/fileedService/updateFileLink_ms.php
+
+Other files/folders:
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
+- DuggaSys/microservices/Microservices_inverse_dependencies.md
+- backend-models/microservices/duggaSys services/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/courseedService.md
+
+---
 
 ### setAsActiveCourse_ms.php
 New name: <ins>updateActiveCourse_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+sharedMicroservices folder:
 - DuggaSys/microservices/sharedMicroservices/setAsActiveCourse_ms.php
+
+courseedService folder:
+- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
+
+sectionedService folder:
+- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+
+Other files/folders:
 - DuggaSys/microservices/curlService.php
 - DuggaSys/microservices/Microservices Documentation/microserviceCodingStandard.md
 - DuggaSys/microservices/Microservices.md
-- DuggaSys/microservices/courseedService/updateCourseVersion_ms.php
 - DuggaSys/microservices/Microservices Documentation/microserviceRefactorPOSTnoAnswer.md
 - DuggaSys/microservices/Microservices Documentation/sharedMicroservices.md
 - DuggaSys/microservices/Microservices Documentation/sectionedService.md
 - DuggaSys/microservices/Microservices Documentation/microserviceRefactorPOSTWithAnswer.md
-- backend-models/microservices/duggaSys services/Microservices.md
 - DuggaSys/microservices/Microservices Documentation/courseedService.md
-- DuggaSys/microservices/sectionedService/updateCourseVersion_sectioned_ms.php
+- backend-models/microservices/duggaSys services/Microservices.md
+
+---
 
 ## showDuggaService
 Microservices to be renamed in the showDuggaService folder.
@@ -649,32 +865,51 @@ Microservices to be renamed in the showDuggaService folder.
 New name: <ins>retrieveAllShowDuggaServiceData_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+showDuggaService folder:
 - DuggaSys/microservices/showDuggaService/getShowDugga_ms.php
+
+Other files/folders:
 - Shared/dugga.js
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/showDuggaService.md
 
+---
+
 ### loadDugga_ms.php
 New name: <ins>readSubmittedDugga_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+showDuggaService folder:
 - DuggaSys/microservices/showDuggaService/loadDugga_ms.php
+- DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php
+
+tests folder:
+- DuggaSys/tests/microservices/showDuggaService/loadDugga_ms_test.php
+
+Other files/folders:
 - DuggaSys/microservices/Microservices.md
 - DuggaSys/microservices/Microservices_inverse_dependencies.md
 - DuggaSys/microservices/Microservices Documentation/showDuggaService.md
-- DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php
 - backend-models/microservices/duggaSys services/Microservices.md
-- DuggaSys/tests/microservices/showDuggaService/loadDugga_ms_test.php
+
+---
 
 ### processDuggaFile_ms.php
 New name: <ins>processSubmittedDugga_ms.php</ins>
 
 Used in, where the microservice/file name also needs to be changed:
+
+showDuggaService folder:
 - DuggaSys/microservices/showDuggaService/processDuggaFile_ms.php
-- DuggaSys/microservices/Microservices.md
-- DuggaSys/microservices/Microservices Documentation/showDuggaService.md
 - DuggaSys/microservices/showDuggaService/retrieveShowDuggaService_ms.php
-- backend-models/microservices/duggaSys services/Microservices.md
+
+tests folder:
 - DuggaSys/tests/microservices/processDuggaFile_test.php
 
+Other files/folders:
+- DuggaSys/microservices/Microservices.md
+- DuggaSys/microservices/Microservices Documentation/showDuggaService.md
+- backend-models/microservices/duggaSys services/Microservices.md
