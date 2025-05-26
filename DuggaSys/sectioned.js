@@ -1206,43 +1206,47 @@ function cancelDelete () {
 // update selected directory
 function updateSelectedDir() {
   var selectedDir = document.getElementById("selectDir").value;
-  $.ajax({
-    url: "./sectioned.php",
-    type: "POST",
-    data: {
-      action: "updateSelectedDir",
-      selectedDir: selectedDir,
-      cid: cidFromServer
-    },
-    success: function (data) {
-      console.log('POST-request call successful');
-      console.log("Response: ", data);
-      toast("success",'Directory has been updated succesfully',5)
 
-      // Parse the JSON response
-      var response;
-      try {
-        response = JSON.parse(data);
-      } catch (e) {
-        console.error('Failed to parse JSON:', e);
-        return;
-      }
+      fetch("./sectioned.php", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          action: "updateSelectedDir",
+          selectedDir: selectedDir,
+          cid: cidFromServer
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log('POST-request call successful');
+        console.log("Response: ", data);
+        toast("success", 'Directory has been updated succesfully', 5);
 
-      // Handle the response
-      //TODO:: Server is sending html response instead of JSON
-      if (response.status === "success") {
-        console.log('Update successful');
-      } else {
-        console.error('Update failed:', response.message);
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error('Update failed:', error);
-      console.log("Status: ", status);
-      console.log("Error: ", error);
-      toast("error",'Directory update failed',7)
-    }
-  });
+        // Parse the JSON response
+        var response;
+        try {
+          response = JSON.parse(data);
+        } catch (e) {
+          console.error('Failed to parse JSON:', e);
+          return;
+        }
+
+        // Handle the response
+        //TODO:: Server is sending html response instead of JSON
+        if (response.status === "success") {
+          console.log('Update successful');
+        } else {
+          console.error('Update failed:', response.message);
+        }
+      })
+      .catch(error => {
+        console.error('Update failed:', error);
+        console.log("Error: ", error);
+        toast("error", 'Directory update failed', 7);
+      });
+
 }
 
 //----------------------------------------------------------------------------------
