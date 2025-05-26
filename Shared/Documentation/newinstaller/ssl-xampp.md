@@ -8,13 +8,14 @@ If you get __Warning: Potential Security Risk Ahead__, you have SSL configured a
 
 ## Prerequisites
 
-To follow this tutorial you need to have run __newinstaller__, or have your own SSL-cert and key. If the installation was successful, you should have these two files at the following path:
+To follow this tutorial you need to have successfully ran __newinstaller__, or have your own SSL-cert and key. You should have these two files at the following path:
 - _LenaSYS/newinstaller/tools/ssl/__localhost.crt___
 - _LenaSYS/newinstaller/tools/ssl/__localhost.key___
 These files are local to your system and are ignored by git.
 
 ## Step 1: configure Apache (httpd.conf)
-In the XAMPP GUI, press the _Config_ button belonging to __Apache__, and open _httpd.conf_:
+In the XAMPP GUI, press the apache config button, and open _httpd.conf_:
+
 (_xampp/apache/conf/__httpd.conf___)
 
 locate and uncomment the following lines:
@@ -22,13 +23,14 @@ locate and uncomment the following lines:
 LoadModule ssl_module modules/mod_ssl.so
 Include conf/extra/httpd-ssl.conf
 ```
-save the file
 
 ## Step 2: configure SSL (httpd-ssl.conf)
 Next, open _httpd-ssl.conf_ the same way as before:
+
 (_xampp/apache/conf/__httpd-ssl.conf___)
 
-The XAMPP conf will have a bunch of comments, so you will need to locate the lines. Some lines should not need to change, e.g __SSLEngine on__ but it is good to check. 
+The XAMPP conf will have a bunch of comments, so you will need to locate the lines. Some lines should not need to change, e.g __`SSLEngine on`__ but it is good to check. 
+
 Update the config to reflect the following:
 (NOTE: you can not just copy it into the file, it will break the config)
 

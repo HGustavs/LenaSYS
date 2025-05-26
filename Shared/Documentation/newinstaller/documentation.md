@@ -169,9 +169,7 @@ This section covers the various options available in the installer.
 
 ## Step 6 - SSL
 
-To enable https on your system you need SSL on the apache server you are hosting lenasys with. If the installation was successful you should have two files in the following path:
-- LenaSYS/newinstaller/tools/ssl/__localhost.crt__
-- LenaSYS/newinstaller/tools/ssl/__localhost.key__
+To enable https on your system you need SSL on the apache server you are hosting lenasys with.
 
 ### Tutorials
 If you are using [XAMPP](ssl-xampp.md)
