@@ -145,7 +145,6 @@ function mdown(event) {
             // If node is clicked, determine start point for resize
         } else if (event.target.classList.contains("node")) {
             pointerState = pointerStates.CLICKED_NODE;
-            console.log("hi");
             const element = data[findIndex(data, context[0].id)];
 
             // Save the original properties
@@ -225,7 +224,7 @@ function ddown(event) {
                 startX = event.clientX;
                 startY = event.clientY;
 
-                if (!altPressed) {
+                if (!altPressed && pointerState !== pointerStates.CLICKED_NODE) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
                     canPressDeleteBtn = true;
