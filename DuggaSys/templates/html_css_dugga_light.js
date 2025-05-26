@@ -80,7 +80,7 @@ function returnedDugga(data)
 	if (data['param'] == "UNK") {
 		alert("UNKNOWN DUGGA!");
 	} else {
-		retdata = jQuery.parseJSON(data['param']);
+		retdata = JSON.parse(data['param']);
 		duggaParams = retdata;
 		//document.getElementById("duggaInstructions").innerHTML = retdata["instructions"];
 		//showDuggaInfoPopup();
@@ -191,8 +191,8 @@ function saveClick()
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
 
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
+	bitstr += " " + window.width;
+	bitstr += " " + window.height;
 
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
@@ -219,7 +219,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 	inParams = parseGet();
-	retdata = jQuery.parseJSON(decodeURIComponent(param));
+	retdata = JSON.parse(decodeURIComponent(param));
 	duggaParams = retdata;
 	if(duggaParams["type"]==="pdf"){
 			document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
