@@ -2748,5 +2748,4 @@ function tooltipPosition(element){
         left: null
     };
 }
-console.log(allToolbarBox);
 //#endregion =====================================================================================

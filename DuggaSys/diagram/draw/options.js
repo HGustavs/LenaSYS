@@ -1954,12 +1954,20 @@ function changeLineProperties() {
     showdata();
 }
 
-/* Enables bringing an element to the front or sending it to the back by adjusting its z-index and redrawing the canvas */
-
+/**
+ * @description Enables bringing an element to the front or sending it to the back by adjusting its z-index and redrawing the canvas 
+ */ 
 function bringToFront(id) {
     const elem = data.find(e => e.id === id);
     if (!elem) return;
 
+    // Loops through the entire list of elements placed on the canvas
+    // Disables the bring to front if the element is a Loop, Alt or Super State
+    for (let i = 0; i < data.length; i++){
+        if (data[i].name === "Loop or Alt" || data[i].name === "Super State"){
+            return;
+        }
+    }
     const maxZ = Math.max(...data.map(e => e.z ?? 2));
     elem.z = maxZ + 1;
 
@@ -1980,10 +1988,3 @@ function sendToBack(id) {
 
     showdata(); // Redraw everything
 }
-
-
-
-
-
-
-
