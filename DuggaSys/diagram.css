@@ -37,6 +37,16 @@
     }
 }
 
+#options-pane button {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid #5f4c7a; 
+  background-color: #7c5896;
+  box-shadow: none;
+  outline: none;
+  background-clip: padding-box;
+}
+
 @media screen and (min-height: 1199px) {
     #diagram-toolbar {
         width: 50px;
