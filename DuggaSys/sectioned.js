@@ -1683,14 +1683,7 @@ function returnedSection(data) {
 
 
 
-    str += "<div id='statisticsSwimlanes'";
-    /*if (displaySwimlanes !== null){//extremely cursed but prevents "autoopening" of swimlanes on refresh
-      if (displaySwimlanes == "block")
-        str += " style= 'display: block'";
-      else if (displaySwimlanes == "none")
-        str += " style= 'display: none'";
-    }*/
-    str += ">";
+    str += "<div id='statisticsSwimlanes'>";
 
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
