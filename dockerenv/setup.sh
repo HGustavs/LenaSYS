@@ -7,9 +7,13 @@ set -e
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # macOS
   GROUP_CMD=(sudo dseditgroup -o edit -a "$USER" -t user _www)
+  GROUP_NAME="_www"
+  CHMOD_CMD=(sudo chown -R "$USER":_www ../../LenaSYS)
 else
   # Linux  
   GROUP_CMD=(sudo usermod -aG www-data "$USER")
+  GROUP_NAME="www-data"
+  CHMOD_CMD=(sudo chown -R "$USER":www-data ../../LenaSYS)
 fi
 
 # Make sure metadata folder exists
@@ -21,15 +25,15 @@ if [ ! -f ./coursesyspw.php ]; then
   cp ./coursesyspw.php.template ./coursesyspw.php
 fi
 
-# Add this user to www-data group if not exists
-if ! id -nG "$USER" | grep -qw "www-data"; then
-  echo "Beginning to add $USER to www-data or _www for macOS group (you may need to logout/login)..."
+# Add this user to www-data/_www group if not exists
+if ! id -nG "$USER" | grep -qw "$GROUP_NAME"; then
+  echo "Beginning to add $USER to $GROUP_NAME group (you may need to logout/login)..."
   "${GROUP_CMD[@]}"
 fi
 
-# Add LenaSYS folder to username and www-data group recursively
-echo "Beginning to add LenaSYS to your username and www-data group..."
-sudo chown -R "$USER":www-data ../../LenaSYS
+# Add LenaSYS folder to username and group recursively
+echo "Changing ownership of LenaSYS to $USER:$GROUP_NAME..."
+"${CHMOD_CMD[@]}"
 
 # Change permissions of LenaSYS to 777
 echo "Beginning to change permissions of LenaSYS to 777..."
