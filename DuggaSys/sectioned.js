@@ -1716,7 +1716,7 @@ function returnedSection(data) {
             }
      
           }
-          observer.disconnect();
+          observer.disconnect(); //stop watching all when i have seen what i wanted the elusive "statisticsSwimlanes"
         }
       });
     });
@@ -3108,7 +3108,6 @@ window.addEventListener("DOMContentLoaded", function () {
       document.getElementById("statisticsSwimlanes").style.display="block";
     }
     sessionStorage.setItem("displaySwimlanes", "block");
-    //location.reload();
   });
   document.getElementById("sectionList_arrowStatisticsClosed").addEventListener("click", function () {
     document.getElementById("sectionList_arrowStatisticsOpen").style.display="block";
