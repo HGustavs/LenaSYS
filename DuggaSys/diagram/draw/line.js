@@ -54,21 +54,9 @@ function drawLine(line, targetGhost = false) {
     
     let fx, fy, tx, ty, offset;
 
-    // Sets the to-coordinates to the same as the from-coordinates after getting line attributes
-    // if the line is recursive
-    if (line.recursive) {
-        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, felem, line.ctype, fromElemMouseY, toElemMouseY);
-        
-        // Setting start position for the recursive line, to originate from the top
-        fx = felem.cx;
-        fy = felem.y1;
-        offset.x1 = 0;
-        offset.y1 = 0;
-        tx = fx;
-        ty = fy;
-    } else {
-        [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
-    }
+    //
+    [fx, fy, tx, ty, offset] = getLineAttributes(line, felem, telem, line.ctype, fromElemMouseY, toElemMouseY);
+    
 
     // Follows the cursor while drawing the line
     if (isCurrentlyDrawing) {
@@ -138,11 +126,7 @@ function drawLine(line, targetGhost = false) {
 
         // Drawings and offsets for SD (state/activity diagram) line types
     } else if ((line.type == entityType.SD && line.innerType != SDLineType.SEGMENT)) {
-        if (line.recursive) {
-            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
-
-            // Tweak offset of end-points if line direction is UP
-        } else if ((fy > ty) && (line.ctype == lineDirection.UP)) {
+        if ((fy > ty) && (line.ctype == lineDirection.UP)) {
             // UMLFinalState seems to always end up as telem after line has been drawn even if drawn line originated from it
             if (telem.kind === elementTypesNames.UMLFinalState) {
                 offset.y2 = -4 + 3 / zoomfact;
@@ -211,10 +195,7 @@ function drawLine(line, targetGhost = false) {
     } else {
 
         // Some drawing options for the remainder of line types (UML, IE or Sequence)
-        if (line.recursive) {
-            lineStr += drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem);
-        }
-        else if (line.type === entityType.SE){   
+        if (line.type === entityType.SE){   
             lineStr += drawSequenceLine(fx, fy, tx, ty, offset, line, lineColor, strokeDash);
         }
         else if (telem.kind === elementTypesNames.SelfCall) {
@@ -260,19 +241,11 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
-        let {length, elementLength, startX, startY} = recursiveParam(felem);
         startX += offset.x1 * zoomfact;
         startY += offset.y1 * zoomfact; 
 
     // Draws the Segmented version for arrow and not straight line
-    if(line.recursive){
-        if(line.startIcon === SDLineIcons.ARROW){
-            lineStr += iconPoly(SD_ARROW[line.ctype], startX, startY, lineColor, color.BLACK);
-        }
-        if(line.endIcon === SDLineIcons.ARROW){
-            lineStr += iconPoly(SD_ARROW[line.ctype], startX + length, startY +(10 * zoomfact), lineColor, color.BLACK);
-        }
-    }else if(line.innerType == SDLineType.SEGMENT){
+   if(line.innerType == SDLineType.SEGMENT){
         const arrowStartPos = calculateArrowPosition(fx, fy, tx, ty, "start", line.innerType);
         const arrowEndPos = calculateArrowPosition(fx, fy, tx, ty, "end", line.innerType);
         const reverseCtype = line.ctype.split('').reverse().join('');
@@ -409,9 +382,6 @@ function drawLine(line, targetGhost = false) {
         if (rememberTargetLabelID) {
             targetLabel = lineLabelList[findIndex(lineLabelList, rememberTargetLabelID)];
         }
-        // Label positioning for recursive lines
-        const labelPosY = (ty + fy) / 2 - ((textheight / 2) * zoomfact + 4 * zoomfact);
-        const labelPositionY = labelPosY - zoomfact;
 
         // Label positioning for regular (non-recursive) lines
         const labelCenterX = label.centerX - (2 * zoomfact);
@@ -422,42 +392,7 @@ function drawLine(line, targetGhost = false) {
         const rectPosY = labelCenterY - (textheight * zoomfact + zoomfact * 3) / 2;
 
         // Add label with styling based on selection
-        if (line.recursive) {
-            
-            // Calculating the label position based on element size, so it follows when resized
-            let length = 20 * zoomfact;
-            let lift   = 80 * zoomfact;
-                    
-            // Calculations only for SE
-            if (line.type === entityType.SE) {
-                length = 70 * zoomfact; 
-                lift = 20 * zoomfact;   
-            }
-
-            let {lineLength, elementLength, startX, startY } = recursiveParam(felem);
-            startY -= lift;
-            startX += length;
-
-            labelStr += `<rect
-                        class='text cardinalityLabel'
-                        id='${line.id + 'Label'}'
-                        x='${((startX)) - textWidth / 2}'
-                        y='${((startY)) - ((textheight / 4))}'
-                        width='${(textWidth + zoomfact * 4)}'
-                        height='${textheight * zoomfact}'
-                    />`;
-            labelStr += `<text
-                        class='cardinalityLabelText'
-                        dominant-baseline='middle'
-                        text-anchor='middle'
-                        x='${((startX))}'
-                        y='${((startY)) + ((textheight / 4))}'
-                        fill='${lineColor}' 
-                        font-size='${Math.round(zoomfact * textheight)}'>
-                        ${labelValue}
-                    </text>`;
-        } else {
-            // For non-recursive lines
+       
             labelStr += `<rect
                         class='text cardinalityLabel'
                         id='${line.id + 'Label'}'
@@ -476,7 +411,7 @@ function drawLine(line, targetGhost = false) {
                         y='${labelCenterY}'>
                         ${labelValue}
                     </text>`;
-        }
+        
     }
     return { lineStr, labelStr };
 }
@@ -901,19 +836,6 @@ function drawRecursive(offset, line, lineColor, strokewidth, strokeDash, felem) 
 }
 
 
-/** 
- * @description Localizes the basic parameters for the recursive lines    
- * @param {Object} felem The element the arrows originate from
- */
-
-function recursiveParam(felem){
-    const length = 40 * zoomfact;
-    const elementLength = felem.x2 - felem.x1;
-    const startX = felem.x1 + elementLength -length;
-    const startY = felem.y1;
-
-    return {length, elementLength, startX, startY};
-}
 
 /**
  * @description Draw the cardinalities label for the line
