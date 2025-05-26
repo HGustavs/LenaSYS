@@ -2551,24 +2551,7 @@ function FABMouseOver(e) {
 				element.classList.toggle('scale-out');
 			}
 		});
-	} else if (e.target.id === "addElement") {
-		var e2=document.querySelectorAll('.fab-btn-sm2');
-		var eL2=document.querySelector('.fab-btn-list2');
-
-		e2.forEach(element2 => {
-			if(element2.classList.contains('scale-out')){
-				eL2.style.display="block";
-				element2.classList.toggle('scale-out');
-			}
-		});
-		
-		document.querySelector('#addElement').classList.add('spin');
-
-		
-		setTimeout(function() {
-			document.querySelector('#addElement').classList.remove('spin');
-		}, 1000); 
-	}
+	} 
 }
 
 //----------------------------------------------------------------------------------
@@ -2580,19 +2563,42 @@ function FABMouseOut(e) {
 		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
-	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
-		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
-		document.querySelector('.fab-btn-list2').style.display="none";
-	}
-	
 }
 //----------------------------------------------------------------------------------
 // FABDown : FAB Mouse Down
 //----------------------------------------------------------------------------------
 function FABDown(e)
 {
-	//Unused at the moment but might be useful in the future to handle pressing down with mouse on FAB
+	// Handling: floating fab-button
+	if (e.target.id == "fabBtn") {
+		var eL=document.querySelector('.fab-btn-list');
+		var e1=document.querySelectorAll('.fab-btn-sm');
+		
+		e1.forEach(element => {
+			if(element.classList.contains('scale-out')){
+				eL.style.display="block";
+				element.classList.toggle('scale-out');
+			}
+		});
+	} 
+	// Handling: header fab-button
+	else if (e.target.id == "addElement") {
+		var e2=document.querySelectorAll('.fab-btn-sm2');
+		var eL2=document.querySelector('.fab-btn-list2');
+
+		e2.forEach(element2 => {
+			if(element2.classList.contains('scale-out')){
+				eL2.style.display="block";
+				element2.classList.toggle('scale-out');
+			}
+		});
+	}
+	// ignore if on fab-icon, handling done within onclick function
+	else if(document.querySelector('.fab-btn-list2')){
+		if (!e.target.classList.contains('btn-floating')){
+			closeFabDropdown();
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------
