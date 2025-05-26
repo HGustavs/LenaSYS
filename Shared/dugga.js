@@ -2607,7 +2607,7 @@ function FABDown(e)
 			}
 		});
 	}
-	// if click on fab-dropdown-element, it's handled by its connected "onclick" function.
+	// ignore click if on fab-icon, handling done within onclick function
 	else if(document.querySelector('.fab-btn-list2')){
 		if (!e.target.classList.contains('btn-floating')){
 			closeFabDropdown();

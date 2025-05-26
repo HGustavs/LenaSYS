@@ -8067,6 +8067,10 @@ only screen and (max-device-width: 568px) {
   pointer-events: none;
 }
 
+.material-icons{
+pointer-events: none;
+}
+
 @media screen and (max-height: 600px) {
   .fab-btn-list {
     transform-origin: 0% bottom;

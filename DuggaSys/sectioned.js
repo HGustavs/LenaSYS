@@ -3011,9 +3011,11 @@ document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
     localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
     
-    //closes fab-element-dropdown if scrolling
-    closeFabDropdown();
-  }
+    //closes fab-element-dropdown if scrolling (and visible)
+    if(document.querySelector('.fab-btn-list2').checkVisibility() == true){
+			closeFabDropdown();
+		}
+	}
 });
 
 // Functions to prevent collapsing when clicking icons
