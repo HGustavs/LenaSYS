@@ -156,8 +156,8 @@ class ConfigurationManager {
 			$htdocs_owner = Permissions::get_owner($xampp_path_htdocs);
 			$htdocs_group = Permissions::get_group($xampp_path_htdocs);
 
-			# If server is not a Docker, and owner and group are not daemon, then print error message.
-			if (!$is_docker && ($htdocs_owner["data"] && $htdocs_group["data"]) != "daemon") {
+			# If not in Docker and htdocs is not owned by daemon:daemon
+			if (!$is_docker && ( $htdocs_owner["data"] !== "daemon" || $htdocs_group["data"] !== "daemon" ) ) {
 				$xampp_setup_dir = realpath(__DIR__ . "/../../xampp/setup.sh");
 				$error_message = "Permission denied: the htdocs folder is not owned by 'daemon:daemon.\n'";
 				$error_message .= "Current path: $xampp_path_htdocs\n";
