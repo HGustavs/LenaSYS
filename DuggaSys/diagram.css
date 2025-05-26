@@ -34,35 +34,13 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 60px; 
+        width: 50px; 
         height: 100vh; 
         z-index: 1000;
-        overflow-y: auto; /* Scrollbar appears only when needed */
-         overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
-}
-/*scrollbar styling more adaptive to different environments or browsers*/
-#diagram-toolbar::-webkit-scrollbar {
-    width: 10px;
-}
-
-/*  Options-scrollbar track */
-#diagram-toolbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-    box-shadow: inset 0 0 5px grey;
-}
-
-/*  Options-scrollbar handle */
-#diagram-toolbar::-webkit-scrollbar-thumb {
-    background: #eb4;
-    border-radius: 10px;
-}
-
-/*  Options-scrollbar handle on hover */
-#diagram-toolbar::-webkit-scrollbar-thumb:hover {
-    background: #eb4;
-    border-radius: 10px;
 }
 
 @media screen and (min-height: 1199px) {
