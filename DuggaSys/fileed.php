@@ -319,7 +319,7 @@ $js = array(
                                 <button class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></button>
                                 <button class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></button>
                                 <button class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</button>
-                                <button class="markdown-icons" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></button>
+                                <button class="markdown-icons" id="listIcon" onclick="lists()" title="lists"><img src="../Shared/icons/list-symbol.svg"></button>
                                 <button class="markdown-icons" onclick="linkYoutube()" title="link Youtube"><b>Yt</b></button>
                                 <button class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</button>
                                 <button class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img src="../Shared/icons/link-icon.svg"></button>
