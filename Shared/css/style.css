@@ -1575,10 +1575,6 @@ header td {
   justify-content: flex-start;
   align-items: center;
 
-  & .navBurgerIcon {
-    display: none;
-  }
-
   & .auth-box {
     height: fit-content;
     width: fit-content;
@@ -1726,7 +1722,7 @@ div .navButt:hover {
   color: var(--color-text-header);
   text-decoration: none;
   text-align: right;
-  
+  overflow: hidden;
   padding-right: 4px;
   width: 50px;
 }
@@ -1796,6 +1792,8 @@ div .navButt:hover {
 }
 
 #loginbutton {
+  padding:0px;
+  margin:0px;
   cursor: pointer;
   height: 50px;
   width: 50px;
@@ -6409,12 +6407,6 @@ only screen and (max-device-width: 568px) {
 
 @media only screen and (max-width: 860px),
 only screen and (max-device-width: 568px) {
-  .navheader {
-    & .newVers, .editVers, .results, .tests, .files, .coursePage, .access, .refresh {
-      display: none;
-    }
-  }
-
   .navheader .hamburger {
     pointer-events: auto;
     width: 32px;
@@ -6452,7 +6444,6 @@ only screen and (max-device-width: 568px) {
     padding: 10px;
     background-color: var(--color-primary-2);
   }
-  
   #hamburgerBox div {
     width: 250px;
     height: 32px;  
@@ -6484,6 +6475,10 @@ only screen and (max-device-width: 568px) {
   margin-bottom: 10px;
 }
 
+.navheader .navBurgerIcon {
+  display: none;
+}
+
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
 
@@ -6502,6 +6497,7 @@ only screen and (max-device-width: 568px) {
     padding: 10px;
     height: 120px;
     background-color: var(--color-primary-2);
+
   }
   
   #motdNav {
@@ -6764,63 +6760,6 @@ only screen and (max-device-width: 568px) {
     visibility: visible;
     opacity: 1;
   }
-}
-
-@media only screen and (max-width: 460px) {
-  .toast:first-child {
-    margin: 2rem 0 0 0;
-  }
-
-  .toast {
-    width: 80vw;
-    margin: 1rem 0 0 0;
-  }
-
-  #toastContainer {
-    align-items: center;
-    width: 100vw;
-  }
-  
-  .toastText, .typeText {
-    font-size: 10pt;
-  }
-
-  .typeIcon {
-    font-size: 2.5rem;
-  }
-
-  .motdLeftContainer{
-    width:85%;
-  }
-
-  .motdRightContainer{
-    width:15%;
-  }
-
-  #home, #theme-toggle, #back, #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher {
-    display: none;
-  }
-
-  .navBurgerIcon, #darkModeBurgerTeacher,#goBackBurgerTeacher,#homeBurgerTeacher, #homeBurger, #darkModeBurger,#goBackBurger {
-    display: block;
-  }
-
-  #navBurgerBox{
-    position: absolute;
-    top: 50px;
-    width: 32px;
-    padding: 10px;
-    height: 120px;
-    background-color: var(--color-primary-2);
-  }
-
-  .navheader .navBurgerIcon {
-    display: block;
-    color:white;
-    font-size:24px;
-    width: 29px;
-    margin-left: 15px
-  } 
 }
 
 #noAccessMessage {
@@ -10774,6 +10713,36 @@ margin:2px;
 #removeUser .flex-end {
   display: flex;
   justify-content: flex-end;
+}
+
+@media only screen and (max-width: 460px) {
+  .toast:first-child {
+    margin: 2rem 0 0 0;
+  }
+
+  .toast {
+    width: 80vw;
+    margin: 1rem 0 0 0;
+  }
+
+  #toastContainer {
+    align-items: center;
+    width: 100vw;
+  }
+  
+  .toastText, .typeText {
+    font-size: 10pt;
+  }
+
+  .typeIcon {
+    font-size: 2.5rem;
+  }
+  .motdLeftContainer{
+    width:85%;
+  }
+  .motdRightContainer{
+    width:15%;
+  }
 }
 
 @-webkit-keyframes fadein {
