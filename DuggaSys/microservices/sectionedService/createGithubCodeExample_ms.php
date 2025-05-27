@@ -32,6 +32,7 @@ if (strcmp($opt, "CREGITEX") === 0) {
 function AqcuireCourse()
 {
     global $pdo, $courseid, $coursevers, $lid;
+    /** @var \PDO $pdo */
     $query = $pdo->prepare("SELECT cid,githubDir,vers FROM listentries WHERE lid=:lid;");
     $query->bindParam(":lid", $lid);
     $query->execute();
@@ -70,6 +71,7 @@ function GetCourseVers($allFiles)
         $explodeFiles = explode('.', $groupedFiles[0]);
         $exampleName = $explodeFiles[0];
         //count if there is already a codeexample or if we should create a new one on the current coursevers where the button was pressed.
+        /** @var \PDO $pdo */
         $query1 = $pdo->prepare("SELECT COUNT(*) AS count FROM codeexample  WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;");
         $query1->bindParam(":cid", $courseid);
         $query1->bindParam(":examplename", $exampleName);
@@ -149,6 +151,7 @@ function NoCodeExampleFilesExist($exampleName, $groupedFiles)
     $link = json_decode($response, true);
 
     //select the latest codeexample created to link boxes to this codeexample
+    /** @var \PDO $pdo */
     $query = $pdo->prepare("SELECT MAX(exampleid) as LatestExID FROM codeexample;");
     $query->execute();
     $result = $query->fetch(PDO::FETCH_OBJ);
@@ -251,7 +254,7 @@ function NoCodeExampleNoFiles($exampleName)
     global $pdo, $courseid, $coursevers;
     //Check for update
     //TODO: Implement update for already existing code-examples.
-
+    /** @var \PDO $pdo */
     $query1 = $pdo->prepare("SELECT exampleid AS eid FROM codeexample  WHERE cid=:cid AND examplename=:examplename AND cversion=:vers;");
     $query1->bindParam(":cid", $courseid);
     $query1->bindParam(":examplename", $exampleName);
