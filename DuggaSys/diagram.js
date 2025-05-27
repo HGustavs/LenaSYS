@@ -505,13 +505,13 @@ function getData() {
     DiagramResponse = fetchDiagram();
 
     //Add event listeners 
-    document.getElementById("diagram-toolbar").addEventListener("mousedown", mdown);
-    document.getElementById("diagram-toolbar").addEventListener("mouseup", tup);
-    document.getElementById("container").addEventListener("mousedown", mdown);
-    document.getElementById("container").addEventListener("mouseup", mup);
-    document.getElementById("container").addEventListener("mousemove", mmoving);
+    document.getElementById("diagram-toolbar").addEventListener("pointerdown", mdown);
+    document.getElementById("diagram-toolbar").addEventListener("pointerup", tup);
+    document.getElementById("container").addEventListener("pointerdown", mdown);
+    document.getElementById("container").addEventListener("pointerup", mup);
+    document.getElementById("container").addEventListener("pointermove", mmoving);
     document.getElementById("container").addEventListener("wheel", mwheel);
-    document.getElementById("options-pane").addEventListener("mousedown", mdown);
+    document.getElementById("options-pane").addEventListener("pointerdown", mdown);
 
     //Mobile FAB-buttons
     document.getElementById("fab-check").addEventListener("click", toggleErrorCheck);
@@ -522,9 +522,8 @@ function getData() {
 
     //Main mobile FAB-button
     document.getElementById("diagram-fab").addEventListener("click", () =>{
-        document.querySelectorAll('.fab-inner').forEach(button => {
-            button.style.display = button.style.display === 'flex' ? 'none' : 'flex';
-          });
+        let fabList = document.querySelector(".fab-btn-list");
+        fabList.style.display = fabList.style.display === 'none' ? 'block' : 'none';
     });
 
     //Side navbar buttons. (save, load and reset are inside diagram_dugga)
@@ -550,7 +549,6 @@ function getData() {
     document.getElementById("mb-backButton").addEventListener("click", () => {
         history.back();
     });
-    
 
     // debugDrawSDEntity(); // <-- debugfunc to show an sd entity
     generateToolTips();
@@ -938,6 +936,27 @@ function setupTouchAsMouseSupport() {
     // Handle touchstart: either simulates mousedown or prepare for pinch-zoom
     container.addEventListener("touchstart", function (event) {
         if (event.touches.length === 1) {
+            const touch = event.touches[0];
+
+            // If the Pointer-tool is used, a selection can be done on one element, and movement is possible
+            if (mouseMode === mouseModes.POINTER) {
+                let touchedElement = document.elementFromPoint (touch.clientX, touch.clientY);
+
+                while (touchedElement && !touchedElement.classList.contains("element")) {
+                    touchedElement = touchedElement.parentElement;
+                }
+
+                if (touchedElement && touchedElement.classList.contains ("element")) {
+                    const elementId = touchedElement.id;
+                    const elData = data.find(el => el.id === elementId); 
+                    // Updates element based on movement
+                    if (elData) {
+                        updateSelection(elData);
+                    }
+                }
+                pointerTool_Start(touch.clientX, touch.clientY);
+            }
+
             // Single touch, simulates a mouse down event
             const mouseEvent = convertTouchToMouse(event, "mousedown");
             container.dispatchEvent(mouseEvent);
@@ -953,6 +972,12 @@ function setupTouchAsMouseSupport() {
     container.addEventListener("touchmove", function (event) {
         event.preventDefault();
         if (event.touches.length === 1) {
+            const touch = event.touches[0];
+
+            if (mouseMode === mouseModes.POINTER && pointerState === pointerStates.CLICKED_ELEMENT) {
+                pointerTool_Update(touch.clientX, touch.clientY);
+            }
+
             // Singel touch, simulate mouse move event
             const mouseEvent = convertTouchToMouse(event, "mousemove");
             container.dispatchEvent(mouseEvent);
@@ -968,6 +993,7 @@ function setupTouchAsMouseSupport() {
             // No touches left, simulate mouse up event
             const mouseEvent = convertTouchToMouse(event, "mouseup");
             container.dispatchEvent(mouseEvent);
+            pointerTool_End();
             initialPinchDistance = null;
         }
     }, { passive: false });
@@ -1028,6 +1054,19 @@ function mouseMode_onMouseUp(event) {
                     stateMachine.save(ghostElement.id, StateChange.ChangeTypes.ELEMENT_CREATED);
                     makeGhost();
                     showdata();
+                    
+                    // Only affects mobile view (Closes the submenu after placing an element)
+                    let dropdownItems = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
+                        dropdownItems.forEach(item=>{
+                        item.classList.remove("active");
+                    });
+
+                    document.querySelectorAll(".mb-sub-menu.show").forEach(subMenu=>{
+                        subMenu.setAttribute("aria-hidden", "true");
+                        subMenu.classList.remove("show");
+                        let dropIcon = subMenu.parentNode.querySelector(".mb-dropdown-icon i");
+                        if(dropIcon) dropIcon.classList.remove("rotation");
+                    }); 
                 }
                 break;
             case mouseModes.EDGE_CREATION:
@@ -1092,6 +1131,10 @@ function mouseMode_onMouseUp(event) {
  */
 function mmoving(event) {
     lastMousePos = new Point(event.clientX, event.clientY);
+
+    if (pointerState === pointerStates.CLICKED_ELEMENT && mouseMode === mouseModes.POINTER && 'ontouchstart' in window) {
+        return;
+    }
     switch (pointerState) {
         case pointerStates.CLICKED_CONTAINER:
             // Compute new scroll position
@@ -1118,56 +1161,31 @@ function mmoving(event) {
             updateLabelPos(event.clientX, event.clientY);
             updatepos();
             break;
-        case pointerStates.CLICKED_ELEMENT:
-            if (mouseMode != mouseModes.EDGE_CREATION) {
-                const prevTargetPos = {
-                    x: data[findIndex(data, targetElement.id)].x,
-                    y: data[findIndex(data, targetElement.id)].y
-                };
-                let targetElementDiv = document.getElementById(targetElement.id);
-                let targetPos = {
-                    x: 1 * targetElementDiv.style.left.substring(0, targetElementDiv.style.left.length - 2),
-                    y: 1 * targetElementDiv.style.top.substring(0, targetElementDiv.style.top.length - 2)
-                };
-                targetPos = screenToDiagramCoordinates(targetPos.x, targetPos.y);
-                targetDelta = {
-                    x: (targetPos.x * zoomfact) - (prevTargetPos.x * zoomfact),
-                    y: (targetPos.y * zoomfact) - (prevTargetPos.y * zoomfact),
-                };
+      case pointerStates.CLICKED_ELEMENT:
+            if (mouseMode !== mouseModes.EDGE_CREATION && targetElement && !targetElement.isLocked) {
+                const coords = screenToDiagramCoordinates(event.clientX, event.clientY); // Convert mouse position to diagram coordinates
 
-                // Letting the system know that an object is being moved
-                movingObject = true;
+                const snapId = visualSnapToLifeline(coords); // Identifying a lifeline nearby for snapping
 
-                // Moving object
-                deltaX = startX - event.clientX;
-                deltaY = startY - event.clientY;
-
-                // Check coordinates of moveable element and if they are within snap threshold
-                const moveableElementPos = screenToDiagramCoordinates(event.clientX, event.clientY);
-                // Lifeline coordinates to visualize snap for selected activation elements
-                const snapId = visualSnapToLifeline(moveableElementPos);
-                
-                // Visualized snap to lifeline
-                if (snapId) {
-                    const lLine = data.find(el => el.id === snapId);
-                    let anySnapped = false;
-
-                    context.forEach(el => {
-                        if (el.kind === elementTypesNames.sequenceActivation) {
-                            el.x = lLine.x + (lLine.width / 2) - (el.width / 2);
-                            anySnapped = true;
-                        }
-                    });
-
-                    if (anySnapped) {
-                        startX = event.clientX;
-                        deltaX = 0;
+                context.forEach(el => {
+                    if (el.kind === elementTypesNames.sequenceActivation && snapId) {
+                        const lLine = data.find(line => line.id === snapId);
+                        el.x = lLine.x + (lLine.width / 2) - (el.width / 2); // Snap horizontally to lifeline cenetr 
+                    } else {
+                        el.x = coords.x - (el.width / 2); //  Follow mouse normally (centered)
                     }
-                }
+
+                    el.y = coords.y - (el.height / 2); // Update vertical position to center under mouse
+                });
+
+                //Flag as moving and update the diagram
+                movingObject = true;
                 updatepos();
-                calculateDeltaExceeded();
+                showdata();
             }
-            break;
+    break;
+
+
         case pointerStates.CLICKED_NODE:
             const index = findIndex(data, context[0].id);
             const elementData = data[index];
@@ -1341,6 +1359,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function addObjectToData(object, stateMachineShouldSave = true) {
     data.push(object);
     if (stateMachineShouldSave) stateMachine.save(object.id, StateChange.ChangeTypes.ELEMENT_CREATED);
+
+    
 }
 
 /**
@@ -1497,7 +1517,6 @@ function saveProperties() {
         addToLine("functions", "+");
     }
     // Saves the changes and updates relevant graphics
-    stateMachine.save(element.id, StateChange.ChangeTypes.ELEMENT_ATTRIBUTE_CHANGED);
     showdata();
     updatepos();
 }
@@ -2530,7 +2549,13 @@ window.addEventListener("resize", () => {
 
     if (window.innerWidth > 414) {
         isMobile = false;
-        ruler.style.left = "50px";
+        if(window.innerHeight > 1199){
+            ruler.style.left = "70px";
+        }
+        else{
+            ruler.style.left = "60px";
+        }
+        
         ruler.style.top = "0px";
     }
     else {
@@ -2776,5 +2801,4 @@ function tooltipPosition(element){
         left: null
     };
 }
-console.log(allToolbarBox);
 //#endregion =====================================================================================

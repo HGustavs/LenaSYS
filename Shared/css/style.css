@@ -8129,7 +8129,7 @@ only screen and (max-device-width: 568px) {
   bottom: 10vh;
   right: 7vw;
   display: none;
-  z-index: 2;
+  z-index: 3;
 }
 .diagram-btn-fab{
   line-height: 0;
@@ -10490,18 +10490,6 @@ margin:2px;
 
 .svgbacklayer-background {
   background-color: var(--color-background);
-}
-
-@media screen and (min-height: 1199px) {
-  #rulerOverlay {
-      left:50px;
-  }
-}
-
-@media screen and (min-height: 1200px) {
-  #rulerOverlay {
-      left:70px;
-  }
 }
 
 #rulerOverlay {

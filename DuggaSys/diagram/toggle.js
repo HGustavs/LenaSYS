@@ -145,21 +145,24 @@ function toggleA4Template() {
         template.style.display = "none";
         vRect.style.display = "none";
         a4Rect.style.display = "none";
-        document.getElementById("a4OptionsDropdownContainer").style.display = "none";
-        
+
         document.getElementById("a4TemplateToggle").style.backgroundColor = "transparent";
         document.getElementById("a4TemplateToggle").style.color = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "bold";
     } else {
         template.style.display = "block";
-        document.getElementById("a4OptionsDropdownContainer").style.display = "block";
-        
+
+        // Apply the selected layout immediately
+        applyA4Option();
+
         document.getElementById("a4TemplateToggle").style.backgroundColor = color.PURPLE;
         document.getElementById("a4TemplateToggle").style.color = color.WHITE;
         document.getElementById("a4TemplateToggle").style.fontWeight = "normal";
     }
+
     document.getElementById("a4TemplateToggle").style.border = `3px solid ${color.PURPLE}`;
 }
+
 
 function toggleA4Dropdown() {
     const dropdown = document.getElementById("a4OptionsDropdown");
@@ -202,8 +205,13 @@ function toggleA4Vertical() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
 
-    vRect.style.display = "none";  // Hide horizontal
-    a4Rect.style.display = "block";  // Show vertical
+    vRect.style.display = "none";
+    a4Rect.style.display = "block";
+
+
+    // Set position to origin
+    a4Rect.style.left = "0px";
+    a4Rect.style.top = "0px";
 }
 
 /**
@@ -213,8 +221,12 @@ function toggleA4Horizontal() {
     const vRect = document.getElementById("vRect");
     const a4Rect = document.getElementById("a4Rect");
 
-    a4Rect.style.display = "none";  // Hide vertical
-    vRect.style.display = "block";  // Show horizontal
+    a4Rect.style.display = "none";
+    vRect.style.display = "block";
+
+    // Set position to origin
+    vRect.style.left = "0px";
+    vRect.style.top = "0px";
 }
 
 /**
@@ -223,12 +235,29 @@ function toggleA4Horizontal() {
 function applyA4Option() {
     const selectedOption = document.getElementById("a4OptionsDropdown").value;
 
+    // Always show the A4 template layer itself
+    const template = document.getElementById("a4Template");
+    template.style.display = "block";
+
+    const vRect = document.getElementById("vRect");
+    const a4Rect = document.getElementById("a4Rect");
+
+    // Reset both rectangles
+    vRect.style.display = "none";
+    a4Rect.style.display = "none";
+
+    // Apply the selected template shape
     if (selectedOption === "vertical") {
-        toggleA4Vertical();
+        a4Rect.style.display = "block";
+        a4Rect.style.left = "0px";
+        a4Rect.style.top = "0px";
     } else if (selectedOption === "horizontal") {
-        toggleA4Horizontal();
+        vRect.style.display = "block";
+        vRect.style.left = "0px";
+        vRect.style.top = "0px";
     }
 }
+
 
 /**
  * @description Toggles weither the snap-to-grid logic should be active or not. The GUI button will also be flipped.
@@ -546,6 +575,7 @@ function toggleToolbar() {
 
     let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
     let toolbarActive = toolbar.classList.toggle("active");
+    closeMenu("mobileToolbar");
 
     /*
     * Determines wether to rotate the chevron icon if the toolbar and * toggleBtn is in a active state
@@ -562,20 +592,23 @@ function toggleToolbar() {
 
 //Toggles for Mobile sidebar 
 function secondToolbarToggle() { 
-     let toggleBtn = document.querySelector(".icon-wrapper-sidebar");
-     let chevronIcon = document.querySelector(".toggle-chevron-sidebar");
-     let toolbar   = document.getElementById('mb-diagram-sidebar');
-     let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
+    let toggleBtn = document.querySelector(".icon-wrapper-sidebar");
+    let chevronIcon = document.querySelector(".toggle-chevron-sidebar");
+    let toolbar   = document.getElementById('mb-diagram-sidebar');
+    let ChevronActive = toggleBtn.classList.toggle("toolbar-active");
 
-       if (ChevronActive) {
+    if (ChevronActive) {
         chevronIcon.style.transform = `rotate(180deg)`;
+        document.body.classList.add("sidebar-open");
     }
     else {
         chevronIcon.style.transform = `rotate(0deg)`;
+        document.body.classList.remove("sidebar-open");
     }
 
     toolbar.classList.toggle('open');
     toggleBtn.classList.toggle('open');
+    closeMenu("sidebar");
 }
     
 
@@ -684,4 +717,30 @@ function nonElementToggle(el){
     setTimeout(()=>{
         el.classList.remove("active");
     }, 1500);
+}
+
+/**
+ * @description Function that autocloses menus depening on which menu that is currently open
+ * @param {*} dir describes which menu that is currently open 
+ */
+function closeMenu(dir){
+    let toggleBtnToolbar = document.querySelector(".icon-wrapper");
+    let chevronIconToolbar = document.querySelector(".toggle-chevron");
+    let toggleBtnSidebar = document.querySelector(".icon-wrapper-sidebar");
+    let chevronIconSidebar = document.querySelector(".toggle-chevron-sidebar");
+
+    // Closes the FAB-menu and toolbar when sidebar is opened
+    if(dir === 'sidebar'){
+        document.getElementById("mb-diagram-toolbar").classList.remove("active");
+        toggleBtnToolbar.classList.remove("toolbar-active");
+        chevronIconToolbar.style.transform = `rotate(0deg)`;
+        document.querySelector(".fab-btn-list").style.display = `none`;
+    }
+
+    // Closes only the sidebar when the toolbar is opened
+    else if(dir === 'mobileToolbar'){
+        document.getElementById("mb-diagram-sidebar").classList.remove("open");
+        toggleBtnSidebar.classList.remove("toolbar-active");
+        chevronIconSidebar.style.transform = `rotate(0deg)`;
+    }
 }

@@ -59,6 +59,7 @@
     <script src="./diagram/helpers/context.js"></script>
     <script src="./diagram/helpers/element.js"></script>
     <script src="./diagram/helpers/boxSelect.js"></script>
+    <script src="./diagram/helpers/pointerTool.js"></script>
     <script src="./diagram/zoom.js"></script>
     <script src="./diagram/camera.js"></script>
     <script src="./diagram/tooltip_information.js"></script>
@@ -109,19 +110,19 @@
         <i class="material-icons toggle-chevron">keyboard_arrow_up</i>
     </div>
 
-    <!-- The FAB-btn for the diagram.php, STARTS HERE!-->
+    <!-- The FAB-btn for the diagram.php, STARTS HERE! -->
         <div class="fixed-action-button diagram-fab">
-        <ol class="fab-btn-list" style="margin-bottom: 60px; padding:0;">
-            <button id="fab-check" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+        <ol class="fab-btn-list" style="margin-bottom: 60px; padding: 0; display: none;">
+            <button id="fab-check" class="btn-floating fab-inner diagramIcons" type="button">
             <img class="icon-fit" src="../Shared/icons/LookingGlass.svg" alt="Check"/>
             </button>  
-            <button id="fab-localSaveAs" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <button id="fab-localSaveAs" class="btn-floating fab-inner diagramIcons" type="button">
             <img class="icon-fit" src="../Shared/icons/diagram_save_as_icon.svg" alt="Save as diagram"/>
             </button>  
-            <button id="fab-localSave"  class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <button id="fab-localSave"  class="btn-floating fab-inner diagramIcons" type="button">
             <img class="icon-fit" src="../Shared/icons/save_button.svg" alt="Save diagram"/>
             </button>   
-            <button id="fab-load" class="btn-floating fab-inner diagramIcons" style="display: none;" type="button">
+            <button id="fab-load" class="btn-floating fab-inner diagramIcons" type="button">
             <img class="icon-fit" src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
             </button>  
         </ol>
@@ -625,6 +626,14 @@
         </fieldset>
         <!-- MODES FIELD ENDS HERE!! -->
 
+        <!-- Self Call -->
+        <fieldset id="localLoadField">
+            <legend aria-hidden="true">Self Call</legend>
+            <div class="placementTypeBoxIcons diagramIcons" id="elementPlacement17" onclick="togglePlacementType(17); setElementPlacementType(17); setMouseMode(mouseModes.PLACING_ELEMENT);">
+                <img src="../Shared/icons/diagram_entity.svg" alt="Self Call" />
+            </div>
+        </fieldset>
+
         <!-- CAMERA FIELD IN TOOLBAR -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
@@ -632,6 +641,7 @@
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
             </div>
         </fieldset>
+
         <!-- CAMERA FIELD IN TOOLBAR ENDS HERE!! -->
 
         <!-- HISTORY FIELD IN TOOLBAR -->
@@ -711,6 +721,7 @@
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
             </div>
         </fieldset>
+
         <!-- LOAD FIELD IN TOOLBAR ENDS HERE!! -->
     </div>
     <!-- TOOLBAR ENDS HERE!! -->
