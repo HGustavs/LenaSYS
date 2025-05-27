@@ -1436,4 +1436,27 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 .confirm { 
     background-color: #e9e9e9;
 }
-/*/ END /*/
+
+
+#pop {
+    background: var(--color-background) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  #pop table {
+    background: var(--color-background) !important;
+    background-image: none !important;
+  }
+  
+  #pop td {
+    background-image: none !important;
+  }
+  
+  #pop {
+    border: 2px solid white !important;
+    border-radius: 6px !important;
+    padding: 6px !important;
+  }
+  
