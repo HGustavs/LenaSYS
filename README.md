@@ -160,7 +160,7 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
    ```
 
 **On macOS/Linux:** 
-- There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](README.md/#using-linux-or-mac), and then run the script again.
+- There is a `setup.sh` script which located at: `LenaSYS/xampp/` and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder. If none of them steps work, then try to follow to change the file permissions [here](README.md/#macos-specifics), and then run the script again.
 
 **macOS Specifics**
 - On Mac, you need to set extra permissions on the folder `xamppfiles`. 
