@@ -1585,7 +1585,7 @@ header td {
   & ul {
     display: flex;
     flex-direction: row;
-    margin: 0.5em;
+    margin:0.5em 0 0.5em 0.5em;
     padding: 0;
     list-style: none;
     align-items: center;
@@ -4441,15 +4441,12 @@ span.arrow {
 .course-dropdown {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  padding: 3px;
   border: none;
-  width: 120px;
   height: 28px;
   background: transparent;
   background-image: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  vertical-align: text-top;
   color: black;
   outline: none;
 }
@@ -6797,8 +6794,11 @@ only screen and (max-device-width: 568px) {
     width:15%;
   }
 
-  #courseDropDownTop {
-    font-size: 0.6em;
+  .navheader {
+    & ul {
+    margin: 0;
+    gap: 0;
+    }
   }
 }
 
