@@ -58,7 +58,7 @@
     }
 
 
-    #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
+    #docf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
         cursor: pointer;
         filter: invert(80%);
         -webkit-filter: invert(80%);
@@ -567,11 +567,6 @@ body {
   border: 2px solid var(--color-border);
 }
 
-.iconColorInDarkMode{
-    cursor: pointer;
-    filter: invert(80%);
-    -webkit-filter: invert(80%);
-}
 
 #statisticsSwimlanes{
     border: 2px solid var(--color-text-secondary);
