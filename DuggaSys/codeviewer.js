@@ -2904,11 +2904,13 @@ function resetText(boxid)
 {
 	var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
 	var zoomInButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
+	var box = retData['box'][boxid - 1];
+	var fontSize = document.getElementById("fontsize").value = box[6];
 	
 	enableZoomButton(zoomButton);
 	enableZoomButton(zoomInButton);
 	
-	document.getElementById("box" + boxid).style.fontSize = "9px";
+	document.getElementById("box" + boxid).style.fontSize = fontSize;
 
 }
 
