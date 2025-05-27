@@ -6460,8 +6460,8 @@ only screen and (max-device-width: 568px) {
 
   #versionCog, #versionPlus, #editStudent,
   #githubPopupWindow,#testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement, #messagedialog, #refreshIMG{
-    display: none;
+  #editCourse, #announcement, #messagedialog, #refreshIMG, .editVers, .newVers, .results, .tests, .files, .access, .refresh, .coursePage{
+    display: none !important; /*TODO: Make editVers..coursePage disappear from the DOM correctly without use of !important.*/
   }
 }
 
