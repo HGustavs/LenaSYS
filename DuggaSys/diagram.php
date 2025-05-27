@@ -626,6 +626,14 @@
         </fieldset>
         <!-- MODES FIELD ENDS HERE!! -->
 
+        <!-- Self Call -->
+        <fieldset id="localLoadField">
+            <legend aria-hidden="true">Self Call</legend>
+            <div class="placementTypeBoxIcons diagramIcons" id="elementPlacement17" onclick="togglePlacementType(17); setElementPlacementType(17); setMouseMode(mouseModes.PLACING_ELEMENT);">
+                <img src="../Shared/icons/diagram_entity.svg" alt="Self Call" />
+            </div>
+        </fieldset>
+
         <!-- CAMERA FIELD IN TOOLBAR -->
         <fieldset>
             <legend aria-hidden="true">Camera</legend>
@@ -633,6 +641,7 @@
                 <img src="../Shared/icons/fullscreen.svg" alt="Reset view">
             </div>
         </fieldset>
+
         <!-- CAMERA FIELD IN TOOLBAR ENDS HERE!! -->
 
         <!-- HISTORY FIELD IN TOOLBAR -->
@@ -712,6 +721,7 @@
                 <img src="../Shared/icons/diagram_load_icon.svg" alt="Load diagram"/>
             </div>
         </fieldset>
+
         <!-- LOAD FIELD IN TOOLBAR ENDS HERE!! -->
     </div>
     <!-- TOOLBAR ENDS HERE!! -->

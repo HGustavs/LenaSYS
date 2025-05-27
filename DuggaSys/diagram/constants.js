@@ -81,6 +81,7 @@ const elementTypes = {
     sequenceLoopOrAlt: 14,
     note: 15,
     sequenceObject: 16,
+    SelfCall: 17,
 };
 
 /**
@@ -105,6 +106,7 @@ const elementTypesNames = {
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "note",
     UMLRelation: "UMLRelation",
+    SelfCall: "SelfCall",
 };
 
 /**

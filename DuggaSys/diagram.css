@@ -114,6 +114,17 @@
     }
 }
 
+
+.selfcallBox {
+  pointer-events: all;
+  cursor: pointer; /* if you want the hover cursor */
+  opacity: 0;
+}
+
+.selfcallBox:hover {
+  opacity: 1;
+}
+
 #svgbacklayer {
     position: absolute;
     left: 0;

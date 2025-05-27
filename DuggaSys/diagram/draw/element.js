@@ -53,6 +53,9 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.ERRelation:
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
+        case elementTypesNames.SelfCall:
+            divContent = drawElementSelfCall(element, boxw, boxh, linew);
+            break;
         case elementTypesNames.ERAttr:
             divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
             break;
@@ -687,6 +690,29 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
             style='fill:${fill}; stroke:${strokeColor}; stroke-width:${linew};'
         />`;
     return drawSvg(boxw, boxh, poly);
+}
+
+//In progress 
+function drawElementSelfCall(element, boxw, boxh, linew) {
+  const strokeColor = "black";
+  const fillColor   = "none";
+    console.log("hello from draw")
+  // Determine square size so it fits with a linew-wide margin
+  const size = Math.min(boxw, boxh) - 2 * linew;
+  // Center it
+  const x = (boxw  - size) / 2;
+  const y = (boxh  - size) / 2;
+
+  const square = `
+    <rect 
+      class="selfcall"
+      x="${x}" y="${y}" 
+      width="${size}" height="${size}" 
+      style="fill:${fillColor}; stroke:${strokeColor}; stroke-width:${linew};" 
+    />
+  `;
+
+  return drawSvg(boxw, boxh, square);
 }
 
 /**
