@@ -12,8 +12,9 @@ function drawLine(line, targetGhost = false) {
     let fromElemMouseY;
     let toElemMouseY;
 
-    //For straight SD lines only
-    let iconXModifier, iconYModifier;
+    // For straight SD and SE lines only
+    let iconXModifier = 0, 
+        iconYModifier = 0;
 
     // Element line is drawn from element(felem)/to element(telem)
     // Determines staring element based on ID
@@ -241,8 +242,10 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
+        let { length, elementLength, startX, startY } = recursiveParam(felem);
+
         startX += offset.x1 * zoomfact;
-        startY += offset.y1 * zoomfact; 
+        startY += offset.y1 * zoomfact;
 
     // Draws the Segmented version for arrow and not straight line
    if(line.innerType == SDLineType.SEGMENT){
@@ -260,15 +263,15 @@ function drawLine(line, targetGhost = false) {
         const arrowStartPos = calculateArrowPosition(fx+(iconXModifier*zoomfact), fy+(iconYModifier*zoomfact), tx+(iconXModifier*zoomfact), ty+(iconYModifier*zoomfact), "start", line.innerType);
         const arrowEndPos = calculateArrowPosition(fx-(iconXModifier*zoomfact), fy-(iconYModifier*zoomfact), tx-(iconXModifier*zoomfact), ty-(iconYModifier*zoomfact), "end", line.innerType);
         // Handle start arrow
-        if (line.startIcon === SDLineIcons.ARROW) {
+        if (line.startIcon === SDLineIcons.ARROW || line.startIcon === SELineIcons.ARROW) {
             lineStr += iconPoly(SD_ARROW["RL"], arrowStartPos.x, arrowStartPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
         }
         // Handle end arrow
-        if (line.endIcon === SDLineIcons.ARROW) {
+        if (line.endIcon === SDLineIcons.ARROW || line.endIcon === SELineIcons.ARROW) {
             lineStr += iconPoly(SD_ARROW["LR"], arrowEndPos.x, arrowEndPos.y, lineColor, color.BLACK,findRotation(arrowEndPos.x,arrowEndPos.y,arrowStartPos.x,arrowStartPos.y));
         }
-    }    
-        
+
+        }
     }
 
     // Draws the cardinality start and end labels for Self Call

@@ -19,35 +19,61 @@
     }
 }
 
+@media (min-width: 415px) and (max-width: 767px){
+    .icon-wrapper-sidebar{
+        display: none;
+    }
+}
 
 @media screen and (min-width: 768px) {
+    /*
+    Make toolbar scrollable when content exceeds screen height.
+    */
     #diagram-toolbar {
         position: fixed;
         top: 0;
         left: 0;
         bottom: 0;
-        width: 50px; 
+        width: 60px; 
         height: 100vh; 
         z-index: 1000;
+        overflow-y: auto; /* Scrollbar appears only when needed */
+         overflow-x: hidden;
     }
 }
-@media screen and (min-height: 1199px) {
-    #diagram-toolbar {
-        width: 50px;
-    }
+/*scrollbar styling more adaptive to different environments or browsers*/
+#diagram-toolbar::-webkit-scrollbar {
+    width: 10px;
+}
 
-    #svggrid {
-        left: 0px;
-    }
+/*  Options-scrollbar track */
+#diagram-toolbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px grey;
+}
+
+/*  Options-scrollbar handle */
+#diagram-toolbar::-webkit-scrollbar-thumb {
+    background: #eb4;
+    border-radius: 10px;
+}
+
+/*  Options-scrollbar handle on hover */
+#diagram-toolbar::-webkit-scrollbar-thumb:hover {
+    background: #eb4;
+    border-radius: 10px;
 }
 
 @media screen and (min-height: 1200px) {
     #diagram-toolbar {
         width: 70px;
     }
-
     #svggrid {
         left: 20px;
+    }
+    #rulerOverlay {
+        left: 70px !important;
     }
 }
 
@@ -178,7 +204,6 @@
     line-height: 80px;
     text-align: center;
     border-radius: 40px;
-    background-color: #eb4;
     user-select: none;
     cursor: pointer;
     z-index: 5000;
@@ -315,7 +340,7 @@
 #rulerOverlay {
     display: none;
     position: absolute;
-    left: 50px;
+    left: 60px;
     top: 0;
     width: 100%;
     height: 100%;
@@ -422,7 +447,7 @@
         position: absolute !important;
         top: 50px !important;
         left: 50px !important;
-        width: 60% !important;
+        z-index: 5000 !important;
     }
 
     .icon-wrapper.toolbar-active{
@@ -573,6 +598,8 @@
     border-right: solid black 1px;
     background-color: var(--color-primary);
     z-index: 1000;
+    height: 100vh;
+    min-height: 100vh;
 }
 
 #diagram-toolbar>fieldset {
@@ -587,8 +614,8 @@
 
 /* Diagram Messages */
 #diagram-message {
-    width: 300px;
-    left: 100px;
+    min-width: 300px;
+    left: 85px;
     bottom: 20px;
     position: absolute;
     z-index: 100;
@@ -608,7 +635,7 @@
 
 #diagram-message>div {
     pointer-events: auto;
-    margin: 5px;
+    margin: 20px;
     display: block;
     padding: 10px;
     box-shadow: 6px 6px 10px #888;
@@ -616,14 +643,35 @@
 
 #diagram-message .error {
     background-color: #FFD2D2;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #diagram-message .success {
     background-color: #DFF2BF;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #diagram-message .warning {
     background-color: #FEEFB3;
+    min-width: 250px;
+    max-width: 250px;
+    overflow: hidden;
+    >p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 /*tooltip*/
@@ -658,11 +706,6 @@
 
 
 .diagramIcons:hover .toolTipText {
-    visibility: visible;
-    transition-delay: 700ms;
-}
-
-.disabledIcon:hover .toolTipText {
     visibility: visible;
     transition-delay: 700ms;
 }
@@ -912,6 +955,8 @@
     background-color: #815e9d;
     color: white;
     padding: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #loadContainer button:hover {
@@ -1177,11 +1222,23 @@
 
 .disabledIcon {
     background-color: #8d68ab;
+    opacity: 0.5;
 }
 
-    .disabledIcon:hover .toolTipText {
-        visibility: visible;
-    }
+.disabledIcon .diagramIcons {
+    pointer-events: none;
+    border: none;
+    cursor: default;
+}
+
+.disabledIcon .diagramIcons:hover {
+    border: none;
+}
+
+.disabledIcon .diagramIcons:hover .toolTipText {
+    visibility: hidden;
+}
+
 #a4options {
     display: flex;
 }
@@ -1216,6 +1273,10 @@ button.saveButton {
   font-size: 16px;
   margin-top:10px;
   padding-left: 5px;
+}
+
+.deleteLocalDiagram {
+    width: 70px;
 }
 
 /*****************

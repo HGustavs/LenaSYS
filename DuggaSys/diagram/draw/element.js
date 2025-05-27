@@ -366,7 +366,20 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
 
     // Conditionally display stereotype above name if one is set
     if (element.stereotype != "" && element.stereotype != null) {
-        headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', `«${element.stereotype}»`);
+        // Shrinks the stereotype text but only if its long (over 20 chars)
+        //so it fits within the element width without overflowing/cutting off
+        let fullStereotype = `«${element.stereotype}»`;
+        if (fullStereotype.length > 20) {
+            headStereotype = `<text 
+        x="${boxw / 2}" 
+        y="${texth * 0.8 * lineHeight}" 
+        text-anchor="middle"
+        lengthAdjust="spacingAndGlyphs" 
+        textLength="${boxw - 10}"
+    >${fullStereotype}</text>`;
+        } else {
+            headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', fullStereotype);
+        }
         for (let i = 0; i < headerLines.length; i++) {
             const y = texth * (i + 1.5) * lineHeight;
             headText += drawText(boxw / 2, y, 'middle', headerLines[i]);

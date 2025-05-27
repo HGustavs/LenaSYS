@@ -63,9 +63,15 @@ function generateContextProperties() {
     }
     propSet.innerHTML = str;
     
+    // Real-time typing
+    var inputs = propSet.querySelectorAll('input, textarea');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('input', function() {
+            saveProperties();
+        });
+    }
 
     // Add a blur event to handle undo/redo when the user finishes editing (i.e clicks away or presses Enter) for better undo/redo functionality.
-
     const nameInput = propSet.querySelector('#elementProperty_name');
     if (nameInput) {
         nameInput.addEventListener('blur', () => {
@@ -126,7 +132,7 @@ function textarea(name, property, element) {
         return `<div style='color:${color.WHITE};'>${name}</div>
             <input 
                 id='elementProperty_${property}' 
-                maxlength='10'
+                maxlength='30'
                 value='${shownProperty}'
             >${safeName}</input>`;
     }
@@ -1948,12 +1954,20 @@ function changeLineProperties() {
     showdata();
 }
 
-/* Enables bringing an element to the front or sending it to the back by adjusting its z-index and redrawing the canvas */
-
+/**
+ * @description Enables bringing an element to the front or sending it to the back by adjusting its z-index and redrawing the canvas 
+ */ 
 function bringToFront(id) {
     const elem = data.find(e => e.id === id);
     if (!elem) return;
 
+    // Loops through the entire list of elements placed on the canvas
+    // Disables the bring to front if the element is a Loop, Alt or Super State
+    for (let i = 0; i < data.length; i++){
+        if (data[i].name === "Loop or Alt" || data[i].name === "Super State"){
+            return;
+        }
+    }
     const maxZ = Math.max(...data.map(e => e.z ?? 2));
     elem.z = maxZ + 1;
 
@@ -1974,10 +1988,3 @@ function sendToBack(id) {
 
     showdata(); // Redraw everything
 }
-
-
-
-
-
-
-
