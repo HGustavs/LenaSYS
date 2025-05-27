@@ -1,5 +1,5 @@
 /*Adds testing course to databbase*/
-INSERT INTO course (cid,coursecode,coursename,created,creator,visibility,activeversion,hp) VALUES (1885,'G1337','Testing-Course',NOW(),1,1,'1337','1');
+/* Course is created in testdata.sql */
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname,startdate,enddate,motd) VALUES (1885,'G1337','Testing-Course','Course for testing codeviewer','1337','','2020-05-01 00:00:00','2020-06:30 00:00:00','Code examples shows both templateid and boxid!');
 INSERT INTO coursekeys (cid,urlkey,coursename, activeversion) VALUES (1885, 'testing', 'Testing-Course', 1337); 
 
