@@ -57,6 +57,7 @@
         --color-fileLink-table-2: #242729;
     }
 
+
     #dorf, #NewTabLink, .whiteIcon, .iconColorInDarkMode {
         cursor: pointer;
         filter: invert(80%);
@@ -978,7 +979,77 @@ input{
 }
 
 #target-col p{
-    color: black;
+    color: var(--color-text-light);
+}
+.dugga-col {
+    background-color: var(--color-background);
+    color: var(--color-text-light);
+}
+
+#htmlCssTable {
+    background-color: var(--color-background);
+}
+
+#target-col {
+    background-color: var(--color-background);
+    color: var(--color-text-light);
+}
+
+#target-window {
+    background-color: var(--color-background-light-surface);
+    border: 1px solid var(--color-sectioned-table-lo);
+}
+
+#input-col-content {
+    background-color: var(--color-background-codeviewer);
+}
+
+#content-window {
+    background-color: var(--color-background-codeviewer);
+    color: var(--color-text-light);
+    border: 2px solid var(--color-sectioned-table-lo);
+}
+
+#input-col-URL {
+    background-color: var(--color-background);
+    color: var(--color-text-light);
+}
+
+#preview-col {
+    background-color: var(--color-background);
+}
+
+#code-preview-window-wrapper {
+    background-color: var(--color-background-light-surface);
+    border: 1px solid var(--color-sectioned-table-lo);
+}
+
+#url-preview-window-wrapper {
+    background-color: var(--color-background-light-surface);
+    border: 1px solid var(--color-sectioned-table-lo);
+}
+
+#url-preview-window {
+    background-color: var(--color-background-light-surface);
+}
+
+#validation-col {
+    background-color: var(--color-background);
+    color: var(--color-text-light);
+}
+
+#validation-content {
+    background-color: var(--color-background);
+    border: 1px solid var(--color-sectioned-table-lo);
+}
+
+#url-validation-window {
+    background-color: var(--color-background-light-surface);
+}
+
+.formBoxHeader {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
 }
 
 /* Style for "Upload PDF of Presentation" */
