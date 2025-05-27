@@ -2156,6 +2156,9 @@ function showModal() {
     let diagramKeys;
     let localDiagrams;
 
+    let chevron = document.querySelector('.icon-wrapper-sidebar');
+    chevron.style.setProperty('display', 'none', 'important');
+
     let local = localStorage.getItem("diagrams");
 
 
@@ -2232,6 +2235,12 @@ function closeModal() {
     const modal = document.querySelector('.loadModal');
     const overlay = document.querySelector('.loadModalOverlay');
 
+    let chevron = document.querySelector('.icon-wrapper-sidebar');
+    if(chevron.style.display === "none"){
+        chevron.style.setProperty('display', 'block', 'important');
+    }
+    
+    
     modal.classList.add('hiddenLoad');
     overlay.classList.add('hiddenLoad');
 }
