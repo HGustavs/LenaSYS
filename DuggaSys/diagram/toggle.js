@@ -599,9 +599,11 @@ function secondToolbarToggle() {
 
     if (ChevronActive) {
         chevronIcon.style.transform = `rotate(180deg)`;
+        document.body.classList.add("sidebar-open");
     }
     else {
         chevronIcon.style.transform = `rotate(0deg)`;
+        document.body.classList.remove("sidebar-open");
     }
 
     toolbar.classList.toggle('open');
