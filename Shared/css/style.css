@@ -3637,6 +3637,7 @@ div.submit-button.new-user:hover {
 }
 
 input.submit-button-newitem {
+  position: relative;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   background-color: var(--color-accent);
@@ -3672,6 +3673,18 @@ input.submit-button-newitem:hover {
   padding: 0px;
   margin: 2px 10px 2px 0;
     
+}
+
+.courseHeaderFabDropdown{
+  position: relative;
+  display: inline-block;
+}
+
+.CourseFabDropdownDiv{
+  position: relative;
+  margin-top: 50%;
+  height:fit-content;
+  width: 50px;
 }
 
 input.diagram-sidebar-buttons {
@@ -3862,10 +3875,9 @@ div.submit-button:disabled {
   width: 100%;
 }
 
-#submitButtonTable{
-  position: relative;
-  z-index:500;
-  margin-top: 20px;
+.submitButtonTable-center{
+  display: flex;
+  justify-content: center;
 }
 
 #submitButtonTable input.large-button {
@@ -7803,8 +7815,8 @@ only screen and (max-device-width: 568px) {
 
 .fixed-action-button2 {
   position: absolute;
-  top: auto;
-  right: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   touch-action: none;
 }
@@ -8015,9 +8027,7 @@ only screen and (max-device-width: 568px) {
 }
 
 .fab-btn-list2 {
-  position: absolute;
-  padding: 5rem 3.5rem 0rem 0rem;
-  margin: -2rem;
+  padding: 0;
   width: 100%;
   list-style: none;
   text-align: center;
@@ -8044,6 +8054,11 @@ only screen and (max-device-width: 568px) {
   width: 24px;
   height: 24px;
   padding-top: 8px;
+  pointer-events: none;
+}
+
+.material-icons{
+pointer-events: none;
 }
 
 @media screen and (max-height: 600px) {

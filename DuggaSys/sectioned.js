@@ -1073,8 +1073,32 @@ async function createFABItem(kind, itemtitle, comment) {
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
     // console.log(numberOfItems + " " + itemtitle + "(s) created");  
+    closeFabDropdown();
     numberOfItems = 1; // Reset number of items to create
-  }
+  } 
+}
+
+// handles closing of the dropdown menus called via fab-buttons
+function closeFabDropdown(){
+
+  headerDropdownListVisible = document.querySelector('.fab-btn-list2').checkVisibility();
+  floatingDropdownListVisible = document.querySelector('.fab-btn-list').checkVisibility();
+
+  if(headerDropdownListVisible && floatingDropdownListVisible){
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+    document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+
+		document.querySelector('.fab-btn-list2').style.display="none";
+		document.querySelector('.fab-btn-list').style.display="none";
+	}
+  else if(headerDropdownListVisible){
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list2').style.display="none";
+	}
+  else if(floatingDropdownListVisible){
+		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list').style.display="none";
+	}
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -2846,18 +2870,12 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
-document.addEventListener("mouseover", function (e) {
-  // showFabList(e);
-  FABMouseOver(e);
-});
-
 document.addEventListener("mouseout", function (e) {
   FABMouseOut(e);
 });
 
 document.addEventListener("mousedown", function (e) {
   mouseDown(e);
-
   if (e.button == 0) {
     FABDown(e);
   }
@@ -2865,6 +2883,10 @@ document.addEventListener("mousedown", function (e) {
 
 document.addEventListener("mouseup", function (e) {
   mouseUp(e);
+});
+
+document.addEventListener("mouseover", function (e) {
+  FABMouseOver(e);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -3003,7 +3025,12 @@ window.addEventListener("keyup", function (event) {
 document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
     localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
-  }
+    
+    //closes fab-element-dropdown if scrolling (and visible)
+    if(document.querySelector('.fab-btn-list2').checkVisibility() == true){
+			closeFabDropdown();
+		}
+	}
 });
 
 // Functions to prevent collapsing when clicking icons
