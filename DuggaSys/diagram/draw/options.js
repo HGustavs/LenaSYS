@@ -40,7 +40,7 @@ function generateContextProperties() {
         showProperties(true, propSet, menuSet);
         str += drawElementProperties(element);
 
-        // Bring to front / send to back buttons, not shown for UML SuperState or Sequence Loop elements
+        // Bring to front / send to back buttons. Bring to front isn't displayed for UML SuperState or Sequence Loop elements
         if(element.kind != elementTypesNames.UMLSuperState && element.kind != elementTypesNames.sequenceLoopOrAlt){
             str += `
             <div style="margin-top: 10px; color: ${color.WHITE};">Layer</div>
@@ -48,7 +48,10 @@ function generateContextProperties() {
             <button class="saveButton" onclick="sendToBack('${element.id}')">Send to Back</button>
             `;
         } else {
-            str += `<div style="margin-top: 10px; margin-bottom: -30px; color: ${color.WHITE};">Layer</div>`;
+            str += `
+            <div style="margin-top: 10px; color: ${color.WHITE};">Layer</div>
+            <button class="saveButton" onclick="sendToBack('${element.id}')">Send to Back</button>
+            `;
         }
     }
     // Creates radio buttons and drop-down menu for changing the kind attribute on the selected line.
