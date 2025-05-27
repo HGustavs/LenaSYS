@@ -1054,6 +1054,19 @@ function mouseMode_onMouseUp(event) {
                     stateMachine.save(ghostElement.id, StateChange.ChangeTypes.ELEMENT_CREATED);
                     makeGhost();
                     showdata();
+                    
+                    // Only affects mobile view (Closes the submenu after placing an element)
+                    let dropdownItems = document.querySelectorAll(".mb-sub-menu .mb-toolbar-box");
+                        dropdownItems.forEach(item=>{
+                        item.classList.remove("active");
+                    });
+
+                    document.querySelectorAll(".mb-sub-menu.show").forEach(subMenu=>{
+                        subMenu.setAttribute("aria-hidden", "true");
+                        subMenu.classList.remove("show");
+                        let dropIcon = subMenu.parentNode.querySelector(".mb-dropdown-icon i");
+                        if(dropIcon) dropIcon.classList.remove("rotation");
+                    }); 
                 }
                 break;
             case mouseModes.EDGE_CREATION:
@@ -1346,6 +1359,8 @@ document.addEventListener("DOMContentLoaded", () => {
 function addObjectToData(object, stateMachineShouldSave = true) {
     data.push(object);
     if (stateMachineShouldSave) stateMachine.save(object.id, StateChange.ChangeTypes.ELEMENT_CREATED);
+
+    
 }
 
 /**
