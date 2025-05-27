@@ -71,7 +71,7 @@ NOTE: You need to keep open Docker desktop program/app and do not turn off, othe
 
 11. Before you install the LenaSYS, it is good to know that the text-input which says `Hostname`, needs to be `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when entering root user credentials, type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
 
-12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](README.md/#new-installer-steps) or [old LenaSYS installer](README.md/#old-installer-steps).
+12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](#new-installer-steps) or [old LenaSYS installer](#old-installer-steps).
 
 #### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
