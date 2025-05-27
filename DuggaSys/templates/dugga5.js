@@ -54,24 +54,26 @@ var goalObject;
 // Setup
 //----------------------------------------------------------------------------------
 
-function setup() 
-{
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
-	.done( function(script) {
+function setup() {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js";
+
+	script.onload = function () {
 		acanvas = document.getElementById('container');
 		renderer = new THREE.WebGLRenderer();
-		
+
 		AJAXService("GETPARAM", { }, "PDUGGA");
 		acanvas.addEventListener('click', toggleRotate, false);
+	};
 
-	})
-	.fail(function( jqxhr, settings, exception ) {
-	  	//console.log(jqxhr);
-	  	//console.log(settings);
-	  	//console.log(exception);	    
-	});
+	script.onerror = function () {
+		console.error("❌ Failed to load Three.js script.");
+	};
 
+	document.head.appendChild(script);
 }
+
 
 //----------------------------------------------------------------------------------
 // returnedDugga: callback from ajax call in setup, data is json
