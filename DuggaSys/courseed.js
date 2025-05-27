@@ -64,6 +64,9 @@ function updateCourse() {
 	const courseid = "C" + cid;
 	const token = document.getElementById("githubToken").value;
 
+	console.log("updateCourse() => Input element:", courseGitURL);
+	console.log("updateCourse() => courseGitURL value before fetch:", courseGitURL || "NO INPUT");
+
 	const url = "../DuggaSys/gitcommitService.php";
 	const params = {
 		githubURL: courseGitURL,
@@ -288,6 +291,7 @@ async function fetchLatestCommit(gitHubURL) {
 //XMLHttpRequest, same as fetchGitHubRepo
 function updateGithubRepo(githubURL, cid) {
 	// Used to return success(true) or error(false) to the calling function
+	console.log("updateGithubRepo() => Updating githubURL:", githubURL || "NO INPUT");
 	var dataCheck;
 
 	const xhr = new XMLHttpRequest();
@@ -371,6 +375,7 @@ function createVersion() {
 }
 
 function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl) {
+	console.log("selectCourse() => Selecting course to edit - gitHubUrl:", gitHubUrl || "NO INPUT");
 	let items = document.querySelectorAll(".item");
 	items.forEach(item => {
 		item.style.border = "none";
@@ -731,7 +736,21 @@ function returnedCourse(data) {
 				str += "<div class='ellipsis' style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
 				str += "<span style='margin-bottom: 0px'>";
 
-				str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+				//str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+
+				// safe handling of quotes in HTML attributes
+				const gitUrl = item['courseGitURL'] ? item['courseGitURL'].replace(/"/g, '&quot;') : '';
+				str += `<span>
+				  <img 
+					alt='course settings icon' 
+					tabindex='0' 
+					class='courseSettingIcon' 
+					id='dorf' 
+					style='position: relative; top: 2px;' 
+					src='../Shared/icons/Cogwheel.svg' 
+					onclick='selectCourse("${item['cid']}", "${htmlFix(item['coursename'])}", "${item['coursecode']}", "${item['visibility']}", "${item['activeversion']}", "${item['activeedversion']}", "${gitUrl}")' 
+					title='Edit "${item['coursename']}" '>
+				</span>`;
 
 
 				str += "</span>";
