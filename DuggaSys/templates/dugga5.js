@@ -68,7 +68,7 @@ function setup() {
 	};
 
 	script.onerror = function () {
-		console.error("❌ Failed to load Three.js script.");
+		console.error("Failed to load Three.js script.");
 	};
 
 	document.head.appendChild(script);
