@@ -10809,7 +10809,6 @@ button:disabled {
 }
 
 .instructions-content{
-  visibility: initial;
   display: block;
   -webkit-columns: 1;
   -moz-columns: 1; 
@@ -10819,7 +10818,8 @@ button:disabled {
 }
 
 .instructions-content:not(.vis){
-  /*display: none;*/
+  height: auto;
+  transition: 300ms;
 }
 
 #InlPHPDocumentPrev{

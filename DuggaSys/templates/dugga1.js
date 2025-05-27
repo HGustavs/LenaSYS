@@ -21,6 +21,7 @@ var retdata=null;
 var hc=null;
 var score = -1;
 var activehex;
+var init = true;
 //----------------------------------------------------------------------------------
 // Setup
 //----------------------------------------------------------------------------------
@@ -359,11 +360,38 @@ function resetBitstring() {
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
+document.addEventListener("DOMContentLoaded", function(){
+	const instructionBox = document.querySelector(".instructions-content");
+
+	instructionBox.classList.add("vis");
+
+	instructionBox.style.height="auto";
+
+	let height = instructionBox.clientHeight + "px";
+
+	instructionBox.style.height="0px";
+	
+	setTimeout(function(){
+		instructionBox.style.height=height
+	}, 0);
+}, {once: true});
+
 function toggleInstructions()
-{
-	let instructionBox = document.querySelector(".instructions-content");
-	if(!instructionBox.classList.contains("vis")){
+{	
+	const instructionBox = document.querySelector(".instructions-content");
+
+	if(instructionBox.classList.contains("vis")){
+		instructionBox.style.height="0px";
+
+		instructionBox.addEventListener("transitionrun", function(){
+			instructionBox.classList.remove("vis");
+		}, {
+			once: true
+		});
+	}
+	else{
 		instructionBox.classList.add("vis");
+
 		instructionBox.style.height="auto";
 
 		let height = instructionBox.clientHeight + "px";
@@ -374,12 +402,5 @@ function toggleInstructions()
 			instructionBox.style.height=height
 		}, 0);
 	}
-	else{
-		instructionBox.style.height="0px";
-		instructionBox.addEventListener("transitionend", function(){
-			instructionBox.classList.remove("vis");
-		}, {
-			once :true
-		});
-	}
+	init = false;
 }

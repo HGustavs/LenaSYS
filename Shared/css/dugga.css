@@ -204,7 +204,6 @@ strong {font-weight: bold;}
 	text-decoration: line-through; 
 }  
 .instructions-content {
-	visibility: initial;
 	-webkit-columns: 2 200px;
 	-moz-columns: 2 200px;
 	columns: 2 200px;
@@ -215,7 +214,9 @@ strong {font-weight: bold;}
 	border:1px solid #ccc;
 }
 .instructions-content:not(.vis) {
-	padding:0;
+	padding-left: 15;
+	padding-top:0;
+	padding-bottom: 0;
 }
 .feedback-content{
 	padding:1px;
