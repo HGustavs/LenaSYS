@@ -6766,6 +6766,42 @@ only screen and (max-device-width: 568px) {
   padding: 5px;
 }
 
+@media only screen and (max-width: 460px) {
+  .toast:first-child {
+    margin: 2rem 0 0 0;
+  }
+
+  .toast {
+    width: 80vw;
+    margin: 1rem 0 0 0;
+  }
+
+  #toastContainer {
+    align-items: center;
+    width: 100vw;
+  }
+  
+  .toastText, .typeText {
+    font-size: 10pt;
+  }
+
+  .typeIcon {
+    font-size: 2.5rem;
+  }
+
+  .motdLeftContainer{
+    width:85%;
+  }
+
+  .motdRightContainer{
+    width:15%;
+  }
+
+  #courseDropDownTop {
+    font-size: 0.6em;
+  }
+}
+
 /* Is used to style a Select-box in diagram.php. */
 #selectDiv {
   display: flex;
@@ -10713,36 +10749,6 @@ margin:2px;
 #removeUser .flex-end {
   display: flex;
   justify-content: flex-end;
-}
-
-@media only screen and (max-width: 460px) {
-  .toast:first-child {
-    margin: 2rem 0 0 0;
-  }
-
-  .toast {
-    width: 80vw;
-    margin: 1rem 0 0 0;
-  }
-
-  #toastContainer {
-    align-items: center;
-    width: 100vw;
-  }
-  
-  .toastText, .typeText {
-    font-size: 10pt;
-  }
-
-  .typeIcon {
-    font-size: 2.5rem;
-  }
-  .motdLeftContainer{
-    width:85%;
-  }
-  .motdRightContainer{
-    width:15%;
-  }
 }
 
 @-webkit-keyframes fadein {
