@@ -5563,6 +5563,16 @@ div.reset-pw:hover{
   border-bottom: 2px dotted rgba(0, 0, 0, 0.2);
 }
 
+.slide-toggle {
+  overflow: hidden;
+  transition: max-height 0.6s ease;
+  max-height: 0;
+}
+
+.slide-toggle.open {
+  max-height: 1000px;
+}
+
 .fumho tr:nth-child(even) {
   background-color: #e8e8e8;
 }

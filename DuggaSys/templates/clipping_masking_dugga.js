@@ -42,10 +42,10 @@ function setup()
 		if (canvas) {
 				context = canvas.getContext("2d");
 				fitToContainer();
-				$( window ).resize(function() {
-						fitToContainer();
-						render();
-				});
+				window.addEventListener("resize", function () {
+                    fitToContainer();
+                    render();
+                });
 				context.clearRect(0, 0, canvas.width, canvas.height);
 
 				if(requiresParams){
@@ -81,7 +81,7 @@ function show(){
                 newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
                 newTableBody += "</tr>";
 
-                $("#operationList").append(newTableBody);
+                document.getElementById("operationList").insertAdjacentHTML("beforeend", newTableBody);
             }
         }
         render();
@@ -109,8 +109,9 @@ function show(){
     if(hasFacit){
 
     }else{
-        $("#submitButtonTable").appendTo("#content");
-    		$("#lockedDuggaInfo").appendTo("#content");
+        document.getElementById("content").appendChild(document.getElementById("submitButtonTable"));
+        document.getElementById("content").appendChild(document.getElementById("lockedDuggaInfo"));
+
     }
 
     if (hasUserStats){
@@ -118,7 +119,7 @@ function show(){
       document.getElementById('duggaTotalTime').innerHTML=userStats[1];
       document.getElementById('duggaClicks').innerHTML=userStats[2];
       document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-      $("#duggaStats").css("display","block");
+      document.getElementById("duggaStats").style.display = "block";
     }
 
 }
@@ -148,14 +149,16 @@ function returnedDugga(data)
     if(data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
         hasFeedback=true;
         feedback=data["feedback"];
-        $("#showFeedbackButton").css("display","block");
+        document.getElementById("showFeedbackButton").style.display = "block";
     }
     if(data["answer"] !== null && data["answer"] !== "UNK") {
         hasSavedAnswer=true;
         savedAnswer=data['answer'];
     }
     displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
-    $(".submit-button").removeClass("btn-disable");
+    document.querySelectorAll(".submit-button").forEach(function(el) {
+    el.classList.remove("btn-disable");
+    });
     show();
 }
 
@@ -202,7 +205,7 @@ function saveClick()
 
   	// Loop through all the added operations
   	bitstr = ",";
-  	$("*[id*=opCode_]").each(function (){
+    document.querySelectorAll("[id*='opCode_']").forEach(function(el) {
   			bitstr+=this.innerHTML + ",";
   	});
   	bitstr += "T " + elapsedTime;
@@ -228,7 +231,7 @@ function saveClick()
 
     // Loop through all the added operations
     bitstr = ",";
-    $("*[id*=opCode_]").each(function (){
+    document.querySelectorAll("[id*='opCode_']").forEach(function(el) {
             bitstr+=this.innerHTML + ",";
     });
     bitstr += "T " + elapsedTime;
@@ -309,14 +312,14 @@ function fitToContainer()
 
 function toggleSelectOperation(e){
 		if ($(e).closest("tr").hasClass("selectedOp")){
-				$(e).closest("tr").removeClass("selectedOp");
+                e.closest("tr").classList.remove("selectedOp");
 				document.getElementById("addOpButton").value = "Add Op.";
 				$("#operationList").find("tr:odd").css('background-color', '#dad8db');
 		} else {
-				$(e).closest("tr").addClass("selectedOp");
+                e.closest("tr").classList.add("selectedOp");
 				document.getElementById("addOpButton").value = "Change Op.";
 				// Unselect any previous selected row
-				$("#operationList").find("tr").each(function (){
+                $("#operationList").find("tr").each(function (){
 						if (this.id != $(e).closest("tr").attr('id')) $(this).removeClass("selectedOp");
 				});
 		}
@@ -326,12 +329,18 @@ function toggleSelectOperation(e){
 
 function refreshOpNum(){
 	var idx = 1;
-	$("*[id^=opNum]").each(function (){
-			this.innerHTML = idx++;
+    document.querySelectorAll("[id^='opNum']").forEach(function (el) {			this.innerHTML = idx++;
 	});
     
-	$("#operationList").find("tr:odd").addClass("OperationListTableOdd");
-	$("#operationList").find("tr:even").addClass("OperationListTableEven");
+	const rows = document.querySelectorAll("#operationList tr");
+    rows.forEach((row, index) => {
+    if (index % 2 === 0) {
+    row.classList.add("OperationListTableEven");
+    } else {
+    row.classList.add("OperationListTableOdd");
+    }
+    });
+
   render();
 }
 
@@ -357,38 +366,58 @@ function startDuggaHighScore(){
 	}
 }
 
-function newbutton()
-{
-	ClickCounter.onClick();
-	var newOp = $('#ops > optgroup > option:selected').text();
-	var newOpCode = $("#ops").val();
+function newbutton() {
+  ClickCounter.onClick();
 
-	if($("#operationList").find("tr").hasClass("selectedOp")){
-			$(".selectedOp").each(function(){
-				$(this).find("*[id^=op_]").html(newOp);
-				$(this).find("*[id^=opCode_]").html(newOpCode);
-				toggleSelectOperation(this);
-			});
-      render();
-	} else {
-		var i = 0;
-		$('#operationList tr').each(function (){
-				var tmp = this.id.replace("v","");
-				if (tmp > i) i=tmp;
-		});
-		i++;
-		var newTableBody = "<tr id='v" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-		newTableBody += '<td><span style="width:100%; padding:0; margin:0 10px; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
-		newTableBody += '<td style="text-align:center"><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
-		newTableBody += "</tr>";
+  const opsSelect = document.getElementById("ops");
+  const newOp = opsSelect.options[opsSelect.selectedIndex].text;
+  const newOpCode = opsSelect.value;
 
-		$("#operationList").append(newTableBody);
-		refreshOpNum();
-	}
+  const operationList = document.getElementById("operationList");
+  const selectedOps = operationList.querySelectorAll("tr.selectedOp");
+
+  if (selectedOps.length > 0) {
+    selectedOps.forEach(function(row) {
+      row.querySelectorAll("[id^=op_]").forEach(el => {
+        el.innerHTML = newOp;
+      });
+      row.querySelectorAll("[id^=opCode_]").forEach(el => {
+        el.innerHTML = newOpCode;
+      });
+      toggleSelectOperation(row);
+    });
+    render();
+  } else {
+    let i = 0;
+    operationList.querySelectorAll("tr").forEach(row => {
+      const tmp = parseInt(row.id.replace("v", ""), 10);
+      if (tmp > i) i = tmp;
+    });
+    i++;
+
+    const tr = document.createElement("tr");
+    tr.id = "v" + i;
+    tr.innerHTML = `
+    <td style="font-size:11px; text-align: center;" id="opNum${i}">${i + 1}</td>
+    <td>
+    <span style="width:100%; padding:0; margin:0 10px; box-sizing: border-box;" id="op_${i}" onclick="toggleSelectOperation(this);">${newOp}</span>
+    <span id="opCode_${i}" style="display:none">${newOpCode}</span>
+    </td>
+    <td style="text-align:center">
+    <button onclick="const tr=this.closest('tr'); tr.previousElementSibling?.before(tr); refreshOpNum();">&uarr;</button>
+    </td>
+    <td style="text-align:center">
+    <button onclick="const tr=this.closest('tr'); tr.nextElementSibling?.after(tr); refreshOpNum();">&darr;</button>
+    </td>
+    <td style="text-align:center">
+    <button onclick="this.closest('tr').remove(); refreshOpNum();">X</button>
+    </td>
+    `;
+    operationList.appendChild(tr);
+    refreshOpNum();
+  }
 }
+
 
 function goMofo(txt)
 {
@@ -696,16 +725,20 @@ function goMofo(txt)
     function render(){
         canvas.width = canvas.width;
         // context.scale(canvas.width/600,canvas.height/700);
-        $("*[id*=opCode_]").each(function (){
+    document.querySelectorAll("[id*='opCode_']").forEach(function(el) {
             goMofo(this.innerHTML);
         });
     }
 
     function toggleFeedback()
 {
-    $(".feedback-content").slideToggle("slow");
+    document.querySelectorAll(".feedback-content").forEach(el => {
+    el.style.display = (el.style.display === "none" || getComputedStyle(el).display === "none") ? "block" : "none";
+    });
 }
 function toggleInstructions()
 {
-    $(".instructions-content").slideToggle("slow");
+    document.querySelectorAll(".instructions-content").forEach(el => {
+    el.classList.toggle("open");
+    });
 }
