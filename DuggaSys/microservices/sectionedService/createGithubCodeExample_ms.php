@@ -102,7 +102,7 @@ function GetCourseVers($allFiles)
 function NoCodeExampleFilesExist($exampleName, $groupedFiles)
 {
     global $pdo, $courseid, $coursevers, $kind, $link,
-        $gradesys, $highscoremode, $pos, $log_uuid;
+        $gradesys, $highscoremode, $pos, $log_uuid, $exampleid;
 
     //Count the number of files in the codeexample
     $fileCount = count($groupedFiles);
