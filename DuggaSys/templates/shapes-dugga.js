@@ -74,7 +74,9 @@ function returnedDugga(data)
 		alert("UNKNOWN DUGGA!");
 	}else{		
 		dta=JSON.parse(data['param']);
-		document.querySelector(".submit-button").classList.remove("btn-disable");
+		document.querySelectorAll(".submit-button").forEach(el => {
+			el.classList.remove("btn-disable");
+		});
 		if (data["answer"] !== null && data["answer"] !== "UNK") {			
 			var previousAnswer = data['answer'].split(' ');
 			bitarray=previousAnswer[3].split(',');
@@ -86,7 +88,6 @@ function returnedDugga(data)
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 			// No feedback
 	} else {
-			document.getElementById("showFeedbackButton").style.display = 'block';
 		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
 		var feedbackArr = data["feedback"].split("||");
 		for (var k=feedbackArr.length-1;k>=0;k--){
@@ -96,10 +97,13 @@ function returnedDugga(data)
 		fb += "</tbody></table>";
 		document.getElementById('feedbackTable').innerHTML = fb;		
 		document.getElementById('feedbackBox').style.display = "block";
+		document.getElementById("showFeedbackButton").style.display = "block";
 	}
+	document.getElementById("content").append(document.getElementById("submitButtonTable"));
+	if(document.getElementById("lockedDuggaInfo")){
+		document.getElementById("content")
+		.insertBefore(document.getElementById("lockedDuggaInfo"), document.getElementById("content"));
 	}
-	document.querySelector("#content").appendChild(document.querySelector("#submitButtonTable"));
-	document.querySelector("#content").appendChild(document.querySelector("#lockedDuggaInfo"));
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 	if (running) {
 		renderId = requestAnimationFrame(redrawgfx);
