@@ -1684,7 +1684,6 @@ function returnedSection(data) {
 
 
     str += "<div id='statisticsSwimlanes'>";
-
     str += "<svg id='swimlaneSVG' xmlns='http://www.w3.org/2000/svg'></svg>";
     str += "</div>";
     /*str += "<input id='loadDuggaButton' class='submit-button large-button' type='button' value='Load Dugga' onclick='showLoadDuggaPopup();' />"; */
@@ -1703,7 +1702,7 @@ function returnedSection(data) {
             if (displaySwimlanes == "block"){
               document.getElementById("sectionList_arrowStatisticsOpen").style.display="none";//apperantly there is two different arrows
               document.getElementById("sectionList_arrowStatisticsClosed").style.display="block";
-              if (hasDuggs) {
+              if (hasDuggs) {//edge case. Some sectioned should not show swimlanes. example: Testing-Course G1337
                 document.getElementById("swimlaneSVG").style.display="block";
                 document.getElementById("statisticsSwimlanes").style.display="block";
               }
