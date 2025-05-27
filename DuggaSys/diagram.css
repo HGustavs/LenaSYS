@@ -581,9 +581,10 @@
     z-index: 1000;
 }
 
-#diagram-toolbar>fieldset {
+#diagram-toolbar > fieldset {
     padding: 2px;
-    border-color: var(--color-primary-hover);
+    border: 1px solid var(--color-primary-hover);
+    -webkit-appearance: none;
 }
 
 #diagram-toolbar>fieldset>legend {
