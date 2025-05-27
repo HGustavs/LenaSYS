@@ -50,7 +50,7 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 <img src="Shared/Documentation/docker_images/terminal3.png" width="512">
 
-5. Now you need to choose which script to run based on your operating system:
+5. Now you need to choose which script to run based on your operating system. The scripts are located at: `LenaSYS/dockerenv/`
 - **On Windows:** Here you need to build a few images and containers, and to do that run the command for Windows: `.\setup.bat`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
 
 - **On macOS/Linux:** There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](README.md/#using-linux-or-mac), and then run the script again.
@@ -158,6 +158,9 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
     extension=php_pdo_odbc.dll
     extension=php_pdo_sqlite.dll
    ```
+
+**On macOS/Linux:** 
+- There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](README.md/#using-linux-or-mac), and then run the script again.
 
 **macOS Specifics**
 - On Mac, you need to set extra permissions on the folder `xamppfiles`. 
