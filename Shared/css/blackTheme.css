@@ -585,6 +585,7 @@ body {
 .logoutBox,
 .formBox,
 .markdown,
+.showsecurityquestion,
 #mrkdwntxt{
   background-color: var(--color-background);
   color: var(--color-text-light);
