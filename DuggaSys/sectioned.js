@@ -2396,6 +2396,7 @@ function returnedSection(data) {
             order: str
           }, "SECTION");
           resave = true;
+          location.reload();
           return false;
         }
 
