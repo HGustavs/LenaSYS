@@ -86,16 +86,17 @@ function returnedDugga(data)
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 			// No feedback
 	} else {
-			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-			var feedbackArr = data["feedback"].split("||");
-			for (var k=feedbackArr.length-1;k>=0;k--){
-				var fb_tmp = feedbackArr[k].split("%%");
-				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 		
-			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
-			document.getElementById('feedbackBox').style.display = "block";
 			document.getElementById("showFeedbackButton").style.display = 'block';
+		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		var feedbackArr = data["feedback"].split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+		fb += "</tbody></table>";
+		document.getElementById('feedbackTable').innerHTML = fb;		
+		document.getElementById('feedbackBox').style.display = "block";
+	}
 	}
 	document.querySelector("#content").appendChild(document.querySelector("#submitButtonTable"));
 	document.querySelector("#content").appendChild(document.querySelector("#lockedDuggaInfo"));
