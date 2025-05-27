@@ -23,7 +23,7 @@ else
     # Change htdocs folder owner and permissions
     echo "Found htdocs and beginning to change htdocs folder owner and permissions"
     sudo chown daemon:daemon "$HTDOCS_DIR"
-    sudo chmod 777 "$HTDOCS_DIR"
+    sudo chmod -R 777 "$HTDOCS_DIR"
 fi
 
 # Add this user to daemon group if not exists
