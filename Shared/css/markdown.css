@@ -176,16 +176,6 @@
 	border: 1px solid #ddd;
 }
 
-#markdown h4, #markdown h5, #markdown h6 {
-	margin: 0;
-}
-
-#markdown h3{
-    font-size:16px;
-    margin: 2px 0px 2px 0px;
-    border-bottom: 2px solid #aaa;
-}
-
 #markdown hr {
     height:4px;  
     padding:0;
