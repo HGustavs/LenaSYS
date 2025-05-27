@@ -53,7 +53,7 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 5. Now you need to choose which script to run based on your operating system. The scripts are located at: `LenaSYS/dockerenv/`
 - **On Windows:** Here you need to build a few images and containers, and to do that run the command for Windows: `.\setup.bat`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
 
-- **On macOS/Linux:** There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](README.md/#using-linux-or-mac), and then run the script again.
+- **On macOS/Linux:** There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](#using-linux-or-mac), and then run the script again.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
 6. Docker has finished building images and containers when the terminal stops printing out or/and shows a blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.
@@ -160,9 +160,9 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
    ```
 
 **On macOS/Linux:** 
-- There is a `setup.sh` script which located at: `LenaSYS/xampp/` and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder. If none of them steps work, then try to follow to change the file permissions [here](README.md/#macos-specifics), and then run the script again.
+- There is a `setup.sh` script which located at: `LenaSYS/xampp/` and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder. If none of them steps work, then try to follow to change the file permissions [here](#macos-specifics), and then run the script again.
 
-**macOS Specifics**
+#### macOS Specifics
 - On Mac, you need to set extra permissions on the folder `xamppfiles`. 
 - To do this:
   1. Right-click on the `xamppfiles` folder and select **Get Info** (or press `Cmd + I`).
