@@ -2,7 +2,7 @@
 processDuggaFile_ms.php
 
 ## Description
-Retrieves and processes all submission files from the 'submission' table (i.e. submitted PDF, ZIP files) related to a specific dugga for a given course and version.
+Retrieves and processes all submission files from the 'submission' table (i.e. submitted PDF, ZIP files) related to a specific dugga for a given course and version. 
 
 ## Input Parameters
 - Parameter: $courseid
@@ -26,7 +26,7 @@ Retrieves and processes all submission files from the 'submission' table (i.e. s
    - Description: Submission segment/moment. Stored as int(11) in the database
 
 ## Calling Methods
-- PHP function call
+-
 
 ## Output Data and Format
 - Output: $subid
@@ -94,7 +94,7 @@ Retrieves and processes all submission files from the 'submission' table (i.e. s
    - Description: List of file names
 
 ## Examples of Use
--
+`SELECT subid,vers,did,fieldnme,filename,extension (...) from submission WHERE segment=:moment ORDER BY subid,fieldnme,updtime asc`
 
 ### Microservices Used
 None
@@ -490,7 +490,7 @@ Retrieves submitted user responses from a dugga, based on specific identifiers s
    - Description: Unique identifier for the dugga. Stored as int(11) in the database
 
 ## Examples of Use
--
+`SELECT vid,variant.variantanswer AS variantanswer,useranswer,param,cid,vers,quiz FROM userAnswer LEFT JOIN variant ON userAnswer.variant=variant.vid WHERE hash=:hash`
 
 ### Microservices Used
 - retrieveShowDuggaService_ms.php
@@ -589,7 +589,7 @@ Calls retrieveShowDuggaService_ms.php to fetch detailed dugga-related data and r
    - Description: The return array from retrieveShowDuggaService_ms, through calling the function retrieveShowDuggaService. Values for parameters are inserted in saveDugga_ms and passed to the function.
 
 ## Examples of Use
--
+`UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timesSubmitted=timesSubmitted+1 WHERE hash=:hash AND password=:hashpwd`
 
 ### Microservices Used
 - retrieveShowDuggaService_ms.php
@@ -691,7 +691,7 @@ Calls retrieveShowDuggaService_ms.php to fetch detailed dugga-related data and r
    - Description: The return array from retrieveShowDuggaService_ms, through calling the function retrieveShowDuggaService. Values for parameters are inserted in updateActiveUsers_ms and passed to the function.
 
 ## Examples of Use
--
+`UPDATE groupdugga SET active_users=:AUtoken WHERE hash=:hash`
 
 ### Microservices Used
 - retrieveShowDuggaService_ms.php
