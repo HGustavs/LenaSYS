@@ -6,7 +6,7 @@ Adds a new list entry to a course, handling the creation of a new code example i
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -18,7 +18,7 @@ Adds a new list entry to a course, handling the creation of a new code example i
    - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $sectname
-   - Type: String
+   - Type: string
    - Description: Section name. Stored as varchar(64) in the database
 
 - Parameter: $kind
@@ -26,7 +26,7 @@ Adds a new list entry to a course, handling the creation of a new code example i
    - Description: Kind/type of section. Stored as int(10) in the database
 
 - Parameter: $link
-   - Type: String
+   - Type: string
    - Description: Link ID, which indicates whether to create a new code example. If 'link' is '-1', it indicates that a new code example needs to be created. Stored as varchar(200) in the database
 
 - Parameter: $visibility
@@ -42,11 +42,11 @@ Adds a new list entry to a course, handling the creation of a new code example i
    - Description: Highscore mode. Stored as int(11) in the database
 
 - Parameter: $comments
-   - Type: String
+   - Type: string
    - Description: Comments for the section. Stored as varchar(512) in the database
 
 - Parameter: $grptype
-   - Type: String
+   - Type: string
    - Description: Group type. Stored as varchar(16) in the database
 
 - Parameter: $pos
@@ -62,7 +62,7 @@ Adds a new list entry to a course, handling the creation of a new code example i
    - Description: ID of the user. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: For logging purposes
 
 ## Calling Methods
@@ -74,7 +74,7 @@ Adds a new list entry to a course, handling the creation of a new code example i
    - Description: The script returns a JSON object describing the updated course content, after inserting a new item (like a code example, text, or list entry) into the course.
 
 ## Examples of Use
-'SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;'
+`SELECT * FROM codeexample ORDER BY exampleid DESC LIMIT 1;`
 
 ### Microservices Used
 - getUid_ms
@@ -92,7 +92,7 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -108,7 +108,7 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
    - Description: Section ID. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: For logging purposes
 
 ## Calling Methods
@@ -120,9 +120,7 @@ Deletes list entries from the database. List entries are duggas, headers, tests 
    - Description: The script returns a JSON object describing which listentry that should be deleted from the listentries-table.
 
 ## Examples of Use
-'DELETE FROM useranswer WHERE moment=:lid'
-
-'DELETE FROM listentries WHERE lid = :lid'
+`DELETE FROM useranswer WHERE moment=:lid`
 
 ### Microservices Used
 - getUid_ms
@@ -140,7 +138,7 @@ Only available to users who are logged in.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -148,15 +146,15 @@ Only available to users who are logged in.
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier, for logging purposes
 
 - Parameter: $showgrp
-   - Type: String
+   - Type: string
    - Description: Retrieves a specific group based on the first two characters of the group name. Used as a filter to fetch the $grplst 
 
 ## Calling Methods
@@ -168,31 +166,31 @@ Only available to users who are logged in.
    - Description: Contains $groups, $fistname, $lastname and email, for users whose group name matches the 2 caracters specified in $showgrp.
 
 - Output: $groups
-   - Type: String
+   - Type: string
    - Description: Groups that users are part of. Stored as varchar(256) in the database
 
 - Output: $firstname
-   - Type: String
+   - Type: string
    - Description: Firstname. Stored as varchar(50) in the database
 
 - Output: $lastname
-   - Type: String
+   - Type: string
    - Description: Lastname. Stored as varchar(50) in the database
 
 - Output: $email
-   - Type: String
+   - Type: string
    - Description: Email address. Stored as varchar(256) in the database
 
 - Output: $grpmembershp
-   - Type: String
+   - Type: string
    - Description: Contains a list of groups a user is part of
 
 - Output: $debug
-   - Type: String
+   - Type: string
    - Description: Displays "Failed to get group members!" if the operation failes
 
 ## Examples of Use
--
+`SELECT user.uid,user.username,user.firstname,user.lastname (...) FROM user,user_course WHERE user.uid=user_course.uid and user_course.cid=:cid AND user_course.vers=:vers`
 
 ### Microservices Used
 - coursesyspw.php
@@ -223,39 +221,39 @@ None
    - Description: Course ID. Stored as int(10) in the database
 
 - Output: $coursecode
-   - Type: String
+   - Type: string
    - Description: Course code. Stored as varchar(45) in the database
 
 - Output: $vers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Output: $versname
-   - Type: String
+   - Type: string
    - Description: Name of the course version. Stored as varchar(45) in the database
 
 - Output: $coursename
-   - Type: String
+   - Type: string
    - Description: Course name. Stored as varchar(80) in the database
 
 - Output: $coursenamealt
-   - Type: String
+   - Type: string
    - Description: Alternative course name. Stored as varchar(45) in the database
 
 - Output: $startdate
-   - Type: String
+   - Type: string
    - Description: Start date of course version. Stored as datetime in the database
 
 - Output: $enddate
-   - Type: String
+   - Type: string
    - Description: End date of course version. Stored as datetime in the database
 
 - Output: $motd
-   - Type: String
+   - Type: string
    - Description: Message of the day for the course version. Stored as varchar(50) in the database
 
 ## Examples of Use
--
+`SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate,motd FROM vers`
 
 ### Microservices Used
 - getUid_ms.php
@@ -271,7 +269,7 @@ Fetches all list entries from the database. List entries are duggas, headers, te
 ## Input Parameters
 
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -283,7 +281,7 @@ Fetches all list entries from the database. List entries are duggas, headers, te
    - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier for logging purposes
 
 ## Calling Methods
@@ -312,7 +310,7 @@ Fetches All data from the 'userduggafeedback' table
 ## Input Parameters
 
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -324,7 +322,7 @@ Fetches All data from the 'userduggafeedback' table
    - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier for logging purposes
 
 - Parameter: $moment
@@ -340,7 +338,7 @@ Fetches All data from the 'userduggafeedback' table
    - Description: Returns the course's list entries divided into sections. If $opt is set to 'GETUF', a list of every piece of feedback individual students have given for the specific entry will be returned, along with a single int representing the average of all feedback scores.
 
 ## Examples of Use
--
+`SELECT AVG(score) AS avgScore FROM userduggafeedback WHERE lid=:lid AND cid=:cid`
 
 ## Microservices Used
 sharedMicroservices/getUid_ms.php
@@ -360,19 +358,19 @@ Updates the active version of a specific course. After the update, retrieveSecti
    - Description: Unique identifier of the course to be updated. Stored as int(10) in the database
 
 - Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Current course version. Stored as varchar(8) in the database
 
 - Parameter: $versid
-   - Type: String
+   - Type: string
    - Description: The updated course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier, for logging purposes
 
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 ## Calling Methods
@@ -385,43 +383,43 @@ Updates the active version of a specific course. After the update, retrieveSecti
    - Description: Contains all relevant and updates data after a successful update. Contains $duggor, $releases, $resulties, $entries, $links, $codeexamples, $versions, $startdate, $enddate, $grpmembershp, $userfeedback, $groups, $grplst, $feedbackquestion, $avgfeedbackscore
 
 - Output: $duggor
-   - Type: String
+   - Type: string
    - Description: Details about quizzes. Contains id, qname, release, deadline and relativedeadline from the 'quiz' table
 
 - Output: $releases
-   - Type: String
+   - Type: string
    - Description: Dates regarding quizzes. Contains release, deadline and relativedeadline from the 'quiz' table
 
 - Output: $resulties
-   - Type: String
+   - Type: string
    - Description: Results of submissions for quizzes. Contains moment, grade, submitted, marked and useranswer from the 'useranswer' table
 
 - Output: $entries
-   - Type: String
+   - Type: string
    - Description: Details about entries for quizzes. Contains entryname, lid, pos, kind, moment, link, visible, highscoremode, gradesys, groupKind, comments, tabs, feedbackenabled, feedbackquestion, ts and code_id from the 'listentries' table. As well as deadline, relativedeadline, qrelease and qstart from the 'quiz' table. Done as LEFT OUTER JOIN
 
 - Output: $links
-   - Type: String
+   - Type: string
    - Description: Information about files related to the course. Contains fieldid and fieldname from the 'filelink' table
 
 - Output: $codeexamples
-   - Type: String
+   - Type: string
    - Description: Details about code examples related to the course. Contains exampleid, cid, examplename, sectionname, runlink and cversion from the 'codeexample' table
 
 - Output: $versions
-   - Type: String
+   - Type: string
    - Description: A list of all course versions for a specific course ID
 
 - Output: $startdate
-   - Type: String
+   - Type: string
    - Description: Start date of the course version, from the 'vers' table. Stored as datetime in the database
 
 - Output: $enddate
-   - Type: String
+   - Type: string
    - Description: End date of the course version, from the 'vers' table. Stored as datetime in the database
 
 - Output: $grpmembershp
-   - Type: String
+   - Type: string
    - Description: Group memberships
 
 - Output: $userfeedback
@@ -445,7 +443,7 @@ Updates the active version of a specific course. After the update, retrieveSecti
    - Description: Stores avarage feedback scores
 
 ## Examples of Use
--
+`UPDATE course SET activeversion=:vers WHERE cid=:cid`
 
 ### Microservices Used
 - retrieveSectionedService_ms
@@ -460,7 +458,7 @@ Creates and/or updates code examples based on GitHub files available in the GitH
 Retrieves all updated data from the database through retrieveSectionedService_ms.php, and uses it as its output.
 
 - Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $kind
@@ -468,7 +466,7 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: List entry type. Stored as int(10) in the database
 
 - Parameter: $link
-   - Type: String
+   - Type: string
    - Description: List entry link. Stored as varchar(200) in the database
 
 - Parameter: $gradesys
@@ -488,11 +486,11 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: Listentry ID. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier, for logging purposes
 
 - Parameter: $sectionname
-   - Type: String
+   - Type: string
    - Description: Name of section. Stored as varchar(64) in the database
 
 - Parameter: $templateNumber
@@ -504,7 +502,7 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: ID of code example. Stored as mediumint(8) in the database  
 
 - Parameter: $exampleName
-   - Type: String
+   - Type: string
    - Description: Name of code example. Stored as varchar(64) in the database
 
 - Parameter: $boxid
@@ -516,19 +514,19 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $boxtitle
-   - Type: String
+   - Type: string
    - Description: Box title, code example title. Stored as varchar(20) in the database
 
 - Parameter: $boxcontent
-   - Type: String
+   - Type: string
    - Description: Type of content (code or document) inside box. Stored as varchar(64) in the database
 
 - Parameter: $fileName
-   - Type: String
+   - Type: string
    - Description: File name. Stored as varchar(256) in the database
 
 - Parameter: $settings
-   - Type: String
+   - Type: string
    - Description: Settings for example box. Setting for important = 1. Stored as varchar(1024) in the database 
 
 - Parameter: $wordlistid
@@ -544,7 +542,7 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $boxName
-   - Type: String
+   - Type: string
    - Description: New or updated filename. Stored as varchar(256) in the database
 
 - Parameter: $newBoxID
@@ -565,7 +563,7 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: Course ID. Stored as int(10) in the database
 
 - Output: $coursevers 
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Output: $userid 
@@ -573,11 +571,11 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: User ID. Stored as int(10) in the database
 
 - Output: $examplename 
-   - Type: String
+   - Type: string
    - Description: Code example name. Stored as varchar(64) in the database
 
 - Output: $link 
-   - Type: String
+   - Type: string
    - Description: List entry link. Stored as varchar(200) in the database
 
 - Output: $kind 
@@ -585,7 +583,7 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: Type of list entry. Stored as int(10) in the database
 
 - Output: $comment 
-   - Type: String
+   - Type: string
    - Description: Comment on list entry. Stored as varchar(512) in the database
 
 - Output: $visible 
@@ -609,11 +607,11 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
    - Description: Tabs settings. Stored as tinyint(4) in the database
 
 - Output: $groupkind 
-   - Type: String
+   - Type: string
    - Description: Group type. Stored as varchar(16) in the database
 
 ## Examples of Use
--
+`INSERT INTO box (boxid, exampleid, boxtitle, (...)) VALUES (:boxid, :exampleid, :boxtitle, (...));`
 
 ### Microservices Used
 - getUid_ms
@@ -626,11 +624,11 @@ Retrieves all updated data from the database through retrieveSectionedService_ms
 setVisibleListEntries_ms
 
 ## Description
-Updates listentries to be visible by parameter lid
+Updates listentries to be visible, by using the $lid parameter.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -646,7 +644,7 @@ Updates listentries to be visible by parameter lid
    - Description: Section ID. Stored as int(10) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: For logging purposes
 
 - Parameter: $visible
@@ -654,7 +652,7 @@ Updates listentries to be visible by parameter lid
    - Description: Toggle visibility
 
 - Parameter: $vers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 ## Calling Methods
@@ -666,7 +664,7 @@ Updates listentries to be visible by parameter lid
    - Description: JSON object returned from retrieveSectionedService_ms.php, augmented with the first element containing the debug message.
 
 ## Examples of Use
-
+`UPDATE listentries SET visible = :visible WHERE lid = :lid`
 
 ### Microservices Used
 - getUid_ms
@@ -678,11 +676,11 @@ Updates listentries to be visible by parameter lid
 updateActiveCourseVersion_sectioned_ms
 
 ## Description
-Microservice that updates the active version of a course
+Updates the active version of a course.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -694,11 +692,11 @@ Microservice that updates the active version of a course
    - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: For logging purposes
 
 - Parameter: $vers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 ## Calling Methods
@@ -710,7 +708,7 @@ Microservice that updates the active version of a course
    - Description: JSON object returned from retrieveSectionedService_ms.php, along with the new active course version ID and a debug message
 
 ## Examples of Use
--
+`UPDATE course SET activeversion=:vers WHERE cid=:cid`
 
 ### Microservices Used
 - retrieveSectionedService_ms
@@ -731,38 +729,38 @@ This service is restricted to superusers.
 
 - Parameter: $lid  
   - Type: int  
-  - Description: ID of the list entry to be updated
+  - Description: ID of the list entry to be updated. Stored as int(10) in the database
 
 - Parameter: $tabs  
-  - Type: string  
-  - Description: The new tab configuration string
+  - Type: int 
+  - Description: The new tab configuration string. Stored as tinyint(1) in the database
 
 - Parameter: $courseid  
   - Type: int  
-  - Description: Course ID used in data retrieval
+  - Description: Course ID used in data retrieval. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Version of the course used in data retrieval
+  - Type: string
+  - Description: Version of the course used in data retrieval. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid  
   - Type: string  
-  - Description: UUID used for service logging
+  - Description: Used for logging purposes
 
 ## Calling Methods  
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Data returned by 'retrieveSectionedService_ms.php', including updated section information
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if the update fails
 
 ## Examples of Use  
-'UPDATE listentries SET tabs=? WHERE lid=?;'
+`UPDATE listentries SET tabs=? WHERE lid=?;`
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -774,7 +772,7 @@ This service is restricted to superusers.
 updateListEntries_ms.php
 
 ## Description  
-Updates a list entry in the 'listentries' table with new section information such as name, visibility, grading system, moment, kind, and feedback configuration.  
+Updates a list entry in the 'listentries' table with new section information such as name, visibility, grading system, moment, kind, and feedback configuration. 
 
 ## Input Parameters  
 - Parameter: $opt  
@@ -783,67 +781,67 @@ Updates a list entry in the 'listentries' table with new section information suc
 
 - Parameter: $lid  
   - Type: int  
-  - Description: ID of the list entry to be updated
+  - Description: ID of the list entry to be updated. Stored as int(10) in the database
 
 - Parameter: $sectname  
   - Type: string  
-  - Description: The updated name/title of the section
+  - Description: The updated name/title of the section. Stored as varchar(64) in the database
 
 - Parameter: $comments  
   - Type: string  
-  - Description: Comment or description associated with the section
+  - Description: Comment or description associated with the section. Stored as varchar(512) in the database
 
 - Parameter: $highscoremode  
   - Type: int  
-  - Description: Highscore mode setting
+  - Description: Highscore mode setting. Stored as int(11) in the database
 
 - Parameter: $feedback  
   - Type: int  
-  - Description: Whether feedback is enabled (1) or disabled (0)
+  - Description: Whether feedback is enabled (1) or disabled (0). Stored as tinyint(1) in the database
 
 - Parameter: $feedbackquestion  
   - Type: string  
-  - Description: Feedback question shown if feedback is enabled
+  - Description: Feedback question shown if feedback is enabled. Stored as varchar(512) in the database
 
 - Parameter: $courseid  
   - Type: int  
-  - Description: Course ID the section belongs to
+  - Description: Course ID the section belongs to. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Course version used for filtering sectioned entries
+  - Type: string
+  - Description: Course version used for filtering sectioned entries. Stored as varchar(8) in the database
 
 - Parameter: $link  
-  - Type: int  
-  - Description: ID of the linked code example
+  - Type: string
+  - Description: ID of the linked code example. Stored as varchar(200) in the database
 
 - Parameter: $kind  
   - Type: int  
-  - Description: Type of the entry
+  - Description: Type of the entry. Stored as int(10) in the database
 
 - Parameter: $moment  
-  - Type: int or string  
-  - Description: ID of the associated moment, or "null" if none
+  - Type: int 
+  - Description: ID of the associated moment, or "null" if none. Stored as int(10) in the database
 
 - Parameter: $visibility  
   - Type: int  
-  - Description: Visibility status
+  - Description: Visibility status. Stored as tinyint(1) in the database
 
 - Parameter: $grptype  
   - Type: string  
-  - Description: Group type
+  - Description: Group type. Stored as varchar(16) in the database
 
 - Parameter: $tabs  
   - Type: int  
-  - Description: Tab configuration value
+  - Description: Tab configuration. Stored as tinyint(4) in the database
 
 - Parameter: $gradesys  
   - Type: int  
-  - Description: Grading system ID
+  - Description: Grading system ID. Stored as tinyint(1) in the database
 
 - Parameter: $coursename  
   - Type: string  
-  - Description: Name of the course
+  - Description: Name of the course. Stored as varchar(80) in the database
 
 - Parameter: $log_uuid  
   - Type: string  
@@ -853,16 +851,16 @@ Updates a list entry in the 'listentries' table with new section information suc
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Contains updated section data as returned by retrieveSectionedService_ms.php
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if any operation fails
 
 ## Examples of Use  
-'UPDATE listentries SET highscoremode=?, gradesystem=?, moment=?, entryname=?, kind=?, link=?, visible=?, comments=?, groupKind=?, feedbackenabled=?, feedbackquestion=? WHERE lid=?;'
+`UPDATE listentries SET highscoremode=?, gradesystem=?, moment=?, entryname=?, kind=?, link=?, visible=?, comments=?, groupKind=?, feedbackenabled=?, feedbackquestion=? WHERE lid=?;`
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -883,15 +881,15 @@ The group and course data is then added to the $data array retrieved from retrie
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $vers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier, for logging purposes
 
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $coursevers
@@ -907,15 +905,15 @@ The group and course data is then added to the $data array retrieved from retrie
    - Description: Array containing groupKind and groupVal. Along with structured data from the function retrieveSectionedService in retrieveSectionedService_ms.php
 
 - Output: $groupKind
-   - Type: String
+   - Type: string
    - Description: Group kind. Stored as varchar(4) in the database
 
 - Output: $groupVal
-   - Type: String
+   - Type: string
    - Description: Group value. Stored as varchar(8) in the database
 
 ## Examples of Use
--
+`SELECT groupKind,groupVal FROM `groups` `
 
 ### Microservices Used
 - retrieveSectionedService_ms.php
@@ -932,7 +930,7 @@ The feedback data is then added to the $data array retrieved from retrieveSectio
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -944,11 +942,11 @@ The feedback data is then added to the $data array retrieved from retrieveSectio
    - Description: Describe parameter. Stored as int(10) in the database
 
 - Parameter: $vers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier, for logging purposes
 
 - Parameter: $coursevers
@@ -968,7 +966,7 @@ The feedback data is then added to the $data array retrieved from retrieveSectio
    - Description: User feedback ID. Stored as int(10) in the database
 
 - Output: $username
-   - Type: String
+   - Type: string
    - Description: User's username. Stored as varchar(80) in the database
 
 - Output: $cid
@@ -984,11 +982,11 @@ The feedback data is then added to the $data array retrieved from retrieveSectio
    - Description: Feedback score. Stored as int(11) in the database
 
 - Output: $entryname
-   - Type: String
+   - Type: string
    - Description: Entry name. Stored as varchar(68) in the database
 
 - Output: feedbackquestion
-   - Type: String
+   - Type: string
    - Description: Feedback question for users to answer. Stored as varchar(512) in the database
 
 - Output: avgfeedbackscore
@@ -996,7 +994,7 @@ The feedback data is then added to the $data array retrieved from retrieveSectio
    - Description: Avarage feedback score for a specific dugga and course, calculated through SQL AVG()
 
 ## Examples of Use
--
+`SELECT * FROM userduggafeedback WHERE lid=:lid AND cid=:cid`
 
 ### Microservices Used
 - retrieveSectionedService_ms.php
@@ -1010,43 +1008,38 @@ getDeletedListEntries_ms
 Retrieves all list entries with visibility set to 3 (i.e., marked as deleted) from the 'listentries' table. Used to show items that were previously deleted from the course structure.
 
 ## Input Parameters
-
 - Parameter: $opt  
   - Type: string  
   - Description: Operation type (used for logging/debugging).
 
 - Parameter: $courseid  
-  - Type: int(10)  
-  - Description: Course ID.
+  - Type: int
+  - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers  
   - Type: int(11)  
-  - Description: Course version.
+  - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $versid  
-  - Type: int(11)  
-  - Description: Version ID (not used in logic directly).
+  - Type: int
+  - Description: Version ID (not used in logic directly). Stored as int(11) in the database
 
 - Parameter: $log_uuid  
-  - Type: char  
+  - Type: string  
   - Description: UUID used for logging.
 
 ## Calling Methods
-
 - GET (getOP)
 
 ## Output Data and Format
-
 - Output  
   - Type: JSON  
   - Description: The full sectioned course data, including entries marked as deleted.
 
 ## Examples of Use
-
-'SELECT * FROM listentries WHERE visible = '3''
+`SELECT * FROM listentries WHERE visible = '3'`
 
 ### Microservices Used
-
 - getUid_ms  
 - retrieveSectionedService_ms
 
@@ -1061,41 +1054,37 @@ Retrieves all available group kinds and their values from the 'groups' table. Us
 ## Input Parameters
 
 - Parameter: $courseid  
-  - Type: int(10)  
-  - Description: Course ID.
+  - Type: int
+  - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int(11)  
-  - Description: Course version.
+  - Type: int
+  - Description: Course version. Stored as int(11) in the database
 
 - Parameter: $versid  
-  - Type: int(11)  
-  - Description: Version ID (unused in logic).
+  - Type: int
+  - Description: Version ID (unused in logic). Stored as int(11) in the database
 
 - Parameter: $log_uuid  
-  - Type: char  
-  - Description: UUID used for logging.
+  - Type: string  
+  - Description: UUID used for logging
 
 - Parameter: $opt  
   - Type: string  
-  - Description: Operation type (used for logging/debugging).
+  - Description: Operation type 
 
 ## Calling Methods
-
-- GET (getOP)
+- GET
 
 ## Output Data and Format
-
 - Output  
   - Type: JSON  
   - Description: The full sectioned course data including group values grouped by kind.
 
 ## Examples of Use
-
-'SELECT groupKind, groupVal FROM groups'
+`SELECT groupKind, groupVal FROM groups`
 
 ### Microservices Used
-
 - getUid_ms  
 - retrieveSectionedService_ms
 
@@ -1111,7 +1100,7 @@ Logs the operations.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 - Parameter: $courseid
@@ -1119,11 +1108,11 @@ Logs the operations.
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursecode
-   - Type: String
+   - Type: string
    - Description: Course code. Stored as varchar(45) in the database
 
 - (Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database. UNUSED)
 
 - Parameter: $versid
@@ -1131,23 +1120,23 @@ Logs the operations.
    - Description: Course version ID. Stored as varchar(8) in the database
 
 - Parameter: $motd
-   - Type: String
+   - Type: string
    - Description: Message of the day for the course version. Stored as varchar(50) in the database
 
 - Parameter: $versname
-   - Type: String
+   - Type: string
    - Description: Name of course version. Stored as varchar(45) in the database
 
 - Parameter: $startdate
-   - Type: String
+   - Type: string
    - Description: Start date of the course version. Stored as datetime in the database
 
 - Parameter: $enddate
-   - Type: String
+   - Type: string
    - Description: End date of the course version. Stored as datetime in the database
 
 - Parameter: $makeactive
-   - Type: String
+   - Type: string
    - Description: Activating the course version. Stored as varchar(8) in the database
 
 ## Calling Methods
@@ -1159,7 +1148,7 @@ Logs the operations.
    - Description: Array of data retrieved from retrieveSectionedService_ms.php. Includes detailed information about the courses
 
 ## Examples of Use
--
+`UPDATE vers SET versname=:versname, startdate=:startdate, enddate=:enddate, motd=:motd WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers`
 
 ### Microservices Used
 - retrieveSectionedService_ms.php
@@ -1190,15 +1179,15 @@ Logs the operation.
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: Unique identifier, for logging purposes
 
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Operation type
 
 ## Calling Methods
@@ -1210,7 +1199,7 @@ Logs the operation.
    - Description: Array of data retrieved from retrieveSectionedService_ms.php. Includes detailed information about the courses
 
 ## Examples of Use
--
+`UPDATE listentries SET gradesystem=:gradesys WHERE lid=:lid`
 
 ### Microservices Used
 - getUid_ms.php
@@ -1233,11 +1222,11 @@ If a user does not have an email address in the database, a default one is gener
 
 - Parameter: $courseid  
   - Type: int  
-  - Description: Course ID used to filter results
+  - Description: Course ID used to filter results. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Course version used to filter results
+  - Type: string
+  - Description: Course version used to filter results. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid  
   - Type: string  
@@ -1251,27 +1240,23 @@ If a user does not have an email address in the database, a default one is gener
 - GET
 
 ## Output Data and Format  
-- Output: grplst  
+- Output: $grplst  
   - Type: array  
   - Description: List of group members (group name, first name, last name, email)
 
-- Output: grpmembershp  
+- Output: $grpmembershp  
   - Type: string  
   - Description: Group name of the logged-in user
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if query fails
 
 ## Examples of Use  
-SELECT user.uid, user.firstname, user.lastname, user.email, user_course.groups  
-FROM user, user_course  
-WHERE user.uid=user_course.uid AND user_course.cid=? AND user_course.vers=?;
+`SELECT user.uid, user.firstname, user.lastname, user.email, user_course.groups FROM user, user_course WHERE user.uid=user_course.uid AND user_course.cid=? AND user_course.vers=?;`
 
 ### Microservices Used  
 - retrieveSectionedService_ms.php  
-- sessions.php  
-- basic.php
 
 ---
 
@@ -1294,12 +1279,10 @@ None
   - Description: Array of course versions including course ID, code, version number, version name, course name(s), start/end date, and MOTD
 
 ## Examples of Use  
-SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers;
+`SELECT cid, coursecode, vers, versname, coursename, coursenamealt, startdate, enddate, motd FROM vers`
 
 ### Microservices Used  
 - getUid_ms.php  
-- sessions.php  
-- basic.php
 
 ---
 
@@ -1315,28 +1298,27 @@ This microservice sets a list entry in the 'listentries' table as "removed" by u
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-   - Type: String  
+   - Type: string  
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid  
-   - Type: String  
-   - Description: Used for logging.
+   - Type: string  
+   - Description: Used for logging purposes
 
 - Parameter: $opt  
-   - Type: String  
+   - Type: string  
    - Description: Operation type
 
 ## Calling Methods
 - GET
 
 ## Output Data and Format
-
 - Output: $data
    - Type: JSON  
-   - Description: Result from "retrieveSectionedService_ms"
+   - Description: Result from retrieveSectionedService-function in "retrieveSectionedService_ms"
 
 ## Examples of Use
--
+`UPDATE listentries SET visible = '3' WHERE lid=:lid`
 
 ### Microservices Used
 - getUid_ms.php
@@ -1356,7 +1338,7 @@ This microservice reorders entries in the 'listentries' table by updating their 
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-   - Type: String  
+   - Type: string  
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $pos
@@ -1368,7 +1350,7 @@ This microservice reorders entries in the 'listentries' table by updating their 
    - Description: moment ID for the listentry. Stored as int(10) in the database
 
 - Parameter: $order  
-   - Type: String  
+   - Type: string  
    - Description: String representing new order of entries
 
 - Parameter: $lid  
@@ -1376,24 +1358,23 @@ This microservice reorders entries in the 'listentries' table by updating their 
    - Description: Listentry ID. Stored as int(10) in the database
 
 - Parameter: $opt  
-   - Type: String  
+   - Type: string  
    - Description: Operation type, must be "REORDER" to trigger update logic
 
 - Parameter: $log_uuid  
-   - Type: String  
+   - Type: string  
    - Description: Used for logging.
 
 ## Calling Methods
 - GET
 
 ## Output Data and Format
-
 - Output: $data
    - Type: JSON  
    - Description: Result from "retrieveSectionedService_ms"
 
 ## Examples of Use
--
+`UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid`
 
 ### Microservices Used
 - getUid_ms.php  
@@ -1410,7 +1391,7 @@ It also counts all course versions to work out totalGroups = 24 × versions for 
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Specifies the operation type
 
 - Parameter: $courseid
@@ -1418,22 +1399,19 @@ It also counts all course versions to work out totalGroups = 24 × versions for 
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 ## Calling Methods
 - GET
 
 ## Output Data and Format
-- Output: object/array
+- Output: $data
    - Type: JSON
-   - Description: Echoes the JSON array returned by retrieveSectionedService_ms.php (keys include entries, coursename, versions, results, access flags, etc.).
+   - Description: Echoes the JSON array returned by retrieveSectionedService_ms.php (keys include entries, coursename, versions, results, access flags, etc.)
 
 ## Examples of Use
-``` fetch("sectionedService/retrieveAllCourseVersions_ms.php?courseid=37&coursevers=30000&opt=READ")
-  .then(r => r.json())
-  .then(data => console.log(data.entries));
- ```
+`SELECT vers FROM vers WHERE cid=:cid`
 
 ### Microservices Used
 - retrieveSectionedService_ms.php
@@ -1444,11 +1422,12 @@ It also counts all course versions to work out totalGroups = 24 × versions for 
 retrieveSectionedService_ms.php
 
 ## Description
-Core read service for the “sectioned” aka “course-page”view. Given a course and a version, it collects everything the user needs to render the page.
+Core read service for the “sectioned”/“course-page” view. 
+Given a course and a version, it collects everything the user needs to render the page.
 
 ## Input Parameters
 - Parameter: $opt
-   - Type: String
+   - Type: string
    - Description: Specifies the operation type
 
 - Parameter: $userid
@@ -1460,11 +1439,11 @@ Core read service for the “sectioned” aka “course-page”view. Given a cou
    - Description: Course ID. Stored as int(10) in the database
 
 - Parameter: $coursevers
-   - Type: String
+   - Type: string
    - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $log_uuid
-   - Type: String
+   - Type: string
    - Description: For logging purposes
 
 ## Calling Methods
@@ -1476,17 +1455,7 @@ Core read service for the “sectioned” aka “course-page”view. Given a cou
   - Description: Full data package for the course-page view (keys include entries, coursename, versions, results, access flags, etc.).
 
 ## Examples of Use
-``` async function loadCourse(cid, vers) {
-  const res = await fetch(
-    `sectionedService/retrieveSectionedService_ms.php?courseid=${cid}&coursevers=${vers}&opt=READ`
-  );
-  const data = await res.json();
-  renderListEntries(data.entries);
-  fillVersionSelector(data.versions, data.coursevers);
-}
- ```
+-
 
 ### Microservices Used
-- 
-
----
+None
