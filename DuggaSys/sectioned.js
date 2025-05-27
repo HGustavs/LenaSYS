@@ -1230,43 +1230,47 @@ function cancelDelete () {
 // update selected directory
 function updateSelectedDir() {
   var selectedDir = document.getElementById("selectDir").value;
-  $.ajax({
-    url: "./sectioned.php",
-    type: "POST",
-    data: {
-      action: "updateSelectedDir",
-      selectedDir: selectedDir,
-      cid: cidFromServer
-    },
-    success: function (data) {
-      console.log('POST-request call successful');
-      console.log("Response: ", data);
-      toast("success",'Directory has been updated succesfully',5)
 
-      // Parse the JSON response
-      var response;
-      try {
-        response = JSON.parse(data);
-      } catch (e) {
-        console.error('Failed to parse JSON:', e);
-        return;
-      }
+      fetch("./sectioned.php", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          action: "updateSelectedDir",
+          selectedDir: selectedDir,
+          cid: cidFromServer
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log('POST-request call successful');
+        console.log("Response: ", data);
+        toast("success", 'Directory has been updated succesfully', 5);
 
-      // Handle the response
-      //TODO:: Server is sending html response instead of JSON
-      if (response.status === "success") {
-        console.log('Update successful');
-      } else {
-        console.error('Update failed:', response.message);
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error('Update failed:', error);
-      console.log("Status: ", status);
-      console.log("Error: ", error);
-      toast("error",'Directory update failed',7)
-    }
-  });
+        // Parse the JSON response
+        var response;
+        try {
+          response = JSON.parse(data);
+        } catch (e) {
+          console.error('Failed to parse JSON:', e);
+          return;
+        }
+
+        // Handle the response
+        //TODO:: Server is sending html response instead of JSON
+        if (response.status === "success") {
+          console.log('Update successful');
+        } else {
+          console.error('Update failed:', response.message);
+        }
+      })
+      .catch(error => {
+        console.error('Update failed:', error);
+        console.log("Error: ", error);
+        toast("error", 'Directory update failed', 7);
+      });
+
 }
 
 //----------------------------------------------------------------------------------
@@ -3781,24 +3785,28 @@ function createExamples(momentID, isManual) {
 
   //wrapped ajax in promise in order to return promise to the function that called it. see setInterval
   return new Promise((resolve, reject) => {
-    $.ajax({
-      url: "sectionedservice.php",
-      type: "POST",
-      data: { 'lid': lid, 'opt': 'CREGITEX' },
-      dataType: "json",
-      success: function (response) {
-        console.log("AJAX request succeeded. Response:", response);
-        lastUpdatedCodeExampes = Date.now();
-        if (isManual) {
-          console.log("Code examples have been manually updated successfully!");
-        }
-        resolve(response);
+    fetch("sectionedservice.php", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      error: function (xhr, status, error) {
-        console.error("AJAX request failed. Status:", status);
-        console.error("Error:", error);
-        console.log("Failed to manually update code examples!");
+      body: new URLSearchParams({
+        'lid': lid,
+        'opt': 'CREGITEX'
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log("Fetch request succeeded. Response:", response);
+      lastUpdatedCodeExampes = Date.now();
+      if (isManual) {
+        console.log("Code examples have been manually updated successfully!");
       }
+      resolve(response);
+    })
+    .catch(error => {
+      console.error("Fetch request failed. Error:", error);
+      console.log("Failed to manually update code examples!");
     });
   });
 }
@@ -4878,25 +4886,31 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     }
 
     //Send data to sectioned.php through POST
-    $.ajax({
-       url: 'sectionedservice.php',
-       type: 'POST',
-       data: {
+    fetch('sectionedservice.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
         courseid: cid,
         githubURL: githubURL,
         codeExampleName: fileName,
         opt: 'GITCODEEXAMPLE',
         codeExampleData: AllJsonData
-       },
-       success: function(response) {
-          console.log(response);
-       },
-       error: function(xhr, status, error) {
-        console.error('AJAX Error:', status, error);
-      }
-    });   
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      location.replace(location.href);
+    })
+    .catch(error => {
+      console.error('Fetch Error:', error);
+    });
+    
     confirmBox('closeConfirmBox');
-    location.replace(location.href);
+        
+
 }
 function updateTemplate() {
   templateNo = document.getElementById("templateno").value;
