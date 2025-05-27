@@ -231,7 +231,7 @@ function ddown(event) {
                 startX = event.clientX;
                 startY = event.clientY;
 
-                if (!altPressed) {
+                if (!altPressed && pointerState !== pointerStates.CLICKED_NODE) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
                     canPressDeleteBtn = true;
