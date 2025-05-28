@@ -4656,41 +4656,6 @@ function returnedUserFeedback(data) {
   }
 
 }
-//------------------------------------------------------------------------------
-// Creates a table with the Feedback data.
-//------------------------------------------------------------------------------
-function createUserFeedbackTable(data) {
-  var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
-  str += "<thead><tr><th>Feedback ID</th>";
-  str += "<th>Username</th>";
-  str += "<th>Course ID</th>";
-  str += "<th>Dugga ID</th>";
-  str += "<th>Rating</th>";
-  str += "<th>Contact student</th></tr></thead><tbody style='background-color: var(--color-background)'>";
-
-  for (var i = 0; i < data.userfeedback.length; i++) {
-    str += "<tr>";
-    str += "<td>" + data.userfeedback[i].ufid + "</td>";
-    if (data.userfeedback[i].username === null) {
-      str += "<td>Anonymous</td>";
-    } else {
-      str += "<td>" + data.userfeedback[i].username + "</td>";
-    }
-    str += "<td>" + data.userfeedback[i].cid + "</td>";
-    str += "<td>" + data.userfeedback[i].lid + "</td>";
-    str += "<td style='font-weight: bold; font-size: 18px;'>" + data.userfeedback[i].score + "</td>";
-    if (data.userfeedback[i].username === null) {
-      str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
-    } else {
-      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student'
-      onclick='contactStudent(\"${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
-    }
-    str += "</tr>";
-  }
-
-  str += "</tbody></table>";
-  return str;
-}
 
 //------------------------------------------------------------------------------
 // Opens an email to the student
