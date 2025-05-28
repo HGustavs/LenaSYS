@@ -541,6 +541,7 @@ function getData() {
     if (logoutButton) {   
         logoutButton.addEventListener("click", () => {
             window.showLogoutPopup();
+            console.log("is a function: " + typeof LogoutBoxWrapper === "function");
       });
     }   
 
