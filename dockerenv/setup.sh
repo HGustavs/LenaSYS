@@ -8,12 +8,12 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   # macOS
   GROUP_CMD=(sudo dseditgroup -o edit -a "$USER" -t user _www)
   GROUP_NAME="_www"
-  CHMOD_CMD=(sudo chown -R "$USER":_www ../../LenaSYS)
+  CHOWN_CMD=(sudo chown -R "$USER":_www ../../LenaSYS)
 else
   # Linux  
   GROUP_CMD=(sudo usermod -aG www-data "$USER")
   GROUP_NAME="www-data"
-  CHMOD_CMD=(sudo chown -R "$USER":www-data ../../LenaSYS)
+  CHOWN_CMD=(sudo chown -R "$USER":www-data ../../LenaSYS)
 fi
 
 # Make sure metadata folder exists
@@ -33,7 +33,7 @@ fi
 
 # Add LenaSYS folder to username and group recursively
 echo "Changing ownership of LenaSYS to $USER:$GROUP_NAME..."
-"${CHMOD_CMD[@]}"
+"${CHOWN_CMD[@]}"
 
 # Change permissions of LenaSYS to 777
 echo "Beginning to change permissions of LenaSYS to 777..."

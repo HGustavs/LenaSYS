@@ -20,7 +20,7 @@
 <body>
 
 	<form id="installer_form">
-		<div id="page1" class="page">
+		<div id="page1" class="page" style="display:flex;">
 			<div class="banner">
 				<h1 class="header-1">Welcome to <b>LenaSYS</b></h1>
 			</div>
