@@ -1135,14 +1135,6 @@ function prepareItem() {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
   }
 
-  if (document.getElementById('fdbck').checked) {
-    param.feedback = 1;
-    param.feedbackquestion = document.getElementById("fdbckque").value;
-  } else {
-    param.feedback = 0;
-    param.feedbackquestion = null;
-  }
-
   // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren (Old solution)
   //var elementBtnTop = document.getElementById("FABStatic2").getBoundingClientRect();
   //screenPos = Math.round((-1 * elementBtnTop.top) / 350);
@@ -4522,7 +4514,7 @@ function refreshMoment(momentID) {
 function contactStudent(entryname, username) {
 
   window.location = "mailto:" + username +
-    "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga " + entryname;
+    "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga " + entryname; // Is this related to the feedback functions? Should be removed or altered if it is.
 }
 
 //Fetch Code Examples content from github 
