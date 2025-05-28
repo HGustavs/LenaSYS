@@ -2202,7 +2202,7 @@ function returnedSection(data) {
           str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+          item['tabs']]) + "), clearHideItemList();' />";
 
 
           str += "</td>";
@@ -2219,12 +2219,12 @@ function returnedSection(data) {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
-            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+            item['tabs']]) + "), clearHideItemList();' />";
           } else {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
-            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+            item['tabs']]) + "), clearHideItemList();' />";
           }
           str += "</td>";
         }
@@ -3119,7 +3119,6 @@ window.addEventListener("DOMContentLoaded", function () {
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
-  // toggleFeedbacks();
 });
 
 
