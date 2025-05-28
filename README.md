@@ -56,7 +56,7 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 - **On macOS/Linux:** There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](#using-linux-or-mac), and then run the script again.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
-6. Docker has finished building images and containers when the terminal stops printing out or/and shows a blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.
+6. Docker has finished building images and containers and you need to wait for 10 seconds to allow the script to set the permissions and ownerships. Once the terminal stops printing output and shows the message `Now you can use the website!`, then you can proceed to the next step. NOTE: To shutdown the Docker containers run: `docker compose down`. Make sure you are in the `LenaSYS/dockerenv/` directory when running this command.
 <img src="Shared/Documentation/docker_images/terminal5.png" width="512">
 
 7. Now go to Docker desktop and you can see a menu which says images and containers. Press the containers from the menu and here you can see there are three containers and each one has green-circle which means they are running. If you can not see three containers, then you need to press `drop-down`-button
@@ -81,7 +81,7 @@ After changing the file permissions recursively over the repository, all the fil
 
 ### Stop containers in Docker
 
-1. To stop running containers, open the terminal where docker is running press `ctrl-c` and wait until all three containers says stopped. NOTE: If your terminal says all three are stopped, but your username does not appear in your terminal, then press the up- or down-arrow keys to show your username.
+1. To stop the running containers, open a terminal and navigate to the `LenaSYS/dockerenv/` directory and run: `docker stop $(docker ps -aq)`.
 <img src="Shared/Documentation/docker_images/terminal6.png" width="512">
 
 2. If you go back to Docker desktop and go to containers, you can see three containers are not running, shown by the gray circles. Now containers are not running.
@@ -91,16 +91,13 @@ After changing the file permissions recursively over the repository, all the fil
 
 1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
 
-2. After that run the command: `docker compose down` in the terminal.
+2. To remove the containers, open a terminal and navigate to the `LenaSYS/dockerenv/` directory and run: `docker compose down`. Now your terminal says removed which means containers are removed.
 <img src="Shared/Documentation/docker_images/terminal7.png" width="512">
 
-3. Now your terminal says removed which means containers are removed.
-<img src="Shared/Documentation/docker_images/terminal8.png" width="512">
-
-4. You can check in Docker desktop and press containers. Here you can see that all containers are gone.
+3. You can check in Docker desktop and press containers. Here you can see that all containers are gone.
 <img src="Shared/Documentation/docker_images/dockerContainers2.png" width="512">
 
-5. To remove all images to free up space, you need to press images in Docker desktop and select all checkboxes. When all selected,  press `Delete`-button and it will show a pop-up if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
+4. To remove all images to free up space, you need to press images in Docker desktop and select all checkboxes. When all selected,  press `Delete`-button and it will show a pop-up if you want to delete, press `Delete forever`-button. Now you have successful removed all containers and images.
 <img src="Shared/Documentation/docker_images/dockerimages.png" width="512">
 
 ### Stop running or pause Docker desktop
