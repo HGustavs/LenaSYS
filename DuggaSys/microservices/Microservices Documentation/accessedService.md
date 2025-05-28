@@ -64,7 +64,7 @@ Logs the event and performs authentication.
    - Description: Error message if the user is not a superuser, the $opt is not 'ADDCLASS' or not able to create the class/course
 
 ## Examples of Use
--
+`INSERT INTO class (class, responsible, classname (...) ) VALUES(:class, :responsible, :classname (...) );"`
 
 ### Microservices Used
 - getUid_ms.php
@@ -141,7 +141,7 @@ Checks if a user exists based on the username, creates a new user if it not and 
    - Description: Message is displayed if an error occurs
 
 ## Examples of Use
--
+`INSERT INTO class (class, responsible) VALUES(:className,1);`
 
 ### Microservices Used
 - getUid_ms.php
@@ -216,11 +216,11 @@ The data is only retrieved for users who have specific access.
 
 - Parameter: $opt
    - Type: String
-   - Description: Operation option. Optional
+   - Description: Operation option
 
 - Parameter: $newusers
    - Type: String
-   - Description: String of newly added users. Optional
+   - Description: String of newly added users
 
 ## Calling Methods
 -
@@ -383,7 +383,7 @@ The data is only retrieved for users who have specific access.
    - Description: Stored as int(11) in the database
 
 ## Examples of Use
--
+`SELECT user_course.uid FROM user_course WHERE user_course.access = 'W' GROUP by user_course.uid;`
 
 ### Microservices Used
 None
@@ -446,7 +446,7 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
 
 
 ## Examples of Use
--
+`UPDATE user SET firstname=:firstname WHERE uid=:uid;`
 
 ### Microservices Used
 - retrieveAccessedService_ms.php
@@ -489,7 +489,8 @@ Updates properties for a specific user in the 'user_course' table. Can only be d
    - Description: Displays message if there are errors in operations
 
 ## Examples of Use
--
+`UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;`
 
 ### Microservices Used
 - getUid_ms.php
+
