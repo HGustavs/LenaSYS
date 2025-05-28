@@ -1,4 +1,4 @@
-This is a guide on how to install a local database for testing of contribution\*-files. It is not recommended that you push your local database to the master(main) branch, it should only be on your local version of LenaSyYS on your local machine.
+This is a guide on how to install a local database for testing of contribution\*-files. It is not recommended that you push your local database to the master(main) branch, it should only be on your local version of LenaSYS on your local machine.
 
 As of 28/05/2025 in the github repository there is a folder named ‘test\_contribution’, in it is a sql file named ‘test\_database.sql’.
 
