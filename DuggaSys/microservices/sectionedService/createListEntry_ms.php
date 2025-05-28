@@ -4,7 +4,6 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveSectionedService_ms.php";
 include_once "../curlService.php";
 
 pdoConnect();
@@ -81,7 +80,15 @@ $listEntryData = [
 
 $debug = callMicroservicePOST("sharedMicroservices/createNewListEntry_ms.php", $listEntryData, true);
 
-$data = retrieveSectionedService($debug, $opt, $pdo, $userid, $courseid, $coursevers, $log_uuid);
+$postData = [
+    'debug' => $debug,
+    'opt' => $opt,
+    'uid' => $userid,
+    'cid' => $courseid,
+    'vers' => $coursevers,
+    'log_uuid' => $log_uuid
+];
 
-header('Content-Type: application/json');
-echo json_encode($data);
+header("Content-Type: application/json");
+$response = callMicroservicePOST("sectionedService/retrieveSectionedService_ms.php", $postData, true );
+echo $response;

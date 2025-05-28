@@ -1400,3 +1400,93 @@ This microservice reorders entries in the 'listentries' table by updating their 
 - retrieveSectionedService_ms.php
 
 ---
+
+# Name of file/service
+retrieveAllCourseVersions_ms.php
+
+## Description
+Delivers course-page JSON for one course and version.
+It also counts all course versions to work out totalGroups = 24 × versions for internal debugging only—this value isn’t sent to the user.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Specifies the operation type
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: object/array
+   - Type: JSON
+   - Description: Echoes the JSON array returned by retrieveSectionedService_ms.php (keys include entries, coursename, versions, results, access flags, etc.).
+
+## Examples of Use
+``` fetch("sectionedService/retrieveAllCourseVersions_ms.php?courseid=37&coursevers=30000&opt=READ")
+  .then(r => r.json())
+  .then(data => console.log(data.entries));
+ ```
+
+### Microservices Used
+- retrieveSectionedService_ms.php
+
+---
+
+# Name of file/service
+retrieveSectionedService_ms.php
+
+## Description
+Core read service for the “sectioned” aka “course-page”view. Given a course and a version, it collects everything the user needs to render the page.
+
+## Input Parameters
+- Parameter: $opt
+   - Type: String
+   - Description: Specifies the operation type
+
+- Parameter: $userid
+   - Type: int
+   - Description: User ID. Stored as int(10) in the database
+
+- Parameter: $courseid
+   - Type: int
+   - Description: Course ID. Stored as int(10) in the database
+
+- Parameter: $coursevers
+   - Type: String
+   - Description: Course version. Stored as varchar(8) in the database
+
+- Parameter: $log_uuid
+   - Type: String
+   - Description: For logging purposes
+
+## Calling Methods
+- GET
+
+## Output Data and Format
+- Output: object/array 
+  - Type: JSON  
+  - Description: Full data package for the course-page view (keys include entries, coursename, versions, results, access flags, etc.).
+
+## Examples of Use
+``` async function loadCourse(cid, vers) {
+  const res = await fetch(
+    `sectionedService/retrieveSectionedService_ms.php?courseid=${cid}&coursevers=${vers}&opt=READ`
+  );
+  const data = await res.json();
+  renderListEntries(data.entries);
+  fillVersionSelector(data.versions, data.coursevers);
+}
+ ```
+
+### Microservices Used
+- 
+
+---

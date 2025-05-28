@@ -54,24 +54,26 @@ var goalObject;
 // Setup
 //----------------------------------------------------------------------------------
 
-function setup() 
-{
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
-	.done( function(script) {
+function setup() {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js";
+
+	script.onload = function () {
 		acanvas = document.getElementById('container');
 		renderer = new THREE.WebGLRenderer();
-		
+
 		AJAXService("GETPARAM", { }, "PDUGGA");
 		acanvas.addEventListener('click', toggleRotate, false);
+	};
 
-	})
-	.fail(function( jqxhr, settings, exception ) {
-	  	//console.log(jqxhr);
-	  	//console.log(settings);
-	  	//console.log(exception);	    
-	});
+	script.onerror = function () {
+		console.error("Failed to load Three.js script.");
+	};
 
+	document.head.appendChild(script);
 }
+
 
 //----------------------------------------------------------------------------------
 // returnedDugga: callback from ajax call in setup, data is json
@@ -149,16 +151,17 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	//console.log(ans.triangle);
 
 	// Setup code
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
-	.done( function( script, textStatus ) {
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js";
+
+	script.onload = function () {
 		acanvas = document.getElementById('container');
 		renderer = new THREE.WebGLRenderer();
 		acanvas.addEventListener('click', toggleRotate, false);
 
-		// Parse student answer and dugga answer
-		var studentPreviousAnswer = "";
 		var p = JSON.parse(param);
-		if (uanswer !== null && uanswer !== "UNK"){
+		if (uanswer !== null && uanswer !== "UNK") {
 			var previous = uanswer.split(' ');
 			var prevRaw = previous[3];
 			prevRaw = prevRaw.replace(/&quot;/g, '"');
@@ -169,10 +172,10 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			renderTriangleTable();
 		}
 
-    if (renderId != undefined){
-        cancelAnimationFrame(renderId);
-        renderId=undefined;
-    }
+		if (renderId !== undefined) {
+			cancelAnimationFrame(renderId);
+			renderId = undefined;
+		}
 
 		init();
 		goalObject = param;
@@ -197,12 +200,13 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
 		}
 
-	})
-	.fail(function( jqxhr, settings, exception ) {
-	  	//console.log(jqxhr);
-	  	//console.log(settings);
-	  	//console.log(exception);	    
-	});
+	};
+
+	script.onerror = function () {
+		console.error("Failed to load Three.js script.");
+	};
+
+	document.head.appendChild(script);
 
   // Teacher feedback
   var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";

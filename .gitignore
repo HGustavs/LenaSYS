@@ -25,3 +25,6 @@ DuggaSys/microservices/endpointDirectory/newMDStructureTest.md
 *.key
 *.crt
 DuggaSys/microservices/endpointDirectory/dependenciesList.php
+DuggaSys/microservices/endpointDirectory/descriptionSearch.php
+DuggaSys/microservices/endpointDirectory/nameQuery.php
+DuggaSys/microservices/endpointDirectory/parameterQuery.php
